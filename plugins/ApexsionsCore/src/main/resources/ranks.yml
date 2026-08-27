@@ -1,0 +1,80 @@
+# ==============================================================================
+# ApexsionsCore — Rank Definitions & LuckPerms Provisioning (ranks.yml)
+# ==============================================================================
+
+# Owner Configuration (The Ancestor rank is exclusively granted to this UUID)
+owner:
+  uuid: "00000000-0000-0000-0000-000000000000"
+
+# Managed LuckPerms Ranks (Automatically and idempotently provisioned on startup)
+ranks:
+  ancestor:
+    display-name: "The Ancestor"
+    formatted-name: "<dark_red><bold>The Ancestor</bold></dark_red>"
+    prefix: "<dark_red><bold>[The Ancestor]</bold></dark_red> "
+    color: "#8B0000"
+    bold: true
+    protected: true
+    weight: 100
+
+  warden:
+    display-name: "Warden"
+    formatted-name: "<dark_blue>Warden</dark_blue>"
+    prefix: "<dark_blue>[Warden]</dark_blue> "
+    color: "#00008B"
+    weight: 90
+
+  herald:
+    display-name: "Herald"
+    formatted-name: "<#FF69B4>Herald</#FF69B4>"
+    prefix: "<#FF69B4>[Herald]</#FF69B4> "
+    color: "#FF69B4"
+    weight: 80
+
+  sions:
+    display-name: "Sions"
+    formatted-name: "<gradient:#00FFFF:#FFD700><bold>Sions</bold></gradient>"
+    prefix: "<gradient:#00FFFF:#FFD700><bold>[Sions]</bold></gradient> "
+    color: "#00FFFF"
+    weight: 70
+    gradient:
+      enabled: true
+      colors:
+        - "#00FFFF"
+        - "#FFD700"
+
+  emperor:
+    display-name: "Emperor"
+    formatted-name: "<red>Emperor</red>"
+    prefix: "<red>[Emperor]</red> "
+    color: "#FF0000"
+    weight: 60
+
+  sovereign:
+    display-name: "Sovereign"
+    formatted-name: "<gold>Sovereign</gold>"
+    prefix: "<gold>[Sovereign]</gold> "
+    color: "#FFD700"
+    weight: 50
+
+  archon:
+    display-name: "Archon"
+    formatted-name: "<aqua>Archon</aqua>"
+    prefix: "<aqua>[Archon]</aqua> "
+    color: "#00FFFF"
+    weight: 40
+
+  ascendant:
+    display-name: "Ascendant"
+    formatted-name: "<#90EE90>Ascendant</#90EE90>"
+    prefix: "<#90EE90>[Ascendant]</#90EE90> "
+    color: "#90EE90"
+    weight: 30
+
+  wanderer:
+    display-name: "Wanderer"
+    formatted-name: "<gray>Wanderer</gray>"
+    prefix: "<gray>[Wanderer]</gray> "
+    color: "#808080"
+    default: true
+    weight: 10

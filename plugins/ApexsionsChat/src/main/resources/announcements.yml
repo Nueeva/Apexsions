@@ -1,0 +1,16 @@
+# ==============================================================================
+# ApexsionsChat — Scheduled Announcements (announcements.yml)
+# ==============================================================================
+
+announcements:
+  enabled: true
+  interval-seconds: 600 # Every 10 minutes
+  random-order: false
+  prefix: "<gradient:#06b6d4:#3b82f6><bold>ANNOUNCEMENT</bold></gradient> <dark_gray>»</dark_gray> "
+
+  messages:
+    - "<gradient:#38bdf8:#f59e0b><bold>Welcome to Apexsions!</bold></gradient> Choose your realm with <yellow>/region choose</yellow> and build your legacy!"
+    - "<green>Report rule-breakers quickly and discreetly using <yellow>/report <player> <reason></yellow> to notify online staff.</green>"
+    - "<gold>Level up your realm titles from Level 1 to 100! Type <yellow>/level</yellow> to view rewards and unclaimed gifts.</gold>"
+    - "<aqua>Showcase your rarest weapons and armor to the chat using <yellow>/showitem</yellow> or <yellow>[item]</yellow> in your message!</aqua>"
+    - "<light_purple>Have an unread offline message? Open your mailbox anytime with <yellow>/mail</yellow> or send letters via <yellow>/mail send</yellow>.</light_purple>"

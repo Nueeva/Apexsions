@@ -1,0 +1,22 @@
+# Build & Target Directories
+target/
+build/
+.gradle/
+
+# Maven temporary files
+dependency-reduced-pom.xml
+
+# Bundled build tools binaries
+apache-maven-*/
+gradle-*/
+jdk-*/
+
+# IDE configuration
+.idea/
+.vscode/
+*.iml
+
+# OS and runtime logs
+*.log
+.DS_Store
+Thumbs.db

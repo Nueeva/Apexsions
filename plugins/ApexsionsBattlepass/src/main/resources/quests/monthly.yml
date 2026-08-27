@@ -1,0 +1,178 @@
+months:
+  1:
+    monthly_monster_slaughter_m1:
+      name: "&cPembantai 1000 Monster Month 1"
+      description: "Basmi total 1000 Hostile Mobs selama bulan pertama Season."
+      type: "KILL_ENTITY"
+      target-amount: 1000
+      reward-xp: 6000
+      reward-coins: 1200
+
+    monthly_grand_miner_m1:
+      name: "&6Penggali Gunung Month 1"
+      description: "Tambang 3000 blok batu/deepslate."
+      type: "MINE_BLOCK"
+      target-amount: 3000
+      reward-xp: 6500
+      reward-coins: 1300
+
+    monthly_diamond_baron_m1:
+      name: "&bRaja Diamond Month 1"
+      description: "Kumpulkan 150 Diamond Ore dari perut bumi."
+      type: "MINE_BLOCK"
+      target-block: "DIAMOND_ORE"
+      target-amount: 150
+      reward-xp: 8000
+      reward-coins: 1600
+
+    monthly_crop_tycoon_m1:
+      name: "&eKonglomerat Tani Month 1"
+      description: "Panen 2000 hasil tani di seluruh dunia."
+      type: "HARVEST_CROPS"
+      target-amount: 2000
+      reward-xp: 5500
+      reward-coins: 1100
+
+    monthly_smelt_factory_m1:
+      name: "&4Pabrik Raksasa Month 1"
+      description: "Lebur 1000 ores atau bahan makanan."
+      type: "SMELT_ITEM"
+      target-amount: 1000
+      reward-xp: 6000
+      reward-coins: 1200
+
+    monthly_master_rancher_m1:
+      name: "&dPeternak Akbar Month 1"
+      description: "Kembangbiakkan 250 pasang hewan ternak."
+      type: "BREED_ANIMALS"
+      target-amount: 250
+      reward-xp: 5500
+      reward-coins: 1100
+
+    monthly_ocean_legend_m1:
+      name: "&bLegenda Samudra Month 1"
+      description: "Dapatkan 300 tangkapan ikan dari samudra luas."
+      type: "FISH"
+      target-amount: 300
+      reward-xp: 5000
+      reward-coins: 1000
+
+  2:
+    monthly_nether_conqueror_m2:
+      name: "&4Penakluk Neraka Month 2"
+      description: "Kalahkan 500 mob Nether (Blaze, Ghast, Piglin, Wither Skeleton)."
+      type: "KILL_ENTITY"
+      target-amount: 500
+      reward-xp: 7500
+      reward-coins: 1500
+
+    monthly_debris_collector_m2:
+      name: "&8Kolektor Ancient Debris Month 2"
+      description: "Temukan dan tambang 40 Ancient Debris."
+      type: "MINE_BLOCK"
+      target-block: "ANCIENT_DEBRIS"
+      target-amount: 40
+      reward-xp: 9000
+      reward-coins: 1800
+
+    monthly_master_architect_m2:
+      name: "&eMaster Arsitektur Month 2"
+      description: "Pasang 2500 blok bangunan di server."
+      type: "PLACE_BLOCK"
+      target-amount: 2500
+      reward-xp: 6500
+      reward-coins: 1300
+
+    monthly_legendary_enchanter_m2:
+      name: "&dSang Penyihir Agung Month 2"
+      description: "Enchant 120 senjata, armor, atau perkakas."
+      type: "ENCHANT_ITEM"
+      target-amount: 120
+      reward-xp: 7000
+      reward-coins: 1400
+
+    monthly_exp_titan_m2:
+      name: "&aTitan Pengalaman Month 2"
+      description: "Raih total 8000 EXP Points dari aktivitas permainan."
+      type: "EXP_GAIN"
+      target-amount: 8000
+      reward-xp: 8500
+      reward-coins: 1700
+
+    monthly_enderman_hunter_m2:
+      name: "&5Pembasmi 250 Enderman Month 2"
+      description: "Kalahkan 250 Enderman di Overworld atau End."
+      type: "KILL_ENTITY"
+      target-entity: "ENDERMAN"
+      target-amount: 250
+      reward-xp: 7500
+      reward-coins: 1500
+
+    monthly_gold_rush_m2:
+      name: "&6Pencari Tambang Emas Month 2"
+      description: "Tambang 400 Gold Ore di Nether atau Mesa."
+      type: "MINE_BLOCK"
+      target-block: "GOLD_ORE"
+      target-amount: 400
+      reward-xp: 7000
+      reward-coins: 1400
+
+  3:
+    monthly_wither_nemesis_m3:
+      name: "&8Penakluk Wither Skeleton Month 3"
+      description: "Habisi 300 Wither Skeleton di Nether Fortress."
+      type: "KILL_ENTITY"
+      target-entity: "WITHER_SKELETON"
+      target-amount: 300
+      reward-xp: 9500
+      reward-coins: 1900
+
+    monthly_ultimate_miner_m3:
+      name: "&3Master Pertambangan Puncak Month 3"
+      description: "Tambang 5000 blok batu/mineral apa saja."
+      type: "MINE_BLOCK"
+      target-amount: 5000
+      reward-xp: 10000
+      reward-coins: 2000
+
+    monthly_diamond_overload_m3:
+      name: "&bDeposit Berlian Akbar Month 3"
+      description: "Tambang 250 Diamond Ore sebelum Season berakhir."
+      type: "MINE_BLOCK"
+      target-block: "DIAMOND_ORE"
+      target-amount: 250
+      reward-xp: 11000
+      reward-coins: 2200
+
+    monthly_legendary_farmer_m3:
+      name: "&ePuncak Panen Raya Month 3"
+      description: "Panen 3500 tanaman pangan di ladang."
+      type: "HARVEST_CROPS"
+      target-amount: 3500
+      reward-xp: 8500
+      reward-coins: 1700
+
+    monthly_extreme_exp_m3:
+      name: "&aDewa Pengalaman Month 3"
+      description: "Kumpulkan 15000 EXP Points."
+      type: "EXP_GAIN"
+      target-amount: 15000
+      reward-xp: 12000
+      reward-coins: 2500
+
+    monthly_feast_king_m3:
+      name: "&cRaja Kuliner Month 3"
+      description: "Konsumsi 300 makanan bergizi."
+      type: "CONSUME_FOOD"
+      target-amount: 300
+      reward-xp: 7000
+      reward-coins: 1400
+
+    monthly_netherite_emperor_m3:
+      name: "&4Kaisar Netherite Month 3"
+      description: "Tambang 60 Ancient Debris di kedalaman Nether."
+      type: "MINE_BLOCK"
+      target-block: "ANCIENT_DEBRIS"
+      target-amount: 60
+      reward-xp: 12500
+      reward-coins: 2500

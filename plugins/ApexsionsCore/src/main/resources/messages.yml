@@ -1,0 +1,39 @@
+# ==============================================================================
+# Apexsions — Localization & Messages Configuration (messages.yml)
+# Formatted using Adventure MiniMessage Syntax
+# ==============================================================================
+
+prefix: "<gold><bold>Apexsions</bold> <dark_gray>»</dark_gray> "
+
+kingdom:
+  welcome-first-join:
+    - "<gold><bold>════════════════════════════════════════════════</bold></gold>"
+    - "<yellow><bold>Welcome to Apexsions,</bold> <white>%player%</white>!</yellow>"
+    - "<gray>Discover the 3 great realms: <aqua>Zenithar</aqua>, <gold>Solterra</gold>, and <green>Sylvamoor</green>.</gray>"
+    - "<gray>When ready, interact with a Guide NPC or click <gold><bold><click:run_command:'/kingdom choose'><hover:show_text:'<yellow>Click to open Kingdom Selection Menu</yellow>'>[CHOOSE KINGDOM]</click></bold></gold> to pledge allegiance!</gray>"
+    - "<gold><bold>════════════════════════════════════════════════</bold></gold>"
+  allegiance-pledged:
+    - "<gold><bold>════════════════════════════════════════════════</bold></gold>"
+    - "<green><bold>ALLEGIANCE PLEDGED!</bold> You are now a citizen of <yellow>%kingdom%</yellow><green>!</green></green>"
+    - "<gray>Your journey begins now. Teleporting to capital spawn...</gray>"
+    - "<gold><bold>════════════════════════════════════════════════</bold></gold>"
+  already-pledged: "<red>You have already pledged allegiance to a kingdom! Allegiance cannot be changed freely.</red>"
+  not-pledged: "<yellow>You have not pledged allegiance to a kingdom yet! Use <gold>/kingdom choose</gold>.</yellow>"
+  teleporting: "<green>Teleporting to <yellow>%kingdom%</yellow> capital spawn...</green>"
+  teleport-failed: "<red>Could not teleport to kingdom spawn location.</red>"
+
+rewards:
+  claimed-single: "<green>✔ You have successfully claimed your reward for <yellow>Level %level%</yellow>!</green>"
+  claimed-all: "<green>✔ Successfully claimed <gold>%count%</gold> pending level rewards!</green>"
+  no-unclaimed: "<yellow>You don't have any unclaimed level rewards right now.</yellow>"
+  level-too-low: "<red>You must reach Level %level% to claim this reward!</red>"
+  already-claimed: "<red>You have already claimed the reward for Level %level%.</red>"
+
+level:
+  levelup-title: "<gold><bold>LEVEL UP!</bold></gold>"
+  levelup-subtitle: "<yellow>Level <gold>%level%</gold> — Title: <aqua>%title%</aqua></yellow>"
+
+errors:
+  player-only: "<red>This command can only be executed by players.</red>"
+  no-permission: "<red>You do not have permission to execute this command.</red>"
+  profile-loading: "<red>Your profile is still loading, please wait a moment.</red>"

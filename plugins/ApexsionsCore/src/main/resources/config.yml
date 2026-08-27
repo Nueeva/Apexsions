@@ -1,0 +1,52 @@
+# ==============================================================================
+# Apexsions — KingdomCore Main Configuration (config.yml)
+# Modular YAMLs: kingdoms.yml, titles.yml, xp.yml, rewards.yml, messages.yml, gui.yml
+# ==============================================================================
+
+server:
+  name: "Apexsions"
+
+database:
+  # Database type: 'postgresql' (production standard) or 'sqlite' / 'h2' (local dev fallback)
+  type: "postgresql"
+  host: "localhost"
+  port: 5432
+  database: "kingdomcore"
+  username: "postgres"
+  password: "password"
+  pool:
+    maximum-pool-size: 10
+    minimum-idle: 2
+    idle-timeout: 600000
+    connection-timeout: 30000
+    max-lifetime: 1800000
+  # Automatically fallback to local SQLite (database.db) if PostgreSQL cannot be reached
+  auto-fallback: true
+
+locations:
+  lobby:
+    world: "world"
+    x: 0.5
+    y: 100.0
+    z: 0.5
+    yaw: 0.0
+    pitch: 0.0
+
+level:
+  min: 1
+  max: 100
+  # Base XP multiplier: required XP = base * (level ^ exponent)
+  formula:
+    base: 100
+    exponent: 1.5
+  # Behavior on max level (100): allow_overflow (true) or cap_xp (false)
+  allow-overflow: false
+
+bluemap:
+  enabled: true
+  # Path to BlueMap world.conf (relative to server root or plugins/BlueMap/maps/world.conf)
+  config-path: "world.conf"
+  # Synchronize kingdom spawn locations with BlueMap marker positions
+  sync-spawns: true
+  # Display title/actionbar when player walks into kingdom territory
+  territory-actionbar: true

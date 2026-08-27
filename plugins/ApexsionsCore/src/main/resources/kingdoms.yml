@@ -1,0 +1,52 @@
+# ==============================================================================
+# Apexsions — Kingdoms Configuration (kingdoms.yml)
+# ==============================================================================
+
+regions:
+  ZENITHAR:
+    display-name: "<gradient:#ffe900:#f39c12><bold>Zenithar</bold></gradient>"
+    icon: "GOLD_BLOCK"
+    slot: 20
+    description:
+      - "<dark_gray>Celestial & Solar Realm</dark_gray>"
+      - "<gray>A majestic kingdom of radiant yellow light,"
+      - "<gray>golden citadels & arcane sky spires."
+      - ""
+      - "<yellow><bold>Kingdom Traits:</bold></yellow>"
+      - "<gray> • Starting Title: <gold>Acolyte of Zenith</gold>"
+      - "<gray> • Supreme Title: <gold>Emperor of Zenithar</gold>"
+      - "<gray> • Capital Realm: <yellow>world (-3028, 64, -5597)</yellow>"
+      - ""
+      - "<yellow>⚡ Click to pledge allegiance to Zenithar!</yellow>"
+
+  SOLTERRA:
+    display-name: "<gradient:#ff4d4d:#c0392b><bold>Solterra</bold></gradient>"
+    icon: "REDSTONE_BLOCK"
+    slot: 22
+    description:
+      - "<dark_gray>Crimson Earth & Fire Empire</dark_gray>"
+      - "<gray>A blazing domain of crimson power,"
+      - "<gray>red magma dunes & legendary warriors."
+      - ""
+      - "<red><bold>Kingdom Traits:</bold></red>"
+      - "<gray> • Starting Title: <red>Dune Wanderer</red>"
+      - "<gray> • Supreme Title: <red>Lord of Solterra</red>"
+      - "<gray> • Capital Realm: <red>world (-5843, 65, 889)</red>"
+      - ""
+      - "<red>⚡ Click to pledge allegiance to Solterra!</red>"
+
+  SYLVAMOOR:
+    display-name: "<gradient:#87ceeb:#3498db><bold>Sylvamoor</bold></gradient>"
+    icon: "DIAMOND_BLOCK"
+    slot: 24
+    description:
+      - "<dark_gray>Azure Crystal & Ocean Realm</dark_gray>"
+      - "<gray>An ancient kingdom of azure frost,"
+      - "<gray>mystic blue flora & oceanic harmony."
+      - ""
+      - "<aqua><bold>Kingdom Traits:</bold></aqua>"
+      - "<gray> • Starting Title: <aqua>Sylvan Citizen</aqua>"
+      - "<gray> • Supreme Title: <aqua>Avatar of Sylvamoor</aqua>"
+      - "<gray> • Capital Realm: <aqua>world (-9666, 64, -4812)</aqua>"
+      - ""
+      - "<aqua>⚡ Click to pledge allegiance to Sylvamoor!</aqua>"

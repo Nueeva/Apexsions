@@ -1,0 +1,11 @@
+id: free
+display-name: "&f&lFree Pass"
+permission: "apexsionsbattlepass.pass.free"
+default-owned: true
+icon:
+  material: "CHEST"
+lore:
+  - "&7Pass bawaan gratis untuk semua pemain."
+priority: 0
+reward-access:
+  - free

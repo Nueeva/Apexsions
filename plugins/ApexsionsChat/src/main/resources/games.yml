@@ -1,0 +1,50 @@
+# ==============================================================================
+# ApexsionsChat — Automated Chat Games (games.yml)
+# ==============================================================================
+
+games:
+  enabled: true
+  minimum-interval-seconds: 300 # 5 minutes
+  maximum-interval-seconds: 600 # 10 minutes
+  timeout-seconds: 45
+
+  # Word Unscramble Game
+  unscramble:
+    enabled: true
+    weight: 50
+    words:
+      - "Minecraft"
+      - "Apexsions"
+      - "Sions"
+      - "Zenithar"
+      - "Sylvamoor"
+      - "Solterra"
+      - "Netherite"
+      - "Dragon"
+      - "Diamond"
+      - "Kingdom"
+
+  # Quick Math Game
+  math:
+    enabled: true
+    weight: 50
+    min-operators: 1
+    max-operators: 3
+    operators:
+      - "+"
+      - "-"
+      - "*"
+      - "/"
+    min-number: 1
+    max-number: 50
+
+  # Rewards granted atomically to the first correct player
+  rewards:
+    xp:
+      enabled: true
+      amount: 150
+    vault-money:
+      enabled: false
+      amount: 500
+    commands:
+      - "give {player} gold_nugget 5"

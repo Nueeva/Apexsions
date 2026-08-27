@@ -1,0 +1,121 @@
+name: ApexsionsChat
+version: '1.0.0'
+main: com.yourserver.apexsionschat.ApexsionsChatPlugin
+api-version: '1.21'
+author: Antigravity
+description: Dedicated chat, community communication, moderation, reports, chat games, item showcase, announcements, and offline mail for Apexsions.
+softdepend:
+  - ApexsionsCore
+  - LuckPerms
+  - Vault
+  - PlaceholderAPI
+  - Essentials
+
+commands:
+  channel:
+    aliases:
+      - ch
+    description: Switch or speak in a specific chat channel.
+    permission: apexsionschat.channel
+    usage: /channel <global|kingdom|staff>
+  global:
+    aliases:
+      - g
+    description: Switch to or speak in Global chat.
+    permission: apexsionschat.channel.global
+    usage: /global [message]
+  kingdomchat:
+    aliases:
+      - kchat
+      - kc
+    description: Switch to or speak in Kingdom chat.
+    permission: apexsionschat.channel.kingdom
+    usage: /kingdomchat [message]
+  staffchat:
+    aliases:
+      - sc
+    description: Speak in Staff chat channel.
+    permission: apexsionschat.channel.staff
+    usage: /staffchat [message]
+  showitem:
+    aliases:
+      - item
+      - i
+      - hand
+    description: Showcase the item currently held in your hand to the chat.
+    permission: apexsionschat.showitem
+    usage: /showitem
+  report:
+    description: Report a player for breaking server rules.
+    permission: apexsionschat.report
+    usage: /report <player> <reason>
+  reports:
+    aliases:
+      - reportlist
+    description: View and manage in-server moderation reports.
+    permission: apexsionschat.staff.reports
+    usage: /reports
+  mail:
+    description: Send, read, and manage offline mail messages.
+    permission: apexsionschat.mail
+    usage: /mail [send <player> <message>|read|clear]
+  apexsionschat:
+    aliases:
+      - chatadmin
+      - acchat
+    description: ApexsionsChat administrative management.
+    permission: apexsionschat.admin
+    usage: /apexsionschat <reload|game start|announce|mute|clear>
+
+permissions:
+  apexsionschat.channel:
+    description: Allows switching chat channels.
+    default: true
+  apexsionschat.channel.global:
+    description: Allows using global chat.
+    default: true
+  apexsionschat.channel.kingdom:
+    description: Allows using realm/kingdom chat.
+    default: true
+  apexsionschat.channel.staff:
+    description: Allows using staff chat.
+    default: op
+  apexsionschat.showitem:
+    description: Allows using /showitem.
+    default: true
+  apexsionschat.report:
+    description: Allows submitting /report.
+    default: true
+  apexsionschat.mail:
+    description: Allows using /mail.
+    default: true
+  apexsionschat.mention:
+    description: Allows @Player mentions.
+    default: true
+  apexsionschat.mention.all:
+    description: Allows @all mentions without cooldown.
+    default: op
+  apexsionschat.staff.reports:
+    description: Allows viewing and resolving player reports.
+    default: op
+  apexsionschat.staff.alerts:
+    description: Allows receiving moderation violation alerts.
+    default: op
+  apexsionschat.staff.mutebypass:
+    description: Allows speaking when global chat is muted.
+    default: op
+  apexsionschat.bypass.all:
+    description: Allows bypassing all moderation filters.
+    default: false
+  apexsionschat.bypass.spam:
+    description: Allows bypassing spam and rate-limit checks.
+    default: false
+  apexsionschat.bypass.profanity:
+    description: Allows bypassing profanity and toxicity filters.
+    default: false
+  apexsionschat.bypass.advertising:
+    description: Allows bypassing advertising filters.
+    default: false
+  apexsionschat.admin:
+    description: Full administrative control over ApexsionsChat.
+    default: op

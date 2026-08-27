@@ -1,0 +1,48 @@
+prefix: "&8[&6&lApexsions BP&8] &r"
+
+no-permission: "%prefix%&cAnda tidak memiliki izin untuk menggunakan perintah ini."
+admin-no-permission: "%prefix%&cAnda tidak memiliki izin untuk membuka Admin Panel BattlePass."
+player-only: "%prefix%&cPerintah ini hanya dapat dijalankan oleh pemain."
+plugin-reloaded: "%prefix%&aKonfigurasi Apexsions Battlepass berhasil direload!"
+invalid-args: "%prefix%&cArgumen tidak valid. Gunakan &e/bp &catau &e/abp help &cuntuk bantuan."
+player-not-found: "%prefix%&cPemain &e%player% &ctidak ditemukan atau sedang offline."
+
+# Season Messages
+season-not-started: "%prefix%&cSeason belum dimulai! Dimulai pada: &e%date%"
+season-transition-active: "%prefix%&eSeason telah berakhir! Saat ini berada dalam &6Masa Transisi (1 Hari)&e. Anda hanya dapat mengklaim reward level."
+season-ended: "%prefix%&cSeason saat ini telah berakhir."
+
+# XP & Level Messages
+xp-gained: "%prefix%&a+ %amount% XP Battle Pass!"
+level-up: "%prefix%&6&lLEVEL UP! &aSelamat! Battle Pass Anda telah naik ke &eLevel %level%&a!"
+
+# Reward Messages
+reward-claimed: "%prefix%&aBerhasil mengklaim reward level &e%level% &8(&f%pass% Pass&8)&a!"
+reward-already-claimed: "%prefix%&cReward level &e%level% &cuntuk pass &e%pass% &csudah pernah diklaim."
+reward-level-not-reached: "%prefix%&cLevel Anda belum mencukupi untuk mengklaim reward ini! (Butuh Level %level%)"
+reward-pass-locked: "%prefix%&cAnda belum memiliki &e%pass% Pass&c!"
+
+# Currency & Shop Messages
+currency-added: "%prefix%&aBerhasil menambahkan &e%amount% %currency% &ckepada &e%player%."
+currency-removed: "%prefix%&aBerhasil mengurangkan &e%amount% %currency% &cdari &e%player%."
+currency-set: "%prefix%&aBerhasil mengatur %currency% &e%player% &cmenjadi &e%amount%."
+currency-balance: "%prefix%&7Saldo %currency% Anda: &e%amount%"
+shop-item-bought: "%prefix%&aBerhasil membeli &e%item% &aseharga &e%price%&a!"
+shop-insufficient-coins: "%prefix%&cSaldo %currency% Anda tidak cukup!"
+shop-insufficient-funds: "%prefix%&cSaldo %currency% Anda tidak cukup! Butuh &e%price% %currency%."
+shop-limit-reached: "%prefix%&cBatas pembelian untuk item ini telah tercapai!"
+shop-locked-transition: "%prefix%&cShop dikunci selama masa transisi season!"
+
+# Shop Refresh Messages
+shop-refresh-success: "%prefix%&aBerhasil me-refresh &e%category% Shop &adengan biaya &e%cost% %currency%&a!"
+shop-refresh-cooldown: "%prefix%&cHarap tunggu &e%seconds% detik &csebelum melakukan refresh shop kembali."
+shop-refresh-failed: "%prefix%&cGagal melakukan refresh shop. Silakan coba kembali."
+shop-refresh-reset-all: "%prefix%&aBerhasil mereset counter refresh harian seluruh player!"
+shop-refresh-reset-player: "%prefix%&aBerhasil mereset counter refresh harian untuk &e%player%&a."
+
+# Quest Messages
+quest-completed: "%prefix%&a&lQUEST SELESAI! &f%quest% &a- Reward: &e+%xp% XP&a, &e+%coins% Coins&a!"
+quest-locked-transition: "%prefix%&cQuest tidak dapat dikerjakan saat masa transisi season!"
+quest-expired: "%prefix%&cQuest untuk periode ini sudah expired!"
+quest-upcoming: "%prefix%&cQuest untuk periode ini belum aktif!"
+

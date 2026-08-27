@@ -1,0 +1,25 @@
+passes:
+  free:
+    name: "&f&lFree Pass"
+    permission: "apexsionsbattlepass.pass.free"
+    default-owned: true
+    icon: "CHEST"
+    lore:
+      - "&7Pass bawaan untuk semua pemain."
+
+  premium:
+    name: "&6&lPremium Pass"
+    permission: "apexsionsbattlepass.pass.premium"
+    default-owned: false
+    icon: "GOLD_BLOCK"
+    lore:
+      - "&7Pass eksklusif dengan reward berlimpah!"
+      - "&7Dapatkan di webstore kami atau gunakan &e/abp buy"
+
+  vip:
+    name: "&b&lVIP Pass"
+    permission: "apexsionsbattlepass.pass.vip"
+    default-owned: false
+    icon: "DIAMOND_BLOCK"
+    lore:
+      - "&7Pass tertinggi dengan bonus khusus!"

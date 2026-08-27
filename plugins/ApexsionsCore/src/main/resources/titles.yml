@@ -1,0 +1,53 @@
+# ==============================================================================
+# Apexsions — Level Titles Configuration (titles.yml)
+# Level range: 1–100 mapped by Kingdom + Level tier
+# ==============================================================================
+
+level-titles:
+  default:
+    "1-10": "Novice"
+    "11-20": "Apprentice"
+    "21-30": "Adept"
+    "31-40": "Expert"
+    "41-50": "Master"
+    "51-60": "Champion"
+    "61-70": "Hero"
+    "71-80": "Legend"
+    "81-90": "Mythic"
+    "91-100": "Transcendent"
+
+  ZENITHAR:
+    "1-10": "Acolyte of Zenith"
+    "11-20": "Celestial Scout"
+    "21-30": "Sky Warden"
+    "31-40": "Astral Knight"
+    "41-50": "Apex Templar"
+    "51-60": "Star Commander"
+    "61-70": "Solaris Archon"
+    "71-80": "High Celestial"
+    "81-90": "Zenith Paragon"
+    "91-100": "Emperor of Zenithar"
+
+  SOLTERRA:
+    "1-10": "Dune Wanderer"
+    "11-20": "Sun Scout"
+    "21-30": "Terra Blade"
+    "31-40": "Solar Knight"
+    "41-50": "Flame Vanguard"
+    "51-60": "Dune Warlord"
+    "61-70": "Solaris Champion"
+    "71-80": "Sun Sovereign"
+    "81-90": "Solterra Overlord"
+    "91-100": "Lord of Solterra"
+
+  SYLVAMOOR:
+    "1-10": "Sylvan Citizen"
+    "11-20": "Grove Keeper"
+    "21-30": "Forest Warden"
+    "31-40": "Wild Knight"
+    "41-50": "Nature Commander"
+    "51-60": "Druidic Lord"
+    "61-70": "Verdant Archon"
+    "71-80": "Elder Guardian"
+    "81-90": "Sylvan Sovereign"
+    "91-100": "Avatar of Sylvamoor"

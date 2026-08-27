@@ -1,0 +1,20 @@
+# ==============================================================================
+# ApexsionsChat — Player Report System (reports.yml)
+# ==============================================================================
+
+reports:
+  cooldown-seconds: 60
+  max-open-reports-per-player: 3
+  staff-permission: "apexsionschat.staff.reports"
+
+  # Quick-select standard reasons
+  standard-reasons:
+    - "Chat Spamming"
+    - "Hate Speech / Toxicity"
+    - "Advertising External Server"
+    - "Cheating / Unfair Advantage"
+    - "Harassment / Griefing"
+
+  gui:
+    title: "<dark_gray>🛡️ Staff Report Inbox</dark_gray>"
+    size: 45

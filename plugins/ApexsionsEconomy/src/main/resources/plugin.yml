@@ -1,0 +1,70 @@
+name: ApexsionsEconomy
+version: '1.0.0'
+main: com.apex.economy.ApexsionsEconomy
+api-version: '1.20'
+authors: [ApexTeam]
+description: Apexsions Economy - Multi-Currency, Indonesian Formatter, Escrow Auction House
+commands:
+  economy:
+    description: Main command for Apexsions Economy
+    aliases: [eco, uang, bal]
+    usage: /economy
+    permission: apexsionseconomy.use
+    permission-message: "&cAnda tidak memiliki izin untuk menggunakan perintah ini."
+  pay:
+    description: Transfer currency to another player
+    aliases: [transfer, kirimuang]
+    usage: /pay <player> <amount> [currency]
+    permission: apexsionseconomy.pay
+    permission-message: "&cAnda tidak memiliki izin untuk mentransfer uang."
+  ah:
+    description: Open the Auction House
+    aliases: [lelang, auction]
+    usage: /ah
+    permission: apexsionseconomy.ah
+    permission-message: "&cAnda tidak memiliki izin untuk membuka auction house."
+  trade:
+    description: Trade items and currency with another player
+    aliases: [barter, tukar]
+    usage: /trade [player|accept|deny]
+    permission: apexsionseconomy.trade
+    permission-message: "&cAnda tidak memiliki izin untuk melakukan trade."
+  ecoadmin:
+    description: Admin economy management command
+    aliases: [adminpay, apexeconomy]
+    usage: /ecoadmin <give|take|set> <player> <amount> [currency]
+    permission: apexsionseconomy.admin
+    permission-message: "&cAnda tidak memiliki izin admin ekonomi."
+permissions:
+  apexsionseconomy.use:
+    description: Allows accessing economy main menu and balance
+    default: true
+  apexsionseconomy.pay:
+    description: Allows transferring currency
+    default: true
+  apexsionseconomy.trade:
+    description: Allows trading items and currency
+    default: true
+  apexsionseconomy.ah:
+    description: Allows using auction house
+    default: true
+  apexsionseconomy.admin:
+    description: Allows admin management of economy
+    default: op
+  apexpassionseconomy.use:
+    description: Alias for backwards compatibility
+    default: true
+  apexpassionseconomy.pay:
+    description: Alias for backwards compatibility
+    default: true
+  apexpassionseconomy.trade:
+    description: Alias for backwards compatibility
+    default: true
+  apexpassionseconomy.ah:
+    description: Alias for backwards compatibility
+    default: true
+  apexpassionseconomy.admin:
+    description: Alias for backwards compatibility
+    default: op
+
+

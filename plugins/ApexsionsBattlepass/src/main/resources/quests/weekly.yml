@@ -1,0 +1,219 @@
+weeks:
+  1:
+    weekly_diamond_miner_w1:
+      name: "&bKolektor Diamond Week 1"
+      description: "Tambang 20 Diamond Ore di dasar goa."
+      type: "MINE_BLOCK"
+      target-block: "DIAMOND_ORE"
+      target-amount: 20
+      reward-xp: 1200
+      reward-coins: 200
+
+    weekly_zombie_crusher_w1:
+      name: "&aPembantai Zombie Week 1"
+      description: "Bunuh 80 Zombie selama seminggu."
+      type: "KILL_ENTITY"
+      target-entity: "ZOMBIE"
+      target-amount: 80
+      reward-xp: 1000
+      reward-coins: 180
+
+    weekly_farm_master_w1:
+      name: "&eLumbung Pangan Week 1"
+      description: "Panen 200 tanaman pangan di ladang."
+      type: "HARVEST_CROPS"
+      target-amount: 200
+      reward-xp: 1100
+      reward-coins: 190
+
+    weekly_deepslate_mason_w1:
+      name: "&8Ahli Deepslate Week 1"
+      description: "Tambang 350 blok Deepslate."
+      type: "MINE_BLOCK"
+      target-block: "DEEPSLATE"
+      target-amount: 350
+      reward-xp: 1300
+      reward-coins: 220
+
+    weekly_iron_smelter_w1:
+      name: "&fPabrik Besi Week 1"
+      description: "Lebur 128 Iron Ingot."
+      type: "SMELT_ITEM"
+      target-item: "IRON_INGOT"
+      target-amount: 128
+      reward-xp: 1200
+      reward-coins: 200
+
+  2:
+    weekly_nether_explorer_w2:
+      name: "&4Penjelajah Nether Week 2"
+      description: "Bunuh 40 Blaze di Nether Fortress."
+      type: "KILL_ENTITY"
+      target-entity: "BLAZE"
+      target-amount: 40
+      reward-xp: 1500
+      reward-coins: 250
+
+    weekly_master_fisher_w2:
+      name: "&bNelayan Ulung Week 2"
+      description: "Tangkap 50 ikan langka dari lautan."
+      type: "FISH"
+      target-amount: 50
+      reward-xp: 1300
+      reward-coins: 220
+
+    weekly_builder_bricks_w2:
+      name: "&6Arsitek Hebat Week 2"
+      description: "Pasang 300 Stone Bricks."
+      type: "PLACE_BLOCK"
+      target-block: "STONE_BRICKS"
+      target-amount: 300
+      reward-xp: 1400
+      reward-coins: 230
+
+    weekly_gold_hunter_w2:
+      name: "&ePemburu Emas Week 2"
+      description: "Tambang 64 Gold Ore."
+      type: "MINE_BLOCK"
+      target-block: "GOLD_ORE"
+      target-amount: 64
+      reward-xp: 1300
+      reward-coins: 220
+
+    weekly_animal_rancher_w2:
+      name: "&dPeternak Unggul Week 2"
+      description: "Kembangbiakkan 40 pasang hewan ternak."
+      type: "BREED_ANIMALS"
+      target-amount: 40
+      reward-xp: 1200
+      reward-coins: 200
+
+  3:
+    weekly_enderman_slayer_w3:
+      name: "&5Pemburu Enderman Week 3"
+      description: "Kalahkan 35 Enderman."
+      type: "KILL_ENTITY"
+      target-entity: "ENDERMAN"
+      target-amount: 35
+      reward-xp: 1600
+      reward-coins: 280
+
+    weekly_ancient_debris_w3:
+      name: "&4Pencari Debris Week 3"
+      description: "Tambang 8 Ancient Debris di Nether."
+      type: "MINE_BLOCK"
+      target-block: "ANCIENT_DEBRIS"
+      target-amount: 8
+      reward-xp: 1800
+      reward-coins: 300
+
+    weekly_enchanter_w3:
+      name: "&dAhli Sihir Week 3"
+      description: "Enchant 20 item pada Enchanting Table."
+      type: "ENCHANT_ITEM"
+      target-amount: 20
+      reward-xp: 1500
+      reward-coins: 260
+
+    weekly_obsidian_miner_w3:
+      name: "&5Penambang Obsidian Week 3"
+      description: "Tambang 40 Obsidian keras."
+      type: "MINE_BLOCK"
+      target-block: "OBSIDIAN"
+      target-amount: 40
+      reward-xp: 1400
+      reward-coins: 240
+
+    weekly_piglin_slayer_w3:
+      name: "&6Prajurit Nether Week 3"
+      description: "Kalahkan 50 Zombified Piglin."
+      type: "KILL_ENTITY"
+      target-entity: "ZOMBIFIED_PIGLIN"
+      target-amount: 50
+      reward-xp: 1300
+      reward-coins: 220
+
+  4:
+    weekly_wither_slayer_w4:
+      name: "&8Pembantai Wither Skeleton Week 4"
+      description: "Bunuh 40 Wither Skeleton."
+      type: "KILL_ENTITY"
+      target-entity: "WITHER_SKELETON"
+      target-amount: 40
+      reward-xp: 1800
+      reward-coins: 320
+
+    weekly_exp_master_w4:
+      name: "&aMaster Pengalaman Week 4"
+      description: "Kumpulkan 1500 EXP Points."
+      type: "EXP_GAIN"
+      target-amount: 1500
+      reward-xp: 1700
+      reward-coins: 300
+
+    weekly_lapis_miner_w4:
+      name: "&9Pencari Lapis Week 4"
+      description: "Tambang 80 Lapis Lazuli Ore."
+      type: "MINE_BLOCK"
+      target-block: "LAPIS_ORE"
+      target-amount: 80
+      reward-xp: 1400
+      reward-coins: 250
+
+    weekly_creeper_hunter_w4:
+      name: "&2Pemburu Peledak Week 4"
+      description: "Kalahkan 50 Creeper berbahaya."
+      type: "KILL_ENTITY"
+      target-entity: "CREEPER"
+      target-amount: 50
+      reward-xp: 1600
+      reward-coins: 280
+
+    weekly_food_feast_w4:
+      name: "&cPesta Makanan Week 4"
+      description: "Konsumsi 64 makanan."
+      type: "CONSUME_FOOD"
+      target-amount: 64
+      reward-xp: 1200
+      reward-coins: 200
+
+  5:
+    special_week_mob_rush:
+      name: "&6[Special Week] Mob Rush"
+      description: "Kalahkan 50 Hostile Mob apa saja di sisa hari bulan ini."
+      type: "KILL_ENTITY"
+      target-amount: 50
+      reward-xp: 1200
+      reward-coins: 200
+
+    special_week_speed_miner:
+      name: "&e[Special Week] Speed Miner"
+      description: "Tambang 180 Stone / Deepslate sebelum bulan berganti."
+      type: "MINE_BLOCK"
+      target-amount: 180
+      reward-xp: 1100
+      reward-coins: 180
+
+    special_week_quick_harvest:
+      name: "&a[Special Week] Quick Harvest"
+      description: "Panen 100 tanaman ladang."
+      type: "HARVEST_CROPS"
+      target-amount: 100
+      reward-xp: 1000
+      reward-coins: 170
+
+    special_week_rapid_smelt:
+      name: "&4[Special Week] Rapid Smelter"
+      description: "Lebur 64 item/ore di tungku peleburan."
+      type: "SMELT_ITEM"
+      target-amount: 64
+      reward-xp: 1000
+      reward-coins: 170
+
+    special_week_angler:
+      name: "&b[Special Week] Bonus Fishing"
+      description: "Tangkap 25 ikan di sisa periode minggu ini."
+      type: "FISH"
+      target-amount: 25
+      reward-xp: 1100
+      reward-coins: 180

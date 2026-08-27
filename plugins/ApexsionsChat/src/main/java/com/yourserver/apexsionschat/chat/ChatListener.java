@@ -1,0 +1,95 @@
+package com.yourserver.apexsionschat.chat;
+
+import com.yourserver.apexsionschat.ApexsionsChatPlugin;
+import com.yourserver.apexsionschat.channel.ChatChannel;
+import com.yourserver.apexsionschat.moderation.ModerationResult;
+import io.papermc.paper.event.player.AsyncChatEvent;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
+import org.bukkit.Bukkit;
+import org.bukkit.Sound;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
+
+import java.util.UUID;
+
+public class ChatListener implements Listener {
+
+    private final ApexsionsChatPlugin plugin;
+    private final MiniMessage miniMessage = MiniMessage.miniMessage();
+
+    public ChatListener(ApexsionsChatPlugin plugin) {
+        this.plugin = plugin;
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onAsyncChat(AsyncChatEvent event) {
+        Player player = event.getPlayer();
+        String rawMessage = PlainTextComponentSerializer.plainText().serialize(event.message());
+
+        // 1. Check if message is a valid answer for an active chat game
+        if (plugin.getGameManager() != null && plugin.getGameManager().checkAnswer(player, rawMessage)) {
+            // Player answered the chat game correctly!
+            event.setCancelled(true);
+            return;
+        }
+
+        // 2. Resolve target channel
+        ChatChannel channel = plugin.getChannelManager().getPlayerChannel(player);
+        if (!channel.canSpeak(player)) {
+            player.sendMessage(miniMessage.deserialize("<red>You do not have permission to speak in the " + channel.getName() + " channel.</red>"));
+            event.setCancelled(true);
+            return;
+        }
+
+        // 3. Moderation Pipeline (Spam, Ads, Profanity, Hate Speech)
+        ModerationResult modResult = plugin.getModerationEngine().process(player, rawMessage, channel.getId());
+        if (modResult.isBlocked()) {
+            player.sendMessage(miniMessage.deserialize("<red>✖ Message blocked: <dark_red>" + modResult.getReason() + "</dark_red></red>"));
+            event.setCancelled(true);
+            return;
+        }
+
+        String finalMessage = modResult.getMessage() != null ? modResult.getMessage() : rawMessage;
+
+        // 4. Format chat message with rich components, domain metadata, badges, and mentions
+        Component formattedComponent = plugin.getChatFormatter().format(player, channel, finalMessage);
+
+        // 5. Apply channel recipient filtering
+        event.viewers().removeIf(audience -> {
+            if (audience instanceof Player recipient) {
+                return !channel.canReceive(recipient, player);
+            }
+            return false;
+        });
+
+        // 6. Set custom renderer
+        event.renderer((source, sourceDisplayName, message, viewer) -> formattedComponent);
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onPlayerJoin(PlayerJoinEvent event) {
+        Player player = event.getPlayer();
+        UUID uuid = player.getUniqueId();
+
+        // Check unread offline mail asynchronously
+        plugin.getMailRepository().countUnreadMailAsync(uuid).thenAccept(unreadCount -> {
+            if (unreadCount > 0 && player.isOnline()) {
+                Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                    if (player.isOnline()) {
+                        player.sendMessage(miniMessage.deserialize(
+                                "<gold>📬 You have <yellow><bold>" + unreadCount + "</bold></yellow> unread offline message(s)! Type <yellow><underlined>/mail</underlined></yellow> to view.</gold>"
+                        ));
+                        try {
+                            player.playSound(player.getLocation(), Sound.ITEM_BOOK_PAGE_TURN, 1.0f, 1.0f);
+                        } catch (Exception ignored) {}
+                    }
+                }, 40L); // 2 seconds after join
+            }
+        });
+    }
+}

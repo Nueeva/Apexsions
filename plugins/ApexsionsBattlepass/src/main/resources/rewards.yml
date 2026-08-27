@@ -1,0 +1,1124 @@
+levels:
+  1:
+    required-xp: 1000
+    rewards:
+      free:
+        - type: ITEM
+          material: BREAD
+          amount: 16
+          name: "&fStarter Bread (16x)"
+      premium:
+        - type: MONEY
+          amount: 10000
+          name: "&a$10,000 Server Money"
+      premium-plus:
+        - type: CURRENCY
+          amount: 50
+          name: "&e50 Battle Coins"
+      ultimate:
+        - type: ITEM
+          material: IRON_BLOCK
+          amount: 4
+          name: "&fIron Block (4x)"
+
+  2:
+    required-xp: 1000
+    rewards:
+      free:
+        - type: ITEM
+          material: TORCH
+          amount: 32
+          name: "&6Torches (32x)"
+      premium:
+        - type: ITEM
+          material: IRON_INGOT
+          amount: 16
+          name: "&fIron Ingot (16x)"
+      premium-plus:
+        - type: ITEM
+          material: GOLD_INGOT
+          amount: 8
+          name: "&eGold Ingot (8x)"
+      ultimate:
+        - type: MONEY
+          amount: 25000
+          name: "&a$25,000 Server Money"
+
+  3:
+    required-xp: 1000
+    rewards:
+      free:
+        - type: ITEM
+          material: COOKED_BEEF
+          amount: 16
+          name: "&cCooked Steak (16x)"
+      premium:
+        - type: CURRENCY
+          amount: 60
+          name: "&e60 Battle Coins"
+      premium-plus:
+        - type: ITEM
+          material: EXPERIENCE_BOTTLE
+          amount: 16
+          name: "&aEXP Bottle (16x)"
+      ultimate:
+        - type: ITEM
+          material: DIAMOND
+          amount: 4
+          name: "&bDiamond (4x)"
+
+  4:
+    required-xp: 1000
+    rewards:
+      free:
+        - type: ITEM
+          material: OAK_LOG
+          amount: 32
+          name: "&6Oak Log (32x)"
+      premium:
+        - type: ITEM
+          material: GOLDEN_APPLE
+          amount: 2
+          name: "&eGolden Apple (2x)"
+      premium-plus:
+        - type: MONEY
+          amount: 20000
+          name: "&a$20,000 Server Money"
+      ultimate:
+        - type: CURRENCY
+          amount: 100
+          name: "&e100 Battle Coins"
+
+  5:
+    required-xp: 1000
+    rewards:
+      free:
+        - type: CURRENCY
+          amount: 30
+          name: "&e30 Battle Coins"
+      premium:
+        - type: ITEM
+          material: DIAMOND
+          amount: 3
+          name: "&bDiamond (3x)"
+      premium-plus:
+        - type: ITEM
+          material: DIAMOND
+          amount: 5
+          name: "&bDiamond (5x)"
+      ultimate:
+        - type: ITEM
+          material: NETHERITE_SCRAP
+          amount: 1
+          name: "&8Netherite Scrap (1x)"
+
+  6:
+    required-xp: 1000
+    rewards:
+      free:
+        - type: ITEM
+          material: COAL
+          amount: 32
+          name: "&8Coal (32x)"
+      premium:
+        - type: MONEY
+          amount: 15000
+          name: "&a$15,000 Server Money"
+      premium-plus:
+        - type: CURRENCY
+          amount: 70
+          name: "&e70 Battle Coins"
+      ultimate:
+        - type: ITEM
+          material: EMERALD_BLOCK
+          amount: 2
+          name: "&aEmerald Block (2x)"
+
+  7:
+    required-xp: 1000
+    rewards:
+      free:
+        - type: ITEM
+          material: ARROW
+          amount: 32
+          name: "&7Arrows (32x)"
+      premium:
+        - type: ITEM
+          material: LAPIS_LAZULI
+          amount: 32
+          name: "&9Lapis Lazuli (32x)"
+      premium-plus:
+        - type: ITEM
+          material: GOLD_BLOCK
+          amount: 2
+          name: "&eGold Block (2x)"
+      ultimate:
+        - type: MONEY
+          amount: 35000
+          name: "&a$35,000 Server Money"
+
+  8:
+    required-xp: 1000
+    rewards:
+      free:
+        - type: ITEM
+          material: IRON_INGOT
+          amount: 8
+          name: "&fIron Ingot (8x)"
+      premium:
+        - type: ITEM
+          material: ENDER_PEARL
+          amount: 4
+          name: "&3Ender Pearl (4x)"
+      premium-plus:
+        - type: CURRENCY
+          amount: 80
+          name: "&e80 Battle Coins"
+      ultimate:
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 1
+          name: "&bDiamond Block (1x)"
+
+  9:
+    required-xp: 1000
+    rewards:
+      free:
+        - type: ITEM
+          material: BOOK
+          amount: 8
+          name: "&fBook (8x)"
+      premium:
+        - type: MONEY
+          amount: 20000
+          name: "&a$20,000 Server Money"
+      premium-plus:
+        - type: ITEM
+          material: EXPERIENCE_BOTTLE
+          amount: 24
+          name: "&aEXP Bottle (24x)"
+      ultimate:
+        - type: CURRENCY
+          amount: 120
+          name: "&e120 Battle Coins"
+
+  10:
+    required-xp: 1000
+    rewards:
+      free:
+        - type: ITEM
+          material: DIAMOND
+          amount: 2
+          name: "&bDiamond (2x)"
+      premium:
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 1
+          name: "&bDiamond Block (1x)"
+      premium-plus:
+        - type: ITEM
+          material: NETHERITE_SCRAP
+          amount: 1
+          name: "&8Netherite Scrap (1x)"
+      ultimate:
+        - type: ITEM
+          material: NETHERITE_INGOT
+          amount: 1
+          name: "&8Netherite Ingot (1x)"
+
+  11:
+    required-xp: 1000
+    rewards:
+      free:
+        - type: ITEM
+          material: GOLDEN_CARROT
+          amount: 16
+          name: "&eGolden Carrot (16x)"
+      premium:
+        - type: CURRENCY
+          amount: 75
+          name: "&e75 Battle Coins"
+      premium-plus:
+        - type: MONEY
+          amount: 25000
+          name: "&a$25,000 Server Money"
+      ultimate:
+        - type: ITEM
+          material: ENCHANTED_GOLDEN_APPLE
+          amount: 1
+          name: "&6Enchanted Golden Apple (1x)"
+
+  12:
+    required-xp: 1000
+    rewards:
+      free:
+        - type: ITEM
+          material: REDSTONE
+          amount: 32
+          name: "&cRedstone (32x)"
+      premium:
+        - type: ITEM
+          material: IRON_BLOCK
+          amount: 4
+          name: "&fIron Block (4x)"
+      premium-plus:
+        - type: CURRENCY
+          amount: 85
+          name: "&e85 Battle Coins"
+      ultimate:
+        - type: MONEY
+          amount: 40000
+          name: "&a$40,000 Server Money"
+
+  13:
+    required-xp: 1000
+    rewards:
+      free:
+        - type: CURRENCY
+          amount: 35
+          name: "&e35 Battle Coins"
+      premium:
+        - type: MONEY
+          amount: 25000
+          name: "&a$25,000 Server Money"
+      premium-plus:
+        - type: ITEM
+          material: DIAMOND
+          amount: 6
+          name: "&bDiamond (6x)"
+      ultimate:
+        - type: ITEM
+          material: TOTEM_OF_UNDYING
+          amount: 1
+          name: "&eTotem of Undying (1x)"
+
+  14:
+    required-xp: 1000
+    rewards:
+      free:
+        - type: ITEM
+          material: EMERALD
+          amount: 8
+          name: "&aEmerald (8x)"
+      premium:
+        - type: ITEM
+          material: GOLD_BLOCK
+          amount: 3
+          name: "&eGold Block (3x)"
+      premium-plus:
+        - type: CURRENCY
+          amount: 90
+          name: "&e90 Battle Coins"
+      ultimate:
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 2
+          name: "&bDiamond Block (2x)"
+
+  15:
+    required-xp: 1000
+    rewards:
+      free:
+        - type: ITEM
+          material: GOLDEN_APPLE
+          amount: 2
+          name: "&eGolden Apple (2x)"
+      premium:
+        - type: ITEM
+          material: NETHERITE_SCRAP
+          amount: 1
+          name: "&8Netherite Scrap (1x)"
+      premium-plus:
+        - type: ITEM
+          material: NETHERITE_SCRAP
+          amount: 2
+          name: "&8Netherite Scrap (2x)"
+      ultimate:
+        - type: ITEM
+          material: NETHERITE_INGOT
+          amount: 1
+          name: "&8Netherite Ingot (1x)"
+
+  16:
+    required-xp: 1000
+    rewards:
+      free:
+        - type: ITEM
+          material: OBSIDIAN
+          amount: 8
+          name: "&5Obsidian (8x)"
+      premium:
+        - type: MONEY
+          amount: 30000
+          name: "&a$30,000 Server Money"
+      premium-plus:
+        - type: CURRENCY
+          amount: 95
+          name: "&e95 Battle Coins"
+      ultimate:
+        - type: MONEY
+          amount: 50000
+          name: "&a$50,000 Server Money"
+
+  17:
+    required-xp: 1000
+    rewards:
+      free:
+        - type: ITEM
+          material: FIREWORK_ROCKET
+          amount: 32
+          name: "&dFirework Rocket (32x)"
+      premium:
+        - type: ITEM
+          material: ENDER_PEARL
+          amount: 8
+          name: "&3Ender Pearl (8x)"
+      premium-plus:
+        - type: ITEM
+          material: EXPERIENCE_BOTTLE
+          amount: 32
+          name: "&aEXP Bottle (32x)"
+      ultimate:
+        - type: CURRENCY
+          amount: 150
+          name: "&e150 Battle Coins"
+
+  18:
+    required-xp: 1000
+    rewards:
+      free:
+        - type: ITEM
+          material: GLOWSTONE_DUST
+          amount: 16
+          name: "&eGlowstone Dust (16x)"
+      premium:
+        - type: CURRENCY
+          amount: 90
+          name: "&e90 Battle Coins"
+      premium-plus:
+        - type: MONEY
+          amount: 35000
+          name: "&a$35,000 Server Money"
+      ultimate:
+        - type: ITEM
+          material: SHULKER_BOX
+          amount: 1
+          name: "&dShulker Box (1x)"
+
+  19:
+    required-xp: 1000
+    rewards:
+      free:
+        - type: CURRENCY
+          amount: 40
+          name: "&e40 Battle Coins"
+      premium:
+        - type: ITEM
+          material: DIAMOND
+          amount: 4
+          name: "&bDiamond (4x)"
+      premium-plus:
+        - type: CURRENCY
+          amount: 100
+          name: "&e100 Battle Coins"
+      ultimate:
+        - type: ITEM
+          material: NETHERITE_SCRAP
+          amount: 3
+          name: "&8Netherite Scrap (3x)"
+
+  20:
+    required-xp: 1000
+    rewards:
+      free:
+        - type: ITEM
+          material: DIAMOND
+          amount: 3
+          name: "&bDiamond (3x)"
+      premium:
+        - type: ITEM
+          material: NETHERITE_INGOT
+          amount: 1
+          name: "&8Netherite Ingot (1x)"
+      premium-plus:
+        - type: ITEM
+          material: NETHERITE_INGOT
+          amount: 1
+          name: "&8Netherite Ingot (1x)"
+      ultimate:
+        - type: ITEM
+          material: BEACON
+          amount: 1
+          name: "&bBeacon (1x)"
+
+  21:
+    required-xp: 1000
+    rewards:
+      free:
+        - type: ITEM
+          material: QUARTZ
+          amount: 32
+          name: "&fNether Quartz (32x)"
+      premium:
+        - type: MONEY
+          amount: 35000
+          name: "&a$35,000 Server Money"
+      premium-plus:
+        - type: CURRENCY
+          amount: 110
+          name: "&e110 Battle Coins"
+      ultimate:
+        - type: MONEY
+          amount: 60000
+          name: "&a$60,000 Server Money"
+
+  22:
+    required-xp: 1000
+    rewards:
+      free:
+        - type: ITEM
+          material: PRISMARINE_SHARD
+          amount: 16
+          name: "&3Prismarine Shard (16x)"
+      premium:
+        - type: ITEM
+          material: EMERALD_BLOCK
+          amount: 2
+          name: "&aEmerald Block (2x)"
+      premium-plus:
+        - type: ITEM
+          material: DIAMOND
+          amount: 8
+          name: "&bDiamond (8x)"
+      ultimate:
+        - type: ITEM
+          material: TOTEM_OF_UNDYING
+          amount: 1
+          name: "&eTotem of Undying (1x)"
+
+  23:
+    required-xp: 1000
+    rewards:
+      free:
+        - type: ITEM
+          material: TNT
+          amount: 8
+          name: "&cTNT (8x)"
+      premium:
+        - type: CURRENCY
+          amount: 100
+          name: "&e100 Battle Coins"
+      premium-plus:
+        - type: MONEY
+          amount: 40000
+          name: "&a$40,000 Server Money"
+      ultimate:
+        - type: CURRENCY
+          amount: 180
+          name: "&e180 Battle Coins"
+
+  24:
+    required-xp: 1000
+    rewards:
+      free:
+        - type: CURRENCY
+          amount: 45
+          name: "&e45 Battle Coins"
+      premium:
+        - type: ITEM
+          material: GOLD_BLOCK
+          amount: 4
+          name: "&eGold Block (4x)"
+      premium-plus:
+        - type: CURRENCY
+          amount: 115
+          name: "&e115 Battle Coins"
+      ultimate:
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 3
+          name: "&bDiamond Block (3x)"
+
+  25:
+    required-xp: 1000
+    rewards:
+      free:
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 1
+          name: "&bDiamond Block (1x)"
+      premium:
+        - type: ITEM
+          material: ENCHANTED_GOLDEN_APPLE
+          amount: 1
+          name: "&6Enchanted Golden Apple (1x)"
+      premium-plus:
+        - type: ITEM
+          material: NETHERITE_INGOT
+          amount: 1
+          name: "&8Netherite Ingot (1x)"
+      ultimate:
+        - type: ITEM
+          material: NETHER_STAR
+          amount: 1
+          name: "&fNether Star (1x)"
+
+  26:
+    required-xp: 1000
+    rewards:
+      free:
+        - type: ITEM
+          material: SLIME_BALL
+          amount: 16
+          name: "&aSlime Ball (16x)"
+      premium:
+        - type: MONEY
+          amount: 40000
+          name: "&a$40,000 Server Money"
+      premium-plus:
+        - type: CURRENCY
+          amount: 120
+          name: "&e120 Battle Coins"
+      ultimate:
+        - type: MONEY
+          amount: 75000
+          name: "&a$75,000 Server Money"
+
+  27:
+    required-xp: 1000
+    rewards:
+      free:
+        - type: ITEM
+          material: AMETHYST_SHARD
+          amount: 16
+          name: "&dAmethyst Shard (16x)"
+      premium:
+        - type: ITEM
+          material: EXPERIENCE_BOTTLE
+          amount: 32
+          name: "&aEXP Bottle (32x)"
+      premium-plus:
+        - type: ITEM
+          material: DIAMOND
+          amount: 10
+          name: "&bDiamond (10x)"
+      ultimate:
+        - type: ITEM
+          material: NETHERITE_SCRAP
+          amount: 4
+          name: "&8Netherite Scrap (4x)"
+
+  28:
+    required-xp: 1000
+    rewards:
+      free:
+        - type: ITEM
+          material: SADDLE
+          amount: 1
+          name: "&6Saddle (1x)"
+      premium:
+        - type: CURRENCY
+          amount: 110
+          name: "&e110 Battle Coins"
+      premium-plus:
+        - type: MONEY
+          amount: 45000
+          name: "&a$45,000 Server Money"
+      ultimate:
+        - type: CURRENCY
+          amount: 200
+          name: "&e200 Battle Coins"
+
+  29:
+    required-xp: 1000
+    rewards:
+      free:
+        - type: CURRENCY
+          amount: 50
+          name: "&e50 Battle Coins"
+      premium:
+        - type: ITEM
+          material: DIAMOND
+          amount: 5
+          name: "&bDiamond (5x)"
+      premium-plus:
+        - type: CURRENCY
+          amount: 125
+          name: "&e125 Battle Coins"
+      ultimate:
+        - type: ITEM
+          material: ENCHANTED_GOLDEN_APPLE
+          amount: 2
+          name: "&6Enchanted Golden Apple (2x)"
+
+  30:
+    required-xp: 1000
+    rewards:
+      free:
+        - type: ITEM
+          material: NETHERITE_SCRAP
+          amount: 1
+          name: "&8Netherite Scrap (1x)"
+      premium:
+        - type: ITEM
+          material: NETHERITE_INGOT
+          amount: 1
+          name: "&8Netherite Ingot (1x)"
+      premium-plus:
+        - type: ITEM
+          material: NETHERITE_INGOT
+          amount: 2
+          name: "&8Netherite Ingot (2x)"
+      ultimate:
+        - type: ITEM
+          material: ELYTRA
+          amount: 1
+          name: "&bElytra Wings (1x)"
+
+  31:
+    required-xp: 1000
+    rewards:
+      free:
+        - type: ITEM
+          material: BLAZE_ROD
+          amount: 8
+          name: "&6Blaze Rod (8x)"
+      premium:
+        - type: MONEY
+          amount: 45000
+          name: "&a$45,000 Server Money"
+      premium-plus:
+        - type: CURRENCY
+          amount: 130
+          name: "&e130 Battle Coins"
+      ultimate:
+        - type: MONEY
+          amount: 90000
+          name: "&a$90,000 Server Money"
+
+  32:
+    required-xp: 1000
+    rewards:
+      free:
+        - type: ITEM
+          material: GHAST_TEAR
+          amount: 4
+          name: "&fGhast Tear (4x)"
+      premium:
+        - type: ITEM
+          material: GOLD_BLOCK
+          amount: 5
+          name: "&eGold Block (5x)"
+      premium-plus:
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 2
+          name: "&bDiamond Block (2x)"
+      ultimate:
+        - type: ITEM
+          material: TOTEM_OF_UNDYING
+          amount: 2
+          name: "&eTotem of Undying (2x)"
+
+  33:
+    required-xp: 1000
+    rewards:
+      free:
+        - type: ITEM
+          material: WITHER_SKELETON_SKULL
+          amount: 1
+          name: "&8Wither Skeleton Skull (1x)"
+      premium:
+        - type: CURRENCY
+          amount: 120
+          name: "&e120 Battle Coins"
+      premium-plus:
+        - type: MONEY
+          amount: 50000
+          name: "&a$50,000 Server Money"
+      ultimate:
+        - type: CURRENCY
+          amount: 220
+          name: "&e220 Battle Coins"
+
+  34:
+    required-xp: 1000
+    rewards:
+      free:
+        - type: CURRENCY
+          amount: 55
+          name: "&e55 Battle Coins"
+      premium:
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 2
+          name: "&bDiamond Block (2x)"
+      premium-plus:
+        - type: CURRENCY
+          amount: 140
+          name: "&e140 Battle Coins"
+      ultimate:
+        - type: ITEM
+          material: NETHERITE_SCRAP
+          amount: 4
+          name: "&8Netherite Scrap (4x)"
+
+  35:
+    required-xp: 1000
+    rewards:
+      free:
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 1
+          name: "&bDiamond Block (1x)"
+      premium:
+        - type: ITEM
+          material: NETHERITE_INGOT
+          amount: 1
+          name: "&8Netherite Ingot (1x)"
+      premium-plus:
+        - type: ITEM
+          material: NETHERITE_INGOT
+          amount: 2
+          name: "&8Netherite Ingot (2x)"
+      ultimate:
+        - type: ITEM
+          material: NETHER_STAR
+          amount: 1
+          name: "&fNether Star (1x)"
+
+  36:
+    required-xp: 1000
+    rewards:
+      free:
+        - type: ITEM
+          material: GOLDEN_CARROT
+          amount: 32
+          name: "&eGolden Carrot (32x)"
+      premium:
+        - type: MONEY
+          amount: 50000
+          name: "&a$50,000 Server Money"
+      premium-plus:
+        - type: CURRENCY
+          amount: 150
+          name: "&e150 Battle Coins"
+      ultimate:
+        - type: MONEY
+          amount: 100000
+          name: "&a$100,000 Server Money"
+
+  37:
+    required-xp: 1000
+    rewards:
+      free:
+        - type: ITEM
+          material: ENDER_EYE
+          amount: 8
+          name: "&2Eye of Ender (8x)"
+      premium:
+        - type: ITEM
+          material: EXPERIENCE_BOTTLE
+          amount: 48
+          name: "&aEXP Bottle (48x)"
+      premium-plus:
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 3
+          name: "&bDiamond Block (3x)"
+      ultimate:
+        - type: ITEM
+          material: DRAGON_BREATH
+          amount: 8
+          name: "&dDragon Breath (8x)"
+
+  38:
+    required-xp: 1000
+    rewards:
+      free:
+        - type: ITEM
+          material: SHULKER_SHELL
+          amount: 2
+          name: "&dShulker Shell (2x)"
+      premium:
+        - type: CURRENCY
+          amount: 130
+          name: "&e130 Battle Coins"
+      premium-plus:
+        - type: MONEY
+          amount: 60000
+          name: "&a$60,000 Server Money"
+      ultimate:
+        - type: CURRENCY
+          amount: 250
+          name: "&e250 Battle Coins"
+
+  39:
+    required-xp: 1000
+    rewards:
+      free:
+        - type: CURRENCY
+          amount: 60
+          name: "&e60 Battle Coins"
+      premium:
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 2
+          name: "&bDiamond Block (2x)"
+      premium-plus:
+        - type: CURRENCY
+          amount: 160
+          name: "&e160 Battle Coins"
+      ultimate:
+        - type: ITEM
+          material: ENCHANTED_GOLDEN_APPLE
+          amount: 3
+          name: "&6Enchanted Golden Apple (3x)"
+
+  40:
+    required-xp: 1000
+    rewards:
+      free:
+        - type: ITEM
+          material: NETHERITE_SCRAP
+          amount: 2
+          name: "&8Netherite Scrap (2x)"
+      premium:
+        - type: ITEM
+          material: NETHERITE_INGOT
+          amount: 2
+          name: "&8Netherite Ingot (2x)"
+      premium-plus:
+        - type: ITEM
+          material: NETHERITE_INGOT
+          amount: 3
+          name: "&8Netherite Ingot (3x)"
+      ultimate:
+        - type: ITEM
+          material: BEACON
+          amount: 2
+          name: "&bBeacon (2x)"
+
+  41:
+    required-xp: 1000
+    rewards:
+      free:
+        - type: ITEM
+          material: HEART_OF_THE_SEA
+          amount: 1
+          name: "&3Heart of the Sea (1x)"
+      premium:
+        - type: MONEY
+          amount: 60000
+          name: "&a$60,000 Server Money"
+      premium-plus:
+        - type: CURRENCY
+          amount: 170
+          name: "&e170 Battle Coins"
+      ultimate:
+        - type: MONEY
+          amount: 125000
+          name: "&a$125,000 Server Money"
+
+  42:
+    required-xp: 1000
+    rewards:
+      free:
+        - type: ITEM
+          material: NAUTILUS_SHELL
+          amount: 8
+          name: "&fNautilus Shell (8x)"
+      premium:
+        - type: ITEM
+          material: GOLD_BLOCK
+          amount: 8
+          name: "&eGold Block (8x)"
+      premium-plus:
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 4
+          name: "&bDiamond Block (4x)"
+      ultimate:
+        - type: ITEM
+          material: TOTEM_OF_UNDYING
+          amount: 3
+          name: "&eTotem of Undying (3x)"
+
+  43:
+    required-xp: 1000
+    rewards:
+      free:
+        - type: ITEM
+          material: ECHO_SHARD
+          amount: 3
+          name: "&3Echo Shard (3x)"
+      premium:
+        - type: CURRENCY
+          amount: 150
+          name: "&e150 Battle Coins"
+      premium-plus:
+        - type: MONEY
+          amount: 75000
+          name: "&a$75,000 Server Money"
+      ultimate:
+        - type: CURRENCY
+          amount: 300
+          name: "&e300 Battle Coins"
+
+  44:
+    required-xp: 1000
+    rewards:
+      free:
+        - type: CURRENCY
+          amount: 70
+          name: "&e70 Battle Coins"
+      premium:
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 3
+          name: "&bDiamond Block (3x)"
+      premium-plus:
+        - type: CURRENCY
+          amount: 180
+          name: "&e180 Battle Coins"
+      ultimate:
+        - type: ITEM
+          material: NETHERITE_BLOCK
+          amount: 1
+          name: "&8Netherite Block (1x)"
+
+  45:
+    required-xp: 1000
+    rewards:
+      free:
+        - type: ITEM
+          material: NETHERITE_INGOT
+          amount: 1
+          name: "&8Netherite Ingot (1x)"
+      premium:
+        - type: ITEM
+          material: NETHERITE_INGOT
+          amount: 2
+          name: "&8Netherite Ingot (2x)"
+      premium-plus:
+        - type: ITEM
+          material: NETHERITE_INGOT
+          amount: 3
+          name: "&8Netherite Ingot (3x)"
+      ultimate:
+        - type: ITEM
+          material: DRAGON_HEAD
+          amount: 1
+          name: "&5Dragon Head (1x)"
+
+  46:
+    required-xp: 1000
+    rewards:
+      free:
+        - type: ITEM
+          material: EXPERIENCE_BOTTLE
+          amount: 32
+          name: "&aEXP Bottle (32x)"
+      premium:
+        - type: MONEY
+          amount: 75000
+          name: "&a$75,000 Server Money"
+      premium-plus:
+        - type: CURRENCY
+          amount: 200
+          name: "&e200 Battle Coins"
+      ultimate:
+        - type: MONEY
+          amount: 150000
+          name: "&a$150,000 Server Money"
+
+  47:
+    required-xp: 1000
+    rewards:
+      free:
+        - type: ITEM
+          material: GOLDEN_APPLE
+          amount: 8
+          name: "&eGolden Apple (8x)"
+      premium:
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 4
+          name: "&bDiamond Block (4x)"
+      premium-plus:
+        - type: ITEM
+          material: NETHERITE_SCRAP
+          amount: 6
+          name: "&8Netherite Scrap (6x)"
+      ultimate:
+        - type: ITEM
+          material: ENCHANTED_GOLDEN_APPLE
+          amount: 4
+          name: "&6Enchanted Golden Apple (4x)"
+
+  48:
+    required-xp: 1000
+    rewards:
+      free:
+        - type: ITEM
+          material: TOTEM_OF_UNDYING
+          amount: 1
+          name: "&eTotem of Undying (1x)"
+      premium:
+        - type: CURRENCY
+          amount: 180
+          name: "&e180 Battle Coins"
+      premium-plus:
+        - type: MONEY
+          amount: 100000
+          name: "&a$100,000 Server Money"
+      ultimate:
+        - type: CURRENCY
+          amount: 400
+          name: "&e400 Battle Coins"
+
+  49:
+    required-xp: 1000
+    rewards:
+      free:
+        - type: CURRENCY
+          amount: 100
+          name: "&e100 Battle Coins"
+      premium:
+        - type: ITEM
+          material: NETHERITE_INGOT
+          amount: 2
+          name: "&8Netherite Ingot (2x)"
+      premium-plus:
+        - type: CURRENCY
+          amount: 250
+          name: "&e250 Battle Coins"
+      ultimate:
+        - type: ITEM
+          material: NETHERITE_BLOCK
+          amount: 1
+          name: "&8Netherite Block (1x)"
+
+  50:
+    required-xp: 1000
+    rewards:
+      free:
+        - type: ITEM
+          material: NETHER_STAR
+          amount: 1
+          name: "&fNether Star (1x)"
+      premium:
+        - type: ITEM
+          material: ELYTRA
+          amount: 1
+          name: "&bElytra Wings (1x)"
+      premium-plus:
+        - type: ITEM
+          material: BEACON
+          amount: 2
+          name: "&bBeacon (2x)"
+      ultimate:
+        - type: ITEM
+          material: NETHERITE_BLOCK
+          amount: 2
+          name: "&8Netherite Block (2x)"

@@ -1,0 +1,20 @@
+# ==============================================================================
+# ApexsionsChat — Offline Mail System (mail.yml)
+# ==============================================================================
+
+mail:
+  cooldown-seconds: 15
+  max-subject-length: 48
+  max-body-length: 512
+  max-stored-per-player: 50
+
+  gui:
+    title: "<dark_gray>📬 Your Mailbox</dark_gray>"
+    size: 45
+
+  book:
+    title: "Letter from {sender}"
+    author: "{sender}"
+    lore:
+      - "<gray>Sent on: <gold>{date}</gold></gray>"
+      - "<yellow>Click in hand to read!</yellow>"

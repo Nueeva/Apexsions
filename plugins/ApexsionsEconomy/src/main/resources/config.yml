@@ -1,0 +1,44 @@
+# ==============================================================================
+# ApexsionsEconomy — Core Configuration (config.yml)
+# ==============================================================================
+
+database:
+  type: "SQLITE" # SQLITE or POSTGRESQL
+  file: "economy.db"
+  postgresql:
+    host: "localhost"
+    port: 5432
+    database: "apexsions_economy"
+    username: "postgres"
+    password: "password"
+    ssl: false
+    maximum-pool-size: 10
+
+currencies:
+  rupiah:
+    id: "rupiah"
+    display-name: "Rupiah"
+    symbol: "Rp"
+    color: "&a"
+    starting-balance: 10000.0
+    decimals: 0
+  diamond:
+    id: "diamond"
+    display-name: "Diamond"
+    symbol: "💎"
+    color: "&b"
+    starting-balance: 0.0
+    decimals: 0
+
+trade:
+  enabled: true
+  request-timeout-seconds: 60
+  # Additional transport tariff charged to BOTH players when trading across different kingdoms
+  cross-kingdom-transport-fee: 5000.0
+  # Same-kingdom trades are always 0.0 (FREE)
+
+auction:
+  enabled: true
+  max-listings-per-player: 10
+  listing-duration-hours: 24
+  listing-fee-percentage: 2.0

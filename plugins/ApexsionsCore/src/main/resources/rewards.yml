@@ -1,0 +1,270 @@
+# ==============================================================================
+# Apexsions — Level Progression & Milestone Rewards (rewards.yml)
+# Special Milestone Rewards on levels: 11, 21, 31, 41, 51, 61, 71, 81, 91, 100
+# Supported placeholders in commands/messages: %player%, %level%, %kingdom%
+# ==============================================================================
+
+settings:
+  gui-title: "<dark_gray><bold>🏆 Level Progression Rewards 🏆</bold></dark_gray>"
+  gui-size: 54
+  auto-claim: false
+
+# Default template for levels not explicitly configured
+default-reward:
+  icon: "GOLD_NUGGET"
+  display-name: "<yellow>Level %level% Bounty</yellow>"
+  lore:
+    - "<gray>Standard level advancement reward."
+    - "<green>• 150 Currency & Kingdom Tokens</green>"
+  commands:
+    - "eco give %player% 150"
+
+# Specific rewards for each level (1-100)
+rewards:
+  2:
+    display-name: "<yellow>Level 2 Starter Pack</yellow>"
+    icon: "BREAD"
+    lore:
+      - "<gray>Rewards:"
+      - "<green>• 16x Bread</green>"
+      - "<green>• 100 Currency</green>"
+    commands:
+      - "give %player% bread 16"
+      - "eco give %player% 100"
+
+  5:
+    display-name: "<yellow>Level 5 Explorer's Satchel</yellow>"
+    icon: "IRON_INGOT"
+    lore:
+      - "<gray>Rewards:"
+      - "<green>• 8x Iron Ingot</green>"
+      - "<green>• 250 Currency</green>"
+    commands:
+      - "give %player% iron_ingot 8"
+      - "eco give %player% 250"
+
+  10:
+    display-name: "<yellow>Level 10 Vanguard Bounty</yellow>"
+    icon: "GOLD_INGOT"
+    lore:
+      - "<gray>Rewards:"
+      - "<green>• 4x Gold Ingot</green>"
+      - "<green>• 500 Currency</green>"
+    commands:
+      - "give %player% gold_ingot 4"
+      - "eco give %player% 500"
+
+  # ============================================================================
+  # SPECIAL MILESTONE REWARD: LEVEL 11 (Novice Tier Unlocked)
+  # ============================================================================
+  11:
+    is-milestone: true
+    display-name: "<gradient:#ffe900:#f39c12><bold>👑 MILESTONE: Level 11 Ascension</bold></gradient>"
+    icon: "ENDER_CHEST"
+    lore:
+      - "<gold><bold>★ SPECIAL MILESTONE REWARD ★</bold></gold>"
+      - "<gray>Milestone tier unlocked:"
+      - "<yellow>• 1x Kingdom Novice Crate Key</yellow>"
+      - "<yellow>• 5x Diamonds</yellow>"
+      - "<yellow>• 1,000 Currency</yellow>"
+      - "<yellow>• Permanent Tier Title Unlocked!</yellow>"
+    commands:
+      - "crate key give %player% novice 1"
+      - "give %player% diamond 5"
+      - "eco give %player% 1000"
+    broadcast: "<gold><bold>Apexsions</bold> » <yellow>%player% has achieved <bold>Level 11 Milestone</bold> in kingdom %kingdom%!</yellow></gold>"
+    sound: "UI_TOAST_CHALLENGE_COMPLETE"
+
+  15:
+    display-name: "<yellow>Level 15 Guardian Cache</yellow>"
+    icon: "LAPIS_LAZULI"
+    lore:
+      - "<green>• 16x Lapis Lazuli</green>"
+      - "<green>• 750 Currency</green>"
+    commands:
+      - "give %player% lapis_lazuli 16"
+      - "eco give %player% 750"
+
+  20:
+    display-name: "<yellow>Level 20 Elite Cache</yellow>"
+    icon: "DIAMOND"
+    lore:
+      - "<green>• 3x Diamonds</green>"
+      - "<green>• 1,000 Currency</green>"
+    commands:
+      - "give %player% diamond 3"
+      - "eco give %player% 1000"
+
+  # ============================================================================
+  # SPECIAL MILESTONE REWARD: LEVEL 21 (Guardian Tier Unlocked)
+  # ============================================================================
+  21:
+    is-milestone: true
+    display-name: "<gradient:#00c6ff:#0072ff><bold>👑 MILESTONE: Level 21 Guardian</bold></gradient>"
+    icon: "ENDER_CHEST"
+    lore:
+      - "<gold><bold>★ SPECIAL MILESTONE REWARD ★</bold></gold>"
+      - "<gray>Milestone tier unlocked:"
+      - "<aqua>• 1x Kingdom Guardian Crate Key</aqua>"
+      - "<aqua>• 10x Diamonds & 2x Netherite Scrap</aqua>"
+      - "<aqua>• 2,500 Currency</aqua>"
+    commands:
+      - "crate key give %player% guardian 1"
+      - "give %player% diamond 10"
+      - "give %player% netherite_scrap 2"
+      - "eco give %player% 2500"
+    broadcast: "<gold><bold>Apexsions</bold> » <yellow>%player% has attained <bold>Level 21 Guardian Rank</bold> in %kingdom%!</yellow></gold>"
+    sound: "UI_TOAST_CHALLENGE_COMPLETE"
+
+  # ============================================================================
+  # SPECIAL MILESTONE REWARD: LEVEL 31 (Knight Tier Unlocked)
+  # ============================================================================
+  31:
+    is-milestone: true
+    display-name: "<gradient:#e67e22:#d35400><bold>👑 MILESTONE: Level 31 Knight</bold></gradient>"
+    icon: "ENDER_CHEST"
+    lore:
+      - "<gold><bold>★ SPECIAL MILESTONE REWARD ★</bold></gold>"
+      - "<yellow>• 1x Knight Crate Key</yellow>"
+      - "<yellow>• 1x Enchanted Golden Apple</yellow>"
+      - "<yellow>• 5,000 Currency</yellow>"
+    commands:
+      - "crate key give %player% knight 1"
+      - "give %player% enchanted_golden_apple 1"
+      - "eco give %player% 5000"
+    broadcast: "<gold><bold>Apexsions</bold> » <yellow>%player% has been dubbed <bold>Level 31 Knight</bold> in %kingdom%!</yellow></gold>"
+    sound: "UI_TOAST_CHALLENGE_COMPLETE"
+
+  # ============================================================================
+  # SPECIAL MILESTONE REWARD: LEVEL 41 (Commander Tier Unlocked)
+  # ============================================================================
+  41:
+    is-milestone: true
+    display-name: "<gradient:#9b59b6:#8e44ad><bold>👑 MILESTONE: Level 41 Commander</bold></gradient>"
+    icon: "ENDER_CHEST"
+    lore:
+      - "<gold><bold>★ SPECIAL MILESTONE REWARD ★</bold></gold>"
+      - "<light_purple>• 1x Commander Crate Key</light_purple>"
+      - "<light_purple>• 1x Netherite Ingot</light_purple>"
+      - "<light_purple>• 10,000 Currency</light_purple>"
+    commands:
+      - "crate key give %player% commander 1"
+      - "give %player% netherite_ingot 1"
+      - "eco give %player% 10000"
+    broadcast: "<gold><bold>Apexsions</bold> » <yellow>%player% has achieved <bold>Level 41 Commander</bold> in %kingdom%!</yellow></gold>"
+    sound: "UI_TOAST_CHALLENGE_COMPLETE"
+
+  # ============================================================================
+  # SPECIAL MILESTONE REWARD: LEVEL 51 (Master Tier Unlocked)
+  # ============================================================================
+  51:
+    is-milestone: true
+    display-name: "<gradient:#2ecc71:#27ae60><bold>👑 MILESTONE: Level 51 Master</bold></gradient>"
+    icon: "ENDER_CHEST"
+    lore:
+      - "<gold><bold>★ SPECIAL MILESTONE REWARD ★</bold></gold>"
+      - "<green>• 1x Master Crate Key</green>"
+      - "<green>• 1x Totem of Undying</green>"
+      - "<green>• 20,000 Currency</green>"
+    commands:
+      - "crate key give %player% master 1"
+      - "give %player% totem_of_undying 1"
+      - "eco give %player% 20000"
+    broadcast: "<gold><bold>Apexsions</bold> » <green>%player% has attained <bold>Level 51 Master</bold> status in %kingdom%!</green></gold>"
+    sound: "UI_TOAST_CHALLENGE_COMPLETE"
+
+  # ============================================================================
+  # SPECIAL MILESTONE REWARD: LEVEL 61 (Archon Tier Unlocked)
+  # ============================================================================
+  61:
+    is-milestone: true
+    display-name: "<gradient:#1abc9c:#16a085><bold>👑 MILESTONE: Level 61 Archon</bold></gradient>"
+    icon: "ENDER_CHEST"
+    lore:
+      - "<gold><bold>★ SPECIAL MILESTONE REWARD ★</bold></gold>"
+      - "<aqua>• 1x Archon Crate Key</aqua>"
+      - "<aqua>• 1x Elytra Wings</aqua>"
+      - "<aqua>• 35,000 Currency</aqua>"
+    commands:
+      - "crate key give %player% archon 1"
+      - "give %player% elytra 1"
+      - "eco give %player% 35000"
+    broadcast: "<gold><bold>Apexsions</bold> » <aqua>%player% has ascended to <bold>Level 61 Archon</bold> in %kingdom%!</aqua></gold>"
+    sound: "UI_TOAST_CHALLENGE_COMPLETE"
+
+  # ============================================================================
+  # SPECIAL MILESTONE REWARD: LEVEL 71 (High Celestial Tier Unlocked)
+  # ============================================================================
+  71:
+    is-milestone: true
+    display-name: "<gradient:#34495e:#2c3e50><bold>👑 MILESTONE: Level 71 High Celestial</bold></gradient>"
+    icon: "ENDER_CHEST"
+    lore:
+      - "<gold><bold>★ SPECIAL MILESTONE REWARD ★</bold></gold>"
+      - "<blue>• 1x Celestial Key</blue>"
+      - "<blue>• 2x Netherite Ingots</blue>"
+      - "<blue>• 50,000 Currency</blue>"
+    commands:
+      - "crate key give %player% celestial 1"
+      - "give %player% netherite_ingot 2"
+      - "eco give %player% 50000"
+    broadcast: "<gold><bold>Apexsions</bold> » <blue>%player% has reached <bold>Level 71 High Celestial</bold> in %kingdom%!</blue></gold>"
+    sound: "UI_TOAST_CHALLENGE_COMPLETE"
+
+  # ============================================================================
+  # SPECIAL MILESTONE REWARD: LEVEL 81 (Overlord Tier Unlocked)
+  # ============================================================================
+  81:
+    is-milestone: true
+    display-name: "<gradient:#e74c3c:#c0392b><bold>👑 MILESTONE: Level 81 Overlord</bold></gradient>"
+    icon: "ENDER_CHEST"
+    lore:
+      - "<gold><bold>★ SPECIAL MILESTONE REWARD ★</bold></gold>"
+      - "<red>• 1x Mythic Overlord Key</red>"
+      - "<red>• 1x Beacon</red>"
+      - "<red>• 75,000 Currency</red>"
+    commands:
+      - "crate key give %player% mythic 1"
+      - "give %player% beacon 1"
+      - "eco give %player% 75000"
+    broadcast: "<gold><bold>Apexsions</bold> » <red>%player% has risen as a <bold>Level 81 Overlord</bold> in %kingdom%!</red></gold>"
+    sound: "UI_TOAST_CHALLENGE_COMPLETE"
+
+  # ============================================================================
+  # SPECIAL MILESTONE REWARD: LEVEL 91 (Sovereign Tier Unlocked)
+  # ============================================================================
+  91:
+    is-milestone: true
+    display-name: "<gradient:#f39c12:#f1c40f><bold>👑 MILESTONE: Level 91 Sovereign</bold></gradient>"
+    icon: "ENDER_CHEST"
+    lore:
+      - "<gold><bold>★ SPECIAL MILESTONE REWARD ★</bold></gold>"
+      - "<gold>• 1x Sovereign Divine Key</gold>"
+      - "<gold>• 5x Enchanted Golden Apples</gold>"
+      - "<gold>• 100,000 Currency</gold>"
+    commands:
+      - "crate key give %player% sovereign 1"
+      - "give %player% enchanted_golden_apple 5"
+      - "eco give %player% 100000"
+    broadcast: "<gold><bold>Apexsions</bold> » <gold>%player% is now a <bold>Level 91 Sovereign of %kingdom%</bold>!</gold>"
+    sound: "UI_TOAST_CHALLENGE_COMPLETE"
+
+  # ============================================================================
+  # ULTIMATE MILESTONE REWARD: LEVEL 100 (Apex Emperor / Transcendent)
+  # ============================================================================
+  100:
+    is-milestone: true
+    display-name: "<gradient:#ff007f:#7f00ff><bold>⚡ SUPREME APEX MILESTONE: LEVEL 100 ⚡</bold></gradient>"
+    icon: "NETHER_STAR"
+    lore:
+      - "<gold><bold>★ ULTIMATE SERVER PINNACLE REWARD ★</bold></gold>"
+      - "<light_purple>• 3x Supreme God Keys</light_purple>"
+      - "<light_purple>• 1x Supreme Apexsions Star Artifact</light_purple>"
+      - "<light_purple>• 250,000 Currency</light_purple>"
+      - "<light_purple>• Permanent Server-wide Hall of Fame Status</light_purple>"
+    commands:
+      - "crate key give %player% god 3"
+      - "give %player% nether_star 1"
+      - "eco give %player% 250000"
+    broadcast: "<gold><bold>══════════════════════════════════════════════════════════</bold>\n<yellow><bold>👑 ASCENSION TO THE THRONE!</bold></yellow>\n<white>%player%</white> <yellow>has reached the ultimate</yellow> <gold><bold>MAX LEVEL 100</bold></gold> <yellow>in</yellow> <aqua><bold>%kingdom%</bold></aqua>!\n<gold><bold>══════════════════════════════════════════════════════════</bold></gold>"
+    sound: "UI_TOAST_CHALLENGE_COMPLETE"

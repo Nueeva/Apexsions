@@ -1,0 +1,136 @@
+# ==============================================================================
+# ApexsionsChat — Moderation & Security Configuration (moderation.yml)
+# ==============================================================================
+
+# General Security Settings
+general:
+  # If false, server operators (OPs) are ALSO subjected to moderation filters.
+  # Set to true only if you want OPs to bypass all filters without permissions.
+  bypass-for-op: false
+
+  # Send notifications to staff when a message is blocked or censored
+  staff-alerts:
+    enabled: true
+    permission: "apexsionschat.staff.alerts"
+    format: "<gold>🛡️ <dark_gray>[<red>Chat Blocked</red>]</dark_gray> <yellow>{player}</yellow> <gray>({rule}):</gray> <color:#fca5a5>{message}</color></gold>"
+
+  # Sound alert played to the player when their message is blocked
+  sound-alerts:
+    enabled: true
+    sound: "BLOCK_NOTE_BLOCK_BASS"
+    volume: 1.0
+    pitch: 0.8
+
+  # Global Chat Mute state (can be toggled in-game with /apexsionschat mute)
+  global-mute:
+    enabled: false
+    bypass-permission: "apexsionschat.staff.mutebypass"
+    message: "<red>✖ Global chat is currently muted by server staff.</red>"
+
+# Anti-Spam & Anti-Flood Protection
+spam:
+  enabled: true
+  min-message-delay-ms: 1200 # Minimum delay between consecutive messages
+  rate-limit:
+    messages: 3 # Maximum messages allowed in the time window
+    window-seconds: 4 # Sliding time window
+    action: "BLOCK"
+  mute:
+    enabled: true
+    duration-seconds: 15 # Temporary mute duration after repeated spam violations
+    violation-threshold: 3 # Violations before temporary mute triggers
+  duplicate-similarity-threshold: 0.80 # Levenshtein similarity ratio (0.0 to 1.0)
+  max-caps-percentage: 65 # Upper limit percentage of capitalized letters (min length 5)
+  max-consecutive-symbols: 4 # Maximum repeating punctuation/symbols
+  action: "BLOCK"
+
+# Anti-Advertising Protection (IP, Web Domains, Discord)
+advertising:
+  enabled: true
+  action: "BLOCK"
+  whitelisted-domains:
+    - "apexsions.net"
+    - "apexsions.com"
+    - "discord.gg/apexsions"
+  block-ip-addresses: true
+  block-domains: true
+  block-discord-invites: true
+
+# Profanity & Toxicity Filtering
+profanity:
+  enabled: true
+  action: "BLOCK" # BLOCK, REPLACE (censors with mask), or WARN
+  replacement-mask: "***"
+  normalize:
+    lowercase: true
+    collapse-whitespace: true
+    remove-common-separators: true
+    normalize-leetspeak: true
+  exceptions:
+    - "pass"
+    - "class"
+    - "grass"
+    - "compass"
+    - "assist"
+    - "asset"
+    - "title"
+    - "glass"
+    - "mass"
+    - "bass"
+  banned-words:
+    - "kontol"
+    - "memek"
+    - "anjing"
+    - "babi"
+    - "bangsat"
+    - "ngentot"
+    - "bajingan"
+    - "pantek"
+    - "itil"
+    - "jembut"
+    - "peler"
+    - "fuck"
+    - "shit"
+    - "bitch"
+    - "cunt"
+    - "asshole"
+    - "dick"
+    - "pussy"
+    - "bastard"
+    - "slut"
+    - "whore"
+
+# Discriminatory & Hate Speech Protection
+hate-speech:
+  enabled: true
+  action: "BLOCK"
+  log-violations: true
+  banned-phrases:
+    - "nigger"
+    - "nigga"
+    - "faggot"
+    - "retard"
+    - "autistic"
+
+# Custom Regex Filter Rules (Advanced Security)
+custom-rules:
+  enabled: true
+  rules:
+    - name: "CRASH_EXPLOIT"
+      pattern: "\\$\\{jndi:"
+      action: "BLOCK"
+      reason: "Malicious payload syntax detected."
+    - name: "DISCORD_TOKEN"
+      pattern: "[a-zA-Z0-9_-]{24}\\.[a-zA-Z0-9_-]{6}\\.[a-zA-Z0-9_-]{27}"
+      action: "BLOCK"
+      reason: "Potential token leak detected."
+
+# Mention Controls
+mentions:
+  player:
+    enabled: true
+    highlight-format: "<color:#38bdf8><bold>@{player}</bold></color>"
+  all:
+    enabled: true
+    cooldown-seconds: 60
+    highlight-format: "<gradient:#f59e0b:#ef4444><bold>@all</bold></gradient>"

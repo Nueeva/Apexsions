@@ -1,0 +1,392 @@
+# ==============================================================================
+# Apexsions — XP Sources & Anti-Abuse Configuration (xp.yml)
+# ==============================================================================
+
+anti-abuse:
+  block-tracker-cache-size: 50000
+  block-tracker-expire-hours: 24
+  pvp-kill-cooldown-seconds: 120
+  movement-jump-cooldown-seconds: 5
+
+sources:
+  # ============================================================================
+  # 1. MINING & EXCAVATION (Ores, Crystals, & Stones)
+  # ============================================================================
+  mining:
+    enabled: true
+    default: 1
+    natural-blocks-only: true
+    custom-amounts:
+      # Rare Ores & Deepslate Variants
+      ANCIENT_DEBRIS: 50
+      EMERALD_ORE: 25
+      DEEPSLATE_EMERALD_ORE: 30
+      DIAMOND_ORE: 15
+      DEEPSLATE_DIAMOND_ORE: 20
+      GOLD_ORE: 8
+      DEEPSLATE_GOLD_ORE: 10
+      NETHER_GOLD_ORE: 5
+      IRON_ORE: 5
+      DEEPSLATE_IRON_ORE: 6
+      REDSTONE_ORE: 6
+      DEEPSLATE_REDSTONE_ORE: 7
+      LAPIS_ORE: 6
+      DEEPSLATE_LAPIS_ORE: 7
+      COPPER_ORE: 3
+      DEEPSLATE_COPPER_ORE: 4
+      COAL_ORE: 3
+      DEEPSLATE_COAL_ORE: 4
+      NETHER_QUARTZ_ORE: 4
+      # Raw Ore Blocks & Crystals
+      RAW_IRON_BLOCK: 15
+      RAW_COPPER_BLOCK: 10
+      RAW_GOLD_BLOCK: 25
+      AMETHYST_CLUSTER: 6
+      SMALL_AMETHYST_BUD: 1
+      MEDIUM_AMETHYST_BUD: 2
+      LARGE_AMETHYST_BUD: 4
+      # Obsidian & Rare Blocks
+      OBSIDIAN: 12
+      CRYING_OBSIDIAN: 15
+      GLOWSTONE: 3
+      SEA_LANTERN: 4
+      # Natural Stones & Terrane
+      STONE: 1
+      DEEPSLATE: 1
+      GRANITE: 1
+      DIORITE: 1
+      ANDESITE: 1
+      TUFF: 1
+      CALCITE: 1
+      DRIPSTONE_BLOCK: 1
+      BASALT: 1
+      SMOOTH_BASALT: 1
+      BLACKSTONE: 1
+      NETHERRACK: 1
+      END_STONE: 1
+      SANDSTONE: 1
+      RED_SANDSTONE: 1
+      PRISMARINE: 2
+      PRISMARINE_BRICKS: 2
+      DARK_PRISMARINE: 3
+
+  # ============================================================================
+  # 2. WOODCUTTING & FORESTRY (Logs & Stems)
+  # ============================================================================
+  woodcutting:
+    enabled: true
+    default: 2
+    natural-blocks-only: true
+    custom-amounts:
+      OAK_LOG: 2
+      BIRCH_LOG: 2
+      SPRUCE_LOG: 2
+      JUNGLE_LOG: 3
+      ACACIA_LOG: 3
+      DARK_OAK_LOG: 3
+      MANGROVE_LOG: 3
+      CHERRY_LOG: 3
+      PALE_OAK_LOG: 3
+      CRIMSON_STEM: 4
+      WARPED_STEM: 4
+      BAMBOO_BLOCK: 2
+      MUSHROOM_STEM: 2
+      RED_MUSHROOM_BLOCK: 1
+      BROWN_MUSHROOM_BLOCK: 1
+
+  # ============================================================================
+  # 3. FISHING & ANGLING (Fish, Treasures, & Junk)
+  # ============================================================================
+  fishing:
+    enabled: true
+    default: 10
+    treasure-bonus: 25
+    custom-amounts:
+      # Fishes
+      COD: 8
+      SALMON: 10
+      TROPICAL_FISH: 15
+      PUFFERFISH: 20
+      # Treasures
+      ENCHANTED_BOOK: 50
+      NAUTILUS_SHELL: 45
+      SADDLE: 35
+      NAME_TAG: 30
+      BOW: 20
+      FISHING_ROD: 15
+      # Junks / Misc
+      LILY_PAD: 5
+      BOWL: 2
+      LEATHER: 3
+      LEATHER_BOOTS: 3
+      ROTTEN_FLESH: 1
+      STICK: 1
+      STRING: 2
+      POTION: 10
+      BONE: 2
+      INK_SAC: 3
+      TRIPWIRE_HOOK: 4
+
+  # ============================================================================
+  # 4. MOB COMBAT & BOSS HUNTS (Individual Mobs)
+  # ============================================================================
+  mob-kill:
+    enabled: true
+    hostile-default: 8
+    passive-default: 2
+    boss-multiplier: 1.0
+    custom-amounts:
+      # Apex Bosses
+      ENDER_DRAGON: 500
+      WITHER: 250
+      WARDEN: 200
+      ELDER_GUARDIAN: 80
+      RAVAGER: 60
+      # Illagers & Raids
+      EVOKER: 40
+      VINDICATOR: 15
+      PILLAGER: 12
+      WITCH: 20
+      ILLUSIONER: 50
+      VEX: 6
+      # Nether Mobs
+      PIGLIN_BRUTE: 35
+      WITHER_SKELETON: 20
+      GHAST: 18
+      BLAZE: 12
+      HOGLIN: 12
+      ZOGLIN: 15
+      MAGMA_CUBE: 5
+      PIGLIN: 8
+      ZOMBIFIED_PIGLIN: 8
+      STRIDER: 3
+      # End Mobs
+      SHULKER: 25
+      ENDERMAN: 16
+      ENDERMITE: 5
+      # Overworld Hostile Mobs
+      BREEZE: 30
+      BOGGED: 10
+      CREEPER: 12
+      PHANTOM: 14
+      GUARDIAN: 15
+      ZOMBIE: 8
+      DROWNED: 9
+      HUSK: 9
+      ZOMBIE_VILLAGER: 10
+      SKELETON: 8
+      STRAY: 9
+      SPIDER: 6
+      CAVE_SPIDER: 8
+      SLIME: 4
+      SILVERFISH: 3
+      # Golems & Utility
+      IRON_GOLEM: 20
+      SNOW_GOLEM: 2
+      # Animals & Peaceful Mobs
+      SNIFFER: 10
+      CAMEL: 5
+      HORSE: 3
+      DONKEY: 3
+      MULE: 3
+      LLAMA: 3
+      TRADER_LLAMA: 3
+      PANDA: 4
+      POLAR_BEAR: 6
+      WOLF: 3
+      FOX: 3
+      CAT: 2
+      OCELOT: 3
+      COW: 2
+      PIG: 2
+      SHEEP: 2
+      GOAT: 3
+      RABBIT: 2
+      CHICKEN: 1
+      ARMADILLO: 3
+      TURTLE: 4
+      DOLPHIN: 3
+      SQUID: 2
+      GLOW_SQUID: 3
+      FROG: 2
+      PARROT: 2
+      BAT: 1
+      BEE: 3
+      VILLAGER: 1
+
+  # ============================================================================
+  # 5. PLAYER COMBAT (PvP)
+  # ============================================================================
+  player-kill:
+    enabled: true
+    default: 25
+
+  # ============================================================================
+  # 6. AGRICULTURE & ANIMAL BREEDING (Crops & Animals)
+  # ============================================================================
+  farming:
+    enabled: true
+    default: 3
+    breed-default: 5
+    custom-amounts:
+      # Harvestable Crops (Mature Only)
+      WHEAT: 3
+      CARROTS: 3
+      POTATOES: 3
+      BEETROOTS: 3
+      NETHER_WART: 5
+      COCOA: 4
+      SWEET_BERRY_BUSH: 2
+      CAVE_VINES: 2
+      MELON: 3
+      PUMPKIN: 3
+      SUGAR_CANE: 1
+      CACTUS: 1
+      BAMBOO: 1
+      CHORUS_FLOWER: 5
+      CHORUS_PLANT: 2
+      TORCHFLOWER_CROP: 6
+      PITCHER_CROP: 6
+    breeding-amounts:
+      # Breeding per Animal Type
+      SNIFFER: 25
+      CAMEL: 15
+      PANDA: 12
+      HORSE: 10
+      DONKEY: 8
+      MULE: 8
+      TURTLE: 10
+      LLAMA: 8
+      ARMADILLO: 8
+      WOLF: 6
+      CAT: 6
+      OCELOT: 6
+      FOX: 6
+      GOAT: 6
+      BEE: 6
+      COW: 5
+      SHEEP: 5
+      PIG: 5
+      RABBIT: 4
+      CHICKEN: 3
+      FROG: 4
+
+  # ============================================================================
+  # 7. ANVIL SMITHING (Repair, Combine, Rename)
+  # ============================================================================
+  anvil:
+    enabled: true
+    default: 5
+    repair: 6
+    combine: 10
+    apply-book: 8
+    rename: 3
+
+  # ============================================================================
+  # 8. ARCANE ENCHANTING (Enchantment Tiers)
+  # ============================================================================
+  enchanting:
+    enabled: true
+    default: 10
+    tier1-xp: 10   # Level 1-10
+    tier2-xp: 25   # Level 11-20
+    tier3-xp: 50   # Level 21-30
+    xp-per-level-cost: 2
+
+  # ============================================================================
+  # 9. COOKING & SMELTING (Furnace, Smoker, Blast Furnace)
+  # ============================================================================
+  cooking:
+    enabled: true
+    default: 2
+    custom-amounts:
+      # Netherite & Rare Smelting
+      NETHERITE_SCRAP: 30
+      GOLD_INGOT: 6
+      IRON_INGOT: 4
+      COPPER_INGOT: 2
+      # Cooked Food
+      COOKED_BEEF: 3
+      COOKED_PORKCHOP: 3
+      COOKED_MUTTON: 3
+      COOKED_SALMON: 3
+      COOKED_CHICKEN: 2
+      COOKED_COD: 2
+      COOKED_RABBIT: 2
+      BAKED_POTATO: 2
+      DRIED_KELP: 1
+      # Blocks & Materials
+      STONE: 1
+      SMOOTH_STONE: 1
+      GLASS: 1
+      TERRACOTTA: 1
+      GLAZED_TERRACOTTA: 1
+      BRICK: 1
+      NETHER_BRICK: 1
+      POPPED_CHORUS_FRUIT: 2
+      LIME_DYE: 1
+      GREEN_DYE: 1
+
+  # ============================================================================
+  # 10. GOLDEN NUTRITION (Apples)
+  # ============================================================================
+  golden-apple:
+    enabled: true
+    golden-apple: 10
+    enchanted-golden-apple: 60
+
+  # ============================================================================
+  # 11. ALCHEMY & BREWING (Extracting Completed Potions)
+  # ============================================================================
+  brewing:
+    enabled: true
+    default: 5
+    custom-amounts:
+      TURTLE_MASTER: 15
+      INVISIBILITY: 12
+      REGENERATION: 10
+      STRENGTH: 10
+      HEALING: 8
+      FIRE_RESISTANCE: 8
+      SLOW_FALLING: 8
+      HARMING: 8
+      SPEED: 7
+      NIGHT_VISION: 7
+      WATER_BREATHING: 7
+      LEAPING: 7
+      POISON: 6
+      WEAKNESS: 6
+      SLOWNESS: 6
+      AWKWARD: 4
+      MUNDANE: 2
+      THICK: 2
+
+  # ============================================================================
+  # 12. POTION CONSUMPTION & SPLASHING
+  # ============================================================================
+  potion-use:
+    enabled: true
+    drink-potion: 3
+    splash-potion: 4
+    lingering-potion: 6
+
+  # ============================================================================
+  # 13. WORLD EXPLORATION & MOVEMENT
+  # ============================================================================
+  exploration:
+    enabled: true
+    movement:
+      distance-threshold: 16
+      xp: 1
+    swimming:
+      distance-threshold: 16
+      xp: 2
+    gliding:
+      distance-threshold: 32
+      xp: 2
+    riding:
+      distance-threshold: 32
+      xp: 1
+    jumping:
+      cooldown-seconds: 5
+      xp: 1

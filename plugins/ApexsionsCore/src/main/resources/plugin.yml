@@ -1,0 +1,101 @@
+name: ApexsionsCore
+version: '1.0.0'
+main: com.yourserver.apexsionscore.ApexsionsCorePlugin
+api-version: '1.21'
+author: Antigravity
+description: Core server management plugin for Apexsions Realms, Progression, XP, Level Titles, Ranks, and Chat.
+softdepend:
+  - LuckPerms
+  - Vault
+  - PlaceholderAPI
+  - Essentials
+  - BlueMap
+  - Citizens
+
+commands:
+  lobby:
+    description: Teleport to the main server lobby.
+    permission: apexsionscore.command.lobby
+    usage: /lobby
+  region:
+    aliases:
+      - kingdom
+      - kingdoms
+      - k
+    description: Region / Realm navigation, selection, and information.
+    permission: apexsionscore.command.region
+    usage: /region [choose|info]
+  kingdom:
+    aliases:
+      - k
+      - kingdoms
+    description: Realm / Kingdom navigation, selection, and information.
+    permission: apexsionscore.command.region
+    usage: /kingdom [choose|info]
+  apexsionscore:
+    aliases:
+      - ac
+      - apexionscore
+      - kingdomcore
+      - kc
+    description: Administrative management for ApexsionsCore.
+    permission: apexsionscore.admin
+    usage: /apexsionscore <reload|setlevel|addxp|setkingdom|info>
+  apexionscore:
+    aliases:
+      - ac
+      - kc
+    description: Alias for ApexsionsCore admin management.
+    permission: apexsionscore.admin
+    usage: /apexionscore <reload|setlevel|addxp|setkingdom|info>
+  kingdomcore:
+    aliases:
+      - kc
+    description: Legacy alias for ApexsionsCore admin management.
+    permission: apexsionscore.admin
+    usage: /kingdomcore <reload|setlevel|addxp|setkingdom|info>
+  level:
+    aliases:
+      - lvl
+      - profile
+      - rewards
+      - exp
+      - xpguide
+    description: View character profile, level progression, rewards, and XP guide.
+    permission: apexsionscore.command.level
+    usage: /level
+
+permissions:
+  apexsionscore.command.lobby:
+    description: Allows teleporting to the lobby.
+    default: true
+  apexsionscore.command.region:
+    description: Allows teleporting to the player's realm/kingdom.
+    default: true
+  apexsionscore.command.level:
+    description: Allows accessing level, profile, rewards, and XP guide.
+    default: true
+  apexsionscore.admin:
+    description: Allows access to administrative commands.
+    default: op
+  apexsionscore.admin.*:
+    description: Wildcard administrative access for ApexsionsCore.
+    default: op
+    children:
+      apexsionscore.admin: true
+  apexionscore.command.lobby:
+    default: true
+  apexionscore.command.region:
+    default: true
+  apexionscore.command.level:
+    default: true
+  apexionscore.admin:
+    default: op
+  kingdomcore.command.lobby:
+    default: true
+  kingdomcore.command.kingdom:
+    default: true
+  kingdomcore.command.level:
+    default: true
+  kingdomcore.admin:
+    default: op

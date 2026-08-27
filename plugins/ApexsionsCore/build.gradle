@@ -1,0 +1,86 @@
+plugins {
+    id 'java'
+    id 'com.gradleup.shadow' version '8.3.6'
+}
+
+group = 'com.yourserver.apexsionscore'
+version = '1.0.0'
+
+repositories {
+    mavenCentral()
+    maven {
+        name = 'papermc'
+        url = uri('https://repo.papermc.io/repository/maven-public/')
+    }
+    maven {
+        name = 'luckperms'
+        url = uri('https://repo.luckperms.net/')
+    }
+    maven {
+        name = 'placeholderapi'
+        url = uri('https://repo.extendedclip.com/content/repositories/placeholderapi/')
+    }
+    maven {
+        name = 'jitpack'
+        url = uri('https://jitpack.io')
+    }
+    maven {
+        name = 'essentialsx'
+        url = uri('https://repo.essentialsx.net/releases/')
+    }
+}
+
+dependencies {
+    // Paper API
+    compileOnly 'io.papermc.paper:paper-api:1.21.4-R0.1-SNAPSHOT'
+
+    // Shaded Database & Cache
+    implementation 'org.postgresql:postgresql:42.7.5'
+    implementation 'com.zaxxer:HikariCP:6.2.1'
+    implementation 'org.flywaydb:flyway-core:11.3.4'
+    implementation 'org.flywaydb:flyway-database-postgresql:11.3.4'
+    implementation 'com.github.ben-manes.caffeine:caffeine:3.2.0'
+    implementation 'org.xerial:sqlite-jdbc:3.49.1.0'
+    implementation 'com.h2database:h2:2.3.232'
+
+    // Integrations
+    compileOnly 'net.luckperms:api:5.4'
+    compileOnly 'com.github.MilkBowl:VaultAPI:1.7.1'
+    compileOnly 'me.clip:placeholderapi:2.11.6'
+    compileOnly 'net.essentialsx:EssentialsX:2.20.1'
+
+    // Test
+    testImplementation platform('org.junit:junit-bom:5.12.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testImplementation 'org.mockito:mockito-core:5.16.0'
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+    options.release = 21
+}
+
+shadowJar {
+    archiveBaseName.set('ApexsionsCore')
+    archiveClassifier.set('')
+    archiveVersion.set('1.0.0')
+
+    relocate 'org.postgresql', 'com.yourserver.apexsionscore.libs.postgresql'
+    relocate 'com.zaxxer.hikari', 'com.yourserver.apexsionscore.libs.hikari'
+    relocate 'org.flywaydb', 'com.yourserver.apexsionscore.libs.flyway'
+    relocate 'com.github.benmanes.caffeine', 'com.yourserver.apexsionscore.libs.caffeine'
+
+    mergeServiceFiles()
+}
+
+build.dependsOn shadowJar
+
+test {
+    useJUnitPlatform()
+}

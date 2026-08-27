@@ -1,0 +1,23 @@
+# ==============================================================================
+# Apexsions — Graphical User Interfaces Configuration (gui.yml)
+# ==============================================================================
+
+kingdom-select:
+  title: "<dark_gray><bold>Pilih Kerajaan</bold></dark_gray>"
+  size: 45
+
+kingdom-profile:
+  title: "<dark_gray><bold>Profil Kerajaan</bold></dark_gray>"
+  size: 45
+
+level-rewards:
+  title: "<dark_gray><bold>Hadiah Level</bold></dark_gray>"
+  size: 54
+
+xp-guide:
+  title: "<dark_gray><bold>Panduan XP</bold></dark_gray>"
+  size: 45
+
+xp-guide-category:
+  title: "<dark_gray><bold>XP: {category}</bold></dark_gray>"
+  size: 54

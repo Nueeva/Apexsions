@@ -1,0 +1,28 @@
+packages:
+  starter:
+    display-name: "&a&l+100 BP XP"
+    exp: 100
+    prices:
+      rupiah: 10000
+      diamond: 5
+
+  medium:
+    display-name: "&e&l+500 BP XP"
+    exp: 500
+    prices:
+      rupiah: 45000
+      diamond: 20
+
+  large:
+    display-name: "&6&l+1000 BP XP"
+    exp: 1000
+    prices:
+      rupiah: 80000
+      diamond: 35
+
+  epic:
+    display-name: "&d&l+2500 BP XP"
+    exp: 2500
+    prices:
+      rupiah: 180000
+      diamond: 80

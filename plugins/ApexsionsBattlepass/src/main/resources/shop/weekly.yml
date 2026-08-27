@@ -1,0 +1,160 @@
+items:
+  weekly_enchanted_apple:
+    display-name: "&6&lEnchanted Golden Apple"
+    material: "ENCHANTED_GOLDEN_APPLE"
+    amount: 1
+    currency-type: "rupiah"
+    price: 150000.0
+    purchase-limit: 1
+    rarity: "EPIC"
+    category: "Special"
+    weight: 8
+    lore:
+      - "&7Apel emas legendaris dengan proteksi magis luar biasa."
+
+  weekly_diamond_block:
+    display-name: "&b&lDiamond Block (2x)"
+    material: "DIAMOND_BLOCK"
+    amount: 2
+    currency-type: "battle_coins"
+    price: 180.0
+    purchase-limit: 2
+    rarity: "RARE"
+    category: "Material"
+    weight: 12
+    lore:
+      - "&7Balok berlian padat untuk keperluan crafting tingkat tinggi."
+
+  weekly_netherite_scrap:
+    display-name: "&8&lNetherite Scrap (2x)"
+    material: "NETHERITE_SCRAP"
+    amount: 2
+    currency-type: "rupiah"
+    price: 200000.0
+    purchase-limit: 2
+    rarity: "EPIC"
+    category: "Material"
+    weight: 8
+    lore:
+      - "&7Pecahan Netherite dari kedalaman dunia bawah."
+
+  weekly_mending_book:
+    display-name: "&a&lEnchanted Book (Mending)"
+    material: "ENCHANTED_BOOK"
+    amount: 1
+    currency-type: "battle_coins"
+    price: 250.0
+    purchase-limit: 1
+    rarity: "EPIC"
+    category: "Special"
+    weight: 8
+    lore:
+      - "&7Memperbaiki armor dan alat menggunakan EXP."
+
+  weekly_unbreaking_book:
+    display-name: "&3&lEnchanted Book (Unbreaking III)"
+    material: "ENCHANTED_BOOK"
+    amount: 1
+    currency-type: "rupiah"
+    price: 80000.0
+    purchase-limit: 2
+    rarity: "RARE"
+    category: "Special"
+    weight: 10
+    lore:
+      - "&7Meningkatkan ketahanan peralatan secara drastis."
+
+  weekly_totem_undying:
+    display-name: "&e&lTotem of Undying"
+    material: "TOTEM_OF_UNDYING"
+    amount: 1
+    currency-type: "rupiah"
+    price: 250000.0
+    purchase-limit: 1
+    rarity: "EPIC"
+    category: "Special"
+    weight: 7
+    lore:
+      - "&7Menyelamatkan nyawa dari kematian mendadak."
+
+  weekly_trident:
+    display-name: "&b&lTrident Samudra Perkasa"
+    material: "TRIDENT"
+    amount: 1
+    currency-type: "battle_coins"
+    price: 400.0
+    purchase-limit: 1
+    rarity: "LEGENDARY"
+    category: "Weapon"
+    weight: 5
+    lore:
+      - "&7Senjata pusaka penguasa lautan."
+
+  weekly_title_veteran:
+    display-name: "&6&lTitle Scroll: [Prajurit Tangguh]"
+    material: "NAME_TAG"
+    amount: 1
+    currency-type: "battle_coins"
+    price: 200.0
+    purchase-limit: 1
+    rarity: "EPIC"
+    category: "Title"
+    weight: 6
+    commands:
+      - "lp user %player% permission set battlepass.title.veteran"
+    lore:
+      - "&7Membuka gelar eksklusif &6[Prajurit Tangguh]&7!"
+
+  weekly_flame_trail:
+    display-name: "&c&lCosmetic Trail: Jejak Api Membara"
+    material: "BLAZE_POWDER"
+    amount: 1
+    currency-type: "rupiah"
+    price: 150000.0
+    purchase-limit: 1
+    rarity: "LEGENDARY"
+    category: "Cosmetic"
+    weight: 5
+    commands:
+      - "lp user %player% permission set battlepass.trail.flame"
+    lore:
+      - "&7Meninggalkan jejak lidah api saat bergerak."
+
+  weekly_shulker_box:
+    display-name: "&d&lShulker Box Ungu"
+    material: "SHULKER_BOX"
+    amount: 1
+    currency-type: "battle_coins"
+    price: 220.0
+    purchase-limit: 2
+    rarity: "RARE"
+    category: "Storage"
+    weight: 9
+    lore:
+      - "&7Kotak penyimpanan portabel berkapasitas besar."
+
+  weekly_experience_bundle:
+    display-name: "&a&lPaket Botol EXP Besar (32x)"
+    material: "EXPERIENCE_BOTTLE"
+    amount: 32
+    currency-type: "battle_coins"
+    price: 150.0
+    purchase-limit: 3
+    rarity: "UNCOMMON"
+    category: "Utility"
+    weight: 12
+    lore:
+      - "&7Pasokan EXP melimpah untuk enchantment."
+
+  weekly_heart_of_the_sea:
+    display-name: "&b&lHeart of the Sea"
+    material: "HEART_OF_THE_SEA"
+    amount: 1
+    currency-type: "rupiah"
+    price: 180000.0
+    purchase-limit: 1
+    rarity: "EPIC"
+    category: "Special"
+    weight: 6
+    lore:
+      - "&7Inti samudra mistis untuk membuat Conduit."

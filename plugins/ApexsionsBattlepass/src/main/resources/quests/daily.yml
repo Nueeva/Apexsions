@@ -1,0 +1,191 @@
+quests:
+  daily_miner_stone:
+    name: "&ePenambang Batu"
+    description: "Hancurkan 64 Stone block."
+    type: "BREAK_BLOCK"
+    target-block: "STONE"
+    target-amount: 64
+    reward-xp: 200
+    reward-coins: 30
+
+  daily_deepslate_miner:
+    name: "&8Penggali Deepslate"
+    description: "Tambang 32 Deepslate di kedalaman."
+    type: "MINE_BLOCK"
+    target-block: "DEEPSLATE"
+    target-amount: 32
+    reward-xp: 250
+    reward-coins: 35
+
+  daily_coal_collector:
+    name: "&8Pencari Batubara"
+    description: "Tambang 20 Coal Ore."
+    type: "MINE_BLOCK"
+    target-block: "COAL_ORE"
+    target-amount: 20
+    reward-xp: 200
+    reward-coins: 25
+
+  daily_iron_miner:
+    name: "&fPencari Besi"
+    description: "Tambang 15 Iron Ore."
+    type: "MINE_BLOCK"
+    target-block: "IRON_ORE"
+    target-amount: 15
+    reward-xp: 300
+    reward-coins: 40
+
+  daily_woodcutter:
+    name: "&6Penebang Pohon"
+    description: "Tebang 32 Oak Log."
+    type: "BREAK_BLOCK"
+    target-block: "OAK_LOG"
+    target-amount: 32
+    reward-xp: 200
+    reward-coins: 25
+
+  daily_zombie_slayer:
+    name: "&aPemburu Zombie"
+    description: "Basmi 15 Zombie yang berkeliaran."
+    type: "KILL_ENTITY"
+    target-entity: "ZOMBIE"
+    target-amount: 15
+    reward-xp: 300
+    reward-coins: 45
+
+  daily_skeleton_archer:
+    name: "&fPenembak Skeleton"
+    description: "Bunuh 12 Skeleton bertulang."
+    type: "KILL_ENTITY"
+    target-entity: "SKELETON"
+    target-amount: 12
+    reward-xp: 300
+    reward-coins: 45
+
+  daily_spider_hunter:
+    name: "&4Pembasmi Laba-laba"
+    description: "Kalahkan 10 Spider."
+    type: "KILL_ENTITY"
+    target-entity: "SPIDER"
+    target-amount: 10
+    reward-xp: 250
+    reward-coins: 35
+
+  daily_creeper_sweeper:
+    name: "&2Penjinak Creeper"
+    description: "Bunuh 8 Creeper sebelum meledak."
+    type: "KILL_ENTITY"
+    target-entity: "CREEPER"
+    target-amount: 8
+    reward-xp: 350
+    reward-coins: 50
+
+  daily_fisherman:
+    name: "&bPemancing Santai"
+    description: "Tangkap 8 ekor ikan di perairan."
+    type: "FISH"
+    target-amount: 8
+    reward-xp: 250
+    reward-coins: 40
+
+  daily_wheat_harvester:
+    name: "&ePetani Gandum"
+    description: "Panen 32 tanaman Wheat yang sudah matang."
+    type: "HARVEST_CROPS"
+    target-block: "WHEAT"
+    target-amount: 32
+    reward-xp: 200
+    reward-coins: 30
+
+  daily_carrot_grower:
+    name: "&6Pemetik Wortel"
+    description: "Panen 24 tanaman Carrot."
+    type: "HARVEST_CROPS"
+    target-block: "CARROTS"
+    target-amount: 24
+    reward-xp: 200
+    reward-coins: 30
+
+  daily_planter:
+    name: "&aPenghijauan Alam"
+    description: "Tanam 30 biji bibit tanaman atau sapling."
+    type: "PLANT_CROPS"
+    target-amount: 30
+    reward-xp: 200
+    reward-coins: 25
+
+  daily_animal_breeder:
+    name: "&dPeternak Ramah"
+    description: "Kembangbiakkan 6 pasang hewan ternak."
+    type: "BREED_ANIMALS"
+    target-amount: 6
+    reward-xp: 300
+    reward-coins: 40
+
+  daily_food_smelter:
+    name: "&6Koki Dapur"
+    description: "Masak 20 makanan di Furnace / Smoker."
+    type: "SMELT_ITEM"
+    target-amount: 20
+    reward-xp: 250
+    reward-coins: 35
+
+  daily_ore_smelter:
+    name: "&4Pelebur Besi"
+    description: "Lebur 24 Iron / Copper / Gold Ingot."
+    type: "SMELT_ITEM"
+    target-item: "IRON_INGOT"
+    target-amount: 24
+    reward-xp: 250
+    reward-coins: 35
+
+  daily_builder_planks:
+    name: "&eTukang Bangunan"
+    description: "Pasang 64 Oak Planks pada bangunan Anda."
+    type: "PLACE_BLOCK"
+    target-block: "OAK_PLANKS"
+    target-amount: 64
+    reward-xp: 200
+    reward-coins: 30
+
+  daily_food_lover:
+    name: "&cPenikmat Makanan"
+    description: "Konsumsi 12 makanan lezat."
+    type: "CONSUME_FOOD"
+    target-amount: 12
+    reward-xp: 150
+    reward-coins: 20
+
+  daily_exp_hunter:
+    name: "&aPengumpul Pengalaman"
+    description: "Kumpulkan 150 EXP Points dari aktivitas game."
+    type: "EXP_GAIN"
+    target-amount: 150
+    reward-xp: 300
+    reward-coins: 40
+
+  daily_tool_crafter:
+    name: "&7Pengrajin Perkakas"
+    description: "Craft 5 perkakas besi atau batu."
+    type: "CRAFT_ITEM"
+    target-amount: 5
+    reward-xp: 200
+    reward-coins: 25
+
+  daily_torch_maker:
+    name: "&6Penerang Goa"
+    description: "Craft 32 Torch obor penerang."
+    type: "CRAFT_ITEM"
+    target-item: "TORCH"
+    target-amount: 32
+    reward-xp: 150
+    reward-coins: 20
+
+  daily_bread_maker:
+    name: "&ePembuat Roti"
+    description: "Craft 16 Roti lezat dari gandum."
+    type: "CRAFT_ITEM"
+    target-item: "BREAD"
+    target-amount: 16
+    reward-xp: 200
+    reward-coins: 25
