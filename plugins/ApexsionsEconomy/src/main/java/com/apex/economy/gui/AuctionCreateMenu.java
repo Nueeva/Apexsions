@@ -1,10 +1,10 @@
 package com.apex.economy.gui;
 
-import com.apex.economy.gui.core.Gui;
-import com.apex.economy.gui.core.GuiButton;
-import com.apex.economy.gui.navigation.BackButton;
-import com.apex.economy.gui.util.ItemBuilder;
-import com.apex.economy.util.ItemSerializer;
+import com.apex.battlepass.gui.core.Gui;
+import com.apex.battlepass.gui.core.GuiButton;
+import com.apex.battlepass.gui.navigation.BackButton;
+import com.apex.battlepass.gui.util.ItemBuilder;
+import com.apex.battlepass.util.ItemSerializer;
 import com.apex.economy.ApexsionsEconomy;
 import com.apex.economy.currency.Currency;
 import com.apex.economy.util.NumberFormatUtil;
@@ -76,7 +76,7 @@ public class AuctionCreateMenu extends Gui {
                     if (p > 0) this.price = p;
                     open();
                 } catch (Exception e) {
-                    player.sendMessage("Â§cFormat harga tidak valid!");
+                    player.sendMessage("§cFormat harga tidak valid!");
                     open();
                 }
             }, this::open);
@@ -99,7 +99,7 @@ public class AuctionCreateMenu extends Gui {
 
         // 5. Confirm & List Button (Slot 23)
         setButton(23, new GuiButton(new ItemBuilder(Material.LIME_CONCRETE)
-                .name("&a&l[âœ”] KONFIRMASI & PASANG LELANG")
+                .name("&a&l[✔] KONFIRMASI & PASANG LELANG")
                 .lore(List.of(
                         "&7Klik untuk memasang barang ke pasar lelang.",
                         " ",
@@ -108,7 +108,7 @@ public class AuctionCreateMenu extends Gui {
                 .build(), event -> {
             ItemStack placed = inventory.getItem(13);
             if (placed == null || placed.getType() == Material.AIR) {
-                player.sendMessage("Â§c[!] Harap letakkan barang ke dalam Slot 13 terlebih dahulu!");
+                player.sendMessage("§c[!] Harap letakkan barang ke dalam Slot 13 terlebih dahulu!");
                 return;
             }
 

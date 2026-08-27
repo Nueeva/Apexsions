@@ -1,8 +1,8 @@
 package com.apex.economy.trade.gui;
 
-import com.apex.economy.gui.core.Gui;
-import com.apex.economy.gui.core.GuiButton;
-import com.apex.economy.gui.util.ItemBuilder;
+import com.apex.battlepass.gui.core.Gui;
+import com.apex.battlepass.gui.core.GuiButton;
+import com.apex.battlepass.gui.util.ItemBuilder;
 import com.apex.economy.ApexsionsEconomy;
 import com.apex.economy.currency.Currency;
 import com.apex.economy.trade.TradeSession;
@@ -80,15 +80,15 @@ public class TradeCurrencySelectMenu extends Gui {
             try {
                 double amount = NumberFormatUtil.parse(amountStr);
                 if (amount <= 0) {
-                    player.sendMessage("Â§cNominal transfer harus lebih besar dari 0!");
+                    player.sendMessage("§cNominal transfer harus lebih besar dari 0!");
                 } else if (!plugin.getCurrencyService().has(player.getUniqueId(), currency.getId(), amount)) {
-                    player.sendMessage("Â§cSaldo " + currency.getDisplayName() + " Anda tidak mencukupi!");
+                    player.sendMessage("§cSaldo " + currency.getDisplayName() + " Anda tidak mencukupi!");
                 } else {
                     session.setMoneyOffer(player, currency, amount);
-                    player.sendMessage("Â§a[âœ”] Berhasil menambahkan tawaran Â§e" + NumberFormatUtil.format(amount, currency) + "Â§a!");
+                    player.sendMessage("§a[✔] Berhasil menambahkan tawaran §e" + NumberFormatUtil.format(amount, currency) + "§a!");
                 }
             } catch (NumberFormatException e) {
-                player.sendMessage("Â§cFormat nominal tidak valid!");
+                player.sendMessage("§cFormat nominal tidak valid!");
             }
             session.setTemporarilyClosing(true);
             new TradeMenu(plugin, player, session).open();

@@ -1,10 +1,10 @@
 package com.apex.economy.gui;
 
-import com.apex.economy.gui.core.Gui;
-import com.apex.economy.gui.core.GuiButton;
-import com.apex.economy.gui.navigation.BackButton;
-import com.apex.economy.gui.navigation.CloseButton;
-import com.apex.economy.gui.util.ItemBuilder;
+import com.apex.battlepass.gui.core.Gui;
+import com.apex.battlepass.gui.core.GuiButton;
+import com.apex.battlepass.gui.navigation.BackButton;
+import com.apex.battlepass.gui.navigation.CloseButton;
+import com.apex.battlepass.gui.util.ItemBuilder;
 import com.apex.economy.ApexsionsEconomy;
 import com.apex.economy.auction.AuctionListing;
 import com.apex.economy.auction.AuctionStatus;
@@ -34,7 +34,7 @@ public class MyAuctionsMenu extends Gui {
 
         // 1. Top Header Info (Slot 0 & Slot 4)
         setButton(0, new GuiButton(new ItemBuilder(Material.BOOK)
-                .name("&e&l[ðŸ’¡] CARA MENJUAL BARANG")
+                .name("&e&l[💡] CARA MENJUAL BARANG")
                 .lore(List.of(
                         "&7Pegang item di tangan utama, lalu ketik:",
                         "&a/ah sell <harga> [rupiah|diamond] [durasi_jam]",
@@ -48,9 +48,9 @@ public class MyAuctionsMenu extends Gui {
                 .lore(List.of(
                         "&7Status barang lelang milik Anda:",
                         " ",
-                        "&aâ— Aktif: &7Klik item untuk ubah harga atau hapus lelang.",
-                        "&câ—‹ Kedaluwarsa: &7Klik item untuk klaim barang kembali.",
-                        "&eâœ” Terjual: &7Saldo otomatis masuk ke dompet Anda."
+                        "&a● Aktif: &7Klik item untuk ubah harga atau hapus lelang.",
+                        "&c○ Kedaluwarsa: &7Klik item untuk klaim barang kembali.",
+                        "&e✔ Terjual: &7Saldo otomatis masuk ke dompet Anda."
                 ))
                 .build()));
 
@@ -88,7 +88,7 @@ public class MyAuctionsMenu extends Gui {
                 lore.add("&a&l[KLIK UNTUK KLAIM BARANG KEMBALI]");
             } else if (listing.getStatus() == AuctionStatus.SOLD) {
                 lore.add("&7Pembeli: &a" + (listing.getBuyerUuid() != null ? "Player" : "Pembeli"));
-                lore.add("&aâœ” Saldo penjualan telah masuk ke dompet Anda.");
+                lore.add("&a✔ Saldo penjualan telah masuk ke dompet Anda.");
             }
 
             ItemStack display = new ItemBuilder(item)
@@ -109,7 +109,7 @@ public class MyAuctionsMenu extends Gui {
         setButton(45, new BackButton(this, parent));
 
         setButton(49, new GuiButton(new ItemBuilder(Material.GOLDEN_HORSE_ARMOR)
-                .name("&a&l[ðŸ›] KEMBALI KE PASAR LELANG")
+                .name("&a&l[🏛] KEMBALI KE PASAR LELANG")
                 .lore(List.of(
                         "&7Buka katalog lelang umum seluruh pemain.",
                         " ",

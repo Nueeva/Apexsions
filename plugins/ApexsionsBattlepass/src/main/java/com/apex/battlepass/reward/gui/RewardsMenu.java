@@ -62,9 +62,10 @@ public class RewardsMenu extends Gui {
                 .name("&6&lSISA WAKTU SEASON")
                 .lore(List.of(
                         "&7Season ends in: &e" + seasonTimeLeft,
-                        "&7Raih level 50 untuk mengklaim seluruh hadiah!"
+                        "&7Raih level " + maxLevel + " untuk mengklaim seluruh hadiah!"
                 ))
                 .build()));
+
 
         // Player Stats Card (Slot 8)
         int reqXp = plugin.getRewardManager().getRequiredXp(data.getLevel());

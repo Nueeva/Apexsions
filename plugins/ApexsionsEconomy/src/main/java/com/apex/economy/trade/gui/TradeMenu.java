@@ -1,97 +1,55 @@
 package com.apex.economy.trade.gui;
 
+import com.apex.battlepass.gui.core.Gui;
+import com.apex.battlepass.gui.core.GuiButton;
+import com.apex.battlepass.gui.util.ItemBuilder;
 import com.apex.economy.ApexsionsEconomy;
-import com.apex.economy.gui.core.Gui;
-import com.apex.economy.gui.core.GuiButton;
-import com.apex.economy.gui.util.ItemBuilder;
 import com.apex.economy.trade.TradeOffer;
 import com.apex.economy.trade.TradeSession;
 import com.apex.economy.util.NumberFormatUtil;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TradeMenu extends Gui {
 
+    public static final int[] MY_OFFER_SLOTS = {10, 11, 12, 19, 20, 21, 28, 29, 30, 37, 38, 39};
+    public static final int[] PARTNER_OFFER_SLOTS = {14, 15, 16, 23, 24, 25, 32, 33, 34, 41, 42, 43};
+    public static final int[] DIVIDER_SLOTS = {4, 13, 22, 31, 40};
+
+    public static final int MY_MONEY_SLOT = 2;
+    public static final int PARTNER_MONEY_SLOT = 6;
+    public static final int MY_CONFIRM_SLOT = 47;
+    public static final int CANCEL_SLOT = 49;
+    public static final int PARTNER_CONFIRM_SLOT = 51;
+
     private final ApexsionsEconomy plugin;
     private final TradeSession session;
-
-    // Slot layout (54 slots, 6 rows)
-    private static final int[] MY_OFFER_SLOTS = {
-            10, 11, 12,
-            19, 20, 21,
-            28, 29, 30,
-            37, 38, 39
-    };
-
-    private static final int[] PARTNER_OFFER_SLOTS = {
-            14, 15, 16,
-            23, 24, 25,
-            32, 33, 34,
-            41, 42, 43
-    };
-
-    private static final int[] CENTER_DIVIDER_SLOTS = {4, 13, 31, 40};
-    private static final int KINGDOM_INFO_SLOT = 22;
-
-    private static final int MY_MONEY_SLOT = 2;
-    private static final int PARTNER_MONEY_SLOT = 6;
-    private static final int MY_CONFIRM_SLOT = 47;
-    private static final int PARTNER_CONFIRM_SLOT = 51;
-    private static final int CANCEL_SLOT = 49;
+    private final Player partner;
 
     public TradeMenu(ApexsionsEconomy plugin, Player player, TradeSession session) {
-        super(null, player, "&8[ &2&lBARTER ITEM & SALDO &8]", 54, null);
+        super(null, player, "&8[ &2&lTRADE: &f" + session.getPartner(player).getName() + " &8]", 54, null);
         this.plugin = plugin;
         this.session = session;
+        this.partner = session.getPartner(player);
     }
 
     @Override
     public void initialize() {
-        fillBorder();
+        fillBackground(Material.BLACK_STAINED_GLASS_PANE);
 
-        Player partner = session.getPartner(player);
-        if (partner == null) return;
-
-        // 1. Center Dividers
-        for (int slot : CENTER_DIVIDER_SLOTS) {
-            setButton(slot, new GuiButton(new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE)
-                    .name("&8|")
+        // 1. Divider in column 4
+        for (int slot : DIVIDER_SLOTS) {
+            setButton(slot, new GuiButton(new ItemBuilder(Material.WHITE_STAINED_GLASS_PANE)
+                    .name("&7| &fPEMISAH TRADE &7|")
                     .lore(List.of(
                             "&7Sisi Kiri: &aTawaran Anda (12 Slot)",
                             "&7Sisi Kanan: &eTawaran " + partner.getName() + " (12 Slot)"
-                    ))
-                    .build(), null));
-        }
-
-        // 1.5 Center Kingdom & Transport Fee Indicator (Slot 22)
-        String myKingdom = plugin.getApexsionsCoreHook().getPlayerKingdom(player.getUniqueId());
-        String partnerKingdom = plugin.getApexsionsCoreHook().getPlayerKingdom(partner.getUniqueId());
-        boolean sameKingdom = plugin.getApexsionsCoreHook().isSameKingdom(player.getUniqueId(), partner.getUniqueId());
-        double transportFee = session.getTransportFee();
-
-        if (sameKingdom) {
-            setButton(KINGDOM_INFO_SLOT, new GuiButton(new ItemBuilder(Material.GOLDEN_HELMET)
-                    .name("&a&l[👑] PERDAGANGAN SESAMA KERAJAAN")
-                    .lore(List.of(
-                            "&7Kerajaan: &6" + (myKingdom.equalsIgnoreCase("NONE") ? "Tanpa Kerajaan" : myKingdom),
-                            "&aBiaya Transportasi: &2GRATIS (Rp 0)",
-                            " ",
-                            "&7Perdagangan dalam satu kerajaan bebas pajak."
-                    ))
-                    .build(), null));
-        } else {
-            setButton(KINGDOM_INFO_SLOT, new GuiButton(new ItemBuilder(Material.MAP)
-                    .name("&e&l[🌐] PERDAGANGAN LINTAS-KERAJAAN")
-                    .lore(List.of(
-                            "&7Kerajaan Anda: &6" + (myKingdom.equalsIgnoreCase("NONE") ? "Tanpa Kerajaan" : myKingdom),
-                            "&7Kerajaan Lawan: &6" + (partnerKingdom.equalsIgnoreCase("NONE") ? "Tanpa Kerajaan" : partnerKingdom),
-                            " ",
-                            "&eBiaya Transportasi: &6Rp " + String.format("%,.0f", transportFee),
-                            "&c(Dipotong dari saldo kedua pemain saat konfirmasi)"
                     ))
                     .build(), null));
         }
@@ -129,6 +87,7 @@ public class TradeMenu extends Gui {
             ItemStack item = (partnerOffer != null) ? partnerOffer.getItem(offerIdx) : null;
 
             if (item != null && item.getType() != Material.AIR) {
+                // View-only button (hoverable to inspect)
                 setButton(slot, new GuiButton(item.clone(), event -> {
                     // Partner items cannot be taken
                 }));
@@ -159,28 +118,23 @@ public class TradeMenu extends Gui {
         } else {
             String formatted = NumberFormatUtil.format(myOffer.getMoneyAmount(), myOffer.getCurrency());
             setButton(MY_MONEY_SLOT, new GuiButton(new ItemBuilder(Material.EMERALD)
-                    .name("&a&lTAWARAN SALDO ANDA: &e" + formatted)
+                    .name("&a&l[✔] KIRIM SALDO: &e" + formatted)
                     .lore(List.of(
                             "&7Mata Uang: &f" + myOffer.getCurrency().getDisplayName(),
                             "&7Nominal: &e" + formatted,
                             " ",
-                            "&eKlik Kiri untuk mengubah jumlah",
-                            "&cKlik Kanan untuk membatalkan tawaran uang"
+                            "&eKlik untuk ubah atau hapus tawaran uang >"
                     ))
                     .build(), event -> {
-                if (event.isRightClick()) {
-                    session.clearMoneyOffer(player);
-                } else {
-                    session.setTemporarilyClosing(true);
-                    new TradeCurrencyEditMenu(plugin, player, session).open();
-                }
+                session.setTemporarilyClosing(true);
+                new TradeCurrencyEditMenu(plugin, player, session).open();
             }));
         }
 
-        // 5. Partner Money Display (Slot 6)
+        // 5. Partner Money Info Display (Slot 6)
         if (partnerOffer == null || partnerOffer.getCurrency() == null || partnerOffer.getMoneyAmount() <= 0) {
-            setButton(PARTNER_MONEY_SLOT, new GuiButton(new ItemBuilder(Material.GRAY_DYE)
-                    .name("&7Tawaran Saldo Lawan: &cTidak Ada")
+            setButton(PARTNER_MONEY_SLOT, new GuiButton(new ItemBuilder(Material.REDSTONE)
+                    .name("&c&lTAWARAN SALDO LAWAN")
                     .lore(List.of(
                             "&7Pemain &e" + partner.getName() + " &7tidak",
                             "&7mengirim saldo atau diamond."
@@ -204,7 +158,6 @@ public class TradeMenu extends Gui {
                     .name("&c&l[✖] STATUS: BELUM KONFIRMASI")
                     .lore(List.of(
                             "&7Periksa barang & saldo yang ditawarkan.",
-                            (transportFee > 0 ? "&eBiaya Transportasi: &6Rp " + String.format("%,.0f", transportFee) : "&aBiaya Transportasi: &2GRATIS"),
                             " ",
                             "&aKlik untuk konfirmasi & menyetujui trade >"
                     ))
@@ -257,17 +210,46 @@ public class TradeMenu extends Gui {
         }));
     }
 
+    public void refreshContents() {
+        if (!player.isOnline()) return;
+        buttons.clear();
+        inventory.clear();
+        initialize();
+        for (var entry : buttons.entrySet()) {
+            if (entry.getKey() >= 0 && entry.getKey() < size && entry.getValue() != null) {
+                inventory.setItem(entry.getKey(), entry.getValue().getItemStack());
+            }
+        }
+    }
+
     @Override
     public void handleBottomInventoryClick(InventoryClickEvent event) {
-        ItemStack clicked = event.getCurrentItem();
-        if (clicked == null || clicked.getType() == Material.AIR) return;
+        ItemStack clickedItem = event.getCurrentItem();
+        if (clickedItem == null || clickedItem.getType() == Material.AIR) return;
 
-        event.setCancelled(true);
-        boolean added = session.addItem(player, clicked);
-        if (added) {
-            event.setCurrentItem(null);
-        } else {
-            player.sendMessage("§cSlot tawaran trade Anda sudah penuh (Maks 12 item)!");
+        TradeOffer myOffer = session.getOffer(player);
+        if (myOffer == null) return;
+
+        if (myOffer.isFull()) {
+            player.sendMessage("§cSlot tawaran trade Anda sudah penuh (maksimal 12 item)!");
+            return;
+        }
+
+        // Move item to trade offer
+        ItemStack itemToAdd = clickedItem.clone();
+        event.setCurrentItem(null);
+        session.addItem(player, itemToAdd);
+    }
+
+
+    @Override
+    public void onInventoryClose(InventoryCloseEvent event) {
+        if (session.isTemporarilyClosing()) {
+            session.setTemporarilyClosing(false);
+            return;
+        }
+        if (session.getState() == TradeSession.TradeState.ACTIVE) {
+            session.cancelTrade(player, "Menu trade ditutup");
         }
     }
 }

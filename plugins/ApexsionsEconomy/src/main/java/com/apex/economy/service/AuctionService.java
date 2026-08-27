@@ -1,6 +1,6 @@
 package com.apex.economy.service;
 
-import com.apex.economy.util.ItemSerializer;
+import com.apex.battlepass.util.ItemSerializer;
 import com.apex.economy.ApexsionsEconomy;
 import com.apex.economy.auction.AuctionListing;
 import com.apex.economy.auction.AuctionStatus;
@@ -71,7 +71,7 @@ public class AuctionService {
         plugin.getRepository().saveAuction(listing);
 
         String itemName = ItemSerializer.getItemDisplayName(item);
-        seller.sendMessage("Â§a[âœ”] Berhasil mendaftarkan Â§e" + itemName + " Â§ake Auction House seharga Â§e" + NumberFormatUtil.format(price, currency) + "Â§a!");
+        seller.sendMessage("§a[✔] Berhasil mendaftarkan §e" + itemName + " §ake Auction House seharga §e" + NumberFormatUtil.format(price, currency) + "§a!");
         return true;
     }
 
@@ -80,24 +80,24 @@ public class AuctionService {
 
         AuctionListing listing = activeAuctions.get(auctionId);
         if (listing == null || listing.getStatus() != AuctionStatus.ACTIVE || listing.isExpired()) {
-            buyer.sendMessage("Â§cBarang lelang ini sudah tidak tersedia atau telah kedaluwarsa!");
+            buyer.sendMessage("§cBarang lelang ini sudah tidak tersedia atau telah kedaluwarsa!");
             return false;
         }
 
         if (buyer.getUniqueId().equals(listing.getSellerUuid())) {
-            buyer.sendMessage("Â§cAnda tidak dapat membeli barang lelang milik Anda sendiri!");
+            buyer.sendMessage("§cAnda tidak dapat membeli barang lelang milik Anda sendiri!");
             return false;
         }
 
         Currency currency = plugin.getCurrencyRegistry().get(listing.getCurrencyId());
         if (currency == null) {
-            buyer.sendMessage("Â§cMata uang untuk transaksi ini tidak dikenali.");
+            buyer.sendMessage("§cMata uang untuk transaksi ini tidak dikenali.");
             return false;
         }
 
         CurrencyService cs = plugin.getCurrencyService();
         if (!cs.has(buyer.getUniqueId(), currency.getId(), listing.getPrice())) {
-            buyer.sendMessage("Â§cSaldo " + currency.getDisplayName() + " Anda tidak mencukupi untuk membeli barang ini!");
+            buyer.sendMessage("§cSaldo " + currency.getDisplayName() + " Anda tidak mencukupi untuk membeli barang ini!");
             return false;
         }
 
@@ -125,12 +125,12 @@ public class AuctionService {
         }
 
         String itemName = item != null ? ItemSerializer.getItemDisplayName(item) : "Item";
-        buyer.sendMessage("Â§a[âœ”] Selamat! Anda berhasil membeli Â§e" + itemName + " Â§aseharga Â§e" + NumberFormatUtil.format(listing.getPrice(), currency) + "Â§a!");
+        buyer.sendMessage("§a[✔] Selamat! Anda berhasil membeli §e" + itemName + " §aseharga §e" + NumberFormatUtil.format(listing.getPrice(), currency) + "§a!");
 
         // Notify seller if online
         Player seller = Bukkit.getPlayer(listing.getSellerUuid());
         if (seller != null && seller.isOnline()) {
-            seller.sendMessage("Â§a[âœ”] Barang lelang Anda (Â§e" + itemName + "Â§a) telah dibeli oleh Â§e" + buyer.getName() + " Â§aseharga Â§e" + NumberFormatUtil.format(listing.getPrice(), currency) + "Â§a!");
+            seller.sendMessage("§a[✔] Barang lelang Anda (§e" + itemName + "§a) telah dibeli oleh §e" + buyer.getName() + " §aseharga §e" + NumberFormatUtil.format(listing.getPrice(), currency) + "§a!");
         }
 
         return true;
@@ -141,12 +141,12 @@ public class AuctionService {
 
         AuctionListing listing = activeAuctions.get(auctionId);
         if (listing == null || listing.getStatus() != AuctionStatus.ACTIVE) {
-            seller.sendMessage("Â§cLelang tidak ditemukan atau sudah tidak aktif!");
+            seller.sendMessage("§cLelang tidak ditemukan atau sudah tidak aktif!");
             return false;
         }
 
         if (!seller.getUniqueId().equals(listing.getSellerUuid())) {
-            seller.sendMessage("Â§cAnda bukan pemilik barang lelang ini!");
+            seller.sendMessage("§cAnda bukan pemilik barang lelang ini!");
             return false;
         }
 
@@ -165,7 +165,7 @@ public class AuctionService {
             }
         }
 
-        seller.sendMessage("Â§a[âœ”] Lelang berhasil dibatalkan dan barang telah dikembalikan ke inventory Anda.");
+        seller.sendMessage("§a[✔] Lelang berhasil dibatalkan dan barang telah dikembalikan ke inventory Anda.");
         return true;
     }
 
@@ -174,12 +174,12 @@ public class AuctionService {
 
         AuctionListing listing = activeAuctions.get(auctionId);
         if (listing == null || listing.getStatus() != AuctionStatus.ACTIVE) {
-            seller.sendMessage("Â§cLelang tidak ditemukan atau sudah tidak aktif!");
+            seller.sendMessage("§cLelang tidak ditemukan atau sudah tidak aktif!");
             return false;
         }
 
         if (!seller.getUniqueId().equals(listing.getSellerUuid())) {
-            seller.sendMessage("Â§cAnda bukan pemilik barang lelang ini!");
+            seller.sendMessage("§cAnda bukan pemilik barang lelang ini!");
             return false;
         }
 
@@ -187,7 +187,7 @@ public class AuctionService {
         plugin.getRepository().saveAuction(listing);
 
         Currency curr = plugin.getCurrencyRegistry().get(listing.getCurrencyId());
-        seller.sendMessage("Â§a[âœ”] Berhasil mengubah harga lelang menjadi Â§e" + NumberFormatUtil.format(newPrice, curr) + "Â§a!");
+        seller.sendMessage("§a[✔] Berhasil mengubah harga lelang menjadi §e" + NumberFormatUtil.format(newPrice, curr) + "§a!");
         return true;
     }
 
@@ -209,7 +209,7 @@ public class AuctionService {
             }
         }
 
-        seller.sendMessage("Â§a[âœ”] Barang lelang kedaluwarsa berhasil diklaim kembali!");
+        seller.sendMessage("§a[✔] Barang lelang kedaluwarsa berhasil diklaim kembali!");
         return true;
     }
 

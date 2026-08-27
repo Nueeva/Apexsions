@@ -140,6 +140,27 @@ public class QuestManager {
         return dailyQuests;
     }
 
+    public Map<String, Quest> getActiveDailyQuests() {
+        if (dailyQuests.size() <= 10) {
+            return dailyQuests;
+        }
+
+        // Deterministic daily selection based on date epoch day
+        java.time.ZoneId zone = plugin.getSeasonManager().getZoneId();
+        long epochDay = java.time.LocalDate.now(zone).toEpochDay();
+        Random random = new Random(epochDay * 31L + 17L);
+
+        List<Quest> allList = new ArrayList<>(dailyQuests.values());
+        Collections.shuffle(allList, random);
+
+        Map<String, Quest> selected = new LinkedHashMap<>();
+        for (int i = 0; i < Math.min(10, allList.size()); i++) {
+            Quest q = allList.get(i);
+            selected.put(q.getId(), q);
+        }
+        return selected;
+    }
+
     public Map<Integer, Map<String, Quest>> getWeeklyQuests() {
         return weeklyQuests;
     }
@@ -156,7 +177,8 @@ public class QuestManager {
         }
 
         if (quest.getCategory() == QuestCategory.DAILY) {
-            return plugin.getSeasonManager().isActive() ? QuestStatus.ACTIVE : QuestStatus.TRANSITION;
+            if (!plugin.getSeasonManager().isActive()) return QuestStatus.TRANSITION;
+            return getActiveDailyQuests().containsKey(quest.getId()) ? QuestStatus.ACTIVE : QuestStatus.LOCKED;
         } else if (quest.getCategory() == QuestCategory.WEEKLY) {
             return periodService.getWeeklyPeriodStatus(quest.getPeriodIndex());
         } else if (quest.getCategory() == QuestCategory.MONTHLY) {
@@ -164,6 +186,7 @@ public class QuestManager {
         }
         return QuestStatus.LOCKED;
     }
+
 
     public void incrementProgress(Player player, QuestObjectiveType type, Object target, int amount) {
         if (!plugin.getSeasonManager().isActive()) return; // Locked outside active season
@@ -286,8 +309,9 @@ public class QuestManager {
     private List<Quest> getActiveQuestsForPlayer(Player player, QuestObjectiveType type) {
         List<Quest> list = new ArrayList<>();
 
-        // Daily
-        for (Quest q : dailyQuests.values()) {
+        // Daily (only today's 10 active daily quests)
+        Map<String, Quest> activeDaily = getActiveDailyQuests();
+        for (Quest q : activeDaily.values()) {
             if (q.getType() == type && periodService.isQuestActive(q)) {
                 list.add(q);
             }
@@ -317,4 +341,5 @@ public class QuestManager {
 
         return list;
     }
+
 }

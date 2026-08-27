@@ -1,8 +1,8 @@
 package com.apex.economy.trade.gui;
 
-import com.apex.economy.gui.core.Gui;
-import com.apex.economy.gui.core.GuiButton;
-import com.apex.economy.gui.util.ItemBuilder;
+import com.apex.battlepass.gui.core.Gui;
+import com.apex.battlepass.gui.core.GuiButton;
+import com.apex.battlepass.gui.util.ItemBuilder;
 import com.apex.economy.ApexsionsEconomy;
 import com.apex.economy.trade.TradeOffer;
 import com.apex.economy.trade.TradeSession;
@@ -51,7 +51,7 @@ public class TradeCurrencyEditMenu extends Gui {
 
         // 2. Change / Re-select Currency & Amount (Slot 11)
         setButton(11, new GuiButton(new ItemBuilder(Material.ANVIL)
-                .name("&e&l[âœ] UBAH JUMLAH / MATA UANG")
+                .name("&e&l[✏] UBAH JUMLAH / MATA UANG")
                 .lore(List.of(
                         "&7Pilih kembali mata uang dan masukkan",
                         "&7nominal baru untuk tawaran ini.",
@@ -66,7 +66,7 @@ public class TradeCurrencyEditMenu extends Gui {
 
         // 3. Remove Money Offer (Slot 15)
         setButton(15, new GuiButton(new ItemBuilder(Material.LAVA_BUCKET)
-                .name("&c&l[âœ–] HAPUS TAWARAN SALDO")
+                .name("&c&l[✖] HAPUS TAWARAN SALDO")
                 .lore(List.of(
                         "&7Batalkan penawaran saldo/diamond ini.",
                         "&7Status konfirmasi akan direset.",
@@ -76,7 +76,7 @@ public class TradeCurrencyEditMenu extends Gui {
                 .build(), event -> {
             navigatingAway = true;
             session.clearMoneyOffer(player);
-            player.sendMessage("Â§e[!] Tawaran saldo telah dihapus.");
+            player.sendMessage("§e[!] Tawaran saldo telah dihapus.");
             session.setTemporarilyClosing(true);
             new TradeMenu(plugin, player, session).open();
         }));

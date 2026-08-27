@@ -1,11 +1,11 @@
 package com.apex.economy.trade.gui;
 
+import com.apex.battlepass.gui.core.Gui;
+import com.apex.battlepass.gui.core.GuiButton;
+import com.apex.battlepass.gui.navigation.BackButton;
+import com.apex.battlepass.gui.navigation.CloseButton;
+import com.apex.battlepass.gui.util.ItemBuilder;
 import com.apex.economy.ApexsionsEconomy;
-import com.apex.economy.gui.core.Gui;
-import com.apex.economy.gui.core.GuiButton;
-import com.apex.economy.gui.navigation.BackButton;
-import com.apex.economy.gui.navigation.CloseButton;
-import com.apex.economy.gui.util.ItemBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -17,7 +17,6 @@ import java.util.List;
 public class TradePlayerSelectMenu extends Gui {
 
     private final ApexsionsEconomy plugin;
-    private boolean globalFilter = false; // Default: Kingdom Only
 
     public TradePlayerSelectMenu(ApexsionsEconomy plugin, Player player, Gui parent) {
         super(null, player, "&8[ &2&lPILIH PEMAIN UNTUK TRADE &8]", 54, parent);
@@ -32,19 +31,14 @@ public class TradePlayerSelectMenu extends Gui {
     public void initialize() {
         fillBorder();
 
-        String myKingdom = plugin.getApexsionsCoreHook().getPlayerKingdom(player.getUniqueId());
-        String myKingdomDisplay = myKingdom.equalsIgnoreCase("NONE") ? "Tanpa Kerajaan" : myKingdom;
-        double transportFee = plugin.getConfig().getDouble("trade.cross-kingdom-transport-fee", 5000.0);
-
         // 1. Info Card (Slot 2)
         setButton(2, new GuiButton(new ItemBuilder(Material.COMPASS)
                 .name("&6&lSistem Barter & Trade")
                 .lore(List.of(
-                        "&7Pilih pemain online untuk barter",
-                        "&7item & uang secara aman dan anti-scam.",
+                        "&7Pilih pemain online untuk mengirim",
+                        "&7permintaan barter item & uang.",
                         " ",
-                        "&7Kerajaan Anda: &6" + myKingdomDisplay,
-                        "&7Biaya Lintas-Kerajaan: &eRp " + String.format("%,.0f", transportFee)
+                        "&aAman, Real-time & Anti-Scam!"
                 ))
                 .build(), null));
 
@@ -83,47 +77,11 @@ public class TradePlayerSelectMenu extends Gui {
             }, this::open);
         }));
 
-        // 4. Kingdom Filter Toggle Button (Slot 8)
-        if (!globalFilter) {
-            setButton(8, new GuiButton(new ItemBuilder(Material.GOLDEN_HELMET)
-                    .name("&6&l[👑] FILTER: SESAMA KERAJAAN")
-                    .lore(List.of(
-                            "&7Menampilkan pemain dari &6" + myKingdomDisplay + "&7.",
-                            "&aBiaya Transportasi: &2GRATIS (Rp 0)",
-                            " ",
-                            "&eKlik untuk beralih ke Mode Global (Semua Kerajaan) >"
-                    ))
-                    .build(), event -> {
-                this.globalFilter = true;
-                open();
-            }));
-        } else {
-            setButton(8, new GuiButton(new ItemBuilder(Material.ENDER_EYE)
-                    .name("&b&l[🌐] FILTER: SEMUA KERAJAAN (GLOBAL)")
-                    .lore(List.of(
-                            "&7Menampilkan pemain dari seluruh kerajaan.",
-                            "&eBiaya Transportasi Lintas-Kerajaan: &6Rp " + String.format("%,.0f", transportFee),
-                            " ",
-                            "&eKlik untuk beralih ke Mode Sesama Kerajaan >"
-                    ))
-                    .build(), event -> {
-                this.globalFilter = false;
-                open();
-            }));
-        }
-
-        // 5. Online Players Grid
-        List<Player> filteredList = new ArrayList<>();
+        // 4. Online Players Grid
+        List<Player> onlineList = new ArrayList<>();
         for (Player p : Bukkit.getOnlinePlayers()) {
             if (!p.getUniqueId().equals(player.getUniqueId())) {
-                if (globalFilter) {
-                    filteredList.add(p);
-                } else {
-                    // Filter to same kingdom only
-                    if (myKingdom.equalsIgnoreCase("NONE") || plugin.getApexsionsCoreHook().isSameKingdom(player.getUniqueId(), p.getUniqueId())) {
-                        filteredList.add(p);
-                    }
-                }
+                onlineList.add(p);
             }
         }
 
@@ -134,25 +92,21 @@ public class TradePlayerSelectMenu extends Gui {
                 37, 38, 39, 40, 41, 42, 43
         };
 
-        if (filteredList.isEmpty()) {
-            String emptyMessage = globalFilter
-                    ? "&7Saat ini tidak ada pemain lain yang online."
-                    : "&7Tidak ada anggota kerajaan &e" + myKingdomDisplay + " &7yang online.\n&eGunakan tombol filter di atas untuk melihat pemain global.";
-
+        if (onlineList.isEmpty()) {
             setButton(22, new GuiButton(new ItemBuilder(Material.BARRIER)
-                    .name("&c&lTIDAK ADA PEMAIN DITEMUKAN")
-                    .lore(List.of(emptyMessage.split("\n")))
+                    .name("&c&lTIDAK ADA PLAYER LAIN ONLINE")
+                    .lore(List.of(
+                            "&7Saat ini tidak ada pemain lain yang sedang online.",
+                            "&7Anda dapat menunggu pemain lain bergabung."
+                    ))
                     .build(), null));
         } else {
             int idx = 0;
-            for (Player target : filteredList) {
+            for (Player target : onlineList) {
                 if (idx >= slots.length) break;
 
                 boolean inTrade = plugin.getTradeManager().isInTrade(target);
                 boolean targetTradeEnabled = plugin.getTradeManager().isTradeEnabled(target.getUniqueId());
-                String targetKingdom = plugin.getApexsionsCoreHook().getPlayerKingdom(target.getUniqueId());
-                String targetKingdomDisplay = targetKingdom.equalsIgnoreCase("NONE") ? "Tanpa Kerajaan" : targetKingdom;
-                boolean sameKingdom = plugin.getApexsionsCoreHook().isSameKingdom(player.getUniqueId(), target.getUniqueId());
 
                 String statusTag;
                 String statusLore;
@@ -172,18 +126,12 @@ public class TradePlayerSelectMenu extends Gui {
                     actionLore = "&aKlik untuk mengirim permintaan trade >";
                 }
 
-                String feeLore = sameKingdom
-                        ? "&aBiaya Transportasi: &2GRATIS (Sesama Kerajaan)"
-                        : "&eBiaya Transportasi: &6Rp " + String.format("%,.0f", transportFee) + " &7(Dibayar saat konfirmasi)";
-
                 ItemStack head = new ItemBuilder(Material.PLAYER_HEAD)
                         .skullOwner(target)
                         .name("&e&l" + target.getName() + " " + statusTag)
                         .lore(List.of(
-                                "&7Kerajaan: &6" + targetKingdomDisplay,
-                                feeLore,
-                                " ",
                                 statusLore,
+                                " ",
                                 actionLore
                         ))
                         .build();
@@ -202,6 +150,7 @@ public class TradePlayerSelectMenu extends Gui {
                 }));
             }
         }
+
 
         // Navigation
         if (parent != null) {

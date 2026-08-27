@@ -46,7 +46,7 @@ public class WeeklyQuestMenu extends Gui {
                 .build()));
 
         Map<String, Quest> wQuests = plugin.getQuestManager().getWeeklyQuests().getOrDefault(weekNumber, Map.of());
-        int[] slots = { 10, 11, 12, 13, 14, 15, 16, 19, 20, 21, 22, 23, 24, 25 };
+        int[] slots = { 11, 12, 13, 14, 15, 20, 21, 22, 23, 24 };
         int idx = 0;
 
         for (Quest quest : wQuests.values()) {
@@ -56,6 +56,7 @@ public class WeeklyQuestMenu extends Gui {
 
         setButton(31, new BackButton(this));
     }
+
 
     private GuiButton createQuestButton(PlayerData data, Quest quest) {
         QuestStatus status = plugin.getQuestManager().getQuestStatus(player, quest);

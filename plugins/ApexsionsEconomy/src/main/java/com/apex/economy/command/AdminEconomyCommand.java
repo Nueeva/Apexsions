@@ -24,12 +24,12 @@ public class AdminEconomyCommand implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!sender.hasPermission("apexsionseconomy.admin") && !sender.hasPermission("apexpassionseconomy.admin")) {
-            sender.sendMessage("Â§cAnda tidak memiliki izin untuk menggunakan perintah ini.");
+            sender.sendMessage("§cAnda tidak memiliki izin untuk menggunakan perintah ini.");
             return true;
         }
 
         if (args.length < 3) {
-            sender.sendMessage("Â§cPenggunaan: /ecoadmin <give|take|set> <player> <amount> [rupiah|diamond]");
+            sender.sendMessage("§cPenggunaan: /ecoadmin <give|take|set> <player> <amount> [rupiah|diamond]");
             return true;
         }
 
@@ -37,7 +37,7 @@ public class AdminEconomyCommand implements CommandExecutor, TabCompleter {
         String targetName = args[1];
         OfflinePlayer target = Bukkit.getOfflinePlayer(targetName);
         if (target.getUniqueId() == null) {
-            sender.sendMessage("Â§cPemain " + targetName + " tidak valid.");
+            sender.sendMessage("§cPemain " + targetName + " tidak valid.");
             return true;
         }
 
@@ -45,31 +45,31 @@ public class AdminEconomyCommand implements CommandExecutor, TabCompleter {
         try {
             amount = NumberFormatUtil.parse(args[2]);
         } catch (Exception e) {
-            sender.sendMessage("Â§cJumlah tidak valid!");
+            sender.sendMessage("§cJumlah tidak valid!");
             return true;
         }
 
         String currId = (args.length >= 4) ? args[3].toLowerCase() : "rupiah";
         Currency currency = plugin.getCurrencyRegistry().get(currId);
         if (currency == null) {
-            sender.sendMessage("Â§cMata uang " + currId + " tidak dikenali!");
+            sender.sendMessage("§cMata uang " + currId + " tidak dikenali!");
             return true;
         }
 
         switch (action) {
             case "give", "add" -> {
                 plugin.getCurrencyService().addBalance(target.getUniqueId(), currency.getId(), amount);
-                sender.sendMessage("Â§aBerhasil memberikan Â§e" + NumberFormatUtil.format(amount, currency) + " Â§akepada Â§e" + targetName);
+                sender.sendMessage("§aBerhasil memberikan §e" + NumberFormatUtil.format(amount, currency) + " §akepada §e" + targetName);
             }
             case "take", "remove" -> {
                 plugin.getCurrencyService().removeBalance(target.getUniqueId(), currency.getId(), amount);
-                sender.sendMessage("Â§cBerhasil mengurangi Â§e" + NumberFormatUtil.format(amount, currency) + " Â§cdari Â§e" + targetName);
+                sender.sendMessage("§cBerhasil mengurangi §e" + NumberFormatUtil.format(amount, currency) + " §cdari §e" + targetName);
             }
             case "set" -> {
                 plugin.getCurrencyService().setBalance(target.getUniqueId(), currency.getId(), amount);
-                sender.sendMessage("Â§aBerhasil menyetel saldo " + currency.getDisplayName() + " Â§e" + targetName + " Â§amenjadi Â§e" + NumberFormatUtil.format(amount, currency));
+                sender.sendMessage("§aBerhasil menyetel saldo " + currency.getDisplayName() + " §e" + targetName + " §amenjadi §e" + NumberFormatUtil.format(amount, currency));
             }
-            default -> sender.sendMessage("Â§cAksi tidak valid! Pilihan: give, take, set.");
+            default -> sender.sendMessage("§cAksi tidak valid! Pilihan: give, take, set.");
         }
 
         return true;

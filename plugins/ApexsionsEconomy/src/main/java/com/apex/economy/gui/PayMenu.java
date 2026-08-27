@@ -1,10 +1,10 @@
 package com.apex.economy.gui;
 
-import com.apex.economy.gui.core.Gui;
-import com.apex.economy.gui.core.GuiButton;
-import com.apex.economy.gui.navigation.BackButton;
-import com.apex.economy.gui.navigation.CloseButton;
-import com.apex.economy.gui.util.ItemBuilder;
+import com.apex.battlepass.gui.core.Gui;
+import com.apex.battlepass.gui.core.GuiButton;
+import com.apex.battlepass.gui.navigation.BackButton;
+import com.apex.battlepass.gui.navigation.CloseButton;
+import com.apex.battlepass.gui.util.ItemBuilder;
 import com.apex.economy.ApexsionsEconomy;
 import com.apex.economy.currency.Currency;
 import com.apex.economy.util.NumberFormatUtil;
@@ -37,7 +37,7 @@ public class PayMenu extends Gui {
 
         if (rupiah != null) {
             setButton(2, new GuiButton(new ItemBuilder(Material.EMERALD)
-                    .name((selectedCurrency == rupiah ? "&a&l[âœ”] " : "&7") + "Transfer Rupiah")
+                    .name((selectedCurrency == rupiah ? "&a&l[✔] " : "&7") + "Transfer Rupiah")
                     .lore(List.of(
                             "&7Saldo Anda: &e" + NumberFormatUtil.format(plugin.getCurrencyService().getBalance(player.getUniqueId(), "rupiah"), rupiah),
                             " ",
@@ -51,7 +51,7 @@ public class PayMenu extends Gui {
 
         if (diamond != null) {
             setButton(3, new GuiButton(new ItemBuilder(Material.DIAMOND)
-                    .name((selectedCurrency == diamond ? "&b&l[âœ”] " : "&7") + "Transfer Diamond")
+                    .name((selectedCurrency == diamond ? "&b&l[✔] " : "&7") + "Transfer Diamond")
                     .lore(List.of(
                             "&7Saldo Anda: &e" + NumberFormatUtil.format(plugin.getCurrencyService().getBalance(player.getUniqueId(), "diamond"), diamond),
                             " ",
@@ -65,7 +65,7 @@ public class PayMenu extends Gui {
 
         // 2. Custom Player Search Button (Slot 6)
         setButton(6, new GuiButton(new ItemBuilder(Material.NAME_TAG)
-                .name("&e&l[ðŸ”] KETIK NAMA PLAYER")
+                .name("&e&l[🔍] KETIK NAMA PLAYER")
                 .lore(List.of(
                         "&7Kirim ke pemain online dengan mengetik nama.",
                         " ",
@@ -75,12 +75,12 @@ public class PayMenu extends Gui {
             plugin.getChatInputManager().startInput(player, "Masukkan nama penerima transfer:", targetName -> {
                 Player target = Bukkit.getPlayer(targetName);
                 if (target == null || !target.isOnline()) {
-                    player.sendMessage("Â§cPemain " + targetName + " tidak ditemukan atau sedang offline!");
+                    player.sendMessage("§cPemain " + targetName + " tidak ditemukan atau sedang offline!");
                     open();
                     return;
                 }
                 if (target.getUniqueId().equals(player.getUniqueId())) {
-                    player.sendMessage("Â§cAnda tidak dapat mentransfer saldo ke diri sendiri!");
+                    player.sendMessage("§cAnda tidak dapat mentransfer saldo ke diri sendiri!");
                     open();
                     return;
                 }
@@ -146,7 +146,7 @@ public class PayMenu extends Gui {
                 plugin.getPayService().transfer(player, target.getUniqueId(), target.getName(), selectedCurrency, amount);
                 if (parent != null) parent.open();
             } catch (NumberFormatException e) {
-                player.sendMessage("Â§cFormat jumlah saldo tidak valid!");
+                player.sendMessage("§cFormat jumlah saldo tidak valid!");
                 open();
             }
         }, this::open);

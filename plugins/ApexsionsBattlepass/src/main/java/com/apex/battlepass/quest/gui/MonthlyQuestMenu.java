@@ -44,7 +44,7 @@ public class MonthlyQuestMenu extends Gui {
                 .build()));
 
         Map<String, Quest> mQuests = plugin.getQuestManager().getMonthlyQuests().getOrDefault(monthNumber, Map.of());
-        int[] slots = { 10, 11, 12, 13, 14, 15, 16, 19, 20, 21, 22, 23, 24, 25 };
+        int[] slots = { 11, 12, 13, 14, 15, 20, 21, 22, 23, 24 };
         int idx = 0;
 
         for (Quest quest : mQuests.values()) {
@@ -54,6 +54,7 @@ public class MonthlyQuestMenu extends Gui {
 
         setButton(31, new BackButton(this));
     }
+
 
     private GuiButton createQuestButton(PlayerData data, Quest quest) {
         QuestStatus status = plugin.getQuestManager().getQuestStatus(player, quest);

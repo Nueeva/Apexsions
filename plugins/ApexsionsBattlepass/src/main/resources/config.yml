@@ -12,10 +12,11 @@ storage:
 
 # Battle Pass Level Settings
 battlepass:
-  max-level: 100
+  max-level: 200
   # xp-mode: FIXED (sama per level) atau CUSTOM (mengikuti list required-xp per level)
-  xp-mode: "CUSTOM"
-  default-required-xp: 1000
+  xp-mode: "FIXED"
+  default-required-xp: 100
+
 
 # Daily Quest & Shop Reset Settings
 resets:

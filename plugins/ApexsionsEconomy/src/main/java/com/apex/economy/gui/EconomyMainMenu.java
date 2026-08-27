@@ -1,9 +1,9 @@
 package com.apex.economy.gui;
 
-import com.apex.economy.gui.core.Gui;
-import com.apex.economy.gui.core.GuiButton;
-import com.apex.economy.gui.navigation.CloseButton;
-import com.apex.economy.gui.util.ItemBuilder;
+import com.apex.battlepass.gui.core.Gui;
+import com.apex.battlepass.gui.core.GuiButton;
+import com.apex.battlepass.gui.navigation.CloseButton;
+import com.apex.battlepass.gui.util.ItemBuilder;
 import com.apex.economy.ApexsionsEconomy;
 import com.apex.economy.currency.Currency;
 import com.apex.economy.util.NumberFormatUtil;
@@ -58,7 +58,7 @@ public class EconomyMainMenu extends Gui {
 
         // 2. Pay Button (Slot 19)
         setButton(19, new GuiButton(new ItemBuilder(Material.GOLD_INGOT)
-                .name("&e&l[ðŸ’¸] KIRIM UANG (PAY)")
+                .name("&e&l[💸] KIRIM UANG (PAY)")
                 .lore(List.of(
                         "&7Transfer saldo Rupiah atau Diamond",
                         "&7secara instan ke sesama pemain.",
@@ -71,7 +71,7 @@ public class EconomyMainMenu extends Gui {
 
         // 3. Trade Button (Slot 21)
         setButton(21, new GuiButton(new ItemBuilder(Material.EMERALD)
-                .name("&a&l[ðŸ¤] SISTEM TRADE & BARTER")
+                .name("&a&l[🤝] SISTEM TRADE & BARTER")
                 .lore(List.of(
                         "&7Tukar item dan saldo secara aman",
                         "&7dan real-time dengan pemain lain.",
@@ -84,7 +84,7 @@ public class EconomyMainMenu extends Gui {
 
         // 4. Leaderboard Button (Slot 23)
         setButton(23, new GuiButton(new ItemBuilder(Material.NETHER_STAR)
-                .name("&6&l[ðŸ†] LEADERBOARD KEKAYAAN")
+                .name("&6&l[🏆] LEADERBOARD KEKAYAAN")
                 .lore(List.of(
                         "&7Lihat daftar pemain terkaya di server",
                         "&7untuk Rupiah dan Diamond.",
@@ -97,7 +97,7 @@ public class EconomyMainMenu extends Gui {
 
         // 5. Auction House Button (Slot 25)
         setButton(25, new GuiButton(new ItemBuilder(Material.GOLDEN_HORSE_ARMOR)
-                .name("&b&l[ðŸ›] AUCTION HOUSE (LELANG)")
+                .name("&b&l[🏛] AUCTION HOUSE (LELANG)")
                 .lore(List.of(
                         "&7Pasar lelang aman antar pemain.",
                         "&7Jual dan beli barang langka menggunakan",

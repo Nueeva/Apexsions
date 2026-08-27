@@ -1,11 +1,12 @@
 package com.apex.economy.gui;
 
-import com.apex.economy.gui.core.Gui;
-import com.apex.economy.gui.core.GuiButton;
-import com.apex.economy.gui.navigation.BackButton;
-import com.apex.economy.gui.navigation.CloseButton;
-import com.apex.economy.gui.util.ItemBuilder;
-import com.apex.economy.util.ItemSerializer;
+import com.apex.battlepass.admin.gui.AdminConfirmMenu;
+import com.apex.battlepass.gui.core.Gui;
+import com.apex.battlepass.gui.core.GuiButton;
+import com.apex.battlepass.gui.navigation.BackButton;
+import com.apex.battlepass.gui.navigation.CloseButton;
+import com.apex.battlepass.gui.util.ItemBuilder;
+import com.apex.battlepass.util.ItemSerializer;
 import com.apex.economy.ApexsionsEconomy;
 import com.apex.economy.auction.AuctionListing;
 import com.apex.economy.currency.Currency;
@@ -83,7 +84,7 @@ public class AuctionBrowseMenu extends Gui {
                 .build()));
 
         setButton(4, new GuiButton(new ItemBuilder(Material.BOOK)
-                .name("&e&l[ðŸ’¡] CARA MENJUAL BARANG")
+                .name("&e&l[💡] CARA MENJUAL BARANG")
                 .lore(List.of(
                         "&7Pegang item di tangan utama, lalu gunakan command:",
                         "&a/ah sell <harga> [rupiah|diamond] [durasi_jam]",
@@ -95,7 +96,7 @@ public class AuctionBrowseMenu extends Gui {
 
         // 2. Search Filter (Slot 7)
         setButton(7, new GuiButton(new ItemBuilder(Material.NAME_TAG)
-                .name("&e&l[ðŸ”] CARI ITEM")
+                .name("&e&l[🔍] CARI ITEM")
                 .lore(List.of(
                         "&7Filter lelang berdasarkan nama barang.",
                         " ",
@@ -174,7 +175,7 @@ public class AuctionBrowseMenu extends Gui {
         setButton(45, new BackButton(this, parent));
 
         if (validPage > 1) {
-            setButton(47, new GuiButton(new ItemBuilder(Material.ARROW).name("&eâ—€ Halaman Sebelumnya (" + (validPage - 1) + ")").build(), event -> {
+            setButton(47, new GuiButton(new ItemBuilder(Material.ARROW).name("&e◀ Halaman Sebelumnya (" + (validPage - 1) + ")").build(), event -> {
                 new AuctionBrowseMenu(plugin, player, parent, validPage - 1, sortMode, filter).open();
             }));
         }
@@ -183,7 +184,7 @@ public class AuctionBrowseMenu extends Gui {
 
         // Bottom Center: My Auctions Management Button (Slot 49)
         setButton(49, new GuiButton(new ItemBuilder(Material.CHEST)
-                .name("&b&l[ðŸ“¦] LELANG SAYA & PENGELOLAAN")
+                .name("&b&l[📦] LELANG SAYA & PENGELOLAAN")
                 .lore(List.of(
                         "&7Kelola barang yang sedang Anda jual,",
                         "&7ubah harga, batalkan lelang, atau klaim barang.",
@@ -195,7 +196,7 @@ public class AuctionBrowseMenu extends Gui {
         }));
 
         if (validPage < maxPages) {
-            setButton(51, new GuiButton(new ItemBuilder(Material.ARROW).name("&eHalaman Berikutnya (" + (validPage + 1) + ") â–¶").build(), event -> {
+            setButton(51, new GuiButton(new ItemBuilder(Material.ARROW).name("&eHalaman Berikutnya (" + (validPage + 1) + ") ▶").build(), event -> {
                 new AuctionBrowseMenu(plugin, player, parent, validPage + 1, sortMode, filter).open();
             }));
         }

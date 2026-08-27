@@ -20,23 +20,23 @@ public class PayService {
         if (sender == null || receiverUuid == null || currency == null) return false;
 
         if (sender.getUniqueId().equals(receiverUuid)) {
-            sender.sendMessage("Â§cAnda tidak dapat mentransfer saldo ke diri sendiri!");
+            sender.sendMessage("§cAnda tidak dapat mentransfer saldo ke diri sendiri!");
             return false;
         }
 
         if (amount <= 0 || Double.isNaN(amount) || Double.isInfinite(amount)) {
-            sender.sendMessage("Â§cJumlah transfer tidak valid!");
+            sender.sendMessage("§cJumlah transfer tidak valid!");
             return false;
         }
 
         if (!currency.isTransferable()) {
-            sender.sendMessage("Â§cMata uang " + currency.getDisplayName() + " tidak dapat ditransfer antar pemain!");
+            sender.sendMessage("§cMata uang " + currency.getDisplayName() + " tidak dapat ditransfer antar pemain!");
             return false;
         }
 
         CurrencyService cs = plugin.getCurrencyService();
         if (!cs.has(sender.getUniqueId(), currency.getId(), amount)) {
-            sender.sendMessage("Â§cSaldo " + currency.getDisplayName() + " Anda tidak mencukupi untuk mentransfer sejumlah itu!");
+            sender.sendMessage("§cSaldo " + currency.getDisplayName() + " Anda tidak mencukupi untuk mentransfer sejumlah itu!");
             return false;
         }
 
@@ -47,12 +47,12 @@ public class PayService {
         String formatted = NumberFormatUtil.format(amount, currency);
 
         // Sender notification
-        sender.sendMessage("Â§a[âœ”] Berhasil mentransfer Â§e" + formatted + " Â§akepada Â§e" + receiverName + "Â§a.");
+        sender.sendMessage("§a[✔] Berhasil mentransfer §e" + formatted + " §akepada §e" + receiverName + "§a.");
 
         // Receiver notification if online
         Player targetPlayer = Bukkit.getPlayer(receiverUuid);
         if (targetPlayer != null && targetPlayer.isOnline()) {
-            targetPlayer.sendMessage("Â§a[âœ”] Anda menerima kiriman saldo Â§e" + formatted + " Â§adari Â§e" + sender.getName() + "Â§a.");
+            targetPlayer.sendMessage("§a[✔] Anda menerima kiriman saldo §e" + formatted + " §adari §e" + sender.getName() + "§a.");
         }
 
         return true;

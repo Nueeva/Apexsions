@@ -1,219 +1,1090 @@
-weeks:
+﻿weeks:
   1:
-    weekly_diamond_miner_w1:
-      name: "&bKolektor Diamond Week 1"
-      description: "Tambang 20 Diamond Ore di dasar goa."
-      type: "MINE_BLOCK"
-      target-block: "DIAMOND_ORE"
-      target-amount: 20
-      reward-xp: 1200
-      reward-coins: 200
+    w1_mine_stone:
+      name: "Ekskavasi Batu Besar [W1]"
+      description: "Tambang 256 Stone block."
+      type: "BREAK_BLOCK"
+      target-block: "STONE"
+      target-amount: 256
+      reward-xp: 175
+      reward-coins: 12
 
-    weekly_zombie_crusher_w1:
-      name: "&aPembantai Zombie Week 1"
-      description: "Bunuh 80 Zombie selama seminggu."
-      type: "KILL_ENTITY"
-      target-entity: "ZOMBIE"
-      target-amount: 80
-      reward-xp: 1000
-      reward-coins: 180
-
-    weekly_farm_master_w1:
-      name: "&eLumbung Pangan Week 1"
-      description: "Panen 200 tanaman pangan di ladang."
-      type: "HARVEST_CROPS"
-      target-amount: 200
-      reward-xp: 1100
-      reward-coins: 190
-
-    weekly_deepslate_mason_w1:
-      name: "&8Ahli Deepslate Week 1"
-      description: "Tambang 350 blok Deepslate."
+    w1_mine_deepslate:
+      name: "Penggalian Bawah Tanah [W1]"
+      description: "Tambang 150 Deepslate di kedalaman."
       type: "MINE_BLOCK"
       target-block: "DEEPSLATE"
-      target-amount: 350
-      reward-xp: 1300
-      reward-coins: 220
+      target-amount: 150
+      reward-xp: 200
+      reward-coins: 13
 
-    weekly_iron_smelter_w1:
-      name: "&fPabrik Besi Week 1"
-      description: "Lebur 128 Iron Ingot."
-      type: "SMELT_ITEM"
-      target-item: "IRON_INGOT"
-      target-amount: 128
-      reward-xp: 1200
-      reward-coins: 200
+    w1_mine_coal:
+      name: "Tambang Batubara Mingguan [W1]"
+      description: "Tambang 80 Coal Ore."
+      type: "MINE_BLOCK"
+      target-block: "COAL_ORE"
+      target-amount: 80
+      reward-xp: 250
+      reward-coins: 14
 
-  2:
-    weekly_nether_explorer_w2:
-      name: "&4Penjelajah Nether Week 2"
-      description: "Bunuh 40 Blaze di Nether Fortress."
-      type: "KILL_ENTITY"
-      target-entity: "BLAZE"
-      target-amount: 40
-      reward-xp: 1500
-      reward-coins: 250
+    w1_mine_iron:
+      name: "Peleburan Logam Besi [W1]"
+      description: "Tambang 60 Iron Ore."
+      type: "MINE_BLOCK"
+      target-block: "IRON_ORE"
+      target-amount: 60
+      reward-xp: 300
+      reward-coins: 15
 
-    weekly_master_fisher_w2:
-      name: "&bNelayan Ulung Week 2"
-      description: "Tangkap 50 ikan langka dari lautan."
-      type: "FISH"
-      target-amount: 50
-      reward-xp: 1300
-      reward-coins: 220
+    w1_mine_copper:
+      name: "Kolektor Tembaga [W1]"
+      description: "Tambang 64 Copper Ore."
+      type: "MINE_BLOCK"
+      target-block: "COPPER_ORE"
+      target-amount: 64
+      reward-xp: 175
+      reward-coins: 16
 
-    weekly_builder_bricks_w2:
-      name: "&6Arsitek Hebat Week 2"
-      description: "Pasang 300 Stone Bricks."
-      type: "PLACE_BLOCK"
-      target-block: "STONE_BRICKS"
-      target-amount: 300
-      reward-xp: 1400
-      reward-coins: 230
-
-    weekly_gold_hunter_w2:
-      name: "&ePemburu Emas Week 2"
-      description: "Tambang 64 Gold Ore."
+    w1_mine_gold:
+      name: "Demam Emas [W1]"
+      description: "Tambang 40 Gold Ore."
       type: "MINE_BLOCK"
       target-block: "GOLD_ORE"
-      target-amount: 64
-      reward-xp: 1300
-      reward-coins: 220
-
-    weekly_animal_rancher_w2:
-      name: "&dPeternak Unggul Week 2"
-      description: "Kembangbiakkan 40 pasang hewan ternak."
-      type: "BREED_ANIMALS"
       target-amount: 40
-      reward-xp: 1200
-      reward-coins: 200
+      reward-xp: 200
+      reward-coins: 17
 
-  3:
-    weekly_enderman_slayer_w3:
-      name: "&5Pemburu Enderman Week 3"
-      description: "Kalahkan 35 Enderman."
-      type: "KILL_ENTITY"
-      target-entity: "ENDERMAN"
-      target-amount: 35
-      reward-xp: 1600
-      reward-coins: 280
-
-    weekly_ancient_debris_w3:
-      name: "&4Pencari Debris Week 3"
-      description: "Tambang 8 Ancient Debris di Nether."
-      type: "MINE_BLOCK"
-      target-block: "ANCIENT_DEBRIS"
-      target-amount: 8
-      reward-xp: 1800
-      reward-coins: 300
-
-    weekly_enchanter_w3:
-      name: "&dAhli Sihir Week 3"
-      description: "Enchant 20 item pada Enchanting Table."
-      type: "ENCHANT_ITEM"
-      target-amount: 20
-      reward-xp: 1500
-      reward-coins: 260
-
-    weekly_obsidian_miner_w3:
-      name: "&5Penambang Obsidian Week 3"
-      description: "Tambang 40 Obsidian keras."
-      type: "MINE_BLOCK"
-      target-block: "OBSIDIAN"
-      target-amount: 40
-      reward-xp: 1400
-      reward-coins: 240
-
-    weekly_piglin_slayer_w3:
-      name: "&6Prajurit Nether Week 3"
-      description: "Kalahkan 50 Zombified Piglin."
-      type: "KILL_ENTITY"
-      target-entity: "ZOMBIFIED_PIGLIN"
-      target-amount: 50
-      reward-xp: 1300
-      reward-coins: 220
-
-  4:
-    weekly_wither_slayer_w4:
-      name: "&8Pembantai Wither Skeleton Week 4"
-      description: "Bunuh 40 Wither Skeleton."
-      type: "KILL_ENTITY"
-      target-entity: "WITHER_SKELETON"
-      target-amount: 40
-      reward-xp: 1800
-      reward-coins: 320
-
-    weekly_exp_master_w4:
-      name: "&aMaster Pengalaman Week 4"
-      description: "Kumpulkan 1500 EXP Points."
-      type: "EXP_GAIN"
-      target-amount: 1500
-      reward-xp: 1700
-      reward-coins: 300
-
-    weekly_lapis_miner_w4:
-      name: "&9Pencari Lapis Week 4"
-      description: "Tambang 80 Lapis Lazuli Ore."
+    w1_mine_lapis:
+      name: "Peneliti Enchanting [W1]"
+      description: "Tambang 36 Lapis Ore."
       type: "MINE_BLOCK"
       target-block: "LAPIS_ORE"
-      target-amount: 80
-      reward-xp: 1400
-      reward-coins: 250
+      target-amount: 36
+      reward-xp: 250
+      reward-coins: 18
 
-    weekly_creeper_hunter_w4:
-      name: "&2Pemburu Peledak Week 4"
-      description: "Kalahkan 50 Creeper berbahaya."
+    w1_mine_redstone:
+      name: "Ahli Mekanisme [W1]"
+      description: "Tambang 48 Redstone Ore."
+      type: "MINE_BLOCK"
+      target-block: "REDSTONE_ORE"
+      target-amount: 48
+      reward-xp: 300
+      reward-coins: 12
+
+    w1_mine_diamond:
+      name: "Perburuan Berlian [W1]"
+      description: "Tambang 12 Diamond Ore."
+      type: "MINE_BLOCK"
+      target-block: "DIAMOND_ORE"
+      target-amount: 12
+      reward-xp: 175
+      reward-coins: 13
+
+    w1_mine_obsidian:
+      name: "Pertahanan Kokoh [W1]"
+      description: "Tambang 24 Obsidian."
+      type: "MINE_BLOCK"
+      target-block: "OBSIDIAN"
+      target-amount: 24
+      reward-xp: 200
+      reward-coins: 14
+
+  2:
+    w2_mine_netherrack:
+      name: "Jelajah Neraka [W2]"
+      description: "Hancurkan 200 Netherrack."
+      type: "BREAK_BLOCK"
+      target-block: "NETHERRACK"
+      target-amount: 200
+      reward-xp: 250
+      reward-coins: 15
+
+    w2_mine_quartz:
+      name: "Kristal Neraka [W2]"
+      description: "Tambang 50 Nether Quartz Ore."
+      type: "MINE_BLOCK"
+      target-block: "NETHER_QUARTZ_ORE"
+      target-amount: 50
+      reward-xp: 300
+      reward-coins: 16
+
+    w2_mine_ancient_debris:
+      name: "Pencari Logam Kuno [W2]"
+      description: "Tambang 4 Ancient Debris."
+      type: "MINE_BLOCK"
+      target-block: "ANCIENT_DEBRIS"
+      target-amount: 4
+      reward-xp: 175
+      reward-coins: 17
+
+    w2_mine_amethyst:
+      name: "Penambang Amethyst [W2]"
+      description: "Tambang 32 Amethyst Block."
+      type: "MINE_BLOCK"
+      target-block: "AMETHYST_BLOCK"
+      target-amount: 32
+      reward-xp: 200
+      reward-coins: 18
+
+    w2_mine_tuff:
+      name: "Penggali Batuan Tuff [W2]"
+      description: "Hancurkan 100 Tuff."
+      type: "BREAK_BLOCK"
+      target-block: "TUFF"
+      target-amount: 100
+      reward-xp: 250
+      reward-coins: 12
+
+    w2_mine_diorite:
+      name: "Penggali Diorite [W2]"
+      description: "Hancurkan 80 Diorite."
+      type: "BREAK_BLOCK"
+      target-block: "DIORITE"
+      target-amount: 80
+      reward-xp: 300
+      reward-coins: 13
+
+    w2_mine_granite:
+      name: "Penggali Granite [W2]"
+      description: "Hancurkan 80 Granite."
+      type: "BREAK_BLOCK"
+      target-block: "GRANITE"
+      target-amount: 80
+      reward-xp: 175
+      reward-coins: 14
+
+    w2_mine_andesite:
+      name: "Penggali Andesite [W2]"
+      description: "Hancurkan 80 Andesite."
+      type: "BREAK_BLOCK"
+      target-block: "ANDESITE"
+      target-amount: 80
+      reward-xp: 200
+      reward-coins: 15
+
+    w2_mine_blackstone:
+      name: "Batu Hitam Nether [W2]"
+      description: "Hancurkan 100 Blackstone."
+      type: "BREAK_BLOCK"
+      target-block: "BLACKSTONE"
+      target-amount: 100
+      reward-xp: 250
+      reward-coins: 16
+
+    w2_mine_basalt:
+      name: "Pilar Basalt [W2]"
+      description: "Hancurkan 80 Basalt."
+      type: "BREAK_BLOCK"
+      target-block: "BASALT"
+      target-amount: 80
+      reward-xp: 300
+      reward-coins: 17
+
+  3:
+    w3_wood_oak:
+      name: "Penebang Hutan Oak [W3]"
+      description: "Tebang 100 Oak Log."
+      type: "BREAK_BLOCK"
+      target-block: "OAK_LOG"
+      target-amount: 100
+      reward-xp: 175
+      reward-coins: 18
+
+    w3_wood_birch:
+      name: "Penebang Hutan Birch [W3]"
+      description: "Tebang 100 Birch Log."
+      type: "BREAK_BLOCK"
+      target-block: "BIRCH_LOG"
+      target-amount: 100
+      reward-xp: 200
+      reward-coins: 12
+
+    w3_wood_spruce:
+      name: "Penebang Hutan Spruce [W3]"
+      description: "Tebang 100 Spruce Log."
+      type: "BREAK_BLOCK"
+      target-block: "SPRUCE_LOG"
+      target-amount: 100
+      reward-xp: 250
+      reward-coins: 13
+
+    w3_wood_jungle:
+      name: "Penebang Hutan Jungle [W3]"
+      description: "Tebang 100 Jungle Log."
+      type: "BREAK_BLOCK"
+      target-block: "JUNGLE_LOG"
+      target-amount: 100
+      reward-xp: 300
+      reward-coins: 14
+
+    w3_wood_acacia:
+      name: "Penebang Hutan Acacia [W3]"
+      description: "Tebang 100 Acacia Log."
+      type: "BREAK_BLOCK"
+      target-block: "ACACIA_LOG"
+      target-amount: 100
+      reward-xp: 175
+      reward-coins: 15
+
+    w3_wood_dark_oak:
+      name: "Penebang Hutan Dark Oak [W3]"
+      description: "Tebang 100 Dark Oak Log."
+      type: "BREAK_BLOCK"
+      target-block: "DARK_OAK_LOG"
+      target-amount: 100
+      reward-xp: 200
+      reward-coins: 16
+
+    w3_wood_mangrove:
+      name: "Penebang Mangrove Rawa [W3]"
+      description: "Tebang 100 Mangrove Log."
+      type: "BREAK_BLOCK"
+      target-block: "MANGROVE_LOG"
+      target-amount: 100
+      reward-xp: 250
+      reward-coins: 17
+
+    w3_wood_cherry:
+      name: "Penebang Bunga Sakura [W3]"
+      description: "Tebang 100 Cherry Log."
+      type: "BREAK_BLOCK"
+      target-block: "CHERRY_LOG"
+      target-amount: 100
+      reward-xp: 300
+      reward-coins: 18
+
+    w3_wood_crimson:
+      name: "Penebang Jamur Crimson [W3]"
+      description: "Tebang 80 Crimson Stem."
+      type: "BREAK_BLOCK"
+      target-block: "CRIMSON_STEM"
+      target-amount: 80
+      reward-xp: 175
+      reward-coins: 12
+
+    w3_wood_warped:
+      name: "Penebang Jamur Warped [W3]"
+      description: "Tebang 80 Warped Stem."
+      type: "BREAK_BLOCK"
+      target-block: "WARPED_STEM"
+      target-amount: 80
+      reward-xp: 200
+      reward-coins: 13
+
+  4:
+    w4_kill_zombie:
+      name: "Pemberantas Wabah Zombie [W4]"
+      description: "Basmi 50 Zombie."
+      type: "KILL_ENTITY"
+      target-entity: "ZOMBIE"
+      target-amount: 50
+      reward-xp: 250
+      reward-coins: 14
+
+    w4_kill_skeleton:
+      name: "Penembak Jitu Skeleton [W4]"
+      description: "Basmi 40 Skeleton."
+      type: "KILL_ENTITY"
+      target-entity: "SKELETON"
+      target-amount: 40
+      reward-xp: 300
+      reward-coins: 15
+
+    w4_kill_spider:
+      name: "Sarang Laba-laba [W4]"
+      description: "Kalahkan 40 Spider."
+      type: "KILL_ENTITY"
+      target-entity: "SPIDER"
+      target-amount: 40
+      reward-xp: 175
+      reward-coins: 16
+
+    w4_kill_cave_spider:
+      name: "Pembersih Tambang Laba-laba [W4]"
+      description: "Kalahkan 20 Cave Spider."
+      type: "KILL_ENTITY"
+      target-entity: "CAVE_SPIDER"
+      target-amount: 20
+      reward-xp: 200
+      reward-coins: 17
+
+    w4_kill_creeper:
+      name: "Ahli Penjinak Peledak [W4]"
+      description: "Kalahkan 25 Creeper."
       type: "KILL_ENTITY"
       target-entity: "CREEPER"
-      target-amount: 50
-      reward-xp: 1600
-      reward-coins: 280
+      target-amount: 25
+      reward-xp: 250
+      reward-coins: 18
 
-    weekly_food_feast_w4:
-      name: "&cPesta Makanan Week 4"
-      description: "Konsumsi 64 makanan."
-      type: "CONSUME_FOOD"
-      target-amount: 64
-      reward-xp: 1200
-      reward-coins: 200
+    w4_kill_enderman:
+      name: "Pemburu Mata Ender [W4]"
+      description: "Kalahkan 15 Enderman."
+      type: "KILL_ENTITY"
+      target-entity: "ENDERMAN"
+      target-amount: 15
+      reward-xp: 300
+      reward-coins: 12
+
+    w4_kill_drowned:
+      name: "Penjaga Kedalaman Air [W4]"
+      description: "Kalahkan 30 Drowned."
+      type: "KILL_ENTITY"
+      target-entity: "DROWNED"
+      target-amount: 30
+      reward-xp: 175
+      reward-coins: 13
+
+    w4_kill_husk:
+      name: "Penjaga Gurun [W4]"
+      description: "Kalahkan 30 Husk."
+      type: "KILL_ENTITY"
+      target-entity: "HUSK"
+      target-amount: 30
+      reward-xp: 200
+      reward-coins: 14
+
+    w4_kill_stray:
+      name: "Penjaga Salju [W4]"
+      description: "Kalahkan 25 Stray."
+      type: "KILL_ENTITY"
+      target-entity: "STRAY"
+      target-amount: 25
+      reward-xp: 250
+      reward-coins: 15
+
+    w4_kill_witch:
+      name: "Pemburu Ramuan Jahat [W4]"
+      description: "Kalahkan 10 Witch."
+      type: "KILL_ENTITY"
+      target-entity: "WITCH"
+      target-amount: 10
+      reward-xp: 300
+      reward-coins: 16
 
   5:
-    special_week_mob_rush:
-      name: "&6[Special Week] Mob Rush"
-      description: "Kalahkan 50 Hostile Mob apa saja di sisa hari bulan ini."
+    w5_kill_slime:
+      name: "Pemberantas Slime Hijau [W5]"
+      description: "Kalahkan 30 Slime."
       type: "KILL_ENTITY"
-      target-amount: 50
-      reward-xp: 1200
-      reward-coins: 200
+      target-entity: "SLIME"
+      target-amount: 30
+      reward-xp: 175
+      reward-coins: 17
 
-    special_week_speed_miner:
-      name: "&e[Special Week] Speed Miner"
-      description: "Tambang 180 Stone / Deepslate sebelum bulan berganti."
-      type: "MINE_BLOCK"
-      target-amount: 180
-      reward-xp: 1100
-      reward-coins: 180
-
-    special_week_quick_harvest:
-      name: "&a[Special Week] Quick Harvest"
-      description: "Panen 100 tanaman ladang."
-      type: "HARVEST_CROPS"
-      target-amount: 100
-      reward-xp: 1000
-      reward-coins: 170
-
-    special_week_rapid_smelt:
-      name: "&4[Special Week] Rapid Smelter"
-      description: "Lebur 64 item/ore di tungku peleburan."
-      type: "SMELT_ITEM"
-      target-amount: 64
-      reward-xp: 1000
-      reward-coins: 170
-
-    special_week_angler:
-      name: "&b[Special Week] Bonus Fishing"
-      description: "Tangkap 25 ikan di sisa periode minggu ini."
-      type: "FISH"
+    w5_kill_magma_cube:
+      name: "Pemberantas Magma Cube [W5]"
+      description: "Kalahkan 25 Magma Cube."
+      type: "KILL_ENTITY"
+      target-entity: "MAGMA_CUBE"
       target-amount: 25
-      reward-xp: 1100
-      reward-coins: 180
+      reward-xp: 200
+      reward-coins: 18
+
+    w5_kill_blaze:
+      name: "Pemadam Api Neraka [W5]"
+      description: "Kalahkan 20 Blaze."
+      type: "KILL_ENTITY"
+      target-entity: "BLAZE"
+      target-amount: 20
+      reward-xp: 250
+      reward-coins: 12
+
+    w5_kill_wither_skeleton:
+      name: "Pemburu Kepala Hitam [W5]"
+      description: "Kalahkan 15 Wither Skeleton."
+      type: "KILL_ENTITY"
+      target-entity: "WITHER_SKELETON"
+      target-amount: 15
+      reward-xp: 300
+      reward-coins: 13
+
+    w5_kill_piglin:
+      name: "Pertempuran Bastion [W5]"
+      description: "Kalahkan 30 Piglin."
+      type: "KILL_ENTITY"
+      target-entity: "PIGLIN"
+      target-amount: 30
+      reward-xp: 175
+      reward-coins: 14
+
+    w5_kill_zombified_piglin:
+      name: "Penjaga Piglin Zombie [W5]"
+      description: "Kalahkan 35 Zombified Piglin."
+      type: "KILL_ENTITY"
+      target-entity: "ZOMBIFIED_PIGLIN"
+      target-amount: 35
+      reward-xp: 200
+      reward-coins: 15
+
+    w5_kill_hoglin:
+      name: "Pemburu Monster Hoglin [W5]"
+      description: "Kalahkan 15 Hoglin."
+      type: "KILL_ENTITY"
+      target-entity: "HOGLIN"
+      target-amount: 15
+      reward-xp: 250
+      reward-coins: 16
+
+    w5_kill_ghast:
+      name: "Penembak Hantu Api [W5]"
+      description: "Kalahkan 8 Ghast."
+      type: "KILL_ENTITY"
+      target-entity: "GHAST"
+      target-amount: 8
+      reward-xp: 300
+      reward-coins: 17
+
+    w5_kill_phantom:
+      name: "Penjaga Langit Malam [W5]"
+      description: "Kalahkan 12 Phantom."
+      type: "KILL_ENTITY"
+      target-entity: "PHANTOM"
+      target-amount: 12
+      reward-xp: 175
+      reward-coins: 18
+
+    w5_kill_pillager:
+      name: "Penyelamat Desa Outpost [W5]"
+      description: "Kalahkan 20 Pillager."
+      type: "KILL_ENTITY"
+      target-entity: "PILLAGER"
+      target-amount: 20
+      reward-xp: 200
+      reward-coins: 12
+
+  6:
+    w6_kill_vindicator:
+      name: "Duel Kapak Vindicator [W6]"
+      description: "Kalahkan 10 Vindicator."
+      type: "KILL_ENTITY"
+      target-entity: "VINDICATOR"
+      target-amount: 10
+      reward-xp: 250
+      reward-coins: 13
+
+    w6_kill_ravager:
+      name: "Penakluk Monster Ravager [W6]"
+      description: "Kalahkan 3 Ravager."
+      type: "KILL_ENTITY"
+      target-entity: "RAVAGER"
+      target-amount: 3
+      reward-xp: 300
+      reward-coins: 14
+
+    w6_kill_guardian:
+      name: "Penjelajah Monumen Laut [W6]"
+      description: "Kalahkan 15 Guardian."
+      type: "KILL_ENTITY"
+      target-entity: "GUARDIAN"
+      target-amount: 15
+      reward-xp: 175
+      reward-coins: 15
+
+    w6_kill_player:
+      name: "Gladiator Arena PvP [W6]"
+      description: "Kalahkan 5 Pemain dalam duel."
+      type: "KILL_PLAYER"
+      target-amount: 5
+      reward-xp: 200
+      reward-coins: 16
+
+    w6_harvest_wheat:
+      name: "Panen Raya Gandum [W6]"
+      description: "Panen 120 tanaman Wheat matang."
+      type: "HARVEST_CROPS"
+      target-block: "WHEAT"
+      target-amount: 120
+      reward-xp: 250
+      reward-coins: 17
+
+    w6_harvest_carrots:
+      name: "Panen Kebun Wortel [W6]"
+      description: "Panen 120 tanaman Carrots matang."
+      type: "HARVEST_CROPS"
+      target-block: "CARROTS"
+      target-amount: 120
+      reward-xp: 300
+      reward-coins: 18
+
+    w6_harvest_potatoes:
+      name: "Panen Ladang Kentang [W6]"
+      description: "Panen 120 tanaman Potatoes matang."
+      type: "HARVEST_CROPS"
+      target-block: "POTATOES"
+      target-amount: 120
+      reward-xp: 175
+      reward-coins: 12
+
+    w6_harvest_beetroots:
+      name: "Panen Bit Merah [W6]"
+      description: "Panen 80 tanaman Beetroots matang."
+      type: "HARVEST_CROPS"
+      target-block: "BEETROOTS"
+      target-amount: 80
+      reward-xp: 200
+      reward-coins: 13
+
+    w6_harvest_nether_wart:
+      name: "Panen Kebun Nether [W6]"
+      description: "Panen 80 Nether Wart matang."
+      type: "HARVEST_CROPS"
+      target-block: "NETHER_WART"
+      target-amount: 80
+      reward-xp: 250
+      reward-coins: 14
+
+    w6_harvest_sugarcane:
+      name: "Panen Perkebunan Tebu [W6]"
+      description: "Kumpulkan 100 Sugar Cane."
+      type: "BREAK_BLOCK"
+      target-block: "SUGAR_CANE"
+      target-amount: 100
+      reward-xp: 300
+      reward-coins: 15
+
+  7:
+    w7_harvest_bamboo:
+      name: "Panen Hutan Bambu [W7]"
+      description: "Kumpulkan 120 Bamboo."
+      type: "BREAK_BLOCK"
+      target-block: "BAMBOO"
+      target-amount: 120
+      reward-xp: 175
+      reward-coins: 16
+
+    w7_harvest_cactus:
+      name: "Panen Kaktus Gurun [W7]"
+      description: "Kumpulkan 80 Cactus."
+      type: "BREAK_BLOCK"
+      target-block: "CACTUS"
+      target-amount: 80
+      reward-xp: 200
+      reward-coins: 17
+
+    w7_harvest_melon:
+      name: "Panen Kebun Semangka [W7]"
+      description: "Hancurkan 40 Melon Block."
+      type: "BREAK_BLOCK"
+      target-block: "MELON"
+      target-amount: 40
+      reward-xp: 250
+      reward-coins: 18
+
+    w7_harvest_pumpkin:
+      name: "Panen Kebun Labu [W7]"
+      description: "Hancurkan 40 Pumpkin."
+      type: "BREAK_BLOCK"
+      target-block: "PUMPKIN"
+      target-amount: 40
+      reward-xp: 300
+      reward-coins: 12
+
+    w7_harvest_cocoa:
+      name: "Panen Biji Kakao [W7]"
+      description: "Panen 60 Cocoa Beans matang."
+      type: "BREAK_BLOCK"
+      target-block: "COCOA"
+      target-amount: 60
+      reward-xp: 175
+      reward-coins: 13
+
+    w7_harvest_sweet_berries:
+      name: "Panen Buah Beri [W7]"
+      description: "Kumpulkan 80 Sweet Berries."
+      type: "BREAK_BLOCK"
+      target-block: "SWEET_BERRY_BUSH"
+      target-amount: 80
+      reward-xp: 200
+      reward-coins: 14
+
+    w7_craft_bread:
+      name: "Produksi Roti Massal [W7]"
+      description: "Craft 64 Bread."
+      type: "CRAFT_ITEM"
+      target-item: "BREAD"
+      target-amount: 64
+      reward-xp: 250
+      reward-coins: 15
+
+    w7_craft_torches:
+      name: "Penerangan Gua [W7]"
+      description: "Craft 128 Torch."
+      type: "CRAFT_ITEM"
+      target-item: "TORCH"
+      target-amount: 128
+      reward-xp: 300
+      reward-coins: 16
+
+    w7_craft_iron_block:
+      name: "Penyusun Blok Besi [W7]"
+      description: "Craft 12 Iron Block."
+      type: "CRAFT_ITEM"
+      target-item: "IRON_BLOCK"
+      target-amount: 12
+      reward-xp: 175
+      reward-coins: 17
+
+    w7_craft_gold_block:
+      name: "Penyusun Blok Emas [W7]"
+      description: "Craft 8 Gold Block."
+      type: "CRAFT_ITEM"
+      target-item: "GOLD_BLOCK"
+      target-amount: 8
+      reward-xp: 200
+      reward-coins: 18
+
+  8:
+    w8_craft_diamond_block:
+      name: "Penyusun Blok Berlian [W8]"
+      description: "Craft 4 Diamond Block."
+      type: "CRAFT_ITEM"
+      target-item: "DIAMOND_BLOCK"
+      target-amount: 4
+      reward-xp: 250
+      reward-coins: 12
+
+    w8_craft_books:
+      name: "Penulis Perpustakaan [W8]"
+      description: "Craft 32 Book."
+      type: "CRAFT_ITEM"
+      target-item: "BOOK"
+      target-amount: 32
+      reward-xp: 300
+      reward-coins: 13
+
+    w8_craft_arrows:
+      name: "Amunisi Panah [W8]"
+      description: "Craft 128 Arrow."
+      type: "CRAFT_ITEM"
+      target-item: "ARROW"
+      target-amount: 128
+      reward-xp: 175
+      reward-coins: 14
+
+    w8_craft_golden_apple:
+      name: "Ahli Apel Emas [W8]"
+      description: "Craft 8 Golden Apple."
+      type: "CRAFT_ITEM"
+      target-item: "GOLDEN_APPLE"
+      target-amount: 8
+      reward-xp: 200
+      reward-coins: 15
+
+    w8_craft_shields:
+      name: "Bengkel Perisai [W8]"
+      description: "Craft 6 Shield."
+      type: "CRAFT_ITEM"
+      target-item: "SHIELD"
+      target-amount: 6
+      reward-xp: 250
+      reward-coins: 16
+
+    w8_craft_pistons:
+      name: "Teknisi Redstone [W8]"
+      description: "Craft 16 Piston."
+      type: "CRAFT_ITEM"
+      target-item: "PISTON"
+      target-amount: 16
+      reward-xp: 300
+      reward-coins: 17
+
+    w8_smelt_iron:
+      name: "Peleburan Besi Industri [W8]"
+      description: "Lebur 64 Iron Ingot."
+      type: "SMELT_ITEM"
+      target-item: "IRON_INGOT"
+      target-amount: 64
+      reward-xp: 175
+      reward-coins: 18
+
+    w8_smelt_gold:
+      name: "Peleburan Emas Murni [W8]"
+      description: "Lebur 48 Gold Ingot."
+      type: "SMELT_ITEM"
+      target-item: "GOLD_INGOT"
+      target-amount: 48
+      reward-xp: 200
+      reward-coins: 12
+
+    w8_smelt_copper:
+      name: "Peleburan Tembaga [W8]"
+      description: "Lebur 64 Copper Ingot."
+      type: "SMELT_ITEM"
+      target-item: "COPPER_INGOT"
+      target-amount: 64
+      reward-xp: 250
+      reward-coins: 13
+
+    w8_smelt_glass:
+      name: "Pabrik Kaca Pasir [W8]"
+      description: "Lebur 64 Glass."
+      type: "SMELT_ITEM"
+      target-item: "GLASS"
+      target-amount: 64
+      reward-xp: 300
+      reward-coins: 14
+
+  9:
+    w9_smelt_stone:
+      name: "Pembuat Batu Halus [W9]"
+      description: "Lebur 64 Stone."
+      type: "SMELT_ITEM"
+      target-item: "STONE"
+      target-amount: 64
+      reward-xp: 175
+      reward-coins: 15
+
+    w9_smelt_beef:
+      name: "Restoran Steak [W9]"
+      description: "Masak 64 Cooked Beef."
+      type: "SMELT_ITEM"
+      target-item: "COOKED_BEEF"
+      target-amount: 64
+      reward-xp: 200
+      reward-coins: 16
+
+    w9_smelt_pork:
+      name: "Restoran Daging Babi [W9]"
+      description: "Masak 64 Cooked Porkchop."
+      type: "SMELT_ITEM"
+      target-item: "COOKED_PORKCHOP"
+      target-amount: 64
+      reward-xp: 250
+      reward-coins: 17
+
+    w9_smelt_mutton:
+      name: "Restoran Daging Domba [W9]"
+      description: "Masak 48 Cooked Mutton."
+      type: "SMELT_ITEM"
+      target-item: "COOKED_MUTTON"
+      target-amount: 48
+      reward-xp: 300
+      reward-coins: 18
+
+    w9_smelt_salmon:
+      name: "Restoran Salmon Panggang [W9]"
+      description: "Masak 48 Cooked Salmon."
+      type: "SMELT_ITEM"
+      target-item: "COOKED_SALMON"
+      target-amount: 48
+      reward-xp: 175
+      reward-coins: 12
+
+    w9_fish_general:
+      name: "Ekspedisi Memancing [W9]"
+      description: "Pancing 30 ikan dari perairan."
+      type: "FISH"
+      target-amount: 30
+      reward-xp: 200
+      reward-coins: 13
+
+    w9_breed_cows:
+      name: "Peternakan Sapi Makmur [W9]"
+      description: "Kembangbiakkan 16 Sapi."
+      type: "BREED_ANIMALS"
+      target-entity: "COW"
+      target-amount: 16
+      reward-xp: 250
+      reward-coins: 14
+
+    w9_breed_sheep:
+      name: "Peternakan Domba Wol [W9]"
+      description: "Kembangbiakkan 16 Domba."
+      type: "BREED_ANIMALS"
+      target-entity: "SHEEP"
+      target-amount: 16
+      reward-xp: 300
+      reward-coins: 15
+
+    w9_breed_pigs:
+      name: "Peternakan Babi [W9]"
+      description: "Kembangbiakkan 16 Babi."
+      type: "BREED_ANIMALS"
+      target-entity: "PIG"
+      target-amount: 16
+      reward-xp: 175
+      reward-coins: 16
+
+    w9_breed_chickens:
+      name: "Peternakan Unggas Raksasa [W9]"
+      description: "Kembangbiakkan 20 Ayam."
+      type: "BREED_ANIMALS"
+      target-entity: "CHICKEN"
+      target-amount: 20
+      reward-xp: 200
+      reward-coins: 17
+
+  10:
+    w10_breed_horses:
+      name: "Peternakan Kuda Tunggang [W10]"
+      description: "Kembangbiakkan 6 Kuda."
+      type: "BREED_ANIMALS"
+      target-entity: "HORSE"
+      target-amount: 6
+      reward-xp: 250
+      reward-coins: 18
+
+    w10_breed_wolves:
+      name: "Kawanan Serigala Jinak [W10]"
+      description: "Kembangbiakkan 6 Serigala."
+      type: "BREED_ANIMALS"
+      target-entity: "WOLF"
+      target-amount: 6
+      reward-xp: 300
+      reward-coins: 12
+
+    w10_eat_steak:
+      name: "Santapan Lezat [W10]"
+      description: "Makan 32 Cooked Beef."
+      type: "CONSUME_FOOD"
+      target-item: "COOKED_BEEF"
+      target-amount: 32
+      reward-xp: 175
+      reward-coins: 13
+
+    w10_eat_golden_carrot:
+      name: "Nutrisi Wortel Emas [W10]"
+      description: "Makan 20 Golden Carrot."
+      type: "CONSUME_FOOD"
+      target-item: "GOLDEN_CARROT"
+      target-amount: 20
+      reward-xp: 200
+      reward-coins: 14
+
+    w10_eat_golden_apple:
+      name: "Kekuatan Apel Emas [W10]"
+      description: "Makan 6 Golden Apple."
+      type: "CONSUME_FOOD"
+      target-item: "GOLDEN_APPLE"
+      target-amount: 6
+      reward-xp: 250
+      reward-coins: 15
+
+    w10_enchant_tools:
+      name: "Penyihir Perkakas [W10]"
+      description: "Enchant 8 item di Enchantment Table."
+      type: "ENCHANT_ITEM"
+      target-item: "DIAMOND_PICKAXE"
+      target-amount: 8
+      reward-xp: 300
+      reward-coins: 16
+
+    w10_enchant_weapons:
+      name: "Penyihir Senjata [W10]"
+      description: "Enchant 8 pedang/busur di Enchantment Table."
+      type: "ENCHANT_ITEM"
+      target-item: "DIAMOND_SWORD"
+      target-amount: 8
+      reward-xp: 175
+      reward-coins: 17
+
+    w10_gain_exp_large:
+      name: "Pencari Jiwa Pengalaman [W10]"
+      description: "Kumpulkan 600 EXP point."
+      type: "EXP_GAIN"
+      target-amount: 600
+      reward-xp: 200
+      reward-coins: 18
+
+    w10_place_torches:
+      name: "Jalur Ekspedisi Terang [W10]"
+      description: "Pasang 64 Torch di dunia."
+      type: "PLACE_BLOCK"
+      target-block: "TORCH"
+      target-amount: 64
+      reward-xp: 250
+      reward-coins: 12
+
+    w10_place_cobble:
+      name: "Pembangun Tembok [W10]"
+      description: "Pasang 128 Cobblestone."
+      type: "PLACE_BLOCK"
+      target-block: "COBBLESTONE"
+      target-amount: 128
+      reward-xp: 300
+      reward-coins: 13
+
+  11:
+    w11_place_stone_bricks:
+      name: "Arsitek Benteng [W11]"
+      description: "Pasang 100 Stone Bricks."
+      type: "PLACE_BLOCK"
+      target-block: "STONE_BRICKS"
+      target-amount: 100
+      reward-xp: 175
+      reward-coins: 14
+
+    w11_place_glass:
+      name: "Pemasang Jendela Kaca [W11]"
+      description: "Pasang 64 Glass."
+      type: "PLACE_BLOCK"
+      target-block: "GLASS"
+      target-amount: 64
+      reward-xp: 200
+      reward-coins: 15
+
+    w11_place_scaffolding:
+      name: "Konstruksi Bangunan [W11]"
+      description: "Pasang 64 Scaffolding."
+      type: "PLACE_BLOCK"
+      target-block: "SCAFFOLDING"
+      target-amount: 64
+      reward-xp: 250
+      reward-coins: 16
+
+    w11_mine_clay_blocks:
+      name: "Pengrajin Terakota [W11]"
+      description: "Kumpulkan 48 Clay block."
+      type: "MINE_BLOCK"
+      target-block: "CLAY"
+      target-amount: 48
+      reward-xp: 300
+      reward-coins: 17
+
+    w11_mine_sandstone:
+      name: "Arkeolog Kuil Gurun [W11]"
+      description: "Hancurkan 64 Sandstone."
+      type: "MINE_BLOCK"
+      target-block: "SANDSTONE"
+      target-amount: 64
+      reward-xp: 175
+      reward-coins: 18
+
+    w11_mine_prismarine:
+      name: "Pembongkar Monumen Laut [W11]"
+      description: "Hancurkan 48 Prismarine."
+      type: "MINE_BLOCK"
+      target-block: "PRISMARINE"
+      target-amount: 48
+      reward-xp: 200
+      reward-coins: 12
+
+    w11_mine_sea_lantern:
+      name: "Pencari Lentera Laut [W11]"
+      description: "Hancurkan 16 Sea Lantern."
+      type: "MINE_BLOCK"
+      target-block: "SEA_LANTERN"
+      target-amount: 16
+      reward-xp: 250
+      reward-coins: 13
+
+    w11_mine_glowstone:
+      name: "Pencari Cahaya Neraka [W11]"
+      description: "Hancurkan 40 Glowstone."
+      type: "MINE_BLOCK"
+      target-block: "GLOWSTONE"
+      target-amount: 40
+      reward-xp: 300
+      reward-coins: 14
+
+    w11_mine_magma_block:
+      name: "Pencegah Jebakan Magma [W11]"
+      description: "Hancurkan 40 Magma Block."
+      type: "MINE_BLOCK"
+      target-block: "MAGMA_BLOCK"
+      target-amount: 40
+      reward-xp: 175
+      reward-coins: 15
+
+    w11_mine_soul_sand:
+      name: "Penjelajah Pasir Jiwa [W11]"
+      description: "Kumpulkan 64 Soul Sand."
+      type: "BREAK_BLOCK"
+      target-block: "SOUL_SAND"
+      target-amount: 64
+      reward-xp: 200
+      reward-coins: 16
+
+  12:
+    w12_mine_soul_soil:
+      name: "Penjelajah Tanah Jiwa [W12]"
+      description: "Kumpulkan 64 Soul Soil."
+      type: "BREAK_BLOCK"
+      target-block: "SOUL_SOIL"
+      target-amount: 64
+      reward-xp: 250
+      reward-coins: 17
+
+    w12_mine_end_stone:
+      name: "Penambang Dimensi End [W12]"
+      description: "Hancurkan 128 End Stone."
+      type: "MINE_BLOCK"
+      target-block: "END_STONE"
+      target-amount: 128
+      reward-xp: 300
+      reward-coins: 18
+
+    w12_mine_purpur:
+      name: "Penjelajah Kota End [W12]"
+      description: "Hancurkan 48 Purpur Block."
+      type: "MINE_BLOCK"
+      target-block: "PURPUR_BLOCK"
+      target-amount: 48
+      reward-xp: 175
+      reward-coins: 12
+
+    w12_kill_shulker:
+      name: "Pemburu Kotak Shulker [W12]"
+      description: "Kalahkan 8 Shulker."
+      type: "KILL_ENTITY"
+      target-entity: "SHULKER"
+      target-amount: 8
+      reward-xp: 200
+      reward-coins: 13
+
+    w12_kill_endermite:
+      name: "Pemberantas Endermite [W12]"
+      description: "Kalahkan 15 Endermite."
+      type: "KILL_ENTITY"
+      target-entity: "ENDERMITE"
+      target-amount: 15
+      reward-xp: 250
+      reward-coins: 14
+
+    w12_kill_silverfish:
+      name: "Pemberantas Kutu Batu [W12]"
+      description: "Kalahkan 20 Silverfish."
+      type: "KILL_ENTITY"
+      target-entity: "SILVERFISH"
+      target-amount: 20
+      reward-xp: 300
+      reward-coins: 15
+
+    w12_kill_iron_golem:
+      name: "Ujian Ketangguhan Golem [W12]"
+      description: "Kalahkan 3 Iron Golem."
+      type: "KILL_ENTITY"
+      target-entity: "IRON_GOLEM"
+      target-amount: 3
+      reward-xp: 175
+      reward-coins: 16
+
+    w12_kill_evoker:
+      name: "Penakluk Sihir Evoker [W12]"
+      description: "Kalahkan 3 Evoker."
+      type: "KILL_ENTITY"
+      target-entity: "EVOKER"
+      target-amount: 3
+      reward-xp: 200
+      reward-coins: 17
+
+    w12_craft_anvil:
+      name: "Pandai Besi Legend [W12]"
+      description: "Craft 2 Anvil."
+      type: "CRAFT_ITEM"
+      target-item: "ANVIL"
+      target-amount: 2
+      reward-xp: 250
+      reward-coins: 18
+
+    w12_craft_enchanting_table:
+      name: "Pembuat Meja Sihir [W12]"
+      description: "Craft 1 Enchanting Table."
+      type: "CRAFT_ITEM"
+      target-item: "ENCHANTING_TABLE"
+      target-amount: 1
+      reward-xp: 300
+      reward-coins: 12
+

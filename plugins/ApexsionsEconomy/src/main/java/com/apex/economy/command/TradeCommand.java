@@ -23,12 +23,12 @@ public class TradeCommand implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player player)) {
-            sender.sendMessage("Â§cPerintah ini hanya dapat dijalankan oleh pemain in-game!");
+            sender.sendMessage("§cPerintah ini hanya dapat dijalankan oleh pemain in-game!");
             return true;
         }
 
         if (!player.hasPermission("apexsionseconomy.trade")) {
-            player.sendMessage("Â§cAnda tidak memiliki izin untuk menggunakan sistem trade!");
+            player.sendMessage("§cAnda tidak memiliki izin untuk menggunakan sistem trade!");
             return true;
         }
 
@@ -59,13 +59,13 @@ public class TradeCommand implements CommandExecutor, TabCompleter {
 
         if (sub.equals("on") || sub.equals("enable") || sub.equals("aktif")) {
             plugin.getTradeManager().setTradeEnabled(player.getUniqueId(), true);
-            player.sendMessage("Â§a[âœ”] Fitur trade Anda sekarang Â§eAKTIFÂ§a. Pemain lain dapat mengirimkan permintaan trade.");
+            player.sendMessage("§a[✔] Fitur trade Anda sekarang §eAKTIF§a. Pemain lain dapat mengirimkan permintaan trade.");
             return true;
         }
 
         if (sub.equals("off") || sub.equals("disable") || sub.equals("nonaktif")) {
             plugin.getTradeManager().setTradeEnabled(player.getUniqueId(), false);
-            player.sendMessage("Â§c[âœ–] Fitur trade Anda sekarang Â§eNONAKTIFÂ§c. Pemain lain tidak dapat mengirimkan permintaan trade ke Anda.");
+            player.sendMessage("§c[✖] Fitur trade Anda sekarang §eNONAKTIF§c. Pemain lain tidak dapat mengirimkan permintaan trade ke Anda.");
             return true;
         }
 
@@ -74,7 +74,7 @@ public class TradeCommand implements CommandExecutor, TabCompleter {
             if (session != null) {
                 session.cancelTrade(player, "Dibatalkan via perintah /trade cancel");
             } else {
-                player.sendMessage("Â§cAnda tidak sedang berada dalam sesi trade.");
+                player.sendMessage("§cAnda tidak sedang berada dalam sesi trade.");
             }
             return true;
         }
@@ -84,7 +84,7 @@ public class TradeCommand implements CommandExecutor, TabCompleter {
         String targetName = args[0];
         Player target = Bukkit.getPlayer(targetName);
         if (target == null || !target.isOnline()) {
-            player.sendMessage("Â§cPemain Â§e" + targetName + " Â§ctidak ditemukan atau sedang offline!");
+            player.sendMessage("§cPemain §e" + targetName + " §ctidak ditemukan atau sedang offline!");
             return true;
         }
 

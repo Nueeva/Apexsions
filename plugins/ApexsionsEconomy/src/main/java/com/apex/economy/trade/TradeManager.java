@@ -56,9 +56,9 @@ public class TradeManager implements Listener {
         setTradeEnabled(player.getUniqueId(), newState);
 
         if (newState) {
-            player.sendMessage("Â§a[âœ”] Fitur trade Anda sekarang Â§eAKTIFÂ§a. Pemain lain dapat mengirimkan permintaan trade.");
+            player.sendMessage("§a[✔] Fitur trade Anda sekarang §eAKTIF§a. Pemain lain dapat mengirimkan permintaan trade.");
         } else {
-            player.sendMessage("Â§c[âœ–] Fitur trade Anda sekarang Â§eNONAKTIFÂ§c. Pemain lain tidak dapat mengirimkan permintaan trade ke Anda.");
+            player.sendMessage("§c[✖] Fitur trade Anda sekarang §eNONAKTIF§c. Pemain lain tidak dapat mengirimkan permintaan trade ke Anda.");
         }
         return newState;
     }
@@ -70,7 +70,7 @@ public class TradeManager implements Listener {
                     if (reqEntry.getValue().isExpired()) {
                         Player sender = Bukkit.getPlayer(reqEntry.getValue().getSenderUuid());
                         if (sender != null && sender.isOnline()) {
-                            sender.sendMessage("Â§c[!] Permintaan trade ke Â§e" + reqEntry.getValue().getTargetName() + " Â§ctelah kedaluwarsa.");
+                            sender.sendMessage("§c[!] Permintaan trade ke §e" + reqEntry.getValue().getTargetName() + " §ctelah kedaluwarsa.");
                         }
                         return true;
                     }
@@ -84,27 +84,27 @@ public class TradeManager implements Listener {
         if (sender == null || target == null || !sender.isOnline() || !target.isOnline()) return false;
 
         if (sender.getUniqueId().equals(target.getUniqueId())) {
-            sender.sendMessage("Â§cAnda tidak dapat mengajak diri sendiri untuk trade!");
+            sender.sendMessage("§cAnda tidak dapat mengajak diri sendiri untuk trade!");
             return false;
         }
 
         if (!isTradeEnabled(sender.getUniqueId())) {
-            sender.sendMessage("Â§cAnda sedang menonaktifkan fitur trade! Aktifkan kembali dengan Â§e/trade toggle Â§cuntuk mengajak pemain lain.");
+            sender.sendMessage("§cAnda sedang menonaktifkan fitur trade! Aktifkan kembali dengan §e/trade toggle §cuntuk mengajak pemain lain.");
             return false;
         }
 
         if (!isTradeEnabled(target.getUniqueId())) {
-            sender.sendMessage("Â§cPemain Â§e" + target.getName() + " Â§csedang menonaktifkan permintaan trade.");
+            sender.sendMessage("§cPemain §e" + target.getName() + " §csedang menonaktifkan permintaan trade.");
             return false;
         }
 
         if (isInTrade(sender)) {
-            sender.sendMessage("Â§cAnda sedang berada dalam sesi trade!");
+            sender.sendMessage("§cAnda sedang berada dalam sesi trade!");
             return false;
         }
 
         if (isInTrade(target)) {
-            sender.sendMessage("Â§cPemain Â§e" + target.getName() + " Â§csedang berada dalam sesi trade lain!");
+            sender.sendMessage("§cPemain §e" + target.getName() + " §csedang berada dalam sesi trade lain!");
             return false;
         }
 
@@ -121,15 +121,15 @@ public class TradeManager implements Listener {
         TradeRequest request = new TradeRequest(sender.getUniqueId(), sender.getName(), target.getUniqueId(), target.getName(), 60);
         pendingRequests.computeIfAbsent(target.getUniqueId(), k -> new ConcurrentHashMap<>()).put(sender.getUniqueId(), request);
 
-        sender.sendMessage("Â§a[âœ”] Permintaan trade telah dikirim ke Â§e" + target.getName() + "Â§a. Menunggu persetujuan (60 detik)...");
+        sender.sendMessage("§a[✔] Permintaan trade telah dikirim ke §e" + target.getName() + "§a. Menunggu persetujuan (60 detik)...");
 
         // Send rich message with interactive buttons to target
-        target.sendMessage("Â§8=======================================");
-        target.sendMessage("Â§6Â§l[TRADE] Â§e" + sender.getName() + " Â§7mengajak Anda untuk melakukan trade!");
+        target.sendMessage("§8=======================================");
+        target.sendMessage("§6§l[TRADE] §e" + sender.getName() + " §7mengajak Anda untuk melakukan trade!");
 
 
         try {
-            TextComponent acceptBtn = new TextComponent("[âœ” SETUJU]");
+            TextComponent acceptBtn = new TextComponent("[✔ SETUJU]");
             acceptBtn.setColor(ChatColor.GREEN);
             acceptBtn.setBold(true);
             acceptBtn.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/trade accept " + sender.getName()));
@@ -137,7 +137,7 @@ public class TradeManager implements Listener {
 
             TextComponent space = new TextComponent("   ");
 
-            TextComponent denyBtn = new TextComponent("[âœ– TOLAK]");
+            TextComponent denyBtn = new TextComponent("[✖ TOLAK]");
             denyBtn.setColor(ChatColor.RED);
             denyBtn.setBold(true);
             denyBtn.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/trade deny " + sender.getName()));
@@ -150,10 +150,10 @@ public class TradeManager implements Listener {
 
             target.spigot().sendMessage(fullMessage);
         } catch (Throwable t) {
-            target.sendMessage("Â§7Ketik Â§a/trade accept " + sender.getName() + " Â§7untuk setuju, atau Â§c/trade deny " + sender.getName() + " Â§7untuk menolak.");
+            target.sendMessage("§7Ketik §a/trade accept " + sender.getName() + " §7untuk setuju, atau §c/trade deny " + sender.getName() + " §7untuk menolak.");
         }
 
-        target.sendMessage("Â§8=======================================");
+        target.sendMessage("§8=======================================");
         return true;
     }
 
@@ -162,7 +162,7 @@ public class TradeManager implements Listener {
         if (target == null) return false;
         Map<UUID, TradeRequest> requests = pendingRequests.get(target.getUniqueId());
         if (requests == null || requests.isEmpty()) {
-            target.sendMessage("Â§cAnda tidak memiliki permintaan trade yang masuk!");
+            target.sendMessage("§cAnda tidak memiliki permintaan trade yang masuk!");
             return false;
         }
 
@@ -185,24 +185,24 @@ public class TradeManager implements Listener {
         }
 
         if (matchingRequest == null || matchingRequest.isExpired()) {
-            target.sendMessage("Â§cPermintaan trade dari pemain tersebut tidak ditemukan atau sudah kedaluwarsa!");
+            target.sendMessage("§cPermintaan trade dari pemain tersebut tidak ditemukan atau sudah kedaluwarsa!");
             return false;
         }
 
         Player sender = Bukkit.getPlayer(matchingRequest.getSenderUuid());
         if (sender == null || !sender.isOnline()) {
-            target.sendMessage("Â§cPemain yang mengajak trade sedang offline!");
+            target.sendMessage("§cPemain yang mengajak trade sedang offline!");
             requests.remove(matchingRequest.getSenderUuid());
             return false;
         }
 
         if (isInTrade(target)) {
-            target.sendMessage("Â§cAnda sedang berada dalam sesi trade lain!");
+            target.sendMessage("§cAnda sedang berada dalam sesi trade lain!");
             return false;
         }
 
         if (isInTrade(sender)) {
-            target.sendMessage("Â§cPemain Â§e" + sender.getName() + " Â§csedang berada dalam sesi trade lain!");
+            target.sendMessage("§cPemain §e" + sender.getName() + " §csedang berada dalam sesi trade lain!");
             return false;
         }
 
@@ -215,7 +215,7 @@ public class TradeManager implements Listener {
         if (target == null) return false;
         Map<UUID, TradeRequest> requests = pendingRequests.get(target.getUniqueId());
         if (requests == null || requests.isEmpty()) {
-            target.sendMessage("Â§cAnda tidak memiliki permintaan trade yang masuk!");
+            target.sendMessage("§cAnda tidak memiliki permintaan trade yang masuk!");
             return false;
         }
 
@@ -235,16 +235,16 @@ public class TradeManager implements Listener {
         }
 
         if (matchingRequest == null) {
-            target.sendMessage("Â§cPermintaan trade dari pemain tersebut tidak ditemukan!");
+            target.sendMessage("§cPermintaan trade dari pemain tersebut tidak ditemukan!");
             return false;
         }
 
         requests.remove(matchingRequest.getSenderUuid());
-        target.sendMessage("Â§e[!] Anda telah menolak permintaan trade dari Â§6" + matchingRequest.getSenderName() + "Â§e.");
+        target.sendMessage("§e[!] Anda telah menolak permintaan trade dari §6" + matchingRequest.getSenderName() + "§e.");
 
         Player sender = Bukkit.getPlayer(matchingRequest.getSenderUuid());
         if (sender != null && sender.isOnline()) {
-            sender.sendMessage("Â§c[!] Â§e" + target.getName() + " Â§ctelah menolak permintaan trade Anda.");
+            sender.sendMessage("§c[!] §e" + target.getName() + " §ctelah menolak permintaan trade Anda.");
         }
         return true;
     }
@@ -254,8 +254,8 @@ public class TradeManager implements Listener {
         activeSessions.put(player1.getUniqueId(), session);
         activeSessions.put(player2.getUniqueId(), session);
 
-        player1.sendMessage("Â§a[âœ”] Sesi trade dengan Â§e" + player2.getName() + " Â§adimulai!");
-        player2.sendMessage("Â§a[âœ”] Sesi trade dengan Â§e" + player1.getName() + " Â§adimulai!");
+        player1.sendMessage("§a[✔] Sesi trade dengan §e" + player2.getName() + " §adimulai!");
+        player2.sendMessage("§a[✔] Sesi trade dengan §e" + player1.getName() + " §adimulai!");
 
         session.start();
     }

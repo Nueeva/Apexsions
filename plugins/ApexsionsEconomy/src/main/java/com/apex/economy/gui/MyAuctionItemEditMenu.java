@@ -1,11 +1,11 @@
 package com.apex.economy.gui;
 
-import com.apex.economy.gui.core.Gui;
-import com.apex.economy.gui.core.GuiButton;
-import com.apex.economy.gui.navigation.BackButton;
-import com.apex.economy.gui.navigation.CloseButton;
-import com.apex.economy.gui.util.ItemBuilder;
-import com.apex.economy.util.ItemSerializer;
+import com.apex.battlepass.gui.core.Gui;
+import com.apex.battlepass.gui.core.GuiButton;
+import com.apex.battlepass.gui.navigation.BackButton;
+import com.apex.battlepass.gui.navigation.CloseButton;
+import com.apex.battlepass.gui.util.ItemBuilder;
+import com.apex.battlepass.util.ItemSerializer;
 import com.apex.economy.ApexsionsEconomy;
 import com.apex.economy.auction.AuctionListing;
 import com.apex.economy.currency.Currency;
@@ -49,7 +49,7 @@ public class MyAuctionItemEditMenu extends Gui {
 
         // 2. Change Price Button (Slot 20)
         setButton(20, new GuiButton(new ItemBuilder(Material.GOLD_INGOT)
-                .name("&e&l[âœ] UBAH HARGA LELANG")
+                .name("&e&l[✏] UBAH HARGA LELANG")
                 .lore(List.of(
                         "&7Ubah harga barang lelang Anda.",
                         "&7Harga saat ini: &a" + NumberFormatUtil.format(listing.getPrice(), curr),
@@ -61,14 +61,14 @@ public class MyAuctionItemEditMenu extends Gui {
                 try {
                     double newPrice = NumberFormatUtil.parse(input);
                     if (newPrice <= 0) {
-                        player.sendMessage("Â§cHarga harus lebih besar dari 0!");
+                        player.sendMessage("§cHarga harus lebih besar dari 0!");
                         open();
                         return;
                     }
                     plugin.getAuctionService().updateAuctionPrice(player, listing.getId(), newPrice);
                     open();
                 } catch (Exception e) {
-                    player.sendMessage("Â§cFormat harga tidak valid!");
+                    player.sendMessage("§cFormat harga tidak valid!");
                     open();
                 }
             }, this::open);
@@ -76,7 +76,7 @@ public class MyAuctionItemEditMenu extends Gui {
 
         // 3. Cancel / Delete Auction Button (Slot 24)
         setButton(24, new GuiButton(new ItemBuilder(Material.RED_CONCRETE)
-                .name("&c&l[âœ–] BATALKAN & AMBIL BARANG")
+                .name("&c&l[✖] BATALKAN & AMBIL BARANG")
                 .lore(List.of(
                         "&7Hapus barang ini dari pasar lelang",
                         "&7dan kembalikan ke inventory Anda.",

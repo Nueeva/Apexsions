@@ -1,9 +1,9 @@
 package com.apex.economy.gui;
 
-import com.apex.economy.gui.core.Gui;
-import com.apex.economy.gui.core.GuiButton;
-import com.apex.economy.gui.util.ItemBuilder;
-import com.apex.economy.util.ItemSerializer;
+import com.apex.battlepass.gui.core.Gui;
+import com.apex.battlepass.gui.core.GuiButton;
+import com.apex.battlepass.gui.util.ItemBuilder;
+import com.apex.battlepass.util.ItemSerializer;
 import com.apex.economy.ApexsionsEconomy;
 import com.apex.economy.auction.AuctionListing;
 import com.apex.economy.currency.Currency;
@@ -46,7 +46,7 @@ public class AuctionBuyConfirmMenu extends Gui {
 
         // 2. Confirm Buy Button (Slot 20)
         setButton(20, new GuiButton(new ItemBuilder(Material.LIME_CONCRETE)
-                .name("&a&l[âœ”] YA, BELI SEKARANG")
+                .name("&a&l[✔] YA, BELI SEKARANG")
                 .lore(List.of(
                         "&7Saldo Anda akan dipotong &e" + NumberFormatUtil.format(listing.getPrice(), curr) + "&7.",
                         " ",
@@ -59,7 +59,7 @@ public class AuctionBuyConfirmMenu extends Gui {
 
         // 3. Cancel Button (Slot 24)
         setButton(24, new GuiButton(new ItemBuilder(Material.RED_CONCRETE)
-                .name("&c&l[âœ–] BATALKAN")
+                .name("&c&l[✖] BATALKAN")
                 .lore(List.of(
                         "&7Kembali ke pasar lelang tanpa membeli.",
                         " ",

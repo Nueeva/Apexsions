@@ -1,10 +1,10 @@
 package com.apex.economy.gui;
 
-import com.apex.economy.gui.core.Gui;
-import com.apex.economy.gui.core.GuiButton;
-import com.apex.economy.gui.navigation.BackButton;
-import com.apex.economy.gui.navigation.CloseButton;
-import com.apex.economy.gui.util.ItemBuilder;
+import com.apex.battlepass.gui.core.Gui;
+import com.apex.battlepass.gui.core.GuiButton;
+import com.apex.battlepass.gui.navigation.BackButton;
+import com.apex.battlepass.gui.navigation.CloseButton;
+import com.apex.battlepass.gui.util.ItemBuilder;
 import com.apex.economy.ApexsionsEconomy;
 import com.apex.economy.currency.Currency;
 import com.apex.economy.leaderboard.EconomyLeaderboardEntry;
@@ -68,14 +68,14 @@ public class EconomyLeaderboardMenu extends Gui {
 
         // Currency Tabs (Slots 1, 2)
         setButton(1, new GuiButton(new ItemBuilder(Material.EMERALD)
-                .name(currencyId.equals("rupiah") ? "&a&l[âœ”] LEADERBOARD RUPIAH" : "&a&lLEADERBOARD RUPIAH")
+                .name(currencyId.equals("rupiah") ? "&a&l[✔] LEADERBOARD RUPIAH" : "&a&lLEADERBOARD RUPIAH")
                 .lore(List.of("&7Peringkat kekayaan Rupiah (Top 100).", " ", "&eKlik untuk beralih >"))
                 .build(), event -> {
             new EconomyLeaderboardMenu(plugin, player, "rupiah", parent, 1).open();
         }));
 
         setButton(2, new GuiButton(new ItemBuilder(Material.DIAMOND)
-                .name(currencyId.equals("diamond") ? "&b&l[âœ”] LEADERBOARD DIAMOND" : "&b&lLEADERBOARD DIAMOND")
+                .name(currencyId.equals("diamond") ? "&b&l[✔] LEADERBOARD DIAMOND" : "&b&lLEADERBOARD DIAMOND")
                 .lore(List.of("&7Peringkat kekayaan Diamond (Top 100).", " ", "&eKlik untuk beralih >"))
                 .build(), event -> {
             new EconomyLeaderboardMenu(plugin, player, "diamond", parent, 1).open();
@@ -107,9 +107,9 @@ public class EconomyLeaderboardMenu extends Gui {
             String statusText = op.isOnline() ? "&aOnline" : "&7Offline";
 
             String rankPrefix = switch (entry.getRank()) {
-                case 1 -> "&e&lðŸ¥‡ #1 ";
-                case 2 -> "&f&lðŸ¥ˆ #2 ";
-                case 3 -> "&6&lðŸ¥‰ #3 ";
+                case 1 -> "&e&l🥇 #1 ";
+                case 2 -> "&f&l🥈 #2 ";
+                case 3 -> "&6&l🥉 #3 ";
                 default -> "&7#" + entry.getRank() + " ";
             };
 
@@ -129,7 +129,7 @@ public class EconomyLeaderboardMenu extends Gui {
         setButton(45, new BackButton(this, parent));
 
         if (validPage > 1) {
-            setButton(47, new GuiButton(new ItemBuilder(Material.ARROW).name("&eâ—€ Top " + ((validPage - 1) * 10)).build(), event -> {
+            setButton(47, new GuiButton(new ItemBuilder(Material.ARROW).name("&e◀ Top " + ((validPage - 1) * 10)).build(), event -> {
                 new EconomyLeaderboardMenu(plugin, player, currencyId, parent, validPage - 1).open();
             }));
         }
@@ -137,7 +137,7 @@ public class EconomyLeaderboardMenu extends Gui {
         setButton(49, new GuiButton(new ItemBuilder(Material.MAP).name("&7Halaman &e" + validPage + " &8/ &f" + maxPages).build()));
 
         if (validPage < maxPages) {
-            setButton(51, new GuiButton(new ItemBuilder(Material.ARROW).name("&eTop " + ((validPage + 1) * 10) + " â–¶").build(), event -> {
+            setButton(51, new GuiButton(new ItemBuilder(Material.ARROW).name("&eTop " + ((validPage + 1) * 10) + " ▶").build(), event -> {
                 new EconomyLeaderboardMenu(plugin, player, currencyId, parent, validPage + 1).open();
             }));
         }

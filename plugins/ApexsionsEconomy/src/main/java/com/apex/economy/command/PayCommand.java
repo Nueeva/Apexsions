@@ -25,7 +25,7 @@ public class PayCommand implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player player)) {
-            sender.sendMessage("Â§cPerintah ini hanya dapat digunakan oleh player!");
+            sender.sendMessage("§cPerintah ini hanya dapat digunakan oleh player!");
             return true;
         }
 
@@ -35,14 +35,14 @@ public class PayCommand implements CommandExecutor, TabCompleter {
         }
 
         if (args.length < 2) {
-            player.sendMessage("Â§cPenggunaan: /pay <player> <amount> [rupiah|diamond]");
+            player.sendMessage("§cPenggunaan: /pay <player> <amount> [rupiah|diamond]");
             return true;
         }
 
         String targetName = args[0];
         Player target = Bukkit.getPlayer(targetName);
         if (target == null) {
-            player.sendMessage("Â§cPemain " + targetName + " tidak ditemukan atau sedang offline!");
+            player.sendMessage("§cPemain " + targetName + " tidak ditemukan atau sedang offline!");
             return true;
         }
 
@@ -50,14 +50,14 @@ public class PayCommand implements CommandExecutor, TabCompleter {
         try {
             amount = NumberFormatUtil.parse(args[1]);
         } catch (Exception e) {
-            player.sendMessage("Â§cJumlah tidak valid! Gunakan angka biasa atau singkatan seperti 10k, 1.5jt, 2m.");
+            player.sendMessage("§cJumlah tidak valid! Gunakan angka biasa atau singkatan seperti 10k, 1.5jt, 2m.");
             return true;
         }
 
         String currId = (args.length >= 3) ? args[2].toLowerCase() : "rupiah";
         Currency currency = plugin.getCurrencyRegistry().get(currId);
         if (currency == null) {
-            player.sendMessage("Â§cMata uang " + currId + " tidak dikenali! Pilihan: rupiah, diamond.");
+            player.sendMessage("§cMata uang " + currId + " tidak dikenali! Pilihan: rupiah, diamond.");
             return true;
         }
 

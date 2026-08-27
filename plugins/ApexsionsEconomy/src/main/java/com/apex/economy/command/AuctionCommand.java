@@ -27,7 +27,7 @@ public class AuctionCommand implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player player)) {
-            sender.sendMessage("Â§cPerintah ini hanya dapat digunakan oleh player!");
+            sender.sendMessage("§cPerintah ini hanya dapat digunakan oleh player!");
             return true;
         }
 
@@ -45,14 +45,14 @@ public class AuctionCommand implements CommandExecutor, TabCompleter {
 
         if (sub.equals("sell") || sub.equals("list") || sub.equals("jual")) {
             if (args.length < 2) {
-                player.sendMessage("Â§cPenggunaan: /ah sell <harga> [rupiah|diamond] [durasi_jam]");
-                player.sendMessage("Â§7Contoh: Â§e/ah sell 10k rupiah 24");
+                player.sendMessage("§cPenggunaan: /ah sell <harga> [rupiah|diamond] [durasi_jam]");
+                player.sendMessage("§7Contoh: §e/ah sell 10k rupiah 24");
                 return true;
             }
 
             ItemStack inHand = player.getInventory().getItemInMainHand();
             if (inHand == null || inHand.getType() == Material.AIR) {
-                player.sendMessage("Â§c[!] Harap pegang barang yang ingin Anda jual di tangan utama!");
+                player.sendMessage("§c[!] Harap pegang barang yang ingin Anda jual di tangan utama!");
                 return true;
             }
 
@@ -60,18 +60,18 @@ public class AuctionCommand implements CommandExecutor, TabCompleter {
             try {
                 price = NumberFormatUtil.parse(args[1]);
                 if (price <= 0 || Double.isNaN(price) || Double.isInfinite(price)) {
-                    player.sendMessage("Â§c[!] Harga harus berupa angka positif yang valid!");
+                    player.sendMessage("§c[!] Harga harus berupa angka positif yang valid!");
                     return true;
                 }
             } catch (Exception e) {
-                player.sendMessage("Â§c[!] Format harga tidak valid! Contoh: 1000, 10k, 1.5jt, 2m.");
+                player.sendMessage("§c[!] Format harga tidak valid! Contoh: 1000, 10k, 1.5jt, 2m.");
                 return true;
             }
 
             String currName = (args.length >= 3) ? args[2].toLowerCase() : "rupiah";
             Currency curr = plugin.getCurrencyRegistry().get(currName);
             if (curr == null) {
-                player.sendMessage("Â§c[!] Mata uang '" + currName + "' tidak dikenali! Pilihan: rupiah, diamond.");
+                player.sendMessage("§c[!] Mata uang '" + currName + "' tidak dikenali! Pilihan: rupiah, diamond.");
                 return true;
             }
 
@@ -80,11 +80,11 @@ public class AuctionCommand implements CommandExecutor, TabCompleter {
                 try {
                     durationHours = Integer.parseInt(args[3]);
                     if (durationHours < 1 || durationHours > 72) {
-                        player.sendMessage("Â§c[!] Durasi lelang harus berada di antara 1 hingga 72 jam.");
+                        player.sendMessage("§c[!] Durasi lelang harus berada di antara 1 hingga 72 jam.");
                         return true;
                     }
                 } catch (NumberFormatException e) {
-                    player.sendMessage("Â§c[!] Format durasi jam harus berupa angka!");
+                    player.sendMessage("§c[!] Format durasi jam harus berupa angka!");
                     return true;
                 }
             }
@@ -94,12 +94,12 @@ public class AuctionCommand implements CommandExecutor, TabCompleter {
         }
 
         if (sub.equals("help") || sub.equals("bantuan")) {
-            player.sendMessage("Â§8Â§m----------------------------------------");
-            player.sendMessage("Â§6Â§lBANTUAN AUCTION HOUSE (LELANG):");
-            player.sendMessage(" Â§e/ah Â§7- Membuka pasar lelang (GUI)");
-            player.sendMessage(" Â§e/ah sell <harga> [mata_uang] [jam] Â§7- Menjual barang yang dipegang");
-            player.sendMessage(" Â§e/ah my Â§7- Mengelola barang lelang milik Anda");
-            player.sendMessage("Â§8Â§m----------------------------------------");
+            player.sendMessage("§8§m----------------------------------------");
+            player.sendMessage("§6§lBANTUAN AUCTION HOUSE (LELANG):");
+            player.sendMessage(" §e/ah §7- Membuka pasar lelang (GUI)");
+            player.sendMessage(" §e/ah sell <harga> [mata_uang] [jam] §7- Menjual barang yang dipegang");
+            player.sendMessage(" §e/ah my §7- Mengelola barang lelang milik Anda");
+            player.sendMessage("§8§m----------------------------------------");
             return true;
         }
 

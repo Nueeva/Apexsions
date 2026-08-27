@@ -25,7 +25,7 @@ public class EconomyCommand implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player player)) {
-            sender.sendMessage("Â§cPerintah ini hanya dapat dijalankan oleh player!");
+            sender.sendMessage("§cPerintah ini hanya dapat dijalankan oleh player!");
             return true;
         }
 
@@ -36,13 +36,13 @@ public class EconomyCommand implements CommandExecutor, TabCompleter {
 
         String sub = args[0].toLowerCase();
         if (sub.equals("bal") || sub.equals("balance") || sub.equals("info")) {
-            player.sendMessage("Â§8Â§m----------------------------------------");
-            player.sendMessage("Â§aÂ§lDOMPET & INFORMASI SALDO ANDA:");
+            player.sendMessage("§8§m----------------------------------------");
+            player.sendMessage("§a§lDOMPET & INFORMASI SALDO ANDA:");
             for (Currency c : plugin.getCurrencyRegistry().getAll()) {
                 double b = plugin.getCurrencyService().getBalance(player.getUniqueId(), c.getId());
-                player.sendMessage(" Â§8- Â§f" + c.getDisplayName() + ": Â§eÂ§l" + NumberFormatUtil.format(b, c) + " Â§7(" + NumberFormatUtil.formatFull(b, c) + ")");
+                player.sendMessage(" §8- §f" + c.getDisplayName() + ": §e§l" + NumberFormatUtil.format(b, c) + " §7(" + NumberFormatUtil.formatFull(b, c) + ")");
             }
-            player.sendMessage("Â§8Â§m----------------------------------------");
+            player.sendMessage("§8§m----------------------------------------");
             return true;
         }
 

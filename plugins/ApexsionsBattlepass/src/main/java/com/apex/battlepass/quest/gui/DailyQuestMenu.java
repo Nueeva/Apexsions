@@ -40,8 +40,8 @@ public class DailyQuestMenu extends Gui {
                 ))
                 .build()));
 
-        Map<String, Quest> dailyQuests = plugin.getQuestManager().getDailyQuests();
-        int[] slots = { 10, 11, 12, 13, 14, 15, 16, 19, 20, 21, 22, 23, 24, 25 };
+        Map<String, Quest> dailyQuests = plugin.getQuestManager().getActiveDailyQuests();
+        int[] slots = { 11, 12, 13, 14, 15, 20, 21, 22, 23, 24 };
         int idx = 0;
 
         for (Quest quest : dailyQuests.values()) {
@@ -51,6 +51,7 @@ public class DailyQuestMenu extends Gui {
 
         setButton(31, new BackButton(this));
     }
+
 
     private GuiButton createQuestButton(PlayerData data, Quest quest) {
         QuestStatus status = plugin.getQuestManager().getQuestStatus(player, quest);
