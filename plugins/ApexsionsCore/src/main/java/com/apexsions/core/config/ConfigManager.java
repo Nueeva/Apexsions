@@ -162,7 +162,7 @@ public class ConfigManager {
     public boolean isDbAutoFallback() { return dbAutoFallback; }
 
     public Location getLobbyLocation() {
-        if (lobbyLocation == null) {
+        if (lobbyLocation == null || lobbyLocation.getWorld() == null) {
             String worldName = mainConfig.getString("locations.lobby.world", "world");
             World world = Bukkit.getWorld(worldName);
             if (world != null) {
@@ -175,6 +175,22 @@ public class ConfigManager {
             }
         }
         return lobbyLocation;
+    }
+
+    public void setLobbyLocation(Location loc) {
+        if (loc == null || loc.getWorld() == null) return;
+        this.lobbyLocation = loc.clone();
+        mainConfig.set("locations.lobby.world", loc.getWorld().getName());
+        mainConfig.set("locations.lobby.x", loc.getX());
+        mainConfig.set("locations.lobby.y", loc.getY());
+        mainConfig.set("locations.lobby.z", loc.getZ());
+        mainConfig.set("locations.lobby.yaw", (double) loc.getYaw());
+        mainConfig.set("locations.lobby.pitch", (double) loc.getPitch());
+        try {
+            mainConfig.save(new File(plugin.getDataFolder(), "config.yml"));
+        } catch (Exception e) {
+            plugin.getLogger().warning("Failed to save lobby location to config.yml: " + e.getMessage());
+        }
     }
 
     public int getLevelMin() { return levelMin; }

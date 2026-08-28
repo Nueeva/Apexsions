@@ -1,4 +1,4 @@
-﻿name: ApexsionsCore
+name: ApexsionsCore
 version: '1.0.0'
 main: com.apexsions.core.ApexsionsCorePlugin
 api-version: '1.21'
@@ -11,6 +11,8 @@ softdepend:
   - Essentials
   - BlueMap
   - Citizens
+  - Multiverse-Core
+
 
 commands:
   lobby:

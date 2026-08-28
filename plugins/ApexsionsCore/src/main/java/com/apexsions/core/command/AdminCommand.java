@@ -86,6 +86,18 @@ public class AdminCommand implements CommandExecutor, TabCompleter {
                 handleSetRegion(sender, args[1], args[2]);
                 break;
 
+            case "setlobby":
+                if (!(sender instanceof Player player)) {
+                    sender.sendMessage(miniMessage.deserialize("<red>Only players can set the lobby location.</red>"));
+                    return true;
+                }
+                plugin.getConfigManager().setLobbyLocation(player.getLocation());
+                sender.sendMessage(miniMessage.deserialize("<green>Lobby location updated to world <yellow>" + player.getWorld().getName() + "</yellow> at (" + 
+                        String.format("%.1f", player.getLocation().getX()) + ", " + 
+                        String.format("%.1f", player.getLocation().getY()) + ", " + 
+                        String.format("%.1f", player.getLocation().getZ()) + ")!</green>"));
+                break;
+
             case "info":
                 if (args.length < 2) {
                     sender.sendMessage(miniMessage.deserialize("<red>Usage: /ac info <player></red>"));
@@ -249,13 +261,14 @@ public class AdminCommand implements CommandExecutor, TabCompleter {
         sender.sendMessage(miniMessage.deserialize("<yellow>/ac setlevel <player> <level></yellow> <gray>- Set player level (1-100)</gray>"));
         sender.sendMessage(miniMessage.deserialize("<yellow>/ac addxp <player> <amount></yellow> <gray>- Grant progression XP</gray>"));
         sender.sendMessage(miniMessage.deserialize("<yellow>/ac setkingdom <player> <kingdomKey></yellow> <gray>- Transfer player kingdom</gray>"));
+        sender.sendMessage(miniMessage.deserialize("<yellow>/ac setlobby</yellow> <gray>- Set lobby spawn to your current location/world</gray>"));
         sender.sendMessage(miniMessage.deserialize("<yellow>/ac info <player></yellow> <gray>- Inspect player progression data</gray>"));
     }
 
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (args.length == 1) {
-            List<String> list = Arrays.asList("reload", "war", "setlevel", "addxp", "setkingdom", "info");
+            List<String> list = Arrays.asList("reload", "war", "setlevel", "addxp", "setkingdom", "setlobby", "info");
             return filter(list, args[0]);
         }
         if (args.length == 2 && args[0].equalsIgnoreCase("war")) {

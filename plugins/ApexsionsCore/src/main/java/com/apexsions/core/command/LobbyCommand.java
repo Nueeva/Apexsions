@@ -29,14 +29,14 @@ public class LobbyCommand implements CommandExecutor {
             return true;
         }
 
-        if (!player.hasPermission("kingdomcore.command.lobby")) {
+        if (!player.hasPermission("apexsionscore.command.lobby") && !player.hasPermission("kingdomcore.command.lobby")) {
             player.sendMessage(miniMessage.deserialize("<red>You do not have permission to use /lobby.</red>"));
             return true;
         }
 
         Location lobbyLoc = plugin.getConfigManager().getLobbyLocation();
         if (lobbyLoc == null || lobbyLoc.getWorld() == null) {
-            player.sendMessage(miniMessage.deserialize("<red>Lobby spawn location is not set or lobby world is not loaded.</red>"));
+            player.sendMessage(miniMessage.deserialize("<red>Lobby spawn location is not set or Multiverse lobby world is not loaded yet.</red>"));
             return true;
         }
 
