@@ -1,0 +1,59 @@
+# Kategori: Ores & Minerals (Pertambangan)
+name: "Pertambangan & Mineral"
+icon: "DIAMOND"
+slot: 16
+description: "Bijih logam murni, permata, dan mineral berharga dari perut bumi."
+
+items:
+  coal:
+    material: "COAL"
+    buy-price: 50.0
+    display-name: "<dark_gray>Coal</dark_gray>"
+  copper_ingot:
+    material: "COPPER_INGOT"
+    buy-price: 45.0
+    display-name: "<gold>Copper Ingot</gold>"
+  iron_ingot:
+    material: "IRON_INGOT"
+    buy-price: 85.0
+    display-name: "<white>Iron Ingot</white>"
+  gold_ingot:
+    material: "GOLD_INGOT"
+    buy-price: 140.0
+    display-name: "<gold>Gold Ingot</gold>"
+  redstone:
+    material: "REDSTONE"
+    buy-price: 60.0
+    display-name: "<red>Redstone Dust</red>"
+  lapis_lazuli:
+    material: "LAPIS_LAZULI"
+    buy-price: 70.0
+    display-name: "<blue>Lapis Lazuli</blue>"
+  amethyst_shard:
+    material: "AMETHYST_SHARD"
+    buy-price: 65.0
+    display-name: "<light_purple>Amethyst Shard</light_purple>"
+  nether_quartz:
+    material: "QUARTZ"
+    buy-price: 60.0
+    display-name: "<white>Nether Quartz</white>"
+  emerald:
+    material: "EMERALD"
+    buy-price: 280.0
+    display-name: "<green><bold>Emerald</bold></green>"
+  diamond:
+    material: "DIAMOND"
+    buy-price: 380.0
+    display-name: "<aqua><bold>Diamond</bold></aqua>"
+  ancient_debris:
+    material: "ANCIENT_DEBRIS"
+    buy-price: 650.0
+    display-name: "<dark_red><bold>Ancient Debris</bold></dark_red>"
+  netherite_scrap:
+    material: "NETHERITE_SCRAP"
+    buy-price: 700.0
+    display-name: "<dark_gray><bold>Netherite Scrap</bold></dark_gray>"
+  netherite_ingot:
+    material: "NETHERITE_INGOT"
+    buy-price: 1400.0
+    display-name: "<dark_purple><bold>Netherite Ingot</bold></dark_purple>"

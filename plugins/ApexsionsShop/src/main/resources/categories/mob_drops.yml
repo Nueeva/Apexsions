@@ -1,0 +1,59 @@
+# Kategori: Mob Drops (Drop Monster & Berburu)
+name: "Mob Drops & Berburu"
+icon: "ROTTEN_FLESH"
+slot: 28
+description: "Drop jarahan dari monster, hewan buruan, dan makhluk misterius."
+
+items:
+  rotten_flesh:
+    material: "ROTTEN_FLESH"
+    buy-price: 20.0
+    display-name: "<dark_green>Rotten Flesh</dark_green>"
+  bone:
+    material: "BONE"
+    buy-price: 30.0
+    display-name: "<white>Bone</white>"
+  string:
+    material: "STRING"
+    buy-price: 35.0
+    display-name: "<white>String</white>"
+  spider_eye:
+    material: "SPIDER_EYE"
+    buy-price: 40.0
+    display-name: "<dark_red>Spider Eye</dark_red>"
+  gunpowder:
+    material: "GUNPOWDER"
+    buy-price: 65.0
+    display-name: "<dark_gray>Gunpowder</dark_gray>"
+  leather:
+    material: "LEATHER"
+    buy-price: 35.0
+    display-name: "<gold>Leather</gold>"
+  feather:
+    material: "FEATHER"
+    buy-price: 20.0
+    display-name: "<white>Feather</white>"
+  slime_ball:
+    material: "SLIME_BALL"
+    buy-price: 65.0
+    display-name: "<green>Slime Ball</green>"
+  ender_pearl:
+    material: "ENDER_PEARL"
+    buy-price: 90.0
+    display-name: "<dark_aqua>Ender Pearl</dark_aqua>"
+  blaze_rod:
+    material: "BLAZE_ROD"
+    buy-price: 130.0
+    display-name: "<gold>Blaze Rod</gold>"
+  ghast_tear:
+    material: "GHAST_TEAR"
+    buy-price: 320.0
+    display-name: "<white>Ghast Tear</white>"
+  shulker_shell:
+    material: "SHULKER_SHELL"
+    buy-price: 550.0
+    display-name: "<light_purple>Shulker Shell</light_purple>"
+  wither_skeleton_skull:
+    material: "WITHER_SKELETON_SKULL"
+    buy-price: 850.0
+    display-name: "<dark_gray><bold>Wither Skeleton Skull</bold></dark_gray>"

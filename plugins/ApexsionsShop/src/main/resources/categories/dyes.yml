@@ -1,0 +1,71 @@
+# Kategori: Dyes (Pewarna)
+name: "Dyes & Pewarna"
+icon: "RED_DYE"
+slot: 30
+description: "Seluruh aneka pewarna alami dan sintetis untuk dekorasi."
+
+items:
+  white_dye:
+    material: "WHITE_DYE"
+    buy-price: 25.0
+    display-name: "<white>White Dye</white>"
+  orange_dye:
+    material: "ORANGE_DYE"
+    buy-price: 25.0
+    display-name: "<gold>Orange Dye</gold>"
+  magenta_dye:
+    material: "MAGENTA_DYE"
+    buy-price: 25.0
+    display-name: "<light_purple>Magenta Dye</light_purple>"
+  light_blue_dye:
+    material: "LIGHT_BLUE_DYE"
+    buy-price: 25.0
+    display-name: "<aqua>Light Blue Dye</aqua>"
+  yellow_dye:
+    material: "YELLOW_DYE"
+    buy-price: 25.0
+    display-name: "<yellow>Yellow Dye</yellow>"
+  lime_dye:
+    material: "LIME_DYE"
+    buy-price: 25.0
+    display-name: "<green>Lime Dye</green>"
+  pink_dye:
+    material: "PINK_DYE"
+    buy-price: 25.0
+    display-name: "<light_purple>Pink Dye</light_purple>"
+  gray_dye:
+    material: "GRAY_DYE"
+    buy-price: 25.0
+    display-name: "<dark_gray>Gray Dye</dark_gray>"
+  light_gray_dye:
+    material: "LIGHT_GRAY_DYE"
+    buy-price: 25.0
+    display-name: "<gray>Light Gray Dye</gray>"
+  cyan_dye:
+    material: "CYAN_DYE"
+    buy-price: 25.0
+    display-name: "<dark_aqua>Cyan Dye</dark_aqua>"
+  purple_dye:
+    material: "PURPLE_DYE"
+    buy-price: 25.0
+    display-name: "<dark_purple>Purple Dye</dark_purple>"
+  blue_dye:
+    material: "BLUE_DYE"
+    buy-price: 25.0
+    display-name: "<blue>Blue Dye</blue>"
+  brown_dye:
+    material: "BROWN_DYE"
+    buy-price: 25.0
+    display-name: "<gold>Brown Dye</gold>"
+  green_dye:
+    material: "GREEN_DYE"
+    buy-price: 25.0
+    display-name: "<dark_green>Green Dye</dark_green>"
+  red_dye:
+    material: "RED_DYE"
+    buy-price: 25.0
+    display-name: "<red>Red Dye</red>"
+  black_dye:
+    material: "BLACK_DYE"
+    buy-price: 25.0
+    display-name: "<dark_gray>Black Dye</dark_gray>"

@@ -1,0 +1,67 @@
+# Kategori: Farming (Pertanian & Perkebunan)
+name: "Pertanian & Tani"
+icon: "WHEAT"
+slot: 14
+description: "Hasil panen ladang, bibit tanaman, dan komoditas agraris."
+
+items:
+  wheat:
+    material: "WHEAT"
+    buy-price: 25.0
+    display-name: "<yellow>Wheat</yellow>"
+  wheat_seeds:
+    material: "WHEAT_SEEDS"
+    buy-price: 10.0
+    display-name: "<green>Wheat Seeds</green>"
+  carrot:
+    material: "CARROT"
+    buy-price: 22.0
+    display-name: "<gold>Carrot</gold>"
+  potato:
+    material: "POTATO"
+    buy-price: 22.0
+    display-name: "<yellow>Potato</yellow>"
+  beetroot:
+    material: "BEETROOT"
+    buy-price: 22.0
+    display-name: "<red>Beetroot</red>"
+  beetroot_seeds:
+    material: "BEETROOT_SEEDS"
+    buy-price: 10.0
+    display-name: "<red>Beetroot Seeds</red>"
+  sugar_cane:
+    material: "SUGAR_CANE"
+    buy-price: 30.0
+    display-name: "<green>Sugar Cane</green>"
+  melon_slice:
+    material: "MELON_SLICE"
+    buy-price: 12.0
+    display-name: "<green>Melon Slice</green>"
+  pumpkin:
+    material: "PUMPKIN"
+    buy-price: 40.0
+    display-name: "<gold>Pumpkin</gold>"
+  cocoa_beans:
+    material: "COCOA_BEANS"
+    buy-price: 35.0
+    display-name: "<gold>Cocoa Beans</gold>"
+  cactus:
+    material: "CACTUS"
+    buy-price: 25.0
+    display-name: "<green>Cactus</green>"
+  bamboo:
+    material: "BAMBOO"
+    buy-price: 15.0
+    display-name: "<green>Bamboo</green>"
+  sweet_berries:
+    material: "SWEET_BERRIES"
+    buy-price: 18.0
+    display-name: "<red>Sweet Berries</red>"
+  glow_berries:
+    material: "GLOW_BERRIES"
+    buy-price: 25.0
+    display-name: "<yellow>Glow Berries</yellow>"
+  nether_wart:
+    material: "NETHER_WART"
+    buy-price: 55.0
+    display-name: "<dark_red>Nether Wart</dark_red>"

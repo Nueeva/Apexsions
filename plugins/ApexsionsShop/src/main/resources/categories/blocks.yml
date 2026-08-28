@@ -1,0 +1,87 @@
+# Kategori: Blocks (Blok Bangunan & Alam)
+name: "Blocks & Alam"
+icon: "BRICKS"
+slot: 10
+description: "Blok bangunan dasar, batu, kayu, dan material konstruksi."
+
+items:
+  cobblestone:
+    material: "COBBLESTONE"
+    buy-price: 15.0
+    display-name: "<gray>Cobblestone</gray>"
+  stone:
+    material: "STONE"
+    buy-price: 18.0
+    display-name: "<gray>Stone</gray>"
+  deepslate:
+    material: "DEEPSLATE"
+    buy-price: 20.0
+    display-name: "<dark_gray>Deepslate</dark_gray>"
+  granite:
+    material: "GRANITE"
+    buy-price: 20.0
+    display-name: "<gold>Granite</gold>"
+  diorite:
+    material: "DIORITE"
+    buy-price: 20.0
+    display-name: "<white>Diorite</white>"
+  andesite:
+    material: "ANDESITE"
+    buy-price: 20.0
+    display-name: "<gray>Andesite</gray>"
+  dirt:
+    material: "DIRT"
+    buy-price: 12.0
+    display-name: "<gold>Dirt</gold>"
+  grass_block:
+    material: "GRASS_BLOCK"
+    buy-price: 35.0
+    display-name: "<green>Grass Block</green>"
+  sand:
+    material: "SAND"
+    buy-price: 18.0
+    display-name: "<yellow>Sand</yellow>"
+  gravel:
+    material: "GRAVEL"
+    buy-price: 18.0
+    display-name: "<gray>Gravel</gray>"
+  oak_log:
+    material: "OAK_LOG"
+    buy-price: 35.0
+    display-name: "<gold>Oak Log</gold>"
+  spruce_log:
+    material: "SPRUCE_LOG"
+    buy-price: 35.0
+    display-name: "<dark_green>Spruce Log</dark_green>"
+  birch_log:
+    material: "BIRCH_LOG"
+    buy-price: 35.0
+    display-name: "<white>Birch Log</white>"
+  dark_oak_log:
+    material: "DARK_OAK_LOG"
+    buy-price: 35.0
+    display-name: "<dark_gray>Dark Oak Log</dark_gray>"
+  oak_planks:
+    material: "OAK_PLANKS"
+    buy-price: 10.0
+    display-name: "<gold>Oak Planks</gold>"
+  glass:
+    material: "GLASS"
+    buy-price: 22.0
+    display-name: "<aqua>Glass</aqua>"
+  obsidian:
+    material: "OBSIDIAN"
+    buy-price: 120.0
+    display-name: "<dark_purple>Obsidian</dark_purple>"
+  netherrack:
+    material: "NETHERRACK"
+    buy-price: 12.0
+    display-name: "<dark_red>Netherrack</dark_red>"
+  end_stone:
+    material: "END_STONE"
+    buy-price: 30.0
+    display-name: "<yellow>End Stone</yellow>"
+  prismarine:
+    material: "PRISMARINE"
+    buy-price: 45.0
+    display-name: "<dark_aqua>Prismarine</dark_aqua>"

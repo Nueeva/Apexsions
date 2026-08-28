@@ -1,0 +1,28 @@
+name: ApexsionsShop
+version: 1.0.0
+main: com.apex.shop.ApexsionsShop
+api-version: "1.21"
+authors: [ "Nueeva", "Apexsions Team" ]
+description: "Dynamic Kingdom Shop & Economy Market Plugin"
+softdepend: [ "ApexsionsCore", "ApexsionsEconomy", "Vault" ]
+
+commands:
+  shop:
+    description: "Membuka Menu Pasar & Toko Kerajaan Apexsions"
+    aliases: [ "pasar", "toko", "store", "bazar" ]
+    permission: apexsionsshop.use
+  sell:
+    description: "Membuka GUI Penjualan Cepat Item"
+    aliases: [ "sellgui", "jual", "sellhand", "sellall" ]
+    permission: apexsionsshop.sell
+
+permissions:
+  apexsionsshop.use:
+    description: "Akses membuka menu shop"
+    default: true
+  apexsionsshop.sell:
+    description: "Akses menjual item ke toko"
+    default: true
+  apexsionsshop.admin:
+    description: "Akses admin shop reload dan bypass"
+    default: op

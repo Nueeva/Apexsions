@@ -1,0 +1,55 @@
+# Kategori: Food (Makanan & Masakan)
+name: "Makanan & Masakan"
+icon: "COOKED_BEEF"
+slot: 12
+description: "Makanan olahan, daging matang, dan ransum penjelajah."
+
+items:
+  bread:
+    material: "BREAD"
+    buy-price: 40.0
+    display-name: "<gold>Bread</gold>"
+  baked_potato:
+    material: "BAKED_POTATO"
+    buy-price: 35.0
+    display-name: "<yellow>Baked Potato</yellow>"
+  cooked_beef:
+    material: "COOKED_BEEF"
+    buy-price: 65.0
+    display-name: "<red>Cooked Steak</red>"
+  cooked_porkchop:
+    material: "COOKED_PORKCHOP"
+    buy-price: 60.0
+    display-name: "<light_purple>Cooked Porkchop</light_purple>"
+  cooked_mutton:
+    material: "COOKED_MUTTON"
+    buy-price: 50.0
+    display-name: "<gold>Cooked Mutton</gold>"
+  cooked_chicken:
+    material: "COOKED_CHICKEN"
+    buy-price: 45.0
+    display-name: "<yellow>Cooked Chicken</yellow>"
+  cooked_salmon:
+    material: "COOKED_SALMON"
+    buy-price: 50.0
+    display-name: "<aqua>Cooked Salmon</aqua>"
+  cooked_cod:
+    material: "COOKED_COD"
+    buy-price: 45.0
+    display-name: "<aqua>Cooked Cod</aqua>"
+  pumpkin_pie:
+    material: "PUMPKIN_PIE"
+    buy-price: 75.0
+    display-name: "<gold>Pumpkin Pie</gold>"
+  cookie:
+    material: "COOKIE"
+    buy-price: 25.0
+    display-name: "<gold>Cookie</gold>"
+  golden_carrot:
+    material: "GOLDEN_CARROT"
+    buy-price: 180.0
+    display-name: "<gold>Golden Carrot</gold>"
+  golden_apple:
+    material: "GOLDEN_APPLE"
+    buy-price: 550.0
+    display-name: "<yellow><bold>Golden Apple</bold></yellow>"
