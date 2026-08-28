@@ -9,6 +9,7 @@ import com.yourserver.apexsionscore.chat.ChatListener;
 import com.yourserver.apexsionscore.command.AdminCommand;
 import com.yourserver.apexsionscore.command.KingdomCommand;
 import com.yourserver.apexsionscore.command.LobbyCommand;
+import com.yourserver.apexsionscore.command.RtpCommand;
 import com.yourserver.apexsionscore.config.ConfigManager;
 import com.yourserver.apexsionscore.database.DatabaseManager;
 import com.yourserver.apexsionscore.database.PlayerRepository;
@@ -23,6 +24,7 @@ import com.yourserver.apexsionscore.level.xp.XpSourceRegistry;
 import com.yourserver.apexsionscore.player.PlayerDataService;
 import com.yourserver.apexsionscore.player.PlayerListener;
 import com.yourserver.apexsionscore.player.TerritoryListener;
+import com.yourserver.apexsionscore.region.KingdomRtpService;
 import com.yourserver.apexsionscore.region.RegionManager;
 import com.yourserver.apexsionscore.region.RegionTeleportService;
 import com.yourserver.apexsionscore.region.gui.KingdomProfileGUI;
@@ -55,6 +57,7 @@ public class ApexsionsCorePlugin extends JavaPlugin {
     private PlayerDataService playerDataService;
     private RegionManager regionManager;
     private RegionTeleportService regionTeleportService;
+    private KingdomRtpService kingdomRtpService;
     private RegionSelectionGUI regionSelectionGUI;
     private KingdomProfileGUI kingdomProfileGUI;
     private LevelRewardsGUI levelRewardsGUI;
@@ -111,6 +114,7 @@ public class ApexsionsCorePlugin extends JavaPlugin {
             this.regionManager = new RegionManager(this, regionRepository);
             this.regionManager.loadRegions();
             this.regionTeleportService = new RegionTeleportService(this);
+            this.kingdomRtpService = new KingdomRtpService(this);
 
             this.regionSelectionGUI = new RegionSelectionGUI(this);
             Bukkit.getPluginManager().registerEvents(regionSelectionGUI, this);
@@ -249,6 +253,19 @@ public class ApexsionsCorePlugin extends JavaPlugin {
             levelCmd.setExecutor(regionHandler);
             levelCmd.setTabCompleter(regionHandler);
         }
+
+        // /rtp (aliases: /wild, /wilderness, /krtp, /randomteleport, /rtpkingdom)
+        com.yourserver.apexsionscore.command.RtpCommand rtpHandler = new com.yourserver.apexsionscore.command.RtpCommand(this);
+        PluginCommand rtpCmd = getCommand("rtp");
+        if (rtpCmd != null) {
+            rtpCmd.setExecutor(rtpHandler);
+            rtpCmd.setTabCompleter(rtpHandler);
+        }
+        PluginCommand wildCmd = getCommand("wild");
+        if (wildCmd != null) {
+            wildCmd.setExecutor(rtpHandler);
+            wildCmd.setTabCompleter(rtpHandler);
+        }
     }
 
     public static ApexsionsCorePlugin getInstance() { return instance; }
@@ -261,6 +278,7 @@ public class ApexsionsCorePlugin extends JavaPlugin {
     public PlayerDataService getPlayerDataService() { return playerDataService; }
     public RegionManager getRegionManager() { return regionManager; }
     public RegionTeleportService getRegionTeleportService() { return regionTeleportService; }
+    public KingdomRtpService getKingdomRtpService() { return kingdomRtpService; }
     public RegionSelectionGUI getRegionSelectionGUI() { return regionSelectionGUI; }
     public KingdomProfileGUI getKingdomProfileGUI() { return kingdomProfileGUI; }
     public LevelRewardsGUI getLevelRewardsGUI() { return levelRewardsGUI; }

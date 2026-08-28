@@ -50,3 +50,11 @@ bluemap:
   sync-spawns: true
   # Display title/actionbar when player walks into kingdom territory
   territory-actionbar: true
+
+rtp:
+  # Cooldown between /rtp uses in seconds (bypass permission: apexsionscore.rtp.bypass)
+  cooldown-seconds: 60
+  # Maximum retry attempts to find safe location within kingdom polygon
+  max-attempts: 30
+  # Padding distance from territory polygon borders (blocks)
+  boundary-margin: 16

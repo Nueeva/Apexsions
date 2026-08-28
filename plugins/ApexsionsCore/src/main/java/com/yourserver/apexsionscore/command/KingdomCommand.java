@@ -83,9 +83,17 @@ public class KingdomCommand implements CommandExecutor, TabCompleter {
                 handleKingdomXpGuide(player);
                 break;
 
+            case "rtp":
+            case "wild":
+            case "wilderness":
+            case "krtp":
+                plugin.getKingdomRtpService().executeRtp(player);
+                break;
+
             default:
                 player.sendMessage(miniMessage.deserialize("<gold><bold>Apexsions Kingdom Commands:</bold></gold>"));
                 player.sendMessage(miniMessage.deserialize("<yellow>/kingdom</yellow> <gray>- Teleport to your kingdom spawn</gray>"));
+                player.sendMessage(miniMessage.deserialize("<yellow>/kingdom rtp</yellow> <gray>- Random teleport strictly inside your kingdom</gray>"));
                 player.sendMessage(miniMessage.deserialize("<yellow>/kingdom choose</yellow> <gray>- Open kingdom selection GUI</gray>"));
                 player.sendMessage(miniMessage.deserialize("<yellow>/kingdom info</yellow> <gray>- Open your interactive Kingdom Profile & Level GUI</gray>"));
                 player.sendMessage(miniMessage.deserialize("<yellow>/kingdom rewards</yellow> <gray>- View & claim Level 1–100 progression rewards</gray>"));
@@ -154,7 +162,7 @@ public class KingdomCommand implements CommandExecutor, TabCompleter {
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
         if (args.length == 1) {
-            List<String> list = Arrays.asList("choose", "info", "profile", "rewards", "claim", "xp", "guide", "level");
+            List<String> list = Arrays.asList("choose", "info", "profile", "rewards", "claim", "xp", "guide", "level", "rtp", "wild", "wilderness");
             String prefix = args[0].toLowerCase();
             List<String> matches = new ArrayList<>();
             for (String s : list) {

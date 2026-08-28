@@ -89,4 +89,20 @@ public class TerritoryPolygon {
     public double getMaxY() {
         return maxY;
     }
+
+    public double getMinX() {
+        return minX;
+    }
+
+    public double getMaxX() {
+        return maxX;
+    }
+
+    public double getMinZ() {
+        return minZ;
+    }
+
+    public double getMaxZ() {
+        return maxZ;
+    }
 }

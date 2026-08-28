@@ -64,6 +64,22 @@ commands:
     description: View character profile, level progression, rewards, and XP guide.
     permission: apexsionscore.command.level
     usage: /level
+  rtp:
+    aliases:
+      - wild
+      - wilderness
+      - krtp
+      - randomteleport
+      - rtpkingdom
+    description: Random teleport strictly inside your pledged kingdom territory.
+    permission: apexsionscore.command.rtp
+    usage: /rtp
+  wild:
+    aliases:
+      - wilderness
+    description: Random teleport strictly inside your pledged kingdom territory.
+    permission: apexsionscore.command.rtp
+    usage: /wild
 
 permissions:
   apexsionscore.command.lobby:
@@ -75,6 +91,12 @@ permissions:
   apexsionscore.command.level:
     description: Allows accessing level, profile, rewards, and XP guide.
     default: true
+  apexsionscore.command.rtp:
+    description: Allows random teleporting inside player's kingdom territory.
+    default: true
+  apexsionscore.rtp.bypass:
+    description: Bypasses /rtp cooldown timer.
+    default: op
   apexsionscore.admin:
     description: Allows access to administrative commands.
     default: op
@@ -89,6 +111,8 @@ permissions:
     default: true
   apexionscore.command.level:
     default: true
+  apexionscore.command.rtp:
+    default: true
   apexionscore.admin:
     default: op
   kingdomcore.command.lobby:
@@ -96,6 +120,8 @@ permissions:
   kingdomcore.command.kingdom:
     default: true
   kingdomcore.command.level:
+    default: true
+  kingdomcore.command.rtp:
     default: true
   kingdomcore.admin:
     default: op
