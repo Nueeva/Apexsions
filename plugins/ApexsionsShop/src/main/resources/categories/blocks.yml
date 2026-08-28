@@ -2,9 +2,10 @@
 name: "Blocks & Alam"
 icon: "BRICKS"
 slot: 10
-description: "Blok bangunan dasar, batu, kayu, dan material konstruksi."
+description: "Blok bangunan lengkap, bebatuan, aneka kayu, tanah, terracotta, dan konkret."
 
 items:
+  # --- Bebatuan Dasar (Stones) ---
   cobblestone:
     material: "COBBLESTONE"
     buy-price: 15.0
@@ -13,6 +14,14 @@ items:
     material: "STONE"
     buy-price: 18.0
     display-name: "<gray>Stone</gray>"
+  smooth_stone:
+    material: "SMOOTH_STONE"
+    buy-price: 22.0
+    display-name: "<gray>Smooth Stone</gray>"
+  cobbled_deepslate:
+    material: "COBBLED_DEEPSLATE"
+    buy-price: 18.0
+    display-name: "<dark_gray>Cobbled Deepslate</dark_gray>"
   deepslate:
     material: "DEEPSLATE"
     buy-price: 20.0
@@ -29,22 +38,70 @@ items:
     material: "ANDESITE"
     buy-price: 20.0
     display-name: "<gray>Andesite</gray>"
-  dirt:
-    material: "DIRT"
-    buy-price: 12.0
-    display-name: "<gold>Dirt</gold>"
-  grass_block:
-    material: "GRASS_BLOCK"
+  tuff:
+    material: "TUFF"
+    buy-price: 20.0
+    display-name: "<dark_gray>Tuff</dark_gray>"
+  calcite:
+    material: "CALCITE"
+    buy-price: 25.0
+    display-name: "<white>Calcite</white>"
+  dripstone_block:
+    material: "DRIPSTONE_BLOCK"
+    buy-price: 25.0
+    display-name: "<gold>Dripstone Block</gold>"
+  blackstone:
+    material: "BLACKSTONE"
+    buy-price: 25.0
+    display-name: "<dark_gray>Blackstone</dark_gray>"
+  basalt:
+    material: "BASALT"
+    buy-price: 22.0
+    display-name: "<dark_gray>Basalt</dark_gray>"
+  obsidian:
+    material: "OBSIDIAN"
+    buy-price: 120.0
+    display-name: "<dark_purple>Obsidian</dark_purple>"
+  crying_obsidian:
+    material: "CRYING_OBSIDIAN"
+    buy-price: 180.0
+    display-name: "<light_purple>Crying Obsidian</light_purple>"
+
+  # --- Bricks & Batu Olahan ---
+  stone_bricks:
+    material: "STONE_BRICKS"
+    buy-price: 22.0
+    display-name: "<gray>Stone Bricks</gray>"
+  deepslate_bricks:
+    material: "DEEPSLATE_BRICKS"
+    buy-price: 25.0
+    display-name: "<dark_gray>Deepslate Bricks</dark_gray>"
+  mud_bricks:
+    material: "MUD_BRICKS"
+    buy-price: 25.0
+    display-name: "<gold>Mud Bricks</gold>"
+  nether_bricks:
+    material: "NETHER_BRICKS"
+    buy-price: 30.0
+    display-name: "<dark_red>Nether Bricks</dark_red>"
+  red_nether_bricks:
+    material: "RED_NETHER_BRICKS"
     buy-price: 35.0
-    display-name: "<green>Grass Block</green>"
-  sand:
-    material: "SAND"
-    buy-price: 18.0
-    display-name: "<yellow>Sand</yellow>"
-  gravel:
-    material: "GRAVEL"
-    buy-price: 18.0
-    display-name: "<gray>Gravel</gray>"
+    display-name: "<red>Red Nether Bricks</red>"
+  end_stone_bricks:
+    material: "END_STONE_BRICKS"
+    buy-price: 35.0
+    display-name: "<yellow>End Stone Bricks</yellow>"
+  quartz_bricks:
+    material: "QUARTZ_BRICKS"
+    buy-price: 45.0
+    display-name: "<white>Quartz Bricks</white>"
+  prismarine_bricks:
+    material: "PRISMARINE_BRICKS"
+    buy-price: 45.0
+    display-name: "<dark_aqua>Prismarine Bricks</dark_aqua>"
+
+  # --- Batang Kayu (Logs) ---
   oak_log:
     material: "OAK_LOG"
     buy-price: 35.0
@@ -57,22 +114,160 @@ items:
     material: "BIRCH_LOG"
     buy-price: 35.0
     display-name: "<white>Birch Log</white>"
+  jungle_log:
+    material: "JUNGLE_LOG"
+    buy-price: 35.0
+    display-name: "<gold>Jungle Log</gold>"
+  acacia_log:
+    material: "ACACIA_LOG"
+    buy-price: 35.0
+    display-name: "<gold>Acacia Log</gold>"
   dark_oak_log:
     material: "DARK_OAK_LOG"
     buy-price: 35.0
     display-name: "<dark_gray>Dark Oak Log</dark_gray>"
+  mangrove_log:
+    material: "MANGROVE_LOG"
+    buy-price: 35.0
+    display-name: "<dark_red>Mangrove Log</dark_red>"
+  cherry_log:
+    material: "CHERRY_LOG"
+    buy-price: 40.0
+    display-name: "<light_purple>Cherry Log</light_purple>"
+  pale_oak_log:
+    material: "PALE_OAK_LOG"
+    buy-price: 40.0
+    display-name: "<white>Pale Oak Log</white>"
+  crimson_stem:
+    material: "CRIMSON_STEM"
+    buy-price: 45.0
+    display-name: "<dark_red>Crimson Stem</dark_red>"
+  warped_stem:
+    material: "WARPED_STEM"
+    buy-price: 45.0
+    display-name: "<dark_aqua>Warped Stem</dark_aqua>"
+
+  # --- Papan Kayu (Planks) ---
   oak_planks:
     material: "OAK_PLANKS"
     buy-price: 10.0
     display-name: "<gold>Oak Planks</gold>"
+  spruce_planks:
+    material: "SPRUCE_PLANKS"
+    buy-price: 10.0
+    display-name: "<dark_green>Spruce Planks</dark_green>"
+  birch_planks:
+    material: "BIRCH_PLANKS"
+    buy-price: 10.0
+    display-name: "<white>Birch Planks</white>"
+  jungle_planks:
+    material: "JUNGLE_PLANKS"
+    buy-price: 10.0
+    display-name: "<gold>Jungle Planks</gold>"
+  acacia_planks:
+    material: "ACACIA_PLANKS"
+    buy-price: 10.0
+    display-name: "<gold>Acacia Planks</gold>"
+  dark_oak_planks:
+    material: "DARK_OAK_PLANKS"
+    buy-price: 10.0
+    display-name: "<dark_gray>Dark Oak Planks</dark_gray>"
+  mangrove_planks:
+    material: "MANGROVE_PLANKS"
+    buy-price: 10.0
+    display-name: "<dark_red>Mangrove Planks</dark_red>"
+  cherry_planks:
+    material: "CHERRY_PLANKS"
+    buy-price: 12.0
+    display-name: "<light_purple>Cherry Planks</light_purple>"
+  bamboo_planks:
+    material: "BAMBOO_PLANKS"
+    buy-price: 10.0
+    display-name: "<yellow>Bamboo Planks</yellow>"
+
+  # --- Tanah, Pasir & Lumpur (Earth & Sands) ---
+  dirt:
+    material: "DIRT"
+    buy-price: 12.0
+    display-name: "<gold>Dirt</gold>"
+  coarse_dirt:
+    material: "COARSE_DIRT"
+    buy-price: 15.0
+    display-name: "<gold>Coarse Dirt</gold>"
+  grass_block:
+    material: "GRASS_BLOCK"
+    buy-price: 35.0
+    display-name: "<green>Grass Block</green>"
+  podzol:
+    material: "PODZOL"
+    buy-price: 30.0
+    display-name: "<gold>Podzol</gold>"
+  mycelium:
+    material: "MYCELIUM"
+    buy-price: 40.0
+    display-name: "<light_purple>Mycelium</light_purple>"
+  mud:
+    material: "MUD"
+    buy-price: 15.0
+    display-name: "<dark_gray>Mud</dark_gray>"
+  clay:
+    material: "CLAY"
+    buy-price: 25.0
+    display-name: "<gray>Clay Block</gray>"
+  sand:
+    material: "SAND"
+    buy-price: 18.0
+    display-name: "<yellow>Sand</yellow>"
+  red_sand:
+    material: "RED_SAND"
+    buy-price: 20.0
+    display-name: "<gold>Red Sand</gold>"
+  sandstone:
+    material: "SANDSTONE"
+    buy-price: 22.0
+    display-name: "<yellow>Sandstone</yellow>"
+  red_sandstone:
+    material: "RED_SANDSTONE"
+    buy-price: 24.0
+    display-name: "<gold>Red Sandstone</gold>"
+  gravel:
+    material: "GRAVEL"
+    buy-price: 18.0
+    display-name: "<gray>Gravel</gray>"
+  soul_sand:
+    material: "SOUL_SAND"
+    buy-price: 25.0
+    display-name: "<gold>Soul Sand</gold>"
+  soul_soil:
+    material: "SOUL_SOIL"
+    buy-price: 25.0
+    display-name: "<gold>Soul Soil</gold>"
+
+  # --- Kaca, Laut & Dimensi Lain ---
   glass:
     material: "GLASS"
     buy-price: 22.0
     display-name: "<aqua>Glass</aqua>"
-  obsidian:
-    material: "OBSIDIAN"
-    buy-price: 120.0
-    display-name: "<dark_purple>Obsidian</dark_purple>"
+  tinted_glass:
+    material: "TINTED_GLASS"
+    buy-price: 40.0
+    display-name: "<dark_gray>Tinted Glass</dark_gray>"
+  sea_lantern:
+    material: "SEA_LANTERN"
+    buy-price: 60.0
+    display-name: "<aqua>Sea Lantern</aqua>"
+  glowstone:
+    material: "GLOWSTONE"
+    buy-price: 50.0
+    display-name: "<yellow>Glowstone</yellow>"
+  prismarine:
+    material: "PRISMARINE"
+    buy-price: 45.0
+    display-name: "<dark_aqua>Prismarine</dark_aqua>"
+  dark_prismarine:
+    material: "DARK_PRISMARINE"
+    buy-price: 55.0
+    display-name: "<dark_aqua>Dark Prismarine</dark_aqua>"
   netherrack:
     material: "NETHERRACK"
     buy-price: 12.0
@@ -81,7 +276,75 @@ items:
     material: "END_STONE"
     buy-price: 30.0
     display-name: "<yellow>End Stone</yellow>"
-  prismarine:
-    material: "PRISMARINE"
-    buy-price: 45.0
-    display-name: "<dark_aqua>Prismarine</dark_aqua>"
+
+  # --- Concrete (Konkret Pilihan) ---
+  white_concrete:
+    material: "WHITE_CONCRETE"
+    buy-price: 28.0
+    display-name: "<white>White Concrete</white>"
+  orange_concrete:
+    material: "ORANGE_CONCRETE"
+    buy-price: 28.0
+    display-name: "<gold>Orange Concrete</gold>"
+  yellow_concrete:
+    material: "YELLOW_CONCRETE"
+    buy-price: 28.0
+    display-name: "<yellow>Yellow Concrete</yellow>"
+  lime_concrete:
+    material: "LIME_CONCRETE"
+    buy-price: 28.0
+    display-name: "<green>Lime Concrete</green>"
+  cyan_concrete:
+    material: "CYAN_CONCRETE"
+    buy-price: 28.0
+    display-name: "<dark_aqua>Cyan Concrete</dark_aqua>"
+  blue_concrete:
+    material: "BLUE_CONCRETE"
+    buy-price: 28.0
+    display-name: "<blue>Blue Concrete</blue>"
+  red_concrete:
+    material: "RED_CONCRETE"
+    buy-price: 28.0
+    display-name: "<red>Red Concrete</red>"
+  black_concrete:
+    material: "BLACK_CONCRETE"
+    buy-price: 28.0
+    display-name: "<dark_gray>Black Concrete</dark_gray>"
+
+  # --- Terracotta Pilihan ---
+  terracotta:
+    material: "TERRACOTTA"
+    buy-price: 26.0
+    display-name: "<gold>Terracotta</gold>"
+  white_terracotta:
+    material: "WHITE_TERRACOTTA"
+    buy-price: 28.0
+    display-name: "<white>White Terracotta</white>"
+  orange_terracotta:
+    material: "ORANGE_TERRACOTTA"
+    buy-price: 28.0
+    display-name: "<gold>Orange Terracotta</gold>"
+  yellow_terracotta:
+    material: "YELLOW_TERRACOTTA"
+    buy-price: 28.0
+    display-name: "<yellow>Yellow Terracotta</yellow>"
+  lime_terracotta:
+    material: "LIME_TERRACOTTA"
+    buy-price: 28.0
+    display-name: "<green>Lime Terracotta</green>"
+  cyan_terracotta:
+    material: "CYAN_TERRACOTTA"
+    buy-price: 28.0
+    display-name: "<dark_aqua>Cyan Terracotta</dark_aqua>"
+  blue_terracotta:
+    material: "BLUE_TERRACOTTA"
+    buy-price: 28.0
+    display-name: "<blue>Blue Terracotta</blue>"
+  red_terracotta:
+    material: "RED_TERRACOTTA"
+    buy-price: 28.0
+    display-name: "<red>Red Terracotta</red>"
+  black_terracotta:
+    material: "BLACK_TERRACOTTA"
+    buy-price: 28.0
+    display-name: "<dark_gray>Black Terracotta</dark_gray>"

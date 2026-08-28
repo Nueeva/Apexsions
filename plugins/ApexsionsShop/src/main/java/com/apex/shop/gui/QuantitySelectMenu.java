@@ -6,11 +6,14 @@ import com.apex.shop.dynamic.DynamicPriceCalculator.PriceResult;
 import com.apex.shop.gui.core.ShopGui;
 import com.apex.shop.gui.core.ShopGuiButton;
 import com.apex.shop.gui.core.ShopItemBuilder;
+import com.apex.shop.gui.navigation.BackButton;
+import com.apex.shop.util.InventoryUtil;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class QuantitySelectMenu extends ShopGui {
@@ -18,7 +21,7 @@ public class QuantitySelectMenu extends ShopGui {
     private final ShopItem shopItem;
 
     public QuantitySelectMenu(ApexsionsShop plugin, Player player, ShopItem shopItem, ShopGui parent) {
-        super(plugin, player, "<dark_gray>[ JUMLAH: " + shopItem.getDisplayName() + " ]</dark_gray>", 45, parent);
+        super(plugin, player, "<dark_gray>[ TRANSAKSI: " + shopItem.getDisplayName() + " ]</dark_gray>", 45, parent);
         this.shopItem = shopItem;
     }
 
@@ -26,18 +29,34 @@ public class QuantitySelectMenu extends ShopGui {
     public void initialize() {
         fillBorder();
 
-        // 1. Center Item Preview (Slot 4)
+        PriceResult buy1 = plugin.getDynamicPriceCalculator().calculateBuyPrice(shopItem, player, 1);
+        PriceResult buy64 = plugin.getDynamicPriceCalculator().calculateBuyPrice(shopItem, player, 64);
+        PriceResult sell1 = plugin.getDynamicPriceCalculator().calculateSellPrice(shopItem, player, 1);
+        PriceResult sell64 = plugin.getDynamicPriceCalculator().calculateSellPrice(shopItem, player, 64);
+
+        int playerHas = InventoryUtil.countItems(player, shopItem.getMaterial());
+        double balance = plugin.getEconomyHook().getBalance(player);
+
+        // 1. Center Item Preview Card (Slot 4)
+        List<String> lore = new ArrayList<>();
+        lore.add("<gray>Kategori: <gold>" + shopItem.getCategory().getDisplayName() + "</gold></gray>");
+        lore.add("<dark_gray>────────────────────────</dark_gray>");
+        lore.add("<green>Harga Beli: <gold>" + plugin.getEconomyHook().format(buy1.finalTotalPrice()) + "</gold> <gray>(64x: " + plugin.getEconomyHook().format(buy64.finalTotalPrice()) + ")</gray></green>");
+        lore.add("<red>Harga Jual: <gold>" + plugin.getEconomyHook().format(sell1.finalTotalPrice()) + "</gold> <gray>(64x: " + plugin.getEconomyHook().format(sell64.finalTotalPrice()) + ")</gray></red>");
+        lore.add("<dark_gray>────────────────────────</dark_gray>");
+        lore.add("<gray>Saldo Kamu: <yellow>" + plugin.getEconomyHook().format(balance) + "</yellow></gray>");
+        lore.add("<gray>Dimiliki di Tas: <yellow>" + playerHas + " butir</yellow></gray>");
+        lore.add("<gray>Pajak Kerajaan: <red>" + String.format("%.1f", buy1.taxPercent()) + "%</red></gray>");
+
         setButton(4, new ShopGuiButton(new ShopItemBuilder(shopItem.getMaterial())
                 .name(shopItem.getDisplayName())
-                .lore(List.of(
-                        "<gray>Kategori: <gold>" + shopItem.getCategory().getDisplayName() + "</gold></gray>",
-                        "<gray>Pilih kuantitas transaksi di bawah.</gray>"
-                ))
+                .lore(lore)
+                .hideAttributes()
                 .build()));
 
-        // 2. Buy Options (Row 2: 10, 11, 12, 13, 14)
-        int[] buyAmounts = { 1, 16, 32, 64, 128 };
-        int[] buySlots = { 10, 11, 12, 13, 14 };
+        // 2. Buy Buttons (Row 2: Slots 10, 11, 12, 13, 14)
+        int[] buyAmounts = { 1, 16, 32, 64 };
+        int[] buySlots = { 10, 11, 12, 13 };
 
         for (int i = 0; i < buyAmounts.length; i++) {
             int qty = buyAmounts[i];
@@ -48,16 +67,37 @@ public class QuantitySelectMenu extends ShopGui {
                     .name("<green><bold>BELI " + qty + "x</bold></green>")
                     .lore(List.of(
                             "<gray>Total Biaya: <gold>" + plugin.getEconomyHook().format(res.finalTotalPrice()) + "</gold></gray>",
-                            "<dark_gray>Termasuk Pajak: " + plugin.getEconomyHook().format(res.taxAmount()) + "</dark_gray>",
+                            "<dark_gray>Termasuk Pajak (" + String.format("%.1f", res.taxPercent()) + "%): " + plugin.getEconomyHook().format(res.taxAmount()) + "</dark_gray>",
                             " ",
-                            "<yellow>Klik untuk konfirmasi pembelian ▶</yellow>"
+                            "<yellow>Sentuh / Klik untuk Beli ▶</yellow>"
                     ))
                     .build(), event -> {
                 buy(qty);
             }));
         }
 
-        // 3. Sell Options (Row 3: 19, 20, 21, 22, 23)
+        // Buy Max Button (Slot 14)
+        int rawAffordable = buy1.effectiveUnitPrice() > 0 ? (int) (balance / (buy1.effectiveUnitPrice() * (1.0 + buy1.taxPercent() / 100.0))) : 0;
+        final int maxAffordable = Math.max(0, rawAffordable);
+        PriceResult maxBuyRes = plugin.getDynamicPriceCalculator().calculateBuyPrice(shopItem, player, Math.max(1, maxAffordable));
+        setButton(14, new ShopGuiButton(new ShopItemBuilder(Material.EMERALD)
+                .name("<green><bold>BELI MAKSIMAL (" + maxAffordable + "x)</bold></green>")
+                .lore(List.of(
+                        "<gray>Mampu Dibeli: <yellow>" + maxAffordable + " butir</yellow></gray>",
+                        "<gray>Total Biaya: <gold>" + plugin.getEconomyHook().format(maxAffordable > 0 ? maxBuyRes.finalTotalPrice() : 0) + "</gold></gray>",
+                        " ",
+                        "<yellow>Sentuh / Klik untuk Beli Semua ▶</yellow>"
+                ))
+                .build(), event -> {
+            if (maxAffordable > 0) buy(maxAffordable);
+            else {
+                player.sendMessage(MM.deserialize(plugin.getConfigManager().getMessage("not-enough-money", "<red>Saldo tidak cukup!</red>")
+                        .replace("%required%", plugin.getEconomyHook().format(buy1.finalTotalPrice()))));
+                player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
+            }
+        }));
+
+        // 3. Sell Buttons (Row 3: Slots 19, 20, 21, 22, 23)
         int[] sellAmounts = { 1, 16, 32, 64 };
         int[] sellSlots = { 19, 20, 21, 22 };
 
@@ -70,38 +110,31 @@ public class QuantitySelectMenu extends ShopGui {
                     .name("<red><bold>JUAL " + qty + "x</bold></red>")
                     .lore(List.of(
                             "<gray>Hasil Jual: <gold>" + plugin.getEconomyHook().format(res.finalTotalPrice()) + "</gold></gray>",
-                            "<dark_gray>Potongan Pajak: " + plugin.getEconomyHook().format(res.taxAmount()) + "</dark_gray>",
+                            "<dark_gray>Potongan Pajak (" + String.format("%.1f", res.taxPercent()) + "%): " + plugin.getEconomyHook().format(res.taxAmount()) + "</dark_gray>",
                             " ",
-                            "<yellow>Klik untuk konfirmasi penjualan ▶</yellow>"
+                            "<yellow>Sentuh / Klik untuk Jual ▶</yellow>"
                     ))
                     .build(), event -> {
                 sell(qty);
             }));
         }
 
-        // Sell Max Button (Slot 23)
-        int playerHas = countItems(player, shopItem.getMaterial());
+        // Sell All Button (Slot 23)
         PriceResult maxSellRes = plugin.getDynamicPriceCalculator().calculateSellPrice(shopItem, player, Math.max(1, playerHas));
         setButton(23, new ShopGuiButton(new ShopItemBuilder(Material.CHEST)
                 .name("<red><bold>JUAL SEMUA (" + playerHas + "x)</bold></red>")
                 .lore(List.of(
-                        "<gray>Total Dimiliki: <yellow>" + playerHas + "x</yellow></gray>",
+                        "<gray>Total Dimiliki: <yellow>" + playerHas + " butir</yellow></gray>",
                         "<gray>Hasil Jual: <gold>" + plugin.getEconomyHook().format(playerHas > 0 ? maxSellRes.finalTotalPrice() : 0) + "</gold></gray>",
                         " ",
-                        "<yellow>Klik untuk menjual seluruh item ini ▶</yellow>"
+                        "<yellow>Sentuh / Klik untuk Jual Semua ▶</yellow>"
                 ))
                 .build(), event -> {
             sell(playerHas);
         }));
 
-        // Back Button (Slot 40)
-        setButton(40, new ShopGuiButton(new ShopItemBuilder(Material.ARROW)
-                .name("<yellow>◀ KEMBALI</yellow>")
-                .build(), event -> {
-            player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.7f, 1.0f);
-            if (parent != null) parent.open();
-            else new ShopMainMenu(plugin, player).open();
-        }));
+        // 4. Navigation (Bottom Row: Slot 40)
+        setButton(40, new BackButton(this, parent));
     }
 
     private void buy(int quantity) {
@@ -117,6 +150,13 @@ public class QuantitySelectMenu extends ShopGui {
         }
 
         ItemStack toAdd = new ItemStack(shopItem.getMaterial(), quantity);
+        if (!InventoryUtil.hasEnoughSpace(player, toAdd)) {
+            player.sendMessage(MM.deserialize(plugin.getConfig().getString("messages.prefix", "") +
+                    plugin.getConfig().getString("messages.inventory-full", "<red>Inventori penuh!</red>")));
+            player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
+            return;
+        }
+
         if (plugin.getEconomyHook().withdraw(player, totalCost)) {
             player.getInventory().addItem(toAdd);
             player.sendMessage(MM.deserialize(plugin.getConfig().getString("messages.prefix", "") +
@@ -139,14 +179,20 @@ public class QuantitySelectMenu extends ShopGui {
             return;
         }
 
-        int playerHas = countItems(player, shopItem.getMaterial());
+        int playerHas = InventoryUtil.countItems(player, shopItem.getMaterial());
         int actualQuantity = Math.min(quantity, playerHas);
-        if (actualQuantity <= 0) return;
+        if (actualQuantity <= 0) {
+            player.sendMessage(MM.deserialize(plugin.getConfig().getString("messages.prefix", "") +
+                    plugin.getConfig().getString("messages.not-enough-items", "<red>Kamu tidak memiliki item!</red>")
+                            .replace("%item%", shopItem.getDisplayName())));
+            player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
+            return;
+        }
 
         PriceResult result = plugin.getDynamicPriceCalculator().calculateSellPrice(shopItem, player, actualQuantity);
         double payout = result.finalTotalPrice();
 
-        removeItems(player, shopItem.getMaterial(), actualQuantity);
+        InventoryUtil.removeItems(player, shopItem.getMaterial(), actualQuantity);
         plugin.getEconomyHook().deposit(player, payout);
 
         player.sendMessage(MM.deserialize(plugin.getConfig().getString("messages.prefix", "") +
@@ -157,34 +203,5 @@ public class QuantitySelectMenu extends ShopGui {
                         .replace("%tax%", plugin.getEconomyHook().format(result.taxAmount()))));
         player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 0.6f, 1.8f);
         open();
-    }
-
-    private int countItems(Player player, Material material) {
-        int count = 0;
-        for (ItemStack is : player.getInventory().getStorageContents()) {
-            if (is != null && is.getType() == material) {
-                count += is.getAmount();
-            }
-        }
-        return count;
-    }
-
-    private void removeItems(Player player, Material material, int amount) {
-        int remaining = amount;
-        ItemStack[] contents = player.getInventory().getStorageContents();
-        for (int i = 0; i < contents.length; i++) {
-            ItemStack is = contents[i];
-            if (is != null && is.getType() == material) {
-                if (is.getAmount() <= remaining) {
-                    remaining -= is.getAmount();
-                    contents[i] = null;
-                } else {
-                    is.setAmount(is.getAmount() - remaining);
-                    remaining = 0;
-                    break;
-                }
-            }
-        }
-        player.getInventory().setStorageContents(contents);
     }
 }

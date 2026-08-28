@@ -14,7 +14,7 @@ import java.util.List;
 public class ShopMainMenu extends ShopGui {
 
     public ShopMainMenu(ApexsionsShop plugin, Player player) {
-        super(plugin, player, plugin.getConfig().getString("gui.title-main", "<dark_gray><bold>[ APEXSIONS MARKET ]</bold></dark_gray>"), 54);
+        super(plugin, player, plugin.getConfigManager().getGuiConfig().getString("titles.main-menu", "<dark_gray><bold>[ APEXSIONS MARKET ]</bold></dark_gray>"), 54);
     }
 
     @Override
@@ -41,7 +41,7 @@ public class ShopMainMenu extends ShopGui {
                             category.getDescription(),
                             " ",
                             "<gray>Total Item: <yellow>" + itemCount + " komoditas</yellow></gray>",
-                            "<yellow>Klik untuk membuka kategori ▶</yellow>"
+                            "<yellow>Sentuh / Klik untuk Buka ▶</yellow>"
                     ))
                     .build(), event -> {
                 player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.7f, 1.2f);
@@ -69,9 +69,9 @@ public class ShopMainMenu extends ShopGui {
                 .name("<green><bold>JUAL CEPAT (SELL GUI)</bold></green>")
                 .lore(List.of(
                         "<gray>Jual banyak item sekaligus secara instan.</gray>",
-                        "<gray>Cukup drag & drop item ke dalam kotak.</gray>",
+                        "<gray>Cukup drag & drop item ke dalam kotak kosong.</gray>",
                         " ",
-                        "<yellow>Klik untuk membuka Sell GUI ▶</yellow>"
+                        "<yellow>Sentuh / Klik untuk Buka Sell GUI ▶</yellow>"
                 ))
                 .build(), event -> {
             player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.7f, 1.2f);
@@ -79,8 +79,6 @@ public class ShopMainMenu extends ShopGui {
         }));
 
         // 5. Close Button (Slot 49)
-        setButton(49, new ShopGuiButton(new ShopItemBuilder(Material.BARRIER)
-                .name("<red><bold>TUTUP MENU</bold></red>")
-                .build(), event -> player.closeInventory()));
+        setButton(49, new com.apex.shop.gui.navigation.CloseButton());
     }
 }

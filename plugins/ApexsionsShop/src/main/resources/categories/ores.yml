@@ -9,14 +9,26 @@ items:
     material: "COAL"
     buy-price: 50.0
     display-name: "<dark_gray>Coal</dark_gray>"
+  raw_copper:
+    material: "RAW_COPPER"
+    buy-price: 35.0
+    display-name: "<gold>Raw Copper</gold>"
   copper_ingot:
     material: "COPPER_INGOT"
     buy-price: 45.0
     display-name: "<gold>Copper Ingot</gold>"
+  raw_iron:
+    material: "RAW_IRON"
+    buy-price: 70.0
+    display-name: "<white>Raw Iron</white>"
   iron_ingot:
     material: "IRON_INGOT"
     buy-price: 85.0
     display-name: "<white>Iron Ingot</white>"
+  raw_gold:
+    material: "RAW_GOLD"
+    buy-price: 115.0
+    display-name: "<gold>Raw Gold</gold>"
   gold_ingot:
     material: "GOLD_INGOT"
     buy-price: 140.0
@@ -43,17 +55,5 @@ items:
     display-name: "<green><bold>Emerald</bold></green>"
   diamond:
     material: "DIAMOND"
-    buy-price: 380.0
+    buy-price: 450.0
     display-name: "<aqua><bold>Diamond</bold></aqua>"
-  ancient_debris:
-    material: "ANCIENT_DEBRIS"
-    buy-price: 650.0
-    display-name: "<dark_red><bold>Ancient Debris</bold></dark_red>"
-  netherite_scrap:
-    material: "NETHERITE_SCRAP"
-    buy-price: 700.0
-    display-name: "<dark_gray><bold>Netherite Scrap</bold></dark_gray>"
-  netherite_ingot:
-    material: "NETHERITE_INGOT"
-    buy-price: 1400.0
-    display-name: "<dark_purple><bold>Netherite Ingot</bold></dark_purple>"

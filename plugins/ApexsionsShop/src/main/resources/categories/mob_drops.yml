@@ -53,7 +53,3 @@ items:
     material: "SHULKER_SHELL"
     buy-price: 550.0
     display-name: "<light_purple>Shulker Shell</light_purple>"
-  wither_skeleton_skull:
-    material: "WITHER_SKELETON_SKULL"
-    buy-price: 850.0
-    display-name: "<dark_gray><bold>Wither Skeleton Skull</bold></dark_gray>"
