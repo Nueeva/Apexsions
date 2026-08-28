@@ -1,7 +1,7 @@
-# Gemini Guidelines — ApexsionsCore
+﻿# Gemini Guidelines — ApexsionsCore
 
 Standar pengembangan khusus modul `ApexsionsCore`:
-- **Package Root**: `com.yourserver.apexsionscore`
+- **Package Root**: `com.apexsions.core`
 - **Pattern**: Repository pattern dengan asynchronous database operations via CompletableFuture.
 - **Provider API**: Seluruh interaksi publik harus diakses lewat `ApexsionsCoreProvider.get()`.
 - **Adventure Components**: Hindari chat formatting legacy; gunakan `MiniMessage.miniMessage()`.

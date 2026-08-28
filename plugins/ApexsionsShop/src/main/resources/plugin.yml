@@ -1,6 +1,6 @@
-name: ApexsionsShop
+﻿name: ApexsionsShop
 version: 1.0.0
-main: com.apex.shop.ApexsionsShop
+main: com.apexsions.shop.ApexsionsShop
 api-version: "1.21"
 authors: [ "Nueeva", "Apexsions Team" ]
 description: "Dynamic Kingdom Shop & Economy Market Plugin"

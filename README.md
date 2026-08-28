@@ -4,15 +4,16 @@ Kumpulan plugin server Minecraft profesional berkinerja tinggi yang dirancang se
 
 ---
 
-## 📦 1. Daftar 5 Plugin Suite Utama
+## 📦 1. Daftar 6 Plugin Suite Utama
 
-| Plugin | Versi | Status | Deskripsi & Fokus Utama |
-| :--- | :---: | :---: | :--- |
-| **`ApexsionsCore`** | `1.0.0` | ![Active](https://img.shields.io/badge/Status-Active-brightgreen) | Otoritas Wilayah Kerajaan (*Zenithar*, *Solterra*, *Sylvamoor*), Progresi Leveling (13 XP Sources), BlueMap Polygons, Leaderboard GUI (`/kingdom top`), Kingdom War Manager, PvP Combat Tag (15s), Kingdom-Bounded `/rtp`, dan Enforcer TPA EssentialsX. |
-| **`ApexsionsChat`** | `1.0.0` | ![Active](https://img.shields.io/badge/Status-Active-brightgreen) | Komunikasi Kyori MiniMessage, Channel (*Global*, *Kingdom*, *Staff*), Chat Settings GUI (`/channel settings`), Pamer Item (`/showitem`), Surat Offline (`/mail`), Chat Games, dan Moderasi Lapis Tiga dengan Staff Reports GUI. |
-| **`ApexsionsEconomy`** | `1.0.0` | ![Active](https://img.shields.io/badge/Status-Active-brightgreen) | Multi-Currency (`Rupiah`, `Diamond`), Transfer Cepat (`/pay`), Pasar Lelang (`/ah`) dengan Escrow Claim, dan Barter/Trade 12-Slot dengan Pajak Transportasi Antar-Kerajaan. |
-| **`ApexsionsBattlepass`** | `1.0.0` | ![Active](https://img.shields.io/badge/Status-Active-brightgreen) | 200 Level BattlePass, Season Management, Quests (Daily, Weekly, Monthly), Tingkatan Pass (`FREE`, `PREMIUM`, `PREMIUM+`, `ULTIMATE`), dan Visual Admin GUI Editor 54-Slot (`/abp`). |
-| **`ApexsionsShop`** | `1.0.0` | ![Active](https://img.shields.io/badge/Status-Active-brightgreen) | Pasar Dinamis 6 Kategori, Rasio Jual **20%**, Formula Dinamis Multiplier Cuaca & Bioma Kerajaan, Price Clamping (50%-200%), Siaran Tren Pasar Berkelanjutan, Pajak Wilayah 10%, UI Ramah Sentuh/Bedrock, dan GUI Jual Cepat 45-Slot (`/sell`). |
+| Plugin | Versi | Status | Package Root Java | Deskripsi & Fokus Utama |
+| :--- | :---: | :---: | :--- | :--- |
+| **`ApexsionsCore`** | `1.0.0` | ![Active](https://img.shields.io/badge/Status-Active-brightgreen) | `com.apexsions.core.*` | Otoritas Wilayah Kerajaan (*Zenithar*, *Solterra*, *Sylvamoor*), Progresi Leveling (13 XP Sources), BlueMap Polygons, Leaderboard GUI (`/kingdom top`), Kingdom War Manager, PvP Combat Tag (15s), Kingdom-Bounded `/rtp`, dan Enforcer TPA EssentialsX. |
+| **`ApexsionsChat`** | `1.0.0` | ![Active](https://img.shields.io/badge/Status-Active-brightgreen) | `com.apexsions.chat.*` | Komunikasi Kyori MiniMessage, Channel (*Global*, *Kingdom*, *Staff*), Chat Settings GUI (`/channel settings`), Pamer Item (`/showitem`), Surat Offline (`/mail`), Chat Games, dan Moderasi Lapis Tiga dengan Staff Reports GUI. |
+| **`ApexsionsEconomy`** | `1.0.0` | ![Active](https://img.shields.io/badge/Status-Active-brightgreen) | `com.apexsions.economy.*` | Multi-Currency (`Rupiah`, `Diamond`), Transfer Cepat (`/pay`), Pasar Lelang (`/ah`) dengan Escrow Claim, dan Barter/Trade 12-Slot dengan Pajak Transportasi Antar-Kerajaan. |
+| **`ApexsionsBattlepass`** | `1.0.0` | ![Active](https://img.shields.io/badge/Status-Active-brightgreen) | `com.apexsions.battlepass.*` | 200 Level BattlePass, Season Management, Quests (Daily, Weekly, Monthly), Tingkatan Pass (`FREE`, `PREMIUM`, `PREMIUM+`, `ULTIMATE`), dan Visual Admin GUI Editor 54-Slot (`/abp`). |
+| **`ApexsionsShop`** | `1.0.0` | ![Active](https://img.shields.io/badge/Status-Active-brightgreen) | `com.apexsions.shop.*` | Pasar Dinamis 6 Kategori, Rasio Jual **20%**, Formula Dinamis Multiplier Cuaca & Bioma Kerajaan, Price Clamping (50%-200%), Siaran Tren Pasar Berkelanjutan, Pajak Wilayah 10%, UI Ramah Sentuh/Bedrock, dan GUI Jual Cepat 45-Slot (`/sell`). |
+| **`ApexsionsMedia`** | `1.0.0` | ![Active](https://img.shields.io/badge/Status-Active-brightgreen) | `com.apexsions.media.*` | Render Banner/Logo Gambar Multi-Tile Asinkron (PNG/JPG/URL), Raytrace Line-of-Sight Hover Glowing, Actionbar Tooltips, dan Interaksi Tautan Konfirmasi Web (`[Buka URL]` & `[Salin Clipboard]`). |
 
 ---
 
@@ -56,6 +57,12 @@ Kumpulan plugin server Minecraft profesional berkinerja tinggi yang dirancang se
 - **Pajak Kerajaan 10%**: Otomatis disalurkan ke kas perbendaharaan kerajaan pemain.
 - **UI Ramah Sentuh & Bedrock**: Kontrol navigasi di baris terbawah inventaris.
 - **GUI Jual Cepat 45-Slot (`/sell` & `/sellgui`)**: Drag-and-drop banyak item sekaligus untuk langsung dijual.
+
+### 🖼️ ApexsionsMedia
+- **Render Gambar Multi-Tile Async**: Mendukung PNG, JPG, JPEG dari file lokal atau URL web tanpa lag server.
+- **Raytrace Line-of-Sight Hover Glowing**: Partikel bercahaya border & actionbar tooltip saat crosshair pemain mengarah ke banner.
+- **Interaksi URL Fleksibel**: Pilihan mode Chat MiniMessage (`[🌐 BUKA URL]` & `[📋 SALIN LINK]`) atau GUI Konfirmasi 27-slot.
+- **100% Vanilla & Bedrock Compatible**: Tanpa mod klien tambahan, didukung penuh oleh Geyser/Floodgate.
 
 ---
 
@@ -131,15 +138,24 @@ Kumpulan plugin server Minecraft profesional berkinerja tinggi yang dirancang se
 | `/sellhand` | `/jualtangan` | Menjual item yang sedang dipegang | `apexsionsshop.sell` | `true` |
 | `/shop reload` | `/pasar reload` | Memuat ulang kategori & pasar (Admin) | `apexsionsshop.admin` | `op` |
 
+### 🖼️ Modul ApexsionsMedia
+| Perintah | Alias | Deskripsi | Hak Akses (Permission) | Default |
+| :--- | :--- | :--- | :--- | :---: |
+| `/media create <id> <src> <w> <h> [url] [mode]` | `/banner create` | Memasang banner baru di lokasi target | `apexsionsmedia.admin` | `op` |
+| `/media delete <id>` | `/banner delete` | Menghapus banner dan entity terkait | `apexsionsmedia.admin` | `op` |
+| `/media list` | `/banner list` | Menampilkan daftar seluruh banner aktif | `apexsionsmedia.admin` | `op` |
+| `/media setlink <id> <url> [mode]` | `/banner setlink` | Mengubah tautan URL interaktif banner | `apexsionsmedia.admin` | `op` |
+| `/media reload` | `/banner reload` | Memuat ulang konfigurasi & banner | `apexsionsmedia.admin` | `op` |
+
 ---
 
 ## 🛠️ 4. Kompilasi & Build Otomatis
 
-Seluruh 5 plugin dapat dikompilasi secara serentak menggunakan script PowerShell bawaan atau Apache Maven (Java 21 LTS & Paper API 1.21.4):
+Seluruh 6 plugin dapat dikompilasi secara serentak menggunakan script PowerShell bawaan atau Apache Maven (Java 21 LTS & Paper API 1.21.4):
 
 ```powershell
 # Jalankan build script multi-compiler
-.\build.ps1
+powershell -ExecutionPolicy Bypass -File .\build.ps1
 ```
 
 File `.jar` hasil kompilasi siap pasang akan tersedia di:
@@ -148,6 +164,7 @@ File `.jar` hasil kompilasi siap pasang akan tersedia di:
 - `build/libs/ApexsionsEconomy-1.0.0.jar`
 - `build/libs/ApexsionsBattlepass-1.0.0.jar`
 - `build/libs/ApexsionsShop-1.0.0.jar`
+- `build/libs/ApexsionsMedia-1.0.0.jar`
 
 ---
 
@@ -159,5 +176,6 @@ Untuk panduan teknis mendalam per modul, silakan baca dokumentasi di folder `doc
 - 💰 [**ApexsionsEconomy Manual**](docs/APEXSIONS_ECONOMY.md)
 - 🎫 [**ApexsionsBattlepass Manual**](docs/APEXSIONS_BATTLEPASS.md)
 - 🛒 [**ApexsionsShop Manual**](docs/APEXSIONS_SHOP.md)
+- 🖼️ [**ApexsionsMedia Manual**](docs/APEXSIONS_MEDIA.md)
 - 🏛️ [**Ecosystem Architecture Guide**](docs/ECOSYSTEM_ARCHITECTURE.md)
 - 🗄️ [**PostgreSQL Integration Guide**](docs/ECONOMY_INTEGRATION_POSTGRESQL.md)

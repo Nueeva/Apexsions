@@ -1,4 +1,4 @@
-# ApexsionsEconomy — PostgreSQL & Web Integration Guide
+﻿# ApexsionsEconomy — PostgreSQL & Web Integration Guide
 
 Dokumentasi resmi arsitektur basis data, Web Marketplace (Auction House), REST API, dan schema **PostgreSQL** untuk **ApexsionsEconomy**.
 
@@ -202,7 +202,7 @@ export async function handleTopupWebhook(orderId: string, playerUuid: string, cu
 Gunakan `ApexsionsEconomyAPI` yang telah disediakan:
 
 ```java
-import com.apex.economy.api.ApexsionsEconomyAPI;
+import com.apexsions.economy.api.ApexsionsEconomyAPI;
 
 public class ShopPluginIntegration {
 

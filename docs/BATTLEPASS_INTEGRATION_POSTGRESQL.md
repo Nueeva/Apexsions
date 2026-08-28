@@ -1,4 +1,4 @@
-# ApexsionsBattlepass — PostgreSQL & Web Integration Guide
+﻿# ApexsionsBattlepass — PostgreSQL & Web Integration Guide
 
 Dokumentasi resmi arsitektur basis data, REST/Web integration, dan schema **PostgreSQL** untuk **ApexsionsBattlepass**.
 
@@ -179,8 +179,8 @@ export async function addCoinsAfterPayment(uuid: string, seasonId: number, coins
 Tambahkan dependensi `ApexsionsBattlepass` di `pom.xml` atau `build.gradle`:
 
 ```java
-import com.apex.battlepass.ApexsionsBattlepass;
-import com.apex.battlepass.player.PlayerData;
+import com.apexsions.battlepass.ApexsionsBattlepass;
+import com.apexsions.battlepass.player.PlayerData;
 
 public class MyPluginIntegration {
 

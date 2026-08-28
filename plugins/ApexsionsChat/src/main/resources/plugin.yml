@@ -1,6 +1,6 @@
-name: ApexsionsChat
+﻿name: ApexsionsChat
 version: '1.0.0'
-main: com.yourserver.apexsionschat.ApexsionsChatPlugin
+main: com.apexsions.chat.ApexsionsChatPlugin
 api-version: '1.21'
 author: Antigravity
 description: Dedicated chat, community communication, moderation, reports, chat games, item showcase, announcements, and offline mail for Apexsions.

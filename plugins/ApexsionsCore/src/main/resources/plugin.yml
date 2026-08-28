@@ -1,6 +1,6 @@
-name: ApexsionsCore
+﻿name: ApexsionsCore
 version: '1.0.0'
-main: com.yourserver.apexsionscore.ApexsionsCorePlugin
+main: com.apexsions.core.ApexsionsCorePlugin
 api-version: '1.21'
 author: Antigravity
 description: Core server management plugin for Apexsions Realms, Progression, XP, Level Titles, Ranks, and Chat.

@@ -1,0 +1,21 @@
+name: ApexsionsMedia
+version: '1.0.0'
+main: com.apexsions.media.ApexsionsMediaPlugin
+api-version: '1.21'
+author: Antigravity
+description: High-performance interactive banner, logo, and in-game media display suite with line-of-sight hover glow and URL actions.
+
+commands:
+  media:
+    description: Master command for creating and managing interactive media banners.
+    permission: apexsionsmedia.admin
+    usage: /media <create|delete|list|info|setlink|reload>
+    aliases: [banner, logomedia, mapimage]
+
+permissions:
+  apexsionsmedia.admin:
+    description: Full administrative access to ApexsionsMedia banners.
+    default: op
+  apexsionsmedia.interact:
+    description: Permission to interact and click on media banners.
+    default: true

@@ -1,6 +1,6 @@
-name: ApexsionsBattlepass
+﻿name: ApexsionsBattlepass
 version: '1.0.0'
-main: com.apex.battlepass.ApexsionsBattlepass
+main: com.apexsions.battlepass.ApexsionsBattlepass
 api-version: '1.20'
 authors: [ApexTeam]
 description: Apexsions Battlepass - Modular, Modern, Scalable Battle Pass Plugin for Minecraft

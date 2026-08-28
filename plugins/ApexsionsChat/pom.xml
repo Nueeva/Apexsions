@@ -1,10 +1,10 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.yourserver.apexsionschat</groupId>
+    <groupId>com.apexsions.chat</groupId>
     <artifactId>ApexsionsChat</artifactId>
     <version>1.0.0</version>
     <name>ApexsionsChat</name>
@@ -99,7 +99,7 @@
 
         <!-- ApexsionsCore Dependency -->
         <dependency>
-            <groupId>com.yourserver.apexsionscore</groupId>
+            <groupId>com.apexsions.core</groupId>
             <artifactId>ApexsionsCore</artifactId>
             <version>1.0.0</version>
             <scope>system</scope>
@@ -152,15 +152,15 @@
                             <relocations>
                                 <relocation>
                                     <pattern>org.postgresql</pattern>
-                                    <shadedPattern>com.yourserver.apexsionschat.libs.postgresql</shadedPattern>
+                                    <shadedPattern>com.apexsions.chat.libs.postgresql</shadedPattern>
                                 </relocation>
                                 <relocation>
                                     <pattern>com.zaxxer.hikari</pattern>
-                                    <shadedPattern>com.yourserver.apexsionschat.libs.hikari</shadedPattern>
+                                    <shadedPattern>com.apexsions.chat.libs.hikari</shadedPattern>
                                 </relocation>
                                 <relocation>
                                     <pattern>com.github.benmanes.caffeine</pattern>
-                                    <shadedPattern>com.yourserver.apexsionschat.libs.caffeine</shadedPattern>
+                                    <shadedPattern>com.apexsions.chat.libs.caffeine</shadedPattern>
                                 </relocation>
                             </relocations>
                             <filters>

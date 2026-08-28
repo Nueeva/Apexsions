@@ -1,8 +1,8 @@
-# ApexsionsShop Guidelines
+﻿# ApexsionsShop Guidelines
 
 - **Brand Name**: `Apexsions`
 - **Plugin Name**: `ApexsionsShop`
-- **Package**: `com.apex.shop.*`
+- **Package**: `com.apexsions.shop.*`
 - **Java Target**: Java 21 LTS
 - **Platform**: Paper API 1.21.4
 - **Currency**: Rupiah (via ApexsionsEconomy)

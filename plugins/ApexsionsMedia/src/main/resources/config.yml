@@ -1,0 +1,47 @@
+# ==============================================================================
+#                 APEXSIONS MEDIA — CONFIGURATION FILE
+# ==============================================================================
+
+# Database storage for persistent banner placements
+database:
+  type: "SQLITE" # SQLITE or POSTGRESQL
+  sqlite:
+    file: "banners.db"
+  postgresql:
+    host: "localhost"
+    port: 5432
+    database: "apexsions_media"
+    username: "postgres"
+    password: "password"
+    ssl: false
+
+# Line of sight & hover raytrace configuration
+raytrace:
+  enabled: true
+  interval-ticks: 3        # Frequency of raytrace checking (3 ticks = ~6.6 times/sec)
+  max-distance: 7.0        # Maximum distance in blocks for hover detection
+  actionbar-hint: true     # Display tooltip on actionbar when hovering
+  actionbar-message: "<gradient:#f39c12:#f1c40f><bold>✨ KLIK KANAN</bold></gradient> <gray>untuk membuka link informasi!</gray>"
+  
+  # Particle effects rendered along banner border on hover
+  particles:
+    enabled: true
+    type: "GLOW"           # GLOW, END_ROD, FLAME, WAX_ON, VILLAGER_HAPPY
+    count: 3
+    offset: 0.15
+
+# Default action behavior when a player right-clicks an interactive banner
+# Options:
+#   CHAT_PROMPT  -> Sends an interactive MiniMessage prompt with [Buka URL] and [Salin URL] buttons
+#   GUI_CONFIRM  -> Opens a dedicated 27-slot confirmation GUI in Minecraft
+#   DIRECT_URL   -> Sends direct clickable link without extra buttons
+interaction:
+  default-mode: "CHAT_PROMPT"
+  sound-feedback: true
+  sound-name: "UI_BUTTON_CLICK"
+  cooldown-seconds: 2
+
+# Cache settings
+cache:
+  max-cached-images: 50
+  expire-after-access-minutes: 60

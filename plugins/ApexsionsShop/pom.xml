@@ -1,10 +1,10 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.apex.shop</groupId>
+    <groupId>com.apexsions.shop</groupId>
     <artifactId>ApexsionsShop</artifactId>
     <version>1.0.0</version>
     <packaging>jar</packaging>
@@ -56,7 +56,7 @@
 
         <!-- ApexsionsCore Dependency -->
         <dependency>
-            <groupId>com.yourserver.apexsionscore</groupId>
+            <groupId>com.apexsions.core</groupId>
             <artifactId>ApexsionsCore</artifactId>
             <version>1.0.0</version>
             <scope>system</scope>
@@ -65,7 +65,7 @@
 
         <!-- ApexsionsEconomy Dependency -->
         <dependency>
-            <groupId>com.apex.economy</groupId>
+            <groupId>com.apexsions.economy</groupId>
             <artifactId>ApexsionsEconomy</artifactId>
             <version>1.0.0</version>
             <scope>system</scope>
