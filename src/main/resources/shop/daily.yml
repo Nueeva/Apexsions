@@ -1,0 +1,186 @@
+items:
+  daily_bread_bundle:
+    display-name: "&f&lPaket Roti Hangat (16x)"
+    material: "BREAD"
+    amount: 16
+    currency-type: "battle_coins"
+    price: 40.0
+    purchase-limit: 5
+    rarity: "COMMON"
+    category: "Consumable"
+    weight: 20
+    lore:
+      - "&7Roti bergizi untuk petualangan harian."
+
+  daily_cooked_steak:
+    display-name: "&a&lSteak Panggang Pilihan (12x)"
+    material: "COOKED_BEEF"
+    amount: 12
+    currency-type: "rupiah"
+    price: 10000.0
+    purchase-limit: 3
+    rarity: "COMMON"
+    category: "Consumable"
+    weight: 20
+    lore:
+      - "&7Makanan lezat berenergi tinggi."
+
+  daily_golden_apple:
+    display-name: "&e&lGolden Apple Harian (2x)"
+    material: "GOLDEN_APPLE"
+    amount: 2
+    currency-type: "rupiah"
+    price: 25000.0
+    purchase-limit: 2
+    rarity: "RARE"
+    category: "Consumable"
+    weight: 10
+    lore:
+      - "&7Apel emas dengan efek regenerasi."
+
+  daily_iron_ingots:
+    display-name: "&f&lBatangan Besi Murni (16x)"
+    material: "IRON_INGOT"
+    amount: 16
+    currency-type: "battle_coins"
+    price: 50.0
+    purchase-limit: 4
+    rarity: "COMMON"
+    category: "Material"
+    weight: 18
+    lore:
+      - "&7Bahan dasar pembuatan perkakas & armor."
+
+  daily_diamond:
+    display-name: "&b&lDiamond Harian (3x)"
+    material: "DIAMOND"
+    amount: 3
+    currency-type: "rupiah"
+    price: 50000.0
+    purchase-limit: 1
+    rarity: "RARE"
+    category: "Material"
+    weight: 10
+    lore:
+      - "&7Mineral berkilau berharga tinggi."
+
+  daily_exp_bottle:
+    display-name: "&a&lBotol Pengalaman (8x)"
+    material: "EXPERIENCE_BOTTLE"
+    amount: 8
+    currency-type: "battle_coins"
+    price: 45.0
+    purchase-limit: 5
+    rarity: "UNCOMMON"
+    category: "Utility"
+    weight: 15
+    lore:
+      - "&7Botol berisi EXP instan."
+
+  daily_speed_potion:
+    display-name: "&b&lPotion of Swiftness II"
+    material: "POTION"
+    amount: 1
+    currency-type: "rupiah"
+    price: 15000.0
+    purchase-limit: 2
+    rarity: "UNCOMMON"
+    category: "Effect"
+    weight: 15
+    lore:
+      - "&7Meningkatkan kecepatan lari secara drastis."
+
+  daily_ender_pearl:
+    display-name: "&3&lEnder Pearl (4x)"
+    material: "ENDER_PEARL"
+    amount: 4
+    currency-type: "battle_coins"
+    price: 60.0
+    purchase-limit: 2
+    rarity: "UNCOMMON"
+    category: "Utility"
+    weight: 14
+    lore:
+      - "&7Teleportasi instan ke titik lemparan."
+
+  daily_title_novice:
+    display-name: "&e&lTitle Scroll: [Petualang Muda]"
+    material: "NAME_TAG"
+    amount: 1
+    currency-type: "battle_coins"
+    price: 120.0
+    purchase-limit: 1
+    rarity: "RARE"
+    category: "Title"
+    weight: 8
+    commands:
+      - "lp user %player% permission set battlepass.title.novice"
+    lore:
+      - "&7Membuka gelar eksklusif &e[Petualang Muda]&7!"
+
+  daily_sparkle_effect:
+    display-name: "&d&lCosmetic Trail: Kilau Bintang"
+    material: "GLOWSTONE_DUST"
+    amount: 1
+    currency-type: "rupiah"
+    price: 45000.0
+    purchase-limit: 1
+    rarity: "EPIC"
+    category: "Cosmetic"
+    weight: 6
+    commands:
+      - "lp user %player% permission set battlepass.trail.sparkle"
+    lore:
+      - "&7Efek jejak partikel berkilau saat berjalan."
+
+  daily_firework_rockets:
+    display-name: "&d&lKembang Api Elytra (16x)"
+    material: "FIREWORK_ROCKET"
+    amount: 16
+    currency-type: "battle_coins"
+    price: 35.0
+    purchase-limit: 6
+    rarity: "COMMON"
+    category: "Utility"
+    weight: 20
+    lore:
+      - "&7Bahan bakar untuk terbang bebas."
+
+  daily_arrow_pack:
+    display-name: "&7&lAnak Panah Pemburu (32x)"
+    material: "ARROW"
+    amount: 32
+    currency-type: "battle_coins"
+    price: 30.0
+    purchase-limit: 4
+    rarity: "COMMON"
+    category: "Combat"
+    weight: 20
+    lore:
+      - "&7Amunisi panah untuk pertarungan jarak jauh."
+
+  daily_obsidian:
+    display-name: "&8&lObsidian Padat (8x)"
+    material: "OBSIDIAN"
+    amount: 8
+    currency-type: "battle_coins"
+    price: 55.0
+    purchase-limit: 3
+    rarity: "UNCOMMON"
+    category: "Material"
+    weight: 12
+    lore:
+      - "&7Batu keras untuk membangun portal Nether."
+
+  daily_totem_fragment:
+    display-name: "&e&lTotem of Undying"
+    material: "TOTEM_OF_UNDYING"
+    amount: 1
+    currency-type: "rupiah"
+    price: 75000.0
+    purchase-limit: 1
+    rarity: "RARE"
+    category: "Utility"
+    weight: 8
+    lore:
+      - "&7Jimat penyelamat nyawa dari bahaya maut."

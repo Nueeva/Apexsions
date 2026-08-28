@@ -1,0 +1,453 @@
+﻿months:
+  1:
+    m1_master_miner:
+      name: "Master Penambang Dunia [M1]"
+      description: "Tambang 1,000 Stone block."
+      type: "BREAK_BLOCK"
+      target-block: "STONE"
+      target-amount: 1000
+      reward-xp: 375
+      reward-coins: 25
+
+    m1_deepslate_conqueror:
+      name: "Penakluk Kedalaman Deepslate [M1]"
+      description: "Tambang 600 Deepslate."
+      type: "MINE_BLOCK"
+      target-block: "DEEPSLATE"
+      target-amount: 600
+      reward-xp: 450
+      reward-coins: 26
+
+    m1_diamond_emperor:
+      name: "Kaisar Tambang Berlian [M1]"
+      description: "Tambang 48 Diamond Ore."
+      type: "MINE_BLOCK"
+      target-block: "DIAMOND_ORE"
+      target-amount: 48
+      reward-xp: 500
+      reward-coins: 27
+
+    m1_ancient_debris_lord:
+      name: "Pemburu Netherite Legendaris [M1]"
+      description: "Tambang 16 Ancient Debris."
+      type: "MINE_BLOCK"
+      target-block: "ANCIENT_DEBRIS"
+      target-amount: 16
+      reward-xp: 550
+      reward-coins: 28
+
+    m1_emerald_tycoon:
+      name: "Taipan Zamrud Pegunungan [M1]"
+      description: "Tambang 24 Emerald Ore."
+      type: "MINE_BLOCK"
+      target-block: "EMERALD_ORE"
+      target-amount: 24
+      reward-xp: 375
+      reward-coins: 29
+
+    m1_gold_rush_king:
+      name: "Raja Emas Sejati [M1]"
+      description: "Tambang 150 Gold Ore."
+      type: "MINE_BLOCK"
+      target-block: "GOLD_ORE"
+      target-amount: 150
+      reward-xp: 450
+      reward-coins: 30
+
+    m1_iron_industrialist:
+      name: "Industrialis Besi Murni [M1]"
+      description: "Tambang 200 Iron Ore."
+      type: "MINE_BLOCK"
+      target-block: "IRON_ORE"
+      target-amount: 200
+      reward-xp: 500
+      reward-coins: 31
+
+    m1_redstone_genius:
+      name: "Pakar Sirkuit Redstone [M1]"
+      description: "Tambang 160 Redstone Ore."
+      type: "MINE_BLOCK"
+      target-block: "REDSTONE_ORE"
+      target-amount: 160
+      reward-xp: 550
+      reward-coins: 32
+
+    m1_obsidian_titan:
+      name: "Kolektor Obsidian Titan [M1]"
+      description: "Tambang 100 Obsidian."
+      type: "MINE_BLOCK"
+      target-block: "OBSIDIAN"
+      target-amount: 100
+      reward-xp: 375
+      reward-coins: 33
+
+    m1_quartz_archon:
+      name: "Prajurit Kristal Nether [M1]"
+      description: "Tambang 200 Nether Quartz Ore."
+      type: "MINE_BLOCK"
+      target-block: "NETHER_QUARTZ_ORE"
+      target-amount: 200
+      reward-xp: 450
+      reward-coins: 34
+
+  2:
+    m2_grand_lumberjack:
+      name: "Raja Penebang Hutan [M2]"
+      description: "Tebang 500 batang pohon kayu apa saja."
+      type: "BREAK_BLOCK"
+      target-block: "OAK_LOG"
+      target-amount: 500
+      reward-xp: 500
+      reward-coins: 35
+
+    m2_spruce_logger:
+      name: "Penebang Pohon Spruce Raksasa [M2]"
+      description: "Tebang 300 Spruce Log."
+      type: "BREAK_BLOCK"
+      target-block: "SPRUCE_LOG"
+      target-amount: 300
+      reward-xp: 550
+      reward-coins: 25
+
+    m2_dark_oak_logger:
+      name: "Penebang Hutan Rimba Gelap [M2]"
+      description: "Tebang 300 Dark Oak Log."
+      type: "BREAK_BLOCK"
+      target-block: "DARK_OAK_LOG"
+      target-amount: 300
+      reward-xp: 375
+      reward-coins: 26
+
+    m2_jungle_explorer:
+      name: "Eksplorasi Pohon Hutan Tropis [M2]"
+      description: "Tebang 300 Jungle Log."
+      type: "BREAK_BLOCK"
+      target-block: "JUNGLE_LOG"
+      target-amount: 300
+      reward-xp: 450
+      reward-coins: 27
+
+    m2_nether_fungi_logger:
+      name: "Penebang Hutan Neraka [M2]"
+      description: "Tebang 250 Crimson & Warped Stem."
+      type: "BREAK_BLOCK"
+      target-block: "CRIMSON_STEM"
+      target-amount: 250
+      reward-xp: 500
+      reward-coins: 28
+
+    m2_monster_hunter_champion:
+      name: "Pahlawan Pembasmi Monster [M2]"
+      description: "Basmi 200 Zombie di seluruh dunia."
+      type: "KILL_ENTITY"
+      target-entity: "ZOMBIE"
+      target-amount: 200
+      reward-xp: 550
+      reward-coins: 29
+
+    m2_skeleton_destroyer:
+      name: "Penghancur Pasukan Skeleton [M2]"
+      description: "Kalahkan 150 Skeleton."
+      type: "KILL_ENTITY"
+      target-entity: "SKELETON"
+      target-amount: 150
+      reward-xp: 375
+      reward-coins: 30
+
+    m2_creeper_annihilator:
+      name: "Pemusnah Pasukan Creeper [M2]"
+      description: "Kalahkan 100 Creeper."
+      type: "KILL_ENTITY"
+      target-entity: "CREEPER"
+      target-amount: 100
+      reward-xp: 450
+      reward-coins: 31
+
+    m2_spider_extirpator:
+      name: "Pembersih Sarang Laba-laba [M2]"
+      description: "Kalahkan 120 Spider."
+      type: "KILL_ENTITY"
+      target-entity: "SPIDER"
+      target-amount: 120
+      reward-xp: 500
+      reward-coins: 32
+
+    m2_enderman_nemesis:
+      name: "Mitos Pemburu Enderman [M2]"
+      description: "Kalahkan 50 Enderman."
+      type: "KILL_ENTITY"
+      target-entity: "ENDERMAN"
+      target-amount: 50
+      reward-xp: 550
+      reward-coins: 33
+
+  3:
+    m3_blaze_slayer_lord:
+      name: "Penakluk Benteng Neraka [M3]"
+      description: "Kalahkan 80 Blaze."
+      type: "KILL_ENTITY"
+      target-entity: "BLAZE"
+      target-amount: 80
+      reward-xp: 375
+      reward-coins: 34
+
+    m3_wither_skull_hunter:
+      name: "Pemburu Tengkorak Wither [M3]"
+      description: "Kalahkan 60 Wither Skeleton."
+      type: "KILL_ENTITY"
+      target-entity: "WITHER_SKELETON"
+      target-amount: 60
+      reward-xp: 450
+      reward-coins: 35
+
+    m3_ghast_sniper:
+      name: "Penembak Jitu Hantu Langit [M3]"
+      description: "Kalahkan 25 Ghast."
+      type: "KILL_ENTITY"
+      target-entity: "GHAST"
+      target-amount: 25
+      reward-xp: 500
+      reward-coins: 25
+
+    m3_ocean_conqueror:
+      name: "Penakluk Kuil Samudra [M3]"
+      description: "Kalahkan 50 Guardian."
+      type: "KILL_ENTITY"
+      target-entity: "GUARDIAN"
+      target-amount: 50
+      reward-xp: 550
+      reward-coins: 26
+
+    m3_raid_champion:
+      name: "Pahlawan Penyelamat Desa [M3]"
+      description: "Kalahkan 60 Pillager."
+      type: "KILL_ENTITY"
+      target-entity: "PILLAGER"
+      target-amount: 60
+      reward-xp: 375
+      reward-coins: 27
+
+    m3_pvp_warlord:
+      name: "Panglima Perang PvP [M3]"
+      description: "Kalahkan 20 Pemain di medan tempur."
+      type: "KILL_PLAYER"
+      target-amount: 20
+      reward-xp: 450
+      reward-coins: 28
+
+    m3_grand_farmer_wheat:
+      name: "Lumbung Pangan Gandum [M3]"
+      description: "Panen 500 tanaman Wheat matang."
+      type: "HARVEST_CROPS"
+      target-block: "WHEAT"
+      target-amount: 500
+      reward-xp: 500
+      reward-coins: 29
+
+    m3_grand_farmer_carrots:
+      name: "Lumbung Sayur Wortel [M3]"
+      description: "Panen 500 tanaman Carrots matang."
+      type: "HARVEST_CROPS"
+      target-block: "CARROTS"
+      target-amount: 500
+      reward-xp: 550
+      reward-coins: 30
+
+    m3_grand_farmer_potatoes:
+      name: "Lumbung Pangan Kentang [M3]"
+      description: "Panen 500 tanaman Potatoes matang."
+      type: "HARVEST_CROPS"
+      target-block: "POTATOES"
+      target-amount: 500
+      reward-xp: 375
+      reward-coins: 31
+
+    m3_grand_farmer_netherwart:
+      name: "Panen Raya Nether Wart [M3]"
+      description: "Panen 300 Nether Wart matang."
+      type: "HARVEST_CROPS"
+      target-block: "NETHER_WART"
+      target-amount: 300
+      reward-xp: 450
+      reward-coins: 32
+
+  4:
+    m4_grand_sugarcane:
+      name: "Mega Perkebunan Tebu [M4]"
+      description: "Kumpulkan 400 Sugar Cane."
+      type: "BREAK_BLOCK"
+      target-block: "SUGAR_CANE"
+      target-amount: 400
+      reward-xp: 500
+      reward-coins: 33
+
+    m4_grand_bamboo:
+      name: "Mega Perkebunan Bambu [M4]"
+      description: "Kumpulkan 500 Bamboo."
+      type: "BREAK_BLOCK"
+      target-block: "BAMBOO"
+      target-amount: 500
+      reward-xp: 550
+      reward-coins: 34
+
+    m4_master_fisherman:
+      name: "Nelayan Legendaris Samudra [M4]"
+      description: "Tangkap 100 ikan dari perairan."
+      type: "FISH"
+      target-amount: 100
+      reward-xp: 375
+      reward-coins: 35
+
+    m4_master_breeder_cow:
+      name: "Peternakan Sapi Raksasa [M4]"
+      description: "Kembangbiakkan 50 Sapi."
+      type: "BREED_ANIMALS"
+      target-entity: "COW"
+      target-amount: 50
+      reward-xp: 450
+      reward-coins: 25
+
+    m4_master_breeder_sheep:
+      name: "Peternakan Domba Raksasa [M4]"
+      description: "Kembangbiakkan 50 Domba."
+      type: "BREED_ANIMALS"
+      target-entity: "SHEEP"
+      target-amount: 50
+      reward-xp: 500
+      reward-coins: 26
+
+    m4_master_breeder_pig:
+      name: "Peternakan Babi Raksasa [M4]"
+      description: "Kembangbiakkan 50 Babi."
+      type: "BREED_ANIMALS"
+      target-entity: "PIG"
+      target-amount: 50
+      reward-xp: 550
+      reward-coins: 27
+
+    m4_master_breeder_chicken:
+      name: "Peternakan Unggas Raksasa [M4]"
+      description: "Kembangbiakkan 60 Ayam."
+      type: "BREED_ANIMALS"
+      target-entity: "CHICKEN"
+      target-amount: 60
+      reward-xp: 375
+      reward-coins: 28
+
+    m4_grand_smelter_iron:
+      name: "Peleburan Logam Besi Raksasa [M4]"
+      description: "Lebur 300 Iron Ingot di furnace."
+      type: "SMELT_ITEM"
+      target-item: "IRON_INGOT"
+      target-amount: 300
+      reward-xp: 450
+      reward-coins: 29
+
+    m4_grand_smelter_gold:
+      name: "Peleburan Emas Batangan [M4]"
+      description: "Lebur 200 Gold Ingot di furnace."
+      type: "SMELT_ITEM"
+      target-item: "GOLD_INGOT"
+      target-amount: 200
+      reward-xp: 500
+      reward-coins: 30
+
+    m4_grand_smelter_glass:
+      name: "Pabrik Kaca Megah [M4]"
+      description: "Lebur 250 Glass."
+      type: "SMELT_ITEM"
+      target-item: "GLASS"
+      target-amount: 250
+      reward-xp: 550
+      reward-coins: 31
+
+  5:
+    m5_grand_smelter_food:
+      name: "Dapur Katering Daging [M5]"
+      description: "Masak 250 Cooked Beef."
+      type: "SMELT_ITEM"
+      target-item: "COOKED_BEEF"
+      target-amount: 250
+      reward-xp: 375
+      reward-coins: 32
+
+    m5_grand_crafter_bread:
+      name: "Pabrik Roti Kota [M5]"
+      description: "Craft 250 Bread."
+      type: "CRAFT_ITEM"
+      target-item: "BREAD"
+      target-amount: 250
+      reward-xp: 450
+      reward-coins: 33
+
+    m5_grand_crafter_torches:
+      name: "Pabrik Obor Tambang [M5]"
+      description: "Craft 500 Torch."
+      type: "CRAFT_ITEM"
+      target-item: "TORCH"
+      target-amount: 500
+      reward-xp: 500
+      reward-coins: 34
+
+    m5_grand_crafter_diamond_block:
+      name: "Penyimpan Harta Berlian [M5]"
+      description: "Craft 16 Diamond Block."
+      type: "CRAFT_ITEM"
+      target-item: "DIAMOND_BLOCK"
+      target-amount: 16
+      reward-xp: 550
+      reward-coins: 35
+
+    m5_grand_crafter_golden_apple:
+      name: "Pabrik Apel Emas [M5]"
+      description: "Craft 32 Golden Apple."
+      type: "CRAFT_ITEM"
+      target-item: "GOLDEN_APPLE"
+      target-amount: 32
+      reward-xp: 375
+      reward-coins: 25
+
+    m5_master_enchanter:
+      name: "Pakar Sihir Tingkat Tinggi [M5]"
+      description: "Enchant 30 perlengkapan senjata/armor."
+      type: "ENCHANT_ITEM"
+      target-item: "DIAMOND_SWORD"
+      target-amount: 30
+      reward-xp: 450
+      reward-coins: 26
+
+    m5_gourmet_golden_carrots:
+      name: "Konsumsi Makanan Bangsawan [M5]"
+      description: "Makan 64 Golden Carrot."
+      type: "CONSUME_FOOD"
+      target-item: "GOLDEN_CARROT"
+      target-amount: 64
+      reward-xp: 500
+      reward-coins: 27
+
+    m5_gourmet_golden_apples:
+      name: "Konsumsi Makanan Legendaris [M5]"
+      description: "Makan 20 Golden Apple."
+      type: "CONSUME_FOOD"
+      target-item: "GOLDEN_APPLE"
+      target-amount: 20
+      reward-xp: 550
+      reward-coins: 28
+
+    m5_exp_overlord:
+      name: "Raja Penguasa Jiwa EXP [M5]"
+      description: "Kumpulkan 3,000 EXP point."
+      type: "EXP_GAIN"
+      target-amount: 3000
+      reward-xp: 375
+      reward-coins: 29
+
+    m5_grand_builder:
+      name: "Arsitek Megaproyek [M5]"
+      description: "Pasang 500 Stone Bricks."
+      type: "PLACE_BLOCK"
+      target-block: "STONE_BRICKS"
+      target-amount: 500
+      reward-xp: 450
+      reward-coins: 30
+

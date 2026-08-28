@@ -1,0 +1,15 @@
+id: ultimate
+display-name: "&5&lUltimate Pass"
+permission: "apexsionsbattlepass.pass.ultimate"
+default-owned: false
+icon:
+  material: "NETHERITE_BLOCK"
+lore:
+  - "&7Pass kasta tertinggi dengan seluruh akses reward eksklusif!"
+priority: 30
+reward-access:
+  - free
+  - premium
+  - premium-plus
+  - ultimate
+  - vip

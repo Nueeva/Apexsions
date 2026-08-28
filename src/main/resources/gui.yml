@@ -1,0 +1,40 @@
+titles:
+  main: "&8[ &6&lAPEXSIONS BATTLEPASS &8]"
+  rewards: "&8[ &b&lBP REWARDS &8- Page %page% ]"
+  daily-quest: "&8[ &a&lDAILY QUESTS &8]"
+  weekly-quest: "&8[ &e&lWEEKLY QUESTS &8- Week %week% ]"
+  monthly-quest: "&8[ &d&lMONTHLY QUESTS &8- Month %month% ]"
+  shop: "&8[ &c&lBATTLE SHOP &8- %category% ]"
+  shop-refresh-confirm: "&8[ &c&lKONFIRMASI REFRESH SHOP &8]"
+  admin-main: "&8[ &4&lABP ADMIN PANEL &8]"
+  admin-season: "&8[ &4&lABP BATTLEPASS MANAGEMENT &8]"
+  admin-quest: "&8[ &4&lABP QUEST MANAGEMENT &8]"
+  admin-reward: "&8[ &4&lABP REWARD MANAGEMENT &8- Hal. %page% ]"
+  admin-shop: "&8[ &4&lABP SHOP MANAGEMENT &8]"
+  admin-player: "&8[ &4&lABP PLAYER MANAGEMENT &8- Hal. %page% ]"
+  admin-player-detail: "&8[ &4&lMANAGE: &e%player% &8]"
+  admin-stats: "&8[ &4&lABP MONITORING & STATISTICS &8]"
+  admin-confirm: "&8[ &4&lKONFIRMASI AKSI ADMIN &8]"
+
+filler:
+  material: "BLACK_STAINED_GLASS_PANE"
+  name: " "
+
+buttons:
+  back:
+    material: "ARROW"
+    name: "&c&l< KEMBALI"
+    lore:
+      - "&7Klik untuk kembali ke menu sebelumnya"
+  close:
+    material: "BARRIER"
+    name: "&c&lTUTUP"
+    lore:
+      - "&7Klik untuk menutup menu"
+  next-page:
+    material: "PAPER"
+    name: "&eHalaman Selanjutnya >"
+  prev-page:
+    material: "PAPER"
+    name: "&e< Halaman Sebelumnya"
+

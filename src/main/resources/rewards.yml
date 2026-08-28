@@ -1,0 +1,4668 @@
+﻿levels:
+  1:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: BREAD
+          amount: 16
+          name: '&fRoti Gandum (16x)'
+      premium:
+        - type: ITEM
+          material: IRON_BLOCK
+          amount: 4
+          name: '&fIron Block (4x)'
+      premium-plus:
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 2
+          name: '&bDiamond Block (2x)'
+      ultimate:
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 4
+          name: '&bDiamond Block (4x)'
+  2:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: COOKED_BEEF
+          amount: 12
+          name: '&cSteak Sapi (12x)'
+      premium:
+        - type: MONEY
+          amount: 15000
+          name: '&a$15,000 Server Money'
+      premium-plus:
+        - type: ITEM
+          material: ANCIENT_DEBRIS
+          amount: 2
+          name: '&8Ancient Debris (2x)'
+      ultimate:
+        - type: ITEM
+          material: EMERALD_BLOCK
+          amount: 6
+          name: '&aEmerald Block (6x)'
+  3:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: TORCH
+          amount: 32
+          name: '&6Obor (32x)'
+      premium:
+        - type: ITEM
+          material: GOLDEN_APPLE
+          amount: 4
+          name: '&eGolden Apple (4x)'
+      premium-plus:
+        - type: ITEM
+          material: ENCHANTED_GOLDEN_APPLE
+          amount: 1
+          name: '&dEnchanted Golden Apple (1x)'
+      ultimate:
+        - type: ITEM
+          material: ANCIENT_DEBRIS
+          amount: 4
+          name: '&8Ancient Debris (4x)'
+  4:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: OAK_LOG
+          amount: 24
+          name: '&6Kayu Oak (24x)'
+      premium:
+        - type: MONEY
+          amount: 20000
+          name: '&a$20,000 Server Money'
+      premium-plus:
+        - type: ITEM
+          material: GOLDEN_CARROT
+          amount: 32
+          name: '&6Golden Carrot (32x)'
+      ultimate:
+        - type: ITEM
+          material: NETHERITE_SCRAP
+          amount: 4
+          name: '&8Netherite Scrap (4x)'
+  5:
+    required-xp: 100
+    rewards:
+      free:
+        - type: CURRENCY
+          amount: 50
+          name: '&e50 Battle Coins'
+      premium:
+        - type: ITEM
+          material: DIAMOND
+          amount: 5
+          name: '&bDiamond (5x)'
+      premium-plus:
+        - type: CURRENCY
+          amount: 100
+          name: '&e100 Battle Coins'
+      ultimate:
+        - type: ITEM
+          material: CRYING_OBSIDIAN
+          amount: 16
+          name: '&5Crying Obsidian (16x)'
+  6:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: GOLD_INGOT
+          amount: 6
+          name: '&eBatang Emas (6x)'
+      premium:
+        - type: MONEY
+          amount: 25000
+          name: '&a$25,000 Server Money'
+      premium-plus:
+        - type: ITEM
+          material: NETHERITE_SCRAP
+          amount: 2
+          name: '&8Netherite Scrap (2x)'
+      ultimate:
+        - type: ITEM
+          material: EXPERIENCE_BOTTLE
+          amount: 64
+          name: '&aBotol EXP (64x)'
+  7:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: COAL
+          amount: 16
+          name: '&8Batubara (16x)'
+      premium:
+        - type: ITEM
+          material: REDSTONE_BLOCK
+          amount: 8
+          name: '&cRedstone Block (8x)'
+      premium-plus:
+        - type: ITEM
+          material: AMETHYST_BLOCK
+          amount: 16
+          name: '&dAmethyst Block (16x)'
+      ultimate:
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 4
+          name: '&bDiamond Block (4x)'
+  8:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: EXPERIENCE_BOTTLE
+          amount: 8
+          name: '&aBotol EXP (8x)'
+      premium:
+        - type: MONEY
+          amount: 30000
+          name: '&a$30,000 Server Money'
+      premium-plus:
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 2
+          name: '&bDiamond Block (2x)'
+      ultimate:
+        - type: ITEM
+          material: EMERALD_BLOCK
+          amount: 6
+          name: '&aEmerald Block (6x)'
+  9:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: ARROW
+          amount: 32
+          name: '&fAnak Panah (32x)'
+      premium:
+        - type: ITEM
+          material: IRON_BLOCK
+          amount: 4
+          name: '&fIron Block (4x)'
+      premium-plus:
+        - type: ITEM
+          material: ANCIENT_DEBRIS
+          amount: 2
+          name: '&8Ancient Debris (2x)'
+      ultimate:
+        - type: ITEM
+          material: ANCIENT_DEBRIS
+          amount: 4
+          name: '&8Ancient Debris (4x)'
+  10:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: DIAMOND
+          amount: 3
+          name: '&bDiamond (3x)'
+      premium:
+        - type: ITEM
+          material: EMERALD_BLOCK
+          amount: 4
+          name: '&aEmerald Block (4x)'
+        - type: CURRENCY
+          amount: 100
+          name: '&e100 Battle Coins'
+      premium-plus:
+        - type: CURRENCY
+          amount: 150
+          name: '&e150 Battle Coins'
+      ultimate:
+        - type: ITEM
+          material: TOTEM_OF_UNDYING
+          amount: 1
+          name: '&6Totem of Undying'
+        - type: CURRENCY
+          amount: 200
+          name: '&e200 Battle Coins'
+  11:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: BREAD
+          amount: 16
+          name: '&fRoti Gandum (16x)'
+      premium:
+        - type: ITEM
+          material: GOLDEN_APPLE
+          amount: 4
+          name: '&eGolden Apple (4x)'
+      premium-plus:
+        - type: ITEM
+          material: GOLDEN_CARROT
+          amount: 32
+          name: '&6Golden Carrot (32x)'
+      ultimate:
+        - type: ITEM
+          material: CRYING_OBSIDIAN
+          amount: 16
+          name: '&5Crying Obsidian (16x)'
+  12:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: COOKED_BEEF
+          amount: 12
+          name: '&cSteak Sapi (12x)'
+      premium:
+        - type: MONEY
+          amount: 40000
+          name: '&a$40,000 Server Money'
+      premium-plus:
+        - type: ITEM
+          material: EXPERIENCE_BOTTLE
+          amount: 32
+          name: '&aBotol EXP (32x)'
+      ultimate:
+        - type: ITEM
+          material: EXPERIENCE_BOTTLE
+          amount: 64
+          name: '&aBotol EXP (64x)'
+  13:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: TORCH
+          amount: 32
+          name: '&6Obor (32x)'
+      premium:
+        - type: ITEM
+          material: DIAMOND
+          amount: 5
+          name: '&bDiamond (5x)'
+      premium-plus:
+        - type: ITEM
+          material: NETHERITE_SCRAP
+          amount: 2
+          name: '&8Netherite Scrap (2x)'
+      ultimate:
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 4
+          name: '&bDiamond Block (4x)'
+  14:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: OAK_LOG
+          amount: 24
+          name: '&6Kayu Oak (24x)'
+      premium:
+        - type: MONEY
+          amount: 45000
+          name: '&a$45,000 Server Money'
+      premium-plus:
+        - type: ITEM
+          material: AMETHYST_BLOCK
+          amount: 16
+          name: '&dAmethyst Block (16x)'
+      ultimate:
+        - type: ITEM
+          material: EMERALD_BLOCK
+          amount: 6
+          name: '&aEmerald Block (6x)'
+  15:
+    required-xp: 100
+    rewards:
+      free:
+        - type: CURRENCY
+          amount: 50
+          name: '&e50 Battle Coins'
+      premium:
+        - type: ITEM
+          material: REDSTONE_BLOCK
+          amount: 8
+          name: '&cRedstone Block (8x)'
+      premium-plus:
+        - type: ITEM
+          material: SHULKER_BOX
+          amount: 1
+          name: '&dShulker Box'
+      ultimate:
+        - type: ITEM
+          material: ANCIENT_DEBRIS
+          amount: 4
+          name: '&8Ancient Debris (4x)'
+  16:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: GOLD_INGOT
+          amount: 6
+          name: '&eBatang Emas (6x)'
+      premium:
+        - type: MONEY
+          amount: 50000
+          name: '&a$50,000 Server Money'
+      premium-plus:
+        - type: ITEM
+          material: ANCIENT_DEBRIS
+          amount: 2
+          name: '&8Ancient Debris (2x)'
+      ultimate:
+        - type: ITEM
+          material: NETHERITE_SCRAP
+          amount: 4
+          name: '&8Netherite Scrap (4x)'
+  17:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: COAL
+          amount: 16
+          name: '&8Batubara (16x)'
+      premium:
+        - type: ITEM
+          material: IRON_BLOCK
+          amount: 4
+          name: '&fIron Block (4x)'
+      premium-plus:
+        - type: ITEM
+          material: ENCHANTED_GOLDEN_APPLE
+          amount: 1
+          name: '&dEnchanted Golden Apple (1x)'
+      ultimate:
+        - type: ITEM
+          material: CRYING_OBSIDIAN
+          amount: 16
+          name: '&5Crying Obsidian (16x)'
+  18:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: EXPERIENCE_BOTTLE
+          amount: 8
+          name: '&aBotol EXP (8x)'
+      premium:
+        - type: MONEY
+          amount: 55000
+          name: '&a$55,000 Server Money'
+      premium-plus:
+        - type: ITEM
+          material: GOLDEN_CARROT
+          amount: 32
+          name: '&6Golden Carrot (32x)'
+      ultimate:
+        - type: ITEM
+          material: EXPERIENCE_BOTTLE
+          amount: 64
+          name: '&aBotol EXP (64x)'
+  19:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: ARROW
+          amount: 32
+          name: '&fAnak Panah (32x)'
+      premium:
+        - type: ITEM
+          material: GOLDEN_APPLE
+          amount: 4
+          name: '&eGolden Apple (4x)'
+      premium-plus:
+        - type: ITEM
+          material: EXPERIENCE_BOTTLE
+          amount: 32
+          name: '&aBotol EXP (32x)'
+      ultimate:
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 4
+          name: '&bDiamond Block (4x)'
+  20:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: DIAMOND
+          amount: 4
+          name: '&bDiamond (4x)'
+      premium:
+        - type: ITEM
+          material: EMERALD_BLOCK
+          amount: 4
+          name: '&aEmerald Block (4x)'
+        - type: CURRENCY
+          amount: 100
+          name: '&e100 Battle Coins'
+      premium-plus:
+        - type: CURRENCY
+          amount: 50
+          name: '&e50 Battle Coins'
+      ultimate:
+        - type: ITEM
+          material: TOTEM_OF_UNDYING
+          amount: 1
+          name: '&6Totem of Undying'
+        - type: CURRENCY
+          amount: 200
+          name: '&e200 Battle Coins'
+  21:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: BREAD
+          amount: 16
+          name: '&fRoti Gandum (16x)'
+      premium:
+        - type: ITEM
+          material: DIAMOND
+          amount: 5
+          name: '&bDiamond (5x)'
+      premium-plus:
+        - type: ITEM
+          material: AMETHYST_BLOCK
+          amount: 16
+          name: '&dAmethyst Block (16x)'
+      ultimate:
+        - type: ITEM
+          material: ANCIENT_DEBRIS
+          amount: 4
+          name: '&8Ancient Debris (4x)'
+  22:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: COOKED_BEEF
+          amount: 12
+          name: '&cSteak Sapi (12x)'
+      premium:
+        - type: MONEY
+          amount: 65000
+          name: '&a$65,000 Server Money'
+      premium-plus:
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 2
+          name: '&bDiamond Block (2x)'
+      ultimate:
+        - type: ITEM
+          material: NETHERITE_SCRAP
+          amount: 4
+          name: '&8Netherite Scrap (4x)'
+  23:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: TORCH
+          amount: 32
+          name: '&6Obor (32x)'
+      premium:
+        - type: ITEM
+          material: REDSTONE_BLOCK
+          amount: 8
+          name: '&cRedstone Block (8x)'
+      premium-plus:
+        - type: ITEM
+          material: ANCIENT_DEBRIS
+          amount: 2
+          name: '&8Ancient Debris (2x)'
+      ultimate:
+        - type: ITEM
+          material: CRYING_OBSIDIAN
+          amount: 16
+          name: '&5Crying Obsidian (16x)'
+  24:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: OAK_LOG
+          amount: 24
+          name: '&6Kayu Oak (24x)'
+      premium:
+        - type: MONEY
+          amount: 70000
+          name: '&a$70,000 Server Money'
+      premium-plus:
+        - type: ITEM
+          material: ENCHANTED_GOLDEN_APPLE
+          amount: 1
+          name: '&dEnchanted Golden Apple (1x)'
+      ultimate:
+        - type: ITEM
+          material: EXPERIENCE_BOTTLE
+          amount: 64
+          name: '&aBotol EXP (64x)'
+  25:
+    required-xp: 100
+    rewards:
+      free:
+        - type: CURRENCY
+          amount: 50
+          name: '&e50 Battle Coins'
+      premium:
+        - type: MONEY
+          amount: 72500
+          name: '&a$72,500 Server Money'
+        - type: ITEM
+          material: NETHERITE_INGOT
+          amount: 1
+          name: '&8Netherite Ingot (1x)'
+      premium-plus:
+        - type: CURRENCY
+          amount: 100
+          name: '&e100 Battle Coins'
+      ultimate:
+        - type: ITEM
+          material: ENCHANTED_GOLDEN_APPLE
+          amount: 3
+          name: '&dEnchanted Golden Apple (3x)'
+        - type: ITEM
+          material: NETHERITE_INGOT
+          amount: 2
+          name: '&8Netherite Ingot (2x)'
+  26:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: GOLD_INGOT
+          amount: 6
+          name: '&eBatang Emas (6x)'
+      premium:
+        - type: MONEY
+          amount: 75000
+          name: '&a$75,000 Server Money'
+      premium-plus:
+        - type: ITEM
+          material: EXPERIENCE_BOTTLE
+          amount: 32
+          name: '&aBotol EXP (32x)'
+      ultimate:
+        - type: ITEM
+          material: EMERALD_BLOCK
+          amount: 6
+          name: '&aEmerald Block (6x)'
+  27:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: COAL
+          amount: 16
+          name: '&8Batubara (16x)'
+      premium:
+        - type: ITEM
+          material: GOLDEN_APPLE
+          amount: 4
+          name: '&eGolden Apple (4x)'
+      premium-plus:
+        - type: ITEM
+          material: NETHERITE_SCRAP
+          amount: 2
+          name: '&8Netherite Scrap (2x)'
+      ultimate:
+        - type: ITEM
+          material: ANCIENT_DEBRIS
+          amount: 4
+          name: '&8Ancient Debris (4x)'
+  28:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: EXPERIENCE_BOTTLE
+          amount: 8
+          name: '&aBotol EXP (8x)'
+      premium:
+        - type: MONEY
+          amount: 80000
+          name: '&a$80,000 Server Money'
+      premium-plus:
+        - type: ITEM
+          material: AMETHYST_BLOCK
+          amount: 16
+          name: '&dAmethyst Block (16x)'
+      ultimate:
+        - type: ITEM
+          material: NETHERITE_SCRAP
+          amount: 4
+          name: '&8Netherite Scrap (4x)'
+  29:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: ARROW
+          amount: 32
+          name: '&fAnak Panah (32x)'
+      premium:
+        - type: ITEM
+          material: DIAMOND
+          amount: 5
+          name: '&bDiamond (5x)'
+      premium-plus:
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 2
+          name: '&bDiamond Block (2x)'
+      ultimate:
+        - type: ITEM
+          material: CRYING_OBSIDIAN
+          amount: 16
+          name: '&5Crying Obsidian (16x)'
+  30:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: DIAMOND
+          amount: 5
+          name: '&bDiamond (5x)'
+      premium:
+        - type: ITEM
+          material: EMERALD_BLOCK
+          amount: 4
+          name: '&aEmerald Block (4x)'
+        - type: CURRENCY
+          amount: 100
+          name: '&e100 Battle Coins'
+      premium-plus:
+        - type: ITEM
+          material: SHULKER_BOX
+          amount: 1
+          name: '&dShulker Box'
+      ultimate:
+        - type: ITEM
+          material: TOTEM_OF_UNDYING
+          amount: 1
+          name: '&6Totem of Undying'
+        - type: CURRENCY
+          amount: 200
+          name: '&e200 Battle Coins'
+  31:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: BREAD
+          amount: 16
+          name: '&fRoti Gandum (16x)'
+      premium:
+        - type: ITEM
+          material: REDSTONE_BLOCK
+          amount: 8
+          name: '&cRedstone Block (8x)'
+      premium-plus:
+        - type: ITEM
+          material: ENCHANTED_GOLDEN_APPLE
+          amount: 1
+          name: '&dEnchanted Golden Apple (1x)'
+      ultimate:
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 4
+          name: '&bDiamond Block (4x)'
+  32:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: COOKED_BEEF
+          amount: 12
+          name: '&cSteak Sapi (12x)'
+      premium:
+        - type: MONEY
+          amount: 90000
+          name: '&a$90,000 Server Money'
+      premium-plus:
+        - type: ITEM
+          material: GOLDEN_CARROT
+          amount: 32
+          name: '&6Golden Carrot (32x)'
+      ultimate:
+        - type: ITEM
+          material: EMERALD_BLOCK
+          amount: 6
+          name: '&aEmerald Block (6x)'
+  33:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: TORCH
+          amount: 32
+          name: '&6Obor (32x)'
+      premium:
+        - type: ITEM
+          material: IRON_BLOCK
+          amount: 4
+          name: '&fIron Block (4x)'
+      premium-plus:
+        - type: ITEM
+          material: EXPERIENCE_BOTTLE
+          amount: 32
+          name: '&aBotol EXP (32x)'
+      ultimate:
+        - type: ITEM
+          material: ANCIENT_DEBRIS
+          amount: 4
+          name: '&8Ancient Debris (4x)'
+  34:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: OAK_LOG
+          amount: 24
+          name: '&6Kayu Oak (24x)'
+      premium:
+        - type: MONEY
+          amount: 95000
+          name: '&a$95,000 Server Money'
+      premium-plus:
+        - type: ITEM
+          material: NETHERITE_SCRAP
+          amount: 2
+          name: '&8Netherite Scrap (2x)'
+      ultimate:
+        - type: ITEM
+          material: NETHERITE_SCRAP
+          amount: 4
+          name: '&8Netherite Scrap (4x)'
+  35:
+    required-xp: 100
+    rewards:
+      free:
+        - type: CURRENCY
+          amount: 50
+          name: '&e50 Battle Coins'
+      premium:
+        - type: ITEM
+          material: GOLDEN_APPLE
+          amount: 4
+          name: '&eGolden Apple (4x)'
+      premium-plus:
+        - type: CURRENCY
+          amount: 200
+          name: '&e200 Battle Coins'
+      ultimate:
+        - type: ITEM
+          material: CRYING_OBSIDIAN
+          amount: 16
+          name: '&5Crying Obsidian (16x)'
+  36:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: GOLD_INGOT
+          amount: 6
+          name: '&eBatang Emas (6x)'
+      premium:
+        - type: MONEY
+          amount: 100000
+          name: '&a$100,000 Server Money'
+      premium-plus:
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 2
+          name: '&bDiamond Block (2x)'
+      ultimate:
+        - type: ITEM
+          material: EXPERIENCE_BOTTLE
+          amount: 64
+          name: '&aBotol EXP (64x)'
+  37:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: COAL
+          amount: 16
+          name: '&8Batubara (16x)'
+      premium:
+        - type: ITEM
+          material: DIAMOND
+          amount: 5
+          name: '&bDiamond (5x)'
+      premium-plus:
+        - type: ITEM
+          material: ANCIENT_DEBRIS
+          amount: 2
+          name: '&8Ancient Debris (2x)'
+      ultimate:
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 4
+          name: '&bDiamond Block (4x)'
+  38:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: EXPERIENCE_BOTTLE
+          amount: 8
+          name: '&aBotol EXP (8x)'
+      premium:
+        - type: MONEY
+          amount: 105000
+          name: '&a$105,000 Server Money'
+      premium-plus:
+        - type: ITEM
+          material: ENCHANTED_GOLDEN_APPLE
+          amount: 1
+          name: '&dEnchanted Golden Apple (1x)'
+      ultimate:
+        - type: ITEM
+          material: EMERALD_BLOCK
+          amount: 6
+          name: '&aEmerald Block (6x)'
+  39:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: ARROW
+          amount: 32
+          name: '&fAnak Panah (32x)'
+      premium:
+        - type: ITEM
+          material: REDSTONE_BLOCK
+          amount: 8
+          name: '&cRedstone Block (8x)'
+      premium-plus:
+        - type: ITEM
+          material: GOLDEN_CARROT
+          amount: 32
+          name: '&6Golden Carrot (32x)'
+      ultimate:
+        - type: ITEM
+          material: ANCIENT_DEBRIS
+          amount: 4
+          name: '&8Ancient Debris (4x)'
+  40:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: DIAMOND
+          amount: 6
+          name: '&bDiamond (6x)'
+      premium:
+        - type: ITEM
+          material: EMERALD_BLOCK
+          amount: 4
+          name: '&aEmerald Block (4x)'
+        - type: CURRENCY
+          amount: 100
+          name: '&e100 Battle Coins'
+      premium-plus:
+        - type: CURRENCY
+          amount: 50
+          name: '&e50 Battle Coins'
+      ultimate:
+        - type: ITEM
+          material: TOTEM_OF_UNDYING
+          amount: 1
+          name: '&6Totem of Undying'
+        - type: CURRENCY
+          amount: 200
+          name: '&e200 Battle Coins'
+  41:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: BREAD
+          amount: 16
+          name: '&fRoti Gandum (16x)'
+      premium:
+        - type: ITEM
+          material: IRON_BLOCK
+          amount: 4
+          name: '&fIron Block (4x)'
+      premium-plus:
+        - type: ITEM
+          material: NETHERITE_SCRAP
+          amount: 2
+          name: '&8Netherite Scrap (2x)'
+      ultimate:
+        - type: ITEM
+          material: CRYING_OBSIDIAN
+          amount: 16
+          name: '&5Crying Obsidian (16x)'
+  42:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: COOKED_BEEF
+          amount: 12
+          name: '&cSteak Sapi (12x)'
+      premium:
+        - type: MONEY
+          amount: 115000
+          name: '&a$115,000 Server Money'
+      premium-plus:
+        - type: ITEM
+          material: AMETHYST_BLOCK
+          amount: 16
+          name: '&dAmethyst Block (16x)'
+      ultimate:
+        - type: ITEM
+          material: EXPERIENCE_BOTTLE
+          amount: 64
+          name: '&aBotol EXP (64x)'
+  43:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: TORCH
+          amount: 32
+          name: '&6Obor (32x)'
+      premium:
+        - type: ITEM
+          material: GOLDEN_APPLE
+          amount: 4
+          name: '&eGolden Apple (4x)'
+      premium-plus:
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 2
+          name: '&bDiamond Block (2x)'
+      ultimate:
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 4
+          name: '&bDiamond Block (4x)'
+  44:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: OAK_LOG
+          amount: 24
+          name: '&6Kayu Oak (24x)'
+      premium:
+        - type: MONEY
+          amount: 120000
+          name: '&a$120,000 Server Money'
+      premium-plus:
+        - type: ITEM
+          material: ANCIENT_DEBRIS
+          amount: 2
+          name: '&8Ancient Debris (2x)'
+      ultimate:
+        - type: ITEM
+          material: EMERALD_BLOCK
+          amount: 6
+          name: '&aEmerald Block (6x)'
+  45:
+    required-xp: 100
+    rewards:
+      free:
+        - type: CURRENCY
+          amount: 50
+          name: '&e50 Battle Coins'
+      premium:
+        - type: ITEM
+          material: DIAMOND
+          amount: 5
+          name: '&bDiamond (5x)'
+      premium-plus:
+        - type: ITEM
+          material: SHULKER_BOX
+          amount: 1
+          name: '&dShulker Box'
+      ultimate:
+        - type: ITEM
+          material: ANCIENT_DEBRIS
+          amount: 4
+          name: '&8Ancient Debris (4x)'
+  46:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: GOLD_INGOT
+          amount: 6
+          name: '&eBatang Emas (6x)'
+      premium:
+        - type: MONEY
+          amount: 125000
+          name: '&a$125,000 Server Money'
+      premium-plus:
+        - type: ITEM
+          material: GOLDEN_CARROT
+          amount: 32
+          name: '&6Golden Carrot (32x)'
+      ultimate:
+        - type: ITEM
+          material: NETHERITE_SCRAP
+          amount: 4
+          name: '&8Netherite Scrap (4x)'
+  47:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: COAL
+          amount: 16
+          name: '&8Batubara (16x)'
+      premium:
+        - type: ITEM
+          material: REDSTONE_BLOCK
+          amount: 8
+          name: '&cRedstone Block (8x)'
+      premium-plus:
+        - type: ITEM
+          material: EXPERIENCE_BOTTLE
+          amount: 32
+          name: '&aBotol EXP (32x)'
+      ultimate:
+        - type: ITEM
+          material: CRYING_OBSIDIAN
+          amount: 16
+          name: '&5Crying Obsidian (16x)'
+  48:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: EXPERIENCE_BOTTLE
+          amount: 8
+          name: '&aBotol EXP (8x)'
+      premium:
+        - type: MONEY
+          amount: 130000
+          name: '&a$130,000 Server Money'
+      premium-plus:
+        - type: ITEM
+          material: NETHERITE_SCRAP
+          amount: 2
+          name: '&8Netherite Scrap (2x)'
+      ultimate:
+        - type: ITEM
+          material: EXPERIENCE_BOTTLE
+          amount: 64
+          name: '&aBotol EXP (64x)'
+  49:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: ARROW
+          amount: 32
+          name: '&fAnak Panah (32x)'
+      premium:
+        - type: ITEM
+          material: IRON_BLOCK
+          amount: 4
+          name: '&fIron Block (4x)'
+      premium-plus:
+        - type: ITEM
+          material: AMETHYST_BLOCK
+          amount: 16
+          name: '&dAmethyst Block (16x)'
+      ultimate:
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 4
+          name: '&bDiamond Block (4x)'
+  50:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 2
+          name: '&b&lDiamond Block (2x)'
+        - type: CURRENCY
+          amount: 250
+          name: '&e250 Battle Coins'
+      premium:
+        - type: MONEY
+          amount: 135000
+          name: '&a$135,000 Server Money'
+        - type: ITEM
+          material: NETHERITE_INGOT
+          amount: 1
+          name: '&8Netherite Ingot (1x)'
+      premium-plus:
+        - type: ITEM
+          material: TOTEM_OF_UNDYING
+          amount: 2
+          name: '&6&lTotem of Undying (2x)'
+        - type: CURRENCY
+          amount: 300
+          name: '&e300 Battle Coins'
+      ultimate:
+        - type: ITEM
+          material: BEACON
+          amount: 1
+          name: '&b&lBeacon'
+        - type: ITEM
+          material: NETHERITE_BLOCK
+          amount: 2
+          name: '&8Netherite Block (2x)'
+        - type: CURRENCY
+          amount: 500
+          name: '&e500 Battle Coins'
+  51:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: BREAD
+          amount: 16
+          name: '&fRoti Gandum (16x)'
+      premium:
+        - type: ITEM
+          material: GOLDEN_APPLE
+          amount: 4
+          name: '&eGolden Apple (4x)'
+      premium-plus:
+        - type: ITEM
+          material: ANCIENT_DEBRIS
+          amount: 2
+          name: '&8Ancient Debris (2x)'
+      ultimate:
+        - type: ITEM
+          material: ANCIENT_DEBRIS
+          amount: 4
+          name: '&8Ancient Debris (4x)'
+  52:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: COOKED_BEEF
+          amount: 12
+          name: '&cSteak Sapi (12x)'
+      premium:
+        - type: MONEY
+          amount: 140000
+          name: '&a$140,000 Server Money'
+      premium-plus:
+        - type: ITEM
+          material: ENCHANTED_GOLDEN_APPLE
+          amount: 1
+          name: '&dEnchanted Golden Apple (1x)'
+      ultimate:
+        - type: ITEM
+          material: NETHERITE_SCRAP
+          amount: 4
+          name: '&8Netherite Scrap (4x)'
+  53:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: TORCH
+          amount: 32
+          name: '&6Obor (32x)'
+      premium:
+        - type: ITEM
+          material: DIAMOND
+          amount: 5
+          name: '&bDiamond (5x)'
+      premium-plus:
+        - type: ITEM
+          material: GOLDEN_CARROT
+          amount: 32
+          name: '&6Golden Carrot (32x)'
+      ultimate:
+        - type: ITEM
+          material: CRYING_OBSIDIAN
+          amount: 16
+          name: '&5Crying Obsidian (16x)'
+  54:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: OAK_LOG
+          amount: 24
+          name: '&6Kayu Oak (24x)'
+      premium:
+        - type: MONEY
+          amount: 145000
+          name: '&a$145,000 Server Money'
+      premium-plus:
+        - type: ITEM
+          material: EXPERIENCE_BOTTLE
+          amount: 32
+          name: '&aBotol EXP (32x)'
+      ultimate:
+        - type: ITEM
+          material: EXPERIENCE_BOTTLE
+          amount: 64
+          name: '&aBotol EXP (64x)'
+  55:
+    required-xp: 100
+    rewards:
+      free:
+        - type: CURRENCY
+          amount: 50
+          name: '&e50 Battle Coins'
+      premium:
+        - type: ITEM
+          material: REDSTONE_BLOCK
+          amount: 8
+          name: '&cRedstone Block (8x)'
+      premium-plus:
+        - type: CURRENCY
+          amount: 200
+          name: '&e200 Battle Coins'
+      ultimate:
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 4
+          name: '&bDiamond Block (4x)'
+  56:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: GOLD_INGOT
+          amount: 6
+          name: '&eBatang Emas (6x)'
+      premium:
+        - type: MONEY
+          amount: 150000
+          name: '&a$150,000 Server Money'
+      premium-plus:
+        - type: ITEM
+          material: AMETHYST_BLOCK
+          amount: 16
+          name: '&dAmethyst Block (16x)'
+      ultimate:
+        - type: ITEM
+          material: EMERALD_BLOCK
+          amount: 6
+          name: '&aEmerald Block (6x)'
+  57:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: COAL
+          amount: 16
+          name: '&8Batubara (16x)'
+      premium:
+        - type: ITEM
+          material: IRON_BLOCK
+          amount: 4
+          name: '&fIron Block (4x)'
+      premium-plus:
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 2
+          name: '&bDiamond Block (2x)'
+      ultimate:
+        - type: ITEM
+          material: ANCIENT_DEBRIS
+          amount: 4
+          name: '&8Ancient Debris (4x)'
+  58:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: EXPERIENCE_BOTTLE
+          amount: 8
+          name: '&aBotol EXP (8x)'
+      premium:
+        - type: MONEY
+          amount: 155000
+          name: '&a$155,000 Server Money'
+      premium-plus:
+        - type: ITEM
+          material: ANCIENT_DEBRIS
+          amount: 2
+          name: '&8Ancient Debris (2x)'
+      ultimate:
+        - type: ITEM
+          material: NETHERITE_SCRAP
+          amount: 4
+          name: '&8Netherite Scrap (4x)'
+  59:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: ARROW
+          amount: 32
+          name: '&fAnak Panah (32x)'
+      premium:
+        - type: ITEM
+          material: GOLDEN_APPLE
+          amount: 4
+          name: '&eGolden Apple (4x)'
+      premium-plus:
+        - type: ITEM
+          material: ENCHANTED_GOLDEN_APPLE
+          amount: 1
+          name: '&dEnchanted Golden Apple (1x)'
+      ultimate:
+        - type: ITEM
+          material: CRYING_OBSIDIAN
+          amount: 16
+          name: '&5Crying Obsidian (16x)'
+  60:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: DIAMOND
+          amount: 8
+          name: '&bDiamond (8x)'
+      premium:
+        - type: ITEM
+          material: EMERALD_BLOCK
+          amount: 4
+          name: '&aEmerald Block (4x)'
+        - type: CURRENCY
+          amount: 100
+          name: '&e100 Battle Coins'
+      premium-plus:
+        - type: ITEM
+          material: SHULKER_BOX
+          amount: 1
+          name: '&dShulker Box'
+      ultimate:
+        - type: ITEM
+          material: TOTEM_OF_UNDYING
+          amount: 1
+          name: '&6Totem of Undying'
+        - type: CURRENCY
+          amount: 200
+          name: '&e200 Battle Coins'
+  61:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: BREAD
+          amount: 16
+          name: '&fRoti Gandum (16x)'
+      premium:
+        - type: ITEM
+          material: DIAMOND
+          amount: 5
+          name: '&bDiamond (5x)'
+      premium-plus:
+        - type: ITEM
+          material: EXPERIENCE_BOTTLE
+          amount: 32
+          name: '&aBotol EXP (32x)'
+      ultimate:
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 4
+          name: '&bDiamond Block (4x)'
+  62:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: COOKED_BEEF
+          amount: 12
+          name: '&cSteak Sapi (12x)'
+      premium:
+        - type: MONEY
+          amount: 165000
+          name: '&a$165,000 Server Money'
+      premium-plus:
+        - type: ITEM
+          material: NETHERITE_SCRAP
+          amount: 2
+          name: '&8Netherite Scrap (2x)'
+      ultimate:
+        - type: ITEM
+          material: EMERALD_BLOCK
+          amount: 6
+          name: '&aEmerald Block (6x)'
+  63:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: TORCH
+          amount: 32
+          name: '&6Obor (32x)'
+      premium:
+        - type: ITEM
+          material: REDSTONE_BLOCK
+          amount: 8
+          name: '&cRedstone Block (8x)'
+      premium-plus:
+        - type: ITEM
+          material: AMETHYST_BLOCK
+          amount: 16
+          name: '&dAmethyst Block (16x)'
+      ultimate:
+        - type: ITEM
+          material: ANCIENT_DEBRIS
+          amount: 4
+          name: '&8Ancient Debris (4x)'
+  64:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: OAK_LOG
+          amount: 24
+          name: '&6Kayu Oak (24x)'
+      premium:
+        - type: MONEY
+          amount: 170000
+          name: '&a$170,000 Server Money'
+      premium-plus:
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 2
+          name: '&bDiamond Block (2x)'
+      ultimate:
+        - type: ITEM
+          material: NETHERITE_SCRAP
+          amount: 4
+          name: '&8Netherite Scrap (4x)'
+  65:
+    required-xp: 100
+    rewards:
+      free:
+        - type: CURRENCY
+          amount: 50
+          name: '&e50 Battle Coins'
+      premium:
+        - type: ITEM
+          material: IRON_BLOCK
+          amount: 4
+          name: '&fIron Block (4x)'
+      premium-plus:
+        - type: CURRENCY
+          amount: 100
+          name: '&e100 Battle Coins'
+      ultimate:
+        - type: ITEM
+          material: CRYING_OBSIDIAN
+          amount: 16
+          name: '&5Crying Obsidian (16x)'
+  66:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: GOLD_INGOT
+          amount: 6
+          name: '&eBatang Emas (6x)'
+      premium:
+        - type: MONEY
+          amount: 175000
+          name: '&a$175,000 Server Money'
+      premium-plus:
+        - type: ITEM
+          material: ENCHANTED_GOLDEN_APPLE
+          amount: 1
+          name: '&dEnchanted Golden Apple (1x)'
+      ultimate:
+        - type: ITEM
+          material: EXPERIENCE_BOTTLE
+          amount: 64
+          name: '&aBotol EXP (64x)'
+  67:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: COAL
+          amount: 16
+          name: '&8Batubara (16x)'
+      premium:
+        - type: ITEM
+          material: GOLDEN_APPLE
+          amount: 4
+          name: '&eGolden Apple (4x)'
+      premium-plus:
+        - type: ITEM
+          material: GOLDEN_CARROT
+          amount: 32
+          name: '&6Golden Carrot (32x)'
+      ultimate:
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 4
+          name: '&bDiamond Block (4x)'
+  68:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: EXPERIENCE_BOTTLE
+          amount: 8
+          name: '&aBotol EXP (8x)'
+      premium:
+        - type: MONEY
+          amount: 180000
+          name: '&a$180,000 Server Money'
+      premium-plus:
+        - type: ITEM
+          material: EXPERIENCE_BOTTLE
+          amount: 32
+          name: '&aBotol EXP (32x)'
+      ultimate:
+        - type: ITEM
+          material: EMERALD_BLOCK
+          amount: 6
+          name: '&aEmerald Block (6x)'
+  69:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: ARROW
+          amount: 32
+          name: '&fAnak Panah (32x)'
+      premium:
+        - type: ITEM
+          material: DIAMOND
+          amount: 5
+          name: '&bDiamond (5x)'
+      premium-plus:
+        - type: ITEM
+          material: NETHERITE_SCRAP
+          amount: 2
+          name: '&8Netherite Scrap (2x)'
+      ultimate:
+        - type: ITEM
+          material: ANCIENT_DEBRIS
+          amount: 4
+          name: '&8Ancient Debris (4x)'
+  70:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: DIAMOND
+          amount: 9
+          name: '&bDiamond (9x)'
+      premium:
+        - type: ITEM
+          material: EMERALD_BLOCK
+          amount: 4
+          name: '&aEmerald Block (4x)'
+        - type: CURRENCY
+          amount: 100
+          name: '&e100 Battle Coins'
+      premium-plus:
+        - type: CURRENCY
+          amount: 150
+          name: '&e150 Battle Coins'
+      ultimate:
+        - type: ITEM
+          material: TOTEM_OF_UNDYING
+          amount: 1
+          name: '&6Totem of Undying'
+        - type: CURRENCY
+          amount: 200
+          name: '&e200 Battle Coins'
+  71:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: BREAD
+          amount: 16
+          name: '&fRoti Gandum (16x)'
+      premium:
+        - type: ITEM
+          material: REDSTONE_BLOCK
+          amount: 8
+          name: '&cRedstone Block (8x)'
+      premium-plus:
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 2
+          name: '&bDiamond Block (2x)'
+      ultimate:
+        - type: ITEM
+          material: CRYING_OBSIDIAN
+          amount: 16
+          name: '&5Crying Obsidian (16x)'
+  72:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: COOKED_BEEF
+          amount: 12
+          name: '&cSteak Sapi (12x)'
+      premium:
+        - type: MONEY
+          amount: 190000
+          name: '&a$190,000 Server Money'
+      premium-plus:
+        - type: ITEM
+          material: ANCIENT_DEBRIS
+          amount: 2
+          name: '&8Ancient Debris (2x)'
+      ultimate:
+        - type: ITEM
+          material: EXPERIENCE_BOTTLE
+          amount: 64
+          name: '&aBotol EXP (64x)'
+  73:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: TORCH
+          amount: 32
+          name: '&6Obor (32x)'
+      premium:
+        - type: ITEM
+          material: IRON_BLOCK
+          amount: 4
+          name: '&fIron Block (4x)'
+      premium-plus:
+        - type: ITEM
+          material: ENCHANTED_GOLDEN_APPLE
+          amount: 1
+          name: '&dEnchanted Golden Apple (1x)'
+      ultimate:
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 4
+          name: '&bDiamond Block (4x)'
+  74:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: OAK_LOG
+          amount: 24
+          name: '&6Kayu Oak (24x)'
+      premium:
+        - type: MONEY
+          amount: 195000
+          name: '&a$195,000 Server Money'
+      premium-plus:
+        - type: ITEM
+          material: GOLDEN_CARROT
+          amount: 32
+          name: '&6Golden Carrot (32x)'
+      ultimate:
+        - type: ITEM
+          material: EMERALD_BLOCK
+          amount: 6
+          name: '&aEmerald Block (6x)'
+  75:
+    required-xp: 100
+    rewards:
+      free:
+        - type: CURRENCY
+          amount: 50
+          name: '&e50 Battle Coins'
+      premium:
+        - type: MONEY
+          amount: 197500
+          name: '&a$197,500 Server Money'
+        - type: ITEM
+          material: NETHERITE_INGOT
+          amount: 2
+          name: '&8Netherite Ingot (2x)'
+      premium-plus:
+        - type: ITEM
+          material: SHULKER_BOX
+          amount: 1
+          name: '&dShulker Box'
+      ultimate:
+        - type: ITEM
+          material: ENCHANTED_GOLDEN_APPLE
+          amount: 3
+          name: '&dEnchanted Golden Apple (3x)'
+        - type: ITEM
+          material: NETHERITE_INGOT
+          amount: 2
+          name: '&8Netherite Ingot (2x)'
+  76:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: GOLD_INGOT
+          amount: 6
+          name: '&eBatang Emas (6x)'
+      premium:
+        - type: MONEY
+          amount: 200000
+          name: '&a$200,000 Server Money'
+      premium-plus:
+        - type: ITEM
+          material: NETHERITE_SCRAP
+          amount: 2
+          name: '&8Netherite Scrap (2x)'
+      ultimate:
+        - type: ITEM
+          material: NETHERITE_SCRAP
+          amount: 4
+          name: '&8Netherite Scrap (4x)'
+  77:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: COAL
+          amount: 16
+          name: '&8Batubara (16x)'
+      premium:
+        - type: ITEM
+          material: DIAMOND
+          amount: 5
+          name: '&bDiamond (5x)'
+      premium-plus:
+        - type: ITEM
+          material: AMETHYST_BLOCK
+          amount: 16
+          name: '&dAmethyst Block (16x)'
+      ultimate:
+        - type: ITEM
+          material: CRYING_OBSIDIAN
+          amount: 16
+          name: '&5Crying Obsidian (16x)'
+  78:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: EXPERIENCE_BOTTLE
+          amount: 8
+          name: '&aBotol EXP (8x)'
+      premium:
+        - type: MONEY
+          amount: 205000
+          name: '&a$205,000 Server Money'
+      premium-plus:
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 2
+          name: '&bDiamond Block (2x)'
+      ultimate:
+        - type: ITEM
+          material: EXPERIENCE_BOTTLE
+          amount: 64
+          name: '&aBotol EXP (64x)'
+  79:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: ARROW
+          amount: 32
+          name: '&fAnak Panah (32x)'
+      premium:
+        - type: ITEM
+          material: REDSTONE_BLOCK
+          amount: 8
+          name: '&cRedstone Block (8x)'
+      premium-plus:
+        - type: ITEM
+          material: ANCIENT_DEBRIS
+          amount: 2
+          name: '&8Ancient Debris (2x)'
+      ultimate:
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 4
+          name: '&bDiamond Block (4x)'
+  80:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: DIAMOND
+          amount: 10
+          name: '&bDiamond (10x)'
+      premium:
+        - type: ITEM
+          material: EMERALD_BLOCK
+          amount: 4
+          name: '&aEmerald Block (4x)'
+        - type: CURRENCY
+          amount: 100
+          name: '&e100 Battle Coins'
+      premium-plus:
+        - type: CURRENCY
+          amount: 50
+          name: '&e50 Battle Coins'
+      ultimate:
+        - type: ITEM
+          material: TOTEM_OF_UNDYING
+          amount: 1
+          name: '&6Totem of Undying'
+        - type: CURRENCY
+          amount: 200
+          name: '&e200 Battle Coins'
+  81:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: BREAD
+          amount: 16
+          name: '&fRoti Gandum (16x)'
+      premium:
+        - type: ITEM
+          material: IRON_BLOCK
+          amount: 4
+          name: '&fIron Block (4x)'
+      premium-plus:
+        - type: ITEM
+          material: GOLDEN_CARROT
+          amount: 32
+          name: '&6Golden Carrot (32x)'
+      ultimate:
+        - type: ITEM
+          material: ANCIENT_DEBRIS
+          amount: 4
+          name: '&8Ancient Debris (4x)'
+  82:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: COOKED_BEEF
+          amount: 12
+          name: '&cSteak Sapi (12x)'
+      premium:
+        - type: MONEY
+          amount: 215000
+          name: '&a$215,000 Server Money'
+      premium-plus:
+        - type: ITEM
+          material: EXPERIENCE_BOTTLE
+          amount: 32
+          name: '&aBotol EXP (32x)'
+      ultimate:
+        - type: ITEM
+          material: NETHERITE_SCRAP
+          amount: 4
+          name: '&8Netherite Scrap (4x)'
+  83:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: TORCH
+          amount: 32
+          name: '&6Obor (32x)'
+      premium:
+        - type: ITEM
+          material: GOLDEN_APPLE
+          amount: 4
+          name: '&eGolden Apple (4x)'
+      premium-plus:
+        - type: ITEM
+          material: NETHERITE_SCRAP
+          amount: 2
+          name: '&8Netherite Scrap (2x)'
+      ultimate:
+        - type: ITEM
+          material: CRYING_OBSIDIAN
+          amount: 16
+          name: '&5Crying Obsidian (16x)'
+  84:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: OAK_LOG
+          amount: 24
+          name: '&6Kayu Oak (24x)'
+      premium:
+        - type: MONEY
+          amount: 220000
+          name: '&a$220,000 Server Money'
+      premium-plus:
+        - type: ITEM
+          material: AMETHYST_BLOCK
+          amount: 16
+          name: '&dAmethyst Block (16x)'
+      ultimate:
+        - type: ITEM
+          material: EXPERIENCE_BOTTLE
+          amount: 64
+          name: '&aBotol EXP (64x)'
+  85:
+    required-xp: 100
+    rewards:
+      free:
+        - type: CURRENCY
+          amount: 50
+          name: '&e50 Battle Coins'
+      premium:
+        - type: ITEM
+          material: DIAMOND
+          amount: 5
+          name: '&bDiamond (5x)'
+      premium-plus:
+        - type: CURRENCY
+          amount: 100
+          name: '&e100 Battle Coins'
+      ultimate:
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 4
+          name: '&bDiamond Block (4x)'
+  86:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: GOLD_INGOT
+          amount: 6
+          name: '&eBatang Emas (6x)'
+      premium:
+        - type: MONEY
+          amount: 225000
+          name: '&a$225,000 Server Money'
+      premium-plus:
+        - type: ITEM
+          material: ANCIENT_DEBRIS
+          amount: 2
+          name: '&8Ancient Debris (2x)'
+      ultimate:
+        - type: ITEM
+          material: EMERALD_BLOCK
+          amount: 6
+          name: '&aEmerald Block (6x)'
+  87:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: COAL
+          amount: 16
+          name: '&8Batubara (16x)'
+      premium:
+        - type: ITEM
+          material: REDSTONE_BLOCK
+          amount: 8
+          name: '&cRedstone Block (8x)'
+      premium-plus:
+        - type: ITEM
+          material: ENCHANTED_GOLDEN_APPLE
+          amount: 1
+          name: '&dEnchanted Golden Apple (1x)'
+      ultimate:
+        - type: ITEM
+          material: ANCIENT_DEBRIS
+          amount: 4
+          name: '&8Ancient Debris (4x)'
+  88:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: EXPERIENCE_BOTTLE
+          amount: 8
+          name: '&aBotol EXP (8x)'
+      premium:
+        - type: MONEY
+          amount: 230000
+          name: '&a$230,000 Server Money'
+      premium-plus:
+        - type: ITEM
+          material: GOLDEN_CARROT
+          amount: 32
+          name: '&6Golden Carrot (32x)'
+      ultimate:
+        - type: ITEM
+          material: NETHERITE_SCRAP
+          amount: 4
+          name: '&8Netherite Scrap (4x)'
+  89:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: ARROW
+          amount: 32
+          name: '&fAnak Panah (32x)'
+      premium:
+        - type: ITEM
+          material: IRON_BLOCK
+          amount: 4
+          name: '&fIron Block (4x)'
+      premium-plus:
+        - type: ITEM
+          material: EXPERIENCE_BOTTLE
+          amount: 32
+          name: '&aBotol EXP (32x)'
+      ultimate:
+        - type: ITEM
+          material: CRYING_OBSIDIAN
+          amount: 16
+          name: '&5Crying Obsidian (16x)'
+  90:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: DIAMOND
+          amount: 11
+          name: '&bDiamond (11x)'
+      premium:
+        - type: ITEM
+          material: EMERALD_BLOCK
+          amount: 4
+          name: '&aEmerald Block (4x)'
+        - type: CURRENCY
+          amount: 100
+          name: '&e100 Battle Coins'
+      premium-plus:
+        - type: ITEM
+          material: SHULKER_BOX
+          amount: 1
+          name: '&dShulker Box'
+      ultimate:
+        - type: ITEM
+          material: TOTEM_OF_UNDYING
+          amount: 1
+          name: '&6Totem of Undying'
+        - type: CURRENCY
+          amount: 200
+          name: '&e200 Battle Coins'
+  91:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: BREAD
+          amount: 16
+          name: '&fRoti Gandum (16x)'
+      premium:
+        - type: ITEM
+          material: GOLDEN_APPLE
+          amount: 4
+          name: '&eGolden Apple (4x)'
+      premium-plus:
+        - type: ITEM
+          material: AMETHYST_BLOCK
+          amount: 16
+          name: '&dAmethyst Block (16x)'
+      ultimate:
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 4
+          name: '&bDiamond Block (4x)'
+  92:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: COOKED_BEEF
+          amount: 12
+          name: '&cSteak Sapi (12x)'
+      premium:
+        - type: MONEY
+          amount: 240000
+          name: '&a$240,000 Server Money'
+      premium-plus:
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 2
+          name: '&bDiamond Block (2x)'
+      ultimate:
+        - type: ITEM
+          material: EMERALD_BLOCK
+          amount: 6
+          name: '&aEmerald Block (6x)'
+  93:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: TORCH
+          amount: 32
+          name: '&6Obor (32x)'
+      premium:
+        - type: ITEM
+          material: DIAMOND
+          amount: 5
+          name: '&bDiamond (5x)'
+      premium-plus:
+        - type: ITEM
+          material: ANCIENT_DEBRIS
+          amount: 2
+          name: '&8Ancient Debris (2x)'
+      ultimate:
+        - type: ITEM
+          material: ANCIENT_DEBRIS
+          amount: 4
+          name: '&8Ancient Debris (4x)'
+  94:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: OAK_LOG
+          amount: 24
+          name: '&6Kayu Oak (24x)'
+      premium:
+        - type: MONEY
+          amount: 245000
+          name: '&a$245,000 Server Money'
+      premium-plus:
+        - type: ITEM
+          material: ENCHANTED_GOLDEN_APPLE
+          amount: 1
+          name: '&dEnchanted Golden Apple (1x)'
+      ultimate:
+        - type: ITEM
+          material: NETHERITE_SCRAP
+          amount: 4
+          name: '&8Netherite Scrap (4x)'
+  95:
+    required-xp: 100
+    rewards:
+      free:
+        - type: CURRENCY
+          amount: 50
+          name: '&e50 Battle Coins'
+      premium:
+        - type: ITEM
+          material: REDSTONE_BLOCK
+          amount: 8
+          name: '&cRedstone Block (8x)'
+      premium-plus:
+        - type: CURRENCY
+          amount: 200
+          name: '&e200 Battle Coins'
+      ultimate:
+        - type: ITEM
+          material: CRYING_OBSIDIAN
+          amount: 16
+          name: '&5Crying Obsidian (16x)'
+  96:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: GOLD_INGOT
+          amount: 6
+          name: '&eBatang Emas (6x)'
+      premium:
+        - type: MONEY
+          amount: 250000
+          name: '&a$250,000 Server Money'
+      premium-plus:
+        - type: ITEM
+          material: EXPERIENCE_BOTTLE
+          amount: 32
+          name: '&aBotol EXP (32x)'
+      ultimate:
+        - type: ITEM
+          material: EXPERIENCE_BOTTLE
+          amount: 64
+          name: '&aBotol EXP (64x)'
+  97:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: COAL
+          amount: 16
+          name: '&8Batubara (16x)'
+      premium:
+        - type: ITEM
+          material: IRON_BLOCK
+          amount: 4
+          name: '&fIron Block (4x)'
+      premium-plus:
+        - type: ITEM
+          material: NETHERITE_SCRAP
+          amount: 2
+          name: '&8Netherite Scrap (2x)'
+      ultimate:
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 4
+          name: '&bDiamond Block (4x)'
+  98:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: EXPERIENCE_BOTTLE
+          amount: 8
+          name: '&aBotol EXP (8x)'
+      premium:
+        - type: MONEY
+          amount: 255000
+          name: '&a$255,000 Server Money'
+      premium-plus:
+        - type: ITEM
+          material: AMETHYST_BLOCK
+          amount: 16
+          name: '&dAmethyst Block (16x)'
+      ultimate:
+        - type: ITEM
+          material: EMERALD_BLOCK
+          amount: 6
+          name: '&aEmerald Block (6x)'
+  99:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: ARROW
+          amount: 32
+          name: '&fAnak Panah (32x)'
+      premium:
+        - type: ITEM
+          material: GOLDEN_APPLE
+          amount: 4
+          name: '&eGolden Apple (4x)'
+      premium-plus:
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 2
+          name: '&bDiamond Block (2x)'
+      ultimate:
+        - type: ITEM
+          material: ANCIENT_DEBRIS
+          amount: 4
+          name: '&8Ancient Debris (4x)'
+  100:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 4
+          name: '&b&lDiamond Block (4x)'
+        - type: CURRENCY
+          amount: 250
+          name: '&e250 Battle Coins'
+      premium:
+        - type: MONEY
+          amount: 260000
+          name: '&a$260,000 Server Money'
+        - type: ITEM
+          material: NETHERITE_INGOT
+          amount: 2
+          name: '&8Netherite Ingot (2x)'
+      premium-plus:
+        - type: ITEM
+          material: TOTEM_OF_UNDYING
+          amount: 2
+          name: '&6&lTotem of Undying (2x)'
+        - type: CURRENCY
+          amount: 300
+          name: '&e300 Battle Coins'
+      ultimate:
+        - type: ITEM
+          material: BEACON
+          amount: 1
+          name: '&b&lBeacon'
+        - type: ITEM
+          material: NETHERITE_BLOCK
+          amount: 2
+          name: '&8Netherite Block (2x)'
+        - type: CURRENCY
+          amount: 500
+          name: '&e500 Battle Coins'
+  101:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: BREAD
+          amount: 16
+          name: '&fRoti Gandum (16x)'
+      premium:
+        - type: ITEM
+          material: DIAMOND
+          amount: 5
+          name: '&bDiamond (5x)'
+      premium-plus:
+        - type: ITEM
+          material: ENCHANTED_GOLDEN_APPLE
+          amount: 1
+          name: '&dEnchanted Golden Apple (1x)'
+      ultimate:
+        - type: ITEM
+          material: CRYING_OBSIDIAN
+          amount: 16
+          name: '&5Crying Obsidian (16x)'
+  102:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: COOKED_BEEF
+          amount: 12
+          name: '&cSteak Sapi (12x)'
+      premium:
+        - type: MONEY
+          amount: 265000
+          name: '&a$265,000 Server Money'
+      premium-plus:
+        - type: ITEM
+          material: GOLDEN_CARROT
+          amount: 32
+          name: '&6Golden Carrot (32x)'
+      ultimate:
+        - type: ITEM
+          material: EXPERIENCE_BOTTLE
+          amount: 64
+          name: '&aBotol EXP (64x)'
+  103:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: TORCH
+          amount: 32
+          name: '&6Obor (32x)'
+      premium:
+        - type: ITEM
+          material: REDSTONE_BLOCK
+          amount: 8
+          name: '&cRedstone Block (8x)'
+      premium-plus:
+        - type: ITEM
+          material: EXPERIENCE_BOTTLE
+          amount: 32
+          name: '&aBotol EXP (32x)'
+      ultimate:
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 4
+          name: '&bDiamond Block (4x)'
+  104:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: OAK_LOG
+          amount: 24
+          name: '&6Kayu Oak (24x)'
+      premium:
+        - type: MONEY
+          amount: 270000
+          name: '&a$270,000 Server Money'
+      premium-plus:
+        - type: ITEM
+          material: NETHERITE_SCRAP
+          amount: 2
+          name: '&8Netherite Scrap (2x)'
+      ultimate:
+        - type: ITEM
+          material: EMERALD_BLOCK
+          amount: 6
+          name: '&aEmerald Block (6x)'
+  105:
+    required-xp: 100
+    rewards:
+      free:
+        - type: CURRENCY
+          amount: 50
+          name: '&e50 Battle Coins'
+      premium:
+        - type: ITEM
+          material: IRON_BLOCK
+          amount: 4
+          name: '&fIron Block (4x)'
+      premium-plus:
+        - type: ITEM
+          material: SHULKER_BOX
+          amount: 1
+          name: '&dShulker Box'
+      ultimate:
+        - type: ITEM
+          material: ANCIENT_DEBRIS
+          amount: 4
+          name: '&8Ancient Debris (4x)'
+  106:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: GOLD_INGOT
+          amount: 6
+          name: '&eBatang Emas (6x)'
+      premium:
+        - type: MONEY
+          amount: 275000
+          name: '&a$275,000 Server Money'
+      premium-plus:
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 2
+          name: '&bDiamond Block (2x)'
+      ultimate:
+        - type: ITEM
+          material: NETHERITE_SCRAP
+          amount: 4
+          name: '&8Netherite Scrap (4x)'
+  107:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: COAL
+          amount: 16
+          name: '&8Batubara (16x)'
+      premium:
+        - type: ITEM
+          material: GOLDEN_APPLE
+          amount: 4
+          name: '&eGolden Apple (4x)'
+      premium-plus:
+        - type: ITEM
+          material: ANCIENT_DEBRIS
+          amount: 2
+          name: '&8Ancient Debris (2x)'
+      ultimate:
+        - type: ITEM
+          material: CRYING_OBSIDIAN
+          amount: 16
+          name: '&5Crying Obsidian (16x)'
+  108:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: EXPERIENCE_BOTTLE
+          amount: 8
+          name: '&aBotol EXP (8x)'
+      premium:
+        - type: MONEY
+          amount: 280000
+          name: '&a$280,000 Server Money'
+      premium-plus:
+        - type: ITEM
+          material: ENCHANTED_GOLDEN_APPLE
+          amount: 1
+          name: '&dEnchanted Golden Apple (1x)'
+      ultimate:
+        - type: ITEM
+          material: EXPERIENCE_BOTTLE
+          amount: 64
+          name: '&aBotol EXP (64x)'
+  109:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: ARROW
+          amount: 32
+          name: '&fAnak Panah (32x)'
+      premium:
+        - type: ITEM
+          material: DIAMOND
+          amount: 5
+          name: '&bDiamond (5x)'
+      premium-plus:
+        - type: ITEM
+          material: GOLDEN_CARROT
+          amount: 32
+          name: '&6Golden Carrot (32x)'
+      ultimate:
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 4
+          name: '&bDiamond Block (4x)'
+  110:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: DIAMOND
+          amount: 13
+          name: '&bDiamond (13x)'
+      premium:
+        - type: ITEM
+          material: EMERALD_BLOCK
+          amount: 4
+          name: '&aEmerald Block (4x)'
+        - type: CURRENCY
+          amount: 100
+          name: '&e100 Battle Coins'
+      premium-plus:
+        - type: CURRENCY
+          amount: 150
+          name: '&e150 Battle Coins'
+      ultimate:
+        - type: ITEM
+          material: TOTEM_OF_UNDYING
+          amount: 1
+          name: '&6Totem of Undying'
+        - type: CURRENCY
+          amount: 200
+          name: '&e200 Battle Coins'
+  111:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: BREAD
+          amount: 16
+          name: '&fRoti Gandum (16x)'
+      premium:
+        - type: ITEM
+          material: REDSTONE_BLOCK
+          amount: 8
+          name: '&cRedstone Block (8x)'
+      premium-plus:
+        - type: ITEM
+          material: NETHERITE_SCRAP
+          amount: 2
+          name: '&8Netherite Scrap (2x)'
+      ultimate:
+        - type: ITEM
+          material: ANCIENT_DEBRIS
+          amount: 4
+          name: '&8Ancient Debris (4x)'
+  112:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: COOKED_BEEF
+          amount: 12
+          name: '&cSteak Sapi (12x)'
+      premium:
+        - type: MONEY
+          amount: 290000
+          name: '&a$290,000 Server Money'
+      premium-plus:
+        - type: ITEM
+          material: AMETHYST_BLOCK
+          amount: 16
+          name: '&dAmethyst Block (16x)'
+      ultimate:
+        - type: ITEM
+          material: NETHERITE_SCRAP
+          amount: 4
+          name: '&8Netherite Scrap (4x)'
+  113:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: TORCH
+          amount: 32
+          name: '&6Obor (32x)'
+      premium:
+        - type: ITEM
+          material: IRON_BLOCK
+          amount: 4
+          name: '&fIron Block (4x)'
+      premium-plus:
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 2
+          name: '&bDiamond Block (2x)'
+      ultimate:
+        - type: ITEM
+          material: CRYING_OBSIDIAN
+          amount: 16
+          name: '&5Crying Obsidian (16x)'
+  114:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: OAK_LOG
+          amount: 24
+          name: '&6Kayu Oak (24x)'
+      premium:
+        - type: MONEY
+          amount: 295000
+          name: '&a$295,000 Server Money'
+      premium-plus:
+        - type: ITEM
+          material: ANCIENT_DEBRIS
+          amount: 2
+          name: '&8Ancient Debris (2x)'
+      ultimate:
+        - type: ITEM
+          material: EXPERIENCE_BOTTLE
+          amount: 64
+          name: '&aBotol EXP (64x)'
+  115:
+    required-xp: 100
+    rewards:
+      free:
+        - type: CURRENCY
+          amount: 50
+          name: '&e50 Battle Coins'
+      premium:
+        - type: ITEM
+          material: GOLDEN_APPLE
+          amount: 4
+          name: '&eGolden Apple (4x)'
+      premium-plus:
+        - type: CURRENCY
+          amount: 200
+          name: '&e200 Battle Coins'
+      ultimate:
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 4
+          name: '&bDiamond Block (4x)'
+  116:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: GOLD_INGOT
+          amount: 6
+          name: '&eBatang Emas (6x)'
+      premium:
+        - type: MONEY
+          amount: 300000
+          name: '&a$300,000 Server Money'
+      premium-plus:
+        - type: ITEM
+          material: GOLDEN_CARROT
+          amount: 32
+          name: '&6Golden Carrot (32x)'
+      ultimate:
+        - type: ITEM
+          material: EMERALD_BLOCK
+          amount: 6
+          name: '&aEmerald Block (6x)'
+  117:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: COAL
+          amount: 16
+          name: '&8Batubara (16x)'
+      premium:
+        - type: ITEM
+          material: DIAMOND
+          amount: 5
+          name: '&bDiamond (5x)'
+      premium-plus:
+        - type: ITEM
+          material: EXPERIENCE_BOTTLE
+          amount: 32
+          name: '&aBotol EXP (32x)'
+      ultimate:
+        - type: ITEM
+          material: ANCIENT_DEBRIS
+          amount: 4
+          name: '&8Ancient Debris (4x)'
+  118:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: EXPERIENCE_BOTTLE
+          amount: 8
+          name: '&aBotol EXP (8x)'
+      premium:
+        - type: MONEY
+          amount: 305000
+          name: '&a$305,000 Server Money'
+      premium-plus:
+        - type: ITEM
+          material: NETHERITE_SCRAP
+          amount: 2
+          name: '&8Netherite Scrap (2x)'
+      ultimate:
+        - type: ITEM
+          material: NETHERITE_SCRAP
+          amount: 4
+          name: '&8Netherite Scrap (4x)'
+  119:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: ARROW
+          amount: 32
+          name: '&fAnak Panah (32x)'
+      premium:
+        - type: ITEM
+          material: REDSTONE_BLOCK
+          amount: 8
+          name: '&cRedstone Block (8x)'
+      premium-plus:
+        - type: ITEM
+          material: AMETHYST_BLOCK
+          amount: 16
+          name: '&dAmethyst Block (16x)'
+      ultimate:
+        - type: ITEM
+          material: CRYING_OBSIDIAN
+          amount: 16
+          name: '&5Crying Obsidian (16x)'
+  120:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: DIAMOND
+          amount: 14
+          name: '&bDiamond (14x)'
+      premium:
+        - type: ITEM
+          material: EMERALD_BLOCK
+          amount: 4
+          name: '&aEmerald Block (4x)'
+        - type: CURRENCY
+          amount: 100
+          name: '&e100 Battle Coins'
+      premium-plus:
+        - type: ITEM
+          material: SHULKER_BOX
+          amount: 1
+          name: '&dShulker Box'
+      ultimate:
+        - type: ITEM
+          material: TOTEM_OF_UNDYING
+          amount: 1
+          name: '&6Totem of Undying'
+        - type: CURRENCY
+          amount: 200
+          name: '&e200 Battle Coins'
+  121:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: BREAD
+          amount: 16
+          name: '&fRoti Gandum (16x)'
+      premium:
+        - type: ITEM
+          material: IRON_BLOCK
+          amount: 4
+          name: '&fIron Block (4x)'
+      premium-plus:
+        - type: ITEM
+          material: ANCIENT_DEBRIS
+          amount: 2
+          name: '&8Ancient Debris (2x)'
+      ultimate:
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 4
+          name: '&bDiamond Block (4x)'
+  122:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: COOKED_BEEF
+          amount: 12
+          name: '&cSteak Sapi (12x)'
+      premium:
+        - type: MONEY
+          amount: 315000
+          name: '&a$315,000 Server Money'
+      premium-plus:
+        - type: ITEM
+          material: ENCHANTED_GOLDEN_APPLE
+          amount: 1
+          name: '&dEnchanted Golden Apple (1x)'
+      ultimate:
+        - type: ITEM
+          material: EMERALD_BLOCK
+          amount: 6
+          name: '&aEmerald Block (6x)'
+  123:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: TORCH
+          amount: 32
+          name: '&6Obor (32x)'
+      premium:
+        - type: ITEM
+          material: GOLDEN_APPLE
+          amount: 4
+          name: '&eGolden Apple (4x)'
+      premium-plus:
+        - type: ITEM
+          material: GOLDEN_CARROT
+          amount: 32
+          name: '&6Golden Carrot (32x)'
+      ultimate:
+        - type: ITEM
+          material: ANCIENT_DEBRIS
+          amount: 4
+          name: '&8Ancient Debris (4x)'
+  124:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: OAK_LOG
+          amount: 24
+          name: '&6Kayu Oak (24x)'
+      premium:
+        - type: MONEY
+          amount: 320000
+          name: '&a$320,000 Server Money'
+      premium-plus:
+        - type: ITEM
+          material: EXPERIENCE_BOTTLE
+          amount: 32
+          name: '&aBotol EXP (32x)'
+      ultimate:
+        - type: ITEM
+          material: NETHERITE_SCRAP
+          amount: 4
+          name: '&8Netherite Scrap (4x)'
+  125:
+    required-xp: 100
+    rewards:
+      free:
+        - type: CURRENCY
+          amount: 50
+          name: '&e50 Battle Coins'
+      premium:
+        - type: MONEY
+          amount: 322500
+          name: '&a$322,500 Server Money'
+        - type: ITEM
+          material: NETHERITE_INGOT
+          amount: 2
+          name: '&8Netherite Ingot (2x)'
+      premium-plus:
+        - type: CURRENCY
+          amount: 100
+          name: '&e100 Battle Coins'
+      ultimate:
+        - type: ITEM
+          material: ENCHANTED_GOLDEN_APPLE
+          amount: 3
+          name: '&dEnchanted Golden Apple (3x)'
+        - type: ITEM
+          material: NETHERITE_INGOT
+          amount: 2
+          name: '&8Netherite Ingot (2x)'
+  126:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: GOLD_INGOT
+          amount: 6
+          name: '&eBatang Emas (6x)'
+      premium:
+        - type: MONEY
+          amount: 325000
+          name: '&a$325,000 Server Money'
+      premium-plus:
+        - type: ITEM
+          material: AMETHYST_BLOCK
+          amount: 16
+          name: '&dAmethyst Block (16x)'
+      ultimate:
+        - type: ITEM
+          material: EXPERIENCE_BOTTLE
+          amount: 64
+          name: '&aBotol EXP (64x)'
+  127:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: COAL
+          amount: 16
+          name: '&8Batubara (16x)'
+      premium:
+        - type: ITEM
+          material: REDSTONE_BLOCK
+          amount: 8
+          name: '&cRedstone Block (8x)'
+      premium-plus:
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 2
+          name: '&bDiamond Block (2x)'
+      ultimate:
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 4
+          name: '&bDiamond Block (4x)'
+  128:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: EXPERIENCE_BOTTLE
+          amount: 8
+          name: '&aBotol EXP (8x)'
+      premium:
+        - type: MONEY
+          amount: 330000
+          name: '&a$330,000 Server Money'
+      premium-plus:
+        - type: ITEM
+          material: ANCIENT_DEBRIS
+          amount: 2
+          name: '&8Ancient Debris (2x)'
+      ultimate:
+        - type: ITEM
+          material: EMERALD_BLOCK
+          amount: 6
+          name: '&aEmerald Block (6x)'
+  129:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: ARROW
+          amount: 32
+          name: '&fAnak Panah (32x)'
+      premium:
+        - type: ITEM
+          material: IRON_BLOCK
+          amount: 4
+          name: '&fIron Block (4x)'
+      premium-plus:
+        - type: ITEM
+          material: ENCHANTED_GOLDEN_APPLE
+          amount: 1
+          name: '&dEnchanted Golden Apple (1x)'
+      ultimate:
+        - type: ITEM
+          material: ANCIENT_DEBRIS
+          amount: 4
+          name: '&8Ancient Debris (4x)'
+  130:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: DIAMOND
+          amount: 15
+          name: '&bDiamond (15x)'
+      premium:
+        - type: ITEM
+          material: EMERALD_BLOCK
+          amount: 4
+          name: '&aEmerald Block (4x)'
+        - type: CURRENCY
+          amount: 100
+          name: '&e100 Battle Coins'
+      premium-plus:
+        - type: CURRENCY
+          amount: 150
+          name: '&e150 Battle Coins'
+      ultimate:
+        - type: ITEM
+          material: TOTEM_OF_UNDYING
+          amount: 1
+          name: '&6Totem of Undying'
+        - type: CURRENCY
+          amount: 200
+          name: '&e200 Battle Coins'
+  131:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: BREAD
+          amount: 16
+          name: '&fRoti Gandum (16x)'
+      premium:
+        - type: ITEM
+          material: GOLDEN_APPLE
+          amount: 4
+          name: '&eGolden Apple (4x)'
+      premium-plus:
+        - type: ITEM
+          material: EXPERIENCE_BOTTLE
+          amount: 32
+          name: '&aBotol EXP (32x)'
+      ultimate:
+        - type: ITEM
+          material: CRYING_OBSIDIAN
+          amount: 16
+          name: '&5Crying Obsidian (16x)'
+  132:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: COOKED_BEEF
+          amount: 12
+          name: '&cSteak Sapi (12x)'
+      premium:
+        - type: MONEY
+          amount: 340000
+          name: '&a$340,000 Server Money'
+      premium-plus:
+        - type: ITEM
+          material: NETHERITE_SCRAP
+          amount: 2
+          name: '&8Netherite Scrap (2x)'
+      ultimate:
+        - type: ITEM
+          material: EXPERIENCE_BOTTLE
+          amount: 64
+          name: '&aBotol EXP (64x)'
+  133:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: TORCH
+          amount: 32
+          name: '&6Obor (32x)'
+      premium:
+        - type: ITEM
+          material: DIAMOND
+          amount: 5
+          name: '&bDiamond (5x)'
+      premium-plus:
+        - type: ITEM
+          material: AMETHYST_BLOCK
+          amount: 16
+          name: '&dAmethyst Block (16x)'
+      ultimate:
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 4
+          name: '&bDiamond Block (4x)'
+  134:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: OAK_LOG
+          amount: 24
+          name: '&6Kayu Oak (24x)'
+      premium:
+        - type: MONEY
+          amount: 345000
+          name: '&a$345,000 Server Money'
+      premium-plus:
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 2
+          name: '&bDiamond Block (2x)'
+      ultimate:
+        - type: ITEM
+          material: EMERALD_BLOCK
+          amount: 6
+          name: '&aEmerald Block (6x)'
+  135:
+    required-xp: 100
+    rewards:
+      free:
+        - type: CURRENCY
+          amount: 50
+          name: '&e50 Battle Coins'
+      premium:
+        - type: ITEM
+          material: REDSTONE_BLOCK
+          amount: 8
+          name: '&cRedstone Block (8x)'
+      premium-plus:
+        - type: ITEM
+          material: SHULKER_BOX
+          amount: 1
+          name: '&dShulker Box'
+      ultimate:
+        - type: ITEM
+          material: ANCIENT_DEBRIS
+          amount: 4
+          name: '&8Ancient Debris (4x)'
+  136:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: GOLD_INGOT
+          amount: 6
+          name: '&eBatang Emas (6x)'
+      premium:
+        - type: MONEY
+          amount: 350000
+          name: '&a$350,000 Server Money'
+      premium-plus:
+        - type: ITEM
+          material: ENCHANTED_GOLDEN_APPLE
+          amount: 1
+          name: '&dEnchanted Golden Apple (1x)'
+      ultimate:
+        - type: ITEM
+          material: NETHERITE_SCRAP
+          amount: 4
+          name: '&8Netherite Scrap (4x)'
+  137:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: COAL
+          amount: 16
+          name: '&8Batubara (16x)'
+      premium:
+        - type: ITEM
+          material: IRON_BLOCK
+          amount: 4
+          name: '&fIron Block (4x)'
+      premium-plus:
+        - type: ITEM
+          material: GOLDEN_CARROT
+          amount: 32
+          name: '&6Golden Carrot (32x)'
+      ultimate:
+        - type: ITEM
+          material: CRYING_OBSIDIAN
+          amount: 16
+          name: '&5Crying Obsidian (16x)'
+  138:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: EXPERIENCE_BOTTLE
+          amount: 8
+          name: '&aBotol EXP (8x)'
+      premium:
+        - type: MONEY
+          amount: 355000
+          name: '&a$355,000 Server Money'
+      premium-plus:
+        - type: ITEM
+          material: EXPERIENCE_BOTTLE
+          amount: 32
+          name: '&aBotol EXP (32x)'
+      ultimate:
+        - type: ITEM
+          material: EXPERIENCE_BOTTLE
+          amount: 64
+          name: '&aBotol EXP (64x)'
+  139:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: ARROW
+          amount: 32
+          name: '&fAnak Panah (32x)'
+      premium:
+        - type: ITEM
+          material: GOLDEN_APPLE
+          amount: 4
+          name: '&eGolden Apple (4x)'
+      premium-plus:
+        - type: ITEM
+          material: NETHERITE_SCRAP
+          amount: 2
+          name: '&8Netherite Scrap (2x)'
+      ultimate:
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 4
+          name: '&bDiamond Block (4x)'
+  140:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: DIAMOND
+          amount: 16
+          name: '&bDiamond (16x)'
+      premium:
+        - type: ITEM
+          material: EMERALD_BLOCK
+          amount: 4
+          name: '&aEmerald Block (4x)'
+        - type: CURRENCY
+          amount: 100
+          name: '&e100 Battle Coins'
+      premium-plus:
+        - type: CURRENCY
+          amount: 50
+          name: '&e50 Battle Coins'
+      ultimate:
+        - type: ITEM
+          material: TOTEM_OF_UNDYING
+          amount: 1
+          name: '&6Totem of Undying'
+        - type: CURRENCY
+          amount: 200
+          name: '&e200 Battle Coins'
+  141:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: BREAD
+          amount: 16
+          name: '&fRoti Gandum (16x)'
+      premium:
+        - type: ITEM
+          material: DIAMOND
+          amount: 5
+          name: '&bDiamond (5x)'
+      premium-plus:
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 2
+          name: '&bDiamond Block (2x)'
+      ultimate:
+        - type: ITEM
+          material: ANCIENT_DEBRIS
+          amount: 4
+          name: '&8Ancient Debris (4x)'
+  142:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: COOKED_BEEF
+          amount: 12
+          name: '&cSteak Sapi (12x)'
+      premium:
+        - type: MONEY
+          amount: 365000
+          name: '&a$365,000 Server Money'
+      premium-plus:
+        - type: ITEM
+          material: ANCIENT_DEBRIS
+          amount: 2
+          name: '&8Ancient Debris (2x)'
+      ultimate:
+        - type: ITEM
+          material: NETHERITE_SCRAP
+          amount: 4
+          name: '&8Netherite Scrap (4x)'
+  143:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: TORCH
+          amount: 32
+          name: '&6Obor (32x)'
+      premium:
+        - type: ITEM
+          material: REDSTONE_BLOCK
+          amount: 8
+          name: '&cRedstone Block (8x)'
+      premium-plus:
+        - type: ITEM
+          material: ENCHANTED_GOLDEN_APPLE
+          amount: 1
+          name: '&dEnchanted Golden Apple (1x)'
+      ultimate:
+        - type: ITEM
+          material: CRYING_OBSIDIAN
+          amount: 16
+          name: '&5Crying Obsidian (16x)'
+  144:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: OAK_LOG
+          amount: 24
+          name: '&6Kayu Oak (24x)'
+      premium:
+        - type: MONEY
+          amount: 370000
+          name: '&a$370,000 Server Money'
+      premium-plus:
+        - type: ITEM
+          material: GOLDEN_CARROT
+          amount: 32
+          name: '&6Golden Carrot (32x)'
+      ultimate:
+        - type: ITEM
+          material: EXPERIENCE_BOTTLE
+          amount: 64
+          name: '&aBotol EXP (64x)'
+  145:
+    required-xp: 100
+    rewards:
+      free:
+        - type: CURRENCY
+          amount: 50
+          name: '&e50 Battle Coins'
+      premium:
+        - type: ITEM
+          material: IRON_BLOCK
+          amount: 4
+          name: '&fIron Block (4x)'
+      premium-plus:
+        - type: CURRENCY
+          amount: 100
+          name: '&e100 Battle Coins'
+      ultimate:
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 4
+          name: '&bDiamond Block (4x)'
+  146:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: GOLD_INGOT
+          amount: 6
+          name: '&eBatang Emas (6x)'
+      premium:
+        - type: MONEY
+          amount: 375000
+          name: '&a$375,000 Server Money'
+      premium-plus:
+        - type: ITEM
+          material: NETHERITE_SCRAP
+          amount: 2
+          name: '&8Netherite Scrap (2x)'
+      ultimate:
+        - type: ITEM
+          material: EMERALD_BLOCK
+          amount: 6
+          name: '&aEmerald Block (6x)'
+  147:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: COAL
+          amount: 16
+          name: '&8Batubara (16x)'
+      premium:
+        - type: ITEM
+          material: GOLDEN_APPLE
+          amount: 4
+          name: '&eGolden Apple (4x)'
+      premium-plus:
+        - type: ITEM
+          material: AMETHYST_BLOCK
+          amount: 16
+          name: '&dAmethyst Block (16x)'
+      ultimate:
+        - type: ITEM
+          material: ANCIENT_DEBRIS
+          amount: 4
+          name: '&8Ancient Debris (4x)'
+  148:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: EXPERIENCE_BOTTLE
+          amount: 8
+          name: '&aBotol EXP (8x)'
+      premium:
+        - type: MONEY
+          amount: 380000
+          name: '&a$380,000 Server Money'
+      premium-plus:
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 2
+          name: '&bDiamond Block (2x)'
+      ultimate:
+        - type: ITEM
+          material: NETHERITE_SCRAP
+          amount: 4
+          name: '&8Netherite Scrap (4x)'
+  149:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: ARROW
+          amount: 32
+          name: '&fAnak Panah (32x)'
+      premium:
+        - type: ITEM
+          material: DIAMOND
+          amount: 5
+          name: '&bDiamond (5x)'
+      premium-plus:
+        - type: ITEM
+          material: ANCIENT_DEBRIS
+          amount: 2
+          name: '&8Ancient Debris (2x)'
+      ultimate:
+        - type: ITEM
+          material: CRYING_OBSIDIAN
+          amount: 16
+          name: '&5Crying Obsidian (16x)'
+  150:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 6
+          name: '&b&lDiamond Block (6x)'
+        - type: CURRENCY
+          amount: 250
+          name: '&e250 Battle Coins'
+      premium:
+        - type: MONEY
+          amount: 385000
+          name: '&a$385,000 Server Money'
+        - type: ITEM
+          material: NETHERITE_INGOT
+          amount: 3
+          name: '&8Netherite Ingot (3x)'
+      premium-plus:
+        - type: ITEM
+          material: TOTEM_OF_UNDYING
+          amount: 2
+          name: '&6&lTotem of Undying (2x)'
+        - type: CURRENCY
+          amount: 300
+          name: '&e300 Battle Coins'
+      ultimate:
+        - type: ITEM
+          material: BEACON
+          amount: 1
+          name: '&b&lBeacon'
+        - type: ITEM
+          material: NETHERITE_BLOCK
+          amount: 2
+          name: '&8Netherite Block (2x)'
+        - type: CURRENCY
+          amount: 500
+          name: '&e500 Battle Coins'
+  151:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: BREAD
+          amount: 16
+          name: '&fRoti Gandum (16x)'
+      premium:
+        - type: ITEM
+          material: REDSTONE_BLOCK
+          amount: 8
+          name: '&cRedstone Block (8x)'
+      premium-plus:
+        - type: ITEM
+          material: GOLDEN_CARROT
+          amount: 32
+          name: '&6Golden Carrot (32x)'
+      ultimate:
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 4
+          name: '&bDiamond Block (4x)'
+  152:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: COOKED_BEEF
+          amount: 12
+          name: '&cSteak Sapi (12x)'
+      premium:
+        - type: MONEY
+          amount: 390000
+          name: '&a$390,000 Server Money'
+      premium-plus:
+        - type: ITEM
+          material: EXPERIENCE_BOTTLE
+          amount: 32
+          name: '&aBotol EXP (32x)'
+      ultimate:
+        - type: ITEM
+          material: EMERALD_BLOCK
+          amount: 6
+          name: '&aEmerald Block (6x)'
+  153:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: TORCH
+          amount: 32
+          name: '&6Obor (32x)'
+      premium:
+        - type: ITEM
+          material: IRON_BLOCK
+          amount: 4
+          name: '&fIron Block (4x)'
+      premium-plus:
+        - type: ITEM
+          material: NETHERITE_SCRAP
+          amount: 2
+          name: '&8Netherite Scrap (2x)'
+      ultimate:
+        - type: ITEM
+          material: ANCIENT_DEBRIS
+          amount: 4
+          name: '&8Ancient Debris (4x)'
+  154:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: OAK_LOG
+          amount: 24
+          name: '&6Kayu Oak (24x)'
+      premium:
+        - type: MONEY
+          amount: 395000
+          name: '&a$395,000 Server Money'
+      premium-plus:
+        - type: ITEM
+          material: AMETHYST_BLOCK
+          amount: 16
+          name: '&dAmethyst Block (16x)'
+      ultimate:
+        - type: ITEM
+          material: NETHERITE_SCRAP
+          amount: 4
+          name: '&8Netherite Scrap (4x)'
+  155:
+    required-xp: 100
+    rewards:
+      free:
+        - type: CURRENCY
+          amount: 50
+          name: '&e50 Battle Coins'
+      premium:
+        - type: ITEM
+          material: GOLDEN_APPLE
+          amount: 4
+          name: '&eGolden Apple (4x)'
+      premium-plus:
+        - type: CURRENCY
+          amount: 200
+          name: '&e200 Battle Coins'
+      ultimate:
+        - type: ITEM
+          material: CRYING_OBSIDIAN
+          amount: 16
+          name: '&5Crying Obsidian (16x)'
+  156:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: GOLD_INGOT
+          amount: 6
+          name: '&eBatang Emas (6x)'
+      premium:
+        - type: MONEY
+          amount: 400000
+          name: '&a$400,000 Server Money'
+      premium-plus:
+        - type: ITEM
+          material: ANCIENT_DEBRIS
+          amount: 2
+          name: '&8Ancient Debris (2x)'
+      ultimate:
+        - type: ITEM
+          material: EXPERIENCE_BOTTLE
+          amount: 64
+          name: '&aBotol EXP (64x)'
+  157:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: COAL
+          amount: 16
+          name: '&8Batubara (16x)'
+      premium:
+        - type: ITEM
+          material: DIAMOND
+          amount: 5
+          name: '&bDiamond (5x)'
+      premium-plus:
+        - type: ITEM
+          material: ENCHANTED_GOLDEN_APPLE
+          amount: 1
+          name: '&dEnchanted Golden Apple (1x)'
+      ultimate:
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 4
+          name: '&bDiamond Block (4x)'
+  158:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: EXPERIENCE_BOTTLE
+          amount: 8
+          name: '&aBotol EXP (8x)'
+      premium:
+        - type: MONEY
+          amount: 405000
+          name: '&a$405,000 Server Money'
+      premium-plus:
+        - type: ITEM
+          material: GOLDEN_CARROT
+          amount: 32
+          name: '&6Golden Carrot (32x)'
+      ultimate:
+        - type: ITEM
+          material: EMERALD_BLOCK
+          amount: 6
+          name: '&aEmerald Block (6x)'
+  159:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: ARROW
+          amount: 32
+          name: '&fAnak Panah (32x)'
+      premium:
+        - type: ITEM
+          material: REDSTONE_BLOCK
+          amount: 8
+          name: '&cRedstone Block (8x)'
+      premium-plus:
+        - type: ITEM
+          material: EXPERIENCE_BOTTLE
+          amount: 32
+          name: '&aBotol EXP (32x)'
+      ultimate:
+        - type: ITEM
+          material: ANCIENT_DEBRIS
+          amount: 4
+          name: '&8Ancient Debris (4x)'
+  160:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: DIAMOND
+          amount: 18
+          name: '&bDiamond (18x)'
+      premium:
+        - type: ITEM
+          material: EMERALD_BLOCK
+          amount: 4
+          name: '&aEmerald Block (4x)'
+        - type: CURRENCY
+          amount: 100
+          name: '&e100 Battle Coins'
+      premium-plus:
+        - type: CURRENCY
+          amount: 50
+          name: '&e50 Battle Coins'
+      ultimate:
+        - type: ITEM
+          material: TOTEM_OF_UNDYING
+          amount: 1
+          name: '&6Totem of Undying'
+        - type: CURRENCY
+          amount: 200
+          name: '&e200 Battle Coins'
+  161:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: BREAD
+          amount: 16
+          name: '&fRoti Gandum (16x)'
+      premium:
+        - type: ITEM
+          material: IRON_BLOCK
+          amount: 4
+          name: '&fIron Block (4x)'
+      premium-plus:
+        - type: ITEM
+          material: AMETHYST_BLOCK
+          amount: 16
+          name: '&dAmethyst Block (16x)'
+      ultimate:
+        - type: ITEM
+          material: CRYING_OBSIDIAN
+          amount: 16
+          name: '&5Crying Obsidian (16x)'
+  162:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: COOKED_BEEF
+          amount: 12
+          name: '&cSteak Sapi (12x)'
+      premium:
+        - type: MONEY
+          amount: 415000
+          name: '&a$415,000 Server Money'
+      premium-plus:
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 2
+          name: '&bDiamond Block (2x)'
+      ultimate:
+        - type: ITEM
+          material: EXPERIENCE_BOTTLE
+          amount: 64
+          name: '&aBotol EXP (64x)'
+  163:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: TORCH
+          amount: 32
+          name: '&6Obor (32x)'
+      premium:
+        - type: ITEM
+          material: GOLDEN_APPLE
+          amount: 4
+          name: '&eGolden Apple (4x)'
+      premium-plus:
+        - type: ITEM
+          material: ANCIENT_DEBRIS
+          amount: 2
+          name: '&8Ancient Debris (2x)'
+      ultimate:
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 4
+          name: '&bDiamond Block (4x)'
+  164:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: OAK_LOG
+          amount: 24
+          name: '&6Kayu Oak (24x)'
+      premium:
+        - type: MONEY
+          amount: 420000
+          name: '&a$420,000 Server Money'
+      premium-plus:
+        - type: ITEM
+          material: ENCHANTED_GOLDEN_APPLE
+          amount: 1
+          name: '&dEnchanted Golden Apple (1x)'
+      ultimate:
+        - type: ITEM
+          material: EMERALD_BLOCK
+          amount: 6
+          name: '&aEmerald Block (6x)'
+  165:
+    required-xp: 100
+    rewards:
+      free:
+        - type: CURRENCY
+          amount: 50
+          name: '&e50 Battle Coins'
+      premium:
+        - type: ITEM
+          material: DIAMOND
+          amount: 5
+          name: '&bDiamond (5x)'
+      premium-plus:
+        - type: ITEM
+          material: SHULKER_BOX
+          amount: 1
+          name: '&dShulker Box'
+      ultimate:
+        - type: ITEM
+          material: ANCIENT_DEBRIS
+          amount: 4
+          name: '&8Ancient Debris (4x)'
+  166:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: GOLD_INGOT
+          amount: 6
+          name: '&eBatang Emas (6x)'
+      premium:
+        - type: MONEY
+          amount: 425000
+          name: '&a$425,000 Server Money'
+      premium-plus:
+        - type: ITEM
+          material: EXPERIENCE_BOTTLE
+          amount: 32
+          name: '&aBotol EXP (32x)'
+      ultimate:
+        - type: ITEM
+          material: NETHERITE_SCRAP
+          amount: 4
+          name: '&8Netherite Scrap (4x)'
+  167:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: COAL
+          amount: 16
+          name: '&8Batubara (16x)'
+      premium:
+        - type: ITEM
+          material: REDSTONE_BLOCK
+          amount: 8
+          name: '&cRedstone Block (8x)'
+      premium-plus:
+        - type: ITEM
+          material: NETHERITE_SCRAP
+          amount: 2
+          name: '&8Netherite Scrap (2x)'
+      ultimate:
+        - type: ITEM
+          material: CRYING_OBSIDIAN
+          amount: 16
+          name: '&5Crying Obsidian (16x)'
+  168:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: EXPERIENCE_BOTTLE
+          amount: 8
+          name: '&aBotol EXP (8x)'
+      premium:
+        - type: MONEY
+          amount: 430000
+          name: '&a$430,000 Server Money'
+      premium-plus:
+        - type: ITEM
+          material: AMETHYST_BLOCK
+          amount: 16
+          name: '&dAmethyst Block (16x)'
+      ultimate:
+        - type: ITEM
+          material: EXPERIENCE_BOTTLE
+          amount: 64
+          name: '&aBotol EXP (64x)'
+  169:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: ARROW
+          amount: 32
+          name: '&fAnak Panah (32x)'
+      premium:
+        - type: ITEM
+          material: IRON_BLOCK
+          amount: 4
+          name: '&fIron Block (4x)'
+      premium-plus:
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 2
+          name: '&bDiamond Block (2x)'
+      ultimate:
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 4
+          name: '&bDiamond Block (4x)'
+  170:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: DIAMOND
+          amount: 19
+          name: '&bDiamond (19x)'
+      premium:
+        - type: ITEM
+          material: EMERALD_BLOCK
+          amount: 4
+          name: '&aEmerald Block (4x)'
+        - type: CURRENCY
+          amount: 100
+          name: '&e100 Battle Coins'
+      premium-plus:
+        - type: CURRENCY
+          amount: 150
+          name: '&e150 Battle Coins'
+      ultimate:
+        - type: ITEM
+          material: TOTEM_OF_UNDYING
+          amount: 1
+          name: '&6Totem of Undying'
+        - type: CURRENCY
+          amount: 200
+          name: '&e200 Battle Coins'
+  171:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: BREAD
+          amount: 16
+          name: '&fRoti Gandum (16x)'
+      premium:
+        - type: ITEM
+          material: GOLDEN_APPLE
+          amount: 4
+          name: '&eGolden Apple (4x)'
+      premium-plus:
+        - type: ITEM
+          material: ENCHANTED_GOLDEN_APPLE
+          amount: 1
+          name: '&dEnchanted Golden Apple (1x)'
+      ultimate:
+        - type: ITEM
+          material: ANCIENT_DEBRIS
+          amount: 4
+          name: '&8Ancient Debris (4x)'
+  172:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: COOKED_BEEF
+          amount: 12
+          name: '&cSteak Sapi (12x)'
+      premium:
+        - type: MONEY
+          amount: 440000
+          name: '&a$440,000 Server Money'
+      premium-plus:
+        - type: ITEM
+          material: GOLDEN_CARROT
+          amount: 32
+          name: '&6Golden Carrot (32x)'
+      ultimate:
+        - type: ITEM
+          material: NETHERITE_SCRAP
+          amount: 4
+          name: '&8Netherite Scrap (4x)'
+  173:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: TORCH
+          amount: 32
+          name: '&6Obor (32x)'
+      premium:
+        - type: ITEM
+          material: DIAMOND
+          amount: 5
+          name: '&bDiamond (5x)'
+      premium-plus:
+        - type: ITEM
+          material: EXPERIENCE_BOTTLE
+          amount: 32
+          name: '&aBotol EXP (32x)'
+      ultimate:
+        - type: ITEM
+          material: CRYING_OBSIDIAN
+          amount: 16
+          name: '&5Crying Obsidian (16x)'
+  174:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: OAK_LOG
+          amount: 24
+          name: '&6Kayu Oak (24x)'
+      premium:
+        - type: MONEY
+          amount: 445000
+          name: '&a$445,000 Server Money'
+      premium-plus:
+        - type: ITEM
+          material: NETHERITE_SCRAP
+          amount: 2
+          name: '&8Netherite Scrap (2x)'
+      ultimate:
+        - type: ITEM
+          material: EXPERIENCE_BOTTLE
+          amount: 64
+          name: '&aBotol EXP (64x)'
+  175:
+    required-xp: 100
+    rewards:
+      free:
+        - type: CURRENCY
+          amount: 50
+          name: '&e50 Battle Coins'
+      premium:
+        - type: MONEY
+          amount: 447500
+          name: '&a$447,500 Server Money'
+        - type: ITEM
+          material: NETHERITE_INGOT
+          amount: 4
+          name: '&8Netherite Ingot (4x)'
+      premium-plus:
+        - type: CURRENCY
+          amount: 200
+          name: '&e200 Battle Coins'
+      ultimate:
+        - type: ITEM
+          material: ENCHANTED_GOLDEN_APPLE
+          amount: 3
+          name: '&dEnchanted Golden Apple (3x)'
+        - type: ITEM
+          material: NETHERITE_INGOT
+          amount: 2
+          name: '&8Netherite Ingot (2x)'
+  176:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: GOLD_INGOT
+          amount: 6
+          name: '&eBatang Emas (6x)'
+      premium:
+        - type: MONEY
+          amount: 450000
+          name: '&a$450,000 Server Money'
+      premium-plus:
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 2
+          name: '&bDiamond Block (2x)'
+      ultimate:
+        - type: ITEM
+          material: EMERALD_BLOCK
+          amount: 6
+          name: '&aEmerald Block (6x)'
+  177:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: COAL
+          amount: 16
+          name: '&8Batubara (16x)'
+      premium:
+        - type: ITEM
+          material: IRON_BLOCK
+          amount: 4
+          name: '&fIron Block (4x)'
+      premium-plus:
+        - type: ITEM
+          material: ANCIENT_DEBRIS
+          amount: 2
+          name: '&8Ancient Debris (2x)'
+      ultimate:
+        - type: ITEM
+          material: ANCIENT_DEBRIS
+          amount: 4
+          name: '&8Ancient Debris (4x)'
+  178:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: EXPERIENCE_BOTTLE
+          amount: 8
+          name: '&aBotol EXP (8x)'
+      premium:
+        - type: MONEY
+          amount: 455000
+          name: '&a$455,000 Server Money'
+      premium-plus:
+        - type: ITEM
+          material: ENCHANTED_GOLDEN_APPLE
+          amount: 1
+          name: '&dEnchanted Golden Apple (1x)'
+      ultimate:
+        - type: ITEM
+          material: NETHERITE_SCRAP
+          amount: 4
+          name: '&8Netherite Scrap (4x)'
+  179:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: ARROW
+          amount: 32
+          name: '&fAnak Panah (32x)'
+      premium:
+        - type: ITEM
+          material: GOLDEN_APPLE
+          amount: 4
+          name: '&eGolden Apple (4x)'
+      premium-plus:
+        - type: ITEM
+          material: GOLDEN_CARROT
+          amount: 32
+          name: '&6Golden Carrot (32x)'
+      ultimate:
+        - type: ITEM
+          material: CRYING_OBSIDIAN
+          amount: 16
+          name: '&5Crying Obsidian (16x)'
+  180:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: DIAMOND
+          amount: 20
+          name: '&bDiamond (20x)'
+      premium:
+        - type: ITEM
+          material: EMERALD_BLOCK
+          amount: 4
+          name: '&aEmerald Block (4x)'
+        - type: CURRENCY
+          amount: 100
+          name: '&e100 Battle Coins'
+      premium-plus:
+        - type: ITEM
+          material: SHULKER_BOX
+          amount: 1
+          name: '&dShulker Box'
+      ultimate:
+        - type: ITEM
+          material: TOTEM_OF_UNDYING
+          amount: 1
+          name: '&6Totem of Undying'
+        - type: CURRENCY
+          amount: 200
+          name: '&e200 Battle Coins'
+  181:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: BREAD
+          amount: 16
+          name: '&fRoti Gandum (16x)'
+      premium:
+        - type: ITEM
+          material: DIAMOND
+          amount: 5
+          name: '&bDiamond (5x)'
+      premium-plus:
+        - type: ITEM
+          material: NETHERITE_SCRAP
+          amount: 2
+          name: '&8Netherite Scrap (2x)'
+      ultimate:
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 4
+          name: '&bDiamond Block (4x)'
+  182:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: COOKED_BEEF
+          amount: 12
+          name: '&cSteak Sapi (12x)'
+      premium:
+        - type: MONEY
+          amount: 465000
+          name: '&a$465,000 Server Money'
+      premium-plus:
+        - type: ITEM
+          material: AMETHYST_BLOCK
+          amount: 16
+          name: '&dAmethyst Block (16x)'
+      ultimate:
+        - type: ITEM
+          material: EMERALD_BLOCK
+          amount: 6
+          name: '&aEmerald Block (6x)'
+  183:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: TORCH
+          amount: 32
+          name: '&6Obor (32x)'
+      premium:
+        - type: ITEM
+          material: REDSTONE_BLOCK
+          amount: 8
+          name: '&cRedstone Block (8x)'
+      premium-plus:
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 2
+          name: '&bDiamond Block (2x)'
+      ultimate:
+        - type: ITEM
+          material: ANCIENT_DEBRIS
+          amount: 4
+          name: '&8Ancient Debris (4x)'
+  184:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: OAK_LOG
+          amount: 24
+          name: '&6Kayu Oak (24x)'
+      premium:
+        - type: MONEY
+          amount: 470000
+          name: '&a$470,000 Server Money'
+      premium-plus:
+        - type: ITEM
+          material: ANCIENT_DEBRIS
+          amount: 2
+          name: '&8Ancient Debris (2x)'
+      ultimate:
+        - type: ITEM
+          material: NETHERITE_SCRAP
+          amount: 4
+          name: '&8Netherite Scrap (4x)'
+  185:
+    required-xp: 100
+    rewards:
+      free:
+        - type: CURRENCY
+          amount: 50
+          name: '&e50 Battle Coins'
+      premium:
+        - type: ITEM
+          material: IRON_BLOCK
+          amount: 4
+          name: '&fIron Block (4x)'
+      premium-plus:
+        - type: CURRENCY
+          amount: 100
+          name: '&e100 Battle Coins'
+      ultimate:
+        - type: ITEM
+          material: CRYING_OBSIDIAN
+          amount: 16
+          name: '&5Crying Obsidian (16x)'
+  186:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: GOLD_INGOT
+          amount: 6
+          name: '&eBatang Emas (6x)'
+      premium:
+        - type: MONEY
+          amount: 475000
+          name: '&a$475,000 Server Money'
+      premium-plus:
+        - type: ITEM
+          material: GOLDEN_CARROT
+          amount: 32
+          name: '&6Golden Carrot (32x)'
+      ultimate:
+        - type: ITEM
+          material: EXPERIENCE_BOTTLE
+          amount: 64
+          name: '&aBotol EXP (64x)'
+  187:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: COAL
+          amount: 16
+          name: '&8Batubara (16x)'
+      premium:
+        - type: ITEM
+          material: GOLDEN_APPLE
+          amount: 4
+          name: '&eGolden Apple (4x)'
+      premium-plus:
+        - type: ITEM
+          material: EXPERIENCE_BOTTLE
+          amount: 32
+          name: '&aBotol EXP (32x)'
+      ultimate:
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 4
+          name: '&bDiamond Block (4x)'
+  188:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: EXPERIENCE_BOTTLE
+          amount: 8
+          name: '&aBotol EXP (8x)'
+      premium:
+        - type: MONEY
+          amount: 480000
+          name: '&a$480,000 Server Money'
+      premium-plus:
+        - type: ITEM
+          material: NETHERITE_SCRAP
+          amount: 2
+          name: '&8Netherite Scrap (2x)'
+      ultimate:
+        - type: ITEM
+          material: EMERALD_BLOCK
+          amount: 6
+          name: '&aEmerald Block (6x)'
+  189:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: ARROW
+          amount: 32
+          name: '&fAnak Panah (32x)'
+      premium:
+        - type: ITEM
+          material: DIAMOND
+          amount: 5
+          name: '&bDiamond (5x)'
+      premium-plus:
+        - type: ITEM
+          material: AMETHYST_BLOCK
+          amount: 16
+          name: '&dAmethyst Block (16x)'
+      ultimate:
+        - type: ITEM
+          material: ANCIENT_DEBRIS
+          amount: 4
+          name: '&8Ancient Debris (4x)'
+  190:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: DIAMOND
+          amount: 21
+          name: '&bDiamond (21x)'
+      premium:
+        - type: ITEM
+          material: EMERALD_BLOCK
+          amount: 4
+          name: '&aEmerald Block (4x)'
+        - type: CURRENCY
+          amount: 100
+          name: '&e100 Battle Coins'
+      premium-plus:
+        - type: CURRENCY
+          amount: 150
+          name: '&e150 Battle Coins'
+      ultimate:
+        - type: ITEM
+          material: TOTEM_OF_UNDYING
+          amount: 1
+          name: '&6Totem of Undying'
+        - type: CURRENCY
+          amount: 200
+          name: '&e200 Battle Coins'
+  191:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: BREAD
+          amount: 16
+          name: '&fRoti Gandum (16x)'
+      premium:
+        - type: ITEM
+          material: REDSTONE_BLOCK
+          amount: 8
+          name: '&cRedstone Block (8x)'
+      premium-plus:
+        - type: ITEM
+          material: ANCIENT_DEBRIS
+          amount: 2
+          name: '&8Ancient Debris (2x)'
+      ultimate:
+        - type: ITEM
+          material: CRYING_OBSIDIAN
+          amount: 16
+          name: '&5Crying Obsidian (16x)'
+  192:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: COOKED_BEEF
+          amount: 12
+          name: '&cSteak Sapi (12x)'
+      premium:
+        - type: MONEY
+          amount: 490000
+          name: '&a$490,000 Server Money'
+      premium-plus:
+        - type: ITEM
+          material: ENCHANTED_GOLDEN_APPLE
+          amount: 1
+          name: '&dEnchanted Golden Apple (1x)'
+      ultimate:
+        - type: ITEM
+          material: EXPERIENCE_BOTTLE
+          amount: 64
+          name: '&aBotol EXP (64x)'
+  193:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: TORCH
+          amount: 32
+          name: '&6Obor (32x)'
+      premium:
+        - type: ITEM
+          material: IRON_BLOCK
+          amount: 4
+          name: '&fIron Block (4x)'
+      premium-plus:
+        - type: ITEM
+          material: GOLDEN_CARROT
+          amount: 32
+          name: '&6Golden Carrot (32x)'
+      ultimate:
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 4
+          name: '&bDiamond Block (4x)'
+  194:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: OAK_LOG
+          amount: 24
+          name: '&6Kayu Oak (24x)'
+      premium:
+        - type: MONEY
+          amount: 495000
+          name: '&a$495,000 Server Money'
+      premium-plus:
+        - type: ITEM
+          material: EXPERIENCE_BOTTLE
+          amount: 32
+          name: '&aBotol EXP (32x)'
+      ultimate:
+        - type: ITEM
+          material: EMERALD_BLOCK
+          amount: 6
+          name: '&aEmerald Block (6x)'
+  195:
+    required-xp: 100
+    rewards:
+      free:
+        - type: CURRENCY
+          amount: 50
+          name: '&e50 Battle Coins'
+      premium:
+        - type: ITEM
+          material: GOLDEN_APPLE
+          amount: 4
+          name: '&eGolden Apple (4x)'
+      premium-plus:
+        - type: ITEM
+          material: SHULKER_BOX
+          amount: 1
+          name: '&dShulker Box'
+      ultimate:
+        - type: ITEM
+          material: ANCIENT_DEBRIS
+          amount: 4
+          name: '&8Ancient Debris (4x)'
+  196:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: GOLD_INGOT
+          amount: 6
+          name: '&eBatang Emas (6x)'
+      premium:
+        - type: MONEY
+          amount: 500000
+          name: '&a$500,000 Server Money'
+      premium-plus:
+        - type: ITEM
+          material: AMETHYST_BLOCK
+          amount: 16
+          name: '&dAmethyst Block (16x)'
+      ultimate:
+        - type: ITEM
+          material: NETHERITE_SCRAP
+          amount: 4
+          name: '&8Netherite Scrap (4x)'
+  197:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: COAL
+          amount: 16
+          name: '&8Batubara (16x)'
+      premium:
+        - type: ITEM
+          material: DIAMOND
+          amount: 5
+          name: '&bDiamond (5x)'
+      premium-plus:
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 2
+          name: '&bDiamond Block (2x)'
+      ultimate:
+        - type: ITEM
+          material: CRYING_OBSIDIAN
+          amount: 16
+          name: '&5Crying Obsidian (16x)'
+  198:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: EXPERIENCE_BOTTLE
+          amount: 8
+          name: '&aBotol EXP (8x)'
+      premium:
+        - type: MONEY
+          amount: 505000
+          name: '&a$505,000 Server Money'
+      premium-plus:
+        - type: ITEM
+          material: ANCIENT_DEBRIS
+          amount: 2
+          name: '&8Ancient Debris (2x)'
+      ultimate:
+        - type: ITEM
+          material: EXPERIENCE_BOTTLE
+          amount: 64
+          name: '&aBotol EXP (64x)'
+  199:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: ARROW
+          amount: 32
+          name: '&fAnak Panah (32x)'
+      premium:
+        - type: ITEM
+          material: REDSTONE_BLOCK
+          amount: 8
+          name: '&cRedstone Block (8x)'
+      premium-plus:
+        - type: ITEM
+          material: ENCHANTED_GOLDEN_APPLE
+          amount: 1
+          name: '&dEnchanted Golden Apple (1x)'
+      ultimate:
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 4
+          name: '&bDiamond Block (4x)'
+  200:
+    required-xp: 100
+    rewards:
+      free:
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 8
+          name: '&b&lDiamond Block (8x)'
+        - type: CURRENCY
+          amount: 250
+          name: '&e250 Battle Coins'
+      premium:
+        - type: MONEY
+          amount: 510000
+          name: '&a$510,000 Server Money'
+        - type: ITEM
+          material: NETHERITE_INGOT
+          amount: 4
+          name: '&8Netherite Ingot (4x)'
+      premium-plus:
+        - type: ITEM
+          material: TOTEM_OF_UNDYING
+          amount: 2
+          name: '&6&lTotem of Undying (2x)'
+        - type: CURRENCY
+          amount: 300
+          name: '&e300 Battle Coins'
+      ultimate:
+        - type: ITEM
+          material: ELYTRA
+          amount: 1
+          name: '&5&l[ULTIMATE] Legendary Elytra'
+        - type: ITEM
+          material: NETHERITE_BLOCK
+          amount: 4
+          name: '&8&lNetherite Block (4x)'
+        - type: CURRENCY
+          amount: 1000
+          name: '&e&l1,000 Battle Coins'
+        - type: MONEY
+          amount: 1000000
+          name: '&6&l$1,000,000 Grand Prize Money'

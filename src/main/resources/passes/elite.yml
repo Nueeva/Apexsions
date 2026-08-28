@@ -1,0 +1,14 @@
+id: elite
+display-name: "&5&lElite Pass"
+permission: "apexsionsbattlepass.pass.elite"
+default-owned: false
+icon:
+  material: "EMERALD_BLOCK"
+lore:
+  - "&7Pass kasta tertinggi untuk petualang sejati!"
+priority: 30
+reward-access:
+  - free
+  - premium
+  - vip
+  - elite
