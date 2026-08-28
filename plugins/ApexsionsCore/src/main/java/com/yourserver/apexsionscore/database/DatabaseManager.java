@@ -192,15 +192,19 @@ public class DatabaseManager {
             stmt.execute("CREATE INDEX IF NOT EXISTS idx_regions_key ON regions(key);");
 
             // Seed initial starter kingdoms matching BlueMap world.conf
-            stmt.execute("INSERT INTO regions (id, key, display_name, world_name, spawn_x, spawn_y, spawn_z, spawn_yaw, spawn_pitch, enabled) " +
-                    "VALUES ('a0000000-0000-0000-0000-000000000001', 'ZENITHAR', 'Zenithar', 'world', -3028.5, 64.0, -5597.5, 0.0, 0.0, 1) " +
-                    "ON CONFLICT(key) DO UPDATE SET spawn_x = EXCLUDED.spawn_x, spawn_y = EXCLUDED.spawn_y, spawn_z = EXCLUDED.spawn_z, world_name = EXCLUDED.world_name;");
-            stmt.execute("INSERT INTO regions (id, key, display_name, world_name, spawn_x, spawn_y, spawn_z, spawn_yaw, spawn_pitch, enabled) " +
-                    "VALUES ('a0000000-0000-0000-0000-000000000002', 'SOLTERRA', 'Solterra', 'world', -5843.5, 65.0, 889.5, 0.0, 0.0, 1) " +
-                    "ON CONFLICT(key) DO UPDATE SET spawn_x = EXCLUDED.spawn_x, spawn_y = EXCLUDED.spawn_y, spawn_z = EXCLUDED.spawn_z, world_name = EXCLUDED.world_name;");
-            stmt.execute("INSERT INTO regions (id, key, display_name, world_name, spawn_x, spawn_y, spawn_z, spawn_yaw, spawn_pitch, enabled) " +
-                    "VALUES ('a0000000-0000-0000-0000-000000000003', 'SYLVAMOOR', 'Sylvamoor', 'world', -9666.5, 64.0, -4812.5, 0.0, 0.0, 1) " +
-                    "ON CONFLICT(key) DO UPDATE SET spawn_x = EXCLUDED.spawn_x, spawn_y = EXCLUDED.spawn_y, spawn_z = EXCLUDED.spawn_z, world_name = EXCLUDED.world_name;");
+            try {
+                stmt.execute("INSERT INTO regions (id, key, display_name, world_name, spawn_x, spawn_y, spawn_z, spawn_yaw, spawn_pitch, enabled) " +
+                        "VALUES ('a0000000-0000-0000-0000-000000000001', 'ZENITHAR', 'Zenithar', 'world', -3028.5, 64.0, -5597.5, 0.0, 0.0, 1) " +
+                        "ON CONFLICT(key) DO UPDATE SET spawn_x = EXCLUDED.spawn_x, spawn_y = EXCLUDED.spawn_y, spawn_z = EXCLUDED.spawn_z, world_name = EXCLUDED.world_name;");
+                stmt.execute("INSERT INTO regions (id, key, display_name, world_name, spawn_x, spawn_y, spawn_z, spawn_yaw, spawn_pitch, enabled) " +
+                        "VALUES ('a0000000-0000-0000-0000-000000000002', 'SOLTERRA', 'Solterra', 'world', -5843.5, 65.0, 889.5, 0.0, 0.0, 1) " +
+                        "ON CONFLICT(key) DO UPDATE SET spawn_x = EXCLUDED.spawn_x, spawn_y = EXCLUDED.spawn_y, spawn_z = EXCLUDED.spawn_z, world_name = EXCLUDED.world_name;");
+                stmt.execute("INSERT INTO regions (id, key, display_name, world_name, spawn_x, spawn_y, spawn_z, spawn_yaw, spawn_pitch, enabled) " +
+                        "VALUES ('a0000000-0000-0000-0000-000000000003', 'SYLVAMOOR', 'Sylvamoor', 'world', -9666.5, 64.0, -4812.5, 0.0, 0.0, 1) " +
+                        "ON CONFLICT(key) DO UPDATE SET spawn_x = EXCLUDED.spawn_x, spawn_y = EXCLUDED.spawn_y, spawn_z = EXCLUDED.spawn_z, world_name = EXCLUDED.world_name;");
+            } catch (SQLException seedEx) {
+                plugin.getLogger().warning("Could not execute ON CONFLICT seed (already seeded or dialect variant): " + seedEx.getMessage());
+            }
         } catch (SQLException e) {
             plugin.getLogger().log(Level.SEVERE, "Failed executing table setup", e);
         }
