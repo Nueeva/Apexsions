@@ -1,6 +1,6 @@
 package com.apex.economy.auction;
 
-import com.apex.battlepass.util.ItemSerializer;
+import com.apex.economy.util.ItemSerializer;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.UUID;

@@ -21,6 +21,7 @@ Panduan teknis modul `ApexsionsCore` untuk konfigurasi, perintah, API eksternal,
 | `/kingdom select` | Membuka menu pemilihan kerajaan | `apexsionscore.kingdom.select` |
 | `/level` | Membuka progress bar level & reward | `apexsionscore.level` |
 | `/xpguide` | Membuka panduan 13 kategori XP | `apexsionscore.xpguide` |
+| `/rtp` | Teleportasi acak aman di dalam wilayah kerajaan sendiri | `apexsionscore.rtp` |
 | `/kadmin addxp <pemain> <jumlah>` | Menambahkan XP ke pemain | `apexsionscore.admin` |
 | `/kadmin setlevel <pemain> <level>` | Mengubah level pemain secara manual | `apexsionscore.admin` |
 | `/kadmin reload` | Memuat ulang seluruh file konfigurasi | `apexsionscore.admin` |

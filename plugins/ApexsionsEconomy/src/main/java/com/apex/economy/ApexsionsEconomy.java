@@ -1,6 +1,6 @@
 package com.apex.economy;
 
-import com.apex.battlepass.gui.core.GuiClickListener;
+import com.apex.economy.gui.core.GuiClickListener;
 import com.apex.economy.command.AdminEconomyCommand;
 import com.apex.economy.command.AuctionCommand;
 import com.apex.economy.command.EconomyCommand;
@@ -26,7 +26,7 @@ public class ApexsionsEconomy extends JavaPlugin {
     private EconomyLeaderboardService leaderboardService;
     private AuctionService auctionService;
     private com.apex.economy.trade.TradeManager tradeManager;
-    private com.apex.battlepass.util.ChatInputManager chatInputManager;
+    private com.apex.economy.util.ChatInputManager chatInputManager;
 
     @Override
     public void onEnable() {
@@ -43,7 +43,7 @@ public class ApexsionsEconomy extends JavaPlugin {
         this.repository.init();
 
         // 3. Initialize Services
-        this.chatInputManager = new com.apex.battlepass.util.ChatInputManager(this);
+        this.chatInputManager = new com.apex.economy.util.ChatInputManager(this);
         this.currencyService = new CurrencyService(this);
         this.payService = new PayService(this);
         this.leaderboardService = new EconomyLeaderboardService(this);
@@ -159,6 +159,6 @@ public class ApexsionsEconomy extends JavaPlugin {
     public EconomyLeaderboardService getLeaderboardService() { return leaderboardService; }
     public AuctionService getAuctionService() { return auctionService; }
     public com.apex.economy.trade.TradeManager getTradeManager() { return tradeManager; }
-    public com.apex.battlepass.util.ChatInputManager getChatInputManager() { return chatInputManager; }
+    public com.apex.economy.util.ChatInputManager getChatInputManager() { return chatInputManager; }
 }
 

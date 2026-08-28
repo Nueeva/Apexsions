@@ -1,8 +1,8 @@
 package com.apex.economy.trade.gui;
 
-import com.apex.battlepass.gui.core.Gui;
-import com.apex.battlepass.gui.core.GuiButton;
-import com.apex.battlepass.gui.util.ItemBuilder;
+import com.apex.economy.gui.core.Gui;
+import com.apex.economy.gui.core.GuiButton;
+import com.apex.economy.gui.util.ItemBuilder;
 import com.apex.economy.ApexsionsEconomy;
 import com.apex.economy.trade.TradeOffer;
 import com.apex.economy.trade.TradeSession;

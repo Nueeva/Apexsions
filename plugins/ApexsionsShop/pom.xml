@@ -18,6 +18,25 @@
         <paper.api.version>1.21.4-R0.1-SNAPSHOT</paper.api.version>
     </properties>
 
+    <repositories>
+        <repository>
+            <id>papermc</id>
+            <url>https://repo.papermc.io/repository/maven-public/</url>
+        </repository>
+        <repository>
+            <id>sonatype</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </repository>
+        <repository>
+            <id>placeholderapi</id>
+            <url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
+        </repository>
+        <repository>
+            <id>jitpack</id>
+            <url>https://jitpack.io</url>
+        </repository>
+    </repositories>
+
     <dependencies>
         <!-- Paper API -->
         <dependency>
@@ -27,47 +46,59 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- Kyori Adventure & MiniMessage -->
+        <!-- Vault API (fallback economy) -->
         <dependency>
-            <groupId>net.kyori</groupId>
-            <artifactId>adventure-api</artifactId>
-            <version>4.17.0</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>net.kyori</groupId>
-            <artifactId>adventure-text-minimessage</artifactId>
-            <version>4.17.0</version>
+            <groupId>com.github.MilkBowl</groupId>
+            <artifactId>VaultAPI</artifactId>
+            <version>1.7</version>
             <scope>provided</scope>
         </dependency>
 
-        <!-- ApexsionsCore & ApexsionsEconomy (provided) -->
+        <!-- ApexsionsCore Dependency -->
         <dependency>
             <groupId>com.yourserver.apexsionscore</groupId>
             <artifactId>ApexsionsCore</artifactId>
             <version>1.0.0</version>
-            <scope>provided</scope>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/../ApexsionsCore/target/ApexsionsCore-1.0.0.jar</systemPath>
         </dependency>
+
+        <!-- ApexsionsEconomy Dependency -->
         <dependency>
             <groupId>com.apex.economy</groupId>
             <artifactId>ApexsionsEconomy</artifactId>
             <version>1.0.0</version>
-            <scope>provided</scope>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/../ApexsionsEconomy/target/ApexsionsEconomy-1.0.0.jar</systemPath>
         </dependency>
     </dependencies>
 
     <build>
+        <defaultGoal>clean package</defaultGoal>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.13.0</version>
+                <version>3.14.0</version>
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
                     <release>${java.version}</release>
                     <encoding>UTF-8</encoding>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.6.0</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
         <resources>

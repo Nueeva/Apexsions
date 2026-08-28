@@ -1,6 +1,6 @@
 package com.apex.economy.service;
 
-import com.apex.battlepass.util.ItemSerializer;
+import com.apex.economy.util.ItemSerializer;
 import com.apex.economy.ApexsionsEconomy;
 import com.apex.economy.auction.AuctionListing;
 import com.apex.economy.auction.AuctionStatus;
