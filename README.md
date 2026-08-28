@@ -4,28 +4,136 @@ Kumpulan plugin server Minecraft profesional berkinerja tinggi yang dirancang se
 
 ---
 
-## 📦 Daftar Plugin Suite
+## 📦 1. Daftar 5 Plugin Suite Utama
 
-| Plugin | Versi | Deskripsi & Fitur Utama |
-| :--- | :---: | :--- |
-| **`ApexsionsCore`** | `1.0.0` | Otoritas Wilayah Kerajaan (*Zenithar*, *Solterra*, *Sylvamoor*), Sistem Progresi & Leveling (13 XP sources), Terintegrasi Poligon BlueMap, Sistem **Kingdom-Bounded `/rtp`** (mendarat aman hanya di wilayah kerajaan pemain), dan Pembatasan TPA EssentialsX teritorial. |
-| **`ApexsionsChat`** | `1.0.0` | Sistem Obrolan Terpadu MiniMessage, Channel (*Global*, *Kingdom*, *Staff*), Pamer Item (`/showitem`), Surat Offline (`/mail`), Chat Games interaktif, Pengumuman berkala, serta Moderasi Anti-Spam/Profanity/Exploit Lapis Tiga. |
-| **`ApexsionsEconomy`** | `1.0.0` | Multi-Currency (`Rupiah`, `Diamond`), Transfer (`/pay`), Pasar Lelang (`/ah`) dengan Escrow Claim, dan Sistem Barter/Trade 12-Slot dengan Toggle `/trade toggle` serta Pajak Transportasi Lintas-Kerajaan. |
-| **`ApexsionsBattlepass`** | `1.0.0` | Sistem BattlePass Modern 200 Level (100 XP fixed/level), Pool Quests (42 Daily, 120 Weekly, 50 Monthly), Tingkatan Pass (`FREE`, `PREMIUM`, `PREMIUM+`, `ULTIMATE`), Toko Rotasi, Auto-Fill GUI Rewards, dan Editor Admin GUI 54-Slot (`/abp`). |
-| **`ApexsionsShop`** | `1.0.0` | Pasar & Toko Dinamis 6 Kategori (`Blocks`, `Makanan`, `Pertanian`, `Ore`, `Mob Drops`, `Dyes`), Rasio Jual **20%**, Formula Dinamis Cuaca & Bioma Kerajaan, Pajak Wilayah 10%, UI Ramah Bedrock/Touchscreen, dan GUI Jual Cepat 45-Slot (`/sell`). |
+| Plugin | Versi | Status | Deskripsi & Fokus Utama |
+| :--- | :---: | :---: | :--- |
+| **`ApexsionsCore`** | `1.0.0` | ![Active](https://img.shields.io/badge/Status-Active-brightgreen) | Otoritas Wilayah Kerajaan (*Zenithar*, *Solterra*, *Sylvamoor*), Progresi Leveling (13 XP Sources), BlueMap Polygons, Kingdom-Bounded `/rtp`, dan Enforcer TPA EssentialsX. |
+| **`ApexsionsChat`** | `1.0.0` | ![Active](https://img.shields.io/badge/Status-Active-brightgreen) | Komunikasi Kyori MiniMessage, Channel (*Global*, *Kingdom*, *Staff*), Pamer Item (`/showitem`), Surat Offline (`/mail`), Chat Games, dan Moderasi Lapis Tiga. |
+| **`ApexsionsEconomy`** | `1.0.0` | ![Active](https://img.shields.io/badge/Status-Active-brightgreen) | Multi-Currency (`Rupiah`, `Diamond`), Transfer Cepat (`/pay`), Pasar Lelang (`/ah`) dengan Escrow Claim, dan Barter/Trade 12-Slot dengan Pajak Transportasi. |
+| **`ApexsionsBattlepass`** | `1.0.0` | ![Active](https://img.shields.io/badge/Status-Active-brightgreen) | 200 Level BattlePass, Season Management, Quests (Daily, Weekly, Monthly), Tingkatan Pass (`FREE`, `PREMIUM`, `PREMIUM+`, `ULTIMATE`), dan Visual Admin GUI Editor 54-Slot (`/abp`). |
+| **`ApexsionsShop`** | `1.0.0` | ![Active](https://img.shields.io/badge/Status-Active-brightgreen) | Pasar Dinamis 6 Kategori, Rasio Jual **20%**, Formula Dinamis Multiplier Cuaca & Bioma Kerajaan, Pajak Wilayah 10%, UI Ramah Sentuh/Bedrock, dan GUI Jual Cepat 45-Slot (`/sell`). |
 
 ---
 
-## 🛠️ Kompilasi & Build Otomatis
+## 🌟 2. Fitur Unggulan Setiap Plugin
 
-Seluruh 5 plugin dapat dikompilasi dan dikemas secara serentak menggunakan build script PowerShell bawaan (Java 21 LTS & Paper API 1.21.4):
+### 👑 ApexsionsCore
+- **3 Kerajaan Berdaulat**: *Zenithar* (Pegunungan/Tambang), *Solterra* (Gurun/Pertanian), *Sylvamoor* (Hutan/Alam).
+- **Formula Leveling & 13 Sumber XP**: Mining, Mob Kill, Woodcutting, Fishing, Farming, Crafting, Enchanting, Smelting, Player Kill, Golden Apple, Potion Use, Exploration, Structure Discovery.
+- **BlueMap Polygon Integration**: Visualisasi transparan wilayah kerajaan pada peta web real-time.
+- **Kingdom-Bounded `/rtp`**: Teleportasi acak aman yang selalu mendarat di dalam batas wilayah kerajaan pemain.
+- **Enforcer TPA EssentialsX**: Teleportasi `/tpa` wajib sesama anggota kerajaan dan kedua pemain wajib berada di dalam area kerajaan.
+
+### 💬 ApexsionsChat
+- **Channel Terisolasi**: Saluran Global, Kerajaan, dan Staf.
+- **Showcase Item Modern (`/showitem`)**: Menampilkan item tangan dengan hover tooltip interaktif tanpa kebocoran syntax tag.
+- **Surat Offline (`/mail`)**: Mengirim dan membaca pesan untuk pemain yang sedang offline.
+- **Chat Games & Siaran**: Mini game tebak kata & matematika berhadiah, serta pengumuman terjadwal.
+- **Moderasi Keamanan Lapis Tiga**: Anti-Spam (Levenshtein rate limiter), Anti-Profanity (sensor kata kotor), Anti-Ad (blocker IP/Link), Exploit Blocker, dan Notifikasi Staf Real-time.
+
+### 💰 ApexsionsEconomy
+- **Dual Currency Engine**: `Rupiah` (Rp) dan `Diamond` (♦) dengan pemformatan otomatis (`K`, `Jt`, `M`, `T`).
+- **Pasar Lelang (`/ah`)**: Jual-beli item bebas antar-pemain dengan sistem brankas klaim (*Escrow Claim*) untuk mencegah kehilangan item saat inventaris penuh.
+- **Barter & Trade Terintegrasi Kerajaan (`/trade`)**:
+  - Filter pemain sesama kerajaan secara otomatis.
+  - Tombol toggle filter global.
+  - Pajak transportasi lintas-kerajaan dipungut otomatis saat konfirmasi transaksi.
+
+### 🎫 ApexsionsBattlepass
+- **200 Level Hadiah**: 100 XP fixed per level dengan pewarisan klaim hadiah bertingkat (*Tier Inheritance*).
+- **Pool Misi Masif**: 42 Misi Harian, 120 Misi Mingguan, dan 50 Misi Bulanan.
+- **Toko Rotasi & Exp-Shop**: Penukaran BP-XP untuk item langka dengan batas pembelian per pemain.
+- **Admin Visual Editor 54-Slot (`/abp`)**: Pengaturan reward, item shop, probabilitas kelangkaan, dan level langsung via GUI di dalam game.
+
+### 🛒 ApexsionsShop
+- **6 Kategori Lengkap**: `blocks.yml`, `farming.yml`, `food.yml`, `ores.yml`, `mob_drops.yml`, `dyes.yml`.
+- **Harga Dinamis Cuaca & Kerajaan**: Harga berfluktuasi cerdas sesuai hujan/badai dan keunggulan komoditas kerajaan pembeli.
+- **UI Ramah Sentuh & Bedrock**: Kontrol navigasi di baris terbawah inventaris.
+- **GUI Jual Cepat 45-Slot (`/sell` & `/sellgui`)**: Drag-and-drop banyak item sekaligus untuk langsung dijual.
+
+---
+
+## 📜 3. Master Command List & Permissions Matrix
+
+### 👑 Modul ApexsionsCore
+| Perintah | Alias | Deskripsi | Hak Akses (Permission) | Default |
+| :--- | :--- | :--- | :--- | :---: |
+| `/lobby` | `/hub` | Teleportasi ke lobi utama server | `apexsionscore.command.lobby` | `true` |
+| `/kingdom` | `/k`, `/region` | Membuka profil dan status kerajaan | `apexsionscore.command.region` | `true` |
+| `/kingdom choose` | `/k select` | Membuka menu pemilihan 3 kerajaan | `apexsionscore.command.region` | `true` |
+| `/level` | `/lvl`, `/profile` | Membuka GUI progress bar level & hadiah | `apexsionscore.command.level` | `true` |
+| `/xpguide` | `/exp` | Panduan detail 13 sumber perolehan XP | `apexsionscore.command.level` | `true` |
+| `/rtp` | `/wild`, `/krtp` | Teleportasi acak aman di wilayah kerajaan | `apexsionscore.command.rtp` | `true` |
+| `/kadmin addxp <p> <amt>` | `/ac addxp` | Menambahkan XP pemain (Admin) | `apexsionscore.admin` | `op` |
+| `/kadmin setlevel <p> <lvl>`| `/ac setlevel` | Mengatur level pemain langsung (Admin) | `apexsionscore.admin` | `op` |
+| `/kadmin setkingdom <p> <k>`| `/ac setk` | Memindahkan kerajaan pemain (Admin) | `apexsionscore.admin` | `op` |
+| `/kadmin reload` | `/ac reload` | Memuat ulang konfigurasi Core (Admin) | `apexsionscore.admin` | `op` |
+
+### 💬 Modul ApexsionsChat
+| Perintah | Alias | Deskripsi | Hak Akses (Permission) | Default |
+| :--- | :--- | :--- | :--- | :---: |
+| `/channel <g\|k\|s>` | `/ch` | Mengganti channel obrolan aktif | `apexsionschat.channel` | `true` |
+| `/g [pesan]` | `/global` | Berbicara di obrolan Global | `apexsionschat.channel.global` | `true` |
+| `/kc [pesan]` | `/kchat` | Berbicara di obrolan Kerajaan | `apexsionschat.channel.kingdom` | `true` |
+| `/sc [pesan]` | `/staffchat` | Berbicara di obrolan Staf | `apexsionschat.channel.staff` | `op` |
+| `/showitem` | `/item`, `/i` | Memamerkan item di tangan ke obrolan | `apexsionschat.showitem` | `true` |
+| `/mail send <p> <pesan>`| - | Mengirim surat offline ke pemain | `apexsionschat.mail` | `true` |
+| `/mail read` | `/inbox` | Membaca kotak masuk surat offline | `apexsionschat.mail` | `true` |
+| `/report <p> <alasan>`| - | Melaporkan pemain yang melanggar aturan | `apexsionschat.report` | `true` |
+| `/reports` | `/reportlist` | Membuka daftar laporan pemain (Staf) | `apexsionschat.staff.reports` | `op` |
+| `/apexsionschat mute` | `/chat mute` | Mengunci obrolan global server (Admin) | `apexsionschat.admin` | `op` |
+| `/apexsionschat clear`| `/chat clear`| Membersihkan layar obrolan pemain (Admin) | `apexsionschat.admin` | `op` |
+| `/apexsionschat reload`| - | Memuat ulang konfigurasi chat (Admin) | `apexsionschat.admin` | `op` |
+
+### 💰 Modul ApexsionsEconomy
+| Perintah | Alias | Deskripsi | Hak Akses (Permission) | Default |
+| :--- | :--- | :--- | :--- | :---: |
+| `/economy` | `/eco`, `/bal`, `/uang` | Membuka menu utama saldo pemain | `apexsionseconomy.use` | `true` |
+| `/baltop` | `/topbal` | Menampilkan papan peringkat kekayaan | `apexsionseconomy.use` | `true` |
+| `/pay <p> <amt> [curr]` | `/transfer` | Mentransfer uang ke pemain lain | `apexsionseconomy.pay` | `true` |
+| `/ah` | `/lelang`, `/auction` | Membuka pasar lelang & brankas escrow | `apexsionseconomy.ah` | `true` |
+| `/ah sell <harga>` | `/lelang jual` | Mendaftarkan item ke pasar lelang | `apexsionseconomy.ah` | `true` |
+| `/trade [pemain]` | `/barter`, `/tukar` | Membuka menu barter item & saldo | `apexsionseconomy.trade` | `true` |
+| `/trade toggle` | - | Mengaktifkan/menonaktifkan request trade | `apexsionseconomy.trade` | `true` |
+| `/ecoadmin give <p> <amt>`| `/aeco give` | Menambah saldo pemain (Admin) | `apexsionseconomy.admin` | `op` |
+| `/ecoadmin take <p> <amt>`| `/aeco take` | Mengurangi saldo pemain (Admin) | `apexsionseconomy.admin` | `op` |
+| `/ecoadmin set <p> <amt>` | `/aeco set` | Mengatur saldo pemain (Admin) | `apexsionseconomy.admin` | `op` |
+
+### 🎫 Modul ApexsionsBattlepass
+| Perintah | Alias | Deskripsi | Hak Akses (Permission) | Default |
+| :--- | :--- | :--- | :--- | :---: |
+| `/bp` | `/battlepass` | Membuka antarmuka 200 level BattlePass | `apexsionsbattlepass.use` | `true` |
+| `/bp quests` | `/bp misi` | Membuka daftar misi harian/mingguan/bulanan | `apexsionsbattlepass.use` | `true` |
+| `/bp shop` | `/bp toko` | Membuka toko rotasi BattlePass | `apexsionsbattlepass.use` | `true` |
+| `/abp` | `/bpadmin`, `/adminbp` | Membuka panel kontrol visual editor 54-slot | `apexsionsbattlepass.admin` | `op` |
+| `/abp setlevel <p> <lvl>`| - | Mengatur level BattlePass pemain (Admin) | `apexsionsbattlepass.admin` | `op` |
+| `/abp addxp <p> <xp>` | - | Memberikan poin BP-XP ke pemain (Admin) | `apexsionsbattlepass.admin` | `op` |
+| `/abp givepass <p> <tier>`| `/abp setpass` | Memberikan status pass tier ke pemain (Admin) | `apexsionsbattlepass.admin` | `op` |
+| `/abp reload` | - | Memuat ulang file konfigurasi BP (Admin) | `apexsionsbattlepass.reload` | `op` |
+
+### 🛒 Modul ApexsionsShop
+| Perintah | Alias | Deskripsi | Hak Akses (Permission) | Default |
+| :--- | :--- | :--- | :--- | :---: |
+| `/shop` | `/pasar`, `/toko`, `/store` | Membuka menu utama 6 kategori toko | `apexsionsshop.use` | `true` |
+| `/shop <kategori>` | `/pasar <kat>` | Membuka kategori toko spesifik | `apexsionsshop.use` | `true` |
+| `/sell` | `/sellgui`, `/jual` | Membuka GUI jual cepat 45-slot | `apexsionsshop.sell` | `true` |
+| `/sellall` | `/jualsemua` | Menjual seluruh item cocok di inventaris | `apexsionsshop.sell` | `true` |
+| `/sellhand` | `/jualtangan` | Menjual item yang sedang dipegang | `apexsionsshop.sell` | `true` |
+| `/shop reload` | `/pasar reload` | Memuat ulang kategori & pasar (Admin) | `apexsionsshop.admin` | `op` |
+
+---
+
+## 🛠️ 4. Kompilasi & Build Otomatis
+
+Seluruh 5 plugin dapat dikompilasi secara serentak menggunakan script PowerShell bawaan atau Apache Maven (Java 21 LTS & Paper API 1.21.4):
 
 ```powershell
-# Jalankan build script untuk seluruh plugin
+# Jalankan build script multi-compiler
 .\build.ps1
 ```
 
-Output file `.jar` siap pasang akan otomatis tersedia di:
+File `.jar` hasil kompilasi siap pasang akan tersedia di:
 - `build/libs/ApexsionsCore-1.0.0.jar`
 - `build/libs/ApexsionsChat-1.0.0.jar`
 - `build/libs/ApexsionsEconomy-1.0.0.jar`
@@ -34,8 +142,13 @@ Output file `.jar` siap pasang akan otomatis tersedia di:
 
 ---
 
-## 🚀 Alur Rilis & Git Repository
+## 📚 5. Indeks Dokumentasi Lengkap (`docs/`)
 
-- **Repository Utama:** `https://github.com/Nueeva/Apexsions.git`
-- **Branch Utama:** `main`
-- Setiap perubahan kode, dokumentasi, dan binary `.jar` selalu disinkronkan dan di-push ke branch utama.
+Untuk panduan teknis mendalam per modul, silakan baca dokumentasi di folder `docs/`:
+- 👑 [**ApexsionsCore Manual**](docs/APEXSIONS_CORE.md)
+- 💬 [**ApexsionsChat Manual**](docs/APEXSIONS_CHAT.md)
+- 💰 [**ApexsionsEconomy Manual**](docs/APEXSIONS_ECONOMY.md)
+- 🎫 [**ApexsionsBattlepass Manual**](docs/APEXSIONS_BATTLEPASS.md)
+- 🛒 [**ApexsionsShop Manual**](docs/APEXSIONS_SHOP.md)
+- 🏛️ [**Ecosystem Architecture Guide**](docs/ECOSYSTEM_ARCHITECTURE.md)
+- 🗄️ [**PostgreSQL Integration Guide**](docs/ECONOMY_INTEGRATION_POSTGRESQL.md)
