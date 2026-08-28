@@ -133,6 +133,9 @@ public class RewardsMenu extends Gui {
         }
 
         setButton(53, new CloseButton());
+
+        // 4. Fill every remaining empty slot across all 54 slots
+        fillBackground(Material.BLACK_STAINED_GLASS_PANE);
     }
 
     private GuiButton createRewardButton(PlayerData data, int level, String passId) {
@@ -145,9 +148,9 @@ public class RewardsMenu extends Gui {
         String passName = tier != null ? tier.getDisplayName() : passId.toUpperCase();
 
         if (rewards.isEmpty()) {
-            ItemStack emptyItem = new ItemBuilder(Material.GRAY_DYE)
-                    .name("&7&l" + passName + " - Level " + level)
-                    .lore(List.of("&7Tidak ada hadiah pada level ini."))
+            ItemStack emptyItem = new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE)
+                    .name("&8[ Kosong ] &7" + passName + " - Level " + level)
+                    .lore(List.of("&8Tidak ada hadiah pada slot ini."))
                     .build();
             return new GuiButton(emptyItem, null);
         }
