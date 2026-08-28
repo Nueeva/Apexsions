@@ -62,15 +62,14 @@ public class ConfigManager {
     }
 
     public void load() {
-        this.mainConfig = loadCustomFile("config.yml");
-        this.kingdomsConfig = loadCustomFile("kingdoms.yml");
-        this.titlesConfig = loadCustomFile("titles.yml");
-        this.xpConfig = loadCustomFile("xp.yml");
-        this.rewardsConfig = loadCustomFile("rewards.yml");
-        this.messagesConfig = loadCustomFile("messages.yml");
-        this.guiConfig = loadCustomFile("gui.yml");
-        this.chatConfig = loadCustomFile("chat.yml");
-        this.ranksConfig = loadCustomFile("ranks.yml");
+        this.mainConfig = loadCustomFile("config.yml", "config.yml");
+        this.kingdomsConfig = loadCustomFile("kingdoms/kingdoms.yml", "kingdoms.yml");
+        this.titlesConfig = loadCustomFile("progression/titles.yml", "titles.yml");
+        this.xpConfig = loadCustomFile("progression/xp.yml", "xp.yml");
+        this.rewardsConfig = loadCustomFile("progression/rewards.yml", "rewards.yml");
+        this.ranksConfig = loadCustomFile("progression/ranks.yml", "ranks.yml");
+        this.messagesConfig = loadCustomFile("messages.yml", "messages.yml");
+        this.guiConfig = loadCustomFile("gui.yml", "gui.yml");
 
         // Server
         this.serverName = mainConfig.getString("server.name", "Apexsions");
@@ -121,16 +120,34 @@ public class ConfigManager {
         this.allowOverflow = mainConfig.getBoolean("level.allow-overflow", false);
     }
 
-    private FileConfiguration loadCustomFile(String fileName) {
-        File file = new File(plugin.getDataFolder(), fileName);
-        if (!file.exists()) {
+    private FileConfiguration loadCustomFile(String targetPath, String legacyPath) {
+        File file = new File(plugin.getDataFolder(), targetPath);
+        File legacyFile = legacyPath != null ? new File(plugin.getDataFolder(), legacyPath) : null;
+
+        // If legacy file exists and target doesn't, use legacy file for backward compatibility
+        if (!file.exists() && legacyFile != null && legacyFile.exists()) {
+            file = legacyFile;
+        } else if (!file.exists()) {
             file.getParentFile().mkdirs();
-            plugin.saveResource(fileName, false);
+            try {
+                plugin.saveResource(targetPath, false);
+            } catch (Exception e) {
+                // If resource not found at targetPath, try legacyPath
+                if (legacyPath != null) {
+                    try {
+                        plugin.saveResource(legacyPath, false);
+                    } catch (Exception ignored) {}
+                }
+            }
         }
+
         FileConfiguration config = YamlConfiguration.loadConfiguration(file);
 
         // Merge defaults
-        InputStream defStream = plugin.getResource(fileName);
+        InputStream defStream = plugin.getResource(targetPath);
+        if (defStream == null && legacyPath != null) {
+            defStream = plugin.getResource(legacyPath);
+        }
         if (defStream != null) {
             YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(new InputStreamReader(defStream, StandardCharsets.UTF_8));
             config.setDefaults(defConfig);
@@ -213,7 +230,7 @@ public class ConfigManager {
     }
 
     public boolean isChatEnabled() {
-        return chatConfig != null ? chatConfig.getBoolean("enabled", true) : true;
+        return chatConfig != null ? chatConfig.getBoolean("enabled", true) : false;
     }
 
     public FileConfiguration getRanksConfig() { return ranksConfig; }
@@ -223,13 +240,10 @@ public class ConfigManager {
     }
 
     public String getKingdomChatTag(String kingdomKey) {
-        if (chatConfig == null) {
-            return "<gray>[None]</gray>";
-        }
         if (kingdomKey == null || kingdomKey.isEmpty() || kingdomKey.equalsIgnoreCase("NONE")) {
-            return chatConfig.getString("kingdom-tags.none", "<gray>[Unpledged]</gray>");
+            return chatConfig != null ? chatConfig.getString("kingdom-tags.none", "<gray>[Unpledged]</gray>") : "<gray>[Unpledged]</gray>";
         }
-        return chatConfig.getString("kingdom-tags." + kingdomKey.toUpperCase(), "<gold>[" + kingdomKey + "]</gold>");
+        return chatConfig != null ? chatConfig.getString("kingdom-tags." + kingdomKey.toUpperCase(), "<gold>[" + kingdomKey + "]</gold>") : "<gold>[" + kingdomKey + "]</gold>";
     }
 
     public String getDefaultRank() {
