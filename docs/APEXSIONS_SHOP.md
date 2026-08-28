@@ -1,12 +1,12 @@
 # ApexsionsShop — Comprehensive Technical Manual
 
-Panduan teknis dan operasional lengkap untuk modul **`ApexsionsShop`** (Sistem Toko 6 Kategori, Pasar Dinamis Cuaca & Pasokan, Pajak Kerajaan 10%, GUI Ramah Bedrock/Touchscreen, dan GUI Jual Cepat 45-Slot `/sell`).
+Panduan teknis dan operasional lengkap untuk modul **`ApexsionsShop`** (Sistem Toko 6 Kategori, Pasar Dinamis Cuaca & Pasokan, Price Clamping, Siaran Tren Pasar, Pajak Kerajaan 10%, GUI Ramah Bedrock/Touchscreen, dan GUI Jual Cepat 45-Slot `/sell`).
 
 ---
 
 ## 🛒 1. Ikhtisar Modul & Arsitektur
 
-`ApexsionsShop` mengelola ekosistem perdagangan dinamis server, di mana harga komoditas berfluktuasi secara cerdas berdasarkan kondisi alam, spesialisasi wilayah kerajaan pembeli, dan ketersediaan pasokan.
+`ApexsionsShop` mengelola ekosistem perdagangan dinamis server, di mana harga komoditas berfluktuasi secara cerdas berdasarkan kondisi alam, spesialisasi wilayah kerajaan pembeli, ketersediaan pasokan (*Supply & Demand Curve*), dan batas pengaman anti-inflasi (*Price Clamping*).
 
 ```
                            ┌────────────────────────┐
@@ -18,8 +18,8 @@ Panduan teknis dan operasional lengkap untuk modul **`ApexsionsShop`** (Sistem T
          ▼                             ▼                             ▼
 ┌──────────────────┐         ┌───────────────────┐         ┌───────────────────┐
 │ 6 Shop Categories│         │  Dynamic Pricing  │         │  Bedrock GUI Hub  │
-│Blocks/Farming/Ore│         │Weather Multiplier,│         │Bottom Bar Nav,    │
-│Food/Drops/Dyes   │         │Kingdom Bias, Tax  │         │45-Slot Quick Sell │
+│Blocks/Farming/Ore│         │Price Clamping 50% │         │Bottom Bar Nav,    │
+│Food/Drops/Dyes   │         │- 200%, Market Bcst│         │45-Slot Quick Sell │
 └──────────────────┘         └───────────────────┘         └───────────────────┘
 ```
 
@@ -38,17 +38,14 @@ Panduan teknis dan operasional lengkap untuk modul **`ApexsionsShop`** (Sistem T
 
 ## 📈 3. Formula Harga Dinamis & Ekonomi Berkelanjutan
 
-Untuk mencegah inflasi dan mendorong perdagangan strategis, harga ditentukan dengan formula:
+$$\text{Harga Final} = \text{Clamp}_{50\%}^{200\%}(\text{Harga Dasar} \times M_{\text{Cuaca}} \times M_{\text{Kerajaan}} \times M_{\text{Pasokan}}) \pm \text{Pajak}$$
 
-$$\text{Harga Final} = (\text{Harga Dasar} \times M_{\text{Cuaca}} \times M_{\text{Kerajaan}} \times M_{\text{Pasokan}}) \pm \text{Pajak}$$
-
-- **Rasio Jual Bawaan**: **20%** dari harga beli (mencegah eksploitasi perputaran uang instan).
-- **Multiplier Cuaca ($M_{\text{Cuaca}}$)**:
-  - Hujan lebat meningkatkan permintaan hasil pertanian (+15%).
-  - Badai petir (*Thunderstorm*) meningkatkan harga ore langka (+25%).
-- **Spesialisasi Kerajaan ($M_{\text{Kerajaan}}$)**:
-  - Pemain yang berbelanja komoditas unggulan kerajaannya sendiri (misal Zenithar membeli ore) mendapatkan potongan harga khusus.
-- **Pajak Kerajaan (10%)**: Pajak 10% dipotong dari setiap transaksi untuk kas kerajaan/server.
+- **Rasio Jual Bawaan**: **20%** dari harga beli dasar (mencegah eksploitasi perputaran uang instan).
+- **Price Clamping (Batas Pengaman)**: Harga satuan efektif dijamin tidak akan pernah jatuh di bawah **50%** atau melambung melampaui **200%** dari harga dasar.
+- **Siaran Tren Pasar Otomatis (`MarketBroadcastService`)**: Pengumuman berkala MiniMessage mengenai komoditas yang sedang 'BOOM' (harga naik) atau 'DIP' (harga anjlok).
+- **Multiplier Cuaca ($M_{\text{Cuaca}}$)**: Hujan lebat meningkatkan permintaan hasil pertanian (+15%), badai petir meningkatkan harga ore langka (+25%).
+- **Spesialisasi Kerajaan ($M_{\text{Kerajaan}}$)**: Diskon komoditas khusus untuk warga kerajaan pemilik bioma.
+- **Pajak Kerajaan (10%)**: Pajak 10% dipotong dari setiap transaksi dan secara otomatis disalurkan ke kas kerajaan pembeli.
 
 ---
 
@@ -69,16 +66,3 @@ $$\text{Harga Final} = (\text{Harga Dasar} \times M_{\text{Cuaca}} \times M_{\te
 | `/sellall` | `/jualsemua` | Menjual seluruh item yang cocok di inventaris | `apexsionsshop.sell` | `true` |
 | `/sellhand` | `/jualtangan` | Menjual item yang sedang dipegang di tangan utama | `apexsionsshop.sell` | `true` |
 | `/shop reload` | `/pasar reload` | Memuat ulang konfigurasi kategori, pasar, dan GUI | `apexsionsshop.admin` | `op` |
-
----
-
-## 🧩 6. Integrasi API Publik
-
-```java
-// Mendapatkan instance API toko
-ApexsionsShopAPI shopAPI = ApexsionsShopProvider.get();
-
-// Mengambil harga dinamis item
-double buyPrice = shopAPI.calculateBuyPrice(material, player);
-double sellPrice = shopAPI.calculateSellPrice(material, player);
-```

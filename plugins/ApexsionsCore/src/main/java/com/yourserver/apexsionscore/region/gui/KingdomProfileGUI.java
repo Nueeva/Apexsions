@@ -24,7 +24,7 @@ import java.util.*;
 
 /**
  * Modern 45-slot Chest GUI displaying a player's kingdom profile, XP progress,
- * level titles, rewards shortcut, XP guide directory, and teleportation.
+ * level titles, rewards shortcut, XP guide directory, teleportation, and leaderboard.
  */
 public class KingdomProfileGUI implements Listener {
 
@@ -75,9 +75,6 @@ public class KingdomProfileGUI implements Listener {
         Optional<Region> regionOpt = data.getRegionId() != null ? plugin.getRegionManager().getRegion(data.getRegionId()) : Optional.empty();
         String kingdomDisplay = regionOpt.map(Region::getDisplayName).orElse("<gray>Belum Memilih</gray>");
 
-        Optional<Region> curTerritory = plugin.getRegionManager().getRegionAt(player.getLocation());
-        String curTerritoryName = curTerritory.map(Region::getDisplayName).orElse("<gray>Wilderness</gray>");
-
         ItemStack skull = new ItemStack(Material.PLAYER_HEAD);
         SkullMeta skullMeta = (SkullMeta) skull.getItemMeta();
         if (skullMeta != null) {
@@ -99,6 +96,15 @@ public class KingdomProfileGUI implements Listener {
         }
         inv.setItem(13, skull);
 
+        // Count online players in kingdom
+        long onlineKingdomCount = 0;
+        if (regionOpt.isPresent()) {
+            Region r = regionOpt.get();
+            onlineKingdomCount = Bukkit.getOnlinePlayers().stream()
+                    .filter(p -> plugin.getApi().getPlayerRegionKey(p.getUniqueId()).equalsIgnoreCase(r.getKey()))
+                    .count();
+        }
+
         // 3. Slot 20: Kingdom Card
         if (regionOpt.isPresent()) {
             Region reg = regionOpt.get();
@@ -110,8 +116,10 @@ public class KingdomProfileGUI implements Listener {
             };
 
             ItemStack kItem = createItem(iconMat, reg.getDisplayName(),
-                    "<gray>Status: <green>Warga</green></gray>",
-                    "<gray>Ibukota: <yellow>" + reg.getWorldName() + " (" + (int)(double)reg.getSpawnX() + ", " + (int)(double)reg.getSpawnY() + ", " + (int)(double)reg.getSpawnZ() + ")</yellow></gray>");
+                    "<gray>Status: <green>Warga Terdaftar</green></gray>",
+                    "<gray>Warga Online: <yellow>" + onlineKingdomCount + " Pemain</yellow></gray>",
+                    "<gray>Ibukota: <yellow>" + reg.getWorldName() + " (" + (int)(double)reg.getSpawnX() + ", " + (int)(double)reg.getSpawnY() + ", " + (int)(double)reg.getSpawnZ() + ")</yellow></gray>",
+                    "<gray>Status Wilayah: " + (plugin.getWarManager().isWarActiveInTerritory(reg) ? "<red><bold>SEDANG PERANG</bold></red>" : "<green>Damai</green>") + "</gray>");
             inv.setItem(20, kItem);
         } else {
             ItemStack chooseItem = createItem(Material.ARMOR_STAND,
@@ -156,14 +164,29 @@ public class KingdomProfileGUI implements Listener {
             inv.setItem(24, lockedTp);
         }
 
-        // 6. Slot 31: XP Guide Directory
+        // 6. Slot 29: Leaderboard / Hall of Fame
+        ItemStack topBtn = createItem(Material.NETHER_STAR,
+                "<gradient:#f1c40f:#e67e22><bold>Papan Peringkat</bold></gradient>",
+                "<gray>Lihat top level & pemain terkuat.",
+                "<gold>» Klik untuk buka leaderboard</gold>");
+        inv.setItem(29, topBtn);
+
+        // 7. Slot 31: XP Guide Directory
         ItemStack xpGuideBtn = createItem(Material.KNOWLEDGE_BOOK,
                 "<green><bold>Panduan XP</bold></green>",
                 "<gray>Daftar 13 sumber perolehan XP.",
                 "<green>» Klik untuk buka</green>");
         inv.setItem(31, xpGuideBtn);
 
-        // 7. Slot 40: Close Button
+        // 8. Slot 33: Random Teleport (RTP)
+        ItemStack rtpBtn = createItem(Material.COMPASS,
+                "<light_purple><bold>Random Teleport (RTP)</bold></light_purple>",
+                "<gray>Teleportasi acak di dalam wilayah kerajaan.",
+                "<gray>Syarat: <white>Wajib berada di dalam wilayah</white></gray>",
+                "<light_purple>» Klik untuk RTP</light_purple>");
+        inv.setItem(33, rtpBtn);
+
+        // 9. Slot 40: Close Button
         ItemStack closeBtn = createItem(Material.BARRIER, "<red><bold>Tutup</bold></red>");
         inv.setItem(40, closeBtn);
 
@@ -205,9 +228,23 @@ public class KingdomProfileGUI implements Listener {
             return;
         }
 
+        // Leaderboard (Slot 29)
+        if (slot == 29) {
+            player.closeInventory();
+            plugin.getKingdomTopGUI().open(player);
+            return;
+        }
+
         // XP Guide (Slot 31)
         if (slot == 31) {
             plugin.getXpGuideGUI().open(player);
+            return;
+        }
+
+        // RTP (Slot 33)
+        if (slot == 33) {
+            player.closeInventory();
+            plugin.getKingdomRtpService().executeRtp(player);
             return;
         }
 

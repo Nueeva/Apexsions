@@ -17,7 +17,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.*;
 
 /**
- * Handles administrative management commands for KingdomCore (/kingdomcore, /kc).
+ * Handles administrative management commands for ApexsionsCore (/apexsionscore, /ac, /kadmin).
  */
 public class AdminCommand implements CommandExecutor, TabCompleter {
 
@@ -57,6 +57,10 @@ public class AdminCommand implements CommandExecutor, TabCompleter {
                 sender.sendMessage(miniMessage.deserialize("<green>ApexsionsCore modular configs, LuckPerms ranks, BlueMap markers, and Level Rewards reloaded successfully!</green>"));
                 break;
 
+            case "war":
+                handleWar(sender, args);
+                break;
+
             case "setlevel":
                 if (args.length < 3) {
                     sender.sendMessage(miniMessage.deserialize("<red>Usage: /ac setlevel <player> <level></red>"));
@@ -67,7 +71,7 @@ public class AdminCommand implements CommandExecutor, TabCompleter {
 
             case "addxp":
                 if (args.length < 3) {
-                    sender.sendMessage(miniMessage.deserialize("<red>Usage: /kc addxp <player> <amount></red>"));
+                    sender.sendMessage(miniMessage.deserialize("<red>Usage: /ac addxp <player> <amount></red>"));
                     return true;
                 }
                 handleAddXp(sender, args[1], args[2]);
@@ -76,7 +80,7 @@ public class AdminCommand implements CommandExecutor, TabCompleter {
             case "setregion":
             case "setkingdom":
                 if (args.length < 3) {
-                    sender.sendMessage(miniMessage.deserialize("<red>Usage: /kc setkingdom <player> <kingdomKey></red>"));
+                    sender.sendMessage(miniMessage.deserialize("<red>Usage: /ac setkingdom <player> <kingdomKey></red>"));
                     return true;
                 }
                 handleSetRegion(sender, args[1], args[2]);
@@ -84,7 +88,7 @@ public class AdminCommand implements CommandExecutor, TabCompleter {
 
             case "info":
                 if (args.length < 2) {
-                    sender.sendMessage(miniMessage.deserialize("<red>Usage: /kc info <player></red>"));
+                    sender.sendMessage(miniMessage.deserialize("<red>Usage: /ac info <player></red>"));
                     return true;
                 }
                 handleInfo(sender, args[1]);
@@ -98,151 +102,187 @@ public class AdminCommand implements CommandExecutor, TabCompleter {
         return true;
     }
 
-    private void handleSetLevel(CommandSender sender, String targetName, String levelStr) {
-        Player target = Bukkit.getPlayer(targetName);
+    private void handleWar(CommandSender sender, String[] args) {
+        if (args.length < 2) {
+            sender.sendMessage(miniMessage.deserialize("<yellow>War Commands:</yellow>"));
+            sender.sendMessage(miniMessage.deserialize("<gold>/ac war start <Kingdom1> <Kingdom2> [durasi_menit]</gold>"));
+            sender.sendMessage(miniMessage.deserialize("<gold>/ac war stop</gold>"));
+            sender.sendMessage(miniMessage.deserialize("<gold>/ac war status</gold>"));
+            return;
+        }
+
+        String action = args[1].toLowerCase();
+        if (action.equals("start")) {
+            if (args.length < 4) {
+                sender.sendMessage(miniMessage.deserialize("<red>Usage: /ac war start <Kingdom1> <Kingdom2> [durasi_menit]</red>"));
+                return;
+            }
+
+            Optional<Region> k1 = plugin.getRegionManager().getRegion(args[2]);
+            Optional<Region> k2 = plugin.getRegionManager().getRegion(args[3]);
+
+            if (k1.isEmpty() || k2.isEmpty()) {
+                sender.sendMessage(miniMessage.deserialize("<red>Salah satu nama kerajaan tidak valid!</red>"));
+                return;
+            }
+
+            long duration = 30L;
+            if (args.length >= 5) {
+                try {
+                    duration = Long.parseLong(args[4]);
+                } catch (NumberFormatException ignored) {}
+            }
+
+            plugin.getWarManager().startWar(k1.get(), k2.get(), duration);
+            sender.sendMessage(miniMessage.deserialize("<green>Perang berhasil dideklarasikan antara <yellow>" + k1.get().getKey() + "</yellow> dan <yellow>" + k2.get().getKey() + "</yellow> selama " + duration + " menit!</green>"));
+        } else if (action.equals("stop") || action.equals("end")) {
+            if (!plugin.getWarManager().isWarActive()) {
+                sender.sendMessage(miniMessage.deserialize("<yellow>Tidak ada perang kerajaan yang sedang aktif saat ini.</yellow>"));
+                return;
+            }
+            plugin.getWarManager().stopWar();
+            sender.sendMessage(miniMessage.deserialize("<green>Perang kerajaan berhasil dihentikan secara paksa oleh admin.</green>"));
+        } else if (action.equals("status")) {
+            if (!plugin.getWarManager().isWarActive()) {
+                sender.sendMessage(miniMessage.deserialize("<green>Status: <yellow>Semua kerajaan dalam keadaan DAMAI.</yellow></green>"));
+            } else {
+                long rem = plugin.getWarManager().getRemainingSeconds();
+                sender.sendMessage(miniMessage.deserialize("<red>Status: <bold>PERANG AKTIF!</bold></red>"));
+                sender.sendMessage(miniMessage.deserialize("<gray>Kerajaan: <yellow>" + plugin.getWarManager().getKingdom1().map(Region::getKey).orElse("?") + "</yellow> vs <yellow>" + plugin.getWarManager().getKingdom2().map(Region::getKey).orElse("?") + "</yellow></gray>"));
+                sender.sendMessage(miniMessage.deserialize("<gray>Sisa Waktu: <white>" + (rem / 60) + "m " + (rem % 60) + "s</white></gray>"));
+            }
+        }
+    }
+
+    private void handleSetLevel(CommandSender sender, String playerName, String levelStr) {
+        Player target = Bukkit.getPlayer(playerName);
         if (target == null) {
-            sender.sendMessage(miniMessage.deserialize("<red>Player '" + targetName + "' not found or offline.</red>"));
+            sender.sendMessage(miniMessage.deserialize("<red>Player not found or offline.</red>"));
             return;
         }
 
         try {
-            int level = Integer.parseInt(levelStr);
-            plugin.getLevelManager().setLevel(target.getUniqueId(), level);
-            sender.sendMessage(miniMessage.deserialize("<green>Set level of <white>" + target.getName() + "</white> to <yellow>" + level + "</yellow>.</green>"));
+            int newLevel = Integer.parseInt(levelStr);
+            if (newLevel < 1 || newLevel > 100) {
+                sender.sendMessage(miniMessage.deserialize("<red>Level must be between 1 and 100.</red>"));
+                return;
+            }
+
+            plugin.getPlayerDataService().getCached(target.getUniqueId()).ifPresent(data -> {
+                data.setLevel(newLevel);
+                long reqXp = plugin.getLevelFormula().getXpForLevel(newLevel);
+                data.setXp(reqXp);
+                plugin.getPlayerDataService().save(data);
+                sender.sendMessage(miniMessage.deserialize("<green>Set level of " + target.getName() + " to " + newLevel + ".</green>"));
+                target.sendMessage(miniMessage.deserialize("<green>Your level has been set to " + newLevel + " by an administrator.</green>"));
+            });
         } catch (NumberFormatException e) {
             sender.sendMessage(miniMessage.deserialize("<red>Invalid level number.</red>"));
         }
     }
 
-    private void handleAddXp(CommandSender sender, String targetName, String amountStr) {
-        Player target = Bukkit.getPlayer(targetName);
+    private void handleAddXp(CommandSender sender, String playerName, String amountStr) {
+        Player target = Bukkit.getPlayer(playerName);
         if (target == null) {
-            sender.sendMessage(miniMessage.deserialize("<red>Player '" + targetName + "' not found or offline.</red>"));
+            sender.sendMessage(miniMessage.deserialize("<red>Player not found or offline.</red>"));
             return;
         }
 
         try {
             long amount = Long.parseLong(amountStr);
             if (amount <= 0) {
-                sender.sendMessage(miniMessage.deserialize("<red>XP amount must be greater than 0.</red>"));
+                sender.sendMessage(miniMessage.deserialize("<red>Amount must be greater than 0.</red>"));
                 return;
             }
-            plugin.getLevelManager().addXp(target.getUniqueId(), amount, XpSource.COMMAND);
-            sender.sendMessage(miniMessage.deserialize("<green>Added <yellow>" + amount + " XP</yellow> to <white>" + target.getName() + "</white>.</green>"));
+
+            plugin.getXpService().awardXp(target.getUniqueId(), amount, XpSource.ADMIN);
+            sender.sendMessage(miniMessage.deserialize("<green>Added " + amount + " XP to " + target.getName() + ".</green>"));
         } catch (NumberFormatException e) {
-            sender.sendMessage(miniMessage.deserialize("<red>Invalid XP amount number.</red>"));
+            sender.sendMessage(miniMessage.deserialize("<red>Invalid XP amount.</red>"));
         }
     }
 
-    private void handleSetRegion(CommandSender sender, String targetName, String regionKey) {
-        Player target = Bukkit.getPlayer(targetName);
+    private void handleSetRegion(CommandSender sender, String playerName, String regionKey) {
+        Player target = Bukkit.getPlayer(playerName);
         if (target == null) {
-            sender.sendMessage(miniMessage.deserialize("<red>Player '" + targetName + "' not found or offline.</red>"));
+            sender.sendMessage(miniMessage.deserialize("<red>Player not found or offline.</red>"));
             return;
         }
 
         Optional<Region> regionOpt = plugin.getRegionManager().getRegion(regionKey);
         if (regionOpt.isEmpty()) {
-            sender.sendMessage(miniMessage.deserialize("<red>Region '" + regionKey + "' does not exist.</red>"));
+            sender.sendMessage(miniMessage.deserialize("<red>Kingdom '" + regionKey + "' does not exist.</red>"));
             return;
         }
 
         Region region = regionOpt.get();
-        Optional<PlayerData> dataOpt = plugin.getPlayerDataService().getCached(target.getUniqueId());
-        if (dataOpt.isEmpty()) {
-            sender.sendMessage(miniMessage.deserialize("<red>Target player data is not loaded.</red>"));
-            return;
-        }
-
-        PlayerData data = dataOpt.get();
-        data.setRegionId(region.getId());
-        plugin.getPlayerDataService().save(data);
-
-        sender.sendMessage(miniMessage.deserialize("<green>Set region of <white>" + target.getName() + "</white> to <yellow>" + region.getDisplayName() + "</yellow>.</green>"));
-        target.sendMessage(miniMessage.deserialize("<gold>An administrator set your region to <yellow>" + region.getDisplayName() + "</yellow>.</gold>"));
+        plugin.getPlayerDataService().getCached(target.getUniqueId()).ifPresent(data -> {
+            data.setRegionId(region.getId());
+            plugin.getPlayerDataService().save(data);
+            sender.sendMessage(miniMessage.deserialize("<green>Set kingdom of " + target.getName() + " to " + region.getKey() + ".</green>"));
+            target.sendMessage(miniMessage.deserialize("<green>Your allegiance has been transferred to " + region.getDisplayName() + " by an administrator.</green>"));
+        });
     }
 
-    private void handleInfo(CommandSender sender, String targetName) {
-        Player target = Bukkit.getPlayer(targetName);
+    private void handleInfo(CommandSender sender, String playerName) {
+        Player target = Bukkit.getPlayer(playerName);
         if (target == null) {
-            sender.sendMessage(miniMessage.deserialize("<red>Player '" + targetName + "' not found or offline.</red>"));
+            sender.sendMessage(miniMessage.deserialize("<red>Player not found or offline.</red>"));
             return;
         }
 
-        Optional<PlayerData> dataOpt = plugin.getPlayerDataService().getCached(target.getUniqueId());
-        if (dataOpt.isEmpty()) {
-            sender.sendMessage(miniMessage.deserialize("<red>Player profile not found in cache.</red>"));
-            return;
-        }
-
-        PlayerData data = dataOpt.get();
-        String regionDisplay = "None";
-        if (data.hasRegion()) {
-            Optional<Region> regionOpt = plugin.getRegionManager().getRegion(data.getRegionId());
-            if (regionOpt.isPresent()) {
-                regionDisplay = regionOpt.get().getDisplayName();
-            }
-        }
-
-        String title = plugin.getLevelManager().getLevelTitle(target.getUniqueId());
-        long reqXp = plugin.getLevelManager().getRequiredXpForNextLevel(data.getLevel());
-        String reqXpStr = reqXp == Long.MAX_VALUE ? "MAX" : String.valueOf(reqXp);
-
-        sender.sendMessage(miniMessage.deserialize("<gold><bold>═════════ Admin Player Info ═════════</bold></gold>"));
-        sender.sendMessage(miniMessage.deserialize("<yellow>Player:</yellow> <white>" + target.getName() + " (" + target.getUniqueId() + ")</white>"));
-        sender.sendMessage(miniMessage.deserialize("<yellow>Kingdom:</yellow> <white>" + regionDisplay + "</white>"));
-        sender.sendMessage(miniMessage.deserialize("<yellow>Level:</yellow> <gold>" + data.getLevel() + "</gold>"));
-        sender.sendMessage(miniMessage.deserialize("<yellow>Title:</yellow> <gold>" + title + "</gold>"));
-        sender.sendMessage(miniMessage.deserialize("<yellow>XP:</yellow> <green>" + data.getXp() + "</green> <gray>/ " + reqXpStr + "</gray>"));
-        sender.sendMessage(miniMessage.deserialize("<gold><bold>═════════════════════════════════════</bold></gold>"));
+        plugin.getPlayerDataService().getCached(target.getUniqueId()).ifPresentOrElse(data -> {
+            sender.sendMessage(miniMessage.deserialize("<gold>--- Player Info: " + target.getName() + " ---</gold>"));
+            sender.sendMessage(miniMessage.deserialize("<gray>Level: <yellow>" + data.getLevel() + "</yellow></gray>"));
+            sender.sendMessage(miniMessage.deserialize("<gray>XP: <yellow>" + data.getXp() + "</yellow></gray>"));
+            String regionName = data.getRegionId() != null ?
+                    plugin.getRegionManager().getRegion(data.getRegionId()).map(Region::getKey).orElse("Unknown") : "None";
+            sender.sendMessage(miniMessage.deserialize("<gray>Kingdom: <yellow>" + regionName + "</yellow></gray>"));
+            sender.sendMessage(miniMessage.deserialize("<gray>Claimed Rewards: <yellow>" + data.getClaimedRewards().size() + "</yellow></gray>"));
+        }, () -> sender.sendMessage(miniMessage.deserialize("<red>No cached data found for player.</red>")));
     }
 
     private void sendHelp(CommandSender sender) {
-        sender.sendMessage(miniMessage.deserialize("<gold><bold>═════════ ApexsionsCore Admin ═════════</bold></gold>"));
-        sender.sendMessage(miniMessage.deserialize("<yellow>/ac reload</yellow> <gray>- Reload plugin configuration</gray>"));
-        sender.sendMessage(miniMessage.deserialize("<yellow>/ac setlevel <player> <level></yellow> <gray>- Set player level</gray>"));
-        sender.sendMessage(miniMessage.deserialize("<yellow>/ac addxp <player> <amount></yellow> <gray>- Add XP to player</gray>"));
-        sender.sendMessage(miniMessage.deserialize("<yellow>/ac setkingdom <player> <kingdom></yellow> <gray>- Change player kingdom</gray>"));
-        sender.sendMessage(miniMessage.deserialize("<yellow>/ac info <player></yellow> <gray>- View player progression info</gray>"));
-        sender.sendMessage(miniMessage.deserialize("<gold><bold>═════════════════════════════════════</bold></gold>"));
+        sender.sendMessage(miniMessage.deserialize("<gold><bold>=== ApexsionsCore Admin Commands ===</bold></gold>"));
+        sender.sendMessage(miniMessage.deserialize("<yellow>/ac reload</yellow> <gray>- Reload all modular configs & markers</gray>"));
+        sender.sendMessage(miniMessage.deserialize("<yellow>/ac war <start|stop|status></yellow> <gray>- Manage kingdom wars</gray>"));
+        sender.sendMessage(miniMessage.deserialize("<yellow>/ac setlevel <player> <level></yellow> <gray>- Set player level (1-100)</gray>"));
+        sender.sendMessage(miniMessage.deserialize("<yellow>/ac addxp <player> <amount></yellow> <gray>- Grant progression XP</gray>"));
+        sender.sendMessage(miniMessage.deserialize("<yellow>/ac setkingdom <player> <kingdomKey></yellow> <gray>- Transfer player kingdom</gray>"));
+        sender.sendMessage(miniMessage.deserialize("<yellow>/ac info <player></yellow> <gray>- Inspect player progression data</gray>"));
     }
 
     @Override
-    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
-        if (!sender.hasPermission("apexsionscore.admin") && !sender.hasPermission("apexionscore.admin") && !sender.hasPermission("kingdomcore.admin")) {
-            return Collections.emptyList();
-        }
-
+    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (args.length == 1) {
-            List<String> subs = Arrays.asList("reload", "setlevel", "addxp", "setkingdom", "setregion", "info");
-            String prefix = args[0].toLowerCase();
-            List<String> list = new ArrayList<>();
-            for (String s : subs) {
-                if (s.startsWith(prefix)) list.add(s);
-            }
-            return list;
+            List<String> list = Arrays.asList("reload", "war", "setlevel", "addxp", "setkingdom", "info");
+            return filter(list, args[0]);
         }
-
-        if (args.length == 2 && !args[0].equalsIgnoreCase("reload")) {
-            List<String> players = new ArrayList<>();
-            for (Player p : Bukkit.getOnlinePlayers()) {
-                if (p.getName().toLowerCase().startsWith(args[1].toLowerCase())) {
-                    players.add(p.getName());
-                }
-            }
-            return players;
+        if (args.length == 2 && args[0].equalsIgnoreCase("war")) {
+            return filter(Arrays.asList("start", "stop", "status"), args[1]);
         }
-
-        if (args.length == 3 && (args[0].equalsIgnoreCase("setkingdom") || args[0].equalsIgnoreCase("setregion"))) {
-            List<String> regions = new ArrayList<>();
-            for (Region r : plugin.getRegionManager().getRegions()) {
-                if (r.getKey().toLowerCase().startsWith(args[2].toLowerCase())) {
-                    regions.add(r.getKey());
-                }
-            }
-            return regions;
+        if (args.length == 2 && (args[0].equalsIgnoreCase("setlevel") || args[0].equalsIgnoreCase("addxp") || args[0].equalsIgnoreCase("setkingdom") || args[0].equalsIgnoreCase("info"))) {
+            return null; // Player names
         }
-
+        if (args.length == 3 && args[0].equalsIgnoreCase("war") && args[1].equalsIgnoreCase("start")) {
+            return filter(new ArrayList<>(plugin.getRegionManager().getRegions().stream().map(Region::getKey).toList()), args[2]);
+        }
+        if (args.length == 4 && args[0].equalsIgnoreCase("war") && args[1].equalsIgnoreCase("start")) {
+            return filter(new ArrayList<>(plugin.getRegionManager().getRegions().stream().map(Region::getKey).toList()), args[3]);
+        }
+        if (args.length == 3 && args[0].equalsIgnoreCase("setkingdom")) {
+            return filter(new ArrayList<>(plugin.getRegionManager().getRegions().stream().map(Region::getKey).toList()), args[2]);
+        }
         return Collections.emptyList();
+    }
+
+    private List<String> filter(List<String> list, String input) {
+        List<String> result = new ArrayList<>();
+        for (String s : list) {
+            if (s.toLowerCase().startsWith(input.toLowerCase())) {
+                result.add(s);
+            }
+        }
+        return result;
     }
 }

@@ -15,7 +15,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.*;
 
 /**
- * Handles /kingdom (aliases: /k, /kingdoms), /kingdom choose, /kingdom info, /kingdom rewards, and /kingdom xp.
+ * Handles player region & kingdom interactions (/region, /kingdom, /k, /level).
  */
 public class KingdomCommand implements CommandExecutor, TabCompleter {
 
@@ -29,26 +29,27 @@ public class KingdomCommand implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (!(sender instanceof Player player)) {
-            sender.sendMessage(miniMessage.deserialize("<red>This command can only be executed by players.</red>"));
+            sender.sendMessage(miniMessage.deserialize("<red>Only players can use kingdom commands.</red>"));
             return true;
         }
 
-        String cmdLabel = label.toLowerCase();
-        if (cmdLabel.equals("rewards") || cmdLabel.equals("reward") || cmdLabel.equals("claim")) {
-            handleKingdomRewards(player);
-            return true;
-        }
-        if (cmdLabel.equals("exp") || cmdLabel.equals("xp") || cmdLabel.equals("xpguide") || cmdLabel.equals("guide")) {
-            handleKingdomXpGuide(player);
-            return true;
-        }
-        if (cmdLabel.equals("level") || cmdLabel.equals("lvl") || cmdLabel.equals("profile") || cmdLabel.equals("stats")) {
+        // If command is /level, open Level Rewards / Profile GUI directly
+        if (label.equalsIgnoreCase("level") || label.equalsIgnoreCase("lvl") || label.equalsIgnoreCase("profile")) {
             handleKingdomInfo(player);
             return true;
         }
 
+        if (label.equalsIgnoreCase("rewards") || label.equalsIgnoreCase("reward") || label.equalsIgnoreCase("claim")) {
+            handleKingdomRewards(player);
+            return true;
+        }
+
+        if (label.equalsIgnoreCase("xp") || label.equalsIgnoreCase("guide") || label.equalsIgnoreCase("xpguide") || label.equalsIgnoreCase("exp")) {
+            handleKingdomXpGuide(player);
+            return true;
+        }
+
         if (args.length == 0) {
-            // Default: /kingdom -> Teleport to own kingdom
             handleKingdomTeleport(player);
             return true;
         }
@@ -57,6 +58,7 @@ public class KingdomCommand implements CommandExecutor, TabCompleter {
         switch (sub) {
             case "choose":
             case "select":
+            case "join":
                 handleKingdomChoose(player);
                 break;
 
@@ -68,6 +70,12 @@ public class KingdomCommand implements CommandExecutor, TabCompleter {
             case "level":
             case "lvl":
                 handleKingdomInfo(player);
+                break;
+
+            case "top":
+            case "leaderboard":
+            case "ranking":
+                plugin.getKingdomTopGUI().open(player);
                 break;
 
             case "rewards":
@@ -96,6 +104,7 @@ public class KingdomCommand implements CommandExecutor, TabCompleter {
                 player.sendMessage(miniMessage.deserialize("<yellow>/kingdom rtp</yellow> <gray>- Random teleport strictly inside your kingdom</gray>"));
                 player.sendMessage(miniMessage.deserialize("<yellow>/kingdom choose</yellow> <gray>- Open kingdom selection GUI</gray>"));
                 player.sendMessage(miniMessage.deserialize("<yellow>/kingdom info</yellow> <gray>- Open your interactive Kingdom Profile & Level GUI</gray>"));
+                player.sendMessage(miniMessage.deserialize("<yellow>/kingdom top</yellow> <gray>- View the Hall of Fame & Kingdom Leaderboards</gray>"));
                 player.sendMessage(miniMessage.deserialize("<yellow>/kingdom rewards</yellow> <gray>- View & claim Level 1–100 progression rewards</gray>"));
                 player.sendMessage(miniMessage.deserialize("<yellow>/kingdom xp</yellow> <gray>- Open 13 XP gameplay sources and guide GUI</gray>"));
                 player.sendMessage(miniMessage.deserialize("<yellow>/level</yellow> <gray>- Quick shortcut to your character profile & level progress</gray>"));
@@ -106,7 +115,7 @@ public class KingdomCommand implements CommandExecutor, TabCompleter {
     }
 
     private void handleKingdomTeleport(Player player) {
-        if (!player.hasPermission("kingdomcore.command.kingdom")) {
+        if (!player.hasPermission("apexsionscore.command.region") && !player.hasPermission("kingdomcore.command.kingdom")) {
             player.sendMessage(miniMessage.deserialize("<red>You do not have permission to teleport to your kingdom.</red>"));
             return;
         }
@@ -129,7 +138,7 @@ public class KingdomCommand implements CommandExecutor, TabCompleter {
     }
 
     private void handleKingdomChoose(Player player) {
-        if (!player.hasPermission("kingdomcore.command.kingdom.choose")) {
+        if (!player.hasPermission("apexsionscore.command.region") && !player.hasPermission("kingdomcore.command.kingdom.choose")) {
             player.sendMessage(miniMessage.deserialize("<red>You do not have permission to choose a kingdom.</red>"));
             return;
         }
@@ -138,8 +147,8 @@ public class KingdomCommand implements CommandExecutor, TabCompleter {
     }
 
     private void handleKingdomInfo(Player player) {
-        if (!player.hasPermission("kingdomcore.command.kingdom.info")) {
-            player.sendMessage(miniMessage.deserialize("<red>You do not have permission to view kingdom info.</red>"));
+        if (!player.hasPermission("apexsionscore.command.level") && !player.hasPermission("kingdomcore.command.level")) {
+            player.sendMessage(miniMessage.deserialize("<red>You do not have permission to view your kingdom profile.</red>"));
             return;
         }
 
@@ -147,8 +156,8 @@ public class KingdomCommand implements CommandExecutor, TabCompleter {
     }
 
     private void handleKingdomRewards(Player player) {
-        if (!player.hasPermission("kingdomcore.command.kingdom.info")) {
-            player.sendMessage(miniMessage.deserialize("<red>You do not have permission to view rewards.</red>"));
+        if (!player.hasPermission("apexsionscore.command.level") && !player.hasPermission("kingdomcore.command.level")) {
+            player.sendMessage(miniMessage.deserialize("<red>You do not have permission to view level rewards.</red>"));
             return;
         }
 
@@ -156,21 +165,25 @@ public class KingdomCommand implements CommandExecutor, TabCompleter {
     }
 
     private void handleKingdomXpGuide(Player player) {
+        if (!player.hasPermission("apexsionscore.command.level") && !player.hasPermission("kingdomcore.command.level")) {
+            player.sendMessage(miniMessage.deserialize("<red>You do not have permission to view XP guide.</red>"));
+            return;
+        }
+
         plugin.getXpGuideGUI().open(player);
     }
 
     @Override
-    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
+    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (args.length == 1) {
-            List<String> list = Arrays.asList("choose", "info", "profile", "rewards", "claim", "xp", "guide", "level", "rtp", "wild", "wilderness");
-            String prefix = args[0].toLowerCase();
-            List<String> matches = new ArrayList<>();
+            List<String> list = Arrays.asList("choose", "info", "top", "profile", "rewards", "claim", "xp", "guide", "level", "rtp", "wild", "wilderness");
+            List<String> result = new ArrayList<>();
             for (String s : list) {
-                if (s.startsWith(prefix)) {
-                    matches.add(s);
+                if (s.toLowerCase().startsWith(args[0].toLowerCase())) {
+                    result.add(s);
                 }
             }
-            return matches;
+            return result;
         }
         return Collections.emptyList();
     }

@@ -28,9 +28,12 @@ import com.yourserver.apexsionscore.region.KingdomRtpService;
 import com.yourserver.apexsionscore.region.RegionManager;
 import com.yourserver.apexsionscore.region.RegionTeleportService;
 import com.yourserver.apexsionscore.region.gui.KingdomProfileGUI;
+import com.yourserver.apexsionscore.region.gui.KingdomTopGUI;
 import com.yourserver.apexsionscore.region.gui.LevelRewardsGUI;
 import com.yourserver.apexsionscore.region.gui.RegionSelectionGUI;
 import com.yourserver.apexsionscore.region.gui.XpGuideGUI;
+import com.yourserver.apexsionscore.war.CombatTagService;
+import com.yourserver.apexsionscore.war.WarManager;
 import org.bukkit.Bukkit;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -39,8 +42,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.logging.Level;
 
 /**
- * Main plugin entrypoint for KingdomCore on server Apexsions.
- * Designed for Paper 26.2 and Java 25+ with BlueMap and Citizens support.
+ * Main plugin entrypoint for ApexsionsCore on server Apexsions.
+ * Designed for Paper 26.2 and Java 21+ with BlueMap and Citizens support.
  */
 public class ApexsionsCorePlugin extends JavaPlugin {
 
@@ -60,8 +63,13 @@ public class ApexsionsCorePlugin extends JavaPlugin {
     private KingdomRtpService kingdomRtpService;
     private RegionSelectionGUI regionSelectionGUI;
     private KingdomProfileGUI kingdomProfileGUI;
+    private KingdomTopGUI kingdomTopGUI;
     private LevelRewardsGUI levelRewardsGUI;
     private XpGuideGUI xpGuideGUI;
+
+    // War & Combat
+    private CombatTagService combatTagService;
+    private WarManager warManager;
 
     // Progression & Rewards
     private LevelFormula levelFormula;
@@ -122,11 +130,17 @@ public class ApexsionsCorePlugin extends JavaPlugin {
             this.kingdomProfileGUI = new KingdomProfileGUI(this);
             Bukkit.getPluginManager().registerEvents(kingdomProfileGUI, this);
 
+            this.kingdomTopGUI = new KingdomTopGUI(this);
+            Bukkit.getPluginManager().registerEvents(kingdomTopGUI, this);
+
             this.levelRewardsGUI = new LevelRewardsGUI(this);
             Bukkit.getPluginManager().registerEvents(levelRewardsGUI, this);
 
             this.xpGuideGUI = new XpGuideGUI(this);
             Bukkit.getPluginManager().registerEvents(xpGuideGUI, this);
+
+            this.combatTagService = new CombatTagService(this);
+            this.warManager = new WarManager(this);
 
             // 5. Progression (Level, XP, Rewards)
             this.levelFormula = new LevelFormula(configManager);
@@ -281,6 +295,9 @@ public class ApexsionsCorePlugin extends JavaPlugin {
     public KingdomRtpService getKingdomRtpService() { return kingdomRtpService; }
     public RegionSelectionGUI getRegionSelectionGUI() { return regionSelectionGUI; }
     public KingdomProfileGUI getKingdomProfileGUI() { return kingdomProfileGUI; }
+    public KingdomTopGUI getKingdomTopGUI() { return kingdomTopGUI; }
+    public CombatTagService getCombatTagService() { return combatTagService; }
+    public WarManager getWarManager() { return warManager; }
     public LevelRewardsGUI getLevelRewardsGUI() { return levelRewardsGUI; }
     public XpGuideGUI getXpGuideGUI() { return xpGuideGUI; }
     public LevelFormula getLevelFormula() { return levelFormula; }

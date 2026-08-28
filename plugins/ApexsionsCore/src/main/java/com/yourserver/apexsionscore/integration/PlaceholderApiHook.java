@@ -4,14 +4,17 @@ import com.yourserver.apexsionscore.ApexsionsCorePlugin;
 import com.yourserver.apexsionscore.player.PlayerData;
 import com.yourserver.apexsionscore.region.Region;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
 /**
- * PlaceholderAPI expansion providing KingdomCore placeholders to external plugins (e.g. TAB, Scoreboards, Holograms).
+ * Comprehensive PlaceholderAPI expansion providing ApexsionsCore placeholders
+ * to external plugins (e.g. TAB v6.1, Scoreboards, DecentHolograms, ajLeaderboards).
  */
 public class PlaceholderApiHook extends PlaceholderExpansion {
 
@@ -64,6 +67,18 @@ public class PlaceholderApiHook extends PlaceholderExpansion {
             case "xp_needed":
                 long needed = plugin.getLevelManager().getRequiredXpForNextLevel(data.getLevel());
                 return needed == Long.MAX_VALUE ? "MAX" : String.valueOf(needed);
+
+            case "xp_progressbar":
+            case "progressbar":
+                long nextXp = plugin.getLevelFormula().getXpForLevel(data.getLevel() + 1);
+                int percent = (int) Math.min(100, Math.max(0, (data.getXp() * 100) / Math.max(1, nextXp)));
+                int totalBars = 10;
+                int filled = (percent * totalBars) / 100;
+                StringBuilder sb = new StringBuilder("&e");
+                for (int i = 0; i < filled; i++) sb.append("█");
+                sb.append("&8");
+                for (int i = filled; i < totalBars; i++) sb.append("░");
+                return sb.toString();
 
             case "region":
             case "kingdom":
@@ -127,6 +142,50 @@ public class PlaceholderApiHook extends PlaceholderExpansion {
                     return reg.map(Region::getDisplayName).orElse("Wilderness");
                 }
                 return "Wilderness";
+
+            case "in_own_territory":
+                if (offlinePlayer.isOnline() && offlinePlayer.getPlayer() != null && data.getRegionId() != null) {
+                    Optional<Region> reg = plugin.getRegionManager().getRegion(data.getRegionId());
+                    return reg.map(r -> String.valueOf(r.containsLocation(offlinePlayer.getPlayer().getLocation()))).orElse("false");
+                }
+                return "false";
+
+            case "combat_tagged":
+                if (plugin.getCombatTagService() != null) {
+                    return String.valueOf(plugin.getCombatTagService().isCombatTagged(offlinePlayer.getUniqueId()));
+                }
+                return "false";
+
+            case "combat_timer":
+                if (plugin.getCombatTagService() != null) {
+                    return String.valueOf(plugin.getCombatTagService().getRemainingSeconds(offlinePlayer.getUniqueId()));
+                }
+                return "0";
+
+            case "war_status":
+                if (plugin.getWarManager() != null && plugin.getWarManager().isWarActive()) {
+                    return "WAR";
+                }
+                return "PEACE";
+
+            case "war_timer":
+                if (plugin.getWarManager() != null) {
+                    return String.valueOf(plugin.getWarManager().getRemainingSeconds());
+                }
+                return "0";
+
+            case "online_kingdom_members":
+                if (data.getRegionId() != null) {
+                    Optional<Region> rOpt = plugin.getRegionManager().getRegion(data.getRegionId());
+                    if (rOpt.isPresent()) {
+                        String kKey = rOpt.get().getKey();
+                        long count = Bukkit.getOnlinePlayers().stream()
+                                .filter(p -> plugin.getApi().getPlayerRegionKey(p.getUniqueId()).equalsIgnoreCase(kKey))
+                                .count();
+                        return String.valueOf(count);
+                    }
+                }
+                return "0";
 
             default:
                 return null;

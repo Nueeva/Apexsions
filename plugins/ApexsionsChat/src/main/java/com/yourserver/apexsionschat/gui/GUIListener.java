@@ -154,5 +154,34 @@ public class GUIListener implements Listener {
                 return;
             }
         }
+
+        // 6. Chat Settings GUI
+        if (holder instanceof ChatSettingsGUI) {
+            if (slot == 22) {
+                player.closeInventory();
+                return;
+            }
+            if (slot == 11) { // Toggle Mention Sound
+                boolean current = plugin.getConfigManager().getMainConfig().getBoolean("mentions.sound.enabled", true);
+                plugin.getConfigManager().getMainConfig().set("mentions.sound.enabled", !current);
+                player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1.0f, 1.2f);
+                player.openInventory(new ChatSettingsGUI(plugin, player).getInventory());
+                return;
+            }
+            if (slot == 13) { // Switch Channel (Global -> Kingdom -> Staff -> Global)
+                var cur = plugin.getChannelManager().getPlayerChannel(player);
+                String next = (cur != null && cur.getName().equalsIgnoreCase("Global")) ? "kingdom" :
+                        (cur != null && cur.getName().equalsIgnoreCase("Kingdom")) ? "staff" : "global";
+                plugin.getChannelManager().setPlayerChannel(player, next);
+                player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1.0f, 1.5f);
+                player.openInventory(new ChatSettingsGUI(plugin, player).getInventory());
+                return;
+            }
+            if (slot == 15) { // Test Alert Sound
+                player.playSound(player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_CHIME, 1.0f, 1.8f);
+                player.sendMessage(miniMessage.deserialize("<green>🔊 Audio alert test berhasil dibunyikan!</green>"));
+                return;
+            }
+        }
     }
 }

@@ -45,10 +45,8 @@ public class ChannelCommand implements CommandExecutor, TabCompleter {
         }
 
         // Generic /channel <channelName>
-        if (args.length == 0) {
-            ChatChannel current = plugin.getChannelManager().getPlayerChannel(player);
-            player.sendMessage(miniMessage.deserialize("<gold>Current active channel:</gold> <yellow>" + current.getName() + "</yellow>"));
-            player.sendMessage(miniMessage.deserialize("<gray>Usage: /channel <global|kingdom|staff></gray>"));
+        if (args.length == 0 || args[0].equalsIgnoreCase("settings") || args[0].equalsIgnoreCase("gui") || args[0].equalsIgnoreCase("menu")) {
+            player.openInventory(new com.yourserver.apexsionschat.gui.ChatSettingsGUI(plugin, player).getInventory());
             return true;
         }
 

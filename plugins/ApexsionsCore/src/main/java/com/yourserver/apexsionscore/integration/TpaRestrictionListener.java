@@ -17,9 +17,9 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Enforces Kingdom and Territory spatial restrictions on EssentialsX TPA commands.
- * - Both players must belong to the exact same kingdom.
- * - Both players must be physically inside their kingdom's territory polygon.
+ * Enforces Kingdom, Territory, Combat Tag, and War restrictions on teleportation commands:
+ * - EssentialsX TPA commands (/tpa, /tpahere, /tpask, /tpaccept, /tpyes)
+ * - Navigation commands (/spawn, /lobby, /hub, /kingdom spawn)
  */
 public class TpaRestrictionListener implements Listener {
 
@@ -49,7 +49,19 @@ public class TpaRestrictionListener implements Listener {
 
         Player sender = event.getPlayer();
 
-        // 1. Intercept /tpa, /tpahere, /tpask
+        // 1. Check Combat Tag on Any Teleport Command
+        if (isTeleportCommand(cmd, parts)) {
+            if (plugin.getCombatTagService() != null && plugin.getCombatTagService().isCombatTagged(sender.getUniqueId())) {
+                if (!sender.hasPermission("apexsionscore.admin.bypass.tpa")) {
+                    long remaining = plugin.getCombatTagService().getRemainingSeconds(sender.getUniqueId());
+                    event.setCancelled(true);
+                    sender.sendMessage(miniMessage.deserialize("<red>⚔ Kamu sedang dalam mode tempur (Combat Tag: <yellow>" + remaining + "s</yellow>)! Teleportasi <yellow>/" + cmd + "</yellow> dinonaktifkan.</red>"));
+                    return;
+                }
+            }
+        }
+
+        // 2. Intercept /tpa, /tpahere, /tpask
         if (cmd.equals("tpa") || cmd.equals("tpahere") || cmd.equals("tpask")) {
             if (parts.length < 2) {
                 return; // Let Essentials show command usage
@@ -70,7 +82,7 @@ public class TpaRestrictionListener implements Listener {
                 return;
             }
 
-            // Validate Kingdom & Territory
+            // Validate Kingdom, Territory, Combat & War
             String failureReason = validateTpa(sender, target);
             if (failureReason != null) {
                 event.setCancelled(true);
@@ -82,7 +94,7 @@ public class TpaRestrictionListener implements Listener {
             pendingTpaRequests.put(target.getUniqueId(), sender.getUniqueId());
         }
 
-        // 2. Intercept /tpaccept, /tpyes
+        // 3. Intercept /tpaccept, /tpyes
         else if (cmd.equals("tpaccept") || cmd.equals("tpyes")) {
             UUID senderUuid = pendingTpaRequests.get(sender.getUniqueId());
             if (senderUuid != null) {
@@ -102,15 +114,41 @@ public class TpaRestrictionListener implements Listener {
         }
     }
 
+    private boolean isTeleportCommand(String cmd, String[] parts) {
+        if (cmd.equals("tpa") || cmd.equals("tpahere") || cmd.equals("tpask") ||
+                cmd.equals("tpaccept") || cmd.equals("tpyes") || cmd.equals("rtp") ||
+                cmd.equals("wild") || cmd.equals("wilderness") || cmd.equals("krtp") ||
+                cmd.equals("spawn") || cmd.equals("lobby") || cmd.equals("hub") ||
+                cmd.equals("home") || cmd.equals("sethome") || cmd.equals("warp") || cmd.equals("back")) {
+            return true;
+        }
+
+        if (cmd.equals("kingdom") || cmd.equals("k") || cmd.equals("region")) {
+            return parts.length >= 2 && (parts[1].equalsIgnoreCase("spawn") || parts[1].equalsIgnoreCase("warp") || parts[1].equalsIgnoreCase("rtp"));
+        }
+
+        return false;
+    }
+
     /**
-     * Validates whether two players meet kingdom and territory requirements for TPA.
+     * Validates whether two players meet kingdom, territory, and war requirements for TPA.
      * @return MiniMessage error string if invalid, or null if valid.
      */
     public String validateTpa(Player sender, Player target) {
+        // 1. Combat Tag Check on Both Players
+        if (plugin.getCombatTagService() != null) {
+            if (plugin.getCombatTagService().isCombatTagged(sender.getUniqueId())) {
+                return "<red>✖ Teleportasi ditolak! Anda sedang dalam mode tempur (Combat Tag).</red>";
+            }
+            if (plugin.getCombatTagService().isCombatTagged(target.getUniqueId())) {
+                return "<red>✖ Teleportasi ditolak! Pemain tujuan (<yellow>" + target.getName() + "</yellow>) sedang dalam mode tempur.</red>";
+            }
+        }
+
         String p1Key = plugin.getApi().getPlayerRegionKey(sender.getUniqueId());
         String p2Key = plugin.getApi().getPlayerRegionKey(target.getUniqueId());
 
-        // 1. Kingdom Membership Check
+        // 2. Kingdom Membership Check
         if (p1Key.equalsIgnoreCase("NONE") || p2Key.equalsIgnoreCase("NONE")) {
             return "<red>✖ Teleportasi (TPA) gagal! Kedua pemain wajib terdaftar dalam sebuah kerajaan.</red>";
         }
@@ -119,13 +157,19 @@ public class TpaRestrictionListener implements Listener {
             return "<red>✖ Teleportasi (TPA) ditolak! Anda hanya dapat melakukan TPA ke sesama anggota kerajaan (<gold>" + p1Key + "</gold>).</red>";
         }
 
-        // 2. Physical Territory Polygon Check
+        // 3. Physical Territory Polygon Check
         Optional<Region> regOpt = plugin.getRegionManager().getRegion(p1Key);
         if (regOpt.isEmpty()) {
             return "<red>✖ Kerajaan <gold>" + p1Key + "</gold> tidak ditemukan di sistem.</red>";
         }
 
         Region reg = regOpt.get();
+
+        // 4. War Status Check in Territory
+        if (plugin.getWarManager() != null && plugin.getWarManager().isWarActiveInTerritory(reg)) {
+            return "<dark_red>⚔ Teleportasi (TPA) diblokir! Wilayah kerajaan <yellow>" + reg.getDisplayName() + "</yellow> sedang dalam keadaan PERANG (WAR)!</dark_red>";
+        }
+
         boolean senderInside = reg.containsLocation(sender.getLocation());
         boolean targetInside = reg.containsLocation(target.getLocation());
 

@@ -8,11 +8,11 @@ Kumpulan plugin server Minecraft profesional berkinerja tinggi yang dirancang se
 
 | Plugin | Versi | Status | Deskripsi & Fokus Utama |
 | :--- | :---: | :---: | :--- |
-| **`ApexsionsCore`** | `1.0.0` | ![Active](https://img.shields.io/badge/Status-Active-brightgreen) | Otoritas Wilayah Kerajaan (*Zenithar*, *Solterra*, *Sylvamoor*), Progresi Leveling (13 XP Sources), BlueMap Polygons, Kingdom-Bounded `/rtp`, dan Enforcer TPA EssentialsX. |
-| **`ApexsionsChat`** | `1.0.0` | ![Active](https://img.shields.io/badge/Status-Active-brightgreen) | Komunikasi Kyori MiniMessage, Channel (*Global*, *Kingdom*, *Staff*), Pamer Item (`/showitem`), Surat Offline (`/mail`), Chat Games, dan Moderasi Lapis Tiga. |
-| **`ApexsionsEconomy`** | `1.0.0` | ![Active](https://img.shields.io/badge/Status-Active-brightgreen) | Multi-Currency (`Rupiah`, `Diamond`), Transfer Cepat (`/pay`), Pasar Lelang (`/ah`) dengan Escrow Claim, dan Barter/Trade 12-Slot dengan Pajak Transportasi. |
+| **`ApexsionsCore`** | `1.0.0` | ![Active](https://img.shields.io/badge/Status-Active-brightgreen) | Otoritas Wilayah Kerajaan (*Zenithar*, *Solterra*, *Sylvamoor*), Progresi Leveling (13 XP Sources), BlueMap Polygons, Leaderboard GUI (`/kingdom top`), Kingdom War Manager, PvP Combat Tag (15s), Kingdom-Bounded `/rtp`, dan Enforcer TPA EssentialsX. |
+| **`ApexsionsChat`** | `1.0.0` | ![Active](https://img.shields.io/badge/Status-Active-brightgreen) | Komunikasi Kyori MiniMessage, Channel (*Global*, *Kingdom*, *Staff*), Chat Settings GUI (`/channel settings`), Pamer Item (`/showitem`), Surat Offline (`/mail`), Chat Games, dan Moderasi Lapis Tiga dengan Staff Reports GUI. |
+| **`ApexsionsEconomy`** | `1.0.0` | ![Active](https://img.shields.io/badge/Status-Active-brightgreen) | Multi-Currency (`Rupiah`, `Diamond`), Transfer Cepat (`/pay`), Pasar Lelang (`/ah`) dengan Escrow Claim, dan Barter/Trade 12-Slot dengan Pajak Transportasi Antar-Kerajaan. |
 | **`ApexsionsBattlepass`** | `1.0.0` | ![Active](https://img.shields.io/badge/Status-Active-brightgreen) | 200 Level BattlePass, Season Management, Quests (Daily, Weekly, Monthly), Tingkatan Pass (`FREE`, `PREMIUM`, `PREMIUM+`, `ULTIMATE`), dan Visual Admin GUI Editor 54-Slot (`/abp`). |
-| **`ApexsionsShop`** | `1.0.0` | ![Active](https://img.shields.io/badge/Status-Active-brightgreen) | Pasar Dinamis 6 Kategori, Rasio Jual **20%**, Formula Dinamis Multiplier Cuaca & Bioma Kerajaan, Pajak Wilayah 10%, UI Ramah Sentuh/Bedrock, dan GUI Jual Cepat 45-Slot (`/sell`). |
+| **`ApexsionsShop`** | `1.0.0` | ![Active](https://img.shields.io/badge/Status-Active-brightgreen) | Pasar Dinamis 6 Kategori, Rasio Jual **20%**, Formula Dinamis Multiplier Cuaca & Bioma Kerajaan, Price Clamping (50%-200%), Siaran Tren Pasar Berkelanjutan, Pajak Wilayah 10%, UI Ramah Sentuh/Bedrock, dan GUI Jual Cepat 45-Slot (`/sell`). |
 
 ---
 
@@ -21,16 +21,19 @@ Kumpulan plugin server Minecraft profesional berkinerja tinggi yang dirancang se
 ### 👑 ApexsionsCore
 - **3 Kerajaan Berdaulat**: *Zenithar* (Pegunungan/Tambang), *Solterra* (Gurun/Pertanian), *Sylvamoor* (Hutan/Alam).
 - **Formula Leveling & 13 Sumber XP**: Mining, Mob Kill, Woodcutting, Fishing, Farming, Crafting, Enchanting, Smelting, Player Kill, Golden Apple, Potion Use, Exploration, Structure Discovery.
+- **Hall of Fame & Leaderboard GUI (`/kingdom top`)**: Antarmuka visual 54-slot klasemen peringkat kerajaan dan pemain level tertinggi.
+- **Kingdom War Manager (`/ac war`)**: Mode perang resmi antar-kerajaan dengan proteksi penguncian teleportasi di zona perang aktif.
+- **PvP Combat Tagging (15 Detik)**: Mencegah combat log dan membatalkan segala bentuk teleportasi (`/tpa`, `/rtp`, `/spawn`, `/lobby`, `/home`) saat sedang bertarung.
 - **BlueMap Polygon Integration**: Visualisasi transparan wilayah kerajaan pada peta web real-time.
-- **Kingdom-Bounded `/rtp`**: Teleportasi acak aman yang selalu mendarat di dalam batas wilayah kerajaan pemain.
+- **Kingdom-Bounded `/rtp`**: Teleportasi acak aman yang mewajibkan pemain berada di teritori kerajaannya sendiri.
 - **Enforcer TPA EssentialsX**: Teleportasi `/tpa` wajib sesama anggota kerajaan dan kedua pemain wajib berada di dalam area kerajaan.
 
 ### 💬 ApexsionsChat
-- **Channel Terisolasi**: Saluran Global, Kerajaan, dan Staf.
+- **Channel Terisolasi & Preferensi Visual (`/channel settings`)**: Saluran Global, Kerajaan, dan Staf, dilengkapi GUI personal untuk toggle audio mention pings dan pemilihan channel.
 - **Showcase Item Modern (`/showitem`)**: Menampilkan item tangan dengan hover tooltip interaktif tanpa kebocoran syntax tag.
 - **Surat Offline (`/mail`)**: Mengirim dan membaca pesan untuk pemain yang sedang offline.
 - **Chat Games & Siaran**: Mini game tebak kata & matematika berhadiah, serta pengumuman terjadwal.
-- **Moderasi Keamanan Lapis Tiga**: Anti-Spam (Levenshtein rate limiter), Anti-Profanity (sensor kata kotor), Anti-Ad (blocker IP/Link), Exploit Blocker, dan Notifikasi Staf Real-time.
+- **Moderasi Keamanan Lapis Tiga**: Anti-Spam (Levenshtein rate limiter), Anti-Profanity (sensor kata kotor), Anti-Ad (blocker IP/Link), Exploit Blocker, Notifikasi Staf Real-time, dan Staff Reports Resolution GUI (`/reports`).
 
 ### 💰 ApexsionsEconomy
 - **Dual Currency Engine**: `Rupiah` (Rp) dan `Diamond` (♦) dengan pemformatan otomatis (`K`, `Jt`, `M`, `T`).
@@ -49,6 +52,8 @@ Kumpulan plugin server Minecraft profesional berkinerja tinggi yang dirancang se
 ### 🛒 ApexsionsShop
 - **6 Kategori Lengkap**: `blocks.yml`, `farming.yml`, `food.yml`, `ores.yml`, `mob_drops.yml`, `dyes.yml`.
 - **Harga Dinamis Cuaca & Kerajaan**: Harga berfluktuasi cerdas sesuai hujan/badai dan keunggulan komoditas kerajaan pembeli.
+- **Price Clamping & Siaran Tren Pasar**: Batas pengaman harga (50% - 200%) dan siaran berkala komoditas BOOM/DIP.
+- **Pajak Kerajaan 10%**: Otomatis disalurkan ke kas perbendaharaan kerajaan pemain.
 - **UI Ramah Sentuh & Bedrock**: Kontrol navigasi di baris terbawah inventaris.
 - **GUI Jual Cepat 45-Slot (`/sell` & `/sellgui`)**: Drag-and-drop banyak item sekaligus untuk langsung dijual.
 
@@ -62,18 +67,22 @@ Kumpulan plugin server Minecraft profesional berkinerja tinggi yang dirancang se
 | `/lobby` | `/hub` | Teleportasi ke lobi utama server | `apexsionscore.command.lobby` | `true` |
 | `/kingdom` | `/k`, `/region` | Membuka profil dan status kerajaan | `apexsionscore.command.region` | `true` |
 | `/kingdom choose` | `/k select` | Membuka menu pemilihan 3 kerajaan | `apexsionscore.command.region` | `true` |
+| `/kingdom top` | `/k leaderboard`| Membuka Hall of Fame & Leaderboard GUI | `apexsionscore.command.level` | `true` |
 | `/level` | `/lvl`, `/profile` | Membuka GUI progress bar level & hadiah | `apexsionscore.command.level` | `true` |
 | `/xpguide` | `/exp` | Panduan detail 13 sumber perolehan XP | `apexsionscore.command.level` | `true` |
 | `/rtp` | `/wild`, `/krtp` | Teleportasi acak aman di wilayah kerajaan | `apexsionscore.command.rtp` | `true` |
-| `/kadmin addxp <p> <amt>` | `/ac addxp` | Menambahkan XP pemain (Admin) | `apexsionscore.admin` | `op` |
-| `/kadmin setlevel <p> <lvl>`| `/ac setlevel` | Mengatur level pemain langsung (Admin) | `apexsionscore.admin` | `op` |
-| `/kadmin setkingdom <p> <k>`| `/ac setk` | Memindahkan kerajaan pemain (Admin) | `apexsionscore.admin` | `op` |
-| `/kadmin reload` | `/ac reload` | Memuat ulang konfigurasi Core (Admin) | `apexsionscore.admin` | `op` |
+| `/ac war start <K1> <K2> [m]`| - | Memulai perang resmi antar kerajaan (Admin) | `apexsionscore.admin` | `op` |
+| `/ac war stop` | - | Menghentikan perang kerajaan aktif (Admin) | `apexsionscore.admin` | `op` |
+| `/ac war status` | - | Memeriksa status aktif perang kerajaan (Admin) | `apexsionscore.admin` | `op` |
+| `/ac addxp <p> <amt>` | `/kc addxp` | Menambahkan XP pemain (Admin) | `apexsionscore.admin` | `op` |
+| `/ac setlevel <p> <lvl>`| `/kc setlevel` | Mengatur level pemain langsung (Admin) | `apexsionscore.admin` | `op` |
+| `/ac setkingdom <p> <k>`| `/kc setk` | Memindahkan kerajaan pemain (Admin) | `apexsionscore.admin` | `op` |
+| `/ac reload` | `/kc reload` | Memuat ulang konfigurasi Core (Admin) | `apexsionscore.admin` | `op` |
 
 ### 💬 Modul ApexsionsChat
 | Perintah | Alias | Deskripsi | Hak Akses (Permission) | Default |
 | :--- | :--- | :--- | :--- | :---: |
-| `/channel <g\|k\|s>` | `/ch` | Mengganti channel obrolan aktif | `apexsionschat.channel` | `true` |
+| `/channel [settings]` | `/ch` | Mengganti channel obrolan atau buka preferensi GUI | `apexsionschat.channel` | `true` |
 | `/g [pesan]` | `/global` | Berbicara di obrolan Global | `apexsionschat.channel.global` | `true` |
 | `/kc [pesan]` | `/kchat` | Berbicara di obrolan Kerajaan | `apexsionschat.channel.kingdom` | `true` |
 | `/sc [pesan]` | `/staffchat` | Berbicara di obrolan Staf | `apexsionschat.channel.staff` | `op` |
@@ -81,7 +90,7 @@ Kumpulan plugin server Minecraft profesional berkinerja tinggi yang dirancang se
 | `/mail send <p> <pesan>`| - | Mengirim surat offline ke pemain | `apexsionschat.mail` | `true` |
 | `/mail read` | `/inbox` | Membaca kotak masuk surat offline | `apexsionschat.mail` | `true` |
 | `/report <p> <alasan>`| - | Melaporkan pemain yang melanggar aturan | `apexsionschat.report` | `true` |
-| `/reports` | `/reportlist` | Membuka daftar laporan pemain (Staf) | `apexsionschat.staff.reports` | `op` |
+| `/reports` | `/reportlist` | Membuka antarmuka resolusi laporan (Staf) | `apexsionschat.staff.reports` | `op` |
 | `/apexsionschat mute` | `/chat mute` | Mengunci obrolan global server (Admin) | `apexsionschat.admin` | `op` |
 | `/apexsionschat clear`| `/chat clear`| Membersihkan layar obrolan pemain (Admin) | `apexsionschat.admin` | `op` |
 | `/apexsionschat reload`| - | Memuat ulang konfigurasi chat (Admin) | `apexsionschat.admin` | `op` |

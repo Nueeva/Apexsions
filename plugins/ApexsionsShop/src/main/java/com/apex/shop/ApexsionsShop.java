@@ -36,6 +36,7 @@ public class ApexsionsShop extends JavaPlugin implements ApexsionsShopAPI {
     private SupplyScannerService supplyScannerService;
     private TaxService taxService;
     private DynamicPriceCalculator dynamicPriceCalculator;
+    private MarketBroadcastService marketBroadcastService;
 
     @Override
     public void onEnable() {
@@ -60,6 +61,8 @@ public class ApexsionsShop extends JavaPlugin implements ApexsionsShopAPI {
         this.supplyScannerService = new SupplyScannerService(this);
         this.taxService = new TaxService(this);
         this.dynamicPriceCalculator = new DynamicPriceCalculator(this);
+        this.marketBroadcastService = new MarketBroadcastService(this);
+        this.marketBroadcastService.start();
 
         // 3. Register SPI API Provider
         com.apex.shop.api.ApexsionsShopProvider.register(this);
@@ -90,6 +93,9 @@ public class ApexsionsShop extends JavaPlugin implements ApexsionsShopAPI {
 
     @Override
     public void onDisable() {
+        if (marketBroadcastService != null) {
+            marketBroadcastService.stop();
+        }
         com.apex.shop.api.ApexsionsShopProvider.unregister();
         getLogger().info("ApexsionsShop has been disabled.");
     }
@@ -105,6 +111,10 @@ public class ApexsionsShop extends JavaPlugin implements ApexsionsShopAPI {
 
     public static ApexsionsShop getInstance() {
         return instance;
+    }
+
+    public MarketBroadcastService getMarketBroadcastService() {
+        return marketBroadcastService;
     }
 
     public com.apex.shop.config.ConfigManager getConfigManager() {

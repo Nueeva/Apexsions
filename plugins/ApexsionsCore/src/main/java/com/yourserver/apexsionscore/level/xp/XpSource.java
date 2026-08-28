@@ -1,7 +1,7 @@
 package com.yourserver.apexsionscore.level.xp;
 
 /**
- * Enumeration of all valid XP gain sources in KingdomCore.
+ * Enumeration of all valid XP gain sources in ApexsionsCore.
  */
 public enum XpSource {
     MINING,
@@ -18,5 +18,6 @@ public enum XpSource {
     POTION_USE,
     EXPLORATION,
     COMMAND,
+    ADMIN,
     CUSTOM
 }

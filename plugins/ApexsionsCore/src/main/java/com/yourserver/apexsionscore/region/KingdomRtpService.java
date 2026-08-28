@@ -4,26 +4,19 @@ import com.yourserver.apexsionscore.ApexsionsCorePlugin;
 import com.yourserver.apexsionscore.player.PlayerData;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.title.Title;
-import org.bukkit.Bukkit;
-import org.bukkit.HeightMap;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Particle;
-import org.bukkit.Sound;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
 import java.time.Duration;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Handles safe random teleportation (RTP) strictly bounded within the player's kingdom territory.
+ * Fully asynchronous with Paper chunk loading, pass-through safety verification,
+ * and war/combat-state teleportation locks.
  */
 public class KingdomRtpService {
 
@@ -31,18 +24,21 @@ public class KingdomRtpService {
     private final MiniMessage miniMessage = MiniMessage.miniMessage();
     private final Map<UUID, Long> cooldowns = new ConcurrentHashMap<>();
 
-    private static final Set<Material> UNSAFE_BLOCKS = Set.of(
+    private static final Set<Material> UNSAFE_BLOCKS = EnumSet.of(
             Material.LAVA,
             Material.WATER,
             Material.FIRE,
             Material.SOUL_FIRE,
-            Material.MAGMA_BLOCK,
+            Material.CAMPFIRE,
+            Material.SOUL_CAMPFIRE,
             Material.CACTUS,
             Material.SWEET_BERRY_BUSH,
             Material.WITHER_ROSE,
-            Material.POINTED_DRIPSTONE,
+            Material.MAGMA_BLOCK,
             Material.POWDER_SNOW,
-            Material.VOID_AIR
+            Material.VOID_AIR,
+            Material.CAVE_AIR,
+            Material.POINTED_DRIPSTONE
     );
 
     public KingdomRtpService(ApexsionsCorePlugin plugin) {
@@ -58,7 +54,14 @@ public class KingdomRtpService {
             return;
         }
 
-        // 1. Check player kingdom
+        // 1. Check Combat Tag
+        if (plugin.getCombatTagService() != null && plugin.getCombatTagService().isCombatTagged(player.getUniqueId())) {
+            long remaining = plugin.getCombatTagService().getRemainingSeconds(player.getUniqueId());
+            player.sendMessage(miniMessage.deserialize("<red>⚔ Kamu sedang dalam mode tempur (Combat Tag: <yellow>" + remaining + "s</yellow>)! RTP dinonaktifkan.</red>"));
+            return;
+        }
+
+        // 2. Check player kingdom
         Optional<PlayerData> dataOpt = plugin.getPlayerDataService().getCached(player.getUniqueId());
         if (dataOpt.isEmpty() || !dataOpt.get().hasRegion()) {
             player.sendMessage(miniMessage.deserialize("<yellow>⚔ Kamu belum memilih kerajaan! Pilih kerajaan terlebih dahulu untuk menggunakan RTP.</yellow>"));
@@ -75,7 +78,19 @@ public class KingdomRtpService {
 
         Region region = regionOpt.get();
 
-        // 2. Check Cooldown
+        // 3. Strict Check: Player MUST currently be physically inside their own kingdom territory
+        if (!region.containsLocation(player.getLocation())) {
+            player.sendMessage(miniMessage.deserialize("<red>✖ Kamu hanya dapat menggunakan <yellow>/rtp</yellow> ketika sedang berada di dalam wilayah teritorial kerajaanmu (<gold>" + region.getDisplayName() + "</gold>)!</red>"));
+            return;
+        }
+
+        // 4. Check War State in Territory
+        if (plugin.getWarManager() != null && plugin.getWarManager().isWarActiveInTerritory(region)) {
+            player.sendMessage(miniMessage.deserialize("<dark_red>⚔ Wilayah kerajaan sedang dalam keadaan PERANG (WAR)! Seluruh fitur teleportasi dinonaktifkan sementara.</dark_red>"));
+            return;
+        }
+
+        // 5. Check Cooldown
         long now = System.currentTimeMillis();
         long cooldownSeconds = plugin.getConfigManager().getMainConfig().getLong("rtp.cooldown-seconds", 60L);
         if (!player.hasPermission("apexsionscore.rtp.bypass")) {
@@ -87,7 +102,7 @@ public class KingdomRtpService {
             }
         }
 
-        // 3. Start Search
+        // 6. Start Search
         player.sendMessage(miniMessage.deserialize("<gold>🔍 Mencari lokasi acak yang aman di wilayah kerajaan <yellow>" + region.getDisplayName() + "</yellow>...</gold>"));
         findAndTeleport(player, region, 0, 30, cooldownSeconds);
     }
@@ -155,15 +170,15 @@ public class KingdomRtpService {
             Bukkit.getScheduler().runTask(plugin, () -> {
                 int highestY = finalWorld.getHighestBlockYAt(blockX, blockZ, HeightMap.MOTION_BLOCKING_NO_LEAVES);
 
-                // Ensure Y is within world and polygon bounds
+                // Ensure Y is within world and safe boundaries
                 if (highestY < finalWorld.getMinHeight() + 5 || highestY > finalWorld.getMaxHeight() - 5) {
                     findAndTeleport(player, region, attempt + 1, maxAttempts, cooldownSeconds);
                     return;
                 }
 
-                Block ground = finalWorld.getBlockAt(blockX, highestY - 1, blockZ);
-                Block feet = finalWorld.getBlockAt(blockX, highestY, blockZ);
-                Block head = finalWorld.getBlockAt(blockX, highestY + 1, blockZ);
+                Block ground = finalWorld.getBlockAt(blockX, highestY, blockZ);
+                Block feet = finalWorld.getBlockAt(blockX, highestY + 1, blockZ);
+                Block head = finalWorld.getBlockAt(blockX, highestY + 2, blockZ);
 
                 // Safety Validation
                 if (!isSafeGround(ground) || !isSafePassThrough(feet) || !isSafePassThrough(head)) {
@@ -171,7 +186,7 @@ public class KingdomRtpService {
                     return;
                 }
 
-                Location targetLoc = new Location(finalWorld, blockX + 0.5, highestY, blockZ + 0.5, player.getLocation().getYaw(), player.getLocation().getPitch());
+                Location targetLoc = new Location(finalWorld, blockX + 0.5, highestY + 1.0, blockZ + 0.5, player.getLocation().getYaw(), player.getLocation().getPitch());
 
                 // Strict polygon verification
                 if (polygon != null && !polygon.contains(targetLoc.getX(), targetLoc.getY(), targetLoc.getZ())) {
@@ -191,7 +206,7 @@ public class KingdomRtpService {
                         finalWorld.spawnParticle(Particle.PORTAL, targetLoc.clone().add(0, 1, 0), 40, 0.5, 0.5, 0.5, 0.1);
 
                         // Send Messages & Titles
-                        player.sendMessage(miniMessage.deserialize("<green>✨ Berhasil teleportasi ke wilayah <yellow>" + region.getDisplayName() + "</yellow> di koordinat <aqua>[" + blockX + ", " + highestY + ", " + blockZ + "]</aqua>!</green>"));
+                        player.sendMessage(miniMessage.deserialize("<green>✨ Berhasil teleportasi ke wilayah <yellow>" + region.getDisplayName() + "</yellow> di koordinat <aqua>[" + blockX + ", " + (highestY + 1) + ", " + blockZ + "]</aqua>!</green>"));
 
                         Title title = Title.title(
                                 miniMessage.deserialize("<gold><bold>" + region.getDisplayName() + "</bold></gold>"),

@@ -1,12 +1,12 @@
 # ApexsionsChat — Comprehensive Technical Manual
 
-Panduan teknis dan operasional lengkap untuk modul **`ApexsionsChat`** (Sistem Komunikasi Terpadu, Channel MiniMessage, Showcase Item, Offline Mail, Chat Games, Pengumuman, dan Moderasi Lapis Tiga).
+Panduan teknis dan operasional lengkap untuk modul **`ApexsionsChat`** (Sistem Komunikasi Terpadu, Channel MiniMessage, Showcase Item, Offline Mail, Chat Games, Pengumuman, Chat Settings GUI, dan Moderasi Lapis Tiga).
 
 ---
 
 ## 💬 1. Ikhtisar Modul & Arsitektur
 
-`ApexsionsChat` mengelola seluruh arus percakapan dan keamanan teks di server dengan perenderan modern Kyori Adventure & MiniMessage.
+`ApexsionsChat` mengelola seluruh arus percakapan, preferensi notifikasi personal pemain, resolusi tiket laporan staf, dan keamanan teks di server dengan perenderan modern Kyori Adventure & MiniMessage.
 
 ```
                          ┌────────────────────────┐
@@ -19,15 +19,20 @@ Panduan teknis dan operasional lengkap untuk modul **`ApexsionsChat`** (Sistem K
 ┌──────────────────┐       ┌───────────────────┐          ┌───────────────────┐
 │ Channels & Social│       │  Interactive Hub  │          │  Security Lapis 3 │
 │Global / Kingdom /│       │/showitem, /mail,  │          │Anti-Spam, Profane,│
-│  Staff Channels  │       │Chat Games, Announce│         │Anti-Ad & Exploits │
+│  Staff Channels  │       │Chat Settings GUI  │          │Anti-Ad & Exploits │
 └──────────────────┘       └───────────────────┘          └───────────────────┘
 ```
 
 ---
 
-## 📢 2. Channel Obrolan Terpadu
+## 📢 2. Channel Obrolan & Preferensi Pemain (`/channel settings`)
 
-Pemain dapat beralih atau mengirim pesan langsung ke channel tertentu:
+Pemain dapat beralih channel atau membuka GUI pengaturan personal:
+
+- **`/channel` / `/channel settings`**: Membuka GUI 27-slot untuk:
+  - Mengaktifkan/menonaktifkan suara notifikasi saat di-mention (`@Player`).
+  - Mengganti channel aktif secara visual (Global ➜ Kingdom ➜ Staff).
+  - Melakukan uji coba audio alerts.
 
 | Channel | Format Prefix | Perintah Cepat | Hak Akses | Deskripsi |
 | :--- | :--- | :--- | :--- | :--- |
@@ -37,38 +42,24 @@ Pemain dapat beralih atau mengirim pesan langsung ke channel tertentu:
 
 ---
 
-## 🛡️ 3. Sistem Keamanan & Moderasi Lapis Tiga (Advanced Security)
-
-Mencegah serangan spam, toksisitas kata-kata kasar, promosi link/IP liar, dan exploit crash server:
+## 🛡️ 3. Sistem Keamanan & Moderasi Lapis Tiga
 
 1. **Lapis 1 — Rate Limiting & Anti-Spam**:
    - Sliding window timer (maksimal 3 pesan per 2 detik).
-   - Deteksi pesan berulang (*near-duplicate*) menggunakan algoritma Levenshtein Distance $\ge 80\%$.
-   - Auto temp-mute jika pemain terus melakukan spam cepat.
+   - Deteksi pesan berulang menggunakan algoritma Levenshtein Distance $\ge 80\%$.
 2. **Lapis 2 — Anti-Profanity & Toksisitas**:
-   - Filter kata-kata kotor multi-bahasa dengan substitusi karakter angka (`4` $\to$ `a`, `1` $\to$ `i`, `0` $\to$ `o`).
-   - Peringatan instan ke pemain dan sensor otomatis.
+   - Filter kata-kata kotor multi-bahasa dengan substitusi karakter angka.
 3. **Lapis 3 — Anti-Ad & Exploit Blocker**:
-   - Regex blocker untuk alamat IP server (`\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}`), domain web, dan tautan Discord non-whitelist.
-   - Deteksi exploit syntax (seperti JNDI lookup `${jndi:...}` atau token leaks).
-   - **Staff Alerts**: Staf dengan izin `apexsionschat.staff.alerts` menerima notifikasi merah real-time beserta audio alert saat ada pesan mencurigakan.
+   - Blocker alamat IP server liar dan exploit syntax.
+   - **Staff Reports GUI (`/reports`)**: Antarmuka interaktif staf untuk meninjau laporan, menandai "Reviewing", "Resolved", atau "Dismissed".
 
 ---
 
-## 🎁 4. Fitur Interaktif & Komunitas
-
-- **`/showitem`**: Menampilkan item di tangan dengan hover tooltips interaktif (nama item, enchantments, lore, potion effects) tanpa kebocoran syntax tag.
-- **Offline `/mail`**: Sistem kotak surat untuk mengirim dan membaca pesan pemain lain bahkan saat mereka sedang offline.
-- **Chat Games Otomatis**: Mini game tebak matematika dan susun kata teracak (*unscramble*) berhadiah saldo Rupiah/Diamond.
-- **Pengumuman Berkala**: Siaran terjadwal MiniMessage dengan teks animasi dan tautan web server.
-
----
-
-## 📜 5. Matriks Perintah & Permissions
+## 📜 4. Matriks Perintah & Permissions
 
 | Perintah | Alias | Deskripsi | Permission | Default |
 | :--- | :--- | :--- | :--- | :---: |
-| `/channel <g\|k\|s>` | `/ch` | Mengganti channel obrolan aktif | `apexsionschat.channel` | `true` |
+| `/channel [settings]` | `/ch` | Mengganti channel atau buka Chat Settings GUI | `apexsionschat.channel` | `true` |
 | `/g [pesan]` | `/global` | Berbicara di obrolan global | `apexsionschat.channel.global` | `true` |
 | `/kc [pesan]` | `/kingdomchat` | Berbicara di obrolan kerajaan | `apexsionschat.channel.kingdom` | `true` |
 | `/sc [pesan]` | `/staffchat` | Berbicara di obrolan staf | `apexsionschat.channel.staff` | `op` |

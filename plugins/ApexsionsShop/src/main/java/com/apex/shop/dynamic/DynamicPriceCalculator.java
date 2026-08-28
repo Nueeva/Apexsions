@@ -4,6 +4,15 @@ import com.apex.shop.ApexsionsShop;
 import com.apex.shop.category.ShopItem;
 import org.bukkit.entity.Player;
 
+/**
+ * Calculates dynamic buy and sell prices for commodities based on:
+ * - Base prices
+ * - Dynamic Weather multipliers (Rain, Thunderstorm)
+ * - Kingdom Territory Biome Specialty discounts/bonuses
+ * - Real-time Supply & Demand Saturation
+ * - Strict Price Clamping (Min 50% floor to Max 200% ceiling)
+ * - Territory Taxation (10% routed to Kingdom Treasury)
+ */
 public class DynamicPriceCalculator {
 
     private final ApexsionsShop plugin;
@@ -33,7 +42,10 @@ public class DynamicPriceCalculator {
         double kingdomMult = plugin.getKingdomMarketService().getBuyMultiplier(item, player);
         double supplyMult = 1.00;
 
-        double effectiveUnit = baseUnit * weatherMult * kingdomMult * supplyMult;
+        double rawUnit = baseUnit * weatherMult * kingdomMult * supplyMult;
+
+        // Price Clamping: Min 50% to Max 200% of base buy price
+        double effectiveUnit = Math.max(baseUnit * 0.50, Math.min(baseUnit * 2.00, rawUnit));
         double rawTotal = effectiveUnit * quantity;
 
         double taxPercent = plugin.getTaxService().getTaxPercent(player);
@@ -63,7 +75,10 @@ public class DynamicPriceCalculator {
         double kingdomMult = plugin.getKingdomMarketService().getSellMultiplier(item, player);
         double supplyMult = plugin.getSupplyScannerService().getSupplySellMultiplier(item, player, quantity);
 
-        double effectiveUnit = baseUnit * weatherMult * kingdomMult * supplyMult;
+        double rawUnit = baseUnit * weatherMult * kingdomMult * supplyMult;
+
+        // Price Clamping: Min 50% to Max 200% of base sell price
+        double effectiveUnit = Math.max(baseUnit * 0.50, Math.min(baseUnit * 2.00, rawUnit));
         double rawTotal = effectiveUnit * quantity;
 
         double taxPercent = plugin.getTaxService().getTaxPercent(player);
