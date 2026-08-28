@@ -27,6 +27,7 @@ public class ApexsionsShop extends JavaPlugin implements ApexsionsShopAPI {
 
     private static ApexsionsShop instance;
 
+    private com.apex.shop.config.ConfigManager configManager;
     private ShopItemRegistry itemRegistry;
     private EconomyHook economyHook;
     private KingdomCoreHook kingdomCoreHook;
@@ -40,9 +41,11 @@ public class ApexsionsShop extends JavaPlugin implements ApexsionsShopAPI {
     public void onEnable() {
         instance = this;
 
-        saveDefaultConfig();
+        // 1. Initialize Configuration Manager
+        this.configManager = new com.apex.shop.config.ConfigManager(this);
+        this.configManager.load();
 
-        // 1. Initialize Hooks & Services
+        // 2. Initialize Hooks & Services
         this.economyHook = new EconomyHook(this);
         this.economyHook.initialize();
 
@@ -57,6 +60,9 @@ public class ApexsionsShop extends JavaPlugin implements ApexsionsShopAPI {
         this.supplyScannerService = new SupplyScannerService(this);
         this.taxService = new TaxService(this);
         this.dynamicPriceCalculator = new DynamicPriceCalculator(this);
+
+        // 3. Register SPI API Provider
+        com.apex.shop.api.ApexsionsShopProvider.register(this);
 
         // 2. Register GUI Listeners
         getServer().getPluginManager().registerEvents(new ShopGuiListener(), this);
@@ -84,16 +90,25 @@ public class ApexsionsShop extends JavaPlugin implements ApexsionsShopAPI {
 
     @Override
     public void onDisable() {
+        com.apex.shop.api.ApexsionsShopProvider.unregister();
         getLogger().info("ApexsionsShop has been disabled.");
     }
 
     public void reloadPluginConfig() {
-        reloadConfig();
-        itemRegistry.load();
+        if (configManager != null) {
+            configManager.load();
+        }
+        if (itemRegistry != null) {
+            itemRegistry.load();
+        }
     }
 
     public static ApexsionsShop getInstance() {
         return instance;
+    }
+
+    public com.apex.shop.config.ConfigManager getConfigManager() {
+        return configManager;
     }
 
     public ShopItemRegistry getItemRegistry() {

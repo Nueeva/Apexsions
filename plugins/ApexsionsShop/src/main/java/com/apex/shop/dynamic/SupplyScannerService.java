@@ -25,12 +25,12 @@ public class SupplyScannerService {
      * Huge quantity (> 9 stacks): slight graceful drop down to min 0.75.
      */
     public double getSupplySellMultiplier(ShopItem item, Player player, int quantityToSell) {
-        if (!plugin.getConfig().getBoolean("dynamic-pricing.supply-scanner.enabled", true)) {
+        if (!plugin.getConfigManager().getMarketsConfig().getBoolean("supply-scanner.enabled", true)) {
             return 1.00;
         }
 
-        double dropPerStack = plugin.getConfig().getDouble("dynamic-pricing.supply-scanner.saturation-drop-per-stack", 0.015);
-        double minMultiplier = plugin.getConfig().getDouble("dynamic-pricing.supply-scanner.min-sell-multiplier", 0.75);
+        double dropPerStack = plugin.getConfigManager().getMarketsConfig().getDouble("supply-scanner.saturation-drop-per-stack", 0.015);
+        double minMultiplier = plugin.getConfigManager().getMarketsConfig().getDouble("supply-scanner.min-sell-multiplier", 0.75);
 
         int totalFound = quantityToSell;
 

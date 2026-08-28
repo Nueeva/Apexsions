@@ -1,6 +1,5 @@
 # ========================================================
-# APEXSIONS SHOP CONFIGURATION
-# Sistem Pasar Dinamis, Multi-Kategori & Pajak Kerajaan
+# APEXSIONS SHOP - MAIN CONFIGURATION
 # ========================================================
 
 economy:
@@ -12,68 +11,11 @@ economy:
 tax:
   # Tarif pajak default (persen)
   default-tax-percent: 10.0
-  # Otomatis mengambil pajak dari ApexsionsCore jika tersedia
+  # Otomatis mengambil tarif pajak dari ApexsionsCore jika tersedia
   use-core-kingdom-tax: true
   # Tampilkan rincian pajak pada lore item
   show-tax-in-lore: true
 
 dynamic-pricing:
   enabled: true
-  
-  # Pengali Cuaca (Weather Dynamics)
-  weather:
-    enabled: true
-    clear:
-      farming-sell-multiplier: 1.20 # Kemarau/terik: hasil tani lebih langka & mahal
-      mob-sell-multiplier: 1.00
-    rain:
-      farming-sell-multiplier: 0.95
-      mob-sell-multiplier: 1.10
-    thunder:
-      farming-sell-multiplier: 0.90
-      mob-sell-multiplier: 1.25 # Badai: monster lebih ganas, drop lebih berharga
-
-  # Pasar Spesialisasi Kerajaan (Kingdom Biome Market)
-  kingdoms:
-    SOLTERRA: # Kerajaan Agraris (Plains, Savanna)
-      food-buy-multiplier: 0.80      # Makanan lebih murah 20%
-      farming-buy-multiplier: 0.80   # Pertanian lebih murah 20%
-      ores-buy-multiplier: 1.25      # Tambang lebih mahal 25%
-      blocks-buy-multiplier: 1.10
-    ZENITHAR: # Kerajaan Pertambangan (Mountains, Caves)
-      ores-buy-multiplier: 0.80      # Tambang & mineral lebih murah 20%
-      food-buy-multiplier: 1.30      # Makanan lebih mahal 30%
-      farming-buy-multiplier: 1.25   # Pertanian lebih mahal 25%
-      dyes-buy-multiplier: 1.15
-    SYLVAMOOR: # Kerajaan Alam & Rimba (Forest, Jungle, Swamp)
-      dyes-buy-multiplier: 0.75      # Pewarna & tanaman liar lebih murah 25%
-      farming-buy-multiplier: 0.85
-      ores-buy-multiplier: 1.20      # Tambang lebih mahal 20%
-      mob_drops-buy-multiplier: 0.85
-
-  # Pemindai Pasokan (Supply & Saturation)
-  supply-scanner:
-    enabled: true
-    # Radius pengecekan chest di sekitar pemain saat transaksi besar (blok)
-    chest-scan-radius: 8
-    # Degradasi harga jual jika menjual dalam kuantitas sangat masif (> 576 item / 9 stack)
-    saturation-drop-per-stack: 0.015
-    min-sell-multiplier: 0.75 # Maksimal penurunan harga karena banjir pasar adalah 25%
-
-gui:
-  title-main: "<dark_gray><bold>[ APEXSIONS MARKET & TOKO ]</bold></dark_gray>"
-  title-category: "<dark_gray><bold>[ TOKO: <gold>%category%</gold> ]</bold></dark_gray>"
-  title-sellgui: "<dark_gray><bold>[ JUAL CEPAT ITEM (DRAG & DROP) ]</bold></dark_gray>"
-  auto-fill-empty-slots: true
-  filler-material: "BLACK_STAINED_GLASS_PANE"
-  accent-material: "CYAN_STAINED_GLASS_PANE"
-
-messages:
-  prefix: "<gold><bold>ApexsionsShop</bold></gold> <dark_gray>»</dark_gray> "
-  buy-success: "<green>Berhasil membeli <yellow>%amount%x %item%</yellow> seharga <gold>%price%</gold> (Pajak: <red>%tax%</red>)!</green>"
-  sell-success: "<green>Berhasil menjual <yellow>%amount%x %item%</yellow> dan mendapatkan <gold>%price%</gold> (Pajak: <red>%tax%</red>)!</green>"
-  not-enough-money: "<red>Saldo Rupiah kamu tidak mencukupi! Butuh <gold>%required%</gold>.</red>"
-  not-enough-items: "<red>Kamu tidak memiliki cukup <yellow>%item%</yellow> di inventori untuk dijual!</red>"
-  inventory-full: "<red>Inventori kamu penuh! Kosongkan beberapa slot terlebih dahulu.</red>"
-  cannot-sell-item: "<red>Item ini tidak dapat dijual ke toko!</red>"
-  reload-success: "<green>Konfigurasi ApexsionsShop berhasil dimuat ulang!</green>"
+  # Detail cuaca dan pasar wilayah berada di markets.yml

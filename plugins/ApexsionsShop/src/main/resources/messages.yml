@@ -1,0 +1,17 @@
+# ========================================================
+# APEXSIONS SHOP - LOCALIZED MESSAGES (MiniMessage)
+# ========================================================
+
+prefix: "<gold><bold>ApexsionsShop</bold></gold> <dark_gray>»</dark_gray> "
+
+buy-success: "<green>Berhasil membeli <yellow>%amount%x %item%</yellow> seharga <gold>%price%</gold> (Pajak: <red>%tax%</red>)!</green>"
+sell-success: "<green>Berhasil menjual <yellow>%amount%x %item%</yellow> dan mendapatkan <gold>%price%</gold> (Pajak: <red>%tax%</red>)!</green>"
+
+not-enough-money: "<red>Saldo Rupiah kamu tidak mencukupi! Butuh <gold>%required%</gold>.</red>"
+not-enough-items: "<red>Kamu tidak memiliki cukup <yellow>%item%</yellow> di inventori untuk dijual!</red>"
+inventory-full: "<red>Inventori kamu penuh! Kosongkan beberapa slot terlebih dahulu.</red>"
+cannot-sell-item: "<red>Item ini tidak dapat dijual ke toko!</red>"
+
+no-permission: "<red>Kamu tidak memiliki izin untuk melakukan tindakan ini!</red>"
+only-player: "<red>Perintah ini hanya dapat dijalankan oleh pemain in-game!</red>"
+reload-success: "<green>Seluruh konfigurasi, pesan, GUI, dan data pasar berhasil dimuat ulang!</green>"

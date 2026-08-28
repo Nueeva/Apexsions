@@ -1,0 +1,32 @@
+# ========================================================
+# APEXSIONS SHOP - GUI LAYOUTS & STYLING
+# ========================================================
+
+titles:
+  main-menu: "<dark_gray><bold>[ APEXSIONS MARKET & TOKO ]</bold></dark_gray>"
+  category-menu: "<dark_gray><bold>[ TOKO: <gold>%category%</gold> ]</bold></dark_gray>"
+  quantity-menu: "<dark_gray><bold>[ JUMLAH: <gold>%item%</gold> ]</bold></dark_gray>"
+  sell-gui: "<dark_gray><bold>[ JUAL CEPAT (SELL GUI) ]</bold></dark_gray>"
+
+settings:
+  auto-fill-empty-slots: true
+  filler-material: "BLACK_STAINED_GLASS_PANE"
+  border-material: "BLACK_STAINED_GLASS_PANE"
+  accent-material: "CYAN_STAINED_GLASS_PANE"
+
+navigation:
+  back:
+    material: "ARROW"
+    name: "<yellow>◀ KEMBALI</yellow>"
+  close:
+    material: "BARRIER"
+    name: "<red><bold>TUTUP MENU</bold></red>"
+  previous-page:
+    material: "PAPER"
+    name: "<yellow>◀ Halaman %page%</yellow>"
+  next-page:
+    material: "PAPER"
+    name: "<yellow>Halaman %page% ▶</yellow>"
+  page-indicator:
+    material: "MAP"
+    name: "<gray>Halaman <yellow>%page%</yellow> / <white>%total%</white></gray>"

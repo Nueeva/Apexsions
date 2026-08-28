@@ -21,8 +21,8 @@ public class KingdomMarketService {
         }
 
         ShopCategory cat = item.getCategory();
-        String path = "dynamic-pricing.kingdoms." + kingdom.toUpperCase() + "." + cat.getId() + "-buy-multiplier";
-        return plugin.getConfig().getDouble(path, 1.00);
+        String path = "kingdoms." + kingdom.toUpperCase() + "." + cat.getId() + "-buy-multiplier";
+        return plugin.getConfigManager().getMarketsConfig().getDouble(path, 1.00);
     }
 
     public double getSellMultiplier(ShopItem item, Player player) {
