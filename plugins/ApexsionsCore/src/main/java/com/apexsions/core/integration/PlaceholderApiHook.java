@@ -122,12 +122,58 @@ public class PlaceholderApiHook extends PlaceholderExpansion {
                 }
                 return "#808080";
 
-            case "rank_prefix":
-            case "prefix":
+            case "rank_badge":
+            case "badge":
                 if (offlinePlayer.isOnline() && offlinePlayer.getPlayer() != null) {
-                    return plugin.getLuckPermsHook().getPlayerPrefix(offlinePlayer.getPlayer());
+                    String rank = plugin.getLuckPermsHook().getPlayerRank(offlinePlayer.getPlayer()).toLowerCase();
+                    return switch (rank) {
+                        case "ancestor" -> "<gradient:#8B0000:#FF0000><bold>👑 ANCESTOR</bold></gradient>";
+                        case "warden" -> "<gradient:#1e3c72:#2a5298><bold>🛡 WARDEN</bold></gradient>";
+                        case "herald" -> "<gradient:#f857a6:#ff5858><bold>📜 HERALD</bold></gradient>";
+                        case "sions" -> "<gradient:#00FFFF:#FFD700><bold>✦ SIONS ✦</bold></gradient>";
+                        case "emperor" -> "<gradient:#e52d27:#b31217><bold>⚔ EMPEROR</bold></gradient>";
+                        case "sovereign" -> "<gradient:#f39c12:#f1c40f><bold>⚜ SOVEREIGN</bold></gradient>";
+                        case "archon" -> "<gradient:#00c6ff:#0072ff><bold>💎 ARCHON</bold></gradient>";
+                        case "ascendant" -> "<gradient:#11998e:#38ef7d><bold>☘ ASCENDANT</bold></gradient>";
+                        default -> "<gradient:#bdc3c7:#7f8c8d>Wanderer</gradient>";
+                    };
                 }
-                return "";
+                return "<gradient:#bdc3c7:#7f8c8d>Wanderer</gradient>";
+
+            case "level_badge":
+                return "<gradient:#f1c40f:#e67e22><bold>[Lv." + data.getLevel() + "]</bold></gradient>";
+
+            case "kingdom_badge":
+                if (data.getRegionId() != null) {
+                    Optional<Region> regOpt = plugin.getRegionManager().getRegion(data.getRegionId());
+                    if (regOpt.isPresent()) {
+                        String k = regOpt.get().getKey().toUpperCase();
+                        return switch (k) {
+                            case "ZENITHAR" -> "<gradient:#ffd700:#ffa502><bold>[👑 ZENITHAR]</bold></gradient>";
+                            case "SOLTERRA" -> "<gradient:#ff4757:#ff6b81><bold>[🔥 SOLTERRA]</bold></gradient>";
+                            case "SYLVAMOOR" -> "<gradient:#2ed573:#1e90ff><bold>[🌿 SYLVAMOOR]</bold></gradient>";
+                            default -> "<gradient:#70a1ff:#1e90ff><bold>[" + k + "]</bold></gradient>";
+                        };
+                    }
+                }
+                return "<dark_gray>[No Kingdom]</dark_gray>";
+
+            case "player_prefix":
+                String rPrefix = (offlinePlayer.isOnline() && offlinePlayer.getPlayer() != null) ?
+                        plugin.getLuckPermsHook().getPlayerPrefix(offlinePlayer.getPlayer()) : "";
+                String kBadge = "";
+                if (data.getRegionId() != null) {
+                    Optional<Region> regOpt = plugin.getRegionManager().getRegion(data.getRegionId());
+                    if (regOpt.isPresent()) {
+                        kBadge = switch (regOpt.get().getKey().toUpperCase()) {
+                            case "ZENITHAR" -> "<gold>[👑 Zenithar]</gold> ";
+                            case "SOLTERRA" -> "<red>[🔥 Solterra]</red> ";
+                            case "SYLVAMOOR" -> "<green>[🌿 Sylvamoor]</green> ";
+                            default -> "";
+                        };
+                    }
+                }
+                return kBadge + rPrefix;
 
             case "current_territory":
                 if (offlinePlayer.isOnline() && offlinePlayer.getPlayer() != null) {

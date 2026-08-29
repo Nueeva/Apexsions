@@ -74,7 +74,7 @@ public class ApexsionsCoreHook {
     public void addXp(UUID uuid, long amount) {
         if (!isAvailable()) return;
         try {
-            ApexsionsCoreProvider.get().addXp(uuid, amount, XpSource.CUSTOM);
+            ApexsionsCoreProvider.get().addXp(uuid, amount, XpSource.CHAT_GAME_WIN);
         } catch (Throwable ignored) {}
     }
 }

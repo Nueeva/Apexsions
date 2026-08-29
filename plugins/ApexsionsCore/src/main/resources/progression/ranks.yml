@@ -1,5 +1,5 @@
 # ==============================================================================
-# ApexsionsCore — Rank Definitions & LuckPerms Provisioning (ranks.yml)
+# ApexsionsCore — Luxury Rank Definitions & LuckPerms Provisioning (ranks.yml)
 # ==============================================================================
 
 # Owner Configuration (The Ancestor rank is exclusively granted to this UUID)
@@ -10,8 +10,9 @@ owner:
 ranks:
   ancestor:
     display-name: "The Ancestor"
-    formatted-name: "<dark_red><bold>The Ancestor</bold></dark_red>"
-    prefix: "<dark_red><bold>[The Ancestor]</bold></dark_red> "
+    formatted-name: "<gradient:#8B0000:#FF0000><bold>👑 THE ANCESTOR</bold></gradient>"
+    prefix: "<gradient:#8B0000:#FF0000><bold>[👑 ANCESTOR]</bold></gradient> "
+    badge: "<gradient:#8B0000:#FF0000><bold>👑 ANCESTOR</bold></gradient>"
     color: "#8B0000"
     bold: true
     protected: true
@@ -19,62 +20,65 @@ ranks:
 
   warden:
     display-name: "Warden"
-    formatted-name: "<dark_blue>Warden</dark_blue>"
-    prefix: "<dark_blue>[Warden]</dark_blue> "
-    color: "#00008B"
+    formatted-name: "<gradient:#1e3c72:#2a5298><bold>🛡 WARDEN</bold></gradient>"
+    prefix: "<gradient:#1e3c72:#2a5298><bold>[🛡 WARDEN]</bold></gradient> "
+    badge: "<gradient:#1e3c72:#2a5298><bold>🛡 WARDEN</bold></gradient>"
+    color: "#2a5298"
     weight: 90
 
   herald:
     display-name: "Herald"
-    formatted-name: "<#FF69B4>Herald</#FF69B4>"
-    prefix: "<#FF69B4>[Herald]</#FF69B4> "
-    color: "#FF69B4"
+    formatted-name: "<gradient:#f857a6:#ff5858><bold>📜 HERALD</bold></gradient>"
+    prefix: "<gradient:#f857a6:#ff5858><bold>[📜 HERALD]</bold></gradient> "
+    badge: "<gradient:#f857a6:#ff5858><bold>📜 HERALD</bold></gradient>"
+    color: "#ff5858"
     weight: 80
 
   sions:
     display-name: "Sions"
-    formatted-name: "<gradient:#00FFFF:#FFD700><bold>Sions</bold></gradient>"
-    prefix: "<gradient:#00FFFF:#FFD700><bold>[Sions]</bold></gradient> "
+    formatted-name: "<gradient:#00FFFF:#FFD700><bold>✦ SIONS ✦</bold></gradient>"
+    prefix: "<gradient:#00FFFF:#FFD700><bold>[✦ SIONS]</bold></gradient> "
+    badge: "<gradient:#00FFFF:#FFD700><bold>✦ SIONS ✦</bold></gradient>"
     color: "#00FFFF"
     weight: 70
-    gradient:
-      enabled: true
-      colors:
-        - "#00FFFF"
-        - "#FFD700"
 
   emperor:
     display-name: "Emperor"
-    formatted-name: "<red>Emperor</red>"
-    prefix: "<red>[Emperor]</red> "
-    color: "#FF0000"
+    formatted-name: "<gradient:#e52d27:#b31217><bold>⚔ EMPEROR</bold></gradient>"
+    prefix: "<gradient:#e52d27:#b31217><bold>[⚔ EMPEROR]</bold></gradient> "
+    badge: "<gradient:#e52d27:#b31217><bold>⚔ EMPEROR</bold></gradient>"
+    color: "#e52d27"
     weight: 60
 
   sovereign:
     display-name: "Sovereign"
-    formatted-name: "<gold>Sovereign</gold>"
-    prefix: "<gold>[Sovereign]</gold> "
-    color: "#FFD700"
+    formatted-name: "<gradient:#f39c12:#f1c40f><bold>⚜ SOVEREIGN</bold></gradient>"
+    prefix: "<gradient:#f39c12:#f1c40f><bold>[⚜ SOVEREIGN]</bold></gradient> "
+    badge: "<gradient:#f39c12:#f1c40f><bold>⚜ SOVEREIGN</bold></gradient>"
+    color: "#f1c40f"
     weight: 50
 
   archon:
     display-name: "Archon"
-    formatted-name: "<aqua>Archon</aqua>"
-    prefix: "<aqua>[Archon]</aqua> "
-    color: "#00FFFF"
+    formatted-name: "<gradient:#00c6ff:#0072ff><bold>💎 ARCHON</bold></gradient>"
+    prefix: "<gradient:#00c6ff:#0072ff><bold>[💎 ARCHON]</bold></gradient> "
+    badge: "<gradient:#00c6ff:#0072ff><bold>💎 ARCHON</bold></gradient>"
+    color: "#00c6ff"
     weight: 40
 
   ascendant:
     display-name: "Ascendant"
-    formatted-name: "<#90EE90>Ascendant</#90EE90>"
-    prefix: "<#90EE90>[Ascendant]</#90EE90> "
-    color: "#90EE90"
+    formatted-name: "<gradient:#11998e:#38ef7d><bold>☘ ASCENDANT</bold></gradient>"
+    prefix: "<gradient:#11998e:#38ef7d><bold>[☘ ASCENDANT]</bold></gradient> "
+    badge: "<gradient:#11998e:#38ef7d><bold>☘ ASCENDANT</bold></gradient>"
+    color: "#38ef7d"
     weight: 30
 
   wanderer:
     display-name: "Wanderer"
-    formatted-name: "<gray>Wanderer</gray>"
-    prefix: "<gray>[Wanderer]</gray> "
-    color: "#808080"
+    formatted-name: "<gradient:#bdc3c7:#2c3e50>WANDERER</gradient>"
+    prefix: "<gradient:#bdc3c7:#7f8c8d>[Wanderer]</gradient> "
+    badge: "<gradient:#bdc3c7:#7f8c8d>Wanderer</gradient>"
+    color: "#95a5a6"
     default: true
     weight: 10

@@ -220,6 +220,16 @@ public class QuestManager {
                 // Add XP through centralized XP service
                 plugin.getXpService().addXp(player, quest.getRewardXp());
 
+                // Add Core Kingdom XP
+                if (Bukkit.getPluginManager().isPluginEnabled("ApexsionsCore")) {
+                    try {
+                        com.apexsions.core.api.ApexsionsCoreAPI coreApi = com.apexsions.core.api.ApexsionsCoreProvider.get();
+                        if (coreApi != null) {
+                            coreApi.addXp(player.getUniqueId(), Math.max(50, quest.getRewardXp() / 2), com.apexsions.core.level.xp.XpSource.BATTLEPASS_QUEST);
+                        }
+                    } catch (Throwable ignored) {}
+                }
+
                 // Add Coins
                 if (quest.getRewardCoins() > 0) {
                     plugin.getCurrencyService().addCurrency(player.getUniqueId(), quest.getRewardCoins());

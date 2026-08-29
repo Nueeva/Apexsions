@@ -159,12 +159,16 @@ public class QuantitySelectMenu extends ShopGui {
 
         if (plugin.getEconomyHook().withdraw(player, totalCost)) {
             player.getInventory().addItem(toAdd);
+            long xpEarned = Math.max(1, (long) (totalCost / 50.0));
+            plugin.getKingdomCoreHook().addXp(player.getUniqueId(), xpEarned);
+
             player.sendMessage(MM.deserialize(plugin.getConfig().getString("messages.prefix", "") +
                     plugin.getConfig().getString("messages.buy-success", "<green>Beli berhasil!</green>")
                             .replace("%amount%", String.valueOf(quantity))
                             .replace("%item%", shopItem.getDisplayName())
                             .replace("%price%", plugin.getEconomyHook().format(totalCost))
-                            .replace("%tax%", plugin.getEconomyHook().format(result.taxAmount()))));
+                            .replace("%tax%", plugin.getEconomyHook().format(result.taxAmount())) +
+                    " <gray>(+<yellow>" + xpEarned + " XP</yellow>)</gray>"));
             player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 0.8f, 1.3f);
             open();
         }
@@ -196,12 +200,16 @@ public class QuantitySelectMenu extends ShopGui {
         plugin.getEconomyHook().deposit(player, payout);
         plugin.getSupplyScannerService().recordSale(shopItem.getMaterial(), actualQuantity);
 
+        long xpEarned = Math.max(1, (long) (payout / 50.0));
+        plugin.getKingdomCoreHook().addXp(player.getUniqueId(), xpEarned);
+
         player.sendMessage(MM.deserialize(plugin.getConfig().getString("messages.prefix", "") +
                 plugin.getConfig().getString("messages.sell-success", "<green>Jual berhasil!</green>")
                         .replace("%amount%", String.valueOf(actualQuantity))
                         .replace("%item%", shopItem.getDisplayName())
                         .replace("%price%", plugin.getEconomyHook().format(payout))
-                        .replace("%tax%", plugin.getEconomyHook().format(result.taxAmount()))));
+                        .replace("%tax%", plugin.getEconomyHook().format(result.taxAmount())) +
+                " <gray>(+<yellow>" + xpEarned + " XP</yellow>)</gray>"));
         player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 0.6f, 1.8f);
         open();
     }

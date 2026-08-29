@@ -124,8 +124,16 @@ public class LevelManager {
         if (player != null && player.isOnline()) {
             // Visual / Audio feedback
             player.playSound(player.getLocation(), Sound.UI_TOAST_CHALLENGE_COMPLETE, 1.0f, 1.2f);
+            player.playSound(player.getLocation(), Sound.BLOCK_BEACON_ACTIVATE, 0.8f, 1.5f);
+            player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1.0f, 1.0f);
 
-            Component titleText = miniMessage.deserialize("<gold><bold>⚡ LEVEL UP! ⚡</bold></gold>");
+            // Particle Halo & Burst
+            org.bukkit.Location pLoc = player.getLocation().clone();
+            pLoc.getWorld().spawnParticle(org.bukkit.Particle.TOTEM_OF_UNDYING, pLoc.clone().add(0, 1.2, 0), 40, 0.5, 0.8, 0.5, 0.3);
+            pLoc.getWorld().spawnParticle(org.bukkit.Particle.END_ROD, pLoc.clone().add(0, 2.0, 0), 20, 0.4, 0.2, 0.4, 0.05);
+            pLoc.getWorld().spawnParticle(org.bukkit.Particle.PORTAL, pLoc.clone().add(0, 1.0, 0), 30, 0.6, 0.6, 0.6, 0.1);
+
+            Component titleText = miniMessage.deserialize("<gradient:#f1c40f:#e67e22><bold>✦ LEVEL UP! ✦</bold></gradient>");
             Component subtitleText = miniMessage.deserialize("<yellow>Level <white>" + newLevel + "</white> <gray>•</gray> <gold>" + newTitle + "</gold></yellow>");
 
             Title title = Title.title(titleText, subtitleText, Title.Times.times(Duration.ofMillis(300), Duration.ofMillis(2500), Duration.ofMillis(800)));
@@ -138,7 +146,15 @@ public class LevelManager {
             player.sendMessage(miniMessage.deserialize("<gradient:#ffe900:#f39c12><bold>═══════════════════════════════════════════════</bold></gradient>"));
         }
 
-        // Milestone broadcast check
+        // Server milestone broadcast for major tiers
+        if (newLevel % 10 == 0 || newLevel == 25 || newLevel == 75) {
+            String kName = region != null ? region.getDisplayName() : "Apexsions";
+            String pName = player != null ? player.getName() : data.getUsername();
+            Component milestoneMsg = miniMessage.deserialize("<gradient:#f39c12:#f1c40f><bold>👑 APEXSIONS MILESTONE 👑</bold></gradient> <yellow>Pemain <white>" + pName + "</white> dari kerajaan <gold>" + kName + "</gold> baru saja mencapai <gold><bold>Level " + newLevel + " (" + newTitle + ")</bold></gold>!</yellow>");
+            Bukkit.broadcast(milestoneMsg);
+        }
+
+        // Milestone reward check
         if (plugin.getRewardManager() != null) {
             plugin.getRewardManager().getReward(newLevel).ifPresent(reward -> {
                 if (reward.isMilestone() && reward.getBroadcast() != null && !reward.getBroadcast().isEmpty() && player != null) {

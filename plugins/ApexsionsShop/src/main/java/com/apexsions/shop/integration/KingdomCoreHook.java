@@ -60,4 +60,15 @@ public class KingdomCoreHook {
     public boolean isCoreAvailable() {
         return coreAvailable;
     }
+
+    public void addXp(UUID uuid, long amount) {
+        if (coreAvailable && amount > 0) {
+            try {
+                ApexsionsCoreAPI api = ApexsionsCoreProvider.get();
+                if (api != null) {
+                    api.addXp(uuid, amount, com.apexsions.core.level.xp.XpSource.SHOP_TRANSACTION);
+                }
+            } catch (Throwable ignored) {}
+        }
+    }
 }
