@@ -30,6 +30,13 @@ public class VaultHook {
         return available && economy != null;
     }
 
+    public double getBalance(Player player) {
+        if (isAvailable() && player != null) {
+            return economy.getBalance(player);
+        }
+        return 0.0;
+    }
+
     public void deposit(Player player, double amount) {
         if (isAvailable() && player != null) {
             economy.depositPlayer(player, amount);

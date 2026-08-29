@@ -15,6 +15,12 @@ public class PlayerData {
     private int level;
     private long xp;
     private UUID regionId;
+    private String activeTitle;
+    private String activeAura;
+    private String activeTrail;
+    private String activeKillEffect;
+    private final Set<String> unlockedTitles = ConcurrentHashMap.newKeySet();
+    private final Set<String> unlockedCosmetics = ConcurrentHashMap.newKeySet();
     private final Set<Integer> claimedRewards = ConcurrentHashMap.newKeySet();
     private final Instant createdAt;
     private Instant updatedAt;
@@ -80,6 +86,72 @@ public class PlayerData {
 
     public boolean hasRegion() {
         return regionId != null;
+    }
+
+    public String getActiveTitle() {
+        return activeTitle;
+    }
+
+    public void setActiveTitle(String activeTitle) {
+        this.activeTitle = activeTitle;
+        this.updatedAt = Instant.now();
+    }
+
+    public String getActiveAura() {
+        return activeAura;
+    }
+
+    public void setActiveAura(String activeAura) {
+        this.activeAura = activeAura;
+        this.updatedAt = Instant.now();
+    }
+
+    public String getActiveTrail() {
+        return activeTrail;
+    }
+
+    public void setActiveTrail(String activeTrail) {
+        this.activeTrail = activeTrail;
+        this.updatedAt = Instant.now();
+    }
+
+    public String getActiveKillEffect() {
+        return activeKillEffect;
+    }
+
+    public void setActiveKillEffect(String activeKillEffect) {
+        this.activeKillEffect = activeKillEffect;
+        this.updatedAt = Instant.now();
+    }
+
+    public boolean hasUnlockedTitle(String titleId) {
+        return titleId != null && unlockedTitles.contains(titleId.toLowerCase(Locale.ROOT));
+    }
+
+    public void unlockTitle(String titleId) {
+        if (titleId != null) {
+            unlockedTitles.add(titleId.toLowerCase(Locale.ROOT));
+            this.updatedAt = Instant.now();
+        }
+    }
+
+    public Set<String> getUnlockedTitles() {
+        return Collections.unmodifiableSet(unlockedTitles);
+    }
+
+    public boolean hasUnlockedCosmetic(String cosmeticId) {
+        return cosmeticId != null && unlockedCosmetics.contains(cosmeticId.toLowerCase(Locale.ROOT));
+    }
+
+    public void unlockCosmetic(String cosmeticId) {
+        if (cosmeticId != null) {
+            unlockedCosmetics.add(cosmeticId.toLowerCase(Locale.ROOT));
+            this.updatedAt = Instant.now();
+        }
+    }
+
+    public Set<String> getUnlockedCosmetics() {
+        return Collections.unmodifiableSet(unlockedCosmetics);
     }
 
     public boolean isRewardClaimed(int level) {

@@ -113,9 +113,31 @@ commands:
   aadmin:
     description: Open the Centralized Master Admin Hub for all Apexsions plugins.
     permission: apexsions.admin.gui
-    usage: /aadmin
+  titles:
+    aliases:
+      - tags
+      - title
+      - tag
+    description: Open the Title Vault GUI to equip prestige titles and honorific badges.
+    permission: apexsionscore.command.titles
+    usage: /titles
+  cosmetics:
+    aliases:
+      - aura
+      - auras
+      - trail
+      - trails
+    description: Open the Particle Cosmetics GUI for Head Auras, Footstep Trails, and Kill Effects.
+    permission: apexsionscore.command.cosmetics
+    usage: /cosmetics
 
 permissions:
+  apexsionscore.command.titles:
+    description: Allows accessing the Title Vault GUI.
+    default: true
+  apexsionscore.command.cosmetics:
+    description: Allows accessing the Particle Cosmetics GUI.
+    default: true
   apexsions.admin.gui:
     description: Allows accessing the Centralized Master Admin Hub (/admingui).
     default: op

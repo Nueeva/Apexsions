@@ -233,6 +233,25 @@ public class PlaceholderApiHook extends PlaceholderExpansion {
                 }
                 return "0";
 
+            case "rank_animated":
+            case "animated_rank":
+                if (offlinePlayer.isOnline() && offlinePlayer.getPlayer() != null && plugin.getRankAnimationManager() != null) {
+                    return plugin.getRankAnimationManager().getAnimatedRankPrefix(offlinePlayer.getPlayer());
+                }
+                return "<gray>[Wanderer]</gray>";
+
+            case "active_title":
+                return data.getActiveTitle() != null ? data.getActiveTitle() : "";
+
+            case "cosmetic_aura":
+                return data.getActiveAura() != null ? data.getActiveAura() : "None";
+
+            case "cosmetic_trail":
+                return data.getActiveTrail() != null ? data.getActiveTrail() : "None";
+
+            case "cosmetic_kill":
+                return data.getActiveKillEffect() != null ? data.getActiveKillEffect() : "None";
+
             default:
                 return null;
         }

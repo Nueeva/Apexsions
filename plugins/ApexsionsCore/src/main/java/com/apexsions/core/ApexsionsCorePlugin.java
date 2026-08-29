@@ -98,6 +98,11 @@ public class ApexsionsCorePlugin extends JavaPlugin {
     private CitizensHook citizensHook;
     private TerritoryListener territoryListener;
 
+    // Rank, Titles & Cosmetics
+    private com.apexsions.core.rank.RankAnimationManager rankAnimationManager;
+    private com.apexsions.core.title.TitleManager titleManager;
+    private com.apexsions.core.cosmetics.CosmeticsManager cosmeticsManager;
+
     // Public API
     private ApexsionsCoreAPI api;
 
@@ -172,12 +177,23 @@ public class ApexsionsCorePlugin extends JavaPlugin {
             this.xpSourceRegistry = new XpSourceRegistry(this);
             this.xpSourceRegistry.registerAll();
 
-            // 6. Listeners
+            // 7. Rank Animation, Titles & Particle Cosmetics Engine
+            this.rankAnimationManager = new com.apexsions.core.rank.RankAnimationManager(this);
+            this.rankAnimationManager.start();
+
+            this.titleManager = new com.apexsions.core.title.TitleManager(this);
+
+            this.cosmeticsManager = new com.apexsions.core.cosmetics.CosmeticsManager(this);
+            this.cosmeticsManager.start();
+            Bukkit.getPluginManager().registerEvents(this.cosmeticsManager, this);
+            Bukkit.getPluginManager().registerEvents(new com.apexsions.core.cosmetics.gui.CosmeticsGUIListener(), this);
+
+            // 8. Listeners
             Bukkit.getPluginManager().registerEvents(new PlayerListener(this), this);
             this.territoryListener = new TerritoryListener(this);
             Bukkit.getPluginManager().registerEvents(territoryListener, this);
 
-            // 7. Chat System (Only register fallback if ApexsionsChat is not installed)
+            // 9. Chat System (Only register fallback if ApexsionsChat is not installed)
             if (this.configManager.isChatEnabled() && !Bukkit.getPluginManager().isPluginEnabled("ApexsionsChat")) {
                 this.chatFormatter = new ChatFormatter(this);
                 Bukkit.getPluginManager().registerEvents(new ChatListener(this, chatFormatter), this);
@@ -227,6 +243,14 @@ public class ApexsionsCorePlugin extends JavaPlugin {
 
         // Unregister Public API
         ApexsionsCoreProvider.unregister();
+
+        // Stop Cosmetics and Rank Animation
+        if (rankAnimationManager != null) {
+            rankAnimationManager.stop();
+        }
+        if (cosmeticsManager != null) {
+            cosmeticsManager.stop();
+        }
 
         // Flush all cached player profiles safely to database
         if (playerDataService != null) {
@@ -335,6 +359,22 @@ public class ApexsionsCorePlugin extends JavaPlugin {
             aAdminCmd.setExecutor(hubHandler);
             aAdminCmd.setTabCompleter(hubHandler);
         }
+
+        // /titles (aliases: /tags, /title, /tag)
+        com.apexsions.core.command.TitlesCommand titlesHandler = new com.apexsions.core.command.TitlesCommand(this);
+        PluginCommand titlesCmd = getCommand("titles");
+        if (titlesCmd != null) {
+            titlesCmd.setExecutor(titlesHandler);
+            titlesCmd.setTabCompleter(titlesHandler);
+        }
+
+        // /cosmetics (aliases: /aura, /auras, /trail, /trails)
+        com.apexsions.core.command.CosmeticsCommand cosmeticsHandler = new com.apexsions.core.command.CosmeticsCommand(this);
+        PluginCommand cosmeticsCmd = getCommand("cosmetics");
+        if (cosmeticsCmd != null) {
+            cosmeticsCmd.setExecutor(cosmeticsHandler);
+            cosmeticsCmd.setTabCompleter(cosmeticsHandler);
+        }
     }
 
     public static ApexsionsCorePlugin getInstance() { return instance; }
@@ -358,6 +398,9 @@ public class ApexsionsCorePlugin extends JavaPlugin {
     public com.apexsions.core.warp.WarpManager getWarpManager() { return warpManager; }
     public com.apexsions.core.admin.AdminChatInputManager getAdminChatInputManager() { return adminChatInputManager; }
     public com.apexsions.core.admin.AdminHubManager getAdminHubManager() { return adminHubManager; }
+    public com.apexsions.core.rank.RankAnimationManager getRankAnimationManager() { return rankAnimationManager; }
+    public com.apexsions.core.title.TitleManager getTitleManager() { return titleManager; }
+    public com.apexsions.core.cosmetics.CosmeticsManager getCosmeticsManager() { return cosmeticsManager; }
     public LevelRewardsGUI getLevelRewardsGUI() { return levelRewardsGUI; }
     public XpGuideGUI getXpGuideGUI() { return xpGuideGUI; }
     public LevelFormula getLevelFormula() { return levelFormula; }

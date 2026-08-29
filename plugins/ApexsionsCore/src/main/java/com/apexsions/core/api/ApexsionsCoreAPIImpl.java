@@ -123,4 +123,60 @@ public class ApexsionsCoreAPIImpl implements ApexsionsCoreAPI {
     public void registerAdminModule(@NotNull com.apexsions.core.admin.AdminModule module) {
         plugin.getAdminHubManager().registerModule(module);
     }
+
+    @Override
+    public @NotNull PlayerChatProfile getPlayerChatProfile(@NotNull UUID uuid) {
+        PlayerData data = plugin.getPlayerDataService().getCached(uuid).orElse(null);
+        org.bukkit.entity.Player player = org.bukkit.Bukkit.getPlayer(uuid);
+        String pName = player != null ? player.getName() : (data != null ? data.getUsername() : "Player");
+
+        int level = data != null ? data.getLevel() : 1;
+        long xp = data != null ? data.getXp() : 0;
+        long reqXp = plugin.getLevelFormula().getRequiredXpForNextLevel(level);
+        String levelTitle = plugin.getLevelManager().getLevelTitle(uuid);
+        String activeTitle = data != null ? data.getActiveTitle() : null;
+
+        String rank = (player != null && plugin.getLuckPermsHook() != null)
+                ? plugin.getLuckPermsHook().getPlayerRank(player)
+                : "Wanderer";
+
+        String kingdomKey = "NONE";
+        String kingdomDisplay = "Belum Memilih";
+        if (data != null && data.getRegionId() != null) {
+            Region r = plugin.getRegionManager().getRegion(data.getRegionId()).orElse(null);
+            if (r != null) {
+                kingdomKey = r.getKey();
+                kingdomDisplay = r.getDisplayName();
+            }
+        }
+
+        String kingName = plugin.getConfigManager().getKingdomKing(kingdomKey);
+        boolean isMonarch = kingName != null && pName.equalsIgnoreCase(kingName);
+
+        double balance = (player != null && plugin.getVaultHook() != null && plugin.getVaultHook().hasEconomy())
+                ? plugin.getVaultHook().getBalance(player)
+                : 0.0;
+
+        int ping = player != null ? player.getPing() : 0;
+        int hp = player != null ? (int) Math.ceil(player.getHealth()) : 20;
+        int maxHp = player != null ? (int) Math.ceil(player.getMaxHealth()) : 20;
+
+        return new PlayerChatProfile(
+                uuid,
+                pName,
+                level,
+                xp,
+                reqXp,
+                levelTitle,
+                activeTitle,
+                rank,
+                kingdomKey,
+                kingdomDisplay,
+                isMonarch,
+                balance,
+                ping,
+                hp,
+                maxHp
+        );
+    }
 }

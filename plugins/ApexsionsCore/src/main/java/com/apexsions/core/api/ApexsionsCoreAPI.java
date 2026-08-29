@@ -118,4 +118,10 @@ public interface ApexsionsCoreAPI {
      * Registers a custom module card into the Central Master Admin Hub (/admingui).
      */
     void registerAdminModule(@NotNull com.apexsions.core.admin.AdminModule module);
+
+    /**
+     * Retrieves clean decoupled PlayerChatProfile DTO for chat formatting, hover tooltips, and tablists.
+     */
+    @NotNull
+    PlayerChatProfile getPlayerChatProfile(@NotNull UUID uuid);
 }

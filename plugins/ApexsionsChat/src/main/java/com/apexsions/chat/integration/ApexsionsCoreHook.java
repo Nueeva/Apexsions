@@ -77,4 +77,13 @@ public class ApexsionsCoreHook {
             ApexsionsCoreProvider.get().addXp(uuid, amount, XpSource.CHAT_GAME_WIN);
         } catch (Throwable ignored) {}
     }
+
+    public com.apexsions.core.api.PlayerChatProfile getPlayerChatProfile(UUID uuid) {
+        if (!isAvailable()) return null;
+        try {
+            return ApexsionsCoreProvider.get().getPlayerChatProfile(uuid);
+        } catch (Throwable t) {
+            return null;
+        }
+    }
 }

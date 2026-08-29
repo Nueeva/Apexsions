@@ -2,7 +2,10 @@ package com.apexsions.chat.chat;
 
 import com.apexsions.chat.ApexsionsChatPlugin;
 import com.apexsions.chat.channel.ChatChannel;
+import com.apexsions.core.api.PlayerChatProfile;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.event.ClickEvent;
+import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import org.bukkit.Material;
@@ -27,17 +30,22 @@ public class ChatFormatter {
     public Component format(Player player, ChatChannel channel, String rawMessage) {
         UUID uuid = player.getUniqueId();
 
-        // 1. Gather domain metadata from ApexsionsCore & LuckPerms
-        int level = plugin.getApexsionsCoreHook().getPlayerLevel(uuid);
-        String title = plugin.getApexsionsCoreHook().getPlayerTitle(uuid);
-        String rank = plugin.getLuckPermsHook().getPlayerRank(player);
-        String regionKey = plugin.getApexsionsCoreHook().getPlayerRegionKey(uuid);
+        // 1. Gather clean profile DTO from Core API
+        PlayerChatProfile profile = plugin.getApexsionsCoreHook().getPlayerChatProfile(uuid);
+
+        String title = profile != null && profile.activeTitle() != null ? profile.activeTitle() : (profile != null ? profile.levelTitle() : "Citizen");
+        String rank = profile != null ? profile.rank() : plugin.getLuckPermsHook().getPlayerRank(player);
+        int level = profile != null ? profile.level() : 1;
+        String regionKey = profile != null ? profile.kingdomKey() : "NONE";
         String kingdomTag = getKingdomTag(regionKey);
 
-        // 2. Build safe message component with mentions and item showcase
+        // 2. Build interactive player name component with rich ID-Card hover tooltip and click-to-profile action
+        Component playerComponent = buildInteractivePlayerComponent(player, profile);
+
+        // 3. Build safe message component with mentions and item showcase
         Component messageComponent = buildMessageComponent(player, rawMessage);
 
-        // 3. Format complete line using TagResolvers to prevent syntax leaking and tag breakage
+        // 4. Format complete line using TagResolvers
         String template = channel.getFormat()
                 .replace("{channel_prefix}", "<channel_prefix>")
                 .replace("{channel_name}", "<channel_name>")
@@ -56,9 +64,50 @@ public class ChatFormatter {
                 Placeholder.parsed("title", title),
                 Placeholder.parsed("rank", rank),
                 Placeholder.parsed("kingdom", kingdomTag),
-                Placeholder.unparsed("player", player.getName()),
+                Placeholder.component("player", playerComponent),
                 Placeholder.component("message", messageComponent)
         );
+    }
+
+    private Component buildInteractivePlayerComponent(Player player, PlayerChatProfile profile) {
+        String pName = profile != null ? profile.playerName() : player.getName();
+        String title = profile != null && profile.activeTitle() != null ? profile.activeTitle() : (profile != null ? profile.levelTitle() : "Wanderer");
+        String rank = profile != null ? profile.rank() : "Wanderer";
+        int level = profile != null ? profile.level() : 1;
+        long xp = profile != null ? profile.xp() : 0;
+        long reqXp = profile != null ? profile.requiredNextXp() : 1000;
+        double balance = profile != null ? profile.balanceRupiah() : 0.0;
+        int hp = profile != null ? profile.health() : (int) player.getHealth();
+        int maxHp = profile != null ? profile.maxHealth() : (int) player.getMaxHealth();
+        int ping = profile != null ? profile.ping() : player.getPing();
+        String kingdomDisplay = profile != null ? profile.kingdomDisplayName() : "Belum Memilih";
+
+        String rankBadge = switch (rank.toLowerCase()) {
+            case "ancestor" -> "<gradient:#8B0000:#FF0000><bold>👑 ANCESTOR</bold></gradient>";
+            case "warden" -> "<gradient:#1e3c72:#2a5298><bold>🛡 WARDEN</bold></gradient>";
+            case "herald" -> "<gradient:#f857a6:#ff5858><bold>📜 HERALD</bold></gradient>";
+            case "sions" -> "<gradient:#00FFFF:#FFD700><bold>✦ SIONS ✦</bold></gradient>";
+            case "emperor" -> "<gradient:#e52d27:#b31217><bold>⚔ EMPEROR</bold></gradient>";
+            case "sovereign" -> "<gradient:#f39c12:#f1c40f><bold>⚜ SOVEREIGN</bold></gradient>";
+            case "archon" -> "<gradient:#00c6ff:#0072ff><bold>💎 ARCHON</bold></gradient>";
+            case "ascendant" -> "<gradient:#11998e:#38ef7d><bold>☘ ASCENDANT</bold></gradient>";
+            default -> "<gray>" + rank + "</gray>";
+        };
+
+        String hoverCard =
+                "<gradient:#f1c40f:#e67e22><bold>👑 KARTU IDENTITAS KARAKTER 👑</bold></gradient>\n" +
+                "<gray>Pemain:</gray> <white><bold>" + pName + "</bold></white>\n" +
+                "<gray>Gelar:</gray> " + title + "\n" +
+                "<gray>Rank:</gray> " + rankBadge + "\n" +
+                "<gray>Kerajaan:</gray> <gold>" + kingdomDisplay + "</gold>" + (profile != null && profile.isMonarch() ? " <yellow><bold>[RAJA]</bold></yellow>" : "") + "\n" +
+                "<gray>Level Karakter:</gray> <yellow>Lv. " + level + "</yellow> <dark_gray>(" + xp + " / " + (reqXp == Long.MAX_VALUE ? "MAX" : reqXp) + " XP)</dark_gray>\n" +
+                "<gray>Saldo Rupiah:</gray> <green><bold>Rp " + String.format("%,.0f", balance) + "</bold></green>\n" +
+                "<gray>Status Darah:</gray> <red>" + hp + "/" + maxHp + " ❤</red> <gray>• Ping:</gray> <green>" + ping + "ms</green>\n\n" +
+                "<yellow>▶ Klik untuk membuka profil kerajaan pemain!</yellow>";
+
+        return miniMessage.deserialize("<white>" + player.getName() + "</white>")
+                .hoverEvent(HoverEvent.showText(miniMessage.deserialize(hoverCard)))
+                .clickEvent(ClickEvent.runCommand("/kingdom profile " + player.getName()));
     }
 
     public Component buildMessageComponent(Player player, String rawMessage) {
