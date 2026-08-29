@@ -11,11 +11,14 @@ Repository dikerjakan bersama oleh beberapa developer. Oleh karena itu, **SEBELU
    - Cek perbedaan dengan `git log HEAD..origin/main --oneline`.
 2. **Otomatis Masukkan / Sinkronkan Perubahan Baru**:
    - Jika terdapat perubahan baru di remote (`origin/main`) dan working tree lokal bersih, lakukan `git pull --ff-only origin main` (atau sinkronkan dengan aman).
-   - Segera terapkan/update ke workspace lokal dan salin JAR terbaru ke server jika relevan.
+   - Segera terapkan/update ke workspace lokal di `C:\Apex Plugin`.
    - Jangan pernah mulai mengubah kode berdasarkan salinan lama (*stale branch*).
 3. **Pemeriksaan Ulang Sebelum Push (*Pre-Push Safety*)**:
    - Sebelum commit/push, selalu lakukan `git fetch origin` kembali untuk memastikan tidak ada commit baru yang masuk saat agent sedang bekerja (*race condition*).
 4. **Larangan Destruktif**: Dilarang menggunakan `git reset --hard`, `git push --force`, atau `git clean -fd` tanpa alasan valid yang diverifikasi.
+5. **Isolasi Batas Workspace Ketat (*Strict Workspace Boundary*)**:
+   - **DILARANG KERAS** mengakses, menyalin, membaca, atau memodifikasi direktori di luar `C:\Apex Plugin`.
+   - Seluruh file build, binary JAR, dan konfigurasi hanya dikelola di dalam `C:\Apex Plugin` (seperti `build/libs/` dan `plugins/`). Tidak boleh menyentuh folder server eksternal atau folder lain di komputer ini.
 
 ---
 
