@@ -188,45 +188,8 @@ public class RegionSelectionGUI implements Listener {
         }
 
         String regionKey = slotRegionMap.get(slot);
-        Optional<Region> regionOpt = plugin.getRegionManager().getRegion(regionKey);
-        if (regionOpt.isEmpty()) {
-            return;
-        }
-
-        Region region = regionOpt.get();
-        Optional<PlayerData> dataOpt = plugin.getPlayerDataService().getCached(player.getUniqueId());
-        if (dataOpt.isEmpty()) {
-            player.sendMessage(miniMessage.deserialize("<red>Data profilmu sedang dimuat. Silakan coba sesaat lagi.</red>"));
-            return;
-        }
-
-        PlayerData data = dataOpt.get();
-        if (data.hasRegion()) {
-            player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
-            player.sendMessage(miniMessage.deserialize("<red>Kamu sudah bersumpah setia pada suatu kerajaan! Afiliasi kerajaan tidak dapat diubah sembarangan.</red>"));
-            player.closeInventory();
-            return;
-        }
-
-        KingdomRegionChooseEvent chooseEvent = new KingdomRegionChooseEvent(player, region);
-        Bukkit.getPluginManager().callEvent(chooseEvent);
-        if (chooseEvent.isCancelled()) {
-            return;
-        }
-
-        // Save selected region
-        data.setRegionId(region.getId());
-        plugin.getPlayerDataService().save(data);
-
-        player.closeInventory();
-        player.playSound(player.getLocation(), Sound.UI_TOAST_CHALLENGE_COMPLETE, 1.0f, 1.0f);
-        player.sendMessage(miniMessage.deserialize("<gold><bold>════════════════════════════════════════════════</bold></gold>"));
-        player.sendMessage(miniMessage.deserialize("<green><bold>SUMPAH SETIA DITERIMA!</bold> Kamu sekarang resmi menjadi warga <yellow>" + region.getDisplayName() + "</yellow><green>!</green></green>"));
-        player.sendMessage(miniMessage.deserialize("<gray>Petualanganmu dimulai. Melakukan teleportasi ke ibukota...</gray>"));
-        player.sendMessage(miniMessage.deserialize("<gold><bold>════════════════════════════════════════════════</bold></gold>"));
-
-        // Teleport player to their new kingdom spawn
-        plugin.getRegionTeleportService().teleport(player, region);
+        player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.7f, 1.2f);
+        new KingdomInfoGUI(plugin).open(player, regionKey);
     }
 
     @EventHandler

@@ -98,20 +98,61 @@ public class KingdomCommand implements CommandExecutor, TabCompleter {
                 plugin.getKingdomRtpService().executeRtp(player);
                 break;
 
+            case "setking":
+                handleSetKing(sender, args);
+                break;
+
             default:
-                player.sendMessage(miniMessage.deserialize("<gold><bold>Apexsions Kingdom Commands:</bold></gold>"));
-                player.sendMessage(miniMessage.deserialize("<yellow>/kingdom</yellow> <gray>- Teleport to your kingdom spawn</gray>"));
-                player.sendMessage(miniMessage.deserialize("<yellow>/kingdom rtp</yellow> <gray>- Random teleport strictly inside your kingdom</gray>"));
-                player.sendMessage(miniMessage.deserialize("<yellow>/kingdom choose</yellow> <gray>- Open kingdom selection GUI</gray>"));
-                player.sendMessage(miniMessage.deserialize("<yellow>/kingdom info</yellow> <gray>- Open your interactive Kingdom Profile & Level GUI</gray>"));
-                player.sendMessage(miniMessage.deserialize("<yellow>/kingdom top</yellow> <gray>- View the Hall of Fame & Kingdom Leaderboards</gray>"));
-                player.sendMessage(miniMessage.deserialize("<yellow>/kingdom rewards</yellow> <gray>- View & claim Level 1–100 progression rewards</gray>"));
-                player.sendMessage(miniMessage.deserialize("<yellow>/kingdom xp</yellow> <gray>- Open 13 XP gameplay sources and guide GUI</gray>"));
-                player.sendMessage(miniMessage.deserialize("<yellow>/level</yellow> <gray>- Quick shortcut to your character profile & level progress</gray>"));
+                sender.sendMessage(miniMessage.deserialize("<gold><bold>Apexsions Kingdom Commands:</bold></gold>"));
+                sender.sendMessage(miniMessage.deserialize("<yellow>/kingdom</yellow> <gray>- Teleport to your kingdom spawn</gray>"));
+                sender.sendMessage(miniMessage.deserialize("<yellow>/kingdom rtp</yellow> <gray>- Random teleport strictly inside your kingdom</gray>"));
+                sender.sendMessage(miniMessage.deserialize("<yellow>/kingdom choose</yellow> <gray>- Open kingdom selection GUI</gray>"));
+                sender.sendMessage(miniMessage.deserialize("<yellow>/kingdom info</yellow> <gray>- Open your interactive Kingdom Profile & Level GUI</gray>"));
+                sender.sendMessage(miniMessage.deserialize("<yellow>/kingdom top</yellow> <gray>- View the Hall of Fame & Kingdom Leaderboards</gray>"));
+                sender.sendMessage(miniMessage.deserialize("<yellow>/kingdom rewards</yellow> <gray>- View & claim Level 1–100 progression rewards</gray>"));
+                sender.sendMessage(miniMessage.deserialize("<yellow>/kingdom xp</yellow> <gray>- Open 13 XP gameplay sources and guide GUI</gray>"));
+                sender.sendMessage(miniMessage.deserialize("<yellow>/level</yellow> <gray>- Quick shortcut to your character profile & level progress</gray>"));
+                if (sender.hasPermission("apexsionscore.admin")) {
+                    sender.sendMessage(miniMessage.deserialize("<gold>/kingdom setking <kingdom> <player></gold> <gray>- Angkat Raja baru kerajaan</gray>"));
+                }
                 break;
         }
 
         return true;
+    }
+
+    private void handleSetKing(CommandSender sender, String[] args) {
+        if (!sender.hasPermission("apexsionscore.admin") && !sender.isOp()) {
+            sender.sendMessage(miniMessage.deserialize("<red>Anda tidak memiliki izin untuk mengangkat Raja kerajaan!</red>"));
+            return;
+        }
+
+        if (args.length < 3) {
+            sender.sendMessage(miniMessage.deserialize("<red>Penggunaan: <yellow>/kingdom setking <kingdom> <player></yellow></red>"));
+            return;
+        }
+
+        String kingdomInput = args[1].toUpperCase();
+        Optional<Region> regionOpt = plugin.getRegionManager().getRegion(kingdomInput);
+        if (regionOpt.isEmpty()) {
+            sender.sendMessage(miniMessage.deserialize("<red>Kerajaan <yellow>" + kingdomInput + "</yellow> tidak ditemukan! Pilih: ZENITHAR, SOLTERRA, atau SYLVAMOOR.</red>"));
+            return;
+        }
+
+        String targetName = args[2];
+        plugin.getConfigManager().setKingdomKing(kingdomInput, targetName);
+
+        sender.sendMessage(miniMessage.deserialize("<green>Berhasil mengangkat <yellow><bold>" + targetName + "</bold></yellow> sebagai Raja resmi <gold>" + regionOpt.get().getDisplayName() + "</gold>!</green>"));
+
+        // Proclamation
+        org.bukkit.Bukkit.broadcast(miniMessage.deserialize("<dark_gray>════════════════════════════════════════════════</dark_gray>\n" +
+                "<gradient:#f1c40f:#e67e22><bold>👑 PROKLAMASI PENOBATAN RAJA 👑</bold></gradient>\n" +
+                "<white><bold>" + targetName + "</bold></white> <gray>telah resmi dinobatkan sebagai Raja Tertinggi </gray>" + regionOpt.get().getDisplayName() + "<gray>!</gray>\n" +
+                "<dark_gray>════════════════════════════════════════════════</dark_gray>"));
+
+        for (Player p : org.bukkit.Bukkit.getOnlinePlayers()) {
+            p.playSound(p.getLocation(), org.bukkit.Sound.UI_TOAST_CHALLENGE_COMPLETE, 1.0f, 1.0f);
+        }
     }
 
     private void handleKingdomTeleport(Player player) {
@@ -176,7 +217,10 @@ public class KingdomCommand implements CommandExecutor, TabCompleter {
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (args.length == 1) {
-            List<String> list = Arrays.asList("choose", "info", "top", "profile", "rewards", "claim", "xp", "guide", "level", "rtp", "wild", "wilderness");
+            List<String> list = new ArrayList<>(Arrays.asList("choose", "info", "top", "profile", "rewards", "claim", "xp", "guide", "level", "rtp", "wild", "wilderness"));
+            if (sender.hasPermission("apexsionscore.admin")) {
+                list.add("setking");
+            }
             List<String> result = new ArrayList<>();
             for (String s : list) {
                 if (s.toLowerCase().startsWith(args[0].toLowerCase())) {
@@ -184,6 +228,10 @@ public class KingdomCommand implements CommandExecutor, TabCompleter {
                 }
             }
             return result;
+        } else if (args.length == 2 && args[0].equalsIgnoreCase("setking")) {
+            return Arrays.asList("ZENITHAR", "SOLTERRA", "SYLVAMOOR");
+        } else if (args.length == 3 && args[0].equalsIgnoreCase("setking")) {
+            return null; // suggest online players
         }
         return Collections.emptyList();
     }

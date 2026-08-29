@@ -40,16 +40,24 @@ items:
   ender_pearl:
     material: "ENDER_PEARL"
     buy-price: 90.0
+    sell-price: 25.0
+    buy-enabled: false
     display-name: "<dark_aqua>Ender Pearl</dark_aqua>"
   blaze_rod:
     material: "BLAZE_ROD"
     buy-price: 130.0
+    sell-price: 35.0
+    buy-enabled: false
     display-name: "<gold>Blaze Rod</gold>"
   ghast_tear:
     material: "GHAST_TEAR"
     buy-price: 320.0
+    sell-price: 80.0
+    buy-enabled: false
     display-name: "<white>Ghast Tear</white>"
   shulker_shell:
     material: "SHULKER_SHELL"
     buy-price: 550.0
+    sell-price: 150.0
+    buy-enabled: false
     display-name: "<light_purple>Shulker Shell</light_purple>"

@@ -76,7 +76,11 @@ public class CategoryShopMenu extends ShopGui {
 
             List<String> lore = new ArrayList<>();
             lore.add("<dark_gray>────────────────────────</dark_gray>");
-            lore.add("<green>Harga Beli: <gold>" + plugin.getEconomyHook().format(buy1.finalTotalPrice()) + "</gold> <gray>(64x: " + plugin.getEconomyHook().format(buy64.finalTotalPrice()) + ")</gray></green>");
+            if (item.isBuyEnabled()) {
+                lore.add("<green>Harga Beli: <gold>" + plugin.getEconomyHook().format(buy1.finalTotalPrice()) + "</gold> <gray>(64x: " + plugin.getEconomyHook().format(buy64.finalTotalPrice()) + ")</gray></green>");
+            } else {
+                lore.add("<red>Harga Beli: <gray>[PEMBELIAN DITUTUP]</gray></red>");
+            }
             lore.add("<red>Harga Jual: <gold>" + plugin.getEconomyHook().format(sell1.finalTotalPrice()) + "</gold> <gray>(64x: " + plugin.getEconomyHook().format(sell64.finalTotalPrice()) + ")</gray></red>");
             lore.add("<dark_gray>────────────────────────</dark_gray>");
             lore.add("<gray>Di Tas Kamu: <yellow>" + playerHas + " butir</yellow></gray>");
@@ -85,11 +89,14 @@ public class CategoryShopMenu extends ShopGui {
             if (buy1.weatherMultiplier() != 1.0 || buy1.kingdomMultiplier() != 1.0 || sell1.weatherMultiplier() != 1.0) {
                 lore.add("<aqua>⚡ Pengaruh Pasar Dinamis Aktif</aqua>");
             }
+            if (!item.isBuyEnabled()) {
+                lore.add("<yellow><bold>⚠ HANYA BISA DIJUAL (SELL ONLY)</bold></yellow>");
+            }
             if (plugin.getConfig().getBoolean("tax.show-tax-in-lore", true)) {
                 lore.add("<dark_gray>Termasuk Pajak Kerajaan (" + String.format("%.1f", buy1.taxPercent()) + "%)</dark_gray>");
             }
             lore.add(" ");
-            lore.add("<yellow>Sentuh / Klik untuk Beli / Jual ▶</yellow>");
+            lore.add(item.isBuyEnabled() ? "<yellow>Sentuh / Klik untuk Beli / Jual ▶</yellow>" : "<yellow>Sentuh / Klik untuk Jual Item ▶</yellow>");
 
             ItemStack displayItem = new ShopItemBuilder(item.getMaterial())
                     .name(item.getDisplayName())

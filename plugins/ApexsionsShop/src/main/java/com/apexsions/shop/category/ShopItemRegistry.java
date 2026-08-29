@@ -70,10 +70,12 @@ public class ShopItemRegistry {
                     continue;
                 }
 
-                double buyPrice = sec.getDouble("buy-price", 20.0);
+                boolean buyEnabled = sec.getBoolean("buy-enabled", sec.getDouble("buy-price", 1.0) > 0);
+                double buyPrice = Math.max(1.0, sec.getDouble("buy-price", 20.0));
+                double sellPrice = sec.getDouble("sell-price", buyPrice * 0.20);
                 String displayName = sec.getString("display-name", "<white>" + mat.name() + "</white>");
 
-                ShopItem shopItem = new ShopItem(key.toLowerCase(), mat, category, buyPrice, displayName);
+                ShopItem shopItem = new ShopItem(key.toLowerCase(), mat, category, buyPrice, sellPrice, buyEnabled, displayName);
                 itemById.put(shopItem.getId(), shopItem);
                 itemByMaterial.put(mat, shopItem);
                 itemsByCategory.get(category).add(shopItem);

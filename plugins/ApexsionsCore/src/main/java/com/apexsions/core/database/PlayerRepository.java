@@ -207,4 +207,25 @@ public class PlayerRepository {
             return 1;
         });
     }
+
+    public CompletableFuture<Integer> getTotalPlayersInRegionAsync(UUID regionId) {
+        return db.supplyAsync(() -> {
+            String sql = "SELECT COUNT(*) AS total FROM players WHERE region_id = ?";
+            try (Connection conn = db.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+                if (db.isUsingFallback()) {
+                    ps.setString(1, regionId.toString());
+                } else {
+                    ps.setObject(1, regionId);
+                }
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (rs.next()) {
+                        return rs.getInt("total");
+                    }
+                }
+            } catch (SQLException e) {
+                plugin.getLogger().log(Level.SEVERE, "Failed counting players for region: " + regionId, e);
+            }
+            return 0;
+        });
+    }
 }

@@ -139,6 +139,9 @@ public class ApexsionsCorePlugin extends JavaPlugin {
             this.kingdomTopGUI = new KingdomTopGUI(this);
             Bukkit.getPluginManager().registerEvents(kingdomTopGUI, this);
 
+            Bukkit.getPluginManager().registerEvents(new com.apexsions.core.region.gui.KingdomInfoGUI(this), this);
+            Bukkit.getPluginManager().registerEvents(new com.apexsions.core.region.gui.KingdomConfirmGUI(this), this);
+
             this.levelRewardsGUI = new LevelRewardsGUI(this);
             Bukkit.getPluginManager().registerEvents(levelRewardsGUI, this);
 

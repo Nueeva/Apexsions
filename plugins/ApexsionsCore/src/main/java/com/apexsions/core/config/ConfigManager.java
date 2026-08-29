@@ -263,6 +263,27 @@ public class ConfigManager {
         return null;
     }
 
+    public void setKingdomKing(String kingdomKey, String kingName) {
+        if (kingdomsConfig != null) {
+            kingdomsConfig.set("regions." + kingdomKey.toUpperCase() + ".king.name", kingName);
+            saveKingdomsConfig();
+        }
+    }
+
+    public void saveKingdomsConfig() {
+        if (kingdomsConfig != null) {
+            try {
+                File file = new File(plugin.getDataFolder(), "kingdoms/kingdoms.yml");
+                if (!file.exists()) {
+                    file.getParentFile().mkdirs();
+                }
+                kingdomsConfig.save(file);
+            } catch (Exception e) {
+                plugin.getLogger().warning("Could not save kingdoms.yml: " + e.getMessage());
+            }
+        }
+    }
+
     public String getDefaultRegion() { return "None"; }
 
     private String getEnvOrDefault(String key, String def) {

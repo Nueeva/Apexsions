@@ -55,47 +55,58 @@ public class QuantitySelectMenu extends ShopGui {
                 .build()));
 
         // 2. Buy Buttons (Row 2: Slots 10, 11, 12, 13, 14)
-        int[] buyAmounts = { 1, 16, 32, 64 };
-        int[] buySlots = { 10, 11, 12, 13 };
+        if (shopItem.isBuyEnabled()) {
+            int[] buyAmounts = { 1, 16, 32, 64 };
+            int[] buySlots = { 10, 11, 12, 13 };
 
-        for (int i = 0; i < buyAmounts.length; i++) {
-            int qty = buyAmounts[i];
-            int slot = buySlots[i];
-            PriceResult res = plugin.getDynamicPriceCalculator().calculateBuyPrice(shopItem, player, qty);
+            for (int i = 0; i < buyAmounts.length; i++) {
+                int qty = buyAmounts[i];
+                int slot = buySlots[i];
+                PriceResult res = plugin.getDynamicPriceCalculator().calculateBuyPrice(shopItem, player, qty);
 
-            setButton(slot, new ShopGuiButton(new ShopItemBuilder(Material.LIME_DYE, Math.min(64, qty))
-                    .name("<green><bold>BELI " + qty + "x</bold></green>")
+                setButton(slot, new ShopGuiButton(new ShopItemBuilder(Material.LIME_DYE, Math.min(64, qty))
+                        .name("<green><bold>BELI " + qty + "x</bold></green>")
+                        .lore(List.of(
+                                "<gray>Total Biaya: <gold>" + plugin.getEconomyHook().format(res.finalTotalPrice()) + "</gold></gray>",
+                                "<dark_gray>Termasuk Pajak (" + String.format("%.1f", res.taxPercent()) + "%): " + plugin.getEconomyHook().format(res.taxAmount()) + "</dark_gray>",
+                                " ",
+                                "<yellow>Sentuh / Klik untuk Beli ▶</yellow>"
+                        ))
+                        .build(), event -> {
+                    buy(qty);
+                }));
+            }
+
+            // Buy Max Button (Slot 14)
+            int rawAffordable = buy1.effectiveUnitPrice() > 0 ? (int) (balance / (buy1.effectiveUnitPrice() * (1.0 + buy1.taxPercent() / 100.0))) : 0;
+            final int maxAffordable = Math.max(0, rawAffordable);
+            PriceResult maxBuyRes = plugin.getDynamicPriceCalculator().calculateBuyPrice(shopItem, player, Math.max(1, maxAffordable));
+            setButton(14, new ShopGuiButton(new ShopItemBuilder(Material.EMERALD)
+                    .name("<green><bold>BELI MAKSIMAL (" + maxAffordable + "x)</bold></green>")
                     .lore(List.of(
-                            "<gray>Total Biaya: <gold>" + plugin.getEconomyHook().format(res.finalTotalPrice()) + "</gold></gray>",
-                            "<dark_gray>Termasuk Pajak (" + String.format("%.1f", res.taxPercent()) + "%): " + plugin.getEconomyHook().format(res.taxAmount()) + "</dark_gray>",
+                            "<gray>Mampu Dibeli: <yellow>" + maxAffordable + " butir</yellow></gray>",
+                            "<gray>Total Biaya: <gold>" + plugin.getEconomyHook().format(maxAffordable > 0 ? maxBuyRes.finalTotalPrice() : 0) + "</gold></gray>",
                             " ",
-                            "<yellow>Sentuh / Klik untuk Beli ▶</yellow>"
+                            "<yellow>Sentuh / Klik untuk Beli Semua ▶</yellow>"
                     ))
                     .build(), event -> {
-                buy(qty);
+                if (maxAffordable > 0) buy(maxAffordable);
+                else {
+                    player.sendMessage(MM.deserialize(plugin.getConfigManager().getMessage("not-enough-money", "<red>Saldo tidak cukup!</red>")
+                            .replace("%required%", plugin.getEconomyHook().format(buy1.finalTotalPrice()))));
+                    player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
+                }
             }));
+        } else {
+            // Purchase disabled banner (Sell-Only commodity)
+            setButton(12, new ShopGuiButton(new ShopItemBuilder(Material.BARRIER)
+                    .name("<red><bold>⛔ PEMBELIAN DITUTUP (SELL ONLY)</bold></red>")
+                    .lore(List.of(
+                            "<gray>Komoditas langka ini tidak dapat dibeli dari pasar.</gray>",
+                            "<gray>Anda hanya dapat menjual item ini dari hasil jarahan.</gray>"
+                    ))
+                    .build()));
         }
-
-        // Buy Max Button (Slot 14)
-        int rawAffordable = buy1.effectiveUnitPrice() > 0 ? (int) (balance / (buy1.effectiveUnitPrice() * (1.0 + buy1.taxPercent() / 100.0))) : 0;
-        final int maxAffordable = Math.max(0, rawAffordable);
-        PriceResult maxBuyRes = plugin.getDynamicPriceCalculator().calculateBuyPrice(shopItem, player, Math.max(1, maxAffordable));
-        setButton(14, new ShopGuiButton(new ShopItemBuilder(Material.EMERALD)
-                .name("<green><bold>BELI MAKSIMAL (" + maxAffordable + "x)</bold></green>")
-                .lore(List.of(
-                        "<gray>Mampu Dibeli: <yellow>" + maxAffordable + " butir</yellow></gray>",
-                        "<gray>Total Biaya: <gold>" + plugin.getEconomyHook().format(maxAffordable > 0 ? maxBuyRes.finalTotalPrice() : 0) + "</gold></gray>",
-                        " ",
-                        "<yellow>Sentuh / Klik untuk Beli Semua ▶</yellow>"
-                ))
-                .build(), event -> {
-            if (maxAffordable > 0) buy(maxAffordable);
-            else {
-                player.sendMessage(MM.deserialize(plugin.getConfigManager().getMessage("not-enough-money", "<red>Saldo tidak cukup!</red>")
-                        .replace("%required%", plugin.getEconomyHook().format(buy1.finalTotalPrice()))));
-                player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
-            }
-        }));
 
         // 3. Sell Buttons (Row 3: Slots 19, 20, 21, 22, 23)
         int[] sellAmounts = { 1, 16, 32, 64 };
@@ -138,6 +149,12 @@ public class QuantitySelectMenu extends ShopGui {
     }
 
     private void buy(int quantity) {
+        if (!shopItem.isBuyEnabled()) {
+            player.sendMessage(MM.deserialize("<red>Komoditas langka ini tidak dapat dibeli dari toko!</red>"));
+            player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
+            return;
+        }
+
         PriceResult result = plugin.getDynamicPriceCalculator().calculateBuyPrice(shopItem, player, quantity);
         double totalCost = result.finalTotalPrice();
 

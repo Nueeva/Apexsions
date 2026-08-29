@@ -7,6 +7,30 @@ regions:
     display-name: "<gradient:#ffe900:#f39c12><bold>Zenithar</bold></gradient>"
     icon: "GOLD_BLOCK"
     slot: 20
+    lore:
+      - "<dark_gray>Celestial & Solar Realm</dark_gray>"
+      - "<gray>Sebuah kerajaan megah bertahtakan cahaya keemasan,"
+      - "<gray>istana awan menjulang tinggi, dan kuil arcanum langit."
+      - "<gray>Warganya dikenal bijaksana, tangkas menambang emas murni,"
+      - "<gray>serta menjunjung tinggi kedamaian di puncak cakrawala."
+    capital:
+      name: "Solarium Spire Citadel"
+      coordinates: "world (-3028, 64, -5597)"
+      biomes: "Sky Plains, High Peaks, Jagged Peaks"
+    king:
+      name: "Belum Ada Raja"
+      title: "Monarch of the Sun"
+    tax-percent: 10.0
+    buffs:
+      - "<green>+15% Mining & Experience Boost</green>"
+      - "<green>+10% Kecepatan Gerak di Ketinggian (Y > 80)</green>"
+      - "<green>Aura Cahaya Abadi di Wilayah Ibukota</green>"
+    nerfs:
+      - "<red>-10% Kecepatan Renang di Air Dalam</red>"
+      - "<red>+10% Kerentanan terhadap Serangan Petir / Badai</red>"
+    titles:
+      starting: "<#f7d794>Acolyte of Zenith</#f7d794>"
+      supreme: "<gradient:#ffeaa7:#ffd700><bold>✦ EMPEROR OF ZENITHAR ✦</bold></gradient>"
     description:
       - "<dark_gray>Celestial & Solar Realm</dark_gray>"
       - "<gray>A majestic kingdom of radiant yellow light,"
@@ -17,12 +41,36 @@ regions:
       - "<gray> • Supreme Title: <gold>Emperor of Zenithar</gold>"
       - "<gray> • Capital Realm: <yellow>world (-3028, 64, -5597)</yellow>"
       - ""
-      - "<yellow>⚡ Click to pledge allegiance to Zenithar!</yellow>"
+      - "<yellow>⚡ Klik untuk melihat informasi detail Zenithar!</yellow>"
 
   SOLTERRA:
     display-name: "<gradient:#ff4d4d:#c0392b><bold>Solterra</bold></gradient>"
     icon: "REDSTONE_BLOCK"
     slot: 22
+    lore:
+      - "<dark_gray>Crimson Earth & Fire Empire</dark_gray>"
+      - "<gray>Kekaisaran perang perkasa bermahkotakan lautan magma,"
+      - "<gray>benteng obsidian merah, dan bukit pasir membara."
+      - "<gray>Warganya adalah prajurit tangguh penakluk medan keras,"
+      - "<gray>memiliki kekuatan tempur api dan keuletan tanpa tanding."
+    capital:
+      name: "Ignis Bastion Fortress"
+      coordinates: "world (-5843, 65, 889)"
+      biomes: "Desert, Badlands / Mesa, Savanna Plateau"
+    king:
+      name: "Belum Ada Raja"
+      title: "Warlord of the Dunes"
+    tax-percent: 10.0
+    buffs:
+      - "<green>+15% Melee Attack & Fire Damage</green>"
+      - "<green>Kebal terhadap Efek Terbakar di Wilayah Kerajaan</green>"
+      - "<green>+10% Knockback Resistance</green>"
+    nerfs:
+      - "<red>-10% Ketahanan terhadap Fall Damage</red>"
+      - "<red>-10% Efisiensi Pertanian Tanaman Dingin</red>"
+    titles:
+      starting: "<#fab1a0>Dune Wanderer</#fab1a0>"
+      supreme: "<gradient:#f12711:#f5af19><bold>✦ LORD OF SOLTERRA ✦</bold></gradient>"
     description:
       - "<dark_gray>Crimson Earth & Fire Empire</dark_gray>"
       - "<gray>A blazing domain of crimson power,"
@@ -33,12 +81,36 @@ regions:
       - "<gray> • Supreme Title: <red>Lord of Solterra</red>"
       - "<gray> • Capital Realm: <red>world (-5843, 65, 889)</red>"
       - ""
-      - "<red>⚡ Click to pledge allegiance to Solterra!</red>"
+      - "<red>⚡ Klik untuk melihat informasi detail Solterra!</red>"
 
   SYLVAMOOR:
     display-name: "<gradient:#87ceeb:#3498db><bold>Sylvamoor</bold></gradient>"
     icon: "DIAMOND_BLOCK"
     slot: 24
+    lore:
+      - "<dark_gray>Azure Crystal & Ocean Realm</dark_gray>"
+      - "<gray>Kerajaan kuno penuh kedamaian di tengah hutan lebat,"
+      - "<gray>pohon dunia mistis, dan samudra kristal biru berkilau."
+      - "<gray>Warganya hidup selaras dengan alam, mahir bercocok tanam,"
+      - "<gray>serta dianugerahi kemampuan regenerasi jiwa yang luar biasa."
+    capital:
+      name: "Eldergrove Sanctuary"
+      coordinates: "world (-9666, 64, -4812)"
+      biomes: "Old Growth Taiga, Jungle, Warm Ocean"
+    king:
+      name: "Belum Ada Raja"
+      title: "Guardian of the World Tree"
+    tax-percent: 10.0
+    buffs:
+      - "<green>+15% Farming Harvest & Natural Regeneration</green>"
+      - "<green>+15% Kecepatan Renang & Nafas Dalam Air</green>"
+      - "<green>Peluang Panen Ganda Tanaman (Double Drop)</green>"
+    nerfs:
+      - "<red>-10% Ketahanan terhadap Ledakan (Blast Resistance)</red>"
+      - "<red>+15% Kerentanan terhadap Efek Racun / Wither</red>"
+    titles:
+      starting: "<#a8e6cf>Sylvan Citizen</#a8e6cf>"
+      supreme: "<gradient:#00f2fe:#4facfe><bold>✦ AVATAR OF SYLVAMOOR ✦</bold></gradient>"
     description:
       - "<dark_gray>Azure Crystal & Ocean Realm</dark_gray>"
       - "<gray>An ancient kingdom of azure frost,"
@@ -49,4 +121,4 @@ regions:
       - "<gray> • Supreme Title: <aqua>Avatar of Sylvamoor</aqua>"
       - "<gray> • Capital Realm: <aqua>world (-9666, 64, -4812)</aqua>"
       - ""
-      - "<aqua>⚡ Click to pledge allegiance to Sylvamoor!</aqua>"
+      - "<aqua>⚡ Klik untuk melihat informasi detail Sylvamoor!</aqua>"

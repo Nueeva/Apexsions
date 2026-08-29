@@ -21,26 +21,40 @@ public class ShopMainMenu extends ShopGui {
     public void initialize() {
         fillBorder();
 
-        // 1. Player Info Banner (Slot 4)
+        // 1. Unified Player & Kingdom Info Banner (Slot 4 - Top Center)
         double balance = plugin.getEconomyHook().getBalance(player);
+        String kingdomName = plugin.getKingdomMarketService().getKingdomNameFormatted(player);
+        double taxPercent = plugin.getTaxService().getTaxPercent(player);
+        String weatherDesc = plugin.getWeatherPriceService().getWeatherDescription(player.getWorld());
+
         setButton(4, new ShopGuiButton(new ShopItemBuilder(Material.PLAYER_HEAD)
                 .skullOwner(player)
                 .name("<gold><bold>" + player.getName() + "</bold></gold>")
                 .lore(List.of(
-                        "<gray>Saldo Rupiah: <yellow>" + plugin.getEconomyHook().format(balance) + "</yellow></gray>",
-                        "<gray>Kerajaan: " + plugin.getKingdomMarketService().getKingdomNameFormatted(player) + "</gray>"
+                        "<gray>Kerajaan: " + kingdomName + "</gray>",
+                        "<gray>Saldo Rupiah: <yellow><bold>" + plugin.getEconomyHook().format(balance) + "</bold></yellow></gray>",
+                        "<gray>Pajak Pasar: <red>" + String.format("%.1f", taxPercent) + "%</red></gray>",
+                        "<gray>Kondisi Cuaca: <aqua>" + weatherDesc + "</aqua></gray>"
                 ))
                 .build()));
 
-        // 2. 6 Category Buttons
-        for (ShopCategory category : ShopCategory.values()) {
+        // 2. 6 Categories cleanly arranged in 2 symmetrical rows
+        // Row 2: Slots 20, 22, 24
+        // Row 3: Slots 29, 31, 33
+        int[] catSlots = { 20, 22, 24, 29, 31, 33 };
+        ShopCategory[] categories = ShopCategory.values();
+
+        for (int i = 0; i < categories.length && i < catSlots.length; i++) {
+            ShopCategory category = categories[i];
+            int slot = catSlots[i];
             int itemCount = plugin.getItemRegistry().getItemsByCategory(category).size();
-            setButton(category.getSlot(), new ShopGuiButton(new ShopItemBuilder(category.getIcon())
+
+            setButton(slot, new ShopGuiButton(new ShopItemBuilder(category.getIcon())
                     .name("<gold><bold>" + category.getDisplayName() + "</bold></gold>")
                     .lore(List.of(
                             category.getDescription(),
                             " ",
-                            "<gray>Total Item: <yellow>" + itemCount + " komoditas</yellow></gray>",
+                            "<gray>Total Komoditas: <yellow>" + itemCount + " item</yellow></gray>",
                             "<yellow>Sentuh / Klik untuk Buka ▶</yellow>"
                     ))
                     .build(), event -> {
@@ -49,27 +63,12 @@ public class ShopMainMenu extends ShopGui {
             }));
         }
 
-        // 3. Market Live Overview Card (Slot 22)
-        String weatherDesc = plugin.getWeatherPriceService().getWeatherDescription(player.getWorld());
-        double taxPercent = plugin.getTaxService().getTaxPercent(player);
-        setButton(22, new ShopGuiButton(new ShopItemBuilder(Material.COMPASS)
-                .name("<aqua><bold>INDIKATOR PASAR DINAMIS</bold></aqua>")
-                .lore(List.of(
-                        "<gray>Kondisi Cuaca: " + weatherDesc + "</gray>",
-                        "<gray>Pasar Wilayah: " + plugin.getKingdomMarketService().getKingdomNameFormatted(player) + "</gray>",
-                        "<gray>Tarif Pajak: <red>" + String.format("%.1f", taxPercent) + "%</red></gray>",
-                        " ",
-                        "<dark_aqua>Harga menyesuaikan cuaca dan spesialisasi bioma!</dark_aqua>"
-                ))
-                .glow()
-                .build()));
-
-        // 4. Quick Sell GUI Button (Slot 32)
-        setButton(32, new ShopGuiButton(new ShopItemBuilder(Material.HOPPER)
-                .name("<green><bold>JUAL CEPAT (SELL GUI)</bold></green>")
+        // 3. Quick Sell GUI Button (Slot 40 - Bottom Row Accent)
+        setButton(40, new ShopGuiButton(new ShopItemBuilder(Material.HOPPER)
+                .name("<green><bold>⚡ JUAL CEPAT (SELL GUI)</bold></green>")
                 .lore(List.of(
                         "<gray>Jual banyak item sekaligus secara instan.</gray>",
-                        "<gray>Cukup drag & drop item ke dalam kotak kosong.</gray>",
+                        "<gray>Cukup masukkan item ke dalam kotak penjualan.</gray>",
                         " ",
                         "<yellow>Sentuh / Klik untuk Buka Sell GUI ▶</yellow>"
                 ))
@@ -78,7 +77,7 @@ public class ShopMainMenu extends ShopGui {
             new SellGuiMenu(plugin, player, this).open();
         }));
 
-        // 5. Close Button (Slot 49)
+        // 4. Close Button (Slot 49 - Bottom Center)
         setButton(49, new com.apexsions.shop.gui.navigation.CloseButton());
     }
 }

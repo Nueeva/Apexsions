@@ -58,12 +58,12 @@ public class KingdomProtectionListener implements Listener {
         Optional<Region> regionAtLoc = plugin.getRegionManager().getRegionAt(victimLoc);
 
         if (regionAtLoc.isPresent() && regionAtLoc.get().getId().equals(victimKingdom)) {
-            // Inside own kingdom territory -> Cancel PvP!
-            event.setCancelled(true);
-            attacker.sendActionBar(mm.deserialize("<red><bold>⚔ PERLINDUNGAN KERAJAAN: </bold><gray>Dilarang menyerang sesama anggota di dalam wilayah kerajaan!</gray></red>"));
-            attacker.playSound(attacker.getLocation(), Sound.ITEM_SHIELD_BLOCK, 0.8f, 1.2f);
+            // Inside own kingdom territory -> Set damage to 0 (Masih bisa memukul tapi 0 damage)!
+            event.setDamage(0.0);
+            attacker.sendActionBar(mm.deserialize("<red><bold>⚔ PERLINDUNGAN WILAYAH: </bold><gray>Damage sesama warga kerajaan di wilayah sendiri adalah 0!</gray></red>"));
+            attacker.playSound(attacker.getLocation(), Sound.ITEM_SHIELD_BLOCK, 0.6f, 1.4f);
         }
-        // If outside territory -> friendly fire is permitted (bebas)
+        // If outside territory or different kingdoms -> full PvP damage is permitted
     }
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)

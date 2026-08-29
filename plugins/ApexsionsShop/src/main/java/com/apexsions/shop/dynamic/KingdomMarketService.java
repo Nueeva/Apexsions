@@ -34,10 +34,10 @@ public class KingdomMarketService {
     public String getKingdomNameFormatted(Player player) {
         String key = plugin.getKingdomCoreHook().getPlayerKingdom(player);
         return switch (key.toUpperCase()) {
-            case "SOLTERRA" -> "<gold>Solterra (Agraris & Lembah)</gold>";
-            case "ZENITHAR" -> "<aqua>Zenithar (Pegunungan & Tambang)</aqua>";
-            case "SYLVAMOOR" -> "<green>Sylvamoor (Rimba & Rawa)</green>";
-            default -> "<gray>Netral / Tanpa Kerajaan</gray>";
+            case "ZENITHAR" -> "<gradient:#ffe900:#f39c12><bold>Zenithar</bold></gradient>";
+            case "SOLTERRA" -> "<gradient:#ff4d4d:#c0392b><bold>Solterra</bold></gradient>";
+            case "SYLVAMOOR" -> "<gradient:#87ceeb:#3498db><bold>Sylvamoor</bold></gradient>";
+            default -> "<gray>Tanpa Kerajaan</gray>";
         };
     }
 }
