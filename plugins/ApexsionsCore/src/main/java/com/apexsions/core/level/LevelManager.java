@@ -88,7 +88,18 @@ public class LevelManager {
         newXp = oldXp + amount;
         data.setXp(newXp);
 
-        // Check for level ups
+        // Reconcile and handle level-ups
+        reconcileLevel(data, player);
+    }
+
+    /**
+     * Checks if player has accumulated enough XP to level up, and processes all pending level-ups.
+     * Can be invoked on login or data load to reconcile any pending progress.
+     */
+    public boolean reconcileLevel(PlayerData data, Player player) {
+        if (data == null) return false;
+
+        int maxLevel = plugin.getConfigManager().getLevelMax();
         int currentLevel = data.getLevel();
         int startingLevel = currentLevel;
 
@@ -103,13 +114,15 @@ public class LevelManager {
             }
         }
 
-        // If level up occurred
         if (currentLevel > startingLevel) {
             handleLevelUp(data, player, startingLevel, currentLevel);
+            plugin.getPlayerDataService().save(data);
+            return true;
+        } else {
+            // Save state in case XP was adjusted
+            plugin.getPlayerDataService().save(data);
+            return false;
         }
-
-        // Async save
-        plugin.getPlayerDataService().save(data);
     }
 
     private void handleLevelUp(PlayerData data, Player player, int oldLevel, int newLevel) {
@@ -176,6 +189,7 @@ public class LevelManager {
             int clamped = Math.clamp(level, minLevel, maxLevel);
             int oldLevel = data.getLevel();
             data.setLevel(clamped);
+            data.setXp(0); // Reset progress XP for clean start at new level
 
             Player player = Bukkit.getPlayer(uuid);
             if (clamped > oldLevel) {
@@ -188,7 +202,8 @@ public class LevelManager {
     public void setXp(UUID uuid, long xp) {
         plugin.getPlayerDataService().getCached(uuid).ifPresent(data -> {
             data.setXp(Math.max(0, xp));
-            plugin.getPlayerDataService().save(data);
+            Player player = Bukkit.getPlayer(uuid);
+            reconcileLevel(data, player);
         });
     }
 }

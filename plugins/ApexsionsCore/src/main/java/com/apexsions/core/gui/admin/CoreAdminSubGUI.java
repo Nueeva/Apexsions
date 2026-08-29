@@ -207,13 +207,12 @@ public class CoreAdminSubGUI implements InventoryHolder {
         }
 
         if (slot == 29) { // Give 500 XP
+            plugin.getLevelManager().addXp(player.getUniqueId(), 500, com.apexsions.core.level.xp.XpSource.ADMIN);
             PlayerData pData = plugin.getPlayerDataService().getCached(player.getUniqueId()).orElse(null);
             if (pData != null) {
-                pData.addXp(500);
-                plugin.getPlayerRepository().save(pData);
-                player.sendMessage(mm.deserialize("<green>✓ Berhasil menambahkan 500 XP! Total Level: <yellow>Lv. " + pData.getLevel() + "</yellow></green>"));
-                player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 0.8f, 1.4f);
+                player.sendMessage(mm.deserialize("<green>✓ Berhasil menambahkan 500 XP! Status: <yellow>Lv. " + pData.getLevel() + " (" + pData.getXp() + " XP)</yellow></green>"));
             }
+            buildGUI();
             return;
         }
 

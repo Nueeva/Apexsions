@@ -3,6 +3,8 @@ package com.apexsions.core.player;
 import com.apexsions.core.ApexsionsCorePlugin;
 import com.apexsions.core.cache.PlayerCache;
 import com.apexsions.core.database.PlayerRepository;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -35,6 +37,8 @@ public class PlayerDataService {
                 data.setUsername(username);
                 repository.save(data);
             }
+            Player p = Bukkit.getPlayer(uuid);
+            plugin.getLevelManager().reconcileLevel(data, p);
             return CompletableFuture.completedFuture(data);
         }
 
@@ -46,6 +50,8 @@ public class PlayerDataService {
                     repository.save(data);
                 }
                 cache.put(uuid, data);
+                Player p = Bukkit.getPlayer(uuid);
+                plugin.getLevelManager().reconcileLevel(data, p);
                 return CompletableFuture.completedFuture(data);
             } else {
                 PlayerData newData = PlayerData.createDefault(uuid, username);

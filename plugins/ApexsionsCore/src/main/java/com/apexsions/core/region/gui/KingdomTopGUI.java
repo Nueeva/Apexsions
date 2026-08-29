@@ -89,12 +89,15 @@ public class KingdomTopGUI implements Listener {
 
             if (i < topPlayers.size()) {
                 PlayerData topP = topPlayers.get(i);
-                boolean isOnline = Bukkit.getPlayer(topP.getUuid()) != null;
+                Player onlineP = Bukkit.getPlayer(topP.getUuid());
+                plugin.getLevelManager().reconcileLevel(topP, onlineP);
+                boolean isOnline = onlineP != null;
+                long reqXp = plugin.getLevelFormula().getRequiredXpForNextLevel(topP.getLevel());
 
                 List<Component> pLore = new ArrayList<>();
                 pLore.add(miniMessage.deserialize("<gray>Peringkat: <gold>#" + rankNum + "</gold></gray>"));
                 pLore.add(miniMessage.deserialize("<gray>Level Karakter: <yellow>Lv. " + topP.getLevel() + "</yellow></gray>"));
-                pLore.add(miniMessage.deserialize("<gray>Total XP: <aqua>" + String.format("%,d", topP.getXp()) + " XP</aqua></gray>"));
+                pLore.add(miniMessage.deserialize("<gray>EXP Progress: <aqua>" + String.format("%,d", topP.getXp()) + " / " + (reqXp == Long.MAX_VALUE ? "MAX" : String.format("%,d", reqXp)) + " XP</aqua></gray>"));
                 pLore.add(miniMessage.deserialize(""));
                 pLore.add(miniMessage.deserialize("<gray>Status: " + (isOnline ? "<green>● Online</green>" : "<dark_gray>○ Offline</dark_gray>") + "</gray>"));
 

@@ -70,7 +70,7 @@ public class PlaceholderApiHook extends PlaceholderExpansion {
 
             case "xp_progressbar":
             case "progressbar":
-                long nextXp = plugin.getLevelFormula().getXpForLevel(data.getLevel() + 1);
+                long nextXp = plugin.getLevelFormula().getRequiredXpForNextLevel(data.getLevel());
                 int percent = (int) Math.min(100, Math.max(0, (data.getXp() * 100) / Math.max(1, nextXp)));
                 int totalBars = 10;
                 int filled = (percent * totalBars) / 100;

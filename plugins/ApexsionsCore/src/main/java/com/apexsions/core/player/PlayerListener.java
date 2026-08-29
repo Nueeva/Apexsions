@@ -45,6 +45,11 @@ public class PlayerListener implements Listener {
         if (plugin.getLuckPermsHook().isAvailable() && plugin.getLuckPermsHook().getRankProvisioner() != null) {
             plugin.getLuckPermsHook().getRankProvisioner().handlePlayerJoin(player);
         }
+
+        // 2. Reconcile Level progression in case player has accumulated XP
+        plugin.getPlayerDataService().getCached(player.getUniqueId()).ifPresent(data -> {
+            plugin.getLevelManager().reconcileLevel(data, player);
+        });
         
         // 2. First-join guidance
         if (!player.hasPlayedBefore()) {
