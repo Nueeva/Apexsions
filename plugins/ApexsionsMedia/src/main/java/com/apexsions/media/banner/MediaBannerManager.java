@@ -10,8 +10,8 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.GlowItemFrame;
 import org.bukkit.entity.ItemFrame;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.MapMeta;
 import org.bukkit.map.MapView;
@@ -27,6 +27,7 @@ public class MediaBannerManager {
     private final ApexsionsMediaPlugin plugin;
     private final Map<String, MediaBanner> banners = new ConcurrentHashMap<>();
     private final Map<UUID, MediaBanner> frameToBannerMap = new ConcurrentHashMap<>();
+    private final Map<Integer, MapView> registeredMapViews = new ConcurrentHashMap<>();
     private HikariDataSource dataSource;
 
     public MediaBannerManager(ApexsionsMediaPlugin plugin) {
@@ -74,6 +75,7 @@ public class MediaBannerManager {
     public void loadAllBanners() {
         banners.clear();
         frameToBannerMap.clear();
+        registeredMapViews.clear();
 
         if (dataSource == null) return;
 
@@ -97,7 +99,6 @@ public class MediaBannerManager {
                 MediaBanner banner = new MediaBanner(id, world, x, y, z, facing, w, h, src, link, mode);
                 banners.put(id.toLowerCase(), banner);
 
-                // Spawn frames when world is ready
                 Bukkit.getScheduler().runTask(plugin, () -> spawnBannerFrames(banner));
             }
             plugin.getLogger().info("Loaded " + banners.size() + " media banners from database.");
@@ -107,14 +108,51 @@ public class MediaBannerManager {
     }
 
     public CompletableFuture<Boolean> createAndSpawnBanner(String id, Location loc, BlockFace facing,
-                                                          int width, int height, String source,
-                                                          String linkUrl, MediaBanner.ClickMode mode) {
+                                                           int width, int height, String source,
+                                                           String linkUrl, MediaBanner.ClickMode mode) {
         MediaBanner banner = new MediaBanner(id, loc.getWorld().getName(), loc.getX(), loc.getY(), loc.getZ(),
                 facing, width, height, source, linkUrl, mode);
 
         banners.put(id.toLowerCase(), banner);
+        return saveBannerToDb(banner);
+    }
 
-        // Save to DB
+    public CompletableFuture<Boolean> moveBanner(String id, Location newLoc, BlockFace newFacing) {
+        MediaBanner banner = banners.get(id.toLowerCase());
+        if (banner == null) return CompletableFuture.completedFuture(false);
+
+        banner.updateLocation(newLoc, newFacing);
+        return saveBannerToDb(banner);
+    }
+
+    public CompletableFuture<Boolean> cloneBanner(String sourceId, String targetId, Location loc, BlockFace facing) {
+        MediaBanner sourceBanner = banners.get(sourceId.toLowerCase());
+        if (sourceBanner == null) return CompletableFuture.completedFuture(false);
+
+        return createAndSpawnBanner(targetId, loc, facing,
+                sourceBanner.getWidthTiles(), sourceBanner.getHeightTiles(),
+                sourceBanner.getSource(), sourceBanner.getLinkUrl(), sourceBanner.getClickMode());
+    }
+
+    public CompletableFuture<Boolean> updateBannerLink(String id, String linkUrl, MediaBanner.ClickMode mode) {
+        MediaBanner banner = banners.get(id.toLowerCase());
+        if (banner == null) return CompletableFuture.completedFuture(false);
+
+        banner.setLinkUrl(linkUrl);
+        if (mode != null) banner.setClickMode(mode);
+        return saveBannerToDb(banner);
+    }
+
+    public CompletableFuture<Boolean> updateBannerSize(String id, int width, int height) {
+        MediaBanner banner = banners.get(id.toLowerCase());
+        if (banner == null) return CompletableFuture.completedFuture(false);
+
+        banner.setWidthTiles(width);
+        banner.setHeightTiles(height);
+        return saveBannerToDb(banner);
+    }
+
+    private CompletableFuture<Boolean> saveBannerToDb(MediaBanner banner) {
         return CompletableFuture.supplyAsync(() -> {
             try (Connection conn = dataSource.getConnection();
                  PreparedStatement ps = conn.prepareStatement("""
@@ -167,14 +205,20 @@ public class MediaBannerManager {
                             if (frameLoc == null) continue;
 
                             try {
-                                ItemFrame frame = world.spawn(frameLoc, GlowItemFrame.class, f -> {
+                                ItemFrame frame = world.spawn(frameLoc, ItemFrame.class, f -> {
                                     f.setFacingDirection(banner.getFacing(), true);
                                     f.setVisible(false);
                                     f.setFixed(true);
                                     f.setSilent(true);
+                                    f.setInvulnerable(true);
+                                    f.setPersistent(true);
                                 });
 
                                 MapView mapView = Bukkit.createMap(world);
+                                mapView.setScale(MapView.Scale.NORMAL);
+                                mapView.setTrackingPosition(false);
+                                mapView.setUnlimitedTracking(false);
+                                mapView.setLocked(true);
                                 mapView.getRenderers().clear();
                                 mapView.addRenderer(new ImageRenderer.CustomMapRenderer(tiles[tileX][tileY]));
 
@@ -189,6 +233,11 @@ public class MediaBannerManager {
                                 banner.getItemFrameUuids().add(frame.getUniqueId());
                                 banner.getMapIds().add(mapView.getId());
                                 frameToBannerMap.put(frame.getUniqueId(), banner);
+                                registeredMapViews.put(mapView.getId(), mapView);
+
+                                for (Player p : world.getPlayers()) {
+                                    p.sendMap(mapView);
+                                }
                             } catch (Exception e) {
                                 plugin.getLogger().warning("Could not place ItemFrame at " + frameLoc + ": " + e.getMessage());
                             }
@@ -200,7 +249,24 @@ public class MediaBannerManager {
                 });
     }
 
-    private Location calculateTileLocation(MediaBanner banner, int tileX, int tileY) {
+    public void sendAllBannersToPlayer(Player player) {
+        if (player == null || !player.isOnline()) return;
+        World playerWorld = player.getWorld();
+
+        for (MediaBanner banner : banners.values()) {
+            if (playerWorld.getName().equalsIgnoreCase(banner.getWorldName())) {
+                for (int mapId : banner.getMapIds()) {
+                    MapView mv = registeredMapViews.get(mapId);
+                    if (mv == null) mv = Bukkit.getMap(mapId);
+                    if (mv != null) {
+                        player.sendMap(mv);
+                    }
+                }
+            }
+        }
+    }
+
+    public Location calculateTileLocation(MediaBanner banner, int tileX, int tileY) {
         World world = banner.getWorld();
         if (world == null) return null;
 
@@ -209,10 +275,10 @@ public class MediaBannerManager {
         double z = banner.getZ();
 
         switch (banner.getFacing()) {
-            case NORTH -> x += tileX;
-            case SOUTH -> x -= tileX;
-            case WEST -> z -= tileX;
-            case EAST -> z += tileX;
+            case NORTH -> x -= tileX;
+            case SOUTH -> x += tileX;
+            case WEST -> z += tileX;
+            case EAST -> z -= tileX;
             default -> x += tileX;
         }
 
@@ -228,7 +294,11 @@ public class MediaBannerManager {
             if (ent != null) ent.remove();
             frameToBannerMap.remove(uuid);
         }
+        for (int mapId : banner.getMapIds()) {
+            registeredMapViews.remove(mapId);
+        }
         banner.getItemFrameUuids().clear();
+        banner.getMapIds().clear();
     }
 
     public boolean deleteBanner(String id) {

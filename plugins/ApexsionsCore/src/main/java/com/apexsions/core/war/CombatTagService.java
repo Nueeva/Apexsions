@@ -41,6 +41,10 @@ public class CombatTagService implements Listener {
         return true;
     }
 
+    public boolean isInCombat(Player player) {
+        return player != null && isCombatTagged(player.getUniqueId());
+    }
+
     public long getRemainingSeconds(UUID uuid) {
         Long expireTime = combatTags.get(uuid);
         if (expireTime == null) return 0;

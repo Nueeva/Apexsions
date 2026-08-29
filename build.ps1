@@ -1,6 +1,11 @@
 # ==============================================================================
-#           APEXSIONS PLUGIN SUITE — AUTOMATED 6-PLUGIN BUILD SCRIPT
+#           APEXSIONS PLUGIN SUITE — AUTOMATED MULTI-COMPILER
 # ==============================================================================
+param(
+    [Parameter(Position = 0)]
+    [string]$Plugin = ""
+)
+
 $ErrorActionPreference = "Stop"
 
 $scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
@@ -10,13 +15,15 @@ $outLibs = "build/libs"
 if (!(Test-Path $outLibs)) { New-Item -ItemType Directory -Path $outLibs -Force | Out-Null }
 
 # Locate JDK
-$javaHome = $env:JAVA_HOME
-if (!(Test-Path "$javaHome/bin/javac.exe")) {
+$localJdk = "$scriptDir/plugins/ApexsionsCore/jdk-21"
+if (Test-Path "$localJdk/bin/javac.exe") {
+    $env:JAVA_HOME = (Get-Item $localJdk).FullName
+    $env:Path = "$($env:JAVA_HOME)/bin;$env:Path"
+} elseif (!(Test-Path "$env:JAVA_HOME/bin/javac.exe")) {
     $foundJavac = Get-ChildItem "C:\Program Files\Eclipse Adoptium\*\bin\javac.exe", "C:\Program Files\Java\*\bin\javac.exe" -ErrorAction SilentlyContinue | Select-Object -First 1
     if ($foundJavac) {
-        $javaHome = $foundJavac.Directory.Parent.FullName
-        $env:JAVA_HOME = $javaHome
-        $env:Path = "$javaHome/bin;$env:Path"
+        $env:JAVA_HOME = $foundJavac.Directory.Parent.FullName
+        $env:Path = "$($env:JAVA_HOME)/bin;$env:Path"
     }
 }
 
@@ -30,11 +37,7 @@ if (Test-Path $mvn) {
     $hasMaven = $true
 }
 
-Write-Host "==========================================================" -ForegroundColor Yellow
-Write-Host "         APEXSIONS PLUGIN SUITE MULTI-COMPILER            " -ForegroundColor Yellow
-Write-Host "==========================================================" -ForegroundColor Yellow
-
-$plugins = @(
+$allPlugins = @(
     @{ Name = "ApexsionsCore";       Path = "plugins/ApexsionsCore" },
     @{ Name = "ApexsionsChat";       Path = "plugins/ApexsionsChat" },
     @{ Name = "ApexsionsEconomy";    Path = "plugins/ApexsionsEconomy" },
@@ -43,13 +46,35 @@ $plugins = @(
     @{ Name = "ApexsionsMedia";      Path = "plugins/ApexsionsMedia" }
 )
 
+$targetPlugins = @()
+if ([string]::IsNullOrWhiteSpace($Plugin) -or $Plugin.ToLower() -eq "all") {
+    $targetPlugins = $allPlugins
+} else {
+    $search = $Plugin.ToLower().Replace("apexsions", "")
+    foreach ($p in $allPlugins) {
+        if ($p.Name.ToLower().Contains($search)) {
+            $targetPlugins += $p
+        }
+    }
+    if ($targetPlugins.Count -eq 0) {
+        Write-Host "Plugin '$Plugin' not found! Available options: ApexsionsCore, ApexsionsChat, ApexsionsEconomy, ApexsionsBattlepass, ApexsionsShop, ApexsionsMedia, all" -ForegroundColor Red
+        exit 1
+    }
+}
+
+Write-Host "==========================================================" -ForegroundColor Yellow
+Write-Host "         APEXSIONS PLUGIN SUITE MULTI-COMPILER            " -ForegroundColor Yellow
+Write-Host "==========================================================" -ForegroundColor Yellow
+Write-Host "Target: $($targetPlugins.Name -join ', ')" -ForegroundColor Cyan
+
 if ($hasMaven) {
     $index = 1
-    foreach ($p in $plugins) {
+    $total = $targetPlugins.Count
+    foreach ($p in $targetPlugins) {
         $pName = $p.Name
         $pDir = $p.Path
         Write-Host ""
-        Write-Host "[$index/6] Building $pName with Maven..." -ForegroundColor Green
+        Write-Host "[$index/$total] Building $pName with Maven..." -ForegroundColor Green
         & $mvn -f "$pDir/pom.xml" clean package -DskipTests=true
         if ($LASTEXITCODE -ne 0) {
             Write-Host "Compilation failed for $pName!" -ForegroundColor Red
@@ -76,7 +101,8 @@ if ($hasMaven) {
     $cp = $jars -join ";"
 
     $index = 1
-    foreach ($p in $plugins) {
+    $total = $targetPlugins.Count
+    foreach ($p in $targetPlugins) {
         $pName = $p.Name
         $pDir = $p.Path
         $srcDir = "$pDir/src/main/java"
@@ -86,7 +112,7 @@ if ($hasMaven) {
 
         if (Test-Path $srcDir) {
             Write-Host ""
-            Write-Host "[$index/6] Compiling $pName..." -ForegroundColor Green
+            Write-Host "[$index/$total] Compiling $pName..." -ForegroundColor Green
             if (!(Test-Path $classesDir)) { New-Item -ItemType Directory -Path $classesDir -Force | Out-Null } else { Remove-Item -Recurse -Force "$classesDir/*" }
             if (!(Test-Path $stagingDir)) { New-Item -ItemType Directory -Path $stagingDir -Force | Out-Null } else { Remove-Item -Recurse -Force "$stagingDir/*" }
 
@@ -119,10 +145,13 @@ if ($hasMaven) {
 
 Write-Host ""
 Write-Host "==========================================================" -ForegroundColor Green
-Write-Host "  ALL 6 APEXSIONS PLUGINS BUILT & PACKAGED SUCCESSFULLY!  " -ForegroundColor Green
+Write-Host "         COMPILATION COMPLETED SUCCESSFULLY!              " -ForegroundColor Green
 Write-Host "==========================================================" -ForegroundColor Green
 
-Get-ChildItem "$outLibs/*.jar" | ForEach-Object {
-    $kb = [math]::Round($_.Length / 1024, 2)
-    Write-Host "  [OK] $($_.Name) ($kb KB)" -ForegroundColor Yellow
+foreach ($p in $targetPlugins) {
+    $outJar = "$outLibs/$($p.Name)-1.0.0.jar"
+    if (Test-Path $outJar) {
+        $kb = [math]::Round((Get-Item $outJar).Length / 1024, 2)
+        Write-Host "  [OK] $($p.Name)-1.0.0.jar ($kb KB)" -ForegroundColor Yellow
+    }
 }

@@ -71,6 +71,9 @@ public class ApexsionsCorePlugin extends JavaPlugin {
     private CombatTagService combatTagService;
     private WarManager warManager;
 
+    // Warp System
+    private com.apexsions.core.warp.WarpManager warpManager;
+
     // Progression & Rewards
     private LevelFormula levelFormula;
     private LevelTitleResolver levelTitleResolver;
@@ -142,7 +145,12 @@ public class ApexsionsCorePlugin extends JavaPlugin {
             this.combatTagService = new CombatTagService(this);
             this.warManager = new WarManager(this);
 
-            // 5. Progression (Level, XP, Rewards)
+            // 5. Warp System
+            this.warpManager = new com.apexsions.core.warp.WarpManager(this);
+            Bukkit.getPluginManager().registerEvents(new com.apexsions.core.gui.warp.WarpGUIListener(), this);
+            Bukkit.getPluginManager().registerEvents(new com.apexsions.core.war.KingdomProtectionListener(this), this);
+
+            // 6. Progression (Level, XP, Rewards)
             this.levelFormula = new LevelFormula(configManager);
             this.levelTitleResolver = new LevelTitleResolver(this);
             this.levelManager = new LevelManager(this, levelFormula, levelTitleResolver);
@@ -280,6 +288,24 @@ public class ApexsionsCorePlugin extends JavaPlugin {
             wildCmd.setExecutor(rtpHandler);
             wildCmd.setTabCompleter(rtpHandler);
         }
+
+        // /warp (aliases: /warps, /warpmgr, /warpadmin)
+        com.apexsions.core.command.WarpCommand warpHandler = new com.apexsions.core.command.WarpCommand(this);
+        PluginCommand warpCmd = getCommand("warp");
+        if (warpCmd != null) {
+            warpCmd.setExecutor(warpHandler);
+            warpCmd.setTabCompleter(warpHandler);
+        }
+        PluginCommand warpsCmd = getCommand("warps");
+        if (warpsCmd != null) {
+            warpsCmd.setExecutor(warpHandler);
+            warpsCmd.setTabCompleter(warpHandler);
+        }
+        PluginCommand warpMgrCmd = getCommand("warpmgr");
+        if (warpMgrCmd != null) {
+            warpMgrCmd.setExecutor(warpHandler);
+            warpMgrCmd.setTabCompleter(warpHandler);
+        }
     }
 
     public static ApexsionsCorePlugin getInstance() { return instance; }
@@ -297,7 +323,10 @@ public class ApexsionsCorePlugin extends JavaPlugin {
     public KingdomProfileGUI getKingdomProfileGUI() { return kingdomProfileGUI; }
     public KingdomTopGUI getKingdomTopGUI() { return kingdomTopGUI; }
     public CombatTagService getCombatTagService() { return combatTagService; }
+    public CombatTagService getCombatTagManager() { return combatTagService; }
     public WarManager getWarManager() { return warManager; }
+    public WarManager getKingdomWarManager() { return warManager; }
+    public com.apexsions.core.warp.WarpManager getWarpManager() { return warpManager; }
     public LevelRewardsGUI getLevelRewardsGUI() { return levelRewardsGUI; }
     public XpGuideGUI getXpGuideGUI() { return xpGuideGUI; }
     public LevelFormula getLevelFormula() { return levelFormula; }

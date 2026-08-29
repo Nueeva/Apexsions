@@ -8,12 +8,12 @@ Kumpulan plugin server Minecraft profesional berkinerja tinggi yang dirancang se
 
 | Plugin | Versi | Status | Package Root Java | Deskripsi & Fokus Utama |
 | :--- | :---: | :---: | :--- | :--- |
-| **`ApexsionsCore`** | `1.0.0` | ![Active](https://img.shields.io/badge/Status-Active-brightgreen) | `com.apexsions.core.*` | Otoritas Wilayah Kerajaan (*Zenithar*, *Solterra*, *Sylvamoor*), Progresi Leveling (13 XP Sources), BlueMap Polygons, Leaderboard GUI (`/kingdom top`), Kingdom War Manager, PvP Combat Tag (15s), Kingdom-Bounded `/rtp`, dan Enforcer TPA EssentialsX. |
+| **`ApexsionsCore`** | `1.0.0` | ![Active](https://img.shields.io/badge/Status-Active-brightgreen) | `com.apexsions.core.*` | Otoritas Wilayah Kerajaan (*Zenithar*, *Solterra*, *Sylvamoor*), Sistem Warp Navigasi GUI & Admin Editor GUI, Perlindungan PvP Teritorial Kerajaan, Progresi Leveling (13 XP Sources), BlueMap Polygons, Leaderboard GUI (`/kingdom top`), Kingdom War Manager, PvP Combat Tag (15s), Kingdom-Bounded `/rtp`, dan Enforcer TPA EssentialsX. |
 | **`ApexsionsChat`** | `1.0.0` | ![Active](https://img.shields.io/badge/Status-Active-brightgreen) | `com.apexsions.chat.*` | Komunikasi Kyori MiniMessage, Channel (*Global*, *Kingdom*, *Staff*), Chat Settings GUI (`/channel settings`), Pamer Item (`/showitem`), Surat Offline (`/mail`), Chat Games, dan Moderasi Lapis Tiga dengan Staff Reports GUI. |
 | **`ApexsionsEconomy`** | `1.0.0` | ![Active](https://img.shields.io/badge/Status-Active-brightgreen) | `com.apexsions.economy.*` | Multi-Currency (`Rupiah`, `Diamond`), Transfer Cepat (`/pay`), Pasar Lelang (`/ah`) dengan Escrow Claim, dan Barter/Trade 12-Slot dengan Pajak Transportasi Antar-Kerajaan. |
 | **`ApexsionsBattlepass`** | `1.0.0` | ![Active](https://img.shields.io/badge/Status-Active-brightgreen) | `com.apexsions.battlepass.*` | 200 Level BattlePass, Season Management, Quests (Daily, Weekly, Monthly), Tingkatan Pass (`FREE`, `PREMIUM`, `PREMIUM+`, `ULTIMATE`), dan Visual Admin GUI Editor 54-Slot (`/abp`). |
 | **`ApexsionsShop`** | `1.0.0` | ![Active](https://img.shields.io/badge/Status-Active-brightgreen) | `com.apexsions.shop.*` | Pasar Dinamis 6 Kategori, Rasio Jual **20%**, Formula Dinamis Multiplier Cuaca & Bioma Kerajaan, Price Clamping (50%-200%), Siaran Tren Pasar Berkelanjutan, Pajak Wilayah 10%, UI Ramah Sentuh/Bedrock, dan GUI Jual Cepat 45-Slot (`/sell`). |
-| **`ApexsionsMedia`** | `1.0.0` | ![Active](https://img.shields.io/badge/Status-Active-brightgreen) | `com.apexsions.media.*` | Render Banner/Logo Gambar Multi-Tile Asinkron (PNG/JPG/URL), Raytrace Line-of-Sight Hover Glowing, Actionbar Tooltips, dan Interaksi Tautan Konfirmasi Web (`[Buka URL]` & `[Salin Clipboard]`). |
+| **`ApexsionsMedia`** | `1.0.0` | ![Active](https://img.shields.io/badge/Status-Active-brightgreen) | `com.apexsions.media.*` | Render Banner/Logo Gambar Multi-Tile Asinkron (PNG/JPG/URL) dengan deteksi ukuran otomatis, Raytrace Line-of-Sight Hover Glowing, Actionbar Tooltips, Replikasi/Pindah Banner (`/media place`, `/media copy`), dan Interaksi Tautan Konfirmasi Web (`[Buka URL]` & `[Salin Clipboard]`). |
 
 ---
 
@@ -21,10 +21,16 @@ Kumpulan plugin server Minecraft profesional berkinerja tinggi yang dirancang se
 
 ### 👑 ApexsionsCore
 - **3 Kerajaan Berdaulat**: *Zenithar* (Pegunungan/Tambang), *Solterra* (Gurun/Pertanian), *Sylvamoor* (Hutan/Alam).
+- **Sistem Warp GUI Player & Admin Editor GUI**:
+  - `/warp` & `/warps`: GUI navigasi 54-slot dengan filter tab kategori (`SERVER`, `RESOURCE`, `EVENT`, `KINGDOM`, `PVP`, `GENERAL`).
+  - `/warpmgr` / `/warp admin`: GUI manajemen interaktif admin untuk memperbarui koordinat posisi berdiri, mengubah ikon dari tangan, kategori, delay timer, toggle hidden, dan hapus warp.
+- **Perlindungan Teritorial PvP Sesama Kerajaan**:
+  - Otomatis membatalkan 100% serangan (Melee, Panah/Trident, Splash Potion, Pet) antar sesama anggota kerajaan saat berada **di dalam wilayah kerajaan sendiri**.
+  - Bebas bertarung sesama anggota jika berada di luar wilayah claim (Wilderness / Warzone / Wilayah Musuh).
 - **Formula Leveling & 13 Sumber XP**: Mining, Mob Kill, Woodcutting, Fishing, Farming, Crafting, Enchanting, Smelting, Player Kill, Golden Apple, Potion Use, Exploration, Structure Discovery.
 - **Hall of Fame & Leaderboard GUI (`/kingdom top`)**: Antarmuka visual 54-slot klasemen peringkat kerajaan dan pemain level tertinggi.
 - **Kingdom War Manager (`/ac war`)**: Mode perang resmi antar-kerajaan dengan proteksi penguncian teleportasi di zona perang aktif.
-- **PvP Combat Tagging (15 Detik)**: Mencegah combat log dan membatalkan segala bentuk teleportasi (`/tpa`, `/rtp`, `/spawn`, `/lobby`, `/home`) saat sedang bertarung.
+- **PvP Combat Tagging (15 Detik)**: Mencegah combat log dan membatalkan segala bentuk teleportasi (`/tpa`, `/rtp`, `/warp`, `/spawn`, `/lobby`, `/home`) saat sedang bertarung.
 - **BlueMap Polygon Integration**: Visualisasi transparan wilayah kerajaan pada peta web real-time.
 - **Kingdom-Bounded `/rtp`**: Teleportasi acak aman yang mewajibkan pemain berada di teritori kerajaannya sendiri.
 - **Enforcer TPA EssentialsX**: Teleportasi `/tpa` wajib sesama anggota kerajaan dan kedua pemain wajib berada di dalam area kerajaan.
@@ -59,7 +65,11 @@ Kumpulan plugin server Minecraft profesional berkinerja tinggi yang dirancang se
 - **GUI Jual Cepat 45-Slot (`/sell` & `/sellgui`)**: Drag-and-drop banyak item sekaligus untuk langsung dijual.
 
 ### 🖼️ ApexsionsMedia
-- **Render Gambar Multi-Tile Async**: Mendukung PNG, JPG, JPEG dari file lokal atau URL web tanpa lag server.
+- **Render Banner Gambar Multi-Tile Async**: Mendukung PNG, JPG, JPEG dari file lokal atau URL web tanpa format ketat (dimensi & link opsional).
+- **Penempatan & Kloning Fleksibel**:
+  - `/media place <id>`: Memindahkan/memasang template banner ke dinding yang sedang dilihat via Raytracing.
+  - `/media copy <idAsal> <idBaru>`: Menduplikasi konfigurasi banner ke instance baru.
+  - `/media resize <id> <w> <h>`: Mengubah ukuran tile banner langsung.
 - **Raytrace Line-of-Sight Hover Glowing**: Partikel bercahaya border & actionbar tooltip saat crosshair pemain mengarah ke banner.
 - **Interaksi URL Fleksibel**: Pilihan mode Chat MiniMessage (`[🌐 BUKA URL]` & `[📋 SALIN LINK]`) atau GUI Konfirmasi 27-slot.
 - **100% Vanilla & Bedrock Compatible**: Tanpa mod klien tambahan, didukung penuh oleh Geyser/Floodgate.
@@ -71,13 +81,18 @@ Kumpulan plugin server Minecraft profesional berkinerja tinggi yang dirancang se
 ### 👑 Modul ApexsionsCore
 | Perintah | Alias | Deskripsi | Hak Akses (Permission) | Default |
 | :--- | :--- | :--- | :--- | :---: |
-| `/lobby` | `/hub` | Teleportasi ke lobi utama server | `apexsionscore.command.lobby` | `true` |
+| `/lobby` | `/hub` | Teleportasi ke lobi utama server (Multiverse-ready) | `apexsionscore.command.lobby` | `true` |
+| `/warp [nama]` | `/warps` | Membuka GUI navigasi warp atau teleport langsung | `apexsionscore.command.warp` | `true` |
+| `/warpmgr` | `/warpadmin`, `/warp admin` | Membuka Interactive Admin Warp Management GUI | `apexsionscore.warp.admin` | `op` |
+| `/warp set <nama> [kat]` | - | Membuat warp baru di lokasi berdiri | `apexsionscore.warp.admin` | `op` |
+| `/warp delete <nama>` | `/warp del` | Menghapus warp dari database | `apexsionscore.warp.admin` | `op` |
 | `/kingdom` | `/k`, `/region` | Membuka profil dan status kerajaan | `apexsionscore.command.region` | `true` |
 | `/kingdom choose` | `/k select` | Membuka menu pemilihan 3 kerajaan | `apexsionscore.command.region` | `true` |
 | `/kingdom top` | `/k leaderboard`| Membuka Hall of Fame & Leaderboard GUI | `apexsionscore.command.level` | `true` |
 | `/level` | `/lvl`, `/profile` | Membuka GUI progress bar level & hadiah | `apexsionscore.command.level` | `true` |
 | `/xpguide` | `/exp` | Panduan detail 13 sumber perolehan XP | `apexsionscore.command.level` | `true` |
 | `/rtp` | `/wild`, `/krtp` | Teleportasi acak aman di wilayah kerajaan | `apexsionscore.command.rtp` | `true` |
+| `/ac setlobby` | `/kc setlobby` | Mengatur titik spawn lobi saat ini (Multiverse-ready) | `apexsionscore.admin` | `op` |
 | `/ac war start <K1> <K2> [m]`| - | Memulai perang resmi antar kerajaan (Admin) | `apexsionscore.admin` | `op` |
 | `/ac war stop` | - | Menghentikan perang kerajaan aktif (Admin) | `apexsionscore.admin` | `op` |
 | `/ac war status` | - | Memeriksa status aktif perang kerajaan (Admin) | `apexsionscore.admin` | `op` |
@@ -141,20 +156,31 @@ Kumpulan plugin server Minecraft profesional berkinerja tinggi yang dirancang se
 ### 🖼️ Modul ApexsionsMedia
 | Perintah | Alias | Deskripsi | Hak Akses (Permission) | Default |
 | :--- | :--- | :--- | :--- | :---: |
-| `/media create <id> <src> <w> <h> [url] [mode]` | `/banner create` | Memasang banner baru di lokasi target | `apexsionsmedia.admin` | `op` |
+| `/media create <id> <src> [w] [h] [url] [mode]` | `/banner create` | Memasang banner baru di lokasi target | `apexsionsmedia.admin` | `op` |
+| `/media place <id>` | `/banner place` | Memasang banner yang ada ke dinding target raytrace | `apexsionsmedia.admin` | `op` |
+| `/media copy <idAsal> <idBaru>` | `/banner copy` | Menduplikasi pengaturan banner ke instance baru | `apexsionsmedia.admin` | `op` |
+| `/media resize <id> <w> <h>` | `/banner resize` | Mengubah ukuran lebar & tinggi banner | `apexsionsmedia.admin` | `op` |
+| `/media setlink <id> [url\|none] [mode]` | `/banner setlink` | Mengatur tautan URL interaktif banner | `apexsionsmedia.admin` | `op` |
 | `/media delete <id>` | `/banner delete` | Menghapus banner dan entity terkait | `apexsionsmedia.admin` | `op` |
 | `/media list` | `/banner list` | Menampilkan daftar seluruh banner aktif | `apexsionsmedia.admin` | `op` |
-| `/media setlink <id> <url> [mode]` | `/banner setlink` | Mengubah tautan URL interaktif banner | `apexsionsmedia.admin` | `op` |
 | `/media reload` | `/banner reload` | Memuat ulang konfigurasi & banner | `apexsionsmedia.admin` | `op` |
 
 ---
 
 ## 🛠️ 4. Kompilasi & Build Otomatis
 
-Seluruh 6 plugin dapat dikompilasi secara serentak menggunakan script PowerShell bawaan atau Apache Maven (Java 21 LTS & Paper API 1.21.4):
+Kompilasi seluruh suite secara bersamaan atau per-plugin secara kilat menggunakan PowerShell multi-compiler:
 
 ```powershell
-# Jalankan build script multi-compiler
+# 1. Kompilasi KILAT per plugin (hanya ~15-20 detik):
+powershell -ExecutionPolicy Bypass -File .\build.ps1 Core
+powershell -ExecutionPolicy Bypass -File .\build.ps1 Media
+powershell -ExecutionPolicy Bypass -File .\build.ps1 Chat
+powershell -ExecutionPolicy Bypass -File .\build.ps1 Economy
+powershell -ExecutionPolicy Bypass -File .\build.ps1 Battlepass
+powershell -ExecutionPolicy Bypass -File .\build.ps1 Shop
+
+# 2. Kompilasi SELURUH 6 plugin suite serentak:
 powershell -ExecutionPolicy Bypass -File .\build.ps1
 ```
 

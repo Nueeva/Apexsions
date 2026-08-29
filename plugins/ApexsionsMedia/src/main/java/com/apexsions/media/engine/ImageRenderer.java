@@ -2,7 +2,6 @@ package com.apexsions.media.engine;
 
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.map.MapCanvas;
 import org.bukkit.map.MapRenderer;
@@ -10,6 +9,7 @@ import org.bukkit.map.MapView;
 import org.jetbrains.annotations.NotNull;
 
 import javax.imageio.ImageIO;
+import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
@@ -17,7 +17,11 @@ import java.io.File;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URL;
+import java.util.Collections;
+import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
 public class ImageRenderer {
@@ -29,6 +33,32 @@ public class ImageRenderer {
                 .maximumSize(maxCachedImages)
                 .expireAfterAccess(expireMinutes, TimeUnit.MINUTES)
                 .build();
+    }
+
+    public Dimension detectDimensions(String source, File dataFolder) {
+        try {
+            BufferedImage original;
+            if (source.startsWith("http://") || source.startsWith("https://")) {
+                URL url = URI.create(source).toURL();
+                try (InputStream in = url.openStream()) {
+                    original = ImageIO.read(in);
+                }
+            } else {
+                File imgFile = new File(source);
+                if (!imgFile.isAbsolute()) {
+                    imgFile = new File(new File(dataFolder, "images"), source);
+                }
+                if (!imgFile.exists()) return new Dimension(1, 1);
+                original = ImageIO.read(imgFile);
+            }
+
+            if (original != null) {
+                int w = Math.max(1, Math.min(10, Math.round((float) original.getWidth() / 128.0f)));
+                int h = Math.max(1, Math.min(10, Math.round((float) original.getHeight() / 128.0f)));
+                return new Dimension(w, h);
+            }
+        } catch (Exception ignored) {}
+        return new Dimension(1, 1);
     }
 
     public CompletableFuture<byte[][][]> loadAndProcessTiles(String source, int widthTiles, int heightTiles, File dataFolder) {
@@ -92,24 +122,38 @@ public class ImageRenderer {
         });
     }
 
+    public void invalidateCache() {
+        imageTileCache.invalidateAll();
+    }
+
     public static class CustomMapRenderer extends MapRenderer {
         private final byte[] pixelData;
-        private boolean rendered = false;
+        private final Set<UUID> renderedPlayers = Collections.newSetFromMap(new ConcurrentHashMap<>());
 
         public CustomMapRenderer(byte[] pixelData) {
-            super(false);
+            super(true); // contextual per player
             this.pixelData = pixelData;
         }
 
         @Override
         public void render(@NotNull MapView map, @NotNull MapCanvas canvas, @NotNull Player player) {
-            if (rendered) return;
+            if (renderedPlayers.contains(player.getUniqueId())) {
+                return;
+            }
             for (int y = 0; y < 128; y++) {
                 for (int x = 0; x < 128; x++) {
                     canvas.setPixel(x, y, pixelData[(y * 128) + x]);
                 }
             }
-            rendered = true;
+            renderedPlayers.add(player.getUniqueId());
+        }
+
+        public void resetForPlayer(UUID uuid) {
+            renderedPlayers.remove(uuid);
+        }
+
+        public void resetAll() {
+            renderedPlayers.clear();
         }
     }
 }

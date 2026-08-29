@@ -82,8 +82,33 @@ commands:
     description: Random teleport strictly inside your pledged kingdom territory.
     permission: apexsionscore.command.rtp
     usage: /wild
+  warp:
+    aliases:
+      - warps
+    description: Open warp navigation GUI or teleport to a specific warp location.
+    permission: apexsionscore.command.warp
+    usage: /warp [name|admin|set|del]
+  warps:
+    description: Open the interactive warp navigation menu.
+    permission: apexsionscore.command.warp
+    usage: /warps
+  warpmgr:
+    aliases:
+      - warpadmin
+    description: Open interactive Admin Warp Management GUI.
+    permission: apexsionscore.warp.admin
+    usage: /warpmgr
 
 permissions:
+  apexsionscore.command.warp:
+    description: Allows using /warp and accessing public server warps.
+    default: true
+  apexsionscore.warp.admin:
+    description: Allows managing warps, setting warps, and opening /warpmgr.
+    default: op
+  apexsionscore.warp.bypass:
+    description: Bypasses warp teleportation countdown delay.
+    default: op
   apexsionscore.command.lobby:
     description: Allows teleporting to the lobby.
     default: true

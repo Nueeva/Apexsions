@@ -20,14 +20,14 @@ public class MediaBanner {
     }
 
     private final String id;
-    private final String worldName;
-    private final double x;
-    private final double y;
-    private final double z;
-    private final BlockFace facing;
-    private final int widthTiles;
-    private final int heightTiles;
-    private final String source;
+    private String worldName;
+    private double x;
+    private double y;
+    private double z;
+    private BlockFace facing;
+    private int widthTiles;
+    private int heightTiles;
+    private String source;
     private String linkUrl;
     private ClickMode clickMode;
     private final List<UUID> itemFrameUuids = new ArrayList<>();
@@ -51,13 +51,21 @@ public class MediaBanner {
 
     public String getId() { return id; }
     public String getWorldName() { return worldName; }
+    public void setWorldName(String worldName) { this.worldName = worldName; }
     public double getX() { return x; }
+    public void setX(double x) { this.x = x; }
     public double getY() { return y; }
+    public void setY(double y) { this.y = y; }
     public double getZ() { return z; }
+    public void setZ(double z) { this.z = z; }
     public BlockFace getFacing() { return facing; }
+    public void setFacing(BlockFace facing) { this.facing = facing; }
     public int getWidthTiles() { return widthTiles; }
+    public void setWidthTiles(int widthTiles) { this.widthTiles = widthTiles; }
     public int getHeightTiles() { return heightTiles; }
+    public void setHeightTiles(int heightTiles) { this.heightTiles = heightTiles; }
     public String getSource() { return source; }
+    public void setSource(String source) { this.source = source; }
     public String getLinkUrl() { return linkUrl; }
     public void setLinkUrl(String linkUrl) { this.linkUrl = linkUrl; }
     public ClickMode getClickMode() { return clickMode; }
@@ -75,6 +83,15 @@ public class MediaBanner {
         return w != null ? new Location(w, x, y, z) : null;
     }
 
+    public void updateLocation(Location loc, BlockFace facing) {
+        if (loc == null || loc.getWorld() == null) return;
+        this.worldName = loc.getWorld().getName();
+        this.x = loc.getX();
+        this.y = loc.getY();
+        this.z = loc.getZ();
+        this.facing = facing;
+    }
+
     public BoundingBox getBoundingBox() {
         double minX = x;
         double minY = y - heightTiles + 1.0;
@@ -84,29 +101,30 @@ public class MediaBanner {
         double maxY = y + 1.0;
         double maxZ = z;
 
-        // Facing direction expansions
         switch (facing) {
             case NORTH -> {
-                maxX = x + widthTiles;
-                maxZ = z + 0.2;
-                minZ = z - 0.2;
-            }
-            case SOUTH -> {
                 minX = x - widthTiles + 1.0;
                 maxX = x + 1.0;
-                maxZ = z + 0.2;
-                minZ = z - 0.2;
+                maxZ = z + 0.3;
+                minZ = z - 0.3;
+            }
+            case SOUTH -> {
+                minX = x;
+                maxX = x + widthTiles;
+                maxZ = z + 0.3;
+                minZ = z - 0.3;
             }
             case WEST -> {
-                maxZ = z - widthTiles + 1.0;
-                minZ = z - widthTiles + 1.0;
-                maxX = x + 0.2;
-                minX = x - 0.2;
+                minZ = z;
+                maxZ = z + widthTiles;
+                maxX = x + 0.3;
+                minX = x - 0.3;
             }
             case EAST -> {
-                maxZ = z + widthTiles;
-                maxX = x + 0.2;
-                minX = x - 0.2;
+                minZ = z - widthTiles + 1.0;
+                maxZ = z + 1.0;
+                maxX = x + 0.3;
+                minX = x - 0.3;
             }
             default -> {
                 maxX = x + widthTiles;

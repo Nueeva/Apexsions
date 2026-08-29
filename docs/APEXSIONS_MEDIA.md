@@ -1,6 +1,6 @@
 # ApexsionsMedia — Comprehensive Technical Manual
 
-Panduan teknis dan operasional lengkap untuk modul **`ApexsionsMedia`** (Sistem Render Banner & Logo Gambar Multi-Tile Async, Raytrace Line-of-Sight Hover Glowing, dan Konfirmasi Aksi Tautan Web / Salin Clipboard).
+Panduan teknis dan operasional lengkap untuk modul **`ApexsionsMedia`** (Sistem Render Banner & Logo Gambar Multi-Tile Async, Raytrace Line-of-Sight Hover Glowing, Penempatan Fleksibel, dan Konfirmasi Aksi Tautan Web / Salin Clipboard).
 
 ---
 
@@ -28,11 +28,11 @@ Panduan teknis dan operasional lengkap untuk modul **`ApexsionsMedia`** (Sistem 
 ## 🎨 2. Mesin Raster & Rendering Gambar Async
 
 - **Dukungan Format**: PNG, JPG, JPEG dari folder lokal (`plugins/ApexsionsMedia/images/`) atau URL langsung (`https://...`).
-- **Algoritma Palet Warna Cepat (`MapPalette`)**:
-  - Konversi warna 15-bit RGB ke byte palet warna peta Minecraft bawaan dengan bobot persepsi mata manusia Euclidean ($0.299R^2 + 0.587G^2 + 0.114B^2$).
-  - Multi-tile slicing otomatis: Gambar diperkecil dan dipotong menjadi matriks ubin $128 \times 128$ piksel.
+- **Deteksi Dimensi & Rasio Otomatis**: Jika lebar dan tinggi tidak disertakan dalam perintah, plugin otomatis mendeteksi resolusi gambar asli dan menyesuaikan ubin secara proporsional.
+- **Contextual MapRenderer & Auto-Broadcast**:
+  - Menggunakan renderer peta kontekstual per-pemain sehingga saat pemain baru login atau berpindah dunia, data visual peta otomatis dikirimkan (`player.sendMap`) seketika tanpa visual kosong/goib.
 - **Caffeine Cache Integration**:
-  - Buffer raster ubin disimpan di memori RAM sehingga tidak perlu mengunduh/merender ulang gambar yang sama.
+  - Buffer raster ubin disimpan di memori RAM sehingga tidak perlu mengunduh/merender ulang gambar yang sama saat diduplikasi ke banyak lokasi.
 
 ---
 
@@ -43,7 +43,7 @@ Panduan teknis dan operasional lengkap untuk modul **`ApexsionsMedia`** (Sistem 
 - **Efek Partikel Border**:
   - Menampilkan partikel bercahaya (`GLOW`, `END_ROD`, `DUST`) di sekeliling sudut dan batas banner saat pemain mengarahkan pandangannya ke banner tersebut.
 - **Actionbar Tooltip Real-time**:
-  - Menampilkan prompt teks halus di layar aksi bawah: `✨ KLIK KANAN untuk membuka link informasi!`.
+  - Menampilkan prompt teks halus di layar aksi bawah: `<gradient:#f39c12:#f1c40f><bold>✨ KLIK KANAN</bold></gradient> <gray>untuk membuka link informasi!</gray>`.
 
 ---
 
@@ -69,22 +69,40 @@ Pemain dapat mengklik kanan pada banner untuk memicu aksi URL dengan 3 pilihan m
 
 | Perintah | Alias | Deskripsi | Hak Akses (Permission) | Default |
 | :--- | :--- | :--- | :--- | :---: |
-| `/media create <id> <file/url> <w> <h> [link] [mode]` | `/banner create` | Memasang banner baru di lokasi target | `apexsionsmedia.admin` | `op` |
+| `/media create <id> <file/url> [w] [h] [link] [mode]` | `/banner create` | Memasang banner baru (URL & ukuran opsional) | `apexsionsmedia.admin` | `op` |
+| `/media place <id>` | `/media apply`, `/media paste` | Memasang/memindahkan banner yang ada ke lokasi bidikan baru | `apexsionsmedia.admin` | `op` |
+| `/media copy <idAsal> <idBaru>` | `/media clone` | Menduplikasi konfigurasi banner ke target baru | `apexsionsmedia.admin` | `op` |
+| `/media setlink <id> [link/none] [mode]` | `/banner setlink` | Mengatur, mengubah, atau menghapus tautan URL banner | `apexsionsmedia.admin` | `op` |
+| `/media resize <id> <w> <h>` | `/banner resize` | Mengubah ukuran dimensi ubin banner (1-10) | `apexsionsmedia.admin` | `op` |
 | `/media delete <id>` | `/banner delete` | Menghapus banner dan membersihkan entity | `apexsionsmedia.admin` | `op` |
 | `/media list` | `/banner list` | Menampilkan daftar seluruh banner aktif | `apexsionsmedia.admin` | `op` |
-| `/media setlink <id> <url> [mode]` | `/banner setlink` | Mengatur atau mengubah tautan URL banner | `apexsionsmedia.admin` | `op` |
-| `/media reload` | `/banner reload` | Memuat ulang konfigurasi dan memuat banner | `apexsionsmedia.admin` | `op` |
+| `/media reload` | `/banner reload` | Memuat ulang konfigurasi dan render ulang seluruh banner | `apexsionsmedia.admin` | `op` |
 
 ---
 
-## ⚙️ 6. Contoh Penggunaan Cepat
+## ⚙️ 6. Contoh Penggunaan Cepat & Fleksibel
 
-### Memasang Banner Web Discord (Lebar 3 x Tinggi 2):
+### A. Memasang Banner Sederhana (Tanpa URL, Ukuran Otomatis/Default):
 ```bash
-/media create discord https://example.com/discord-banner.png 3 2 https://discord.gg/apexsions CHAT_PROMPT
+/media create logo logo.png
 ```
 
-### Memasang Logo Server dari File Lokal `plugins/ApexsionsMedia/images/logo.png`:
+### B. Memasang Banner dengan Ukuran Tertentu Saja (Tanpa URL):
 ```bash
-/media create serverlogo logo.png 2 2 https://apexsions.net GUI_CONFIRM
+/media create serverbanner https://example.com/banner.png 3 2
+```
+
+### C. Memasang Banner Lengkap dengan Tautan URL Discord:
+```bash
+/media create discord https://example.com/discord.png 3 2 https://discord.gg/apexsions CHAT_PROMPT
+```
+
+### D. Mengaplikasikan Banner yang Sudah Dibuat ke Tempat Lain:
+Arahkan crosshair ke dinding tempat baru, lalu ketik:
+```bash
+# Untuk memindahkan banner yang sudah ada:
+/media place discord
+
+# Untuk membuat duplikat banner di tempat baru:
+/media copy discord discord_spawn2
 ```

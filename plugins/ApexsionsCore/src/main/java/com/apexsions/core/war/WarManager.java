@@ -50,6 +50,14 @@ public class WarManager {
         return territory.equals(kingdom1) || territory.equals(kingdom2);
     }
 
+    public boolean isWarActiveFor(Player player) {
+        if (!isWarActive() || player == null) return false;
+        var dataOpt = plugin.getPlayerDataService().getCached(player.getUniqueId());
+        if (dataOpt.isEmpty() || dataOpt.get().getRegionId() == null) return false;
+        var regId = dataOpt.get().getRegionId();
+        return (kingdom1 != null && kingdom1.getId().equals(regId)) || (kingdom2 != null && kingdom2.getId().equals(regId));
+    }
+
     public void startWar(Region k1, Region k2, long durationMinutes) {
         if (k1 == null || k2 == null || k1.equals(k2)) {
             return;

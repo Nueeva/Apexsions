@@ -217,6 +217,10 @@ public class DatabaseManager {
         return dataSource.getConnection();
     }
 
+    public HikariDataSource getDataSource() {
+        return dataSource;
+    }
+
     public ExecutorService getAsyncExecutor() {
         return asyncExecutor;
     }

@@ -7,6 +7,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.Player;
@@ -17,8 +18,10 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 import org.bukkit.event.hanging.HangingBreakEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 
 import java.util.Map;
 import java.util.UUID;
@@ -32,6 +35,24 @@ public class MediaInteractListener implements Listener {
 
     public MediaInteractListener(ApexsionsMediaPlugin plugin) {
         this.plugin = plugin;
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onPlayerJoin(PlayerJoinEvent e) {
+        Bukkit.getScheduler().runTaskLater(plugin, () -> {
+            if (e.getPlayer().isOnline()) {
+                plugin.getBannerManager().sendAllBannersToPlayer(e.getPlayer());
+            }
+        }, 15L);
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onPlayerChangedWorld(PlayerChangedWorldEvent e) {
+        Bukkit.getScheduler().runTaskLater(plugin, () -> {
+            if (e.getPlayer().isOnline()) {
+                plugin.getBannerManager().sendAllBannersToPlayer(e.getPlayer());
+            }
+        }, 10L);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
@@ -70,7 +91,7 @@ public class MediaInteractListener implements Listener {
 
         String link = banner.getLinkUrl();
         if (link == null || link.isBlank()) {
-            player.sendMessage(miniMessage.deserialize("<yellow>Banner ini tidak memiliki tautan eksternal.</yellow>"));
+            player.sendMessage(miniMessage.deserialize("<yellow>Banner <gold>" + banner.getId() + "</gold> tidak memiliki tautan URL yang terpasang.</yellow>"));
             return;
         }
 

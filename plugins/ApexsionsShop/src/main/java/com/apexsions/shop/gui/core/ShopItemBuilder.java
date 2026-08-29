@@ -64,8 +64,7 @@ public class ShopItemBuilder {
 
     public ShopItemBuilder glow() {
         if (meta != null) {
-            meta.addEnchant(Enchantment.DURABILITY, 1, true);
-            meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+            meta.setEnchantmentGlintOverride(true);
         }
         return this;
     }
