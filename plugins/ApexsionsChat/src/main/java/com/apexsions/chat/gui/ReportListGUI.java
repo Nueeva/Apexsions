@@ -66,6 +66,7 @@ public class ReportListGUI extends BaseChatGUI {
         if (page > 1) {
             inventory.setItem(36, createNavButton("<yellow>◀ Previous Page</yellow>", Material.ARROW));
         }
+        inventory.setItem(38, createNavButton("<gradient:#3498db:#2980b9><bold>⬅ Kembali ke Admin Hub</bold></gradient>", Material.ARROW));
         if (reports.size() >= 21) {
             inventory.setItem(44, createNavButton("<yellow>Next Page ▶</yellow>", Material.ARROW));
         }

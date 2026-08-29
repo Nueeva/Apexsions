@@ -49,6 +49,13 @@ public class MediaCommand implements CommandExecutor, TabCompleter {
         String sub = args[0].toLowerCase();
 
         switch (sub) {
+            case "gui", "admin" -> {
+                if (sender instanceof Player p) {
+                    new com.apexsions.media.gui.MediaAdminGUI(plugin, p).open();
+                } else {
+                    sender.sendMessage(miniMessage.deserialize("<red>Hanya pemain yang dapat membuka GUI.</red>"));
+                }
+            }
             case "create", "new" -> handleCreate(sender, args);
             case "place", "apply", "paste" -> handlePlace(sender, args);
             case "copy", "clone" -> handleCopy(sender, args);

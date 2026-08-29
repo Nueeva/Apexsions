@@ -74,6 +74,9 @@ public class ApexsionsCorePlugin extends JavaPlugin {
     // Warp System
     private com.apexsions.core.warp.WarpManager warpManager;
 
+    // Admin Hub
+    private com.apexsions.core.admin.AdminHubManager adminHubManager;
+
     // Progression & Rewards
     private LevelFormula levelFormula;
     private LevelTitleResolver levelTitleResolver;
@@ -145,10 +148,13 @@ public class ApexsionsCorePlugin extends JavaPlugin {
             this.combatTagService = new CombatTagService(this);
             this.warManager = new WarManager(this);
 
-            // 5. Warp System
+            // 5. Warp System & Admin Hub
             this.warpManager = new com.apexsions.core.warp.WarpManager(this);
             Bukkit.getPluginManager().registerEvents(new com.apexsions.core.gui.warp.WarpGUIListener(), this);
             Bukkit.getPluginManager().registerEvents(new com.apexsions.core.war.KingdomProtectionListener(this), this);
+
+            this.adminHubManager = new com.apexsions.core.admin.AdminHubManager(this);
+            Bukkit.getPluginManager().registerEvents(new com.apexsions.core.gui.admin.AdminHubListener(), this);
 
             // 6. Progression (Level, XP, Rewards)
             this.levelFormula = new LevelFormula(configManager);
@@ -306,6 +312,24 @@ public class ApexsionsCorePlugin extends JavaPlugin {
             warpMgrCmd.setExecutor(warpHandler);
             warpMgrCmd.setTabCompleter(warpHandler);
         }
+
+        // /admingui (aliases: /apexadmin, /aadmin, /aa)
+        com.apexsions.core.command.AdminHubCommand hubHandler = new com.apexsions.core.command.AdminHubCommand(this);
+        PluginCommand adminGuiCmd = getCommand("admingui");
+        if (adminGuiCmd != null) {
+            adminGuiCmd.setExecutor(hubHandler);
+            adminGuiCmd.setTabCompleter(hubHandler);
+        }
+        PluginCommand apexAdminCmd = getCommand("apexadmin");
+        if (apexAdminCmd != null) {
+            apexAdminCmd.setExecutor(hubHandler);
+            apexAdminCmd.setTabCompleter(hubHandler);
+        }
+        PluginCommand aAdminCmd = getCommand("aadmin");
+        if (aAdminCmd != null) {
+            aAdminCmd.setExecutor(hubHandler);
+            aAdminCmd.setTabCompleter(hubHandler);
+        }
     }
 
     public static ApexsionsCorePlugin getInstance() { return instance; }
@@ -327,6 +351,7 @@ public class ApexsionsCorePlugin extends JavaPlugin {
     public WarManager getWarManager() { return warManager; }
     public WarManager getKingdomWarManager() { return warManager; }
     public com.apexsions.core.warp.WarpManager getWarpManager() { return warpManager; }
+    public com.apexsions.core.admin.AdminHubManager getAdminHubManager() { return adminHubManager; }
     public LevelRewardsGUI getLevelRewardsGUI() { return levelRewardsGUI; }
     public XpGuideGUI getXpGuideGUI() { return xpGuideGUI; }
     public LevelFormula getLevelFormula() { return levelFormula; }

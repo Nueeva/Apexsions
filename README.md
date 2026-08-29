@@ -82,6 +82,7 @@ Kumpulan plugin server Minecraft profesional berkinerja tinggi yang dirancang se
 | Perintah | Alias | Deskripsi | Hak Akses (Permission) | Default |
 | :--- | :--- | :--- | :--- | :---: |
 | `/lobby` | `/hub` | Teleportasi ke lobi utama server (Multiverse-ready) | `apexsionscore.command.lobby` | `true` |
+| `/admingui` | `/apexadmin`, `/aadmin`, `/aa` | **Master Admin Hub Terpusat** (Dashboard 54-slot 6 Modul Suite) | `apexsions.admin.gui` | `op` |
 | `/warp [nama]` | `/warps` | Membuka GUI navigasi warp atau teleport langsung | `apexsionscore.command.warp` | `true` |
 | `/warpmgr` | `/warpadmin`, `/warp admin` | Membuka Interactive Admin Warp Management GUI | `apexsionscore.warp.admin` | `op` |
 | `/warp set <nama> [kat]` | - | Membuat warp baru di lokasi berdiri | `apexsionscore.warp.admin` | `op` |

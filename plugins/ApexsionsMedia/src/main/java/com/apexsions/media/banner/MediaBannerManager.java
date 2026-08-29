@@ -332,6 +332,14 @@ public class MediaBannerManager {
         return Collections.unmodifiableCollection(banners.values());
     }
 
+    public Collection<MediaBanner> getAllBanners() {
+        return getBanners();
+    }
+
+    public void reload() {
+        loadAllBanners();
+    }
+
     public void shutdown() {
         for (MediaBanner b : banners.values()) {
             removeBannerFrames(b);

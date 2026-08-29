@@ -64,7 +64,17 @@ public class WarpAdminGUI implements InventoryHolder {
         }
 
         // Bottom Controls
-        // Slot 45: Add New Warp
+        // Slot 45: Back to Admin Hub
+        ItemStack backBtn = new ItemStack(Material.ARROW);
+        ItemMeta bm = backBtn.getItemMeta();
+        if (bm != null) {
+            bm.displayName(mm.deserialize("<gradient:#3498db:#2980b9><bold>⬅ KEMBALI KE ADMIN HUB</bold></gradient>"));
+            bm.lore(List.of(mm.deserialize("<gray>Kembali ke panel Master Admin Hub (/admingui).</gray>")));
+            backBtn.setItemMeta(bm);
+        }
+        inventory.setItem(45, backBtn);
+
+        // Slot 47: Add New Warp
         ItemStack addBtn = new ItemStack(Material.EMERALD);
         ItemMeta am = addBtn.getItemMeta();
         if (am != null) {
@@ -75,7 +85,7 @@ public class WarpAdminGUI implements InventoryHolder {
             ));
             addBtn.setItemMeta(am);
         }
-        inventory.setItem(45, addBtn);
+        inventory.setItem(47, addBtn);
 
         // Slot 49: Reload Warps
         ItemStack reloadBtn = new ItemStack(Material.NETHER_STAR);
@@ -124,8 +134,15 @@ public class WarpAdminGUI implements InventoryHolder {
         int slot = e.getRawSlot();
         if (slot < 0 || slot >= 54) return;
 
-        // Add Warp button (Slot 45)
+        // Back to Admin Hub (Slot 45)
         if (slot == 45) {
+            player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.7f, 1.2f);
+            plugin.getAdminHubManager().openHub(player);
+            return;
+        }
+
+        // Add Warp button (Slot 47)
+        if (slot == 47) {
             String newId = "warp_" + (warpList.size() + 1);
             plugin.getWarpManager().setWarp(newId, newId, "SERVER", Material.COMPASS, player.getLocation(), null, 3, "Warp baru")
                     .thenAccept(success -> Bukkit.getScheduler().runTask(plugin, () -> {
@@ -182,6 +199,11 @@ public class WarpAdminGUI implements InventoryHolder {
             item.setItemMeta(meta);
         }
         return item;
+    }
+
+    public void open() {
+        player.openInventory(inventory);
+        player.playSound(player.getLocation(), Sound.BLOCK_CHEST_OPEN, 0.8f, 1.2f);
     }
 
     @Override

@@ -107,4 +107,15 @@ public interface ApexsionsCoreAPI {
      */
     @NotNull
     PlayerDataService getPlayerDataService();
+
+    /**
+     * Gets the Central Admin Hub Manager.
+     */
+    @NotNull
+    com.apexsions.core.admin.AdminHubManager getAdminHubManager();
+
+    /**
+     * Registers a custom module card into the Central Master Admin Hub (/admingui).
+     */
+    void registerAdminModule(@NotNull com.apexsions.core.admin.AdminModule module);
 }

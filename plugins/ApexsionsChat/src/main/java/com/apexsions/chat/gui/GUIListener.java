@@ -55,6 +55,11 @@ public class GUIListener implements Listener {
                 player.closeInventory();
                 return;
             }
+            if (slot == 38) {
+                player.closeInventory();
+                player.performCommand("admingui");
+                return;
+            }
             if (slot == 36 && reportListGUI.getPage() > 1) {
                 new ReportListGUI(plugin, reportListGUI.getPage() - 1).loadAndOpen(player);
                 return;

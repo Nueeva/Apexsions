@@ -98,8 +98,27 @@ commands:
     description: Open interactive Admin Warp Management GUI.
     permission: apexsionscore.warp.admin
     usage: /warpmgr
+  admingui:
+    aliases:
+      - apexadmin
+      - aadmin
+      - aa
+    description: Open the Centralized Master Admin Hub for all Apexsions plugins.
+    permission: apexsions.admin.gui
+    usage: /admingui [module|reload]
+  apexadmin:
+    description: Open the Centralized Master Admin Hub for all Apexsions plugins.
+    permission: apexsions.admin.gui
+    usage: /apexadmin
+  aadmin:
+    description: Open the Centralized Master Admin Hub for all Apexsions plugins.
+    permission: apexsions.admin.gui
+    usage: /aadmin
 
 permissions:
+  apexsions.admin.gui:
+    description: Allows accessing the Centralized Master Admin Hub (/admingui).
+    default: op
   apexsionscore.command.warp:
     description: Allows using /warp and accessing public server warps.
     default: true

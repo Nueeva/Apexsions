@@ -61,6 +61,10 @@ public class ConfigManager {
         this.plugin = plugin;
     }
 
+    public void reload() {
+        load();
+    }
+
     public void load() {
         this.mainConfig = loadCustomFile("config.yml", "config.yml");
         this.kingdomsConfig = loadCustomFile("kingdoms/kingdoms.yml", "kingdoms.yml");

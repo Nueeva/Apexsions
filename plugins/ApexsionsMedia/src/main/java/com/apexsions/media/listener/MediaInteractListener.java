@@ -150,6 +150,8 @@ public class MediaInteractListener implements Listener {
     public void onInventoryClick(InventoryClickEvent e) {
         if (e.getInventory().getHolder() instanceof MediaConfirmGUI gui) {
             gui.handleClick(e);
+        } else if (e.getInventory().getHolder() instanceof com.apexsions.media.gui.MediaAdminGUI adminGUI) {
+            adminGUI.handleClick(e);
         }
     }
 }

@@ -113,4 +113,14 @@ public class ApexsionsCoreAPIImpl implements ApexsionsCoreAPI {
     public @NotNull PlayerDataService getPlayerDataService() {
         return plugin.getPlayerDataService();
     }
+
+    @Override
+    public @NotNull com.apexsions.core.admin.AdminHubManager getAdminHubManager() {
+        return plugin.getAdminHubManager();
+    }
+
+    @Override
+    public void registerAdminModule(@NotNull com.apexsions.core.admin.AdminModule module) {
+        plugin.getAdminHubManager().registerModule(module);
+    }
 }

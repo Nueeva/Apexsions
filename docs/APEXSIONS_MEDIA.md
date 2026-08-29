@@ -70,6 +70,7 @@ Pemain dapat mengklik kanan pada banner untuk memicu aksi URL dengan 3 pilihan m
 | Perintah | Alias | Deskripsi | Hak Akses (Permission) | Default |
 | :--- | :--- | :--- | :--- | :---: |
 | `/media create <id> <file/url> [w] [h] [link] [mode]` | `/banner create` | Memasang banner baru (URL & ukuran opsional) | `apexsionsmedia.admin` | `op` |
+| `/media admin` | `/media gui` | Membuka Interactive 54-Slot Banner Management GUI | `apexsionsmedia.admin` | `op` |
 | `/media place <id>` | `/media apply`, `/media paste` | Memasang/memindahkan banner yang ada ke lokasi bidikan baru | `apexsionsmedia.admin` | `op` |
 | `/media copy <idAsal> <idBaru>` | `/media clone` | Menduplikasi konfigurasi banner ke target baru | `apexsionsmedia.admin` | `op` |
 | `/media setlink <id> [link/none] [mode]` | `/banner setlink` | Mengatur, mengubah, atau menghapus tautan URL banner | `apexsionsmedia.admin` | `op` |

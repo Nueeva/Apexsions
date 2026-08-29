@@ -106,6 +106,7 @@ $$\text{XP Dibutuhkan}(L) = \lfloor 100 \times L^{1.5} + (L \times 50) \rfloor$$
 | Perintah | Alias | Deskripsi | Permission | Default |
 | :--- | :--- | :--- | :--- | :---: |
 | `/lobby` | `/hub` | Teleportasi ke lobi pusat server (Mendukung Multiverse) | `apexsionscore.command.lobby` | `true` |
+| `/admingui` | `/apexadmin`, `/aadmin`, `/aa` | **Master Admin Hub Terpusat** (Dashboard 54-slot 6 Modul Suite) | `apexsions.admin.gui` | `op` |
 | `/warp [nama]` | `/warps` | Membuka GUI navigasi warp atau teleport ke warp tertentu | `apexsionscore.command.warp` | `true` |
 | `/warpmgr` | `/warpadmin`, `/warp admin` | Membuka Interactive Admin Warp Management GUI | `apexsionscore.warp.admin` | `op` |
 | `/warp set <nama> [kategori]` | - | Membuat warp baru di lokasi berdiri | `apexsionscore.warp.admin` | `op` |
@@ -123,3 +124,20 @@ $$\text{XP Dibutuhkan}(L) = \lfloor 100 \times L^{1.5} + (L \times 50) \rfloor$$
 | `/ac addxp <p> <amt>` | `/kc addxp` | Menambahkan poin XP ke pemain | `apexsionscore.admin` | `op` |
 | `/ac setlevel <p> <lvl>`| `/kc setlevel` | Mengubah level pemain secara langsung | `apexsionscore.admin` | `op` |
 | `/ac setkingdom <p> <k>`| `/kc setkingdom`| Memindahkan kerajaan pemain secara paksa | `apexsionscore.admin` | `op` |
+
+---
+
+## 🎛️ 8. Master Admin Hub Terpusat (`/admingui`)
+
+- **Dashboard 54-Slot Sentral (`MasterAdminGUI`)**: Menyatukan seluruh modul administrasi plugin dalam satu tampilan intuitif.
+- **Header Status Server Real-time**: Memantau RAM server yang sedang terpakai, TPS, jumlah pemain online, pool koneksi database, serta status perang kerajaan.
+- **6 Kartu Modul Suite**:
+  1. **👑 Core Management**: Sub-menu Warp Manager, Kingdom War Control, dan Lobby Spawn Setup.
+  2. **💬 Chat & Reports**: Kotak masuk resolusi tiket laporan pemain staff (`ReportListGUI`).
+  3. **💰 Economy & Auction**: Kontrol saldo dan pasar lelang pemain.
+  4. **🎫 BattlePass Editor**: Panel visual editor reward, misi, dan seasonal settings (`/abp`).
+  5. **🛒 Dynamic Shop**: Pasar dinamis, harga komoditas cuaca, dan monitoring inflasi.
+  6. **🖼️ Media & Banners**: Daftar banner aktif, teleportasi ke banner, dan replikasi template (`MediaAdminGUI`).
+- **Granular Permission & Visual Lock Indicator**: Kartu modul yang tidak diizinkan untuk staf junior akan tetap tampil tetapi terkunci dengan gembok merah (`🔒 TERKUNCI`), mencegah akses tanpa izin.
+- **Universal Breadcrumb Navigation**: Tombol `⬅ KEMBALI KE ADMIN HUB` (Slot 45) tertanam di seluruh sub-menu admin untuk navigasi bolak-balik tanpa harus mengetik perintah ulang.
+- **Tombol Reload Suite Serentak**: Memuat ulang konfigurasi seluruh plugin suite dengan 1 klik tombol Redstone Block.

@@ -133,6 +133,14 @@ public class AdminMainMenu extends Gui {
         }));
 
         // Navigation
+        setButton(45, new GuiButton(new ItemBuilder(Material.ARROW)
+                .name("&9&l⬅ KEMBALI KE ADMIN HUB")
+                .lore(List.of("&7Kembali ke panel Master Admin Hub (/admingui)."))
+                .build(), event -> {
+            player.closeInventory();
+            player.performCommand("admingui");
+        }));
+
         setButton(49, new CloseButton());
     }
 }
