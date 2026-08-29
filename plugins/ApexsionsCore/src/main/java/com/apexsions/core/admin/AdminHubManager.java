@@ -1,8 +1,7 @@
 package com.apexsions.core.admin;
 
 import com.apexsions.core.ApexsionsCorePlugin;
-import com.apexsions.core.gui.admin.CoreAdminSubGUI;
-import com.apexsions.core.gui.admin.MasterAdminGUI;
+import com.apexsions.core.gui.admin.*;
 import com.apexsions.core.gui.warp.WarpAdminGUI;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -99,11 +98,7 @@ public class AdminHubManager {
 
             @Override
             public void open(Player admin) {
-                if (Bukkit.getPluginManager().isPluginEnabled("ApexsionsChat")) {
-                    admin.performCommand("reports");
-                } else {
-                    admin.sendMessage(mm.deserialize("<red>Plugin ApexsionsChat tidak aktif pada server ini.</red>"));
-                }
+                new ChatAdminSubGUI(plugin, admin).open();
             }
         });
 
@@ -140,11 +135,7 @@ public class AdminHubManager {
 
             @Override
             public void open(Player admin) {
-                if (Bukkit.getPluginManager().isPluginEnabled("ApexsionsEconomy")) {
-                    admin.performCommand("ecoadmin");
-                } else {
-                    admin.sendMessage(mm.deserialize("<red>Plugin ApexsionsEconomy tidak aktif pada server ini.</red>"));
-                }
+                new EconomyAdminSubGUI(plugin, admin).open();
             }
         });
 
@@ -222,12 +213,7 @@ public class AdminHubManager {
 
             @Override
             public void open(Player admin) {
-                if (Bukkit.getPluginManager().isPluginEnabled("ApexsionsShop")) {
-                    admin.performCommand("shop reload");
-                    admin.sendMessage(mm.deserialize("<green>✓ Toko Dinamis berhasil dimuat ulang!</green>"));
-                } else {
-                    admin.sendMessage(mm.deserialize("<red>Plugin ApexsionsShop tidak aktif pada server ini.</red>"));
-                }
+                new ShopAdminSubGUI(plugin, admin).open();
             }
         });
 

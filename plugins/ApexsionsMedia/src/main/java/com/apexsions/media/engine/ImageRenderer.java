@@ -96,6 +96,8 @@ public class ImageRenderer {
 
                 BufferedImage scaled = new BufferedImage(targetW, targetH, BufferedImage.TYPE_INT_ARGB);
                 Graphics2D g2d = scaled.createGraphics();
+                g2d.setColor(java.awt.Color.WHITE);
+                g2d.fillRect(0, 0, targetW, targetH);
                 g2d.drawImage(original.getScaledInstance(targetW, targetH, Image.SCALE_SMOOTH), 0, 0, null);
                 g2d.dispose();
 

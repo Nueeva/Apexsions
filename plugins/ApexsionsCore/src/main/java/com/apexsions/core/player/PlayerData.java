@@ -64,6 +64,11 @@ public class PlayerData {
         this.updatedAt = Instant.now();
     }
 
+    public void addXp(long amount) {
+        this.xp = Math.max(0, this.xp + amount);
+        this.updatedAt = Instant.now();
+    }
+
     public UUID getRegionId() {
         return regionId;
     }

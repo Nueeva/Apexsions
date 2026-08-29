@@ -19,97 +19,114 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.*;
 
 /**
- * Modern 54-Slot GUI Leaderboard displaying Top Kingdoms and Top Players.
- * Fully compatible with ajLeaderboards and DecentHolograms statistics.
+ * Modern 54-Slot Kingdom-Specific Leaderboard GUI.
+ * Shows top ranking players only for the player's chosen kingdom.
  */
 public class KingdomTopGUI implements Listener {
 
     private final ApexsionsCorePlugin plugin;
     private final MiniMessage miniMessage = MiniMessage.miniMessage();
-    private static final String GUI_TITLE = "<gradient:#f39c12:#f1c40f><bold>👑 APEXSIONS LEADERBOARD</bold></gradient>";
 
     public KingdomTopGUI(ApexsionsCorePlugin plugin) {
         this.plugin = plugin;
     }
 
     public void open(Player player) {
-        Inventory inv = Bukkit.createInventory(null, 54, miniMessage.deserialize(GUI_TITLE));
+        PlayerData pData = plugin.getPlayerDataService().getCached(player.getUniqueId()).orElse(null);
+        if (pData == null || !pData.hasRegion()) {
+            player.sendMessage(miniMessage.deserialize("<red><bold>⚔ KERAJAAN DIPERLUKAN:</bold> Anda harus memilih kerajaan terlebih dahulu untuk melihat leaderboard! Gunakan <yellow>/kingdom choose</yellow>.</red>"));
+            player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
+            return;
+        }
+
+        Region region = plugin.getRegionManager().getRegionById(pData.getRegionId()).orElse(null);
+        if (region == null) {
+            player.sendMessage(miniMessage.deserialize("<red>Data wilayah kerajaan kamu tidak ditemukan.</red>"));
+            return;
+        }
+
+        // Asynchronously query database for top 10 players and player's own rank
+        plugin.getPlayerRepository().getTopPlayersByRegionAsync(region.getId(), 10).thenAcceptBoth(
+                plugin.getPlayerRepository().getPlayerRankInRegionAsync(player.getUniqueId(), region.getId()),
+                (topPlayers, playerRank) -> {
+                    Bukkit.getScheduler().runTask(plugin, () -> {
+                        if (!player.isOnline()) return;
+                        renderAndOpen(player, pData, region, topPlayers, playerRank);
+                    });
+                }
+        );
+    }
+
+    private void renderAndOpen(Player player, PlayerData pData, Region region, List<PlayerData> topPlayers, int playerRank) {
+        String titleStr = "<gradient:#f39c12:#f1c40f><bold>👑 TOP KERAJAAN " + region.getKey().toUpperCase() + "</bold></gradient>";
+        Inventory inv = Bukkit.createInventory(null, 54, miniMessage.deserialize(titleStr));
 
         // Background Filler
-        ItemStack filler = createItem(Material.DARK_OAK_HANGING_SIGN, " ", null);
         ItemStack grayGlass = createItem(Material.GRAY_STAINED_GLASS_PANE, " ", null);
-        ItemStack goldGlass = createItem(Material.ORANGE_STAINED_GLASS_PANE, " ", null);
-
         for (int i = 0; i < 54; i++) {
             inv.setItem(i, grayGlass);
         }
 
-        // Header
+        // Header: Kingdom Banner (Slot 4)
+        Material kIcon = region.getKey().equalsIgnoreCase("ZENITHAR") ? Material.GOLD_BLOCK :
+                region.getKey().equalsIgnoreCase("SOLTERRA") ? Material.REDSTONE_BLOCK : Material.EMERALD_BLOCK;
+
         List<Component> headerLore = new ArrayList<>();
-        headerLore.add(miniMessage.deserialize("<gray>Peringkat supremasi kerajaan dan pemain terkuat di server.</gray>"));
+        headerLore.add(miniMessage.deserialize("<gray>Peringkat supremasi dan pahlawan terkuat di kerajaan <yellow>" + region.getDisplayName() + "</yellow>.</gray>"));
         headerLore.add(miniMessage.deserialize(""));
-        headerLore.add(miniMessage.deserialize("<gold>⚔ Bersaing untuk kejayaan kerajaanmu!</gold>"));
-        inv.setItem(4, createItem(Material.NETHER_STAR, "<gold><bold>🌟 HALL OF FAME</bold></gold>", headerLore));
+        headerLore.add(miniMessage.deserialize("<gray>Wilayah Teritori: <white>" + region.getWorldName() + "</white></gray>"));
+        headerLore.add(miniMessage.deserialize("<gray>Status Perang: " + (plugin.getWarManager().isWarActiveInTerritory(region) ? "<red><bold>⚔ SEDANG PERANG</bold></red>" : "<green>Damai</green>") + "</gray>"));
+        headerLore.add(miniMessage.deserialize(""));
+        headerLore.add(miniMessage.deserialize("<gold>⚔ Kejayaan dan kemakmuran abadi bagi " + region.getDisplayName() + "!</gold>"));
+        inv.setItem(4, createItem(kIcon, "<gold><bold>👑 KERAJAAN " + region.getDisplayName().toUpperCase() + "</bold></gold>", headerLore));
 
-        // 3 Kingdom Overview Badges (Slots 20, 22, 24)
-        int[] kingdomSlots = {20, 22, 24};
-        List<Region> regions = new ArrayList<>(plugin.getRegionManager().getRegions());
-        for (int i = 0; i < Math.min(regions.size(), kingdomSlots.length); i++) {
-            Region r = regions.get(i);
-            List<Component> kLore = new ArrayList<>();
-            kLore.add(miniMessage.deserialize("<dark_gray>Statistik Kerajaan</dark_gray>"));
-            kLore.add(miniMessage.deserialize("<gray>Wilayah: <white>" + r.getWorldName() + "</white></gray>"));
-            kLore.add(miniMessage.deserialize("<gray>Status Perang: " + (plugin.getWarManager().isWarActiveInTerritory(r) ? "<red><bold>SEDANG PERANG</bold></red>" : "<green>Damai</green>") + "</gray>"));
-            kLore.add(miniMessage.deserialize(""));
-            kLore.add(miniMessage.deserialize("<yellow>Klik untuk melihat profil kerajaan</yellow>"));
+        // Top 10 Kingdom Player Slots (20..24, 29..33)
+        int[] playerSlots = {20, 21, 22, 23, 24, 29, 30, 31, 32, 33};
 
-            Material icon = r.getKey().equalsIgnoreCase("ZENITHAR") ? Material.GOLD_BLOCK :
-                    r.getKey().equalsIgnoreCase("SOLTERRA") ? Material.REDSTONE_BLOCK : Material.DIAMOND_BLOCK;
-
-            inv.setItem(kingdomSlots[i], createItem(icon, "<gold><bold>" + r.getDisplayName() + "</bold></gold>", kLore));
-        }
-
-        // Top 5 Online Players Preview (Slots 29, 30, 31, 32, 33)
-        List<Player> sortedPlayers = new ArrayList<>(Bukkit.getOnlinePlayers());
-        sortedPlayers.sort((p1, p2) -> {
-            int lvl1 = plugin.getPlayerDataService().getCached(p1.getUniqueId()).map(PlayerData::getLevel).orElse(1);
-            int lvl2 = plugin.getPlayerDataService().getCached(p2.getUniqueId()).map(PlayerData::getLevel).orElse(1);
-            return Integer.compare(lvl2, lvl1);
-        });
-
-        int[] playerSlots = {29, 30, 31, 32, 33};
         for (int i = 0; i < playerSlots.length; i++) {
-            if (i < sortedPlayers.size()) {
-                Player topP = sortedPlayers.get(i);
-                PlayerData data = plugin.getPlayerDataService().getCached(topP.getUniqueId()).orElse(null);
-                int lvl = data != null ? data.getLevel() : 1;
-                long xp = data != null ? data.getXp() : 0;
-                String kName = data != null && data.hasRegion() ? data.getRegionId().toString() : "None";
+            int slot = playerSlots[i];
+            int rankNum = i + 1;
+
+            if (i < topPlayers.size()) {
+                PlayerData topP = topPlayers.get(i);
+                boolean isOnline = Bukkit.getPlayer(topP.getUuid()) != null;
 
                 List<Component> pLore = new ArrayList<>();
-                pLore.add(miniMessage.deserialize("<gray>Peringkat: <gold>#" + (i + 1) + "</gold></gray>"));
-                pLore.add(miniMessage.deserialize("<gray>Level: <yellow>Lv. " + lvl + "</yellow></gray>"));
-                pLore.add(miniMessage.deserialize("<gray>Total XP: <aqua>" + xp + " XP</aqua></gray>"));
+                pLore.add(miniMessage.deserialize("<gray>Peringkat: <gold>#" + rankNum + "</gold></gray>"));
+                pLore.add(miniMessage.deserialize("<gray>Level Karakter: <yellow>Lv. " + topP.getLevel() + "</yellow></gray>"));
+                pLore.add(miniMessage.deserialize("<gray>Total XP: <aqua>" + String.format("%,d", topP.getXp()) + " XP</aqua></gray>"));
                 pLore.add(miniMessage.deserialize(""));
-                pLore.add(miniMessage.deserialize("<green>Status: Online</green>"));
+                pLore.add(miniMessage.deserialize("<gray>Status: " + (isOnline ? "<green>● Online</green>" : "<dark_gray>○ Offline</dark_gray>") + "</gray>"));
 
-                Material trophyMat = (i == 0) ? Material.TOTEM_OF_UNDYING :
-                        (i == 1) ? Material.GOLDEN_HELMET :
-                                (i == 2) ? Material.IRON_HELMET : Material.PLAYER_HEAD;
+                Material trophyMat;
+                if (rankNum == 1) trophyMat = Material.TOTEM_OF_UNDYING;
+                else if (rankNum == 2) trophyMat = Material.GOLDEN_HELMET;
+                else if (rankNum == 3) trophyMat = Material.IRON_HELMET;
+                else trophyMat = Material.PLAYER_HEAD;
 
-                inv.setItem(playerSlots[i], createItem(trophyMat, "<yellow><bold>" + topP.getName() + "</bold></yellow>", pLore));
+                inv.setItem(slot, createItem(trophyMat, "<yellow><bold>#" + rankNum + " " + topP.getUsername() + "</bold></yellow>", pLore));
             } else {
-                List<Component> emptyLore = Collections.singletonList(miniMessage.deserialize("<dark_gray>Slot kosong</dark_gray>"));
-                inv.setItem(playerSlots[i], createItem(Material.BARRIER, "<gray>Peringkat #" + (i + 1) + " (Kosong)</gray>", emptyLore));
+                List<Component> emptyLore = Collections.singletonList(miniMessage.deserialize("<dark_gray>Belum ada pemain di slot peringkat ini.</dark_gray>"));
+                inv.setItem(slot, createItem(Material.BARRIER, "<gray>Peringkat #" + rankNum + " (Kosong)</gray>", emptyLore));
             }
         }
 
-        // Bottom Navigation (Slot 49: Back, Slot 53: Close)
+        // Slot 47: Player's Own Rank Card
+        List<Component> myRankLore = new ArrayList<>();
+        myRankLore.add(miniMessage.deserialize("<gray>Kerajaan: <yellow>" + region.getDisplayName() + "</yellow></gray>"));
+        myRankLore.add(miniMessage.deserialize("<gray>Peringkat Kamu: <gold>#" + playerRank + "</gold></gray>"));
+        myRankLore.add(miniMessage.deserialize("<gray>Level: <yellow>Lv. " + pData.getLevel() + "</yellow></gray>"));
+        myRankLore.add(miniMessage.deserialize("<gray>Total XP: <aqua>" + String.format("%,d", pData.getXp()) + " XP</aqua></gray>"));
+        myRankLore.add(miniMessage.deserialize(""));
+        myRankLore.add(miniMessage.deserialize("<gold>Terus tingkatkan level dan kumpulkan XP!</gold>"));
+        inv.setItem(47, createItem(Material.BOOK, "<green><bold>✦ PERINGKAT PRIBADI KAMU ✦</bold></green>", myRankLore));
+
+        // Bottom Navigation (Slot 49: Back to Profile, Slot 53: Close)
         inv.setItem(49, createItem(Material.ARROW, "<red><bold>◀ KEMBALI KE PROFIL</bold></red>", Collections.singletonList(miniMessage.deserialize("<gray>Kembali ke menu profil kerajaan</gray>"))));
         inv.setItem(53, createItem(Material.BARRIER, "<red><bold>✖ TUTUP</bold></red>", null));
 
         player.openInventory(inv);
-        player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.8f, 1.2f);
+        player.playSound(player.getLocation(), Sound.BLOCK_BEACON_ACTIVATE, 0.8f, 1.3f);
     }
 
     @EventHandler
@@ -117,7 +134,8 @@ public class KingdomTopGUI implements Listener {
         if (!(event.getWhoClicked() instanceof Player player)) return;
 
         Component title = event.getView().title();
-        if (!miniMessage.serialize(title).contains("APEXSIONS LEADERBOARD")) return;
+        String serialized = miniMessage.serialize(title);
+        if (!serialized.contains("TOP KERAJAAN") && !serialized.contains("APEXSIONS LEADERBOARD")) return;
 
         event.setCancelled(true);
         int slot = event.getRawSlot();
@@ -128,8 +146,8 @@ public class KingdomTopGUI implements Listener {
         } else if (slot == 53) {
             player.closeInventory();
             player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.7f, 1.0f);
-        } else if (slot == 20 || slot == 22 || slot == 24) {
-            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BELL, 0.8f, 1.5f);
+        } else if (slot >= 20 && slot <= 33) {
+            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 0.8f, 1.4f);
         }
     }
 

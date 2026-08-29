@@ -19,6 +19,12 @@ public class AdminHubListener implements Listener {
             gui.handleClick(event);
         } else if (holder instanceof CoreAdminSubGUI subGUI) {
             subGUI.handleClick(event);
+        } else if (holder instanceof ChatAdminSubGUI chatGUI) {
+            chatGUI.handleClick(event);
+        } else if (holder instanceof EconomyAdminSubGUI ecoGUI) {
+            ecoGUI.handleClick(event);
+        } else if (holder instanceof ShopAdminSubGUI shopGUI) {
+            shopGUI.handleClick(event);
         }
     }
 }

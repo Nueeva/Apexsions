@@ -51,7 +51,7 @@ public class MapPalette {
 
     public static byte matchColor(Color color) {
         if (color.getAlpha() < 128) {
-            return 0; // Transparent
+            return COLOR_INDEX_CACHE[(31 << 10) | (31 << 5) | 31]; // Pure White for transparent background
         }
         int r = color.getRed() >> 3;
         int g = color.getGreen() >> 3;
@@ -61,7 +61,9 @@ public class MapPalette {
 
     public static byte matchColor(int rgb) {
         int alpha = (rgb >> 24) & 0xFF;
-        if (alpha < 128) return 0;
+        if (alpha < 128) {
+            return COLOR_INDEX_CACHE[(31 << 10) | (31 << 5) | 31]; // Pure White for transparent background
+        }
         int r = ((rgb >> 16) & 0xFF) >> 3;
         int g = ((rgb >> 8) & 0xFF) >> 3;
         int b = (rgb & 0xFF) >> 3;

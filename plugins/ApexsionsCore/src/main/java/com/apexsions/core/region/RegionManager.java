@@ -41,6 +41,10 @@ public class RegionManager {
         return Optional.ofNullable(regionsById.get(id));
     }
 
+    public Optional<Region> getRegionById(UUID id) {
+        return getRegion(id);
+    }
+
     public Optional<Region> getRegion(String key) {
         if (key == null) return Optional.empty();
         return Optional.ofNullable(regionsByKey.get(key.toUpperCase(Locale.ROOT)));

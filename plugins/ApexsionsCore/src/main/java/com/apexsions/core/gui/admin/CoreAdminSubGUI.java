@@ -2,6 +2,7 @@ package com.apexsions.core.gui.admin;
 
 import com.apexsions.core.ApexsionsCorePlugin;
 import com.apexsions.core.gui.warp.WarpAdminGUI;
+import com.apexsions.core.player.PlayerData;
 import com.apexsions.core.region.Region;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -20,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 54-Slot Sub-Menu dedicated to ApexsionsCore administrative tools.
+ * 54-Slot Interactive Sub-Menu for ApexsionsCore administrative tools.
  */
 public class CoreAdminSubGUI implements InventoryHolder {
 
@@ -79,7 +80,7 @@ public class CoreAdminSubGUI implements InventoryHolder {
         }
         inventory.setItem(22, warItem);
 
-        // Slot 24: Set Lobby Spawn (Multiverse-ready)
+        // Slot 24: Set Lobby Spawn
         ItemStack lobbyItem = new ItemStack(Material.BEACON);
         ItemMeta lobbyMeta = lobbyItem.getItemMeta();
         if (lobbyMeta != null) {
@@ -94,12 +95,56 @@ public class CoreAdminSubGUI implements InventoryHolder {
         }
         inventory.setItem(24, lobbyItem);
 
+        // Slot 29: Quick Level / XP Modifier
+        ItemStack xpItem = new ItemStack(Material.EXPERIENCE_BOTTLE);
+        ItemMeta xpMeta = xpItem.getItemMeta();
+        if (xpMeta != null) {
+            xpMeta.displayName(mm.deserialize("<gradient:#2ecc71:#f1c40f><bold>⭐ PLAYER LEVEL & XP BOOST ⭐</bold></gradient>"));
+            xpMeta.lore(List.of(
+                    mm.deserialize("<gray>Beri bonus XP / Level langsung:</gray>"),
+                    mm.deserialize("<dark_gray>•</dark_gray> <white>Beri +500 XP ke dirimu</white>"),
+                    Component.empty(),
+                    mm.deserialize("<yellow>▶ Klik untuk menambah 500 XP ke akunmu!</yellow>")
+            ));
+            xpItem.setItemMeta(xpMeta);
+        }
+        inventory.setItem(29, xpItem);
+
+        // Slot 31: Kingdom RTP Config
+        ItemStack rtpItem = new ItemStack(Material.COMPASS);
+        ItemMeta rtpMeta = rtpItem.getItemMeta();
+        if (rtpMeta != null) {
+            rtpMeta.displayName(mm.deserialize("<gradient:#1abc9c:#16a085><bold>🧭 KINGDOM RTP SERVICE 🧭</bold></gradient>"));
+            rtpMeta.lore(List.of(
+                    mm.deserialize("<gray>Sistem teleportasi acak terisolasi kerajaan:</gray>"),
+                    mm.deserialize("<dark_gray>•</dark_gray> <white>Uji coba Random Teleportasi (/kingdom rtp)</white>"),
+                    Component.empty(),
+                    mm.deserialize("<yellow>▶ Klik untuk uji coba RTP sekarang!</yellow>")
+            ));
+            rtpItem.setItemMeta(rtpMeta);
+        }
+        inventory.setItem(31, rtpItem);
+
+        // Slot 33: Reload Core Config
+        ItemStack reloadItem = new ItemStack(Material.REDSTONE_BLOCK);
+        ItemMeta reloadMeta = reloadItem.getItemMeta();
+        if (reloadMeta != null) {
+            reloadMeta.displayName(mm.deserialize("<gradient:#e74c3c:#c0392b><bold>🔄 RELOAD APEXSIONS CORE 🔄</bold></gradient>"));
+            reloadMeta.lore(List.of(
+                    mm.deserialize("<gray>Muat ulang konfigurasi regions & settings.</gray>"),
+                    Component.empty(),
+                    mm.deserialize("<yellow>▶ Klik untuk reload ApexsionsCore!</yellow>")
+            ));
+            reloadItem.setItemMeta(reloadMeta);
+        }
+        inventory.setItem(33, reloadItem);
+
         // Slot 45: Back Button to Master Admin Hub
         ItemStack backBtn = new ItemStack(Material.ARROW);
         ItemMeta backMeta = backBtn.getItemMeta();
         if (backMeta != null) {
-            backMeta.displayName(mm.deserialize("<gradient:#3498db:#2980b9><bold>⬅ KEMBALI KE ADMIN HUB</bold></gradient>"));
-            backMeta.lore(List.of(mm.deserialize("<gray>Kembali ke menu dashboard utama /admingui.</gray>")));
+            backMeta.displayName(mm.deserialize("<gradient:#e74c3c:#c0392b><bold>⬅ KEMBALI KE ADMIN HUB</bold></gradient>"));
+            backMeta.lore(List.of(mm.deserialize("<gray>Kembali ke menu utama Apexsions Admin Hub.</gray>")));
             backBtn.setItemMeta(backMeta);
         }
         inventory.setItem(45, backBtn);
@@ -114,23 +159,13 @@ public class CoreAdminSubGUI implements InventoryHolder {
         inventory.setItem(49, closeBtn);
     }
 
-    private ItemStack createGlass(Material material, String name) {
-        ItemStack item = new ItemStack(material);
-        ItemMeta meta = item.getItemMeta();
-        if (meta != null) {
-            meta.displayName(mm.deserialize(name));
-            item.setItemMeta(meta);
-        }
-        return item;
-    }
-
     public void handleClick(InventoryClickEvent event) {
         event.setCancelled(true);
         int slot = event.getRawSlot();
 
         if (slot == 45) { // Back to Hub
-            player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.7f, 1.2f);
-            plugin.getAdminHubManager().openHub(player);
+            player.closeInventory();
+            new MasterAdminGUI(plugin, player).open();
             return;
         }
 
@@ -140,36 +175,70 @@ public class CoreAdminSubGUI implements InventoryHolder {
             return;
         }
 
-        if (slot == 20) { // Warp Manager
-            player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.8f, 1.2f);
+        if (slot == 20) { // Warp Admin GUI
+            player.closeInventory();
             new WarpAdminGUI(plugin, player).open();
             return;
         }
 
-        if (slot == 22) { // War Controls
+        if (slot == 22) { // Kingdom War
             if (plugin.getWarManager().isWarActive()) {
                 plugin.getWarManager().stopWar();
-                player.sendMessage(mm.deserialize("<green>✓ Perang kerajaan berhasil dihentikan!</green>"));
+                player.sendMessage(mm.deserialize("<green>✓ Perang kerajaan berhasil dihentikan oleh admin!</green>"));
             } else {
-                var zOpt = plugin.getRegionManager().getRegion("ZENITHAR");
-                var sOpt = plugin.getRegionManager().getRegion("SOLTERRA");
-                if (zOpt.isPresent() && sOpt.isPresent()) {
-                    plugin.getWarManager().startWar(zOpt.get(), sOpt.get(), 30);
-                    player.sendMessage(mm.deserialize("<red>⚔ Perang resmi dimulai antara Zenithar dan Solterra (30 menit)!</red>"));
+                List<Region> list = new ArrayList<>(plugin.getRegionManager().getRegions());
+                if (list.size() >= 2) {
+                    plugin.getWarManager().startWar(list.get(0), list.get(1), 30);
+                    player.sendMessage(mm.deserialize("<red>⚔ Perang kerajaan dideklarasikan selama 30 menit!</red>"));
                 } else {
-                    player.sendMessage(mm.deserialize("<red>Region Zenithar atau Solterra tidak ditemukan di database.</red>"));
+                    player.sendMessage(mm.deserialize("<red>Dibutuhkan minimal 2 kerajaan untuk memulai perang!</red>"));
                 }
             }
-            player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 0.8f, 1.2f);
-            buildGUI(); // Refresh
+            player.playSound(player.getLocation(), Sound.ENTITY_ENDER_DRAGON_GROWL, 0.7f, 1.0f);
+            buildGUI();
             return;
         }
 
         if (slot == 24) { // Set Lobby Spawn
             player.performCommand("ac setlobby");
-            player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 0.8f, 1.5f);
+            player.playSound(player.getLocation(), Sound.BLOCK_BEACON_ACTIVATE, 0.8f, 1.5f);
+            player.sendMessage(mm.deserialize("<green>✓ Titik spawn lobby berhasil disetel pada posisimu!</green>"));
             return;
         }
+
+        if (slot == 29) { // Give 500 XP
+            PlayerData pData = plugin.getPlayerDataService().getCached(player.getUniqueId()).orElse(null);
+            if (pData != null) {
+                pData.addXp(500);
+                plugin.getPlayerRepository().save(pData);
+                player.sendMessage(mm.deserialize("<green>✓ Berhasil menambahkan 500 XP! Total Level: <yellow>Lv. " + pData.getLevel() + "</yellow></green>"));
+                player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 0.8f, 1.4f);
+            }
+            return;
+        }
+
+        if (slot == 31) { // Kingdom RTP
+            player.closeInventory();
+            plugin.getKingdomRtpService().executeRtp(player);
+            return;
+        }
+
+        if (slot == 33) { // Reload Core
+            plugin.getConfigManager().reload();
+            player.sendMessage(mm.deserialize("<green>✓ ApexsionsCore berhasil dimuat ulang!</green>"));
+            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 0.8f, 1.5f);
+            buildGUI();
+        }
+    }
+
+    private ItemStack createGlass(Material material, String name) {
+        ItemStack item = new ItemStack(material);
+        ItemMeta meta = item.getItemMeta();
+        if (meta != null) {
+            meta.displayName(mm.deserialize(name));
+            item.setItemMeta(meta);
+        }
+        return item;
     }
 
     public void open() {

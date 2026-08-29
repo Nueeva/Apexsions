@@ -8,6 +8,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -220,11 +221,12 @@ public class WarpManager {
 
         // Start countdown
         Location startLoc = player.getLocation().clone();
-        player.sendMessage(mm.deserialize("<yellow>⏳ Teleportasi ke <gold>" + warp.getName() + "</gold> dalam <white>" + delay + "</white> detik. Jangan bergerak!</yellow>"));
+        player.sendMessage(mm.deserialize("<yellow>⏳ Mempersiapkan teleportasi ke <gold>" + warp.getName() + "</gold> dalam <white>" + delay + "</white> detik. <red>Jangan bergerak!</red></yellow>"));
         player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1.0f, 1.2f);
 
         BukkitTask task = Bukkit.getScheduler().runTaskTimer(plugin, new Runnable() {
             int remaining = delay;
+            double angle = 0;
 
             @Override
             public void run() {
@@ -234,17 +236,28 @@ public class WarpManager {
                 }
 
                 // Check movement
-                if (player.getLocation().distanceSquared(startLoc) > 0.1) {
+                if (player.getLocation().distanceSquared(startLoc) > 0.15) {
                     player.sendMessage(mm.deserialize("<red>✖ Teleportasi dibatalkan karena kamu bergerak!</red>"));
+                    player.sendActionBar(mm.deserialize("<red><bold>✖ TELEPORTASI DIBATALKAN</bold></red>"));
                     player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
                     cancelPendingTeleport(player.getUniqueId());
                     return;
                 }
 
+                // Particle effects during warmup
+                Location pLoc = player.getLocation().clone();
+                for (int i = 0; i < 4; i++) {
+                    angle += Math.PI / 8;
+                    double xOff = Math.cos(angle) * 0.8;
+                    double zOff = Math.sin(angle) * 0.8;
+                    pLoc.getWorld().spawnParticle(Particle.PORTAL, pLoc.clone().add(xOff, (angle % 2.0), zOff), 1, 0, 0, 0, 0);
+                    pLoc.getWorld().spawnParticle(Particle.ENCHANT, pLoc.clone().add(-xOff, (angle % 2.0), -zOff), 1, 0, 0, 0, 0);
+                }
+
                 remaining--;
                 if (remaining > 0) {
-                    player.sendActionBar(mm.deserialize("<yellow>Teleportasi dalam <gold>" + remaining + "s</gold>...</yellow>"));
-                    player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_HAT, 1.0f, 1.5f);
+                    player.sendActionBar(mm.deserialize("<gradient:#f39c12:#f1c40f><bold>✦ TELEPORTASI KE " + warp.getName().toUpperCase() + " DALAM " + remaining + " DETIK... ✦</bold></gradient>"));
+                    player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 0.8f, 1.4f);
                 } else {
                     cancelPendingTeleport(player.getUniqueId());
                     executeTeleport(player, warp, target);
@@ -255,14 +268,53 @@ public class WarpManager {
         pendingTeleports.put(player.getUniqueId(), task);
     }
 
+    public Location getSafeLandingLocation(Location loc) {
+        if (loc == null || loc.getWorld() == null) return loc;
+        World world = loc.getWorld();
+        int blockX = loc.getBlockX();
+        int blockY = loc.getBlockY();
+        int blockZ = loc.getBlockZ();
+
+        org.bukkit.block.Block feet = world.getBlockAt(blockX, blockY, blockZ);
+        org.bukkit.block.Block head = world.getBlockAt(blockX, blockY + 1, blockZ);
+        org.bukkit.block.Block ground = world.getBlockAt(blockX, blockY - 1, blockZ);
+
+        if (feet.getType() == Material.LAVA || head.getType() == Material.LAVA || ground.getType() == Material.LAVA || ground.getType() == Material.VOID_AIR) {
+            org.bukkit.block.Block highest = world.getHighestBlockAt(blockX, blockZ);
+            Location safe = highest.getLocation().add(0.5, 1.0, 0.5);
+            safe.setYaw(loc.getYaw());
+            safe.setPitch(loc.getPitch());
+            return safe;
+        }
+
+        if (feet.getType().isSolid() || head.getType().isSolid()) {
+            for (int y = blockY; y < world.getMaxHeight() - 2; y++) {
+                org.bukkit.block.Block b1 = world.getBlockAt(blockX, y, blockZ);
+                org.bukkit.block.Block b2 = world.getBlockAt(blockX, y + 1, blockZ);
+                org.bukkit.block.Block bBelow = world.getBlockAt(blockX, y - 1, blockZ);
+                if (!b1.getType().isSolid() && !b2.getType().isSolid() && bBelow.getType().isSolid()) {
+                    Location safe = b1.getLocation().add(0.5, 0.0, 0.5);
+                    safe.setYaw(loc.getYaw());
+                    safe.setPitch(loc.getPitch());
+                    return safe;
+                }
+            }
+        }
+        return loc;
+    }
+
     private void executeTeleport(Player player, Warp warp, Location target) {
-        player.teleportAsync(target).thenAccept(success -> {
+        Location safeTarget = getSafeLandingLocation(target);
+        player.teleportAsync(safeTarget).thenAccept(success -> {
             if (success) {
+                player.sendActionBar(mm.deserialize("<green><bold>✔ BERHASIL TELEPORTASI KE " + warp.getName().toUpperCase() + "!</bold></green>"));
                 player.sendMessage(mm.deserialize("<green>✔ Berhasil teleportasi ke <yellow>" + warp.getName() + "</yellow>!</green>"));
-                player.playSound(target, Sound.ENTITY_ENDERMAN_TELEPORT, 1.0f, 1.0f);
-                target.getWorld().spawnParticle(Particle.PORTAL, target.clone().add(0, 1, 0), 30, 0.5, 0.5, 0.5, 0.1);
+                player.playSound(safeTarget, Sound.ENTITY_ENDERMAN_TELEPORT, 1.0f, 1.1f);
+                player.playSound(safeTarget, Sound.ITEM_CHORUS_FRUIT_TELEPORT, 0.8f, 1.3f);
+                safeTarget.getWorld().spawnParticle(Particle.PORTAL, safeTarget.clone().add(0, 1, 0), 40, 0.5, 0.8, 0.5, 0.1);
+                safeTarget.getWorld().spawnParticle(Particle.TOTEM_OF_UNDYING, safeTarget.clone().add(0, 1, 0), 15, 0.4, 0.6, 0.4, 0.2);
             } else {
-                player.sendMessage(mm.deserialize("<red>Gagal melakukan teleportasi.</red>"));
+                player.sendMessage(mm.deserialize("<red>Gagal melakukan teleportasi ke warp tujuan.</red>"));
             }
         });
     }
