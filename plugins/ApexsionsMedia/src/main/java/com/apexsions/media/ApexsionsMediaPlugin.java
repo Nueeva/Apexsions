@@ -11,6 +11,7 @@ import java.io.File;
 
 public class ApexsionsMediaPlugin extends JavaPlugin {
 
+    // Apexsions Media Plugin Instance
     private static ApexsionsMediaPlugin instance;
     private ImageRenderer imageRenderer;
     private MediaBannerManager bannerManager;

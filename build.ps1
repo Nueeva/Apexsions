@@ -1,9 +1,12 @@
 # ==============================================================================
-#           APEXSIONS PLUGIN SUITE — TURBO MULTI-COMPILER
+#           APEXSIONS PLUGIN SUITE — SMART TURBO MULTI-COMPILER
 # ==============================================================================
 param(
     [Parameter(Position = 0)]
     [string]$Plugin = "",
+
+    [Parameter()]
+    [switch]$All = $false,
 
     [Parameter()]
     [switch]$Clean = $false,
@@ -56,10 +59,50 @@ $allPlugins = @(
     @{ Name = 'ApexsionsMedia';      Path = 'plugins\ApexsionsMedia' }
 )
 
+function Test-PluginModified {
+    param(
+        [string]$Name,
+        [string]$RelPath,
+        [string]$RootDirectory
+    )
+
+    $pluginDir = Join-Path $RootDirectory $RelPath
+    $builtJar = Join-Path $pluginDir ($Name + '-1.0.0.jar')
+    $outJar = Join-Path (Join-Path $RootDirectory 'build\libs') ($Name + '-1.0.0.jar')
+
+    if ((-not (Test-Path $builtJar)) -or (-not (Test-Path $outJar))) {
+        return $true
+    }
+
+    $jarTime = (Get-Item $builtJar).LastWriteTimeUtc
+
+    # Check pom.xml
+    $pomFile = Join-Path $pluginDir 'pom.xml'
+    if (Test-Path $pomFile) {
+        if ((Get-Item $pomFile).LastWriteTimeUtc -gt $jarTime) {
+            return $true
+        }
+    }
+
+    # Check src
+    $srcDir = Join-Path $pluginDir 'src'
+    if (Test-Path $srcDir) {
+        $newestSrc = Get-ChildItem -Path $srcDir -Recurse -File -ErrorAction SilentlyContinue | 
+            Sort-Object LastWriteTimeUtc -Descending | 
+            Select-Object -First 1
+        if ($newestSrc -and ($newestSrc.LastWriteTimeUtc -gt $jarTime)) {
+            return $true
+        }
+    }
+
+    return $false
+}
+
 $targetPlugins = @()
-if ([string]::IsNullOrWhiteSpace($Plugin) -or $Plugin.ToLower() -eq 'all') {
+
+if ($All -or ($Plugin.ToLower() -eq 'all')) {
     $targetPlugins = $allPlugins
-} else {
+} elseif (-not [string]::IsNullOrWhiteSpace($Plugin)) {
     $search = $Plugin.ToLower().Replace('apexsions', '')
     if ($search -eq 'bp') { $search = 'battlepass' }
     if ($search -eq 'eco') { $search = 'economy' }
@@ -72,17 +115,37 @@ if ([string]::IsNullOrWhiteSpace($Plugin) -or $Plugin.ToLower() -eq 'all') {
         Write-Host "Plugin '$Plugin' not found! Available options: Core, Chat, Economy (eco), Battlepass (bp), Shop, Media, all" -ForegroundColor Red
         exit 1
     }
+} else {
+    foreach ($p in $allPlugins) {
+        if (Test-PluginModified -Name $p.Name -RelPath $p.Path -RootDirectory $scriptDir) {
+            $targetPlugins += $p
+        }
+    }
+
+    if ($targetPlugins.Count -eq 0) {
+        $stopwatch.Stop()
+        $quickSec = [math]::Round($stopwatch.Elapsed.TotalSeconds, 2)
+        Write-Host '==========================================================' -ForegroundColor Yellow
+        Write-Host '     ⚡ APEXSIONS PLUGIN SUITE — SMART TURBO COMPILER    ' -ForegroundColor Yellow
+        Write-Host '==========================================================' -ForegroundColor Yellow
+        Write-Host ('  [✓] All 6 plugins are UP TO DATE! (Checked in {0}s)' -f $quickSec) -ForegroundColor Green
+        Write-Host '      No changes detected in source files. Compilation skipped.' -ForegroundColor Gray
+        Write-Host ''
+        Write-Host "  💡 Tip: Gunakan '.\build.ps1 all' jika ingin memaksakan kompilasi seluruh plugin." -ForegroundColor DarkGray
+        exit 0
+    }
 }
 
 Write-Host '==========================================================' -ForegroundColor Yellow
-Write-Host '     ⚡ APEXSIONS PLUGIN SUITE — TURBO MULTI-COMPILER     ' -ForegroundColor Yellow
+Write-Host '     ⚡ APEXSIONS PLUGIN SUITE — SMART TURBO COMPILER    ' -ForegroundColor Yellow
 Write-Host '==========================================================' -ForegroundColor Yellow
 $targetNames = ($targetPlugins | ForEach-Object { $_.Name }) -join ', '
-Write-Host "Target: $targetNames" -ForegroundColor Cyan
+$infoMsg = 'Target: {0} ({1} of {2} plugins)' -f $targetNames, $targetPlugins.Count, $allPlugins.Count
+Write-Host $infoMsg -ForegroundColor Cyan
 if ($Clean) { 
     Write-Host 'Mode  : Clean Recompile (-Clean)' -ForegroundColor DarkYellow 
 } else { 
-    Write-Host 'Mode  : Ultra-Fast Incremental (No Clean)' -ForegroundColor Green 
+    Write-Host 'Mode  : Smart Incremental Build' -ForegroundColor Green 
 }
 
 # Construct Maven arguments
@@ -116,7 +179,8 @@ function Build-Plugin-Fast {
     $sw = [System.Diagnostics.Stopwatch]::StartNew()
     $pluginDir = Join-Path $RootDirectory $RelPath
     $pomFile = Join-Path $pluginDir 'pom.xml'
-    $fullArgs = @('-f', "`"$pomFile`"") + $Goals + $ExtraArgs
+    $quotedPom = '"{0}"' -f $pomFile
+    $fullArgs = @('-f', $quotedPom) + $Goals + $ExtraArgs
 
     $pinfo = New-Object System.Diagnostics.ProcessStartInfo
     $pinfo.FileName = $MvnCmd
@@ -165,13 +229,13 @@ if ($hasMaven) {
     foreach ($p in $targetPlugins) {
         $pName = $p.Name
         $pRel = $p.Path
-        Write-Host ""
-        Write-Host "[$idx/$total] ⚡ Building $pName..." -ForegroundColor Green
+        Write-Host ''
+        Write-Host ('[{0}/{1}] ⚡ Building {2}...' -f $idx, $total, $pName) -ForegroundColor Green
         $res = Build-Plugin-Fast -Name $pName -RelPath $pRel -MvnCmd $mvn -Goals $mvnGoals -ExtraArgs $mvnArgs -OutDirectory $outLibs -RootDirectory $scriptDir
         
         if (-not $res.Success) {
-            Write-Host ""
-            Write-Host "❌ Compilation FAILED for $pName (ExitCode: $($res.ExitCode))" -ForegroundColor Red
+            Write-Host ''
+            Write-Host ('❌ Compilation FAILED for {0} (ExitCode: {1})' -f $pName, $res.ExitCode) -ForegroundColor Red
             Write-Host $res.StdOut
             Write-Host $res.StdErr -ForegroundColor Red
             exit 1
@@ -188,13 +252,13 @@ $totalSec = [math]::Round($stopwatch.Elapsed.TotalSeconds, 2)
 
 Write-Host ''
 Write-Host '==========================================================' -ForegroundColor Yellow
-Write-Host "      ⚡ ALL TARGETS BUILT SUCCESSFULLY IN ${totalSec}s!  " -ForegroundColor Green
+Write-Host ('      ⚡ ALL TARGETS BUILT SUCCESSFULLY IN {0}s!  ' -f $totalSec) -ForegroundColor Green
 Write-Host '==========================================================' -ForegroundColor Yellow
 foreach ($p in $targetPlugins) {
     $pName = $p.Name
     $destJar = Join-Path $outLibs ($pName + '-1.0.0.jar')
     if (Test-Path $destJar) {
         $kb = [math]::Round((Get-Item $destJar).Length / 1024, 2)
-        Write-Host "  [OK] $pName-1.0.0.jar ($kb KB)" -ForegroundColor Cyan
+        Write-Host ('  [OK] {0}-1.0.0.jar ({1} KB)' -f $pName, $kb) -ForegroundColor Cyan
     }
 }
