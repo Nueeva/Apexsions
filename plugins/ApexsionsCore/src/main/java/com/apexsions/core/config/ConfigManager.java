@@ -263,6 +263,13 @@ public class ConfigManager {
         return null;
     }
 
+    public String getKingdomKing(String kingdomKey) {
+        if (kingdomsConfig != null) {
+            return kingdomsConfig.getString("regions." + kingdomKey.toUpperCase() + ".king.name", "Belum Ditunjuk");
+        }
+        return "Belum Ditunjuk";
+    }
+
     public void setKingdomKing(String kingdomKey, String kingName) {
         if (kingdomsConfig != null) {
             kingdomsConfig.set("regions." + kingdomKey.toUpperCase() + ".king.name", kingName);

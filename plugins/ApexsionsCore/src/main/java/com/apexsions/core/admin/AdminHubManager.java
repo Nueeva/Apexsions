@@ -2,7 +2,6 @@ package com.apexsions.core.admin;
 
 import com.apexsions.core.ApexsionsCorePlugin;
 import com.apexsions.core.gui.admin.*;
-import com.apexsions.core.gui.warp.WarpAdminGUI;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
@@ -44,12 +43,12 @@ public class AdminHubManager {
             public List<Component> getDescription(Player player) {
                 return List.of(
                         mm.deserialize("<gray>Kontrol sentral kerajaan, perang, dan navigasi:</gray>"),
-                        mm.deserialize("<dark_gray>•</dark_gray> <yellow>Warp Manager</yellow> <gray>(Daftar & Edit Warp)</gray>"),
-                        mm.deserialize("<dark_gray>•</dark_gray> <yellow>Kingdom War</yellow> <gray>(Deklarasi & Status Perang)</gray>"),
-                        mm.deserialize("<dark_gray>•</dark_gray> <yellow>Region Spawn</yellow> <gray>(Atur titik spawn kerajaan)</gray>"),
-                        mm.deserialize("<dark_gray>•</dark_gray> <yellow>Level & XP</yellow> <gray>(Formula & Level Reward)</gray>"),
+                        mm.deserialize("<dark_gray>•</dark_gray> <yellow>Warp Manager & Penobatan Raja</yellow>"),
+                        mm.deserialize("<dark_gray>•</dark_gray> <yellow>Kingdom War & Teritori</yellow>"),
+                        mm.deserialize("<dark_gray>•</dark_gray> <yellow>Region Spawns & Lobby</yellow>"),
+                        mm.deserialize("<dark_gray>•</dark_gray> <yellow>Kingdom RTP System</yellow>"),
                         Component.empty(),
-                        mm.deserialize("<yellow>▶ Klik untuk membuka Panel Kontrol Core!</yellow>")
+                        mm.deserialize("<yellow>▶ Klik untuk membuka Panel Core!</yellow>")
                 );
             }
 
@@ -65,7 +64,46 @@ public class AdminHubManager {
             }
         });
 
-        // 2. Chat Fallback / Hook
+        // 2. Player Manager Module
+        registerModule(new AdminModule() {
+            @Override
+            public String getId() { return "players"; }
+
+            @Override
+            public Component getDisplayName() {
+                return mm.deserialize("<gradient:#3498db:#9b59b6><bold>👤 PLAYER MANAGER</bold></gradient>");
+            }
+
+            @Override
+            public Material getIcon() { return Material.PLAYER_HEAD; }
+
+            @Override
+            public List<Component> getDescription(Player player) {
+                return List.of(
+                        mm.deserialize("<gray>Akses penuh data pemain & moderasi:</gray>"),
+                        mm.deserialize("<dark_gray>•</dark_gray> <aqua>Daftar Pemain Online & Filter</aqua>"),
+                        mm.deserialize("<dark_gray>•</dark_gray> <aqua>Edit Saldo Rupiah & Diamond</aqua>"),
+                        mm.deserialize("<dark_gray>•</dark_gray> <aqua>Edit Level & XP Progresi</aqua>"),
+                        mm.deserialize("<dark_gray>•</dark_gray> <aqua>Ganti Kerajaan & Sanksi (Mute/Kick/Ban)</aqua>"),
+                        mm.deserialize("<dark_gray>•</dark_gray> <aqua>Teleport & Live Inv Viewer</aqua>"),
+                        Component.empty(),
+                        mm.deserialize("<yellow>▶ Klik untuk membuka Player Manager!</yellow>")
+                );
+            }
+
+            @Override
+            public String getPermission() { return "apexsionscore.admin"; }
+
+            @Override
+            public int getPriority() { return 15; }
+
+            @Override
+            public void open(Player admin) {
+                new PlayerManagerGUI(plugin, admin).open();
+            }
+        });
+
+        // 3. Chat Module
         registerModule(new AdminModule() {
             @Override
             public String getId() { return "chat"; }
@@ -82,9 +120,10 @@ public class AdminHubManager {
             public List<Component> getDescription(Player player) {
                 return List.of(
                         mm.deserialize("<gray>Manajemen obrolan & moderasi staf:</gray>"),
-                        mm.deserialize("<dark_gray>•</dark_gray> <aqua>Staff Reports GUI</aqua> <gray>(Resolusi laporan pemain)</gray>"),
-                        mm.deserialize("<dark_gray>•</dark_gray> <aqua>Global Mute</aqua> <gray>(Kunci/buka obrolan server)</gray>"),
-                        mm.deserialize("<dark_gray>•</dark_gray> <aqua>Channel Controls</aqua> <gray>(Global, Kingdom, Staff)</gray>"),
+                        mm.deserialize("<dark_gray>•</dark_gray> <aqua>Staff Reports Inbox (/reports)</aqua>"),
+                        mm.deserialize("<dark_gray>•</dark_gray> <aqua>Global Mute & Clear Chat</aqua>"),
+                        mm.deserialize("<dark_gray>•</dark_gray> <aqua>Server Broadcast Announcement</aqua>"),
+                        mm.deserialize("<dark_gray>•</dark_gray> <aqua>Trigger Chat Mini-Game</aqua>"),
                         Component.empty(),
                         mm.deserialize("<yellow>▶ Klik untuk membuka Panel Chat!</yellow>")
                 );
@@ -102,7 +141,7 @@ public class AdminHubManager {
             }
         });
 
-        // 3. Economy Hook
+        // 4. Economy Module
         registerModule(new AdminModule() {
             @Override
             public String getId() { return "economy"; }
@@ -118,12 +157,13 @@ public class AdminHubManager {
             @Override
             public List<Component> getDescription(Player player) {
                 return List.of(
-                        mm.deserialize("<gray>Sistem moneter & pasar pemain:</gray>"),
-                        mm.deserialize("<dark_gray>•</dark_gray> <green>Saldo Pemain</green> <gray>(Rupiah Rp & Diamond ♦)</gray>"),
-                        mm.deserialize("<dark_gray>•</dark_gray> <green>Auction Vault</green> <gray>(Audit & bersihkan brankas AH)</gray>"),
-                        mm.deserialize("<dark_gray>•</dark_gray> <green>Trade Taxes</green> <gray>(Pajak perdagangan kerajaan)</gray>"),
+                        mm.deserialize("<gray>Multi-Currency, Bank & Lelang:</gray>"),
+                        mm.deserialize("<dark_gray>•</dark_gray> <green>Transfer Saldo Rupiah & Diamond</green>"),
+                        mm.deserialize("<dark_gray>•</dark_gray> <green>Pasar Lelang Global (/ah)</green>"),
+                        mm.deserialize("<dark_gray>•</dark_gray> <green>Bersihkan Lelang Expired</green>"),
+                        mm.deserialize("<dark_gray>•</dark_gray> <green>Top Saldo Terkaya Server</green>"),
                         Component.empty(),
-                        mm.deserialize("<yellow>▶ Klik untuk melihat informasi Ekonomi!</yellow>")
+                        mm.deserialize("<yellow>▶ Klik untuk membuka Panel Ekonomi!</yellow>")
                 );
             }
 
@@ -139,28 +179,29 @@ public class AdminHubManager {
             }
         });
 
-        // 4. BattlePass Hook
+        // 5. BattlePass Module
         registerModule(new AdminModule() {
             @Override
             public String getId() { return "battlepass"; }
 
             @Override
             public Component getDisplayName() {
-                return mm.deserialize("<gradient:#9b59b6:#8e44ad><bold>🎫 APEXSIONS BATTLEPASS</bold></gradient>");
+                return mm.deserialize("<gradient:#9b59b6:#8e44ad><bold>📜 APEXSIONS BATTLEPASS</bold></gradient>");
             }
 
             @Override
-            public Material getIcon() { return Material.DRAGON_BREATH; }
+            public Material getIcon() { return Material.ENCHANTED_BOOK; }
 
             @Override
             public List<Component> getDescription(Player player) {
                 return List.of(
-                        mm.deserialize("<gray>Visual Editor 54-slot & Manajemen Season:</gray>"),
-                        mm.deserialize("<dark_gray>•</dark_gray> <light_purple>Reward Editor</light_purple> <gray>(200 Level Hadiah)</gray>"),
-                        mm.deserialize("<dark_gray>•</dark_gray> <light_purple>Quests Pool</light_purple> <gray>(Harian, Mingguan, Bulanan)</gray>"),
-                        mm.deserialize("<dark_gray>•</dark_gray> <light_purple>Rotation Shop</light_purple> <gray>(Toko rotasi & XP-Shop)</gray>"),
+                        mm.deserialize("<gray>Progresi musim & quest harian/mingguan:</gray>"),
+                        mm.deserialize("<dark_gray>•</dark_gray> <light_purple>Berikan Premium Pass ke Pemain</light_purple>"),
+                        mm.deserialize("<dark_gray>•</dark_gray> <light_purple>Reset Quest Harian / Mingguan</light_purple>"),
+                        mm.deserialize("<dark_gray>•</dark_gray> <light_purple>Force Rotasi Toko BattlePass</light_purple>"),
+                        mm.deserialize("<dark_gray>•</dark_gray> <light_purple>Set Tier BP Pemain</light_purple>"),
                         Component.empty(),
-                        mm.deserialize("<yellow>▶ Klik untuk membuka Visual Editor (/abp)!</yellow>")
+                        mm.deserialize("<yellow>▶ Klik untuk membuka Panel BattlePass!</yellow>")
                 );
             }
 
@@ -172,15 +213,11 @@ public class AdminHubManager {
 
             @Override
             public void open(Player admin) {
-                if (Bukkit.getPluginManager().isPluginEnabled("ApexsionsBattlepass")) {
-                    admin.performCommand("abp");
-                } else {
-                    admin.sendMessage(mm.deserialize("<red>Plugin ApexsionsBattlepass tidak aktif pada server ini.</red>"));
-                }
+                new BattlePassAdminSubGUI(plugin, admin).open();
             }
         });
 
-        // 5. Dynamic Shop Hook
+        // 6. Dynamic Shop Module
         registerModule(new AdminModule() {
             @Override
             public String getId() { return "shop"; }
@@ -191,17 +228,18 @@ public class AdminHubManager {
             }
 
             @Override
-            public Material getIcon() { return Material.CHEST_MINECART; }
+            public Material getIcon() { return Material.CHEST; }
 
             @Override
             public List<Component> getDescription(Player player) {
                 return List.of(
-                        mm.deserialize("<gray>Pasar dinamis & fluktuasi harga:</gray>"),
-                        mm.deserialize("<dark_gray>•</dark_gray> <gold>Tren Pasar</gold> <gray>(Pantau komoditas BOOM/DIP)</gray>"),
-                        mm.deserialize("<dark_gray>•</dark_gray> <gold>Price Clamping</gold> <gray>(Batas aman 50% - 200%)</gray>"),
-                        mm.deserialize("<dark_gray>•</dark_gray> <gold>Pajak Kerajaan</gold> <gray>(Pajak 10% per wilayah)</gray>"),
+                        mm.deserialize("<gray>Pasar dinamis & komoditas kerajaan:</gray>"),
+                        mm.deserialize("<dark_gray>•</dark_gray> <gold>Inspeksi Toko Utama (/shop)</gold>"),
+                        mm.deserialize("<dark_gray>•</dark_gray> <gold>Status Mob Drops Langka (Sell-Only)</gold>"),
+                        mm.deserialize("<dark_gray>•</dark_gray> <gold>Picu Market Boom / Resesi</gold>"),
+                        mm.deserialize("<dark_gray>•</dark_gray> <gold>Reset Fluktuasi Harga Dinamis</gold>"),
                         Component.empty(),
-                        mm.deserialize("<yellow>▶ Klik untuk mengelola Toko Dinamis!</yellow>")
+                        mm.deserialize("<yellow>▶ Klik untuk membuka Panel Shop!</yellow>")
                 );
             }
 
@@ -217,14 +255,14 @@ public class AdminHubManager {
             }
         });
 
-        // 6. Media & Banner Hook
+        // 7. Media Module
         registerModule(new AdminModule() {
             @Override
             public String getId() { return "media"; }
 
             @Override
             public Component getDisplayName() {
-                return mm.deserialize("<gradient:#1abc9c:#16a085><bold>🖼️ APEXSIONS MEDIA</bold></gradient>");
+                return mm.deserialize("<gradient:#e67e22:#f39c12><bold>🖼️ APEXSIONS MEDIA</bold></gradient>");
             }
 
             @Override
@@ -233,12 +271,13 @@ public class AdminHubManager {
             @Override
             public List<Component> getDescription(Player player) {
                 return List.of(
-                        mm.deserialize("<gray>Render banner, logo & tautan interaktif:</gray>"),
-                        mm.deserialize("<dark_gray>•</dark_gray> <aqua>Banner List</aqua> <gray>(Daftar seluruh banner aktif)</gray>"),
-                        mm.deserialize("<dark_gray>•</dark_gray> <aqua>Raytrace Glow</aqua> <gray>(Line-of-sight visual feedback)</gray>"),
-                        mm.deserialize("<dark_gray>•</dark_gray> <aqua>Template Replikasi</aqua> <gray>(/media place & copy)</gray>"),
+                        mm.deserialize("<gray>Display visual banner & holografi:</gray>"),
+                        mm.deserialize("<dark_gray>•</dark_gray> <yellow>Buat Banner Interaktif Baru</yellow>"),
+                        mm.deserialize("<dark_gray>•</dark_gray> <yellow>Daftar Banner Aktif</yellow>"),
+                        mm.deserialize("<dark_gray>•</dark_gray> <yellow>Atur Aksi Tautan Klik URL</yellow>"),
+                        mm.deserialize("<dark_gray>•</dark_gray> <yellow>Toggle Raytrace Hover Glow</yellow>"),
                         Component.empty(),
-                        mm.deserialize("<yellow>▶ Klik untuk membuka daftar Banner!</yellow>")
+                        mm.deserialize("<yellow>▶ Klik untuk membuka Panel Media!</yellow>")
                 );
             }
 
@@ -250,11 +289,7 @@ public class AdminHubManager {
 
             @Override
             public void open(Player admin) {
-                if (Bukkit.getPluginManager().isPluginEnabled("ApexsionsMedia")) {
-                    admin.performCommand("media admin");
-                } else {
-                    admin.sendMessage(mm.deserialize("<red>Plugin ApexsionsMedia tidak aktif pada server ini.</red>"));
-                }
+                new MediaAdminSubGUI(plugin, admin).open();
             }
         });
     }

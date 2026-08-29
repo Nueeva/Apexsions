@@ -75,6 +75,7 @@ public class ApexsionsCorePlugin extends JavaPlugin {
     private com.apexsions.core.warp.WarpManager warpManager;
 
     // Admin Hub
+    private com.apexsions.core.admin.AdminChatInputManager adminChatInputManager;
     private com.apexsions.core.admin.AdminHubManager adminHubManager;
 
     // Progression & Rewards
@@ -156,6 +157,7 @@ public class ApexsionsCorePlugin extends JavaPlugin {
             Bukkit.getPluginManager().registerEvents(new com.apexsions.core.gui.warp.WarpGUIListener(), this);
             Bukkit.getPluginManager().registerEvents(new com.apexsions.core.war.KingdomProtectionListener(this), this);
 
+            this.adminChatInputManager = new com.apexsions.core.admin.AdminChatInputManager(this);
             this.adminHubManager = new com.apexsions.core.admin.AdminHubManager(this);
             Bukkit.getPluginManager().registerEvents(new com.apexsions.core.gui.admin.AdminHubListener(), this);
 
@@ -354,6 +356,7 @@ public class ApexsionsCorePlugin extends JavaPlugin {
     public WarManager getWarManager() { return warManager; }
     public WarManager getKingdomWarManager() { return warManager; }
     public com.apexsions.core.warp.WarpManager getWarpManager() { return warpManager; }
+    public com.apexsions.core.admin.AdminChatInputManager getAdminChatInputManager() { return adminChatInputManager; }
     public com.apexsions.core.admin.AdminHubManager getAdminHubManager() { return adminHubManager; }
     public LevelRewardsGUI getLevelRewardsGUI() { return levelRewardsGUI; }
     public XpGuideGUI getXpGuideGUI() { return xpGuideGUI; }

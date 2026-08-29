@@ -7,7 +7,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.InventoryHolder;
 
 /**
- * Handles clicks for MasterAdminGUI, CoreAdminSubGUI, and universal back navigation.
+ * Universal Click Listener for all Master Admin Hub dashboards and sub-GUIs.
  */
 public class AdminHubListener implements Listener {
 
@@ -17,14 +17,22 @@ public class AdminHubListener implements Listener {
 
         if (holder instanceof MasterAdminGUI gui) {
             gui.handleClick(event);
-        } else if (holder instanceof CoreAdminSubGUI subGUI) {
-            subGUI.handleClick(event);
+        } else if (holder instanceof PlayerManagerGUI playerManagerGUI) {
+            playerManagerGUI.handleClick(event);
+        } else if (holder instanceof PlayerInspectorGUI playerInspectorGUI) {
+            playerInspectorGUI.handleClick(event);
+        } else if (holder instanceof CoreAdminSubGUI coreGUI) {
+            coreGUI.handleClick(event);
         } else if (holder instanceof ChatAdminSubGUI chatGUI) {
             chatGUI.handleClick(event);
         } else if (holder instanceof EconomyAdminSubGUI ecoGUI) {
             ecoGUI.handleClick(event);
+        } else if (holder instanceof BattlePassAdminSubGUI bpGUI) {
+            bpGUI.handleClick(event);
         } else if (holder instanceof ShopAdminSubGUI shopGUI) {
             shopGUI.handleClick(event);
+        } else if (holder instanceof MediaAdminSubGUI mediaGUI) {
+            mediaGUI.handleClick(event);
         }
     }
 }

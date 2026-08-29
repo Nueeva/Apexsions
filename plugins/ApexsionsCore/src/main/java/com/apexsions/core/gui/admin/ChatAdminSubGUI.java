@@ -14,6 +14,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -33,162 +34,154 @@ public class ChatAdminSubGUI implements InventoryHolder {
         buildGUI();
     }
 
-    private void buildGUI() {
+    public void open() {
+        buildGUI();
+        player.openInventory(inventory);
+    }
+
+    public void buildGUI() {
+        inventory.clear();
+
         ItemStack border = createGlass(Material.BLACK_STAINED_GLASS_PANE, "<dark_gray> </dark_gray>");
+        ItemStack decor = createGlass(Material.CYAN_STAINED_GLASS_PANE, "<aqua>✦</aqua>");
+
         for (int i = 0; i < 54; i++) {
             if (i < 9 || i >= 45 || i % 9 == 0 || i % 9 == 8) {
                 inventory.setItem(i, border);
             }
         }
+        inventory.setItem(1, decor);
+        inventory.setItem(7, decor);
+        inventory.setItem(46, decor);
+        inventory.setItem(52, decor);
+
+        // Header Slot 4: Overview
+        ItemStack header = new ItemStack(Material.WRITABLE_BOOK);
+        ItemMeta hMeta = header.getItemMeta();
+        if (hMeta != null) {
+            hMeta.displayName(mm.deserialize("<gradient:#3498db:#9b59b6><bold>💬 PUSAT MODERASI & CHAT APEXSIONS 💬</bold></gradient>"));
+            hMeta.lore(List.of(
+                    mm.deserialize("<gray>Plugin:</gray> <aqua>ApexsionsChat v1.0.0</aqua>"),
+                    mm.deserialize("<gray>Saluran:</gray> <yellow>Global, Kingdom, Local, Staff</yellow>"),
+                    mm.deserialize("<gray>Filter:</gray> <green>● 3-Layer Moderation Engine Active</green>"),
+                    Component.empty(),
+                    mm.deserialize("<yellow>Pilih kontrol obrolan di bawah.</yellow>")
+            ));
+            header.setItemMeta(hMeta);
+        }
+        inventory.setItem(4, header);
 
         // Slot 20: Open Staff Reports GUI (/reports)
-        ItemStack reportItem = new ItemStack(Material.WRITABLE_BOOK);
-        ItemMeta repMeta = reportItem.getItemMeta();
-        if (repMeta != null) {
-            repMeta.displayName(mm.deserialize("<gradient:#e74c3c:#f39c12><bold>📋 STAFF REPORTS INBOX 📋</bold></gradient>"));
-            repMeta.lore(List.of(
-                    mm.deserialize("<gray>Buka daftar tiket laporan pemain:</gray>"),
-                    mm.deserialize("<dark_gray>•</dark_gray> <white>Investigasi bukti chat & teleportasi</white>"),
-                    mm.deserialize("<dark_gray>•</dark_gray> <white>Ambil tindakan sanksi / dismiss</white>"),
-                    Component.empty(),
-                    mm.deserialize("<yellow>▶ Klik untuk membuka /reports GUI!</yellow>")
-            ));
-            reportItem.setItemMeta(repMeta);
-        }
-        inventory.setItem(20, reportItem);
+        inventory.setItem(20, createActionItem(Material.BOOK, "<gradient:#e74c3c:#f39c12><bold>📋 STAFF REPORTS INBOX</bold></gradient>",
+                List.of("<gray>Buka daftar tiket laporan pemain.</gray>", "<yellow>▶ Klik untuk buka GUI Laporan</yellow>")));
+
+        // Slot 21: Toggle Global Mute
+        inventory.setItem(21, createActionItem(Material.BELL, "<gold><bold>🔇 TOGGLE GLOBAL MUTE</bold></gold>",
+                List.of("<gray>Kunci atau buka seluruh saluran chat publik.</gray>", "<yellow>▶ Klik untuk toggle mute server</yellow>")));
 
         // Slot 22: Clear Global Chat
-        ItemStack clearItem = new ItemStack(Material.BUCKET);
-        ItemMeta clearMeta = clearItem.getItemMeta();
-        if (clearMeta != null) {
-            clearMeta.displayName(mm.deserialize("<gradient:#e67e22:#d35400><bold>🧹 BERSIHKAN OBROLAN GLOBAL 🧹</bold></gradient>"));
-            clearMeta.lore(List.of(
-                    mm.deserialize("<gray>Membersihkan riwayat obrolan layar seluruh pemain.</gray>"),
-                    Component.empty(),
-                    mm.deserialize("<yellow>▶ Klik untuk membersihkan chat sekarang!</yellow>")
-            ));
-            clearItem.setItemMeta(clearMeta);
-        }
-        inventory.setItem(22, clearItem);
+        inventory.setItem(22, createActionItem(Material.BUCKET, "<gradient:#e67e22:#d35400><bold>🧹 BERSIHKAN OBROLAN GLOBAL</bold></gradient>",
+                List.of("<gray>Bersihkan riwayat obrolan layar seluruh pemain.</gray>", "<yellow>▶ Klik untuk bersihkan chat</yellow>")));
+
+        // Slot 23: Broadcast Global Announcement (Chat Input)
+        inventory.setItem(23, createActionItem(Material.OAK_SIGN, "<yellow><bold>📢 SIARKAN PENGUMUMAN (BROADCAST)</bold></yellow>",
+                List.of("<gray>Kirim pengumuman resmi ke seluruh server.</gray>", "<yellow>▶ Klik untuk input teks di chat</yellow>")));
 
         // Slot 24: Start Chat Game
-        ItemStack gameItem = new ItemStack(Material.FIREWORK_ROCKET);
-        ItemMeta gameMeta = gameItem.getItemMeta();
-        if (gameMeta != null) {
-            gameMeta.displayName(mm.deserialize("<gradient:#2ecc71:#27ae60><bold>🎯 MULAI CHAT MINI-GAME 🎯</bold></gradient>"));
-            gameMeta.lore(List.of(
-                    mm.deserialize("<gray>Picu event mini-game kuis / susun kata di chat.</gray>"),
-                    Component.empty(),
-                    mm.deserialize("<yellow>▶ Klik untuk memulai event chat game!</yellow>")
-            ));
-            gameItem.setItemMeta(gameMeta);
-        }
-        inventory.setItem(24, gameItem);
+        inventory.setItem(24, createActionItem(Material.FIREWORK_ROCKET, "<gradient:#2ecc71:#27ae60><bold>🎯 MULAI CHAT MINI-GAME</bold></gradient>",
+                List.of("<gray>Picu event mini-game tebak kata / matematika.</gray>", "<yellow>▶ Klik untuk mulai chat game</yellow>")));
 
         // Slot 31: Reload Chat Plugin
-        ItemStack reloadItem = new ItemStack(Material.REDSTONE_BLOCK);
-        ItemMeta relMeta = reloadItem.getItemMeta();
-        if (relMeta != null) {
-            relMeta.displayName(mm.deserialize("<gradient:#e74c3c:#c0392b><bold>🔄 RELOAD APEXSIONS CHAT 🔄</bold></gradient>"));
-            relMeta.lore(List.of(
-                    mm.deserialize("<gray>Muat ulang konfigurasi, channels & filter.</gray>"),
-                    Component.empty(),
-                    mm.deserialize("<yellow>▶ Klik untuk reload!</yellow>")
-            ));
-            reloadItem.setItemMeta(relMeta);
-        }
-        inventory.setItem(31, reloadItem);
+        inventory.setItem(31, createActionItem(Material.REDSTONE_BLOCK, "<gradient:#e74c3c:#c0392b><bold>🔄 RELOAD APEXSIONS CHAT</bold></gradient>",
+                List.of("<gray>Muat ulang channels, filter kata, dan pesan chat.</gray>", "<yellow>▶ Klik untuk reload</yellow>")));
 
-        // Slot 45: Back Button
-        ItemStack backBtn = new ItemStack(Material.ARROW);
-        ItemMeta backMeta = backBtn.getItemMeta();
-        if (backMeta != null) {
-            backMeta.displayName(mm.deserialize("<gradient:#e74c3c:#c0392b><bold>⬅ KEMBALI KE ADMIN HUB</bold></gradient>"));
-            backBtn.setItemMeta(backMeta);
-        }
-        inventory.setItem(45, backBtn);
-
-        // Slot 49: Close
-        ItemStack closeBtn = new ItemStack(Material.BARRIER);
-        ItemMeta closeMeta = closeBtn.getItemMeta();
-        if (closeMeta != null) {
-            closeMeta.displayName(mm.deserialize("<red><bold>✖ TUTUP</bold></red>"));
-            closeBtn.setItemMeta(closeMeta);
-        }
-        inventory.setItem(49, closeBtn);
+        // Slot 49: Back Button
+        ItemStack backBtn = createActionItem(Material.OAK_DOOR, "<red><bold>◀ KEMBALI KE MASTER ADMIN HUB</bold></red>",
+                List.of("<gray>Kembali ke menu utama panel administrasi.</gray>"));
+        inventory.setItem(49, backBtn);
     }
 
     public void handleClick(InventoryClickEvent event) {
         event.setCancelled(true);
         int slot = event.getRawSlot();
 
-        if (slot == 45) {
-            player.closeInventory();
+        if (slot == 49) {
+            player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.7f, 1.0f);
             new MasterAdminGUI(plugin, player).open();
             return;
         }
 
-        if (slot == 49) {
+        if (slot == 20) { // Reports
             player.closeInventory();
-            player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.7f, 1.0f);
+            player.performCommand("reports");
             return;
         }
 
-        if (slot == 20) { // /reports
-            player.closeInventory();
-            if (Bukkit.getPluginManager().isPluginEnabled("ApexsionsChat")) {
-                player.performCommand("reports");
-            } else {
-                player.sendMessage(mm.deserialize("<red>Plugin ApexsionsChat tidak aktif.</red>"));
-            }
+        if (slot == 21) { // Mute Chat
+            player.performCommand("mutechat");
+            player.playSound(player.getLocation(), Sound.BLOCK_BEACON_ACTIVATE, 0.8f, 1.5f);
             return;
         }
 
-        if (slot == 22) { // Clear chat
-            player.closeInventory();
-            if (Bukkit.getPluginManager().isPluginEnabled("ApexsionsChat")) {
-                player.performCommand("clearchat");
-            } else {
-                for (int i = 0; i < 100; i++) {
-                    Bukkit.broadcast(Component.empty());
-                }
-                Bukkit.broadcast(mm.deserialize("<yellow>Obrolan telah dibersihkan oleh Administrator <white>" + player.getName() + "</white>.</yellow>"));
-            }
+        if (slot == 22) { // Clear Chat
+            player.performCommand("clearchat");
+            player.sendMessage(mm.deserialize("<green>✓ Obrolan global berhasil dibersihkan!</green>"));
+            player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 0.8f, 1.5f);
             return;
         }
 
-        if (slot == 24) { // Start chat game
-            player.closeInventory();
-            if (Bukkit.getPluginManager().isPluginEnabled("ApexsionsChat")) {
-                player.performCommand("chatgame start");
-            } else {
-                player.sendMessage(mm.deserialize("<red>Plugin ApexsionsChat tidak aktif.</red>"));
-            }
+        if (slot == 23) { // Broadcast
+            plugin.getAdminChatInputManager().startSession(player,
+                    "Ketik pesan pengumuman yang ingin disiarkan ke seluruh server:",
+                    broadcastText -> {
+                        Bukkit.broadcast(mm.deserialize("<gradient:#f1c40f:#e67e22><bold>📢 PENGUMUMAN RESMI 📢</bold></gradient>\n<white>" + broadcastText + "</white>"));
+                        for (Player online : Bukkit.getOnlinePlayers()) {
+                            online.playSound(online.getLocation(), Sound.UI_TOAST_CHALLENGE_COMPLETE, 0.8f, 1.2f);
+                        }
+                        open();
+                    },
+                    this::open
+            );
+            return;
+        }
+
+        if (slot == 24) { // Start Chat Game
+            player.performCommand("chatgame start");
+            player.sendMessage(mm.deserialize("<green>✓ Event chat mini-game dimulai!</green>"));
+            player.playSound(player.getLocation(), Sound.ENTITY_FIREWORK_ROCKET_LAUNCH, 0.8f, 1.2f);
             return;
         }
 
         if (slot == 31) { // Reload
-            if (Bukkit.getPluginManager().isPluginEnabled("ApexsionsChat")) {
-                player.performCommand("apexsionschat reload");
-            }
-            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 0.8f, 1.5f);
+            player.performCommand("chat reload");
             player.sendMessage(mm.deserialize("<green>✓ ApexsionsChat berhasil dimuat ulang!</green>"));
+            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 0.8f, 1.5f);
         }
     }
 
-    private ItemStack createGlass(Material material, String name) {
-        ItemStack item = new ItemStack(material);
+    private ItemStack createActionItem(Material mat, String name, List<String> loreLines) {
+        ItemStack item = new ItemStack(mat);
+        ItemMeta meta = item.getItemMeta();
+        if (meta != null) {
+            meta.displayName(mm.deserialize(name));
+            List<Component> components = new ArrayList<>();
+            for (String l : loreLines) {
+                components.add(mm.deserialize(l));
+            }
+            meta.lore(components);
+            item.setItemMeta(meta);
+        }
+        return item;
+    }
+
+    private ItemStack createGlass(Material mat, String name) {
+        ItemStack item = new ItemStack(mat);
         ItemMeta meta = item.getItemMeta();
         if (meta != null) {
             meta.displayName(mm.deserialize(name));
             item.setItemMeta(meta);
         }
         return item;
-    }
-
-    public void open() {
-        player.openInventory(inventory);
-        player.playSound(player.getLocation(), Sound.BLOCK_CHEST_OPEN, 0.8f, 1.2f);
     }
 
     @Override

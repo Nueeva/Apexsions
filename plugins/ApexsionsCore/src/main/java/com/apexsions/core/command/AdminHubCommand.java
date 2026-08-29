@@ -2,7 +2,10 @@ package com.apexsions.core.command;
 
 import com.apexsions.core.ApexsionsCorePlugin;
 import com.apexsions.core.admin.AdminModule;
+import com.apexsions.core.gui.admin.PlayerInspectorGUI;
+import com.apexsions.core.gui.admin.PlayerManagerGUI;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -51,6 +54,22 @@ public class AdminHubCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
+        if (sub.equals("player") || sub.equals("inspect")) {
+            if (args.length >= 2) {
+                Player target = Bukkit.getPlayer(args[1]);
+                if (target != null) {
+                    new PlayerInspectorGUI(plugin, player, target).open();
+                    return true;
+                } else {
+                    player.sendMessage(mm.deserialize("<red>Pemain '" + args[1] + "' tidak ditemukan atau sedang offline.</red>"));
+                    return true;
+                }
+            } else {
+                new PlayerManagerGUI(plugin, player).open();
+                return true;
+            }
+        }
+
         Optional<AdminModule> moduleOpt = plugin.getAdminHubManager().getModule(sub);
         if (moduleOpt.isPresent()) {
             AdminModule module = moduleOpt.get();
@@ -71,12 +90,23 @@ public class AdminHubCommand implements CommandExecutor, TabCompleter {
         if (args.length == 1) {
             List<String> list = new ArrayList<>();
             list.add("reload");
+            list.add("player");
+            list.add("inspect");
             for (AdminModule m : plugin.getAdminHubManager().getAllModules()) {
                 list.add(m.getId());
             }
             String query = args[0].toLowerCase();
             return list.stream().filter(s -> s.toLowerCase().startsWith(query)).toList();
         }
+
+        if (args.length == 2 && (args[0].equalsIgnoreCase("player") || args[0].equalsIgnoreCase("inspect"))) {
+            String query = args[1].toLowerCase();
+            return Bukkit.getOnlinePlayers().stream()
+                    .map(Player::getName)
+                    .filter(n -> n.toLowerCase().startsWith(query))
+                    .toList();
+        }
+
         return Collections.emptyList();
     }
 }
