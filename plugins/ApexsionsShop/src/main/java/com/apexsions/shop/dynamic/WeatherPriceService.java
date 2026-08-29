@@ -42,25 +42,25 @@ public class WeatherPriceService {
         switch (weather) {
             case CLEAR -> {
                 if (category == ShopCategory.FARMING) {
-                    return plugin.getConfigManager().getMarketsConfig().getDouble("weather.clear.farming-sell-multiplier", 1.20);
+                    return plugin.getConfigManager().getMarketsConfig().getDouble("weather.clear.farming-sell-multiplier", 1.10);
                 }
                 return plugin.getConfigManager().getMarketsConfig().getDouble("weather.clear.mob-sell-multiplier", 1.00);
             }
             case RAIN -> {
                 if (category == ShopCategory.FARMING) {
-                    return plugin.getConfigManager().getMarketsConfig().getDouble("weather.rain.farming-sell-multiplier", 0.95);
+                    return plugin.getConfigManager().getMarketsConfig().getDouble("weather.rain.farming-sell-multiplier", 0.98);
                 }
                 if (category == ShopCategory.MOB_DROPS) {
-                    return plugin.getConfigManager().getMarketsConfig().getDouble("weather.rain.mob-sell-multiplier", 1.10);
+                    return plugin.getConfigManager().getMarketsConfig().getDouble("weather.rain.mob-sell-multiplier", 1.05);
                 }
                 return 1.00;
             }
             case THUNDER -> {
                 if (category == ShopCategory.FARMING) {
-                    return plugin.getConfigManager().getMarketsConfig().getDouble("weather.thunder.farming-sell-multiplier", 0.90);
+                    return plugin.getConfigManager().getMarketsConfig().getDouble("weather.thunder.farming-sell-multiplier", 0.95);
                 }
                 if (category == ShopCategory.MOB_DROPS) {
-                    return plugin.getConfigManager().getMarketsConfig().getDouble("weather.thunder.mob-sell-multiplier", 1.25);
+                    return plugin.getConfigManager().getMarketsConfig().getDouble("weather.thunder.mob-sell-multiplier", 1.15);
                 }
                 return 1.00;
             }
@@ -73,9 +73,9 @@ public class WeatherPriceService {
     public String getWeatherDescription(World world) {
         WeatherType weather = getCurrentWeather(world);
         return switch (weather) {
-            case CLEAR -> "<yellow>☀ Cerah / Kemarau (Bonus Panen +20%)</yellow>";
+            case CLEAR -> "<yellow>☀ Cerah / Kemarau (Bonus Panen +10%)</yellow>";
             case RAIN -> "<aqua>🌧 Hujan Subur</aqua>";
-            case THUNDER -> "<dark_purple>⚡ Badai Petir (Bonus Drop Monster +25%)</dark_purple>";
+            case THUNDER -> "<dark_purple>⚡ Badai Petir (Bonus Drop Monster +15%)</dark_purple>";
         };
     }
 }

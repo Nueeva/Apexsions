@@ -1,38 +1,63 @@
 # ========================================================
-# APEXSIONS SHOP - DYNAMIC WEATHER & REGIONAL MULTIPLIERS
+# APEXSIONS SHOP - DYNAMIC WEATHER, REGIONAL & MARKET CONFIG
 # ========================================================
 
 weather:
   enabled: true
   clear:
-    farming-sell-multiplier: 1.20 # Kemarau/terik: hasil panen lebih langka & bernilai tinggi
+    farming-sell-multiplier: 1.10 # Cuaca cerah: hasil pertanian +10%
     mob-sell-multiplier: 1.00
   rain:
-    farming-sell-multiplier: 0.95
-    mob-sell-multiplier: 1.10
+    farming-sell-multiplier: 0.98
+    mob-sell-multiplier: 1.05
   thunder:
-    farming-sell-multiplier: 0.90
-    mob-sell-multiplier: 1.25 # Badai petir: monster lebih ganas, drop lebih berharga
+    farming-sell-multiplier: 0.95
+    mob-sell-multiplier: 1.15 # Badai petir: monster lebih ganas, drop +15%
 
 kingdoms:
   SOLTERRA: # Kerajaan Agraris (Plains & Savanna)
-    food-buy-multiplier: 0.80      # Makanan lebih murah 20%
-    farming-buy-multiplier: 0.80   # Pertanian lebih murah 20%
-    ores-buy-multiplier: 1.25      # Tambang mineral lebih mahal 25%
-    blocks-buy-multiplier: 1.10
+    food-buy-multiplier: 0.90      # Makanan lebih murah 10%
+    farming-buy-multiplier: 0.90   # Pertanian lebih murah 10%
+    ores-buy-multiplier: 1.10      # Tambang mineral lebih mahal 10%
+    blocks-buy-multiplier: 1.05
   ZENITHAR: # Kerajaan Pertambangan (Mountains & Caves)
-    ores-buy-multiplier: 0.80      # Tambang & mineral lebih murah 20%
-    food-buy-multiplier: 1.30      # Makanan lebih mahal 30%
-    farming-buy-multiplier: 1.25   # Pertanian lebih mahal 25%
-    dyes-buy-multiplier: 1.15
+    ores-buy-multiplier: 0.90      # Tambang & mineral lebih murah 10%
+    food-buy-multiplier: 1.15      # Makanan lebih mahal 15%
+    farming-buy-multiplier: 1.10   # Pertanian lebih mahal 10%
+    dyes-buy-multiplier: 1.05
   SYLVAMOOR: # Kerajaan Alam & Rimba (Forest, Jungle, Swamp)
-    dyes-buy-multiplier: 0.75      # Pewarna & tanaman liar lebih murah 25%
-    farming-buy-multiplier: 0.85
-    ores-buy-multiplier: 1.20      # Tambang mineral lebih mahal 20%
-    mob_drops-buy-multiplier: 0.85
+    dyes-buy-multiplier: 0.85      # Pewarna & tanaman liar lebih murah 15%
+    farming-buy-multiplier: 0.95
+    ores-buy-multiplier: 1.10      # Tambang mineral lebih mahal 10%
+    mob_drops-buy-multiplier: 0.90
 
-supply-scanner:
+# ========================================================
+# PASAR DINAMIS GLOBAL & SATURASI PASOKAN (MULTIPLAYER BALANCED)
+# ========================================================
+supply-market:
   enabled: true
-  chest-scan-radius: 8
-  saturation-drop-per-stack: 0.015
-  min-sell-multiplier: 0.75
+  # Sensitivitas kurva logaritmik penurunan harga ketika pasokan membanjiri pasar
+  # Semakin kecil nilai sensitivity (misal 0.025), semakin halus perubahannya
+  sensitivity: 0.025
+  # Ambang batas volume dasar (dalam butir item) sebelum saturasi pasar mulai bekerja
+  # 2304 butir = setara 36 stack (1 inventori penuh)
+  base-volume-threshold: 2304
+  # Batas penurunan harga maksimal akibat pasokan melimpah (0.10 = maksimal turun 10%)
+  max-saturation-drop: 0.10
+  # Batas pengali minimum harga jual (0.90 = minimal 90% dari harga normal)
+  min-sell-multiplier: 0.90
+  # Interval pemulihan pasar (menit) untuk mengembalikan harga ke baseline
+  recovery-interval-minutes: 10
+  # Persentase pemulihan volume pasar setiap interval (25% volume pasar dipulihkan setiap 10 menit)
+  recovery-percent-per-interval: 25.0
+
+# ========================================================
+# BATAS PERLINDUNGAN HARGA (PRICE CLAMPING)
+# ========================================================
+clamping:
+  # Batas fluktuasi harga beli (min 85% s/d max 120% dari base price)
+  min-buy-ratio: 0.85
+  max-buy-ratio: 1.20
+  # Batas fluktuasi harga jual (min 85% s/d max 120% dari base sell price)
+  min-sell-ratio: 0.85
+  max-sell-ratio: 1.20

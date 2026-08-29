@@ -194,6 +194,7 @@ public class QuantitySelectMenu extends ShopGui {
 
         InventoryUtil.removeItems(player, shopItem.getMaterial(), actualQuantity);
         plugin.getEconomyHook().deposit(player, payout);
+        plugin.getSupplyScannerService().recordSale(shopItem.getMaterial(), actualQuantity);
 
         player.sendMessage(MM.deserialize(plugin.getConfig().getString("messages.prefix", "") +
                 plugin.getConfig().getString("messages.sell-success", "<green>Jual berhasil!</green>")

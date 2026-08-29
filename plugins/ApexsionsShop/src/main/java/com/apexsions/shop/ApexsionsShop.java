@@ -59,6 +59,7 @@ public class ApexsionsShop extends JavaPlugin implements ApexsionsShopAPI {
         this.weatherPriceService = new WeatherPriceService(this);
         this.kingdomMarketService = new KingdomMarketService(this);
         this.supplyScannerService = new SupplyScannerService(this);
+        this.supplyScannerService.start();
         this.taxService = new TaxService(this);
         this.dynamicPriceCalculator = new DynamicPriceCalculator(this);
         this.marketBroadcastService = new MarketBroadcastService(this);
@@ -95,6 +96,9 @@ public class ApexsionsShop extends JavaPlugin implements ApexsionsShopAPI {
     public void onDisable() {
         if (marketBroadcastService != null) {
             marketBroadcastService.stop();
+        }
+        if (supplyScannerService != null) {
+            supplyScannerService.stop();
         }
         com.apexsions.shop.api.ApexsionsShopProvider.unregister();
         getLogger().info("ApexsionsShop has been disabled.");

@@ -157,6 +157,7 @@ public class SellGuiMenu extends ShopGui {
                 totalPayout += res.finalTotalPrice();
                 totalTax += res.taxAmount();
                 totalItemsSold += is.getAmount();
+                plugin.getSupplyScannerService().recordSale(shopItem.getMaterial(), is.getAmount());
                 inventory.setItem(slot, null);
             } else {
                 invalidItems.add(is);

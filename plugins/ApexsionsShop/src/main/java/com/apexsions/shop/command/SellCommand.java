@@ -83,6 +83,7 @@ public class SellCommand implements CommandExecutor, TabCompleter {
 
         player.getInventory().setItemInMainHand(null);
         plugin.getEconomyHook().deposit(player, payout);
+        plugin.getSupplyScannerService().recordSale(item.getMaterial(), amount);
 
         player.sendMessage(miniMessage.deserialize(plugin.getConfig().getString("messages.prefix", "") +
                 plugin.getConfig().getString("messages.sell-success", "<green>Berhasil menjual item!</green>")
@@ -109,6 +110,7 @@ public class SellCommand implements CommandExecutor, TabCompleter {
                 totalPayout += res.finalTotalPrice();
                 totalTax += res.taxAmount();
                 totalItemsSold += is.getAmount();
+                plugin.getSupplyScannerService().recordSale(item.getMaterial(), is.getAmount());
                 contents[i] = null;
             }
         }
