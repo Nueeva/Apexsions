@@ -1,6 +1,6 @@
 # AGENTS.md
 
-# Gemini & Agent Development Guidelines — Apexsions Plugin Suite
+# Apexsions — Universal Coding Agent Guidelines
 
 > **Repository:** `Nueeva/Apexsions`
 > **Primary Branch:** `main`
@@ -8,108 +8,133 @@
 > **Architecture:** Multi-plugin modular ecosystem
 > **Brand:** `Apexsions`
 
-Dokumen ini merupakan **operational contract** untuk AI coding agent yang bekerja pada ekosistem Apexsions.
+This file defines **agent-agnostic engineering rules** for AI coding agents working in the Apexsions repository.
 
-Agent wajib mengikuti aturan, workflow, arsitektur, konvensi, dan batasan dalam dokumen ini. Jika sebuah task dapat diselesaikan dengan perubahan kecil dan aman, jangan mengubah arsitektur secara berlebihan.
+It intentionally does **not** duplicate the complete contents of `GEMINI.md`.
 
 ---
 
-# 00. Mission & Core Principles
+# 00. Purpose & Scope
 
-Tujuan agent adalah:
+`AGENTS.md` answers:
 
-1. Memahami existing code sebelum melakukan perubahan.
-2. Mempertahankan functionality yang sudah bekerja.
-3. Menghindari duplicate implementation.
-4. Menjaga kompatibilitas antar-plugin.
-5. Menjaga integritas data dan transaksi.
-6. Menjaga keamanan server.
-7. Meminimalkan perubahan yang tidak diperlukan.
-8. Melakukan validasi nyata, bukan hanya mengandalkan compilation.
-9. Menjaga repository tetap aman untuk multi-developer workflow.
-10. Menghasilkan perubahan yang maintainable dan dapat dikembangkan.
+> **How should any coding agent safely and correctly work in this repository?**
 
-Prinsip utama:
+It governs:
+
+- repository safety;
+- engineering practices;
+- architecture discipline;
+- implementation quality;
+- testing and validation;
+- dependency management;
+- configuration safety;
+- security;
+- documentation synchronization;
+- Git hygiene.
+
+Project-specific facts, Gemini-specific behavior, official plugin definitions, rank hierarchy, exact technology baseline, and detailed Apexsions architecture belong in `GEMINI.md` and technical documentation.
+
+---
+
+# 01. Instruction Hierarchy
+
+When instructions conflict, use this order:
+
+1. Platform/system safety requirements.
+2. Explicit user request.
+3. Repository safety and data integrity.
+4. `GEMINI.md` for Apexsions/Gemini-specific rules.
+5. This `AGENTS.md` for universal engineering rules.
+6. Existing source code and established architecture.
+7. Developer convenience.
+
+Never sacrifice repository integrity merely to complete a task faster.
+
+---
+
+# 02. Core Engineering Principles
+
+Always prefer:
 
 ```text
-Inspect
-  ↓
-Synchronize
+Search
   ↓
 Understand
   ↓
-Plan
+Reuse
   ↓
-Implement
+Extend
   ↓
-Validate
-  ↓
-Review Diff
-  ↓
-Synchronize Again
-  ↓
-Commit
-  ↓
-Push only when authorized
+Create only when necessary
 ```
 
-Gunakan prinsip:
-
-> **Search → Understand → Reuse → Extend → Create only if necessary.**
-
-Jangan gunakan:
-
-> **Assume → Rewrite → Hope.**
-
----
-
-# 01. Rule Priority
-
-Jika terdapat konflik antar-instruksi, gunakan prioritas berikut:
-
-1. System/platform safety requirements.
-2. Repository safety dan data integrity.
-3. Explicit user task.
-4. Dokumen `GEMINI.md`.
-5. Existing architecture dan repository conventions.
-6. Developer convenience.
-
-Jangan mengorbankan data, keamanan, atau integritas repository hanya untuk menyelesaikan task lebih cepat.
-
----
-
-# 02. Agent Operating Protocol
-
-Setiap pekerjaan wajib mengikuti fase berikut.
-
-## Phase 0 — Understand
-
-Sebelum mengubah kode:
-
-1. Baca `GEMINI.md`.
-2. Baca `AGENTS.md` jika tersedia.
-3. Baca dokumentasi relevan.
-4. Identifikasi plugin yang terdampak.
-5. Identifikasi dependency antar-plugin.
-6. Identifikasi existing implementation.
-
-Agent harus mengetahui:
+Do not follow:
 
 ```text
-Apa yang sudah bekerja?
-Apa yang rusak?
-Apa yang duplicated?
-Apa yang harus diubah?
-Apa yang harus tetap untouched?
+Assume
+  ↓
+Rewrite
+  ↓
+Hope
 ```
+
+Core principles:
+
+1. Understand before modifying.
+2. Preserve working behavior unless change is intentional.
+3. Avoid duplicate implementations.
+4. Keep changes focused and reviewable.
+5. Respect existing architecture.
+6. Prefer simple solutions over unnecessary abstraction.
+7. Never invent repository facts when they can be verified.
+8. Validate behavior, not merely compilation.
+9. Preserve backward compatibility where practical.
+10. Treat security and data integrity as first-class requirements.
 
 ---
 
-## Phase 1 — Synchronize
+# 03. Read Before You Change
 
-Pastikan berada di repository root.
+Before modifying code:
 
-Jalankan:
+1. Read `GEMINI.md`.
+2. Read this `AGENTS.md`.
+3. Read relevant technical documentation.
+4. Locate the existing implementation.
+5. Search for related classes, services, APIs, commands, events, and configuration.
+6. Identify affected modules/plugins.
+7. Identify consumers and dependencies.
+8. Determine what must remain untouched.
+
+Never implement a feature in isolation without checking whether equivalent functionality already exists.
+
+---
+
+# 04. Repository & Workspace Safety
+
+Work only inside the assigned repository/project boundary.
+
+Do not:
+
+- inspect unrelated projects;
+- copy code from unrelated repositories without authorization;
+- modify external Minecraft/server directories;
+- deploy artifacts outside the repository;
+- access unrelated credentials or secrets;
+- modify operating-system configuration without explicit task requirements.
+
+Do not silently overwrite another developer's work.
+
+---
+
+# 05. Git Safety
+
+Apexsions is a multi-developer repository.
+
+Before beginning work, inspect repository state and synchronize safely according to `GEMINI.md`.
+
+At minimum:
 
 ```powershell
 git status --short
@@ -117,66 +142,49 @@ git fetch origin
 git log HEAD..origin/main --oneline
 ```
 
-Jika `origin/main` memiliki commit baru:
-
-### Working tree bersih
-
-Gunakan:
+If the working tree is clean and remote commits exist, fast-forward when safe:
 
 ```powershell
 git pull --ff-only origin main
 ```
 
-### Working tree memiliki perubahan
+If local changes exist, do not use destructive commands merely to synchronize.
 
-Jangan otomatis:
+Never automatically use:
 
 ```text
 git reset --hard
 git clean -fd
 git restore
 git checkout -- <file>
-git stash
 ```
 
-Identifikasi terlebih dahulu perubahan lokal dan perubahan remote.
+to discard work.
 
-Jika sinkronisasi aman tidak dapat dilakukan tanpa risiko kehilangan pekerjaan developer, **jangan mengambil tindakan destruktif otomatis**.
-
----
-
-# 03. Strict Workspace Boundary
-
-Agent hanya boleh bekerja di dalam repository/project root yang sedang ditugaskan.
-
-DILARANG:
-
-* membaca project lain yang tidak relevan;
-* menyalin file dari project lain;
-* memodifikasi server eksternal;
-* memodifikasi folder Minecraft server di luar repository;
-* mengakses credential atau secret di luar scope task;
-* memindahkan hasil build ke folder server eksternal;
-* mengubah konfigurasi sistem operasi tanpa kebutuhan task.
-
-Seluruh:
+Never force-push a shared branch:
 
 ```text
-source
-build output
-JAR
-configuration
-generated artifacts
-test artifacts
+git push --force
+git push --force-with-lease
 ```
 
-harus tetap berada di dalam repository/project root kecuali user secara eksplisit meminta lokasi lain.
+Before committing:
+
+```powershell
+git status --short
+git diff --check
+git diff
+```
+
+Before pushing, fetch again and check for newly arrived remote commits.
 
 ---
 
-# 04. Existing Code First
+# 06. Existing Architecture First
 
-Sebelum membuat:
+Respect existing module and plugin boundaries.
+
+Before introducing a new:
 
 ```text
 class
@@ -187,2193 +195,689 @@ repository
 listener
 command
 event
-utility
-configuration
 API
+utility
+configuration system
+database abstraction
+dependency
 ```
 
-agent wajib mencari implementasi yang sudah ada.
+search for an existing equivalent.
 
-Periksa:
+Do not create parallel abstractions merely because the existing implementation is unfamiliar.
 
-```text
-src/
-plugin metadata
-configuration
-existing services
-existing providers
-existing events
-existing repositories
-existing utilities
-existing APIs
-```
-
-Jika functionality serupa sudah tersedia:
-
-1. gunakan implementation existing;
-2. extend jika diperlukan;
-3. refactor hanya jika memang diperlukan;
-4. jangan membuat duplicate abstraction.
-
-Contoh buruk:
-
-```text
-EconomyManager
-EconomyService
-EconomyHandler
-EconomyController
-EconomyHelper
-EconomyUtils
-```
-
-untuk functionality yang sebenarnya sudah dimiliki satu service.
-
-Abstraction baru harus mempunyai alasan teknis yang jelas.
+If the existing architecture is inadequate, explain the reason and make the smallest justified architectural change.
 
 ---
 
-# 05. Scope Control
+# 07. Responsibility & Dependency Boundaries
 
-Agent tidak boleh memperluas scope tanpa kebutuhan teknis.
+Every feature should have a clear owner.
 
-Jika task adalah:
-
-```text
-Bugfix
-```
-
-jangan melakukan refactor besar unrelated.
-
-Jika task adalah:
+Prefer:
 
 ```text
-UI change
+Public API
+    ↓
+Owning Module
+    ↓
+Implementation
 ```
 
-jangan mengubah backend yang tidak berkaitan.
-
-Jika task adalah:
+over:
 
 ```text
-Command change
+Plugin A
+    ↓
+Plugin B internal implementation
 ```
 
-jangan mengganti seluruh command architecture kecuali diperlukan.
+Do not directly access another plugin's private database or internal implementation when a public contract exists or should exist.
 
-Perubahan tambahan hanya diperbolehkan apabila:
+Avoid circular dependencies.
 
-1. diperlukan agar task berhasil;
-2. diperlukan untuk mencegah regression;
-3. diperlukan untuk memperbaiki security/integrity issue yang ditemukan.
-
-Perubahan tambahan harus dilaporkan.
-
----
-
-# 06. Git & Multi-Developer Protocol
-
-Repository dikerjakan oleh beberapa developer.
-
-## Before Work
-
-Selalu:
-
-```powershell
-git status --short
-git fetch origin
-git log HEAD..origin/main --oneline
-```
-
-Jangan mulai mengubah kode dari branch yang diketahui stale.
-
----
-
-## During Work
-
-Agent harus menghindari:
+If a circular dependency appears:
 
 ```text
-git reset --hard
-git clean -fd
-git push --force
-git push --force-with-lease
-```
-
-kecuali terdapat alasan teknis yang jelas dan tindakan tersebut memang diizinkan.
-
-Jangan menghapus perubahan developer lain.
-
----
-
-## Pre-Push Safety
-
-Sebelum push:
-
-```powershell
-git fetch origin
-git log HEAD..origin/main --oneline
-git status --short
-git diff
-```
-
-Jika remote berubah selama agent bekerja:
-
-1. jangan force push;
-2. integrasikan perubahan secara aman;
-3. resolve conflict dengan mempertahankan intent kedua sisi;
-4. ulangi build/test;
-5. periksa `git diff` kembali.
-
----
-
-## Commit Policy
-
-Commit harus:
-
-* atomic;
-* memiliki message jelas;
-* tidak mencampurkan unrelated changes;
-* berisi source/config/documentation yang memang terkait.
-
-Contoh:
-
-```text
-feat(core): add kingdom region resolver
-fix(chat): prevent duplicate chat pipeline
-refactor(economy): isolate transaction service
-docs: update plugin architecture
-```
-
----
-
-## Push Policy
-
-Commit dan push adalah dua tindakan berbeda.
-
-Agent boleh membuat commit setelah validation berhasil.
-
-Agent **tidak boleh menganggap push sebagai default**.
-
-Push hanya dilakukan jika:
-
-1. task secara eksplisit meminta push; atau
-2. repository workflow secara eksplisit mengizinkan autonomous push.
-
-Target branch harus diverifikasi sebelum push.
-
-DILARANG force push ke shared branch.
-
----
-
-# 07. Brand Rules
-
-Nama resmi:
-
-```text
-Apexsions
-```
-
-Bukan:
-
-```text
-Apexions
-```
-
-Kesalahan spelling brand tidak boleh diperkenalkan pada:
-
-* plugin name;
-* documentation;
-* package;
-* command;
-* configuration;
-* log;
-* artifact;
-* API;
-* generated output.
-
----
-
-# 08. Official Plugin Suite
-
-Enam plugin utama:
-
-```text
-ApexsionsCore
-ApexsionsChat
-ApexsionsEconomy
-ApexsionsBattlepass
-ApexsionsShop
-ApexsionsMedia
-```
-
-## ApexsionsCore
-
-```text
-Kingdom
-Region
-Progression
-Level
-XP
-Rewards
-Kingdom War
-Combat Tag
-Multiverse
-RTP
-Rank Animation
-Admin Inspector
-```
-
-## ApexsionsChat
-
-```text
-Chat
-MiniMessage formatting
-Chat Channels
-Channel Settings GUI
-Social Profile Hub
-Staff Reports Desk
-Moderation
-Mentions
-Mail
-Chat notifications
-```
-
-## ApexsionsEconomy
-
-```text
-Multi-Currency
-Atomic Transactions
-Auction House
-Escrow
-Barter
-```
-
-## ApexsionsBattlepass
-
-```text
-Quests
-Passes
-Rotating Shop
-Battlepass progression
-```
-
-## ApexsionsShop
-
-```text
-Kingdom Shop
-Dynamic Market
-Market Trends
-Sell GUI
-```
-
-## ApexsionsMedia
-
-```text
-Interactive Banner
-Interactive Logo
-Raytrace Hover Glow
-URL Actions
-```
-
----
-
-# 09. Java Package Convention
-
-Gunakan:
-
-```text
-com.apexsions.core.*
-com.apexsions.chat.*
-com.apexsions.economy.*
-com.apexsions.battlepass.*
-com.apexsions.shop.*
-com.apexsions.media.*
-```
-
-Jangan mencampurkan package antar-plugin.
-
-Contoh:
-
-```text
-com.apexsions.chat.*
-```
-
-tidak boleh berisi business logic milik Economy.
-
----
-
-# 10. Official Rank Hierarchy
-
-Source of truth:
-
-```text
-ranks.yml
-```
-
-Official ranks:
-
-| Rank        | Weight | Role                           |
-| ----------- | -----: | ------------------------------ |
-| `ancestor`  |    100 | The Ancestor / Owner / Founder |
-| `warden`    |     90 | Head Staff / Admin             |
-| `herald`    |     80 | Staff / Moderator              |
-| `sions`     |     70 | Apex Donator                   |
-| `emperor`   |     60 | Donator Tier 4                 |
-| `sovereign` |     50 | Donator Tier 3                 |
-| `archon`    |     40 | Donator Tier 2                 |
-| `ascendant` |     30 | Donator Tier 1                 |
-| `wanderer`  |     10 | Default / Warga Baru           |
-
-Jangan membuat rank baru tanpa explicit requirement.
-
-Jangan hardcode rank definition di banyak tempat.
-
----
-
-# 11. Technology Baseline
-
-## Language
-
-```text
-Java 21 LTS
-```
-
-Gunakan fitur Java 21 secara wajar.
-
-## Minecraft Platform
-
-```text
-Paper API 1.21.4-R0.1-SNAPSHOT
-Minecraft 1.21.4
-```
-
-Jangan mengubah target platform tanpa explicit project decision.
-
-## Build
-
-```text
-Apache Maven 3.9.9
-PowerShell build.ps1
-```
-
-Primary build:
-
-```powershell
-mvn clean package
-```
-
-Targeted build:
-
-```powershell
-powershell -ExecutionPolicy Bypass -File .\build.ps1 Core
-powershell -ExecutionPolicy Bypass -File .\build.ps1 Chat
-powershell -ExecutionPolicy Bypass -File .\build.ps1 Economy
-powershell -ExecutionPolicy Bypass -File .\build.ps1 Battlepass
-powershell -ExecutionPolicy Bypass -File .\build.ps1 Shop
-powershell -ExecutionPolicy Bypass -File .\build.ps1 Media
-```
-
-Full build:
-
-```powershell
-.\build.ps1 -all
-```
-
-Gunakan `-all` hanya jika seluruh plugin memang terdampak perubahan global.
-
----
-
-# 12. Build Rule
-
-Jika hanya 1–3 plugin berubah:
-
-```text
-Build only affected plugins.
-```
-
-Jangan menjalankan full multi-plugin build tanpa alasan.
-
-Jika perubahan menyentuh:
-
-```text
-shared API
-parent build configuration
-cross-plugin contract
-shared module
-global dependency
-```
-
-tentukan plugin terdampak terlebih dahulu.
-
-Jika seluruh suite terpengaruh, gunakan:
-
-```powershell
-.\build.ps1 -all
-```
-
-Compilation success bukan bukti bahwa fitur benar-benar bekerja.
-
----
-
-# 13. Adventure & MiniMessage
-
-Gunakan:
-
-```text
-Kyori Adventure
-MiniMessage
-Paper Components
-```
-
-Untuk kode baru:
-
-DILARANG menjadikan legacy formatting sebagai architecture utama:
-
-```text
-&
-§
-ChatColor string
-```
-
-Gunakan Adventure Components.
-
-MiniMessage harus diparse secara aman.
-
-Jangan mempercayai user-generated MiniMessage input sebagai trusted markup.
-
----
-
-# 14. Threading & Concurrency
-
-## Async Work
-
-Boleh dilakukan async:
-
-```text
-Database query
-Database write
-HTTP/network request
-CPU-heavy calculation
-File processing
-Serialization
-```
-
-## Main Thread
-
-Bukkit/Paper game-state mutation harus dilakukan pada Main Thread apabila API yang digunakan tidak thread-safe.
-
-Contoh:
-
-```text
-Inventory mutation
-Player state mutation
-Entity mutation
-World mutation
-Teleportation
-Bukkit-sensitive operations
-```
-
-Pattern:
-
-```text
-Async operation
-      ↓
-CompletableFuture
-      ↓
-Main-thread scheduling
-      ↓
-Bukkit state mutation
-```
-
-DILARANG melakukan blocking database/network operation di Main Thread.
-
----
-
-# 15. Database Architecture
-
-Database abstraction harus mendukung:
-
-```text
-SQLite
-PostgreSQL
-```
-
-Gunakan:
-
-```text
-HikariCP
-CompletableFuture
-Repository abstraction
-```
-
-Jangan membuat database system kedua jika existing architecture sudah menyediakan abstraction yang sesuai.
-
----
-
-# 16. Database Migration & Data Safety
-
-Sebelum mengubah persistence:
-
-```text
-Inspect schema
-Inspect serialization
-Inspect migrations
-Inspect existing player data
-Inspect backward compatibility
-```
-
-Jika schema berubah:
-
-```text
-Old Data
-   ↓
-Migration
-   ↓
-New Structure
-```
-
-DILARANG:
-
-```text
-Delete database
+STOP
 ↓
-Start over
+Inspect dependency graph
+↓
+Redesign the contract
 ```
 
-Jangan mereset:
-
-```text
-XP
-Level
-Region
-Rewards
-Currency
-Transaction history
-```
-
-sebagai efek samping refactor.
-
-Migration harus mempertimbangkan SQLite dan PostgreSQL jika keduanya masih supported.
-
-Destructive migration memerlukan alasan yang jelas dan strategi pemulihan.
+Do not hide circular dependencies behind fragile workarounds.
 
 ---
 
-# 17. Transaction Integrity
+# 08. Public APIs
 
-Operasi berikut harus atomic dan concurrency-safe:
+Public APIs should be:
 
-```text
-Economy
-Auction House
-Trade
-Shop
-Barter
-Currency transfer
-Item exchange
-```
+- minimal;
+- intentional;
+- understandable;
+- stable;
+- documented;
+- thread-safe where applicable.
 
-Setiap transaksi harus mencegah:
+Do not expose implementation details unnecessarily.
 
-```text
-Duplicate item
-Duplicate currency
-Negative balance
-Double execution
-Partial transaction
-Race condition
-Lost item
-Lost currency
-```
+Before changing a public API:
 
-Ideal transaction flow:
+1. Search all consumers.
+2. Determine compatibility impact.
+3. Identify whether the change is breaking.
+4. Update relevant documentation.
+5. Provide a migration path when practical.
+
+---
+
+# 09. Threading & Async Work
+
+Never perform blocking database, filesystem, or network operations on the Minecraft main thread.
+
+Long-running or blocking work should be asynchronous where appropriate.
+
+Bukkit/Paper game-state mutations must occur on the correct server thread.
+
+When an API's thread-safety contract is unclear, inspect the API/library documentation and existing usage before implementing.
+
+Do not introduce concurrency merely for complexity's sake.
+
+---
+
+# 10. Database & Persistence
+
+Use the repository's existing database abstraction.
+
+Database code must:
+
+- use parameterized queries;
+- respect transaction boundaries;
+- avoid connection leaks;
+- handle failures explicitly;
+- avoid blocking the main thread;
+- preserve data integrity;
+- respect concurrency requirements.
+
+Do not introduce a second persistence framework without architectural justification.
+
+Never silently destroy or overwrite persistent data.
+
+---
+
+# 11. Transaction & Concurrency Safety
+
+For state-changing operations:
 
 ```text
 Validate
-   ↓
-Acquire required locks
-   ↓
-Verify state again
-   ↓
-Execute transaction
-   ↓
-Persist atomically
-   ↓
-Release locks
-   ↓
-Publish event
+  ↓
+Acquire appropriate consistency boundary
+  ↓
+Perform atomic operation
+  ↓
+Commit
+  ↓
+Publish resulting state/event
 ```
 
-Event publik tidak boleh dipakai sebagai pengganti transaction atomicity.
+Consider:
+
+- race conditions;
+- duplicate requests;
+- stale state;
+- retries;
+- partial failure;
+- transaction ordering;
+- idempotency.
+
+Do not assume that single-threaded-looking code is automatically race-free.
 
 ---
 
-# 18. Economy Security
+# 12. Security
 
-Jangan percaya data dari client.
+Treat all externally supplied data as untrusted.
 
-Server harus menentukan dan memvalidasi:
+Validate at appropriate boundaries:
 
-```text
-player UUID
-item ownership
-currency balance
-transaction amount
-target player
-transaction state
-permissions
-```
+- commands;
+- GUI input;
+- configuration;
+- network/API input;
+- serialized data;
+- player-supplied values.
 
-Validasi harus mencakup:
+Prevent:
 
-```text
-negative values
-overflow
-duplicate requests
-stale state
-race condition
-invalid item data
-invalid transaction state
-```
+- SQL injection;
+- command injection;
+- path traversal;
+- unsafe deserialization;
+- privilege escalation;
+- secret leakage;
+- unintended administrative bypasses.
 
-UUID adalah identity authoritative.
+Never hardcode credentials, API keys, or private secrets.
 
-Player name hanya display metadata.
+Do not weaken security to simplify development.
 
 ---
 
-# 19. Inter-Plugin Architecture
+# 13. Configuration
 
-Gunakan API/provider dan event-driven integration.
+Configuration is part of the public behavior of a plugin.
 
-Core menyediakan:
+When adding or changing configuration:
 
-```text
-ApexsionsCoreProvider.get()
-ApexsionsCoreAPI
-```
+1. Use the existing configuration architecture.
+2. Provide sensible defaults.
+3. Validate values.
+4. Preserve compatibility where practical.
+5. Document new keys.
+6. Avoid silently changing existing configuration semantics.
 
-untuk:
-
-```text
-Region
-Level
-XP
-Level title
-Player progression
-Kingdom state
-```
-
-Economy menyediakan:
-
-```text
-ApexsionsEconomyAPI
-```
-
-untuk:
-
-```text
-Balance
-Currency
-Atomic transactions
-```
-
-Shop menyediakan:
-
-```text
-ApexsionsShopProvider.get()
-ApexsionsShopAPI
-```
-
-untuk:
-
-```text
-Dynamic pricing
-Tax
-Shop inventory
-```
+Never document configuration that the implementation does not actually support.
 
 ---
 
-# 20. API Boundary Rules
+# 14. Commands & Permissions
 
-Plugin lain harus mengakses public API, bukan implementation internal.
+Commands must have:
 
-DILARANG:
+- clear ownership;
+- validated arguments;
+- appropriate permission checks;
+- correct player/console restrictions;
+- useful failure messages;
+- safe handling of malformed input.
 
-```text
-Plugin A
-   ↓
-directly access Plugin B database
-```
-
-Gunakan:
-
-```text
-Plugin A
-   ↓
-Plugin B API
-   ↓
-Plugin B implementation
-   ↓
-Database
-```
-
-API publik harus:
-
-* minimal;
-* jelas;
-* stabil;
-* terdokumentasi;
-* backward-compatible jika memungkinkan.
-
-Jangan mengekspos internal implementation tanpa alasan.
-
----
-
-# 21. Dependency Direction
-
-Target dependency:
+Before adding a permission node or command:
 
 ```text
-                 ApexsionsCore
-                /      |      \
-               ↓       ↓       ↓
-            Chat    Economy   Media
-                       ↓
-                     Shop
-                       ↓
-                  Battlepass
-```
-
-Dependency aktual harus mengikuti kebutuhan repository.
-
-Prinsip:
-
-```text
-Core provides fundamental APIs.
-Feature plugins consume APIs.
-```
-
-ApexsionsCore tidak boleh memiliki hard dependency terhadap plugin feature hanya untuk mengakses functionality feature.
-
-Jika circular dependency ditemukan:
-
-```text
-STOP
+Search existing conventions
 ↓
-inspect dependency graph
+Reuse if appropriate
 ↓
-redesign contract
+Create only when necessary
 ```
 
-Jangan menyelesaikan circular dependency dengan workaround yang menciptakan coupling lebih buruk.
+Documentation must match the actual registered command and permission.
 
 ---
 
-# 22. Soft Dependencies
+# 15. Dependencies
 
-Optional plugin harus tetap graceful apabila tidak tersedia.
+Before adding a dependency:
 
-Contoh:
+1. Search existing dependencies for equivalent functionality.
+2. Check compatibility.
+3. Check runtime implications.
+4. Check licensing where applicable.
+5. Determine whether the dependency should be hard or optional.
+6. Update build configuration.
+7. Update documentation when relevant.
 
-```text
-LuckPerms
-PlaceholderAPI
-Citizens
-TAB
-EssentialsX
-Vault
-```
-
-Jika dependency optional tidak tersedia:
-
-```text
-disable optional integration
-continue core functionality
-log clear information
-```
-
-Jangan membuat optional plugin menjadi hard dependency tanpa alasan.
+Do not add libraries merely to avoid writing a small amount of maintainable code.
 
 ---
 
-# 23. Custom Events
+# 16. Error Handling & Logging
 
-Gunakan event-driven architecture untuk cross-plugin communication apabila sesuai.
+Do not silently swallow exceptions.
 
-Contoh:
+Errors should:
 
-```text
-KingdomWarStartEvent
-PlayerLevelUpEvent
-MarketPriceChangeEvent
-PlayerBalanceChangeEvent
-```
+- preserve useful diagnostic context;
+- use existing project logging conventions;
+- avoid leaking secrets;
+- distinguish expected failures from programming errors.
 
-Event tidak boleh menggantikan direct API ketika synchronous result diperlukan.
+Do not spam logs for normal behavior.
 
-Jangan membuat event hanya demi terlihat "enterprise".
+Do not hide serious failures merely to make the server appear healthy.
 
 ---
 
-# 24. Configuration Architecture
+# 17. Testing & Validation
 
-Gunakan modular configuration.
+Compilation is not equivalent to correctness.
 
-Contoh:
+After modifying code:
 
-```text
-config/
-├── gui.yml
-├── messages.yml
-├── ranks.yml
-├── rewards.yml
-├── moderation.yml
-├── markets.yml
-├── passes/
-├── quests/
-├── shop/
-├── exp-shop/
-└── categories/
-```
+1. Compile the affected component.
+2. Run the narrowest relevant tests.
+3. Validate behavior when practical.
+4. Expand validation if the change crosses module boundaries.
+5. Review warnings and errors.
+6. Review the final diff.
 
-Setiap configuration value harus mempunyai source of truth tunggal.
+Prefer targeted validation over unnecessarily expensive full-project builds.
 
-Jangan menduplikasi value yang sama ke:
-
-```text
-Java constant
-YAML lain
-Database
-Hardcoded string
-```
-
-kecuali terdapat alasan teknis yang jelas.
+Follow project-specific build instructions from `GEMINI.md`.
 
 ---
 
-# 25. Configuration Validation
+# 18. Performance
 
-Configuration harus divalidasi saat startup.
+Do not optimize blindly.
 
-Jika invalid:
+Before introducing an optimization, identify the actual bottleneck or architectural reason.
 
-```text
-Identify file
-Identify key
-Identify invalid value
-Explain expected value
-Fail safely
-```
+Avoid:
 
-Jangan silently menggunakan nilai berbahaya.
+- unnecessary allocations in hot paths;
+- repeated database queries;
+- blocking operations on main thread;
+- unbounded collections;
+- excessive event/listener work;
+- unnecessary synchronization.
 
-Contoh invalid:
-
-```yaml
-starting-balance: -999999999
-```
-
-harus ditolak atau ditangani menggunakan safe fallback yang memang valid.
+Prefer measurable improvements over speculative complexity.
 
 ---
 
-# 26. Commands
+# 19. Backward Compatibility
 
-Semua command harus memvalidasi:
-
-```text
-Sender type
-Permission
-Arguments
-Target
-Cooldown
-State
-```
-
-Jangan mengandalkan client-side validation.
-
-Permission harus eksplisit.
-
-Contoh:
+When changing existing behavior, consider:
 
 ```text
-apexsions.admin
-apexsions.staff
-apexsions.core.*
+Existing users
+Existing configuration
+Existing data
+Existing API consumers
+Existing commands
+Existing permissions
+Existing integrations
 ```
 
-Wildcard permission tidak boleh menjadi default untuk user biasa.
+Breaking changes require explicit justification.
+
+When practical, use:
+
+```text
+Deprecate
+  ↓
+Provide replacement
+  ↓
+Migration path
+  ↓
+Remove later
+```
+
+Do not silently break consumers.
 
 ---
 
-# 27. Security Requirements
+# 20. Documentation Governance
 
-Semua fitur harus mempertimbangkan:
+Documentation is part of implementation when behavior or architecture changes.
 
-```text
-Permission bypass
-Privilege escalation
-Command injection
-SQL injection
-Unsafe deserialization
-Arbitrary file access
-Race condition
-Item duplication
-Currency duplication
-Integer overflow
-Invalid client input
-Unauthorized administrative actions
-```
-
-Security issue yang ditemukan selama implementation harus diprioritaskan dibanding cosmetic refactor.
-
----
-
-# 28. GUI Architecture
-
-GUI harus reusable.
-
-Gunakan pola seperti:
+When a change affects:
 
 ```text
-gui/
-├── BaseGui
-├── GuiPaginator
-├── GuiItemFactory
-├── ReportGui
-├── ReportDetailGui
-├── ShopGui
-├── TradeGui
-└── MailGui
-```
-
-Jangan menduplikasi seluruh inventory-click handling di setiap GUI.
-
-Inventory event harus divalidasi berdasarkan:
-
-```text
-GUI instance
-player
-slot
-action
-state
-```
-
-Jangan mengandalkan display name item sebagai satu-satunya identifier GUI.
-
----
-
-# 29. Logging
-
-Log harus membantu debugging tanpa membocorkan secret.
-
-Gunakan level yang sesuai:
-
-```text
-INFO
-WARNING
-SEVERE
-DEBUG
-```
-
-Jangan log:
-
-```text
-password
-database credentials
-tokens
-API keys
-private secrets
-```
-
-Error harus menjelaskan:
-
-```text
-what happened
-where it happened
-why it failed
-what system was affected
-```
-
-Jangan menangkap exception lalu mengabaikannya secara silent.
-
----
-
-# 30. Testing Philosophy
-
-Testing harus mengikuti:
-
-```text
-Reproduce
-   ↓
-Trace
-   ↓
-Root Cause
-   ↓
-Fix
-   ↓
-Regression Test
-   ↓
-Build
-   ↓
-Runtime Validation
-```
-
-Jangan menyatakan bug selesai hanya karena compilation berhasil.
-
----
-
-# 31. Regression Prevention
-
-Setiap bug penting yang diperbaiki harus sebisa mungkin mempunyai regression coverage.
-
-Prioritas tinggi:
-
-```text
-Economy duplication
-Item duplication
-Permission bypass
-Data loss
-Transaction race
-Chat moderation bypass
-GUI state bugs
-Reward duplication
-```
-
----
-
-# 32. Documentation Synchronization
-
-Jika behavior, architecture, API, command, configuration, atau workflow berubah, update documentation yang terdampak.
-
-Dokumentasi utama:
-
-```text
-README.md
-DOKUMENTASI.md
-GEMINI.md
-AGENTS.md
-```
-
-Tidak semua file harus berubah untuk setiap commit.
-
-Update hanya dokumentasi yang memang terdampak.
-
-Jangan mengubah dokumentasi agar terlihat updated jika behavior sebenarnya tidak berubah.
-
----
-
-# 33. Generated Artifacts
-
-Build artifacts harus berasal dari source code yang telah divalidasi.
-
-Jika repository memang menetapkan binary JAR sebagai tracked artifact:
-
-```text
-source
-   ↓
-build
-   ↓
-validation
-   ↓
-JAR
-   ↓
-git diff
-   ↓
-commit
-```
-
-Jangan commit JAR yang berasal dari source state yang tidak sesuai dengan commit.
-
-Jangan menyalin JAR ke server eksternal sebagai bagian dari repository workflow kecuali user secara eksplisit meminta deployment.
-
----
-
-# 34. Documentation & Release Checklist
-
-Sebelum release:
-
-```text
-[ ] Source code updated
-[ ] Relevant configuration updated
-[ ] Relevant documentation updated
-[ ] Targeted plugin build successful
-[ ] Runtime validation completed
-[ ] Generated JAR verified
-[ ] Git diff reviewed
-[ ] No unintended files changed
-[ ] Remote checked again
-[ ] Commit created
-[ ] Push authorized
-[ ] Push successful
-```
-
----
-
-# 35. Final Pre-Push Safety Check
-
-Sebelum push:
-
-```powershell
-git fetch origin
-git status --short
-git log HEAD..origin/main --oneline
-git diff
-git diff --stat
-```
-
-Pastikan:
-
-```text
-No unexpected files
-No secrets
-No unrelated changes
-No accidental deletions
-No stale remote commits
-No debug artifacts
-No generated junk
-```
-
-Jika terdapat perubahan remote:
-
-```text
-STOP
-↓
-Synchronize safely
-↓
-Rebuild
-↓
-Retest
-↓
-Review diff again
-```
-
----
-
-# 36. Never Assume
-
-Agent wajib memverifikasi informasi yang dapat diverifikasi.
-
-Jangan mengasumsikan:
-
-```text
-class exists
-command exists
-API exists
-dependency exists
-database schema
-configuration key
-plugin version
-event behavior
-thread safety
-```
-
-Gunakan:
-
-```text
-Inspect → Verify → Modify
-```
-
-Jika informasi tersedia di repository, repository adalah sumber kebenaran utama.
-
----
-
-# 37. Git History Awareness
-
-Untuk perubahan kompleks, gunakan Git history bila diperlukan:
-
-```powershell
-git log
-git log -- <file>
-git show <commit>
-git blame <file>
-```
-
-Tujuan:
-
-```text
-Understand previous decisions
-Find regression origin
-Understand ownership/context
-Avoid reverting intentional behavior
-```
-
-Jangan menghapus atau membatalkan perubahan developer lain hanya karena implementation terlihat tidak ideal.
-
----
-
-# 38. Runtime Validation
-
-Compilation bukan validation lengkap.
-
-Jika environment memungkinkan, lakukan:
-
-```text
-Build
-↓
-Start Paper
-↓
-Inspect startup logs
-↓
-Test affected feature
-↓
-Test integration
-↓
-Restart server
-↓
-Verify persistence
-```
-
-Untuk perubahan cross-plugin:
-
-```text
-Core
-↓
+Features
+Architecture
 API
-↓
-Consumer plugin
-↓
-Runtime behavior
-```
-
-harus divalidasi.
-
----
-
-# 39. Change Impact Analysis
-
-Sebelum perubahan besar, identifikasi:
-
-```text
-Affected plugin
-Affected packages
-Affected APIs
-Affected events
-Affected configuration
-Affected database tables
-Affected commands
-Affected permissions
-Affected integrations
-Affected documentation
-```
-
-Contoh:
-
-```text
-Changing Rank API
-        ↓
-Core
-        ↓
-Chat
-        ↓
-TAB / PlaceholderAPI
-        ↓
-Documentation
-```
-
-Jangan menganggap perubahan pada public API hanya berdampak pada satu class.
-
----
-
-# 40. Compatibility
-
-Pertahankan compatibility jika memungkinkan.
-
-Sebelum melakukan breaking change:
-
-1. cari semua consumer;
-2. identifikasi API usage;
-3. tentukan migration strategy;
-4. update consumer;
-5. build seluruh affected modules;
-6. dokumentasikan breaking change.
-
-Jangan menghapus API publik hanya karena implementation baru terasa lebih rapi.
-
----
-
-# 41. Anti-Overengineering
-
-Gunakan solusi paling sederhana yang memenuhi:
-
-```text
-Correctness
-Security
-Maintainability
-Performance
-Compatibility
-```
-
-Jangan menambahkan:
-
-```text
-framework
-abstraction
-dependency
-service layer
-event
-cache
-thread
-database table
-```
-
-tanpa kebutuhan yang jelas.
-
-Complexity adalah hutang yang harus dibayar developer berikutnya.
-
----
-
-# 42. Performance Rules
-
-Hindari operasi mahal di Main Thread.
-
-Waspadai:
-
-```text
-Database query
-Network request
-Large file parsing
-Repeated serialization
-Large player iteration
-Expensive string processing
-Unbounded loops
-```
-
-Untuk high-frequency systems seperti:
-
-```text
-scoreboard
-nametag
-chat
-combat
-player movement
-```
-
-gunakan caching/delta updates bila memang diperlukan.
-
-Target:
-
-```text
-Minimal unnecessary allocations
-Minimal repeated calculation
-Minimal main-thread work
-```
-
-Jangan melakukan premature optimization yang membuat code lebih sulit dipahami tanpa measurable benefit.
-
----
-
-# 43. Scoreboard & Nametag
-
-Jika sistem menggunakan animated RGB/gradient:
-
-```text
-Multi-phase shifting RGB gradient
-Multi-scoreboard synchronization
-Smart delta-frame caching
-```
-
-Animation harus menghindari update penuh apabila tidak diperlukan.
-
-Gunakan delta updates:
-
-```text
-Previous frame
-      ↓
-Compare
-      ↓
-Only changed components
-      ↓
-Apply
-```
-
-Tujuan:
-
-```text
-Zero unnecessary TPS impact
-```
-
----
-
-# 44. Definition of Done
-
-Task hanya dianggap selesai apabila:
-
-```text
-[ ] Requirement terpenuhi
-[ ] Existing implementation telah diperiksa
-[ ] Tidak ada duplicate implementation
-[ ] Scope tetap terkendali
-[ ] Dependency impact diperiksa
-[ ] API impact diperiksa
-[ ] Configuration diperiksa
-[ ] Database impact diperiksa
-[ ] Security impact diperiksa
-[ ] Relevant documentation diperbarui
-[ ] Affected plugin berhasil dikompilasi
-[ ] Relevant tests berhasil
-[ ] Runtime validation dilakukan jika memungkinkan
-[ ] git diff diperiksa
-[ ] git status diperiksa
-[ ] Remote diperiksa kembali
-[ ] Tidak ada perubahan tidak disengaja
-[ ] Commit dibuat jika diperlukan
-[ ] Push hanya dilakukan jika authorized
-```
-
----
-
-# 45. Agent Final Report
-
-Setelah pekerjaan selesai, agent harus melaporkan:
-
-```text
-## Summary
-
-What changed?
-
-## Files Changed
-
-Which files were created/modified/deleted?
-
-## Plugins Affected
-
-Which plugins were affected?
-
-## Architecture Impact
-
-Which APIs, events, services, or dependencies changed?
-
-## Database Impact
-
-Were schemas/migrations changed?
-
-## Configuration
-
-Which configuration files changed?
-
-## Build
-
-Which build command was executed?
-
-## Tests
-
-Which tests/validation were performed?
-
-## Git
-
-Commit:
-Branch:
-Remote synchronization:
-Push status:
-
-## Known Issues
-
-What remains unresolved?
-
-## Risk
-
-Any compatibility/security/performance concerns?
-```
-
-Jangan mengatakan:
-
-```text
-"Everything works."
-```
-
-tanpa evidence.
-
-Gunakan hasil validation yang benar-benar dilakukan.
-
----
-
-# 46. Emergency Stop Conditions
-
-Agent harus berhenti dan tidak melakukan perubahan lebih lanjut jika menemukan:
-
-```text
-Potential data loss
-Unresolved merge conflict
-Unknown destructive migration
-Credential/secret exposure
-Unexpected repository-wide modification
-Circular dependency
-Unclear ownership of conflicting changes
-Potential economy duplication exploit
-Potential permission escalation
-Production data modification requirement
-```
-
-Dalam kondisi tersebut:
-
-```text
-STOP
-↓
-Explain the risk
-↓
-Show evidence
-↓
-Do not destroy or overwrite existing work
-```
-
----
-
-# 47. Golden Rules
-
-Seluruh agent Apexsions wajib mengingat:
-
-```text
-1. Inspect before modifying.
-2. Sync with origin before working.
-3. Never overwrite another developer's work.
-4. Search existing code before creating new code.
-5. Keep scope controlled.
-6. Use APIs instead of direct database coupling.
-7. Keep optional integrations optional.
-8. Never block the Main Thread with database/network work.
-9. Protect economy and item transactions against race conditions and duplication.
-10. Never silently destroy data.
-11. Validate configuration.
-12. Compilation is not runtime validation.
-13. Review git diff before commit.
-14. Fetch origin again before push.
-15. Never force-push shared branches.
-16. Commit and push are separate operations.
-17. Update documentation when behavior or architecture changes.
-18. Prefer simple, correct, maintainable solutions.
-19. Never assume when the repository can prove it.
-20. When safety and speed conflict, choose safety.
-```
-
----
-
-# 48. Final Workflow
-
-The canonical Apexsions development workflow is:
-
-```text
-┌──────────────────────────────┐
-│        Receive Task          │
-└──────────────┬───────────────┘
-               ↓
-┌──────────────────────────────┐
-│ Read GEMINI.md / AGENTS.md   │
-└──────────────┬───────────────┘
-               ↓
-┌──────────────────────────────┐
-│ git status + fetch + inspect │
-└──────────────┬───────────────┘
-               ↓
-       Remote Changes?
-          /         \
-        YES          NO
-         ↓            ↓
-  Sync Safely      Continue
-         \            /
-          ↓          ↓
-┌──────────────────────────────┐
-│ Inspect Existing Code        │
-└──────────────┬───────────────┘
-               ↓
-┌──────────────────────────────┐
-│ Analyze Scope & Dependencies │
-└──────────────┬───────────────┘
-               ↓
-┌──────────────────────────────┐
-│ Plan Minimal Change          │
-└──────────────┬───────────────┘
-               ↓
-┌──────────────────────────────┐
-│ Implement                    │
-└──────────────┬───────────────┘
-               ↓
-┌──────────────────────────────┐
-│ Build Affected Plugins       │
-└──────────────┬───────────────┘
-               ↓
-┌──────────────────────────────┐
-│ Test / Runtime Validation    │
-└──────────────┬───────────────┘
-               ↓
-┌──────────────────────────────┐
-│ Review git diff/status       │
-└──────────────┬───────────────┘
-               ↓
-┌──────────────────────────────┐
-│ Fetch origin again           │
-└──────────────┬───────────────┘
-               ↓
-       Remote Changes?
-          /         \
-        YES          NO
-         ↓            ↓
-   Sync + Rebuild   Continue
-         \            /
-          ↓          ↓
-┌──────────────────────────────┐
-│ Commit                       │
-└──────────────┬───────────────┘
-               ↓
-      Push Authorized?
-          /         \
-        YES          NO
-         ↓            ↓
-       Push       Stop at commit
-         ↓
-┌──────────────────────────────┐
-│ Final Report                 │
-└──────────────────────────────┘
-```
-
-**This workflow is mandatory unless the user explicitly instructs otherwise and the requested deviation does not violate repository safety or data integrity.**
-
----
-
-# 49. Project Evolution & Documentation Governance
-
-Apexsions is a living software ecosystem. Plugin boundaries, APIs, dependencies, configuration, database schemas, Minecraft/Paper versions, build workflows, security requirements, and development conventions may evolve over time.
-
-Agents must treat repository changes as **ecosystem changes**, not merely file edits.
-
-## 49.1 Change Impact Analysis
-
-Before completing a non-trivial change, inspect its potential impact across:
-
-```text
-Source Code
-    ↓
-Plugin Architecture
-    ↓
-Public APIs
-    ↓
 Events
-    ↓
+Commands
+Permissions
 Configuration
-    ↓
-Database / Migrations
-    ↓
-Commands / Permissions
-    ↓
+Database
 Dependencies
-    ↓
-Build System
-    ↓
-Tests
-    ↓
-Documentation
-    ↓
-GEMINI.md / AGENTS.md
+Build workflow
+Versions
+Project structure
 ```
 
-Not every layer must change. The agent must determine which layers are actually affected.
+perform a documentation impact review.
 
----
-
-## 49.2 Documentation Is Part of the Change
-
-Documentation is part of implementation whenever behavior, architecture, API, configuration, command, permission, dependency, workflow, or project structure changes.
-
-The expected model is:
-
-```text
-Implementation Change
-        +
-Documentation Impact Review
-        =
-Complete Change
-```
-
-Do not knowingly leave documentation stale after a feature or architecture change.
-
----
-
-## 49.3 Documentation Discovery
-
-Do not assume that only these files contain documentation:
+Relevant documentation may include:
 
 ```text
 README.md
 DOKUMENTASI.md
 GEMINI.md
 AGENTS.md
-```
-
-When documentation impact is possible, inspect relevant:
-
-```text
-*.md
 docs/
-documentation/
 architecture/
 examples/
-API references
-configuration guides
 CHANGELOG
 CONTRIBUTING
 ```
 
-Only update files that are actually affected.
+Only update documentation that is actually affected.
+
+Do not blindly rewrite every markdown file.
 
 ---
 
-## 49.4 Documentation Impact Matrix
+# 21. Separation of Documentation Responsibilities
 
-| Change | Documentation that must be reviewed |
-|---|---|
-| Internal bugfix | Only if user-visible behavior changes |
-| New feature | README, DOKUMENTASI, and relevant feature/plugin docs |
-| New plugin | Plugin list, architecture docs, README/DOKUMENTASI, GEMINI/AGENTS where rules change |
-| Plugin removal | All references to the removed plugin |
-| Plugin rename | All non-historical references to the old name |
-| New API | API and architecture documentation |
-| Breaking API change | All consumers plus migration notes |
-| New command | Command documentation |
-| New permission | Permission documentation |
-| Configuration change | Configuration documentation |
-| Database schema change | Database/migration documentation |
-| Dependency change | Build/architecture documentation |
-| Java/Paper baseline change | Technology/build docs and agent rules |
-| Build workflow change | Build docs and relevant agent rules |
-| Architecture change | Architecture docs and relevant agent rules |
-| Rank change | Rank/configuration references |
-| Security policy change | Security docs and agent rules |
-
----
-
-## 49.5 GEMINI.md vs AGENTS.md
-
-Do not unnecessarily duplicate the entire contents of both files.
-
-### `GEMINI.md`
-
-Primary responsibility:
+Maintain clear responsibilities:
 
 ```text
-Gemini-specific operating instructions
-Agent workflow
-Git safety
-Repository safety
-Validation rules
-Project evolution rules
-Documentation governance
+AGENTS.md
+→ Universal coding-agent engineering rules
+
+GEMINI.md
+→ Gemini-specific workflow + Apexsions-specific governance and project baseline
+
+README.md
+→ Human onboarding and project overview
+
+DOKUMENTASI.md
+→ Detailed technical documentation
+
+docs/
+→ Detailed subsystem/API/architecture documentation
 ```
 
-### `AGENTS.md`
+Do not turn `AGENTS.md` into a duplicate copy of `GEMINI.md`.
 
-Primary responsibility:
+Do not turn `README.md` into an internal engineering manual.
 
-```text
-General AI coding-agent rules
-Architecture conventions
-Repository development conventions
-Implementation constraints
-Agent-independent engineering rules
-```
-
-If both documents contain the same rule, keep the wording concise and consistent rather than creating two independently maintained copies of large sections.
-
-If a rule changes, inspect both files for contradictions.
+Do not turn `GEMINI.md` into a copy of every technical document.
 
 ---
 
-## 49.6 New Plugin Protocol
+# 22. Project Evolution
 
-When creating a new Apexsions plugin, the agent must first determine:
+Do not assume the current architecture is permanent.
 
-```text
-1. Does the functionality already exist?
-2. Which plugin should own the responsibility?
-3. Is a separate plugin actually justified?
-4. What APIs are required?
-5. What events are required?
-6. What dependencies are required?
-7. What configuration is required?
-8. What database/storage is required?
-9. What commands and permissions are required?
-10. What security risks exist?
-11. What performance implications exist?
-12. What build configuration changes?
-13. What documentation becomes stale?
-```
+The repository may gain:
 
-A new plugin is incomplete until its source, build integration, documentation, and relevant ecosystem references are consistent.
+- new plugins;
+- new APIs;
+- new integrations;
+- new database systems;
+- new commands;
+- new configuration;
+- new dependencies;
+- new Minecraft/Paper versions;
+- new development workflows.
 
----
-
-## 49.7 Plugin Rename / Removal Protocol
-
-When renaming or removing a plugin, search the entire repository for:
+When introducing a significant new system, evaluate:
 
 ```text
-Plugin name
-Artifact name
-Package name
+Ownership
 Dependencies
+API/Event boundaries
 Configuration
-Commands
-Permissions
-Build scripts
+Persistence
+Security
+Performance
+Testing
+Build integration
 Documentation
-Architecture diagrams
-Examples
-CI/CD configuration
 ```
 
-Historical references may remain when they are intentionally part of changelog or history.
-
-All other stale references must be removed or updated.
+The correct response to project growth is controlled evolution, not uncontrolled duplication.
 
 ---
 
-## 49.8 Technology Upgrade Protocol
+# 23. New Plugin Decision
 
-For Java, Paper, Adventure, Maven, database drivers, or major dependencies:
+A new plugin should only be created when the responsibility genuinely warrants a new module.
+
+Before creating one:
+
+```text
+Does the functionality already exist?
+        ↓
+Can an existing plugin own it?
+        ↓
+Would a new plugin improve separation of responsibility?
+        ↓
+What dependencies does it require?
+        ↓
+What APIs/events does it expose?
+        ↓
+What configuration/data does it own?
+        ↓
+What documentation becomes affected?
+```
+
+Do not create a plugin simply to avoid touching existing code.
+
+---
+
+# 24. Architecture Changes
+
+For substantial architecture changes:
+
+```text
+Current State
+    ↓
+Impact Analysis
+    ↓
+Target State
+    ↓
+Migration Strategy
+    ↓
+Implementation
+    ↓
+Validation
+    ↓
+Documentation Synchronization
+```
+
+Document the reason for significant architectural decisions when appropriate.
+
+Do not leave obsolete architecture documentation presented as current.
+
+---
+
+# 25. Technology Upgrades
+
+For major version or dependency upgrades:
 
 ```text
 Inspect current baseline
         ↓
 Assess compatibility
         ↓
-Identify affected plugins
+Identify affected components
         ↓
 Update build configuration
         ↓
-Update code only where required
+Update code only where necessary
         ↓
-Build affected plugins
+Build
         ↓
-Run tests / runtime validation
+Test / Validate
         ↓
 Update documentation
-        ↓
-Update GEMINI / AGENTS if the development baseline changed
 ```
 
 Do not upgrade dependencies merely because a newer version exists.
 
----
-
-## 49.9 Architecture Change Protocol
-
-For architecture changes:
-
-```text
-Current Architecture
-        ↓
-Impact Analysis
-        ↓
-Target Architecture
-        ↓
-Migration Strategy
-        ↓
-Implementation
-        ↓
-Validation
-        ↓
-Documentation Synchronization
-```
-
-Document, where relevant:
-
-```text
-What changed?
-Why did it change?
-What depends on it?
-What became deprecated?
-What is the migration path?
-```
-
-Do not leave old architecture documentation presented as current.
+Project-specific technology versions belong in `GEMINI.md` and technical documentation, not duplicated here unless the universal rule itself depends on that version.
 
 ---
 
-## 49.10 Deprecation Protocol
+# 26. Scope Discipline
 
-For APIs, classes, configuration keys, commands, or features that are being phased out:
+Keep changes focused.
 
-```text
-Current
-  ↓
-Deprecated
-  ↓
-Migration Path
-  ↓
-Removal
-```
+Do not include unrelated:
 
-Where practical, document:
+- refactors;
+- formatting;
+- renames;
+- dependency upgrades;
+- configuration changes;
+- architecture changes.
 
-```text
-Deprecated item
-Replacement
-Migration instructions
-Removal status
-```
+If a task requires a broader change, explain why the broader scope is necessary.
 
-Do not remove public interfaces without checking their consumers.
+A good change should be understandable from its diff.
 
 ---
 
-# 50. Documentation Synchronization Protocol
+# 27. Generated Artifacts
 
-When the user explicitly requests:
+Follow repository-specific instructions for generated files.
 
-> "Update GEMINI.md, AGENTS.md, and all documentation."
+Do not manually edit generated artifacts when they are reproducible from source.
 
-the agent must perform a **repository-wide documentation audit**.
+Do not place build artifacts into external server directories unless explicitly authorized.
 
-The required workflow is:
-
-```text
-1. Identify the actual current project state.
-2. Inspect source code, configuration, build files, and architecture.
-3. Discover documentation files and relevant docs directories.
-4. Identify stale, contradictory, missing, or obsolete information.
-5. Update all documentation affected by the current project state.
-6. Update GEMINI.md when agent rules or project baseline changed.
-7. Update AGENTS.md when general agent/engineering rules changed.
-8. Update README.md for user-facing/onboarding changes.
-9. Update DOKUMENTASI.md for technical/system changes.
-10. Update docs/* and examples when affected.
-11. Remove obsolete references.
-12. Check terminology, plugin names, versions, paths, commands, APIs, permissions, and architecture.
-13. Search again for stale references.
-14. Check for contradictions between documentation files.
-15. Review the final diff.
-```
-
-"All documentation" means **all relevant and affected documentation**, not blindly rewriting every markdown file.
+When generated artifacts are intentionally version-controlled, ensure they correspond to the current source.
 
 ---
 
-# 51. Documentation Source-of-Truth & Consistency
-
-Documentation must describe the actual implementation.
-
-When documentation conflicts with source/configuration:
-
-```text
-Inspect implementation
-        ↓
-Determine intended behavior
-        ↓
-Determine which side is stale
-        ↓
-Fix the correct source
-        ↓
-Synchronize documentation
-```
-
-Do not modify source code solely to make incorrect documentation appear correct.
-
-Before finishing a documentation synchronization task, verify:
-
-```text
-[ ] Plugin names
-[ ] Package names
-[ ] Version numbers
-[ ] Commands
-[ ] Permissions
-[ ] Paths
-[ ] Build commands
-[ ] API names
-[ ] Event names
-[ ] Configuration examples
-[ ] Architecture diagrams
-[ ] Dependency references
-[ ] Database information
-[ ] No obsolete references
-[ ] No contradictions
-```
-
----
-
-# 52. Documentation-Only Changes
+# 28. Documentation-Only Tasks
 
 If the user requests documentation-only work:
 
 ```text
-Do not modify source code.
-Do not change runtime behavior.
-Do not silently "fix" implementation.
+Do not modify runtime source code.
+Do not silently change behavior.
+Do not "fix" unrelated implementation.
 ```
 
-If documentation cannot accurately be updated because the implementation itself is contradictory or unclear:
+If documentation cannot accurately describe the implementation because the implementation is contradictory or unclear:
 
 ```text
 STOP
 ↓
-Explain the inconsistency
+Report the inconsistency
 ↓
-Provide evidence
-↓
-Do not silently alter runtime behavior
+Do not silently change runtime behavior
 ```
 
 ---
 
-# 53. Long-Term Maintenance Rules
+# 29. Final Diff Review
 
-Every future feature should satisfy:
+Before declaring work complete:
 
-```text
-Fits the existing architecture
-OR
-Clearly justifies an architecture change
+```powershell
+git status --short
+git diff --stat
+git diff
+git diff --check
 ```
 
-Every architecture change should consider:
+Confirm:
 
 ```text
-Implementation
-+
-API contracts
-+
-Dependencies
-+
-Configuration
-+
-Database
-+
-Tests
-+
-Documentation
-+
-Agent rules where applicable
+[ ] Intended files changed
+[ ] No unrelated files changed
+[ ] No accidental generated files
+[ ] No secrets
+[ ] No destructive changes
+[ ] Architecture remains coherent
+[ ] Documentation is synchronized
 ```
-
-Every obsolete system should follow:
-
-```text
-Identify
-   ↓
-Deprecate
-   ↓
-Migrate
-   ↓
-Remove
-   ↓
-Clean stale documentation
-```
-
-The repository must maintain one coherent mental model across source code, configuration, documentation, and agent instructions.
 
 ---
 
-# 54. Future-Change Decision Protocol
+# 30. Final Validation Checklist
 
-When the user asks to add or modify functionality, the agent should reason through:
+Before completion:
 
 ```text
-Does this already exist?
-        ↓
-Where should it live?
-        ↓
-Which plugin owns it?
-        ↓
-What does it depend on?
-        ↓
-Who depends on it?
-        ↓
-What API/event contracts change?
-        ↓
-What config/database changes?
-        ↓
-What security risks exist?
-        ↓
-What performance risks exist?
-        ↓
-What documentation becomes stale?
-        ↓
-Does GEMINI.md need updating?
-        ↓
-Does AGENTS.md need updating?
-        ↓
-Implement
-        ↓
-Build
-        ↓
-Test
-        ↓
-Synchronize documentation
-        ↓
-Audit consistency
+[ ] Existing implementation inspected
+[ ] Existing abstractions reused where appropriate
+[ ] Dependencies checked
+[ ] Threading checked
+[ ] Security checked
+[ ] Configuration checked
+[ ] Database impact checked
+[ ] Commands/permissions checked
+[ ] Tests/build performed as appropriate
+[ ] Documentation impact reviewed
+[ ] Git diff reviewed
+[ ] Remote state checked before push
 ```
-
-The agent must not treat a requested feature as an isolated code edit when it changes the wider ecosystem.
 
 ---
 
-# 55. Governance Change Protocol
+# 31. Final Agent Behavior
 
-When changing `GEMINI.md` or `AGENTS.md` itself:
+When uncertain:
 
-1. Inspect the existing rule.
-2. Identify what behavior the rule currently governs.
-3. Identify rules that depend on it.
-4. Identify contradictory or obsolete rules.
-5. Make the smallest coherent governance change.
-6. Search both agent instruction files for conflicting wording.
-7. Verify that the new rule does not accidentally weaken repository safety.
-8. Update related documentation if the governance change reflects an actual project workflow change.
+```text
+Verify
+```
 
-Never add a new rule while knowingly leaving an older contradictory rule active.
+not:
+
+```text
+Guess
+```
+
+When an existing abstraction exists:
+
+```text
+Reuse
+```
+
+not:
+
+```text
+Duplicate
+```
+
+When a change is risky:
+
+```text
+Stop and inspect
+```
+
+not:
+
+```text
+Proceed and hope
+```
+
+When documentation is stale:
+
+```text
+Synchronize
+```
+
+not:
+
+```text
+Ignore
+```
+
+When a requested change conflicts with repository safety:
+
+```text
+Protect the repository
+```
 
 ---
 
-# 56. Final Documentation Definition of Done
+# 32. Relationship With GEMINI.md
 
-Documentation work is complete only when:
+`GEMINI.md` is the authoritative location for:
 
-```text
-[ ] Actual project state was inspected
-[ ] Relevant documentation was discovered
-[ ] Stale information was identified
-[ ] Affected documentation was updated
-[ ] Obsolete references were removed
-[ ] GEMINI.md was updated when necessary
-[ ] AGENTS.md was updated when necessary
-[ ] README.md was updated when necessary
-[ ] DOKUMENTASI.md was updated when necessary
-[ ] Relevant docs/* were updated
-[ ] Examples were checked
-[ ] Commands were checked
-[ ] Configuration examples were checked
-[ ] Architecture references were checked
-[ ] No contradictory instructions remain
-[ ] Repository-wide stale-reference search completed
-[ ] Final git diff reviewed
-```
+- Gemini-specific instructions;
+- Apexsions project identity;
+- official plugin suite;
+- rank hierarchy;
+- project-specific technology baseline;
+- exact build commands;
+- detailed inter-plugin architecture;
+- project-specific Git workflow;
+- long-term Apexsions governance;
+- project-specific documentation rules.
 
-Documentation must be considered **synchronized**, not merely "edited".
+`AGENTS.md` provides the reusable engineering foundation underneath those project-specific rules.
+
+The two files should be **complementary, not duplicates**.
+
+If either file changes, check the other for contradictions, but do not copy the entire document.
 
 ---
 
-# 57. Golden Rule for Project Evolution
+# 33. Golden Rule
 
-The project will change.
-
-Therefore:
-
-> **Never assume today's architecture, plugin list, dependencies, versions, configuration, or workflow will remain permanent.**
-
-When the repository evolves, the agent must evolve the relevant:
-
-```text
-Code
-Configuration
-Build System
-Tests
-Documentation
-GEMINI.md
-AGENTS.md
-```
-
-together when required.
-
-The goal is not to preserve the current repository forever.
-
-The goal is to preserve **consistency, safety, maintainability, and a truthful representation of the current system**.
+> **Understand the repository before changing it, make the smallest correct change, validate the result, protect other developers' work, and leave the repository more coherent than you found it.**
