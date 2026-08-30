@@ -78,38 +78,7 @@ public class GUIListener implements Listener {
 
         // 3. Report Detail GUI
         if (holder instanceof ReportDetailGUI reportDetailGUI) {
-            Report report = reportDetailGUI.getReport();
-            if (slot == 22) {
-                new ReportListGUI(plugin, 1).loadAndOpen(player);
-                return;
-            }
-            if (slot == 11) { // Mark Reviewing
-                plugin.getReportRepository().updateReportStatusAsync(
-                        report.getReportId(), ReportStatus.REVIEWING, player.getUniqueId(), player.getName(), "Under staff review"
-                ).thenAccept(success -> {
-                    player.sendMessage(miniMessage.deserialize("<green>✔ Report #" + report.getReportId() + " marked as <yellow>REVIEWING</yellow>.</green>"));
-                    player.closeInventory();
-                });
-                return;
-            }
-            if (slot == 13) { // Mark Resolved
-                plugin.getReportRepository().updateReportStatusAsync(
-                        report.getReportId(), ReportStatus.RESOLVED, player.getUniqueId(), player.getName(), "Resolved by " + player.getName()
-                ).thenAccept(success -> {
-                    player.sendMessage(miniMessage.deserialize("<green>✔ Report #" + report.getReportId() + " marked as <green>RESOLVED</green>.</green>"));
-                    player.closeInventory();
-                });
-                return;
-            }
-            if (slot == 15) { // Mark Dismissed
-                plugin.getReportRepository().updateReportStatusAsync(
-                        report.getReportId(), ReportStatus.DISMISSED, player.getUniqueId(), player.getName(), "Dismissed by " + player.getName()
-                ).thenAccept(success -> {
-                    player.sendMessage(miniMessage.deserialize("<yellow>✔ Report #" + report.getReportId() + " marked as <red>DISMISSED</red>.</yellow>"));
-                    player.closeInventory();
-                });
-                return;
-            }
+            reportDetailGUI.handleClick(player, event);
             return;
         }
 
@@ -187,6 +156,11 @@ public class GUIListener implements Listener {
                 player.sendMessage(miniMessage.deserialize("<green>🔊 Audio alert test berhasil dibunyikan!</green>"));
                 return;
             }
+        }
+
+        // 7. Social Profile GUI
+        if (holder instanceof SocialProfileGUI socialProfileGUI) {
+            socialProfileGUI.handleClick(event);
         }
     }
 }

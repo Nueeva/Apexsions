@@ -62,7 +62,10 @@ Dokumentasi resmi yang merangkum arsitektur menyeluruh, interaksi antar-plugin, 
 ### 👑 ApexsionsCore
 | Perintah | Alias | Deskripsi | Hak Akses | Default |
 | :--- | :--- | :--- | :--- | :---: |
+| `/admingui` | `/apexadmin`, `/aadmin`, `/aa` | Master Admin Control Hub & Deep Player Inspector | `apexsions.admin.gui` | `op` |
 | `/lobby` | `/hub` | Teleportasi ke lobi utama server | `apexsionscore.command.lobby` | `true` |
+| `/warp` | `/warps` | Membuka GUI navigasi warp 54-slot | `apexsionscore.command.warp` | `true` |
+| `/warpmgr` | `/warp admin` | Membuka Interactive Admin Warp Management GUI | `apexsionscore.warp.admin` | `op` |
 | `/kingdom` | `/k`, `/region` | Membuka profil dan status kerajaan | `apexsionscore.command.region` | `true` |
 | `/kingdom choose` | `/k select` | Membuka menu pemilihan 3 kerajaan | `apexsionscore.command.region` | `true` |
 | `/kingdom top` | `/k leaderboard`| Membuka Hall of Fame & Leaderboard GUI | `apexsionscore.command.level` | `true` |
@@ -77,6 +80,7 @@ Dokumentasi resmi yang merangkum arsitektur menyeluruh, interaksi antar-plugin, 
 | Perintah | Alias | Deskripsi | Hak Akses | Default |
 | :--- | :--- | :--- | :--- | :---: |
 | `/channel [settings]` | `/ch` | Mengganti channel atau buka pengaturan GUI | `apexsionschat.channel` | `true` |
+| `/channel profile <p>`| - | Membuka antarmuka interaksi profil sosial pemain | `apexsionschat.channel` | `true` |
 | `/g [pesan]` | `/global` | Berbicara di obrolan Global | `apexsionschat.channel.global` | `true` |
 | `/kc [pesan]` | `/kchat` | Berbicara di obrolan Kerajaan | `apexsionschat.channel.kingdom` | `true` |
 | `/sc [pesan]` | `/staffchat` | Berbicara di obrolan Staf | `apexsionschat.channel.staff` | `op` |
@@ -84,7 +88,7 @@ Dokumentasi resmi yang merangkum arsitektur menyeluruh, interaksi antar-plugin, 
 | `/mail send <p> <msg>`| - | Mengirim surat offline ke pemain | `apexsionschat.mail` | `true` |
 | `/mail read` | `/inbox` | Membaca kotak masuk surat offline | `apexsionschat.mail` | `true` |
 | `/report <p> <alasan>`| - | Melaporkan pemain yang melanggar aturan | `apexsionschat.report` | `true` |
-| `/reports` | `/reportlist` | Membuka antarmuka resolusi laporan (Staf) | `apexsionschat.staff.reports` | `op` |
+| `/reports` | `/reportlist` | Membuka antarmuka resolusi laporan & meja staf 54-slot | `apexsionschat.staff.reports` | `op` |
 
 ### 💰 ApexsionsEconomy
 | Perintah | Alias | Deskripsi | Hak Akses | Default |

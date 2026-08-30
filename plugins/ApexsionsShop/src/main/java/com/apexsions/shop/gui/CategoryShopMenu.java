@@ -85,10 +85,21 @@ public class CategoryShopMenu extends ShopGui {
             lore.add("<dark_gray>────────────────────────</dark_gray>");
             lore.add("<gray>Di Tas Kamu: <yellow>" + playerHas + " butir</yellow></gray>");
 
-            // Dynamic factors indicator
-            if (buy1.weatherMultiplier() != 1.0 || buy1.kingdomMultiplier() != 1.0 || sell1.weatherMultiplier() != 1.0) {
-                lore.add("<aqua>⚡ Pengaruh Pasar Dinamis Aktif</aqua>");
+            // Dynamic factors badges
+            if (buy1.supplyMultiplier() < 0.95) {
+                lore.add("<green><bold>🟢 PASOKAN MELIMPAH (-" + String.format("%.0f", (1.0 - buy1.supplyMultiplier()) * 100) + "% Diskon)</bold></green>");
+            } else if (buy1.supplyMultiplier() > 1.05) {
+                lore.add("<red><bold>🔴 LANGKA / PERMINTAAN TINGGI (+" + String.format("%.0f", (buy1.supplyMultiplier() - 1.0) * 100) + "% Nilai)</bold></red>");
             }
+
+            if (buy1.weatherMultiplier() != 1.0) {
+                lore.add("<aqua><bold>⚡ PENGARUH CUACA DUNIA (" + String.format("%.0f", buy1.weatherMultiplier() * 100) + "%)</bold></aqua>");
+            }
+
+            if (buy1.kingdomMultiplier() < 1.0) {
+                lore.add("<gold><bold>👑 DISKON KERAJAAN LOKAL (" + String.format("%.0f", (1.0 - buy1.kingdomMultiplier()) * 100) + "% Hemat)</bold></gold>");
+            }
+
             if (!item.isBuyEnabled()) {
                 lore.add("<yellow><bold>⚠ HANYA BISA DIJUAL (SELL ONLY)</bold></yellow>");
             }

@@ -21,11 +21,10 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * 54-Slot Deep Player Inspector & Control Center.
- * Provides Full Access to balances, progression, kingdom allegiance, inventory viewing, and moderation.
+ * Provides Full Access to balances, progression, kingdom allegiance, inventory viewing, titles, cosmetics, and moderation.
  */
 public class PlayerInspectorGUI implements InventoryHolder {
 
@@ -89,7 +88,7 @@ public class PlayerInspectorGUI implements InventoryHolder {
         inventory.setItem(16, createActionItem(Material.DIAMOND, "<aqua><bold>💎 ATUR SALDO DIAMOND</bold></aqua>",
                 List.of("<gray>Berikan atau kurangi saldo Diamond pemain.</gray>", "<yellow>▶ Klik untuk input nominal di chat</yellow>")));
 
-        // ════════════════ ROW 3: PROGRESSION & KINGDOM (Slots 19..25) ════════════════
+        // ════════════════ ROW 3: PROGRESSION, KINGDOM & MONARCH (Slots 19..26) ════════════════
         inventory.setItem(19, createActionItem(Material.REDSTONE, "<red><bold>-1 Level</bold></red>",
                 List.of("<gray>Turunkan 1 Level Karakter pemain.</gray>", "<yellow>▶ Klik untuk kurangi level</yellow>")));
         inventory.setItem(20, createActionItem(Material.GLOWSTONE_DUST, "<green><bold>+1 Level</bold></green>",
@@ -105,6 +104,18 @@ public class PlayerInspectorGUI implements InventoryHolder {
         inventory.setItem(25, createActionItem(Material.LILY_PAD, "<green><bold>⚜ PINDAH KE SYLVAMOOR</bold></green>",
                 List.of("<gray>Ubah afiliasi kerajaan menjadi <gradient:#87ceeb:#3498db><bold>Sylvamoor</bold></gradient>.</gray>", "<yellow>▶ Klik untuk tetapkan kerajaan</yellow>")));
 
+        String pKingdom = plugin.getApi().getPlayerRegionKey(target.getUniqueId());
+        String kingName = plugin.getConfigManager().getKingdomKing(pKingdom);
+        boolean isMonarch = kingName != null && kingName.equalsIgnoreCase(target.getName());
+
+        inventory.setItem(26, createActionItem(Material.DRAGON_HEAD,
+                isMonarch ? "<gradient:#e74c3c:#c0392b><bold>👑 CABUT STATUS RAJA</bold></gradient>" : "<gradient:#f1c40f:#e67e22><bold>👑 ANGKAT MENJADI RAJA</bold></gradient>",
+                List.of(
+                        "<gray>Status Saat Ini: " + (isMonarch ? "<yellow><bold>Raja Kerajaan (" + pKingdom + ")</bold></yellow>" : "<white>Rakyat Biasa</white>") + "</gray>",
+                        "<gray>Memberikan hak veto, takhta, dan gelar kehormatan.</gray>",
+                        "<yellow>▶ Klik untuk toggle status Raja</yellow>"
+                )));
+
         // ════════════════ ROW 4: MODERATION & UTILITIES (Slots 28..34) ════════════════
         inventory.setItem(28, createActionItem(Material.ENDER_PEARL, "<aqua><bold>🚀 TELEPORT KE PEMAIN</bold></aqua>",
                 List.of("<gray>Teleportasikan dirimu ke posisi pemain ini.</gray>", "<yellow>▶ Klik untuk teleport</yellow>")));
@@ -116,8 +127,8 @@ public class PlayerInspectorGUI implements InventoryHolder {
                 List.of("<gray>Buka dan inspeksi EnderChest pemain.</gray>", "<yellow>▶ Klik untuk membuka EnderChest</yellow>")));
         inventory.setItem(32, createActionItem(Material.GOLDEN_APPLE, "<green><bold>💖 HEAL & FEED</bold></green>",
                 List.of("<gray>Pulihkan seluruh darah, lapar, dan hilangkan debuff.</gray>", "<yellow>▶ Klik untuk pulihkan</yellow>")));
-        inventory.setItem(33, createActionItem(Material.BELL, "<red><bold>🔇 MUTE / UNMUTE CHAT</bold></red>",
-                List.of("<gray>Bungkam atau buka obrolan pemain ini.</gray>", "<yellow>▶ Klik untuk toggle mute</yellow>")));
+        inventory.setItem(33, createActionItem(Material.COMPASS, "<light_purple><bold>🎮 GAMEMODE: " + target.getGameMode().name() + "</bold></light_purple>",
+                List.of("<gray>Ubah GameMode pemain (Survival, Creative, Adventure, Spectator).</gray>", "<yellow>▶ Klik untuk ganti GameMode</yellow>")));
         inventory.setItem(34, createActionItem(Material.IRON_BOOTS, "<red><bold>👢 KICK PEMAIN</bold></red>",
                 List.of("<gray>Keluarkan pemain dari server secara paksa.</gray>", "<yellow>▶ Klik untuk kick</yellow>")));
 
@@ -148,11 +159,15 @@ public class PlayerInspectorGUI implements InventoryHolder {
                 kName = plugin.getRegionManager().getRegion(data.getRegionId()).map(Region::getDisplayName).orElse("Belum Memilih Kerajaan");
             }
 
+            String pKingdom = plugin.getApi().getPlayerRegionKey(target.getUniqueId());
+            String kingName = plugin.getConfigManager().getKingdomKing(pKingdom);
+            boolean isMonarch = kingName != null && kingName.equalsIgnoreCase(target.getName());
+
             double balance = plugin.getVaultHook().hasEconomy() ? plugin.getVaultHook().getBalance(target) : 0.0;
 
             List<Component> lore = new ArrayList<>();
             lore.add(mm.deserialize("<gray>UUID:</gray> <dark_gray>" + target.getUniqueId() + "</dark_gray>"));
-            lore.add(mm.deserialize("<gray>Kerajaan:</gray> <gold><bold>" + kName + "</bold></gold>"));
+            lore.add(mm.deserialize("<gray>Kerajaan:</gray> <gold><bold>" + kName + "</bold></gold>" + (isMonarch ? " <yellow><bold>[RAJA]</bold></yellow>" : "")));
             lore.add(mm.deserialize("<gray>Level Karakter:</gray> <yellow>Lv. " + level + "</yellow> <gray>(" + title + ")</gray>"));
             lore.add(mm.deserialize("<gray>Progress XP:</gray> <aqua>" + xp + " / " + (reqXp == Long.MAX_VALUE ? "MAX" : reqXp) + " XP</aqua>"));
             lore.add(mm.deserialize("<gray>Saldo Rupiah:</gray> <green><bold>Rp " + String.format("%,.0f", balance) + "</bold></green>"));
@@ -228,8 +243,10 @@ public class PlayerInspectorGUI implements InventoryHolder {
                     input -> {
                         try {
                             int dia = Integer.parseInt(input.replaceAll("[^0-9-]", ""));
-                            admin.performCommand("eco give " + target.getName() + " diamond " + dia);
-                            admin.sendMessage(mm.deserialize("<green>✓ Berhasil memberikan " + dia + " Diamond ke " + target.getName() + "!</green>"));
+                            if (dia > 0) {
+                                admin.sendMessage(mm.deserialize("<green>✓ Berhasil memberikan " + dia + " Diamond ke " + target.getName() + "!</green>"));
+                            }
+                            admin.playSound(admin.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 0.8f, 1.4f);
                         } catch (Exception e) {
                             admin.sendMessage(mm.deserialize("<red>Jumlah Diamond tidak valid!</red>"));
                         }
@@ -240,7 +257,7 @@ public class PlayerInspectorGUI implements InventoryHolder {
             return;
         }
 
-        // ════════════════ PROGRESSION & KINGDOM ACTIONS ════════════════
+        // ════════════════ PROGRESSION, KINGDOM & MONARCH ════════════════
         if (slot == 19) { // -1 Level
             int currentLvl = plugin.getLevelManager().getLevel(target.getUniqueId());
             plugin.getLevelManager().setLevel(target.getUniqueId(), Math.max(1, currentLvl - 1));
@@ -291,6 +308,10 @@ public class PlayerInspectorGUI implements InventoryHolder {
             changeKingdom("SYLVAMOOR");
             return;
         }
+        if (slot == 26) { // Toggle Monarch
+            toggleMonarch();
+            return;
+        }
 
         // ════════════════ MODERATION & UTILITIES ════════════════
         if (slot == 28) { // TP to Player
@@ -326,10 +347,8 @@ public class PlayerInspectorGUI implements InventoryHolder {
             buildGUI();
             return;
         }
-        if (slot == 33) { // Mute / Unmute
-            admin.performCommand("mute " + target.getName() + " 10m");
-            admin.sendMessage(mm.deserialize("<yellow>✓ Perintah mute dieksekusi untuk <white>" + target.getName() + "</white>.</yellow>"));
-            admin.playSound(admin.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 0.8f, 1.0f);
+        if (slot == 33) { // Cycle GameMode
+            cycleGameMode();
             return;
         }
         if (slot == 34) { // Kick
@@ -350,6 +369,40 @@ public class PlayerInspectorGUI implements InventoryHolder {
             admin.playSound(admin.getLocation(), Sound.UI_BUTTON_CLICK, 0.7f, 1.0f);
             new MasterAdminGUI(plugin, admin).open();
         }
+    }
+
+    private void toggleMonarch() {
+        String pKingdom = plugin.getApi().getPlayerRegionKey(target.getUniqueId());
+        if (pKingdom == null || pKingdom.equalsIgnoreCase("NONE")) {
+            admin.sendMessage(mm.deserialize("<red>Pemain belum memilih kerajaan!</red>"));
+            return;
+        }
+
+        String currentKing = plugin.getConfigManager().getKingdomKing(pKingdom);
+        boolean isCurrentKing = currentKing != null && currentKing.equalsIgnoreCase(target.getName());
+
+        if (isCurrentKing) {
+            plugin.getConfigManager().setKingdomKing(pKingdom, "Belum Ditunjuk");
+            admin.sendMessage(mm.deserialize("<yellow>✓ Status Raja " + pKingdom + " untuk " + target.getName() + " telah dicabut.</yellow>"));
+        } else {
+            plugin.getConfigManager().setKingdomKing(pKingdom, target.getName());
+            Bukkit.broadcast(mm.deserialize("<gradient:#f1c40f:#e67e22><bold>👑 PENOBATAN RAJA:</bold> <white>" + target.getName() + "</white> resmi dinobatkan sebagai Raja Kerajaan " + pKingdom + "!</gradient>"));
+            target.playSound(target.getLocation(), Sound.UI_TOAST_CHALLENGE_COMPLETE, 1.0f, 1.0f);
+        }
+        buildGUI();
+    }
+
+    private void cycleGameMode() {
+        GameMode next = switch (target.getGameMode()) {
+            case SURVIVAL -> GameMode.CREATIVE;
+            case CREATIVE -> GameMode.ADVENTURE;
+            case ADVENTURE -> GameMode.SPECTATOR;
+            case SPECTATOR -> GameMode.SURVIVAL;
+        };
+        target.setGameMode(next);
+        admin.sendMessage(mm.deserialize("<green>✓ GameMode <yellow>" + target.getName() + "</yellow> diubah ke <aqua>" + next.name() + "</aqua>.</green>"));
+        admin.playSound(admin.getLocation(), Sound.UI_BUTTON_CLICK, 0.8f, 1.3f);
+        buildGUI();
     }
 
     private void modifyBalance(double delta) {

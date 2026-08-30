@@ -3,6 +3,7 @@ package com.apexsions.chat.command;
 import com.apexsions.chat.ApexsionsChatPlugin;
 import com.apexsions.chat.channel.ChatChannel;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -47,6 +48,16 @@ public class ChannelCommand implements CommandExecutor, TabCompleter {
         // Generic /channel <channelName>
         if (args.length == 0 || args[0].equalsIgnoreCase("settings") || args[0].equalsIgnoreCase("gui") || args[0].equalsIgnoreCase("menu")) {
             player.openInventory(new com.apexsions.chat.gui.ChatSettingsGUI(plugin, player).getInventory());
+            return true;
+        }
+
+        if (args[0].equalsIgnoreCase("profile") && args.length > 1) {
+            Player target = Bukkit.getPlayer(args[1]);
+            if (target != null) {
+                player.openInventory(new com.apexsions.chat.gui.SocialProfileGUI(plugin, player, target).getInventory());
+            } else {
+                player.sendMessage(miniMessage.deserialize("<red>Pemain target tidak ditemukan atau sedang offline.</red>"));
+            }
             return true;
         }
 

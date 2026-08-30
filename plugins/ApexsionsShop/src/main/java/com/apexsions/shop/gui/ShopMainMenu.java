@@ -63,8 +63,22 @@ public class ShopMainMenu extends ShopGui {
             }));
         }
 
-        // 3. Quick Sell GUI Button (Slot 40 - Bottom Row Accent)
-        setButton(40, new ShopGuiButton(new ShopItemBuilder(Material.HOPPER)
+        // 3. Market Trends Button (Slot 38)
+        setButton(38, new ShopGuiButton(new ShopItemBuilder(Material.SPYGLASS)
+                .name("<gradient:#f1c40f:#e67e22><bold>📈 TREN PASAR & CUACA</bold></gradient>")
+                .lore(List.of(
+                        "<gray>Lihat komoditas langka, pasokan melimpah,</gray>",
+                        "<gray>serta pengaruh cuaca terhadap harga jual-beli.</gray>",
+                        " ",
+                        "<yellow>Sentuh / Klik untuk Buka Tren Pasar ▶</yellow>"
+                ))
+                .build(), event -> {
+            player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.7f, 1.2f);
+            new MarketTrendsMenu(plugin, player, this).open();
+        }));
+
+        // 4. Quick Sell GUI Button (Slot 42 - Bottom Row Accent)
+        setButton(42, new ShopGuiButton(new ShopItemBuilder(Material.HOPPER)
                 .name("<green><bold>⚡ JUAL CEPAT (SELL GUI)</bold></green>")
                 .lore(List.of(
                         "<gray>Jual banyak item sekaligus secara instan.</gray>",
@@ -77,7 +91,7 @@ public class ShopMainMenu extends ShopGui {
             new SellGuiMenu(plugin, player, this).open();
         }));
 
-        // 4. Close Button (Slot 49 - Bottom Center)
+        // 5. Close Button (Slot 49 - Bottom Center)
         setButton(49, new com.apexsions.shop.gui.navigation.CloseButton());
     }
 }

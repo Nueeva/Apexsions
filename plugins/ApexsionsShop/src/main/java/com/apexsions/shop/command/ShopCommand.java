@@ -43,6 +43,11 @@ public class ShopCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
+        if (args.length > 0 && args[0].equalsIgnoreCase("trends")) {
+            new com.apexsions.shop.gui.MarketTrendsMenu(plugin, player, null).open();
+            return true;
+        }
+
         if (args.length > 0) {
             ShopCategory category = ShopCategory.fromId(args[0]);
             if (category != null) {
@@ -62,6 +67,9 @@ public class ShopCommand implements CommandExecutor, TabCompleter {
             String input = args[0].toLowerCase();
             if (sender.hasPermission("apexsionsshop.admin") && "reload".startsWith(input)) {
                 completions.add("reload");
+            }
+            if ("trends".startsWith(input)) {
+                completions.add("trends");
             }
             for (ShopCategory cat : ShopCategory.values()) {
                 if (cat.getId().startsWith(input)) {

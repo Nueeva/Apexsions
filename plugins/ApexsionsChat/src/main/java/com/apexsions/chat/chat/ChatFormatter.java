@@ -103,11 +103,11 @@ public class ChatFormatter {
                 "<gray>Level Karakter:</gray> <yellow>Lv. " + level + "</yellow> <dark_gray>(" + xp + " / " + (reqXp == Long.MAX_VALUE ? "MAX" : reqXp) + " XP)</dark_gray>\n" +
                 "<gray>Saldo Rupiah:</gray> <green><bold>Rp " + String.format("%,.0f", balance) + "</bold></green>\n" +
                 "<gray>Status Darah:</gray> <red>" + hp + "/" + maxHp + " ❤</red> <gray>• Ping:</gray> <green>" + ping + "ms</green>\n\n" +
-                "<yellow>▶ Klik untuk membuka profil kerajaan pemain!</yellow>";
+                "<yellow>▶ Klik untuk membuka menu interaksi sosial & profil pemain!</yellow>";
 
         return miniMessage.deserialize("<white>" + player.getName() + "</white>")
                 .hoverEvent(HoverEvent.showText(miniMessage.deserialize(hoverCard)))
-                .clickEvent(ClickEvent.runCommand("/kingdom profile " + player.getName()));
+                .clickEvent(ClickEvent.runCommand("/channel profile " + player.getName()));
     }
 
     public Component buildMessageComponent(Player player, String rawMessage) {

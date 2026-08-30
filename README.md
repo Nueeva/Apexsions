@@ -21,6 +21,9 @@ Kumpulan plugin server Minecraft profesional berkinerja tinggi yang dirancang se
 
 ### 👑 ApexsionsCore
 - **3 Kerajaan Berdaulat**: *Zenithar* (Pegunungan/Tambang), *Solterra* (Gurun/Pertanian), *Sylvamoor* (Hutan/Alam).
+- **Ultimate Admin Control Panel & Deep Player Inspector (54-Slot GUI)**:
+  - Akses penuh administrasi pemain dari GUI: Ubah saldo Rupiah/Diamond, ubah level (1-100) & XP, ganti kerajaan seketika, dan penobatan **👑 Raja Kerajaan (Monarch)** dengan siaran global.
+  - Quick Tooling: Teleportasi, tarik pemain, inspeksi live inventory & EnderChest, Heal & Feed instan, GameMode switcher (Survival/Creative/Adventure/Spectator), dan Kick sanksi.
 - **Sistem Warp GUI Player & Admin Editor GUI**:
   - `/warp` & `/warps`: GUI navigasi 54-slot dengan filter tab kategori (`SERVER`, `RESOURCE`, `EVENT`, `KINGDOM`, `PVP`, `GENERAL`).
   - `/warpmgr` / `/warp admin`: GUI manajemen interaktif admin untuk memperbarui koordinat posisi berdiri, mengubah ikon dari tangan, kategori, delay timer, toggle hidden, dan hapus warp.
@@ -36,6 +39,10 @@ Kumpulan plugin server Minecraft profesional berkinerja tinggi yang dirancang se
 - **Enforcer TPA EssentialsX**: Teleportasi `/tpa` wajib sesama anggota kerajaan dan kedua pemain wajib berada di dalam area kerajaan.
 
 ### 💬 ApexsionsChat
+- **Interactive Chat ID-Card & Social Profile GUI (27-Slot)**:
+  - Klik nama pemain di chat untuk membuka profil sosial: Rincian gelar, rank, kerajaan, level, saldo Rupiah, ping, serta tombol aksi cepat (`/msg`, `/trade`, `/mail send`, `/report`).
+- **Staff Reports Investigation & Rapid Action Desk (54-Slot GUI)**:
+  - `/reports`: Rincian tiket laporan, teleport ke TKP / posisi terlapor, perubahan status (Reviewing, Resolved, Dismissed), dan eksekusi sanksi 1-klik (Mute 10m, Warn, Kick, Ban 1h).
 - **Channel Terisolasi & Preferensi Visual (`/channel settings`)**: Saluran Global, Kerajaan, dan Staf, dilengkapi GUI personal untuk toggle audio mention pings dan pemilihan channel.
 - **Showcase Item Modern (`/showitem`)**: Menampilkan item tangan dengan hover tooltip interaktif tanpa kebocoran syntax tag.
 - **Surat Offline (`/mail`)**: Mengirim dan membaca pesan untuk pemain yang sedang offline.
@@ -59,6 +66,7 @@ Kumpulan plugin server Minecraft profesional berkinerja tinggi yang dirancang se
 ### 🛒 ApexsionsShop
 - **6 Kategori Lengkap**: `blocks.yml`, `farming.yml`, `food.yml`, `ores.yml`, `mob_drops.yml`, `dyes.yml`.
 - **Harga Dinamis Cuaca & Kerajaan**: Harga berfluktuasi cerdas sesuai hujan/badai dan keunggulan komoditas kerajaan pembeli.
+- **Badge Visual Tren Pasar & Dashboard (`/shop trends`)**: Indikator visual langsung pada lore item (`[PASOKAN MELIMPAH]`, `[LANGKA / PERMINTAAN TINGGI]`, `[EFEK CUACA]`, `[DISKON KERAJAAN]`) dan menu tren ekonomi khusus.
 - **Price Clamping & Siaran Tren Pasar**: Batas pengaman harga (50% - 200%) dan siaran berkala komoditas BOOM/DIP.
 - **Pajak Kerajaan 10%**: Otomatis disalurkan ke kas perbendaharaan kerajaan pemain.
 - **UI Ramah Sentuh & Bedrock**: Kontrol navigasi di baris terbawah inventaris.
