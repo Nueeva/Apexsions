@@ -136,9 +136,9 @@ public class ApexsionsCoreAPIImpl implements ApexsionsCoreAPI {
         String levelTitle = plugin.getLevelManager().getLevelTitle(uuid);
         String activeTitle = data != null ? data.getActiveTitle() : null;
 
-        String rank = (player != null && plugin.getLuckPermsHook() != null)
-                ? plugin.getLuckPermsHook().getPlayerRank(player)
-                : "Wanderer";
+        String rank = (player != null && plugin.getRankAnimationManager() != null)
+                ? plugin.getRankAnimationManager().getAnimatedRankPrefix(player).trim()
+                : ((player != null && plugin.getLuckPermsHook() != null) ? plugin.getLuckPermsHook().getPlayerRank(player) : "Wanderer");
 
         String kingdomKey = "NONE";
         String kingdomDisplay = "Belum Memilih";

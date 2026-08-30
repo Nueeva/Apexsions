@@ -51,7 +51,13 @@ public class PlayerListener implements Listener {
             plugin.getLevelManager().reconcileLevel(data, player);
         });
         
-        // 2. First-join guidance
+        // 3. Setup Animated Rank Nameplates and Scoreboards
+        if (plugin.getRankAnimationManager() != null) {
+            plugin.getRankAnimationManager().setupScoreboardForNewPlayer(player);
+            plugin.getRankAnimationManager().updatePlayerNameplate(player);
+        }
+
+        // 4. First-join guidance
         if (!player.hasPlayedBefore()) {
             Bukkit.getScheduler().runTaskLater(plugin, () -> {
                 if (player.isOnline()) {
@@ -68,5 +74,8 @@ public class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.NORMAL)
     public void onQuit(PlayerQuitEvent event) {
         plugin.getPlayerDataService().flush(event.getPlayer().getUniqueId());
+        if (plugin.getRankAnimationManager() != null) {
+            plugin.getRankAnimationManager().updatePlayerNameplate(event.getPlayer());
+        }
     }
 }
