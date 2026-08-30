@@ -44,6 +44,9 @@ public class ApexsionsMediaPlugin extends JavaPlugin {
 
         getServer().getPluginManager().registerEvents(new MediaInteractListener(this), this);
 
+        // Register Public API
+        com.apexsions.media.api.ApexsionsMediaProvider.register(new com.apexsions.media.api.ApexsionsMediaAPIImpl(this));
+
         // Start Raytrace Service
         this.raytraceService.start();
 
@@ -54,6 +57,7 @@ public class ApexsionsMediaPlugin extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        com.apexsions.media.api.ApexsionsMediaProvider.unregister();
         if (raytraceService != null) {
             raytraceService.stop();
         }

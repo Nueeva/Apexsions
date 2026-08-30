@@ -263,7 +263,7 @@ public class RewardManager {
                 } else {
                     // Integration with ApexsionsEconomy if present
                     try {
-                        com.apexsions.economy.api.ApexsionsEconomyAPI.deposit(player.getUniqueId(), cId, reward.getAmount());
+                        com.apexsions.economy.api.ApexsionsEconomyProvider.get().deposit(player.getUniqueId(), cId, reward.getAmount());
                     } catch (Throwable t) {
                         // Fallback to battle coins if economy not hooked
                         plugin.getCurrencyService().addCurrency(player.getUniqueId(), reward.getAmount());

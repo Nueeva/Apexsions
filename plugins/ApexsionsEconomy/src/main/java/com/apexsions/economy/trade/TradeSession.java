@@ -179,39 +179,39 @@ public class TradeSession {
         state = TradeState.COMPLETED;
         this.temporarilyClosing = true;
 
-        // 3. Swap Currency
-        if (offer1.getCurrency() != null && offer1.getMoneyAmount() > 0) {
-            cs.removeBalance(player1.getUniqueId(), offer1.getCurrency().getId(), offer1.getMoneyAmount());
-            cs.addBalance(player2.getUniqueId(), offer1.getCurrency().getId(), offer1.getMoneyAmount());
-        }
+        plugin.getCurrencyService().getLockManager().executeWithDualAccountLock(player1.getUniqueId(), player2.getUniqueId(), () -> {
+            // 3. Swap Currency
+            if (offer1.getCurrency() != null && offer1.getMoneyAmount() > 0) {
+                cs.transferAtomic(player1.getUniqueId(), player2.getUniqueId(), offer1.getCurrency().getId(), offer1.getMoneyAmount());
+            }
 
-        if (offer2.getCurrency() != null && offer2.getMoneyAmount() > 0) {
-            cs.removeBalance(player2.getUniqueId(), offer2.getCurrency().getId(), offer2.getMoneyAmount());
-            cs.addBalance(player1.getUniqueId(), offer2.getCurrency().getId(), offer2.getMoneyAmount());
-        }
+            if (offer2.getCurrency() != null && offer2.getMoneyAmount() > 0) {
+                cs.transferAtomic(player2.getUniqueId(), player1.getUniqueId(), offer2.getCurrency().getId(), offer2.getMoneyAmount());
+            }
 
-        // 4. Swap Items (Player 1 receives Offer 2, Player 2 receives Offer 1)
-        for (ItemStack item : offer2.getItems()) {
-            if (item != null) {
-                HashMap<Integer, ItemStack> overflow = player1.getInventory().addItem(item);
-                if (!overflow.isEmpty()) {
-                    for (ItemStack drop : overflow.values()) {
-                        player1.getWorld().dropItemNaturally(player1.getLocation(), drop);
+            // 4. Swap Items (Player 1 receives Offer 2, Player 2 receives Offer 1)
+            for (ItemStack item : offer2.getItems()) {
+                if (item != null) {
+                    HashMap<Integer, ItemStack> overflow = player1.getInventory().addItem(item);
+                    if (!overflow.isEmpty()) {
+                        for (ItemStack drop : overflow.values()) {
+                            player1.getWorld().dropItemNaturally(player1.getLocation(), drop);
+                        }
                     }
                 }
             }
-        }
 
-        for (ItemStack item : offer1.getItems()) {
-            if (item != null) {
-                HashMap<Integer, ItemStack> overflow = player2.getInventory().addItem(item);
-                if (!overflow.isEmpty()) {
-                    for (ItemStack drop : overflow.values()) {
-                        player2.getWorld().dropItemNaturally(player2.getLocation(), drop);
+            for (ItemStack item : offer1.getItems()) {
+                if (item != null) {
+                    HashMap<Integer, ItemStack> overflow = player2.getInventory().addItem(item);
+                    if (!overflow.isEmpty()) {
+                        for (ItemStack drop : overflow.values()) {
+                            player2.getWorld().dropItemNaturally(player2.getLocation(), drop);
+                        }
                     }
                 }
             }
-        }
+        });
 
         // 5. Sound & Messages
         try {

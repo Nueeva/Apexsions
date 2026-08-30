@@ -1,76 +1,36 @@
 package com.apexsions.economy.api;
 
-import com.apexsions.economy.ApexsionsEconomy;
 import com.apexsions.economy.currency.Currency;
-import com.apexsions.economy.util.NumberFormatUtil;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.UUID;
 
-public final class ApexsionsEconomyAPI {
+/**
+ * Public service interface for ApexsionsEconomy.
+ */
+public interface ApexsionsEconomyAPI {
 
-    private ApexsionsEconomyAPI() {}
+    double getBalance(@NotNull UUID uuid, @NotNull String currencyId);
 
-    private static ApexsionsEconomy getPlugin() {
-        return ApexsionsEconomy.getInstance();
-    }
+    boolean has(@NotNull UUID uuid, @NotNull String currencyId, double amount);
 
-    public static double getBalance(UUID uuid, String currencyId) {
-        ApexsionsEconomy plugin = getPlugin();
-        if (plugin == null) return 0.0;
-        return plugin.getCurrencyService().getBalance(uuid, currencyId);
-    }
+    void deposit(@NotNull UUID uuid, @NotNull String currencyId, double amount);
 
-    public static boolean has(UUID uuid, String currencyId, double amount) {
-        ApexsionsEconomy plugin = getPlugin();
-        if (plugin == null) return false;
-        return plugin.getCurrencyService().has(uuid, currencyId, amount);
-    }
+    boolean withdraw(@NotNull UUID uuid, @NotNull String currencyId, double amount);
 
-    public static void deposit(UUID uuid, String currencyId, double amount) {
-        ApexsionsEconomy plugin = getPlugin();
-        if (plugin != null) {
-            plugin.getCurrencyService().addBalance(uuid, currencyId, amount);
-        }
-    }
+    boolean transfer(@NotNull UUID senderUuid, @NotNull UUID receiverUuid, @NotNull String currencyId, double amount);
 
-    public static boolean withdraw(UUID uuid, String currencyId, double amount) {
-        ApexsionsEconomy plugin = getPlugin();
-        if (plugin == null) return false;
-        return plugin.getCurrencyService().removeBalance(uuid, currencyId, amount);
-    }
+    @NotNull
+    Collection<Currency> getCurrencies();
 
-    public static boolean transfer(UUID senderUuid, UUID receiverUuid, String currencyId, double amount) {
-        ApexsionsEconomy plugin = getPlugin();
-        if (plugin == null) return false;
-        Currency curr = plugin.getCurrencyRegistry().get(currencyId);
-        if (curr == null || !curr.isTransferable()) return false;
-        if (!plugin.getCurrencyService().has(senderUuid, currencyId, amount)) return false;
+    @Nullable
+    Currency getCurrency(@NotNull String id);
 
-        plugin.getCurrencyService().removeBalance(senderUuid, currencyId, amount);
-        plugin.getCurrencyService().addBalance(receiverUuid, currencyId, amount);
-        return true;
-    }
+    @NotNull
+    String format(double amount, @NotNull String currencyId);
 
-    public static Collection<Currency> getCurrencies() {
-        ApexsionsEconomy plugin = getPlugin();
-        if (plugin == null) return Collections.emptyList();
-        return plugin.getCurrencyRegistry().getAll();
-    }
-
-    public static Currency getCurrency(String id) {
-        ApexsionsEconomy plugin = getPlugin();
-        if (plugin == null) return null;
-        return plugin.getCurrencyRegistry().get(id);
-    }
-
-    public static String format(double amount, String currencyId) {
-        Currency c = getCurrency(currencyId);
-        return NumberFormatUtil.format(amount, c);
-    }
-
-    public static String formatCompact(double amount) {
-        return NumberFormatUtil.formatCompact(amount);
-    }
+    @NotNull
+    String formatCompact(double amount);
 }

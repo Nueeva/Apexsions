@@ -95,13 +95,16 @@ public class ApexsionsBattlepass extends JavaPlugin {
         // 5. Setup External Hooks
         setupHooks();
 
-        // 6. Load data for online players
+        // 6. Register Public API
+        com.apexsions.battlepass.api.ApexsionsBattlepassProvider.register(new com.apexsions.battlepass.api.ApexsionsBattlepassAPIImpl(this));
+
+        // 7. Load data for online players
         int seasonId = seasonManager.getCurrentSeason().getId();
         for (Player p : Bukkit.getOnlinePlayers()) {
             playerManager.loadPlayerData(p, seasonId);
         }
 
-        // 7. Auto-save async task (every 5 minutes)
+        // 8. Auto-save async task (every 5 minutes)
         Bukkit.getScheduler().runTaskTimerAsynchronously(this, () -> {
             playerManager.saveAllPlayerData();
         }, 6000L, 6000L);
@@ -117,6 +120,7 @@ public class ApexsionsBattlepass extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        com.apexsions.battlepass.api.ApexsionsBattlepassProvider.unregister();
         if (playerManager != null) {
             playerManager.saveAllPlayerData();
         }

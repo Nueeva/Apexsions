@@ -37,7 +37,7 @@ public class MainMenu extends Gui {
 
         double rupiahBal = 0.0;
         try {
-            rupiahBal = com.apexsions.economy.api.ApexsionsEconomyAPI.getBalance(player.getUniqueId(), "rupiah");
+            rupiahBal = com.apexsions.economy.api.ApexsionsEconomyProvider.get().getBalance(player.getUniqueId(), "rupiah");
         } catch (Throwable t) {
             rupiahBal = data.getCurrency();
         }

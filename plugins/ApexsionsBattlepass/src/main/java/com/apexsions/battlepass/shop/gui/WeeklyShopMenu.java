@@ -77,7 +77,7 @@ public class WeeklyShopMenu extends Gui {
         // 3. Player Balances Card (Slot 6)
         double rupiahBal = 0.0;
         try {
-            rupiahBal = com.apexsions.economy.api.ApexsionsEconomyAPI.getBalance(player.getUniqueId(), "rupiah");
+            rupiahBal = com.apexsions.economy.api.ApexsionsEconomyProvider.get().getBalance(player.getUniqueId(), "rupiah");
         } catch (Throwable ignored) {}
 
         setButton(6, new GuiButton(new ItemBuilder(Material.SUNFLOWER)

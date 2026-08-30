@@ -54,7 +54,10 @@ public class ApexsionsEconomy extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new GuiClickListener(), this);
         getServer().getPluginManager().registerEvents(new com.apexsions.economy.listener.EconomyPlayerListener(this), this);
 
-        // 5. Register Commands
+        // 5. Register Public API
+        com.apexsions.economy.api.ApexsionsEconomyProvider.register(new com.apexsions.economy.api.ApexsionsEconomyAPIImpl(this));
+
+        // 6. Register Commands
         registerCommands();
 
         getLogger().info("=======================================");
@@ -67,6 +70,7 @@ public class ApexsionsEconomy extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        com.apexsions.economy.api.ApexsionsEconomyProvider.unregister();
         if (tradeManager != null) {
             tradeManager.cancelAllTradesOnDisable();
         }

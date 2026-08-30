@@ -41,8 +41,10 @@ public class PayService {
         }
 
         // Atomic transfer
-        cs.removeBalance(sender.getUniqueId(), currency.getId(), amount);
-        cs.addBalance(receiverUuid, currency.getId(), amount);
+        if (!cs.transferAtomic(sender.getUniqueId(), receiverUuid, currency.getId(), amount)) {
+            sender.sendMessage("§cGagal memproses transfer! Periksa saldo Anda kembali.");
+            return false;
+        }
 
         String formatted = NumberFormatUtil.format(amount, currency);
 

@@ -71,7 +71,7 @@ public class BattlePassLeaderboardMenu extends Gui {
 
         double myRupiah = 0.0;
         try {
-            myRupiah = com.apexsions.economy.api.ApexsionsEconomyAPI.getBalance(player.getUniqueId(), "rupiah");
+            myRupiah = com.apexsions.economy.api.ApexsionsEconomyProvider.get().getBalance(player.getUniqueId(), "rupiah");
         } catch (Throwable t) {
             myRupiah = (data != null ? data.getCurrency() : 0);
         }
@@ -117,7 +117,7 @@ public class BattlePassLeaderboardMenu extends Gui {
 
             double entryRupiah = 0.0;
             try {
-                entryRupiah = com.apexsions.economy.api.ApexsionsEconomyAPI.getBalance(entry.getUuid(), "rupiah");
+                entryRupiah = com.apexsions.economy.api.ApexsionsEconomyProvider.get().getBalance(entry.getUuid(), "rupiah");
             } catch (Throwable t) {
                 entryRupiah = entry.getCurrency();
             }

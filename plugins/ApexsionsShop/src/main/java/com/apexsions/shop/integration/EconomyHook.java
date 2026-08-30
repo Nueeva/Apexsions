@@ -1,6 +1,6 @@
 package com.apexsions.shop.integration;
 
-import com.apexsions.economy.api.ApexsionsEconomyAPI;
+import com.apexsions.economy.api.ApexsionsEconomyProvider;
 import com.apexsions.shop.ApexsionsShop;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
@@ -11,16 +11,14 @@ public class EconomyHook {
 
     private final ApexsionsShop plugin;
     private Economy vaultEconomy;
-    private boolean useApexsionsEconomy = false;
 
     public EconomyHook(ApexsionsShop plugin) {
         this.plugin = plugin;
     }
 
     public void initialize() {
-        if (Bukkit.getPluginManager().isPluginEnabled("ApexsionsEconomy")) {
-            useApexsionsEconomy = true;
-            plugin.getLogger().info("Successfully hooked into ApexsionsEconomy API.");
+        if (ApexsionsEconomyProvider.isAvailable()) {
+            plugin.getLogger().info("Successfully hooked into ApexsionsEconomy Provider.");
         } else if (setupVault()) {
             plugin.getLogger().info("Hooked into Vault Economy provider.");
         } else {
@@ -41,8 +39,8 @@ public class EconomyHook {
     }
 
     public double getBalance(Player player) {
-        if (useApexsionsEconomy) {
-            return ApexsionsEconomyAPI.getBalance(player.getUniqueId(), "rupiah");
+        if (ApexsionsEconomyProvider.isAvailable()) {
+            return ApexsionsEconomyProvider.get().getBalance(player.getUniqueId(), "rupiah");
         }
         if (vaultEconomy != null) {
             return vaultEconomy.getBalance(player);
@@ -56,8 +54,8 @@ public class EconomyHook {
 
     public boolean withdraw(Player player, double amount) {
         if (amount <= 0) return true;
-        if (useApexsionsEconomy) {
-            return ApexsionsEconomyAPI.withdraw(player.getUniqueId(), "rupiah", amount);
+        if (ApexsionsEconomyProvider.isAvailable()) {
+            return ApexsionsEconomyProvider.get().withdraw(player.getUniqueId(), "rupiah", amount);
         }
         if (vaultEconomy != null) {
             return vaultEconomy.withdrawPlayer(player, amount).transactionSuccess();
@@ -67,8 +65,8 @@ public class EconomyHook {
 
     public boolean deposit(Player player, double amount) {
         if (amount <= 0) return true;
-        if (useApexsionsEconomy) {
-            ApexsionsEconomyAPI.deposit(player.getUniqueId(), "rupiah", amount);
+        if (ApexsionsEconomyProvider.isAvailable()) {
+            ApexsionsEconomyProvider.get().deposit(player.getUniqueId(), "rupiah", amount);
             return true;
         }
         if (vaultEconomy != null) {
@@ -78,6 +76,9 @@ public class EconomyHook {
     }
 
     public String format(double amount) {
+        if (ApexsionsEconomyProvider.isAvailable()) {
+            return ApexsionsEconomyProvider.get().format(amount, "rupiah");
+        }
         String symbol = plugin.getConfig().getString("economy.currency-symbol", "Rp ");
         return symbol + String.format("%,.0f", amount).replace(',', '.');
     }

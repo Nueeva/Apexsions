@@ -204,12 +204,12 @@ public class ShopManager {
         } else {
             // ApexsionsEconomy Currency (Rupiah)
             try {
-                double bal = com.apexsions.economy.api.ApexsionsEconomyAPI.getBalance(player.getUniqueId(), item.getCurrencyType());
+                double bal = com.apexsions.economy.api.ApexsionsEconomyProvider.get().getBalance(player.getUniqueId(), item.getCurrencyType());
                 if (bal < item.getPrice()) {
                     player.sendMessage("§cSaldo Rupiah Anda tidak mencukupi! Butuh §eRp." + String.format("%,.0f", item.getPrice()));
                     return false;
                 }
-                com.apexsions.economy.api.ApexsionsEconomyAPI.withdraw(player.getUniqueId(), item.getCurrencyType(), item.getPrice());
+                com.apexsions.economy.api.ApexsionsEconomyProvider.get().withdraw(player.getUniqueId(), item.getCurrencyType(), item.getPrice());
             } catch (Throwable t) {
                 // Fallback to battle coins if economy plugin is absent
                 if (data.getCurrency() < (int) item.getPrice()) {
