@@ -6,27 +6,32 @@ import com.apexsions.core.region.Region;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
 /**
- * Comprehensive PlaceholderAPI expansion providing ApexsionsCore placeholders
- * to external plugins (e.g. TAB v6.1, Scoreboards, DecentHolograms, ajLeaderboards).
+ * Comprehensive PlaceholderAPI expansion providing Apexsions placeholders
+ * to external plugins (e.g. TAB v6.1, Scoreboards, DecentHolograms, ajLeaderboards, Skript).
  */
 public class PlaceholderApiHook extends PlaceholderExpansion {
 
     private final ApexsionsCorePlugin plugin;
+    private final String identifier;
 
     public PlaceholderApiHook(ApexsionsCorePlugin plugin) {
+        this(plugin, "apexsions");
+    }
+
+    public PlaceholderApiHook(ApexsionsCorePlugin plugin, String identifier) {
         this.plugin = plugin;
+        this.identifier = identifier;
     }
 
     @Override
     public @NotNull String getIdentifier() {
-        return "apexsionscore";
+        return identifier;
     }
 
     @Override
@@ -64,8 +69,10 @@ public class PlaceholderApiHook extends PlaceholderExpansion {
             case "xp":
                 return String.valueOf(data.getXp());
 
+            case "req_xp":
             case "xp_needed":
-                long needed = plugin.getLevelManager().getRequiredXpForNextLevel(data.getLevel());
+            case "next_xp":
+                long needed = plugin.getLevelFormula().getRequiredXpForNextLevel(data.getLevel());
                 return needed == Long.MAX_VALUE ? "MAX" : String.valueOf(needed);
 
             case "xp_progressbar":
@@ -92,13 +99,14 @@ public class PlaceholderApiHook extends PlaceholderExpansion {
 
             case "region_name":
             case "kingdom_name":
+            case "kingdom_formatted":
                 if (data.getRegionId() != null) {
                     Optional<Region> regionOpt = plugin.getRegionManager().getRegion(data.getRegionId());
                     if (regionOpt.isPresent()) {
                         return regionOpt.get().getDisplayName();
                     }
                 }
-                return plugin.getConfigManager().getDefaultRegion();
+                return "Belum Memilih";
 
             case "level_title":
             case "title":
@@ -122,14 +130,44 @@ public class PlaceholderApiHook extends PlaceholderExpansion {
                 }
                 return "#808080";
 
+            case "rank_animated":
+            case "animated_rank":
+            case "prefix":
+                if (offlinePlayer.isOnline() && offlinePlayer.getPlayer() != null && plugin.getRankAnimationManager() != null) {
+                    return plugin.getRankAnimationManager().getAnimatedRankPrefix(offlinePlayer.getPlayer());
+                }
+                return "<gradient:#dfe6e9:#74b9ff><bold>[Wanderer]</bold></gradient> ";
+
+            case "active_title":
+                return data.getActiveTitle() != null ? data.getActiveTitle() : "";
+
+            case "balance_rupiah":
+                if (plugin.getVaultHook().hasEconomy() && offlinePlayer.isOnline() && offlinePlayer.getPlayer() != null) {
+                    return String.format("%.0f", plugin.getVaultHook().getBalance(offlinePlayer.getPlayer()));
+                }
+                return "0";
+
+            case "balance_rupiah_formatted":
+                if (plugin.getVaultHook().hasEconomy() && offlinePlayer.isOnline() && offlinePlayer.getPlayer() != null) {
+                    double bal = plugin.getVaultHook().getBalance(offlinePlayer.getPlayer());
+                    return "Rp " + String.format("%,.0f", bal);
+                }
+                return "Rp 0";
+
+            case "balance_diamond":
+                return "0";
+
+            case "balance_diamond_formatted":
+                return "0";
+
             case "rank_badge":
             case "badge":
                 if (offlinePlayer.isOnline() && offlinePlayer.getPlayer() != null) {
-                    String rank = plugin.getLuckPermsHook().getPlayerRank(offlinePlayer.getPlayer()).toLowerCase();
-                    return switch (rank) {
-                        case "ancestor" -> "<gradient:#8B0000:#FF0000><bold>👑 ANCESTOR</bold></gradient>";
-                        case "warden" -> "<gradient:#1e3c72:#2a5298><bold>🛡 WARDEN</bold></gradient>";
-                        case "herald" -> "<gradient:#f857a6:#ff5858><bold>📜 HERALD</bold></gradient>";
+                    String rank = plugin.getLuckPermsHook().getPlayerRankKey(offlinePlayer.getPlayer());
+                    return switch (rank.toLowerCase()) {
+                        case "ancestor", "owner" -> "<gradient:#8B0000:#FF0000><bold>👑 ANCESTOR</bold></gradient>";
+                        case "warden", "admin" -> "<gradient:#1e3c72:#2a5298><bold>🛡 WARDEN</bold></gradient>";
+                        case "herald", "mod" -> "<gradient:#f857a6:#ff5858><bold>📜 HERALD</bold></gradient>";
                         case "sions" -> "<gradient:#00FFFF:#FFD700><bold>✦ SIONS ✦</bold></gradient>";
                         case "emperor" -> "<gradient:#e52d27:#b31217><bold>⚔ EMPEROR</bold></gradient>";
                         case "sovereign" -> "<gradient:#f39c12:#f1c40f><bold>⚜ SOVEREIGN</bold></gradient>";
@@ -157,23 +195,6 @@ public class PlaceholderApiHook extends PlaceholderExpansion {
                     }
                 }
                 return "<dark_gray>[No Kingdom]</dark_gray>";
-
-            case "player_prefix":
-                String rPrefix = (offlinePlayer.isOnline() && offlinePlayer.getPlayer() != null) ?
-                        plugin.getLuckPermsHook().getPlayerPrefix(offlinePlayer.getPlayer()) : "";
-                String kBadge = "";
-                if (data.getRegionId() != null) {
-                    Optional<Region> regOpt = plugin.getRegionManager().getRegion(data.getRegionId());
-                    if (regOpt.isPresent()) {
-                        kBadge = switch (regOpt.get().getKey().toUpperCase()) {
-                            case "ZENITHAR" -> "<gold>[👑 Zenithar]</gold> ";
-                            case "SOLTERRA" -> "<red>[🔥 Solterra]</red> ";
-                            case "SYLVAMOOR" -> "<green>[🌿 Sylvamoor]</green> ";
-                            default -> "";
-                        };
-                    }
-                }
-                return kBadge + rPrefix;
 
             case "current_territory":
                 if (offlinePlayer.isOnline() && offlinePlayer.getPlayer() != null) {
@@ -220,28 +241,23 @@ public class PlaceholderApiHook extends PlaceholderExpansion {
                 }
                 return "0";
 
+            case "online_zenithar":
+                return String.valueOf(countKingdomOnline("ZENITHAR"));
+
+            case "online_solterra":
+                return String.valueOf(countKingdomOnline("SOLTERRA"));
+
+            case "online_sylvamoor":
+                return String.valueOf(countKingdomOnline("SYLVAMOOR"));
+
             case "online_kingdom_members":
                 if (data.getRegionId() != null) {
                     Optional<Region> rOpt = plugin.getRegionManager().getRegion(data.getRegionId());
                     if (rOpt.isPresent()) {
-                        String kKey = rOpt.get().getKey();
-                        long count = Bukkit.getOnlinePlayers().stream()
-                                .filter(p -> plugin.getApi().getPlayerRegionKey(p.getUniqueId()).equalsIgnoreCase(kKey))
-                                .count();
-                        return String.valueOf(count);
+                        return String.valueOf(countKingdomOnline(rOpt.get().getKey()));
                     }
                 }
                 return "0";
-
-            case "rank_animated":
-            case "animated_rank":
-                if (offlinePlayer.isOnline() && offlinePlayer.getPlayer() != null && plugin.getRankAnimationManager() != null) {
-                    return plugin.getRankAnimationManager().getAnimatedRankPrefix(offlinePlayer.getPlayer());
-                }
-                return "<gray>[Wanderer]</gray>";
-
-            case "active_title":
-                return data.getActiveTitle() != null ? data.getActiveTitle() : "";
 
             case "cosmetic_aura":
                 return data.getActiveAura() != null ? data.getActiveAura() : "None";
@@ -255,5 +271,11 @@ public class PlaceholderApiHook extends PlaceholderExpansion {
             default:
                 return null;
         }
+    }
+
+    private long countKingdomOnline(String kingdomKey) {
+        return Bukkit.getOnlinePlayers().stream()
+                .filter(p -> plugin.getApi().getPlayerRegionKey(p.getUniqueId()).equalsIgnoreCase(kingdomKey))
+                .count();
     }
 }

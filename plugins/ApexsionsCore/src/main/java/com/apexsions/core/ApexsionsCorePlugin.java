@@ -207,9 +207,10 @@ public class ApexsionsCorePlugin extends JavaPlugin {
             this.vaultHook.initialize();
 
             if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
-                this.placeholderApiHook = new PlaceholderApiHook(this);
+                this.placeholderApiHook = new PlaceholderApiHook(this, "apexsions");
                 this.placeholderApiHook.register();
-                getLogger().info("PlaceholderAPI expansion registered successfully.");
+                new PlaceholderApiHook(this, "apexsionscore").register();
+                getLogger().info("PlaceholderAPI expansions (%apexsions_*% and %apexsionscore_*%) registered successfully.");
             }
 
             this.essentialsHook = new EssentialsHook(this);
