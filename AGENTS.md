@@ -26,6 +26,14 @@ Dokumen ini berisi panduan instruksi dan standar operasional bagi seluruh agen A
 9. `wanderer` (Wanderer — Default Rank Semua Pemain, Weight: 10)
 
 ### 3. Kompilasi & Git Flow
-- Setiap perubahan wajib diverifikasi menggunakan `powershell -ExecutionPolicy Bypass -File .\build.ps1 -all`.
+- **Aturan Kompilasi Terarah (Targeted Build Rule)**:
+  - Jika yang diubah hanya 1, 2, atau 3 plugin, **HANYA** kompilasi plugin yang dimodifikasi (JANGAN gunakan `-all`):
+    - `powershell -ExecutionPolicy Bypass -File .\build.ps1 Core`
+    - `powershell -ExecutionPolicy Bypass -File .\build.ps1 Chat`
+    - `powershell -ExecutionPolicy Bypass -File .\build.ps1 Economy`
+    - `powershell -ExecutionPolicy Bypass -File .\build.ps1 Battlepass`
+    - `powershell -ExecutionPolicy Bypass -File .\build.ps1 Shop`
+    - `powershell -ExecutionPolicy Bypass -File .\build.ps1 Media`
+  - Gunakan `.\build.ps1 -all` **HANYA** jika seluruh 6 plugin memang mengalami perubahan arsitektural secara serentak.
 - Sebelum memulai dan sebelum push, selalu jalankan `git fetch origin` untuk mendeteksi perubahan remote.
 - Commit dan push seluruh source code, file build, dan binary `.jar` ke branch `main`.

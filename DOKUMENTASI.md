@@ -123,3 +123,23 @@ Dokumentasi resmi yang merangkum arsitektur menyeluruh, interaksi antar-plugin, 
 | `/media list` | `/banner list` | Menampilkan daftar seluruh banner aktif | `apexsionsmedia.admin` | `op` |
 | `/media setlink <id> <url> [mode]` | `/banner setlink` | Mengubah tautan URL interaktif banner | `apexsionsmedia.admin` | `op` |
 | `/media reload` | `/banner reload` | Memuat ulang konfigurasi & banner | `apexsionsmedia.admin` | `op` |
+
+---
+
+## ⚡ 4. Panduan Kompilasi Multi-Compiler (`build.ps1`)
+
+Untuk efisiensi dan kecepatan pengembangan, **HANYA** kompilasi plugin yang mengalami perubahan kode:
+
+```powershell
+# 1. Kompilasi Terarah per Modul (Hanya ~15-20 detik):
+powershell -ExecutionPolicy Bypass -File .\build.ps1 Core
+powershell -ExecutionPolicy Bypass -File .\build.ps1 Chat
+powershell -ExecutionPolicy Bypass -File .\build.ps1 Economy
+powershell -ExecutionPolicy Bypass -File .\build.ps1 Battlepass
+powershell -ExecutionPolicy Bypass -File .\build.ps1 Shop
+powershell -ExecutionPolicy Bypass -File .\build.ps1 Media
+
+# 2. Kompilasi Seluruh Suite (Gunakan HANYA jika semua 6 modul berubah):
+powershell -ExecutionPolicy Bypass -File .\build.ps1 -all
+```
+

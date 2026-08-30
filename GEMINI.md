@@ -58,6 +58,15 @@ Repository dikerjakan bersama oleh beberapa developer. Oleh karena itu, **SEBELU
 - **Bahasa**: Java 21 LTS (Records, Pattern Matching, Virtual Threads ready).
 - **Target Platform**: Paper API `1.21.4-R0.1-SNAPSHOT` (Minecraft 1.21.4).
 - **Build Tool**: PowerShell automated multi-compiler (`build.ps1`) & Apache Maven 3.9.9 (`mvn clean package`).
+- **Aturan Kompilasi Terarah (Targeted Compilation Rule)**:
+  - Jika yang diubah hanya 1, 2, atau 3 plugin, **HANYA** kompilasi plugin yang dimodifikasi tersebut (JANGAN gunakan `-all`):
+    - `powershell -ExecutionPolicy Bypass -File .\build.ps1 Core`
+    - `powershell -ExecutionPolicy Bypass -File .\build.ps1 Chat`
+    - `powershell -ExecutionPolicy Bypass -File .\build.ps1 Economy`
+    - `powershell -ExecutionPolicy Bypass -File .\build.ps1 Battlepass`
+    - `powershell -ExecutionPolicy Bypass -File .\build.ps1 Shop`
+    - `powershell -ExecutionPolicy Bypass -File .\build.ps1 Media`
+  - Gunakan `.\build.ps1 -all` **HANYA** jika seluruh 6 plugin memang mengalami perubahan global secara bersamaan.
 - **Text & Component Engine**: Kyori Adventure 4.x + MiniMessage (Hindari legacy formatting `&` atau `§` di kode baru; gunakan MiniMessage).
 - **Scoreboard & Nametag Engine**: Multi-phase shifting RGB gradient waves dengan multi-scoreboard synchronization dan smart delta frame caching untuk zero-TPS impact.
 - **Basis Data & Concurrency**: Multi-database abstraction via HikariCP (SQLite file-based dan PostgreSQL production-ready) dengan asynchronous `CompletableFuture`. Semua mutasi Bukkit game state wajib kembali ke Main Thread.
@@ -81,5 +90,5 @@ Repository dikerjakan bersama oleh beberapa developer. Oleh karena itu, **SEBELU
 ## 🚀 Alur Git & Rilis
 - Repositori Utama: `https://github.com/Nueeva/Apexsions.git`
 - Branch Utama: `main`
-- **Aturan Rilis**: Setiap pembaruan kode dan fitur **WAJIB** memperbarui dokumentasi (`README.md`, `DOKUMENTASI.md`, `GEMINI.md`, `AGENTS.md`), mengompilasi seluruh JAR via `build.ps1`, serta meng-commit dan mem-push seluruh source code (termasuk folder `src/`, `plugins/`, file build, dan binary `.jar`) ke GitHub!
+- **Aturan Rilis**: Setiap pembaruan kode dan fitur **WAJIB** memperbarui dokumentasi (`README.md`, `DOKUMENTASI.md`, `GEMINI.md`, `AGENTS.md`), mengompilasi file `.jar` yang dimodifikasi via `build.ps1 <Plugin>`, serta meng-commit dan mem-push seluruh source code (termasuk folder `src/`, `plugins/`, file build, dan binary `.jar`) ke GitHub!
 
