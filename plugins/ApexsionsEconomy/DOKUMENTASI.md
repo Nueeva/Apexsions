@@ -1,37 +1,74 @@
 # Dokumentasi Lengkap ApexsionsEconomy
 
-Panduan teknis modul `ApexsionsEconomy` untuk manajemen mata uang, konfigurasi lelang, dan integrasi barter lintas-kerajaan.
+Panduan teknis resmi modul **`ApexsionsEconomy`** untuk pengelolaan multi-currency, transfer aman, pasar lelang (*Auction House*) dengan *Escrow Claim*, dan sistem barter terintegrasi kerajaan.
 
 ---
 
-## 📂 Struktur Konfigurasi YAML
-- `config.yml`: Pengaturan database, mata uang (`rupiah`, `diamond`), pengaturan auction house, dan biaya transportasi barter kerajaan.
-- `plugin.yml`: Deklarasi commands dan permissions.
+## 📂 Struktur Konfigurasi YAML Modular
 
----
-
-## ⚡ Perintah & Permissions
-| Perintah | Deskripsi | Permission |
-| :--- | :--- | :--- |
-| `/economy` / `/bal` | Melihat saldo pribadi atau orang lain | `apexeconomy.use` |
-| `/baltop` | Menampilkan leaderboard kekayaan pemain | `apexeconomy.use` |
-| `/pay <pemain> <jumlah>` | Membuka menu transfer atau kirim uang | `apexeconomy.pay` |
-| `/ah` | Membuka antarmuka pasar lelang | `apexeconomy.ah` |
-| `/ah sell <harga>` | Memasang item di tangan ke pasar lelang | `apexeconomy.ah` |
-| `/trade [pemain]` | Membuka GUI barter item dan uang | `apexeconomy.trade` |
-| `/aeco give <p> <curr> <amt>` | Menambahkan saldo pemain oleh admin | `apexeconomy.admin` |
-| `/aeco set <p> <curr> <amt>` | Mengatur saldo pemain oleh admin | `apexeconomy.admin` |
-| `/aeco take <p> <curr> <amt>` | Mengurangi saldo pemain oleh admin | `apexeconomy.admin` |
-
----
-
-## 🌐 Integrasi Barter Lintas-Kerajaan
-Pada `config.yml`:
-```yaml
-trade:
-  enabled: true
-  request-timeout-seconds: 60
-  # Biaya transportasi dipotong dari kedua pemain jika berasal dari kerajaan yang berbeda
-  cross-kingdom-transport-fee: 5000.0
 ```
-Jika kedua pemain berasal dari kerajaan yang sama (`ApexsionsCoreHook.isSameKingdom == true`), biaya transportasi adalah **Rp 0 (GRATIS)**.
+plugins/ApexsionsEconomy/
+├── config.yml            <-- Pengaturan database (SQLite/PostgreSQL), mata uang, AH, dan tarif trade
+└── plugin.yml            <-- Deklarasi commands, permissions, dan metadata
+```
+
+---
+
+## ⚡ Matriks Perintah & Permissions
+
+| Perintah | Alias | Deskripsi | Permission | Default |
+| :--- | :--- | :--- | :--- | :---: |
+| `/economy` | `/eco`, `/uang`, `/bal` | Membuka menu utama saldo dan statistik keuangan | `apexsionseconomy.use` | `true` |
+| `/baltop` | `/topbal` | Menampilkan leaderboard kekayaan pemain server | `apexsionseconomy.use` | `true` |
+| `/pay <p> <amt> [curr]` | `/transfer`, `/kirimuang` | Mentransfer uang ke pemain lain secara instan | `apexsionseconomy.pay` | `true` |
+| `/ah` | `/lelang`, `/auction` | Membuka antarmuka pasar lelang & brankas klaim | `apexsionseconomy.ah` | `true` |
+| `/trade [pemain]` | `/barter`, `/tukar` | Membuka menu barter item dan saldo multi-currency | `apexsionseconomy.trade` | `true` |
+| `/trade toggle` | - | Mengaktifkan/menonaktifkan permintaan trade | `apexsionseconomy.trade` | `true` |
+| `/ecoadmin reload` | `/apexeconomy reload`, `/adminpay reload` | Memuat ulang konfigurasi ekonomi & mata uang | `apexsionseconomy.admin` | `op` |
+| `/ecoadmin give <p> <amt> [curr]`| - | Menambahkan saldo pemain oleh administrator | `apexsionseconomy.admin` | `op` |
+| `/ecoadmin take <p> <amt> [curr]`| - | Mengurangi saldo pemain oleh administrator | `apexsionseconomy.admin` | `op` |
+| `/ecoadmin set <p> <amt> [curr]` | - | Mengatur nominal saldo pemain secara langsung | `apexsionseconomy.admin` | `op` |
+
+---
+
+## 💵 Sistem Multi-Currency & Format Angka
+
+1. **Rupiah (`rupiah`)**:
+   - Mata uang sirkulasi utama server untuk pasar, lelang, dan perdagangan.
+   - Simbol: `Rp` (Format cerdas: `Rp 50.000`, `Rp 1,5 Jt`, `Rp 2,5 M`, `Rp 1,0 T`).
+2. **Diamond (`diamond`)**:
+   - Mata uang komoditas premium berbasis diamond/gem.
+   - Simbol: `♦` (Format: `100 ♦`).
+
+---
+
+## 🏛️ Pasar Lelang & Brankas Penampungan (*Escrow Vault*)
+
+- **Pemasangan Item**: Pemain dapat melelang item yang dipegang dengan harga dan masa berlaku yang ditentukan.
+- **Sistem Escrow Claim**:
+  - Jika lelang kedaluwarsa tanpa pembeli atau dibatalkan, item otomatis disimpan ke brankas penampungan aman (*Escrow Claim Vault*).
+  - Menjamin item tidak akan pernah hilang meskipun inventaris pemain sedang penuh saat transaksi selesai.
+
+---
+
+## 🔄 Barter & Trade Terintegrasi Kerajaan
+
+- **Penyaringan Pemain Kerajaan**: Menu trade secara default menyaring hanya pemain dalam satu kerajaan.
+- **Tombol Toggle Filter Global (Slot 8)**: Memungkinkan beralih ke mode filter global untuk melihat semua pemain online.
+- **Pajak Transportasi Lintas-Kerajaan**:
+  - Transaksi sesama anggota kerajaan: **Rp 0 (GRATIS)**.
+  - Transaksi lintas kerajaan yang berbeda: Dikenakan biaya transportasi otomatis saat konfirmasi (default `Rp 5.000`).
+
+---
+
+## 🧩 Akses Public API (`ApexsionsEconomyAPI`)
+
+```java
+ApexsionsEconomyAPI eco = ApexsionsEconomy.getEconomyAPI();
+if (eco != null) {
+    boolean hasMoney = eco.has(playerUuid, "rupiah", 10000);
+    eco.deposit(playerUuid, "rupiah", 50000);
+    eco.withdraw(playerUuid, "diamond", 10);
+    String formatted = eco.format(1500000, "rupiah"); // "Rp 1,5 Jt"
+}
+```

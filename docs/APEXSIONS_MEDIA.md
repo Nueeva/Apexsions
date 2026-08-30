@@ -61,23 +61,24 @@ Pemain dapat mengklik kanan pada banner untuk memicu aksi URL dengan 3 pilihan m
      - Tombol Biru: "Salin ke Clipboard"
      - Tombol Merah: "Batal / Tutup"
 3. **`DIRECT_URL`**:
-   - Mengirim tautan langsung tanpa tombol tambahan.
+   - Mengirim tautan langsung tanpa dialog perantara.
 
 ---
 
 ## 📜 5. Matriks Perintah & Hak Akses (Permissions)
 
 | Perintah | Alias | Deskripsi | Hak Akses (Permission) | Default |
-| :--- | :--- | :--- | :--- | :---: |
+| :--- | :--- | :--- | :--- | :--- | :---: |
 | `/media create <id> <file/url> [w] [h] [link] [mode]` | `/banner create` | Memasang banner baru (URL & ukuran opsional) | `apexsionsmedia.admin` | `op` |
-| `/media admin` | `/media gui` | Membuka Interactive 54-Slot Banner Management GUI | `apexsionsmedia.admin` | `op` |
-| `/media place <id>` | `/media apply`, `/media paste` | Memasang/memindahkan banner yang ada ke lokasi bidikan baru | `apexsionsmedia.admin` | `op` |
-| `/media copy <idAsal> <idBaru>` | `/media clone` | Menduplikasi konfigurasi banner ke target baru | `apexsionsmedia.admin` | `op` |
-| `/media setlink <id> [link/none] [mode]` | `/banner setlink` | Mengatur, mengubah, atau menghapus tautan URL banner | `apexsionsmedia.admin` | `op` |
+| `/media place <id>` | `/banner place`, `/media paste` | Memasang banner ke dinding target via Raytracing | `apexsionsmedia.admin` | `op` |
+| `/media copy <idAsal> <idBaru>` | `/banner copy`, `/media clone` | Menduplikasi template konfigurasi banner | `apexsionsmedia.admin` | `op` |
+| `/media move <id>` | `/banner move`, `/media moveto` | Memindahkan lokasi banner yang ada | `apexsionsmedia.admin` | `op` |
 | `/media resize <id> <w> <h>` | `/banner resize` | Mengubah ukuran dimensi ubin banner (1-10) | `apexsionsmedia.admin` | `op` |
-| `/media delete <id>` | `/banner delete` | Menghapus banner dan membersihkan entity | `apexsionsmedia.admin` | `op` |
-| `/media list` | `/banner list` | Menampilkan daftar seluruh banner aktif | `apexsionsmedia.admin` | `op` |
+| `/media setlink <id> [link\|none] [mode]` | `/banner setlink` | Mengatur, mengubah, atau menghapus tautan URL banner | `apexsionsmedia.admin` | `op` |
+| `/media delete <id>` | `/banner delete`, `/media remove` | Menghapus banner dan membersihkan entity item frame | `apexsionsmedia.admin` | `op` |
+| `/media list` | `/banner list` | Menampilkan daftar seluruh banner aktif di server | `apexsionsmedia.admin` | `op` |
 | `/media reload` | `/banner reload` | Memuat ulang konfigurasi dan render ulang seluruh banner | `apexsionsmedia.admin` | `op` |
+| `/media gui` | `/media admin`, `/banner gui` | Membuka Interactive Media Admin Management GUI | `apexsionsmedia.admin` | `op` |
 
 ---
 

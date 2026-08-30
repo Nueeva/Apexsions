@@ -1,12 +1,12 @@
 # ApexsionsCore — Comprehensive Technical Manual
 
-Panduan teknis dan operasional lengkap untuk modul **`ApexsionsCore`** (Otoritas Wilayah Kerajaan, Sistem Warp GUI & Admin GUI, Perlindungan PvP Teritorial, Progresi Karakter, XP Engine, Navigasi BlueMap, Kingdom War, Combat Tag, dan Enforcer TPA EssentialsX).
+Panduan teknis dan operasional lengkap untuk modul **`ApexsionsCore`** (Otoritas Wilayah Kerajaan, Sistem Warp GUI & Admin GUI, Master Admin Hub, Title Vault, Particle Cosmetics, Perlindungan PvP Teritorial, Progresi Karakter, XP Engine, Navigasi BlueMap, Kingdom War, Combat Tag, dan Enforcer TPA EssentialsX).
 
 ---
 
 ## 🏛️ 1. Ikhtisar Modul & Arsitektur
 
-`ApexsionsCore` adalah modul pondasi sentral yang mengatur identitas pemain, pembagian 3 kerajaan besar, sistem progresi berbasis level dan XP, sistem navigasi Warp modern (GUI Player & Admin), rendering wilayah pada web-map (BlueMap), manajemen deklarasi perang kerajaan (*Kingdom War*), PvP combat tagging anti-combat log, serta pengamanan teritorial dari eksploitasi teleportasi dan perkelahian internal kerajaan.
+`ApexsionsCore` adalah modul pondasi sentral yang mengatur identitas pemain, pembagian 3 kerajaan besar, sistem progresi berbasis level dan XP, sistem navigasi Warp modern (GUI Player & Admin), Master Admin Hub (`/admingui`), Title Vault (`/titles`), Particle Cosmetics (`/cosmetics`), rendering wilayah pada web-map (BlueMap), manajemen deklarasi perang kerajaan (*Kingdom War*), PvP combat tagging anti-combat log, serta pengamanan teritorial dari eksploitasi teleportasi dan perkelahian internal kerajaan.
 
 ```
                                 ┌────────────────────────┐
@@ -61,7 +61,7 @@ Sistem navigasi teleportasi publik server dengan antarmuka grafis modern dan man
   - `🏷 Ubah Kategori`: Mengganti kategori warp (`SERVER`, `RESOURCE`, `EVENT`, dll).
   - `⏱ Ubah Delay`: Mengatur delay teleportasi (0s Instan, 3s, 5s, 10s).
   - `👁 Toggle Hidden`: Mengubah status publik / admin-only hidden.
-  - `✖ Hapus Warp`: Menghapus warp secara permanen dari database SQLite.
+  - `✖ Hapus Warp`: Menghapus warp secara permanen dari database SQLite/PostgreSQL.
 
 ---
 
@@ -105,25 +105,29 @@ $$\text{XP Dibutuhkan}(L) = \lfloor 100 \times L^{1.5} + (L \times 50) \rfloor$$
 
 | Perintah | Alias | Deskripsi | Permission | Default |
 | :--- | :--- | :--- | :--- | :---: |
-| `/lobby` | `/hub` | Teleportasi ke lobi pusat server (Mendukung Multiverse) | `apexsionscore.command.lobby` | `true` |
-| `/admingui` | `/apexadmin`, `/aadmin`, `/aa` | **Master Admin Hub Terpusat** (Dashboard 54-slot 6 Modul Suite) | `apexsions.admin.gui` | `op` |
+| `/lobby` | `/hub` | Teleportasi ke lobi pusat server | `apexsionscore.command.lobby` | `true` |
+| `/admingui` | `/apexadmin`, `/aadmin`, `/aa` | **Master Admin Hub Terpusat** (Dashboard 54-slot seluruh suite) | `apexsions.admin.gui` | `op` |
 | `/warp [nama]` | `/warps` | Membuka GUI navigasi warp atau teleport ke warp tertentu | `apexsionscore.command.warp` | `true` |
 | `/warpmgr` | `/warpadmin`, `/warp admin` | Membuka Interactive Admin Warp Management GUI | `apexsionscore.warp.admin` | `op` |
-| `/warp set <nama> [kategori]` | - | Membuat warp baru di lokasi berdiri | `apexsionscore.warp.admin` | `op` |
-| `/warp delete <nama>` | `/warp del` | Menghapus warp yang ada | `apexsionscore.warp.admin` | `op` |
-| `/kingdom` | `/k`, `/region` | Membuka profil dan status kerajaan pemain | `apexsionscore.command.region` | `true` |
-| `/kingdom choose` | `/k select` | Membuka GUI visual pemilihan kerajaan | `apexsionscore.command.region` | `true` |
+| `/warp set <nama> [kat]` | - | Membuat warp baru di lokasi koordinat berdiri | `apexsionscore.warp.admin` | `op` |
+| `/warp delete <nama>` | `/warp del` | Menghapus warp dari database | `apexsionscore.warp.admin` | `op` |
+| `/kingdom` | `/k`, `/region`, `/kingdoms` | Membuka profil dan status kerajaan pemain | `apexsionscore.command.region` | `true` |
+| `/kingdom choose` | `/k select` | Membuka GUI visual pemilihan 3 kerajaan | `apexsionscore.command.region` | `true` |
 | `/kingdom top` | `/k leaderboard` | Membuka GUI Hall of Fame & Leaderboard | `apexsionscore.command.level` | `true` |
-| `/level` | `/lvl`, `/profile` | Membuka GUI progress bar level dan reward | `apexsionscore.command.level` | `true` |
-| `/xpguide` | `/exp` | Panduan detail 13 sumber perolehan XP | `apexsionscore.command.level` | `true` |
-| `/rtp` | `/wild`, `/krtp` | Teleportasi acak di teritori kerajaan sendiri | `apexsionscore.command.rtp` | `true` |
-| `/ac setlobby` | `/kc setlobby` | Mengatur titik spawn lobi saat ini (Multiverse-ready) | `apexsionscore.admin` | `op` |
+| `/level` | `/lvl`, `/profile`, `/rewards`, `/exp` | Membuka GUI progress bar level (1-100) dan reward | `apexsionscore.command.level` | `true` |
+| `/xpguide` | - | Panduan detail 13 sumber perolehan XP | `apexsionscore.command.level` | `true` |
+| `/titles` | `/tags`, `/title`, `/tag` | Membuka Title Vault GUI untuk memasang gelar & badge | `apexsionscore.command.titles` | `true` |
+| `/cosmetics` | `/aura`, `/auras`, `/trail`, `/trails` | Membuka Particle Cosmetics GUI (Auras, Trails, Kill FX) | `apexsionscore.command.cosmetics` | `true` |
+| `/rtp` | `/wild`, `/wilderness`, `/krtp` | Teleportasi acak di teritori kerajaan sendiri | `apexsionscore.command.rtp` | `true` |
+| `/ac reload` | `/apexsionscore reload`, `/kc reload` | Memuat ulang seluruh konfigurasi Core, Ranks & Rewards | `apexsionscore.admin` | `op` |
 | `/ac war start <K1> <K2> [m]`| - | Memulai perang kerajaan resmi | `apexsionscore.admin` | `op` |
-| `/ac war stop` | - | Menghentikan perang kerajaan | `apexsionscore.admin` | `op` |
+| `/ac war stop` | - | Menghentikan perang kerajaan aktif | `apexsionscore.admin` | `op` |
 | `/ac war status` | - | Memeriksa status aktif perang kerajaan | `apexsionscore.admin` | `op` |
-| `/ac addxp <p> <amt>` | `/kc addxp` | Menambahkan poin XP ke pemain | `apexsionscore.admin` | `op` |
 | `/ac setlevel <p> <lvl>`| `/kc setlevel` | Mengubah level pemain secara langsung | `apexsionscore.admin` | `op` |
-| `/ac setkingdom <p> <k>`| `/kc setkingdom`| Memindahkan kerajaan pemain secara paksa | `apexsionscore.admin` | `op` |
+| `/ac addxp <p> <amt>` | `/kc addxp` | Menambahkan poin XP ke pemain | `apexsionscore.admin` | `op` |
+| `/ac setkingdom <p> <k>`| `/kc setk` | Memindahkan kerajaan pemain secara paksa | `apexsionscore.admin` | `op` |
+| `/ac setlobby` | `/kc setlobby` | Mengatur titik spawn lobi saat ini | `apexsionscore.admin` | `op` |
+| `/ac info <p>` | `/kc info` | Memeriksa rincian level, XP, dan kerajaan pemain | `apexsionscore.admin` | `op` |
 
 ---
 
@@ -133,11 +137,11 @@ $$\text{XP Dibutuhkan}(L) = \lfloor 100 \times L^{1.5} + (L \times 50) \rfloor$$
 - **Header Status Server Real-time**: Memantau RAM server yang sedang terpakai, TPS, jumlah pemain online, pool koneksi database, serta status perang kerajaan.
 - **6 Kartu Modul Suite**:
   1. **👑 Core Management**: Sub-menu Warp Manager, Kingdom War Control, dan Lobby Spawn Setup.
-  2. **💬 Chat & Reports**: Kotak masuk resolusi tiket laporan pemain staff (`ReportListGUI`).
+  2. **💬 Chat & Reports**: Kotak masuk resolusi tiket laporan pemain staff (`ReportsAdminGUI`).
   3. **💰 Economy & Auction**: Kontrol saldo dan pasar lelang pemain.
-  4. **🎫 BattlePass Editor**: Panel visual editor reward, misi, dan seasonal settings (`/abp`).
+  4. **🎫 BattlePass Editor**: Panel visual editor reward, misi, dan seasonal settings (`/abp editor`).
   5. **🛒 Dynamic Shop**: Pasar dinamis, harga komoditas cuaca, dan monitoring inflasi.
   6. **🖼️ Media & Banners**: Daftar banner aktif, teleportasi ke banner, dan replikasi template (`MediaAdminGUI`).
-- **Granular Permission & Visual Lock Indicator**: Kartu modul yang tidak diizinkan untuk staf junior akan tetap tampil tetapi terkunci dengan gembok merah (`🔒 TERKUNCI`), mencegah akses tanpa izin.
+- **Granular Permission & Visual Lock Indicator**: Kartu modul yang tidak diizinkan untuk staf junior akan tetap tampil tetapi terkunci dengan gembok merah (`🔒 TERKUNCI`).
 - **Universal Breadcrumb Navigation**: Tombol `⬅ KEMBALI KE ADMIN HUB` (Slot 45) tertanam di seluruh sub-menu admin untuk navigasi bolak-balik tanpa harus mengetik perintah ulang.
 - **Tombol Reload Suite Serentak**: Memuat ulang konfigurasi seluruh plugin suite dengan 1 klik tombol Redstone Block.

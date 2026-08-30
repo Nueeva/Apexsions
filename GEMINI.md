@@ -1829,3 +1829,551 @@ The canonical Apexsions development workflow is:
 ```
 
 **This workflow is mandatory unless the user explicitly instructs otherwise and the requested deviation does not violate repository safety or data integrity.**
+
+---
+
+# 49. Project Evolution & Documentation Governance
+
+Apexsions is a living software ecosystem. Plugin boundaries, APIs, dependencies, configuration, database schemas, Minecraft/Paper versions, build workflows, security requirements, and development conventions may evolve over time.
+
+Agents must treat repository changes as **ecosystem changes**, not merely file edits.
+
+## 49.1 Change Impact Analysis
+
+Before completing a non-trivial change, inspect its potential impact across:
+
+```text
+Source Code
+    ↓
+Plugin Architecture
+    ↓
+Public APIs
+    ↓
+Events
+    ↓
+Configuration
+    ↓
+Database / Migrations
+    ↓
+Commands / Permissions
+    ↓
+Dependencies
+    ↓
+Build System
+    ↓
+Tests
+    ↓
+Documentation
+    ↓
+GEMINI.md / AGENTS.md
+```
+
+Not every layer must change. The agent must determine which layers are actually affected.
+
+---
+
+## 49.2 Documentation Is Part of the Change
+
+Documentation is part of implementation whenever behavior, architecture, API, configuration, command, permission, dependency, workflow, or project structure changes.
+
+The expected model is:
+
+```text
+Implementation Change
+        +
+Documentation Impact Review
+        =
+Complete Change
+```
+
+Do not knowingly leave documentation stale after a feature or architecture change.
+
+---
+
+## 49.3 Documentation Discovery
+
+Do not assume that only these files contain documentation:
+
+```text
+README.md
+DOKUMENTASI.md
+GEMINI.md
+AGENTS.md
+```
+
+When documentation impact is possible, inspect relevant:
+
+```text
+*.md
+docs/
+documentation/
+architecture/
+examples/
+API references
+configuration guides
+CHANGELOG
+CONTRIBUTING
+```
+
+Only update files that are actually affected.
+
+---
+
+## 49.4 Documentation Impact Matrix
+
+| Change | Documentation that must be reviewed |
+|---|---|
+| Internal bugfix | Only if user-visible behavior changes |
+| New feature | README, DOKUMENTASI, and relevant feature/plugin docs |
+| New plugin | Plugin list, architecture docs, README/DOKUMENTASI, GEMINI/AGENTS where rules change |
+| Plugin removal | All references to the removed plugin |
+| Plugin rename | All non-historical references to the old name |
+| New API | API and architecture documentation |
+| Breaking API change | All consumers plus migration notes |
+| New command | Command documentation |
+| New permission | Permission documentation |
+| Configuration change | Configuration documentation |
+| Database schema change | Database/migration documentation |
+| Dependency change | Build/architecture documentation |
+| Java/Paper baseline change | Technology/build docs and agent rules |
+| Build workflow change | Build docs and relevant agent rules |
+| Architecture change | Architecture docs and relevant agent rules |
+| Rank change | Rank/configuration references |
+| Security policy change | Security docs and agent rules |
+
+---
+
+## 49.5 GEMINI.md vs AGENTS.md
+
+Do not unnecessarily duplicate the entire contents of both files.
+
+### `GEMINI.md`
+
+Primary responsibility:
+
+```text
+Gemini-specific operating instructions
+Agent workflow
+Git safety
+Repository safety
+Validation rules
+Project evolution rules
+Documentation governance
+```
+
+### `AGENTS.md`
+
+Primary responsibility:
+
+```text
+General AI coding-agent rules
+Architecture conventions
+Repository development conventions
+Implementation constraints
+Agent-independent engineering rules
+```
+
+If both documents contain the same rule, keep the wording concise and consistent rather than creating two independently maintained copies of large sections.
+
+If a rule changes, inspect both files for contradictions.
+
+---
+
+## 49.6 New Plugin Protocol
+
+When creating a new Apexsions plugin, the agent must first determine:
+
+```text
+1. Does the functionality already exist?
+2. Which plugin should own the responsibility?
+3. Is a separate plugin actually justified?
+4. What APIs are required?
+5. What events are required?
+6. What dependencies are required?
+7. What configuration is required?
+8. What database/storage is required?
+9. What commands and permissions are required?
+10. What security risks exist?
+11. What performance implications exist?
+12. What build configuration changes?
+13. What documentation becomes stale?
+```
+
+A new plugin is incomplete until its source, build integration, documentation, and relevant ecosystem references are consistent.
+
+---
+
+## 49.7 Plugin Rename / Removal Protocol
+
+When renaming or removing a plugin, search the entire repository for:
+
+```text
+Plugin name
+Artifact name
+Package name
+Dependencies
+Configuration
+Commands
+Permissions
+Build scripts
+Documentation
+Architecture diagrams
+Examples
+CI/CD configuration
+```
+
+Historical references may remain when they are intentionally part of changelog or history.
+
+All other stale references must be removed or updated.
+
+---
+
+## 49.8 Technology Upgrade Protocol
+
+For Java, Paper, Adventure, Maven, database drivers, or major dependencies:
+
+```text
+Inspect current baseline
+        ↓
+Assess compatibility
+        ↓
+Identify affected plugins
+        ↓
+Update build configuration
+        ↓
+Update code only where required
+        ↓
+Build affected plugins
+        ↓
+Run tests / runtime validation
+        ↓
+Update documentation
+        ↓
+Update GEMINI / AGENTS if the development baseline changed
+```
+
+Do not upgrade dependencies merely because a newer version exists.
+
+---
+
+## 49.9 Architecture Change Protocol
+
+For architecture changes:
+
+```text
+Current Architecture
+        ↓
+Impact Analysis
+        ↓
+Target Architecture
+        ↓
+Migration Strategy
+        ↓
+Implementation
+        ↓
+Validation
+        ↓
+Documentation Synchronization
+```
+
+Document, where relevant:
+
+```text
+What changed?
+Why did it change?
+What depends on it?
+What became deprecated?
+What is the migration path?
+```
+
+Do not leave old architecture documentation presented as current.
+
+---
+
+## 49.10 Deprecation Protocol
+
+For APIs, classes, configuration keys, commands, or features that are being phased out:
+
+```text
+Current
+  ↓
+Deprecated
+  ↓
+Migration Path
+  ↓
+Removal
+```
+
+Where practical, document:
+
+```text
+Deprecated item
+Replacement
+Migration instructions
+Removal status
+```
+
+Do not remove public interfaces without checking their consumers.
+
+---
+
+# 50. Documentation Synchronization Protocol
+
+When the user explicitly requests:
+
+> "Update GEMINI.md, AGENTS.md, and all documentation."
+
+the agent must perform a **repository-wide documentation audit**.
+
+The required workflow is:
+
+```text
+1. Identify the actual current project state.
+2. Inspect source code, configuration, build files, and architecture.
+3. Discover documentation files and relevant docs directories.
+4. Identify stale, contradictory, missing, or obsolete information.
+5. Update all documentation affected by the current project state.
+6. Update GEMINI.md when agent rules or project baseline changed.
+7. Update AGENTS.md when general agent/engineering rules changed.
+8. Update README.md for user-facing/onboarding changes.
+9. Update DOKUMENTASI.md for technical/system changes.
+10. Update docs/* and examples when affected.
+11. Remove obsolete references.
+12. Check terminology, plugin names, versions, paths, commands, APIs, permissions, and architecture.
+13. Search again for stale references.
+14. Check for contradictions between documentation files.
+15. Review the final diff.
+```
+
+"All documentation" means **all relevant and affected documentation**, not blindly rewriting every markdown file.
+
+---
+
+# 51. Documentation Source-of-Truth & Consistency
+
+Documentation must describe the actual implementation.
+
+When documentation conflicts with source/configuration:
+
+```text
+Inspect implementation
+        ↓
+Determine intended behavior
+        ↓
+Determine which side is stale
+        ↓
+Fix the correct source
+        ↓
+Synchronize documentation
+```
+
+Do not modify source code solely to make incorrect documentation appear correct.
+
+Before finishing a documentation synchronization task, verify:
+
+```text
+[ ] Plugin names
+[ ] Package names
+[ ] Version numbers
+[ ] Commands
+[ ] Permissions
+[ ] Paths
+[ ] Build commands
+[ ] API names
+[ ] Event names
+[ ] Configuration examples
+[ ] Architecture diagrams
+[ ] Dependency references
+[ ] Database information
+[ ] No obsolete references
+[ ] No contradictions
+```
+
+---
+
+# 52. Documentation-Only Changes
+
+If the user requests documentation-only work:
+
+```text
+Do not modify source code.
+Do not change runtime behavior.
+Do not silently "fix" implementation.
+```
+
+If documentation cannot accurately be updated because the implementation itself is contradictory or unclear:
+
+```text
+STOP
+↓
+Explain the inconsistency
+↓
+Provide evidence
+↓
+Do not silently alter runtime behavior
+```
+
+---
+
+# 53. Long-Term Maintenance Rules
+
+Every future feature should satisfy:
+
+```text
+Fits the existing architecture
+OR
+Clearly justifies an architecture change
+```
+
+Every architecture change should consider:
+
+```text
+Implementation
++
+API contracts
++
+Dependencies
++
+Configuration
++
+Database
++
+Tests
++
+Documentation
++
+Agent rules where applicable
+```
+
+Every obsolete system should follow:
+
+```text
+Identify
+   ↓
+Deprecate
+   ↓
+Migrate
+   ↓
+Remove
+   ↓
+Clean stale documentation
+```
+
+The repository must maintain one coherent mental model across source code, configuration, documentation, and agent instructions.
+
+---
+
+# 54. Future-Change Decision Protocol
+
+When the user asks to add or modify functionality, the agent should reason through:
+
+```text
+Does this already exist?
+        ↓
+Where should it live?
+        ↓
+Which plugin owns it?
+        ↓
+What does it depend on?
+        ↓
+Who depends on it?
+        ↓
+What API/event contracts change?
+        ↓
+What config/database changes?
+        ↓
+What security risks exist?
+        ↓
+What performance risks exist?
+        ↓
+What documentation becomes stale?
+        ↓
+Does GEMINI.md need updating?
+        ↓
+Does AGENTS.md need updating?
+        ↓
+Implement
+        ↓
+Build
+        ↓
+Test
+        ↓
+Synchronize documentation
+        ↓
+Audit consistency
+```
+
+The agent must not treat a requested feature as an isolated code edit when it changes the wider ecosystem.
+
+---
+
+# 55. Governance Change Protocol
+
+When changing `GEMINI.md` or `AGENTS.md` itself:
+
+1. Inspect the existing rule.
+2. Identify what behavior the rule currently governs.
+3. Identify rules that depend on it.
+4. Identify contradictory or obsolete rules.
+5. Make the smallest coherent governance change.
+6. Search both agent instruction files for conflicting wording.
+7. Verify that the new rule does not accidentally weaken repository safety.
+8. Update related documentation if the governance change reflects an actual project workflow change.
+
+Never add a new rule while knowingly leaving an older contradictory rule active.
+
+---
+
+# 56. Final Documentation Definition of Done
+
+Documentation work is complete only when:
+
+```text
+[ ] Actual project state was inspected
+[ ] Relevant documentation was discovered
+[ ] Stale information was identified
+[ ] Affected documentation was updated
+[ ] Obsolete references were removed
+[ ] GEMINI.md was updated when necessary
+[ ] AGENTS.md was updated when necessary
+[ ] README.md was updated when necessary
+[ ] DOKUMENTASI.md was updated when necessary
+[ ] Relevant docs/* were updated
+[ ] Examples were checked
+[ ] Commands were checked
+[ ] Configuration examples were checked
+[ ] Architecture references were checked
+[ ] No contradictory instructions remain
+[ ] Repository-wide stale-reference search completed
+[ ] Final git diff reviewed
+```
+
+Documentation must be considered **synchronized**, not merely "edited".
+
+---
+
+# 57. Golden Rule for Project Evolution
+
+The project will change.
+
+Therefore:
+
+> **Never assume today's architecture, plugin list, dependencies, versions, configuration, or workflow will remain permanent.**
+
+When the repository evolves, the agent must evolve the relevant:
+
+```text
+Code
+Configuration
+Build System
+Tests
+Documentation
+GEMINI.md
+AGENTS.md
+```
+
+together when required.
+
+The goal is not to preserve the current repository forever.
+
+The goal is to preserve **consistency, safety, maintainability, and a truthful representation of the current system**.

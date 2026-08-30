@@ -1,6 +1,6 @@
 # ApexsionsShop — Comprehensive Technical Manual
 
-Panduan teknis dan operasional lengkap untuk modul **`ApexsionsShop`** (Sistem Toko 6 Kategori, Pasar Dinamis Cuaca & Pasokan, Price Clamping, Siaran Tren Pasar, Pajak Kerajaan 10%, GUI Ramah Bedrock/Touchscreen, dan GUI Jual Cepat 45-Slot `/sell`).
+Panduan teknis dan operasional lengkap untuk modul **`ApexsionsShop`** (Sistem Toko 6 Kategori, Pasar Dinamis Cuaca & Pasokan, Price Clamping 50%-200%, Siaran Tren Pasar, Pajak Kerajaan 10%, GUI Ramah Bedrock/Touchscreen, dan GUI Jual Cepat 45-Slot `/sell`).
 
 ---
 
@@ -44,7 +44,7 @@ $$\text{Harga Final} = \text{Clamp}_{50\%}^{200\%}(\text{Harga Dasar} \times M_{
 - **Price Clamping (Batas Pengaman)**: Harga satuan efektif dijamin tidak akan pernah jatuh di bawah **50%** atau melambung melampaui **200%** dari harga dasar.
 - **Siaran Tren Pasar Otomatis (`MarketBroadcastService`)**: Pengumuman berkala MiniMessage mengenai komoditas yang sedang 'BOOM' (harga naik) atau 'DIP' (harga anjlok).
 - **Multiplier Cuaca ($M_{\text{Cuaca}}$)**: Hujan lebat meningkatkan permintaan hasil pertanian (+15%), badai petir meningkatkan harga ore langka (+25%).
-- **Spesialisasi Kerajaan ($M_{\text{Kerajaan}}$)**: Diskon komoditas khusus untuk warga kerajaan pemilik bioma.
+- **Spesialisasi Kerajaan ($M_{\text{Kerajaan}}$)**: Diskon komoditas khusus untuk warga kerajaan pemilik bioma (Zenithar, Solterra, Sylvamoor).
 - **Pajak Kerajaan (10%)**: Pajak 10% dipotong dari setiap transaksi dan secara otomatis disalurkan ke kas kerajaan pembeli.
 
 ---
@@ -60,9 +60,10 @@ $$\text{Harga Final} = \text{Clamp}_{50\%}^{200\%}(\text{Harga Dasar} \times M_{
 
 | Perintah | Alias | Deskripsi | Permission | Default |
 | :--- | :--- | :--- | :--- | :---: |
-| `/shop` | `/pasar`, `/toko`, `/store` | Membuka menu utama 6 kategori toko | `apexsionsshop.use` | `true` |
+| `/shop` | `/pasar`, `/toko`, `/store`, `/bazar` | Membuka menu utama 6 kategori toko | `apexsionsshop.use` | `true` |
+| `/shop trends` | - | Membuka dashboard visual tren pasar & fluktuasi | `apexsionsshop.use` | `true` |
 | `/shop <kategori>` | `/pasar <kat>` | Membuka kategori toko tertentu secara langsung | `apexsionsshop.use` | `true` |
+| `/shop reload` | `/pasar reload` | Memuat ulang konfigurasi kategori, pasar, dan GUI | `apexsionsshop.admin` | `op` |
 | `/sell` | `/sellgui`, `/jual` | Membuka GUI jual cepat 45-slot | `apexsionsshop.sell` | `true` |
 | `/sellall` | `/jualsemua` | Menjual seluruh item yang cocok di inventaris | `apexsionsshop.sell` | `true` |
 | `/sellhand` | `/jualtangan` | Menjual item yang sedang dipegang di tangan utama | `apexsionsshop.sell` | `true` |
-| `/shop reload` | `/pasar reload` | Memuat ulang konfigurasi kategori, pasar, dan GUI | `apexsionsshop.admin` | `op` |

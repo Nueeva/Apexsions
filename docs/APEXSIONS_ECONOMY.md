@@ -29,7 +29,7 @@ Panduan teknis dan operasional lengkap untuk modul **`ApexsionsEconomy`** (Siste
 
 1. **Rupiah (`rupiah`)**:
    - Mata uang utama sirkulasi server untuk jual-beli pasar, ongkos transportasi, dan lelang.
-   - Simbol: `Rp` (Format: `Rp 50.000`, `Rp 1,5 Jt`, `Rp 2,5 M`).
+   - Simbol: `Rp` (Format: `Rp 50.000`, `Rp 1,5 Jt`, `Rp 2,5 M`, `Rp 1,0 T`).
 2. **Diamond (`diamond`)**:
    - Mata uang premium berbasis diamond/gem untuk transaksi komoditas berharga dan toko eksklusif.
    - Simbol: `♦` (Format: `100 ♦`).
@@ -38,7 +38,7 @@ Panduan teknis dan operasional lengkap untuk modul **`ApexsionsEconomy`** (Siste
 
 ## 🏛️ 3. Pasar Lelang & Escrow Claim (`/ah`)
 
-- **Pemasangan Item Bebas**: Pemain dapat mendaftarkan item tangan dengan durasi lelang (misal 24 jam / 48 jam).
+- **Pemasangan Item Bebas**: Pemain dapat mendaftarkan item tangan dengan harga dan durasi lelang.
 - **Sistem Penampungan Aman (*Escrow Claim*)**:
   - Jika item kedaluwarsa tanpa pembeli atau lelang dibatalkan, item otomatis dipindahkan ke brankas penampungan (*Escrow Vault*).
   - Mencegah item hilang akibat inventaris pemain penuh saat lelang berakhir.
@@ -50,7 +50,7 @@ Panduan teknis dan operasional lengkap untuk modul **`ApexsionsEconomy`** (Siste
 
 Menu barter 12-slot interaktif dengan keamanan tinggi:
 1. **Filter Pemain Sesama Kerajaan**: Secara otomatis hanya menampilkan pemain satu kerajaan di menu trade untuk mendorong kerjasama internal.
-2. **Tombol Toggle Filter Global**: Tombol slot 8 memungkinkan pemain beralih ke mode `[🌐 FILTER: SEMUA KERAJAAN]` untuk melihat seluruh pemain di server.
+2. **Tombol Toggle Filter Global (Slot 8)**: Memungkinkan pemain beralih ke mode `[🌐 FILTER: SEMUA KERAJAAN]` untuk melihat seluruh pemain di server.
 3. **Pajak Transportasi Lintas-Kerajaan (*Transport Tariff*)**:
    - **Sesama Kerajaan**: Pajak transportasi = **Rp 0 (GRATIS)**.
    - **Beda Kerajaan**: Kedua belah pihak dikenakan biaya transportasi sebesar **Rp 5.000** (dikonfigurasi di `config.yml`) yang dipotong secara otomatis saat konfirmasi kedua pihak tercapai.
@@ -62,16 +62,16 @@ Menu barter 12-slot interaktif dengan keamanan tinggi:
 
 | Perintah | Alias | Deskripsi | Permission | Default |
 | :--- | :--- | :--- | :--- | :---: |
-| `/economy` | `/eco`, `/bal`, `/uang` | Membuka menu utama saldo dan statistik | `apexsionseconomy.use` | `true` |
-| `/baltop` | `/topbal` | Menampilkan leaderboard 10 pemain terkaya | `apexsionseconomy.use` | `true` |
-| `/pay <p> <amt> [curr]` | `/transfer`, `/kirimuang` | Mentransfer uang ke pemain lain via GUI / Chat | `apexsionseconomy.pay` | `true` |
+| `/economy` | `/eco`, `/uang`, `/bal` | Membuka menu utama saldo dan statistik keuangan | `apexsionseconomy.use` | `true` |
+| `/baltop` | `/topbal` | Menampilkan leaderboard 10 pemain terkaya server | `apexsionseconomy.use` | `true` |
+| `/pay <p> <amt> [curr]` | `/transfer`, `/kirimuang` | Mentransfer uang ke pemain lain secara instan | `apexsionseconomy.pay` | `true` |
 | `/ah` | `/lelang`, `/auction` | Membuka antarmuka pasar lelang & brankas klaim | `apexsionseconomy.ah` | `true` |
-| `/ah sell <harga>` | `/lelang jual` | Mendaftarkan item di tangan ke pasar lelang | `apexsionseconomy.ah` | `true` |
 | `/trade [pemain]` | `/barter`, `/tukar` | Membuka menu barter item dan mata uang | `apexsionseconomy.trade` | `true` |
 | `/trade toggle` | - | Mengaktifkan/menonaktifkan permintaan trade | `apexsionseconomy.trade` | `true` |
-| `/ecoadmin give <p> <amt>`| `/aeco give` | Menambahkan saldo pemain oleh administrator | `apexsionseconomy.admin` | `op` |
-| `/ecoadmin take <p> <amt>`| `/aeco take` | Mengurangi saldo pemain oleh administrator | `apexsionseconomy.admin` | `op` |
-| `/ecoadmin set <p> <amt>` | `/aeco set` | Mengatur nominal saldo pemain secara langsung | `apexsionseconomy.admin` | `op` |
+| `/ecoadmin reload` | `/apexeconomy reload`, `/adminpay reload` | Memuat ulang konfigurasi ekonomi & mata uang | `apexsionseconomy.admin` | `op` |
+| `/ecoadmin give <p> <amt> [curr]`| - | Menambahkan saldo pemain oleh administrator | `apexsionseconomy.admin` | `op` |
+| `/ecoadmin take <p> <amt> [curr]`| - | Mengurangi saldo pemain oleh administrator | `apexsionseconomy.admin` | `op` |
+| `/ecoadmin set <p> <amt> [curr]` | - | Mengatur nominal saldo pemain secara langsung | `apexsionseconomy.admin` | `op` |
 
 ---
 
@@ -97,5 +97,16 @@ CREATE TABLE IF NOT EXISTS economy_auctions (
     expires_at BIGINT NOT NULL,
     status VARCHAR(16) NOT NULL DEFAULT 'ACTIVE',
     buyer_uuid VARCHAR(36)
+);
+
+CREATE TABLE IF NOT EXISTS economy_pending_claims (
+    id BIGSERIAL PRIMARY KEY,
+    uuid VARCHAR(36) NOT NULL,
+    type VARCHAR(16) NOT NULL, -- 'MONEY', 'ITEM'
+    currency_id VARCHAR(32),
+    amount NUMERIC(18, 2) DEFAULT 0,
+    item_data TEXT,
+    claimed BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 ```

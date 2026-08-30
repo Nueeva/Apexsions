@@ -1,6 +1,6 @@
 # ApexsionsBattlepass — Comprehensive Technical Manual
 
-Panduan teknis dan operasional lengkap untuk modul **`ApexsionsBattlepass`** (Sistem Musim / Season, 200 Level BattlePass, Quest Pools Harian/Mingguan/Bulanan, Pass Tiers Inheritance, Toko Rotasi, dan Visual Admin Editor `/abp`).
+Panduan teknis dan operasional lengkap untuk modul **`ApexsionsBattlepass`** (Sistem Musim / Season 200 Level, Quest Pools Harian/Mingguan/Bulanan, Pass Tiers Inheritance, Toko Rotasi, Exp-Shop, dan Visual Admin Editor `/abp`).
 
 ---
 
@@ -27,12 +27,11 @@ Panduan teknis dan operasional lengkap untuk modul **`ApexsionsBattlepass`** (Si
 
 ## 👑 2. Tingkatan Pass & Sistem Pewarisan (Pass Tier Inheritance)
 
-Terdapat 4 tingkatan pass dengan hak klaim bertingkat:
+Terdapat tingkatan pass dengan hak klaim bertingkat:
 
-1. **`FREE` Pass**: Terbuka untuk seluruh pemain secara default (mendapatkan reward jalur gratis).
-2. **`PREMIUM` Pass**: Membuka jalur hadiah premium tambahan.
-3. **`PREMIUM+` Pass**: Membuka seluruh reward premium + bonus 25 level instan dan booster XP 20%.
-4. **`ULTIMATE` Pass**: Membuka seluruh jalur hadiah + kosmetik eksklusif + booster XP 50% + hak klaim seluruh tier di bawahnya (`ULTIMATE` $\supset$ `PREMIUM+` $\supset$ `PREMIUM` $\supset$ `FREE`).
+1. **`FREE` Pass**: Terbuka untuk seluruh pemain secara default (`apexsionsbattlepass.pass.free`).
+2. **`PREMIUM` Pass**: Membuka jalur reward premium tambahan (`apexsionsbattlepass.pass.premium`).
+3. **`ULTIMATE` / `VIP` Pass**: Membuka seluruh reward premium + bonus booster XP + mewarisi hak klaim seluruh tier di bawahnya (`ULTIMATE` $\supset$ `PREMIUM+` $\supset$ `PREMIUM` $\supset$ `FREE`, permission `apexsionsbattlepass.pass.vip`).
 
 ---
 
@@ -46,41 +45,54 @@ Setiap misi memberikan BattlePass XP (BP-XP) untuk menaikkan level (100 XP fixed
 
 ---
 
-## 🛠️ 4. Visual Admin Editor 54-Slot (`/abp`)
+## 🛠️ 4. Visual Admin Editor 54-Slot (`/abp editor`)
 
 Admin dapat mengelola seluruh aspek BattlePass langsung dari dalam game:
 - **Editor Hadiah Level**: Drag-and-drop item ke slot level untuk menjadikannya reward, mengatur perintah konsol hadiah, atau mengganti material visual.
 - **Editor Toko Rotasi**: Mengatur stok barang toko rotasi harian/mingguan dan probabilitas kelangkaan (*Rarity Chances*: `COMMON` s/d `MYTHIC`).
-- **Pemberian Pass Instan**: Memberikan pass kepada pemain tanpa perlu mengubah izin LuckPerms secara manual.
+- **Pemberian Pass Instan**: Memberikan pass kepada pemain secara langsung (`/abp givepass <p> <tier>`).
 
 ---
 
 ## 📜 5. Matriks Perintah & Permissions
 
 | Perintah | Alias | Deskripsi | Permission | Default |
-| :--- | :--- | :--- | :--- | :---: |
+| :--- | :--- | :--- | :--- | :--- | :---: |
 | `/bp` | `/battlepass` | Membuka menu utama 200 level BattlePass | `apexsionsbattlepass.use` | `true` |
 | `/bp quests` | `/bp misi` | Membuka daftar misi harian, mingguan, bulanan | `apexsionsbattlepass.use` | `true` |
-| `/bp shop` | `/bp toko` | Membuka toko rotasi berbasis BP-XP | `apexsionsbattlepass.use` | `true` |
-| `/abp` | `/bpadmin`, `/adminbp` | Membuka panel kontrol visual editor 54-slot | `apexsionsbattlepass.admin` | `op` |
-| `/abp setlevel <p> <lvl>`| - | Mengatur level BattlePass pemain secara langsung | `apexsionsbattlepass.admin` | `op` |
-| `/abp addxp <p> <xp>` | - | Memberikan poin BP-XP ke pemain | `apexsionsbattlepass.admin` | `op` |
-| `/abp givepass <p> <tier>`| `/abp setpass` | Memberikan status pass (`premium`/`ultimate`) | `apexsionsbattlepass.admin` | `op` |
-| `/abp reload` | - | Memuat ulang seluruh konfigurasi YAML dan season | `apexsionsbattlepass.reload` | `op` |
+| `/bp shop` | `/bp toko` | Membuka toko rotasi berbasis poin BP-XP | `apexsionsbattlepass.use` | `true` |
+| `/bp pass` | - | Membuka menu peningkatan tier pass | `apexsionsbattlepass.use` | `true` |
+| `/bp season` | - | Memeriksa status, waktu tersisa, dan periode season | `apexsionsbattlepass.use` | `true` |
+| `/bp claim [level]` | - | Mengklaim hadiah level yang telah tercapai | `apexsionsbattlepass.use` | `true` |
+| `/bp level` | - | Menampilkan level dan sisa XP BattlePass saat ini | `apexsionsbattlepass.use` | `true` |
+| `/abp` | `/bpadmin`, `/adminbp`, `/apexsionsbattlepass` | Membuka panel kontrol visual editor 54-slot | `apexsionsbattlepass.admin` | `op` |
+| `/abp reload` | - | Memuat ulang seluruh konfigurasi season & quest | `apexsionsbattlepass.reload` | `op` |
+| `/abp givepass <p> <tier>`| `/abp setpass` | Memberikan tier pass ke pemain | `apexsionsbattlepass.admin` | `op` |
+| `/abp setlevel <p> <lvl>`| - | Mengatur level BattlePass pemain secara manual | `apexsionsbattlepass.admin` | `op` |
+| `/abp addxp <p> <amt>` | - | Memberikan poin BP-XP ke pemain | `apexsionsbattlepass.admin` | `op` |
+| `/abp reset <p>` | - | Mereset total seluruh data progresi pemain | `apexsionsbattlepass.admin` | `op` |
+| `/abp editor` | - | Membuka visual editor hadiah & toko | `apexsionsbattlepass.admin` | `op` |
 
 ---
 
 ## 🗄️ 6. Skema Basis Data PostgreSQL / SQLite
 
 ```sql
-CREATE TABLE IF NOT EXISTS battlepass_players (
-    uuid VARCHAR(36) PRIMARY KEY,
-    season_id INT NOT NULL DEFAULT 1,
-    level INT NOT NULL DEFAULT 1,
-    xp INT NOT NULL DEFAULT 0,
-    pass_tier VARCHAR(32) NOT NULL DEFAULT 'FREE',
-    claimed_free_rewards TEXT,
-    claimed_premium_rewards TEXT,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+CREATE TABLE IF NOT EXISTS abp_player_data (
+    uuid VARCHAR(36) NOT NULL,
+    season_id INTEGER NOT NULL,
+    level INTEGER NOT NULL DEFAULT 1,
+    xp INTEGER NOT NULL DEFAULT 0,
+    currency INTEGER NOT NULL DEFAULT 0,
+    passes TEXT NOT NULL DEFAULT 'FREE',
+    claimed_rewards TEXT NOT NULL DEFAULT '',
+    last_daily_reset BIGINT NOT NULL DEFAULT 0,
+    last_weekly_reset BIGINT NOT NULL DEFAULT 0,
+    last_monthly_reset BIGINT NOT NULL DEFAULT 0,
+    daily_refresh_count INTEGER NOT NULL DEFAULT 0,
+    total_refresh_count INTEGER NOT NULL DEFAULT 0,
+    shop_rotations TEXT DEFAULT '',
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (uuid, season_id)
 );
 ```
