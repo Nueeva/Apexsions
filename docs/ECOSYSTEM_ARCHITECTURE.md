@@ -4,27 +4,27 @@ Dokumentasi arsitektur terpadu yang menjelaskan pola integrasi antar-plugin, alu
 
 ---
 
-## 🏛️ 1. Diagram Keterhubungan 5 Plugin
+## 🏛️ 1. Diagram Keterhubungan 6 Plugin
 
 ```
-                                  ┌────────────────────────┐
-                                  │     ApexsionsCore      │
-                                  │   (Identity & State)   │
-                                  └───────────┬────────────┘
-                                              │
-               ┌──────────────────────────────┼──────────────────────────────┐
-               │                              │                              │
-               ▼                              ▼                              ▼
-     ┌──────────────────┐           ┌───────────────────┐          ┌───────────────────┐
-     │  ApexsionsChat   │           │ ApexsionsEconomy  │          │ApexsionsBattlepass│
-     │ (Communications) │           │(Financial Engine) │          │ (Retention & XP)  │
-     └──────────────────┘           └─────────┬─────────┘          └───────────────────┘
-                                              │
-                                              ▼
-                                    ┌───────────────────┐
-                                    │  ApexsionsShop    │
-                                    │ (Dynamic Markets) │
-                                    └───────────────────┘
+                            ┌────────────────────────┐
+                            │     ApexsionsCore      │
+                            │  (Kingdom & Leveling)  │
+                            └───────────┬────────────┘
+                                        │
+         ┌──────────────────────────────┼──────────────────────────────┐
+         ▼                              ▼                              ▼
+┌──────────────────┐          ┌───────────────────┐          ┌───────────────────┐
+│  ApexsionsChat   │          │ ApexsionsEconomy  │          │ApexsionsBattlepass│
+│ (Chat & Mod Sec) │          │ (AH, Trade, Pay)  │          │ (Quests & Passes) │
+└──────────────────┘          └─────────┬─────────┘          └───────────────────┘
+                                        │
+                    ┌───────────────────┴───────────────────┐
+                    ▼                                       ▼
+          ┌───────────────────┐                   ┌───────────────────┐
+          │  ApexsionsShop    │                   │  ApexsionsMedia   │
+          │ (Dynamic Markets) │                   │(Interactive Visual│
+          └───────────────────┘                   └───────────────────┘
 ```
 
 ---
@@ -35,7 +35,7 @@ Setiap plugin mengekspos API publik melalui singleton provider pattern yang aman
 
 1. **`ApexsionsCoreProvider.get()` $\to$ `ApexsionsCoreAPI`**:
    - `getKingdom(UUID playerId)`: Mendapatkan nama kerajaan pemain (`Zenithar`, `Solterra`, `Sylvamoor`).
-   - `getLevel(UUID playerId)`: Mengambil level progresi pemain.
+   - `getLevel(UUID playerId)`: Mengambil level progresi pemain (1-100).
    - `getXp(UUID playerId)`: Mengambil total poin XP pemain.
    - `isInTerritory(Location loc)`: Memeriksa apakah lokasi berada di dalam batas poligon kerajaan.
    - `isSameKingdom(UUID p1, UUID p2)`: Memvalidasi apakah dua pemain berada di satu kerajaan.
