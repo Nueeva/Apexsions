@@ -81,6 +81,12 @@ public class ApexsionsEconomy extends JavaPlugin {
         instance = null;
     }
 
+    public void reload() {
+        reloadConfig();
+        this.currencyRegistry = new CurrencyRegistry();
+        getLogger().info("ApexsionsEconomy configuration and currencies reloaded.");
+    }
+
     private void registerCommands() {
         EconomyCommand ecoCmd = new EconomyCommand(this);
         PluginCommand ecoPlugin = getCommand("economy");

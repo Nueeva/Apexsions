@@ -28,8 +28,14 @@ public class AdminEconomyCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
+        if (args.length >= 1 && args[0].equalsIgnoreCase("reload")) {
+            plugin.reload();
+            sender.sendMessage("§a[ApexsionsEconomy] Konfigurasi dan pengaturan mata uang berhasil di-reload!");
+            return true;
+        }
+
         if (args.length < 3) {
-            sender.sendMessage("§cPenggunaan: /ecoadmin <give|take|set> <player> <amount> [rupiah|diamond]");
+            sender.sendMessage("§cPenggunaan: /ecoadmin <give|take|set|reload> [player] [amount] [rupiah|diamond]");
             return true;
         }
 
@@ -69,7 +75,7 @@ public class AdminEconomyCommand implements CommandExecutor, TabCompleter {
                 plugin.getCurrencyService().setBalance(target.getUniqueId(), currency.getId(), amount);
                 sender.sendMessage("§aBerhasil menyetel saldo " + currency.getDisplayName() + " §e" + targetName + " §amenjadi §e" + NumberFormatUtil.format(amount, currency));
             }
-            default -> sender.sendMessage("§cAksi tidak valid! Pilihan: give, take, set.");
+            default -> sender.sendMessage("§cAksi tidak valid! Pilihan: give, take, set, reload.");
         }
 
         return true;
@@ -78,17 +84,17 @@ public class AdminEconomyCommand implements CommandExecutor, TabCompleter {
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         if (args.length == 1) {
-            return List.of("give", "take", "set");
+            return List.of("give", "take", "set", "reload");
         }
-        if (args.length == 2) {
+        if (args.length == 2 && !args[0].equalsIgnoreCase("reload")) {
             List<String> list = new ArrayList<>();
             for (var p : Bukkit.getOnlinePlayers()) list.add(p.getName());
             return list;
         }
-        if (args.length == 3) {
+        if (args.length == 3 && !args[0].equalsIgnoreCase("reload")) {
             return List.of("1000", "10k", "100k", "1jt", "10jt", "1m");
         }
-        if (args.length == 4) {
+        if (args.length == 4 && !args[0].equalsIgnoreCase("reload")) {
             return List.of("rupiah", "diamond");
         }
         return List.of();
