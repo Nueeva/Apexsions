@@ -102,6 +102,12 @@ public class KingdomCommand implements CommandExecutor, TabCompleter {
                 handleSetKing(sender, args);
                 break;
 
+            case "unsetking":
+            case "removeking":
+            case "clearking":
+                handleUnsetKing(sender, args);
+                break;
+
             default:
                 sender.sendMessage(miniMessage.deserialize("<gold><bold>Apexsions Kingdom Commands:</bold></gold>"));
                 sender.sendMessage(miniMessage.deserialize("<yellow>/kingdom</yellow> <gray>- Teleport to your kingdom spawn</gray>"));
@@ -114,11 +120,42 @@ public class KingdomCommand implements CommandExecutor, TabCompleter {
                 sender.sendMessage(miniMessage.deserialize("<yellow>/level</yellow> <gray>- Quick shortcut to your character profile & level progress</gray>"));
                 if (sender.hasPermission("apexsionscore.admin")) {
                     sender.sendMessage(miniMessage.deserialize("<gold>/kingdom setking <kingdom> <player></gold> <gray>- Angkat Raja baru kerajaan</gray>"));
+                    sender.sendMessage(miniMessage.deserialize("<gold>/kingdom unsetking <kingdom></gold> <gray>- Cabut gelar Raja kerajaan</gray>"));
                 }
                 break;
         }
 
         return true;
+    }
+
+    private void handleUnsetKing(CommandSender sender, String[] args) {
+        if (!sender.hasPermission("apexsionscore.admin") && !sender.isOp()) {
+            sender.sendMessage(miniMessage.deserialize("<red>Anda tidak memiliki izin untuk mencabut gelar Raja!</red>"));
+            return;
+        }
+
+        if (args.length < 2) {
+            sender.sendMessage(miniMessage.deserialize("<red>Penggunaan: <yellow>/kingdom unsetking <kingdom></yellow></red>"));
+            return;
+        }
+
+        String kingdomInput = args[1].toUpperCase();
+        Optional<Region> regionOpt = plugin.getRegionManager().getRegion(kingdomInput);
+        if (regionOpt.isEmpty()) {
+            sender.sendMessage(miniMessage.deserialize("<red>Kerajaan <yellow>" + kingdomInput + "</yellow> tidak ditemukan! Pilih: ZENITHAR, SOLTERRA, atau SYLVAMOOR.</red>"));
+            return;
+        }
+
+        String previousKing = plugin.getConfigManager().getKingdomKing(kingdomInput);
+        plugin.getConfigManager().setKingdomKing(kingdomInput, "Belum Ditunjuk");
+
+        sender.sendMessage(miniMessage.deserialize("<green>✓ Berhasil mencabut status Raja dari kerajaan <gold>" + regionOpt.get().getDisplayName() + "</gold>!</green>"));
+        if (!previousKing.isEmpty() && !previousKing.equalsIgnoreCase("Belum Ditunjuk")) {
+            Player prevPlayer = org.bukkit.Bukkit.getPlayer(previousKing);
+            if (prevPlayer != null && prevPlayer.isOnline()) {
+                prevPlayer.sendMessage(miniMessage.deserialize("<yellow>⚠️ Gelar Raja kerajaanmu telah dicabut oleh administrator.</yellow>"));
+            }
+        }
     }
 
     private void handleSetKing(CommandSender sender, String[] args) {
@@ -230,6 +267,8 @@ public class KingdomCommand implements CommandExecutor, TabCompleter {
             List<String> list = new ArrayList<>(Arrays.asList("choose", "info", "top", "profile", "rewards", "claim", "xp", "guide", "level", "rtp", "wild", "wilderness"));
             if (sender.hasPermission("apexsionscore.admin")) {
                 list.add("setking");
+                list.add("unsetking");
+                list.add("removeking");
             }
             List<String> result = new ArrayList<>();
             for (String s : list) {
@@ -238,7 +277,7 @@ public class KingdomCommand implements CommandExecutor, TabCompleter {
                 }
             }
             return result;
-        } else if (args.length == 2 && args[0].equalsIgnoreCase("setking")) {
+        } else if (args.length == 2 && (args[0].equalsIgnoreCase("setking") || args[0].equalsIgnoreCase("unsetking") || args[0].equalsIgnoreCase("removeking"))) {
             return Arrays.asList("ZENITHAR", "SOLTERRA", "SYLVAMOOR");
         } else if (args.length == 3 && args[0].equalsIgnoreCase("setking")) {
             return null; // suggest online players
