@@ -139,7 +139,9 @@ public class PlaceholderApiHook extends PlaceholderExpansion {
                 return "<gradient:#dfe6e9:#74b9ff><bold>[Wanderer]</bold></gradient> ";
 
             case "active_title":
-                return data.getActiveTitle() != null ? data.getActiveTitle() : "";
+                return (data.getActiveTitle() != null && !data.getActiveTitle().isEmpty() && !data.getActiveTitle().equalsIgnoreCase("none"))
+                        ? data.getActiveTitle()
+                        : "Wanderer";
 
             case "balance_rupiah":
                 if (plugin.getVaultHook().hasEconomy() && offlinePlayer.isOnline() && offlinePlayer.getPlayer() != null) {
@@ -155,10 +157,10 @@ public class PlaceholderApiHook extends PlaceholderExpansion {
                 return "Rp 0";
 
             case "balance_diamond":
-                return "0";
+                return getDiamondBalance(offlinePlayer, false);
 
             case "balance_diamond_formatted":
-                return "0";
+                return getDiamondBalance(offlinePlayer, true);
 
             case "rank_badge":
             case "badge":
@@ -259,6 +261,10 @@ public class PlaceholderApiHook extends PlaceholderExpansion {
                 }
                 return "0";
 
+            case "staff_online":
+            case "staffonline":
+                return String.valueOf(countStaffOnline());
+
             case "cosmetic_aura":
                 return data.getActiveAura() != null ? data.getActiveAura() : "None";
 
@@ -273,9 +279,37 @@ public class PlaceholderApiHook extends PlaceholderExpansion {
         }
     }
 
+    private long countStaffOnline() {
+        return Bukkit.getOnlinePlayers().stream()
+                .filter(p -> {
+                    if (p.isOp() || p.hasPermission("apexsions.staff")) return true;
+                    if (plugin.getLuckPermsHook() != null) {
+                        String r = plugin.getLuckPermsHook().getPlayerRankKey(p).toLowerCase();
+                        return r.equals("ancestor") || r.equals("warden") || r.equals("herald") || r.equals("owner") || r.equals("admin") || r.equals("mod");
+                    }
+                    return false;
+                })
+                .count();
+    }
+
     private long countKingdomOnline(String kingdomKey) {
         return Bukkit.getOnlinePlayers().stream()
                 .filter(p -> plugin.getApi().getPlayerRegionKey(p.getUniqueId()).equalsIgnoreCase(kingdomKey))
                 .count();
+    }
+
+    private String getDiamondBalance(OfflinePlayer player, boolean formatted) {
+        try {
+            Class<?> providerClass = Class.forName("com.apexsions.economy.api.ApexsionsEconomyProvider");
+            java.lang.reflect.Method isAvail = providerClass.getMethod("isAvailable");
+            if ((boolean) isAvail.invoke(null)) {
+                java.lang.reflect.Method get = providerClass.getMethod("get");
+                Object api = get.invoke(null);
+                java.lang.reflect.Method getBal = api.getClass().getMethod("getBalance", String.class, java.util.UUID.class);
+                double bal = (double) getBal.invoke(api, "diamond", player.getUniqueId());
+                return formatted ? String.format("%,.0f", bal) : String.format("%.0f", bal);
+            }
+        } catch (Throwable ignored) {}
+        return "0";
     }
 }
