@@ -78,6 +78,8 @@ Dokumentasi resmi yang merangkum arsitektur menyeluruh, interaksi antar-plugin, 
 | `/kingdom` | `/k`, `/region` | Membuka profil dan status kerajaan pemain | `apexsionscore.command.region` | `true` |
 | `/kingdom choose` | `/k select` | Membuka menu pemilihan 3 kerajaan | `apexsionscore.command.region` | `true` |
 | `/kingdom top` | `/k leaderboard`| Membuka Hall of Fame & Leaderboard GUI | `apexsionscore.command.level` | `true` |
+| `/kingdom setking <k> <p>` | - | Mengangkat pemain menjadi Raja kerajaan | `apexsionscore.admin` | `op` |
+| `/kingdom unsetking <k>` | `/kingdom removeking` | Mencabut gelar Raja dari kerajaan | `apexsionscore.admin` | `op` |
 | `/level` | `/lvl`, `/profile`, `/exp`, `/rewards` | Membuka GUI progress bar level (1-100) & hadiah | `apexsionscore.command.level` | `true` |
 | `/xpguide` | - | Panduan detail 13 sumber perolehan XP | `apexsionscore.command.level` | `true` |
 | `/titles` | `/tags`, `/title`, `/tag` | Membuka Title Vault GUI untuk memasang gelar & badge prestise | `apexsionscore.command.titles` | `true` |

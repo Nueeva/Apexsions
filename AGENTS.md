@@ -406,6 +406,18 @@ Create only when necessary
 
 Documentation must match the actual registered command and permission.
 
+### Command & GUI Synchronization Rule (MANDATORY)
+
+Whenever a command is **added, updated, modified, or removed**:
+1. **Audit Related GUIs**:
+   - Inspect all Master Admin GUIs (`MasterAdminGUI`, `PlayerInspectorGUI`, `PlayerManagerGUI`, and all module sub-GUIs).
+   - Inspect any user-facing GUIs that execute or represent that command/feature.
+2. **Synchronize Click Handlers**:
+   - Ensure GUI buttons execute the updated command syntax or underlying service directly.
+   - Remove or adapt obsolete command executions from GUIs.
+3. **Verify Tab Completion & Help Messages**:
+   - Ensure `onTabComplete` and command help messages reflect the exact current command signatures.
+
 ---
 
 # 15. Dependencies

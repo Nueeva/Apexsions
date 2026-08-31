@@ -1106,6 +1106,18 @@ apexsions.core.*
 
 Wildcard permission tidak boleh menjadi default untuk user biasa.
 
+## Command & GUI Synchronization Contract (Aturan Wajib)
+
+Setiap kali command **ditambahkan, diubah, atau dihapus**:
+1. **Audit GUI Administrasi & GUI Terkait**:
+   - Periksa seluruh Admin GUI (`MasterAdminGUI`, `PlayerInspectorGUI`, `PlayerManagerGUI`, serta 6 sub-GUI modul).
+   - Periksa GUI publik yang memicu perintah atau merepresentasikan aksi tersebut.
+2. **Sinkronisasi Action Button & Chat Session**:
+   - Pastikan tombol klik di GUI mengeksekusi sintaks command terbaru atau memanggil service layer secara langsung.
+   - Hapus atau sesuaikan tombol GUI jika command telah dihapus atau diganti.
+3. **Validasi Tab Completion & Dokumentasi**:
+   - Pastikan `onTabComplete`, menu bantuan (`/help`), dan dokumentasi internal selalu sinkron dengan registrasi command aktual.
+
 ---
 
 # 27. Security Requirements
