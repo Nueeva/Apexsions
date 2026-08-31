@@ -136,9 +136,21 @@ public class ApexsionsCoreAPIImpl implements ApexsionsCoreAPI {
         String levelTitle = plugin.getLevelManager().getLevelTitle(uuid);
         String activeTitle = data != null ? data.getActiveTitle() : null;
 
-        String rank = (player != null && plugin.getRankAnimationManager() != null)
-                ? plugin.getRankAnimationManager().getAnimatedRankPrefix(player).trim()
-                : ((player != null && plugin.getLuckPermsHook() != null) ? plugin.getLuckPermsHook().getPlayerRank(player) : "Wanderer");
+        String rankKey = (player != null && plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isAvailable())
+                ? plugin.getLuckPermsHook().getPlayerRankKey(player)
+                : (player != null && player.isOp() ? "ancestor" : "wanderer");
+
+        String rank = switch (rankKey.toLowerCase().trim()) {
+            case "ancestor", "owner" -> "<gradient:#8B0000:#FF0000><bold>[👑 ANCESTOR]</bold></gradient>";
+            case "warden", "admin", "headadmin" -> "<gradient:#1e3c72:#2a5298><bold>[🛡 WARDEN]</bold></gradient>";
+            case "herald", "mod", "moderator" -> "<gradient:#f857a6:#ff5858><bold>[📜 HERALD]</bold></gradient>";
+            case "sions" -> "<gradient:#00FFFF:#FFD700><bold>[✦ SIONS]</bold></gradient>";
+            case "emperor" -> "<gradient:#e52d27:#b31217><bold>[⚔ EMPEROR]</bold></gradient>";
+            case "sovereign" -> "<gradient:#f39c12:#f1c40f><bold>[⚜ SOVEREIGN]</bold></gradient>";
+            case "archon" -> "<gradient:#00c6ff:#0072ff><bold>[💎 ARCHON]</bold></gradient>";
+            case "ascendant" -> "<gradient:#11998e:#38ef7d><bold>[☘ ASCENDANT]</bold></gradient>";
+            default -> "<gray>[Wanderer]</gray>";
+        };
 
         String kingdomKey = "NONE";
         String kingdomDisplay = "Belum Memilih";

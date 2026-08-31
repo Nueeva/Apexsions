@@ -91,13 +91,7 @@ public class QuickMathGame implements ChatGame {
 
     @Override
     public Component getPromptComponent() {
-        return miniMessage.deserialize("""
-            <dark_gray>══════════════════════════════════════════</dark_gray>
-            <gradient:#f59e0b:#ef4444><bold>⚡ CHAT GAME — QUICK MATH ⚡</bold></gradient>
-            <gray>Solve the equation:</gray> <yellow><bold>%s</bold></yellow>
-            <gray>First player to type the correct answer wins!</gray>
-            <dark_gray>══════════════════════════════════════════</dark_gray>
-            """.formatted(expression));
+        return miniMessage.deserialize("<gradient:#f59e0b:#ef4444><bold>⚡ GAME</bold></gradient> <dark_gray>➔</dark_gray> <gray>Hitung cepat:</gray> <yellow><bold>%s</bold></yellow> <dark_gray>•</dark_gray> <gray>Ketik jawabanmu di chat!</gray>".formatted(expression));
     }
 
     @Override

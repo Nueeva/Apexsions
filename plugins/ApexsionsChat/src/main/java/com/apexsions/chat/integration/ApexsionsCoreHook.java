@@ -30,7 +30,7 @@ public class ApexsionsCoreHook {
     }
 
     public boolean isAvailable() {
-        return available;
+        return ApexsionsCoreProvider.isAvailable();
     }
 
     public int getPlayerLevel(UUID uuid) {
@@ -75,7 +75,9 @@ public class ApexsionsCoreHook {
         if (!isAvailable()) return;
         try {
             ApexsionsCoreProvider.get().addXp(uuid, amount, XpSource.CHAT_GAME_WIN);
-        } catch (Throwable ignored) {}
+        } catch (Throwable t) {
+            plugin.getLogger().warning("Failed to add XP to " + uuid + ": " + t.getMessage());
+        }
     }
 
     public com.apexsions.core.api.PlayerChatProfile getPlayerChatProfile(UUID uuid) {

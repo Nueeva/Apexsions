@@ -51,21 +51,24 @@ public class PlayerListener implements Listener {
             plugin.getLevelManager().reconcileLevel(data, player);
         });
         
-        // 3. Setup Animated Rank Nameplates and Scoreboards
-        if (plugin.getRankAnimationManager() != null) {
-            plugin.getRankAnimationManager().setupScoreboardForNewPlayer(player);
-            plugin.getRankAnimationManager().updatePlayerNameplate(player);
-        }
-
-        // 4. First-join guidance
+        // 3. First-join guidance
         if (!player.hasPlayedBefore()) {
             Bukkit.getScheduler().runTaskLater(plugin, () -> {
                 if (player.isOnline()) {
-                    player.sendMessage(miniMessage.deserialize("<gold><bold>════════════════════════════════════════════════</bold></gold>"));
-                    player.sendMessage(miniMessage.deserialize("<yellow><bold>Welcome to Apexsions,</bold> <white>" + player.getName() + "</white>!</yellow>"));
-                    player.sendMessage(miniMessage.deserialize("<gray>Discover the 3 great realms: <aqua>Zenithar</aqua>, <gold>Solterra</gold>, and <green>Sylvamoor</green>.</gray>"));
-                    player.sendMessage(miniMessage.deserialize("<gray>When ready, interact with a Guide NPC or click <gold><bold><click:run_command:'/kingdom choose'><hover:show_text:'<yellow>Click to open Kingdom Selection Menu</yellow>'>[CHOOSE KINGDOM]</click></bold></gold> to pledge allegiance!</gray>"));
-                    player.sendMessage(miniMessage.deserialize("<gold><bold>════════════════════════════════════════════════</bold></gold>"));
+                    net.kyori.adventure.title.Title.Times times = net.kyori.adventure.title.Title.Times.times(
+                            java.time.Duration.ofMillis(500),
+                            java.time.Duration.ofMillis(4000),
+                            java.time.Duration.ofMillis(1000)
+                    );
+                    net.kyori.adventure.title.Title welcomeTitle = net.kyori.adventure.title.Title.title(
+                            miniMessage.deserialize("<gradient:#f1c40f:#e67e22><bold>APEXSIONS KINGDOM</bold></gradient>"),
+                            miniMessage.deserialize("<yellow>Selamat Datang, <white>" + player.getName() + "</white>!</yellow>"),
+                            times
+                    );
+                    player.showTitle(welcomeTitle);
+
+                    player.sendMessage(miniMessage.deserialize("<gradient:#f1c40f:#e67e22><bold>KINGDOM</bold></gradient> <dark_gray>➔</dark_gray> <yellow>Pilih salah satu dari 3 kerajaan: <aqua>Zenithar</aqua>, <gold>Solterra</gold>, atau <green>Sylvamoor</green>.</yellow>"));
+                    player.sendMessage(miniMessage.deserialize("<gradient:#f1c40f:#e67e22><bold>KINGDOM</bold></gradient> <dark_gray>➔</dark_gray> <gray>Bicara dengan Guide NPC atau ketik <gold><bold><click:run_command:'/kingdom choose'><hover:show_text:'<yellow>Klik untuk membuka Menu Pemilihan Kerajaan</yellow>'>[PILIH KERAJAAN]</click></bold></gold> untuk bersumpah setia!</gray>"));
                 }
             }, 30L); // 1.5 seconds delay after initial spawn
         }
@@ -74,8 +77,5 @@ public class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.NORMAL)
     public void onQuit(PlayerQuitEvent event) {
         plugin.getPlayerDataService().flush(event.getPlayer().getUniqueId());
-        if (plugin.getRankAnimationManager() != null) {
-            plugin.getRankAnimationManager().updatePlayerNameplate(event.getPlayer());
-        }
     }
 }

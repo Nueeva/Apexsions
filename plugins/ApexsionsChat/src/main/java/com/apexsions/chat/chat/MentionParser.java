@@ -51,8 +51,17 @@ public class MentionParser {
                     notifiedPlayers.add(target.getUniqueId());
                     notifyPlayer(target, sender);
                 }
-                String highlightFmt = config.getString("mentions.player.highlight-format", "<color:#38bdf8><bold>@{player}</bold></color>")
-                        .replace("{player}", target.getName());
+
+                boolean useRankColor = config.getBoolean("mentions.player.use-rank-color", true);
+                String highlightFmt;
+                if (useRankColor && plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isAvailable()) {
+                    highlightFmt = plugin.getLuckPermsHook().getPlayerRankMentionFormat(target)
+                            .replace("{player}", target.getName());
+                } else {
+                    highlightFmt = config.getString("mentions.player.highlight-format", "<color:#38bdf8><bold>@{player}</bold></color>")
+                            .replace("{player}", target.getName());
+                }
+
                 Component highlighted = miniMessage.deserialize(highlightFmt);
                 if (!punctuation.isEmpty()) {
                     return highlighted.append(Component.text(punctuation));
@@ -65,7 +74,7 @@ public class MentionParser {
     }
 
     private void notifyPlayer(Player target, Player sender) {
-        Component actionBar = miniMessage.deserialize("<gold>🔔 You were mentioned by <yellow>" + sender.getName() + "</yellow> in chat!</gold>");
+        Component actionBar = miniMessage.deserialize("<gold>🔔 Kamu di-tag oleh <yellow>" + sender.getName() + "</yellow> di chat!</gold>");
         target.sendActionBar(actionBar);
 
         FileConfiguration config = plugin.getConfigManager().getMainConfig();

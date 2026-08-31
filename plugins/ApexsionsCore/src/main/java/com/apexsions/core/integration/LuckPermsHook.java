@@ -51,18 +51,60 @@ public class LuckPermsHook {
 
     public String getPlayerRankKey(Player player) {
         if (!isAvailable() || player == null) {
-            return "wanderer";
+            return player != null && player.isOp() ? "ancestor" : "wanderer";
         }
         try {
             User user = luckPerms.getUserManager().getUser(player.getUniqueId());
             if (user != null) {
+                String highestGroup = "wanderer";
+                int highestWeight = -1;
+
+                // 1. Check all inherited groups in user's nodes
+                for (net.luckperms.api.node.Node node : user.getNodes()) {
+                    if (node instanceof net.luckperms.api.node.types.InheritanceNode inh) {
+                        String grp = inh.getGroupName().toLowerCase().trim();
+                        int weight = getRankWeight(grp);
+                        if (weight > highestWeight) {
+                            highestWeight = weight;
+                            highestGroup = grp;
+                        }
+                    }
+                }
+
+                // 2. Check primary group as fallback
                 String primaryGroup = user.getPrimaryGroup();
                 if (primaryGroup != null && !primaryGroup.isEmpty()) {
-                    return primaryGroup.toLowerCase().trim();
+                    String pGrp = primaryGroup.toLowerCase().trim();
+                    int weight = getRankWeight(pGrp);
+                    if (weight > highestWeight) {
+                        highestWeight = weight;
+                        highestGroup = pGrp;
+                    }
                 }
+
+                if (highestGroup.equalsIgnoreCase("default")) {
+                    highestGroup = "wanderer";
+                }
+                return highestGroup;
             }
         } catch (Exception ignored) {}
-        return "wanderer";
+        return player.isOp() ? "ancestor" : "wanderer";
+    }
+
+    public int getRankWeight(String rankKey) {
+        if (rankKey == null) return 0;
+        return switch (rankKey.toLowerCase().trim()) {
+            case "ancestor", "owner" -> 100;
+            case "warden", "admin", "headadmin" -> 90;
+            case "herald", "mod", "moderator" -> 80;
+            case "sions" -> 70;
+            case "emperor" -> 60;
+            case "sovereign" -> 50;
+            case "archon" -> 40;
+            case "ascendant" -> 30;
+            case "wanderer" -> 10;
+            default -> 5;
+        };
     }
 
     public String getPlayerRank(Player player) {

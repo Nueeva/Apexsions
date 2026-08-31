@@ -27,7 +27,18 @@ public class VaultHook {
     }
 
     public boolean isAvailable() {
-        return available && economy != null;
+        if (economy == null && Bukkit.getPluginManager().isPluginEnabled("Vault")) {
+            RegisteredServiceProvider<Economy> rsp = Bukkit.getServicesManager().getRegistration(Economy.class);
+            if (rsp != null) {
+                this.economy = rsp.getProvider();
+                this.available = this.economy != null;
+            }
+        }
+        return economy != null;
+    }
+
+    public boolean hasEconomy() {
+        return isAvailable();
     }
 
     public double getBalance(Player player) {
@@ -38,7 +49,7 @@ public class VaultHook {
     }
 
     public void deposit(Player player, double amount) {
-        if (isAvailable() && player != null) {
+        if (isAvailable() && player != null && amount > 0) {
             economy.depositPlayer(player, amount);
         }
     }

@@ -54,8 +54,21 @@ public class ApexsionsEconomy extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new GuiClickListener(), this);
         getServer().getPluginManager().registerEvents(new com.apexsions.economy.listener.EconomyPlayerListener(this), this);
 
-        // 5. Register Public API
+        // 5. Register Public API & Vault Economy Service
         com.apexsions.economy.api.ApexsionsEconomyProvider.register(new com.apexsions.economy.api.ApexsionsEconomyAPIImpl(this));
+        if (getServer().getPluginManager().isPluginEnabled("Vault")) {
+            try {
+                getServer().getServicesManager().register(
+                        net.milkbowl.vault.economy.Economy.class,
+                        new com.apexsions.economy.integration.ApexsionsVaultEconomy(this),
+                        this,
+                        org.bukkit.plugin.ServicePriority.Highest
+                );
+                getLogger().info("Successfully registered ApexsionsEconomy as Vault Economy Service Provider.");
+            } catch (Exception e) {
+                getLogger().warning("Failed to register Vault Economy provider: " + e.getMessage());
+            }
+        }
 
         // 6. Register Commands
         registerCommands();
@@ -71,6 +84,7 @@ public class ApexsionsEconomy extends JavaPlugin {
     @Override
     public void onDisable() {
         com.apexsions.economy.api.ApexsionsEconomyProvider.unregister();
+        getServer().getServicesManager().unregisterAll(this);
         if (tradeManager != null) {
             tradeManager.cancelAllTradesOnDisable();
         }

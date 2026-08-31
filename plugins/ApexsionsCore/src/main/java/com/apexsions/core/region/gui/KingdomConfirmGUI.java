@@ -7,6 +7,8 @@ import com.apexsions.core.region.Region;
 import com.apexsions.core.region.gui.holder.KingdomConfirmHolder;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.title.Title;
+import java.time.Duration;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -182,13 +184,22 @@ public class KingdomConfirmGUI implements Listener {
 
             player.closeInventory();
             player.playSound(player.getLocation(), Sound.UI_TOAST_CHALLENGE_COMPLETE, 1.0f, 1.0f);
-            player.sendMessage(mm.deserialize("<gold><bold>════════════════════════════════════════════════</bold></gold>"));
-            player.sendMessage(mm.deserialize("<green><bold>SUMPAH SETIA RESMI!</bold> Kamu sekarang adalah warga resmi <yellow>" + region.getDisplayName() + "</yellow><green>!</green></green>"));
-            player.sendMessage(mm.deserialize("<gray>Petualanganmu dimulai. Melakukan teleportasi ke ibukota...</gray>"));
-            player.sendMessage(mm.deserialize("<gold><bold>════════════════════════════════════════════════</bold></gold>"));
 
-            // Broadcast to server
-            Bukkit.broadcast(mm.deserialize("<gradient:#f1c40f:#e67e22><bold>👑 SUMPAH SETIA:</bold></gradient> <white>" + player.getName() + "</white> <gray>telah resmi bersumpah setia menjadi warga </gray>" + region.getDisplayName() + "<gray>!</gray>"));
+            // 1. Show spectacular on-screen Title & Subtitle
+            Title.Times times = Title.Times.times(Duration.ofMillis(400), Duration.ofMillis(3500), Duration.ofMillis(1000));
+            Title title = Title.title(
+                    mm.deserialize("<gradient:#f1c40f:#e67e22><bold>⚔ " + region.getKey().toUpperCase() + " ⚔</bold></gradient>"),
+                    mm.deserialize("<yellow>Selamat Datang di Kerajaan <white>" + region.getDisplayName() + "</white>!</yellow>"),
+                    times
+            );
+            player.showTitle(title);
+
+            // 2. Clean, modern chat confirmation
+            player.sendMessage(mm.deserialize("<gradient:#f1c40f:#e67e22><bold>KINGDOM</bold></gradient> <dark_gray>➔</dark_gray> <green>Sumpah setia resmi diterima! Selamat datang di </green>" + region.getDisplayName() + "<green>!</green>"));
+            player.sendMessage(mm.deserialize("<gradient:#f1c40f:#e67e22><bold>KINGDOM</bold></gradient> <dark_gray>➔</dark_gray> <gray>Petualanganmu dimulai. Teleportasi ke ibukota...</gray>"));
+
+            // 3. Broadcast to server
+            Bukkit.broadcast(mm.deserialize("<gradient:#f1c40f:#e67e22><bold>KINGDOM</bold></gradient> <dark_gray>➔</dark_gray> <white>" + player.getName() + "</white> <gray>resmi bersumpah setia kepada </gray>" + region.getDisplayName() + "<gray>!</gray>"));
 
             // Teleport player to kingdom spawn
             plugin.getRegionTeleportService().teleport(player, region);

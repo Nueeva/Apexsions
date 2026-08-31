@@ -10,26 +10,26 @@ channels:
     name: "Global"
     prefix: "<gray>[<gradient:#38bdf8:#0284c7><bold>G</bold></gradient>]</gray>"
     permission: "apexsionschat.channel.global"
-    format: "{channel_prefix} <gray>[<yellow>Lv. {level} <gold>{title}</gold></yellow>]</gray> <gray>[{rank}]</gray> {kingdom} <white>{player}</white> <dark_gray>»</dark_gray> <white>{message}</white>"
+    format: "{channel_prefix} <gray>[<yellow>Lv. {level} <gold>{title}</gold></yellow>]</gray> {rank} {kingdom} <white>{player}</white> <dark_gray>➔</dark_gray> <white>{message}</white>"
     kingdom-filtering: false
 
   kingdom:
     name: "Kingdom"
     prefix: "<gray>[<gradient:#f59e0b:#d97706><bold>Kingdom</bold></gradient>]</gray>"
     permission: "apexsionschat.channel.kingdom"
-    format: "{channel_prefix} <gray>[<yellow>Lv. {level}</yellow>]</gray> <gray>[{rank}]</gray> {kingdom} <white>{player}</white> <dark_gray>»</dark_gray> <yellow>{message}</yellow>"
+    format: "{channel_prefix} <gray>[<yellow>Lv. {level}</yellow>]</gray> {rank} {kingdom} <white>{player}</white> <dark_gray>➔</dark_gray> <yellow>{message}</yellow>"
     kingdom-filtering: true
 
   staff:
     name: "Staff"
     prefix: "<gray>[<gradient:#ef4444:#dc2626><bold>STAFF</bold></gradient>]</gray>"
     permission: "apexsionschat.channel.staff"
-    format: "{channel_prefix} <gray>[{rank}]</gray> <red>{player}</red> <dark_gray>»</dark_gray> <color:#fca5a5>{message}</color>"
+    format: "{channel_prefix} {rank} <red>{player}</red> <dark_gray>➔</dark_gray> <color:#fca5a5>{message}</color>"
     kingdom-filtering: false
 
 # Kingdom chat tags matching ApexsionsCore realms
 kingdom-tags:
   none: "<gray>[Unpledged]</gray>"
-  ZENITHAR: "<yellow>[<gradient:#ffe900:#f39c12><bold>Zenithar</bold></gradient>]</yellow>"
-  SOLTERRA: "<red>[<gradient:#ff4d4d:#c0392b><bold>Solterra</bold></gradient>]</red>"
-  SYLVAMOOR: "<aqua>[<gradient:#87ceeb:#3498db><bold>Sylvamoor</bold></gradient>]</aqua>"
+  ZENITHAR: "<gradient:#ffe900:#f39c12><bold>[✦ ZENITHAR]</bold></gradient>"
+  SOLTERRA: "<gradient:#ff4d4d:#c0392b><bold>[⚔ SOLTERRA]</bold></gradient>"
+  SYLVAMOOR: "<gradient:#11998e:#38ef7d><bold>[☘ SYLVAMOOR]</bold></gradient>"

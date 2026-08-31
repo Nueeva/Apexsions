@@ -142,13 +142,23 @@ public class KingdomCommand implements CommandExecutor, TabCompleter {
         String targetName = args[2];
         plugin.getConfigManager().setKingdomKing(kingdomInput, targetName);
 
-        sender.sendMessage(miniMessage.deserialize("<green>Berhasil mengangkat <yellow><bold>" + targetName + "</bold></yellow> sebagai Raja resmi <gold>" + regionOpt.get().getDisplayName() + "</gold>!</green>"));
+        Player targetPlayer = org.bukkit.Bukkit.getPlayer(targetName);
+        if (targetPlayer != null) {
+            plugin.getPlayerDataService().updateRegion(targetPlayer.getUniqueId(), regionOpt.get().getId());
+            targetPlayer.showTitle(net.kyori.adventure.title.Title.title(
+                    miniMessage.deserialize("<gradient:#f1c40f:#e67e22><bold>👑 PENOBATAN RAJA 👑</bold></gradient>"),
+                    miniMessage.deserialize("<yellow>Kamu resmi menjadi Raja Tertinggi </yellow>" + regionOpt.get().getDisplayName()),
+                    net.kyori.adventure.title.Title.Times.times(java.time.Duration.ofMillis(300), java.time.Duration.ofMillis(3000), java.time.Duration.ofMillis(800))
+            ));
+        }
 
-        // Proclamation
-        org.bukkit.Bukkit.broadcast(miniMessage.deserialize("<dark_gray>════════════════════════════════════════════════</dark_gray>\n" +
-                "<gradient:#f1c40f:#e67e22><bold>👑 PROKLAMASI PENOBATAN RAJA 👑</bold></gradient>\n" +
-                "<white><bold>" + targetName + "</bold></white> <gray>telah resmi dinobatkan sebagai Raja Tertinggi </gray>" + regionOpt.get().getDisplayName() + "<gray>!</gray>\n" +
-                "<dark_gray>════════════════════════════════════════════════</dark_gray>"));
+        sender.sendMessage(miniMessage.deserialize("<green>✓ Berhasil mengangkat <yellow><bold>" + targetName + "</bold></yellow> sebagai Raja resmi <gold>" + regionOpt.get().getDisplayName() + "</gold>!</green>"));
+
+        // Clean Modern Proclamation
+        org.bukkit.Bukkit.broadcast(miniMessage.deserialize(
+                "<gradient:#f1c40f:#e67e22><bold>👑 PENOBATAN RAJA</bold></gradient> <dark_gray>➔</dark_gray> <white><bold>"
+                + targetName + "</bold></white> <gray>resmi dinobatkan sebagai Raja Tertinggi </gray>" + regionOpt.get().getDisplayName() + "<gray>!</gray>"
+        ));
 
         for (Player p : org.bukkit.Bukkit.getOnlinePlayers()) {
             p.playSound(p.getLocation(), org.bukkit.Sound.UI_TOAST_CHALLENGE_COMPLETE, 1.0f, 1.0f);

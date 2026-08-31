@@ -220,11 +220,13 @@ public class PlayerInspectorGUI implements InventoryHolder {
                         try {
                             double newBal = Double.parseDouble(input.replaceAll("[^0-9.-]", ""));
                             if (newBal < 0) newBal = 0;
-                            double current = plugin.getVaultHook().getBalance(target);
-                            if (newBal >= current) {
-                                plugin.getVaultHook().deposit(target, newBal - current);
-                            } else {
-                                plugin.getVaultHook().withdraw(target, current - newBal);
+                            if (plugin.getVaultHook().hasEconomy()) {
+                                double current = plugin.getVaultHook().getBalance(target);
+                                if (newBal >= current) {
+                                    plugin.getVaultHook().deposit(target, newBal - current);
+                                } else {
+                                    plugin.getVaultHook().withdraw(target, current - newBal);
+                                }
                             }
                             admin.sendMessage(mm.deserialize("<green>✓ Saldo Rupiah " + target.getName() + " berhasil diubah menjadi <yellow>Rp " + String.format("%,.0f", newBal) + "</yellow>!</green>"));
                             admin.playSound(admin.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 0.8f, 1.4f);
@@ -244,7 +246,9 @@ public class PlayerInspectorGUI implements InventoryHolder {
                         try {
                             int dia = Integer.parseInt(input.replaceAll("[^0-9-]", ""));
                             if (dia > 0) {
-                                admin.sendMessage(mm.deserialize("<green>✓ Berhasil memberikan " + dia + " Diamond ke " + target.getName() + "!</green>"));
+                                target.getInventory().addItem(new ItemStack(Material.DIAMOND, dia));
+                                admin.sendMessage(mm.deserialize("<green>✓ Berhasil memberikan <aqua>" + dia + " Diamond</aqua> ke " + target.getName() + "!</green>"));
+                                target.sendMessage(mm.deserialize("<green>✓ Kamu menerima <aqua>" + dia + " Diamond</aqua> dari Administrator!</green>"));
                             }
                             admin.playSound(admin.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 0.8f, 1.4f);
                         } catch (Exception e) {
@@ -386,7 +390,15 @@ public class PlayerInspectorGUI implements InventoryHolder {
             admin.sendMessage(mm.deserialize("<yellow>✓ Status Raja " + pKingdom + " untuk " + target.getName() + " telah dicabut.</yellow>"));
         } else {
             plugin.getConfigManager().setKingdomKing(pKingdom, target.getName());
-            Bukkit.broadcast(mm.deserialize("<gradient:#f1c40f:#e67e22><bold>👑 PENOBATAN RAJA:</bold> <white>" + target.getName() + "</white> resmi dinobatkan sebagai Raja Kerajaan " + pKingdom + "!</gradient>"));
+            Bukkit.broadcast(mm.deserialize(
+                    "<gradient:#f1c40f:#e67e22><bold>👑 PENOBATAN RAJA</bold></gradient> <dark_gray>➔</dark_gray> <white><bold>"
+                    + target.getName() + "</bold></white> <gray>resmi dinobatkan sebagai Raja Kerajaan </gray><gold>" + pKingdom + "</gold><gray>!</gray>"
+            ));
+            target.showTitle(net.kyori.adventure.title.Title.title(
+                    mm.deserialize("<gradient:#f1c40f:#e67e22><bold>👑 PENOBATAN RAJA 👑</bold></gradient>"),
+                    mm.deserialize("<yellow>Kamu resmi menjadi Raja Kerajaan <gold>" + pKingdom + "</gold>!</yellow>"),
+                    net.kyori.adventure.title.Title.Times.times(java.time.Duration.ofMillis(300), java.time.Duration.ofMillis(3000), java.time.Duration.ofMillis(800))
+            ));
             target.playSound(target.getLocation(), Sound.UI_TOAST_CHALLENGE_COMPLETE, 1.0f, 1.0f);
         }
         buildGUI();

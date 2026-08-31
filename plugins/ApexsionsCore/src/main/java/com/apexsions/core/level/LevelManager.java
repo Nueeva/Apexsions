@@ -89,7 +89,12 @@ public class LevelManager {
         data.setXp(newXp);
 
         // Reconcile and handle level-ups
-        reconcileLevel(data, player);
+        boolean leveledUp = reconcileLevel(data, player);
+        if (!leveledUp && player != null && player.isOnline()) {
+            long reqXp = formula.getRequiredXpForNextLevel(data.getLevel());
+            player.sendActionBar(miniMessage.deserialize("<gradient:#38ef7d:#11998e><bold>+" + amount + " XP</bold></gradient> <dark_gray>•</dark_gray> <gray>Lv. " + data.getLevel() + " (" + data.getXp() + "/" + reqXp + " XP)</gray>"));
+            player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 0.5f, 1.6f);
+        }
     }
 
     /**

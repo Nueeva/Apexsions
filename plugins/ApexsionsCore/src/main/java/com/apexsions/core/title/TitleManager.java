@@ -64,7 +64,6 @@ public class TitleManager {
         PlayerData data = plugin.getPlayerDataService().getCached(player.getUniqueId()).orElse(null);
         if (data != null) {
             data.setActiveTitle(title != null ? title.getDisplayName() : null);
-            plugin.getRankAnimationManager().updatePlayerNameplate(player);
         }
     }
 
@@ -72,7 +71,6 @@ public class TitleManager {
         PlayerData data = plugin.getPlayerDataService().getCached(player.getUniqueId()).orElse(null);
         if (data != null) {
             data.setActiveTitle(null);
-            plugin.getRankAnimationManager().updatePlayerNameplate(player);
         }
     }
 }

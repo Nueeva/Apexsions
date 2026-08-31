@@ -158,12 +158,9 @@ public class RankAnimationManager {
 
     public void start() {
         stop();
-        // Update nameplates every 4 ticks (200ms) with smart delta frame caching
+        // Advance animation frame counter every 4 ticks (200ms) for PlaceholderAPI expansion
         animationTask = Bukkit.getScheduler().runTaskTimer(plugin, () -> {
             currentFrame++;
-            for (Player player : Bukkit.getOnlinePlayers()) {
-                updatePlayerNameplate(player);
-            }
         }, 10L, 4L);
     }
 
@@ -172,7 +169,6 @@ public class RankAnimationManager {
             animationTask.cancel();
             animationTask = null;
         }
-        lastPrefixCache.clear();
     }
 
     /**
@@ -235,99 +231,9 @@ public class RankAnimationManager {
                 yield "<gradient:" + c[0] + ":" + c[1] + ":" + c[2] + "><bold>[☘ ASCENDANT]</bold></gradient> ";
             }
             default -> {
-                // If in a kingdom, show animated kingdom tag
-                if (!kingdomKey.equalsIgnoreCase("NONE")) {
-                    String[] c = switch (kingdomKey.toUpperCase()) {
-                        case "ZENITHAR" -> SOVEREIGN_FRAMES.get(currentFrame % SOVEREIGN_FRAMES.size());
-                        case "SOLTERRA" -> EMPEROR_FRAMES.get(currentFrame % EMPEROR_FRAMES.size());
-                        case "SYLVAMOOR" -> ASCENDANT_FRAMES.get(currentFrame % ASCENDANT_FRAMES.size());
-                        default -> WANDERER_FRAMES.get(currentFrame % WANDERER_FRAMES.size());
-                    };
-                    yield "<gradient:" + c[0] + ":" + c[1] + ":" + c[2] + "><bold>[⚜ " + kingdomKey.toUpperCase() + "]</bold></gradient> ";
-                }
                 String[] c = WANDERER_FRAMES.get(currentFrame % WANDERER_FRAMES.size());
                 yield "<gradient:" + c[0] + ":" + c[1] + ":" + c[2] + "><bold>[Wanderer]</bold></gradient> ";
             }
         };
-    }
-
-    /**
-     * Updates the player's nametag scoreboard team, Tablist, and display name using Delta Caching.
-     */
-    public void updatePlayerNameplate(Player player) {
-        if (!player.isOnline()) {
-            lastPrefixCache.remove(player.getUniqueId());
-            return;
-        }
-
-        String prefixMm = getAnimatedRankPrefix(player);
-        PlayerData data = plugin.getPlayerDataService().getCached(player.getUniqueId()).orElse(null);
-        if (data != null && data.getActiveTitle() != null && !data.getActiveTitle().trim().isEmpty()) {
-            prefixMm = prefixMm + "<yellow>[" + data.getActiveTitle().trim() + "]</yellow> ";
-        }
-
-        // Smart Delta Check: If visual prefix hasn't changed, skip update
-        String cached = lastPrefixCache.get(player.getUniqueId());
-        if (prefixMm.equals(cached)) {
-            return;
-        }
-        lastPrefixCache.put(player.getUniqueId(), prefixMm);
-
-        Component prefixComp = mm.deserialize(prefixMm);
-        Component fullTabName = prefixComp.append(Component.text(player.getName()));
-
-        // 1. Update Tablist Name (Live animated in TAB list)
-        player.playerListName(fullTabName);
-
-        // 2. Update Display Name
-        player.displayName(fullTabName);
-
-        // 3. Update Scoreboard Team for Nameplate above head across all active scoreboards
-        String teamName = "apx_" + player.getName();
-        if (teamName.length() > 16) {
-            teamName = teamName.substring(0, 16);
-        }
-
-        // Synchronize on Main Server Scoreboard
-        Scoreboard mainBoard = Bukkit.getScoreboardManager().getMainScoreboard();
-        applyTeam(mainBoard, teamName, player.getName(), prefixComp);
-
-        // Synchronize on all active viewers' Scoreboards
-        for (Player viewer : Bukkit.getOnlinePlayers()) {
-            Scoreboard viewerBoard = viewer.getScoreboard();
-            if (viewerBoard != mainBoard) {
-                applyTeam(viewerBoard, teamName, player.getName(), prefixComp);
-            }
-        }
-    }
-
-    /**
-     * Registers all current player teams on a newly joined player's scoreboard.
-     */
-    public void setupScoreboardForNewPlayer(Player newPlayer) {
-        Scoreboard board = newPlayer.getScoreboard();
-        for (Player online : Bukkit.getOnlinePlayers()) {
-            String prefixMm = lastPrefixCache.getOrDefault(online.getUniqueId(), getAnimatedRankPrefix(online));
-            Component prefixComp = mm.deserialize(prefixMm);
-            String teamName = "apx_" + online.getName();
-            if (teamName.length() > 16) {
-                teamName = teamName.substring(0, 16);
-            }
-            applyTeam(board, teamName, online.getName(), prefixComp);
-        }
-    }
-
-    private void applyTeam(Scoreboard board, String teamName, String entryName, Component prefix) {
-        if (board == null) return;
-        try {
-            Team team = board.getTeam(teamName);
-            if (team == null) {
-                team = board.registerNewTeam(teamName);
-            }
-            if (!team.hasEntry(entryName)) {
-                team.addEntry(entryName);
-            }
-            team.prefix(prefix);
-        } catch (Exception ignored) {}
     }
 }

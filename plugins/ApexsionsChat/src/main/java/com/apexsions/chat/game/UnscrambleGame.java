@@ -44,13 +44,7 @@ public class UnscrambleGame implements ChatGame {
 
     @Override
     public Component getPromptComponent() {
-        return miniMessage.deserialize("""
-            <dark_gray>══════════════════════════════════════════</dark_gray>
-            <gradient:#06b6d4:#3b82f6><bold>⚡ CHAT GAME — UNSCRAMBLE ⚡</bold></gradient>
-            <gray>Unscramble the word:</gray> <yellow><bold>%s</bold></yellow>
-            <gray>First player to type the correct answer wins!</gray>
-            <dark_gray>══════════════════════════════════════════</dark_gray>
-            """.formatted(scrambledWord));
+        return miniMessage.deserialize("<gradient:#06b6d4:#3b82f6><bold>⚡ GAME</bold></gradient> <dark_gray>➔</dark_gray> <gray>Susun kata acak:</gray> <yellow><bold>%s</bold></yellow> <dark_gray>•</dark_gray> <gray>Ketik jawabanmu di chat!</gray>".formatted(scrambledWord));
     }
 
     @Override

@@ -128,11 +128,9 @@ public class ChatGameManager {
 
                 // Broadcast win
                 Bukkit.broadcast(miniMessage.deserialize(
-                        "<dark_gray>══════════════════════════════════════════</dark_gray>\n" +
-                        "<gradient:#22c55e:#16a34a><bold>🎉 CHAT GAME WINNER! 🎉</bold></gradient>\n" +
-                        "<white>" + player.getName() + "</white> <gray>answered correctly in</gray> <yellow>" + timeFormatted + "s</yellow><gray>!</gray>\n" +
-                        "<gray>Answer:</gray> <yellow><bold>" + game.getAnswer() + "</bold></yellow>\n" +
-                        "<dark_gray>══════════════════════════════════════════</dark_gray>"
+                        "<gradient:#22c55e:#16a34a><bold>🎉 GAME</bold></gradient> <dark_gray>➔</dark_gray> <white><bold>"
+                        + player.getName() + "</bold></white> <gray>menjawab benar dalam</gray> <yellow>"
+                        + timeFormatted + " detik</yellow><gray>! Jawaban: </gray><yellow><bold>" + game.getAnswer() + "</bold></yellow>"
                 ));
 
                 // Sound
@@ -155,24 +153,28 @@ public class ChatGameManager {
         FileConfiguration config = plugin.getConfigManager().getGamesConfig();
 
         // 1. ApexsionsCore XP Reward
-        if (config.getBoolean("games.rewards.xp.enabled", true)) {
-            long xp = config.getLong("games.rewards.xp.amount", 150);
+        long xp = config.getLong("games.rewards.xp.amount", 150);
+        if (config.getBoolean("games.rewards.xp.enabled", true) && xp > 0) {
             plugin.getApexsionsCoreHook().addXp(player.getUniqueId(), xp);
-            player.sendMessage(miniMessage.deserialize("<green>+<yellow>" + xp + " XP</yellow> rewarded for winning the chat game!</green>"));
+            player.sendMessage(miniMessage.deserialize("<gradient:#ffeaa7:#55efc4><bold>🎁 HADIAH CHAT GAME:</bold></gradient> <green>Kamu memenangkan <yellow>+" + xp + " XP</yellow>!</green>"));
         }
 
         // 2. Vault Economy Reward
-        if (config.getBoolean("games.rewards.vault-money.enabled", false)) {
-            double money = config.getDouble("games.rewards.vault-money.amount", 500);
-            plugin.getVaultHook().deposit(player, money);
-            player.sendMessage(miniMessage.deserialize("<green>+$" + money + " added to your account!</green>"));
+        double money = config.getDouble("games.rewards.vault-money.amount", 2500);
+        if (config.getBoolean("games.rewards.vault-money.enabled", true) && money > 0) {
+            if (plugin.getVaultHook() != null && plugin.getVaultHook().hasEconomy()) {
+                plugin.getVaultHook().deposit(player, money);
+                player.sendMessage(miniMessage.deserialize("<green>✓ <yellow>+Rp " + String.format("%,.0f", money) + "</yellow> berhasil ditambahkan ke saldo Rupiah!</green>"));
+            }
         }
 
         // 3. Command Rewards
         List<String> commands = config.getStringList("games.rewards.commands");
         for (String cmd : commands) {
-            String executable = cmd.replace("{player}", player.getName());
-            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), executable);
+            if (cmd != null && !cmd.isBlank()) {
+                String executable = cmd.replace("{player}", player.getName());
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), executable);
+            }
         }
     }
 
