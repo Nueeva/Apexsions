@@ -36,6 +36,9 @@ public class TitleManager {
 
         // Prestige & Special Titles
         registerTitle(new TitleItem("sultan", "<gradient:#2ecc71:#f1c40f><bold>[💰 SULTAN KERAJAAN]</bold></gradient>", "Gelar eksklusif bagi konglomerat dan donatur terkemuka.", new PermissionCondition("apexsions.title.sultan", "Rank Donatur / Sultan")));
+        registerTitle(new TitleItem("raja_zenithar", "<gradient:#ffd700:#f39c12><bold>👑 Raja Zenithar</bold></gradient>", "Gelar suci bagi Penguasa Tertinggi Kerajaan Emas Zenithar.", new MonarchCondition("ZENITHAR")));
+        registerTitle(new TitleItem("raja_solterra", "<gradient:#ff4757:#c0392b><bold>👑 Raja Solterra</bold></gradient>", "Gelar suci bagi Penguasa Tertinggi Kerajaan Api Solterra.", new MonarchCondition("SOLTERRA")));
+        registerTitle(new TitleItem("raja_sylvamoor", "<gradient:#2ed573:#1e90ff><bold>👑 Raja Sylvamoor</bold></gradient>", "Gelar suci bagi Penguasa Tertinggi Kerajaan Rimba Sylvamoor.", new MonarchCondition("SYLVAMOOR")));
         registerTitle(new TitleItem("monarch", "<gradient:#f1c40f:#e74c3c><bold>[👑 SANG MAHARATU/RAJA]</bold></gradient>", "Gelar sakral pemegang tahta tertinggi kerajaan.", new MonarchCondition()));
     }
 

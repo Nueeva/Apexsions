@@ -7,21 +7,39 @@ import org.bukkit.entity.Player;
 
 public class MonarchCondition implements UnlockCondition {
 
+    private final String requiredKingdom;
+
+    public MonarchCondition() {
+        this(null);
+    }
+
+    public MonarchCondition(String requiredKingdom) {
+        this.requiredKingdom = requiredKingdom;
+    }
+
     @Override
     public boolean isMet(Player player, PlayerData data, ApexsionsCorePlugin plugin) {
-        if (player.isOp()) return true;
-        if (data == null || data.getRegionId() == null) return false;
+        if (player == null) return false;
 
-        String kingdomKey = plugin.getRegionManager().getRegion(data.getRegionId())
-                .map(Region::getKey)
-                .orElse("NONE");
+        if (requiredKingdom != null) {
+            String kingName = plugin.getConfigManager().getKingdomKing(requiredKingdom);
+            return kingName != null && player.getName().equalsIgnoreCase(kingName);
+        }
 
-        String kingName = plugin.getConfigManager().getKingdomKing(kingdomKey);
-        return kingName != null && player.getName().equalsIgnoreCase(kingName);
+        for (String k : new String[]{"ZENITHAR", "SOLTERRA", "SYLVAMOOR"}) {
+            String kingName = plugin.getConfigManager().getKingdomKing(k);
+            if (kingName != null && player.getName().equalsIgnoreCase(kingName)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
     public String getDescription() {
+        if (requiredKingdom != null) {
+            return "<gray>Syarat Khusus:</gray> <gold><bold>Raja / Ratu " + requiredKingdom + "</bold></gold>";
+        }
         return "<gray>Syarat Khusus:</gray> <gold><bold>Raja / Ratu Penguasa Kerajaan</bold></gold>";
     }
 }

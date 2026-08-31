@@ -387,9 +387,14 @@ public class PlayerInspectorGUI implements InventoryHolder {
 
         if (isCurrentKing) {
             plugin.getConfigManager().setKingdomKing(pKingdom, "Belum Ditunjuk");
+            plugin.getTitleManager().unequipTitle(target);
             admin.sendMessage(mm.deserialize("<yellow>✓ Status Raja " + pKingdom + " untuk " + target.getName() + " telah dicabut.</yellow>"));
         } else {
             plugin.getConfigManager().setKingdomKing(pKingdom, target.getName());
+            String titleId = "raja_" + pKingdom.toLowerCase();
+            plugin.getTitleManager().getTitle(titleId).ifPresent(t -> {
+                plugin.getTitleManager().equipTitle(target, t);
+            });
             Bukkit.broadcast(mm.deserialize(
                     "<gradient:#f1c40f:#e67e22><bold>👑 PENOBATAN RAJA</bold></gradient> <dark_gray>➔</dark_gray> <white><bold>"
                     + target.getName() + "</bold></white> <gray>resmi dinobatkan sebagai Raja Kerajaan </gray><gold>" + pKingdom + "</gold><gray>!</gray>"

@@ -153,6 +153,7 @@ public class KingdomCommand implements CommandExecutor, TabCompleter {
         if (!previousKing.isEmpty() && !previousKing.equalsIgnoreCase("Belum Ditunjuk")) {
             Player prevPlayer = org.bukkit.Bukkit.getPlayer(previousKing);
             if (prevPlayer != null && prevPlayer.isOnline()) {
+                plugin.getTitleManager().unequipTitle(prevPlayer);
                 prevPlayer.sendMessage(miniMessage.deserialize("<yellow>⚠️ Gelar Raja kerajaanmu telah dicabut oleh administrator.</yellow>"));
             }
         }
@@ -182,6 +183,13 @@ public class KingdomCommand implements CommandExecutor, TabCompleter {
         Player targetPlayer = org.bukkit.Bukkit.getPlayer(targetName);
         if (targetPlayer != null) {
             plugin.getPlayerDataService().updateRegion(targetPlayer.getUniqueId(), regionOpt.get().getId());
+            
+            // Auto-equip Kingdom Monarch Title
+            String titleId = "raja_" + kingdomInput.toLowerCase();
+            plugin.getTitleManager().getTitle(titleId).ifPresent(t -> {
+                plugin.getTitleManager().equipTitle(targetPlayer, t);
+            });
+
             targetPlayer.showTitle(net.kyori.adventure.title.Title.title(
                     miniMessage.deserialize("<gradient:#f1c40f:#e67e22><bold>👑 PENOBATAN RAJA 👑</bold></gradient>"),
                     miniMessage.deserialize("<yellow>Kamu resmi menjadi Raja Tertinggi </yellow>" + regionOpt.get().getDisplayName()),
