@@ -71,12 +71,26 @@ public class ChatListener implements Listener {
         event.renderer((source, sourceDisplayName, message, viewer) -> formattedComponent);
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         UUID uuid = player.getUniqueId();
 
-        // Check unread offline mail asynchronously
+        // 1. Luxury Join Message with MiniMessage
+        if (plugin.getConfigManager().getMainConfig().getBoolean("join-quit-messages.enabled", true)) {
+            String rank = "<gray>[Wanderer]</gray>";
+            if (plugin.getApexsionsCoreHook() != null && plugin.getApexsionsCoreHook().isAvailable()) {
+                var prof = plugin.getApexsionsCoreHook().getPlayerChatProfile(uuid);
+                if (prof != null) rank = prof.rank();
+            } else if (plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isAvailable()) {
+                rank = plugin.getLuckPermsHook().getPlayerRank(player);
+            }
+            event.joinMessage(miniMessage.deserialize(
+                    "<dark_gray>[</dark_gray><green><bold>+</bold></green><dark_gray>]</dark_gray> " + rank + " <white><bold>" + player.getName() + "</bold></white> <gray>bergabung ke server</gray>"
+            ));
+        }
+
+        // 2. Check unread offline mail asynchronously
         plugin.getMailRepository().countUnreadMailAsync(uuid).thenAccept(unreadCount -> {
             if (unreadCount > 0 && player.isOnline()) {
                 Bukkit.getScheduler().runTaskLater(plugin, () -> {
@@ -91,5 +105,24 @@ public class ChatListener implements Listener {
                 }, 40L); // 2 seconds after join
             }
         });
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onPlayerQuit(org.bukkit.event.player.PlayerQuitEvent event) {
+        Player player = event.getPlayer();
+        UUID uuid = player.getUniqueId();
+
+        if (plugin.getConfigManager().getMainConfig().getBoolean("join-quit-messages.enabled", true)) {
+            String rank = "<gray>[Wanderer]</gray>";
+            if (plugin.getApexsionsCoreHook() != null && plugin.getApexsionsCoreHook().isAvailable()) {
+                var prof = plugin.getApexsionsCoreHook().getPlayerChatProfile(uuid);
+                if (prof != null) rank = prof.rank();
+            } else if (plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isAvailable()) {
+                rank = plugin.getLuckPermsHook().getPlayerRank(player);
+            }
+            event.quitMessage(miniMessage.deserialize(
+                    "<dark_gray>[</dark_gray><red><bold>-</bold></red><dark_gray>]</dark_gray> " + rank + " <white><bold>" + player.getName() + "</bold></white> <gray>meninggalkan server</gray>"
+            ));
+        }
     }
 }

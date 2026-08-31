@@ -53,3 +53,8 @@ item-showcase:
     - "[hand]"
   format: "<gray>[</gray><gold>{item_name}</gold> <yellow>x{amount}</yellow><gray>]</gray>"
   hover-enabled: true
+
+# Luxury Join and Quit server broadcast messages
+join-quit-messages:
+  enabled: true
+
