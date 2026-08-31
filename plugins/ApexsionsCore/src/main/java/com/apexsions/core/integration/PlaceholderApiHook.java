@@ -139,6 +139,16 @@ public class PlaceholderApiHook extends PlaceholderExpansion {
                 return "<gradient:#dfe6e9:#74b9ff><bold>[Wanderer]</bold></gradient> ";
 
             case "active_title":
+                if (data.getRegionId() != null) {
+                    Optional<Region> regOpt = plugin.getRegionManager().getRegion(data.getRegionId());
+                    if (regOpt.isPresent()) {
+                        String kKey = regOpt.get().getKey();
+                        String kingName = plugin.getConfigManager().getKingdomKing(kKey);
+                        if (kingName != null && offlinePlayer.getName() != null && offlinePlayer.getName().equalsIgnoreCase(kingName)) {
+                            return "👑 Raja " + regOpt.get().getDisplayName();
+                        }
+                    }
+                }
                 return (data.getActiveTitle() != null && !data.getActiveTitle().isEmpty() && !data.getActiveTitle().equalsIgnoreCase("none"))
                         ? data.getActiveTitle()
                         : "Wanderer";

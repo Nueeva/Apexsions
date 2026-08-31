@@ -177,22 +177,7 @@ public class RankAnimationManager {
     public String getAnimatedRankPrefix(Player player) {
         if (player == null) return "<gray>[Player]</gray> ";
 
-        PlayerData data = plugin.getPlayerDataService().getCached(player.getUniqueId()).orElse(null);
-        String kingdomKey = "NONE";
-        if (data != null && data.getRegionId() != null) {
-            kingdomKey = plugin.getRegionManager().getRegion(data.getRegionId())
-                    .map(Region::getKey)
-                    .orElse("NONE");
-        }
-
-        // 1. Monarch Prestige (Highest Priority)
-        String kingName = plugin.getConfigManager().getKingdomKing(kingdomKey);
-        if (kingName != null && player.getName().equalsIgnoreCase(kingName)) {
-            String[] c = MONARCH_FRAMES.get(currentFrame % MONARCH_FRAMES.size());
-            return "<gradient:" + c[0] + ":" + c[1] + ":" + c[2] + "><bold>👑 RAJA " + kingdomKey.toUpperCase() + "</bold></gradient> ";
-        }
-
-        // 2. LuckPerms Rank Resolution
+        // LuckPerms Rank Resolution
         String rankKey = (plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isAvailable())
                 ? plugin.getLuckPermsHook().getPlayerRankKey(player)
                 : (player.isOp() ? "ancestor" : "wanderer");
