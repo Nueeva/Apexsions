@@ -129,7 +129,6 @@ custom-rules:
 mentions:
   player:
     enabled: true
-    use-rank-color: true # When true, @Player automatically formats with the target's rank color/gradient
     highlight-format: "<color:#38bdf8><bold>@{player}</bold></color>"
   all:
     enabled: true
