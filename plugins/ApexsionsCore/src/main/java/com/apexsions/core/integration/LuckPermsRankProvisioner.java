@@ -120,7 +120,10 @@ public class LuckPermsRankProvisioner {
                     } catch (IllegalArgumentException ignored) {}
                 }
 
-                // 2. Assign Wanderer as default rank if player only has standard default group
+                // 2. Clear any stray direct personal PrefixNodes on user to ensure clean rank inheritance
+                user.data().clear(node -> node instanceof PrefixNode);
+
+                // 3. Assign Wanderer as default rank if player only has standard default group
                 boolean hasCustomRank = user.getNodes().stream()
                         .filter(n -> n instanceof InheritanceNode)
                         .map(n -> ((InheritanceNode) n).getGroupName())
@@ -128,8 +131,8 @@ public class LuckPermsRankProvisioner {
 
                 if (!hasCustomRank) {
                     user.data().add(InheritanceNode.builder("wanderer").build());
-                    userManager.saveUser(user).join();
                 }
+                userManager.saveUser(user).join();
             } catch (Exception e) {
                 plugin.getLogger().warning("Error processing rank join for " + player.getName() + ": " + e.getMessage());
             }

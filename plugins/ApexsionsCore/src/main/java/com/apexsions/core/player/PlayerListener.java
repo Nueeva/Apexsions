@@ -41,12 +41,16 @@ public class PlayerListener implements Listener {
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
 
-        // 1. Handle LuckPerms Rank default / owner assignment
+        // 1. Ensure player display name is clean text without stale prefixes
+        player.displayName(net.kyori.adventure.text.Component.text(player.getName()));
+        player.customName(net.kyori.adventure.text.Component.text(player.getName()));
+
+        // 2. Handle LuckPerms Rank default / owner assignment
         if (plugin.getLuckPermsHook().isAvailable() && plugin.getLuckPermsHook().getRankProvisioner() != null) {
             plugin.getLuckPermsHook().getRankProvisioner().handlePlayerJoin(player);
         }
 
-        // 2. Reconcile Level progression in case player has accumulated XP
+        // 3. Reconcile Level progression in case player has accumulated XP
         plugin.getPlayerDataService().getCached(player.getUniqueId()).ifPresent(data -> {
             plugin.getLevelManager().reconcileLevel(data, player);
         });
