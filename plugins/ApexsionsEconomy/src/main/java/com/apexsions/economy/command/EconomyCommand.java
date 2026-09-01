@@ -46,6 +46,11 @@ public class EconomyCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
+        if (sub.equals("top") || sub.equals("leaderboard") || sub.equals("baltop") || sub.equals("balancetop")) {
+            new com.apexsions.economy.gui.EconomyLeaderboardMenu(plugin, player, "rupiah", null).open();
+            return true;
+        }
+
         new EconomyMainMenu(plugin, player).open();
         return true;
     }
@@ -53,7 +58,7 @@ public class EconomyCommand implements CommandExecutor, TabCompleter {
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         if (args.length == 1) {
-            return List.of("menu", "bal", "info");
+            return List.of("menu", "bal", "info", "top");
         }
         return List.of();
     }

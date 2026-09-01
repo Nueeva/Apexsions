@@ -70,7 +70,13 @@ public class ApexsionsEconomy extends JavaPlugin {
             }
         }
 
-        // 6. Register Commands
+        // 6. Register PlaceholderAPI Expansion
+        if (getServer().getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+            new com.apexsions.economy.integration.EconomyPlaceholderExpansion(this).register();
+            getLogger().info("Successfully registered ApexsionsEconomy PlaceholderAPI expansion.");
+        }
+
+        // 7. Register Commands
         registerCommands();
 
         getLogger().info("=======================================");

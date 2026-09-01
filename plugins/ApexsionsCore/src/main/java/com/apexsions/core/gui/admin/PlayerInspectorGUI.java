@@ -21,6 +21,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * 54-Slot Deep Player Inspector & Control Center.
@@ -163,7 +164,8 @@ public class PlayerInspectorGUI implements InventoryHolder {
             String kingName = plugin.getConfigManager().getKingdomKing(pKingdom);
             boolean isMonarch = kingName != null && kingName.equalsIgnoreCase(target.getName());
 
-            double balance = plugin.getVaultHook().hasEconomy() ? plugin.getVaultHook().getBalance(target) : 0.0;
+            double balance = getPlayerRupiah(target);
+            double diaBal = getPlayerDiamond(target);
 
             List<Component> lore = new ArrayList<>();
             lore.add(mm.deserialize("<gray>UUID:</gray> <dark_gray>" + target.getUniqueId() + "</dark_gray>"));
@@ -171,6 +173,7 @@ public class PlayerInspectorGUI implements InventoryHolder {
             lore.add(mm.deserialize("<gray>Level Karakter:</gray> <yellow>Lv. " + level + "</yellow> <gray>(" + title + ")</gray>"));
             lore.add(mm.deserialize("<gray>Progress XP:</gray> <aqua>" + xp + " / " + (reqXp == Long.MAX_VALUE ? "MAX" : reqXp) + " XP</aqua>"));
             lore.add(mm.deserialize("<gray>Saldo Rupiah:</gray> <green><bold>Rp " + String.format("%,.0f", balance) + "</bold></green>"));
+            lore.add(mm.deserialize("<gray>Saldo Diamond:</gray> <aqua><bold>" + String.format("%,.0f", diaBal) + " 💎</bold></aqua>"));
             lore.add(mm.deserialize("<gray>Darah / Lapar:</gray> <red>" + (int) target.getHealth() + "/" + (int) target.getMaxHealth() + " HP</red> <gray>•</gray> <gold>" + target.getFoodLevel() + "/20</gold>"));
             lore.add(mm.deserialize("<gray>GameMode:</gray> <white>" + target.getGameMode().name() + "</white> <gray>• Ping:</gray> <green>" + target.getPing() + "ms</green>"));
             lore.add(mm.deserialize("<gray>Lokasi:</gray> <white>" + target.getWorld().getName() + " (" + target.getLocation().getBlockX() + ", " + target.getLocation().getBlockY() + ", " + target.getLocation().getBlockZ() + ")</white>"));
@@ -220,14 +223,9 @@ public class PlayerInspectorGUI implements InventoryHolder {
                         try {
                             double newBal = Double.parseDouble(input.replaceAll("[^0-9.-]", ""));
                             if (newBal < 0) newBal = 0;
-                            if (plugin.getVaultHook().hasEconomy()) {
-                                double current = plugin.getVaultHook().getBalance(target);
-                                if (newBal >= current) {
-                                    plugin.getVaultHook().deposit(target, newBal - current);
-                                } else {
-                                    plugin.getVaultHook().withdraw(target, current - newBal);
-                                }
-                            }
+                            double current = getPlayerRupiah(target);
+                            double delta = newBal - current;
+                            modifyBalance(delta);
                             admin.sendMessage(mm.deserialize("<green>✓ Saldo Rupiah " + target.getName() + " berhasil diubah menjadi <yellow>Rp " + String.format("%,.0f", newBal) + "</yellow>!</green>"));
                             admin.playSound(admin.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 0.8f, 1.4f);
                         } catch (NumberFormatException e) {
@@ -244,11 +242,19 @@ public class PlayerInspectorGUI implements InventoryHolder {
                     "Ketik jumlah Diamond yang ingin diberikan ke " + target.getName() + " (contoh: 50):",
                     input -> {
                         try {
-                            int dia = Integer.parseInt(input.replaceAll("[^0-9-]", ""));
+                            double dia = Double.parseDouble(input.replaceAll("[^0-9.-]", ""));
                             if (dia > 0) {
-                                target.getInventory().addItem(new ItemStack(Material.DIAMOND, dia));
-                                admin.sendMessage(mm.deserialize("<green>✓ Berhasil memberikan <aqua>" + dia + " Diamond</aqua> ke " + target.getName() + "!</green>"));
-                                target.sendMessage(mm.deserialize("<green>✓ Kamu menerima <aqua>" + dia + " Diamond</aqua> dari Administrator!</green>"));
+                                boolean addedEco = false;
+                                try {
+                                    Class<?> providerClass = Class.forName("com.apexsions.economy.api.ApexsionsEconomyProvider");
+                                    if ((boolean) providerClass.getMethod("isAvailable").invoke(null)) {
+                                        Object api = providerClass.getMethod("get").invoke(null);
+                                        api.getClass().getMethod("deposit", UUID.class, String.class, double.class).invoke(api, target.getUniqueId(), "diamond", dia);
+                                        addedEco = true;
+                                    }
+                                } catch (Throwable ignored) {}
+                                admin.sendMessage(mm.deserialize("<green>✓ Berhasil memberikan <aqua>" + String.format("%,.0f", dia) + " Diamond</aqua> ke " + target.getName() + "!</green>"));
+                                target.sendMessage(mm.deserialize("<green>✓ Kamu menerima <aqua>" + String.format("%,.0f", dia) + " Diamond</aqua> dari Administrator!</green>"));
                             }
                             admin.playSound(admin.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 0.8f, 1.4f);
                         } catch (Exception e) {
@@ -422,19 +428,65 @@ public class PlayerInspectorGUI implements InventoryHolder {
         buildGUI();
     }
 
+    private double getPlayerRupiah(Player p) {
+        try {
+            Class<?> providerClass = Class.forName("com.apexsions.economy.api.ApexsionsEconomyProvider");
+            if ((boolean) providerClass.getMethod("isAvailable").invoke(null)) {
+                Object api = providerClass.getMethod("get").invoke(null);
+                return (double) api.getClass().getMethod("getBalance", UUID.class, String.class).invoke(api, p.getUniqueId(), "rupiah");
+            }
+        } catch (Throwable ignored) {}
+        if (plugin.getVaultHook().hasEconomy()) {
+            return plugin.getVaultHook().getBalance(p);
+        }
+        return 0.0;
+    }
+
+    private double getPlayerDiamond(Player p) {
+        try {
+            Class<?> providerClass = Class.forName("com.apexsions.economy.api.ApexsionsEconomyProvider");
+            if ((boolean) providerClass.getMethod("isAvailable").invoke(null)) {
+                Object api = providerClass.getMethod("get").invoke(null);
+                return (double) api.getClass().getMethod("getBalance", UUID.class, String.class).invoke(api, p.getUniqueId(), "diamond");
+            }
+        } catch (Throwable ignored) {}
+        return 0.0;
+    }
+
     private void modifyBalance(double delta) {
-        if (!plugin.getVaultHook().hasEconomy()) {
-            admin.sendMessage(mm.deserialize("<red>Vault Economy tidak tersedia.</red>"));
-            return;
+        boolean handled = false;
+        try {
+            Class<?> providerClass = Class.forName("com.apexsions.economy.api.ApexsionsEconomyProvider");
+            if ((boolean) providerClass.getMethod("isAvailable").invoke(null)) {
+                Object api = providerClass.getMethod("get").invoke(null);
+                if (delta > 0) {
+                    api.getClass().getMethod("deposit", UUID.class, String.class, double.class).invoke(api, target.getUniqueId(), "rupiah", delta);
+                } else {
+                    api.getClass().getMethod("withdraw", UUID.class, String.class, double.class).invoke(api, target.getUniqueId(), "rupiah", Math.abs(delta));
+                }
+                handled = true;
+            }
+        } catch (Throwable ignored) {}
+
+        if (!handled && plugin.getVaultHook().hasEconomy()) {
+            if (delta > 0) {
+                plugin.getVaultHook().deposit(target, delta);
+            } else {
+                plugin.getVaultHook().withdraw(target, Math.abs(delta));
+            }
+            handled = true;
         }
-        if (delta > 0) {
-            plugin.getVaultHook().deposit(target, delta);
-            admin.sendMessage(mm.deserialize("<green>✓ Menambahkan <yellow>Rp " + String.format("%,.0f", delta) + "</yellow> ke " + target.getName() + ".</green>"));
+
+        if (handled) {
+            if (delta > 0) {
+                admin.sendMessage(mm.deserialize("<green>✓ Menambahkan <yellow>Rp " + String.format("%,.0f", delta) + "</yellow> ke " + target.getName() + ".</green>"));
+            } else {
+                admin.sendMessage(mm.deserialize("<yellow>✓ Mengurangi <red>Rp " + String.format("%,.0f", Math.abs(delta)) + "</red> dari " + target.getName() + ".</yellow>"));
+            }
+            admin.playSound(admin.getLocation(), Sound.BLOCK_NOTE_BLOCK_BELL, 0.8f, 1.2f);
         } else {
-            plugin.getVaultHook().withdraw(target, Math.abs(delta));
-            admin.sendMessage(mm.deserialize("<yellow>✓ Mengurangi <red>Rp " + String.format("%,.0f", Math.abs(delta)) + "</red> dari " + target.getName() + ".</yellow>"));
+            admin.sendMessage(mm.deserialize("<red>Layanan ekonomi tidak tersedia.</red>"));
         }
-        admin.playSound(admin.getLocation(), Sound.BLOCK_NOTE_BLOCK_BELL, 0.8f, 1.2f);
         buildGUI();
     }
 

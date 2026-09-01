@@ -10,6 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
+import java.util.UUID;
 
 /**
  * Comprehensive PlaceholderAPI expansion providing Apexsions placeholders
@@ -154,23 +155,20 @@ public class PlaceholderApiHook extends PlaceholderExpansion {
                         : "Wanderer";
 
             case "balance_rupiah":
-                if (plugin.getVaultHook().hasEconomy() && offlinePlayer.isOnline() && offlinePlayer.getPlayer() != null) {
-                    return String.format("%.0f", plugin.getVaultHook().getBalance(offlinePlayer.getPlayer()));
-                }
-                return "0";
+            case "economy_balance_rupiah":
+                return getCurrencyBalance(offlinePlayer, "rupiah", false);
 
             case "balance_rupiah_formatted":
-                if (plugin.getVaultHook().hasEconomy() && offlinePlayer.isOnline() && offlinePlayer.getPlayer() != null) {
-                    double bal = plugin.getVaultHook().getBalance(offlinePlayer.getPlayer());
-                    return "Rp " + String.format("%,.0f", bal);
-                }
-                return "Rp 0";
+            case "economy_balance_rupiah_formatted":
+                return getCurrencyBalance(offlinePlayer, "rupiah", true);
 
             case "balance_diamond":
-                return getDiamondBalance(offlinePlayer, false);
+            case "economy_balance_diamond":
+                return getCurrencyBalance(offlinePlayer, "diamond", false);
 
             case "balance_diamond_formatted":
-                return getDiamondBalance(offlinePlayer, true);
+            case "economy_balance_diamond_formatted":
+                return getCurrencyBalance(offlinePlayer, "diamond", true);
 
             case "rank_badge":
             case "badge":
@@ -308,18 +306,37 @@ public class PlaceholderApiHook extends PlaceholderExpansion {
                 .count();
     }
 
-    private String getDiamondBalance(OfflinePlayer player, boolean formatted) {
+    private String getCurrencyBalance(OfflinePlayer player, String currencyId, boolean formatted) {
+        if (player == null || player.getUniqueId() == null) return formatted ? (currencyId.equalsIgnoreCase("rupiah") ? "Rp 0" : "0") : "0";
+        UUID uuid = player.getUniqueId();
+
+        // 1. Try ApexsionsEconomyProvider
         try {
             Class<?> providerClass = Class.forName("com.apexsions.economy.api.ApexsionsEconomyProvider");
             java.lang.reflect.Method isAvail = providerClass.getMethod("isAvailable");
             if ((boolean) isAvail.invoke(null)) {
                 java.lang.reflect.Method get = providerClass.getMethod("get");
                 Object api = get.invoke(null);
-                java.lang.reflect.Method getBal = api.getClass().getMethod("getBalance", String.class, java.util.UUID.class);
-                double bal = (double) getBal.invoke(api, "diamond", player.getUniqueId());
-                return formatted ? String.format("%,.0f", bal) : String.format("%.0f", bal);
+                java.lang.reflect.Method getBal = api.getClass().getMethod("getBalance", java.util.UUID.class, String.class);
+                double bal = (double) getBal.invoke(api, uuid, currencyId.toLowerCase());
+                if (formatted) {
+                    if (currencyId.equalsIgnoreCase("rupiah")) {
+                        return "Rp " + String.format("%,.0f", bal);
+                    } else {
+                        return String.format("%,.0f", bal);
+                    }
+                } else {
+                    return String.format("%.0f", bal);
+                }
             }
         } catch (Throwable ignored) {}
-        return "0";
+
+        // 2. Fallback to Vault for rupiah if player is online
+        if (currencyId.equalsIgnoreCase("rupiah") && plugin.getVaultHook().hasEconomy() && player.isOnline() && player.getPlayer() != null) {
+            double bal = plugin.getVaultHook().getBalance(player.getPlayer());
+            return formatted ? ("Rp " + String.format("%,.0f", bal)) : String.format("%.0f", bal);
+        }
+
+        return formatted ? (currencyId.equalsIgnoreCase("rupiah") ? "Rp 0" : "0") : "0";
     }
 }

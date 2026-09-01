@@ -38,6 +38,16 @@ public class AuctionCommand implements CommandExecutor, TabCompleter {
 
         String sub = args[0].toLowerCase();
 
+        if (sub.equals("admin") && args.length >= 2 && args[1].equalsIgnoreCase("clear")) {
+            if (!player.hasPermission("apexsionseconomy.admin") && !player.hasPermission("apexpassionseconomy.admin") && !player.isOp()) {
+                player.sendMessage("§cAnda tidak memiliki izin admin lelang!");
+                return true;
+            }
+            int count = plugin.getAuctionService().cleanupExpiredAuctions();
+            player.sendMessage("§a[ApexsionsEconomy] Berhasil membersihkan " + count + " lelang yang kedaluwarsa!");
+            return true;
+        }
+
         if (sub.equals("my") || sub.equals("lelangku") || sub.equals("kelola") || sub.equals("manage")) {
             new MyAuctionsMenu(plugin, player, null).open();
             return true;

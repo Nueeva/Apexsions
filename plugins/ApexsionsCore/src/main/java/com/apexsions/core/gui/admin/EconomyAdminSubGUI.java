@@ -115,10 +115,9 @@ public class EconomyAdminSubGUI implements InventoryHolder {
             plugin.getAdminChatInputManager().startSession(player,
                     "Ketik nama pemain dan jumlah Rupiah (format: <nama> <jumlah>):",
                     input -> {
-                        String[] parts = input.split(" ");
+                        String[] parts = input.trim().split("\\s+");
                         if (parts.length >= 2) {
-                            player.performCommand("eco give " + parts[0] + " rupiah " + parts[1]);
-                            player.sendMessage(mm.deserialize("<green>✓ Berhasil mengirim Rp " + parts[1] + " ke " + parts[0] + "!</green>"));
+                            player.performCommand("ecoadmin give " + parts[0] + " " + parts[1] + " rupiah");
                         } else {
                             player.sendMessage(mm.deserialize("<red>Format salah! Gunakan: <nama> <jumlah></red>"));
                         }
@@ -133,10 +132,9 @@ public class EconomyAdminSubGUI implements InventoryHolder {
             plugin.getAdminChatInputManager().startSession(player,
                     "Ketik nama pemain dan jumlah Diamond (format: <nama> <jumlah>):",
                     input -> {
-                        String[] parts = input.split(" ");
+                        String[] parts = input.trim().split("\\s+");
                         if (parts.length >= 2) {
-                            player.performCommand("eco give " + parts[0] + " diamond " + parts[1]);
-                            player.sendMessage(mm.deserialize("<green>✓ Berhasil mengirim " + parts[1] + " Diamond ke " + parts[0] + "!</green>"));
+                            player.performCommand("ecoadmin give " + parts[0] + " " + parts[1] + " diamond");
                         } else {
                             player.sendMessage(mm.deserialize("<red>Format salah! Gunakan: <nama> <jumlah></red>"));
                         }
@@ -162,13 +160,12 @@ public class EconomyAdminSubGUI implements InventoryHolder {
 
         if (slot == 24) { // Top Balances
             player.closeInventory();
-            player.performCommand("balancetop");
+            player.performCommand("economy bal");
             return;
         }
 
         if (slot == 31) { // Reload
-            player.performCommand("eco reload");
-            player.sendMessage(mm.deserialize("<green>✓ ApexsionsEconomy berhasil dimuat ulang!</green>"));
+            player.performCommand("ecoadmin reload");
             player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 0.8f, 1.5f);
         }
     }

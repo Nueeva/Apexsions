@@ -256,4 +256,17 @@ public class AuctionService {
     public CompletableFuture<List<AuctionListing>> getPlayerAuctions(UUID sellerUuid) {
         return plugin.getRepository().loadPlayerAuctions(sellerUuid);
     }
+
+    public int cleanupExpiredAuctions() {
+        int count = 0;
+        for (AuctionListing al : new ArrayList<>(activeAuctions.values())) {
+            if (al.isExpired() || al.getStatus() == AuctionStatus.EXPIRED) {
+                al.setStatus(AuctionStatus.EXPIRED);
+                activeAuctions.remove(al.getId());
+                plugin.getRepository().saveAuction(al);
+                count++;
+            }
+        }
+        return count;
+    }
 }
