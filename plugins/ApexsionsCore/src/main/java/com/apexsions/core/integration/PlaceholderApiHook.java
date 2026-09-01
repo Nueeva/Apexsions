@@ -110,7 +110,6 @@ public class PlaceholderApiHook extends PlaceholderExpansion {
                 return "Belum Memilih";
 
             case "level_title":
-            case "title":
                 return plugin.getLevelManager().getLevelTitle(data.getUuid());
 
             case "rank":
@@ -140,19 +139,67 @@ public class PlaceholderApiHook extends PlaceholderExpansion {
                 return "<gradient:#dfe6e9:#74b9ff><bold>[Wanderer]</bold></gradient> ";
 
             case "active_title":
+            case "custom_title": {
+                String resolvedTitle = null;
                 if (data.getRegionId() != null) {
                     Optional<Region> regOpt = plugin.getRegionManager().getRegion(data.getRegionId());
                     if (regOpt.isPresent()) {
                         String kKey = regOpt.get().getKey();
                         String kingName = plugin.getConfigManager().getKingdomKing(kKey);
                         if (kingName != null && offlinePlayer.getName() != null && offlinePlayer.getName().equalsIgnoreCase(kingName)) {
-                            return "👑 Raja " + regOpt.get().getDisplayName();
+                            resolvedTitle = "👑 Raja " + regOpt.get().getDisplayName();
                         }
                     }
                 }
-                return (data.getActiveTitle() != null && !data.getActiveTitle().isEmpty() && !data.getActiveTitle().equalsIgnoreCase("none"))
-                        ? data.getActiveTitle()
-                        : "Wanderer";
+                if (resolvedTitle == null && data.getActiveTitle() != null && !data.getActiveTitle().isEmpty()
+                        && !data.getActiveTitle().equalsIgnoreCase("none")
+                        && !data.getActiveTitle().equalsIgnoreCase("wanderer")) {
+                    resolvedTitle = data.getActiveTitle();
+                }
+                return resolvedTitle != null ? resolvedTitle : "";
+            }
+
+            case "title_display":
+            case "active_title_display": {
+                String resolvedTitle = null;
+                if (data.getRegionId() != null) {
+                    Optional<Region> regOpt = plugin.getRegionManager().getRegion(data.getRegionId());
+                    if (regOpt.isPresent()) {
+                        String kKey = regOpt.get().getKey();
+                        String kingName = plugin.getConfigManager().getKingdomKing(kKey);
+                        if (kingName != null && offlinePlayer.getName() != null && offlinePlayer.getName().equalsIgnoreCase(kingName)) {
+                            resolvedTitle = "👑 Raja " + regOpt.get().getDisplayName();
+                        }
+                    }
+                }
+                if (resolvedTitle == null && data.getActiveTitle() != null && !data.getActiveTitle().isEmpty()
+                        && !data.getActiveTitle().equalsIgnoreCase("none")
+                        && !data.getActiveTitle().equalsIgnoreCase("wanderer")) {
+                    resolvedTitle = data.getActiveTitle();
+                }
+                return resolvedTitle != null ? resolvedTitle : "&7-";
+            }
+
+            case "title_suffix":
+            case "active_title_suffix": {
+                String resolvedTitle = null;
+                if (data.getRegionId() != null) {
+                    Optional<Region> regOpt = plugin.getRegionManager().getRegion(data.getRegionId());
+                    if (regOpt.isPresent()) {
+                        String kKey = regOpt.get().getKey();
+                        String kingName = plugin.getConfigManager().getKingdomKing(kKey);
+                        if (kingName != null && offlinePlayer.getName() != null && offlinePlayer.getName().equalsIgnoreCase(kingName)) {
+                            resolvedTitle = "👑 Raja " + regOpt.get().getDisplayName();
+                        }
+                    }
+                }
+                if (resolvedTitle == null && data.getActiveTitle() != null && !data.getActiveTitle().isEmpty()
+                        && !data.getActiveTitle().equalsIgnoreCase("none")
+                        && !data.getActiveTitle().equalsIgnoreCase("wanderer")) {
+                    resolvedTitle = data.getActiveTitle();
+                }
+                return (resolvedTitle != null && !resolvedTitle.isEmpty()) ? (" &8[&f" + resolvedTitle + "&8]") : "";
+            }
 
             case "balance_rupiah":
             case "economy_balance_rupiah":
