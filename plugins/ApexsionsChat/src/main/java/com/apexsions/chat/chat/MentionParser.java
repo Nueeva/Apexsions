@@ -24,7 +24,7 @@ public class MentionParser {
     public Component parseMentions(Player sender, String word, Set<UUID> notifiedPlayers) {
         FileConfiguration config = plugin.getConfigManager().getModerationConfig();
 
-        if (word.equalsIgnoreCase("@all")) {
+        if (word.equalsIgnoreCase("@all") || word.equalsIgnoreCase("@everyone")) {
             if (config.getBoolean("mentions.all.enabled", true) && canUseAllMention(sender)) {
                 recordAllMentionUsage(sender);
                 for (Player p : Bukkit.getOnlinePlayers()) {
@@ -33,7 +33,8 @@ public class MentionParser {
                         notifyPlayer(p, sender);
                     }
                 }
-                String highlightFmt = config.getString("mentions.all.highlight-format", "<gradient:#f59e0b:#ef4444><bold>@all</bold></gradient>");
+                String tag = word.startsWith("@") ? word : "@everyone";
+                String highlightFmt = config.getString("mentions.all.highlight-format", "<gradient:#f59e0b:#ef4444><bold>" + tag + "</bold></gradient>");
                 return miniMessage.deserialize(highlightFmt);
             }
             return Component.text(word);

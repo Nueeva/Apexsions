@@ -7,7 +7,9 @@ import com.apexsions.economy.gui.navigation.CloseButton;
 import com.apexsions.economy.gui.util.ItemBuilder;
 import com.apexsions.economy.util.ItemSerializer;
 import com.apexsions.economy.ApexsionsEconomy;
+import com.apexsions.economy.auction.AuctionCategory;
 import com.apexsions.economy.auction.AuctionListing;
+import com.apexsions.economy.auction.AuctionSortMode;
 import com.apexsions.economy.currency.Currency;
 import com.apexsions.economy.util.NumberFormatUtil;
 import org.bukkit.Material;
@@ -23,23 +25,29 @@ public class AuctionBrowseMenu extends Gui {
     private static final int ITEMS_PER_PAGE = 28;
     private final ApexsionsEconomy plugin;
     private final int page;
-    private final int sortMode; // 0 = Newest, 1 = Price Low-High, 2 = Price High-Low
+    private final AuctionSortMode sortMode;
+    private final AuctionCategory category;
     private final String filter;
 
-    public AuctionBrowseMenu(ApexsionsEconomy plugin, Player player, Gui parent, int page, int sortMode, String filter) {
+    public AuctionBrowseMenu(ApexsionsEconomy plugin, Player player, Gui parent, int page, AuctionSortMode sortMode, AuctionCategory category, String filter) {
         super(null, player, "&8[ &2&lAUCTION HOUSE &8- Hal. " + page + " ]", 54, parent);
         this.plugin = plugin;
         this.page = Math.max(1, page);
-        this.sortMode = sortMode;
+        this.sortMode = sortMode != null ? sortMode : AuctionSortMode.NEWEST;
+        this.category = category != null ? category : AuctionCategory.ALL;
         this.filter = filter != null ? filter.trim().toLowerCase() : "";
     }
 
+    public AuctionBrowseMenu(ApexsionsEconomy plugin, Player player, Gui parent, int page, int sortInt, String filter) {
+        this(plugin, player, parent, page, sortInt == 1 ? AuctionSortMode.CHEAPEST : (sortInt == 2 ? AuctionSortMode.EXPENSIVE : AuctionSortMode.NEWEST), AuctionCategory.ALL, filter);
+    }
+
     public AuctionBrowseMenu(ApexsionsEconomy plugin, Player player, Gui parent) {
-        this(plugin, player, parent, 1, 0, "");
+        this(plugin, player, parent, 1, AuctionSortMode.NEWEST, AuctionCategory.ALL, "");
     }
 
     public AuctionBrowseMenu(ApexsionsEconomy plugin, Player player) {
-        this(plugin, player, null, 1, 0, "");
+        this(plugin, player, null, 1, AuctionSortMode.NEWEST, AuctionCategory.ALL, "");
     }
 
     @Override
@@ -48,7 +56,16 @@ public class AuctionBrowseMenu extends Gui {
 
         List<AuctionListing> listings = new ArrayList<>(plugin.getAuctionService().getActiveAuctions());
 
-        // Filter by item name
+        // 1. Filter by category
+        if (category != AuctionCategory.ALL) {
+            listings.removeIf(l -> {
+                ItemStack is = l.getItemStack();
+                if (is == null) return true;
+                return AuctionCategory.fromItemStack(is) != category;
+            });
+        }
+
+        // 2. Filter by item search name
         if (!filter.isEmpty()) {
             listings.removeIf(l -> {
                 ItemStack is = l.getItemStack();
@@ -58,10 +75,10 @@ public class AuctionBrowseMenu extends Gui {
             });
         }
 
-        // Sort
-        if (sortMode == 1) {
+        // 3. Sort
+        if (sortMode == AuctionSortMode.CHEAPEST) {
             listings.sort(Comparator.comparingDouble(AuctionListing::getPrice));
-        } else if (sortMode == 2) {
+        } else if (sortMode == AuctionSortMode.EXPENSIVE) {
             listings.sort((a, b) -> Double.compare(b.getPrice(), a.getPrice()));
         } else {
             listings.sort((a, b) -> Long.compare(b.getCreatedAt(), a.getCreatedAt()));
@@ -75,7 +92,8 @@ public class AuctionBrowseMenu extends Gui {
         setButton(0, new GuiButton(new ItemBuilder(Material.GOLDEN_HORSE_ARMOR)
                 .name("&6&lPASAR LELANG AKTIF (" + total + " Barang)")
                 .lore(List.of(
-                        "&7Urutan: &f" + getSortName(),
+                        "&7Kategori: &b" + category.getDisplayName(),
+                        "&7Urutan: &f" + sortMode.getDisplayName(),
                         "&7Filter: &f" + (filter.isEmpty() ? "Semua Item" : filter),
                         " ",
                         "&7Klik barang untuk membeli langsung (Instant Buyout)."
@@ -93,32 +111,48 @@ public class AuctionBrowseMenu extends Gui {
                 ))
                 .build()));
 
-        // 2. Search Filter (Slot 7)
+        // 2. Category Selector (Slot 6)
+        setButton(6, new GuiButton(new ItemBuilder(category.getIcon())
+                .name("&e&lKATEGORI: &b" + category.getDisplayName())
+                .lore(List.of(
+                        "&7Filter lelang berdasarkan jenis barang.",
+                        "&7Pilihan: Semua, Senjata/Armor, Tools,",
+                        "&7Mineral, Blok, Makanan/Potion, Spesial.",
+                        " ",
+                        "&eKlik untuk beralih kategori ▶"
+                ))
+                .build(), event -> {
+            AuctionCategory nextCat = AuctionCategory.values()[(category.ordinal() + 1) % AuctionCategory.values().length];
+            new AuctionBrowseMenu(plugin, player, parent, 1, sortMode, nextCat, filter).open();
+        }));
+
+        // 3. Search Filter (Slot 7)
         setButton(7, new GuiButton(new ItemBuilder(Material.NAME_TAG)
                 .name("&e&l[🔍] CARI ITEM")
                 .lore(List.of(
                         "&7Filter lelang berdasarkan nama barang.",
+                        "&7Kata kunci saat ini: &f" + (filter.isEmpty() ? "-" : filter),
                         " ",
                         "&eKlik untuk mencari >"
                 ))
                 .build(), event -> {
             plugin.getChatInputManager().startInput(player, "Masukkan kata kunci nama item (atau 'semua' untuk reset):", query -> {
                 String f = (query.equalsIgnoreCase("semua") || query.equalsIgnoreCase("all") || query.equalsIgnoreCase("reset")) ? "" : query.trim();
-                new AuctionBrowseMenu(plugin, player, parent, 1, sortMode, f).open();
+                new AuctionBrowseMenu(plugin, player, parent, 1, sortMode, category, f).open();
             }, this::open);
         }));
 
-        // 3. Sort Toggle Button (Slot 8)
-        setButton(8, new GuiButton(new ItemBuilder(Material.HOPPER)
-                .name("&e&lURUTKAN: &f" + getSortName())
+        // 4. Sort Toggle Button (Slot 8)
+        setButton(8, new GuiButton(new ItemBuilder(sortMode.getIcon())
+                .name("&e&lURUTKAN: &f" + sortMode.getDisplayName())
                 .lore(List.of(
                         "&7Klik untuk mengubah urutan lelang.",
+                        "&7Pilihan: Terbaru, Termurah, Termahal.",
                         " ",
-                        "&eKlik untuk beralih urutan >"
+                        "&eKlik untuk beralih urutan ▶"
                 ))
                 .build(), event -> {
-            int nextSort = (sortMode + 1) % 3;
-            new AuctionBrowseMenu(plugin, player, parent, 1, nextSort, filter).open();
+            new AuctionBrowseMenu(plugin, player, parent, 1, sortMode.next(), category, filter).open();
         }));
 
         // 4. Render Active Listings in Center (Slots 10..16, 19..25, 28..34, 37..43)
@@ -175,7 +209,7 @@ public class AuctionBrowseMenu extends Gui {
 
         if (validPage > 1) {
             setButton(47, new GuiButton(new ItemBuilder(Material.ARROW).name("&e◀ Halaman Sebelumnya (" + (validPage - 1) + ")").build(), event -> {
-                new AuctionBrowseMenu(plugin, player, parent, validPage - 1, sortMode, filter).open();
+                new AuctionBrowseMenu(plugin, player, parent, validPage - 1, sortMode, category, filter).open();
             }));
         }
 
@@ -196,18 +230,10 @@ public class AuctionBrowseMenu extends Gui {
 
         if (validPage < maxPages) {
             setButton(51, new GuiButton(new ItemBuilder(Material.ARROW).name("&eHalaman Berikutnya (" + (validPage + 1) + ") ▶").build(), event -> {
-                new AuctionBrowseMenu(plugin, player, parent, validPage + 1, sortMode, filter).open();
+                new AuctionBrowseMenu(plugin, player, parent, validPage + 1, sortMode, category, filter).open();
             }));
         }
 
         setButton(53, new CloseButton());
-    }
-
-    private String getSortName() {
-        return switch (sortMode) {
-            case 1 -> "Harga Terendah";
-            case 2 -> "Harga Tertinggi";
-            default -> "Terbaru";
-        };
     }
 }

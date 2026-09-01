@@ -3,6 +3,7 @@ package com.apexsions.economy.database;
 import com.apexsions.economy.ApexsionsEconomy;
 import com.apexsions.economy.auction.AuctionListing;
 import com.apexsions.economy.auction.AuctionStatus;
+import com.apexsions.economy.bank.BankDeposit;
 import com.apexsions.economy.leaderboard.EconomyLeaderboardEntry;
 
 import java.io.File;
@@ -92,6 +93,32 @@ public class EconomyRepository {
                         CREATE TABLE IF NOT EXISTS economy_trade_settings (
                             uuid VARCHAR(36) PRIMARY KEY,
                             trade_enabled BOOLEAN NOT NULL DEFAULT 1
+                        );
+                    """);
+
+                    // 6. Kingdom Treasury table (Transaction Tax Accumulator)
+                    stmt.executeUpdate("""
+                        CREATE TABLE IF NOT EXISTS economy_kingdom_treasury (
+                            kingdom_key VARCHAR(32) NOT NULL,
+                            currency_id VARCHAR(32) NOT NULL,
+                            balance DOUBLE NOT NULL DEFAULT 0,
+                            updated_at BIGINT NOT NULL,
+                            PRIMARY KEY (kingdom_key, currency_id)
+                        );
+                    """);
+
+                    // 7. Time-Locked Bank Deposits table
+                    stmt.executeUpdate("""
+                        CREATE TABLE IF NOT EXISTS economy_bank_deposits (
+                            id VARCHAR(36) PRIMARY KEY,
+                            uuid VARCHAR(36) NOT NULL,
+                            currency_id VARCHAR(32) NOT NULL,
+                            amount DOUBLE NOT NULL,
+                            interest_rate DOUBLE NOT NULL,
+                            expected_return DOUBLE NOT NULL,
+                            created_at BIGINT NOT NULL,
+                            matures_at BIGINT NOT NULL,
+                            claimed BOOLEAN DEFAULT 0
                         );
                     """);
                 }
@@ -298,6 +325,122 @@ public class EconomyRepository {
                     ps.executeUpdate();
                 } catch (SQLException e) {
                     plugin.getLogger().log(Level.SEVERE, "Error saving trade settings for " + uuid, e);
+                }
+            }
+        });
+    }
+
+    // --- KINGDOM TREASURY (KAS KERAJAAN) ---
+
+    public CompletableFuture<Double> getKingdomTreasury(String kingdomKey, String currencyId) {
+        return CompletableFuture.supplyAsync(() -> {
+            synchronized (dbLock) {
+                String sql = "SELECT balance FROM economy_kingdom_treasury WHERE kingdom_key = ? AND currency_id = ?";
+                try (PreparedStatement ps = connection.prepareStatement(sql)) {
+                    ps.setString(1, kingdomKey.toUpperCase(Locale.ROOT));
+                    ps.setString(2, currencyId.toLowerCase(Locale.ROOT));
+                    try (ResultSet rs = ps.executeQuery()) {
+                        if (rs.next()) {
+                            return rs.getDouble("balance");
+                        }
+                    }
+                } catch (SQLException e) {
+                    plugin.getLogger().log(Level.SEVERE, "Error fetching kingdom treasury for " + kingdomKey, e);
+                }
+                return 0.0;
+            }
+        });
+    }
+
+    public CompletableFuture<Void> depositKingdomTreasury(String kingdomKey, String currencyId, double amount) {
+        return CompletableFuture.runAsync(() -> {
+            synchronized (dbLock) {
+                String sql = """
+                    INSERT INTO economy_kingdom_treasury (kingdom_key, currency_id, balance, updated_at)
+                    VALUES (?, ?, ?, ?)
+                    ON CONFLICT(kingdom_key, currency_id) DO UPDATE SET
+                        balance = balance + excluded.balance,
+                        updated_at = excluded.updated_at;
+                """;
+                try (PreparedStatement ps = connection.prepareStatement(sql)) {
+                    ps.setString(1, kingdomKey.toUpperCase(Locale.ROOT));
+                    ps.setString(2, currencyId.toLowerCase(Locale.ROOT));
+                    ps.setDouble(3, amount);
+                    ps.setLong(4, System.currentTimeMillis());
+                    ps.executeUpdate();
+                } catch (SQLException e) {
+                    plugin.getLogger().log(Level.SEVERE, "Error depositing to kingdom treasury " + kingdomKey, e);
+                }
+            }
+        });
+    }
+
+    // --- BANK DEPOSITS (DEPOSITO BERJANGKA) ---
+
+    public CompletableFuture<Void> saveBankDeposit(BankDeposit deposit) {
+        return CompletableFuture.runAsync(() -> {
+            synchronized (dbLock) {
+                String sql = """
+                    INSERT INTO economy_bank_deposits (id, uuid, currency_id, amount, interest_rate, expected_return, created_at, matures_at, claimed)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
+                """;
+                try (PreparedStatement ps = connection.prepareStatement(sql)) {
+                    ps.setString(1, deposit.getId());
+                    ps.setString(2, deposit.getUuid().toString());
+                    ps.setString(3, deposit.getCurrencyId());
+                    ps.setDouble(4, deposit.getAmount());
+                    ps.setDouble(5, deposit.getInterestRate());
+                    ps.setDouble(6, deposit.getExpectedReturn());
+                    ps.setLong(7, deposit.getCreatedAt());
+                    ps.setLong(8, deposit.getMaturesAt());
+                    ps.setBoolean(9, deposit.isClaimed());
+                    ps.executeUpdate();
+                } catch (SQLException e) {
+                    plugin.getLogger().log(Level.SEVERE, "Error saving bank deposit for " + deposit.getUuid(), e);
+                }
+            }
+        });
+    }
+
+    public CompletableFuture<List<BankDeposit>> loadActiveBankDeposits(UUID uuid) {
+        return CompletableFuture.supplyAsync(() -> {
+            List<BankDeposit> list = new ArrayList<>();
+            synchronized (dbLock) {
+                String sql = "SELECT * FROM economy_bank_deposits WHERE uuid = ? AND claimed = 0 ORDER BY matures_at ASC";
+                try (PreparedStatement ps = connection.prepareStatement(sql)) {
+                    ps.setString(1, uuid.toString());
+                    try (ResultSet rs = ps.executeQuery()) {
+                        while (rs.next()) {
+                            list.add(new BankDeposit(
+                                    rs.getString("id"),
+                                    UUID.fromString(rs.getString("uuid")),
+                                    rs.getString("currency_id"),
+                                    rs.getDouble("amount"),
+                                    rs.getDouble("interest_rate"),
+                                    rs.getDouble("expected_return"),
+                                    rs.getLong("created_at"),
+                                    rs.getLong("matures_at"),
+                                    rs.getBoolean("claimed")
+                            ));
+                        }
+                    }
+                } catch (SQLException e) {
+                    plugin.getLogger().log(Level.SEVERE, "Error loading bank deposits for " + uuid, e);
+                }
+            }
+            return list;
+        });
+    }
+
+    public CompletableFuture<Void> claimBankDeposit(String depositId) {
+        return CompletableFuture.runAsync(() -> {
+            synchronized (dbLock) {
+                String sql = "UPDATE economy_bank_deposits SET claimed = 1 WHERE id = ?";
+                try (PreparedStatement ps = connection.prepareStatement(sql)) {
+                    ps.setString(1, depositId);
+                    ps.executeUpdate();
+                } catch (SQLException e) {
+                    plugin.getLogger().log(Level.SEVERE, "Error claiming bank deposit " + depositId, e);
                 }
             }
         });

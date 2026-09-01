@@ -123,37 +123,24 @@ public class TradeManager implements Listener {
 
         sender.sendMessage("§a[✔] Permintaan trade telah dikirim ke §e" + target.getName() + "§a. Menunggu persetujuan (60 detik)...");
 
-        // Send rich message with interactive buttons to target
-        target.sendMessage("§8=======================================");
-        target.sendMessage("§6§l[TRADE] §e" + sender.getName() + " §7mengajak Anda untuk melakukan trade!");
-
+        // Send rich message with interactive buttons to target via Adventure MiniMessage
+        net.kyori.adventure.text.minimessage.MiniMessage mm = net.kyori.adventure.text.minimessage.MiniMessage.miniMessage();
+        target.sendMessage(mm.deserialize("<dark_gray><strikethrough>────────────────────────────────────────</strikethrough></dark_gray>"));
+        target.sendMessage(mm.deserialize("<gradient:#2ecc71:#f1c40f><bold>🤝 PERMINTAAN TRADE & BARTER</bold></gradient>"));
+        target.sendMessage(mm.deserialize("<yellow><bold>" + sender.getName() + "</bold></yellow> <gray>mengajak Anda untuk bertransaksi barang & mata uang!</gray>"));
+        target.sendMessage(net.kyori.adventure.text.Component.empty());
+        target.sendMessage(mm.deserialize(
+                "  <click:run_command:'/trade accept " + sender.getName() + "'><hover:show_text:'<green>Klik untuk menerima trade dari " + sender.getName() + "!</green>'><gradient:#2ecc71:#27ae60><bold>[✔ TERIMA TRADE]</bold></gradient></click>" +
+                "    " +
+                "<click:run_command:'/trade deny " + sender.getName() + "'><hover:show_text:'<red>Klik untuk menolak trade dari " + sender.getName() + "!</red>'><gradient:#e74c3c:#c0392b><bold>[✖ TOLAK TRADE]</bold></gradient></click>"
+        ));
+        target.sendMessage(net.kyori.adventure.text.Component.empty());
+        target.sendMessage(mm.deserialize("<gray>Permintaan otomatis kedaluwarsa dalam <yellow>60 detik</yellow>.</gray>"));
+        target.sendMessage(mm.deserialize("<dark_gray><strikethrough>────────────────────────────────────────</strikethrough></dark_gray>"));
 
         try {
-            TextComponent acceptBtn = new TextComponent("[✔ SETUJU]");
-            acceptBtn.setColor(ChatColor.GREEN);
-            acceptBtn.setBold(true);
-            acceptBtn.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/trade accept " + sender.getName()));
-            acceptBtn.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("Klik untuk menerima permintaan trade dari " + sender.getName()).color(ChatColor.GREEN).create()));
-
-            TextComponent space = new TextComponent("   ");
-
-            TextComponent denyBtn = new TextComponent("[✖ TOLAK]");
-            denyBtn.setColor(ChatColor.RED);
-            denyBtn.setBold(true);
-            denyBtn.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/trade deny " + sender.getName()));
-            denyBtn.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("Klik untuk menolak permintaan trade dari " + sender.getName()).color(ChatColor.RED).create()));
-
-            TextComponent fullMessage = new TextComponent("         ");
-            fullMessage.addExtra(acceptBtn);
-            fullMessage.addExtra(space);
-            fullMessage.addExtra(denyBtn);
-
-            target.spigot().sendMessage(fullMessage);
-        } catch (Throwable t) {
-            target.sendMessage("§7Ketik §a/trade accept " + sender.getName() + " §7untuk setuju, atau §c/trade deny " + sender.getName() + " §7untuk menolak.");
-        }
-
-        target.sendMessage("§8=======================================");
+            target.playSound(target.getLocation(), org.bukkit.Sound.ITEM_BOOK_PAGE_TURN, 1.0f, 1.2f);
+        } catch (Exception ignored) {}
         return true;
     }
 

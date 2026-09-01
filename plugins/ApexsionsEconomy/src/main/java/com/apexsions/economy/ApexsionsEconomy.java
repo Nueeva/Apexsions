@@ -8,6 +8,7 @@ import com.apexsions.economy.command.PayCommand;
 import com.apexsions.economy.currency.CurrencyRegistry;
 import com.apexsions.economy.database.EconomyRepository;
 import com.apexsions.economy.service.AuctionService;
+import com.apexsions.economy.service.BankDepositService;
 import com.apexsions.economy.service.CurrencyService;
 import com.apexsions.economy.service.EconomyLeaderboardService;
 import com.apexsions.economy.service.PayService;
@@ -25,6 +26,8 @@ public class ApexsionsEconomy extends JavaPlugin {
     private PayService payService;
     private EconomyLeaderboardService leaderboardService;
     private AuctionService auctionService;
+    private BankDepositService bankDepositService;
+    private com.apexsions.economy.integration.ApexsionsCoreHook coreHook;
     private com.apexsions.economy.trade.TradeManager tradeManager;
     private com.apexsions.economy.util.ChatInputManager chatInputManager;
 
@@ -43,11 +46,13 @@ public class ApexsionsEconomy extends JavaPlugin {
         this.repository.init();
 
         // 3. Initialize Services
+        this.coreHook = new com.apexsions.economy.integration.ApexsionsCoreHook(this);
         this.chatInputManager = new com.apexsions.economy.util.ChatInputManager(this);
         this.currencyService = new CurrencyService(this);
         this.payService = new PayService(this);
         this.leaderboardService = new EconomyLeaderboardService(this);
         this.auctionService = new AuctionService(this);
+        this.bankDepositService = new BankDepositService(this);
         this.tradeManager = new com.apexsions.economy.trade.TradeManager(this);
 
         // 4. Register Event Listeners
@@ -188,6 +193,8 @@ public class ApexsionsEconomy extends JavaPlugin {
     public PayService getPayService() { return payService; }
     public EconomyLeaderboardService getLeaderboardService() { return leaderboardService; }
     public AuctionService getAuctionService() { return auctionService; }
+    public BankDepositService getBankDepositService() { return bankDepositService; }
+    public com.apexsions.economy.integration.ApexsionsCoreHook getCoreHook() { return coreHook; }
     public com.apexsions.economy.trade.TradeManager getTradeManager() { return tradeManager; }
     public com.apexsions.economy.util.ChatInputManager getChatInputManager() { return chatInputManager; }
 }

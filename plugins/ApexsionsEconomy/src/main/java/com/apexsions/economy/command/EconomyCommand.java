@@ -51,6 +51,11 @@ public class EconomyCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
+        if (sub.equals("deposit") || sub.equals("bank") || sub.equals("deposito")) {
+            new com.apexsions.economy.gui.BankDepositMenu(plugin, player, null).open();
+            return true;
+        }
+
         new EconomyMainMenu(plugin, player).open();
         return true;
     }
@@ -58,7 +63,7 @@ public class EconomyCommand implements CommandExecutor, TabCompleter {
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         if (args.length == 1) {
-            return List.of("menu", "bal", "info", "top");
+            return List.of("menu", "bal", "info", "top", "deposit", "bank");
         }
         return List.of();
     }

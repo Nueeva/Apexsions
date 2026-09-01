@@ -109,6 +109,19 @@ public class EconomyMainMenu extends Gui {
             new AuctionBrowseMenu(plugin, player, this).open();
         }));
 
+        // 6. Bank & Deposito Button (Slot 31)
+        setButton(31, new GuiButton(new ItemBuilder(Material.GOLD_BLOCK)
+                .name("&6&l[🏛] BRANKAS & DEPOSITO BERJANGKA")
+                .lore(List.of(
+                        "&7Simpan uang Rupiah Anda di brankas kerajaan",
+                        "&7dan peroleh bunga imbal hasil terukur (1.5% - 12.5%).",
+                        " ",
+                        "&6Klik untuk membuka menu deposito >"
+                ))
+                .build(), event -> {
+            new BankDepositMenu(plugin, player, this).open();
+        }));
+
         // Close Button
         setButton(40, new CloseButton());
     }

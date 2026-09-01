@@ -112,12 +112,25 @@ public class AuctionService {
                     return false;
                 }
 
-                // 1. Withdraw money from buyer & Deposit to seller atomically
+                double taxPercent = plugin.getConfig().getDouble("auction.tax-percent", 5.0);
+                double taxAmount = Math.max(0, Math.floor(listing.getPrice() * (taxPercent / 100.0)));
+                double sellerNet = listing.getPrice() - taxAmount;
+
+                // 1. Withdraw money from buyer & Deposit net to seller atomically
                 if (!cs.removeBalance(buyer.getUniqueId(), currency.getId(), listing.getPrice())) {
                     buyer.sendMessage("§cGagal memproses pembayaran lelang.");
                     return false;
                 }
-                cs.addBalance(listing.getSellerUuid(), currency.getId(), listing.getPrice());
+                cs.addBalance(listing.getSellerUuid(), currency.getId(), sellerNet);
+
+                // Deposit tax into kingdom treasury
+                if (taxAmount > 0) {
+                    String kingdom = plugin.getCoreHook() != null ? plugin.getCoreHook().getPlayerKingdom(listing.getSellerUuid()) : "ZENITHAR";
+                    if (kingdom == null || kingdom.equalsIgnoreCase("NONE")) {
+                        kingdom = "ZENITHAR";
+                    }
+                    plugin.getRepository().depositKingdomTreasury(kingdom, currency.getId(), taxAmount);
+                }
 
                 // 2. Mark auction as sold
                 listing.setStatus(AuctionStatus.SOLD);
@@ -142,7 +155,8 @@ public class AuctionService {
                 // Notify seller if online
                 Player seller = Bukkit.getPlayer(listing.getSellerUuid());
                 if (seller != null && seller.isOnline()) {
-                    seller.sendMessage("§a[✔] Barang lelang Anda (§e" + itemName + "§a) telah dibeli oleh §e" + buyer.getName() + " §aseharga §e" + NumberFormatUtil.format(listing.getPrice(), currency) + "§a!");
+                    String taxInfo = taxAmount > 0 ? " §7(Pajak Kas Kerajaan " + (int) taxPercent + "%: §c-" + NumberFormatUtil.format(taxAmount, currency) + "§7)" : "";
+                    seller.sendMessage("§a[✔] Barang lelang Anda (§e" + itemName + "§a) telah dibeli oleh §e" + buyer.getName() + "§a! Anda menerima §e" + NumberFormatUtil.format(sellerNet, currency) + taxInfo);
                 }
 
                 return true;
