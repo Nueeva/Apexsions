@@ -33,6 +33,8 @@ public class AdminHubListener implements Listener {
             shopGUI.handleClick(event);
         } else if (holder instanceof MediaAdminSubGUI mediaGUI) {
             mediaGUI.handleClick(event);
+        } else if (holder instanceof com.apexsions.core.gui.rank.RankListGUI rankGUI) {
+            rankGUI.handleClick(event);
         }
     }
 }

@@ -33,9 +33,11 @@ public class CitizensHook implements Listener {
 
         try {
             CitizensAPI.getTraitFactory().registerTrait(TraitInfo.create(KingdomGuideTrait.class).withName("kingdom-guide"));
+            CitizensAPI.getTraitFactory().registerTrait(TraitInfo.create(RankGuideTrait.class).withName("rank-guide"));
+            CitizensAPI.getTraitFactory().registerTrait(TraitInfo.create(WarpGuideTrait.class).withName("warp-guide"));
             Bukkit.getPluginManager().registerEvents(this, plugin);
             this.hooked = true;
-            plugin.getLogger().info("Successfully hooked into Citizens2 and registered KingdomGuideTrait.");
+            plugin.getLogger().info("Successfully hooked into Citizens2 and registered custom Apexsions NPC traits (kingdom-guide, rank-guide, warp-guide).");
         } catch (Throwable t) {
             plugin.getLogger().warning("Failed registering Citizens integration: " + t.getMessage());
         }
@@ -45,24 +47,49 @@ public class CitizensHook implements Listener {
     public void onNPCRightClick(NPCRightClickEvent event) {
         NPC npc = event.getNPC();
         if (npc == null) return;
+        Player player = event.getClicker();
+        String nameLower = npc.getName() != null ? npc.getName().toLowerCase() : "";
 
-        // Check if NPC has custom trait OR matching name
-        boolean isGuide = npc.hasTrait(KingdomGuideTrait.class);
-        if (!isGuide && npc.getName() != null) {
-            String nameLower = npc.getName().toLowerCase();
-            if (nameLower.contains("kingdom") || nameLower.contains("guide") || nameLower.contains("pledge") || nameLower.contains("penjaga")) {
-                isGuide = true;
-            }
-        }
+        // 1. Kingdom Guide (Mulai Bermain / Pilih Kerajaan)
+        boolean isKingdomGuide = npc.hasTrait(KingdomGuideTrait.class)
+                || nameLower.contains("mulai")
+                || nameLower.contains("kerajaan")
+                || nameLower.contains("kingdom")
+                || nameLower.contains("pledge")
+                || nameLower.contains("penjaga");
 
-        if (isGuide) {
-            Player player = event.getClicker();
+        if (isKingdomGuide) {
             Optional<PlayerData> dataOpt = plugin.getPlayerDataService().getCached(player.getUniqueId());
             if (dataOpt.isPresent() && !dataOpt.get().hasRegion()) {
                 plugin.getRegionSelectionGUI().open(player);
             } else {
                 plugin.getKingdomProfileGUI().open(player);
             }
+            return;
+        }
+
+        // 2. Rank List (Daftar Pangkat & Donatur)
+        boolean isRankGuide = npc.hasTrait(RankGuideTrait.class)
+                || nameLower.contains("rank")
+                || nameLower.contains("pangkat")
+                || nameLower.contains("donatur")
+                || nameLower.contains("donasi")
+                || nameLower.contains("store");
+
+        if (isRankGuide) {
+            new com.apexsions.core.gui.rank.RankListGUI(plugin, player).open();
+            return;
+        }
+
+        // 3. Warp List (Navigasi Teleportasi Realm)
+        boolean isWarpGuide = npc.hasTrait(WarpGuideTrait.class)
+                || nameLower.contains("warp")
+                || nameLower.contains("teleport")
+                || nameLower.contains("destinasi")
+                || nameLower.contains("lokasi");
+
+        if (isWarpGuide) {
+            player.openInventory(new com.apexsions.core.gui.warp.WarpGUI(plugin, player).getInventory());
         }
     }
 

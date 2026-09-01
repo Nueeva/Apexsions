@@ -381,6 +381,19 @@ public class ApexsionsCorePlugin extends JavaPlugin {
             cosmeticsCmd.setExecutor(cosmeticsHandler);
             cosmeticsCmd.setTabCompleter(cosmeticsHandler);
         }
+
+        // /rank (aliases: /ranks, /ranklist)
+        com.apexsions.core.command.RankCommand rankHandler = new com.apexsions.core.command.RankCommand(this);
+        PluginCommand rankCmd = getCommand("rank");
+        if (rankCmd != null) {
+            rankCmd.setExecutor(rankHandler);
+            rankCmd.setTabCompleter(rankHandler);
+        }
+        PluginCommand ranksCmd = getCommand("ranks");
+        if (ranksCmd != null) {
+            ranksCmd.setExecutor(rankHandler);
+            ranksCmd.setTabCompleter(rankHandler);
+        }
     }
 
     public static ApexsionsCorePlugin getInstance() { return instance; }

@@ -130,8 +130,22 @@ commands:
     description: Open the Particle Cosmetics GUI for Head Auras, Footstep Trails, and Kill Effects.
     permission: apexsionscore.command.cosmetics
     usage: /cosmetics
+  rank:
+    aliases:
+      - ranks
+      - ranklist
+    description: Open the interactive Rank Hierarchy and Donator Perks menu.
+    permission: apexsionscore.command.rank
+    usage: /rank
+  ranks:
+    description: Open the interactive Rank Hierarchy and Donator Perks menu.
+    permission: apexsionscore.command.rank
+    usage: /ranks
 
 permissions:
+  apexsionscore.command.rank:
+    description: Allows viewing the Rank Hierarchy GUI.
+    default: true
   apexsionscore.command.titles:
     description: Allows accessing the Title Vault GUI.
     default: true
