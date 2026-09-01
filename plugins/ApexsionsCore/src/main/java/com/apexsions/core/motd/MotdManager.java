@@ -2,19 +2,15 @@ package com.apexsions.core.motd;
 
 import com.apexsions.core.ApexsionsCorePlugin;
 import com.destroystokyo.paper.event.server.PaperServerListPingEvent;
-import com.destroystokyo.paper.profile.PlayerProfile;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.UUID;
 
 public class MotdManager implements Listener {
 
@@ -47,18 +43,5 @@ public class MotdManager implements Listener {
                 .append(miniMessage.deserialize(line2));
 
         event.motd(motdComponent);
-
-        // Hover Player List Sample
-        List<String> hoverLines = config.getStringList("motd.hover-sample");
-        if (hoverLines != null && !hoverLines.isEmpty()) {
-            List<PlayerProfile> sampleProfiles = new ArrayList<>();
-            for (String hLine : hoverLines) {
-                // In Paper 1.21, PlayerProfile name supports legacy / component text
-                PlayerProfile profile = Bukkit.createProfile(UUID.randomUUID(), net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer.legacySection().serialize(miniMessage.deserialize(hLine)));
-                sampleProfiles.add(profile);
-            }
-            event.getPlayerSample().clear();
-            event.getPlayerSample().addAll(sampleProfiles);
-        }
     }
 }
