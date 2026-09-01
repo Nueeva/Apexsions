@@ -102,6 +102,7 @@ public class ApexsionsCorePlugin extends JavaPlugin {
     private com.apexsions.core.rank.RankAnimationManager rankAnimationManager;
     private com.apexsions.core.title.TitleManager titleManager;
     private com.apexsions.core.cosmetics.CosmeticsManager cosmeticsManager;
+    private com.apexsions.core.motd.MotdManager motdManager;
 
     // Public API
     private ApexsionsCoreAPI api;
@@ -192,6 +193,10 @@ public class ApexsionsCorePlugin extends JavaPlugin {
             Bukkit.getPluginManager().registerEvents(new PlayerListener(this), this);
             this.territoryListener = new TerritoryListener(this);
             Bukkit.getPluginManager().registerEvents(territoryListener, this);
+
+            // Server MOTD & Ping Manager
+            this.motdManager = new com.apexsions.core.motd.MotdManager(this);
+            Bukkit.getPluginManager().registerEvents(this.motdManager, this);
 
             // 9. Chat System (Only register fallback if ApexsionsChat is not installed)
             if (this.configManager.isChatEnabled() && !Bukkit.getPluginManager().isPluginEnabled("ApexsionsChat")) {
@@ -423,5 +428,6 @@ public class ApexsionsCorePlugin extends JavaPlugin {
     public FileConfiguration getGuiConfig() { return configManager.getGuiConfig(); }
     public FileConfiguration getChatConfig() { return configManager.getChatConfig(); }
     public TerritoryListener getTerritoryListener() { return territoryListener; }
+    public com.apexsions.core.motd.MotdManager getMotdManager() { return motdManager; }
     public ApexsionsCoreAPI getApi() { return api; }
 }

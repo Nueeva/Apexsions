@@ -58,3 +58,19 @@ rtp:
   max-attempts: 30
   # Padding distance from territory polygon borders (blocks)
   boundary-margin: 16
+
+motd:
+  enabled: true
+  line-1: "      <gradient:#f1c40f:#e67e22><bold>✦ APEXSIONS KINGDOM ✦</bold></gradient> <gray>•</gray> <aqua><bold>[1.21.4]</bold></aqua>"
+  lines-2:
+    - "   <gradient:#00c6ff:#0072ff>⚔ PERANG TIGA KERAJAAN & EKONOMI REALM ⚔</gradient>"
+    - "  <gradient:#2ecc71:#f1c40f>🌟 MUSIM BARU TELAH DIBUKA • GABUNG SEKARANG! 🌟</gradient>"
+    - "   <gradient:#e74c3c:#f39c12>👑 PILIH KERAJAANMU: ZENITHAR • SOLTERRA • SYLVAMOOR</gradient>"
+  hover-sample:
+    - "<gradient:#f1c40f:#e67e22><bold>✦ APEXSIONS KINGDOM NETWORK ✦</bold></gradient>"
+    - "<gray>Server Version:</gray> <yellow>Minecraft 1.21.4</yellow>"
+    - "<gray>Kingdoms:</gray> <gold>Zenithar</gold> <gray>•</gray> <red>Solterra</red> <gray>•</gray> <green>Sylvamoor</green>"
+    - "<gray>Fitur:</gray> <aqua>Custom Economy, Auction, BattlePass, War</aqua>"
+    - " "
+    - "<green>▶ Klik dua kali untuk bergabung ke server!</green>"
+
