@@ -124,6 +124,19 @@ public class PlaceholderApiHook extends PlaceholderExpansion {
                 }
                 return "Wanderer";
 
+            case "rank_display":
+            case "rank_formatted":
+                if (offlinePlayer.isOnline() && offlinePlayer.getPlayer() != null) {
+                    String mmRank = plugin.getLuckPermsHook().getPlayerRankDisplayName(offlinePlayer.getPlayer());
+                    try {
+                        return net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer.legacySection()
+                                .serialize(net.kyori.adventure.text.minimessage.MiniMessage.miniMessage().deserialize(mmRank));
+                    } catch (Exception e) {
+                        return mmRank;
+                    }
+                }
+                return "§7Wanderer";
+
             case "rank_color":
                 if (offlinePlayer.isOnline() && offlinePlayer.getPlayer() != null) {
                     return plugin.getLuckPermsHook().getPlayerRankColor(offlinePlayer.getPlayer());
