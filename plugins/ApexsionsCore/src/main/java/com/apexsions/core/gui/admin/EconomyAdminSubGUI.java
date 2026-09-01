@@ -87,13 +87,31 @@ public class EconomyAdminSubGUI implements InventoryHolder {
         inventory.setItem(23, createActionItem(Material.HOPPER, "<yellow><bold>🧹 BERSIHKAN LELANG EXPIRED</bold></yellow>",
                 List.of("<gray>Hapus lelang yang sudah kedaluwarsa.</gray>", "<yellow>▶ Klik untuk eksekusi</yellow>")));
 
-        // Slot 24: Top Balances (/balancetop)
+        // Slot 24: Top Balances (/economy top)
         inventory.setItem(24, createActionItem(Material.TOTEM_OF_UNDYING, "<gradient:#f1c40f:#e67e22><bold>🏆 TOP SALDO SERVER</bold></gradient>",
-                List.of("<gray>Lihat daftar pemain terkaya di server.</gray>", "<yellow>▶ Klik untuk lihat di chat</yellow>")));
+                List.of("<gray>Lihat daftar pemain terkaya di server.</gray>", "<yellow>▶ Klik untuk lihat peringkat</yellow>")));
+
+        // Slot 25: Kingdom Treasury Inspector
+        inventory.setItem(25, createActionItem(Material.GOLD_BLOCK, "<gradient:#ffd700:#f39c12><bold>🏛 KAS KERAJAAN (TREASURY)</bold></gradient>",
+                List.of(
+                        "<gray>Akumulasi pajak transaksi dari seluruh kerajaan.</gray>",
+                        "<gray>Pajak Lelang Aktif:</gray> <green>5% per transaksi</green>",
+                        " ",
+                        "<yellow>▶ Klik untuk cek kas kerajaan</yellow>"
+                )));
 
         // Slot 31: Reload Economy
         inventory.setItem(31, createActionItem(Material.REDSTONE_BLOCK, "<red><bold>🔄 RELOAD APEXSIONS ECONOMY</bold></red>",
                 List.of("<gray>Muat ulang konfigurasi, database, & pajak.</gray>", "<yellow>▶ Klik untuk reload</yellow>")));
+
+        // Slot 32: Bank Deposito Manager
+        inventory.setItem(32, createActionItem(Material.CHEST, "<gradient:#2ecc71:#f1c40f><bold>🏦 DEPOSITO BERJANGKA BANK</bold></gradient>",
+                List.of(
+                        "<gray>Kelola dan buka brankas deposito berjangka.</gray>",
+                        "<gray>Paket:</gray> <white>1 Hari (1.5%), 3 Hari (5%), 7 Hari (12.5%)</white>",
+                        " ",
+                        "<yellow>▶ Klik untuk buka menu deposito</yellow>"
+                )));
 
         // Slot 49: Back Button
         ItemStack backBtn = createActionItem(Material.OAK_DOOR, "<red><bold>◀ KEMBALI KE MASTER ADMIN HUB</bold></red>",
@@ -160,13 +178,30 @@ public class EconomyAdminSubGUI implements InventoryHolder {
 
         if (slot == 24) { // Top Balances
             player.closeInventory();
-            player.performCommand("economy bal");
+            player.performCommand("economy top");
+            return;
+        }
+
+        if (slot == 25) { // Kingdom Treasury
+            player.closeInventory();
+            player.sendMessage(mm.deserialize("<dark_gray><strikethrough>────────────────────────────────────────</strikethrough></dark_gray>"));
+            player.sendMessage(mm.deserialize("<gradient:#ffd700:#f39c12><bold>🏛 KAS KERAJAAN & STATUS TREASURY 🏛</bold></gradient>"));
+            player.sendMessage(mm.deserialize("<gray>Pajak Lelang (5%) disetorkan otomatis ke kas kerajaan penjual.</gray>"));
+            player.sendMessage(mm.deserialize("<dark_gray><strikethrough>────────────────────────────────────────</strikethrough></dark_gray>"));
+            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_CHIME, 1.0f, 1.2f);
             return;
         }
 
         if (slot == 31) { // Reload
             player.performCommand("ecoadmin reload");
             player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 0.8f, 1.5f);
+            return;
+        }
+
+        if (slot == 32) { // Bank Deposito
+            player.closeInventory();
+            player.performCommand("bank");
+            return;
         }
     }
 
