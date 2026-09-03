@@ -98,6 +98,10 @@ public class CoreAdminSubGUI implements InventoryHolder {
         inventory.setItem(24, createActionItem(Material.EMERALD_BLOCK, "<green><bold>👑 RAJA SYLVAMOOR</bold></green>",
                 List.of("<gray>Raja Saat Ini: <yellow>" + (kingSyl.isEmpty() ? "Belum Ditunjuk" : kingSyl) + "</yellow></gray>", "<yellow>▶ Klik untuk setel Raja Sylvamoor di chat</yellow>")));
 
+        // Slot 28: Level Rewards Editor
+        inventory.setItem(28, createActionItem(Material.CHEST, "<gradient:#f1c40f:#e67e22><bold>🎁 KELOLA HADIAH LEVEL 🎁</bold></gradient>",
+                List.of("<gray>Kelola hadiah Level 1-100 via Drag & Drop item.</gray>", "<yellow>▶ Klik untuk buka Level Reward Editor</yellow>")));
+
         // Row 4: Spawn & System Configs (Slots 29..34)
         inventory.setItem(29, createActionItem(Material.BEACON, "<light_purple><bold>🏛 ATUR SPAWN LOBBY</bold></light_purple>",
                 List.of("<gray>Tetapkan titik spawn lobby server pada posisimu.</gray>", "<yellow>▶ Klik untuk setel spawn</yellow>")));
@@ -190,6 +194,12 @@ public class CoreAdminSubGUI implements InventoryHolder {
                     },
                     this::open
             );
+            return;
+        }
+
+        if (slot == 28) { // Level Rewards Editor
+            player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1.0f, 1.0f);
+            player.openInventory(new AdminLevelRewardListGUI(plugin, player, 1).getInventory());
             return;
         }
 

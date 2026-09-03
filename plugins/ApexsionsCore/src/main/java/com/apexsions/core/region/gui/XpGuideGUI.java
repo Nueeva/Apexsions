@@ -63,7 +63,7 @@ public class XpGuideGUI implements Listener {
         // Top Center: Guide Overview
         ItemStack guideBook = createItem(Material.KNOWLEDGE_BOOK,
                 "<gold><bold>Panduan XP</bold></gold>",
-                "<gray>Daftar 13 sumber perolehan XP.",
+                "<gray>Daftar 14 sumber perolehan XP.",
                 "<yellow>Klik kategori untuk melihat rincian.</yellow>");
         inv.setItem(4, guideBook);
 
@@ -118,6 +118,11 @@ public class XpGuideGUI implements Listener {
                 "<yellow><bold>Exploration</bold></yellow>",
                 "<gray>Jalan, renang, elytra & lompat</gray>",
                 "<yellow>» Klik untuk buka</yellow>"));
+
+        inv.setItem(25, createCategoryCard(Material.WRITABLE_BOOK,
+                "<gradient:#06b6d4:#3b82f6><bold>Chat Games</bold></gradient>",
+                "<gray>Susun kata & hitung cepat</gray>",
+                "<aqua>» Klik untuk buka</aqua>"));
 
         // Bottom Navigation Bar
         inv.setItem(39, createItem(Material.NETHER_STAR,
@@ -221,6 +226,7 @@ public class XpGuideGUI implements Listener {
             case "brewing" -> "Brewing";
             case "enchanting" -> "Enchanting";
             case "exploration" -> "Exploration";
+            case "chatgame" -> "Chat Games (Trivia & Math)";
             default -> "Direktori";
         };
     }
@@ -462,6 +468,12 @@ public class XpGuideGUI implements Listener {
                 list.add(new GuideEntry(Material.SADDLE, "Tunggangan", 1, "Tiap 32 blok berkendara"));
                 list.add(new GuideEntry(Material.FEATHER, "Lompat Parkour", 1, "Cooldown 5 detik"));
             }
+            case "chatgame" -> {
+                list.add(new GuideEntry(Material.NAME_TAG, "Susun Kata (Word Unscramble)", 150, "Tebak kata acak di chat publik"));
+                list.add(new GuideEntry(Material.PAPER, "Hitung Cepat (Quick Math)", 150, "Selesaikan operasi matematika di chat"));
+                list.add(new GuideEntry(Material.CLOCK, "Interval Game Otomatis", 0, "Muncul otomatis setiap 5-10 menit di chat"));
+                list.add(new GuideEntry(Material.GOLD_NUGGET, "Hadiah Ekstra", 0, "Bonus koin & item event ApexsionsChat"));
+            }
         }
         return list;
     }
@@ -527,6 +539,7 @@ public class XpGuideGUI implements Listener {
                 case 22 -> openCategoryDetail(player, "brewing", 1);
                 case 23 -> openCategoryDetail(player, "enchanting", 1);
                 case 24 -> openCategoryDetail(player, "exploration", 1);
+                case 25 -> openCategoryDetail(player, "chatgame", 1);
                 case 39 -> plugin.getKingdomProfileGUI().open(player);
                 case 40 -> player.closeInventory();
                 case 41 -> plugin.getLevelRewardsGUI().open(player, 1);

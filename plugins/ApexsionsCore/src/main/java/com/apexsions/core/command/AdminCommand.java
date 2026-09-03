@@ -106,6 +106,15 @@ public class AdminCommand implements CommandExecutor, TabCompleter {
                 handleInfo(sender, args[1]);
                 break;
 
+            case "rewards":
+            case "reward":
+                if (!(sender instanceof Player p)) {
+                    sender.sendMessage(miniMessage.deserialize("<red>Perintah ini hanya dapat digunakan oleh pemain in-game.</red>"));
+                    return true;
+                }
+                p.openInventory(new com.apexsions.core.gui.admin.AdminLevelRewardListGUI(plugin, p, 1).getInventory());
+                break;
+
             default:
                 sendHelp(sender);
                 break;

@@ -81,7 +81,23 @@ public class KingdomCommand implements CommandExecutor, TabCompleter {
             case "rewards":
             case "reward":
             case "claim":
+                if (args.length > 1 && args[1].equalsIgnoreCase("admin")) {
+                    if (!player.hasPermission("apexsionscore.admin") && !player.isOp()) {
+                        player.sendMessage(miniMessage.deserialize("<red>Anda tidak memiliki izin admin!</red>"));
+                        return true;
+                    }
+                    player.openInventory(new com.apexsions.core.gui.admin.AdminLevelRewardListGUI(plugin, player, 1).getInventory());
+                    return true;
+                }
                 handleKingdomRewards(player);
+                break;
+
+            case "admin":
+                if (!player.hasPermission("apexsionscore.admin") && !player.isOp()) {
+                    player.sendMessage(miniMessage.deserialize("<red>Anda tidak memiliki izin admin!</red>"));
+                    return true;
+                }
+                player.openInventory(new com.apexsions.core.gui.admin.AdminLevelRewardListGUI(plugin, player, 1).getInventory());
                 break;
 
             case "xp":
@@ -274,6 +290,7 @@ public class KingdomCommand implements CommandExecutor, TabCompleter {
         if (args.length == 1) {
             List<String> list = new ArrayList<>(Arrays.asList("choose", "info", "top", "profile", "rewards", "claim", "xp", "guide", "level", "rtp", "wild", "wilderness"));
             if (sender.hasPermission("apexsionscore.admin")) {
+                list.add("admin");
                 list.add("setking");
                 list.add("unsetking");
                 list.add("removeking");
@@ -287,6 +304,10 @@ public class KingdomCommand implements CommandExecutor, TabCompleter {
             return result;
         } else if (args.length == 2 && (args[0].equalsIgnoreCase("setking") || args[0].equalsIgnoreCase("unsetking") || args[0].equalsIgnoreCase("removeking"))) {
             return Arrays.asList("ZENITHAR", "SOLTERRA", "SYLVAMOOR");
+        } else if (args.length == 2 && (args[0].equalsIgnoreCase("rewards") || args[0].equalsIgnoreCase("reward"))) {
+            if (sender.hasPermission("apexsionscore.admin")) {
+                return Collections.singletonList("admin");
+            }
         } else if (args.length == 3 && args[0].equalsIgnoreCase("setking")) {
             return null; // suggest online players
         }

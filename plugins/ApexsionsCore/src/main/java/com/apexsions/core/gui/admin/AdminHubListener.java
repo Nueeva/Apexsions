@@ -35,6 +35,10 @@ public class AdminHubListener implements Listener {
             mediaGUI.handleClick(event);
         } else if (holder instanceof com.apexsions.core.gui.rank.RankListGUI rankGUI) {
             rankGUI.handleClick(event);
+        } else if (holder instanceof AdminLevelRewardListGUI rewardListGUI) {
+            rewardListGUI.handleClick(event);
+        } else if (holder instanceof AdminLevelRewardEditorGUI rewardEditorGUI) {
+            rewardEditorGUI.handleClick(event);
         }
     }
 }

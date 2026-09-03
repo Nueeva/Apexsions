@@ -390,3 +390,12 @@ sources:
     jumping:
       cooldown-seconds: 5
       xp: 1
+
+  # ============================================================================
+  # 14. CHAT MINI-GAMES & TRIVIA (ApexsionsChat)
+  # ============================================================================
+  chat-game:
+    enabled: true
+    default: 150
+    unscramble: 150
+    math: 150

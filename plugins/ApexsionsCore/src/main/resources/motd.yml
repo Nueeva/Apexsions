@@ -1,0 +1,25 @@
+# ==============================================================================
+#                 APEXSIONS — MOTD CONFIGURATION (motd.yml)
+# ==============================================================================
+
+# Aktifkan atau nonaktifkan custom MOTD server
+enabled: true
+
+# Baris pertama MOTD (Mendukung Kyori Adventure / MiniMessage gradien & format warna)
+line-1: "      <gradient:#f1c40f:#e67e22><bold>✦ APEXSIONS KINGDOM ✦</bold></gradient> <gray>•</gray> <aqua><bold>[1.21.4]</bold></aqua>"
+
+# Baris kedua MOTD (Diambil secara acak dari salah satu baris di bawah ini saat ping)
+lines-2:
+  - "   <gradient:#00c6ff:#0072ff>⚔ PERANG TIGA KERAJAAN & EKONOMI REALM ⚔</gradient>"
+  - "  <gradient:#2ecc71:#f1c40f>🌟 MUSIM BARU TELAH DIBUKA • GABUNG SEKARANG! 🌟</gradient>"
+  - "   <gradient:#e74c3c:#f39c12>👑 PILIH KERAJAANMU: ZENITHAR • SOLTERRA • SYLVAMOOR</gradient>"
+  - "   <gradient:#9b59b6:#3498db>✨ DAFTAR CREATOR YOUTUBE & TIKTOK • DAPATKAN REWARD! ✨</gradient>"
+
+# Pengaturan Jumlah Slot Pemain di Tampilan Server List
+player-count:
+  # Jika true, slot maksimal server list akan mengikuti angka max-players di bawah
+  custom-max-players: false
+  max-players: 100
+
+  # Jika true, slot maksimal akan otomatis selalu (jumlah pemain online saat ini + 1)
+  just-one-more-slot: false

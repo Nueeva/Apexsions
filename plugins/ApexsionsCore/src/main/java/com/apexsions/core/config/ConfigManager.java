@@ -31,6 +31,7 @@ public class ConfigManager {
     private FileConfiguration guiConfig;
     private FileConfiguration chatConfig;
     private FileConfiguration ranksConfig;
+    private FileConfiguration motdConfig;
 
     // Parsed Main Config Fields
     private String serverName;
@@ -53,7 +54,9 @@ public class ConfigManager {
     // Level Formula
     private int levelMin;
     private int levelMax;
+    private String formulaType;
     private double formulaBase;
+    private double formulaMultiplier;
     private double formulaExponent;
     private boolean allowOverflow;
 
@@ -74,6 +77,7 @@ public class ConfigManager {
         this.ranksConfig = loadCustomFile("progression/ranks.yml", "ranks.yml");
         this.messagesConfig = loadCustomFile("messages.yml", "messages.yml");
         this.guiConfig = loadCustomFile("gui.yml", "gui.yml");
+        this.motdConfig = loadCustomFile("motd.yml", "motd.yml");
 
         // Server
         this.serverName = mainConfig.getString("server.name", "Apexsions");
@@ -119,7 +123,9 @@ public class ConfigManager {
         // Level
         this.levelMin = mainConfig.getInt("level.min", 1);
         this.levelMax = mainConfig.getInt("level.max", 100);
+        this.formulaType = mainConfig.getString("level.formula.type", "MULTIPLIER");
         this.formulaBase = mainConfig.getDouble("level.formula.base", 100.0);
+        this.formulaMultiplier = mainConfig.getDouble("level.formula.multiplier", 1.1);
         this.formulaExponent = mainConfig.getDouble("level.formula.exponent", 1.5);
         this.allowOverflow = mainConfig.getBoolean("level.allow-overflow", false);
     }
@@ -167,6 +173,7 @@ public class ConfigManager {
     public FileConfiguration getMessagesConfig() { return messagesConfig; }
     public FileConfiguration getGuiConfig() { return guiConfig; }
     public FileConfiguration getChatConfig() { return chatConfig; }
+    public FileConfiguration getMotdConfig() { return motdConfig != null ? motdConfig : mainConfig; }
 
     public String getServerName() { return serverName; }
     public String getDbType() { return dbType; }
@@ -216,7 +223,9 @@ public class ConfigManager {
 
     public int getLevelMin() { return levelMin; }
     public int getLevelMax() { return levelMax; }
+    public String getFormulaType() { return formulaType != null ? formulaType : "MULTIPLIER"; }
     public double getFormulaBase() { return formulaBase; }
+    public double getFormulaMultiplier() { return formulaMultiplier > 0 ? formulaMultiplier : 1.1; }
     public double getFormulaExponent() { return formulaExponent; }
     public boolean isAllowOverflow() { return allowOverflow; }
 

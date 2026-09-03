@@ -14,6 +14,7 @@ plugins/ApexsionsCore/
 ├── ranks.yml             <-- Hierarki pangkat LuckPerms & bobot weight (Ancestor s/d Wanderer)
 ├── titles.yml            <-- Daftar gelar prestise dan badge kerajaan per level
 ├── rewards.yml           <-- Konfigurasi hadiah level (Item, Command, Permission)
+├── motd.yml              <-- Kustomisasi MOTD server list ping (MiniMessage gradient, random lines, player slot)
 ├── gui.yml               <-- Tata letak visual GUI (Profile, Top, Rewards, Warp, Admin Hub)
 └── messages.yml          <-- Kumpulan pesan feedback visual MiniMessage
 ```
@@ -47,8 +48,39 @@ plugins/ApexsionsCore/
 | `/ac setkingdom <p> <k>`| `/kc setk` | Memindahkan kerajaan pemain seketika | `apexsionscore.admin` | `op` |
 | `/ac setlobby` | `/kc setlobby` | Menetapkan titik spawn lobi di lokasi berdiri | `apexsionscore.admin` | `op` |
 | `/ac info <p>` | `/kc info` | Memeriksa data lengkap level, XP, dan kerajaan pemain | `apexsionscore.admin` | `op` |
+| `/ac rewards` | `/kingdom admin rewards` | Membuka Interactive Level Reward Editor (Drag & Drop Items) | `apexsionscore.admin` | `op` |
 
 ---
+
+## 🎁 Sistem Hadiah Level & Progresi EXP
+
+### 1. Tata Letak GUI Hadiah Level (`LevelRewardsGUI` - 11 Halaman)
+- **Halaman 1**: 9 hadiah level reguler (Level 2–10) di baris ke-4 (Slot 27–35). Baris ke-3 tanpa milestone.
+- **Halaman 2 s/d 10**:
+  - **Baris ke-3 Tengah (Slot 22)**: Milestone Reward Spesial (Level 11, 21, 31, 41, 51, 61, 71, 81, 91) berupa `ENDER_CHEST`.
+  - **Baris ke-4 (Slot 27–35)**: 9 hadiah level reguler berikutnya berupa `CHEST` (Hal 2: Lv 12–20; ... Hal 10: Lv 92–99).
+- **Halaman 11 (Puncak)**: Hadiah **Level 100** berupa `NETHER_STAR` berdiri di formasi Altar Kaisar Tertinggi (Beacon, Gold Block, Crying Obsidian, Purple Star Trim) di baris ke-3 tengah (Slot 22).
+- **Material Status Visual**:
+  - **TERKUNCI**: `CHEST` / `ENDER_CHEST` / `NETHER_STAR` dengan **Efek Glowing** (Paper 1.21 `setEnchantmentGlintOverride`).
+  - **BISA DIKLAIM**: `CHEST` / `ENDER_CHEST` / `NETHER_STAR` dengan **Efek Glowing** dan prompt hijau.
+  - **SUDAH DIKLAIM**: `MINECART` redup.
+  - **Border & Latar**: `BLACK_STAINED_GLASS_PANE`.
+
+### 2. Admin Level Reward Editor (Drag & Drop & Stackable Checking)
+- Akses via `/admingui` $\rightarrow$ tombol ApexsionsCore $\rightarrow$ **Kelola Hadiah Level**, atau langsung via `/ac rewards`.
+- Admin dapat langsung menyeret (*drag and drop*) atau *shift-click* item apa pun dari inventory ke dalam 28 slot tengah editor.
+- **Pengecekan Stackable Ala BattlePass**:
+  - Item non-stackable (senjata, armor, alat, totem, elytra) otomatis dikunci pada jumlah **1x** dan tidak bisa ditambah lagi.
+  - Item stackable (ingot, diamond, makanan) dapat ditambah dengan klik kiri hingga batas maksimum stack (`getMaxStackSize()`).
+- Item tersimpan lengkap beserta lore, enchantment, dan NBT ke `progression/rewards.yml`.
+- Hadiah item diberikan langsung ke inventory pemain tanpa console command.
+
+### 3. Formula Kenaikan EXP (Multiplier 1,1x Per Level)
+- Menggunakan formula geometrik terkalibrasi di `config.yml`:
+  $$\text{RequiredXP}(level) = \text{round}\big(\text{base} \times \text{multiplier}^{(level - 1)}\big)$$
+  - Default: $\text{base} = 100$, $\text{multiplier} = 1.1$.
+  - Lv 1 $\rightarrow$ 100 XP, Lv 2 $\rightarrow$ 110 XP, Lv 3 $\rightarrow$ 121 XP, Lv 4 $\rightarrow$ 133 XP, dst.
+
 
 ## 🛡️ Mekanisme Keamanan & Integrasi Gameplay
 
