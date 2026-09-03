@@ -42,6 +42,15 @@ public class ApexsionsCoreHook {
         }
     }
 
+    public long getPlayerXp(UUID uuid) {
+        if (!isAvailable()) return 0L;
+        try {
+            return ApexsionsCoreProvider.get().getXp(uuid);
+        } catch (Throwable t) {
+            return 0L;
+        }
+    }
+
     public String getPlayerTitle(UUID uuid) {
         if (!isAvailable()) return "Citizen";
         try {

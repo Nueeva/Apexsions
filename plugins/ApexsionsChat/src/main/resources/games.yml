@@ -12,6 +12,7 @@ games:
   unscramble:
     enabled: true
     weight: 50
+    reward-xp: 150 # XP awarded to ApexsionsCore Level System
     words:
       - "Minecraft"
       - "Apexsions"
@@ -28,6 +29,7 @@ games:
   math:
     enabled: true
     weight: 50
+    reward-xp: 150 # XP awarded to ApexsionsCore Level System
     min-operators: 1
     max-operators: 3
     operators:
@@ -40,9 +42,10 @@ games:
 
   # Rewards granted atomically to the first correct player
   rewards:
+    # Integrasi Level Progression ApexsionsCore
     xp:
       enabled: true
-      amount: 150
+      amount: 150 # Default fallback amount if per-game reward-xp is not set
     vault-money:
       enabled: false
       amount: 500

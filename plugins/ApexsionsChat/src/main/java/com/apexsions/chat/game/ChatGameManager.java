@@ -126,11 +126,23 @@ public class ChatGameManager {
                 double elapsedSeconds = (System.currentTimeMillis() - gameStartTime) / 1000.0;
                 String timeFormatted = String.format("%.1f", elapsedSeconds);
 
+                // Determine XP amount
+                FileConfiguration config = plugin.getConfigManager().getGamesConfig();
+                String gameKey = (game instanceof QuickMathGame) ? "math" : "unscramble";
+                long defaultXp = config.getLong("games.rewards.xp.amount", 150);
+                long xp = config.getLong("games." + gameKey + ".reward-xp", defaultXp);
+                boolean xpEnabled = config.getBoolean("games.rewards.xp.enabled", true) && xp > 0;
+
+                String rewardText = xpEnabled
+                        ? " <dark_gray>•</dark_gray> <green>Hadiah: <yellow>+" + xp + " EXP Kerajaan</yellow></green>"
+                        : "";
+
                 // Broadcast win
                 Bukkit.broadcast(miniMessage.deserialize(
                         "<gradient:#22c55e:#16a34a><bold>🎉 GAME</bold></gradient> <dark_gray>➔</dark_gray> <white><bold>"
                         + player.getName() + "</bold></white> <gray>menjawab benar dalam</gray> <yellow>"
                         + timeFormatted + " detik</yellow><gray>! Jawaban: </gray><yellow><bold>" + game.getAnswer() + "</bold></yellow>"
+                        + rewardText
                 ));
 
                 // Sound
@@ -139,7 +151,7 @@ public class ChatGameManager {
                 }
 
                 // Grant rewards
-                grantRewards(player);
+                grantRewards(player, game, xp, xpEnabled);
 
                 // Schedule next game
                 scheduleNextGame();
@@ -149,14 +161,16 @@ public class ChatGameManager {
         return false;
     }
 
-    private void grantRewards(Player player) {
+    private void grantRewards(Player player, ChatGame game, long xp, boolean xpEnabled) {
         FileConfiguration config = plugin.getConfigManager().getGamesConfig();
 
         // 1. ApexsionsCore XP Reward
-        long xp = config.getLong("games.rewards.xp.amount", 150);
-        if (config.getBoolean("games.rewards.xp.enabled", true) && xp > 0) {
+        if (xpEnabled) {
             plugin.getApexsionsCoreHook().addXp(player.getUniqueId(), xp);
-            player.sendMessage(miniMessage.deserialize("<gradient:#ffeaa7:#55efc4><bold>🎁 HADIAH CHAT GAME:</bold></gradient> <green>Kamu memenangkan <yellow>+" + xp + " XP</yellow>!</green>"));
+            int currentLvl = plugin.getApexsionsCoreHook().getPlayerLevel(player.getUniqueId());
+            player.sendMessage(miniMessage.deserialize(
+                    "<gradient:#ffeaa7:#55efc4><bold>🎁 HADIAH CHAT GAME:</bold></gradient> <green>Kamu memenangkan <yellow><bold>+" + xp + " EXP</bold></yellow> ke sistem level ApexsionsCore! <gray>(Level Kerajaan: <gold><bold>" + currentLvl + "</bold></gold>)</gray></green>"
+            ));
         }
 
         // 2. Vault Economy Reward
