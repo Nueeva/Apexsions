@@ -2,7 +2,7 @@
 #                 APEXSIONS MEDIA — CONFIGURATION FILE
 # ==============================================================================
 
-# Database storage for persistent banner placements
+# Database storage for persistent banner placements & creator system
 database:
   type: "SQLITE" # SQLITE or POSTGRESQL
   sqlite:
@@ -45,3 +45,82 @@ interaction:
 cache:
   max-cached-images: 50
   expire-after-access-minutes: 60
+
+# ==============================================================================
+#           UNIFIED CONTENT CREATOR VERIFICATION & REWARD SUITE
+# ==============================================================================
+creator:
+  enabled: true
+
+  # Google Cloud YouTube Data API v3 Key (Wajib diisi untuk verifikasi YouTube)
+  # Dapatkan secara gratis di: https://console.cloud.google.com/apis/credentials
+  youtube:
+    enabled: true
+    api-key: "YOUR_GOOGLE_CLOUD_API_KEY"
+
+  # TikTok Verification (Menggunakan Scraper API Asynchronous)
+  tiktok:
+    enabled: true
+
+  # Daftar hashtag wajib server yang harus ada di judul/deskripsi video
+  required-hashtags:
+    - "#apexsions"
+    - "#apexsionsmc"
+    - "#apexsionssmp"
+
+  # Batas maksimal umur video sejak diunggah (dalam hari)
+  video-max-age-days: 14
+
+  # Batas waktu berlaku kode verifikasi linking (dalam menit)
+  verification-code-timeout-minutes: 10
+
+  # Tiering & Hadiah Konten Kreator
+  tiers:
+    bronze:
+      name: "<#cd7f32><bold>Bronze Creator</bold></#cd7f32>"
+      min-views: 200
+      min-likes: 20
+      perks-description:
+        - "<gold>25.000 Coins</gold>"
+        - "<aqua>500 EXP</aqua>"
+        - "<light_purple>Rank Media (14 Hari)</light_purple>"
+      rewards:
+        - "eco give %player% 25000"
+        - "lp user %player% parent addtemp media 14d"
+
+    silver:
+      name: "<white><bold>Silver Creator</bold></white>"
+      min-views: 1000
+      min-likes: 100
+      perks-description:
+        - "<gold>100.000 Coins</gold>"
+        - "<aqua>2.000 EXP</aqua>"
+        - "<light_purple>Rank Media (30 Hari)</light_purple>"
+        - "<yellow>Badge Creator Silver</yellow>"
+      rewards:
+        - "eco give %player% 100000"
+        - "lp user %player% parent addtemp media 30d"
+
+    gold:
+      name: "<gold><bold>Gold Creator</bold></gold>"
+      min-views: 5000
+      min-likes: 500
+      perks-description:
+        - "<gold>500.000 Coins</gold>"
+        - "<light_purple>Rank Media Permanen</light_purple>"
+        - "<yellow>Monarch / Creator Title Exclusive</yellow>"
+      rewards:
+        - "eco give %player% 500000"
+        - "lp user %player% parent add media"
+
+    diamond:
+      name: "<aqua><bold>Diamond Creator</bold></aqua>"
+      min-views: 20000
+      min-likes: 2000
+      perks-description:
+        - "<gold>2.000.000 Coins</gold>"
+        - "<gold>Rank Sions / VIP Sions Permanen</gold>"
+        - "<yellow>Akses Saluran Khusus & Custom Broadcast</yellow>"
+      rewards:
+        - "eco give %player% 2000000"
+        - "lp user %player% parent add sions"

@@ -3,7 +3,7 @@ version: '1.0.0'
 main: com.apexsions.media.ApexsionsMediaPlugin
 api-version: '1.21'
 author: Antigravity
-description: High-performance interactive banner, logo, and in-game media display suite with line-of-sight hover glow and URL actions.
+description: High-performance interactive banner, logo, and in-game media display suite with line-of-sight hover glow, URL actions, and unified Creator verification suite.
 
 commands:
   media:
@@ -11,6 +11,11 @@ commands:
     permission: apexsionsmedia.admin
     usage: /media <create|delete|list|info|setlink|reload>
     aliases: [banner, logomedia, mapimage]
+  creator:
+    description: Master command for Content Creator verification, linking, video submit, and rewards.
+    permission: apexsionsmedia.creator
+    usage: /creator <menu|submit|link|verify|unlink|tiers|admin>
+    aliases: [kreator, contentcreator, mediacreator]
 
 permissions:
   apexsionsmedia.admin:
@@ -19,3 +24,9 @@ permissions:
   apexsionsmedia.interact:
     description: Permission to interact and click on media banners.
     default: true
+  apexsionsmedia.creator:
+    description: Permission to use the Creator verification system.
+    default: true
+  apexsionsmedia.creator.admin:
+    description: Administrative access to manage and reset creator profiles.
+    default: op

@@ -168,7 +168,7 @@ Dokumentasi resmi yang merangkum arsitektur menyeluruh, interaksi antar-plugin, 
 
 ---
 
-### 🖼️ ApexsionsMedia
+### 🖼️ ApexsionsMedia (Banner & Creator Suite)
 | Perintah | Alias | Deskripsi | Hak Akses | Default |
 | :--- | :--- | :--- | :--- | :---: |
 | `/media create <id> <src> [w] [h] [url] [mode]` | `/banner create` | Memasang banner baru dengan auto-dimensi & link | `apexsionsmedia.admin` | `op` |
@@ -181,6 +181,13 @@ Dokumentasi resmi yang merangkum arsitektur menyeluruh, interaksi antar-plugin, 
 | `/media resize <id> <w> <h>` | `/banner resize` | Mengubah dimensi ukuran banner secara langsung | `apexsionsmedia.admin` | `op` |
 | `/media reload` | `/banner reload` | Reload konfigurasi & render ulang seluruh banner aktif | `apexsionsmedia.admin` | `op` |
 | `/media gui` | `/media admin`, `/banner gui` | Membuka Interactive Media Admin Management GUI | `apexsionsmedia.admin` | `op` |
+| `/creator` | `/kreator`, `/creator menu` | Membuka Interactive Creator Hub GUI (54-slot) | `apexsionsmedia.creator` | `true` |
+| `/creator submit <url>` | `/creator claim <url>` | Submit URL video YouTube/TikTok untuk verifikasi & klaim | `apexsionsmedia.creator` | `true` |
+| `/creator link <yt\|tt> <id>` | `/creator link yt/tt` | Memulai penautan akun YouTube / TikTok | `apexsionsmedia.creator` | `true` |
+| `/creator verify youtube` | `/creator verify` | Verifikasi kode linking deskripsi YouTube | `apexsionsmedia.creator` | `true` |
+| `/creator unlink <yt\|tt>` | `/creator unbind` | Memutuskan tautan akun kreator | `apexsionsmedia.creator` | `true` |
+| `/creator tiers` | `/creator rewards` | Membuka GUI daftar tingkatan tier & hadiah | `apexsionsmedia.creator` | `true` |
+| `/creator admin <reload\|info\|reset>` | `/creator admin` | Manajemen administrasi data & reload kreator | `apexsionsmedia.creator.admin` | `op` |
 
 ---
 

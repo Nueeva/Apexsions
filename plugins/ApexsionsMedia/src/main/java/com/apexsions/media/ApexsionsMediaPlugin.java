@@ -2,6 +2,10 @@ package com.apexsions.media;
 
 import com.apexsions.media.banner.MediaBannerManager;
 import com.apexsions.media.command.MediaCommand;
+import com.apexsions.media.creator.command.CreatorCommand;
+import com.apexsions.media.creator.listener.CreatorEventListener;
+import com.apexsions.media.creator.service.CreatorManager;
+import com.apexsions.media.creator.session.ChatInputSessionManager;
 import com.apexsions.media.engine.ImageRenderer;
 import com.apexsions.media.listener.MediaInteractListener;
 import com.apexsions.media.raytrace.MediaRaytraceService;
@@ -16,6 +20,8 @@ public class ApexsionsMediaPlugin extends JavaPlugin {
     private ImageRenderer imageRenderer;
     private MediaBannerManager bannerManager;
     private MediaRaytraceService raytraceService;
+    private CreatorManager creatorManager;
+    private ChatInputSessionManager chatInputSessionManager;
 
     @Override
     public void onEnable() {
@@ -34,15 +40,26 @@ public class ApexsionsMediaPlugin extends JavaPlugin {
         this.imageRenderer = new ImageRenderer(maxCached, expireMin);
         this.bannerManager = new MediaBannerManager(this);
         this.raytraceService = new MediaRaytraceService(this);
+        this.chatInputSessionManager = new ChatInputSessionManager(this);
+        this.creatorManager = new CreatorManager(this);
 
-        // Register Command & Listener
+        // Register Media Command & Listener
         MediaCommand cmd = new MediaCommand(this);
         if (getCommand("media") != null) {
             getCommand("media").setExecutor(cmd);
             getCommand("media").setTabCompleter(cmd);
         }
 
+        // Register Creator Command
+        CreatorCommand creatorCmd = new CreatorCommand(this);
+        if (getCommand("creator") != null) {
+            getCommand("creator").setExecutor(creatorCmd);
+            getCommand("creator").setTabCompleter(creatorCmd);
+        }
+
+        // Register Event Listeners
         getServer().getPluginManager().registerEvents(new MediaInteractListener(this), this);
+        getServer().getPluginManager().registerEvents(new CreatorEventListener(this), this);
 
         // Register Public API
         com.apexsions.media.api.ApexsionsMediaProvider.register(new com.apexsions.media.api.ApexsionsMediaAPIImpl(this));
@@ -52,6 +69,7 @@ public class ApexsionsMediaPlugin extends JavaPlugin {
 
         getLogger().info("========================================");
         getLogger().info("ApexsionsMedia v" + getDescription().getVersion() + " enabled successfully!");
+        getLogger().info("Creator Verification Suite loaded.");
         getLogger().info("========================================");
     }
 
@@ -63,6 +81,9 @@ public class ApexsionsMediaPlugin extends JavaPlugin {
         }
         if (bannerManager != null) {
             bannerManager.shutdown();
+        }
+        if (creatorManager != null) {
+            creatorManager.shutdown();
         }
         getLogger().info("ApexsionsMedia disabled.");
         instance = null;
@@ -82,5 +103,13 @@ public class ApexsionsMediaPlugin extends JavaPlugin {
 
     public MediaRaytraceService getRaytraceService() {
         return raytraceService;
+    }
+
+    public CreatorManager getCreatorManager() {
+        return creatorManager;
+    }
+
+    public ChatInputSessionManager getChatInputSessionManager() {
+        return chatInputSessionManager;
     }
 }
