@@ -48,6 +48,16 @@ if (Test-Path $mvn) {
 } elseif (Get-Command 'mvn' -ErrorAction SilentlyContinue) {
     $mvn = 'mvn'
     $hasMaven = $true
+} else {
+    $foundMvn = Get-ChildItem 'C:\Program Files\*\bin\mvn.cmd', 'C:\Program Files\*\maven\bin\mvn.cmd', 'C:\Program Files\Apache NetBeans\java\maven\bin\mvn.cmd' -ErrorAction SilentlyContinue | Select-Object -First 1
+    if ($foundMvn) {
+        $mvn = $foundMvn.FullName
+        $hasMaven = $true
+    }
+}
+if (-not $hasMaven) {
+    Write-Host '❌ Maven not found! Please install Maven or add it to PATH.' -ForegroundColor Red
+    exit 1
 }
 
 $allPlugins = @(
