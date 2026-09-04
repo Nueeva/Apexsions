@@ -171,12 +171,15 @@ public class KingdomProfileGUI implements Listener {
                 "<gold>» Klik untuk buka leaderboard</gold>");
         inv.setItem(29, topBtn);
 
-        // 7. Slot 31: XP Guide Directory
-        ItemStack xpGuideBtn = createItem(Material.KNOWLEDGE_BOOK,
-                "<green><bold>Panduan XP</bold></green>",
-                "<gray>Daftar 13 sumber perolehan XP.",
-                "<green>» Klik untuk buka</green>");
-        inv.setItem(31, xpGuideBtn);
+        // 7. Slot 31: Menu Ganti Nama
+        ItemStack nickBtn = createItem(Material.NAME_TAG,
+                "<gradient:#ffeaa7:#55efc4><bold>Menu Ganti Nama</bold></gradient>",
+                "<gray>Kustomisasi nama panggilan & warna.</gray>",
+                "<gray>Ganti teks via ketik: <white>/nick <nama></white></gray>",
+                "<gray>Pilih efek warna/gradasi via GUI.</gray>",
+                "",
+                "<yellow>» Klik untuk buka menu warna</yellow>");
+        inv.setItem(31, nickBtn);
 
         // 8. Slot 33: Random Teleport (RTP)
         ItemStack rtpBtn = createItem(Material.COMPASS,
@@ -235,9 +238,10 @@ public class KingdomProfileGUI implements Listener {
             return;
         }
 
-        // XP Guide (Slot 31)
+        // Menu Ganti Nama / Nick Color (Slot 31)
         if (slot == 31) {
-            plugin.getXpGuideGUI().open(player);
+            player.closeInventory();
+            player.performCommand("nick color");
             return;
         }
 

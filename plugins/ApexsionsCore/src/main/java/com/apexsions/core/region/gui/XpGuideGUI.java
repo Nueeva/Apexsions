@@ -121,7 +121,7 @@ public class XpGuideGUI implements Listener {
 
         inv.setItem(25, createCategoryCard(Material.WRITABLE_BOOK,
                 "<gradient:#06b6d4:#3b82f6><bold>Chat Games</bold></gradient>",
-                "<gray>Susun kata & hitung cepat</gray>",
+                "<gray>Hadiah:</gray> <gold><bold>+150 XP</bold></gold>",
                 "<aqua>» Klik untuk buka</aqua>"));
 
         // Bottom Navigation Bar
@@ -469,10 +469,8 @@ public class XpGuideGUI implements Listener {
                 list.add(new GuideEntry(Material.FEATHER, "Lompat Parkour", 1, "Cooldown 5 detik"));
             }
             case "chatgame" -> {
-                list.add(new GuideEntry(Material.NAME_TAG, "Susun Kata (Word Unscramble)", 150, "Tebak kata acak di chat publik"));
-                list.add(new GuideEntry(Material.PAPER, "Hitung Cepat (Quick Math)", 150, "Selesaikan operasi matematika di chat"));
-                list.add(new GuideEntry(Material.CLOCK, "Interval Game Otomatis", 0, "Muncul otomatis setiap 5-10 menit di chat"));
-                list.add(new GuideEntry(Material.GOLD_NUGGET, "Hadiah Ekstra", 0, "Bonus koin & item event ApexsionsChat"));
+                list.add(new GuideEntry(Material.NAME_TAG, "Susun Kata (Word Unscramble)", 150, "Menjawab benar kata acak di chat"));
+                list.add(new GuideEntry(Material.PAPER, "Hitung Cepat (Quick Math)", 150, "Menjawab benar soal hitungan di chat"));
             }
         }
         return list;

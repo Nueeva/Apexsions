@@ -117,6 +117,18 @@ public class ChatDatabaseManager {
                     timestamp BIGINT NOT NULL
                 );
             """);
+
+            // Nicknames & Tokens Table
+            stmt.executeUpdate("""
+                CREATE TABLE IF NOT EXISTS apexsions_nicknames (
+                    player_uuid VARCHAR(36) PRIMARY KEY,
+                    player_name VARCHAR(32) NOT NULL,
+                    nickname_raw VARCHAR(32) NOT NULL,
+                    color_style VARCHAR(32) NOT NULL DEFAULT 'default',
+                    tokens INTEGER NOT NULL DEFAULT 0,
+                    updated_at BIGINT NOT NULL
+                );
+            """);
         } catch (SQLException e) {
             plugin.getLogger().severe("Failed to initialize database tables: " + e.getMessage());
         }

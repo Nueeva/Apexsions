@@ -94,9 +94,20 @@ public class ChatFormatter {
             default -> "<gray>" + rank + "</gray>";
         };
 
+        var nickData = plugin.getNicknameService() != null ? plugin.getNicknameService().getNicknameData(player.getUniqueId()) : null;
+        boolean hasNick = nickData != null && nickData.hasNickname();
+
+        Component baseNameComponent = plugin.getNicknameService() != null
+                ? plugin.getNicknameService().getFormattedNickname(player)
+                : Component.text(player.getName());
+
+        String nickLine = hasNick
+                ? "<gray>Akun Asli:</gray> <white><bold>" + player.getName() + "</bold></white>\n<gray>Nama Panggilan:</gray> <yellow>~" + nickData.getNicknameRaw() + "</yellow>\n"
+                : "<gray>Pemain:</gray> <white><bold>" + pName + "</bold></white>\n";
+
         String hoverCard =
                 "<gradient:#f1c40f:#e67e22><bold>👑 KARTU IDENTITAS KARAKTER 👑</bold></gradient>\n" +
-                "<gray>Pemain:</gray> <white><bold>" + pName + "</bold></white>\n" +
+                nickLine +
                 "<gray>Gelar:</gray> " + title + "\n" +
                 "<gray>Rank:</gray> " + rankBadge + "\n" +
                 "<gray>Kerajaan:</gray> <gold>" + kingdomDisplay + "</gold>" + (profile != null && profile.isMonarch() ? " <yellow><bold>[RAJA]</bold></yellow>" : "") + "\n" +
@@ -105,7 +116,7 @@ public class ChatFormatter {
                 "<gray>Status Darah:</gray> <red>" + hp + "/" + maxHp + " ❤</red> <gray>• Ping:</gray> <green>" + ping + "ms</green>\n\n" +
                 "<yellow>▶ Klik untuk membuka menu interaksi sosial & profil pemain!</yellow>";
 
-        return miniMessage.deserialize("<white>" + player.getName() + "</white>")
+        return baseNameComponent
                 .hoverEvent(HoverEvent.showText(miniMessage.deserialize(hoverCard)))
                 .clickEvent(ClickEvent.runCommand("/channel profile " + player.getName()));
     }

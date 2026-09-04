@@ -134,24 +134,24 @@ public class ChatGameManager {
                 boolean xpEnabled = config.getBoolean("games.rewards.xp.enabled", true) && xp > 0;
 
                 String rewardText = xpEnabled
-                        ? " <dark_gray>•</dark_gray> <green>Hadiah: <yellow>+" + xp + " EXP Kerajaan</yellow></green>"
+                        ? " <dark_gray>•</dark_gray> <gray>Hadiah:</gray> <yellow><bold>+" + xp + " XP</bold></yellow>"
                         : "";
 
                 // Broadcast win
                 Bukkit.broadcast(miniMessage.deserialize(
-                        "<gradient:#22c55e:#16a34a><bold>🎉 GAME</bold></gradient> <dark_gray>➔</dark_gray> <white><bold>"
+                        "<gradient:#22c55e:#16a34a><bold>🎉 CHAT GAME</bold></gradient> <dark_gray>➔</dark_gray> <white><bold>"
                         + player.getName() + "</bold></white> <gray>menjawab benar dalam</gray> <yellow>"
-                        + timeFormatted + " detik</yellow><gray>! Jawaban: </gray><yellow><bold>" + game.getAnswer() + "</bold></yellow>"
+                        + timeFormatted + " detik</yellow><gray>! Jawaban:</gray> <yellow><bold>" + game.getAnswer() + "</bold></yellow>"
                         + rewardText
                 ));
 
-                // Sound
-                for (Player p : Bukkit.getOnlinePlayers()) {
-                    p.playSound(p.getLocation(), Sound.UI_TOAST_CHALLENGE_COMPLETE, 1.0f, 1.0f);
-                }
-
-                // Grant rewards
-                grantRewards(player, game, xp, xpEnabled);
+                // Dispatch sound and rewards on main server thread
+                Bukkit.getScheduler().runTask(plugin, () -> {
+                    for (Player p : Bukkit.getOnlinePlayers()) {
+                        p.playSound(p.getLocation(), Sound.UI_TOAST_CHALLENGE_COMPLETE, 1.0f, 1.0f);
+                    }
+                    grantRewards(player, game, xp, xpEnabled);
+                });
 
                 // Schedule next game
                 scheduleNextGame();
@@ -162,15 +162,22 @@ public class ChatGameManager {
     }
 
     private void grantRewards(Player player, ChatGame game, long xp, boolean xpEnabled) {
+        if (!Bukkit.isPrimaryThread()) {
+            Bukkit.getScheduler().runTask(plugin, () -> grantRewards(player, game, xp, xpEnabled));
+            return;
+        }
+
         FileConfiguration config = plugin.getConfigManager().getGamesConfig();
 
         // 1. ApexsionsCore XP Reward
         if (xpEnabled) {
             plugin.getApexsionsCoreHook().addXp(player.getUniqueId(), xp);
             int currentLvl = plugin.getApexsionsCoreHook().getPlayerLevel(player.getUniqueId());
-            player.sendMessage(miniMessage.deserialize(
-                    "<gradient:#ffeaa7:#55efc4><bold>🎁 HADIAH CHAT GAME:</bold></gradient> <green>Kamu memenangkan <yellow><bold>+" + xp + " EXP</bold></yellow> ke sistem level ApexsionsCore! <gray>(Level Kerajaan: <gold><bold>" + currentLvl + "</bold></gold>)</gray></green>"
-            ));
+            if (player.isOnline()) {
+                player.sendMessage(miniMessage.deserialize(
+                        "<gradient:#ffeaa7:#55efc4><bold>🎁 HADIAH CHAT GAME:</bold></gradient> <green>Selamat! Kamu mendapatkan <yellow><bold>+" + xp + " XP</bold></yellow> <dark_gray>•</dark_gray> <gray>Level saat ini: <gold><bold>Lv. " + currentLvl + "</bold></gold></gray></green>"
+                ));
+            }
         }
 
         // 2. Vault Economy Reward
@@ -178,7 +185,9 @@ public class ChatGameManager {
         if (config.getBoolean("games.rewards.vault-money.enabled", true) && money > 0) {
             if (plugin.getVaultHook() != null && plugin.getVaultHook().hasEconomy()) {
                 plugin.getVaultHook().deposit(player, money);
-                player.sendMessage(miniMessage.deserialize("<green>✓ <yellow>+Rp " + String.format("%,.0f", money) + "</yellow> berhasil ditambahkan ke saldo Rupiah!</green>"));
+                if (player.isOnline()) {
+                    player.sendMessage(miniMessage.deserialize("<green>✓ <yellow>+Rp " + String.format("%,.0f", money) + "</yellow> berhasil ditambahkan ke saldo Rupiah!</green>"));
+                }
             }
         }
 

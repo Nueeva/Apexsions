@@ -1,4 +1,4 @@
-﻿name: ApexsionsChat
+name: ApexsionsChat
 version: '1.0.0'
 main: com.apexsions.chat.ApexsionsChatPlugin
 api-version: '1.21'
@@ -66,6 +66,15 @@ commands:
     description: ApexsionsChat administrative management.
     permission: apexsionschat.admin
     usage: /apexsionschat <reload|game start|announce|mute|clear>
+  nick:
+    aliases:
+      - nickname
+    description: Custom nickname system with rename tokens and color/gradient selection.
+    permission: apexsions.nick
+    usage: /nick [nama|color|reset|token]
+  realname:
+    description: Resolve the real player account behind any active nickname.
+    usage: /realname <nickname>
 
 permissions:
   apexsionschat.channel:
@@ -118,4 +127,16 @@ permissions:
     default: false
   apexsionschat.admin:
     description: Full administrative control over ApexsionsChat.
+    default: op
+  apexsions.nick:
+    description: Allows using /nick to set a nickname using tokens.
+    default: true
+  apexsions.nick.color:
+    description: Allows choosing solid colors in /nick color GUI.
+    default: op
+  apexsions.nick.gradient:
+    description: Allows choosing premium gradient colors in /nick color GUI.
+    default: op
+  apexsions.nick.admin:
+    description: Allows administrative token management and setting/resetting others' nicknames.
     default: op

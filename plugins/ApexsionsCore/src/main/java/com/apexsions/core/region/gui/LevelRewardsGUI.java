@@ -314,7 +314,7 @@ public class LevelRewardsGUI implements Listener {
 
     private List<String> buildRewardItemDetails(Reward reward, boolean isMilestone) {
         List<String> list = new ArrayList<>();
-        list.add(isMilestone ? "<gold><bold>Hadiah:</bold></gold>" : "<yellow>Hadiah:</yellow>");
+        list.add(isMilestone ? "<gold><bold>Hadiah Milestone:</bold></gold>" : "<yellow><bold>Hadiah:</bold></yellow>");
 
         Set<String> itemNamesAdded = new HashSet<>();
 
@@ -359,6 +359,38 @@ public class LevelRewardsGUI implements Listener {
             }
         }
 
+        // 3. Fallback to commands if no items and no lore lines were added
+        if (list.size() == 1) {
+            if (reward.getCommands() != null && !reward.getCommands().isEmpty()) {
+                for (String cmd : reward.getCommands()) {
+                    String lower = cmd.toLowerCase().trim();
+                    if (lower.startsWith("eco give") || lower.startsWith("economy give")) {
+                        String[] parts = cmd.split("\\s+");
+                        if (parts.length >= 4) {
+                            list.add(" <gray>•</gray> <green>" + parts[3] + " Saldo Koin</green>");
+                        }
+                    } else if (lower.startsWith("crate key give")) {
+                        String[] parts = cmd.split("\\s+");
+                        if (parts.length >= 5) {
+                            list.add(" <gray>•</gray> <light_purple>" + parts[4] + "x Kunci Crate " + parts[3] + "</light_purple>");
+                        }
+                    } else if (lower.startsWith("give ")) {
+                        String[] parts = cmd.split("\\s+");
+                        if (parts.length >= 3) {
+                            String item = parts[2].replace("minecraft:", "").toUpperCase();
+                            String count = parts.length >= 4 ? parts[3] : "1";
+                            list.add(" <gray>•</gray> <white>" + count + "x " + formatItemName(item) + "</white>");
+                        }
+                    } else {
+                        list.add(" <gray>•</gray> <yellow>Hadiah Spesial Kerajaan</yellow>");
+                    }
+                }
+            } else {
+                list.add(" <gray>•</gray> <yellow>150 Koin & XP Kerajaan</yellow>");
+            }
+        }
+
+        list.add("<gray> </gray>"); // Spacing before status
         return list;
     }
 
@@ -480,6 +512,8 @@ public class LevelRewardsGUI implements Listener {
             if (statusLine != null && !statusLine.isEmpty()) {
                 lore.add(miniMessage.deserialize(statusLine));
             }
+            meta.lore(lore); // Set lore on item meta!
+
             if (glow) {
                 // Paper 1.20.5+ / 1.21.4 Component Glint Override
                 try {

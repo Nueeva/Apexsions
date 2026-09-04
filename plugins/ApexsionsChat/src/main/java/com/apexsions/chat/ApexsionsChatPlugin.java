@@ -14,6 +14,7 @@ import com.apexsions.chat.config.ChatConfigManager;
 import com.apexsions.chat.database.ChatDatabaseManager;
 import com.apexsions.chat.database.MailRepository;
 import com.apexsions.chat.database.ModerationLogRepository;
+import com.apexsions.chat.database.NicknameRepository;
 import com.apexsions.chat.database.ReportRepository;
 import com.apexsions.chat.game.ChatGameManager;
 import com.apexsions.chat.gui.GUIListener;
@@ -21,6 +22,9 @@ import com.apexsions.chat.integration.ApexsionsCoreHook;
 import com.apexsions.chat.integration.LuckPermsHook;
 import com.apexsions.chat.integration.PlaceholderApiHook;
 import com.apexsions.chat.integration.VaultHook;
+import com.apexsions.chat.nick.NicknameListener;
+import com.apexsions.chat.nick.NicknameService;
+import com.apexsions.chat.nick.gui.NickColorGUI;
 import com.apexsions.chat.model.Mail;
 import com.apexsions.chat.model.Report;
 import com.apexsions.chat.moderation.ModerationEngine;
@@ -43,6 +47,7 @@ public class ApexsionsChatPlugin extends JavaPlugin implements ApexsionsChatAPI 
     private ReportRepository reportRepository;
     private MailRepository mailRepository;
     private ModerationLogRepository moderationLogRepository;
+    private NicknameRepository nicknameRepository;
 
     private ApexsionsCoreHook apexsionsCoreHook;
     private LuckPermsHook luckPermsHook;
@@ -56,6 +61,8 @@ public class ApexsionsChatPlugin extends JavaPlugin implements ApexsionsChatAPI 
     private ChatFormatter chatFormatter;
     private ChatGameManager gameManager;
     private AnnouncementManager announcementManager;
+    private NicknameService nicknameService;
+    private NickColorGUI nickColorGUI;
 
     @Override
     public void onEnable() {
@@ -78,6 +85,7 @@ public class ApexsionsChatPlugin extends JavaPlugin implements ApexsionsChatAPI 
         this.reportRepository = new ReportRepository(this, databaseManager);
         this.mailRepository = new MailRepository(this, databaseManager);
         this.moderationLogRepository = new ModerationLogRepository(this, databaseManager);
+        this.nicknameRepository = new NicknameRepository(this, databaseManager);
 
         // 4. Hooks
         this.apexsionsCoreHook = new ApexsionsCoreHook(this);
@@ -97,6 +105,8 @@ public class ApexsionsChatPlugin extends JavaPlugin implements ApexsionsChatAPI 
         this.chatFormatter = new ChatFormatter(this);
         this.gameManager = new ChatGameManager(this);
         this.announcementManager = new AnnouncementManager(this);
+        this.nicknameService = new NicknameService(this, nicknameRepository);
+        this.nickColorGUI = new NickColorGUI(this);
 
         // 6. Register Public API
         ApexsionsChatProvider.register(this);
@@ -105,6 +115,12 @@ public class ApexsionsChatPlugin extends JavaPlugin implements ApexsionsChatAPI 
         registerCommands();
         getServer().getPluginManager().registerEvents(new ChatListener(this), this);
         getServer().getPluginManager().registerEvents(new GUIListener(this), this);
+        getServer().getPluginManager().registerEvents(new NicknameListener(this), this);
+        getServer().getPluginManager().registerEvents(nickColorGUI, this);
+
+        for (Player p : Bukkit.getOnlinePlayers()) {
+            nicknameService.loadPlayer(p);
+        }
 
         // 8. Start Schedulers
         this.gameManager.startScheduler();
@@ -121,6 +137,11 @@ public class ApexsionsChatPlugin extends JavaPlugin implements ApexsionsChatAPI 
         if (gameManager != null) gameManager.stopScheduler();
         if (announcementManager != null) announcementManager.stopScheduler();
         if (placeholderApiHook != null) placeholderApiHook.unregister();
+        if (nicknameService != null) {
+            for (Player p : Bukkit.getOnlinePlayers()) {
+                nicknameService.unloadPlayer(p.getUniqueId());
+            }
+        }
         if (databaseManager != null) databaseManager.shutdown();
 
         ApexsionsChatProvider.unregister();
@@ -149,6 +170,12 @@ public class ApexsionsChatPlugin extends JavaPlugin implements ApexsionsChatAPI 
 
         ApexsionsChatAdminCommand adminCmd = new ApexsionsChatAdminCommand(this);
         registerCmd("apexsionschat", adminCmd);
+
+        NickCommand nickCmd = new NickCommand(this);
+        registerCmd("nick", nickCmd);
+
+        RealNameCommand realNameCmd = new RealNameCommand(this);
+        registerCmd("realname", realNameCmd);
     }
 
     private void registerCmd(String name, Object executor) {
@@ -223,4 +250,6 @@ public class ApexsionsChatPlugin extends JavaPlugin implements ApexsionsChatAPI 
     public ChatFormatter getChatFormatter() { return chatFormatter; }
     public ChatGameManager getGameManager() { return gameManager; }
     public AnnouncementManager getAnnouncementManager() { return announcementManager; }
+    public NicknameService getNicknameService() { return nicknameService; }
+    public NickColorGUI getNickColorGUI() { return nickColorGUI; }
 }

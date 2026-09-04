@@ -61,6 +61,10 @@ public class LevelManager {
 
     public void addXp(UUID uuid, long amount, XpSource source) {
         if (amount <= 0) return;
+        if (!Bukkit.isPrimaryThread()) {
+            Bukkit.getScheduler().runTask(plugin, () -> addXp(uuid, amount, source));
+            return;
+        }
 
         Optional<PlayerData> dataOpt = plugin.getPlayerDataService().getCached(uuid);
         if (dataOpt.isEmpty()) return;
@@ -84,15 +88,15 @@ public class LevelManager {
             return;
         }
 
-        amount = xpEvent.getAmount();
-        newXp = oldXp + amount;
+        long grantedAmount = xpEvent.getAmount();
+        newXp = oldXp + grantedAmount;
         data.setXp(newXp);
 
         // Reconcile and handle level-ups
         boolean leveledUp = reconcileLevel(data, player);
         if (!leveledUp && player != null && player.isOnline()) {
             long reqXp = formula.getRequiredXpForNextLevel(data.getLevel());
-            player.sendActionBar(miniMessage.deserialize("<gradient:#38ef7d:#11998e><bold>+" + amount + " XP</bold></gradient> <dark_gray>•</dark_gray> <gray>Lv. " + data.getLevel() + " (" + data.getXp() + "/" + reqXp + " XP)</gray>"));
+            player.sendActionBar(miniMessage.deserialize("<gradient:#38ef7d:#11998e><bold>+" + grantedAmount + " XP</bold></gradient> <dark_gray>•</dark_gray> <gray>Lv. " + data.getLevel() + " (" + data.getXp() + "/" + reqXp + " XP)</gray>"));
             player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 0.5f, 1.6f);
         }
     }
