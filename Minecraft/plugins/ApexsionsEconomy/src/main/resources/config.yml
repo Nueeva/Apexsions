@@ -24,8 +24,8 @@ currencies:
     decimals: 0
   diamond:
     id: "diamond"
-    display-name: "Diamond"
-    symbol: "💎"
+    display-name: "Diamond 💎"
+    symbol: "Diamond 💎"
     color: "&b"
     starting-balance: 0.0
     decimals: 0

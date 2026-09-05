@@ -68,7 +68,7 @@ public class TradeCurrencyEditMenu extends Gui {
         setButton(15, new GuiButton(new ItemBuilder(Material.LAVA_BUCKET)
                 .name("&c&l[✖] HAPUS TAWARAN SALDO")
                 .lore(List.of(
-                        "&7Batalkan penawaran saldo/diamond ini.",
+                        "&7Batalkan penawaran saldo/diamond 💎 ini.",
                         "&7Status konfirmasi akan direset.",
                         " ",
                         "&cKlik untuk menghapus tawaran >"

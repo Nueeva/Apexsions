@@ -42,10 +42,10 @@ public class EconomyMainMenu extends Gui {
         List<String> profileLore = new ArrayList<>();
         profileLore.add("&7Nama: &f" + player.getName());
         profileLore.add("&7Saldo Rupiah: &e" + (rupiah != null ? NumberFormatUtil.format(rupiahBal, rupiah) : ("Rp" + String.format("%,.0f", rupiahBal))));
-        profileLore.add("&7Saldo Diamond: &e" + (diamond != null ? NumberFormatUtil.format(diamondBal, diamond) : (String.format("%,.0f", diamondBal) + " Diamond")));
+        profileLore.add("&7Saldo Diamond 💎: &e" + (diamond != null ? NumberFormatUtil.format(diamondBal, diamond) : (String.format("%,.0f", diamondBal) + " Diamond 💎")));
         profileLore.add("&7Format Lengkap: &f" + (rupiah != null ? NumberFormatUtil.formatFull(rupiahBal, rupiah) : ("Rp" + String.format("%,.0f", rupiahBal))));
         profileLore.add("&7Peringkat Rupiah: &e" + (rupiahRank > 0 && rupiahRank <= 100 ? "#" + rupiahRank : "Belum Masuk Top 100"));
-        profileLore.add("&7Peringkat Diamond: &e" + (diamondRank > 0 && diamondRank <= 100 ? "#" + diamondRank : "Belum Masuk Top 100"));
+        profileLore.add("&7Peringkat Diamond 💎: &e" + (diamondRank > 0 && diamondRank <= 100 ? "#" + diamondRank : "Belum Masuk Top 100"));
         profileLore.add(" ");
         profileLore.add("&7Gunakan mata uang untuk transaksi, lelang,");
         profileLore.add("&7maupun berbelanja di BattlePass Shop.");
@@ -60,7 +60,7 @@ public class EconomyMainMenu extends Gui {
         setButton(19, new GuiButton(new ItemBuilder(Material.GOLD_INGOT)
                 .name("&e&l[💸] KIRIM UANG (PAY)")
                 .lore(List.of(
-                        "&7Transfer saldo Rupiah atau Diamond",
+                        "&7Transfer saldo Rupiah atau Diamond 💎",
                         "&7secara instan ke sesama pemain.",
                         " ",
                         "&eKlik untuk membuka menu transfer >"
@@ -87,7 +87,7 @@ public class EconomyMainMenu extends Gui {
                 .name("&6&l[🏆] LEADERBOARD KEKAYAAN")
                 .lore(List.of(
                         "&7Lihat daftar pemain terkaya di server",
-                        "&7untuk Rupiah dan Diamond.",
+                        "&7untuk Rupiah dan Diamond 💎.",
                         " ",
                         "&6Klik untuk membuka peringkat >"
                 ))
@@ -101,7 +101,7 @@ public class EconomyMainMenu extends Gui {
                 .lore(List.of(
                         "&7Pasar lelang aman antar pemain.",
                         "&7Jual dan beli barang langka menggunakan",
-                        "&7Rupiah atau Diamond dengan sistem escrow.",
+                        "&7Rupiah atau Diamond 💎 dengan sistem escrow.",
                         " ",
                         "&bKlik untuk membuka pasar lelang >"
                 ))

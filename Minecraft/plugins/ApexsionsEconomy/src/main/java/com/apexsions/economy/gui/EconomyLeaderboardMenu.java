@@ -75,8 +75,8 @@ public class EconomyLeaderboardMenu extends Gui {
         }));
 
         setButton(2, new GuiButton(new ItemBuilder(Material.DIAMOND)
-                .name(currencyId.equals("diamond") ? "&b&l[✔] LEADERBOARD DIAMOND" : "&b&lLEADERBOARD DIAMOND")
-                .lore(List.of("&7Peringkat kekayaan Diamond (Top 100).", " ", "&eKlik untuk beralih >"))
+                .name(currencyId.equals("diamond") ? "&b&l[✔] LEADERBOARD DIAMOND 💎" : "&b&lLEADERBOARD DIAMOND 💎")
+                .lore(List.of("&7Peringkat kekayaan Diamond 💎 (Top 100).", " ", "&eKlik untuk beralih >"))
                 .build(), event -> {
             new EconomyLeaderboardMenu(plugin, player, "diamond", parent, 1).open();
         }));

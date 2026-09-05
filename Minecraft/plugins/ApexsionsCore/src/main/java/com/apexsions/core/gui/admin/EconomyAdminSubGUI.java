@@ -62,7 +62,7 @@ public class EconomyAdminSubGUI implements InventoryHolder {
             hMeta.displayName(mm.deserialize("<gradient:#2ecc71:#f1c40f><bold>👑 SISTEM MULTI-CURRENCY APEXSIONS 👑</bold></gradient>"));
             hMeta.lore(List.of(
                     mm.deserialize("<gray>Plugin:</gray> <green>ApexsionsEconomy v1.0.0</green>"),
-                    mm.deserialize("<gray>Mata Uang:</gray> <yellow>Rupiah (IDR) & Diamond (Premium)</yellow>"),
+                    mm.deserialize("<gray>Mata Uang:</gray> <yellow>Rupiah (IDR) & Diamond 💎 (Premium)</yellow>"),
                     mm.deserialize("<gray>Fitur:</gray> <aqua>Bank, Lelang (/ah), Barter (/trade)</aqua>"),
                     Component.empty(),
                     mm.deserialize("<yellow>Pilih opsi kontrol ekonomi di bawah.</yellow>")
@@ -76,8 +76,8 @@ public class EconomyAdminSubGUI implements InventoryHolder {
                 List.of("<gray>Kirim saldo Rupiah ke pemain.</gray>", "<yellow>▶ Klik untuk input di chat</yellow>")));
 
         // Slot 21: Give Diamond (Chat Input)
-        inventory.setItem(21, createActionItem(Material.DIAMOND, "<aqua><bold>💎 TRANSFER SALDO DIAMOND</bold></aqua>",
-                List.of("<gray>Kirim saldo Diamond ke pemain.</gray>", "<yellow>▶ Klik untuk input di chat</yellow>")));
+        inventory.setItem(21, createActionItem(Material.DIAMOND, "<aqua><bold>💎 TRANSFER SALDO DIAMOND 💎</bold></aqua>",
+                List.of("<gray>Kirim saldo Diamond 💎 ke pemain.</gray>", "<yellow>▶ Klik untuk input di chat</yellow>")));
 
         // Slot 22: Open Auction House
         inventory.setItem(22, createActionItem(Material.GOLD_INGOT, "<gold><bold>🏛 BUKA AUCTION HOUSE (/ah)</bold></gold>",
@@ -148,7 +148,7 @@ public class EconomyAdminSubGUI implements InventoryHolder {
 
         if (slot == 21) { // Give Diamond
             plugin.getAdminChatInputManager().startSession(player,
-                    "Ketik nama pemain dan jumlah Diamond (format: <nama> <jumlah>):",
+                    "Ketik nama pemain dan jumlah Diamond 💎 (format: <nama> <jumlah>):",
                     input -> {
                         String[] parts = input.trim().split("\\s+");
                         if (parts.length >= 2) {

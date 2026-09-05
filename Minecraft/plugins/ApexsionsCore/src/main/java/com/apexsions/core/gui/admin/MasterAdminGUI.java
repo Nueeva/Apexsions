@@ -89,7 +89,7 @@ public class MasterAdminGUI implements InventoryHolder {
                 List.of(
                         "<gray>Akses penuh data pemain & moderasi:</gray>",
                         "<dark_gray>•</dark_gray> <aqua>Daftar Pemain Online & Offline</aqua>",
-                        "<dark_gray>•</dark_gray> <aqua>Edit Saldo Rupiah & Diamond Langsung</aqua>",
+                        "<dark_gray>•</dark_gray> <aqua>Edit Saldo Rupiah & Diamond 💎 Langsung</aqua>",
                         "<dark_gray>•</dark_gray> <aqua>Edit Level Karakter & XP Progresi</aqua>",
                         "<dark_gray>•</dark_gray> <aqua>Ganti Kerajaan & Sanksi (Mute/Kick/Ban)</aqua>",
                         "<dark_gray>•</dark_gray> <aqua>Teleport & Live Inventory Viewer</aqua>",
@@ -115,7 +115,7 @@ public class MasterAdminGUI implements InventoryHolder {
                 "<gradient:#2ecc71:#27ae60><bold>💰 APEXSIONS ECONOMY</bold></gradient>",
                 List.of(
                         "<gray>Multi-Currency, Bank & Lelang:</gray>",
-                        "<dark_gray>•</dark_gray> <green>Transfer Saldo Rupiah & Diamond</green>",
+                        "<dark_gray>•</dark_gray> <green>Transfer Saldo Rupiah & Diamond 💎</green>",
                         "<dark_gray>•</dark_gray> <green>Pasar Lelang Global (/ah)</green>",
                         "<dark_gray>•</dark_gray> <green>Bersihkan Lelang Expired</green>",
                         "<dark_gray>•</dark_gray> <green>Top Saldo Terkaya Server</green>",
@@ -169,7 +169,7 @@ public class MasterAdminGUI implements InventoryHolder {
                         "<gray>Kontrol sihir, tier pricing & custom items:</gray>",
                         "<dark_gray>•</dark_gray> <yellow>Katalog Enchants (/ace enchants)</yellow>",
                         "<dark_gray>•</dark_gray> <yellow>Admin Item Creator (/ace create)</yellow>",
-                        "<dark_gray>•</dark_gray> <yellow>Atur Harga Tier (Rupiah/Diamond)</yellow>",
+                        "<dark_gray>•</dark_gray> <yellow>Atur Harga Tier (Rupiah/Diamond 💎)</yellow>",
                         "",
                         "<yellow>▶ Klik untuk buka Panel Custom Enchants!</yellow>"
                 )));

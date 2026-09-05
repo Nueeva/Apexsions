@@ -86,8 +86,8 @@ public class PlayerInspectorGUI implements InventoryHolder {
                 List.of("<gray>Tambah saldo target sebesar <gold>Rp 1.000.000</gold>.</gray>", "<yellow>▶ Klik untuk tambah</yellow>")));
         inventory.setItem(15, createActionItem(Material.RAW_GOLD, "<yellow><bold>💰 SET SALDO RUPIAH</bold></yellow>",
                 List.of("<gray>Tentukan nominal saldo Rupiah target secara bebas.</gray>", "<yellow>▶ Klik untuk input nominal di chat</yellow>")));
-        inventory.setItem(16, createActionItem(Material.DIAMOND, "<aqua><bold>💎 ATUR SALDO DIAMOND</bold></aqua>",
-                List.of("<gray>Berikan atau kurangi saldo Diamond pemain.</gray>", "<yellow>▶ Klik untuk input nominal di chat</yellow>")));
+        inventory.setItem(16, createActionItem(Material.DIAMOND, "<aqua><bold>💎 ATUR SALDO DIAMOND 💎</bold></aqua>",
+                List.of("<gray>Berikan atau kurangi saldo Diamond 💎 pemain.</gray>", "<yellow>▶ Klik untuk input nominal di chat</yellow>")));
 
         // ════════════════ ROW 3: PROGRESSION, KINGDOM & MONARCH (Slots 19..26) ════════════════
         inventory.setItem(19, createActionItem(Material.REDSTONE, "<red><bold>-1 Level</bold></red>",
@@ -173,7 +173,7 @@ public class PlayerInspectorGUI implements InventoryHolder {
             lore.add(mm.deserialize("<gray>Level Karakter:</gray> <yellow>Lv. " + level + "</yellow> <gray>(" + title + ")</gray>"));
             lore.add(mm.deserialize("<gray>Progress XP:</gray> <aqua>" + xp + " / " + (reqXp == Long.MAX_VALUE ? "MAX" : reqXp) + " XP</aqua>"));
             lore.add(mm.deserialize("<gray>Saldo Rupiah:</gray> <green><bold>Rp " + String.format("%,.0f", balance) + "</bold></green>"));
-            lore.add(mm.deserialize("<gray>Saldo Diamond:</gray> <aqua><bold>" + String.format("%,.0f", diaBal) + " 💎</bold></aqua>"));
+            lore.add(mm.deserialize("<gray>Saldo Diamond 💎:</gray> <aqua><bold>" + String.format("%,.0f", diaBal) + " 💎</bold></aqua>"));
             lore.add(mm.deserialize("<gray>Darah / Lapar:</gray> <red>" + (int) target.getHealth() + "/" + (int) target.getMaxHealth() + " HP</red> <gray>•</gray> <gold>" + target.getFoodLevel() + "/20</gold>"));
             lore.add(mm.deserialize("<gray>GameMode:</gray> <white>" + target.getGameMode().name() + "</white> <gray>• Ping:</gray> <green>" + target.getPing() + "ms</green>"));
             lore.add(mm.deserialize("<gray>Lokasi:</gray> <white>" + target.getWorld().getName() + " (" + target.getLocation().getBlockX() + ", " + target.getLocation().getBlockY() + ", " + target.getLocation().getBlockZ() + ")</white>"));
@@ -239,7 +239,7 @@ public class PlayerInspectorGUI implements InventoryHolder {
         }
         if (slot == 16) { // Set Diamond Custom
             plugin.getAdminChatInputManager().startSession(admin,
-                    "Ketik jumlah Diamond yang ingin diberikan ke " + target.getName() + " (contoh: 50):",
+                    "Ketik jumlah Diamond 💎 yang ingin diberikan ke " + target.getName() + " (contoh: 50):",
                     input -> {
                         try {
                             double dia = Double.parseDouble(input.replaceAll("[^0-9.-]", ""));
@@ -253,12 +253,12 @@ public class PlayerInspectorGUI implements InventoryHolder {
                                         addedEco = true;
                                     }
                                 } catch (Throwable ignored) {}
-                                admin.sendMessage(mm.deserialize("<green>✓ Berhasil memberikan <aqua>" + String.format("%,.0f", dia) + " Diamond</aqua> ke " + target.getName() + "!</green>"));
-                                target.sendMessage(mm.deserialize("<green>✓ Kamu menerima <aqua>" + String.format("%,.0f", dia) + " Diamond</aqua> dari Administrator!</green>"));
+                                admin.sendMessage(mm.deserialize("<green>✓ Berhasil memberikan <aqua>" + String.format("%,.0f", dia) + " Diamond 💎</aqua> ke " + target.getName() + "!</green>"));
+                                target.sendMessage(mm.deserialize("<green>✓ Kamu menerima <aqua>" + String.format("%,.0f", dia) + " Diamond 💎</aqua> dari Administrator!</green>"));
                             }
                             admin.playSound(admin.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 0.8f, 1.4f);
                         } catch (Exception e) {
-                            admin.sendMessage(mm.deserialize("<red>Jumlah Diamond tidak valid!</red>"));
+                            admin.sendMessage(mm.deserialize("<red>Jumlah Diamond 💎 tidak valid!</red>"));
                         }
                         open();
                     },

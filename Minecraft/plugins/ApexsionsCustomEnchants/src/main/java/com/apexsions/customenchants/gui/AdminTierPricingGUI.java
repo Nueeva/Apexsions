@@ -56,7 +56,7 @@ public class AdminTierPricingGUI implements InventoryHolder {
         inventory.setItem(4, createItem(Material.GOLD_BLOCK, "<gradient:#f1c40f:#e67e22><bold>⚙ PENGATURAN HARGA & MATA UANG TIER ⚙</bold></gradient>", List.of(
                 "<gray>Atur jenis mata uang dan nominal gacha per tier.</gray>",
                 "",
-                "<yellow>• Klik Kiri:</yellow> <white>Ganti Mata Uang (Rupiah ↔ Diamond)</white>",
+                "<yellow>• Klik Kiri:</yellow> <white>Ganti Mata Uang (Rupiah ↔ Diamond 💎)</white>",
                 "<yellow>• Klik Kanan:</yellow> <white>Toggle Enabled / Coming Soon</white>",
                 "<yellow>• Shift+Klik Kiri:</yellow> <green>Tambah Harga (+)</green>",
                 "<yellow>• Shift+Klik Kanan:</yellow> <red>Kurangi Harga (-)</red>"
@@ -74,7 +74,7 @@ public class AdminTierPricingGUI implements InventoryHolder {
             slotGroupMap.put(slot, grp);
 
             List<String> lore = new ArrayList<>();
-            lore.add("<gray>Mata Uang:</gray> <yellow><bold>" + grp.getCurrency().toUpperCase() + "</bold></yellow>");
+            lore.add("<gray>Mata Uang:</gray> <yellow><bold>" + (grp.getCurrency().equalsIgnoreCase("diamond") ? "DIAMOND 💎" : grp.getCurrency().toUpperCase()) + "</bold></yellow>");
             lore.add("<gray>Harga Gacha:</gray> <gold><bold>" + grp.getFormattedCost() + "</bold></gold>");
             lore.add("<gray>Status:</gray> " + (grp.isComingSoon() ? "<red>Coming Soon</red>" : (grp.isEnabled() ? "<green>Aktif</green>" : "<red>Non-Aktif</red>")));
             lore.add("");

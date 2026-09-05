@@ -30,7 +30,7 @@ public class ExpConfirmMenu extends Gui {
         String formattedPrice = provider != null ? provider.format(context.getPrice()) : (context.getPrice() + " " + currencyName);
 
         Material summaryIcon = "rupiah".equalsIgnoreCase(context.getCurrencyId()) ? Material.EMERALD : Material.DIAMOND;
-        String methodDisplayName = "rupiah".equalsIgnoreCase(context.getCurrencyId()) ? "Rupiah (Rp.)" : "Diamond";
+        String methodDisplayName = "rupiah".equalsIgnoreCase(context.getCurrencyId()) ? "Rupiah (Rp.)" : "Diamond 💎";
 
         // 1. Transaction Summary Card (Slot 13)
         setButton(13, new GuiButton(new ItemBuilder(summaryIcon)

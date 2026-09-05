@@ -105,9 +105,9 @@ public class TradeMenu extends Gui {
         // 4. Player Money Offer Button (Slot 2)
         if (myOffer == null || myOffer.getCurrency() == null || myOffer.getMoneyAmount() <= 0) {
             setButton(MY_MONEY_SLOT, new GuiButton(new ItemBuilder(Material.REDSTONE)
-                    .name("&c&l[+] KIRIM SALDO / DIAMOND")
+                    .name("&c&l[+] KIRIM SALDO / DIAMOND 💎")
                     .lore(List.of(
-                            "&7Status: &cTidak mengirim uang/diamond",
+                            "&7Status: &cTidak mengirim uang/diamond 💎",
                             " ",
                             "&eKlik untuk memilih mata uang & jumlah >"
                     ))
@@ -137,7 +137,7 @@ public class TradeMenu extends Gui {
                     .name("&c&lTAWARAN SALDO LAWAN")
                     .lore(List.of(
                             "&7Pemain &e" + partner.getName() + " &7tidak",
-                            "&7mengirim saldo atau diamond."
+                            "&7mengirim saldo atau diamond 💎."
                     ))
                     .build(), null));
         } else {

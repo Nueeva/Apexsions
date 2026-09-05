@@ -51,7 +51,7 @@ public class PayMenu extends Gui {
 
         if (diamond != null) {
             setButton(3, new GuiButton(new ItemBuilder(Material.DIAMOND)
-                    .name((selectedCurrency == diamond ? "&b&l[✔] " : "&7") + "Transfer Diamond")
+                    .name((selectedCurrency == diamond ? "&b&l[✔] " : "&7") + "Transfer Diamond 💎")
                     .lore(List.of(
                             "&7Saldo Anda: &e" + NumberFormatUtil.format(plugin.getCurrencyService().getBalance(player.getUniqueId(), "diamond"), diamond),
                             " ",

@@ -183,7 +183,7 @@
                             <span class="text-dim small font-monospace">DUAL-CURRENCY</span>
                         </div>
                         <p class="apx-ledger-desc">
-                            Sistem transaksi ganda Rupiah (Rp) dan Diamond. Kuasai pasar dinamis berbasis supply-demand (/shop), lelang aman Escrow, dan pertukaran barter langsung lintas kerajaan.
+                            Sistem transaksi ganda Rupiah (Rp) dan Diamond 💎. Kuasai pasar dinamis berbasis supply-demand (/shop), lelang aman Escrow, dan pertukaran barter langsung lintas kerajaan.
                         </p>
                         @if(plugins()->isEnabled('wiki'))
                             <a href="{{ route('wiki.show', 'ekonomi-perdagangan') }}" class="apx-ledger-link">

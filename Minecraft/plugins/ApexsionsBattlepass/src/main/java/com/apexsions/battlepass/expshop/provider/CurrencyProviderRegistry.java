@@ -10,7 +10,7 @@ public class CurrencyProviderRegistry {
     public CurrencyProviderRegistry() {
         // Register ApexsionsEconomy currency providers
         registerProvider(new ApexsionsEconomyCurrencyProvider("rupiah", "Rupiah"));
-        registerProvider(new ApexsionsEconomyCurrencyProvider("diamond", "Diamond"));
+        registerProvider(new ApexsionsEconomyCurrencyProvider("diamond", "Diamond 💎"));
     }
 
     public void registerProvider(ExpShopCurrencyProvider provider) {

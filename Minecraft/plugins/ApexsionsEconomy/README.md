@@ -5,7 +5,7 @@ Plugin ekonomi multi-currency, transfer aman, pasar lelang (*Auction House*) den
 ---
 
 ## 🌟 Fitur Utama
-- **Multi-Currency Terintegrasi**: Mengelola mata uang `Rupiah` (Rp) dan `Diamond` secara independen dengan formatting cerdas (`K`, `Jt`, `M`, `T`).
+- **Multi-Currency Terintegrasi**: Mengelola mata uang `Rupiah` (Rp) dan `Diamond` (💎) secara independen dengan formatting cerdas (`K`, `Jt`, `M`, `T`).
 - **Transfer Saldo Cepat (`/pay`)**: GUI daftar kepala pemain online dan pencarian nama via chat.
 - **Auction House (`/ah`)**: Jual-beli item aman antar-pemain dengan masa berlaku lelang dan sistem *Escrow Claim*.
 - **Sistem Barter & Trade Kerajaan (`/trade`)**:

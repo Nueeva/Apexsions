@@ -50,11 +50,11 @@ public class TradeCurrencySelectMenu extends Gui {
         if (diamond != null) {
             double bal = plugin.getCurrencyService().getBalance(player.getUniqueId(), "diamond");
             setButton(15, new GuiButton(new ItemBuilder(Material.DIAMOND)
-                    .name("&b&lTawarkan Diamond")
+                    .name("&b&lTawarkan Diamond 💎")
                     .lore(List.of(
                             "&7Saldo Anda: &e" + NumberFormatUtil.format(bal, diamond),
                             " ",
-                            "&eKlik untuk memasukkan jumlah Diamond >"
+                            "&eKlik untuk memasukkan jumlah Diamond 💎 >"
                     ))
                     .build(), event -> {
                 promptAmount(diamond);

@@ -11,12 +11,12 @@ public class DiamondCurrency implements Currency {
 
     @Override
     public String getDisplayName() {
-        return "Diamond";
+        return "Diamond 💎";
     }
 
     @Override
     public String getSymbol() {
-        return "Diamond";
+        return "Diamond 💎";
     }
 
     @Override

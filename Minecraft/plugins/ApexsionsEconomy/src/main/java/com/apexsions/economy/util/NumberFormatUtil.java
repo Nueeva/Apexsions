@@ -81,7 +81,7 @@ public final class NumberFormatUtil {
      */
     public static double parse(String input) throws NumberFormatException {
         if (input == null || input.isBlank()) throw new NumberFormatException("Input kosong");
-        String clean = input.trim().toLowerCase().replace(" ", "").replace("rp", "").replace("diamond", "");
+        String clean = input.trim().toLowerCase().replace(" ", "").replace("rp", "").replace("diamond", "").replace("💎", "");
 
         double multiplier = 1.0;
         if (clean.endsWith("t")) {

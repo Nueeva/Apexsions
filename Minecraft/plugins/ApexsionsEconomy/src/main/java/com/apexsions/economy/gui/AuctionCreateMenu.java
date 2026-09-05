@@ -52,7 +52,7 @@ public class AuctionCreateMenu extends Gui {
                 .lore(List.of(
                         "&7Pilih mata uang yang diinginkan untuk pembayaran.",
                         " ",
-                        "&aKlik untuk beralih (Rupiah / Diamond) >"
+                        "&aKlik untuk beralih (Rupiah / Diamond 💎) >"
                 ))
                 .build(), event -> {
             Currency rup = plugin.getCurrencyRegistry().get("rupiah");

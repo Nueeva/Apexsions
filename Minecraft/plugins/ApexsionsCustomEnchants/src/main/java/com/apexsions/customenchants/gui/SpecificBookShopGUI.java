@@ -116,7 +116,7 @@ public class SpecificBookShopGUI implements InventoryHolder {
             EnchantmentGroup grp = enchant.getGroup();
             double specificPrice = grp.getCost() * multiplier;
             String formattedCost = grp.getCurrency().equalsIgnoreCase("diamond")
-                    ? (long) specificPrice + " Diamond"
+                    ? (long) specificPrice + " Diamond 💎"
                     : "Rp " + String.format("%,d", (long) specificPrice).replace(',', '.');
 
             ItemStack star = new ItemStack(Material.FIREWORK_STAR);
@@ -285,7 +285,7 @@ public class SpecificBookShopGUI implements InventoryHolder {
 
             if (diaCount < price) {
                 player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
-                player.sendMessage(mm.deserialize("<red>Diamond kamu tidak mencukupi! Butuh <gold>" + (long) price + " Diamond</gold>.</red>"));
+                player.sendMessage(mm.deserialize("<red>Diamond kamu tidak mencukupi! Butuh <gold>" + (long) price + " Diamond 💎</gold>.</red>"));
                 return;
             }
 

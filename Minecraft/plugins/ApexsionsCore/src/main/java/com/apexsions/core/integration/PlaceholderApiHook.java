@@ -367,7 +367,7 @@ public class PlaceholderApiHook extends PlaceholderExpansion {
     }
 
     private String getCurrencyBalance(OfflinePlayer player, String currencyId, boolean formatted) {
-        if (player == null || player.getUniqueId() == null) return formatted ? (currencyId.equalsIgnoreCase("rupiah") ? "Rp 0" : "0") : "0";
+        if (player == null || player.getUniqueId() == null) return formatted ? (currencyId.equalsIgnoreCase("rupiah") ? "Rp 0" : "0 💎") : "0";
         UUID uuid = player.getUniqueId();
 
         // 1. Try ApexsionsEconomyProvider
@@ -383,7 +383,7 @@ public class PlaceholderApiHook extends PlaceholderExpansion {
                     if (currencyId.equalsIgnoreCase("rupiah")) {
                         return "Rp " + String.format("%,.0f", bal);
                     } else {
-                        return String.format("%,.0f", bal);
+                        return String.format("%,.0f", bal) + " 💎";
                     }
                 } else {
                     return String.format("%.0f", bal);
@@ -397,6 +397,6 @@ public class PlaceholderApiHook extends PlaceholderExpansion {
             return formatted ? ("Rp " + String.format("%,.0f", bal)) : String.format("%.0f", bal);
         }
 
-        return formatted ? (currencyId.equalsIgnoreCase("rupiah") ? "Rp 0" : "0") : "0";
+        return formatted ? (currencyId.equalsIgnoreCase("rupiah") ? "Rp 0" : "0 💎") : "0";
     }
 }

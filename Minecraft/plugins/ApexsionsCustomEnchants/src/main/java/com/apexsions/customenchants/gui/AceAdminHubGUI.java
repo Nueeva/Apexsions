@@ -82,7 +82,7 @@ public class AceAdminHubGUI implements InventoryHolder {
         // Slot 22: Tier Pricing & Currency Settings (/ace pricing)
         inventory.setItem(22, createItem(Material.GOLD_INGOT, "<gradient:#2ecc71:#27ae60><bold>💰 TIER PRICING & ODDS (/ace pricing)</bold></gradient>", List.of(
                 "<gray>Pengaturan harga & mata uang Enchanter:</gray>",
-                "<dark_gray>•</dark_gray> <green>Ubah jenis pembayaran (Rupiah ↔ Diamond)</green>",
+                "<dark_gray>•</dark_gray> <green>Ubah jenis pembayaran (Rupiah ↔ Diamond 💎)</green>",
                 "<dark_gray>•</dark_gray> <green>Atur harga gacha acak per tier</green>",
                 "<dark_gray>•</dark_gray> <green>Atur multiplier toko buku spesifik & peluang</green>",
                 "",
