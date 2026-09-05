@@ -12,8 +12,8 @@ public class AdvertisementChecker {
     private final ApexsionsChatPlugin plugin;
     // IPv4 Address Pattern (with dots, spaces, commas, or colons)
     private final Pattern ipPattern = Pattern.compile("(?i)\\b(?:\\d{1,3}[.,\\s]){3}\\d{1,3}(?::\\d{1,5})?\\b");
-    // Web Domain Pattern
-    private final Pattern domainPattern = Pattern.compile("(?i)\\b(?:https?://|www\\.)?[a-zA-Z0-9-]+\\.(?:com|net|org|io|gg|me|xyz|co|tv|app|dev|ru|de|uk)\\b");
+    // Web Domain Pattern (including Indonesian TLDs like .my.id, .id, .web.id)
+    private final Pattern domainPattern = Pattern.compile("(?i)\\b(?:https?://|www\\.)?[a-zA-Z0-9-]+\\.(?:com|net|org|io|gg|me|xyz|co|tv|app|dev|ru|de|uk|my\\.id|web\\.id|id|site|online|cloud|top|biz|info)\\b");
     // Discord Invite Pattern
     private final Pattern discordPattern = Pattern.compile("(?i)(?:discord(?:\\.gg|\\.com/invite)/[a-zA-Z0-9]+)");
 

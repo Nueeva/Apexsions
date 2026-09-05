@@ -160,15 +160,29 @@ document.addEventListener('DOMContentLoaded', () => {
             overlay.classList.add('is-loaded');
         };
 
-        // Smoothly dismiss entrance overlay after page is interactive
+        // Smoothly dismiss entrance overlay
         requestAnimationFrame(() => {
-            setTimeout(dismissTransition, 120);
+            setTimeout(dismissTransition, 80);
         });
 
         // Ensure browser history (Back / Forward bfcache) never leaves screen blocked
         window.addEventListener('pageshow', () => {
             dismissTransition();
         });
+
+        // Instant Hover Prefetching for Internal Pages (eliminates loading lag)
+        document.addEventListener('mouseover', (e) => {
+            const link = e.target.closest('a');
+            if (!link || !link.href) return;
+            if (link.origin !== window.location.origin) return;
+            if (link.hasAttribute('data-prefetched')) return;
+
+            link.setAttribute('data-prefetched', 'true');
+            const prefetchLink = document.createElement('link');
+            prefetchLink.rel = 'prefetch';
+            prefetchLink.href = link.href;
+            document.head.appendChild(prefetchLink);
+        }, { passive: true });
 
         // Intercept internal page navigation links
         document.addEventListener('click', (e) => {
@@ -213,10 +227,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 overlay.classList.remove('is-loaded');
                 overlay.classList.add('is-navigating');
 
-                // Navigate after smooth animation engagement
+                // Snappy 200ms engagement before navigation
                 setTimeout(() => {
                     window.location.href = targetUrl.href;
-                }, 260);
+                }, 200);
 
                 // Safety fallback
                 setTimeout(() => {
@@ -230,7 +244,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     initPageTransitions();
 
-    // 5. Cinematic Scroll Reveal Animations
+    // 5. Cinematic Scroll Reveal Animations (Silky Smooth, Zero Popping)
     const initScrollAnimations = () => {
         if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
             return;
@@ -243,6 +257,7 @@ document.addEventListener('DOMContentLoaded', () => {
             '.apx-caste-banner',
             '.apx-step-monolith',
             '.apx-showcase-card',
+            '.apx-rule-card',
             '.apx-rule-item',
             '.apx-wiki-category-card',
             '.apx-wiki-article-item',
@@ -266,24 +281,30 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
         }, {
-            threshold: 0.08,
-            rootMargin: '0px 0px -30px 0px'
+            threshold: 0.05,
+            rootMargin: '0px 0px -20px 0px'
         });
 
+        const winHeight = window.innerHeight;
         elements.forEach(el => {
-            if (!el.classList.contains('apx-scroll-reveal')) {
+            const rect = el.getBoundingClientRect();
+            // If already inside or just above the viewport on initial paint, reveal immediately without pop-in!
+            if (rect.top < winHeight * 0.92) {
+                el.classList.add('is-revealed');
+            } else {
+                // Below the fold: animate gracefully as user scrolls
                 el.classList.add('apx-scroll-reveal');
-            }
 
-            const parent = el.parentElement;
-            if (parent && (parent.classList.contains('row') || parent.classList.contains('apx-stepper-grid') || parent.classList.contains('apx-pillar-grid'))) {
-                const childIndex = Array.from(parent.children).indexOf(el);
-                if (childIndex >= 0 && childIndex < 4) {
-                    el.classList.add(`apx-reveal-stagger-${childIndex + 1}`);
+                const parent = el.parentElement;
+                if (parent && (parent.classList.contains('row') || parent.classList.contains('apx-stepper-grid') || parent.classList.contains('apx-pillar-grid'))) {
+                    const childIndex = Array.from(parent.children).indexOf(el);
+                    if (childIndex >= 0 && childIndex < 4) {
+                        el.classList.add(`apx-reveal-stagger-${childIndex + 1}`);
+                    }
                 }
-            }
 
-            observer.observe(el);
+                observer.observe(el);
+            }
         });
     };
 

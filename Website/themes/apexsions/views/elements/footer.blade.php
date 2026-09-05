@@ -56,7 +56,7 @@
                     @if(plugins()->isEnabled('wiki'))
                         <li><a href="{{ route('wiki.index') }}"><i class="bi bi-book me-2"></i> Ensiklopedia Pemain</a></li>
                     @endif
-                    <li><a href="{{ route('home') }}#ranks"><i class="bi bi-shield-check me-2"></i> Aturan Ketertiban</a></li>
+                    <li><a href="{{ route('rules') }}"><i class="bi bi-shield-check me-2"></i> Peraturan Resmi</a></li>
                     <li><a href="#kebijakan"><i class="bi bi-file-earmark-lock me-2"></i> Ketentuan Transaksi</a></li>
                     <li><a href="https://discord.gg/apexsions" target="_blank" rel="noopener noreferrer"><i class="bi bi-headset me-2"></i> Pusat Bantuan</a></li>
                 </ul>

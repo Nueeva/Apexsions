@@ -49,6 +49,8 @@ advertising:
   enabled: true
   action: "BLOCK"
   whitelisted-domains:
+    - "apexsions.my.id"
+    - "web.apexsions.my.id"
     - "apexsions.net"
     - "apexsions.com"
     - "discord.gg/apexsions"

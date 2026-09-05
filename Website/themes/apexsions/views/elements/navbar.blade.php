@@ -44,6 +44,11 @@
                     </li>
                 @endif
                 <li class="nav-item">
+                    <a class="nav-link apx-nav-link @if(request()->routeIs('rules')) active @endif" href="{{ route('rules') }}">
+                        Peraturan
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link apx-nav-link" href="#" role="button" data-bs-toggle="modal" data-bs-target="#voteModal">
                         Vote
                     </a>

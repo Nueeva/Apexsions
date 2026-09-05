@@ -93,4 +93,6 @@ Route::prefix('news')->name('posts.')->group(function () {
 Route::resource('posts.comments', PostCommentController::class)
     ->middleware(['auth', 'verified'])->only(['store', 'destroy']);
 
+Route::view('/rules', 'rules')->name('rules');
+
 Route::get('/{path}', [FallbackController::class, 'get'])->where('path', '.*')->name('pages.show')->fallback();

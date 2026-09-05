@@ -2442,35 +2442,40 @@ code:not(pre code) {
     pointer-events: none;
     opacity: 0;
     visibility: hidden;
-    transition: opacity 0.38s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.38s cubic-bezier(0.16, 1, 0.3, 1);
+    transform: scale(1);
+    transition: opacity 0.35s cubic-bezier(0.22, 1, 0.36, 1), transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), visibility 0.4s;
+    will-change: opacity, transform, visibility;
 }
 
 .apx-page-transition.is-navigating {
     opacity: 1 !important;
     visibility: visible !important;
     pointer-events: auto !important;
-    transition: opacity 0.22s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    transform: scale(1) !important;
+    transition: opacity 0.22s cubic-bezier(0.22, 1, 0.36, 1), transform 0.25s cubic-bezier(0.22, 1, 0.36, 1) !important;
 }
 
 .apx-page-transition.is-entering {
     opacity: 1;
     visibility: visible;
     pointer-events: auto;
+    transform: scale(1);
 }
 
 .apx-page-transition.is-loaded {
     opacity: 0 !important;
     visibility: hidden !important;
     pointer-events: none !important;
-    transition: opacity 0.42s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.42s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    transform: scale(1.025) translateY(-8px) !important;
+    transition: opacity 0.48s cubic-bezier(0.22, 1, 0.36, 1), transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), visibility 0.5s !important;
 }
 
 .apx-transition-backdrop {
     position: absolute;
     inset: 0;
     background: radial-gradient(circle at 50% 48%, rgba(15, 21, 35, 0.98) 0%, rgba(6, 8, 13, 0.99) 70%, #06080d 100%);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
 }
 
 .apx-transition-content {
@@ -2482,30 +2487,31 @@ code:not(pre code) {
     justify-content: center;
     text-align: center;
     padding: 2rem;
+    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .apx-transition-crest-halo {
     position: absolute;
-    width: 220px;
-    height: 220px;
+    width: 240px;
+    height: 240px;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -65%);
-    background: radial-gradient(circle, rgba(212, 163, 89, 0.38) 0%, rgba(212, 163, 89, 0.1) 45%, transparent 70%);
+    background: radial-gradient(circle, rgba(212, 163, 89, 0.4) 0%, rgba(212, 163, 89, 0.1) 45%, transparent 70%);
     border-radius: 50%;
-    filter: blur(20px);
+    filter: blur(22px);
     pointer-events: none;
-    animation: apxHaloBreath 2.8s ease-in-out infinite;
+    animation: apxHaloBreath 2.6s ease-in-out infinite;
 }
 
 @keyframes apxHaloBreath {
-    0%, 100% { transform: translate(-50%, -65%) scale(0.9); opacity: 0.55; }
-    50% { transform: translate(-50%, -65%) scale(1.15); opacity: 1; }
+    0%, 100% { transform: translate(-50%, -65%) scale(0.92); opacity: 0.55; }
+    50% { transform: translate(-50%, -65%) scale(1.18); opacity: 1; }
 }
 
 .apx-transition-crest-wrap {
-    width: 100px;
-    height: 100px;
+    width: 104px;
+    height: 104px;
     position: relative;
     display: flex;
     align-items: center;
@@ -2523,12 +2529,12 @@ code:not(pre code) {
 
 @keyframes apxTransitionLogoPulse {
     0%, 100% {
-        transform: scale(0.95);
+        transform: scale(0.96);
         filter: drop-shadow(0 0 14px rgba(212, 163, 89, 0.4));
     }
     50% {
-        transform: scale(1.05);
-        filter: drop-shadow(0 0 30px rgba(212, 163, 89, 0.8));
+        transform: scale(1.04);
+        filter: drop-shadow(0 0 32px rgba(212, 163, 89, 0.85));
     }
 }
 
@@ -2540,10 +2546,10 @@ code:not(pre code) {
 
 .apx-transition-title {
     font-family: 'Cinzel', Georgia, serif;
-    font-size: 1.4rem;
+    font-size: 1.45rem;
     font-weight: 800;
     color: #ffffff;
-    letter-spacing: 0.22em;
+    letter-spacing: 0.24em;
     line-height: 1.2;
     margin-bottom: 0.35rem;
     text-shadow: 0 0 16px rgba(255, 255, 255, 0.25);
@@ -2563,7 +2569,7 @@ code:not(pre code) {
 .apx-transition-bar {
     width: 140px;
     height: 2px;
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.12);
     border-radius: 2px;
     overflow: hidden;
     position: relative;
@@ -2583,12 +2589,12 @@ code:not(pre code) {
 }
 
 /* ==============================================================================
-   Cinematic Scroll Reveal Animations
+   Cinematic Scroll Reveal Animations (Silky Smooth, Zero Popping)
    ============================================================================== */
 .apx-scroll-reveal {
     opacity: 0;
-    transform: translateY(24px);
-    transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+    transform: translateY(16px);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
     will-change: opacity, transform;
 }
 
@@ -2612,4 +2618,150 @@ code:not(pre code) {
     .apx-page-transition {
         display: none !important;
     }
+}
+
+/* ==============================================================================
+   Rules & Sovereignty Page Architecture
+   ============================================================================== */
+.apx-rules-page {
+    background: var(--apx-bg-base);
+    min-height: 80vh;
+}
+
+.apx-rule-card {
+    background: var(--apx-bg-surface);
+    border: 1px solid var(--apx-gold-border-subtle);
+    border-radius: var(--apx-radius-md);
+    overflow: hidden;
+    box-shadow: var(--apx-shadow-card);
+    transition: var(--apx-transition);
+}
+
+.apx-rule-card:hover {
+    border-color: var(--apx-gold-border);
+}
+
+.apx-rule-card-header {
+    background: var(--apx-bg-surface-raised);
+    border-bottom: 1px solid var(--apx-gold-border-subtle);
+    padding: 1.35rem 1.75rem;
+}
+
+.apx-rule-icon-box {
+    width: 48px;
+    height: 48px;
+    background: rgba(212, 163, 89, 0.12);
+    border: 1px solid var(--apx-gold-border);
+    border-radius: var(--apx-radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.apx-rule-pillar-tag {
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.18em;
+    color: var(--apx-gold-light);
+    text-transform: uppercase;
+}
+
+.apx-rule-pillar-title {
+    font-family: 'Cinzel', Georgia, serif;
+    font-size: 1.35rem;
+    color: #ffffff;
+    font-weight: 800;
+}
+
+.apx-rule-card-body {
+    padding: 2rem;
+}
+
+.apx-rule-item {
+    padding-bottom: 1.75rem;
+    margin-bottom: 1.75rem;
+    border-bottom: 1px solid var(--apx-border);
+}
+
+.apx-rule-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+    margin-bottom: 0;
+}
+
+.apx-rule-item-title {
+    font-size: 1.12rem;
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1.4;
+}
+
+.apx-rule-item-desc {
+    color: var(--apx-text-sub);
+    font-size: 0.96rem;
+    line-height: 1.8;
+    margin-bottom: 0.9rem;
+}
+
+.apx-prevention-box {
+    background: rgba(16, 185, 129, 0.07);
+    border: 1px solid rgba(16, 185, 129, 0.28);
+    border-left: 4px solid var(--apx-emerald);
+    border-radius: var(--apx-radius-xs);
+    padding: 0.95rem 1.25rem;
+    margin-top: 0.85rem;
+}
+
+.apx-prevention-header {
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    color: var(--apx-emerald-light);
+    margin-bottom: 0.35rem;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+}
+
+.apx-prevention-text {
+    font-size: 0.9rem;
+    color: #cbd5e1;
+    line-height: 1.65;
+}
+
+.apx-prevention-text code {
+    background: rgba(16, 185, 129, 0.18);
+    color: #6ee7b7;
+    padding: 0.15rem 0.4rem;
+    border-radius: 3px;
+    font-size: 0.84rem;
+    font-family: monospace;
+}
+
+.apx-sanction-table {
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.apx-sanction-table th {
+    background: var(--apx-bg-surface-raised) !important;
+    color: var(--apx-gold-light) !important;
+    font-family: 'Cinzel', Georgia, serif;
+    font-size: 0.92rem;
+    padding: 1.1rem 1.5rem !important;
+    border-bottom: 2px solid var(--apx-gold-border) !important;
+    letter-spacing: 0.05em;
+}
+
+.apx-sanction-table td {
+    padding: 1.1rem 1.5rem !important;
+    border-bottom: 1px solid var(--apx-border) !important;
+    color: var(--apx-text-sub) !important;
+    font-size: 0.94rem;
+    vertical-align: middle;
+}
+
+.apx-sanction-table tr:last-child td {
+    border-bottom: none !important;
 }
