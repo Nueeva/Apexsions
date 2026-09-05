@@ -56,9 +56,9 @@ public class AdminItemCreatorGUI implements InventoryHolder {
     private final Map<Integer, ItemStack> placedItems = new HashMap<>();
 
     // Global Set Bonus State for Fullset Armor & Tools
-    private boolean setBonusActive = true;
-    private String globalSetId = "apexsions";
-    private String globalSetName = "<gradient:#e74c3c:#f39c12><bold>Apexsions</bold></gradient>";
+    private boolean setBonusConfigured = false;
+    private String globalSetId = "";
+    private String globalSetName = "";
     private int globalRequiredPieces = 4;
     private final Map<KitStatType, Double> globalStats = new LinkedHashMap<>();
 
@@ -70,9 +70,7 @@ public class AdminItemCreatorGUI implements InventoryHolder {
         this.plugin = plugin;
         this.player = player;
         this.inventory = Bukkit.createInventory(this, 54, mm.deserialize("<gradient:#e74c3c:#f39c12><bold>🛠 APEXSIONS ITEM & FULLSET CREATOR 🛠</bold></gradient>"));
-
-        globalStats.put(KitStatType.DAMAGE_REDUCTION, 15.0);
-        globalStats.put(KitStatType.ATTACK_DAMAGE_BOOST, 20.0);
+        // Defaults are empty until configured by admin
         buildGUI();
     }
 
@@ -92,7 +90,10 @@ public class AdminItemCreatorGUI implements InventoryHolder {
         } else {
             placedItems.put(slot, newItem);
         }
-        checkAndApplyFullsetBonus();
+        // Only update fullset bonus if explicitly configured
+        if (setBonusConfigured && !globalSetId.isBlank() && !globalStats.isEmpty()) {
+            checkAndApplyFullsetBonus();
+        }
     }
 
     public void buildGUI() {
@@ -124,28 +125,50 @@ public class AdminItemCreatorGUI implements InventoryHolder {
         // 3. Armor Set Status & Configurator (Slot 15)
         boolean fullset = isFullsetComplete();
         List<Component> statusLore = new ArrayList<>();
-        statusLore.add(mm.deserialize("<gray>Nama Set: <gold>" + globalSetName + "</gold></gray>"));
-        statusLore.add(mm.deserialize("<gray>Set ID: <yellow>" + globalSetId + "</yellow></gray>"));
+        if (!globalSetName.isBlank()) {
+            statusLore.add(mm.deserialize("<gray>Nama Set: <gold>" + globalSetName + "</gold></gray>"));
+        } else {
+            statusLore.add(mm.deserialize("<gray>Nama Set: <dark_gray>(Belum Diatur)</dark_gray></gray>"));
+        }
+        if (!globalSetId.isBlank()) {
+            statusLore.add(mm.deserialize("<gray>Set ID: <yellow>" + globalSetId + "</yellow></gray>"));
+        } else {
+            statusLore.add(mm.deserialize("<gray>Set ID: <dark_gray>(Belum Diatur)</dark_gray></gray>"));
+        }
         statusLore.add(mm.deserialize("<gray>Syarat: <gold>" + globalRequiredPieces + " Pieces</gold></gray>"));
         statusLore.add(Component.empty());
         statusLore.add(mm.deserialize("<gray>Stat Bonus Aktif:</gray>"));
-        for (Map.Entry<KitStatType, Double> e : globalStats.entrySet()) {
-            statusLore.add(mm.deserialize("<aqua>● " + e.getKey().getDisplayName() + ": <gold>" + e.getKey().formatValue(e.getValue()) + "</gold></aqua>"));
+        if (globalStats.isEmpty()) {
+            statusLore.add(mm.deserialize("<dark_gray>● Belum ada stat bonus yang dipilih</dark_gray>"));
+        } else {
+            for (Map.Entry<KitStatType, Double> e : globalStats.entrySet()) {
+                statusLore.add(mm.deserialize("<aqua>● " + e.getKey().getDisplayName() + ": <gold>" + e.getKey().formatValue(e.getValue()) + "</gold></aqua>"));
+            }
         }
         statusLore.add(Component.empty());
         if (fullset) {
-            statusLore.add(mm.deserialize("<green><bold>✓ FULLSET ARMOR LENGKAP TERPASANG!</bold></green>"));
-            statusLore.add(mm.deserialize("<gray>Set bonus & Tool bonus otomatis diterapkan ke semua item.</gray>"));
+            statusLore.add(mm.deserialize("<green><bold>✓ FULLSET ARMOR LENGKAP TERPASANG (4/4)</bold></green>"));
+            if (setBonusConfigured && !globalStats.isEmpty()) {
+                statusLore.add(mm.deserialize("<gray>Set bonus & Tool bonus aktif diterapkan.</gray>"));
+            } else {
+                statusLore.add(mm.deserialize("<yellow>Atur set bonus di bawah untuk mengaktifkan efek.</yellow>"));
+            }
         } else {
-            statusLore.add(mm.deserialize("<red><bold>⚠ BELUM FULLSET (Armor belum 4 potong)</bold></red>"));
-            statusLore.add(mm.deserialize("<gray>Lengkapi 4 potong armor untuk mengaktifkan set bonus.</gray>"));
+            int count = (placedItems.containsKey(SLOT_HELMET) ? 1 : 0)
+                    + (placedItems.containsKey(SLOT_CHESTPLATE) ? 1 : 0)
+                    + (placedItems.containsKey(SLOT_LEGGINGS) ? 1 : 0)
+                    + (placedItems.containsKey(SLOT_BOOTS) ? 1 : 0);
+            statusLore.add(mm.deserialize("<yellow><bold>⚠ STATUS ARMOR: " + count + "/4 PIECES</bold></yellow>"));
+            statusLore.add(mm.deserialize("<gray>Lengkapi 4 potong armor untuk fullset bonus.</gray>"));
         }
         statusLore.add(Component.empty());
         statusLore.add(mm.deserialize("<yellow>▶ Klik untuk buka GUI Pengaturan Armor Set Bonus!</yellow>"));
 
-        ItemStack statusIcon = createItem(fullset ? Material.EMERALD : Material.REDSTONE,
-                fullset ? "<green><bold>[✓ FULLSET TERDETEKSI]</bold></green>" : "<red><bold>[⚠ BELUM FULLSET]</bold></red>",
-                statusLore, fullset);
+        Material iconMat = fullset && setBonusConfigured && !globalStats.isEmpty() ? Material.EMERALD : Material.CHAINMAIL_CHESTPLATE;
+        String iconTitle = setBonusConfigured && !globalStats.isEmpty()
+                ? "<green><bold>[✓ SET BONUS DIATUR]</bold></green>"
+                : "<yellow><bold>[SET BONUS: BELUM DIATUR]</bold></yellow>";
+        ItemStack statusIcon = createItem(iconMat, iconTitle, statusLore, setBonusConfigured && !globalStats.isEmpty());
         inventory.setItem(SLOT_SET_STATUS, statusIcon);
 
         // 4. Tools & Weapons Section (Bottom Center: Slots 28..34)
@@ -161,9 +184,11 @@ public class AdminItemCreatorGUI implements InventoryHolder {
         ), false));
 
         // Slot 48: Rename Set / Prefix via Chat
+        String nameDisplay = globalSetName.isBlank() ? "<dark_gray>(Belum Diatur)</dark_gray>" : "<gold>" + globalSetName + "</gold>";
+        String idDisplay = globalSetId.isBlank() ? "<dark_gray>(Belum Diatur)</dark_gray>" : "<yellow>" + globalSetId + "</yellow>";
         inventory.setItem(48, createItem(Material.NAME_TAG, "<gradient:#f1c40f:#e67e22><bold>🏷 UBAH NAMA SET DI CHAT</bold></gradient>", List.of(
-                mm.deserialize("<gray>Nama Set Saat Ini: <gold>" + globalSetName + "</gold></gray>"),
-                mm.deserialize("<gray>Set ID: <yellow>" + globalSetId + "</yellow></gray>"),
+                mm.deserialize("<gray>Nama Set Saat Ini: " + nameDisplay + "</gray>"),
+                mm.deserialize("<gray>Set ID: " + idDisplay + "</gray>"),
                 Component.empty(),
                 mm.deserialize("<yellow>▶ Klik untuk ketik nama set di chat!</yellow>"),
                 mm.deserialize("<dark_gray>Otomatis me-rename seluruh armor & tools di slot</dark_gray>"),
@@ -228,7 +253,7 @@ public class AdminItemCreatorGUI implements InventoryHolder {
     }
 
     public void checkAndApplyFullsetBonus() {
-        if (!setBonusActive) return;
+        if (!setBonusConfigured || globalSetId.isBlank() || globalStats.isEmpty()) return;
 
         // Apply armor set bonus if fullset complete
         if (isFullsetComplete()) {
@@ -247,6 +272,30 @@ public class AdminItemCreatorGUI implements InventoryHolder {
                     applyToolBonusToPiece(tool);
                 }
             }
+        }
+    }
+
+    public void removeFullsetBonusFromAll() {
+        for (ItemStack is : placedItems.values()) {
+            if (is == null) continue;
+            ItemMeta meta = is.getItemMeta();
+            if (meta == null) continue;
+            PersistentDataContainer pdc = meta.getPersistentDataContainer();
+            pdc.remove(new NamespacedKey("apexsions", "set_id"));
+            pdc.remove(new NamespacedKey("apexsions", "set_name"));
+            pdc.remove(new NamespacedKey("apexsions", "set_req"));
+            pdc.remove(new NamespacedKey("apexsions", "set_stats"));
+            pdc.remove(new NamespacedKey("apexsions", "set_type"));
+            pdc.remove(new NamespacedKey("apexsions", "set_val"));
+            pdc.remove(new NamespacedKey("apexsions", "tool_bonus"));
+
+            List<Component> lore = meta.hasLore() && meta.lore() != null ? new ArrayList<>(meta.lore()) : new ArrayList<>();
+            lore.removeIf(c -> {
+                String plain = mm.serialize(c);
+                return plain.contains("SET BONUS") || plain.contains("Syarat:") || plain.contains("Efek:") || plain.contains("TOOL SET BONUS");
+            });
+            meta.lore(lore);
+            is.setItemMeta(meta);
         }
     }
 
@@ -346,7 +395,10 @@ public class AdminItemCreatorGUI implements InventoryHolder {
             }
         }
 
-        checkAndApplyFullsetBonus();
+        // Only update fullset bonus if bonus was configured
+        if (setBonusConfigured && !globalStats.isEmpty()) {
+            checkAndApplyFullsetBonus();
+        }
         player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1.0f, 1.2f);
         player.sendMessage(mm.deserialize("<green><bold>✓ SUKSES!</bold> Seluruh armor dan tools diubah namanya menjadi <gold>" + newBaseName + " [Tipe]</gold>!</green>"));
     }
@@ -437,10 +489,26 @@ public class AdminItemCreatorGUI implements InventoryHolder {
             if (rawSlot == SLOT_SET_STATUS) {
                 event.setCancelled(true);
                 this.isNavigatingSubGUI = true;
-                ItemStack ref = placedItems.getOrDefault(SLOT_HELMET, placedItems.values().stream().findFirst().orElse(null));
-                new ArmorSetBonusPickerGUI(plugin, player, ref, this, updated -> {
-                    this.open();
-                }).open();
+                ItemStack ref = placedItems.get(SLOT_HELMET);
+                if (ref == null) {
+                    ref = placedItems.values().stream().findFirst().orElse(null);
+                }
+                new ArmorSetBonusPickerGUI(plugin, player, globalSetName, globalRequiredPieces, globalStats, ref, this,
+                        (savedName, savedReq, savedStats) -> {
+                            this.globalSetName = savedName;
+                            this.globalSetId = savedName.toLowerCase().replaceAll("[^a-z0-9_-]", "_");
+                            this.globalRequiredPieces = savedReq;
+                            this.globalStats.clear();
+                            this.globalStats.putAll(savedStats);
+                            this.setBonusConfigured = !savedStats.isEmpty();
+
+                            if (this.setBonusConfigured) {
+                                checkAndApplyFullsetBonus();
+                            } else {
+                                removeFullsetBonusFromAll();
+                            }
+                            this.open();
+                        }).open();
                 return;
             }
 
@@ -644,8 +712,10 @@ public class AdminItemCreatorGUI implements InventoryHolder {
                 if (placedItems.containsKey(tSlot)) toolList.add(placedItems.get(tSlot).clone());
             }
 
-            plugin.getPresetManager().savePreset(globalSetId, globalSetName, armorList, toolList);
-            player.sendMessage(mm.deserialize("<green>✓ Set <gold>" + globalSetName + "</gold> berhasil disimpan ke daftar Preset!</green>"));
+            String idToSave = globalSetId.isBlank() ? "preset_" + System.currentTimeMillis() : globalSetId;
+            String nameToSave = globalSetName.isBlank() ? "Custom Set" : globalSetName;
+            plugin.getPresetManager().savePreset(idToSave, nameToSave, armorList, toolList);
+            player.sendMessage(mm.deserialize("<green>✓ Set <gold>" + nameToSave + "</gold> berhasil disimpan ke daftar Preset!</green>"));
         }
 
         int count = placedItems.size();

@@ -34,29 +34,53 @@ public class ArmorSetBonusPickerGUI implements InventoryHolder {
     private final Player player;
     private final ItemStack item;
     private final InventoryHolder returnGUI;
-    private final Consumer<ItemStack> onUpdate;
     private final Inventory inventory;
     private final MiniMessage mm = MiniMessage.miniMessage();
 
     // State
-    private String setName = "Apexsions";
+    private String setName = "";
     private int requiredPieces = 4;
     private final Map<KitStatType, Double> activeStats = new LinkedHashMap<>();
-    private KitStatType selectedEditingStat = KitStatType.DAMAGE_REDUCTION;
+    private KitStatType selectedEditingStat = null;
     private boolean enabled = true;
 
     private static final List<String> PRESET_NAMES = List.of("Apexsions", "Warlord", "Gladiator", "Titan", "Phantom", "Sovereign", "Shadow", "Immortal");
     private int nameIndex = 0;
 
+    @FunctionalInterface
+    public interface SetBonusSaveCallback {
+        void onSave(String setName, int requiredPieces, Map<KitStatType, Double> activeStats);
+    }
+    private final SetBonusSaveCallback onConfigSave;
+
     public ArmorSetBonusPickerGUI(ApexsionsCustomEnchantsPlugin plugin, Player player, ItemStack item, InventoryHolder returnGUI, Consumer<ItemStack> onUpdate) {
+        this(plugin, player, "", 4, null, item, returnGUI, (savedName, savedReq, savedStats) -> {
+            if (onUpdate != null && item != null) {
+                onUpdate.accept(item);
+            }
+        });
+    }
+
+    public ArmorSetBonusPickerGUI(ApexsionsCustomEnchantsPlugin plugin, Player player, String initialSetName, int initialReq, Map<KitStatType, Double> initialStats, ItemStack item, InventoryHolder returnGUI, SetBonusSaveCallback onConfigSave) {
         this.plugin = plugin;
         this.player = player;
         this.item = item;
         this.returnGUI = returnGUI;
-        this.onUpdate = onUpdate;
+        this.onConfigSave = onConfigSave;
+        this.setName = initialSetName != null ? initialSetName : "";
+        this.requiredPieces = initialReq > 0 ? initialReq : 4;
+        if (initialStats != null && !initialStats.isEmpty()) {
+            this.activeStats.putAll(initialStats);
+        }
+
         this.inventory = Bukkit.createInventory(this, 54, mm.deserialize("<gradient:#e74c3c:#f39c12><bold>🛡 PENGATURAN MULTI-STAT SET BONUS 🛡</bold></gradient>"));
 
-        readExistingBonus();
+        if (this.activeStats.isEmpty() && item != null) {
+            readExistingBonus();
+        } else if (!this.activeStats.isEmpty()) {
+            this.selectedEditingStat = this.activeStats.keySet().iterator().next();
+        }
+
         buildGUI();
     }
 
@@ -107,11 +131,11 @@ public class ArmorSetBonusPickerGUI implements InventoryHolder {
             }
         }
 
-        if (activeStats.isEmpty()) {
-            activeStats.put(KitStatType.DAMAGE_REDUCTION, 15.0);
+        if (!activeStats.isEmpty()) {
+            this.selectedEditingStat = activeStats.keySet().iterator().next();
+        } else {
+            this.selectedEditingStat = null;
         }
-
-        this.selectedEditingStat = activeStats.keySet().iterator().next();
         this.enabled = true;
     }
 
@@ -165,29 +189,43 @@ public class ArmorSetBonusPickerGUI implements InventoryHolder {
                 ), is4));
 
         // Section 3: Bonus Value (Slots 28..34) for selected editing stat
-        double currentVal = activeStats.getOrDefault(selectedEditingStat, 15.0);
-        inventory.setItem(27, createItem(Material.BOOK, "<yellow><bold>3. ATUR NILAI: " + selectedEditingStat.getDisplayName() + "</bold></yellow>", List.of(
-                mm.deserialize("<gray>Nilai saat ini: <gold>" + selectedEditingStat.formatValue(currentVal) + "</gold></gray>"),
-                mm.deserialize("<gray>Klik salah satu persentase di samping:</gray>")
-        ), false));
+        if (selectedEditingStat != null) {
+            double currentVal = activeStats.getOrDefault(selectedEditingStat, selectedEditingStat.getDefaultValue());
+            inventory.setItem(27, createItem(Material.BOOK, "<yellow><bold>3. ATUR NILAI: " + selectedEditingStat.getDisplayName() + "</bold></yellow>", List.of(
+                    mm.deserialize("<gray>Nilai saat ini: <gold>" + selectedEditingStat.formatValue(currentVal) + "</gold></gray>"),
+                    mm.deserialize("<gray>Klik salah satu persentase di samping:</gray>")
+            ), false));
 
-        double[] values = {5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 50.0};
-        for (int i = 0; i < values.length; i++) {
-            double v = values[i];
-            boolean isValSel = (Math.abs(currentVal - v) < 0.01);
-            int slot = 28 + i;
-            inventory.setItem(slot, createItem(Material.EXPERIENCE_BOTTLE,
-                    "<gold><bold>" + selectedEditingStat.formatValue(v) + "</bold></gold>" + (isValSel ? " <green><bold>[TERPILIH]</bold></green>" : ""),
-                    List.of(
-                            mm.deserialize("<gray>Atur stat <yellow>" + selectedEditingStat.getDisplayName() + "</yellow> menjadi <gold>" + selectedEditingStat.formatValue(v) + "</gold>.</gray>"),
-                            Component.empty(),
-                            mm.deserialize(isValSel ? "<green>● Nilai ini sedang aktif.</green>" : "<yellow>▶ Klik untuk menerapkan nilai ini.</yellow>")
-                    ), isValSel));
+            double[] values = {5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 50.0};
+            for (int i = 0; i < values.length; i++) {
+                double v = values[i];
+                boolean isValSel = (Math.abs(currentVal - v) < 0.01);
+                int slot = 28 + i;
+                inventory.setItem(slot, createItem(Material.EXPERIENCE_BOTTLE,
+                        "<gold><bold>" + selectedEditingStat.formatValue(v) + "</bold></gold>" + (isValSel ? " <green><bold>[TERPILIH]</bold></green>" : ""),
+                        List.of(
+                                mm.deserialize("<gray>Atur stat <yellow>" + selectedEditingStat.getDisplayName() + "</yellow> menjadi <gold>" + selectedEditingStat.formatValue(v) + "</gold>.</gray>"),
+                                Component.empty(),
+                                mm.deserialize(isValSel ? "<green>● Nilai ini sedang aktif.</green>" : "<yellow>▶ Klik untuk menerapkan nilai ini.</yellow>")
+                        ), isValSel));
+            }
+        } else {
+            inventory.setItem(27, createItem(Material.BOOK, "<yellow><bold>3. ATUR NILAI STAT</bold></yellow>", List.of(
+                    mm.deserialize("<gray>Belum ada stat yang dipilih.</gray>"),
+                    mm.deserialize("<yellow>Pilih salah satu stat di Section 1 terlebih dahulu!</yellow>")
+            ), false));
+            for (int s = 28; s <= 34; s++) {
+                inventory.setItem(s, createItem(Material.GRAY_DYE, "<dark_gray><italic>Pilih Stat di Atas Terlebih Dahulu</italic></dark_gray>", List.of(
+                        mm.deserialize("<gray>Klik salah satu stat di baris atas untuk mengatur nilainya.</gray>")
+                ), false));
+            }
         }
 
         // Section 4: Set ID / Name
-        inventory.setItem(40, createItem(Material.NAME_TAG, "<gradient:#3498db:#9b59b6><bold>🏷 NAMA / ID SET: " + setName + "</bold></gradient>", List.of(
-                mm.deserialize("<gray>Set ID: <yellow>" + setName.toLowerCase() + "</yellow></gray>"),
+        String nameDisplay = (setName == null || setName.isBlank()) ? "<italic>(Belum Diatur)</italic>" : setName;
+        String idDisplay = (setName == null || setName.isBlank()) ? "(Kosong)" : setName.toLowerCase();
+        inventory.setItem(40, createItem(Material.NAME_TAG, "<gradient:#3498db:#9b59b6><bold>🏷 NAMA / ID SET: " + nameDisplay + "</bold></gradient>", List.of(
+                mm.deserialize("<gray>Set ID: <yellow>" + idDisplay + "</yellow></gray>"),
                 Component.empty(),
                 mm.deserialize("<yellow>▶ Klik untuk ganti preset nama set!</yellow>")
         ), false));
@@ -201,20 +239,29 @@ public class ArmorSetBonusPickerGUI implements InventoryHolder {
 
         // Save & Return Button (Slot 49)
         List<Component> summaryLore = new ArrayList<>();
-        summaryLore.add(mm.deserialize("<gray>Set: <gold>" + setName + "</gold> (" + requiredPieces + " Pieces)</gray>"));
-        summaryLore.add(Component.empty());
-        summaryLore.add(mm.deserialize("<gray>Stat Bonus Aktif:</gray>"));
-        for (Map.Entry<KitStatType, Double> e : activeStats.entrySet()) {
-            summaryLore.add(mm.deserialize("<aqua>● " + e.getKey().getDisplayName() + ": <gold>" + e.getKey().formatValue(e.getValue()) + "</gold></aqua>"));
+        if (setName != null && !setName.isBlank()) {
+            summaryLore.add(mm.deserialize("<gray>Set: <gold>" + setName + "</gold> (" + requiredPieces + " Pieces)</gray>"));
+        } else {
+            summaryLore.add(mm.deserialize("<gray>Set: <dark_gray>(Belum Ada Nama)</dark_gray> (" + requiredPieces + " Pieces)</gray>"));
         }
         summaryLore.add(Component.empty());
-        summaryLore.add(mm.deserialize("<green><bold>▶ Klik untuk simpan & terapkan ke item!</bold></green>"));
+        if (activeStats.isEmpty()) {
+            summaryLore.add(mm.deserialize("<red>● Tidak ada stat bonus yang aktif.</red>"));
+            summaryLore.add(mm.deserialize("<gray>Jika disimpan, set bonus pada item akan dihapus/dikosongkan.</gray>"));
+        } else {
+            summaryLore.add(mm.deserialize("<gray>Stat Bonus Aktif:</gray>"));
+            for (Map.Entry<KitStatType, Double> e : activeStats.entrySet()) {
+                summaryLore.add(mm.deserialize("<aqua>● " + e.getKey().getDisplayName() + ": <gold>" + e.getKey().formatValue(e.getValue()) + "</gold></aqua>"));
+            }
+        }
+        summaryLore.add(Component.empty());
+        summaryLore.add(mm.deserialize("<green><bold>▶ Klik untuk simpan & terapkan!</bold></green>"));
 
-        inventory.setItem(49, createItem(Material.EMERALD_BLOCK, "<gradient:#2ecc71:#27ae60><bold>✔ TERAPKAN KE ITEM</bold></gradient>", summaryLore, true));
+        inventory.setItem(49, createItem(Material.EMERALD_BLOCK, "<gradient:#2ecc71:#27ae60><bold>✔ TERAPKAN KE ITEM</bold></gradient>", summaryLore, !activeStats.isEmpty()));
 
-        // Back Button (Slot 45)
+        // Back Button (Slot 45) - ALWAYS PRESENT!
         inventory.setItem(45, createItem(Material.ARROW, "<gradient:#3498db:#2980b9><bold>⬅ KEMBALI</bold></gradient>", List.of(
-                mm.deserialize("<gray>Kembali tanpa menyimpan.</gray>")
+                mm.deserialize("<gray>Kembali ke menu sebelumnya.</gray>")
         ), false));
     }
 
@@ -330,7 +377,11 @@ public class ArmorSetBonusPickerGUI implements InventoryHolder {
 
         // 5. Preset Set Name Rotator (Slot 40)
         if (slot == 40) {
-            nameIndex = (nameIndex + 1) % PRESET_NAMES.size();
+            if (setName == null || setName.isBlank()) {
+                nameIndex = 0;
+            } else {
+                nameIndex = (nameIndex + 1) % PRESET_NAMES.size();
+            }
             this.setName = PRESET_NAMES.get(nameIndex);
             player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1.0f, 1.1f);
             buildGUI();
@@ -339,9 +390,14 @@ public class ArmorSetBonusPickerGUI implements InventoryHolder {
 
         // 6. Remove/Disable Bonus (Slot 41)
         if (slot == 41) {
+            activeStats.clear();
+            selectedEditingStat = null;
             removeBonusFromItem();
+            if (onConfigSave != null) {
+                onConfigSave.onSave(setName, requiredPieces, activeStats);
+            }
             player.playSound(player.getLocation(), Sound.BLOCK_LAVA_EXTINGUISH, 1.0f, 1.0f);
-            player.sendMessage(mm.deserialize("<red>Armor set bonus berhasil dihapus dari item!</red>"));
+            player.sendMessage(mm.deserialize("<red>Armor set bonus berhasil dihapus!</red>"));
             if (returnGUI != null) {
                 player.openInventory(returnGUI.getInventory());
             } else {
@@ -352,14 +408,30 @@ public class ArmorSetBonusPickerGUI implements InventoryHolder {
 
         // 7. Save & Apply (Slot 49)
         if (slot == 49) {
-            applyBonusToItem();
-            player.playSound(player.getLocation(), Sound.UI_TOAST_CHALLENGE_COMPLETE, 1.0f, 1.2f);
-            player.sendMessage(mm.deserialize("<green><bold>✓ BERHASIL!</bold> Multi-Stat Armor Set Bonus diterapkan ke item!</green>"));
+            if (activeStats.isEmpty()) {
+                removeBonusFromItem();
+                if (onConfigSave != null) {
+                    onConfigSave.onSave(setName, requiredPieces, activeStats);
+                }
+                player.playSound(player.getLocation(), Sound.BLOCK_LAVA_EXTINGUISH, 1.0f, 1.0f);
+                player.sendMessage(mm.deserialize("<yellow>Tidak ada stat yang aktif. Set bonus dikosongkan/dihapus.</yellow>"));
+            } else {
+                if (setName == null || setName.isBlank()) {
+                    setName = PRESET_NAMES.get(0);
+                }
+                applyBonusToItem();
+                if (onConfigSave != null) {
+                    onConfigSave.onSave(setName, requiredPieces, activeStats);
+                }
+                player.playSound(player.getLocation(), Sound.UI_TOAST_CHALLENGE_COMPLETE, 1.0f, 1.2f);
+                player.sendMessage(mm.deserialize("<green><bold>✓ BERHASIL!</bold> Multi-Stat Armor Set Bonus diterapkan!</green>"));
+            }
             if (returnGUI != null) {
                 player.openInventory(returnGUI.getInventory());
             } else {
                 player.closeInventory();
             }
+            return;
         }
     }
 
@@ -382,7 +454,6 @@ public class ArmorSetBonusPickerGUI implements InventoryHolder {
         });
         meta.lore(lore);
         item.setItemMeta(meta);
-        if (onUpdate != null) onUpdate.accept(item);
     }
 
     private void applyBonusToItem() {
@@ -427,7 +498,6 @@ public class ArmorSetBonusPickerGUI implements InventoryHolder {
 
         meta.lore(lore);
         item.setItemMeta(meta);
-        if (onUpdate != null) onUpdate.accept(item);
     }
 
     private ItemStack createItem(Material mat, String name, List<Component> lore, boolean glow) {
