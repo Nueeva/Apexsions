@@ -1,10 +1,30 @@
-# Apexsions Plugin Suite — Minecraft 1.21.4 / Paper 26.2
+# Apexsions Ecosystem — Monorepo
 
-Kumpulan plugin server Minecraft profesional berkinerja tinggi yang dirancang secara modular, terintegrasi penuh antar-plugin, dan siap digunakan untuk ekosistem server **Apexsions**.
+Repository monorepo resmi untuk ekosistem **Apexsions**:
+- 🎮 **`Minecraft/`**: Plugin suite Minecraft server profesional (Paper 1.21.4 / Java 21)
+- 🌐 **`Website/`**: Portal web, storefront, dan integrasi ekosistem Apexsions
 
 ---
 
-## 📦 1. Daftar 6 Plugin Suite Utama
+## 📂 Struktur Monorepo
+
+```text
+Apexsions/
+├── Minecraft/             # Seluruh kode sumber, konfigurasi, dan build plugin Minecraft
+│   ├── plugins/          # 6 Plugin Suite (ApexsionsCore, Chat, Economy, Battlepass, Shop, Media)
+│   ├── docs/             # Dokumentasi teknis & arsitektur plugin
+│   ├── build.ps1         # Smart Turbo Multi-Compiler PowerShell
+│   ├── build.gradle      # Gradle root configuration
+│   └── DOKUMENTASI.md    # Manual teknis plugin
+├── Website/               # Aplikasi web portal & store
+├── GEMINI.md              # AI Agent Development Guidelines
+├── AGENTS.md             # Universal Coding Agent Guidelines
+└── README.md             # Dokumentasi utama repositori
+```
+
+---
+
+## 📦 1. Daftar 6 Plugin Suite Utama (di `Minecraft/plugins/`)
 
 | Plugin | Versi | Status | Package Root Java | Deskripsi & Fokus Utama |
 | :--- | :---: | :---: | :--- | :--- |
