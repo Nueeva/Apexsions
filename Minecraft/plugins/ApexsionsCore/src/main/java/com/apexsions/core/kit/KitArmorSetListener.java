@@ -199,7 +199,7 @@ public class KitArmorSetListener implements Listener {
 
             if (prevBonus == null || !prevBonus.setId().equalsIgnoreCase(qualifiedBonus.setId())) {
                 player.playSound(player.getLocation(), Sound.BLOCK_BEACON_ACTIVATE, 0.7f, 1.4f);
-                player.sendMessage(mm.deserialize("<gradient:#f1c40f:#e67e22><bold>✦ ARMOR SET BONUS AKTIF! ✦</bold></gradient>"));
+                player.sendMessage(mm.deserialize("<gold><bold>✦ ARMOR SET BONUS AKTIF! ✦</bold></gold>"));
                 player.sendMessage(mm.deserialize("<gray>Set:</gray> <gold>" + qualifiedBonus.setName() + "</gold> <dark_gray>(" + qualifiedBonus.piecesEquipped() + " Pieces)</dark_gray>"));
                 for (Map.Entry<KitStatType, Double> e : qualifiedBonus.stats().entrySet()) {
                     player.sendMessage(mm.deserialize("<gray>Efek:</gray> <yellow>" + e.getKey().formatValue(e.getValue()) + " " + e.getKey().getDisplayName() + "</yellow>"));
@@ -326,7 +326,7 @@ public class KitArmorSetListener implements Listener {
                         defender.playSound(defender.getLocation(), Sound.ENTITY_PLAYER_ATTACK_NODAMAGE, 1.0f, 1.5f);
                         defender.playSound(defender.getLocation(), Sound.ITEM_CHORUS_FRUIT_TELEPORT, 0.8f, 1.2f);
                         defender.getWorld().spawnParticle(Particle.POOF, defender.getLocation().add(0, 1, 0), 10, 0.2, 0.4, 0.2, 0.05);
-                        defender.sendMessage(mm.deserialize("<gradient:#2ecc71:#27ae60><bold>💨 DODGE!</bold> Kamu berhasil menghindari serangan musuh!</gradient>"));
+                        defender.sendMessage(mm.deserialize("<green><bold>💨 DODGE!</bold> Kamu berhasil menghindari serangan musuh!</green>"));
                         if (attacker != null) {
                             attacker.sendMessage(mm.deserialize("<gray>Musuh berhasil menghindari seranganmu!</gray>"));
                         }
@@ -334,12 +334,22 @@ public class KitArmorSetListener implements Listener {
                     }
                 }
 
-                // Damage Reduction check
-                if (defBonus.hasStat(KitStatType.DAMAGE_REDUCTION)) {
-                    double reduction = Math.abs(defBonus.getStat(KitStatType.DAMAGE_REDUCTION)) / 100.0;
-                    double newDamage = Math.max(0.5, event.getDamage() * (1.0 - reduction));
-                    event.setDamage(newDamage);
+                double damage = event.getDamage();
+
+                // Critical Damage Reduction check (when attacker lands a falling critical strike)
+                if (attacker != null && attacker.getFallDistance() > 0.0f && defBonus.hasStat(KitStatType.CRITICAL_DAMAGE_REDUCTION)) {
+                    double critRed = Math.min(90.0, Math.abs(defBonus.getStat(KitStatType.CRITICAL_DAMAGE_REDUCTION))) / 100.0;
+                    damage = damage * (1.0 - critRed);
+                    defender.getWorld().spawnParticle(Particle.ENCHANTED_HIT, defender.getLocation().add(0, 1, 0), 8, 0.2, 0.2, 0.2, 0.05);
                 }
+
+                // General Damage Reduction check
+                if (defBonus.hasStat(KitStatType.DAMAGE_REDUCTION)) {
+                    double reduction = Math.min(90.0, Math.abs(defBonus.getStat(KitStatType.DAMAGE_REDUCTION))) / 100.0;
+                    damage = damage * (1.0 - reduction);
+                }
+
+                event.setDamage(Math.max(0.5, damage));
             }
         }
     }

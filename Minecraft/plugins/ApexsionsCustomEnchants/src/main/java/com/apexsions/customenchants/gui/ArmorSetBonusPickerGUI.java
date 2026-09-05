@@ -156,7 +156,7 @@ public class ArmorSetBonusPickerGUI implements InventoryHolder {
         String idDisplay = (setName == null || setName.isBlank()) ? "kosong" : setName.toLowerCase().replaceAll("[^a-z0-9_-]", "_");
 
         inventory.setItem(4, createItem(Material.NETHER_STAR,
-                "<gradient:#f1c40f:#e67e22><bold>🛡 PENGATURAN TIER ARMOR SET BONUS 🛡</bold></gradient>",
+                "<gold><bold>🛡 PENGATURAN TIER ARMOR SET BONUS 🛡</bold></gold>",
                 List.of(
                         mm.deserialize("<gray>Nama Set: " + nameDisplay + "</gray>"),
                         mm.deserialize("<gray>ID Set: <yellow>" + idDisplay + "</yellow></gray>"),
@@ -181,7 +181,7 @@ public class ArmorSetBonusPickerGUI implements InventoryHolder {
         lore2.add(mm.deserialize("<yellow>▶ Klik untuk buka GUI Pengaturan Bonus 2-Piece!</yellow>"));
 
         inventory.setItem(20, createItem(Material.CHAINMAIL_CHESTPLATE,
-                "<gradient:#3498db:#2ecc71><bold>🛡 PENGATURAN BONUS 2-PIECE (HALF SET)</bold></gradient>",
+                "<blue><bold>🛡 PENGATURAN BONUS 2-PIECE (HALF SET)</bold></blue>",
                 lore2, !set2Stats.isEmpty()));
 
         // Slot 24: 4-Piece Bonus Option
@@ -200,12 +200,12 @@ public class ArmorSetBonusPickerGUI implements InventoryHolder {
         lore4.add(mm.deserialize("<yellow>▶ Klik untuk buka GUI Pengaturan Bonus 4-Piece!</yellow>"));
 
         inventory.setItem(24, createItem(Material.NETHERITE_CHESTPLATE,
-                "<gradient:#e74c3c:#f39c12><bold>👑 PENGATURAN BONUS 4-PIECE (FULL SET)</bold></gradient>",
+                "<gold><bold>👑 PENGATURAN BONUS 4-PIECE (FULL SET)</bold></gold>",
                 lore4, !set4Stats.isEmpty()));
 
         // Slot 40: Set Name Rotator / Info
         inventory.setItem(40, createItem(Material.NAME_TAG,
-                "<gradient:#3498db:#9b59b6><bold>🏷 NAMA / ID SET: " + nameDisplay + "</bold></gradient>",
+                "<yellow><bold>🏷 NAMA / ID SET: " + nameDisplay + "</bold></yellow>",
                 List.of(
                         mm.deserialize("<gray>ID Set: <yellow>" + idDisplay + "</yellow></gray>"),
                         Component.empty(),
@@ -223,7 +223,7 @@ public class ArmorSetBonusPickerGUI implements InventoryHolder {
 
         // Slot 45: Back
         inventory.setItem(45, createItem(Material.ARROW,
-                "<gradient:#3498db:#2980b9><bold>⬅ KEMBALI TANPA MENYIMPAN</bold></gradient>",
+                "<gray><bold>⬅ KEMBALI TANPA MENYIMPAN</bold></gray>",
                 List.of(
                         mm.deserialize("<gray>Kembali ke menu sebelumnya.</gray>")
                 ), false));
@@ -239,7 +239,7 @@ public class ArmorSetBonusPickerGUI implements InventoryHolder {
         applyLore.add(mm.deserialize("<green><bold>▶ Klik untuk simpan & terapkan ke item!</bold></green>"));
 
         inventory.setItem(49, createItem(Material.EMERALD_BLOCK,
-                "<gradient:#2ecc71:#27ae60><bold>✔ TERAPKAN KE ITEM</bold></gradient>",
+                "<green><bold>✔ TERAPKAN KE ITEM</bold></green>",
                 applyLore, hasAny));
     }
 
@@ -295,14 +295,18 @@ public class ArmorSetBonusPickerGUI implements InventoryHolder {
         // 6. Apply & Save (Slot 49)
         if (slot == 49) {
             if (set2Stats.isEmpty() && set4Stats.isEmpty()) {
-                removeBonusFromItem();
+                if (onConfigSave == null) {
+                    removeBonusFromItem();
+                }
                 player.playSound(player.getLocation(), Sound.BLOCK_LAVA_EXTINGUISH, 1.0f, 1.0f);
                 player.sendMessage(mm.deserialize("<yellow>Tidak ada stat bonus yang diatur. Bonus dikosongkan.</yellow>"));
             } else {
                 if (setName == null || setName.isBlank()) {
                     setName = PRESET_NAMES.get(0);
                 }
-                applyBonusToItem();
+                if (onConfigSave == null) {
+                    applyBonusToItem();
+                }
                 player.playSound(player.getLocation(), Sound.UI_TOAST_CHALLENGE_COMPLETE, 1.0f, 1.2f);
                 player.sendMessage(mm.deserialize("<green><bold>✓ BERHASIL!</bold> Armor Set Bonus <gold>" + setName + "</gold> berhasil diterapkan!</green>"));
             }
@@ -364,23 +368,21 @@ public class ArmorSetBonusPickerGUI implements InventoryHolder {
         pdc.set(new NamespacedKey("apexsions", "set_stats"), PersistentDataType.STRING, sbLegacy.toString());
         pdc.set(new NamespacedKey("apexsions", "set_req"), PersistentDataType.INTEGER, !set4Stats.isEmpty() ? 4 : 2);
 
+        // Clean existing set bonus lore thoroughly using PlainText
+        AdminItemCreatorGUI.cleanSetBonusLore(meta);
+
         // Update Lore
         List<Component> lore = meta.hasLore() && meta.lore() != null ? new ArrayList<>(meta.lore()) : new ArrayList<>();
-        lore.removeIf(c -> {
-            String plain = mm.serialize(c);
-            return plain.contains("SET BONUS") || plain.contains("Pieces:") || plain.contains("Efek:");
-        });
-
         lore.add(Component.empty());
-        lore.add(mm.deserialize("<gradient:#e74c3c:#f39c12><bold>★ SET BONUS: " + setName.toUpperCase() + " ★</bold></gradient>"));
+        lore.add(mm.deserialize("<gold><bold>★ SET BONUS: <yellow>" + setName.toUpperCase() + "</yellow> ★</bold></gold>"));
         if (!set2Stats.isEmpty()) {
-            lore.add(mm.deserialize("<gray>Syarat: <gold>2 Pieces (Half Set)</gold></gray>"));
+            lore.add(mm.deserialize("<gray>Syarat: <yellow>2 Pieces (Half Set)</yellow></gray>"));
             for (Map.Entry<KitStatType, Double> e : set2Stats.entrySet()) {
                 lore.add(mm.deserialize("<gray>  ● Efek: <aqua>" + e.getKey().getDisplayName() + " " + e.getKey().formatValue(e.getValue()) + "</aqua></gray>"));
             }
         }
         if (!set4Stats.isEmpty()) {
-            lore.add(mm.deserialize("<gray>Syarat: <gold>4 Pieces (Full Set)</gold></gray>"));
+            lore.add(mm.deserialize("<gray>Syarat: <yellow>4 Pieces (Full Set)</yellow></gray>"));
             for (Map.Entry<KitStatType, Double> e : set4Stats.entrySet()) {
                 lore.add(mm.deserialize("<gray>  ● Efek: <aqua>" + e.getKey().getDisplayName() + " " + e.getKey().formatValue(e.getValue()) + "</aqua></gray>"));
             }
@@ -404,12 +406,7 @@ public class ArmorSetBonusPickerGUI implements InventoryHolder {
         pdc.remove(new NamespacedKey("apexsions", "set_type"));
         pdc.remove(new NamespacedKey("apexsions", "set_val"));
 
-        List<Component> lore = meta.hasLore() && meta.lore() != null ? new ArrayList<>(meta.lore()) : new ArrayList<>();
-        lore.removeIf(c -> {
-            String plain = mm.serialize(c);
-            return plain.contains("SET BONUS") || plain.contains("Pieces:") || plain.contains("Efek:");
-        });
-        meta.lore(lore);
+        AdminItemCreatorGUI.cleanSetBonusLore(meta);
         item.setItemMeta(meta);
     }
 

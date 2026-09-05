@@ -69,15 +69,17 @@ public class AdminItemCreatorGUI implements InventoryHolder {
     public AdminItemCreatorGUI(ApexsionsCustomEnchantsPlugin plugin, Player player) {
         this.plugin = plugin;
         this.player = player;
-        this.inventory = Bukkit.createInventory(this, 54, mm.deserialize("<gradient:#e74c3c:#f39c12><bold>🛠 APEXSIONS ITEM & FULLSET CREATOR 🛠</bold></gradient>"));
+        this.inventory = Bukkit.createInventory(this, 54, mm.deserialize("<gold><bold>🛠 APEXSIONS ITEM & FULLSET CREATOR 🛠</bold></gold>"));
         // Defaults are empty until configured by admin
         buildGUI();
     }
 
     public void open() {
-        this.isNavigatingSubGUI = false;
         buildGUI();
         player.openInventory(inventory);
+        Bukkit.getScheduler().runTask(plugin, () -> {
+            this.isNavigatingSubGUI = false;
+        });
     }
 
     public void setNavigatingSubGUI(boolean navigating) {
@@ -183,7 +185,7 @@ public class AdminItemCreatorGUI implements InventoryHolder {
 
         Material iconMat = fullset ? Material.NETHER_STAR : Material.SHIELD;
         String iconTitle = setBonusConfigured && (!globalSet2Stats.isEmpty() || !globalSet4Stats.isEmpty())
-                ? "<green><bold>[✓ SET BONUS DIATUR]</bold></green>"
+                ? "<gold><bold>[✓ SET BONUS DIATUR]</bold></gold>"
                 : "<yellow><bold>[SET BONUS: BELUM DIATUR]</bold></yellow>";
         ItemStack statusIcon = createItem(iconMat, iconTitle, statusLore, fullset);
         inventory.setItem(SLOT_SET_STATUS, statusIcon);
@@ -292,6 +294,37 @@ public class AdminItemCreatorGUI implements InventoryHolder {
         }
     }
 
+    public static void cleanSetBonusLore(ItemMeta meta) {
+        if (meta == null || !meta.hasLore() || meta.lore() == null) return;
+        List<Component> lore = new ArrayList<>(meta.lore());
+        List<Component> cleaned = new ArrayList<>();
+
+        for (Component c : lore) {
+            String plain = PlainTextComponentSerializer.plainText().serialize(c).trim().toUpperCase();
+            if (plain.contains("SET BONUS") ||
+                plain.contains("SYARAT") ||
+                plain.contains("EFEK") ||
+                plain.contains("PIECES") ||
+                plain.contains("HALF SET") ||
+                plain.contains("FULL SET")) {
+                continue;
+            }
+            cleaned.add(c);
+        }
+
+        // Remove trailing empty lines that were previously inserted for spacing
+        while (!cleaned.isEmpty()) {
+            Component last = cleaned.get(cleaned.size() - 1);
+            String plain = PlainTextComponentSerializer.plainText().serialize(last).trim();
+            if (plain.isEmpty()) {
+                cleaned.remove(cleaned.size() - 1);
+            } else {
+                break;
+            }
+        }
+        meta.lore(cleaned);
+    }
+
     public void removeFullsetBonusFromAll() {
         for (ItemStack is : placedItems.values()) {
             if (is == null) continue;
@@ -307,12 +340,7 @@ public class AdminItemCreatorGUI implements InventoryHolder {
             pdc.remove(new NamespacedKey("apexsions", "set_type"));
             pdc.remove(new NamespacedKey("apexsions", "set_val"));
 
-            List<Component> lore = meta.hasLore() && meta.lore() != null ? new ArrayList<>(meta.lore()) : new ArrayList<>();
-            lore.removeIf(c -> {
-                String plain = mm.serialize(c);
-                return plain.contains("SET BONUS") || plain.contains("Syarat:") || plain.contains("Efek:");
-            });
-            meta.lore(lore);
+            cleanSetBonusLore(meta);
             is.setItemMeta(meta);
         }
     }
@@ -351,29 +379,29 @@ public class AdminItemCreatorGUI implements InventoryHolder {
         pdc.set(new NamespacedKey("apexsions", "set_stats"), PersistentDataType.STRING, sbLegacy.toString());
         pdc.set(new NamespacedKey("apexsions", "set_req"), PersistentDataType.INTEGER, !globalSet4Stats.isEmpty() ? 4 : 2);
 
-        // Update lore
-        List<Component> lore = meta.hasLore() && meta.lore() != null ? new ArrayList<>(meta.lore()) : new ArrayList<>();
-        lore.removeIf(c -> {
-            String plain = mm.serialize(c);
-            return plain.contains("SET BONUS") || plain.contains("Syarat:") || plain.contains("Efek:");
-        });
+        // Clean existing set bonus lore thoroughly using plain text matching
+        cleanSetBonusLore(meta);
 
-        lore.add(Component.empty());
-        lore.add(mm.deserialize("<gradient:#e74c3c:#f39c12><bold>★ SET BONUS: " + PlainTextComponentSerializer.plainText().serialize(mm.deserialize(globalSetName)).toUpperCase() + " ★</bold></gradient>"));
-        if (!globalSet2Stats.isEmpty()) {
-            lore.add(mm.deserialize("<gray>Syarat: <gold>2 Pieces (Half Set)</gold></gray>"));
-            for (Map.Entry<KitStatType, Double> e : globalSet2Stats.entrySet()) {
-                lore.add(mm.deserialize("<gray>  ● Efek: <aqua>" + e.getKey().getDisplayName() + " " + e.getKey().formatValue(e.getValue()) + "</aqua></gray>"));
+        // Update lore with clean non-gradient colors
+        if (!globalSet2Stats.isEmpty() || !globalSet4Stats.isEmpty()) {
+            List<Component> lore = meta.hasLore() && meta.lore() != null ? new ArrayList<>(meta.lore()) : new ArrayList<>();
+            lore.add(Component.empty());
+            String cleanName = getPlainTextSafe(globalSetName).toUpperCase();
+            lore.add(mm.deserialize("<gold><bold>★ SET BONUS: <yellow>" + cleanName + "</yellow> ★</bold></gold>"));
+            if (!globalSet2Stats.isEmpty()) {
+                lore.add(mm.deserialize("<gray>Syarat: <yellow>2 Pieces (Half Set)</yellow></gray>"));
+                for (Map.Entry<KitStatType, Double> e : globalSet2Stats.entrySet()) {
+                    lore.add(mm.deserialize("<gray>  ● Efek: <aqua>" + e.getKey().getDisplayName() + " " + e.getKey().formatValue(e.getValue()) + "</aqua></gray>"));
+                }
             }
-        }
-        if (!globalSet4Stats.isEmpty()) {
-            lore.add(mm.deserialize("<gray>Syarat: <gold>4 Pieces (Full Set)</gold></gray>"));
-            for (Map.Entry<KitStatType, Double> e : globalSet4Stats.entrySet()) {
-                lore.add(mm.deserialize("<gray>  ● Efek: <aqua>" + e.getKey().getDisplayName() + " " + e.getKey().formatValue(e.getValue()) + "</aqua></gray>"));
+            if (!globalSet4Stats.isEmpty()) {
+                lore.add(mm.deserialize("<gray>Syarat: <yellow>4 Pieces (Full Set)</yellow></gray>"));
+                for (Map.Entry<KitStatType, Double> e : globalSet4Stats.entrySet()) {
+                    lore.add(mm.deserialize("<gray>  ● Efek: <aqua>" + e.getKey().getDisplayName() + " " + e.getKey().formatValue(e.getValue()) + "</aqua></gray>"));
+                }
             }
+            meta.lore(lore);
         }
-
-        meta.lore(lore);
         is.setItemMeta(meta);
     }
 
@@ -429,9 +457,6 @@ public class AdminItemCreatorGUI implements InventoryHolder {
         }
         player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1.0f, 1.2f);
         player.sendMessage(mm.deserialize("<green><bold>✓ SUKSES!</bold> Seluruh armor dan tools diubah namanya menjadi <gold>" + newBaseName + " [Tipe]</gold>!</green>"));
-
-        // Crucial fix: Automatically reopen Item Creator GUI after rename finishes!
-        this.open();
     }
 
     private void renamePiece(ItemStack is, String newBaseName, String suffix) {
@@ -779,11 +804,32 @@ public class AdminItemCreatorGUI implements InventoryHolder {
     }
 
     public void handleClose(InventoryCloseEvent event) {
-        // If not navigating into a sub-GUI, return all items safely to player!
-        if (!isNavigatingSubGUI && !placedItems.isEmpty()) {
-            returnAllItems();
-            player.sendMessage(mm.deserialize("<yellow>Creator ditutup. Seluruh item telah dikembalikan secara aman ke inventarismu.</yellow>"));
-        }
+        if (isNavigatingSubGUI) return;
+
+        // Check on next tick if player truly closed the inventory or just transitioned to another GUI
+        Bukkit.getScheduler().runTask(plugin, () -> {
+            if (player.isOnline()) {
+                Inventory top = player.getOpenInventory().getTopInventory();
+                if (top.getHolder() instanceof AdminItemCreatorGUI ||
+                    top.getHolder() instanceof ArmorSetBonusPickerGUI ||
+                    top.getHolder() instanceof ArmorSetBonusTierGUI ||
+                    top.getHolder() instanceof StatValuePickerGUI ||
+                    top.getHolder() instanceof ToolBonusPickerGUI ||
+                    top.getHolder() instanceof ToolStatValuePickerGUI ||
+                    top.getHolder() instanceof ItemModifierGUI ||
+                    top.getHolder() instanceof CustomEnchantPickerGUI ||
+                    top.getHolder() instanceof VanillaEnchantPickerGUI ||
+                    top.getHolder() instanceof EnchantLevelPickerGUI ||
+                    top.getHolder() instanceof VanillaLevelPickerGUI ||
+                    top.getHolder() instanceof AdminPresetsGUI) {
+                    return; // Still navigating our plugin's GUIs, do NOT return items!
+                }
+            }
+            if (!isNavigatingSubGUI && !placedItems.isEmpty()) {
+                returnAllItems();
+                player.sendMessage(mm.deserialize("<yellow>Creator ditutup. Seluruh item telah dikembalikan secara aman ke inventarismu.</yellow>"));
+            }
+        });
     }
 
     public void finishAndClaimAll() {

@@ -44,8 +44,8 @@ public class ArmorSetBonusTierGUI implements InventoryHolder {
         this.tierStats = tierStats;
         this.hubGUI = hubGUI;
         String title = tierPieces == 2
-                ? "<gradient:#3498db:#2ecc71><bold>🛡 BONUS 2-PIECE (HALF SET) 🛡</bold></gradient>"
-                : "<gradient:#e74c3c:#f39c12><bold>👑 BONUS 4-PIECE (FULL SET) 👑</bold></gradient>";
+                ? "<blue><bold>🛡 BONUS 2-PIECE (HALF SET) 🛡</bold></blue>"
+                : "<gold><bold>👑 BONUS 4-PIECE (FULL SET) 👑</bold></gold>";
         this.inventory = Bukkit.createInventory(this, 54, mm.deserialize(title));
         buildGUI();
     }
@@ -67,7 +67,7 @@ public class ArmorSetBonusTierGUI implements InventoryHolder {
         Material headerMat = tierPieces == 2 ? Material.CHAINMAIL_CHESTPLATE : Material.NETHERITE_CHESTPLATE;
         String tierName = tierPieces == 2 ? "2 Pieces (Half Set)" : "4 Pieces (Full Set)";
         inventory.setItem(4, createItem(headerMat,
-                "<gradient:#f1c40f:#e67e22><bold>⚙ KONFIGURASI BONUS TIER: " + tierName + "</bold></gradient>",
+                "<gold><bold>⚙ KONFIGURASI BONUS TIER: " + tierName + "</bold></gold>",
                 List.of(
                         mm.deserialize("<gray>Syarat Aktif: Memakai minimal <gold>" + tierPieces + " bagian armor</gold> set ini.</gray>"),
                         mm.deserialize("<gray>Stat aktif saat ini: <yellow>" + tierStats.size() + " Stat Efek</yellow></gray>"),
@@ -76,13 +76,12 @@ public class ArmorSetBonusTierGUI implements InventoryHolder {
                         mm.deserialize("<red>▶ Klik Kanan stat untuk menonaktifkannya langsung.</red>")
                 ), true));
 
-        // 6 Stat Buttons
+        // 5 Defensive Stat Buttons (Slots 11..15)
         addStatButton(11, KitStatType.DAMAGE_REDUCTION, Material.SHIELD);
-        addStatButton(12, KitStatType.ATTACK_DAMAGE_BOOST, Material.DIAMOND_SWORD);
+        addStatButton(12, KitStatType.CRITICAL_DAMAGE_REDUCTION, Material.NETHERITE_UPGRADE_SMITHING_TEMPLATE);
         addStatButton(13, KitStatType.DODGE_CHANCE, Material.FEATHER);
-        addStatButton(20, KitStatType.CRITICAL_DAMAGE_BOOST, Material.BLAZE_POWDER);
-        addStatButton(21, KitStatType.EXTRA_MAX_HEALTH, Material.GOLDEN_APPLE);
-        addStatButton(22, KitStatType.MOVEMENT_SPEED_BOOST, Material.SUGAR);
+        addStatButton(14, KitStatType.EXTRA_MAX_HEALTH, Material.GOLDEN_APPLE);
+        addStatButton(15, KitStatType.MOVEMENT_SPEED_BOOST, Material.SUGAR);
 
         // Slot 40: Clear All in this tier
         inventory.setItem(40, createItem(Material.LAVA_BUCKET,
@@ -95,7 +94,7 @@ public class ArmorSetBonusTierGUI implements InventoryHolder {
 
         // Slot 45: Back to Hub
         inventory.setItem(45, createItem(Material.ARROW,
-                "<gradient:#3498db:#2980b9><bold>⬅ SIMPAN & KEMBALI KE MENU UTAMA</bold></gradient>",
+                "<gray><bold>⬅ SIMPAN & KEMBALI KE MENU UTAMA</bold></gray>",
                 List.of(
                         mm.deserialize("<gray>Kembali ke menu pemilihan set bonus.</gray>")
                 ), false));
@@ -144,14 +143,13 @@ public class ArmorSetBonusTierGUI implements InventoryHolder {
             return;
         }
 
-        // Stat Selection
+        // Stat Selection (5 Defensive Stats)
         KitStatType type = switch (slot) {
             case 11 -> KitStatType.DAMAGE_REDUCTION;
-            case 12 -> KitStatType.ATTACK_DAMAGE_BOOST;
+            case 12 -> KitStatType.CRITICAL_DAMAGE_REDUCTION;
             case 13 -> KitStatType.DODGE_CHANCE;
-            case 20 -> KitStatType.CRITICAL_DAMAGE_BOOST;
-            case 21 -> KitStatType.EXTRA_MAX_HEALTH;
-            case 22 -> KitStatType.MOVEMENT_SPEED_BOOST;
+            case 14 -> KitStatType.EXTRA_MAX_HEALTH;
+            case 15 -> KitStatType.MOVEMENT_SPEED_BOOST;
             default -> null;
         };
 
@@ -166,7 +164,7 @@ public class ArmorSetBonusTierGUI implements InventoryHolder {
             } else {
                 // Left-click: Open dedicated StatValuePickerGUI!
                 player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1.0f, 1.2f);
-                double current = tierStats.getOrDefault(type, type.getDefaultValue());
+                double current = tierStats.getOrDefault(type, 0.0); // 0.0 = not yet configured!
                 new StatValuePickerGUI(plugin, player, type, current, this, selectedVal -> {
                     if (selectedVal <= 0.0) {
                         tierStats.remove(type);

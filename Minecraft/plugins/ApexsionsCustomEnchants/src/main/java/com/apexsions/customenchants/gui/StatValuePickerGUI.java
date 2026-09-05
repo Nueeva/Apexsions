@@ -43,7 +43,7 @@ public class StatValuePickerGUI implements InventoryHolder {
         this.currentValue = currentValue;
         this.parentGUI = parentGUI;
         this.onValueSelected = onValueSelected;
-        this.inventory = Bukkit.createInventory(this, 54, mm.deserialize("<gradient:#e74c3c:#f39c12><bold>⚡ ATUR STAT: " + statType.getDisplayName().toUpperCase() + " ⚡</bold></gradient>"));
+        this.inventory = Bukkit.createInventory(this, 54, mm.deserialize("<gold><bold>⚡ ATUR STAT: " + statType.getDisplayName().toUpperCase() + " ⚡</bold></gold>"));
         buildGUI();
     }
 
@@ -63,17 +63,18 @@ public class StatValuePickerGUI implements InventoryHolder {
         // Slot 4: Info Header
         Material statIcon = switch (statType) {
             case DAMAGE_REDUCTION -> Material.SHIELD;
-            case ATTACK_DAMAGE_BOOST -> Material.DIAMOND_SWORD;
+            case CRITICAL_DAMAGE_REDUCTION -> Material.NETHERITE_UPGRADE_SMITHING_TEMPLATE;
             case DODGE_CHANCE -> Material.FEATHER;
-            case CRITICAL_DAMAGE_BOOST -> Material.BLAZE_POWDER;
             case EXTRA_MAX_HEALTH -> Material.GOLDEN_APPLE;
             case MOVEMENT_SPEED_BOOST -> Material.SUGAR;
+            default -> Material.IRON_CHESTPLATE;
         };
 
+        String valText = (currentValue > 0.0) ? statType.formatValue(currentValue) : "Non-aktif (Belum Diatur)";
         inventory.setItem(4, createItem(statIcon,
-                "<gradient:#f1c40f:#e67e22><bold>Stat: " + statType.getDisplayName() + "</bold></gradient>",
+                "<gold><bold>Stat: " + statType.getDisplayName() + "</bold></gold>",
                 List.of(
-                        mm.deserialize("<gray>Nilai saat ini: <gold>" + statType.formatValue(currentValue) + "</gold></gray>"),
+                        mm.deserialize("<gray>Nilai saat ini: <gold>" + valText + "</gold></gray>"),
                         Component.empty(),
                         mm.deserialize("<yellow>Pilih salah satu persentase / nilai di bawah ini</yellow>"),
                         mm.deserialize("<gray>untuk diterapkan ke tier set bonus ini.</gray>")
@@ -90,7 +91,7 @@ public class StatValuePickerGUI implements InventoryHolder {
         int[] valueSlots = {20, 21, 22, 23, 24, 30, 31};
         for (int i = 0; i < options.length && i < valueSlots.length; i++) {
             double v = options[i];
-            boolean isSelected = (Math.abs(currentValue - v) < 0.01);
+            boolean isSelected = (currentValue > 0.0 && Math.abs(currentValue - v) < 0.01);
             int slot = valueSlots[i];
 
             List<Component> lore = new ArrayList<>();
@@ -117,7 +118,7 @@ public class StatValuePickerGUI implements InventoryHolder {
 
         // Slot 45: Back
         inventory.setItem(45, createItem(Material.ARROW,
-                "<gradient:#3498db:#2980b9><bold>⬅ KEMBALI</bold></gradient>",
+                "<gray><bold>⬅ KEMBALI</bold></gray>",
                 List.of(
                         mm.deserialize("<gray>Kembali ke menu pengaturan tier.</gray>")
                 ), false));
