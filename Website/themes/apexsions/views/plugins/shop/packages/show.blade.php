@@ -8,7 +8,7 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body p-4" style="color: var(--apx-text-sub); line-height: 1.7;">
-            {!! $package->description !!}
+            {!! \Illuminate\Support\Str::markdown($package->description) !!}
         </div>
         <div class="modal-footer d-flex justify-content-between align-items-center" style="background: var(--apx-bg-surface-raised); border-top: 1px solid var(--apx-border);">
             <div class="d-flex align-items-baseline gap-2">

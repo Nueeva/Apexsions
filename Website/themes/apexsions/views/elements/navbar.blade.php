@@ -13,7 +13,7 @@
 
         <!-- Mobile Toggler -->
         <button class="navbar-toggler border-0 text-white p-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain" aria-controls="navbarMain" aria-expanded="false" aria-label="Buka menu navigasi">
-            <i class="bi bi-list fs-2 text-warning"></i>
+            <i class="bi bi-list fs-2 text-white"></i>
         </button>
 
         <!-- Nav Links & Right Actions -->
@@ -55,7 +55,7 @@
                 </li>
             </ul>
 
-            <!-- Right Actions: Cart & User Profile Capsule -->
+            <!-- Right Actions: Cart & User Profile Box -->
             <div class="d-flex align-items-center gap-2 mt-3 mt-lg-0">
                 @if(plugins()->isEnabled('shop') && Route::has('shop.cart.index') && request()->is('shop*'))
                     <a href="{{ route('shop.cart.index') }}" class="apx-nav-cart-btn" title="Keranjang Belanja">
@@ -65,26 +65,26 @@
 
                 @auth
                     <div class="dropdown">
-                        <button class="apx-user-pill dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <button class="apx-user-box dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <img src="{{ auth()->user()->getAvatar(28) }}" alt="{{ auth()->user()->name }}" class="apx-user-avatar-mini">
-                            <span class="apx-user-pill-name">{{ auth()->user()->name }}</span>
-                            <i class="bi bi-chevron-down apx-user-pill-chevron"></i>
+                            <span class="apx-user-box-name">{{ auth()->user()->name }}</span>
+                            <i class="bi bi-chevron-down apx-user-box-chevron"></i>
                         </button>
                         <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end shadow-lg apx-nav-dropdown">
                             <li class="px-3 py-2 border-bottom border-secondary border-opacity-25 mb-1">
                                 <small class="text-muted d-block" style="font-size: 0.7rem; letter-spacing: 0.08em;">AKUN TERDAFTAR</small>
-                                <span class="fw-bold text-warning">{{ auth()->user()->name }}</span>
+                                <span class="fw-bold text-white">{{ auth()->user()->name }}</span>
                             </li>
-                            <li><a class="dropdown-item py-2" href="{{ route('profile.index') }}"><i class="bi bi-person-circle me-2 text-warning"></i> Profil Pemain</a></li>
+                            <li><a class="dropdown-item py-2" href="{{ route('profile.index') }}"><i class="bi bi-person me-2 text-dim"></i> Profil Pemain</a></li>
                             @if(plugins()->isEnabled('apexsions-bridge'))
-                                <li><a class="dropdown-item py-2" href="{{ route('apexsions-bridge.link.index') }}"><i class="bi bi-controller me-2 text-warning"></i> Tautkan Minecraft</a></li>
+                                <li><a class="dropdown-item py-2" href="{{ route('apexsions-bridge.link.index') }}"><i class="bi bi-controller me-2 text-dim"></i> Tautkan Minecraft</a></li>
                             @endif
                             @if(plugins()->isEnabled('shop') && Route::has('shop.payments.index'))
-                                <li><a class="dropdown-item py-2" href="{{ route('shop.payments.index') }}"><i class="bi bi-receipt me-2 text-warning"></i> Riwayat Belanja</a></li>
+                                <li><a class="dropdown-item py-2" href="{{ route('shop.payments.index') }}"><i class="bi bi-receipt me-2 text-dim"></i> Riwayat Belanja</a></li>
                             @endif
                             @can('admin-access')
                                 <li><hr class="dropdown-divider border-secondary border-opacity-25"></li>
-                                <li><a class="dropdown-item py-2 text-warning fw-bold" href="{{ route('admin.dashboard') }}"><i class="bi bi-speedometer2 me-2"></i> Admin Panel</a></li>
+                                <li><a class="dropdown-item py-2 text-white fw-bold" href="{{ route('admin.dashboard') }}"><i class="bi bi-speedometer2 me-2 text-gold"></i> Admin Panel</a></li>
                             @endcan
                             <li><hr class="dropdown-divider border-secondary border-opacity-25"></li>
                             <li>

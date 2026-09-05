@@ -128,26 +128,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const filter = pill.getAttribute('data-rank-filter');
             rankCards.forEach(card => {
                 if (filter === 'all' || card.getAttribute('data-rank-category') === filter) {
-                    card.style.display = 'block';
+                    card.style.display = '';
                 } else {
                     card.style.display = 'none';
                 }
             });
         });
     });
-
-    // 4. Realm Showcase Arrow Carousel Micro-interaction
-    const showcaseArrows = document.querySelectorAll('.btn-showcase-arrow');
-    const showcaseImg = document.querySelector('.apx-showcase-img');
-    if (showcaseArrows.length > 0 && showcaseImg) {
-        showcaseArrows.forEach(btn => {
-            btn.addEventListener('click', () => {
-                showcaseImg.style.transition = 'transform 0.3s ease, filter 0.3s ease';
-                showcaseImg.style.filter = 'brightness(1.15)';
-                setTimeout(() => {
-                    showcaseImg.style.filter = 'none';
-                }, 400);
-            });
-        });
-    }
 });

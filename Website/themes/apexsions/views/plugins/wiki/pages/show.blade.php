@@ -70,7 +70,7 @@
                         </h1>
 
                         <div class="apx-wiki-body">
-                            {!! $catPage->content !!}
+                            {!! \Illuminate\Support\Str::markdown($catPage->content) !!}
                         </div>
                     </article>
                 </div>
