@@ -107,6 +107,15 @@ public class AceAdminHubGUI implements InventoryHolder {
                 "<yellow>▶ Klik untuk klaim ke inventory!</yellow>"
         )));
 
+        // Slot 30: Presets GUI (/ace presets)
+        inventory.setItem(30, createItem(Material.CHEST_MINECART, "<gradient:#9b59b6:#e74c3c><bold>📦 PRESET SET ARMOR & TOOLS (/ace presets)</bold></gradient>", List.of(
+                "<gray>Kelola seluruh set equipment yang tersimpan:</gray>",
+                "<dark_gray>•</dark_gray> <yellow>Ambil seluruh item set armor & tools</yellow>",
+                "<dark_gray>•</dark_gray> <yellow>Hapus preset usang / tidak terpakai</yellow>",
+                "",
+                "<yellow>▶ Klik untuk buka GUI Presets!</yellow>"
+        )));
+
         // Slot 31: Reload Configurations
         inventory.setItem(31, createItem(Material.REDSTONE, "<red><bold>⚡ RELOAD KONFIGURASI ⚡</bold></red>", List.of(
                 "<gray>Muat ulang seluruh file konfigurasi:</gray>",
@@ -178,6 +187,12 @@ public class AceAdminHubGUI implements InventoryHolder {
             }
             player.playSound(player.getLocation(), Sound.ENTITY_ITEM_PICKUP, 1.0f, 1.2f);
             player.sendMessage(mm.deserialize("<green>✓ Berhasil mengklaim paket Magic Items!</green>"));
+            return;
+        }
+
+        if (slot == 30) { // Presets GUI
+            player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.8f, 1.2f);
+            new AdminPresetsGUI(plugin, player, this).open();
             return;
         }
 

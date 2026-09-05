@@ -25,7 +25,14 @@ commands:
       - aceadmin
     description: Buka Admin Hub GUI untuk kontrol penuh sihir custom, katalog, creator, dan pricing.
     permission: apexsions.admin
-    usage: /ace [enchants|create|pricing|reload|givebook|givedust|givescroll]
+    usage: /ace [enchants|create|presets|pricing|reload|givebook|givedust|givescroll]
+  presets:
+    aliases:
+      - preset
+      - acepresets
+    description: Buka menu preset armor & tool set yang tersimpan.
+    permission: apexsions.admin
+    usage: /presets
 
 permissions:
   apexsions.customenchants.use:

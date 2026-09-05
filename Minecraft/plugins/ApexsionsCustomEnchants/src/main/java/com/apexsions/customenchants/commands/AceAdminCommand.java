@@ -89,6 +89,14 @@ public class AceAdminCommand implements CommandExecutor, TabCompleter {
                 new AdminTierPricingGUI(plugin, player).open();
                 return true;
             }
+            case "presets", "preset" -> {
+                if (!(sender instanceof Player player)) {
+                    sender.sendMessage(mm.deserialize("<red>Preset GUI hanya bisa dibuka oleh pemain.</red>"));
+                    return true;
+                }
+                new com.apexsions.customenchants.gui.AdminPresetsGUI(plugin, player, null).open();
+                return true;
+            }
             case "reload" -> {
                 plugin.reload();
                 sender.sendMessage(mm.deserialize("<green>ApexsionsCustomEnchants berhasil direload!</green>"));
@@ -196,6 +204,7 @@ public class AceAdminCommand implements CommandExecutor, TabCompleter {
         sender.sendMessage(mm.deserialize("<yellow>/" + label + "</yellow> <dark_gray>»</dark_gray> <gray>Buka Central Admin GUI Hub</gray>"));
         sender.sendMessage(mm.deserialize("<yellow>/" + label + " enchants [page/filter]</yellow> <dark_gray>»</dark_gray> <gray>Katalog Custom Enchants (Replika /ae admin)</gray>"));
         sender.sendMessage(mm.deserialize("<yellow>/" + label + " create</yellow> <dark_gray>»</dark_gray> <gray>Interactive Item & Armor Set Creator GUI</gray>"));
+        sender.sendMessage(mm.deserialize("<yellow>/" + label + " presets</yellow> <dark_gray>»</dark_gray> <gray>Buka GUI Preset Armor & Tool Sets tersimpan</gray>"));
         sender.sendMessage(mm.deserialize("<yellow>/" + label + " pricing</yellow> <dark_gray>»</dark_gray> <gray>Atur Harga Tier, Mata Uang, & Odds Gacha</gray>"));
         sender.sendMessage(mm.deserialize("<yellow>/" + label + " givebook <player> <enchant> <lvl> [suc] [des]</yellow> <dark_gray>»</dark_gray> <gray>Berikan buku enchant</gray>"));
         sender.sendMessage(mm.deserialize("<yellow>/" + label + " givedust <player> <mystery|magic> [rate]</yellow> <dark_gray>»</dark_gray> <gray>Berikan Magic/Mystery Dust</gray>"));
@@ -212,7 +221,7 @@ public class AceAdminCommand implements CommandExecutor, TabCompleter {
 
         List<String> completions = new ArrayList<>();
         if (args.length == 1) {
-            List<String> subs = List.of("enchants", "create", "pricing", "reload", "givebook", "givedust", "givescroll", "help");
+            List<String> subs = List.of("enchants", "create", "presets", "pricing", "reload", "givebook", "givedust", "givescroll", "help");
             for (String s : subs) {
                 if (s.toLowerCase().startsWith(args[0].toLowerCase())) {
                     completions.add(s);

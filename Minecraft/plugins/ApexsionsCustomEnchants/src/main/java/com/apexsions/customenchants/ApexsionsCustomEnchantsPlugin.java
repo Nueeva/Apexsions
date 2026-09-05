@@ -69,6 +69,22 @@ public class ApexsionsCustomEnchantsPlugin extends JavaPlugin {
             ace.setTabCompleter(aceCmd);
         }
 
+        PluginCommand presets = getCommand("presets");
+        if (presets != null) {
+            presets.setExecutor((sender, cmd, lbl, args) -> {
+                if (!sender.hasPermission("apexsions.admin") && !sender.hasPermission("apexsions.ace.admin")) {
+                    sender.sendMessage(net.kyori.adventure.text.minimessage.MiniMessage.miniMessage().deserialize("<red>Anda tidak memiliki izin untuk menggunakan perintah preset.</red>"));
+                    return true;
+                }
+                if (sender instanceof org.bukkit.entity.Player player) {
+                    new com.apexsions.customenchants.gui.AdminPresetsGUI(this, player, null).open();
+                } else {
+                    sender.sendMessage(net.kyori.adventure.text.minimessage.MiniMessage.miniMessage().deserialize("<red>Perintah preset hanya bisa dijalankan oleh pemain.</red>"));
+                }
+                return true;
+            });
+        }
+
         getLogger().info("==================================================");
         getLogger().info("  ApexsionsCustomEnchants v" + getDescription().getVersion() + " Enabled");
         getLogger().info("  Total Enchants Loaded: " + enchantmentRegistry.getAllEnchantments().size());

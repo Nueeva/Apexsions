@@ -93,7 +93,7 @@ public class AdminPresetsGUI implements InventoryHolder {
         // Controls
         // Slot 45: Back
         inventory.setItem(45, createItem(Material.ARROW, "<gradient:#3498db:#2980b9><bold>⬅ KEMBALI</bold></gradient>", List.of(
-                mm.deserialize("<gray>Kembali ke Item Creator.</gray>")
+                mm.deserialize(returnGUI != null ? "<gray>Kembali ke menu sebelumnya.</gray>" : "<gray>Tutup menu preset.</gray>")
         ), false));
 
         // Slot 49: Info
