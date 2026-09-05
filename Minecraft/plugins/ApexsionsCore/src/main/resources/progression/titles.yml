@@ -51,3 +51,96 @@ level-titles:
     "71-80": "<gradient:#11998e:#38ef7d><bold>🌿 Elder Guardian 🌿</bold></gradient>"
     "81-90": "<gradient:#0ba360:#3cba92><bold>⚜ Sylvan Sovereign ⚜</bold></gradient>"
     "91-100": "<gradient:#00f2fe:#4facfe><bold>✦ AVATAR OF SYLVAMOOR ✦</bold></gradient>"
+
+# ==============================================================================
+# Prestige Honorific Titles Vault (/titles, /gelar, /tags)
+# Setiap gelar memiliki izin permission eksplisit (apexsions.title.<id>).
+# Pemain dengan izin tersebut, atau wildcard apexsions.title.*, atau OP dapat langsung membuka!
+# ==============================================================================
+
+prestige-titles:
+  novice:
+    display: "<gray>[Pengelana Awal]</gray>"
+    description: "Gelar kehormatan untuk pemain pemula di server."
+    permission: "apexsions.title.novice"
+    level: 1
+
+  apprentice:
+    display: "<green>[Petualang Muda]</green>"
+    description: "Mulai memahami seluk beluk wilayah kerajaan."
+    permission: "apexsions.title.apprentice"
+    level: 10
+
+  warrior:
+    display: "<yellow>[Ksatria Perang]</yellow>"
+    description: "Telah menaklukkan berbagai rintangan tempur."
+    permission: "apexsions.title.warrior"
+    level: 25
+
+  champion:
+    display: "<gradient:#f1c40f:#e67e22><bold>[Pahlawan Realm]</bold></gradient>"
+    description: "Pahlawan teruji di seluruh penjuru kerajaan."
+    permission: "apexsions.title.champion"
+    level: 50
+
+  legend:
+    display: "<gradient:#ff007f:#7928ca><bold>[Legenda Abadi]</bold></gradient>"
+    description: "Nama yang terukir abadi dalam sejarah peradaban."
+    permission: "apexsions.title.legend"
+    level: 75
+
+  mythic:
+    display: "<gradient:#ff0000:#ff7300:#fffb00><bold>[⚡ DEWA PERANG ⚡]</bold></gradient>"
+    description: "Pencapaian level tertinggi puncak kejayaan."
+    permission: "apexsions.title.mythic"
+    level: 100
+
+  zenith_blade:
+    display: "<gradient:#ffe900:#f39c12><bold>[Pedang Zenithar]</bold></gradient>"
+    description: "Ksatria elit pelindung kota emas Zenithar."
+    permission: "apexsions.title.zenith_blade"
+    kingdom: "ZENITHAR"
+    kingdom-level: 20
+
+  sol_flame:
+    display: "<gradient:#ff4d4d:#c0392b><bold>[Lentera Solterra]</bold></gradient>"
+    description: "Penyala api semangat tempur peradaban Solterra."
+    permission: "apexsions.title.sol_flame"
+    kingdom: "SOLTERRA"
+    kingdom-level: 20
+
+  sylva_warden:
+    display: "<gradient:#87ceeb:#2ecc71><bold>[Penjaga Sylvamoor]</bold></gradient>"
+    description: "Penjaga kedamaian alam dan rimba Sylvamoor."
+    permission: "apexsions.title.sylva_warden"
+    kingdom: "SYLVAMOOR"
+    kingdom-level: 20
+
+  sultan:
+    display: "<gradient:#2ecc71:#f1c40f><bold>[💰 SULTAN KERAJAAN]</bold></gradient>"
+    description: "Gelar eksklusif bagi konglomerat dan donatur terkemuka."
+    permission: "apexsions.title.sultan"
+
+  raja_zenithar:
+    display: "<gradient:#ffd700:#f39c12><bold>👑 Raja Zenithar</bold></gradient>"
+    description: "Gelar suci bagi Penguasa Tertinggi Kerajaan Emas Zenithar."
+    permission: "apexsions.title.raja_zenithar"
+    monarch: "ZENITHAR"
+
+  raja_solterra:
+    display: "<gradient:#ff4757:#c0392b><bold>👑 Raja Solterra</bold></gradient>"
+    description: "Gelar suci bagi Penguasa Tertinggi Kerajaan Api Solterra."
+    permission: "apexsions.title.raja_solterra"
+    monarch: "SOLTERRA"
+
+  raja_sylvamoor:
+    display: "<gradient:#2ed573:#1e90ff><bold>👑 Raja Sylvamoor</bold></gradient>"
+    description: "Gelar suci bagi Penguasa Tertinggi Kerajaan Rimba Sylvamoor."
+    permission: "apexsions.title.raja_sylvamoor"
+    monarch: "SYLVAMOOR"
+
+  monarch:
+    display: "<gradient:#f1c40f:#e74c3c><bold>[👑 SANG MAHARATU/RAJA]</bold></gradient>"
+    description: "Gelar sakral pemegang tahta tertinggi kerajaan."
+    permission: "apexsions.title.monarch"
+    monarch: "ANY"

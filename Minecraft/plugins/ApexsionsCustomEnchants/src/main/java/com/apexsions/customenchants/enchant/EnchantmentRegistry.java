@@ -36,9 +36,23 @@ public class EnchantmentRegistry {
 
     public void load() {
         enchantments.clear();
-        File file = new File(plugin.getDataFolder(), "enchantments.yml");
-        if (!file.exists()) {
-            plugin.saveResource("enchantments.yml", false);
+        File targetFile = new File(plugin.getDataFolder(), "enchants/enchantments.yml");
+        File legacyFile = new File(plugin.getDataFolder(), "enchantments.yml");
+        File file;
+        if (!targetFile.exists() && legacyFile.exists()) {
+            file = legacyFile;
+        } else {
+            file = targetFile;
+            if (!file.exists()) {
+                file.getParentFile().mkdirs();
+                try {
+                    plugin.saveResource("enchants/enchantments.yml", false);
+                } catch (Exception e) {
+                    try {
+                        plugin.saveResource("enchantments.yml", false);
+                    } catch (Exception ignored) {}
+                }
+            }
         }
         FileConfiguration config = YamlConfiguration.loadConfiguration(file);
 

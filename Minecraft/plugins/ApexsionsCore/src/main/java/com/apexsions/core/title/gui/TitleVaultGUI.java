@@ -104,6 +104,9 @@ public class TitleVaultGUI implements InventoryHolder {
                 if (title.getCondition() != null) {
                     lore.add(mm.deserialize(title.getCondition().getDescription()));
                 }
+                if (title.getPermission() != null && !title.getPermission().isBlank()) {
+                    lore.add(mm.deserialize("<gray>Izin / Permission: <light_purple>" + title.getPermission() + "</light_purple></gray>"));
+                }
 
                 lore.add(Component.empty());
                 if (equipped) {
@@ -148,7 +151,7 @@ public class TitleVaultGUI implements InventoryHolder {
             boolean unlocked = plugin.getTitleManager().isTitleUnlocked(player, title);
 
             if (!unlocked) {
-                player.sendMessage(mm.deserialize("<red>🔒 Gelar ini masih terkunci! Penuhi syarat yang tertera untuk membukanya.</red>"));
+                player.sendMessage(mm.deserialize("<red>🔒 Gelar ini masih terkunci! Anda memerlukan permission <yellow>" + title.getPermission() + "</yellow> atau memenuhi syarat di atas.</red>"));
                 player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 0.8f, 1.0f);
                 return;
             }

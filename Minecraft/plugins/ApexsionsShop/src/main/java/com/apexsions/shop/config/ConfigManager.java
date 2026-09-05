@@ -43,12 +43,25 @@ public class ConfigManager {
         guiConfig = YamlConfiguration.loadConfiguration(guiFile);
         mergeDefaults(guiConfig, "gui.yml");
 
-        marketsFile = new File(plugin.getDataFolder(), "markets.yml");
-        if (!marketsFile.exists()) {
-            plugin.saveResource("markets.yml", false);
+        File targetMarkets = new File(plugin.getDataFolder(), "markets/markets.yml");
+        File legacyMarkets = new File(plugin.getDataFolder(), "markets.yml");
+        if (!targetMarkets.exists() && legacyMarkets.exists()) {
+            marketsFile = legacyMarkets;
+        } else {
+            marketsFile = targetMarkets;
+            if (!marketsFile.exists()) {
+                marketsFile.getParentFile().mkdirs();
+                try {
+                    plugin.saveResource("markets/markets.yml", false);
+                } catch (Exception e) {
+                    try {
+                        plugin.saveResource("markets.yml", false);
+                    } catch (Exception ignored) {}
+                }
+            }
         }
         marketsConfig = YamlConfiguration.loadConfiguration(marketsFile);
-        mergeDefaults(marketsConfig, "markets.yml");
+        mergeDefaults(marketsConfig, "markets/markets.yml");
     }
 
     private void mergeDefaults(FileConfiguration config, String resourcePath) {

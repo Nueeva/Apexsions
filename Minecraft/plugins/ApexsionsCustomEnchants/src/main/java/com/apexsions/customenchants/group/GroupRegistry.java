@@ -27,9 +27,22 @@ public class GroupRegistry {
 
     public void load() {
         groups.clear();
-        groupsFile = new File(plugin.getDataFolder(), "groups.yml");
-        if (!groupsFile.exists()) {
-            plugin.saveResource("groups.yml", false);
+        File targetFile = new File(plugin.getDataFolder(), "groups/groups.yml");
+        File legacyFile = new File(plugin.getDataFolder(), "groups.yml");
+        if (!targetFile.exists() && legacyFile.exists()) {
+            groupsFile = legacyFile;
+        } else {
+            groupsFile = targetFile;
+            if (!groupsFile.exists()) {
+                groupsFile.getParentFile().mkdirs();
+                try {
+                    plugin.saveResource("groups/groups.yml", false);
+                } catch (Exception e) {
+                    try {
+                        plugin.saveResource("groups.yml", false);
+                    } catch (Exception ignored) {}
+                }
+            }
         }
         groupsConfig = YamlConfiguration.loadConfiguration(groupsFile);
 

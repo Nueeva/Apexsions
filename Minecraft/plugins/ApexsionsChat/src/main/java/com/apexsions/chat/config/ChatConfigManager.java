@@ -9,6 +9,11 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 
+/**
+ * Manages modular configuration files for ApexsionsChat across categorized folders:
+ * channels/, moderation/, broadcast/, games/, mail/, and root config.yml.
+ * Includes dual-path fallback loader to preserve existing server data.
+ */
 public class ChatConfigManager {
 
     private final ApexsionsChatPlugin plugin;
@@ -25,24 +30,40 @@ public class ChatConfigManager {
     }
 
     public void loadAll() {
-        this.mainConfig = loadConfig("config.yml");
-        this.channelsConfig = loadConfig("channels.yml");
-        this.moderationConfig = loadConfig("moderation.yml");
-        this.gamesConfig = loadConfig("games.yml");
-        this.announcementsConfig = loadConfig("announcements.yml");
-        this.mailConfig = loadConfig("mail.yml");
-        this.reportsConfig = loadConfig("reports.yml");
+        this.mainConfig = loadConfig("config.yml", "config.yml");
+        this.channelsConfig = loadConfig("channels/channels.yml", "channels.yml");
+        this.moderationConfig = loadConfig("moderation/moderation.yml", "moderation.yml");
+        this.reportsConfig = loadConfig("moderation/reports.yml", "reports.yml");
+        this.gamesConfig = loadConfig("games/games.yml", "games.yml");
+        this.announcementsConfig = loadConfig("broadcast/announcements.yml", "announcements.yml");
+        this.mailConfig = loadConfig("mail/mail.yml", "mail.yml");
     }
 
-    private FileConfiguration loadConfig(String fileName) {
-        File file = new File(plugin.getDataFolder(), fileName);
-        if (!file.exists()) {
-            plugin.getDataFolder().mkdirs();
-            plugin.saveResource(fileName, false);
+    private FileConfiguration loadConfig(String targetPath, String legacyPath) {
+        File file = new File(plugin.getDataFolder(), targetPath);
+        File legacyFile = legacyPath != null ? new File(plugin.getDataFolder(), legacyPath) : null;
+
+        // If legacy file exists and target doesn't, use legacy file for backward compatibility
+        if (!file.exists() && legacyFile != null && legacyFile.exists()) {
+            file = legacyFile;
+        } else if (!file.exists()) {
+            file.getParentFile().mkdirs();
+            try {
+                plugin.saveResource(targetPath, false);
+            } catch (Exception e) {
+                if (legacyPath != null) {
+                    try {
+                        plugin.saveResource(legacyPath, false);
+                    } catch (Exception ignored) {}
+                }
+            }
         }
 
         YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
-        InputStream defStream = plugin.getResource(fileName);
+        InputStream defStream = plugin.getResource(targetPath);
+        if (defStream == null && legacyPath != null) {
+            defStream = plugin.getResource(legacyPath);
+        }
         if (defStream != null) {
             config.setDefaults(YamlConfiguration.loadConfiguration(new InputStreamReader(defStream, StandardCharsets.UTF_8)));
         }

@@ -35,9 +35,23 @@ public class RewardManager {
         this.maxLevel = plugin.getConfig().getInt("battlepass.max-level", 100);
         this.defaultRequiredXp = plugin.getConfig().getInt("battlepass.default-required-xp", 1000);
 
-        File file = new File(plugin.getDataFolder(), "rewards.yml");
-        if (!file.exists()) {
-            plugin.saveResource("rewards.yml", false);
+        File targetFile = new File(plugin.getDataFolder(), "rewards/rewards.yml");
+        File legacyFile = new File(plugin.getDataFolder(), "rewards.yml");
+        File file;
+        if (!targetFile.exists() && legacyFile.exists()) {
+            file = legacyFile;
+        } else {
+            file = targetFile;
+            if (!file.exists()) {
+                file.getParentFile().mkdirs();
+                try {
+                    plugin.saveResource("rewards/rewards.yml", false);
+                } catch (Exception e) {
+                    try {
+                        plugin.saveResource("rewards.yml", false);
+                    } catch (Exception ignored) {}
+                }
+            }
         }
 
         FileConfiguration config = YamlConfiguration.loadConfiguration(file);

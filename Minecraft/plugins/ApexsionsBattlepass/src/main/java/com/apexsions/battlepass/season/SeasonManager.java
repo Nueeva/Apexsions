@@ -30,9 +30,23 @@ public class SeasonManager {
             this.zoneId = ZoneId.systemDefault();
         }
 
-        File file = new File(plugin.getDataFolder(), "seasons.yml");
-        if (!file.exists()) {
-            plugin.saveResource("seasons.yml", false);
+        File targetFile = new File(plugin.getDataFolder(), "seasons/seasons.yml");
+        File legacyFile = new File(plugin.getDataFolder(), "seasons.yml");
+        File file;
+        if (!targetFile.exists() && legacyFile.exists()) {
+            file = legacyFile;
+        } else {
+            file = targetFile;
+            if (!file.exists()) {
+                file.getParentFile().mkdirs();
+                try {
+                    plugin.saveResource("seasons/seasons.yml", false);
+                } catch (Exception e) {
+                    try {
+                        plugin.saveResource("seasons.yml", false);
+                    } catch (Exception ignored) {}
+                }
+            }
         }
 
         FileConfiguration config = YamlConfiguration.loadConfiguration(file);
