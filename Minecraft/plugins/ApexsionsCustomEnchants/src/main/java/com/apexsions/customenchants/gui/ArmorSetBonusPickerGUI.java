@@ -301,7 +301,13 @@ public class ArmorSetBonusPickerGUI implements InventoryHolder {
         if (slot == 45) {
             player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1.0f, 1.0f);
             if (returnGUI != null) {
-                player.openInventory(returnGUI.getInventory());
+                if (returnGUI instanceof AdminItemCreatorGUI creator) {
+                    creator.open();
+                } else if (returnGUI instanceof ItemModifierGUI modifier) {
+                    modifier.open();
+                } else {
+                    player.openInventory(returnGUI.getInventory());
+                }
             } else {
                 player.closeInventory();
             }

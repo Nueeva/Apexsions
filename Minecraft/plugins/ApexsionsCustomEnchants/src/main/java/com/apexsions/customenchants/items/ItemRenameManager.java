@@ -64,6 +64,14 @@ public class ItemRenameManager implements Listener {
         }
     }
 
+    @org.bukkit.event.EventHandler
+    public void onPlayerQuit(org.bukkit.event.player.PlayerQuitEvent event) {
+        RenameSession session = activeSessions.remove(event.getPlayer().getUniqueId());
+        if (session != null && session.onCancel != null) {
+            session.onCancel.run();
+        }
+    }
+
     @EventHandler(priority = EventPriority.LOWEST)
     public void onChat(AsyncChatEvent event) {
         Player player = event.getPlayer();
@@ -73,7 +81,7 @@ public class ItemRenameManager implements Listener {
         event.setCancelled(true);
         String plainText = PlainTextComponentSerializer.plainText().serialize(event.message()).trim();
 
-        if (plainText.equalsIgnoreCase("cancel")) {
+        if (plainText.equalsIgnoreCase("cancel") || plainText.equalsIgnoreCase("batal")) {
             player.sendMessage(mm.deserialize("<red>Input nama dibatalkan.</red>"));
             player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
             if (session.onCancel != null) {
@@ -98,6 +106,9 @@ public class ItemRenameManager implements Listener {
                 session.onInput.accept(finalInput);
             } catch (Exception e) {
                 player.sendMessage(mm.deserialize("<red>Gagal memproses nama: " + e.getMessage() + "</red>"));
+                if (session.onCancel != null) {
+                    session.onCancel.run();
+                }
             }
         });
     }

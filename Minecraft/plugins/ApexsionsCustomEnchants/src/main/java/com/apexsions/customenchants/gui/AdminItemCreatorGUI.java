@@ -363,27 +363,28 @@ public class AdminItemCreatorGUI implements InventoryHolder {
     }
 
     public void renameAllItems(String newBaseName) {
+        if (newBaseName == null || newBaseName.isBlank()) return;
         this.globalSetName = newBaseName;
-        String plain = PlainTextComponentSerializer.plainText().serialize(mm.deserialize(newBaseName)).trim();
+        String plain = getPlainTextSafe(newBaseName);
         this.globalSetId = plain.toLowerCase().replaceAll("[^a-z0-9_-]", "_");
 
         // Rename helmet
         if (placedItems.containsKey(SLOT_HELMET)) {
-            renamePiece(placedItems.get(SLOT_HELMET), newBaseName + " Helmet");
+            renamePiece(placedItems.get(SLOT_HELMET), newBaseName, "Helmet");
         }
         // Rename chestplate / elytra
         if (placedItems.containsKey(SLOT_CHESTPLATE)) {
             ItemStack cp = placedItems.get(SLOT_CHESTPLATE);
             String label = cp.getType() == Material.ELYTRA ? "Elytra" : "Chestplate";
-            renamePiece(cp, newBaseName + " " + label);
+            renamePiece(cp, newBaseName, label);
         }
         // Rename leggings
         if (placedItems.containsKey(SLOT_LEGGINGS)) {
-            renamePiece(placedItems.get(SLOT_LEGGINGS), newBaseName + " Leggings");
+            renamePiece(placedItems.get(SLOT_LEGGINGS), newBaseName, "Leggings");
         }
         // Rename boots
         if (placedItems.containsKey(SLOT_BOOTS)) {
-            renamePiece(placedItems.get(SLOT_BOOTS), newBaseName + " Boots");
+            renamePiece(placedItems.get(SLOT_BOOTS), newBaseName, "Boots");
         }
 
         // Rename tools
@@ -391,7 +392,7 @@ public class AdminItemCreatorGUI implements InventoryHolder {
             ItemStack is = placedItems.get(tSlot);
             if (is != null) {
                 String toolName = getToolDisplaySuffix(is);
-                renamePiece(is, newBaseName + " " + toolName);
+                renamePiece(is, newBaseName, toolName);
             }
         }
 
@@ -401,13 +402,43 @@ public class AdminItemCreatorGUI implements InventoryHolder {
         }
         player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1.0f, 1.2f);
         player.sendMessage(mm.deserialize("<green><bold>✓ SUKSES!</bold> Seluruh armor dan tools diubah namanya menjadi <gold>" + newBaseName + " [Tipe]</gold>!</green>"));
+
+        // Crucial fix: Automatically reopen Item Creator GUI after rename finishes!
+        this.open();
     }
 
-    private void renamePiece(ItemStack is, String newDisplayName) {
+    private void renamePiece(ItemStack is, String newBaseName, String suffix) {
+        if (is == null) return;
         ItemMeta meta = is.getItemMeta();
         if (meta != null) {
-            meta.displayName(mm.deserialize(newDisplayName));
+            meta.displayName(formatPieceName(newBaseName, suffix));
             is.setItemMeta(meta);
+        }
+    }
+
+    private Component formatPieceName(String baseName, String suffix) {
+        try {
+            if (baseName.contains("<") && baseName.contains(">")) {
+                return mm.deserialize(baseName + " " + suffix);
+            } else if (baseName.contains("&")) {
+                return net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer.legacyAmpersand().deserialize(baseName + " " + suffix);
+            } else {
+                return mm.deserialize("<gold><bold>" + baseName + " " + suffix + "</bold></gold>");
+            }
+        } catch (Exception e) {
+            return Component.text(baseName + " " + suffix);
+        }
+    }
+
+    public static String getPlainTextSafe(String text) {
+        if (text == null || text.isBlank()) return "";
+        try {
+            if (text.contains("&")) {
+                return PlainTextComponentSerializer.plainText().serialize(net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer.legacyAmpersand().deserialize(text)).trim();
+            }
+            return PlainTextComponentSerializer.plainText().serialize(MiniMessage.miniMessage().deserialize(text)).trim();
+        } catch (Exception e) {
+            return text.replaceAll("<[^>]*>", "").replaceAll("&[0-9a-fk-orA-FK-OR]", "").trim();
         }
     }
 
@@ -456,7 +487,10 @@ public class AdminItemCreatorGUI implements InventoryHolder {
                 plugin.getItemRenameManager().startSession(
                         player,
                         "Masukkan nama dasar / prefix untuk seluruh set (contoh: <gradient:#e74c3c:#f39c12><bold>Apexsions</bold></gradient> atau &6&lApexsions):",
-                        this::renameAllItems,
+                        newName -> {
+                            renameAllItems(newName);
+                            this.open();
+                        },
                         this::open
                 );
                 return;
