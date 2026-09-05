@@ -13,17 +13,22 @@ import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.enchantment.EnchantItemEvent;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.enchantment.EnchantItemEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.entity.ProjectileHitEvent;
+import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.event.player.PlayerGameModeChangeEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemDamageEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerToggleFlightEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -429,6 +434,44 @@ public class EnchantEventListener implements Listener {
                     attacker.sendMessage(mm.deserialize("<gold><bold>⚔ DOUBLE STRIKE!</bold></gold>"));
                 }
             });
+
+            // 16. Impact (Trident double damage)
+            checkAndApply(weapon, "impact", lvl -> {
+                if (ThreadLocalRandom.current().nextInt(100) < 20 * lvl) {
+                    event.setDamage(event.getDamage() * 2.0);
+                    victim.getWorld().spawnParticle(Particle.CRIT, victim.getLocation().add(0, 1, 0), 10);
+                }
+            });
+
+            // 17. Famine (Hunger effect to victim)
+            checkAndApply(weapon, "famine", lvl -> {
+                if (ThreadLocalRandom.current().nextInt(100) < 20 * lvl) {
+                    victim.addPotionEffect(new PotionEffect(PotionEffectType.HUNGER, 60 * lvl, 0));
+                }
+            });
+
+            // 18. Berserk (Strength + Mining fatigue to attacker)
+            checkAndApply(weapon, "berserk", lvl -> {
+                if (ThreadLocalRandom.current().nextInt(100) < 15 * lvl) {
+                    attacker.addPotionEffect(new PotionEffect(PotionEffectType.STRENGTH, 40 * lvl, lvl - 1));
+                    attacker.addPotionEffect(new PotionEffect(PotionEffectType.MINING_FATIGUE, 40 * lvl, 0));
+                }
+            });
+
+            // 19. Forcefield (Push victim away)
+            checkAndApply(weapon, "forcefield", lvl -> {
+                if (ThreadLocalRandom.current().nextInt(100) < 15 * lvl) {
+                    Vector push = victim.getLocation().toVector().subtract(attacker.getLocation().toVector()).normalize().multiply(1.2 * lvl).setY(0.3);
+                    victim.setVelocity(push);
+                    victim.getWorld().spawnParticle(Particle.EXPLOSION, victim.getLocation().add(0, 1, 0), 2);
+                }
+            });
+
+            // 20. Epicness (Sound + particle effects)
+            checkAndApply(weapon, "epicness", lvl -> {
+                victim.getWorld().spawnParticle(Particle.FIREWORK, victim.getLocation().add(0, 1, 0), 15, 0.3, 0.5, 0.3, 0.05);
+                attacker.playSound(victim.getLocation(), Sound.ENTITY_FIREWORK_ROCKET_BLAST, 0.8f, 1.2f);
+            });
         }
 
         // Defender Armor Enchantments
@@ -509,6 +552,29 @@ public class EnchantEventListener implements Listener {
                 checkAndApply(piece, "safeguard", lvl -> {
                     if (ThreadLocalRandom.current().nextInt(100) < 15 * lvl) {
                         finalDefPlayer.addPotionEffect(new PotionEffect(PotionEffectType.RESISTANCE, 40 * lvl, 0));
+                    }
+                });
+            }
+
+            // Reflect (Reflect damage back to attacker)
+            for (ItemStack piece : armor) {
+                checkAndApply(piece, "reflect", lvl -> {
+                    if (attacker != null && ThreadLocalRandom.current().nextInt(100) < 8 * lvl) {
+                        event.setCancelled(true);
+                        attacker.damage(baseDamage, finalDefPlayer);
+                        finalDefPlayer.playSound(finalDefPlayer.getLocation(), Sound.ITEM_SHIELD_BLOCK, 1.0f, 1.5f);
+                        finalDefPlayer.sendMessage(mm.deserialize("<gold><bold>⚡ REFLECT!</bold> Kamu memantulkan kembali serangan lawan!</gold>"));
+                    }
+                });
+                if (event.isCancelled()) return;
+            }
+
+            // Ward (Absorb incoming damage)
+            for (ItemStack piece : armor) {
+                checkAndApply(piece, "ward", lvl -> {
+                    if (ThreadLocalRandom.current().nextInt(100) < 10 * lvl) {
+                        event.setDamage(event.getDamage() * 0.5);
+                        finalDefPlayer.getWorld().spawnParticle(Particle.ENCHANTED_HIT, finalDefPlayer.getLocation().add(0, 1, 0), 10);
                     }
                 });
             }
@@ -678,6 +744,48 @@ public class EnchantEventListener implements Listener {
                 player.setFoodLevel(Math.min(20, player.getFoodLevel() + 1));
             }
         }
+
+        // 7. Harvest (3x3 crop harvesting for Hoes)
+        int harvestLvl = getEnchantLevel(tool, "harvest");
+        if (harvestLvl > 0 && block.getBlockData() instanceof org.bukkit.block.data.Ageable) {
+            for (int dx = -1; dx <= 1; dx++) {
+                for (int dz = -1; dz <= 1; dz++) {
+                    if (dx == 0 && dz == 0) continue;
+                    Block nearby = block.getRelative(dx, 0, dz);
+                    if (nearby.getBlockData() instanceof org.bukkit.block.data.Ageable ageable && ageable.getAge() >= ageable.getMaximumAge()) {
+                        processingBlocks.add(nearby.getLocation());
+                        try {
+                            nearby.breakNaturally(tool);
+                        } finally {
+                            processingBlocks.remove(nearby.getLocation());
+                        }
+                    }
+                }
+            }
+        }
+
+        // 8. Gemify (Ore blocks turn into raw mineral blocks)
+        int gemifyLvl = getEnchantLevel(tool, "gemify");
+        if (gemifyLvl > 0 && ThreadLocalRandom.current().nextInt(100) < 10 * gemifyLvl) {
+            Material mineralBlock = switch (block.getType()) {
+                case DIAMOND_ORE, DEEPSLATE_DIAMOND_ORE -> Material.DIAMOND_BLOCK;
+                case IRON_ORE, DEEPSLATE_IRON_ORE -> Material.IRON_BLOCK;
+                case GOLD_ORE, DEEPSLATE_GOLD_ORE -> Material.GOLD_BLOCK;
+                case EMERALD_ORE, DEEPSLATE_EMERALD_ORE -> Material.EMERALD_BLOCK;
+                case COPPER_ORE, DEEPSLATE_COPPER_ORE -> Material.COPPER_BLOCK;
+                case COAL_ORE, DEEPSLATE_COAL_ORE -> Material.COAL_BLOCK;
+                case REDSTONE_ORE, DEEPSLATE_REDSTONE_ORE -> Material.REDSTONE_BLOCK;
+                case LAPIS_ORE, DEEPSLATE_LAPIS_ORE -> Material.LAPIS_BLOCK;
+                default -> null;
+            };
+            if (mineralBlock != null) {
+                event.setDropItems(false);
+                block.getWorld().dropItemNaturally(block.getLocation(), new ItemStack(mineralBlock));
+                block.getWorld().spawnParticle(Particle.HAPPY_VILLAGER, block.getLocation().add(0.5, 0.5, 0.5), 10, 0.3, 0.3, 0.3, 0.1);
+                player.playSound(block.getLocation(), Sound.BLOCK_ANVIL_LAND, 0.8f, 1.4f);
+                player.sendMessage(mm.deserialize("<gradient:#f1c40f:#e67e22><bold>💎 GEMIFY!</bold> Bongkahan bijih berubah menjadi blok mineral murni!</gradient>"));
+            }
+        }
     }
 
     private void breakTree(Block origin, ItemStack tool, Player player) {
@@ -799,6 +907,184 @@ public class EnchantEventListener implements Listener {
         if (hellLvl > 0 && event.getProjectile() instanceof Arrow arrow) {
             arrow.setVisualFire(true);
             arrow.setFireTicks(200);
+        }
+
+        // Frenzy (Haste & Speed on shoot)
+        checkAndApply(bow, "frenzy", lvl -> {
+            if (ThreadLocalRandom.current().nextInt(100) < 25 * lvl) {
+                player.addPotionEffect(new PotionEffect(PotionEffectType.HASTE, 60 * lvl, lvl - 1));
+                player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 60 * lvl, 0));
+            }
+        });
+    }
+
+    @EventHandler
+    public void onProjectileHit(ProjectileHitEvent event) {
+        if (!(event.getEntity() instanceof Arrow arrow)) return;
+        if (!(arrow.getShooter() instanceof Player player)) return;
+
+        ItemStack bow = player.getInventory().getItemInMainHand();
+        if (bow.getType() != Material.BOW && bow.getType() != Material.CROSSBOW) {
+            bow = player.getInventory().getItemInOffHand();
+        }
+
+        checkAndApply(bow, "explosive", lvl -> {
+            if (ThreadLocalRandom.current().nextInt(100) < 20 * lvl) {
+                Location loc = arrow.getLocation();
+                loc.getWorld().createExplosion(loc, 1.5f + (lvl * 0.5f), false, false);
+            }
+        });
+    }
+
+    @EventHandler(priority = EventPriority.HIGH)
+    public void onPlayerFish(PlayerFishEvent event) {
+        Player player = event.getPlayer();
+        ItemStack rod = player.getInventory().getItemInMainHand();
+        if (rod.getType() != Material.FISHING_ROD) {
+            rod = player.getInventory().getItemInOffHand();
+        }
+        if (rod.getType() != Material.FISHING_ROD) return;
+
+        // 1. AutoReel (Automatically reels in when fish bites)
+        int autoReelLvl = getEnchantLevel(rod, "autoreel");
+        if (autoReelLvl > 0 && event.getState() == PlayerFishEvent.State.BITE) {
+            FishHook hook = event.getHook();
+            plugin.getServer().getScheduler().runTask(plugin, () -> {
+                if (hook.isValid()) {
+                    boolean retrieved = false;
+                    try {
+                        java.lang.reflect.Method m = hook.getClass().getMethod("retrieve", EquipmentSlot.class);
+                        m.invoke(hook, EquipmentSlot.HAND);
+                        retrieved = true;
+                    } catch (Throwable ignored) {}
+                    if (!retrieved) {
+                        try {
+                            java.lang.reflect.Method m = hook.getClass().getMethod("retrieve", ItemStack.class);
+                            m.invoke(hook, player.getInventory().getItemInMainHand());
+                            retrieved = true;
+                        } catch (Throwable ignored) {}
+                    }
+                    if (!retrieved) {
+                        hook.pullHookedEntity();
+                        hook.remove();
+                    }
+                    player.playSound(player.getLocation(), Sound.ENTITY_FISHING_BOBBER_RETRIEVE, 1.0f, 1.2f);
+                    player.sendMessage(mm.deserialize("<gold><bold>🎣 AUTO REEL!</bold> Kail otomatis menarik tangkapan!</gold>"));
+                }
+            });
+        }
+
+        // 2. Bait (Double drops on CAUGHT_FISH)
+        checkAndApply(rod, "bait", lvl -> {
+            if (event.getState() == PlayerFishEvent.State.CAUGHT_FISH && event.getCaught() instanceof Item caughtItem) {
+                if (ThreadLocalRandom.current().nextInt(100) < 25 * lvl) {
+                    ItemStack duplicate = caughtItem.getItemStack().clone();
+                    player.getWorld().dropItemNaturally(caughtItem.getLocation(), duplicate);
+                    player.playSound(player.getLocation(), Sound.ENTITY_ITEM_PICKUP, 1.0f, 1.5f);
+                    player.sendMessage(mm.deserialize("<gold><bold>🎣 BAIT BONUS!</bold> Umpan ajaib melipatgandakan hasil tangkapanmu!</gold>"));
+                }
+            }
+        });
+
+        // 3. Hook (Extra EXP on CAUGHT_FISH)
+        checkAndApply(rod, "hook", lvl -> {
+            if (event.getState() == PlayerFishEvent.State.CAUGHT_FISH) {
+                event.setExpToDrop((int) (event.getExpToDrop() * (1.0 + (lvl * 0.75))));
+            }
+        });
+
+        // 4. Lucky (Luck effect while fishing)
+        checkAndApply(rod, "lucky", lvl -> {
+            if (event.getState() == PlayerFishEvent.State.CAUGHT_FISH || event.getState() == PlayerFishEvent.State.BITE) {
+                player.addPotionEffect(new PotionEffect(PotionEffectType.LUCK, 200 * lvl, 0));
+            }
+        });
+
+        // 5. Sharpness Hook (Damage entity on hook)
+        checkAndApply(rod, "sharpnesshook", lvl -> {
+            if (event.getState() == PlayerFishEvent.State.CAUGHT_ENTITY && event.getCaught() instanceof LivingEntity victim) {
+                victim.damage(lvl * 2.5, player);
+                player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_ATTACK_CRIT, 1.0f, 1.2f);
+            }
+        });
+
+        // 6. Poisoned Hook
+        checkAndApply(rod, "poisonedhook", lvl -> {
+            if (event.getState() == PlayerFishEvent.State.CAUGHT_ENTITY && event.getCaught() instanceof LivingEntity victim) {
+                victim.addPotionEffect(new PotionEffect(PotionEffectType.POISON, 60 * lvl, 0));
+            }
+        });
+
+        // 7. Fire Hook
+        checkAndApply(rod, "firehook", lvl -> {
+            if (event.getState() == PlayerFishEvent.State.CAUGHT_ENTITY && event.getCaught() instanceof LivingEntity victim) {
+                victim.setFireTicks(60 * lvl);
+            }
+        });
+
+        // 8. Snap (Pull hooked entity towards player)
+        checkAndApply(rod, "snap", lvl -> {
+            if (event.getState() == PlayerFishEvent.State.CAUGHT_ENTITY && event.getCaught() instanceof LivingEntity victim) {
+                Vector pull = player.getLocation().toVector().subtract(victim.getLocation().toVector()).normalize().multiply(1.0 + (0.3 * lvl)).setY(0.4);
+                victim.setVelocity(pull);
+            }
+        });
+    }
+
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+    public void onPlayerInteract(PlayerInteractEvent event) {
+        if (event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
+        Block block = event.getClickedBlock();
+        if (block == null || block.getType() != Material.FARMLAND) return;
+
+        Player player = event.getPlayer();
+        if (!player.isSneaking()) return;
+
+        ItemStack tool = player.getInventory().getItemInMainHand();
+        ItemStack off = player.getInventory().getItemInOffHand();
+
+        int planterLvl = getEnchantLevel(tool, "planter");
+        int potatoLvl = getEnchantLevel(tool, "potatoplanter");
+        int carrotLvl = getEnchantLevel(tool, "carrotplanter");
+
+        if (planterLvl <= 0 && potatoLvl <= 0 && carrotLvl <= 0) return;
+
+        // Determine seed and crop type
+        Material seedType = null;
+        Material cropType = null;
+
+        if (planterLvl > 0 && (tool.getType() == Material.WHEAT_SEEDS || off.getType() == Material.WHEAT_SEEDS)) {
+            seedType = Material.WHEAT_SEEDS;
+            cropType = Material.WHEAT;
+        } else if (potatoLvl > 0 && (tool.getType() == Material.POTATO || off.getType() == Material.POTATO)) {
+            seedType = Material.POTATO;
+            cropType = Material.POTATOES;
+        } else if (carrotLvl > 0 && (tool.getType() == Material.CARROT || off.getType() == Material.CARROT)) {
+            seedType = Material.CARROT;
+            cropType = Material.CARROTS;
+        }
+
+        if (seedType == null || cropType == null) return;
+
+        boolean plantedAny = false;
+        for (int dx = -1; dx <= 1; dx++) {
+            for (int dz = -1; dz <= 1; dz++) {
+                Block farm = block.getRelative(dx, 0, dz);
+                Block above = farm.getRelative(0, 1, 0);
+                if (farm.getType() == Material.FARMLAND && above.getType().isAir()) {
+                    if (player.getGameMode() == GameMode.CREATIVE || player.getInventory().containsAtLeast(new ItemStack(seedType), 1)) {
+                        if (player.getGameMode() != GameMode.CREATIVE) {
+                            player.getInventory().removeItem(new ItemStack(seedType, 1));
+                        }
+                        above.setType(cropType);
+                        plantedAny = true;
+                    }
+                }
+            }
+        }
+        if (plantedAny) {
+            player.playSound(block.getLocation(), Sound.ITEM_CROP_PLANT, 1.0f, 1.0f);
+            player.getWorld().spawnParticle(Particle.HAPPY_VILLAGER, block.getLocation().add(0.5, 1.0, 0.5), 8, 0.5, 0.2, 0.5);
         }
     }
 

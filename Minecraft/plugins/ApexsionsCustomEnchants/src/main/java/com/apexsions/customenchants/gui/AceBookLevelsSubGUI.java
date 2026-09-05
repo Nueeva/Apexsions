@@ -31,21 +31,31 @@ public class AceBookLevelsSubGUI implements InventoryHolder {
     private final CustomEnchant enchant;
     private final int returnPage;
     private final String returnFilter;
+    private final String returnRarity;
+    private final String returnCategory;
+    private final String returnSearch;
     private final Inventory inventory;
     private final MiniMessage mm = MiniMessage.miniMessage();
     private final Map<Integer, Integer> slotLevelMap = new HashMap<>();
 
-    public AceBookLevelsSubGUI(ApexsionsCustomEnchantsPlugin plugin, Player player, CustomEnchant enchant, int returnPage, String returnFilter) {
+    public AceBookLevelsSubGUI(ApexsionsCustomEnchantsPlugin plugin, Player player, CustomEnchant enchant, int returnPage, String returnRarity, String returnCategory, String returnSearch) {
         this.plugin = plugin;
         this.player = player;
         this.enchant = enchant;
         this.returnPage = returnPage;
-        this.returnFilter = returnFilter;
+        this.returnRarity = returnRarity != null ? returnRarity : "ALL";
+        this.returnCategory = returnCategory != null ? returnCategory : "ALL";
+        this.returnSearch = returnSearch;
+        this.returnFilter = returnSearch;
 
         int size = Math.max(9, ((enchant.getMaxLevel() + 1 + 8) / 9) * 9);
         if (size > 54) size = 54;
         this.inventory = Bukkit.createInventory(this, size, mm.deserialize("<gold><bold>AE</bold></gold> <green>Book (" + enchant.getId() + ")</green>"));
         buildGUI();
+    }
+
+    public AceBookLevelsSubGUI(ApexsionsCustomEnchantsPlugin plugin, Player player, CustomEnchant enchant, int returnPage, String returnFilter) {
+        this(plugin, player, enchant, returnPage, "ALL", "ALL", returnFilter);
     }
 
     public void open() {
@@ -101,7 +111,7 @@ public class AceBookLevelsSubGUI implements InventoryHolder {
 
         if (slot == inventory.getSize() - 1) { // Go back
             player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.8f, 1.2f);
-            new AceEnchantsCatalogGUI(plugin, player, returnPage, returnFilter).open();
+            new AceEnchantsCatalogGUI(plugin, player, returnPage, returnRarity, returnCategory, returnSearch).open();
             return;
         }
 
