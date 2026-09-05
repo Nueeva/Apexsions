@@ -8,6 +8,8 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
@@ -54,8 +56,10 @@ public class EnchantmentRegistry {
             int maxLvl = sec.getInt(id + ".max-level", 3);
             String applies = sec.getString(id + ".applies", "ALL");
             String desc = sec.getString(id + ".description", "Custom Enchantment");
+            boolean purchasable = sec.getBoolean(id + ".purchasable", !id.equalsIgnoreCase("wings"));
+            boolean enchantable = sec.getBoolean(id + ".enchantable", !id.equalsIgnoreCase("wings"));
 
-            CustomEnchant enchant = new CustomEnchant(id, dName, group, maxLvl, applies, desc);
+            CustomEnchant enchant = new CustomEnchant(id, dName, group, maxLvl, applies, desc, purchasable, enchantable);
             enchantments.put(id.toLowerCase(), enchant);
         }
 
@@ -136,6 +140,18 @@ public class EnchantmentRegistry {
         return out;
     }
 
+    public void applyEnchantDirect(ItemStack item, CustomEnchant enchant, int level) {
+        if (item == null || item.getType().isAir() || enchant == null) return;
+        ItemMeta meta = item.getItemMeta();
+        if (meta == null) return;
+
+        NamespacedKey key = new NamespacedKey(plugin, "ce_" + enchant.getId());
+        meta.getPersistentDataContainer().set(key, PersistentDataType.INTEGER, level);
+
+        rebuildItemLore(meta);
+        item.setItemMeta(meta);
+    }
+
     public ItemStack removeEnchant(ItemStack item, CustomEnchant enchant) {
         if (item == null || item.getType().isAir() || enchant == null) return item;
         ItemStack out = item.clone();
@@ -154,19 +170,31 @@ public class EnchantmentRegistry {
     public void rebuildItemLore(ItemMeta meta) {
         PersistentDataContainer pdc = meta.getPersistentDataContainer();
 
-        // 1. Gather existing lore lines that are NOT custom enchants
+        // 1. Gather existing lore lines that are NOT custom enchants or custom vanilla enchant lines
         List<Component> baseLore = new ArrayList<>();
         if (meta.hasLore() && meta.lore() != null) {
             for (Component c : meta.lore()) {
                 String plain = MiniMessage.miniMessage().serialize(c);
-                if (!isCustomEnchantLore(plain)) {
+                if (!isCustomOrVanillaEnchantLore(plain, meta)) {
                     baseLore.add(c);
                 }
             }
         }
 
-        // 2. Prepend custom enchant lore lines
         List<Component> newLore = new ArrayList<>();
+
+        // 2. Format vanilla enchants in full Roman numerals if any level > 10
+        boolean hasHighLevelVanilla = meta.hasEnchants() && meta.getEnchants().values().stream().anyMatch(lvl -> lvl > 10);
+        if (hasHighLevelVanilla) {
+            meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+            for (Map.Entry<Enchantment, Integer> entry : meta.getEnchants().entrySet()) {
+                String vName = formatVanillaName(entry.getKey().getKey().getKey());
+                String line = "<gray>" + vName + " " + CustomEnchant.toRoman(entry.getValue()) + "</gray>";
+                newLore.add(mm.deserialize(line));
+            }
+        }
+
+        // 3. Prepend custom enchant lore lines in full Roman numerals
         boolean hasAnyCustom = false;
         for (CustomEnchant enchant : enchantments.values()) {
             NamespacedKey key = new NamespacedKey(plugin, "ce_" + enchant.getId());
@@ -186,7 +214,7 @@ public class EnchantmentRegistry {
         meta.lore(newLore);
 
         // Apply glowing enchantment glint shimmer
-        if (hasAnyCustom) {
+        if (hasAnyCustom || hasHighLevelVanilla) {
             meta.setEnchantmentGlintOverride(true);
         } else if (!meta.hasEnchants()) {
             meta.setEnchantmentGlintOverride(null);
@@ -202,10 +230,28 @@ public class EnchantmentRegistry {
         return item;
     }
 
-    private boolean isCustomEnchantLore(String plain) {
+    public static String formatVanillaName(String key) {
+        String[] parts = key.split("_");
+        StringBuilder sb = new StringBuilder();
+        for (String p : parts) {
+            if (!p.isEmpty()) {
+                sb.append(Character.toUpperCase(p.charAt(0))).append(p.substring(1).toLowerCase()).append(" ");
+            }
+        }
+        return sb.toString().trim();
+    }
+
+    private boolean isCustomOrVanillaEnchantLore(String plain, ItemMeta meta) {
         for (CustomEnchant enchant : enchantments.values()) {
             if (plain.contains(enchant.getDisplayName())) {
                 return true;
+            }
+        }
+        if (meta != null && meta.hasEnchants()) {
+            for (Enchantment ve : meta.getEnchants().keySet()) {
+                if (plain.contains(formatVanillaName(ve.getKey().getKey()))) {
+                    return true;
+                }
             }
         }
         return false;

@@ -15,14 +15,22 @@ public class CustomEnchant {
     private final int maxLevel;
     private final String appliesTo;
     private final String description;
+    private final boolean purchasable;
+    private final boolean enchantable;
 
-    public CustomEnchant(String id, String displayName, EnchantmentGroup group, int maxLevel, String appliesTo, String description) {
+    public CustomEnchant(String id, String displayName, EnchantmentGroup group, int maxLevel, String appliesTo, String description, boolean purchasable, boolean enchantable) {
         this.id = id.toLowerCase().trim();
         this.displayName = displayName;
         this.group = group;
         this.maxLevel = Math.max(1, maxLevel);
         this.appliesTo = appliesTo != null ? appliesTo.toUpperCase().trim() : "ALL";
         this.description = description;
+        this.purchasable = purchasable;
+        this.enchantable = enchantable;
+    }
+
+    public CustomEnchant(String id, String displayName, EnchantmentGroup group, int maxLevel, String appliesTo, String description) {
+        this(id, displayName, group, maxLevel, appliesTo, description, !id.equalsIgnoreCase("wings"), !id.equalsIgnoreCase("wings"));
     }
 
     public String getId() {
@@ -47,6 +55,14 @@ public class CustomEnchant {
 
     public String getDescription() {
         return description;
+    }
+
+    public boolean isPurchasable() {
+        return purchasable;
+    }
+
+    public boolean isEnchantable() {
+        return enchantable;
     }
 
     public String getFormattedName() {
@@ -89,18 +105,17 @@ public class CustomEnchant {
     }
 
     public static String toRoman(int number) {
-        return switch (number) {
-            case 1 -> "I";
-            case 2 -> "II";
-            case 3 -> "III";
-            case 4 -> "IV";
-            case 5 -> "V";
-            case 6 -> "VI";
-            case 7 -> "VII";
-            case 8 -> "VIII";
-            case 9 -> "IX";
-            case 10 -> "X";
-            default -> String.valueOf(number);
-        };
+        if (number <= 0) return String.valueOf(number);
+        final int[] values = {1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1};
+        final String[] symbols = {"M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"};
+        StringBuilder sb = new StringBuilder();
+        int temp = number;
+        for (int i = 0; i < values.length; i++) {
+            while (temp >= values[i]) {
+                temp -= values[i];
+                sb.append(symbols[i]);
+            }
+        }
+        return sb.toString();
     }
 }

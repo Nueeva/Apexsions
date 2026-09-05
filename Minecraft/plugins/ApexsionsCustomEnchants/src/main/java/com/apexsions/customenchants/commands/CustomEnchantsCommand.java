@@ -73,7 +73,7 @@ public class CustomEnchantsCommand implements CommandExecutor, TabCompleter {
                 player.sendMessage(mm.deserialize("<gradient:#9b59b6:#e74c3c><bold>✨ INFORMASI CUSTOM ENCHANT ✨</bold></gradient>"));
                 player.sendMessage(mm.deserialize("<gray>Nama: " + enchant.getFormattedName()));
                 player.sendMessage(mm.deserialize("<gray>Tier: " + enchant.getGroup().getDisplayName()));
-                player.sendMessage(mm.deserialize("<gray>Level Maks: <gold>" + enchant.getMaxLevel() + "</gold>"));
+                player.sendMessage(mm.deserialize("<gray>Level Maks: <gold>" + CustomEnchant.toRoman(enchant.getMaxLevel()) + " (" + enchant.getMaxLevel() + ")</gold>"));
                 player.sendMessage(mm.deserialize("<gray>Dapat Di-apply Ke: <aqua>" + String.join(", ", enchant.getTargets()) + "</aqua>"));
                 player.sendMessage(mm.deserialize("<gray>Deskripsi: <yellow>" + enchant.getDescription() + "</yellow>"));
                 player.sendMessage(mm.deserialize("<dark_gray>----------------------------------------</dark_gray>"));

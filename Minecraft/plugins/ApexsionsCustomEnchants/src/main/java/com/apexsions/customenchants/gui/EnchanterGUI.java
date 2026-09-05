@@ -231,9 +231,14 @@ public class EnchanterGUI implements InventoryHolder {
             return;
         }
 
-        List<CustomEnchant> pool = plugin.getEnchantmentRegistry().getEnchantmentsByGroup(grp);
+        List<CustomEnchant> pool = new ArrayList<>();
+        for (CustomEnchant e : plugin.getEnchantmentRegistry().getEnchantmentsByGroup(grp)) {
+            if (e.isPurchasable()) {
+                pool.add(e);
+            }
+        }
         if (pool.isEmpty()) {
-            player.sendMessage(mm.deserialize("<red>Belum ada sihir yang terdaftar pada tier " + grp.getId() + "!</red>"));
+            player.sendMessage(mm.deserialize("<red>Belum ada sihir yang dapat dibeli pada tier " + grp.getId() + "!</red>"));
             return;
         }
 

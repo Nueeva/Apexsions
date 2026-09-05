@@ -116,7 +116,7 @@ public class CustomEnchantPickerGUI implements InventoryHolder {
 
                 List<Component> lore = new ArrayList<>();
                 lore.add(mm.deserialize("<gray>Tier: " + grp.getDisplayName() + "</gray>"));
-                lore.add(mm.deserialize("<gray>Level Maks: <gold>" + enchant.getMaxLevel() + "</gold></gray>"));
+                lore.add(mm.deserialize("<gray>Level Maks: <gold>" + CustomEnchant.toRoman(enchant.getMaxLevel()) + " (" + enchant.getMaxLevel() + ")</gold></gray>"));
                 lore.add(mm.deserialize("<gray>Target: <aqua>" + enchant.getAppliesTo() + "</aqua></gray>"));
                 lore.add(Component.empty());
                 lore.add(mm.deserialize("<yellow>" + enchant.getDescription() + "</yellow>"));

@@ -81,6 +81,7 @@ public class SpecificBookShopGUI implements InventoryHolder {
         List<CustomEnchant> filtered = new ArrayList<>();
         for (CustomEnchant e : plugin.getEnchantmentRegistry().getAllEnchantments()) {
             if (e.getGroup().isComingSoon()) continue;
+            if (!e.isPurchasable()) continue;
 
             // Rarity filter
             if (!rarityFilter.equals("ALL") && !e.getGroup().getId().equalsIgnoreCase(rarityFilter)) {
@@ -132,7 +133,7 @@ public class SpecificBookShopGUI implements InventoryHolder {
                 lore.add(Component.empty());
                 lore.add(mm.deserialize("<gold>Tier:</gold> " + grp.getDisplayName()));
                 lore.add(mm.deserialize("<gold>Berlaku Pada:</gold> <yellow>" + enchant.getAppliesTo() + "</yellow>"));
-                lore.add(mm.deserialize("<gold>Maks Level:</gold> <yellow>" + enchant.getMaxLevel() + "</yellow>"));
+                lore.add(mm.deserialize("<gold>Maks Level:</gold> <yellow>" + CustomEnchant.toRoman(enchant.getMaxLevel()) + " (" + enchant.getMaxLevel() + ")</yellow>"));
                 lore.add(Component.empty());
                 lore.add(mm.deserialize("<green>● " + fixedSuccess + "% Success Rate (Pasti)</green>"));
                 lore.add(mm.deserialize("<red>● 30% Destroy Rate</red>"));

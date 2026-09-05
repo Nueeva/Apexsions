@@ -73,7 +73,7 @@ public class AceBookLevelsSubGUI implements InventoryHolder {
                 lore.add(Component.empty());
                 lore.add(mm.deserialize("<gold>Tier:</gold> " + enchant.getGroup().getDisplayName()));
                 lore.add(mm.deserialize("<gold>Applies to:</gold> <yellow>" + enchant.getAppliesTo() + "</yellow>"));
-                lore.add(mm.deserialize("<gold>Tingkat Level:</gold> <aqua>" + lvl + " / " + enchant.getMaxLevel() + "</aqua>"));
+                lore.add(mm.deserialize("<gold>Tingkat Level:</gold> <aqua>" + CustomEnchant.toRoman(lvl) + " / " + CustomEnchant.toRoman(enchant.getMaxLevel()) + " (" + lvl + "/" + enchant.getMaxLevel() + ")</aqua>"));
                 lore.add(Component.empty());
                 lore.add(mm.deserialize("<yellow>(!) <italic>Left-Click</italic> untuk mengambil buku (100% Success)</yellow>"));
                 lore.add(mm.deserialize("<yellow>(!) <italic>Right-Click</italic> untuk pasang ke item di tangan</yellow>"));

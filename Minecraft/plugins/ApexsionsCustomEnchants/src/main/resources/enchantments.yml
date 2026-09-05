@@ -86,6 +86,8 @@ enchantments:
     max-level: 1
     applies: "BOOTS"
     description: "Allows flying when worn."
+    purchasable: false
+    enchantable: false
 
   aquatic:
     display-name: "Aquatic"

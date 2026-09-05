@@ -111,7 +111,8 @@ public class VanillaEnchantPickerGUI implements InventoryHolder {
                 meta.displayName(mm.deserialize("<gold><bold>" + eName + "</bold></gold>"));
                 List<Component> lore = new ArrayList<>();
                 lore.add(mm.deserialize("<gray>Key: <yellow>" + enchant.getKey().getKey() + "</yellow></gray>"));
-                lore.add(mm.deserialize("<gray>Level Maks Vanilla: <aqua>" + enchant.getMaxLevel() + "</aqua></gray>"));
+                lore.add(mm.deserialize("<gray>Level Maks Vanilla: <aqua>" + CustomEnchant.toRoman(enchant.getMaxLevel()) + " (" + enchant.getMaxLevel() + ")</aqua></gray>"));
+                lore.add(mm.deserialize("<gray>Level Maks Sistem: <gold>XX (20)</gold></gray>"));
                 lore.add(Component.empty());
                 if (isAttached) {
                     lore.add(mm.deserialize("<green><bold>● Terpasang: Level " + CustomEnchant.toRoman(currentLvl) + "</bold></green>"));

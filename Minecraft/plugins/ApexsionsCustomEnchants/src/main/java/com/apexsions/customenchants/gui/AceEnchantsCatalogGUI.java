@@ -84,7 +84,7 @@ public class AceEnchantsCatalogGUI implements InventoryHolder {
                 lore.add(Component.empty());
                 lore.add(mm.deserialize("<gold><bold>x</bold></gold> <gray>Enchant Type:</gray> <yellow>" + enchant.getAppliesTo() + "</yellow>"));
                 lore.add(mm.deserialize("<gold><bold>x</bold></gold> <gray>Applies to:</gray> <yellow>" + enchant.getAppliesTo() + "</yellow>"));
-                lore.add(mm.deserialize("<gold><bold>x</bold></gold> <gray>Levels:</gray> <yellow>" + enchant.getMaxLevel() + "</yellow>"));
+                lore.add(mm.deserialize("<gold><bold>x</bold></gold> <gray>Levels:</gray> <yellow>I - " + CustomEnchant.toRoman(enchant.getMaxLevel()) + " (" + enchant.getMaxLevel() + ")</yellow>"));
                 lore.add(mm.deserialize("<gold><bold>x</bold></gold> <gray>Tier Group:</gray> " + grp.getDisplayName()));
                 lore.add(Component.empty());
                 lore.add(mm.deserialize("<dark_gray>>> </dark_gray><gold>Click</gold> <gray>to</gray> <yellow>Access Books</yellow>"));

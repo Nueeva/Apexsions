@@ -13,6 +13,7 @@ import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.enchantment.EnchantItemEvent;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -810,5 +811,188 @@ public class EnchantEventListener implements Listener {
         if (lvl > 0) {
             action.accept(lvl);
         }
+    }
+
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+    public void onEnchantItem(EnchantItemEvent event) {
+        Player player = event.getEnchanter();
+        ItemStack item = event.getItem();
+        if (item == null || item.getType().isAir()) return;
+
+        int button = event.whichButton(); // 0 (Low), 1 (Medium), 2 (High / Level 30)
+
+        // Custom enchant roll chance based on button clicked:
+        // Button 0 (Exp Level 1-10): 25%
+        // Button 1 (Exp Level 10-20): 50%
+        // Button 2 (Exp Level 30): 80%
+        int baseChance = switch (button) {
+            case 0 -> 25;
+            case 1 -> 50;
+            case 2 -> 80;
+            default -> 30;
+        };
+
+        boolean wonCustomEnchant = ThreadLocalRandom.current().nextInt(100) < baseChance;
+
+        // Schedule lore & glint update on next tick (to format high level vanilla enchants in Roman numerals)
+        plugin.getServer().getScheduler().runTask(plugin, () -> {
+            plugin.getEnchantmentRegistry().updateLoreAndGlint(item);
+            player.updateInventory();
+        });
+
+        if (!wonCustomEnchant) {
+            return;
+        }
+
+        // Special case: Player is enchanting a regular BOOK
+        if (item.getType() == Material.BOOK) {
+            List<CustomEnchant> bookEligible = plugin.getEnchantmentRegistry().getAllEnchantments().stream()
+                    .filter(CustomEnchant::isEnchantable) // Strictly excludes wings
+                    .toList();
+            if (!bookEligible.isEmpty()) {
+                String targetTier = rollTierForButton(button);
+                CustomEnchant chosen = pickEnchantByTierFallback(bookEligible, targetTier);
+                if (chosen == null) {
+                    chosen = bookEligible.get(ThreadLocalRandom.current().nextInt(bookEligible.size()));
+                }
+                final CustomEnchant finalBookEnchant = chosen;
+                plugin.getServer().getScheduler().runTask(plugin, () -> {
+                    ItemStack customBook = plugin.getEnchantBookManager().createBook(finalBookEnchant, 1, 80, 20);
+                    player.getInventory().addItem(customBook);
+                    player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 0.8f, 1.8f);
+                    player.sendMessage(mm.deserialize("<gradient:#f1c40f:#e67e22><bold>✨ ENCHANTING TABLE BONUS BOOK!</bold></gradient> " +
+                            "Kamu juga mendapatkan Buku Sihir <color:" + finalBookEnchant.getGroup().getColor() + "><bold>" + finalBookEnchant.getDisplayName() + " I</bold></color>!"));
+                });
+            }
+            return;
+        }
+
+        // Filter eligible custom enchantments for equipment:
+        // 1. isEnchantable() == true (Strictly excludes wings and non-table enchants)
+        // 2. canApplyTo(item) == true (Item type must match)
+        // 3. current level on item < maxLevel
+        List<CustomEnchant> eligible = plugin.getEnchantmentRegistry().getAllEnchantments().stream()
+                .filter(CustomEnchant::isEnchantable)
+                .filter(e -> e.canApplyTo(item))
+                .filter(e -> getEnchantLevel(item, e.getId()) < e.getMaxLevel())
+                .toList();
+
+        if (eligible.isEmpty()) {
+            return;
+        }
+
+        // Determine target rarity tier based on button
+        String targetTier = rollTierForButton(button);
+
+        // Pick enchantment matching targetTier, with fallback to other tiers
+        CustomEnchant chosen = pickEnchantByTierFallback(eligible, targetTier);
+        if (chosen == null) {
+            chosen = eligible.get(ThreadLocalRandom.current().nextInt(eligible.size()));
+        }
+
+        int currentLvl = getEnchantLevel(item, chosen.getId());
+        int newLvl = currentLvl + 1;
+        // On Level 30 enchant (button 2), 20% bonus chance to start at Level II directly if maxLevel >= 2 and fresh
+        if (button == 2 && chosen.getMaxLevel() >= 2 && currentLvl == 0 && ThreadLocalRandom.current().nextInt(100) < 20) {
+            newLvl = 2;
+        }
+
+        final CustomEnchant firstEnchant = chosen;
+        final int firstLvl = newLvl;
+
+        // Apply immediately to item meta
+        plugin.getEnchantmentRegistry().applyEnchantDirect(item, firstEnchant, firstLvl);
+
+        // Also schedule on next tick to ensure compatibility with CraftBukkit ContainerEnchantTable post-processing
+        plugin.getServer().getScheduler().runTask(plugin, () -> {
+            plugin.getEnchantmentRegistry().applyEnchantDirect(item, firstEnchant, firstLvl);
+            plugin.getEnchantmentRegistry().updateLoreAndGlint(item);
+            player.updateInventory();
+        });
+
+        // Audio-visual celebratory feedback
+        player.playSound(player.getLocation(), Sound.BLOCK_ENCHANTMENT_TABLE_USE, 1.0f, 1.2f);
+        player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 0.8f, 1.8f);
+        player.spawnParticle(Particle.ENCHANT, player.getLocation().add(0, 1.2, 0), 25, 0.4, 0.4, 0.4, 0.1);
+
+        String roman = CustomEnchant.toRoman(firstLvl);
+        String grpColor = firstEnchant.getGroup().getColor();
+        player.sendMessage(mm.deserialize("<gradient:#f1c40f:#e67e22><bold>✨ ENCHANTING TABLE BONUS!</bold></gradient> " +
+                "Itemmu mendapatkan sihir khusus <color:" + grpColor + "><bold>" + firstEnchant.getDisplayName() + " " + roman + "</bold></color> " +
+                "<gray>(" + firstEnchant.getGroup().getDisplayName() + ")</gray>!"));
+
+        // Button 2 (Level 30) exclusive: 15% chance to roll a 2nd custom enchant!
+        if (button == 2 && ThreadLocalRandom.current().nextInt(100) < 15) {
+            List<CustomEnchant> secondEligible = eligible.stream()
+                    .filter(e -> !e.getId().equalsIgnoreCase(firstEnchant.getId()))
+                    .toList();
+            if (!secondEligible.isEmpty()) {
+                String secondTier = rollTierForButton(button);
+                CustomEnchant secondChosen = pickEnchantByTierFallback(secondEligible, secondTier);
+                if (secondChosen != null) {
+                    int secLvl = getEnchantLevel(item, secondChosen.getId()) + 1;
+                    final CustomEnchant finalSecond = secondChosen;
+                    final int finalSecLvl = secLvl;
+
+                    plugin.getEnchantmentRegistry().applyEnchantDirect(item, finalSecond, finalSecLvl);
+                    plugin.getServer().getScheduler().runTask(plugin, () -> {
+                        plugin.getEnchantmentRegistry().applyEnchantDirect(item, finalSecond, finalSecLvl);
+                        plugin.getEnchantmentRegistry().updateLoreAndGlint(item);
+                        player.updateInventory();
+                    });
+
+                    player.sendMessage(mm.deserialize("<gradient:#f1c40f:#e67e22><bold>✨ DOUBLE BONUS!</bold></gradient> " +
+                            "Itemmu juga mendapatkan <color:" + finalSecond.getGroup().getColor() + "><bold>" + finalSecond.getDisplayName() + " " + CustomEnchant.toRoman(finalSecLvl) + "</bold></color>!"));
+                }
+            }
+        }
+    }
+
+    private String rollTierForButton(int button) {
+        int roll = ThreadLocalRandom.current().nextInt(100);
+        return switch (button) {
+            case 0 -> { // Button 0 (Top / Low cost)
+                if (roll < 75) yield "SIMPLE";
+                if (roll < 95) yield "UNIQUE";
+                yield "ELITE";
+            }
+            case 1 -> { // Button 1 (Middle cost)
+                if (roll < 35) yield "SIMPLE";
+                if (roll < 75) yield "UNIQUE";
+                if (roll < 93) yield "ELITE";
+                if (roll < 99) yield "ULTIMATE";
+                yield "LEGENDARY";
+            }
+            case 2 -> { // Button 2 (Level 30 / Max cost)
+                if (roll < 15) yield "SIMPLE";
+                if (roll < 40) yield "UNIQUE";
+                if (roll < 75) yield "ELITE";
+                if (roll < 93) yield "ULTIMATE";
+                if (roll < 99) yield "LEGENDARY";
+                yield "FABLED";
+            }
+            default -> "SIMPLE";
+        };
+    }
+
+    private CustomEnchant pickEnchantByTierFallback(List<CustomEnchant> pool, String targetTier) {
+        List<CustomEnchant> inTier = pool.stream()
+                .filter(e -> e.getGroup().getId().equalsIgnoreCase(targetTier))
+                .toList();
+        if (!inTier.isEmpty()) {
+            return inTier.get(ThreadLocalRandom.current().nextInt(inTier.size()));
+        }
+
+        // Ordered fallbacks
+        String[] tiers = {"FABLED", "LEGENDARY", "ULTIMATE", "ELITE", "UNIQUE", "SIMPLE"};
+        for (String t : tiers) {
+            List<CustomEnchant> list = pool.stream()
+                    .filter(e -> e.getGroup().getId().equalsIgnoreCase(t))
+                    .toList();
+            if (!list.isEmpty()) {
+                return list.get(ThreadLocalRandom.current().nextInt(list.size()));
+            }
+        }
+        return pool.isEmpty() ? null : pool.get(ThreadLocalRandom.current().nextInt(pool.size()));
     }
 }
