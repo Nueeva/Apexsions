@@ -149,10 +149,14 @@ public class AdminPresetsGUI implements InventoryHolder {
             int totalGiven = 0;
             List<ItemStack> allItems = new ArrayList<>();
             for (ItemStack is : p.armorPieces()) {
-                if (is != null && !is.getType().isAir()) allItems.add(is.clone());
+                if (is != null && !is.getType().isAir()) {
+                    allItems.add(plugin.getEnchantmentRegistry().updateLoreAndGlint(is.clone()));
+                }
             }
             for (ItemStack is : p.toolPieces()) {
-                if (is != null && !is.getType().isAir()) allItems.add(is.clone());
+                if (is != null && !is.getType().isAir()) {
+                    allItems.add(plugin.getEnchantmentRegistry().updateLoreAndGlint(is.clone()));
+                }
             }
 
             for (ItemStack is : allItems) {

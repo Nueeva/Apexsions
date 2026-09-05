@@ -2,6 +2,7 @@ package com.apexsions.customenchants.listener;
 
 import com.apexsions.customenchants.ApexsionsCustomEnchantsPlugin;
 import com.apexsions.customenchants.enchant.CustomEnchant;
+import com.destroystokyo.paper.event.player.PlayerArmorChangeEvent;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
@@ -17,7 +18,11 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityShootBowEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.PlayerGameModeChangeEvent;
 import org.bukkit.event.player.PlayerItemDamageEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerToggleFlightEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -28,7 +33,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
- * Core event listener handling custom enchantment gameplay abilities.
+ * Core event listener handling custom enchantment gameplay abilities matching AdvancedEnchantments.
  */
 public class EnchantEventListener implements Listener {
 
@@ -37,6 +42,8 @@ public class EnchantEventListener implements Listener {
 
     private final NamespacedKey keyOverloadHealth;
     private final Map<UUID, RageTracker> rageTrackers = new ConcurrentHashMap<>();
+    private final Set<UUID> flightGrantedByWings = ConcurrentHashMap.newKeySet();
+    private final Set<Location> processingBlocks = ConcurrentHashMap.newKeySet();
 
     private record RageTracker(UUID targetId, int comboCount, long lastHitTime) {}
 
@@ -44,20 +51,48 @@ public class EnchantEventListener implements Listener {
         this.plugin = plugin;
         this.keyOverloadHealth = new NamespacedKey(plugin, "enchant_overload_health");
 
-        // Scan overload and gears every second
+        // Scan armor effects, wings flight, and static buffs every 20 ticks (1 second)
         plugin.getServer().getScheduler().runTaskTimer(plugin, this::scanArmorEnchants, 20L, 20L);
     }
 
     public void scanArmorEnchants() {
         for (Player player : plugin.getServer().getOnlinePlayers()) {
+            ItemStack boots = player.getInventory().getBoots();
             ItemStack chest = player.getInventory().getChestplate();
-            CustomEnchant overload = plugin.getEnchantmentRegistry().getEnchantment("overload");
-            int lvl = overload != null ? plugin.getEnchantmentRegistry().getEnchantLevel(chest, overload) : 0;
+            ItemStack helm = player.getInventory().getHelmet();
+            ItemStack[] armor = player.getInventory().getArmorContents();
 
+            // 1. Wings (Flight on Boots)
+            int wingsLvl = getEnchantLevel(boots, "wings");
+            if (wingsLvl > 0) {
+                if (!player.getAllowFlight()) {
+                    player.setAllowFlight(true);
+                }
+                flightGrantedByWings.add(player.getUniqueId());
+                if (player.isFlying()) {
+                    Location loc = player.getLocation().add(0, 0.1, 0);
+                    player.getWorld().spawnParticle(Particle.CLOUD, loc, 2, 0.1, 0.05, 0.1, 0.01);
+                }
+            } else if (flightGrantedByWings.remove(player.getUniqueId())) {
+                if (player.getGameMode() != GameMode.CREATIVE && player.getGameMode() != GameMode.SPECTATOR) {
+                    player.setFlying(false);
+                    player.setAllowFlight(false);
+                    player.sendMessage(mm.deserialize("<red><bold>✖ WINGS OFF</bold> Efek Wings berakhir. Terbang dinonaktifkan.</red>"));
+                }
+            }
+
+            // 2. Overload (Extra Hearts)
+            int overloadLvl = getEnchantLevel(chest, "overload");
+            if (overloadLvl == 0) {
+                for (ItemStack piece : armor) {
+                    int ol = getEnchantLevel(piece, "overload");
+                    if (ol > overloadLvl) overloadLvl = ol;
+                }
+            }
             AttributeInstance attr = player.getAttribute(Attribute.MAX_HEALTH);
             if (attr != null) {
-                if (lvl > 0) {
-                    double extraHealth = lvl * 4.0; // 2 hearts per level
+                if (overloadLvl > 0) {
+                    double extraHealth = overloadLvl * 4.0; // 2 hearts per level
                     boolean hasMod = false;
                     for (AttributeModifier mod : attr.getModifiers()) {
                         if (mod.getKey().equals(keyOverloadHealth)) {
@@ -77,27 +112,140 @@ public class EnchantEventListener implements Listener {
                 }
             }
 
-            // Gears (Speed on boots)
-            ItemStack boots = player.getInventory().getBoots();
-            CustomEnchant gears = plugin.getEnchantmentRegistry().getEnchantment("gears");
-            int gearsLvl = gears != null ? plugin.getEnchantmentRegistry().getEnchantLevel(boots, gears) : 0;
+            // 3. Gears (Speed on Boots)
+            int gearsLvl = Math.max(getEnchantLevel(boots, "gears"), getEnchantLevel(boots, "speed"));
             if (gearsLvl > 0) {
                 player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 40, gearsLvl - 1, false, false, false));
             }
 
-            // Springs (Jump Boost on boots)
-            CustomEnchant springs = plugin.getEnchantmentRegistry().getEnchantment("springs");
-            int springsLvl = springs != null ? plugin.getEnchantmentRegistry().getEnchantLevel(boots, springs) : 0;
+            // 4. Springs (Jump Boost on Boots)
+            int springsLvl = getEnchantLevel(boots, "springs");
             if (springsLvl > 0) {
                 player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP_BOOST, 40, springsLvl - 1, false, false, false));
             }
 
-            // Haste (when holding tool with haste)
+            // 5. Antigravity (Jump Boost II + Slow Falling on Boots)
+            int antiGravLvl = getEnchantLevel(boots, "antigravity");
+            if (antiGravLvl > 0) {
+                player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP_BOOST, 40, 1, false, false, false));
+                player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_FALLING, 40, 0, false, false, false));
+            }
+
+            // 6. Glowing (Permanent Night Vision on Helmets)
+            int glowingLvl = getEnchantLevel(helm, "glowing");
+            if (glowingLvl > 0) {
+                player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 300, 0, false, false, false));
+            }
+
+            // 7. Aquatic / Rebreather (Permanent Water Breathing on Helmets)
+            int aquaticLvl = Math.max(getEnchantLevel(helm, "aquatic"), getEnchantLevel(helm, "rebreather"));
+            if (aquaticLvl > 0) {
+                player.addPotionEffect(new PotionEffect(PotionEffectType.WATER_BREATHING, 60, 0, false, false, false));
+            }
+
+            // 8. Obsidianshield (Permanent Fire Resistance on Armor)
+            int obLvl = 0;
+            for (ItemStack piece : armor) {
+                int l = getEnchantLevel(piece, "obsidianshield");
+                if (l > obLvl) obLvl = l;
+            }
+            if (obLvl > 0) {
+                player.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 60, 0, false, false, false));
+            }
+
+            // 9. Implants / Feed (Restores hunger & saturation on Helmet)
+            int implantsLvl = Math.max(getEnchantLevel(helm, "implants"), getEnchantLevel(helm, "feed"));
+            if (implantsLvl > 0 && player.getFoodLevel() < 20) {
+                if (ThreadLocalRandom.current().nextInt(100) < 25 * implantsLvl) {
+                    player.setFoodLevel(Math.min(20, player.getFoodLevel() + 1));
+                    player.setSaturation(Math.min(20.0f, player.getSaturation() + 1.0f));
+                }
+            }
+
+            // 10. Haste / Hasten (Haste when holding tool/weapon)
             ItemStack mainHand = player.getInventory().getItemInMainHand();
-            CustomEnchant haste = plugin.getEnchantmentRegistry().getEnchantment("haste");
-            int hasteLvl = haste != null ? plugin.getEnchantmentRegistry().getEnchantLevel(mainHand, haste) : 0;
+            int hasteLvl = Math.max(getEnchantLevel(mainHand, "haste"), getEnchantLevel(mainHand, "hasten"));
             if (hasteLvl > 0) {
                 player.addPotionEffect(new PotionEffect(PotionEffectType.HASTE, 40, hasteLvl - 1, false, false, false));
+            }
+        }
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onArmorChange(PlayerArmorChangeEvent event) {
+        if (event.getSlotType() == PlayerArmorChangeEvent.SlotType.FEET) {
+            Player player = event.getPlayer();
+            ItemStack oldBoots = event.getOldItem();
+            ItemStack newBoots = event.getNewItem();
+
+            int newWings = getEnchantLevel(newBoots, "wings");
+            int oldWings = getEnchantLevel(oldBoots, "wings");
+
+            if (newWings > 0) {
+                player.setAllowFlight(true);
+                flightGrantedByWings.add(player.getUniqueId());
+            } else if (oldWings > 0 && newWings <= 0) {
+                if (flightGrantedByWings.remove(player.getUniqueId())) {
+                    if (player.getGameMode() != GameMode.CREATIVE && player.getGameMode() != GameMode.SPECTATOR) {
+                        player.setFlying(false);
+                        player.setAllowFlight(false);
+                        player.sendMessage(mm.deserialize("<red><bold>✖ WINGS OFF</bold> Efek Wings berakhir. Terbang dinonaktifkan.</red>"));
+                    }
+                }
+            }
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGH)
+    public void onToggleFlight(PlayerToggleFlightEvent event) {
+        Player player = event.getPlayer();
+        if (player.getGameMode() == GameMode.CREATIVE || player.getGameMode() == GameMode.SPECTATOR) return;
+
+        ItemStack boots = player.getInventory().getBoots();
+        int wingsLvl = getEnchantLevel(boots, "wings");
+        if (wingsLvl > 0) {
+            player.setAllowFlight(true);
+            flightGrantedByWings.add(player.getUniqueId());
+        } else if (flightGrantedByWings.contains(player.getUniqueId())) {
+            event.setCancelled(true);
+            player.setFlying(false);
+            player.setAllowFlight(false);
+            flightGrantedByWings.remove(player.getUniqueId());
+            player.sendMessage(mm.deserialize("<red><bold>✖ WINGS OFF</bold> Efek Wings berakhir. Terbang dinonaktifkan.</red>"));
+        }
+    }
+
+    @EventHandler
+    public void onPlayerQuit(PlayerQuitEvent event) {
+        Player player = event.getPlayer();
+        if (flightGrantedByWings.remove(player.getUniqueId())) {
+            if (player.getGameMode() != GameMode.CREATIVE && player.getGameMode() != GameMode.SPECTATOR) {
+                player.setFlying(false);
+                player.setAllowFlight(false);
+            }
+        }
+        rageTrackers.remove(player.getUniqueId());
+    }
+
+    @EventHandler
+    public void onGameModeChange(PlayerGameModeChangeEvent event) {
+        Player player = event.getPlayer();
+        if (event.getNewGameMode() == GameMode.SURVIVAL || event.getNewGameMode() == GameMode.ADVENTURE) {
+            ItemStack boots = player.getInventory().getBoots();
+            if (getEnchantLevel(boots, "wings") <= 0 && flightGrantedByWings.remove(player.getUniqueId())) {
+                player.setFlying(false);
+                player.setAllowFlight(false);
+            }
+        }
+    }
+
+    @EventHandler
+    public void onPlayerDeath(PlayerDeathEvent event) {
+        Player player = event.getEntity();
+        if (flightGrantedByWings.remove(player.getUniqueId())) {
+            if (player.getGameMode() != GameMode.CREATIVE && player.getGameMode() != GameMode.SPECTATOR) {
+                player.setFlying(false);
+                player.setAllowFlight(false);
             }
         }
     }
@@ -117,7 +265,33 @@ public class EnchantEventListener implements Listener {
         if (attacker != null && victim != null) {
             ItemStack weapon = attacker.getInventory().getItemInMainHand();
 
-            // 1. Bleed
+            // 1. Strike / Thunderlord (Lightning Strike)
+            checkAndApply(weapon, "strike", lvl -> {
+                if (ThreadLocalRandom.current().nextInt(100) < 20 * lvl) {
+                    victim.getWorld().strikeLightningEffect(victim.getLocation());
+                    victim.damage(lvl * 2.0, attacker);
+                }
+            });
+            checkAndApply(weapon, "thunderlord", lvl -> {
+                if (ThreadLocalRandom.current().nextInt(100) < 25 * lvl) {
+                    victim.getWorld().strikeLightningEffect(victim.getLocation());
+                    victim.damage(lvl * 2.0, attacker);
+                }
+            });
+
+            // 2. Freeze / Ice Aspect / Permafrost (Slow + Freeze Ticks)
+            checkAndApply(weapon, "iceaspect", lvl -> {
+                victim.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 40 * lvl, lvl - 1));
+                victim.setFreezeTicks(Math.max(victim.getFreezeTicks(), 80 * lvl));
+                victim.getWorld().spawnParticle(Particle.SNOWFLAKE, victim.getLocation().add(0, 1, 0), 10, 0.3, 0.5, 0.3, 0.05);
+            });
+            checkAndApply(weapon, "permafrost", lvl -> {
+                victim.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 40 * lvl, lvl - 1));
+                victim.setFreezeTicks(Math.max(victim.getFreezeTicks(), 80 * lvl));
+                victim.getWorld().spawnParticle(Particle.SNOWFLAKE, victim.getLocation().add(0, 1, 0), 10, 0.3, 0.5, 0.3, 0.05);
+            });
+
+            // 3. Bleed / Twinge
             checkAndApply(weapon, "bleed", lvl -> {
                 victim.getWorld().spawnParticle(Particle.DUST, victim.getLocation().add(0, 1, 0), 15, 0.2, 0.4, 0.2, new Particle.DustOptions(Color.RED, 1.5f));
                 plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
@@ -126,21 +300,27 @@ public class EnchantEventListener implements Listener {
                     }
                 }, 20L);
             });
+            checkAndApply(weapon, "twinge", lvl -> {
+                victim.getWorld().spawnParticle(Particle.DUST, victim.getLocation().add(0, 1, 0), 15, 0.2, 0.4, 0.2, new Particle.DustOptions(Color.RED, 1.5f));
+                plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
+                    if (victim.isValid() && !victim.isDead()) {
+                        victim.damage(lvl * 1.5, attacker);
+                    }
+                }, 20L);
+            });
 
-            // 2. Lifesteal
+            // 4. Lifesteal / Vampire
             checkAndApply(weapon, "lifesteal", lvl -> {
-                double heal = lvl * 1.0;
+                double heal = lvl * 1.2;
                 double maxHealth = attacker.getAttribute(Attribute.MAX_HEALTH).getValue();
                 attacker.setHealth(Math.min(maxHealth, attacker.getHealth() + heal));
                 attacker.getWorld().spawnParticle(Particle.HEART, attacker.getLocation().add(0, 2, 0), 2);
             });
-
-            // 3. Vampire
             checkAndApply(weapon, "vampire", lvl -> {
                 attacker.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 40 * lvl, 0));
             });
 
-            // 4. Cleave
+            // 5. Cleave / Ambit (AoE Sweep)
             checkAndApply(weapon, "cleave", lvl -> {
                 double range = 2.0 + lvl;
                 double cleaveDamage = event.getDamage() * 0.4 * lvl;
@@ -151,8 +331,18 @@ public class EnchantEventListener implements Listener {
                     }
                 }
             });
+            checkAndApply(weapon, "ambit", lvl -> {
+                double range = 2.0 + lvl;
+                double cleaveDamage = event.getDamage() * 0.4 * lvl;
+                for (Entity e : victim.getNearbyEntities(range, range, range)) {
+                    if (e instanceof Monster m && !e.equals(victim)) {
+                        m.damage(cleaveDamage, attacker);
+                        m.getWorld().spawnParticle(Particle.SWEEP_ATTACK, m.getLocation().add(0, 1, 0), 1);
+                    }
+                }
+            });
 
-            // 5. Rage
+            // 6. Rage (Combo Damage Multiplier)
             checkAndApply(weapon, "rage", lvl -> {
                 RageTracker tracker = rageTrackers.get(attacker.getUniqueId());
                 long now = System.currentTimeMillis();
@@ -165,14 +355,14 @@ public class EnchantEventListener implements Listener {
                 event.setDamage(event.getDamage() * (1.0 + bonus));
             });
 
-            // 6. Blind
+            // 7. Blind
             checkAndApply(weapon, "blind", lvl -> {
                 if (ThreadLocalRandom.current().nextInt(100) < 20 * lvl) {
                     victim.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 40 * lvl, 0));
                 }
             });
 
-            // 7. Paralyze
+            // 8. Paralyze
             checkAndApply(weapon, "paralyze", lvl -> {
                 if (ThreadLocalRandom.current().nextInt(100) < 15 * lvl) {
                     victim.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 40 * lvl, 1));
@@ -180,7 +370,7 @@ public class EnchantEventListener implements Listener {
                 }
             });
 
-            // 8. Disarm
+            // 9. Disarm / Neutralize
             checkAndApply(weapon, "disarm", lvl -> {
                 if (victim instanceof Player pVictim && ThreadLocalRandom.current().nextInt(100) < 5 * lvl) {
                     ItemStack vHand = pVictim.getInventory().getItemInMainHand();
@@ -192,16 +382,88 @@ public class EnchantEventListener implements Listener {
                     }
                 }
             });
+            checkAndApply(weapon, "neutralize", lvl -> {
+                if (victim instanceof Player pVictim && ThreadLocalRandom.current().nextInt(100) < 5 * lvl) {
+                    ItemStack vHand = pVictim.getInventory().getItemInMainHand();
+                    if (vHand.getType() != Material.AIR) {
+                        pVictim.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
+                        pVictim.getInventory().addItem(vHand);
+                        pVictim.playSound(pVictim.getLocation(), Sound.ITEM_ARMOR_EQUIP_IRON, 1.0f, 0.8f);
+                        pVictim.sendMessage(mm.deserialize("<red><bold>⚔ DISARMED!</bold> Senjatamu terlempar dari tangan!</red>"));
+                    }
+                }
+            });
+
+            // 10. Confuse (Nausea)
+            checkAndApply(weapon, "confuse", lvl -> {
+                if (ThreadLocalRandom.current().nextInt(100) < 20 * lvl) {
+                    victim.addPotionEffect(new PotionEffect(PotionEffectType.NAUSEA, 60 * lvl, 0));
+                }
+            });
+
+            // 11. Molten / Inflame / Immolation / Spark (Fire)
+            checkAndApply(weapon, "molten", lvl -> victim.setFireTicks(Math.max(victim.getFireTicks(), 40 * lvl)));
+            checkAndApply(weapon, "inflame", lvl -> victim.setFireTicks(Math.max(victim.getFireTicks(), 40 * lvl)));
+            checkAndApply(weapon, "immolation", lvl -> victim.setFireTicks(Math.max(victim.getFireTicks(), 40 * lvl)));
+            checkAndApply(weapon, "spark", lvl -> victim.setFireTicks(Math.max(victim.getFireTicks(), 40 * lvl)));
+
+            // 12. Poisoned Hook (Poison)
+            checkAndApply(weapon, "poisoned hook", lvl -> victim.addPotionEffect(new PotionEffect(PotionEffectType.POISON, 40 * lvl, 0)));
+
+            // 13. Chaos (Wither)
+            checkAndApply(weapon, "chaos", lvl -> victim.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, 40 * lvl, 0)));
+
+            // 14. Critical (Damage multiplier)
+            checkAndApply(weapon, "critical", lvl -> {
+                if (ThreadLocalRandom.current().nextInt(100) < 20 * lvl) {
+                    event.setDamage(event.getDamage() * 1.5);
+                    victim.getWorld().spawnParticle(Particle.CRIT, victim.getLocation().add(0, 1, 0), 15, 0.3, 0.3, 0.3, 0.1);
+                }
+            });
+
+            // 15. Double Strike
+            checkAndApply(weapon, "doublestrike", lvl -> {
+                if (ThreadLocalRandom.current().nextInt(100) < 15 * lvl) {
+                    event.setDamage(event.getDamage() * 1.6);
+                    attacker.sendMessage(mm.deserialize("<gold><bold>⚔ DOUBLE STRIKE!</bold></gold>"));
+                }
+            });
         }
 
         // Defender Armor Enchantments
         if (victim instanceof Player defPlayer) {
             final Player finalDefPlayer = defPlayer;
             final double baseDamage = event.getDamage();
-            ItemStack chest = defPlayer.getInventory().getChestplate();
+            ItemStack[] armor = defPlayer.getInventory().getArmorContents();
+
+            // Dodge
+            for (ItemStack piece : armor) {
+                checkAndApply(piece, "dodge", lvl -> {
+                    if (ThreadLocalRandom.current().nextInt(100) < 5 * lvl) {
+                        event.setCancelled(true);
+                        finalDefPlayer.getWorld().spawnParticle(Particle.POOF, finalDefPlayer.getLocation().add(0, 1, 0), 5);
+                        finalDefPlayer.playSound(finalDefPlayer.getLocation(), Sound.ENTITY_BAT_TAKEOFF, 1.0f, 1.5f);
+                        finalDefPlayer.sendMessage(mm.deserialize("<aqua><bold>💨 DODGE!</bold> Berhasil menghindar dari serangan!</aqua>"));
+                    }
+                });
+                if (event.isCancelled()) return;
+            }
+
+            // Block
+            if (attacker != null) {
+                checkAndApply(defPlayer.getInventory().getItemInMainHand(), "block", lvl -> {
+                    if (ThreadLocalRandom.current().nextInt(100) < 10 * lvl) {
+                        event.setCancelled(true);
+                        attacker.damage(lvl * 1.5, finalDefPlayer);
+                        finalDefPlayer.playSound(finalDefPlayer.getLocation(), Sound.ITEM_SHIELD_BLOCK, 1.0f, 1.0f);
+                        finalDefPlayer.sendMessage(mm.deserialize("<aqua><bold>🛡 BLOCKED & COUNTERED!</bold></aqua>"));
+                    }
+                });
+                if (event.isCancelled()) return;
+            }
 
             // Cactus
-            for (ItemStack piece : defPlayer.getInventory().getArmorContents()) {
+            for (ItemStack piece : armor) {
                 checkAndApply(piece, "cactus", lvl -> {
                     if (attacker != null && ThreadLocalRandom.current().nextInt(100) < 25 * lvl) {
                         attacker.damage(baseDamage * 0.25, finalDefPlayer);
@@ -210,12 +472,42 @@ public class EnchantEventListener implements Listener {
             }
 
             // Enlightened
-            for (ItemStack piece : defPlayer.getInventory().getArmorContents()) {
+            for (ItemStack piece : armor) {
                 checkAndApply(piece, "enlightened", lvl -> {
                     if (ThreadLocalRandom.current().nextInt(100) < 15 * lvl) {
                         double maxH = finalDefPlayer.getAttribute(Attribute.MAX_HEALTH).getValue();
                         finalDefPlayer.setHealth(Math.min(maxH, finalDefPlayer.getHealth() + (lvl * 2.0)));
                         finalDefPlayer.getWorld().spawnParticle(Particle.HEART, finalDefPlayer.getLocation().add(0, 2, 0), 2);
+                    }
+                });
+            }
+
+            // Armored (Sword damage reduction)
+            if (attacker != null && attacker.getInventory().getItemInMainHand().getType().name().endsWith("_SWORD")) {
+                for (ItemStack piece : armor) {
+                    checkAndApply(piece, "armored", lvl -> event.setDamage(event.getDamage() * (1.0 - (0.02 * lvl))));
+                }
+            }
+
+            // Tank (Axe damage reduction)
+            if (attacker != null && attacker.getInventory().getItemInMainHand().getType().name().endsWith("_AXE")) {
+                for (ItemStack piece : armor) {
+                    checkAndApply(piece, "tank", lvl -> event.setDamage(event.getDamage() * (1.0 - (0.02 * lvl))));
+                }
+            }
+
+            // Heavy (Bow damage reduction)
+            if (event.getDamager() instanceof Arrow) {
+                for (ItemStack piece : armor) {
+                    checkAndApply(piece, "heavy", lvl -> event.setDamage(event.getDamage() * (1.0 - (0.02 * lvl))));
+                }
+            }
+
+            // Safeguard (Resistance on hit)
+            for (ItemStack piece : armor) {
+                checkAndApply(piece, "safeguard", lvl -> {
+                    if (ThreadLocalRandom.current().nextInt(100) < 15 * lvl) {
+                        finalDefPlayer.addPotionEffect(new PotionEffect(PotionEffectType.RESISTANCE, 40 * lvl, 0));
                     }
                 });
             }
@@ -226,24 +518,42 @@ public class EnchantEventListener implements Listener {
     public void onFatalDamage(EntityDamageEvent event) {
         if (!(event.getEntity() instanceof Player player)) return;
 
-        // 1. Obsidianshield (Fire / Lava immunity)
-        if (event.getCause() == EntityDamageEvent.DamageCause.FIRE ||
-                event.getCause() == EntityDamageEvent.DamageCause.FIRE_TICK ||
-                event.getCause() == EntityDamageEvent.DamageCause.LAVA) {
-            ItemStack chest = player.getInventory().getChestplate();
-            CustomEnchant ob = plugin.getEnchantmentRegistry().getEnchantment("obsidianshield");
-            if (ob != null && plugin.getEnchantmentRegistry().getEnchantLevel(chest, ob) > 0) {
+        // 1. Fall Damage Negation (Wings / Jelly Legs / Antigravity)
+        if (event.getCause() == EntityDamageEvent.DamageCause.FALL) {
+            ItemStack boots = player.getInventory().getBoots();
+            int wings = getEnchantLevel(boots, "wings");
+            int jelly = getEnchantLevel(boots, "jellylegs");
+            int anti = getEnchantLevel(boots, "antigravity");
+            if (wings > 0 || jelly > 0 || anti > 0) {
                 event.setCancelled(true);
-                player.setFireTicks(0);
                 return;
             }
         }
 
-        // 2. Phoenix (Fatal save)
+        // 2. Obsidianshield (Fire / Lava immunity)
+        if (event.getCause() == EntityDamageEvent.DamageCause.FIRE ||
+                event.getCause() == EntityDamageEvent.DamageCause.FIRE_TICK ||
+                event.getCause() == EntityDamageEvent.DamageCause.LAVA) {
+            for (ItemStack piece : player.getInventory().getArmorContents()) {
+                if (getEnchantLevel(piece, "obsidianshield") > 0) {
+                    event.setCancelled(true);
+                    player.setFireTicks(0);
+                    return;
+                }
+            }
+        }
+
+        // 3. Phoenix (Fatal save)
         if (event.getFinalDamage() >= player.getHealth()) {
             ItemStack chest = player.getInventory().getChestplate();
-            CustomEnchant phoenix = plugin.getEnchantmentRegistry().getEnchantment("phoenix");
-            if (phoenix != null && plugin.getEnchantmentRegistry().getEnchantLevel(chest, phoenix) > 0) {
+            int phoenixLvl = getEnchantLevel(chest, "phoenix");
+            if (phoenixLvl == 0) {
+                for (ItemStack piece : player.getInventory().getArmorContents()) {
+                    int pl = getEnchantLevel(piece, "phoenix");
+                    if (pl > phoenixLvl) phoenixLvl = pl;
+                }
+            }
+            if (phoenixLvl > 0) {
                 event.setCancelled(true);
                 player.setHealth(player.getAttribute(Attribute.MAX_HEALTH).getValue());
                 player.playSound(player.getLocation(), Sound.ITEM_TOTEM_USE, 1.0f, 1.0f);
@@ -260,10 +570,11 @@ public class EnchantEventListener implements Listener {
 
         ItemStack weapon = killer.getInventory().getItemInMainHand();
 
-        // Inquisitive (EXP Multiplier)
-        checkAndApply(weapon, "inquisitive", lvl -> {
-            event.setDroppedExp((int) (event.getDroppedExp() * (1.0 + (lvl * 0.5))));
-        });
+        // Inquisitive / Experience (EXP Multiplier)
+        int expLvl = Math.max(getEnchantLevel(weapon, "inquisitive"), getEnchantLevel(weapon, "experience"));
+        if (expLvl > 0) {
+            event.setDroppedExp((int) (event.getDroppedExp() * (1.0 + (expLvl * 0.5))));
+        }
 
         // Decapitation
         checkAndApply(weapon, "decapitation", lvl -> {
@@ -290,21 +601,18 @@ public class EnchantEventListener implements Listener {
         ItemStack tool = player.getInventory().getItemInMainHand();
         Block block = event.getBlock();
 
-        // 1. AutoSmelt
-        checkAndApply(tool, "autosmelt", lvl -> {
+        if (processingBlocks.contains(block.getLocation())) return;
+
+        // 1. AutoSmelt / Smelting
+        int smeltLvl = Math.max(getEnchantLevel(tool, "autosmelt"), getEnchantLevel(tool, "smelting"));
+        if (smeltLvl > 0) {
             Collection<ItemStack> drops = block.getDrops(tool, player);
             List<ItemStack> newDrops = new ArrayList<>();
             boolean smelted = false;
 
             for (ItemStack drop : drops) {
-                ItemStack smeltedItem = switch (drop.getType()) {
-                    case RAW_IRON -> new ItemStack(Material.IRON_INGOT, drop.getAmount());
-                    case RAW_GOLD -> new ItemStack(Material.GOLD_INGOT, drop.getAmount());
-                    case RAW_COPPER -> new ItemStack(Material.COPPER_INGOT, drop.getAmount());
-                    case COBBLESTONE -> new ItemStack(Material.STONE, drop.getAmount());
-                    default -> drop;
-                };
-                if (smeltedItem != drop) smelted = true;
+                ItemStack smeltedItem = getSmeltedProduct(drop);
+                if (!smeltedItem.isSimilar(drop)) smelted = true;
                 newDrops.add(smeltedItem);
             }
 
@@ -315,26 +623,153 @@ public class EnchantEventListener implements Listener {
                 }
                 block.getWorld().spawnParticle(Particle.FLAME, block.getLocation().add(0.5, 0.5, 0.5), 5, 0.2, 0.2, 0.2, 0.02);
             }
-        });
+        }
 
         // 2. Telepathy
-        checkAndApply(tool, "telepathy", lvl -> {
+        int telepathyLvl = getEnchantLevel(tool, "telepathy");
+        if (telepathyLvl > 0) {
             event.setDropItems(false);
             Collection<ItemStack> drops = block.getDrops(tool, player);
             for (ItemStack drop : drops) {
-                HashMap<Integer, ItemStack> left = player.getInventory().addItem(drop);
+                ItemStack itemToAdd = (smeltLvl > 0) ? getSmeltedProduct(drop) : drop;
+                HashMap<Integer, ItemStack> left = player.getInventory().addItem(itemToAdd);
                 for (ItemStack rem : left.values()) {
                     block.getWorld().dropItemNaturally(block.getLocation(), rem);
                 }
             }
-        });
+        }
+
+        // 3. Replanter (Auto-Replant mature crops)
+        int replanterLvl = getEnchantLevel(tool, "replanter");
+        if (replanterLvl > 0 && block.getBlockData() instanceof org.bukkit.block.data.Ageable ageable) {
+            if (ageable.getAge() >= ageable.getMaximumAge()) {
+                Material cropType = block.getType();
+                plugin.getServer().getScheduler().runTask(plugin, () -> {
+                    block.setType(cropType);
+                    if (block.getBlockData() instanceof org.bukkit.block.data.Ageable newAge) {
+                        newAge.setAge(0);
+                        block.setBlockData(newAge);
+                        block.getWorld().spawnParticle(Particle.HAPPY_VILLAGER, block.getLocation().add(0.5, 0.2, 0.5), 3, 0.2, 0.1, 0.2);
+                    }
+                });
+            }
+        }
+
+        // 4. Timber (Axes)
+        int timberLvl = getEnchantLevel(tool, "timber");
+        if (timberLvl > 0 && !processingBlocks.contains(block.getLocation())) {
+            String name = block.getType().name();
+            if (name.endsWith("_LOG") || name.endsWith("_WOOD")) {
+                breakTree(block, tool, player);
+            }
+        }
+
+        // 5. Trench / Blast (Pickaxes / Shovels 3x3)
+        int trenchLvl = Math.max(getEnchantLevel(tool, "trench"), getEnchantLevel(tool, "blast"));
+        if (trenchLvl > 0 && !processingBlocks.contains(block.getLocation())) {
+            breakTrench(block, tool, player);
+        }
+
+        // 6. Replenish (Food while mining)
+        int replenishLvl = getEnchantLevel(tool, "replenish");
+        if (replenishLvl > 0 && player.getFoodLevel() < 20) {
+            if (ThreadLocalRandom.current().nextInt(100) < 10 * replenishLvl) {
+                player.setFoodLevel(Math.min(20, player.getFoodLevel() + 1));
+            }
+        }
+    }
+
+    private void breakTree(Block origin, ItemStack tool, Player player) {
+        Queue<Block> queue = new LinkedList<>();
+        Set<Block> logsToBreak = new HashSet<>();
+        queue.add(origin);
+        logsToBreak.add(origin);
+
+        while (!queue.isEmpty() && logsToBreak.size() < 64) {
+            Block current = queue.poll();
+            for (int dx = -1; dx <= 1; dx++) {
+                for (int dy = -1; dy <= 1; dy++) {
+                    for (int dz = -1; dz <= 1; dz++) {
+                        if (dx == 0 && dy == 0 && dz == 0) continue;
+                        Block neighbor = current.getRelative(dx, dy, dz);
+                        if (!logsToBreak.contains(neighbor)) {
+                            String name = neighbor.getType().name();
+                            if (name.endsWith("_LOG") || name.endsWith("_WOOD")) {
+                                logsToBreak.add(neighbor);
+                                queue.add(neighbor);
+                                if (logsToBreak.size() >= 64) break;
+                            }
+                        }
+                    }
+                    if (logsToBreak.size() >= 64) break;
+                }
+                if (logsToBreak.size() >= 64) break;
+            }
+        }
+
+        for (Block b : logsToBreak) {
+            if (b.equals(origin)) continue;
+            processingBlocks.add(b.getLocation());
+            try {
+                b.breakNaturally(tool);
+            } finally {
+                processingBlocks.remove(b.getLocation());
+            }
+        }
+    }
+
+    private void breakTrench(Block origin, ItemStack tool, Player player) {
+        for (int x = -1; x <= 1; x++) {
+            for (int y = -1; y <= 1; y++) {
+                for (int z = -1; z <= 1; z++) {
+                    if (x == 0 && y == 0 && z == 0) continue;
+                    Block b = origin.getRelative(x, y, z);
+                    if (b.getType().isAir() || b.getType() == Material.BEDROCK || b.getType() == Material.BARRIER) continue;
+                    if (b.getType().getHardness() < 0) continue;
+
+                    processingBlocks.add(b.getLocation());
+                    try {
+                        b.breakNaturally(tool);
+                    } finally {
+                        processingBlocks.remove(b.getLocation());
+                    }
+                }
+            }
+        }
+    }
+
+    private ItemStack getSmeltedProduct(ItemStack drop) {
+        if (drop == null || drop.getType().isAir()) return drop;
+        Material mat = switch (drop.getType()) {
+            case RAW_IRON -> Material.IRON_INGOT;
+            case RAW_GOLD -> Material.GOLD_INGOT;
+            case RAW_COPPER -> Material.COPPER_INGOT;
+            case COBBLESTONE -> Material.STONE;
+            case COBBLED_DEEPSLATE -> Material.DEEPSLATE;
+            case SAND, RED_SAND -> Material.GLASS;
+            case CLAY_BALL -> Material.BRICK;
+            case ANCIENT_DEBRIS -> Material.NETHERITE_SCRAP;
+            case PORKCHOP -> Material.COOKED_PORKCHOP;
+            case BEEF -> Material.COOKED_BEEF;
+            case CHICKEN -> Material.COOKED_CHICKEN;
+            case MUTTON -> Material.COOKED_MUTTON;
+            case COD -> Material.COOKED_COD;
+            case SALMON -> Material.COOKED_SALMON;
+            case POTATO -> Material.BAKED_POTATO;
+            case OAK_LOG, BIRCH_LOG, SPRUCE_LOG, JUNGLE_LOG, ACACIA_LOG, DARK_OAK_LOG, MANGROVE_LOG, CHERRY_LOG -> Material.CHARCOAL;
+            default -> drop.getType();
+        };
+        if (mat != drop.getType()) {
+            return new ItemStack(mat, drop.getAmount());
+        }
+        return drop;
     }
 
     @EventHandler
     public void onItemDamage(PlayerItemDamageEvent event) {
         ItemStack item = event.getItem();
-        CustomEnchant unb = plugin.getEnchantmentRegistry().getEnchantment("unbreakable");
-        if (unb != null && plugin.getEnchantmentRegistry().getEnchantLevel(item, unb) > 0) {
+        int unb = Math.max(getEnchantLevel(item, "unbreakable"), getEnchantLevel(item, "abiding"));
+        if (unb > 0) {
             event.setCancelled(true);
         }
     }
@@ -357,13 +792,21 @@ public class EnchantEventListener implements Listener {
         checkAndApply(bow, "sniper", lvl -> {
             event.getProjectile().setVelocity(event.getProjectile().getVelocity().multiply(1.0 + (lvl * 0.25)));
         });
+
+        // Hellfire / Missile (Flame & Explosive arrow)
+        int hellLvl = Math.max(getEnchantLevel(bow, "hellfire"), getEnchantLevel(bow, "missile"));
+        if (hellLvl > 0 && event.getProjectile() instanceof Arrow arrow) {
+            arrow.setVisualFire(true);
+            arrow.setFireTicks(200);
+        }
+    }
+
+    private int getEnchantLevel(ItemStack item, String enchantId) {
+        return plugin.getEnchantmentRegistry().getEnchantLevel(item, enchantId);
     }
 
     private void checkAndApply(ItemStack item, String enchantId, java.util.function.Consumer<Integer> action) {
-        if (item == null || item.getType().isAir()) return;
-        CustomEnchant enchant = plugin.getEnchantmentRegistry().getEnchantment(enchantId);
-        if (enchant == null) return;
-        int lvl = plugin.getEnchantmentRegistry().getEnchantLevel(item, enchant);
+        int lvl = getEnchantLevel(item, enchantId);
         if (lvl > 0) {
             action.accept(lvl);
         }

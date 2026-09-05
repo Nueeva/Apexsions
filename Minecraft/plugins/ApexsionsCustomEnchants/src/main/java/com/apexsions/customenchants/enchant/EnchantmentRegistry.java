@@ -44,7 +44,7 @@ public class EnchantmentRegistry {
         if (sec == null) return;
 
         for (String id : sec.getKeys(false)) {
-            String dName = sec.getString(id + ".display", id);
+            String dName = sec.getString(id + ".display-name", sec.getString(id + ".display", id));
             String groupStr = sec.getString(id + ".group", "SIMPLE");
             EnchantmentGroup group = plugin.getGroupRegistry().getGroup(groupStr);
             if (group == null) {
@@ -114,6 +114,13 @@ public class EnchantmentRegistry {
         return meta.getPersistentDataContainer().getOrDefault(key, PersistentDataType.INTEGER, 0);
     }
 
+    public int getEnchantLevel(ItemStack item, String enchantId) {
+        if (item == null || item.getType().isAir() || enchantId == null) return 0;
+        CustomEnchant enchant = getEnchantment(enchantId);
+        if (enchant == null) return 0;
+        return getEnchantLevel(item, enchant);
+    }
+
     public ItemStack applyEnchant(ItemStack item, CustomEnchant enchant, int level) {
         if (item == null || item.getType().isAir() || enchant == null) return item;
         ItemStack out = item.clone();
@@ -144,7 +151,7 @@ public class EnchantmentRegistry {
         return out;
     }
 
-    private void rebuildItemLore(ItemMeta meta) {
+    public void rebuildItemLore(ItemMeta meta) {
         PersistentDataContainer pdc = meta.getPersistentDataContainer();
 
         // 1. Gather existing lore lines that are NOT custom enchants
@@ -160,11 +167,13 @@ public class EnchantmentRegistry {
 
         // 2. Prepend custom enchant lore lines
         List<Component> newLore = new ArrayList<>();
+        boolean hasAnyCustom = false;
         for (CustomEnchant enchant : enchantments.values()) {
             NamespacedKey key = new NamespacedKey(plugin, "ce_" + enchant.getId());
             if (pdc.has(key, PersistentDataType.INTEGER)) {
                 int lvl = pdc.getOrDefault(key, PersistentDataType.INTEGER, 0);
                 if (lvl > 0) {
+                    hasAnyCustom = true;
                     String color = enchant.getGroup().getColor();
                     String line = "<color:" + color + ">" + enchant.getDisplayName() + " " + CustomEnchant.toRoman(lvl) + "</color>";
                     newLore.add(mm.deserialize(line));
@@ -175,6 +184,22 @@ public class EnchantmentRegistry {
         // Append base lore
         newLore.addAll(baseLore);
         meta.lore(newLore);
+
+        // Apply glowing enchantment glint shimmer
+        if (hasAnyCustom) {
+            meta.setEnchantmentGlintOverride(true);
+        } else if (!meta.hasEnchants()) {
+            meta.setEnchantmentGlintOverride(null);
+        }
+    }
+
+    public ItemStack updateLoreAndGlint(ItemStack item) {
+        if (item == null || item.getType().isAir()) return item;
+        ItemMeta meta = item.getItemMeta();
+        if (meta == null) return item;
+        rebuildItemLore(meta);
+        item.setItemMeta(meta);
+        return item;
     }
 
     private boolean isCustomEnchantLore(String plain) {

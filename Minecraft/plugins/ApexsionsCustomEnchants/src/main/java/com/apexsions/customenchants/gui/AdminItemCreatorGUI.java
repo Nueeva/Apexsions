@@ -88,7 +88,8 @@ public class AdminItemCreatorGUI implements InventoryHolder {
         if (newItem == null || newItem.getType().isAir()) {
             placedItems.remove(slot);
         } else {
-            placedItems.put(slot, newItem);
+            ItemStack processed = plugin.getEnchantmentRegistry().updateLoreAndGlint(newItem);
+            placedItems.put(slot, processed);
         }
         // Only update fullset bonus if explicitly configured
         if (setBonusConfigured && !globalSetId.isBlank() && !globalStats.isEmpty()) {
@@ -705,7 +706,8 @@ public class AdminItemCreatorGUI implements InventoryHolder {
     public void returnAllItems() {
         for (ItemStack is : placedItems.values()) {
             if (is != null && !is.getType().isAir()) {
-                HashMap<Integer, ItemStack> overflow = player.getInventory().addItem(is);
+                ItemStack processed = plugin.getEnchantmentRegistry().updateLoreAndGlint(is);
+                HashMap<Integer, ItemStack> overflow = player.getInventory().addItem(processed);
                 if (!overflow.isEmpty()) {
                     for (ItemStack drop : overflow.values()) {
                         player.getWorld().dropItemNaturally(player.getLocation(), drop);
@@ -738,12 +740,16 @@ public class AdminItemCreatorGUI implements InventoryHolder {
             List<ItemStack> armorList = new ArrayList<>();
             int[] aSlots = {SLOT_HELMET, SLOT_CHESTPLATE, SLOT_LEGGINGS, SLOT_BOOTS};
             for (int s : aSlots) {
-                if (placedItems.containsKey(s)) armorList.add(placedItems.get(s).clone());
+                if (placedItems.containsKey(s)) {
+                    armorList.add(plugin.getEnchantmentRegistry().updateLoreAndGlint(placedItems.get(s).clone()));
+                }
             }
 
             List<ItemStack> toolList = new ArrayList<>();
             for (int tSlot : TOOL_SLOTS) {
-                if (placedItems.containsKey(tSlot)) toolList.add(placedItems.get(tSlot).clone());
+                if (placedItems.containsKey(tSlot)) {
+                    toolList.add(plugin.getEnchantmentRegistry().updateLoreAndGlint(placedItems.get(tSlot).clone()));
+                }
             }
 
             String idToSave = globalSetId.isBlank() ? "preset_" + System.currentTimeMillis() : globalSetId;
@@ -755,7 +761,8 @@ public class AdminItemCreatorGUI implements InventoryHolder {
         int count = placedItems.size();
         for (ItemStack is : placedItems.values()) {
             if (is != null && !is.getType().isAir()) {
-                HashMap<Integer, ItemStack> overflow = player.getInventory().addItem(is);
+                ItemStack processed = plugin.getEnchantmentRegistry().updateLoreAndGlint(is);
+                HashMap<Integer, ItemStack> overflow = player.getInventory().addItem(processed);
                 if (!overflow.isEmpty()) {
                     for (ItemStack drop : overflow.values()) {
                         player.getWorld().dropItemNaturally(player.getLocation(), drop);
