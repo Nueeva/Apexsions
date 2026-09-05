@@ -56,7 +56,7 @@ public class RankAnimationManager {
             new String[]{"#b33771", "#4A00E0", "#8E2DE2"}
     );
 
-    // 3. OVERSEER (Weight 92 - Authority Tier): Radiant Gold & Amber Sun
+    // 3. OVERSEER (Weight 95 - Authority Tier, Equal to Architect): Radiant Gold & Amber Sun
     private static final List<String[]> OVERSEER_FRAMES = List.of(
             new String[]{"#FFD700", "#FFA500", "#f39c12"},
             new String[]{"#FFA500", "#f39c12", "#FFD700"},

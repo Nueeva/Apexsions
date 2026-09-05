@@ -969,7 +969,7 @@ a:hover {
     background: rgba(212, 163, 89, 0.08);
 }
 
-/* Tier IV: The Apex Pedestal (Ancestor - Weight 100) */
+/* Tier V: The Apex Pedestal (Ancestor - Weight 100) */
 .apx-card-apex {
     background: rgba(14, 18, 28, 0.95);
     border: 1px solid var(--apx-gold-border);
@@ -982,7 +982,7 @@ a:hover {
     font-size: 1.85rem;
 }
 
-/* Tier III: Council of Authority Bastion (Architect, Overseer, Warden, Herald - Weight 95, 92, 90, 80) */
+/* Tier IV: Council of High Authority (Architect, Overseer - Weight 95, Equal Standing) */
 .apx-tier-authority-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -997,6 +997,23 @@ a:hover {
 
 .apx-tier-authority-grid .apx-caste-card {
     border-top: 2px solid rgba(255, 255, 255, 0.35);
+}
+
+/* Tier III: Administration & Law Enforcement Bastion (Warden, Herald - Weight 90, 80) */
+.apx-tier-staff-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+}
+
+@media (max-width: 768px) {
+    .apx-tier-staff-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.apx-tier-staff-grid .apx-caste-card {
+    border-top: 2px solid rgba(255, 255, 255, 0.25);
 }
 
 /* Official Rank Banner Image */

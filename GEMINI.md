@@ -525,19 +525,19 @@ ranks.yml
 
 Official ranks:
 
-| Rank        | Weight | Role                           |
-| ----------- | -----: | ------------------------------ |
-| `ancestor`  |    100 | The Ancestor / Owner / Founder |
-| `architect` |     95 | Authority / System Architect   |
-| `overseer`  |     92 | Authority / Integrity & Balance|
-| `warden`    |     90 | Head Staff / Admin             |
-| `herald`    |     80 | Staff / Moderator / Helper     |
-| `sions`     |     70 | Apex Donator / Highest Rank    |
-| `emperor`   |     60 | Donator Tier 4                 |
-| `sovereign` |     50 | Donator Tier 3                 |
-| `archon`    |     40 | Donator Tier 2                 |
-| `ascendant` |     30 | Donator Tier 1                 |
-| `wanderer`  |     10 | Default / Warga Baru           |
+| Tingkat  | Rank        | Weight | Role                                     |
+| -------- | ----------- | -----: | ---------------------------------------- |
+| Tier V   | `ancestor`  |    100 | The Ancestor / Owner / Founder (Apex)    |
+| Tier IV  | `architect` |     95 | Authority / Realm Architect (Setara)     |
+| Tier IV  | `overseer`  |     95 | Authority / Integrity & Balance (Setara) |
+| Tier III | `warden`    |     90 | Head Staff / Admin (di bawah Tier IV)    |
+| Tier III | `herald`    |     80 | Staff / Moderator / Helper               |
+| Tier II  | `sions`     |     70 | Apex Donator / Highest Rank              |
+| Tier II  | `emperor`   |     60 | Donator Tier 4                           |
+| Tier II  | `sovereign` |     50 | Donator Tier 3                           |
+| Tier II  | `archon`    |     40 | Donator Tier 2                           |
+| Tier II  | `ascendant` |     30 | Donator Tier 1                           |
+| Tier I   | `wanderer`  |     10 | Default / Warga Baru (Foundation)        |
 
 Jangan membuat rank baru tanpa explicit requirement.
 

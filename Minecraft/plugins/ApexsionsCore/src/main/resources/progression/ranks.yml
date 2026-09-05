@@ -32,7 +32,7 @@ ranks:
     prefix: "<gradient:#FFD700:#FFA500><bold>[👁 OVERSEER]</bold></gradient> "
     badge: "<gradient:#FFD700:#FFA500><bold>👁 OVERSEER</bold></gradient>"
     color: "#FFD700"
-    weight: 92
+    weight: 95
 
   warden:
     display-name: "Warden"

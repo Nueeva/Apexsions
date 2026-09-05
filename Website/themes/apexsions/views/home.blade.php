@@ -16,7 +16,9 @@
             <div class="apx-hero-hierarchy-axis" aria-label="Tingkatan Hierarki Peradaban" role="list">
                 <span class="apx-axis-step" role="listitem">FONDASI</span>
                 <span class="apx-axis-arrow" aria-hidden="true">→</span>
-                <span class="apx-axis-step" role="listitem">KENAIKAN</span>
+                <span class="apx-axis-step" role="listitem">BANGSAWAN</span>
+                <span class="apx-axis-arrow" aria-hidden="true">→</span>
+                <span class="apx-axis-step" role="listitem">ADMINISTRASI</span>
                 <span class="apx-axis-arrow" aria-hidden="true">→</span>
                 <span class="apx-axis-step" role="listitem">OTORITAS</span>
                 <span class="apx-axis-arrow" aria-hidden="true">→</span>
@@ -257,7 +259,9 @@
         <!-- Interactive Strata Filter Navigation -->
         <div class="apx-caste-nav" role="tablist" aria-label="Filter Hierarki Kasta">
             <button type="button" class="apx-caste-filter-btn active" data-rank-filter="all" role="tab" aria-selected="true">SEMUA KASTA (11)</button>
-            <button type="button" class="apx-caste-filter-btn" data-rank-filter="authority" role="tab" aria-selected="false">DEWAN OTORITAS (5)</button>
+            <button type="button" class="apx-caste-filter-btn" data-rank-filter="apex" role="tab" aria-selected="false">PUNCAK LELUHUR (1)</button>
+            <button type="button" class="apx-caste-filter-btn" data-rank-filter="authority" role="tab" aria-selected="false">DEWAN OTORITAS (2)</button>
+            <button type="button" class="apx-caste-filter-btn" data-rank-filter="staff" role="tab" aria-selected="false">ADMINISTRASI &amp; STAF (2)</button>
             <button type="button" class="apx-caste-filter-btn" data-rank-filter="nobles" role="tab" aria-selected="false">ORDO BANGSAWAN (5)</button>
             <button type="button" class="apx-caste-filter-btn" data-rank-filter="pioneers" role="tab" aria-selected="false">WARGA PERINTIS (1)</button>
         </div>
@@ -265,19 +269,19 @@
         <!-- The Architectural Social Ladder -->
         <div class="apx-social-ladder">
 
-            <!-- TIER IV: PUNCAK KEDAULATAN (THE APEX) -->
-            <div class="apx-ladder-tier apx-tier-apex-wrapper" data-rank-category="authority">
+            <!-- TIER V: PUNCAK KEDAULATAN (THE APEX) -->
+            <div class="apx-ladder-tier apx-tier-apex-wrapper" data-rank-category="apex">
                 <div class="apx-tier-label-bar">
-                    <span class="apx-tier-roman">TINGKAT IV</span>
+                    <span class="apx-tier-roman">TINGKAT V</span>
                     <span class="apx-tier-name">PUNCAK KEDAULATAN &bull; THE APEX</span>
                     <span class="apx-weight-pill gold">WEIGHT 100</span>
                 </div>
-                <div class="apx-caste-card apx-card-apex" data-rank-category="authority">
+                <div class="apx-caste-card apx-card-apex" data-rank-category="apex">
                     <img src="{{ theme_asset('img/ranks/rank-ancestor.png') }}" alt="Banner Resmi Kasta The Ancestor" class="apx-caste-banner" loading="lazy" decoding="async" width="952" height="85">
                     <div class="row align-items-center gy-3">
                         <div class="col-lg-4 col-md-5">
                             <div class="d-flex align-items-center gap-2 mb-1">
-                                <span class="apx-caste-tier-badge text-gold">DEWAN OTORITAS</span>
+                                <span class="apx-caste-tier-badge text-gold">TAHTA TERTINGGI</span>
                             </div>
                             <h3 class="apx-caste-name mb-1">The Ancestor</h3>
                             <div class="apx-caste-prefix text-gold"><i class="bi bi-crown"></i> ✦ ANCESTOR ✦</div>
@@ -306,12 +310,12 @@
                 </div>
             </div>
 
-            <!-- TIER III: DEWAN OTORITAS (COUNCIL OF AUTHORITY) -->
+            <!-- TIER IV: DEWAN OTORITAS (COUNCIL OF HIGH AUTHORITY) -->
             <div class="apx-ladder-tier apx-tier-authority-wrapper" data-rank-category="authority">
                 <div class="apx-tier-label-bar">
-                    <span class="apx-tier-roman">TINGKAT III</span>
-                    <span class="apx-tier-name">DEWAN OTORITAS &bull; AUTHORITY</span>
-                    <span class="apx-weight-pill">WEIGHT 95 &bull; 92 &bull; 90 &bull; 80</span>
+                    <span class="apx-tier-roman">TINGKAT IV</span>
+                    <span class="apx-tier-name">DEWAN OTORITAS &bull; HIGH AUTHORITY</span>
+                    <span class="apx-weight-pill">WEIGHT 95 (KEDUDUKAN SETARA)</span>
                 </div>
                 <div class="apx-tier-authority-grid">
                     <!-- 2. Architect -->
@@ -325,7 +329,7 @@
                             <h3 class="apx-caste-name">Architect</h3>
                             <div class="apx-caste-prefix text-purple"><i class="bi bi-compass-fill"></i> 📐 ARCHITECT</div>
                             <p class="apx-caste-desc">
-                                Perancang tata ruang dan pembangun peradaban. Mengatur cetak biru arsitektur realm, struktur kota, dan batas kedaulatan wilayah.
+                                Perancang tata ruang dan pembangun peradaban. Mengatur cetak biru arsitektur realm, struktur kota, dan batas kedaulatan wilayah secara setara di Dewan Otoritas.
                             </p>
                             <ul class="apx-caste-perks">
                                 <li><i class="bi bi-check2"></i> Otoritas Cetak Biru &amp; Pembangunan Realm</li>
@@ -350,12 +354,12 @@
                         <div>
                             <div class="apx-caste-header">
                                 <span class="apx-caste-tier-badge text-gold">DEWAN OTORITAS</span>
-                                <span class="apx-caste-weight">WEIGHT 92</span>
+                                <span class="apx-caste-weight">WEIGHT 95</span>
                             </div>
                             <h3 class="apx-caste-name">Overseer</h3>
                             <div class="apx-caste-prefix text-gold"><i class="bi bi-eye-fill"></i> 👁 OVERSEER</div>
                             <p class="apx-caste-desc">
-                                Mata pengawas kedaulatan dan kestabilan dunia. Memantau integritas transaksi ekonomi, kepatuhan peradaban, dan keseimbangan realm.
+                                Mata pengawas kedaulatan dan kestabilan dunia. Memantau integritas transaksi ekonomi, kepatuhan peradaban, dan audit peradilan secara setara di Dewan Otoritas.
                             </p>
                             <ul class="apx-caste-perks">
                                 <li><i class="bi bi-check2"></i> Audit Kedaulatan, Transaksi &amp; Keadilan</li>
@@ -373,19 +377,29 @@
                             @endif
                         </div>
                     </div>
+                </div>
+            </div>
 
+            <!-- TIER III: ADMINISTRASI & PENEGAK HUKUM (STAFF & LAW ENFORCEMENT) -->
+            <div class="apx-ladder-tier apx-tier-staff-wrapper" data-rank-category="staff">
+                <div class="apx-tier-label-bar">
+                    <span class="apx-tier-roman">TINGKAT III</span>
+                    <span class="apx-tier-name">ADMINISTRASI &amp; PENEGAK HUKUM &bull; STAFF</span>
+                    <span class="apx-weight-pill">WEIGHT 90 &bull; 80</span>
+                </div>
+                <div class="apx-tier-staff-grid">
                     <!-- 4. Warden -->
-                    <div class="apx-caste-card" data-rank-category="authority">
+                    <div class="apx-caste-card" data-rank-category="staff">
                         <img src="{{ theme_asset('img/ranks/rank-warden.png') }}" alt="Banner Resmi Kasta Warden" class="apx-caste-banner" loading="lazy" decoding="async" width="952" height="85">
                         <div>
                             <div class="apx-caste-header">
-                                <span class="apx-caste-tier-badge text-blue">DEWAN OTORITAS</span>
+                                <span class="apx-caste-tier-badge text-blue">ADMINISTRASI &amp; STAF</span>
                                 <span class="apx-caste-weight">WEIGHT 90</span>
                             </div>
                             <h3 class="apx-caste-name">Warden</h3>
                             <div class="apx-caste-prefix text-blue"><i class="bi bi-shield-shaded"></i> ⚔ WARDEN</div>
                             <p class="apx-caste-desc">
-                                Penjaga gerbang utama dan kepala staf peradaban. Mengawasi kestabilan wilayah, tribunal keadilan, dan ketertiban hukum dunia.
+                                Penjaga gerbang utama dan kepala staf administrasi peradaban di bawah naungan Dewan Otoritas. Mengawasi kestabilan wilayah, tribunal keadilan, dan ketertiban hukum dunia.
                             </p>
                             <ul class="apx-caste-perks">
                                 <li><i class="bi bi-check2"></i> Otoritas Tribunal &amp; Keamanan Realm</li>
@@ -405,17 +419,17 @@
                     </div>
 
                     <!-- 5. Herald -->
-                    <div class="apx-caste-card" data-rank-category="authority">
+                    <div class="apx-caste-card" data-rank-category="staff">
                         <img src="{{ theme_asset('img/ranks/rank-herald.png') }}" alt="Banner Resmi Kasta Herald" class="apx-caste-banner" loading="lazy" decoding="async" width="952" height="84">
                         <div>
                             <div class="apx-caste-header">
-                                <span class="apx-caste-tier-badge text-pink">DEWAN OTORITAS</span>
+                                <span class="apx-caste-tier-badge text-pink">ADMINISTRASI &amp; STAF</span>
                                 <span class="apx-caste-weight">WEIGHT 80</span>
                             </div>
                             <h3 class="apx-caste-name">Herald</h3>
                             <div class="apx-caste-prefix text-pink"><i class="bi bi-chat-quote"></i> 📜 HERALD</div>
                             <p class="apx-caste-desc">
-                                Utusan resmi dan pembawa maklumat peradaban. Menjembatani suara warga dengan dewan penguasa dan menjaga diplomasi publik.
+                                Utusan resmi, pembawa maklumat peradaban, dan moderator realm. Menjembatani suara warga dengan dewan penguasa dan menjaga etika publik.
                             </p>
                             <ul class="apx-caste-perks">
                                 <li><i class="bi bi-check2"></i> Moderasi &amp; Diplomasi Publik</li>
