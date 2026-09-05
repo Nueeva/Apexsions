@@ -48,7 +48,7 @@ public class AdminItemCreatorGUI implements InventoryHolder {
     public static final int SLOT_CHESTPLATE = 11;
     public static final int SLOT_LEGGINGS = 12;
     public static final int SLOT_BOOTS = 13;
-    public static final int SLOT_SET_STATUS = 16;
+    public static final int SLOT_SET_STATUS = 15;
 
     public static final int[] TOOL_SLOTS = {28, 29, 30, 31, 32, 33, 34};
 
@@ -131,7 +131,7 @@ public class AdminItemCreatorGUI implements InventoryHolder {
         renderArmorSlot(SLOT_LEGGINGS, Material.IRON_LEGGINGS, "👖 LEGGINGS KOSONG", "Letakkan Leggings di slot ini");
         renderArmorSlot(SLOT_BOOTS, Material.IRON_BOOTS, "👢 BOOTS KOSONG", "Letakkan Boots di slot ini");
 
-        // 3. Set Bonus Status Slot (Slot 16)
+        // 3. Set Bonus Status Slot (Slot 15)
         boolean fullset = isFullsetComplete();
         List<Component> statusLore = new ArrayList<>();
         if (!globalSetName.isBlank()) {
@@ -554,7 +554,7 @@ public class AdminItemCreatorGUI implements InventoryHolder {
                 return;
             }
 
-            // Slot 16: Set Bonus Settings
+            // Slot 15: Set Bonus Settings
             if (rawSlot == SLOT_SET_STATUS) {
                 event.setCancelled(true);
                 this.isNavigatingSubGUI = true;
