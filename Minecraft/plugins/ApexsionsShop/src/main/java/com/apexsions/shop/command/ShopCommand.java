@@ -48,6 +48,22 @@ public class ShopCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
+        if (args.length > 0 && args[0].equalsIgnoreCase("admin")) {
+            if (!sender.hasPermission("apexsionsshop.admin")) {
+                sender.sendMessage(miniMessage.deserialize("<red>Kamu tidak memiliki izin untuk menggunakan perintah admin shop!</red>"));
+                return true;
+            }
+            if (args.length >= 2) {
+                String targetKingdom = args[1].toUpperCase();
+                if (targetKingdom.equals("ZENITHAR") || targetKingdom.equals("SOLTERRA") || targetKingdom.equals("SYLVAMOOR")) {
+                    new ShopMainMenu(plugin, player, targetKingdom).open();
+                    return true;
+                }
+            }
+            new com.apexsions.shop.gui.AdminKingdomShopSelectorGUI(plugin, player).open();
+            return true;
+        }
+
         if (args.length > 0) {
             ShopCategory category = ShopCategory.fromId(args[0]);
             if (category != null) {
@@ -65,8 +81,9 @@ public class ShopCommand implements CommandExecutor, TabCompleter {
         List<String> completions = new ArrayList<>();
         if (args.length == 1) {
             String input = args[0].toLowerCase();
-            if (sender.hasPermission("apexsionsshop.admin") && "reload".startsWith(input)) {
-                completions.add("reload");
+            if (sender.hasPermission("apexsionsshop.admin")) {
+                if ("reload".startsWith(input)) completions.add("reload");
+                if ("admin".startsWith(input)) completions.add("admin");
             }
             if ("trends".startsWith(input)) {
                 completions.add("trends");
@@ -74,6 +91,13 @@ public class ShopCommand implements CommandExecutor, TabCompleter {
             for (ShopCategory cat : ShopCategory.values()) {
                 if (cat.getId().startsWith(input)) {
                     completions.add(cat.getId());
+                }
+            }
+        } else if (args.length == 2 && args[0].equalsIgnoreCase("admin") && sender.hasPermission("apexsionsshop.admin")) {
+            String input = args[1].toLowerCase();
+            for (String k : List.of("zenithar", "solterra", "sylvamoor")) {
+                if (k.startsWith(input)) {
+                    completions.add(k);
                 }
             }
         }

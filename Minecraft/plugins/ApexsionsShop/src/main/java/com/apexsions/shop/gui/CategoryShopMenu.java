@@ -30,12 +30,20 @@ public class CategoryShopMenu extends ShopGui {
 
     private final ShopCategory category;
     private final int page;
+    private final String kingdomOverride;
 
     public CategoryShopMenu(ApexsionsShop plugin, Player player, ShopCategory category, ShopGui parent, int page) {
-        super(plugin, player, plugin.getConfigManager().getGuiConfig().getString("titles.category-menu", "<dark_gray>[ TOKO: %category% ]</dark_gray>")
+        this(plugin, player, category, parent, page, null);
+    }
+
+    public CategoryShopMenu(ApexsionsShop plugin, Player player, ShopCategory category, ShopGui parent, int page, String kingdomOverride) {
+        super(plugin, player, kingdomOverride != null
+                ? "<gradient:#f1c40f:#e67e22><bold>[" + kingdomOverride.toUpperCase() + ": " + category.getDisplayName() + "]</bold></gradient>"
+                : plugin.getConfigManager().getGuiConfig().getString("titles.category-menu", "<dark_gray>[ TOKO: %category% ]</dark_gray>")
                 .replace("%category%", category.getDisplayName()), 54, parent);
         this.category = category;
         this.page = Math.max(1, page);
+        this.kingdomOverride = kingdomOverride;
     }
 
     @Override
@@ -56,7 +64,7 @@ public class CategoryShopMenu extends ShopGui {
                 .lore(List.of(
                         category.getDescription(),
                         "<gray>Saldo Kamu: <yellow>" + plugin.getEconomyHook().format(balance) + "</yellow></gray>",
-                        "<gray>Pajak Wilayah: <red>" + String.format("%.1f", plugin.getTaxService().getTaxPercent(player)) + "%</red></gray>"
+                        "<gray>Pajak Wilayah: <red>" + String.format("%.1f", plugin.getTaxService().getTaxPercent(player, kingdomOverride)) + "%</red></gray>"
                 ))
                 .build()));
 
@@ -67,10 +75,10 @@ public class CategoryShopMenu extends ShopGui {
             ShopItem item = allItems.get(i);
             int currentSlot = SLOTS[slotIdx++];
 
-            PriceResult buy1 = plugin.getDynamicPriceCalculator().calculateBuyPrice(item, player, 1);
-            PriceResult buy64 = plugin.getDynamicPriceCalculator().calculateBuyPrice(item, player, 64);
-            PriceResult sell1 = plugin.getDynamicPriceCalculator().calculateSellPrice(item, player, 1);
-            PriceResult sell64 = plugin.getDynamicPriceCalculator().calculateSellPrice(item, player, 64);
+            PriceResult buy1 = plugin.getDynamicPriceCalculator().calculateBuyPrice(item, player, 1, kingdomOverride);
+            PriceResult buy64 = plugin.getDynamicPriceCalculator().calculateBuyPrice(item, player, 64, kingdomOverride);
+            PriceResult sell1 = plugin.getDynamicPriceCalculator().calculateSellPrice(item, player, 1, kingdomOverride);
+            PriceResult sell64 = plugin.getDynamicPriceCalculator().calculateSellPrice(item, player, 64, kingdomOverride);
 
             int playerHas = InventoryUtil.countItems(player, item.getMaterial());
 
@@ -110,14 +118,14 @@ public class CategoryShopMenu extends ShopGui {
             lore.add(item.isBuyEnabled() ? "<yellow>Sentuh / Klik untuk Beli / Jual ▶</yellow>" : "<yellow>Sentuh / Klik untuk Jual Item ▶</yellow>");
 
             ItemStack displayItem = new ShopItemBuilder(item.getMaterial())
-                    .name(item.getDisplayName())
+                    .name("<gold><bold>" + item.getDisplayName() + "</bold></gold>")
                     .lore(lore)
                     .hideAttributes()
                     .build();
 
             setButton(currentSlot, new ShopGuiButton(displayItem, event -> {
                 player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.7f, 1.2f);
-                new QuantitySelectMenu(plugin, player, item, this).open();
+                new QuantitySelectMenu(plugin, player, item, this, kingdomOverride).open();
             }));
         }
 
@@ -129,7 +137,7 @@ public class CategoryShopMenu extends ShopGui {
                     .name("<yellow>◀ Halaman " + (validPage - 1) + "</yellow>")
                     .build(), event -> {
                 player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.7f, 1.2f);
-                new CategoryShopMenu(plugin, player, category, parent, validPage - 1).open();
+                new CategoryShopMenu(plugin, player, category, parent, validPage - 1, kingdomOverride).open();
             }));
         }
 
@@ -142,7 +150,7 @@ public class CategoryShopMenu extends ShopGui {
                     .name("<yellow>Halaman " + (validPage + 1) + " ▶</yellow>")
                     .build(), event -> {
                 player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.7f, 1.2f);
-                new CategoryShopMenu(plugin, player, category, parent, validPage + 1).open();
+                new CategoryShopMenu(plugin, player, category, parent, validPage + 1, kingdomOverride).open();
             }));
         }
 

@@ -20,14 +20,17 @@ regions:
     king:
       name: "Belum Ada Raja"
       title: "Monarch of the Sun"
-    tax-percent: 10.0
+    tax-percent: 25.0
     buffs:
-      - "<green>+15% Mining & Experience Boost</green>"
-      - "<green>+10% Kecepatan Gerak di Ketinggian (Y > 80)</green>"
-      - "<green>Aura Cahaya Abadi di Wilayah Ibukota</green>"
+      - "<green>+5% Kecepatan Gerak (Speed)</green>"
+      - "<green>+7% Keberuntungan (Luck Boost)</green>"
+      - "<green>+6% Total Serangan (All Damage Boost)</green>"
+      - "<green>+6% Pertahanan Diri (Defense Reduction)</green>"
+      - "<green>+5% Reduksi Serangan Critical Musuh</green>"
     nerfs:
-      - "<red>-10% Kecepatan Renang di Air Dalam</red>"
-      - "<red>+10% Kerentanan terhadap Serangan Petir / Badai</red>"
+      - "<red>+7% Damage & Durasi Efek Racun (Poison Vulnerability)</red>"
+      - "<red>Makanan Memulihkan Hunger Bar Lebih Sedikit (-1 Point)</red>"
+      - "<red>Harga Pasar Fluktuatif (Beli Lebih Tinggi & Jual Lebih Rendah)</red>"
     titles:
       starting: "<#f7d794>Acolyte of Zenith</#f7d794>"
       supreme: "<gradient:#ffeaa7:#ffd700><bold>✦ EMPEROR OF ZENITHAR ✦</bold></gradient>"
@@ -60,14 +63,18 @@ regions:
     king:
       name: "Belum Ada Raja"
       title: "Warlord of the Dunes"
-    tax-percent: 10.0
+    tax-percent: 20.0
     buffs:
-      - "<green>+15% Melee Attack & Fire Damage</green>"
-      - "<green>Kebal terhadap Efek Terbakar di Wilayah Kerajaan</green>"
-      - "<green>+10% Knockback Resistance</green>"
+      - "<green>+15% Total Serangan (All Damage Boost)</green>"
+      - "<green>+10% Serangan Critical (Critical Damage Boost)</green>"
+      - "<green>+2% Pertahanan Diri (Defense Reduction)</green>"
+      - "<green>+10% Kecepatan Menambang (Mining Speed Boost)</green>"
+      - "<green>Harga Ore Cenderung Stabil & Tinggi (Rasio Jual Ore 65% Harga Beli)</green>"
     nerfs:
-      - "<red>-10% Ketahanan terhadap Fall Damage</red>"
-      - "<red>-10% Efisiensi Pertanian Tanaman Dingin</red>"
+      - "<red>+7% Laju Pengurangan Hunger Bar (Exhaustion Rate)</red>"
+      - "<red>-2 HP Maksimal Darah (Total 9 Hati)</red>"
+      - "<red>+8% Total Damage Diterima (Damage Vulnerability)</red>"
+      - "<red>Tanaman & Lahan Pertanian Lebih Cepat Kering</red>"
     titles:
       starting: "<#fab1a0>Dune Wanderer</#fab1a0>"
       supreme: "<gradient:#f12711:#f5af19><bold>✦ LORD OF SOLTERRA ✦</bold></gradient>"
@@ -100,14 +107,20 @@ regions:
     king:
       name: "Belum Ada Raja"
       title: "Guardian of the World Tree"
-    tax-percent: 10.0
+    tax-percent: 15.0
     buffs:
-      - "<green>+15% Farming Harvest & Natural Regeneration</green>"
-      - "<green>+15% Kecepatan Renang & Nafas Dalam Air</green>"
-      - "<green>Peluang Panen Ganda Tanaman (Double Drop)</green>"
+      - "<green>+12% Keberuntungan (Luck Boost)</green>"
+      - "<green>+7% Peluang Ekstra Drop Monster (Mob Drop Rate)</green>"
+      - "<green>+8% Defense & 5% Reduksi Damage Masuk (~12.6% Total Defense)</green>"
+      - "<green>-5% Damage & Durasi Efek Racun (Poison Resistance)</green>"
+      - "<green>+2 HP Maksimal Darah (Total 11 Hati)</green>"
+      - "<green>Kelembapan Lahan Pertanian & Tanaman Stabil</green>"
     nerfs:
-      - "<red>-10% Ketahanan terhadap Ledakan (Blast Resistance)</red>"
-      - "<red>+15% Kerentanan terhadap Efek Racun / Wither</red>"
+      - "<red>Mabuk Ketinggian di Y > 110 (Efek Hunger & Weakness Ringan)</red>"
+      - "<red>+15% Damage Terbakar (Api, Lava, Magma)</red>"
+      - "<red>-10% Kecepatan Menambang (Mining Speed)</red>"
+      - "<red>-10% Serangan ke Pemain (PvP Damage Dealt)</red>"
+      - "<red>-5% Serangan ke Monster (PvE Damage Dealt)</red>"
     titles:
       starting: "<#a8e6cf>Sylvan Citizen</#a8e6cf>"
       supreme: "<gradient:#00f2fe:#4facfe><bold>✦ AVATAR OF SYLVAMOOR ✦</bold></gradient>"

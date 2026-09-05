@@ -108,6 +108,10 @@ public class ApexsionsCorePlugin extends JavaPlugin {
     private com.apexsions.core.kit.KitManager kitManager;
     private com.apexsions.core.kit.KitArmorSetListener kitArmorSetListener;
 
+    // Kingdom Traits & Buffs Engine
+    private com.apexsions.core.kingdom.KingdomBuffManager kingdomBuffManager;
+    private com.apexsions.core.kingdom.KingdomBuffListener kingdomBuffListener;
+
     // Public API & Web Bridge
     private ApexsionsCoreAPI api;
     private com.apexsions.core.integration.web.WebBridgeService webBridgeService;
@@ -243,11 +247,17 @@ public class ApexsionsCorePlugin extends JavaPlugin {
             // 9. Commands
             registerCommands();
 
-            // 10. Public API
+            // 10. Kingdom Buffs & Traits Engine
+            this.kingdomBuffManager = new com.apexsions.core.kingdom.KingdomBuffManager(this);
+            this.kingdomBuffManager.start();
+            this.kingdomBuffListener = new com.apexsions.core.kingdom.KingdomBuffListener(this, kingdomBuffManager);
+            Bukkit.getPluginManager().registerEvents(kingdomBuffListener, this);
+
+            // 11. Public API
             this.api = new ApexsionsCoreAPIImpl(this);
             ApexsionsCoreProvider.register(this.api);
 
-            // 11. Web Platform Status Bridge
+            // 12. Web Platform Status Bridge
             this.webBridgeService = new com.apexsions.core.integration.web.WebBridgeService(this);
             this.webBridgeService.start();
 
@@ -277,6 +287,9 @@ public class ApexsionsCorePlugin extends JavaPlugin {
         }
         if (cosmeticsManager != null) {
             cosmeticsManager.stop();
+        }
+        if (kingdomBuffManager != null) {
+            kingdomBuffManager.stop();
         }
         if (kitManager != null) {
             kitManager.saveCooldownsAsync();
@@ -498,6 +511,7 @@ public class ApexsionsCorePlugin extends JavaPlugin {
     public TerritoryListener getTerritoryListener() { return territoryListener; }
     public com.apexsions.core.motd.MotdManager getMotdManager() { return motdManager; }
     public com.apexsions.core.kit.KitManager getKitManager() { return kitManager; }
+    public com.apexsions.core.kingdom.KingdomBuffManager getKingdomBuffManager() { return kingdomBuffManager; }
     public com.apexsions.core.kit.KitArmorSetListener getKitArmorSetListener() { return kitArmorSetListener; }
     public com.apexsions.core.integration.web.WebBridgeService getWebBridgeService() { return webBridgeService; }
     public ApexsionsCoreAPI getApi() { return api; }

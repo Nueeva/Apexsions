@@ -5,6 +5,7 @@ import com.apexsions.shop.category.ShopCategory;
 import com.apexsions.shop.category.ShopItem;
 import com.apexsions.shop.category.ShopItemRegistry;
 import com.apexsions.shop.command.SellCommand;
+import com.apexsions.shop.command.ShopAdminCommand;
 import com.apexsions.shop.command.ShopCommand;
 import com.apexsions.shop.dynamic.*;
 import com.apexsions.shop.gui.CategoryShopMenu;
@@ -84,6 +85,13 @@ public class ApexsionsShop extends JavaPlugin implements ApexsionsShopAPI {
         if (sell != null) {
             sell.setExecutor(sellCmd);
             sell.setTabCompleter(sellCmd);
+        }
+
+        ShopAdminCommand shopAdminCmd = new ShopAdminCommand(this);
+        PluginCommand shopAdmin = getCommand("shopadmin");
+        if (shopAdmin != null) {
+            shopAdmin.setExecutor(shopAdminCmd);
+            shopAdmin.setTabCompleter(shopAdminCmd);
         }
 
         getLogger().info("==========================================");

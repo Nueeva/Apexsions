@@ -191,4 +191,22 @@ public class ApexsionsCoreAPIImpl implements ApexsionsCoreAPI {
                 maxHp
         );
     }
+
+    @Override
+    public double getKingdomTax(@NotNull String kingdomKey) {
+        if (kingdomKey == null || kingdomKey.equalsIgnoreCase("NONE")) {
+            return 10.0;
+        }
+        String upper = kingdomKey.toUpperCase(java.util.Locale.ROOT);
+        org.bukkit.configuration.ConfigurationSection sec = plugin.getConfigManager().getKingdomsConfig().getConfigurationSection("regions." + upper);
+        if (sec != null && sec.contains("tax-percent")) {
+            return sec.getDouble("tax-percent", 10.0);
+        }
+        return switch (upper) {
+            case "ZENITHAR" -> 25.0;
+            case "SOLTERRA" -> 20.0;
+            case "SYLVAMOOR" -> 15.0;
+            default -> 10.0;
+        };
+    }
 }

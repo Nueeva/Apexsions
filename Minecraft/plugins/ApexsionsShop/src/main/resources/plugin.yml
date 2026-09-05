@@ -1,4 +1,4 @@
-﻿name: ApexsionsShop
+name: ApexsionsShop
 version: 1.0.0
 main: com.apexsions.shop.ApexsionsShop
 api-version: "1.21"
@@ -15,6 +15,10 @@ commands:
     description: "Membuka GUI Penjualan Cepat Item"
     aliases: [ "sellgui", "jual", "sellhand", "sellall" ]
     permission: apexsionsshop.sell
+  shopadmin:
+    description: "Menu Admin Toko Kerajaan Apexsions"
+    aliases: [ "adminshop", "shopview", "adminguishop" ]
+    permission: apexsionsshop.admin
 
 permissions:
   apexsionsshop.use:

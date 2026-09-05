@@ -137,4 +137,9 @@ public class NoOpApexsionsCoreAPI implements ApexsionsCoreAPI {
                 20
         );
     }
+
+    @Override
+    public double getKingdomTax(@NotNull String kingdomKey) {
+        return 10.0;
+    }
 }

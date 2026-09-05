@@ -63,13 +63,22 @@ public class ShopAdminSubGUI implements InventoryHolder {
             hMeta.lore(List.of(
                     mm.deserialize("<gray>Plugin:</gray> <gold>ApexsionsShop v1.0.0</gold>"),
                     mm.deserialize("<gray>Mekanisme:</gray> <yellow>Dynamic Pricing + Regional Kingdom Multiplier</yellow>"),
-                    mm.deserialize("<gray>Pajak Wilayah:</gray> <aqua>10% Regional Tariff Active</aqua>"),
+                    mm.deserialize("<gray>Pajak Kerajaan:</gray> <aqua>Zenithar 25% | Solterra 20% | Sylvamoor 15%</aqua>"),
                     Component.empty(),
                     mm.deserialize("<yellow>Pilih opsi di bawah untuk mengatur dinamika pasar.</yellow>")
             ));
             header.setItemMeta(hMeta);
         }
         inventory.setItem(4, header);
+
+        // Slot 19: Inspect 3 Kingdom Shops (/shopadmin)
+        inventory.setItem(19, createActionItem(Material.GOLDEN_HELMET, "<gradient:#f39c12:#d35400><bold>👑 INSPEKSI TOKO 3 KERAJAAN</bold></gradient>",
+                List.of("<gray>Lihat katalog toko & harga unik tiap kerajaan:</gray>",
+                        "<dark_gray>•</dark_gray> <gold>Zenithar</gold> <gray>(Pajak 25%, Volatilitas Tinggi)</gray>",
+                        "<dark_gray>•</dark_gray> <yellow>Solterra</yellow> <gray>(Pajak 20%, Ore Stabil & 65% Sell)</gray>",
+                        "<dark_gray>•</dark_gray> <green>Sylvamoor</green> <gray>(Pajak 15%, Diskon Agrikultur)</gray>",
+                        "",
+                        "<yellow>▶ Klik untuk membuka /shopadmin</yellow>")));
 
         // Slot 20: Open Kingdom Shop GUI (/shop)
         inventory.setItem(20, createActionItem(Material.CHEST, "<gradient:#f1c40f:#e67e22><bold>🛍 BUKA TOKO UTAMA (/SHOP)</bold></gradient>",
@@ -116,6 +125,12 @@ public class ShopAdminSubGUI implements InventoryHolder {
         if (slot == 49) {
             player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.7f, 1.0f);
             new MasterAdminGUI(plugin, player).open();
+            return;
+        }
+
+        if (slot == 19) { // Inspect 3 Kingdom Shops
+            player.closeInventory();
+            player.performCommand("shopadmin");
             return;
         }
 

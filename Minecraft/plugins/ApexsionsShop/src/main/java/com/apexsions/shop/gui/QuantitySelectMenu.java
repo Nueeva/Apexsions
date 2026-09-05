@@ -19,20 +19,26 @@ import java.util.List;
 public class QuantitySelectMenu extends ShopGui {
 
     private final ShopItem shopItem;
+    private final String kingdomOverride;
 
     public QuantitySelectMenu(ApexsionsShop plugin, Player player, ShopItem shopItem, ShopGui parent) {
-        super(plugin, player, "<dark_gray>[ TRANSAKSI: " + shopItem.getDisplayName() + " ]</dark_gray>", 45, parent);
+        this(plugin, player, shopItem, parent, null);
+    }
+
+    public QuantitySelectMenu(ApexsionsShop plugin, Player player, ShopItem shopItem, ShopGui parent, String kingdomOverride) {
+        super(plugin, player, "<dark_gray>[ TRANSAKSI: " + shopItem.getDisplayName() + (kingdomOverride != null ? " (" + kingdomOverride.toUpperCase() + ")" : "") + " ]</dark_gray>", 45, parent);
         this.shopItem = shopItem;
+        this.kingdomOverride = kingdomOverride;
     }
 
     @Override
     public void initialize() {
         fillBorder();
 
-        PriceResult buy1 = plugin.getDynamicPriceCalculator().calculateBuyPrice(shopItem, player, 1);
-        PriceResult buy64 = plugin.getDynamicPriceCalculator().calculateBuyPrice(shopItem, player, 64);
-        PriceResult sell1 = plugin.getDynamicPriceCalculator().calculateSellPrice(shopItem, player, 1);
-        PriceResult sell64 = plugin.getDynamicPriceCalculator().calculateSellPrice(shopItem, player, 64);
+        PriceResult buy1 = plugin.getDynamicPriceCalculator().calculateBuyPrice(shopItem, player, 1, kingdomOverride);
+        PriceResult buy64 = plugin.getDynamicPriceCalculator().calculateBuyPrice(shopItem, player, 64, kingdomOverride);
+        PriceResult sell1 = plugin.getDynamicPriceCalculator().calculateSellPrice(shopItem, player, 1, kingdomOverride);
+        PriceResult sell64 = plugin.getDynamicPriceCalculator().calculateSellPrice(shopItem, player, 64, kingdomOverride);
 
         int playerHas = InventoryUtil.countItems(player, shopItem.getMaterial());
         double balance = plugin.getEconomyHook().getBalance(player);
@@ -155,7 +161,7 @@ public class QuantitySelectMenu extends ShopGui {
             return;
         }
 
-        PriceResult result = plugin.getDynamicPriceCalculator().calculateBuyPrice(shopItem, player, quantity);
+        PriceResult result = plugin.getDynamicPriceCalculator().calculateBuyPrice(shopItem, player, quantity, kingdomOverride);
         double totalCost = result.finalTotalPrice();
 
         if (!plugin.getEconomyHook().has(player, totalCost)) {
@@ -210,7 +216,7 @@ public class QuantitySelectMenu extends ShopGui {
             return;
         }
 
-        PriceResult result = plugin.getDynamicPriceCalculator().calculateSellPrice(shopItem, player, actualQuantity);
+        PriceResult result = plugin.getDynamicPriceCalculator().calculateSellPrice(shopItem, player, actualQuantity, kingdomOverride);
         double payout = result.finalTotalPrice();
 
         InventoryUtil.removeItems(player, shopItem.getMaterial(), actualQuantity);

@@ -124,4 +124,9 @@ public interface ApexsionsCoreAPI {
      */
     @NotNull
     PlayerChatProfile getPlayerChatProfile(@NotNull UUID uuid);
+
+    /**
+     * Gets the configured tax percentage for a kingdom (e.g. Zenithar 25.0, Solterra 20.0, Sylvamoor 15.0).
+     */
+    double getKingdomTax(@NotNull String kingdomKey);
 }

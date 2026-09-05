@@ -14,10 +14,13 @@ public class KingdomMarketService {
     }
 
     public double getBuyMultiplier(ShopItem item, Player player) {
-        String kingdom = plugin.getKingdomCoreHook().getPlayerKingdom(player);
+        return getBuyMultiplier(item, player, null);
+    }
+
+    public double getBuyMultiplier(ShopItem item, Player player, String kingdomOverride) {
+        String kingdom = resolveKingdom(player, kingdomOverride);
         if (kingdom == null || kingdom.equalsIgnoreCase("NONE")) {
-            // Check location kingdom
-            kingdom = plugin.getKingdomCoreHook().getKingdomAtLocation(player.getLocation());
+            return 1.00;
         }
 
         ShopCategory cat = item.getCategory();
@@ -26,13 +29,62 @@ public class KingdomMarketService {
     }
 
     public double getSellMultiplier(ShopItem item, Player player) {
-        // Sell price generally mirrors the kingdom's buy multiplier to preserve 20% ratio with regional variance
-        double buyMult = getBuyMultiplier(item, player);
-        return buyMult;
+        return getSellMultiplier(item, player, null);
+    }
+
+    public double getSellMultiplier(ShopItem item, Player player, String kingdomOverride) {
+        String kingdom = resolveKingdom(player, kingdomOverride);
+        if (kingdom == null || kingdom.equalsIgnoreCase("NONE")) {
+            return 1.00;
+        }
+
+        ShopCategory cat = item.getCategory();
+        String sellPath = "kingdoms." + kingdom.toUpperCase() + "." + cat.getId() + "-sell-multiplier";
+        if (plugin.getConfigManager().getMarketsConfig().contains(sellPath)) {
+            return plugin.getConfigManager().getMarketsConfig().getDouble(sellPath);
+        }
+
+        // Sell price generally mirrors the kingdom's buy multiplier to preserve ratio with regional variance
+        return getBuyMultiplier(item, player, kingdomOverride);
+    }
+
+    /**
+     * Checks if this kingdom overrides the base sell-to-buy ratio (e.g. Solterra 65% on ORES).
+     * Returns -1.0 if standard 20% base sell ratio applies.
+     */
+    public double getCustomSellRatio(ShopItem item, Player player, String kingdomOverride) {
+        String kingdom = resolveKingdom(player, kingdomOverride);
+        if (kingdom == null || kingdom.equalsIgnoreCase("NONE")) {
+            return -1.0;
+        }
+
+        ShopCategory cat = item.getCategory();
+        String ratioPath = "kingdoms." + kingdom.toUpperCase() + "." + cat.getId() + "-sell-ratio";
+        if (plugin.getConfigManager().getMarketsConfig().contains(ratioPath)) {
+            return plugin.getConfigManager().getMarketsConfig().getDouble(ratioPath, -1.0);
+        }
+        return -1.0;
+    }
+
+    public String resolveKingdom(Player player, String kingdomOverride) {
+        if (kingdomOverride != null && !kingdomOverride.trim().isEmpty() && !kingdomOverride.equalsIgnoreCase("NONE")) {
+            return kingdomOverride.toUpperCase();
+        }
+        if (player == null) return "NONE";
+
+        String kingdom = plugin.getKingdomCoreHook().getPlayerKingdom(player);
+        if (kingdom == null || kingdom.equalsIgnoreCase("NONE")) {
+            kingdom = plugin.getKingdomCoreHook().getKingdomAtLocation(player.getLocation());
+        }
+        return kingdom != null ? kingdom.toUpperCase() : "NONE";
     }
 
     public String getKingdomNameFormatted(Player player) {
-        String key = plugin.getKingdomCoreHook().getPlayerKingdom(player);
+        return getKingdomNameFormatted(resolveKingdom(player, null));
+    }
+
+    public String getKingdomNameFormatted(String key) {
+        if (key == null) return "<gray>Tanpa Kerajaan</gray>";
         return switch (key.toUpperCase()) {
             case "ZENITHAR" -> "<gradient:#ffe900:#f39c12><bold>Zenithar</bold></gradient>";
             case "SOLTERRA" -> "<gradient:#ff4d4d:#c0392b><bold>Solterra</bold></gradient>";

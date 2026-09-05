@@ -13,8 +13,17 @@ import java.util.List;
 
 public class ShopMainMenu extends ShopGui {
 
+    private final String kingdomOverride;
+
     public ShopMainMenu(ApexsionsShop plugin, Player player) {
-        super(plugin, player, plugin.getConfigManager().getGuiConfig().getString("titles.main-menu", "<dark_gray><bold>[ APEXSIONS MARKET ]</bold></dark_gray>"), 54);
+        this(plugin, player, null);
+    }
+
+    public ShopMainMenu(ApexsionsShop plugin, Player player, String kingdomOverride) {
+        super(plugin, player, kingdomOverride != null
+                ? "<gradient:#f1c40f:#e67e22><bold>[ PASAR " + kingdomOverride.toUpperCase() + " ]</bold></gradient>"
+                : plugin.getConfigManager().getGuiConfig().getString("titles.main-menu", "<dark_gray><bold>[ APEXSIONS MARKET ]</bold></dark_gray>"), 54);
+        this.kingdomOverride = kingdomOverride;
     }
 
     @Override
@@ -23,8 +32,10 @@ public class ShopMainMenu extends ShopGui {
 
         // 1. Unified Player & Kingdom Info Banner (Slot 4 - Top Center)
         double balance = plugin.getEconomyHook().getBalance(player);
-        String kingdomName = plugin.getKingdomMarketService().getKingdomNameFormatted(player);
-        double taxPercent = plugin.getTaxService().getTaxPercent(player);
+        String kingdomName = kingdomOverride != null
+                ? plugin.getKingdomMarketService().getKingdomNameFormatted(kingdomOverride) + " <yellow>(Admin Preview)</yellow>"
+                : plugin.getKingdomMarketService().getKingdomNameFormatted(player);
+        double taxPercent = plugin.getTaxService().getTaxPercent(player, kingdomOverride);
         String weatherDesc = plugin.getWeatherPriceService().getWeatherDescription(player.getWorld());
 
         setButton(4, new ShopGuiButton(new ShopItemBuilder(Material.PLAYER_HEAD)
@@ -59,7 +70,7 @@ public class ShopMainMenu extends ShopGui {
                     ))
                     .build(), event -> {
                 player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.7f, 1.2f);
-                new CategoryShopMenu(plugin, player, category, this, 1).open();
+                new CategoryShopMenu(plugin, player, category, this, 1, kingdomOverride).open();
             }));
         }
 

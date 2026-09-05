@@ -71,4 +71,39 @@ public class KingdomCoreHook {
             } catch (Throwable ignored) {}
         }
     }
+
+    public double getKingdomTax(String kingdomKey) {
+        if (coreAvailable && kingdomKey != null && !kingdomKey.equalsIgnoreCase("NONE")) {
+            try {
+                ApexsionsCoreAPI api = ApexsionsCoreProvider.get();
+                if (api != null) {
+                    return api.getKingdomTax(kingdomKey);
+                }
+            } catch (Throwable ignored) {}
+        }
+        // Fallback to markets.yml configuration or defaults
+        if (kingdomKey != null) {
+            double configTax = plugin.getConfigManager().getMarketsConfig().getDouble("kingdoms." + kingdomKey.toUpperCase() + ".tax-percent", -1.0);
+            if (configTax >= 0.0) {
+                return configTax;
+            }
+            return switch (kingdomKey.toUpperCase()) {
+                case "ZENITHAR" -> 25.0;
+                case "SOLTERRA" -> 20.0;
+                case "SYLVAMOOR" -> 15.0;
+                default -> 10.0;
+            };
+        }
+        return 10.0;
+    }
+
+    public double getPlayerKingdomTax(Player player) {
+        String kingdom = getPlayerKingdom(player);
+        if (kingdom == null || kingdom.equalsIgnoreCase("NONE")) {
+            if (player != null) {
+                kingdom = getKingdomAtLocation(player.getLocation());
+            }
+        }
+        return getKingdomTax(kingdom);
+    }
 }

@@ -15,21 +15,42 @@ weather:
     mob-sell-multiplier: 1.15 # Badai petir: monster lebih ganas, drop +15%
 
 kingdoms:
-  SOLTERRA: # Kerajaan Agraris (Plains & Savanna)
-    food-buy-multiplier: 0.90      # Makanan lebih murah 10%
-    farming-buy-multiplier: 0.90   # Pertanian lebih murah 10%
-    ores-buy-multiplier: 1.10      # Tambang mineral lebih mahal 10%
+  SOLTERRA:
+    tax-percent: 20.0
+    ores-buy-multiplier: 1.15      # Harga ore cenderung stabil dan tinggi
+    ores-sell-ratio: 0.65          # Rasio harga jual ore melonjak menjadi 65% dari harga beli
+    ores-stability: true           # Kebal terhadap volatilitas pasar
+    food-buy-multiplier: 0.90      # Makanan murah 10%
+    farming-buy-multiplier: 0.90   # Pertanian murah 10%
     blocks-buy-multiplier: 1.05
-  ZENITHAR: # Kerajaan Pertambangan (Mountains & Caves)
-    ores-buy-multiplier: 0.90      # Tambang & mineral lebih murah 10%
-    food-buy-multiplier: 1.15      # Makanan lebih mahal 15%
-    farming-buy-multiplier: 1.10   # Pertanian lebih mahal 10%
-    dyes-buy-multiplier: 1.05
-  SYLVAMOOR: # Kerajaan Alam & Rimba (Forest, Jungle, Swamp)
-    dyes-buy-multiplier: 0.85      # Pewarna & tanaman liar lebih murah 15%
-    farming-buy-multiplier: 0.95
-    ores-buy-multiplier: 1.10      # Tambang mineral lebih mahal 10%
+    dyes-buy-multiplier: 1.00
+    mob_drops-buy-multiplier: 1.00
+
+  ZENITHAR:
+    tax-percent: 25.0
+    # Harga pasar cenderung fluktuatif & tidak stabil: harga beli tinggi, jual rendah
+    volatility-multiplier: 1.25    # Fluktuasi harga lebih lebar
+    ores-buy-multiplier: 1.15
+    ores-sell-multiplier: 0.80
+    food-buy-multiplier: 1.25
+    food-sell-multiplier: 0.75
+    farming-buy-multiplier: 1.20
+    farming-sell-multiplier: 0.80
+    blocks-buy-multiplier: 1.15
+    blocks-sell-multiplier: 0.80
+    dyes-buy-multiplier: 1.15
+    dyes-sell-multiplier: 0.80
+    mob_drops-buy-multiplier: 1.20
+    mob_drops-sell-multiplier: 0.80
+
+  SYLVAMOOR:
+    tax-percent: 15.0
+    dyes-buy-multiplier: 0.85      # Pewarna & tanaman liar murah 15%
+    farming-buy-multiplier: 0.90   # Hasil tani terjangkau
+    food-buy-multiplier: 0.95
+    ores-buy-multiplier: 1.10
     mob_drops-buy-multiplier: 0.90
+    blocks-buy-multiplier: 1.00
 
 # ========================================================
 # PASAR DINAMIS GLOBAL & SATURASI PASOKAN (MULTIPLAYER BALANCED)
