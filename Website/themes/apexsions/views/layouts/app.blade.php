@@ -32,6 +32,24 @@
     @stack('styles')
 </head>
 <body class="apx-body">
+    <!-- Apexsions Inter-Page Cinematic Transition Overlay -->
+    <div id="apxPageTransition" class="apx-page-transition is-entering" aria-hidden="true">
+        <div class="apx-transition-backdrop"></div>
+        <div class="apx-transition-content">
+            <div class="apx-transition-crest-halo"></div>
+            <div class="apx-transition-crest-wrap">
+                <img src="{{ theme_asset('img/logo.png') }}&v={{ @filemtime(public_path('assets/themes/apexsions/img/logo.png')) ?: '3' }}" alt="Apexsions" class="apx-transition-logo" width="96" height="96">
+            </div>
+            <div class="apx-transition-brand">
+                <span class="apx-transition-title">APEXSIONS</span>
+                <span class="apx-transition-tagline">THE PEAK CIVILIZATIONS</span>
+                <div class="apx-transition-bar">
+                    <div class="apx-transition-bar-fill"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Skip to Main Content (WCAG 2.4.1 Bypass Blocks) -->
     <a href="#main-content" class="apx-skip-link">Lewati ke konten utama</a>
 

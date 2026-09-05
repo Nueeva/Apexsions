@@ -149,4 +149,143 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     });
+
+    // 4. Cinematic Inter-Page Transition (VolteraMC / AAA Portal Experience)
+    const initPageTransitions = () => {
+        const overlay = document.getElementById('apxPageTransition');
+        if (!overlay) return;
+
+        const dismissTransition = () => {
+            overlay.classList.remove('is-navigating', 'is-entering');
+            overlay.classList.add('is-loaded');
+        };
+
+        // Smoothly dismiss entrance overlay after page is interactive
+        requestAnimationFrame(() => {
+            setTimeout(dismissTransition, 120);
+        });
+
+        // Ensure browser history (Back / Forward bfcache) never leaves screen blocked
+        window.addEventListener('pageshow', () => {
+            dismissTransition();
+        });
+
+        // Intercept internal page navigation links
+        document.addEventListener('click', (e) => {
+            const link = e.target.closest('a');
+            if (!link) return;
+
+            const href = link.getAttribute('href');
+            if (!href) return;
+
+            // Ignore anchor jumps, javascript calls, mailto, tel
+            if (href.startsWith('#') || href.startsWith('javascript:') || href.startsWith('mailto:') || href.startsWith('tel:')) {
+                return;
+            }
+
+            // Ignore new-tab links, modifier keys, downloads, or modal triggers
+            if (link.target === '_blank' || e.ctrlKey || e.metaKey || e.shiftKey || e.altKey) {
+                return;
+            }
+            if (link.hasAttribute('data-bs-toggle') || link.hasAttribute('data-apx-copy') || link.hasAttribute('download')) {
+                return;
+            }
+
+            try {
+                const targetUrl = new URL(link.href, window.location.origin);
+                // Only handle same-origin navigation
+                if (targetUrl.origin !== window.location.origin) {
+                    return;
+                }
+
+                // If clicking anchor on the current page, let browser handle smoothly
+                if (targetUrl.pathname === window.location.pathname && targetUrl.search === window.location.search && targetUrl.hash) {
+                    return;
+                }
+
+                // If identical URL, skip
+                if (targetUrl.href === window.location.href) {
+                    return;
+                }
+
+                // Trigger cinematic loading transition
+                e.preventDefault();
+                overlay.classList.remove('is-loaded');
+                overlay.classList.add('is-navigating');
+
+                // Navigate after smooth animation engagement
+                setTimeout(() => {
+                    window.location.href = targetUrl.href;
+                }, 260);
+
+                // Safety fallback
+                setTimeout(() => {
+                    dismissTransition();
+                }, 2000);
+            } catch (err) {
+                // Ignore parse errors, let browser navigate normally
+            }
+        });
+    };
+
+    initPageTransitions();
+
+    // 5. Cinematic Scroll Reveal Animations
+    const initScrollAnimations = () => {
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            return;
+        }
+
+        const autoTargets = [
+            '.apx-section-header',
+            '.apx-pillar-monolith',
+            '.apx-caste-card',
+            '.apx-caste-banner',
+            '.apx-step-monolith',
+            '.apx-showcase-card',
+            '.apx-rule-item',
+            '.apx-wiki-category-card',
+            '.apx-wiki-article-item',
+            '.card',
+            '.apx-scroll-reveal'
+        ];
+
+        const elements = document.querySelectorAll(autoTargets.join(', '));
+        if (!elements.length) return;
+
+        if (!('IntersectionObserver' in window)) {
+            elements.forEach(el => el.classList.add('is-revealed'));
+            return;
+        }
+
+        const observer = new IntersectionObserver((entries, obs) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-revealed');
+                    obs.unobserve(entry.target);
+                }
+            });
+        }, {
+            threshold: 0.08,
+            rootMargin: '0px 0px -30px 0px'
+        });
+
+        elements.forEach(el => {
+            if (!el.classList.contains('apx-scroll-reveal')) {
+                el.classList.add('apx-scroll-reveal');
+            }
+
+            const parent = el.parentElement;
+            if (parent && (parent.classList.contains('row') || parent.classList.contains('apx-stepper-grid') || parent.classList.contains('apx-pillar-grid'))) {
+                const childIndex = Array.from(parent.children).indexOf(el);
+                if (childIndex >= 0 && childIndex < 4) {
+                    el.classList.add(`apx-reveal-stagger-${childIndex + 1}`);
+                }
+            }
+
+            observer.observe(el);
+        });
+    };
+
+    initScrollAnimations();
 });

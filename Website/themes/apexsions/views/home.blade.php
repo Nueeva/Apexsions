@@ -42,11 +42,6 @@
                     <a href="#features" class="btn btn-apx-sovereign">
                         JELAJAHI PERADABAN <i class="bi bi-arrow-down ms-2"></i>
                     </a>
-                    @if(plugins()->isEnabled('wiki'))
-                        <a href="{{ route('wiki.index') }}" class="btn btn-apx-outline" style="padding: 0.75rem 1.4rem; font-weight: 600; font-size: 0.9rem; border-color: rgba(245, 158, 11, 0.4);">
-                            <i class="bi bi-journal-bookmark-fill text-warning me-2"></i> ENSIKLOPEDIA &amp; PANDUAN
-                        </a>
-                    @endif
                     <div class="apx-hero-ip-block apx-copyable" data-apx-copy="apexsions.my.id" role="button" tabindex="0" title="Klik atau tekan Enter untuk menyalin IP Java" aria-label="Salin Alamat IP Server Java">
                         <span class="apx-ip-label">SERVER IP</span>
                         <span class="apx-ip-address font-monospace">apexsions.my.id</span>

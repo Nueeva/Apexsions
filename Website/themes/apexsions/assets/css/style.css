@@ -2425,3 +2425,191 @@ code:not(pre code) {
     font-size: 0.85rem;
     margin-right: 0.75rem;
 }
+
+/* ==============================================================================
+   Cinematic Inter-Page Transition & Ambient Loading Overlay (VolteraMC / AAA Inspiration)
+   ============================================================================== */
+.apx-page-transition {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 999999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.38s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.38s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.apx-page-transition.is-navigating {
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+    transition: opacity 0.22s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.apx-page-transition.is-entering {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.apx-page-transition.is-loaded {
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    transition: opacity 0.42s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.42s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.apx-transition-backdrop {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 50% 48%, rgba(15, 21, 35, 0.98) 0%, rgba(6, 8, 13, 0.99) 70%, #06080d 100%);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+}
+
+.apx-transition-content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+}
+
+.apx-transition-crest-halo {
+    position: absolute;
+    width: 220px;
+    height: 220px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -65%);
+    background: radial-gradient(circle, rgba(212, 163, 89, 0.38) 0%, rgba(212, 163, 89, 0.1) 45%, transparent 70%);
+    border-radius: 50%;
+    filter: blur(20px);
+    pointer-events: none;
+    animation: apxHaloBreath 2.8s ease-in-out infinite;
+}
+
+@keyframes apxHaloBreath {
+    0%, 100% { transform: translate(-50%, -65%) scale(0.9); opacity: 0.55; }
+    50% { transform: translate(-50%, -65%) scale(1.15); opacity: 1; }
+}
+
+.apx-transition-crest-wrap {
+    width: 100px;
+    height: 100px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.25rem;
+}
+
+.apx-transition-logo {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 0 16px rgba(212, 163, 89, 0.45));
+    animation: apxTransitionLogoPulse 2.4s ease-in-out infinite;
+}
+
+@keyframes apxTransitionLogoPulse {
+    0%, 100% {
+        transform: scale(0.95);
+        filter: drop-shadow(0 0 14px rgba(212, 163, 89, 0.4));
+    }
+    50% {
+        transform: scale(1.05);
+        filter: drop-shadow(0 0 30px rgba(212, 163, 89, 0.8));
+    }
+}
+
+.apx-transition-brand {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.apx-transition-title {
+    font-family: 'Cinzel', Georgia, serif;
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: #ffffff;
+    letter-spacing: 0.22em;
+    line-height: 1.2;
+    margin-bottom: 0.35rem;
+    text-shadow: 0 0 16px rgba(255, 255, 255, 0.25);
+}
+
+.apx-transition-tagline {
+    font-family: 'Cinzel', Georgia, serif;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.32em;
+    color: var(--apx-gold-light);
+    text-transform: uppercase;
+    margin-bottom: 1.25rem;
+    opacity: 0.9;
+}
+
+.apx-transition-bar {
+    width: 140px;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    overflow: hidden;
+    position: relative;
+}
+
+.apx-transition-bar-fill {
+    width: 55%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, #d4a359, #f3c37a, transparent);
+    position: absolute;
+    animation: apxBarShimmer 1.35s ease-in-out infinite;
+}
+
+@keyframes apxBarShimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(280%); }
+}
+
+/* ==============================================================================
+   Cinematic Scroll Reveal Animations
+   ============================================================================== */
+.apx-scroll-reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, transform;
+}
+
+.apx-scroll-reveal.is-revealed {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+}
+
+/* Stagger utilities for smooth cascaded entry */
+.apx-reveal-stagger-1 { transition-delay: 0.08s; }
+.apx-reveal-stagger-2 { transition-delay: 0.16s; }
+.apx-reveal-stagger-3 { transition-delay: 0.24s; }
+.apx-reveal-stagger-4 { transition-delay: 0.32s; }
+
+@media (prefers-reduced-motion: reduce) {
+    .apx-scroll-reveal {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+    }
+    .apx-page-transition {
+        display: none !important;
+    }
+}
