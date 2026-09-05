@@ -141,8 +141,30 @@ commands:
     description: Open the interactive Rank Hierarchy and Donator Perks menu.
     permission: apexsionscore.command.rank
     usage: /ranks
+  enchant:
+    aliases:
+      - customenchant
+      - apexenchant
+    description: Apply custom or vanilla enchantments exceeding vanilla limits (up to 4x vanilla max level).
+    permission: apexsionscore.command.enchant
+    usage: /enchant [player] <enchantment> <level>
+  customenchant:
+    description: Alias for /enchant.
+    permission: apexsionscore.command.enchant
+    usage: /customenchant [player] <enchantment> <level>
+  apexenchant:
+    description: Alias for /enchant.
+    permission: apexsionscore.command.enchant
+    usage: /apexenchant [player] <enchantment> <level>
 
 permissions:
+  apexsionscore.command.enchant:
+    description: Allows applying custom enchantments with 4x multiplier.
+    default: op
+  apexsionscore.enchant.bypass:
+    description: Allows bypassing the 4x level multiplier up to server absolute hardcap.
+    default: op
+
   apexsionscore.command.rank:
     description: Allows viewing the Rank Hierarchy GUI.
     default: true

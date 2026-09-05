@@ -98,6 +98,12 @@ public class CoreAdminSubGUI implements InventoryHolder {
         inventory.setItem(24, createActionItem(Material.EMERALD_BLOCK, "<green><bold>👑 RAJA SYLVAMOOR</bold></green>",
                 List.of("<gray>Raja Saat Ini: <yellow>" + (kingSyl.isEmpty() ? "Belum Ditunjuk" : kingSyl) + "</yellow></gray>", "<yellow>▶ Klik untuk setel Raja Sylvamoor di chat</yellow>")));
 
+        // Slot 25: Custom Enchant Tool
+        inventory.setItem(25, createActionItem(Material.ENCHANTED_BOOK, "<gradient:#9b59b6:#8e44ad><bold>✨ CUSTOM ENCHANT TOOL ✨</bold></gradient>",
+                List.of("<gray>Beri enchantment custom hingga <gold>" + plugin.getConfigManager().getEnchantMultiplier() + "x vanilla limit</gold>.</gray>",
+                        "<gray>Formula: <yellow>Sharpness 20, Protection 12, Mending 4, dll.</yellow></gray>",
+                        "<yellow>▶ Klik untuk instruksi & panduan /enchant</yellow>")));
+
         // Slot 28: Level Rewards Editor
         inventory.setItem(28, createActionItem(Material.CHEST, "<gradient:#f1c40f:#e67e22><bold>🎁 KELOLA HADIAH LEVEL 🎁</bold></gradient>",
                 List.of("<gray>Kelola hadiah Level 1-100 via Drag & Drop item.</gray>", "<yellow>▶ Klik untuk buka Level Reward Editor</yellow>")));
@@ -194,6 +200,20 @@ public class CoreAdminSubGUI implements InventoryHolder {
                     },
                     this::open
             );
+            return;
+        }
+
+        if (slot == 25) { // Custom Enchant Tool Info
+            player.closeInventory();
+            player.playSound(player.getLocation(), Sound.BLOCK_ENCHANTMENT_TABLE_USE, 0.8f, 1.2f);
+            player.sendMessage(mm.deserialize("<gold><bold>════════════════════════════════════════</bold></gold>"));
+            player.sendMessage(mm.deserialize("<gradient:#9b59b6:#8e44ad><bold>✨ APEXSIONS CUSTOM ENCHANT GUIDE ✨</bold></gradient>"));
+            player.sendMessage(mm.deserialize("<gray>Pegang item di tangan utama, lalu jalankan command:</gray>"));
+            player.sendMessage(mm.deserialize("<yellow>/enchant <enchantment> <level></yellow> <gray>(cth: <gold>/enchant sharpness 20</gold>)</gray>"));
+            player.sendMessage(mm.deserialize("<yellow>/enchant <player> <enchantment> <level></yellow> <gray>(cth: <gold>/enchant " + player.getName() + " protection 12</gold>)</gray>"));
+            player.sendMessage(mm.deserialize("<yellow>/enchant remove <enchantment></yellow> <gray>atau level 0 untuk menghapus enchant.</gray>"));
+            player.sendMessage(mm.deserialize("<gray>Batas level: <gold>" + plugin.getConfigManager().getEnchantMultiplier() + "x vanilla limit</gold> (Protection: 12, Mending: 4, Sharpness: 20).</gray>"));
+            player.sendMessage(mm.deserialize("<gold><bold>════════════════════════════════════════</bold></gold>"));
             return;
         }
 

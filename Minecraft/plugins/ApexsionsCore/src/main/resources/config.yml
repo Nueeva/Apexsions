@@ -71,3 +71,35 @@ motd:
     - "  <gradient:#2ecc71:#f1c40f>🌟 MUSIM BARU TELAH DIBUKA • GABUNG SEKARANG! 🌟</gradient>"
     - "   <gradient:#e74c3c:#f39c12>👑 PILIH KERAJAANMU: ZENITHAR • SOLTERRA • SYLVAMOOR</gradient>"
 
+# ==============================================================================
+# Custom Enchantment Command Configuration (/enchant)
+# Allows enchantments to exceed vanilla max levels safely via command.
+# Formula: Max Level = Vanilla Max Level * multiplier (unless overridden)
+# ==============================================================================
+enchant:
+  # Multiplier applied to vanilla max enchantment levels (e.g. 4x)
+  # Sharpness (5) -> 20, Mending (1) -> 4, Unbreaking (3) -> 12, Efficiency (5) -> 20
+  multiplier: 4
+  # Absolute hardcap to prevent integer overflow
+  max-absolute-level: 255
+  # Per-enchantment custom overrides (keys in lowercase)
+  overrides:
+    protection: 12
+
+# ==============================================================================
+# Anvil Enhancement Configuration
+# Allows anvil repair and enchant combinations without "Too Expensive!" limits.
+# ==============================================================================
+anvil:
+  # Mengaktifkan bypass batas "Too Expensive!" (vanilla mengunci pada level 40)
+  remove-too-expensive: true
+  # Batas maksimal repair cost (0 = tanpa batas / berapapun biayanya tetap bisa diproses)
+  # Jika diatur > 0 (misal 39), biaya EXP akan dicap agar tidak melebihi angka tersebut
+  cost-cap: 0
+  # Nilai maksimum repair cost yang diizinkan server
+  max-repair-cost: 2147483647
+  # Mengizinkan kombinasi custom enchant (Sharpness 20, Protection 12, dll) tanpa di-reset ke vanilla
+  bypass-enchant-limits: true
+
+
+

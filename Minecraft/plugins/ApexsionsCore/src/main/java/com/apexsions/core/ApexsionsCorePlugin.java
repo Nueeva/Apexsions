@@ -191,6 +191,7 @@ public class ApexsionsCorePlugin extends JavaPlugin {
 
             // 8. Listeners
             Bukkit.getPluginManager().registerEvents(new PlayerListener(this), this);
+            Bukkit.getPluginManager().registerEvents(new com.apexsions.core.anvil.AnvilListener(this), this);
             this.territoryListener = new TerritoryListener(this);
             Bukkit.getPluginManager().registerEvents(territoryListener, this);
 
@@ -393,6 +394,24 @@ public class ApexsionsCorePlugin extends JavaPlugin {
         if (ranksCmd != null) {
             ranksCmd.setExecutor(rankHandler);
             ranksCmd.setTabCompleter(rankHandler);
+        }
+
+        // /enchant (aliases: /customenchant, /apexenchant)
+        com.apexsions.core.command.EnchantCommand enchantHandler = new com.apexsions.core.command.EnchantCommand(this);
+        PluginCommand enchantCmd = getCommand("enchant");
+        if (enchantCmd != null) {
+            enchantCmd.setExecutor(enchantHandler);
+            enchantCmd.setTabCompleter(enchantHandler);
+        }
+        PluginCommand customEnchantCmd = getCommand("customenchant");
+        if (customEnchantCmd != null) {
+            customEnchantCmd.setExecutor(enchantHandler);
+            customEnchantCmd.setTabCompleter(enchantHandler);
+        }
+        PluginCommand apexEnchantCmd = getCommand("apexenchant");
+        if (apexEnchantCmd != null) {
+            apexEnchantCmd.setExecutor(enchantHandler);
+            apexEnchantCmd.setTabCompleter(enchantHandler);
         }
     }
 

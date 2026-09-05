@@ -19,6 +19,8 @@ Plugin fondasi utama server **Apexsions** yang mengelola sistem 3 Kerajaan (*Zen
 - **Title Vault (`/titles`) & Particle Cosmetics (`/cosmetics`)**: GUI untuk melengkapi gelar kehormatan dan efek partikel kosmetik (Head Auras, Footstep Trails, Kill Effects).
 - **Kingdom-Bounded `/rtp`**: Teleportasi acak aman yang mewajibkan pemain berada di teritori kerajaannya sendiri.
 - **Enforcer TPA EssentialsX**: Membatasi `/tpa` hanya ke sesama anggota kerajaan dan wajib berada di dalam area wilayah teritorial kerajaan.
+- **Custom Enchantment Engine (`/enchant`)**: Mendukung level enchant hingga 4x batas vanilla (Sharpness 20, Protection 12, Mending 4) secara aman via command tanpa merusak anvil/meja sihir survival biasa.
+- **Anvil Enhancement Engine**: Menghilangkan batasan "Too Expensive!" (level 40) pada anvil, mendukung biaya level tanpa batas (`cost-cap: 0`), dan menjaga custom enchant dari reset/downgrade.
 
 ---
 

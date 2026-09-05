@@ -49,6 +49,9 @@ plugins/ApexsionsCore/
 | `/ac setlobby` | `/kc setlobby` | Menetapkan titik spawn lobi di lokasi berdiri | `apexsionscore.admin` | `op` |
 | `/ac info <p>` | `/kc info` | Memeriksa data lengkap level, XP, dan kerajaan pemain | `apexsionscore.admin` | `op` |
 | `/ac rewards` | `/kingdom admin rewards` | Membuka Interactive Level Reward Editor (Drag & Drop Items) | `apexsionscore.admin` | `op` |
+| `/enchant <ench> <lvl>` | `/customenchant`, `/apexenchant` | Memberikan enchantment custom hingga 4x vanilla limit | `apexsionscore.command.enchant` | `op` |
+| `/enchant <p> <ench> <lvl>`| - | Memberikan enchantment custom pada item di tangan pemain target | `apexsionscore.command.enchant` | `op` |
+| `/enchant remove <ench>`| - | Menghapus enchantment dari item di tangan (atau level 0) | `apexsionscore.command.enchant` | `op` |
 
 ---
 
@@ -115,3 +118,30 @@ if (api != null) {
     boolean inTerritory = api.isInKingdomTerritory(player, region);
 }
 ```
+
+---
+
+## ✨ Fitur Custom Enchantment (`/enchant`)
+
+Sistem perintah enchantment khusus yang mengabaikan batasan level vanilla secara terkontrol dan aman:
+- **Formula Multiplier**: $\text{Batas Maksimal} = \text{Vanilla Max Level} \times \text{Multiplier (default: 4)}$.
+  - *Sharpness* (vanilla 5) $\rightarrow$ Level 20.
+  - *Mending* (vanilla 1) $\rightarrow$ Level 4.
+  - *Unbreaking* (vanilla 3) $\rightarrow$ Level 12.
+  - *Efficiency* (vanilla 5) $\rightarrow$ Level 20.
+- **Per-Enchantment Overrides** (`config.yml`):
+  - `protection: 12` (dapat disesuaikan secara modular).
+- **Penghapusan Bersih**: Mengatur level ke `0` atau menggunakan `/enchant remove <enchantment>` akan menghapus enchantment secara instan dari item.
+- **Bypass Permission**: Pemegang `apexsionscore.enchant.bypass` dapat memberikan level hingga hardcap server (`255`).
+- **Admin Hub Shortcut**: Terintegrasi pada Slot 25 di `CoreAdminSubGUI` (`/admingui`).
+
+---
+
+## 🔨 Sistem Anvil Enhancement (Remove "Too Expensive!")
+
+Sistem otomatis pada Anvil untuk kenyamanan perbaikan dan penggabungan item:
+- **Remove "Too Expensive!"**: Mengabaikan batas level 40 bawaan Minecraft sehingga item tidak pernah terkunci dengan pesan "Too Expensive!".
+- **Unlimited Repair Cost (`cost-cap: 0`)**: Berapapun tingginya biaya level perbaikan (misal level 50, 75, 120), proses perbaikan tetap dapat diselesaikan selama pemain memiliki EXP yang mencukupi. Jika diinginkan, admin juga dapat mengeset batas atas (misal cap di level 39) melalui `config.yml`.
+- **Bypass Enchant Restriction**: Memastikan custom enchantment (Sharpness 20, Protection 12, Mending 4, dll) tidak ter-reset atau diturunkan levelnya saat digabungkan di anvil.
+
+

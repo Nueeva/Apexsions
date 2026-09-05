@@ -302,6 +302,39 @@ public class ConfigManager {
 
     public String getDefaultRegion() { return "None"; }
 
+    // Custom Enchantment Config
+    public int getEnchantMultiplier() {
+        return mainConfig != null ? mainConfig.getInt("enchant.multiplier", 4) : 4;
+    }
+
+    public int getEnchantMaxAbsoluteLevel() {
+        return mainConfig != null ? mainConfig.getInt("enchant.max-absolute-level", 255) : 255;
+    }
+
+    public int getEnchantOverride(String enchantmentKey) {
+        if (mainConfig == null || enchantmentKey == null) return -1;
+        return mainConfig.getInt("enchant.overrides." + enchantmentKey.toLowerCase(), -1);
+    }
+
+    // Anvil Enhancement Config
+    public boolean isAnvilRemoveTooExpensive() {
+        return mainConfig != null && mainConfig.getBoolean("anvil.remove-too-expensive", true);
+    }
+
+    public int getAnvilCostCap() {
+        return mainConfig != null ? mainConfig.getInt("anvil.cost-cap", 0) : 0;
+    }
+
+    public int getAnvilMaxRepairCost() {
+        return mainConfig != null ? mainConfig.getInt("anvil.max-repair-cost", Integer.MAX_VALUE) : Integer.MAX_VALUE;
+    }
+
+    public boolean isAnvilBypassEnchantLimits() {
+        return mainConfig != null && mainConfig.getBoolean("anvil.bypass-enchant-limits", true);
+    }
+
+
+
     private String getEnvOrDefault(String key, String def) {
         String val = System.getenv(key);
         return (val != null && !val.trim().isEmpty()) ? val.trim() : def;
