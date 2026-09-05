@@ -9,8 +9,8 @@ use Azuriom\Models\Setting;
 
 Setting::updateSettings([
     'theme' => 'apexsions',
-    'name' => 'Apexsions Network',
-    'description' => 'Official Apexsions Minecraft Server Network Portal',
+    'name' => 'Apexsions',
+    'description' => 'The Peak Civilizations',
 ]);
 
 echo 'Settings updated successfully! Current theme: ' . setting('theme') . PHP_EOL;

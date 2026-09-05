@@ -13,8 +13,11 @@
 
         <h1 class="apx-hero-title">
             JELAJAHI DUNIA <br>
-            <span class="apx-hero-gradient-text">APEXSIONS NETWORK</span>
+            <span class="apx-hero-gradient-text">APEXSIONS</span>
         </h1>
+        <div class="apx-hero-tagline text-uppercase fw-bold text-info mb-3" style="letter-spacing: 2px;">
+            The Peak Civilizations
+        </div>
 
         <p class="apx-hero-desc">
             Rasakan sensasi petualangan epik dengan sistem Kingdom War, ekonomi multi-currency atomic, 

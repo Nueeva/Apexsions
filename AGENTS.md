@@ -7,6 +7,7 @@
 > **Project Type:** Minecraft Server Plugin Suite
 > **Architecture:** Multi-plugin modular ecosystem
 > **Brand:** `Apexsions`
+> **Tagline:** `The Peak Civilizations`
 
 This file defines **agent-agnostic engineering rules** for AI coding agents working in the Apexsions repository.
 

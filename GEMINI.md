@@ -367,20 +367,33 @@ DILARANG force push ke shared branch.
 
 # 07. Brand Rules
 
-Nama resmi:
+Nama resmi server:
 
 ```text
 Apexsions
+```
+
+Tagline resmi:
+
+```text
+The Peak Civilizations
 ```
 
 Bukan:
 
 ```text
 Apexions
+Apexsions Kingdom
+Apexsions Network
+Apexsions SMP
 ```
 
-Kesalahan spelling brand tidak boleh diperkenalkan pada:
+DILARANG KERAS menambahkan kata atau imbuhan tambahan pada nama brand server (misalnya: "Kingdom", "Network", "SMP", dll). Nama server murni adalah **Apexsions**.
 
+Kesalahan spelling atau modifikasi brand tidak boleh diperkenalkan pada:
+
+* server display name / UI titles;
+* web views / themes;
 * plugin name;
 * documentation;
 * package;

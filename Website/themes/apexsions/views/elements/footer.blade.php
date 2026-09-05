@@ -4,7 +4,7 @@
             <div class="col-md-6 text-center text-md-start">
                 <div class="apx-navbar-brand mb-2">
                     <span class="text-primary"><i class="bi bi-gem"></i></span>
-                    <span>APEXSIONS NETWORK</span>
+                    <span>APEXSIONS</span>
                 </div>
                 <p class="text-muted small mb-0">
                     Server Minecraft bernuansa MMORPG & Kingdom War terdepan dengan ekonomi custom dan integrasi multi-platform (Java & Bedrock).
@@ -21,7 +21,7 @@
         <hr class="border-secondary opacity-25">
         <div class="row pt-2 align-items-center">
             <div class="col-md-6 text-center text-md-start small text-muted">
-                &copy; {{ date('Y') }} Apexsions Network. Hak cipta dilindungi.
+                &copy; {{ date('Y') }} Apexsions. The Peak Civilizations. Hak cipta dilindungi.
             </div>
             <div class="col-md-6 text-center text-md-end small text-muted">
                 Bukan produk resmi Minecraft. Tidak disetujui oleh atau berafiliasi dengan Mojang atau Microsoft.

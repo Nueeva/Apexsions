@@ -146,7 +146,7 @@ fi
 if [ ! -f /var/www/azuriom/.env ]; then
     echo "Generating /var/www/azuriom/.env configuration..."
     cat << ENV_EOF > /var/www/azuriom/.env
-APP_NAME="Apexsions Network"
+APP_NAME="Apexsions"
 APP_ENV=production
 APP_KEY=
 APP_DEBUG=false
