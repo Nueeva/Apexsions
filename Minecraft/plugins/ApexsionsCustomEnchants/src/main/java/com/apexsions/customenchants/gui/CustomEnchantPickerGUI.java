@@ -28,11 +28,15 @@ public class CustomEnchantPickerGUI implements InventoryHolder {
 
     private final ApexsionsCustomEnchantsPlugin plugin;
     private final Player player;
-    private final ItemStack item;
+    private ItemStack item;
     private final InventoryHolder returnGUI;
     private final Consumer<ItemStack> onUpdate;
     private final Inventory inventory;
     private final MiniMessage mm = MiniMessage.miniMessage();
+
+    public void setItem(ItemStack item) {
+        this.item = item;
+    }
 
     private int page = 1;
     private String groupFilter = "ALL";
@@ -218,7 +222,11 @@ public class CustomEnchantPickerGUI implements InventoryHolder {
         if (slotEnchantMap.containsKey(slot)) {
             CustomEnchant enchant = slotEnchantMap.get(slot);
             player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1.0f, 1.4f);
-            new EnchantLevelPickerGUI(plugin, player, item, enchant, this, onUpdate).open();
+            new EnchantLevelPickerGUI(plugin, player, this.item, enchant, this, updated -> {
+                this.item = updated;
+                if (onUpdate != null) onUpdate.accept(updated);
+                buildGUI();
+            }).open();
         }
     }
 

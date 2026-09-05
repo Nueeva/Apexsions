@@ -42,7 +42,7 @@ public class EconomyMainMenu extends Gui {
         List<String> profileLore = new ArrayList<>();
         profileLore.add("&7Nama: &f" + player.getName());
         profileLore.add("&7Saldo Rupiah: &e" + (rupiah != null ? NumberFormatUtil.format(rupiahBal, rupiah) : ("Rp" + String.format("%,.0f", rupiahBal))));
-        profileLore.add("&7Saldo Diamond 💎: &e" + (diamond != null ? NumberFormatUtil.format(diamondBal, diamond) : (String.format("%,.0f", diamondBal) + " Diamond 💎")));
+        profileLore.add("&7Saldo Diamond 💎: &e" + (diamond != null ? NumberFormatUtil.format(diamondBal, diamond) : (String.format("%,.0f", diamondBal) + " 💎")));
         profileLore.add("&7Format Lengkap: &f" + (rupiah != null ? NumberFormatUtil.formatFull(rupiahBal, rupiah) : ("Rp" + String.format("%,.0f", rupiahBal))));
         profileLore.add("&7Peringkat Rupiah: &e" + (rupiahRank > 0 && rupiahRank <= 100 ? "#" + rupiahRank : "Belum Masuk Top 100"));
         profileLore.add("&7Peringkat Diamond 💎: &e" + (diamondRank > 0 && diamondRank <= 100 ? "#" + diamondRank : "Belum Masuk Top 100"));

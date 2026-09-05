@@ -86,19 +86,45 @@ public class MagicDustManager {
         if (item == null || item.getType() != Material.SUGAR) return false;
         ItemMeta meta = item.getItemMeta();
         if (meta == null) return false;
-        return meta.getPersistentDataContainer().has(keyMysteryDust, PersistentDataType.BYTE);
+        if (meta.getPersistentDataContainer().has(keyMysteryDust, PersistentDataType.BYTE)) return true;
+        if (meta.hasDisplayName()) {
+            String plain = net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer.plainText().serialize(meta.displayName()).toLowerCase();
+            return plain.contains("mystery dust");
+        }
+        return false;
     }
 
     public boolean isMagicDust(ItemStack item) {
         if (item == null || item.getType() != Material.GLOWSTONE_DUST) return false;
         ItemMeta meta = item.getItemMeta();
         if (meta == null) return false;
-        return meta.getPersistentDataContainer().has(keyMagicDustRate, PersistentDataType.INTEGER);
+        if (meta.getPersistentDataContainer().has(keyMagicDustRate, PersistentDataType.INTEGER)) return true;
+        if (meta.hasDisplayName()) {
+            String plain = net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer.plainText().serialize(meta.displayName()).toLowerCase();
+            return plain.contains("magic dust");
+        }
+        return false;
     }
 
     public int getMagicDustRate(ItemStack item) {
         if (!isMagicDust(item)) return 0;
-        return item.getItemMeta().getPersistentDataContainer().getOrDefault(keyMagicDustRate, PersistentDataType.INTEGER, 0);
+        ItemMeta meta = item.getItemMeta();
+        if (meta != null && meta.getPersistentDataContainer().has(keyMagicDustRate, PersistentDataType.INTEGER)) {
+            return meta.getPersistentDataContainer().getOrDefault(keyMagicDustRate, PersistentDataType.INTEGER, 0);
+        }
+        if (meta != null && meta.hasDisplayName()) {
+            String plain = net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer.plainText().serialize(meta.displayName());
+            int idx = plain.indexOf('+');
+            if (idx >= 0) {
+                int endIdx = plain.indexOf('%', idx);
+                if (endIdx > idx) {
+                    try {
+                        return Integer.parseInt(plain.substring(idx + 1, endIdx).trim());
+                    } catch (Exception ignored) {}
+                }
+            }
+        }
+        return 5;
     }
 
     public ItemStack uncoverMysteryDust() {

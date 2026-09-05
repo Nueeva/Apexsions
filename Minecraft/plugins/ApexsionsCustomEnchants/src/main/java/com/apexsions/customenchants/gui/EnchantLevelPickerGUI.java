@@ -128,7 +128,10 @@ public class EnchantLevelPickerGUI implements InventoryHolder {
             player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, 1.0f, 0.8f);
             player.sendMessage(mm.deserialize("<yellow>Sihir <gold>" + enchant.getDisplayName() + "</gold> berhasil dihapus dari item!</yellow>"));
             if (onUpdate != null) onUpdate.accept(updated);
-            if (returnGUI != null) {
+            if (returnGUI instanceof CustomEnchantPickerGUI picker) {
+                picker.setItem(updated);
+                picker.open();
+            } else if (returnGUI != null) {
                 player.openInventory(returnGUI.getInventory());
             } else {
                 player.closeInventory();
@@ -142,7 +145,10 @@ public class EnchantLevelPickerGUI implements InventoryHolder {
             player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1.0f, 1.4f);
             player.sendMessage(mm.deserialize("<green>Berhasil menerapkan sihir <gold>" + enchant.getDisplayName() + " " + CustomEnchant.toRoman(selectedLvl) + "</gold>!</green>"));
             if (onUpdate != null) onUpdate.accept(updated);
-            if (returnGUI != null) {
+            if (returnGUI instanceof CustomEnchantPickerGUI picker) {
+                picker.setItem(updated);
+                picker.open();
+            } else if (returnGUI != null) {
                 player.openInventory(returnGUI.getInventory());
             } else {
                 player.closeInventory();

@@ -63,7 +63,7 @@ public class EnchanterGUI implements InventoryHolder {
         ItemStack profile = createItem(Material.PLAYER_HEAD, "<gradient:#f1c40f:#e67e22><bold>👑 STATUS SALDO KAMU</bold></gradient>", List.of(
                 "<gray>Pemain:</gray> <white>" + player.getName() + "</white>",
                 "<gray>Saldo Rupiah:</gray> <green>Rp " + String.format("%,d", (long) rupiah).replace(',', '.') + "</green>",
-                "<gray>Saldo Diamond:</gray> <aqua>" + (long) diamond + " Diamond 💎</aqua>",
+                "<gray>Saldo Diamond:</gray> <aqua>" + (long) diamond + " 💎</aqua>",
                 "",
                 "<yellow>Beli buku sihir acak berdasarkan kasta tier di bawah.</yellow>"
         ));
@@ -117,7 +117,7 @@ public class EnchanterGUI implements InventoryHolder {
         // Slot 31: White Scroll
         inventory.setItem(31, createItem(Material.PAPER, "<white><bold>🛡 WHITE SCROLL 🛡</bold></white>", List.of(
                 "<gray>Melindungi senjata/armormu dari kehancuran sihir.</gray>",
-                "<gray>Harga:</gray> <aqua>10 Diamond 💎</aqua>",
+                "<gray>Harga:</gray> <aqua>10 💎</aqua>",
                 "",
                 "<yellow>▶ Klik untuk beli White Scroll!</yellow>"
         )));
@@ -125,7 +125,7 @@ public class EnchanterGUI implements InventoryHolder {
         // Slot 33: Black Scroll
         inventory.setItem(33, createItem(Material.INK_SAC, "<dark_gray><bold>📜 BLACK SCROLL 📜</bold></dark_gray>", List.of(
                 "<gray>Mengekstrak 1 sihir dari item menjadi buku 100% success.</gray>",
-                "<gray>Harga:</gray> <aqua>15 Diamond 💎</aqua>",
+                "<gray>Harga:</gray> <aqua>15 💎</aqua>",
                 "",
                 "<yellow>▶ Klik untuk beli Black Scroll!</yellow>"
         )));
@@ -248,7 +248,7 @@ public class EnchanterGUI implements InventoryHolder {
         // Pick random enchant
         CustomEnchant chosen = pool.get(ThreadLocalRandom.current().nextInt(pool.size()));
         int success = ThreadLocalRandom.current().nextInt(40, 101);
-        int destroy = ThreadLocalRandom.current().nextInt(0, 41);
+        int destroy = 100 - success;
 
         ItemStack book = plugin.getEnchantBookManager().createBook(chosen, 1, success, destroy);
         HashMap<Integer, ItemStack> left = player.getInventory().addItem(book);
@@ -284,7 +284,7 @@ public class EnchanterGUI implements InventoryHolder {
         if (eco == null) return;
         if (!eco.has(player.getUniqueId(), "diamond", 10)) {
             player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
-            player.sendMessage(mm.deserialize("<red>Saldo Diamond tidak mencukupi (10 Diamond 💎)!</red>"));
+            player.sendMessage(mm.deserialize("<red>Saldo Diamond tidak mencukupi (10 💎)!</red>"));
             return;
         }
         eco.withdraw(player.getUniqueId(), "diamond", 10);
@@ -299,7 +299,7 @@ public class EnchanterGUI implements InventoryHolder {
         if (eco == null) return;
         if (!eco.has(player.getUniqueId(), "diamond", 15)) {
             player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
-            player.sendMessage(mm.deserialize("<red>Saldo Diamond tidak mencukupi (15 Diamond 💎)!</red>"));
+            player.sendMessage(mm.deserialize("<red>Saldo Diamond tidak mencukupi (15 💎)!</red>"));
             return;
         }
         eco.withdraw(player.getUniqueId(), "diamond", 15);

@@ -59,7 +59,7 @@ public class ExpCurrencyMenu extends Gui {
         if (expPackage.getPrices().containsKey("diamond")) {
             double diamondPrice = expPackage.getPrices().get("diamond");
             ExpShopCurrencyProvider diamondProvider = providers.get("diamond");
-            String formattedDiamond = diamondProvider != null ? diamondProvider.format(diamondPrice) : (String.format("%,.0f", diamondPrice) + " Diamond 💎");
+            String formattedDiamond = diamondProvider != null ? diamondProvider.format(diamondPrice) : (String.format("%,.0f", diamondPrice) + " 💎");
 
             setButton(14, new GuiButton(new ItemBuilder(Material.DIAMOND)
                     .name("&b&lBAYAR DENGAN DIAMOND 💎")

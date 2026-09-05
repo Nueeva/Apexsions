@@ -31,3 +31,19 @@ messages:
   book-destroyed: "<red><bold>☠ HANCUR!</bold> Item hancur lebur karena energi sihir yang tidak stabil!</red>"
   white-scroll-saved: "<aqua><bold>🛡 WHITE SCROLL AKTIF!</bold> Itemmu terlindungi dari kehancuran!</aqua>"
   not-enough-money: "<red>Saldo %currency% kamu tidak mencukupi! Dibutuhkan: <gold>%amount%</gold></red>"
+  limit-reached: "<red><bold>✖ BATAS MAKSIMAL TERCAPAI!</bold> Item ini sudah mencapai batas maksimal sihirmu (<gold>%limit% custom enchant</gold>)!</red>"
+
+enchant-limits:
+  # Batasan default custom enchant per item jika tidak memiliki rank/permission khusus
+  default: 4
+  # Batas custom enchant berdasarkan rank server (-1 untuk unlimited)
+  ranks:
+    wanderer: 4
+    ascendant: 5
+    archon: 6
+    sovereign: 7
+    emperor: 8
+    sions: 9
+    herald: -1
+    warden: -1
+    ancestor: -1

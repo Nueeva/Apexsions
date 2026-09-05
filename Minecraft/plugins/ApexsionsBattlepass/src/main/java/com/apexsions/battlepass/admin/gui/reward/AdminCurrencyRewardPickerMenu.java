@@ -69,7 +69,7 @@ public class AdminCurrencyRewardPickerMenu extends Gui {
                 .name("&b&l[💎] DIAMOND")
                 .lore(List.of(
                         "&7Mata uang Diamond ekonomi server.",
-                        "&7Nominal Awal: &e100 Diamond",
+                        "&7Nominal Awal: &e100 💎",
                         " ",
                         "&aKlik untuk langsung menambahkan >"
                 ))

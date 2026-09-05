@@ -116,7 +116,7 @@ public class SpecificBookShopGUI implements InventoryHolder {
             EnchantmentGroup grp = enchant.getGroup();
             double specificPrice = grp.getCost() * multiplier;
             String formattedCost = grp.getCurrency().equalsIgnoreCase("diamond")
-                    ? (long) specificPrice + " Diamond 💎"
+                    ? (long) specificPrice + " 💎"
                     : "Rp " + String.format("%,d", (long) specificPrice).replace(',', '.');
 
             ItemStack star = new ItemStack(Material.FIREWORK_STAR);
@@ -285,7 +285,7 @@ public class SpecificBookShopGUI implements InventoryHolder {
 
             if (diaCount < price) {
                 player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
-                player.sendMessage(mm.deserialize("<red>Diamond kamu tidak mencukupi! Butuh <gold>" + (long) price + " Diamond 💎</gold>.</red>"));
+                player.sendMessage(mm.deserialize("<red>Diamond kamu tidak mencukupi! Butuh <gold>" + (long) price + " 💎</gold>.</red>"));
                 return;
             }
 
@@ -311,9 +311,10 @@ public class SpecificBookShopGUI implements InventoryHolder {
             }
         }
 
-        // Give book with fixed 50% success chance
+        // Give book with fixed success chance and auto-computed destroy rate (sum = 100%)
         int fixedSuccess = (int) plugin.getSpecificBookSuccessChance();
-        ItemStack book = plugin.getEnchantBookManager().createBook(enchant, 1, fixedSuccess, 30);
+        int destroy = 100 - fixedSuccess;
+        ItemStack book = plugin.getEnchantBookManager().createBook(enchant, 1, fixedSuccess, destroy);
         HashMap<Integer, ItemStack> overflow = player.getInventory().addItem(book);
         if (!overflow.isEmpty()) {
             for (ItemStack drop : overflow.values()) {

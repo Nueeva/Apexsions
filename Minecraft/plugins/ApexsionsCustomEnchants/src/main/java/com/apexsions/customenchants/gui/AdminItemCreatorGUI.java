@@ -62,6 +62,25 @@ public class AdminItemCreatorGUI implements InventoryHolder {
     private final Map<KitStatType, Double> globalSet2Stats = new LinkedHashMap<>();
     private final Map<KitStatType, Double> globalSet4Stats = new LinkedHashMap<>();
 
+    // Active Creator Sessions
+    private static final Map<UUID, AdminItemCreatorGUI> activeCreators = new java.util.concurrent.ConcurrentHashMap<>();
+
+    public static AdminItemCreatorGUI getActiveCreator(UUID uuid) {
+        return activeCreators.get(uuid);
+    }
+
+    public static void registerActiveCreator(UUID uuid, AdminItemCreatorGUI gui) {
+        activeCreators.put(uuid, gui);
+    }
+
+    public static void unregisterActiveCreator(UUID uuid) {
+        activeCreators.remove(uuid);
+    }
+
+    public Map<Integer, ItemStack> getPlacedItems() {
+        return placedItems;
+    }
+
     // State flags
     private boolean saveToPreset = false;
     private boolean isNavigatingSubGUI = false;
@@ -70,11 +89,13 @@ public class AdminItemCreatorGUI implements InventoryHolder {
         this.plugin = plugin;
         this.player = player;
         this.inventory = Bukkit.createInventory(this, 54, mm.deserialize("<gold><bold>🛠 APEXSIONS ITEM & FULLSET CREATOR 🛠</bold></gold>"));
+        registerActiveCreator(player.getUniqueId(), this);
         // Defaults are empty until configured by admin
         buildGUI();
     }
 
     public void open() {
+        registerActiveCreator(player.getUniqueId(), this);
         buildGUI();
         player.openInventory(inventory);
         Bukkit.getScheduler().runTask(plugin, () -> {
@@ -800,6 +821,7 @@ public class AdminItemCreatorGUI implements InventoryHolder {
             }
         }
         placedItems.clear();
+        unregisterActiveCreator(player.getUniqueId());
         player.playSound(player.getLocation(), Sound.ENTITY_ITEM_PICKUP, 1.0f, 1.0f);
     }
 
@@ -876,6 +898,7 @@ public class AdminItemCreatorGUI implements InventoryHolder {
             }
         }
         placedItems.clear();
+        unregisterActiveCreator(player.getUniqueId());
         this.isNavigatingSubGUI = true; // Prevent handleClose from running again
         player.closeInventory();
         player.playSound(player.getLocation(), Sound.UI_TOAST_CHALLENGE_COMPLETE, 1.0f, 1.2f);

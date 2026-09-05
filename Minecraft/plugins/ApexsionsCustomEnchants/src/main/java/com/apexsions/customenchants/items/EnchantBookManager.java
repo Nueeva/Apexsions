@@ -39,7 +39,7 @@ public class EnchantBookManager {
         if (enchant == null) return null;
         int lvl = Math.max(1, Math.min(enchant.getMaxLevel(), level));
         int success = Math.max(1, Math.min(100, successRate));
-        int destroy = Math.max(0, Math.min(100, destroyRate));
+        int destroy = 100 - success;
 
         ItemStack book = new ItemStack(Material.ENCHANTED_BOOK);
         ItemMeta meta = book.getItemMeta();
@@ -106,7 +106,8 @@ public class EnchantBookManager {
         int curDestroy = getBookDestroy(book);
 
         int newSuccess = Math.min(100, curSuccess + addedSuccess);
-        return createBook(enchant, lvl, newSuccess, curDestroy);
+        int newDestroy = 100 - newSuccess;
+        return createBook(enchant, lvl, newSuccess, newDestroy);
     }
 
     public NamespacedKey getKeyBookEnchant() {

@@ -157,6 +157,7 @@ public class ItemModifierGUI implements InventoryHolder {
             player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1.0f, 1.2f);
             new CustomEnchantPickerGUI(plugin, player, item, this, updated -> {
                 this.item = updated;
+                creatorGUI.updateItem(sourceSlot, this.item);
                 buildGUI();
             }).open();
             return;
@@ -167,6 +168,7 @@ public class ItemModifierGUI implements InventoryHolder {
             player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1.0f, 1.2f);
             new VanillaEnchantPickerGUI(plugin, player, item, this, updated -> {
                 this.item = updated;
+                creatorGUI.updateItem(sourceSlot, this.item);
                 buildGUI();
             }).open();
             return;
@@ -191,6 +193,7 @@ public class ItemModifierGUI implements InventoryHolder {
                             }
                             meta.displayName(c);
                             item.setItemMeta(meta);
+                            creatorGUI.updateItem(sourceSlot, item);
                             player.sendMessage(mm.deserialize("<green>✓ Nama item berhasil diubah!</green>"));
                         }
                         this.open();
@@ -206,6 +209,7 @@ public class ItemModifierGUI implements InventoryHolder {
                 player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1.0f, 1.2f);
                 new ArmorSetBonusPickerGUI(plugin, player, item, this, updated -> {
                     this.item = updated;
+                    creatorGUI.updateItem(sourceSlot, this.item);
                     buildGUI();
                 }).open();
                 return;
@@ -215,6 +219,7 @@ public class ItemModifierGUI implements InventoryHolder {
                 String cName = creatorGUI.getGlobalSetName();
                 new ToolBonusPickerGUI(plugin, player, item, cId, cName, this, updated -> {
                     this.item = updated;
+                    creatorGUI.updateItem(sourceSlot, this.item);
                     buildGUI();
                 }).open();
                 return;

@@ -29,6 +29,7 @@ public class ApexsionsCustomEnchantsPlugin extends JavaPlugin {
     private ScrollManager scrollManager;
     private com.apexsions.customenchants.presets.PresetManager presetManager;
     private com.apexsions.customenchants.items.ItemRenameManager itemRenameManager;
+    private com.apexsions.customenchants.enchant.EnchantLimitManager enchantLimitManager;
 
     @Override
     public void onEnable() {
@@ -40,6 +41,7 @@ public class ApexsionsCustomEnchantsPlugin extends JavaPlugin {
         // Initialize Registries
         this.groupRegistry = new GroupRegistry(this);
         this.enchantmentRegistry = new EnchantmentRegistry(this);
+        this.enchantLimitManager = new com.apexsions.customenchants.enchant.EnchantLimitManager(this);
 
         // Initialize Item Managers
         this.enchantBookManager = new EnchantBookManager(this);
@@ -53,6 +55,7 @@ public class ApexsionsCustomEnchantsPlugin extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new EnchantEventListener(this), this);
         getServer().getPluginManager().registerEvents(new CustomEnchantsGUIListener(this), this);
         getServer().getPluginManager().registerEvents(new com.apexsions.customenchants.listener.ToolSetBonusListener(this), this);
+        getServer().getPluginManager().registerEvents(new com.apexsions.customenchants.listener.CustomAnvilListener(this), this);
         getServer().getPluginManager().registerEvents(this.itemRenameManager, this);
 
         // Register Commands
@@ -161,5 +164,9 @@ public class ApexsionsCustomEnchantsPlugin extends JavaPlugin {
 
     public com.apexsions.customenchants.items.ItemRenameManager getItemRenameManager() {
         return itemRenameManager;
+    }
+
+    public com.apexsions.customenchants.enchant.EnchantLimitManager getEnchantLimitManager() {
+        return enchantLimitManager;
     }
 }

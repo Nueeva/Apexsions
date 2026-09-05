@@ -16,7 +16,7 @@ public class DiamondCurrency implements Currency {
 
     @Override
     public String getSymbol() {
-        return "Diamond 💎";
+        return "💎";
     }
 
     @Override

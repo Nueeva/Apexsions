@@ -89,7 +89,7 @@ public class EnchantmentGroup {
 
     public String getFormattedCost() {
         if (currency.equalsIgnoreCase("diamond")) {
-            return (long) cost + " Diamond 💎";
+            return (long) cost + " 💎";
         } else {
             return "Rp " + String.format("%,d", (long) cost).replace(',', '.');
         }

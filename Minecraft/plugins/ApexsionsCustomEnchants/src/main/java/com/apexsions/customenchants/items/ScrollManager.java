@@ -72,14 +72,24 @@ public class ScrollManager {
         if (item == null || item.getType() != Material.PAPER) return false;
         ItemMeta meta = item.getItemMeta();
         if (meta == null) return false;
-        return meta.getPersistentDataContainer().has(keyWhiteScroll, PersistentDataType.BYTE);
+        if (meta.getPersistentDataContainer().has(keyWhiteScroll, PersistentDataType.BYTE)) return true;
+        if (meta.hasDisplayName()) {
+            String plain = net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer.plainText().serialize(meta.displayName()).toLowerCase();
+            return plain.contains("white scroll");
+        }
+        return false;
     }
 
     public boolean isBlackScroll(ItemStack item) {
         if (item == null || item.getType() != Material.INK_SAC) return false;
         ItemMeta meta = item.getItemMeta();
         if (meta == null) return false;
-        return meta.getPersistentDataContainer().has(keyBlackScroll, PersistentDataType.BYTE);
+        if (meta.getPersistentDataContainer().has(keyBlackScroll, PersistentDataType.BYTE)) return true;
+        if (meta.hasDisplayName()) {
+            String plain = net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer.plainText().serialize(meta.displayName()).toLowerCase();
+            return plain.contains("black scroll");
+        }
+        return false;
     }
 
     public boolean isProtectedByWhiteScroll(ItemStack item) {

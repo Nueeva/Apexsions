@@ -253,8 +253,8 @@ public class PlayerInspectorGUI implements InventoryHolder {
                                         addedEco = true;
                                     }
                                 } catch (Throwable ignored) {}
-                                admin.sendMessage(mm.deserialize("<green>✓ Berhasil memberikan <aqua>" + String.format("%,.0f", dia) + " Diamond 💎</aqua> ke " + target.getName() + "!</green>"));
-                                target.sendMessage(mm.deserialize("<green>✓ Kamu menerima <aqua>" + String.format("%,.0f", dia) + " Diamond 💎</aqua> dari Administrator!</green>"));
+                                admin.sendMessage(mm.deserialize("<green>✓ Berhasil memberikan <aqua>" + String.format("%,.0f", dia) + " 💎</aqua> ke " + target.getName() + "!</green>"));
+                                target.sendMessage(mm.deserialize("<green>✓ Kamu menerima <aqua>" + String.format("%,.0f", dia) + " 💎</aqua> dari Administrator!</green>"));
                             }
                             admin.playSound(admin.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 0.8f, 1.4f);
                         } catch (Exception e) {
