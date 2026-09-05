@@ -1,0 +1,241 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+
+:root {
+    --apx-bg-base: #0a0d14;
+    --apx-bg-card: rgba(18, 24, 38, 0.75);
+    --apx-bg-card-hover: rgba(25, 34, 54, 0.9);
+    --apx-primary: #6366f1;
+    --apx-primary-glow: rgba(99, 102, 241, 0.35);
+    --apx-cyan: #00e5ff;
+    --apx-cyan-glow: rgba(0, 229, 255, 0.3);
+    --apx-gold: #f59e0b;
+    --apx-text-main: #f8fafc;
+    --apx-text-muted: #94a3b8;
+    --apx-border: rgba(255, 255, 255, 0.08);
+    --apx-border-glow: rgba(99, 102, 241, 0.4);
+    --apx-radius: 16px;
+    --apx-radius-sm: 10px;
+    --apx-transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+body {
+    background-color: var(--apx-bg-base);
+    background-image: 
+        radial-gradient(circle at 15% 15%, rgba(99, 102, 241, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 85% 25%, rgba(0, 229, 255, 0.06) 0%, transparent 35%),
+        radial-gradient(circle at 50% 80%, rgba(147, 51, 234, 0.05) 0%, transparent 50%);
+    background-attachment: fixed;
+    color: var(--apx-text-main);
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+h1, h2, h3, h4, h5, h6, .navbar-brand, .font-heading {
+    font-family: 'Outfit', sans-serif;
+    letter-spacing: -0.02em;
+}
+
+/* Navbar */
+.apx-navbar {
+    background: rgba(10, 13, 20, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--apx-border);
+    padding: 1rem 0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.apx-navbar .nav-link {
+    color: var(--apx-text-muted);
+    font-weight: 600;
+    font-size: 0.95rem;
+    padding: 0.5rem 1rem !important;
+    border-radius: var(--apx-radius-sm);
+    transition: var(--apx-transition);
+}
+
+.apx-navbar .nav-link:hover, .apx-navbar .nav-link.active {
+    color: var(--apx-text-main);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.apx-navbar-brand {
+    font-weight: 800;
+    font-size: 1.5rem;
+    background: linear-gradient(135deg, #ffffff 30%, var(--apx-cyan) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Hero Section */
+.apx-hero {
+    padding: 6rem 0 4rem;
+    text-align: center;
+    position: relative;
+}
+
+.apx-hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(99, 102, 241, 0.12);
+    border: 1px solid rgba(99, 102, 241, 0.3);
+    color: #a5b4fc;
+    padding: 0.4rem 1rem;
+    border-radius: 9999px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 0 20px var(--apx-primary-glow);
+}
+
+.apx-hero-title {
+    font-size: clamp(2.5rem, 6vw, 4.25rem);
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 1.25rem;
+}
+
+.apx-hero-gradient-text {
+    background: linear-gradient(135deg, #00e5ff 0%, #6366f1 50%, #c084fc 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.apx-hero-desc {
+    color: var(--apx-text-muted);
+    font-size: 1.15rem;
+    max-width: 680px;
+    margin: 0 auto 2.5rem;
+}
+
+/* Server IP Box */
+.apx-ip-widget {
+    background: var(--apx-bg-card);
+    border: 1px solid var(--apx-border);
+    border-radius: var(--apx-radius);
+    display: inline-flex;
+    align-items: center;
+    padding: 0.5rem 0.5rem 0.5rem 1.25rem;
+    gap: 1.25rem;
+    backdrop-filter: blur(12px);
+    transition: var(--apx-transition);
+    cursor: pointer;
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+}
+
+.apx-ip-widget:hover {
+    border-color: var(--apx-cyan);
+    box-shadow: 0 0 25px var(--apx-cyan-glow);
+    transform: translateY(-2px);
+}
+
+.apx-ip-address {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: 0.05em;
+}
+
+.apx-status-indicator {
+    width: 10px;
+    height: 10px;
+    background: #10b981;
+    border-radius: 50%;
+    display: inline-block;
+    box-shadow: 0 0 10px #10b981;
+    animation: apx-pulse 2s infinite;
+}
+
+@keyframes apx-pulse {
+    0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+    70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
+    100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+}
+
+/* Glassmorphism Cards */
+.apx-card {
+    background: var(--apx-bg-card);
+    border: 1px solid var(--apx-border);
+    border-radius: var(--apx-radius);
+    padding: 2rem;
+    backdrop-filter: blur(16px);
+    transition: var(--apx-transition);
+    height: 100%;
+}
+
+.apx-card:hover {
+    background: var(--apx-bg-card-hover);
+    border-color: var(--apx-border-glow);
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.7);
+}
+
+.apx-card-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 14px;
+    background: rgba(99, 102, 241, 0.12);
+    border: 1px solid rgba(99, 102, 241, 0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    color: var(--apx-cyan);
+    margin-bottom: 1.5rem;
+}
+
+/* Custom Buttons */
+.btn-apx-primary {
+    background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+    color: #ffffff;
+    border: none;
+    padding: 0.75rem 1.75rem;
+    border-radius: var(--apx-radius-sm);
+    font-weight: 700;
+    transition: var(--apx-transition);
+    box-shadow: 0 4px 15px var(--apx-primary-glow);
+}
+
+.btn-apx-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px var(--apx-primary-glow);
+    color: #ffffff;
+}
+
+.btn-apx-secondary {
+    background: rgba(255, 255, 255, 0.06);
+    color: #ffffff;
+    border: 1px solid var(--apx-border);
+    padding: 0.75rem 1.75rem;
+    border-radius: var(--apx-radius-sm);
+    font-weight: 600;
+    transition: var(--apx-transition);
+}
+
+.btn-apx-secondary:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+}
+
+/* Footer */
+.apx-footer {
+    background: rgba(10, 13, 20, 0.95);
+    border-top: 1px solid var(--apx-border);
+    padding: 3rem 0 2rem;
+    margin-top: auto;
+    color: var(--apx-text-muted);
+    font-size: 0.9rem;
+}

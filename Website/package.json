@@ -1,0 +1,33 @@
+{
+    "$schema": "https://www.schemastore.org/package.json",
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "build": "vite build",
+        "dev": "vite"
+    },
+    "devDependencies": {
+        "@adminkit/core": "https://github.com/adminkit/adminkit/tarball/master",
+        "@popperjs/core": "^2.11.5",
+        "@simonwep/pickr": "^1.8.0",
+        "axios": "^1.1.2",
+        "bootstrap": "^5.1.0",
+        "bootstrap-icons": "^1.8.1",
+        "chart.js": "^4.3.2",
+        "concurrently": "^9.0.1",
+        "easymde": "^2.14.0",
+        "flatpickr": "^4.6.9",
+        "laravel-vite-plugin": "^3.1",
+        "petite-vue": "^0.4.1",
+        "sass": "^1.32.7",
+        "sortablejs": "^1.13.0",
+        "tinymce": "^7.0.0",
+        "vite": "^8.0.0",
+        "vite-plugin-static-copy": "^4.1.1"
+    },
+    "allowScripts": {
+        "@parcel/watcher": true,
+        "core-js": true,
+        "fsevents": true
+    }
+}

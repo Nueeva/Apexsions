@@ -1235,6 +1235,13 @@ Runtime Validation
 
 Jangan menyatakan bug selesai hanya karena compilation berhasil.
 
+### Local-First Validation Before Remote Deployment (VPS & Production)
+
+DILARANG melakukan trial-and-error atau eksperimen perbaikan langsung di server remote / VPS production:
+1. **Web Platform (Azuriom & PHP):** Validasi sintaks (`php -l`), service provider registration, autoloader namespace (`composer.json`), migrasi database, dan route binding secara lokal terlebih dahulu.
+2. **Minecraft Plugins:** Jalankan targeted build (`build.ps1`) dan validasi runtime lokal.
+3. **Clean Deployment:** Sinkronisasi atau upload ke VPS remote hanya diizinkan apabila seluruh checks di environment lokal telah lulus 100%. VPS adalah target *clean deployment*, bukan tempat debugging awal.
+
 ---
 
 # 31. Regression Prevention

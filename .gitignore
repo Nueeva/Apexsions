@@ -28,3 +28,13 @@
 *.log
 .DS_Store
 Thumbs.db
+
+# Website / Azuriom
+/Website/vendor/
+/Website/node_modules/
+/Website/.env
+/Website/.env.backup
+/Website/.env.production
+/Website/storage/*.key
+/Website/public/storage
+

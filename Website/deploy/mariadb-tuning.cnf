@@ -1,0 +1,22 @@
+# Apexsions MariaDB Tuning for 2 GB RAM VPS
+# Target: /etc/mysql/mariadb.conf.d/99-apexsions.cnf
+
+[mysqld]
+# Limit buffer pool to prevent OOM
+innodb_buffer_pool_size = 256M
+innodb_log_file_size = 64M
+innodb_flush_log_at_trx_commit = 2
+innodb_flush_method = O_DIRECT
+
+# Connection limits for single-node web server
+max_connections = 50
+connect_timeout = 10
+wait_timeout = 600
+max_allowed_packet = 32M
+
+# Query and thread buffers
+table_open_cache = 400
+key_buffer_size = 32M
+thread_cache_size = 8
+tmp_table_size = 32M
+max_heap_table_size = 32M

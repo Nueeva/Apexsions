@@ -23,3 +23,9 @@ Aturan ini wajib ditaati oleh AI Agent untuk workspace Apexsions:
    - Menjaga modularitas 6 plugin di dalam folder `plugins/` (`ApexsionsCore`, `ApexsionsChat`, `ApexsionsEconomy`, `ApexsionsBattlepass`, `ApexsionsShop`, `ApexsionsMedia`).
    - Menggunakan Kyori Adventure + MiniMessage, Paper 1.21.4 API, Java 21, dan HikariCP async.
    - Mengikuti **Targeted Build Rule** (`powershell -ExecutionPolicy Bypass -File .\build.ps1 <PluginName>`).
+
+5. **Validasi Lokal Terlebih Dahulu Sebelum Deploy ke VPS (Local-First Testing Before Remote Deployment)**:
+   - DILARANG KERAS melakukan trial-and-error, eksperimen arsitektur, atau live-debugging langsung di server remote / VPS production.
+   - Semua perubahan pada web portal (Azuriom theme Blade, logic plugin, route definition, provider namespace/autoloading, dan skema database) maupun Minecraft server WAJIB diuji dan divalidasi di environment lokal terlebih dahulu (`php -l`, syntax check, artisan CLI, atau local runtime).
+   - Pastikan kode 100% bebas dari syntax error, missing class, atau route conflict secara lokal sebelum melakukan sinkronisasi/deployment ke VPS remote.
+   - Deployment ke VPS hanya dilakukan sebagai langkah akhir verifikasi produksi (*clean deployment*), bukan tempat *troubleshooting* awal.
