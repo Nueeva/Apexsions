@@ -16,7 +16,7 @@
             <div class="col-lg-4 col-md-6 apx-footer-brand-col">
                 <a class="apx-navbar-brand mb-3 d-inline-flex" href="{{ route('home') }}">
                     <div class="apx-brand-logo-box me-2">
-                        <img src="{{ theme_asset('img/logo.jpg') }}" alt="Apexsions Crest" class="apx-brand-logo-img" width="42" height="42" loading="lazy">
+                        <img src="{{ theme_asset('img/logo.jpg') }}&v=2" alt="Apexsions Crest" class="apx-brand-logo-img" width="42" height="42" loading="lazy">
                     </div>
                     <div class="d-flex flex-column">
                         <span class="apx-brand-title">APEXSIONS</span>

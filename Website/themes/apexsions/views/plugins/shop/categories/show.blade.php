@@ -64,7 +64,7 @@
                         } elseif (str_contains($packageName, 'emperor')) {
                             $defaultImage = theme_asset('img/hero-warrior.jpg');
                         } elseif (str_contains($packageName, 'sions')) {
-                            $defaultImage = theme_asset('img/logo.jpg');
+                            $defaultImage = theme_asset('img/logo.jpg') . '?v=' . (@filemtime(public_path('assets/themes/apexsions/img/logo.jpg')) ?: '2');
                         } elseif (str_contains($packageName, 'pass')) {
                             $fallbackIcon = 'bi bi-trophy-fill';
                         } elseif (str_contains($packageName, 'booster')) {
