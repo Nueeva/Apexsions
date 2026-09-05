@@ -95,6 +95,8 @@ public class LuckPermsHook {
         if (rankKey == null) return 0;
         return switch (rankKey.toLowerCase().trim()) {
             case "ancestor", "owner" -> 100;
+            case "architect" -> 95;
+            case "overseer" -> 92;
             case "warden", "admin", "headadmin" -> 90;
             case "herald", "mod", "moderator" -> 80;
             case "sions" -> 70;

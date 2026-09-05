@@ -515,9 +515,11 @@ Official ranks:
 | Rank        | Weight | Role                           |
 | ----------- | -----: | ------------------------------ |
 | `ancestor`  |    100 | The Ancestor / Owner / Founder |
+| `architect` |     95 | Authority / System Architect   |
+| `overseer`  |     92 | Authority / Integrity & Balance|
 | `warden`    |     90 | Head Staff / Admin             |
-| `herald`    |     80 | Staff / Moderator              |
-| `sions`     |     70 | Apex Donator                   |
+| `herald`    |     80 | Staff / Moderator / Helper     |
+| `sions`     |     70 | Apex Donator / Highest Rank    |
 | `emperor`   |     60 | Donator Tier 4                 |
 | `sovereign` |     50 | Donator Tier 3                 |
 | `archon`    |     40 | Donator Tier 2                 |

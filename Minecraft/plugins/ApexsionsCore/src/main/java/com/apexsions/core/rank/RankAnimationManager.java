@@ -44,7 +44,31 @@ public class RankAnimationManager {
             new String[]{"#ff6b81", "#FF0000", "#8B0000"}
     );
 
-    // 2. WARDEN (Weight 90 - Head Staff / Admin): Deep Sapphire & Royal Navy
+    // 2. ARCHITECT (Weight 95 - Authority Tier): Mystic Amethyst & Royal Purple
+    private static final List<String[]> ARCHITECT_FRAMES = List.of(
+            new String[]{"#8E2DE2", "#4A00E0", "#9b51e0"},
+            new String[]{"#4A00E0", "#9b51e0", "#8E2DE2"},
+            new String[]{"#9b51e0", "#8E2DE2", "#4A00E0"},
+            new String[]{"#8E2DE2", "#6c5ce7", "#a29bfe"},
+            new String[]{"#6c5ce7", "#a29bfe", "#8E2DE2"},
+            new String[]{"#a29bfe", "#8E2DE2", "#6c5ce7"},
+            new String[]{"#8E2DE2", "#b33771", "#4A00E0"},
+            new String[]{"#b33771", "#4A00E0", "#8E2DE2"}
+    );
+
+    // 3. OVERSEER (Weight 92 - Authority Tier): Radiant Gold & Amber Sun
+    private static final List<String[]> OVERSEER_FRAMES = List.of(
+            new String[]{"#FFD700", "#FFA500", "#f39c12"},
+            new String[]{"#FFA500", "#f39c12", "#FFD700"},
+            new String[]{"#f39c12", "#FFD700", "#FFA500"},
+            new String[]{"#FFD700", "#f1c40f", "#e67e22"},
+            new String[]{"#f1c40f", "#e67e22", "#FFD700"},
+            new String[]{"#e67e22", "#FFD700", "#f1c40f"},
+            new String[]{"#FFD700", "#ff9f1a", "#ffd32a"},
+            new String[]{"#ff9f1a", "#ffd32a", "#FFD700"}
+    );
+
+    // 4. WARDEN (Weight 90 - Head Staff / Admin): Deep Sapphire & Royal Navy
     private static final List<String[]> WARDEN_FRAMES = List.of(
             new String[]{"#1e3c72", "#2a5298", "#4a69bd"},
             new String[]{"#2a5298", "#4a69bd", "#1e3c72"},
@@ -186,6 +210,14 @@ public class RankAnimationManager {
             case "ancestor", "owner" -> {
                 String[] c = ANCESTOR_FRAMES.get(currentFrame % ANCESTOR_FRAMES.size());
                 yield "<gradient:" + c[0] + ":" + c[1] + ":" + c[2] + "><bold>[👑 ANCESTOR]</bold></gradient> ";
+            }
+            case "architect" -> {
+                String[] c = ARCHITECT_FRAMES.get(currentFrame % ARCHITECT_FRAMES.size());
+                yield "<gradient:" + c[0] + ":" + c[1] + ":" + c[2] + "><bold>[📐 ARCHITECT]</bold></gradient> ";
+            }
+            case "overseer" -> {
+                String[] c = OVERSEER_FRAMES.get(currentFrame % OVERSEER_FRAMES.size());
+                yield "<gradient:" + c[0] + ":" + c[1] + ":" + c[2] + "><bold>[👁 OVERSEER]</bold></gradient> ";
             }
             case "warden", "admin", "headadmin" -> {
                 String[] c = WARDEN_FRAMES.get(currentFrame % WARDEN_FRAMES.size());

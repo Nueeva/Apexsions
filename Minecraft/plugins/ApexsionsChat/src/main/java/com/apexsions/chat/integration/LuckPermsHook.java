@@ -74,6 +74,8 @@ public class LuckPermsHook {
         if (rankKey == null) return 0;
         return switch (rankKey.toLowerCase().trim()) {
             case "ancestor", "owner" -> 100;
+            case "architect" -> 95;
+            case "overseer" -> 92;
             case "warden", "admin", "headadmin" -> 90;
             case "herald", "mod", "moderator" -> 80;
             case "sions" -> 70;
@@ -90,6 +92,8 @@ public class LuckPermsHook {
         String rankKey = getPlayerRankKey(player);
         return switch (rankKey.toLowerCase().trim()) {
             case "ancestor", "owner" -> "<gradient:#8B0000:#FF0000><bold>@{player}</bold></gradient>";
+            case "architect" -> "<gradient:#8E2DE2:#4A00E0><bold>@{player}</bold></gradient>";
+            case "overseer" -> "<gradient:#FFD700:#FFA500><bold>@{player}</bold></gradient>";
             case "warden", "admin", "headadmin" -> "<gradient:#1e3c72:#2a5298><bold>@{player}</bold></gradient>";
             case "herald", "mod", "moderator" -> "<gradient:#f857a6:#ff5858><bold>@{player}</bold></gradient>";
             case "sions" -> "<gradient:#00FFFF:#FFD700><bold>@{player}</bold></gradient>";

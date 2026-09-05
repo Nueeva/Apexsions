@@ -982,7 +982,7 @@ a:hover {
     font-size: 1.85rem;
 }
 
-/* Tier III: Council of Authority Bastion (Warden & Herald - Weight 90 & 80) */
+/* Tier III: Council of Authority Bastion (Architect, Overseer, Warden, Herald - Weight 95, 92, 90, 80) */
 .apx-tier-authority-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -997,6 +997,37 @@ a:hover {
 
 .apx-tier-authority-grid .apx-caste-card {
     border-top: 2px solid rgba(255, 255, 255, 0.35);
+}
+
+/* Official Rank Banner Image */
+.apx-caste-banner {
+    width: 100%;
+    height: auto;
+    border-radius: var(--apx-radius-xs);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    margin-bottom: 1.25rem;
+    box-shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.6);
+    display: block;
+    background: #05070a;
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.apx-caste-card:hover .apx-caste-banner {
+    border-color: rgba(255, 255, 255, 0.25);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.8);
+    transform: translateY(-1px);
+}
+
+.text-purple {
+    color: #c084fc !important;
+}
+
+.text-pink {
+    color: #f472b6 !important;
+}
+
+.text-blue {
+    color: #60a5fa !important;
 }
 
 /* Tier II: Noble Ascension Terrace (Sions to Ascendant - Weight 70 to 30) */

@@ -73,29 +73,44 @@ public class RankListGUI implements InventoryHolder {
         }
         inventory.setItem(4, header);
 
-        // Staff & Owner Ranks
-        inventory.setItem(10, createRankCard("ancestor", Material.NETHER_STAR, "<gradient:#8B0000:#FF0000><bold>[👑 ANCESTOR]</bold></gradient>", "100",
+        // Row 1: Dewan Otoritas & Leluhur (5 Ranks)
+        inventory.setItem(11, createRankCard("ancestor", Material.NETHER_STAR, "<gradient:#8B0000:#FF0000><bold>[👑 ANCESTOR]</bold></gradient>", "100",
                 "The Ancestor / Owner & Founder",
                 List.of(
                         "<gray>Hak Akses:</gray> <red>Full Console & Server Authority</red>",
                         "<gray>Fokus:</gray> <yellow>Pengembangan & Arah Strategis Apexsions</yellow>"
                 ), currentRank));
 
-        inventory.setItem(12, createRankCard("warden", Material.SHIELD, "<gradient:#1e3c72:#2a5298><bold>[🛡 WARDEN]</bold></gradient>", "90",
+        inventory.setItem(12, createRankCard("architect", Material.AMETHYST_CLUSTER, "<gradient:#8E2DE2:#4A00E0><bold>[📐 ARCHITECT]</bold></gradient>", "95",
+                "Authority — Perancang & Arsitek Realm",
+                List.of(
+                        "<gray>Hak Akses:</gray> <light_purple>Otoritas Cetak Biru & Pembangunan Realm</light_purple>",
+                        "<gray>Fokus:</gray> <yellow>Desain Tata Ruang, Estetika & Kedaulatan Kota</yellow>"
+                ), currentRank));
+
+        inventory.setItem(13, createRankCard("overseer", Material.ENDER_EYE, "<gradient:#FFD700:#FFA500><bold>[👁 OVERSEER]</bold></gradient>", "92",
+                "Authority — Pengawas Kedaulatan Realm",
+                List.of(
+                        "<gray>Hak Akses:</gray> <gold>Audit Kedaulatan, Transaksi & Keadilan</gold>",
+                        "<gray>Fokus:</gray> <yellow>Stabilitas Ekonomi & Integritas Peradaban</yellow>"
+                ), currentRank));
+
+        inventory.setItem(14, createRankCard("warden", Material.SHIELD, "<gradient:#1e3c72:#2a5298><bold>[🛡 WARDEN]</bold></gradient>", "90",
                 "Head Staff & Administrator",
                 List.of(
                         "<gray>Hak Akses:</gray> <aqua>Master Admin Panel & Manajemen Server</aqua>",
                         "<gray>Fokus:</gray> <yellow>Penegakan Aturan & Pengawasan Sistem</yellow>"
                 ), currentRank));
 
-        inventory.setItem(14, createRankCard("herald", Material.WRITABLE_BOOK, "<gradient:#f857a6:#ff5858><bold>[📜 HERALD]</bold></gradient>", "80",
-                "Staff & Moderator",
+        inventory.setItem(15, createRankCard("herald", Material.WRITABLE_BOOK, "<gradient:#f857a6:#ff5858><bold>[📜 HERALD]</bold></gradient>", "80",
+                "Staff & Moderator / Helper",
                 List.of(
                         "<gray>Hak Akses:</gray> <light_purple>Moderasi Chat, Laporan Tiket, & Event</light_purple>",
                         "<gray>Fokus:</gray> <yellow>Membantu Warga & Menjaga Kenyamanan Realm</yellow>"
                 ), currentRank));
 
-        inventory.setItem(16, createRankCard("sions", Material.BEACON, "<gradient:#00FFFF:#FFD700><bold>[✦ SIONS ✦]</bold></gradient>", "70",
+        // Row 3: Ordo Bangsawan & Donatur (5 Ranks)
+        inventory.setItem(29, createRankCard("sions", Material.BEACON, "<gradient:#00FFFF:#FFD700><bold>[✦ SIONS ✦]</bold></gradient>", "70",
                 "Apex Donator — Tingkat Tertinggi",
                 List.of(
                         "<green>✔</green> <yellow>Slot Auction House: 20 Barang</yellow>",
@@ -105,8 +120,7 @@ public class RankListGUI implements InventoryHolder {
                         "<green>✔</green> <yellow>Akses /fly di Wilayah Kerajaan Sendiri</yellow>"
                 ), currentRank));
 
-        // Donator Ranks
-        inventory.setItem(28, createRankCard("emperor", Material.NETHERITE_SWORD, "<gradient:#e52d27:#b31217><bold>[⚔ EMPEROR]</bold></gradient>", "60",
+        inventory.setItem(30, createRankCard("emperor", Material.NETHERITE_SWORD, "<gradient:#e52d27:#b31217><bold>[⚔ EMPEROR]</bold></gradient>", "60",
                 "Donator Tier 4",
                 List.of(
                         "<green>✔</green> <yellow>Slot Auction House: 15 Barang</yellow>",
@@ -115,7 +129,7 @@ public class RankListGUI implements InventoryHolder {
                         "<green>✔</green> <yellow>RTP Cooldown: 10 Detik</yellow>"
                 ), currentRank));
 
-        inventory.setItem(30, createRankCard("sovereign", Material.GOLD_BLOCK, "<gradient:#f39c12:#f1c40f><bold>[⚜ SOVEREIGN]</bold></gradient>", "50",
+        inventory.setItem(31, createRankCard("sovereign", Material.GOLD_BLOCK, "<gradient:#f39c12:#f1c40f><bold>[⚜ SOVEREIGN]</bold></gradient>", "50",
                 "Donator Tier 3",
                 List.of(
                         "<green>✔</green> <yellow>Slot Auction House: 10 Barang</yellow>",
@@ -132,7 +146,7 @@ public class RankListGUI implements InventoryHolder {
                         "<green>✔</green> <yellow>RTP Cooldown: 30 Detik</yellow>"
                 ), currentRank));
 
-        inventory.setItem(34, createRankCard("ascendant", Material.EMERALD, "<gradient:#11998e:#38ef7d><bold>[☘ ASCENDANT]</bold></gradient>", "30",
+        inventory.setItem(33, createRankCard("ascendant", Material.EMERALD, "<gradient:#11998e:#38ef7d><bold>[☘ ASCENDANT]</bold></gradient>", "30",
                 "Donator Tier 1",
                 List.of(
                         "<green>✔</green> <yellow>Slot Auction House: 6 Barang</yellow>",
@@ -140,7 +154,7 @@ public class RankListGUI implements InventoryHolder {
                         "<green>✔</green> <yellow>RTP Cooldown: 45 Detik</yellow>"
                 ), currentRank));
 
-        // Default Warga Baru
+        // Row 4: Warga Perintis / Default (1 Rank)
         inventory.setItem(40, createRankCard("wanderer", Material.COMPASS, "<gradient:#bdc3c7:#7f8c8d>[Wanderer]</gradient>", "10",
                 "Warga Baru / Default",
                 List.of(

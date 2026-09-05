@@ -967,26 +967,28 @@ MARKDOWN
     [
         'category_id' => 6,
         'position' => 1,
-        'title' => 'Struktur 9 Tingkatan Kasta Resmi Apexsions',
-        'slug' => 'struktur-sembilan-kasta',
+        'title' => 'Struktur 11 Tingkatan Kasta Resmi Apexsions',
+        'slug' => 'hierarki-kasta',
         'content' => <<<MARKDOWN
-# Struktur Sembilan Tingkatan Kasta Resmi Apexsions
+# Struktur Sebelas Tingkatan Kasta Resmi Apexsions
 
-Sumber kebenaran hierarki (`ranks.yml`) membagi peradaban Apexsions ke dalam **9 Kasta Resmi** yang memiliki bobot (*weight*), wewenang, dan kehormatan masing-masing:
+Sumber kebenaran hierarki (`ranks.yml`) membagi peradaban Apexsions ke dalam **11 Kasta Resmi** yang memiliki bobot (*weight*), wewenang, dan kehormatan masing-masing:
 
 ---
 
 | Tingkat Kasta | Bobot (Weight) | Peran & Hak Istimewa Utama | Status Hak |
 | :--- | :---: | :--- | :--- |
 | **👑 THE ANCESTOR** | **100** | Pemilik, pencipta semesta, dan pelindung peradaban Apexsions. | Pemilik Tunggal (Owner) |
+| **📐 ARCHITECT** | **95** | Perancang tata ruang, pembangunan realm, dan estetika arsitektur peradaban. | Dewan Otoritas (Authority) |
+| **👁 OVERSEER** | **92** | Pengawas kedaulatan, audit integritas ekonomi pasar, dan stabilitas peradaban. | Dewan Otoritas (Authority) |
 | **🛡 WARDEN** | **90** | Kepala staf administrasi, pengawas keadilan perang, dan penegak hukum server. | Staf Administrator |
-| **📜 HERALD** | **80** | Moderator komunitas, pemandu warga baru, dan penengah sengketa wilayah. | Staf Moderator |
+| **📜 HERALD** | **80** | Pemandu warga, penegak etika komunitas, dan penengah sengketa wilayah. | Staf Helper / Moderator |
 | **✦ SIONS ✦** | **70** | Puncak kasta donatur tertinggi dengan seluruh hak istimewa, broadcast kemegahan, dan aura mahkota emas. | Kasta Donatur Sultan (Apex Tier) |
-| **⚔ EMPEROR** | **60** | Kasta kaisar perang dengan hak terbang di ibukota, kit bulanan ber-set bonus, dan prioritas antrean. | Kasta Donatur Tier 4 |
-| **⚜ SOVEREIGN** | **50** | Kasta penguasa tanah dengan sayap partikel, kit 14 harian, dan bebas tarif dagang lintas kerajaan. | Kasta Donatur Tier 3 |
-| **💎 ARCHON** | **40** | Kasta ksatria agung dengan kit mingguan, efek glow kristal, dan akses enderchest portable. | Kasta Donatur Tier 2 |
-| **☘ ASCENDANT** | **30** | Kasta perintis dengan kit harian, hak bypass antrean server, dan tambahan klaim wilayah. | Kasta Donatur Tier 1 |
-| **WANDERER** | **10** | Warga perintis baru yang baru mendarat di alam peradaban Apexsions. | Kasta Default (Semua Pemain) |
+| **⚔ EMPEROR** | **60** | Kasta kaisar perang dengan hak terbang di wilayah, kit bulanan ber-set bonus, dan prioritas antrean. | Kasta Donatur Tier 4 |
+| **⚜ SOVEREIGN** | **50** | Kasta penguasa tanah dengan sayap partikel, kit 14 harian, dan bebas tarif dagang wilayah. | Kasta Donatur Tier 3 |
+| **💎 ARCHON** | **40** | Kasta perajin kristal dengan kit mingguan, utilitas portabel, dan akses enderchest. | Kasta Donatur Tier 2 |
+| **☘ ASCENDANT** | **30** | Kasta warga terhormat dengan kit harian, hak bypass antrean server, dan tambahan klaim wilayah. | Kasta Donatur Tier 1 |
+| **WANDERER** | **10** | Warga perintis baru yang memulai perjalanan peradaban di alam liar Apexsions. | Kasta Default (Semua Pemain) |
 
 ---
 

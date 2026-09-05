@@ -54,7 +54,7 @@ public class EnchantLimitManager {
         }
 
         // Check LuckPerms rank or group permission
-        String[] rankOrder = {"ancestor", "warden", "herald", "sions", "emperor", "sovereign", "archon", "ascendant", "wanderer"};
+        String[] rankOrder = {"ancestor", "architect", "overseer", "warden", "herald", "sions", "emperor", "sovereign", "archon", "ascendant", "wanderer"};
         for (String r : rankOrder) {
             if (player.hasPermission("group." + r) || player.hasPermission("apexsions.rank." + r)) {
                 int rLimit = plugin.getConfig().getInt("enchant-limits.ranks." + r, getDefaultRankLimit(r));
@@ -88,7 +88,7 @@ public class EnchantLimitManager {
 
     private int getDefaultRankLimit(String rank) {
         return switch (rank.toLowerCase()) {
-            case "ancestor", "warden", "herald" -> -1;
+            case "ancestor", "architect", "overseer", "warden", "herald" -> -1;
             case "sions" -> 9;
             case "emperor" -> 8;
             case "sovereign" -> 7;

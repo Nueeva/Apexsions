@@ -32,7 +32,7 @@
                 </h1>
 
                 <p class="apx-hero-subtext">
-                    Sembilan kasta sosial, tiga wilayah kerajaan, dan satu dunia yang dibentuk seutuhnya oleh sejarah warganya.
+                    Sebelas kasta sosial, tiga wilayah kerajaan, dan satu dunia yang dibentuk seutuhnya oleh sejarah warganya.
                 </p>
 
                 <!-- Primary Sovereign Action & Separate Technical Infrastructure -->
@@ -247,7 +247,7 @@
         <div class="text-center mb-5">
             <div class="apx-section-kicker mb-2">TATANAN SOSIAL</div>
             <h2 class="apx-world-title mb-2">
-                Tatanan Sembilan Kasta Sosial
+                Tatanan Sebelas Kasta Sosial
             </h2>
             <p class="text-muted mx-auto" style="max-width: 680px; font-size: 1rem; line-height: 1.7;">
                 Dari pijakan awal warga perintis hingga tahta tertinggi sang leluhur pendiri kerajaan, setiap kasta memikul bobot kedaulatan, hak wilayah, dan kehormatan yang terukur.
@@ -256,8 +256,8 @@
 
         <!-- Interactive Strata Filter Navigation -->
         <div class="apx-caste-nav" role="tablist" aria-label="Filter Hierarki Kasta">
-            <button type="button" class="apx-caste-filter-btn active" data-rank-filter="all" role="tab" aria-selected="true">SEMUA KASTA (9)</button>
-            <button type="button" class="apx-caste-filter-btn" data-rank-filter="authority" role="tab" aria-selected="false">DEWAN OTORITAS (3)</button>
+            <button type="button" class="apx-caste-filter-btn active" data-rank-filter="all" role="tab" aria-selected="true">SEMUA KASTA (11)</button>
+            <button type="button" class="apx-caste-filter-btn" data-rank-filter="authority" role="tab" aria-selected="false">DEWAN OTORITAS (5)</button>
             <button type="button" class="apx-caste-filter-btn" data-rank-filter="nobles" role="tab" aria-selected="false">ORDO BANGSAWAN (5)</button>
             <button type="button" class="apx-caste-filter-btn" data-rank-filter="pioneers" role="tab" aria-selected="false">WARGA PERINTIS (1)</button>
         </div>
@@ -273,12 +273,13 @@
                     <span class="apx-weight-pill gold">WEIGHT 100</span>
                 </div>
                 <div class="apx-caste-card apx-card-apex" data-rank-category="authority">
+                    <img src="{{ theme_asset('img/ranks/rank-ancestor.png') }}" alt="Banner Resmi Kasta The Ancestor" class="apx-caste-banner" loading="lazy" decoding="async" width="952" height="85">
                     <div class="row align-items-center gy-3">
                         <div class="col-lg-4 col-md-5">
                             <div class="d-flex align-items-center gap-2 mb-1">
                                 <span class="apx-caste-tier-badge text-gold">DEWAN OTORITAS</span>
                             </div>
-                            <h3 class="apx-caste-name mb-1">Ancestor</h3>
+                            <h3 class="apx-caste-name mb-1">The Ancestor</h3>
                             <div class="apx-caste-prefix text-gold"><i class="bi bi-crown"></i> ✦ ANCESTOR ✦</div>
                             <span class="text-dim small">Pendiri Peradaban &amp; Tahta Tertinggi</span>
                         </div>
@@ -310,24 +311,85 @@
                 <div class="apx-tier-label-bar">
                     <span class="apx-tier-roman">TINGKAT III</span>
                     <span class="apx-tier-name">DEWAN OTORITAS &bull; AUTHORITY</span>
-                    <span class="apx-weight-pill">WEIGHT 90 &bull; 80</span>
+                    <span class="apx-weight-pill">WEIGHT 95 &bull; 92 &bull; 90 &bull; 80</span>
                 </div>
                 <div class="apx-tier-authority-grid">
-                    <!-- 2. Warden -->
+                    <!-- 2. Architect -->
                     <div class="apx-caste-card" data-rank-category="authority">
+                        <img src="{{ theme_asset('img/ranks/rank-architect.png') }}" alt="Banner Resmi Kasta Architect" class="apx-caste-banner" loading="lazy" decoding="async" width="952" height="84">
                         <div>
                             <div class="apx-caste-header">
-                                <span class="apx-caste-tier-badge">DEWAN OTORITAS</span>
+                                <span class="apx-caste-tier-badge text-purple">DEWAN OTORITAS</span>
+                                <span class="apx-caste-weight">WEIGHT 95</span>
+                            </div>
+                            <h3 class="apx-caste-name">Architect</h3>
+                            <div class="apx-caste-prefix text-purple"><i class="bi bi-compass-fill"></i> 📐 ARCHITECT</div>
+                            <p class="apx-caste-desc">
+                                Perancang tata ruang dan pembangun peradaban. Mengatur cetak biru arsitektur realm, struktur kota, dan batas kedaulatan wilayah.
+                            </p>
+                            <ul class="apx-caste-perks">
+                                <li><i class="bi bi-check2"></i> Otoritas Cetak Biru &amp; Pembangunan Realm</li>
+                                <li><i class="bi bi-check2"></i> Hak Pengawasan Tata Ruang &amp; Konstruksi</li>
+                                <li><i class="bi bi-check2"></i> Akses Konsol Kreatif &amp; Inspeksi Properti</li>
+                            </ul>
+                        </div>
+                        <div class="apx-caste-action">
+                            @if(plugins()->isEnabled('wiki'))
+                                <a href="{{ route('wiki.show', 'hierarki-kasta') }}" class="apx-player-link">
+                                    Pelajari Peran <i class="bi bi-chevron-right ms-1"></i>
+                                </a>
+                            @else
+                                <span class="text-dim small text-uppercase fw-bold" style="letter-spacing: 0.1em;">ARSITEK REALM</span>
+                            @endif
+                        </div>
+                    </div>
+
+                    <!-- 3. Overseer -->
+                    <div class="apx-caste-card" data-rank-category="authority">
+                        <img src="{{ theme_asset('img/ranks/rank-overseer.png') }}" alt="Banner Resmi Kasta Overseer" class="apx-caste-banner" loading="lazy" decoding="async" width="952" height="81">
+                        <div>
+                            <div class="apx-caste-header">
+                                <span class="apx-caste-tier-badge text-gold">DEWAN OTORITAS</span>
+                                <span class="apx-caste-weight">WEIGHT 92</span>
+                            </div>
+                            <h3 class="apx-caste-name">Overseer</h3>
+                            <div class="apx-caste-prefix text-gold"><i class="bi bi-eye-fill"></i> 👁 OVERSEER</div>
+                            <p class="apx-caste-desc">
+                                Mata pengawas kedaulatan dan kestabilan dunia. Memantau integritas transaksi ekonomi, kepatuhan peradaban, dan keseimbangan realm.
+                            </p>
+                            <ul class="apx-caste-perks">
+                                <li><i class="bi bi-check2"></i> Audit Kedaulatan, Transaksi &amp; Keadilan</li>
+                                <li><i class="bi bi-check2"></i> Pemantauan Dinamika Pasar &amp; Kas Kerajaan</li>
+                                <li><i class="bi bi-check2"></i> Akses Meja Investigasi &amp; Log Peradaban</li>
+                            </ul>
+                        </div>
+                        <div class="apx-caste-action">
+                            @if(plugins()->isEnabled('wiki'))
+                                <a href="{{ route('wiki.show', 'hierarki-kasta') }}" class="apx-player-link">
+                                    Pelajari Peran <i class="bi bi-chevron-right ms-1"></i>
+                                </a>
+                            @else
+                                <span class="text-dim small text-uppercase fw-bold" style="letter-spacing: 0.1em;">PENGAWAS REALM</span>
+                            @endif
+                        </div>
+                    </div>
+
+                    <!-- 4. Warden -->
+                    <div class="apx-caste-card" data-rank-category="authority">
+                        <img src="{{ theme_asset('img/ranks/rank-warden.png') }}" alt="Banner Resmi Kasta Warden" class="apx-caste-banner" loading="lazy" decoding="async" width="952" height="85">
+                        <div>
+                            <div class="apx-caste-header">
+                                <span class="apx-caste-tier-badge text-blue">DEWAN OTORITAS</span>
                                 <span class="apx-caste-weight">WEIGHT 90</span>
                             </div>
                             <h3 class="apx-caste-name">Warden</h3>
-                            <div class="apx-caste-prefix"><i class="bi bi-shield-shaded"></i> ⚔ WARDEN</div>
+                            <div class="apx-caste-prefix text-blue"><i class="bi bi-shield-shaded"></i> ⚔ WARDEN</div>
                             <p class="apx-caste-desc">
                                 Penjaga gerbang utama dan kepala staf peradaban. Mengawasi kestabilan wilayah, tribunal keadilan, dan ketertiban hukum dunia.
                             </p>
                             <ul class="apx-caste-perks">
-                                <li><i class="bi bi-check2"></i> Otoritas Tribunal &amp; Keamanan</li>
-                                <li><i class="bi bi-check2"></i> Pengawasan Integritas Transaksi</li>
+                                <li><i class="bi bi-check2"></i> Otoritas Tribunal &amp; Keamanan Realm</li>
+                                <li><i class="bi bi-check2"></i> Pengawasan Integritas Transaksi &amp; War</li>
                                 <li><i class="bi bi-check2"></i> Hak Inspeksi Wilayah Berdaulat</li>
                             </ul>
                         </div>
@@ -342,15 +404,16 @@
                         </div>
                     </div>
 
-                    <!-- 3. Herald -->
+                    <!-- 5. Herald -->
                     <div class="apx-caste-card" data-rank-category="authority">
+                        <img src="{{ theme_asset('img/ranks/rank-herald.png') }}" alt="Banner Resmi Kasta Herald" class="apx-caste-banner" loading="lazy" decoding="async" width="952" height="84">
                         <div>
                             <div class="apx-caste-header">
-                                <span class="apx-caste-tier-badge">DEWAN OTORITAS</span>
+                                <span class="apx-caste-tier-badge text-pink">DEWAN OTORITAS</span>
                                 <span class="apx-caste-weight">WEIGHT 80</span>
                             </div>
                             <h3 class="apx-caste-name">Herald</h3>
-                            <div class="apx-caste-prefix"><i class="bi bi-chat-quote"></i> ⚜ HERALD</div>
+                            <div class="apx-caste-prefix text-pink"><i class="bi bi-chat-quote"></i> 📜 HERALD</div>
                             <p class="apx-caste-desc">
                                 Utusan resmi dan pembawa maklumat peradaban. Menjembatani suara warga dengan dewan penguasa dan menjaga diplomasi publik.
                             </p>
@@ -381,8 +444,9 @@
                     <span class="apx-weight-pill">WEIGHT 70 &bull; 60 &bull; 50 &bull; 40 &bull; 30</span>
                 </div>
                 <div class="apx-tier-ascension-grid">
-                    <!-- 4. Sions -->
+                    <!-- 6. Sions -->
                     <div class="apx-caste-card" data-rank-category="nobles">
+                        <img src="{{ theme_asset('img/ranks/rank-sions.png') }}" alt="Banner Resmi Kasta Sions" class="apx-caste-banner" loading="lazy" decoding="async" width="952" height="132">
                         <div>
                             <div class="apx-caste-header">
                                 <span class="apx-caste-tier-badge text-gold">APEX NOBLE</span>
@@ -408,8 +472,9 @@
                         </div>
                     </div>
 
-                    <!-- 5. Emperor -->
+                    <!-- 7. Emperor -->
                     <div class="apx-caste-card" data-rank-category="nobles">
+                        <img src="{{ theme_asset('img/ranks/rank-emperor.png') }}" alt="Banner Resmi Kasta Emperor" class="apx-caste-banner" loading="lazy" decoding="async" width="952" height="86">
                         <div>
                             <div class="apx-caste-header">
                                 <span class="apx-caste-tier-badge">DONATUR TIER 4</span>
@@ -435,8 +500,9 @@
                         </div>
                     </div>
 
-                    <!-- 6. Sovereign -->
+                    <!-- 8. Sovereign -->
                     <div class="apx-caste-card" data-rank-category="nobles">
+                        <img src="{{ theme_asset('img/ranks/rank-sovereign.png') }}" alt="Banner Resmi Kasta Sovereign" class="apx-caste-banner" loading="lazy" decoding="async" width="952" height="86">
                         <div>
                             <div class="apx-caste-header">
                                 <span class="apx-caste-tier-badge">DONATUR TIER 3</span>
@@ -462,8 +528,9 @@
                         </div>
                     </div>
 
-                    <!-- 7. Archon -->
+                    <!-- 9. Archon -->
                     <div class="apx-caste-card" data-rank-category="nobles">
+                        <img src="{{ theme_asset('img/ranks/rank-archon.png') }}" alt="Banner Resmi Kasta Archon" class="apx-caste-banner" loading="lazy" decoding="async" width="952" height="87">
                         <div>
                             <div class="apx-caste-header">
                                 <span class="apx-caste-tier-badge">DONATUR TIER 2</span>
@@ -489,8 +556,9 @@
                         </div>
                     </div>
 
-                    <!-- 8. Ascendant -->
+                    <!-- 10. Ascendant -->
                     <div class="apx-caste-card" data-rank-category="nobles">
+                        <img src="{{ theme_asset('img/ranks/rank-ascendant.png') }}" alt="Banner Resmi Kasta Ascendant" class="apx-caste-banner" loading="lazy" decoding="async" width="952" height="85">
                         <div>
                             <div class="apx-caste-header">
                                 <span class="apx-caste-tier-badge">DONATUR TIER 1</span>
@@ -526,6 +594,7 @@
                     <span class="apx-weight-pill">WEIGHT 10</span>
                 </div>
                 <div class="apx-caste-card apx-card-foundation" data-rank-category="pioneers">
+                    <img src="{{ theme_asset('img/ranks/rank-wanderer.png') }}" alt="Banner Resmi Kasta Wanderer" class="apx-caste-banner" loading="lazy" decoding="async" width="952" height="88">
                     <div class="row align-items-center gy-3">
                         <div class="col-lg-4 col-md-5">
                             <div class="d-flex align-items-center gap-2 mb-1">

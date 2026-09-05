@@ -18,6 +18,22 @@ ranks:
     protected: true
     weight: 100
 
+  architect:
+    display-name: "Architect"
+    formatted-name: "<gradient:#8E2DE2:#4A00E0><bold>📐 ARCHITECT</bold></gradient>"
+    prefix: "<gradient:#8E2DE2:#4A00E0><bold>[📐 ARCHITECT]</bold></gradient> "
+    badge: "<gradient:#8E2DE2:#4A00E0><bold>📐 ARCHITECT</bold></gradient>"
+    color: "#8E2DE2"
+    weight: 95
+
+  overseer:
+    display-name: "Overseer"
+    formatted-name: "<gradient:#FFD700:#FFA500><bold>👁 OVERSEER</bold></gradient>"
+    prefix: "<gradient:#FFD700:#FFA500><bold>[👁 OVERSEER]</bold></gradient> "
+    badge: "<gradient:#FFD700:#FFA500><bold>👁 OVERSEER</bold></gradient>"
+    color: "#FFD700"
+    weight: 92
+
   warden:
     display-name: "Warden"
     formatted-name: "<gradient:#1e3c72:#2a5298><bold>🛡 WARDEN</bold></gradient>"

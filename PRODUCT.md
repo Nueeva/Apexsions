@@ -32,7 +32,7 @@ Accessed via desktop and mobile web browsers by players before launching Minecra
 
 - **Platform Architecture:** Built on the Azuriom CMS platform utilizing Laravel Blade templates, custom CSS stylesheets, and responsive vanilla JavaScript.
 - **Live Integration:** Connected to the Paper 1.21.4 backend cluster for real-time status query and player authentication.
-- **Hierarchy Structure:** Authoritative 9-tier rank system (`ancestor` [100], `warden` [90], `herald` [80], `sions` [70], `emperor` [60], `sovereign` [50], `archon` [40], `ascendant` [30], `wanderer` [10]).
+- **Hierarchy Structure:** Authoritative 11-tier rank system (`ancestor` [100], `architect` [95], `overseer` [92], `warden` [90], `herald` [80], `sions` [70], `emperor` [60], `sovereign` [50], `archon` [40], `ascendant` [30], `wanderer` [10]).
 - **Workflow Path:** Configured as `comp-first` (visual compositions and aesthetic alignment precede code modifications).
 
 ## Brand Commitments
