@@ -722,6 +722,7 @@
                             <i class="bi bi-person-plus me-1"></i> Daftar Akun Peradaban
                         </a>
                     @endauth
+                </div>
             </div>
         </div>
 

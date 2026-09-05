@@ -416,19 +416,21 @@ a:hover {
     width: 42px;
     height: 42px;
     border-radius: var(--apx-radius-sm);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    background: rgba(12, 16, 26, 0.9);
+    border: 1px solid var(--apx-gold-border);
+    background: rgba(12, 16, 26, 0.95);
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
     flex-shrink: 0;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.6);
 }
 
 .apx-brand-logo-img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
+    padding: 2px;
 }
 
 .apx-brand-title {

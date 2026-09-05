@@ -6,7 +6,7 @@
 <div class="apx-auth-wrapper">
     <div class="apx-auth-card">
         <div class="apx-auth-header">
-            <img src="{{ theme_asset('img/logo.jpg') }}&v=2" alt="Apexsions Crest" class="rounded-3 shadow-lg mb-3 border border-warning" width="80" height="80" style="object-fit: cover;">
+            <img src="{{ theme_asset('img/logo.png') }}&v={{ @filemtime(public_path('assets/themes/apexsions/img/logo.png')) ?: '3' }}" alt="Apexsions Crest" class="rounded-3 shadow-lg mb-3 border border-warning" width="80" height="80" style="object-fit: contain; padding: 4px; background: rgba(12, 16, 26, 0.95);">
             <h1 class="apx-auth-title">{{ trans('auth.login') }}</h1>
             <p class="apx-auth-subtitle">Apexsions | The Peak Civilizations</p>
         </div>

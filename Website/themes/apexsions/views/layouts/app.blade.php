@@ -15,8 +15,8 @@
     <meta property="og:description" content="@yield('description', setting('description', 'Apexsions - The Peak Civilizations'))">
     <meta property="og:type" content="website">
     <meta property="og:url" content="{{ url()->current() }}">
-    <meta property="og:image" content="{{ theme_asset('img/logo.jpg') }}&v=2">
-    <link rel="shortcut icon" href="{{ theme_asset('img/logo.jpg') }}&v=2">
+    <meta property="og:image" content="{{ theme_asset('img/logo.jpg') }}&v={{ @filemtime(public_path('assets/themes/apexsions/img/logo.jpg')) ?: '3' }}">
+    <link rel="shortcut icon" href="{{ theme_asset('img/favicon.ico') }}&v=3">
 
     <!-- Google Fonts: Cinzel (Majestic Display) & Plus Jakarta Sans (Clean Interface) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">

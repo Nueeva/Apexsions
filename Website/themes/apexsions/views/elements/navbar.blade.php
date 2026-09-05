@@ -3,7 +3,7 @@
         <!-- Brand Logo & Title -->
         <a class="apx-navbar-brand" href="{{ route('home') }}">
             <div class="apx-brand-logo-box">
-                <img src="{{ theme_asset('img/logo.jpg') }}&v=2" alt="Apexsions Crest" class="apx-brand-logo-img" width="42" height="42">
+                <img src="{{ theme_asset('img/logo.png') }}&v={{ @filemtime(public_path('assets/themes/apexsions/img/logo.png')) ?: '3' }}" alt="Apexsions Crest" class="apx-brand-logo-img" width="42" height="42">
             </div>
             <div class="d-flex flex-column">
                 <span class="apx-brand-title">APEXSIONS</span>
