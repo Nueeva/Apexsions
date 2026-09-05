@@ -1,0 +1,30 @@
+# Build & Target Directories
+**/target/
+**/build/
+**/.gradle/
+**/bin/
+
+# Maven temporary files
+**/dependency-reduced-pom.xml
+
+# Database runtime files
+**/*.db
+**/*.db-shm
+**/*.db-wal
+
+# Bundled build tools binaries
+**/apache-maven-*/
+**/gradle-*/
+**/jdk-*/
+
+# IDE configuration
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+
+# OS and runtime logs
+*.log
+.DS_Store
+Thumbs.db
