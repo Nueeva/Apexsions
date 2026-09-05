@@ -120,10 +120,12 @@ public class VanillaEnchantPickerGUI implements InventoryHolder {
                 lore.add(Component.empty());
                 if (isAttached) {
                     lore.add(mm.deserialize("<green><bold>● Terpasang: Level " + CustomEnchant.toRoman(currentLvl) + "</bold></green>"));
+                    lore.add(mm.deserialize("<yellow>▶ Klik Kiri: Ubah Tingkat / Level</yellow>"));
+                    lore.add(mm.deserialize("<red>▶ Klik Kanan: Langsung Hapus Enchant Ini</red>"));
                 } else {
                     lore.add(mm.deserialize("<dark_gray>● Belum terpasang pada item.</dark_gray>"));
+                    lore.add(mm.deserialize("<yellow>▶ Klik untuk memilih tingkat enchant via GUI!</yellow>"));
                 }
-                lore.add(mm.deserialize("<yellow>▶ Klik untuk memilih tingkat enchant via GUI!</yellow>"));
                 meta.lore(lore);
                 book.setItemMeta(meta);
             }
@@ -193,6 +195,18 @@ public class VanillaEnchantPickerGUI implements InventoryHolder {
 
         if (slotEnchantMap.containsKey(slot)) {
             Enchantment enchant = slotEnchantMap.get(slot);
+            int currentLvl = item.getEnchantmentLevel(enchant);
+            if (currentLvl > 0 && event.getClick().isRightClick()) {
+                item.removeEnchantment(enchant);
+                ItemStack updated = plugin.getEnchantmentRegistry().updateLoreAndGlint(item);
+                this.item = updated;
+                player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, 1.0f, 0.8f);
+                player.sendMessage(mm.deserialize("<yellow>Enchant vanilla <gold>" + formatEnchantName(enchant.getKey().getKey()) + "</gold> berhasil dihapus dari item!</yellow>"));
+                if (onUpdate != null) onUpdate.accept(updated);
+                buildGUI();
+                return;
+            }
+
             player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1.0f, 1.4f);
             new VanillaLevelPickerGUI(plugin, player, this.item, enchant, this, updated -> {
                 this.item = updated;

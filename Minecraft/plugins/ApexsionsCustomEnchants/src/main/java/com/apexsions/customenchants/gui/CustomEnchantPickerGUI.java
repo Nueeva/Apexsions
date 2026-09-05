@@ -127,10 +127,12 @@ public class CustomEnchantPickerGUI implements InventoryHolder {
                 lore.add(Component.empty());
                 if (isAttached) {
                     lore.add(mm.deserialize("<green><bold>● Terpasang: Level " + CustomEnchant.toRoman(currentLvl) + "</bold></green>"));
+                    lore.add(mm.deserialize("<yellow>▶ Klik Kiri: Ubah Tingkat / Level</yellow>"));
+                    lore.add(mm.deserialize("<red>▶ Klik Kanan: Langsung Hapus Sihir Ini</red>"));
                 } else {
                     lore.add(mm.deserialize("<dark_gray>● Belum terpasang pada item.</dark_gray>"));
+                    lore.add(mm.deserialize("<yellow>▶ Klik untuk memilih tingkat sihir via GUI!</yellow>"));
                 }
-                lore.add(mm.deserialize("<yellow>▶ Klik untuk memilih tingkat sihir via GUI!</yellow>"));
 
                 meta.lore(lore);
                 star.setItemMeta(meta);
@@ -221,6 +223,17 @@ public class CustomEnchantPickerGUI implements InventoryHolder {
         // 3. Enchantment Selection
         if (slotEnchantMap.containsKey(slot)) {
             CustomEnchant enchant = slotEnchantMap.get(slot);
+            int currentLvl = plugin.getEnchantmentRegistry().getEnchantLevel(item, enchant);
+            if (currentLvl > 0 && event.getClick().isRightClick()) {
+                ItemStack updated = plugin.getEnchantmentRegistry().removeEnchant(item, enchant);
+                this.item = updated;
+                player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, 1.0f, 0.8f);
+                player.sendMessage(mm.deserialize("<yellow>Sihir <gold>" + enchant.getDisplayName() + "</gold> berhasil dihapus dari item!</yellow>"));
+                if (onUpdate != null) onUpdate.accept(updated);
+                buildGUI();
+                return;
+            }
+
             player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1.0f, 1.4f);
             new EnchantLevelPickerGUI(plugin, player, this.item, enchant, this, updated -> {
                 this.item = updated;

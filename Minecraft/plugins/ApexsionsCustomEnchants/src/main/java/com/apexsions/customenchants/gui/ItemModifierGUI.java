@@ -125,6 +125,19 @@ public class ItemModifierGUI implements InventoryHolder {
                     ), false));
         }
 
+        // Slot 24: Selective Enchant Remover
+        int totalActive = activeCE.size() + activeVanilla;
+        inventory.setItem(24, createItem(Material.SHEARS,
+                "<gradient:#e74c3c:#c0392b><bold>✂ HAPUS ENCHANT TERTENTU</bold></gradient>",
+                List.of(
+                        mm.deserialize("<gray>Lepas sihir atau enchant satu per satu</gray>"),
+                        mm.deserialize("<gray>tanpa perlu me-reset seluruh enchant item!</gray>"),
+                        Component.empty(),
+                        mm.deserialize("<gray>Sihir aktif saat ini: <gold>" + totalActive + " Enchant</gold></gray>"),
+                        Component.empty(),
+                        mm.deserialize(totalActive > 0 ? "<yellow>▶ Klik untuk memilih sihir yang ingin dilepas</yellow>" : "<dark_gray>Tidak ada enchant untuk dihapus.</dark_gray>")
+                ), totalActive > 0));
+
         // Slot 25: Reset / Clear Enchants
         inventory.setItem(25, createItem(Material.CAULDRON,
                 "<red><bold>🗑 RESET SEMUA ENCHANT</bold></red>",
@@ -226,6 +239,17 @@ public class ItemModifierGUI implements InventoryHolder {
             }
         }
 
+        // Slot 24: Selective Enchant Remover
+        if (slot == 24) {
+            player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1.0f, 1.2f);
+            new RemoveEnchantsGUI(plugin, player, item, this, updated -> {
+                this.item = updated;
+                creatorGUI.updateItem(sourceSlot, this.item);
+                buildGUI();
+            }).open();
+            return;
+        }
+
         // Reset Enchants
         if (slot == 25) {
             for (CustomEnchant ce : plugin.getEnchantmentRegistry().getAllEnchantments()) {
@@ -234,6 +258,7 @@ public class ItemModifierGUI implements InventoryHolder {
             for (Enchantment ve : new ArrayList<>(item.getEnchantments().keySet())) {
                 item.removeEnchantment(ve);
             }
+            creatorGUI.updateItem(sourceSlot, item);
             player.playSound(player.getLocation(), Sound.BLOCK_GRINDSTONE_USE, 1.0f, 1.0f);
             player.sendMessage(mm.deserialize("<yellow>Seluruh enchantment berhasil dihapus dari item!</yellow>"));
             buildGUI();
