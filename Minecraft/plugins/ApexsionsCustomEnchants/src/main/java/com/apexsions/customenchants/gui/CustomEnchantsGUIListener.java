@@ -40,6 +40,45 @@ public class CustomEnchantsGUIListener implements Listener {
             gui.handleClick(event);
         } else if (holder instanceof TinkererComingSoonGUI gui) {
             gui.handleClick(event);
+        } else if (holder instanceof ItemModifierGUI gui) {
+            gui.handleClick(event);
+        } else if (holder instanceof CustomEnchantPickerGUI gui) {
+            gui.handleClick(event);
+        } else if (holder instanceof VanillaEnchantPickerGUI gui) {
+            gui.handleClick(event);
+        } else if (holder instanceof EnchantLevelPickerGUI gui) {
+            gui.handleClick(event);
+        } else if (holder instanceof VanillaLevelPickerGUI gui) {
+            gui.handleClick(event);
+        } else if (holder instanceof ArmorSetBonusPickerGUI gui) {
+            gui.handleClick(event);
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGH)
+    public void onInventoryDrag(org.bukkit.event.inventory.InventoryDragEvent event) {
+        InventoryHolder holder = event.getInventory().getHolder();
+        if (holder instanceof AdminItemCreatorGUI gui) {
+            gui.handleDrag(event);
+        } else if (holder instanceof EnchanterGUI
+                || holder instanceof SpecificBookShopGUI
+                || holder instanceof AdminTierPricingGUI
+                || holder instanceof AceAdminHubGUI
+                || holder instanceof AceEnchantsCatalogGUI
+                || holder instanceof AceBookLevelsSubGUI
+                || holder instanceof TinkererComingSoonGUI
+                || holder instanceof ItemModifierGUI
+                || holder instanceof CustomEnchantPickerGUI
+                || holder instanceof VanillaEnchantPickerGUI
+                || holder instanceof EnchantLevelPickerGUI
+                || holder instanceof VanillaLevelPickerGUI
+                || holder instanceof ArmorSetBonusPickerGUI) {
+            for (int rawSlot : event.getRawSlots()) {
+                if (rawSlot < event.getInventory().getSize()) {
+                    event.setCancelled(true);
+                    return;
+                }
+            }
         }
     }
 }

@@ -41,5 +41,6 @@ Thumbs.db
 # Decompiler tools and output
 cfr.jar
 decompiled/
+*AdvancedEnchantments*
 
 

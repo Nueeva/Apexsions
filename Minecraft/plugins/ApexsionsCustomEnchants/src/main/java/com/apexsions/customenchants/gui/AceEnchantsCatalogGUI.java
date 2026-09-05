@@ -11,9 +11,11 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.FireworkEffect;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.FireworkEffectMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
@@ -69,9 +71,13 @@ public class AceEnchantsCatalogGUI implements InventoryHolder {
             slotMap.put(slot, enchant);
 
             EnchantmentGroup grp = enchant.getGroup();
-            ItemStack item = new ItemStack(grp.getIcon());
-            ItemMeta meta = item.getItemMeta();
+            ItemStack item = new ItemStack(Material.FIREWORK_STAR);
+            FireworkEffectMeta meta = (FireworkEffectMeta) item.getItemMeta();
             if (meta != null) {
+                FireworkEffect effect = FireworkEffect.builder()
+                        .withColor(grp.getBukkitColor())
+                        .build();
+                meta.setEffect(effect);
                 meta.displayName(mm.deserialize("<gray>Enchantment</gray> <gold>" + enchant.getDisplayName() + "</gold>"));
                 List<Component> lore = new ArrayList<>();
                 lore.add(mm.deserialize("<yellow><bold>x</bold></yellow> <gray>" + enchant.getDescription() + "</gray>"));

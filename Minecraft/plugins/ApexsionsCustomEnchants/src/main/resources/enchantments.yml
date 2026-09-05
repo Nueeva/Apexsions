@@ -1,212 +1,1279 @@
 # ==============================================================================
-# Custom Enchantments Definition for ApexsionsCustomEnchants
+# ApexsionsCustomEnchants — 100% AdvancedPlugins/AE Enchantments Database
 # ==============================================================================
 
 enchantments:
-  # Combat
-  bleed:
-    display: "Bleed"
-    group: UNIQUE
-    max-level: 3
-    applies: "SWORD"
-    description: "Menyebabkan musuh berdarah dan kehilangan HP secara berkala."
-
-  lifesteal:
-    display: "Lifesteal"
-    group: ELITE
-    max-level: 3
-    applies: "SWORD"
-    description: "Memulihkan sebagian nyawamu saat memukul musuh."
-
-  vampire:
-    display: "Vampire"
-    group: ULTIMATE
-    max-level: 3
-    applies: "SWORD"
-    description: "Menghisap darah musuh dan memberikan efek regenerasi."
-
-  cleave:
-    display: "Cleave"
-    group: ELITE
-    max-level: 3
-    applies: "AXE"
-    description: "Menghantam semua musuh di sekitarmu secara bersamaan."
-
-  rage:
-    display: "Rage"
-    group: ULTIMATE
-    max-level: 4
-    applies: "SWORD"
-    description: "Semakin sering memukul berturut-turut, semakin dahsyat serangannya."
-
-  silence:
-    display: "Silence"
-    group: LEGENDARY
-    max-level: 4
-    applies: "SWORD"
-    description: "Membungkam sihir lawan sehingga tidak dapat menggunakan ability."
-
-  disarm:
-    display: "Disarm"
-    group: FABLED
-    max-level: 3
-    applies: "SWORD"
-    description: "Peluang melucuti senjata dari tangan lawan."
-
-  decapitation:
-    display: "Decapitation"
-    group: UNIQUE
-    max-level: 3
-    applies: "SWORD"
-    description: "Peluang memenggal kepala lawan saat terbunuh."
-
-  inquisitive:
-    display: "Inquisitive"
-    group: ULTIMATE
-    max-level: 4
-    applies: "SWORD"
-    description: "Melipatgandakan perolehan EXP dari mob yang dibunuh."
-
-  blind:
-    display: "Blind"
-    group: SIMPLE
-    max-level: 3
-    applies: "SWORD"
-    description: "Memberikan efek kebutaan sementara pada lawan."
-
-  paralyze:
-    display: "Paralyze"
-    group: ELITE
-    max-level: 3
-    applies: "SWORD"
-    description: "Melumpuhkan lawan dengan efek lambat dan kelelahan."
-
-  # Defense & Armor
-  gears:
-    display: "Gears"
-    group: SIMPLE
-    max-level: 3
-    applies: "BOOTS"
-    description: "Memberikan peningkatan kecepatan lari permanen."
-
-  springs:
-    display: "Springs"
-    group: UNIQUE
-    max-level: 3
-    applies: "BOOTS"
-    description: "Memberikan lompatan tinggi (Jump Boost) permanen."
-
-  obsidianshield:
-    display: "Obsidianshield"
-    group: ELITE
-    max-level: 1
-    applies: "CHESTPLATE"
-    description: "Memberikan kekebalan permanen terhadap api dan lahar."
-
-  overload:
-    display: "Overload"
-    group: LEGENDARY
-    max-level: 3
-    applies: "CHESTPLATE"
-    description: "Meningkatkan jumlah nyawa maksimal (Extra Hearts)."
-
-  enlightened:
-    display: "Enlightened"
-    group: ULTIMATE
-    max-level: 3
-    applies: "ARMOR"
-    description: "Peluang menyembuhkan dirimu saat menerima serangan musuh."
-
-  phoenix:
-    display: "Phoenix"
-    group: FABLED
-    max-level: 1
-    applies: "CHESTPLATE"
-    description: "Menyelamatkan dirimu dari kematian dengan memulihkan nyawa penuh."
-
-  cactus:
-    display: "Cactus"
-    group: UNIQUE
-    max-level: 2
-    applies: "ARMOR"
-    description: "Memantulkan sebagian damage kembali ke penyerang."
-
-  # Tools
-  haste:
-    display: "Haste"
-    group: SIMPLE
-    max-level: 3
-    applies: "PICKAXE"
-    description: "Memberikan efek Haste permanen saat memegang beliung."
-
-  autosmelt:
-    display: "AutoSmelt"
-    group: UNIQUE
-    max-level: 3
-    applies: "PICKAXE"
-    description: "Secara otomatis melebur bijih menjadi batangan logam."
-
-  telepathy:
-    display: "Telepathy"
-    group: ULTIMATE
-    max-level: 1
-    applies: "TOOLS"
-    description: "Mengirimkan block drop langsung ke inventory tanpa jatuh."
-
   harvest:
-    display: "Harvest"
-    group: LEGENDARY
-    max-level: 3
-    applies: "PICKAXE"
-    description: "Menambang area 3x3 secara serentak."
+    display-name: "Harvest"
+    group: "ULTIMATE"
+    max-level: 9
+    applies: "HOES"
+    description: "Chance to harvest in 3x3 area."
+
+  autoreel:
+    display-name: "Auto Reel"
+    group: "ULTIMATE"
+    max-level: 4
+    applies: "FISHING ROD"
+    description: "Automatically reels in the fishing rod when it gets a bite."
 
   gemify:
-    display: "Gemify"
-    group: FABLED
-    max-level: 3
-    applies: "PICKAXE"
-    description: "Peluang mengubah bongkahan batu menjadi permata berharga."
-
-  unbreakable:
-    display: "Unbreakable"
-    group: FABLED
+    display-name: "Gemify"
+    group: "FABLED"
     max-level: 1
-    applies: "ALL"
-    description: "Membuat item kebal dari segala jenis kerusakan."
+    applies: "PICKAXE"
+    description: "Chance for an ore block to turn into its block"
 
-  # Bows
-  multiarrow:
-    display: "MultiArrow"
-    group: ULTIMATE
+  planter:
+    display-name: "Planter"
+    group: "ULTIMATE"
     max-level: 3
-    applies: "BOW"
-    description: "Menembakkan beberapa anak panah sekaligus dalam satu tembakan."
+    applies: "HOES"
+    description: "|-"
 
-  sniper:
-    display: "Sniper"
-    group: LEGENDARY
+  potatoplanter:
+    display-name: "Potato Planter"
+    group: "ULTIMATE"
     max-level: 3
-    applies: "BOW"
-    description: "Meningkatkan kecepatan anak panah dan memberikan bonus damage jarak jauh."
+    applies: "HOES"
+    description: "|-"
 
-  piercingarrow:
-    display: "Piercing"
-    group: ELITE
+  carrotplanter:
+    display-name: "Carrot Planter"
+    group: "ULTIMATE"
     max-level: 3
-    applies: "BOW"
-    description: "Anak panah menembus pertahanan baju zirah lawan."
+    applies: "HOES"
+    description: "|-"
 
-  # Heroic (God Tier - Coming Soon)
-  godlyslayer:
-    display: "GodlySlayer"
-    group: HEROIC
+  replanter:
+    display-name: "Replanter"
+    group: "UNIQUE"
+    max-level: 1
+    applies: "HOES"
+    description: "Replants crops when you break them."
+
+  strike:
+    display-name: "Strike"
+    group: "SIMPLE"
+    max-level: 3
+    applies: "SWORDS, BOW, CROSSBOW, TRIDENT"
+    description: "|-"
+
+  impact:
+    display-name: "Impact"
+    group: "ELITE"
+    max-level: 4
+    applies: "TRIDENT"
+    description: "Chance to double dealt damage."
+
+  twinge:
+    display-name: "Twinge"
+    group: "LEGENDARY"
+    max-level: 4
+    applies: "TRIDENT"
+    description: "|-"
+
+  jellylegs:
+    display-name: "Jelly Legs"
+    group: "ULTIMATE"
+    max-level: 3
+    applies: "BOOTS"
+    description: "Chance to negate fall damage."
+
+  wings:
+    display-name: "Wings"
+    group: "LEGENDARY"
+    max-level: 1
+    applies: "BOOTS"
+    description: "Allows flying when worn."
+
+  aquatic:
+    display-name: "Aquatic"
+    group: "SIMPLE"
+    max-level: 1
+    applies: "HELMETS"
+    description: "Breathe underwater."
+
+  smelting:
+    display-name: "Smelting"
+    group: "SIMPLE"
+    max-level: 3
+    applies: "PICKAXES"
+    description: "Chance to smelt mined blocks."
+
+  experience:
+    display-name: "Experience"
+    group: "SIMPLE"
+    max-level: 5
+    applies: "TOOLS"
+    description: "Chance to get more experience from ores."
+
+  hasten:
+    display-name: "Hasten"
+    group: "SIMPLE"
+    max-level: 3
+    applies: "TOOLS"
+    description: "Chance to gain Haste after breaking blocks."
+
+  haste:
+    display-name: "Haste"
+    group: "FABLED"
+    max-level: 3
+    applies: "TOOLS"
+    description: "Allows you to swing your tools faster."
+
+  rebreather:
+    display-name: "Rebreather"
+    group: "SIMPLE"
+    max-level: 2
+    applies: "PICKAXE"
+    description: "|-"
+
+  glowing:
+    display-name: "Glowing"
+    group: "SIMPLE"
+    max-level: 1
+    applies: "HELMET"
+    description: "Gives permanent night vision."
+
+  decapitation:
+    display-name: "Decapitation"
+    group: "SIMPLE"
+    max-level: 3
+    applies: "SWORDS, AXES"
+    description: "|-"
+
+  forcefield:
+    display-name: "Forcefield"
+    group: "SIMPLE"
+    max-level: 5
+    applies: "SWORDS"
+    description: "Chance to push away your opponent."
+
+  epicness:
+    display-name: "Epicness"
+    group: "SIMPLE"
+    max-level: 3
+    applies: "SWORDS"
+    description: "Gives particles and sound effects."
+
+  famine:
+    display-name: "Famine"
+    group: "UNIQUE"
+    max-level: 4
+    applies: "WEAPONS"
+    description: "A chance to give your opponent the hunger effect."
+
+  berserk:
+    display-name: "Berserk"
+    group: "UNIQUE"
+    max-level: 5
+    applies: "SWORDS, AXES"
+    description: "|-"
+
+  reflect:
+    display-name: "Reflect"
+    group: "UNIQUE"
+    max-level: 5
+    applies: "ARMOR"
+    description: "|-"
+
+  ward:
+    display-name: "Ward"
+    group: "UNIQUE"
+    max-level: 4
+    applies: "ARMOR"
+    description: "A chance to absorb enemy damage"
+
+  explosive:
+    display-name: "Explosive"
+    group: "UNIQUE"
+    max-level: 5
+    applies: "BOW"
+    description: "Chance for arrows to explode."
+
+  frenzy:
+    display-name: "Frenzy"
+    group: "UNIQUE"
+    max-level: 5
+    applies: "CROSSBOW"
+    description: "Chance for arrows to explode."
+
+  featherweight:
+    display-name: "Featherweight"
+    group: "UNIQUE"
+    max-level: 3
+    applies: "SWORDS, AXES"
+    description: "Chance to get a burst of haste."
+
+  sharpnesshook:
+    display-name: "Sharpness Hook"
+    group: "ULTIMATE"
+    max-level: 9
+    applies: "FISHING ROD"
+    description: "Deal damage with the hook."
+
+  poisonedhook:
+    display-name: "Poisoned Hook"
+    group: "ELITE"
+    max-level: 3
+    applies: "FISHING ROD"
+    description: "Poisons the hook."
+
+  firehook:
+    display-name: "Fire Hook"
+    group: "ELITE"
+    max-level: 3
+    applies: "FISHING ROD"
+    description: "The hook is on fire."
+
+  molten:
+    display-name: "Molten"
+    group: "UNIQUE"
+    max-level: 4
+    applies: "ARMOR"
+    description: "Chance of setting your attacker ablaze."
+
+  ravenous:
+    display-name: "Ravenous"
+    group: "UNIQUE"
+    max-level: 4
+    applies: "SWORDS, AXES"
+    description: "|-"
+
+  veinminer:
+    display-name: "Vein Miner"
+    group: "ELITE"
+    max-level: 3
+    applies: "PICKAXES"
+    description: "Mine entire vein of ores"
+
+  telepathy:
+    display-name: "Telepathy"
+    group: "UNIQUE"
+    max-level: 4
+    applies: "TOOLS"
+    description: "|-"
+
+  explosivedemise:
+    display-name: "Explosive Demise"
+    group: "UNIQUE"
+    max-level: 8
+    applies: "LEGGINGS"
+    description: "|-"
+
+  enderslayer:
+    display-name: "Ender Slayer"
+    group: "ELITE"
+    max-level: 5
+    applies: "WEAPONS"
+    description: "Increases damage dealt to Enderman and Ender dragons."
+
+  deathpunch:
+    display-name: "Death Punch"
+    group: "SIMPLE"
+    max-level: 5
+    applies: "SWORDS, AXES"
+    description: "Increases damage dealt to Zombies."
+
+  bonecrusher:
+    display-name: "Bone Crusher"
+    group: "SIMPLE"
+    max-level: 3
+    applies: "SWORDS, AXES"
+    description: "Increases damage dealt to Skeletons."
+
+  immolate:
+    display-name: "Immolate"
+    group: "ELITE"
+    max-level: 3
+    applies: "SWORDS, AXES"
+    description: "Increases damage dealt to Spiders."
+
+  slayer:
+    display-name: "Slayer"
+    group: "UNIQUE"
+    max-level: 4
+    applies: "SWORDS, AXES"
+    description: "Increases damage dealt to Passive Mobs."
+
+  hunter:
+    display-name: "Hunter"
+    group: "UNIQUE"
+    max-level: 4
+    applies: "BOW, CROSSBOW, TRIDENT"
+    description: "Increases damage dealt to Passive Mobs."
+
+  beastslayer:
+    display-name: "Beastslayer"
+    group: "LEGENDARY"
+    max-level: 4
+    applies: "SWORDS, AXES"
+    description: "Increases damage dealt to Hostile Mobs."
+
+  hook:
+    display-name: "Hook"
+    group: "ELITE"
+    max-level: 3
+    applies: "FISHING ROD"
+    description: "Get more exp from fishing."
+
+  bait:
+    display-name: "Bait"
+    group: "LEGENDARY"
+    max-level: 3
+    applies: "FISHING ROD"
+    description: "Chance to receive double fishing drops."
+
+  snap:
+    display-name: "Snap"
+    group: "ELITE"
+    max-level: 3
+    applies: "FISHING ROD"
+    description: "Pull hit entity towards you."
+
+  lucky:
+    display-name: "Lucky"
+    group: "ULTIMATE"
+    max-level: 3
+    applies: "FISHING ROD"
+    description: "Chance to increase luck while fishing."
+
+  permafrost:
+    display-name: "Permafrost"
+    group: "ULTIMATE"
+    max-level: 5
+    applies: "SWORDS"
+    description: "Chance slow and bleed opponents."
+
+  soulless:
+    display-name: "Soulless"
+    group: "UNIQUE"
+    max-level: 4
+    applies: "BOW, CROSSBOW, TRIDENT"
+    description: "Increases damage dealt to Hostile Mobs."
+
+  reaper:
+    display-name: "Reaper"
+    group: "ELITE"
+    max-level: 4
+    applies: "AXE"
+    description: "|-"
+
+  netherslayer:
+    display-name: "Nether Slayer"
+    group: "ELITE"
+    max-level: 5
+    applies: "WEAPONS"
+    description: "Increases damage dealt to nether mobs."
+
+  blind:
+    display-name: "Blind"
+    group: "ELITE"
+    max-level: 3
+    applies: "SWORDS"
+    description: "|-"
+
+  allure:
+    display-name: "Allure"
+    group: "ELITE"
+    max-level: 3
+    applies: "SWORDS"
+    description: "Your attack pulls mobs towards you."
+
+  frozen:
+    display-name: "Frozen"
+    group: "ELITE"
+    max-level: 3
+    applies: "ARMOR"
+    description: "|-"
+
+  paralyze:
+    display-name: "Paralyze"
+    group: "ELITE"
+    max-level: 4
+    applies: "SWORDS, AXES"
+    description: "|-"
+
+  poison:
+    display-name: "Poison"
+    group: "ELITE"
+    max-level: 3
+    applies: "SWORDS, AXES"
+    description: "A chance of giving poison effect."
+
+  virus:
+    display-name: "Virus"
+    group: "UNIQUE"
+    max-level: 3
+    applies: "BOW, CROSSBOW, TRIDENT"
+    description: "A chance of giving poison effect."
+
+  poisoned:
+    display-name: "Poisoned"
+    group: "ELITE"
+    max-level: 4
+    applies: "ARMOR"
+    description: "Chance to give poison to your attacker."
+
+  reforged:
+    display-name: "Reforged"
+    group: "ELITE"
+    max-level: 10
+    applies: "WEAPONS AND TOOLS"
+    description: "|-"
+
+  snare:
+    display-name: "Snare"
+    group: "ELITE"
+    max-level: 4
+    applies: "BOWS"
+    description: "|-"
+
+  springs:
+    display-name: "Springs"
+    group: "ELITE"
+    max-level: 3
+    applies: "BOOTS"
+    description: "Gives jump boost."
+
+  undeadruse:
+    display-name: "Undead Ruse"
+    group: "ELITE"
+    max-level: 10
+    applies: "BOOTS"
+    description: "|-"
+
+  voodoo:
+    display-name: "Voodoo"
+    group: "ELITE"
+    max-level: 6
+    applies: "ARMOR"
+    description: "Gives a chance to deal weakness."
+
+  wither:
+    display-name: "Wither"
+    group: "ELITE"
+    max-level: 5
+    applies: "ARMOR"
+    description: "A chance to give the wither effect."
+
+  perish:
+    display-name: "Perish"
+    group: "UNIQUE"
+    max-level: 5
+    applies: "BOW, CROSSBOW, TRIDENT"
+    description: "A chance to give the wither effect."
+
+  smokebomb:
+    display-name: "Smoke Bomb"
+    group: "ELITE"
+    max-level: 8
+    applies: "HELMET"
+    description: "|-"
+
+  infernal:
+    display-name: "Infernal"
+    group: "ELITE"
+    max-level: 3
+    applies: "SWORDS, AXES"
+    description: "Explosive fire effect."
+
+  extinguish:
+    display-name: "Extinguish"
+    group: "ELITE"
+    max-level: 3
+    applies: "LEGGINGS"
+    description: "|-"
+
+  shockwave:
+    display-name: "Shockwave"
+    group: "ELITE"
+    max-level: 5
+    applies: "CHESTPLATES"
+    description: "|-"
+
+  vampire:
+    display-name: "Vampire"
+    group: "ELITE"
+    max-level: 3
+    applies: "SWORDS"
+    description: "|-"
+
+  greatsword:
+    display-name: "Greatsword"
+    group: "ELITE"
     max-level: 5
     applies: "SWORD"
-    description: "Kekuatan dewa penumpas kegelapan."
+    description: "|-"
 
-  immortality:
-    display: "Immortality"
-    group: HEROIC
+  bowmaster:
+    display-name: "Bowmaster"
+    group: "ELITE"
+    max-level: 5
+    applies: "BOW, CROSSBOW, TRIDENT"
+    description: "|-"
+
+  hardened:
+    display-name: "Hardened"
+    group: "LEGENDARY"
+    max-level: 3
+    applies: "ARMOR"
+    description: "Chance to recover durability when damaged by players."
+
+  patch:
+    display-name: "Patch"
+    group: "LEGENDARY"
+    max-level: 3
+    applies: "ARMOR"
+    description: "Chance to recover durability when damaged by mobs."
+
+  rocketescape:
+    display-name: "Rocket Escape"
+    group: "ELITE"
+    max-level: 3
+    applies: "BOOTS"
+    description: "Blast off into the air at low HP."
+
+  trickster:
+    display-name: "Trickster"
+    group: "ELITE"
+    max-level: 8
+    applies: "ARMOR"
+    description: "|-"
+
+  timber:
+    display-name: "Timber"
+    group: "ULTIMATE"
+    max-level: 3
+    applies: "AXES"
+    description: "Chance to break a tree in one hit"
+
+  distance:
+    display-name: "Distance"
+    group: "ULTIMATE"
+    max-level: 4
+    applies: "WEAPONS"
+    description: "|-"
+
+  cleave:
+    display-name: "Cleave"
+    group: "ULTIMATE"
+    max-level: 7
+    applies: "AXES"
+    description: "|-"
+
+  ambit:
+    display-name: "Ambit"
+    group: "ULTIMATE"
+    max-level: 7
+    applies: "SWORDS, AXES"
+    description: "Damages mobs within a radius\nthat increases with the level of enchant."
+
+  angelic:
+    display-name: "Angelic"
+    group: "ULTIMATE"
+    max-level: 5
+    applies: "ARMOR"
+    description: "Heals when damaged."
+
+  arrowdeflect:
+    display-name: "Arrow Deflect"
+    group: "ULTIMATE"
+    max-level: 4
+    applies: "ARMOR"
+    description: "Chance to prevent enemy arrow from dealing damage."
+
+  arrowbreak:
+    display-name: "Arrow Break"
+    group: "ULTIMATE"
+    max-level: 6
+    applies: "AXE"
+    description: "Chance for arrows to bounce off you\nwhile holding item with this enchant."
+
+  curse:
+    display-name: "Curse"
+    group: "ELITE"
+    max-level: 2
+    applies: "ARMOR"
+    description: "Chance to give your enemy mining fatigue."
+
+  diminish:
+    display-name: "Diminish"
+    group: "ULTIMATE"
+    max-level: 1
+    applies: "AXES"
+    description: "Chance to give your enemy mining fatigue."
+
+  interrupt:
+    display-name: "Interrupt"
+    group: "ULTIMATE"
+    max-level: 2
+    applies: "SWORDS"
+    description: "Chance to give your enemy mining fatigue."
+
+  exalted:
+    display-name: "Exalted"
+    group: "ULTIMATE"
+    max-level: 4
+    applies: "SWORDS"
+    description: "|-"
+
+  ragdoll:
+    display-name: "Ragdoll"
+    group: "ULTIMATE"
+    max-level: 4
+    applies: "ARMOR"
+    description: "|-"
+
+  block:
+    display-name: "Block"
+    group: "ULTIMATE"
+    max-level: 3
+    applies: "SWORDS"
+    description: "|-"
+
+  trench:
+    display-name: "Trench"
+    group: "ULTIMATE"
+    max-level: 9
+    applies: "PICKAXES, SHOVELS"
+    description: "Chance to break in 3x3 area."
+
+  tunnel:
+    display-name: "Tunnel"
+    group: "ULTIMATE"
+    max-level: 9
+    applies: "PICKAXES, SHOVELS"
+    description: "|-"
+
+  dodge:
+    display-name: "Dodge"
+    group: "ULTIMATE"
+    max-level: 5
+    applies: "ARMOR"
+    description: "|-"
+
+  fumble:
+    display-name: "Fumble"
+    group: "LEGENDARY"
     max-level: 3
     applies: "CHESTPLATE"
-    description: "Ketahanan mutlak para dewa."
+    description: "|-"
+
+  turmoil:
+    display-name: "Turmoil"
+    group: "LEGENDARY"
+    max-level: 3
+    applies: "ARMOR"
+    description: "|-"
+
+  guardians:
+    display-name: "Guardians"
+    group: "ULTIMATE"
+    max-level: 10
+    applies: "ARMOR"
+    description: "|-"
+
+  iceaspect:
+    display-name: "Ice Aspect"
+    group: "ULTIMATE"
+    max-level: 3
+    applies: "SWORDS"
+    description: "|-"
+
+  momentum:
+    display-name: "Momentum"
+    group: "ELITE"
+    max-level: 3
+    applies: "ELYTRA"
+    description: "|-"
+
+  reinforced:
+    display-name: "Reinforced"
+    group: "ULTIMATE"
+    max-level: 4
+    applies: "ELYTRA"
+    description: "Reduces damage dealt to you."
+
+  restore:
+    display-name: "Restore"
+    group: "FABLED"
+    max-level: 4
+    applies: "TOOLS"
+    description: "|-"
+
+  implants:
+    display-name: "Implants"
+    group: "ULTIMATE"
+    max-level: 3
+    applies: "HELMETS"
+    description: "Chance to restore food every few seconds."
+
+  obsidianshield:
+    display-name: "Obsidianshield"
+    group: "ULTIMATE"
+    max-level: 1
+    applies: "ARMOR"
+    description: "Gives permanent fire resistance."
+
+  piercing:
+    display-name: "Piercing"
+    group: "ULTIMATE"
+    max-level: 5
+    applies: "BOWS"
+    description: "Inflicts more damage."
+
+  archer:
+    display-name: "Archer"
+    group: "ULTIMATE"
+    max-level: 4
+    applies: "BOW"
+    description: "Increases damage dealt with bows."
+
+  marksman:
+    display-name: "Marksman"
+    group: "ELITE"
+    max-level: 4
+    applies: "CROSSBOW"
+    description: "Increases damage dealt with Crossbows."
+
+  poseidon:
+    display-name: "Poseidon"
+    group: "ELITE"
+    max-level: 4
+    applies: "TRIDENT"
+    description: "Increases damage dealt with Tridents."
+
+  safeguard:
+    display-name: "Safeguard"
+    group: "ULTIMATE"
+    max-level: 2
+    applies: "ARMOR"
+    description: "|-"
+
+  disappear:
+    display-name: "Disappear"
+    group: "ULTIMATE"
+    max-level: 4
+    applies: "ARMOR"
+    description: "|-"
+
+  confuse:
+    display-name: "Confuse"
+    group: "ULTIMATE"
+    max-level: 4
+    applies: "SWORDS"
+    description: "Chance to give nausea effect."
+
+  disintegrate:
+    display-name: "Disintegrate"
+    group: "ULTIMATE"
+    max-level: 4
+    applies: "SWORDS"
+    description: "|-"
+
+  shatter:
+    display-name: "Shatter"
+    group: "ULTIMATE"
+    max-level: 4
+    applies: "AXES"
+    description: "|-"
+
+  heavy:
+    display-name: "Heavy"
+    group: "ULTIMATE"
+    max-level: 5
+    applies: "ARMOR"
+    description: "|-"
+
+  devour:
+    display-name: "Devour"
+    group: "UNIQUE"
+    max-level: 3
+    applies: "WEAPONS"
+    description: "Chance to restore food while killing mobs."
+
+  replenish:
+    display-name: "Replenish"
+    group: "ELITE"
+    max-level: 3
+    applies: "PICKAXES"
+    description: "Chance to restore food while mining."
+
+  hellfire:
+    display-name: "Hellfire"
+    group: "ULTIMATE"
+    max-level: 5
+    applies: "BOW"
+    description: "Arrows turn into fireballs."
+
+  missile:
+    display-name: "Missile"
+    group: "ELITE"
+    max-level: 5
+    applies: "CROSSBOW"
+    description: "Arrows turn into fireballs."
+
+  longbow:
+    display-name: "Longbow"
+    group: "ULTIMATE"
+    max-level: 4
+    applies: "BOW"
+    description: "|-"
+
+  tank:
+    display-name: "Tank"
+    group: "ULTIMATE"
+    max-level: 4
+    applies: "ARMOR"
+    description: "|-"
+
+  swordsman:
+    display-name: "Swordsman"
+    group: "ULTIMATE"
+    max-level: 5
+    applies: "ARMOR"
+    description: "|-"
+
+  critical:
+    display-name: "Critical"
+    group: "ELITE"
+    max-level: 3
+    applies: "SWORDS"
+    description: "Increase damage done with critical hit."
+
+  rebound:
+    display-name: "Rebound"
+    group: "LEGENDARY"
+    max-level: 3
+    applies: "WEAPONS"
+    description: "Gain some health back after kills."
+
+  thunderlord:
+    display-name: "Thunderlord"
+    group: "LEGENDARY"
+    max-level: 3
+    applies: "WEAPONS"
+    description: "|-"
+
+  netherling:
+    display-name: "Netherling"
+    group: "ULTIMATE"
+    max-level: 3
+    applies: "SWORDS"
+    description: "Double damage to mobs in Nether."
+
+  endmaster:
+    display-name: "Endmaster"
+    group: "ULTIMATE"
+    max-level: 3
+    applies: "SWORDS"
+    description: "Double damage to mobs in End."
+
+  creeperarmor:
+    display-name: "Creeper Armor"
+    group: "ULTIMATE"
+    max-level: 3
+    applies: "ARMOR"
+    description: "|-"
+
+  spirits:
+    display-name: "Spirits"
+    group: "ULTIMATE"
+    max-level: 10
+    applies: "ARMOR"
+    description: "Chance to spawn guard blazes."
+
+  bleed:
+    display-name: "Bleed"
+    group: "ULTIMATE"
+    max-level: 6
+    applies: "AXES"
+    description: "Make your opponent bleed."
+
+  lavawalker:
+    display-name: "Lava Walker"
+    group: "LEGENDARY"
+    max-level: 1
+    applies: "BOOTS"
+    description: "Walk on Lava."
+
+  waterwalker:
+    display-name: "Water Walker"
+    group: "LEGENDARY"
+    max-level: 1
+    applies: "BOOTS"
+    description: "Walk on Water."
+
+  aqua:
+    display-name: "Aqua"
+    group: "LEGENDARY"
+    max-level: 4
+    applies: "BOOTS"
+    description: "Deal double damage while in water."
+
+  judgement:
+    display-name: "Judgement"
+    group: "LEGENDARY"
+    max-level: 5
+    applies: "ELYTRA"
+    description: "|-"
+
+  divert:
+    display-name: "Divert"
+    group: "LEGENDARY"
+    max-level: 5
+    applies: "ARMOR"
+    description: "|-"
+
+  unholy:
+    display-name: "Unholy"
+    group: "LEGENDARY"
+    max-level: 5
+    applies: "ARMOR"
+    description: "Defend with weakness and wither effects."
+
+  chaos:
+    display-name: "Chaos"
+    group: "LEGENDARY"
+    max-level: 5
+    applies: "TRIDENT"
+    description: "Deal weakness and wither effects."
+
+  convulse:
+    display-name: "Convulse"
+    group: "LEGENDARY"
+    max-level: 6
+    applies: "BOOTS"
+    description: "|-"
+
+  chunky:
+    display-name: "Chunky"
+    group: "LEGENDARY"
+    max-level: 6
+    applies: "CHESTPLATES"
+    description: "Chance to receive less damage."
+
+  barbarian:
+    display-name: "Barbarian"
+    group: "LEGENDARY"
+    max-level: 4
+    applies: "AXES"
+    description: "Chance to inflicts more axe damage."
+
+  lucid:
+    display-name: "Lucid"
+    group: "LEGENDARY"
+    max-level: 3
+    applies: "ARMOR"
+    description: "|-"
+
+  doublestrike:
+    display-name: "Double Strike"
+    group: "LEGENDARY"
+    max-level: 3
+    applies: "SWORDS"
+    description: "A chance to strike twice."
+
+  gears:
+    display-name: "Gears"
+    group: "LEGENDARY"
+    max-level: 3
+    applies: "BOOTS"
+    description: "Added speed when equipped."
+
+  inflame:
+    display-name: "Inflame"
+    group: "LEGENDARY"
+    max-level: 3
+    applies: "AXES"
+    description: "Set all players in radius on fire."
+
+  immolation:
+    display-name: "Immolation"
+    group: "ULTIMATE"
+    max-level: 3
+    applies: "SWORDS"
+    description: "Set all mobs in radius on fire."
+
+  killaura:
+    display-name: "Kill Aura"
+    group: "LEGENDARY"
+    max-level: 5
+    applies: "SWORDS"
+    description: "|-"
+
+  inquisitive:
+    display-name: "Inquisitive"
+    group: "LEGENDARY"
+    max-level: 4
+    applies: "SWORDS"
+    description: "Chance to increase EXP drops from mobs."
+
+  lifesteal:
+    display-name: "Lifesteal"
+    group: "LEGENDARY"
+    max-level: 5
+    applies: "SWORDS"
+    description: "|-"
+
+  overload:
+    display-name: "Overload"
+    group: "LEGENDARY"
+    max-level: 3
+    applies: "ARMOR"
+    description: "Unlocks additional hearts."
+
+  armored:
+    display-name: "Armored"
+    group: "LEGENDARY"
+    max-level: 4
+    applies: "ARMOR"
+    description: "Decreases damage from enemy\nswords by 2% per level."
+
+  blacksmith:
+    display-name: "Blacksmith"
+    group: "LEGENDARY"
+    max-level: 5
+    applies: "AXE"
+    description: "|-"
+
+  immortal:
+    display-name: "Immortal"
+    group: "FABLED"
+    max-level: 4
+    applies: "ARMOR"
+    description: "|-"
+
+  unbreakable:
+    display-name: "Unbreakable"
+    group: "FABLED"
+    max-level: 1
+    applies: "TOOLS"
+    description: "Tools with this enchant become unbreakable"
+
+  abiding:
+    display-name: "Abiding"
+    group: "LEGENDARY"
+    max-level: 1
+    applies: "WEAPONS"
+    description: "Weapons with this enchant become unbreakable"
+
+  disarmor:
+    display-name: "Disarmor"
+    group: "LEGENDARY"
+    max-level: 8
+    applies: "SWORD"
+    description: "|-"
+
+  striker:
+    display-name: "Striker"
+    group: "ULTIMATE"
+    max-level: 3
+    applies: "BOW"
+    description: "Rain arrows over opponent."
+
+  sniper:
+    display-name: "Sniper"
+    group: "ULTIMATE"
+    max-level: 5
+    applies: "BOW"
+    description: "|-"
+
+  deadshot:
+    display-name: "Deadshot"
+    group: "LEGENDARY"
+    max-level: 5
+    applies: "TRIDENT"
+    description: "|-"
+
+  soulbound:
+    display-name: "Soulbound"
+    group: "FABLED"
+    max-level: 3
+    applies: "WEAPONS + TOOLS + BOWS"
+    description: "A chance to keep item on death."
+
+  neutralize:
+    display-name: "Neutralize"
+    group: "FABLED"
+    max-level: 2
+    applies: "BOW, CROSSBOW"
+    description: "Chance to disarm opponent."
+
+  disarm:
+    display-name: "Disarm"
+    group: "FABLED"
+    max-level: 3
+    applies: "SWORDS"
+    description: "Chance to disarm opponent."
+
+  phoenix:
+    display-name: "Phoenix"
+    group: "FABLED"
+    max-level: 3
+    applies: "CHESTPLATES"
+    description: "Chance to revive yourself when killed."
+
+  scare:
+    display-name: "Scare"
+    group: "FABLED"
+    max-level: 5
+    applies: "WEAPONS"
+    description: "|-"
+
+  strife:
+    display-name: "Strife"
+    group: "LEGENDARY"
+    max-level: 3
+    applies: "TRIDENT"
+    description: "Increases Trident melee damage."
+
+  spark:
+    display-name: "Spark"
+    group: "ELITE"
+    max-level: 3
+    applies: "TRIDENT"
+    description: "Light opponents on fire."
+
+  bluntforce:
+    display-name: "Blunt Force"
+    group: "ELITE"
+    max-level: 4
+    applies: "AXES"
+    description: "Chance to strike with great force."
+
+  aegis:
+    display-name: "Aegis"
+    group: "ULTIMATE"
+    max-level: 3
+    applies: "BOOTS"
+    description: "Chance to gain speed when taking fall damage."
+
+  plummet:
+    display-name: "Plummet"
+    group: "ULTIMATE"
+    max-level: 3
+    applies: "BOOTS"
+    description: "|-"
+
+  suspend:
+    display-name: "Suspend"
+    group: "ELITE"
+    max-level: 3
+    applies: "SWORDS"
+    description: "Chance to cause no knockback to mobs."
+
+  nightowl:
+    display-name: "Night Owl"
+    group: "ULTIMATE"
+    max-level: 3
+    applies: "SWORDS"
+    description: "Deal more damage to mobs at night."
+
+  nightwalker:
+    display-name: "Nightwalker"
+    group: "ELITE"
+    max-level: 3
+    applies: "SWORDS"
+    description: "Freeze mobs at night."
+
+  launch:
+    display-name: "Launch"
+    group: "LEGENDARY"
+    max-level: 3
+    applies: "SWORDS"
+    description: "Launch yourself by right-clicking."
+
+  slingshot:
+    display-name: "Slingshot"
+    group: "LEGENDARY"
+    max-level: 3
+    applies: "ELYTRA"
+    description: "Boost yourself into flight by right-clicking."
+
+  nulify:
+    display-name: "Nulify"
+    group: "FABLED"
+    max-level: 4
+    applies: "WEAPONS"
+    description: "|-"
+
+  rush:
+    display-name: "Rush"
+    group: "FABLED"
+    max-level: 3
+    applies: "ELYTRA"
+    description: "|-"
+
+  diploid:
+    display-name: "Diploid"
+    group: "FABLED"
+    max-level: 5
+    applies: "SWORDS"
+    description: "|-"
+
+  multiplication:
+    display-name: "Multiplication"
+    group: "FABLED"
+    max-level: 5
+    applies: "PICKAXE"
+    description: "|-"
+
+  fuddle:
+    display-name: "Fuddle"
+    group: "ULTIMATE"
+    max-level: 3
+    applies: "SWORDS"
+    description: "Disorganize opponents hotbar."
+
+  spiritmaster:
+    display-name: "Spiritmaster"
+    group: "FABLED"
+    max-level: 3
+    applies: "SWORDS"
+    description: "|-"
+
+  axeofspirits:
+    display-name: "Axe of Spirits"
+    group: "FABLED"
+    max-level: 3
+    applies: "AXES"
+    description: "|-"
+
+  soulminer:
+    display-name: "Soulminer"
+    group: "FABLED"
+    max-level: 3
+    applies: "PICKAXE"
+    description: "Chance to get souls by mining."
+
+  soulgrind:
+    display-name: "Soulgrind"
+    group: "FABLED"
+    max-level: 3
+    applies: "SWORDS"
+    description: "Chance to get souls by killing mobs."
+
+  deranged:
+    display-name: "Deranged"
+    group: "LEGENDARY"
+    max-level: 3
+    applies: "SWORDS"
+    description: "Strike lightning at nearby players."
+
+  magnet:
+    display-name: "Magnet"
+    group: "ELITE"
+    max-level: 3
+    applies: "SWORDS"
+    description: "Your attack pulls players towards you."
+
+  callallies:
+    display-name: "Call to Allies"
+    group: "ULTIMATE"
+    max-level: 3
+    applies: "GOAT HORN"
+    description: "|-"
+

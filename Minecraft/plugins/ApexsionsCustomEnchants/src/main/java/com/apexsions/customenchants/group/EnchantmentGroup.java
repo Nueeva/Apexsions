@@ -94,4 +94,23 @@ public class EnchantmentGroup {
             return "Rp " + String.format("%,d", (long) cost).replace(',', '.');
         }
     }
+
+    public org.bukkit.Color getBukkitColor() {
+        try {
+            if (color != null && color.startsWith("#")) {
+                int hex = Integer.parseInt(color.substring(1), 16);
+                return org.bukkit.Color.fromRGB(hex);
+            }
+        } catch (Exception ignored) {}
+        return switch (id.toUpperCase()) {
+            case "SIMPLE" -> org.bukkit.Color.fromRGB(200, 200, 200);
+            case "UNIQUE" -> org.bukkit.Color.fromRGB(122, 255, 80);
+            case "ELITE" -> org.bukkit.Color.fromRGB(20, 250, 255);
+            case "ULTIMATE" -> org.bukkit.Color.fromRGB(250, 255, 0);
+            case "LEGENDARY" -> org.bukkit.Color.fromRGB(255, 140, 0);
+            case "FABLED" -> org.bukkit.Color.fromRGB(255, 85, 255);
+            case "HEROIC" -> org.bukkit.Color.fromRGB(255, 0, 127);
+            default -> org.bukkit.Color.WHITE;
+        };
+    }
 }
