@@ -58,6 +58,14 @@ public class CustomEnchantsGUIListener implements Listener {
             gui.handleClick(event);
         } else if (holder instanceof ArmorSetBonusPickerGUI gui) {
             gui.handleClick(event);
+        } else if (holder instanceof ArmorSetBonusTierGUI gui) {
+            gui.handleClick(event);
+        } else if (holder instanceof StatValuePickerGUI gui) {
+            gui.handleClick(event);
+        } else if (holder instanceof ToolBonusPickerGUI gui) {
+            gui.handleClick(event);
+        } else if (holder instanceof ToolStatValuePickerGUI gui) {
+            gui.handleClick(event);
         }
     }
 
@@ -88,7 +96,11 @@ public class CustomEnchantsGUIListener implements Listener {
                 || holder instanceof VanillaEnchantPickerGUI
                 || holder instanceof EnchantLevelPickerGUI
                 || holder instanceof VanillaLevelPickerGUI
-                || holder instanceof ArmorSetBonusPickerGUI) {
+                || holder instanceof ArmorSetBonusPickerGUI
+                || holder instanceof ArmorSetBonusTierGUI
+                || holder instanceof StatValuePickerGUI
+                || holder instanceof ToolBonusPickerGUI
+                || holder instanceof ToolStatValuePickerGUI) {
             for (int rawSlot : event.getRawSlots()) {
                 if (rawSlot < event.getInventory().getSize()) {
                     event.setCancelled(true);

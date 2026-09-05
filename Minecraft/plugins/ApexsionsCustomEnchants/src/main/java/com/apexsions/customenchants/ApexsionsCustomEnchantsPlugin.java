@@ -52,6 +52,7 @@ public class ApexsionsCustomEnchantsPlugin extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new CustomItemApplyListener(this), this);
         getServer().getPluginManager().registerEvents(new EnchantEventListener(this), this);
         getServer().getPluginManager().registerEvents(new CustomEnchantsGUIListener(this), this);
+        getServer().getPluginManager().registerEvents(new com.apexsions.customenchants.listener.ToolSetBonusListener(this), this);
         getServer().getPluginManager().registerEvents(this.itemRenameManager, this);
 
         // Register Commands

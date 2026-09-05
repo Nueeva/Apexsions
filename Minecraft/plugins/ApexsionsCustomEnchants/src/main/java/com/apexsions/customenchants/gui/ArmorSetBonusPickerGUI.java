@@ -10,7 +10,6 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.Sound;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
@@ -25,8 +24,8 @@ import java.util.*;
 import java.util.function.Consumer;
 
 /**
- * 100% GUI-Driven Armor Set Bonus Selector supporting multiple active stat bonuses per set.
- * Left-Click to select/add a stat, Right-Click to remove a stat.
+ * Main Central Hub for Armor Set Bonus Configuration.
+ * Allows configuring 2-Piece Bonus (Half Set), 4-Piece Bonus (Full Set), or BOTH simultaneously.
  */
 public class ArmorSetBonusPickerGUI implements InventoryHolder {
 
@@ -39,46 +38,50 @@ public class ArmorSetBonusPickerGUI implements InventoryHolder {
 
     // State
     private String setName = "";
-    private int requiredPieces = 4;
-    private final Map<KitStatType, Double> activeStats = new LinkedHashMap<>();
-    private KitStatType selectedEditingStat = null;
-    private boolean enabled = true;
+    private final Map<KitStatType, Double> set2Stats = new LinkedHashMap<>();
+    private final Map<KitStatType, Double> set4Stats = new LinkedHashMap<>();
 
     private static final List<String> PRESET_NAMES = List.of("Apexsions", "Warlord", "Gladiator", "Titan", "Phantom", "Sovereign", "Shadow", "Immortal");
     private int nameIndex = 0;
 
     @FunctionalInterface
     public interface SetBonusSaveCallback {
-        void onSave(String setName, int requiredPieces, Map<KitStatType, Double> activeStats);
+        void onSave(String setName, Map<KitStatType, Double> set2Stats, Map<KitStatType, Double> set4Stats);
     }
     private final SetBonusSaveCallback onConfigSave;
 
-    public ArmorSetBonusPickerGUI(ApexsionsCustomEnchantsPlugin plugin, Player player, ItemStack item, InventoryHolder returnGUI, Consumer<ItemStack> onUpdate) {
-        this(plugin, player, "", 4, null, item, returnGUI, (savedName, savedReq, savedStats) -> {
+    // Single item modifier constructor
+    public ArmorSetBonusPickerGUI(ApexsionsCustomEnchantsPlugin plugin, Player player, ItemStack item,
+                                  InventoryHolder returnGUI, Consumer<ItemStack> onUpdate) {
+        this(plugin, player, "", null, null, item, returnGUI, (savedName, s2, s4) -> {
             if (onUpdate != null && item != null) {
                 onUpdate.accept(item);
             }
         });
     }
 
-    public ArmorSetBonusPickerGUI(ApexsionsCustomEnchantsPlugin plugin, Player player, String initialSetName, int initialReq, Map<KitStatType, Double> initialStats, ItemStack item, InventoryHolder returnGUI, SetBonusSaveCallback onConfigSave) {
+    // Global creator constructor
+    public ArmorSetBonusPickerGUI(ApexsionsCustomEnchantsPlugin plugin, Player player, String initialSetName,
+                                  Map<KitStatType, Double> initialSet2Stats, Map<KitStatType, Double> initialSet4Stats,
+                                  ItemStack item, InventoryHolder returnGUI, SetBonusSaveCallback onConfigSave) {
         this.plugin = plugin;
         this.player = player;
         this.item = item;
         this.returnGUI = returnGUI;
         this.onConfigSave = onConfigSave;
-        this.setName = initialSetName != null ? initialSetName : "";
-        this.requiredPieces = initialReq > 0 ? initialReq : 4;
-        if (initialStats != null && !initialStats.isEmpty()) {
-            this.activeStats.putAll(initialStats);
+        this.setName = (initialSetName != null && !initialSetName.isBlank()) ? initialSetName : "";
+
+        if (initialSet2Stats != null && !initialSet2Stats.isEmpty()) {
+            this.set2Stats.putAll(initialSet2Stats);
+        }
+        if (initialSet4Stats != null && !initialSet4Stats.isEmpty()) {
+            this.set4Stats.putAll(initialSet4Stats);
         }
 
-        this.inventory = Bukkit.createInventory(this, 54, mm.deserialize("<gradient:#e74c3c:#f39c12><bold>🛡 PENGATURAN MULTI-STAT SET BONUS 🛡</bold></gradient>"));
+        this.inventory = Bukkit.createInventory(this, 54, mm.deserialize("<gradient:#e74c3c:#f39c12><bold>🛡 PUSAT ARMOR SET BONUS 🛡</bold></gradient>"));
 
-        if (this.activeStats.isEmpty() && item != null) {
+        if (this.set2Stats.isEmpty() && this.set4Stats.isEmpty() && item != null) {
             readExistingBonus();
-        } else if (!this.activeStats.isEmpty()) {
-            this.selectedEditingStat = this.activeStats.keySet().iterator().next();
         }
 
         buildGUI();
@@ -94,49 +97,45 @@ public class ArmorSetBonusPickerGUI implements InventoryHolder {
         if (pdc.has(kName, PersistentDataType.STRING)) {
             this.setName = pdc.get(kName, PersistentDataType.STRING);
         }
-        NamespacedKey kReq = new NamespacedKey("apexsions", "set_req");
-        if (pdc.has(kReq, PersistentDataType.INTEGER)) {
-            this.requiredPieces = pdc.getOrDefault(kReq, PersistentDataType.INTEGER, 4);
+
+        // Read set2_stats
+        NamespacedKey k2 = new NamespacedKey("apexsions", "set2_stats");
+        if (pdc.has(k2, PersistentDataType.STRING)) {
+            parseStatString(pdc.get(k2, PersistentDataType.STRING), set2Stats);
         }
 
-        // Check multi-stat serialized string first
-        NamespacedKey kStats = new NamespacedKey("apexsions", "set_stats");
-        if (pdc.has(kStats, PersistentDataType.STRING)) {
-            String raw = pdc.get(kStats, PersistentDataType.STRING);
-            if (raw != null && !raw.isBlank()) {
-                String[] parts = raw.split(";");
-                for (String part : parts) {
-                    String[] kv = part.split(":");
-                    if (kv.length == 2) {
-                        try {
-                            KitStatType st = KitStatType.valueOf(kv[0]);
-                            double val = Double.parseDouble(kv[1]);
-                            activeStats.put(st, val);
-                        } catch (Exception ignored) {}
-                    }
+        // Read set4_stats
+        NamespacedKey k4 = new NamespacedKey("apexsions", "set4_stats");
+        if (pdc.has(k4, PersistentDataType.STRING)) {
+            parseStatString(pdc.get(k4, PersistentDataType.STRING), set4Stats);
+        }
+
+        // Legacy fallback
+        if (set2Stats.isEmpty() && set4Stats.isEmpty()) {
+            NamespacedKey kStats = new NamespacedKey("apexsions", "set_stats");
+            if (pdc.has(kStats, PersistentDataType.STRING)) {
+                int req = pdc.getOrDefault(new NamespacedKey("apexsions", "set_req"), PersistentDataType.INTEGER, 4);
+                if (req == 2) {
+                    parseStatString(pdc.get(kStats, PersistentDataType.STRING), set2Stats);
+                } else {
+                    parseStatString(pdc.get(kStats, PersistentDataType.STRING), set4Stats);
                 }
             }
         }
+    }
 
-        // Fallback to legacy single stat if empty
-        if (activeStats.isEmpty()) {
-            NamespacedKey kType = new NamespacedKey("apexsions", "set_type");
-            if (pdc.has(kType, PersistentDataType.STRING)) {
-                String typeStr = pdc.get(kType, PersistentDataType.STRING);
+    private void parseStatString(String raw, Map<KitStatType, Double> target) {
+        if (raw == null || raw.isBlank()) return;
+        for (String p : raw.split(";")) {
+            String[] kv = p.split(":");
+            if (kv.length == 2) {
                 try {
-                    KitStatType st = KitStatType.valueOf(typeStr);
-                    double val = pdc.getOrDefault(new NamespacedKey("apexsions", "set_val"), PersistentDataType.DOUBLE, 20.0);
-                    activeStats.put(st, val);
+                    KitStatType st = KitStatType.valueOf(kv[0].trim());
+                    double val = Double.parseDouble(kv[1].trim());
+                    target.put(st, val);
                 } catch (Exception ignored) {}
             }
         }
-
-        if (!activeStats.isEmpty()) {
-            this.selectedEditingStat = activeStats.keySet().iterator().next();
-        } else {
-            this.selectedEditingStat = null;
-        }
-        this.enabled = true;
     }
 
     public void open() {
@@ -152,236 +151,124 @@ public class ArmorSetBonusPickerGUI implements InventoryHolder {
             inventory.setItem(i, border);
         }
 
-        // Section 1: Stat Types (Slots 10..15)
-        inventory.setItem(1, createItem(Material.BOOK, "<yellow><bold>1. PILIH STAT BONUS (MULTI-STAT)</bold></yellow>", List.of(
-                mm.deserialize("<gray>Klik Kiri: Pilih / Tambahkan Stat ke Set</gray>"),
-                mm.deserialize("<red>Klik Kanan: Hapus Stat dari Set</red>")
-        ), false));
+        // Slot 4: Header
+        String nameDisplay = (setName == null || setName.isBlank()) ? "<dark_gray>(Belum Diatur)</dark_gray>" : "<gold>" + setName + "</gold>";
+        String idDisplay = (setName == null || setName.isBlank()) ? "kosong" : setName.toLowerCase().replaceAll("[^a-z0-9_-]", "_");
 
-        addStatButton(10, KitStatType.DAMAGE_REDUCTION, Material.SHIELD, "<aqua>Pengurangan Damage (Defense)</aqua>");
-        addStatButton(11, KitStatType.ATTACK_DAMAGE_BOOST, Material.DIAMOND_SWORD, "<red>Peningkatan Serangan (Attack)</red>");
-        addStatButton(12, KitStatType.DODGE_CHANCE, Material.FEATHER, "<green>Peluang Menghindar (Dodge)</green>");
-        addStatButton(13, KitStatType.CRITICAL_DAMAGE_BOOST, Material.BLAZE_POWDER, "<gold>Critical Damage Boost</gold>");
-        addStatButton(14, KitStatType.EXTRA_MAX_HEALTH, Material.GOLDEN_APPLE, "<light_purple>Tambahan Hati Maksimal (HP)</light_purple>");
-        addStatButton(15, KitStatType.MOVEMENT_SPEED_BOOST, Material.SUGAR, "<yellow>Kecepatan Lari (Speed)</yellow>");
+        inventory.setItem(4, createItem(Material.NETHER_STAR,
+                "<gradient:#f1c40f:#e67e22><bold>🛡 PENGATURAN TIER ARMOR SET BONUS 🛡</bold></gradient>",
+                List.of(
+                        mm.deserialize("<gray>Nama Set: " + nameDisplay + "</gray>"),
+                        mm.deserialize("<gray>ID Set: <yellow>" + idDisplay + "</yellow></gray>"),
+                        Component.empty(),
+                        mm.deserialize("<yellow>Atur efek bonus untuk 2 Pieces, 4 Pieces, atau keduanya!</yellow>"),
+                        mm.deserialize("<gray>Jika pemain memakai 4 potong armor, kedua efek aktif bersamaan.</gray>")
+                ), true));
 
-        // Section 2: Requirement Pieces (Slots 20 & 24)
-        inventory.setItem(19, createItem(Material.BOOK, "<yellow><bold>2. PILIH SYARAT JUMLAH PIECES</bold></yellow>", List.of(
-                mm.deserialize("<gray>Tentukan berapa buah armor yang wajib dipakai:</gray>")
-        ), false));
+        // Slot 20: 2-Piece Bonus Option
+        List<Component> lore2 = new ArrayList<>();
+        lore2.add(mm.deserialize("<gray>Efek aktif saat pemain memakai <gold>minimal 2 potong armor</gold>.</gray>"));
+        lore2.add(Component.empty());
+        if (set2Stats.isEmpty()) {
+            lore2.add(mm.deserialize("<red>● Belum ada stat yang diatur (Non-aktif).</red>"));
+        } else {
+            lore2.add(mm.deserialize("<green>● Stat 2-Piece Aktif (" + set2Stats.size() + " Efek):</green>"));
+            for (Map.Entry<KitStatType, Double> e : set2Stats.entrySet()) {
+                lore2.add(mm.deserialize("<aqua>  - " + e.getKey().getDisplayName() + ": <gold>" + e.getKey().formatValue(e.getValue()) + "</gold></aqua>"));
+            }
+        }
+        lore2.add(Component.empty());
+        lore2.add(mm.deserialize("<yellow>▶ Klik untuk buka GUI Pengaturan Bonus 2-Piece!</yellow>"));
 
-        boolean is2 = (requiredPieces == 2);
         inventory.setItem(20, createItem(Material.CHAINMAIL_CHESTPLATE,
-                "<gold><bold>2 Pieces (Half Set)</bold></gold>" + (is2 ? " <green><bold>[TERPILIH]</bold></green>" : ""),
-                List.of(
-                        mm.deserialize("<gray>Cukup memakai 2 bagian armor dari set ini.</gray>"),
-                        Component.empty(),
-                        mm.deserialize(is2 ? "<green>● Sedang aktif (2 Pieces).</green>" : "<yellow>▶ Klik untuk memilih 2 Pieces.</yellow>")
-                ), is2));
+                "<gradient:#3498db:#2ecc71><bold>🛡 PENGATURAN BONUS 2-PIECE (HALF SET)</bold></gradient>",
+                lore2, !set2Stats.isEmpty()));
 
-        boolean is4 = (requiredPieces == 4);
+        // Slot 24: 4-Piece Bonus Option
+        List<Component> lore4 = new ArrayList<>();
+        lore4.add(mm.deserialize("<gray>Efek aktif saat pemain memakai <gold>lengkap 4 potong armor</gold>.</gray>"));
+        lore4.add(Component.empty());
+        if (set4Stats.isEmpty()) {
+            lore4.add(mm.deserialize("<red>● Belum ada stat yang diatur (Non-aktif).</red>"));
+        } else {
+            lore4.add(mm.deserialize("<green>● Stat 4-Piece Aktif (" + set4Stats.size() + " Efek):</green>"));
+            for (Map.Entry<KitStatType, Double> e : set4Stats.entrySet()) {
+                lore4.add(mm.deserialize("<aqua>  - " + e.getKey().getDisplayName() + ": <gold>" + e.getKey().formatValue(e.getValue()) + "</gold></aqua>"));
+            }
+        }
+        lore4.add(Component.empty());
+        lore4.add(mm.deserialize("<yellow>▶ Klik untuk buka GUI Pengaturan Bonus 4-Piece!</yellow>"));
+
         inventory.setItem(24, createItem(Material.NETHERITE_CHESTPLATE,
-                "<gradient:#f1c40f:#e67e22><bold>4 Pieces (Full Set)</bold></gradient>" + (is4 ? " <green><bold>[TERPILIH]</bold></green>" : ""),
+                "<gradient:#e74c3c:#f39c12><bold>👑 PENGATURAN BONUS 4-PIECE (FULL SET)</bold></gradient>",
+                lore4, !set4Stats.isEmpty()));
+
+        // Slot 40: Set Name Rotator / Info
+        inventory.setItem(40, createItem(Material.NAME_TAG,
+                "<gradient:#3498db:#9b59b6><bold>🏷 NAMA / ID SET: " + nameDisplay + "</bold></gradient>",
                 List.of(
-                        mm.deserialize("<gray>Wajib memakai 4 bagian armor lengkap (Helm, Baju, Celana, Sepatu).</gray>"),
+                        mm.deserialize("<gray>ID Set: <yellow>" + idDisplay + "</yellow></gray>"),
                         Component.empty(),
-                        mm.deserialize(is4 ? "<green>● Sedang aktif (4 Pieces).</green>" : "<yellow>▶ Klik untuk memilih 4 Pieces (Full Set).</yellow>")
-                ), is4));
-
-        // Section 3: Bonus Value (Slots 28..34) for selected editing stat
-        if (selectedEditingStat != null) {
-            double currentVal = activeStats.getOrDefault(selectedEditingStat, selectedEditingStat.getDefaultValue());
-            inventory.setItem(27, createItem(Material.BOOK, "<yellow><bold>3. ATUR NILAI: " + selectedEditingStat.getDisplayName() + "</bold></yellow>", List.of(
-                    mm.deserialize("<gray>Nilai saat ini: <gold>" + selectedEditingStat.formatValue(currentVal) + "</gold></gray>"),
-                    mm.deserialize("<gray>Klik salah satu persentase di samping:</gray>")
-            ), false));
-
-            double[] values = {5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 50.0};
-            for (int i = 0; i < values.length; i++) {
-                double v = values[i];
-                boolean isValSel = (Math.abs(currentVal - v) < 0.01);
-                int slot = 28 + i;
-                inventory.setItem(slot, createItem(Material.EXPERIENCE_BOTTLE,
-                        "<gold><bold>" + selectedEditingStat.formatValue(v) + "</bold></gold>" + (isValSel ? " <green><bold>[TERPILIH]</bold></green>" : ""),
-                        List.of(
-                                mm.deserialize("<gray>Atur stat <yellow>" + selectedEditingStat.getDisplayName() + "</yellow> menjadi <gold>" + selectedEditingStat.formatValue(v) + "</gold>.</gray>"),
-                                Component.empty(),
-                                mm.deserialize(isValSel ? "<green>● Nilai ini sedang aktif.</green>" : "<yellow>▶ Klik untuk menerapkan nilai ini.</yellow>")
-                        ), isValSel));
-            }
-        } else {
-            inventory.setItem(27, createItem(Material.BOOK, "<yellow><bold>3. ATUR NILAI STAT</bold></yellow>", List.of(
-                    mm.deserialize("<gray>Belum ada stat yang dipilih.</gray>"),
-                    mm.deserialize("<yellow>Pilih salah satu stat di Section 1 terlebih dahulu!</yellow>")
-            ), false));
-            for (int s = 28; s <= 34; s++) {
-                inventory.setItem(s, createItem(Material.GRAY_DYE, "<dark_gray><italic>Pilih Stat di Atas Terlebih Dahulu</italic></dark_gray>", List.of(
-                        mm.deserialize("<gray>Klik salah satu stat di baris atas untuk mengatur nilainya.</gray>")
+                        mm.deserialize("<yellow>▶ Klik untuk ganti preset nama set!</yellow>")
                 ), false));
-            }
-        }
 
-        // Section 4: Set ID / Name
-        String nameDisplay = (setName == null || setName.isBlank()) ? "<italic>(Belum Diatur)</italic>" : setName;
-        String idDisplay = (setName == null || setName.isBlank()) ? "(Kosong)" : setName.toLowerCase();
-        inventory.setItem(40, createItem(Material.NAME_TAG, "<gradient:#3498db:#9b59b6><bold>🏷 NAMA / ID SET: " + nameDisplay + "</bold></gradient>", List.of(
-                mm.deserialize("<gray>Set ID: <yellow>" + idDisplay + "</yellow></gray>"),
-                Component.empty(),
-                mm.deserialize("<yellow>▶ Klik untuk ganti preset nama set!</yellow>")
-        ), false));
+        // Slot 41: Clear all
+        inventory.setItem(41, createItem(Material.LAVA_BUCKET,
+                "<red><bold>✖ HAPUS SELURUH SET BONUS</bold></red>",
+                List.of(
+                        mm.deserialize("<gray>Menghapus seluruh efek bonus 2-set dan 4-set dari item ini.</gray>"),
+                        Component.empty(),
+                        mm.deserialize("<red>▶ Klik untuk mengosongkan seluruh bonus!</red>")
+                ), false));
 
-        // Remove / Disable button
-        inventory.setItem(41, createItem(Material.LAVA_BUCKET, "<red><bold>✖ HAPUS SELURUH SET BONUS</bold></red>", List.of(
-                mm.deserialize("<gray>Menghapus seluruh efek set bonus dari item ini.</gray>"),
-                Component.empty(),
-                mm.deserialize("<red>▶ Klik untuk menonaktifkan & hapus bonus!</red>")
-        ), false));
+        // Slot 45: Back
+        inventory.setItem(45, createItem(Material.ARROW,
+                "<gradient:#3498db:#2980b9><bold>⬅ KEMBALI TANPA MENYIMPAN</bold></gradient>",
+                List.of(
+                        mm.deserialize("<gray>Kembali ke menu sebelumnya.</gray>")
+                ), false));
 
-        // Save & Return Button (Slot 49)
-        List<Component> summaryLore = new ArrayList<>();
-        if (setName != null && !setName.isBlank()) {
-            summaryLore.add(mm.deserialize("<gray>Set: <gold>" + setName + "</gold> (" + requiredPieces + " Pieces)</gray>"));
-        } else {
-            summaryLore.add(mm.deserialize("<gray>Set: <dark_gray>(Belum Ada Nama)</dark_gray> (" + requiredPieces + " Pieces)</gray>"));
-        }
-        summaryLore.add(Component.empty());
-        if (activeStats.isEmpty()) {
-            summaryLore.add(mm.deserialize("<red>● Tidak ada stat bonus yang aktif.</red>"));
-            summaryLore.add(mm.deserialize("<gray>Jika disimpan, set bonus pada item akan dihapus/dikosongkan.</gray>"));
-        } else {
-            summaryLore.add(mm.deserialize("<gray>Stat Bonus Aktif:</gray>"));
-            for (Map.Entry<KitStatType, Double> e : activeStats.entrySet()) {
-                summaryLore.add(mm.deserialize("<aqua>● " + e.getKey().getDisplayName() + ": <gold>" + e.getKey().formatValue(e.getValue()) + "</gold></aqua>"));
-            }
-        }
-        summaryLore.add(Component.empty());
-        summaryLore.add(mm.deserialize("<green><bold>▶ Klik untuk simpan & terapkan!</bold></green>"));
+        // Slot 49: Apply & Return Safely
+        boolean hasAny = !set2Stats.isEmpty() || !set4Stats.isEmpty();
+        List<Component> applyLore = new ArrayList<>();
+        applyLore.add(mm.deserialize("<gray>Set: <gold>" + (setName.isBlank() ? "Custom Set" : setName) + "</gold></gray>"));
+        applyLore.add(Component.empty());
+        applyLore.add(mm.deserialize(set2Stats.isEmpty() ? "<gray>● 2-Piece: Nonaktif</gray>" : "<green>● 2-Piece: " + set2Stats.size() + " Efek Aktif</green>"));
+        applyLore.add(mm.deserialize(set4Stats.isEmpty() ? "<gray>● 4-Piece: Nonaktif</gray>" : "<green>● 4-Piece: " + set4Stats.size() + " Efek Aktif</green>"));
+        applyLore.add(Component.empty());
+        applyLore.add(mm.deserialize("<green><bold>▶ Klik untuk simpan & terapkan ke item!</bold></green>"));
 
-        inventory.setItem(49, createItem(Material.EMERALD_BLOCK, "<gradient:#2ecc71:#27ae60><bold>✔ TERAPKAN KE ITEM</bold></gradient>", summaryLore, !activeStats.isEmpty()));
-
-        // Back Button (Slot 45) - ALWAYS PRESENT!
-        inventory.setItem(45, createItem(Material.ARROW, "<gradient:#3498db:#2980b9><bold>⬅ KEMBALI</bold></gradient>", List.of(
-                mm.deserialize("<gray>Kembali ke menu sebelumnya.</gray>")
-        ), false));
-    }
-
-    private void addStatButton(int slot, KitStatType type, Material mat, String title) {
-        boolean isActive = activeStats.containsKey(type);
-        boolean isEditing = (selectedEditingStat == type);
-
-        String badge = "";
-        if (isActive) {
-            badge = " <green><bold>[" + type.formatValue(activeStats.get(type)) + "]</bold></green>";
-        }
-        if (isEditing) {
-            badge += " <yellow><bold>[EDITING]</bold></yellow>";
-        }
-
-        List<Component> lore = new ArrayList<>();
-        lore.add(mm.deserialize("<gray>Stat: <gold>" + type.getDisplayName() + "</gold></gray>"));
-        lore.add(Component.empty());
-        if (isActive) {
-            lore.add(mm.deserialize("<green>● Status: AKTIF (Nilai: " + type.formatValue(activeStats.get(type)) + ")</green>"));
-        } else {
-            lore.add(mm.deserialize("<dark_gray>● Status: Non-aktif</dark_gray>"));
-        }
-        lore.add(Component.empty());
-        lore.add(mm.deserialize("<green>▶ Klik Kiri: Aktifkan / Pilih untuk atur nilai</green>"));
-        lore.add(mm.deserialize("<red>▶ Klik R-Click: Hapus efek stat ini dari set</red>"));
-
-        inventory.setItem(slot, createItem(mat, title + badge, lore, isActive));
+        inventory.setItem(49, createItem(Material.EMERALD_BLOCK,
+                "<gradient:#2ecc71:#27ae60><bold>✔ TERAPKAN KE ITEM</bold></gradient>",
+                applyLore, hasAny));
     }
 
     public void handleClick(InventoryClickEvent event) {
         event.setCancelled(true);
         int slot = event.getRawSlot();
-        ClickType click = event.getClick();
 
-        // 1. Back
+        // 1. Back (Slot 45)
         if (slot == 45) {
             player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1.0f, 1.0f);
-            if (returnGUI != null) {
-                if (returnGUI instanceof AdminItemCreatorGUI creator) {
-                    creator.open();
-                } else if (returnGUI instanceof ItemModifierGUI modifier) {
-                    modifier.open();
-                } else {
-                    player.openInventory(returnGUI.getInventory());
-                }
-            } else {
-                player.closeInventory();
-            }
+            safeReturnToParent(false);
             return;
         }
 
-        // 2. Stat Types (10..15)
-        if (slot >= 10 && slot <= 15) {
-            KitStatType type = switch (slot) {
-                case 10 -> KitStatType.DAMAGE_REDUCTION;
-                case 11 -> KitStatType.ATTACK_DAMAGE_BOOST;
-                case 12 -> KitStatType.DODGE_CHANCE;
-                case 13 -> KitStatType.CRITICAL_DAMAGE_BOOST;
-                case 14 -> KitStatType.EXTRA_MAX_HEALTH;
-                case 15 -> KitStatType.MOVEMENT_SPEED_BOOST;
-                default -> null;
-            };
-
-            if (type != null) {
-                if (click.isRightClick()) {
-                    // Remove stat
-                    if (activeStats.containsKey(type)) {
-                        activeStats.remove(type);
-                        player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 1.0f, 1.0f);
-                        player.sendMessage(mm.deserialize("<red>Stat <gold>" + type.getDisplayName() + "</gold> dihapus dari set.</red>"));
-                        if (selectedEditingStat == type) {
-                            selectedEditingStat = activeStats.isEmpty() ? null : activeStats.keySet().iterator().next();
-                        }
-                        buildGUI();
-                    }
-                } else {
-                    // Left click: Add/Select stat
-                    if (!activeStats.containsKey(type)) {
-                        activeStats.put(type, type.getDefaultValue());
-                    }
-                    this.selectedEditingStat = type;
-                    player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1.0f, 1.2f);
-                    buildGUI();
-                }
-            }
-            return;
-        }
-
-        // 3. Required Pieces
+        // 2. Open 2-Piece Tier GUI (Slot 20)
         if (slot == 20) {
-            this.requiredPieces = 2;
             player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1.0f, 1.2f);
-            buildGUI();
+            new ArmorSetBonusTierGUI(plugin, player, 2, set2Stats, this).open();
             return;
         }
+
+        // 3. Open 4-Piece Tier GUI (Slot 24)
         if (slot == 24) {
-            this.requiredPieces = 4;
             player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1.0f, 1.2f);
-            buildGUI();
+            new ArmorSetBonusTierGUI(plugin, player, 4, set4Stats, this).open();
             return;
         }
 
-        // 4. Values (28..34)
-        if (slot >= 28 && slot <= 34) {
-            if (selectedEditingStat == null) {
-                player.sendMessage(mm.deserialize("<red>Pilih salah satu stat di atas terlebih dahulu!</red>"));
-                return;
-            }
-            double[] values = {5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 50.0};
-            int idx = slot - 28;
-            if (idx >= 0 && idx < values.length) {
-                activeStats.put(selectedEditingStat, values[idx]);
-                player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.2f);
-                buildGUI();
-            }
-            return;
-        }
-
-        // 5. Preset Set Name Rotator (Slot 40)
+        // 4. Name Rotator (Slot 40)
         if (slot == 40) {
             if (setName == null || setName.isBlank()) {
                 nameIndex = 0;
@@ -394,72 +281,51 @@ public class ArmorSetBonusPickerGUI implements InventoryHolder {
             return;
         }
 
-        // 6. Remove/Disable Bonus (Slot 41)
+        // 5. Clear All (Slot 41)
         if (slot == 41) {
-            activeStats.clear();
-            selectedEditingStat = null;
+            set2Stats.clear();
+            set4Stats.clear();
             removeBonusFromItem();
-            if (onConfigSave != null) {
-                onConfigSave.onSave(setName, requiredPieces, activeStats);
-            }
             player.playSound(player.getLocation(), Sound.BLOCK_LAVA_EXTINGUISH, 1.0f, 1.0f);
-            player.sendMessage(mm.deserialize("<red>Armor set bonus berhasil dihapus!</red>"));
-            if (returnGUI != null) {
-                player.openInventory(returnGUI.getInventory());
-            } else {
-                player.closeInventory();
-            }
+            player.sendMessage(mm.deserialize("<red>Seluruh efek armor set bonus berhasil dihapus!</red>"));
+            safeReturnToParent(true);
             return;
         }
 
-        // 7. Save & Apply (Slot 49)
+        // 6. Apply & Save (Slot 49)
         if (slot == 49) {
-            if (activeStats.isEmpty()) {
+            if (set2Stats.isEmpty() && set4Stats.isEmpty()) {
                 removeBonusFromItem();
-                if (onConfigSave != null) {
-                    onConfigSave.onSave(setName, requiredPieces, activeStats);
-                }
                 player.playSound(player.getLocation(), Sound.BLOCK_LAVA_EXTINGUISH, 1.0f, 1.0f);
-                player.sendMessage(mm.deserialize("<yellow>Tidak ada stat yang aktif. Set bonus dikosongkan/dihapus.</yellow>"));
+                player.sendMessage(mm.deserialize("<yellow>Tidak ada stat bonus yang diatur. Bonus dikosongkan.</yellow>"));
             } else {
                 if (setName == null || setName.isBlank()) {
                     setName = PRESET_NAMES.get(0);
                 }
                 applyBonusToItem();
-                if (onConfigSave != null) {
-                    onConfigSave.onSave(setName, requiredPieces, activeStats);
-                }
                 player.playSound(player.getLocation(), Sound.UI_TOAST_CHALLENGE_COMPLETE, 1.0f, 1.2f);
-                player.sendMessage(mm.deserialize("<green><bold>✓ BERHASIL!</bold> Multi-Stat Armor Set Bonus diterapkan!</green>"));
+                player.sendMessage(mm.deserialize("<green><bold>✓ BERHASIL!</bold> Armor Set Bonus <gold>" + setName + "</gold> berhasil diterapkan!</green>"));
             }
-            if (returnGUI != null) {
-                player.openInventory(returnGUI.getInventory());
-            } else {
-                player.closeInventory();
-            }
+            safeReturnToParent(true);
             return;
         }
     }
 
-    private void removeBonusFromItem() {
-        if (item == null) return;
-        ItemMeta meta = item.getItemMeta();
-        if (meta == null) return;
-        PersistentDataContainer pdc = meta.getPersistentDataContainer();
-        pdc.remove(new NamespacedKey("apexsions", "set_id"));
-        pdc.remove(new NamespacedKey("apexsions", "set_name"));
-        pdc.remove(new NamespacedKey("apexsions", "set_req"));
-        pdc.remove(new NamespacedKey("apexsions", "set_stats"));
-        pdc.remove(new NamespacedKey("apexsions", "set_type"));
-        pdc.remove(new NamespacedKey("apexsions", "set_val"));
+    private void safeReturnToParent(boolean saveChanges) {
+        if (saveChanges && onConfigSave != null) {
+            onConfigSave.onSave(setName, set2Stats, set4Stats);
+            return; // onConfigSave will open the creator safely!
+        }
 
-        List<Component> lore = meta.hasLore() && meta.lore() != null ? new ArrayList<>(meta.lore()) : new ArrayList<>();
-        lore.removeIf(c -> {
-            String plain = mm.serialize(c);
-            return plain.contains("SET BONUS") || plain.contains("Syarat:") || plain.contains("Efek:");
-        });
-        meta.lore(lore);
-        item.setItemMeta(meta);
+        if (returnGUI instanceof AdminItemCreatorGUI creator) {
+            creator.open();
+        } else if (returnGUI instanceof ItemModifierGUI modifier) {
+            modifier.open();
+        } else if (returnGUI != null) {
+            player.openInventory(returnGUI.getInventory());
+        } else {
+            player.closeInventory();
+        }
     }
 
     private void applyBonusToItem() {
@@ -471,54 +337,95 @@ public class ArmorSetBonusPickerGUI implements InventoryHolder {
         String setId = setName.toLowerCase().replaceAll("[^a-z0-9_-]", "_");
         pdc.set(new NamespacedKey("apexsions", "set_id"), PersistentDataType.STRING, setId);
         pdc.set(new NamespacedKey("apexsions", "set_name"), PersistentDataType.STRING, setName);
-        pdc.set(new NamespacedKey("apexsions", "set_req"), PersistentDataType.INTEGER, requiredPieces);
 
-        // Serialize stats
-        StringBuilder sb = new StringBuilder();
-        for (Map.Entry<KitStatType, Double> e : activeStats.entrySet()) {
-            if (!sb.isEmpty()) sb.append(";");
-            sb.append(e.getKey().name()).append(":").append(e.getValue());
+        // Serialize set2_stats
+        StringBuilder sb2 = new StringBuilder();
+        for (Map.Entry<KitStatType, Double> e : set2Stats.entrySet()) {
+            if (!sb2.isEmpty()) sb2.append(";");
+            sb2.append(e.getKey().name()).append(":").append(e.getValue());
         }
-        pdc.set(new NamespacedKey("apexsions", "set_stats"), PersistentDataType.STRING, sb.toString());
+        pdc.set(new NamespacedKey("apexsions", "set2_stats"), PersistentDataType.STRING, sb2.toString());
 
-        // Backwards compatibility primary stat
-        if (!activeStats.isEmpty()) {
-            Map.Entry<KitStatType, Double> first = activeStats.entrySet().iterator().next();
-            pdc.set(new NamespacedKey("apexsions", "set_type"), PersistentDataType.STRING, first.getKey().name());
-            pdc.set(new NamespacedKey("apexsions", "set_val"), PersistentDataType.DOUBLE, first.getValue());
+        // Serialize set4_stats
+        StringBuilder sb4 = new StringBuilder();
+        for (Map.Entry<KitStatType, Double> e : set4Stats.entrySet()) {
+            if (!sb4.isEmpty()) sb4.append(";");
+            sb4.append(e.getKey().name()).append(":").append(e.getValue());
         }
+        pdc.set(new NamespacedKey("apexsions", "set4_stats"), PersistentDataType.STRING, sb4.toString());
 
-        // Clean existing lore
+        // Backwards compatibility legacy set_stats
+        Map<KitStatType, Double> legacyMap = !set4Stats.isEmpty() ? set4Stats : set2Stats;
+        StringBuilder sbLegacy = new StringBuilder();
+        for (Map.Entry<KitStatType, Double> e : legacyMap.entrySet()) {
+            if (!sbLegacy.isEmpty()) sbLegacy.append(";");
+            sbLegacy.append(e.getKey().name()).append(":").append(e.getValue());
+        }
+        pdc.set(new NamespacedKey("apexsions", "set_stats"), PersistentDataType.STRING, sbLegacy.toString());
+        pdc.set(new NamespacedKey("apexsions", "set_req"), PersistentDataType.INTEGER, !set4Stats.isEmpty() ? 4 : 2);
+
+        // Update Lore
         List<Component> lore = meta.hasLore() && meta.lore() != null ? new ArrayList<>(meta.lore()) : new ArrayList<>();
         lore.removeIf(c -> {
             String plain = mm.serialize(c);
-            return plain.contains("SET BONUS") || plain.contains("Syarat:") || plain.contains("Efek:");
+            return plain.contains("SET BONUS") || plain.contains("Pieces:") || plain.contains("Efek:");
         });
 
         lore.add(Component.empty());
         lore.add(mm.deserialize("<gradient:#e74c3c:#f39c12><bold>★ SET BONUS: " + setName.toUpperCase() + " ★</bold></gradient>"));
-        lore.add(mm.deserialize("<gray>Syarat: <gold>" + requiredPieces + " Pieces (" + (requiredPieces == 4 ? "Full Set" : "Half Set") + ")</gold></gray>"));
-        for (Map.Entry<KitStatType, Double> e : activeStats.entrySet()) {
-            lore.add(mm.deserialize("<gray>Efek: <aqua>" + e.getKey().getDisplayName() + " " + e.getKey().formatValue(e.getValue()) + "</aqua></gray>"));
+        if (!set2Stats.isEmpty()) {
+            lore.add(mm.deserialize("<gray>Syarat: <gold>2 Pieces (Half Set)</gold></gray>"));
+            for (Map.Entry<KitStatType, Double> e : set2Stats.entrySet()) {
+                lore.add(mm.deserialize("<gray>  ● Efek: <aqua>" + e.getKey().getDisplayName() + " " + e.getKey().formatValue(e.getValue()) + "</aqua></gray>"));
+            }
+        }
+        if (!set4Stats.isEmpty()) {
+            lore.add(mm.deserialize("<gray>Syarat: <gold>4 Pieces (Full Set)</gold></gray>"));
+            for (Map.Entry<KitStatType, Double> e : set4Stats.entrySet()) {
+                lore.add(mm.deserialize("<gray>  ● Efek: <aqua>" + e.getKey().getDisplayName() + " " + e.getKey().formatValue(e.getValue()) + "</aqua></gray>"));
+            }
         }
 
         meta.lore(lore);
         item.setItemMeta(meta);
     }
 
-    private ItemStack createItem(Material mat, String name, List<Component> lore, boolean glow) {
-        ItemStack item = new ItemStack(mat);
+    private void removeBonusFromItem() {
+        if (item == null) return;
         ItemMeta meta = item.getItemMeta();
+        if (meta == null) return;
+        PersistentDataContainer pdc = meta.getPersistentDataContainer();
+        pdc.remove(new NamespacedKey("apexsions", "set_id"));
+        pdc.remove(new NamespacedKey("apexsions", "set_name"));
+        pdc.remove(new NamespacedKey("apexsions", "set_req"));
+        pdc.remove(new NamespacedKey("apexsions", "set_stats"));
+        pdc.remove(new NamespacedKey("apexsions", "set2_stats"));
+        pdc.remove(new NamespacedKey("apexsions", "set4_stats"));
+        pdc.remove(new NamespacedKey("apexsions", "set_type"));
+        pdc.remove(new NamespacedKey("apexsions", "set_val"));
+
+        List<Component> lore = meta.hasLore() && meta.lore() != null ? new ArrayList<>(meta.lore()) : new ArrayList<>();
+        lore.removeIf(c -> {
+            String plain = mm.serialize(c);
+            return plain.contains("SET BONUS") || plain.contains("Pieces:") || plain.contains("Efek:");
+        });
+        meta.lore(lore);
+        item.setItemMeta(meta);
+    }
+
+    private ItemStack createItem(Material mat, String name, List<Component> lore, boolean glow) {
+        ItemStack is = new ItemStack(mat);
+        ItemMeta meta = is.getItemMeta();
         if (meta != null) {
-            meta.displayName(mm.deserialize(name));
+            if (name != null) meta.displayName(mm.deserialize(name));
             if (lore != null) meta.lore(lore);
             if (glow) {
                 meta.addEnchant(Enchantment.UNBREAKING, 1, true);
                 meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
             }
-            item.setItemMeta(meta);
+            is.setItemMeta(meta);
         }
-        return item;
+        return is;
     }
 
     @Override

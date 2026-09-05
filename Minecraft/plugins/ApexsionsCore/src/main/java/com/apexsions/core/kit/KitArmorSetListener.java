@@ -69,18 +69,34 @@ public class KitArmorSetListener implements Listener {
         }
     }
 
+    private String getPdcString(PersistentDataContainer pdc, String keyName) {
+        if (pdc == null) return null;
+        NamespacedKey k1 = new NamespacedKey("apexsions", keyName);
+        if (pdc.has(k1, PersistentDataType.STRING)) return pdc.get(k1, PersistentDataType.STRING);
+        NamespacedKey k2 = new NamespacedKey("apexsionscore", keyName);
+        if (pdc.has(k2, PersistentDataType.STRING)) return pdc.get(k2, PersistentDataType.STRING);
+        return null;
+    }
+
+    private void parseStatsInto(String raw, Map<KitStatType, Double> target) {
+        if (raw == null || raw.isBlank()) return;
+        for (String p : raw.split(";")) {
+            String[] kv = p.split(":");
+            if (kv.length == 2) {
+                try {
+                    KitStatType st = KitStatType.valueOf(kv[0].trim());
+                    double val = Double.parseDouble(kv[1].trim());
+                    target.put(st, val);
+                } catch (Exception ignored) {}
+            }
+        }
+    }
+
     public void checkPlayerArmor(Player player) {
         if (player == null || !player.isOnline()) return;
 
         ItemStack[] armor = player.getInventory().getArmorContents();
         Map<String, SetPieceData> detectedSets = new HashMap<>();
-
-        NamespacedKey kSetId = plugin.getKitManager().getKeySetId();
-        NamespacedKey kSetName = plugin.getKitManager().getKeySetName();
-        NamespacedKey kSetType = plugin.getKitManager().getKeySetType();
-        NamespacedKey kSetVal = plugin.getKitManager().getKeySetVal();
-        NamespacedKey kSetReq = plugin.getKitManager().getKeySetReq();
-        NamespacedKey kSetStats = plugin.getKitManager().getKeySetStats();
 
         for (ItemStack piece : armor) {
             if (piece == null || piece.getType().isAir()) continue;
@@ -88,51 +104,90 @@ public class KitArmorSetListener implements Listener {
             if (meta == null) continue;
 
             PersistentDataContainer pdc = meta.getPersistentDataContainer();
-            if (pdc.has(kSetId, PersistentDataType.STRING)) {
-                String setId = pdc.get(kSetId, PersistentDataType.STRING);
-                if (setId == null) continue;
+            String setId = getPdcString(pdc, "set_id");
+            if (setId == null) continue;
 
-                String sName = pdc.getOrDefault(kSetName, PersistentDataType.STRING, setId);
-                int req = pdc.getOrDefault(kSetReq, PersistentDataType.INTEGER, 4);
+            String sName = getPdcString(pdc, "set_name");
+            final String finalSName = sName != null ? sName : setId;
 
-                SetPieceData data = detectedSets.computeIfAbsent(setId, k -> new SetPieceData(setId, sName, req));
-                data.incrementPieces();
+            int req = 4;
+            NamespacedKey kReq1 = new NamespacedKey("apexsions", "set_req");
+            NamespacedKey kReq2 = new NamespacedKey("apexsionscore", "set_req");
+            if (pdc.has(kReq1, PersistentDataType.INTEGER)) {
+                req = pdc.get(kReq1, PersistentDataType.INTEGER);
+            } else if (pdc.has(kReq2, PersistentDataType.INTEGER)) {
+                req = pdc.get(kReq2, PersistentDataType.INTEGER);
+            }
+            final int finalReq = req;
 
-                // Parse multi-stat string if present
-                if (pdc.has(kSetStats, PersistentDataType.STRING)) {
-                    String raw = pdc.get(kSetStats, PersistentDataType.STRING);
-                    if (raw != null) {
-                        for (String p : raw.split(";")) {
-                            String[] kv = p.split(":");
-                            if (kv.length == 2) {
-                                try {
-                                    KitStatType st = KitStatType.valueOf(kv[0].trim());
-                                    double val = Double.parseDouble(kv[1].trim());
-                                    data.stats.put(st, val);
-                                } catch (Exception ignored) {}
-                            }
-                        }
-                    }
+            SetPieceData data = detectedSets.computeIfAbsent(setId, k -> new SetPieceData(setId, finalSName, finalReq));
+            data.incrementPieces();
+
+            // 1. Check set2_stats
+            String raw2 = getPdcString(pdc, "set2_stats");
+            if (raw2 != null && !raw2.isBlank()) {
+                parseStatsInto(raw2, data.set2Stats);
+            }
+
+            // 2. Check set4_stats
+            String raw4 = getPdcString(pdc, "set4_stats");
+            if (raw4 != null && !raw4.isBlank()) {
+                parseStatsInto(raw4, data.set4Stats);
+            }
+
+            // 3. Fallback to legacy set_stats
+            String rawLegacy = getPdcString(pdc, "set_stats");
+            if (rawLegacy != null && !rawLegacy.isBlank()) {
+                parseStatsInto(rawLegacy, data.legacyStats);
+            }
+
+            // 4. Fallback to legacy single stat
+            if (data.set2Stats.isEmpty() && data.set4Stats.isEmpty() && data.legacyStats.isEmpty()) {
+                String sTypeStr = getPdcString(pdc, "set_type");
+                if (sTypeStr == null) sTypeStr = "DAMAGE_REDUCTION";
+                double val = 15.0;
+                NamespacedKey kVal1 = new NamespacedKey("apexsions", "set_val");
+                NamespacedKey kVal2 = new NamespacedKey("apexsionscore", "set_val");
+                if (pdc.has(kVal1, PersistentDataType.DOUBLE)) {
+                    val = pdc.get(kVal1, PersistentDataType.DOUBLE);
+                } else if (pdc.has(kVal2, PersistentDataType.DOUBLE)) {
+                    val = pdc.get(kVal2, PersistentDataType.DOUBLE);
                 }
-
-                // Fallback to legacy single stat
-                if (data.stats.isEmpty()) {
-                    String sTypeStr = pdc.getOrDefault(kSetType, PersistentDataType.STRING, "DAMAGE_REDUCTION");
-                    double val = pdc.getOrDefault(kSetVal, PersistentDataType.DOUBLE, 15.0);
-                    try {
-                        KitStatType st = KitStatType.valueOf(sTypeStr.toUpperCase());
-                        data.stats.put(st, val);
-                    } catch (Exception ignored) {}
-                }
+                try {
+                    KitStatType st = KitStatType.valueOf(sTypeStr.toUpperCase());
+                    data.legacyStats.put(st, val);
+                } catch (Exception ignored) {}
             }
         }
 
-        // Determine if any set qualifies
+        // Determine if any set qualifies: Support 2-piece, 4-piece, or BOTH simultaneously!
         ActiveBonus qualifiedBonus = null;
         for (SetPieceData data : detectedSets.values()) {
-            if (data.pieces >= data.requiredPieces) {
-                qualifiedBonus = new ActiveBonus(data.setId, data.setName, data.stats, data.pieces);
-                break;
+            Map<KitStatType, Double> combined = new HashMap<>();
+
+            // 2-piece activation: active if >= 2 pieces equipped
+            if (data.pieces >= 2 && !data.set2Stats.isEmpty()) {
+                for (Map.Entry<KitStatType, Double> e : data.set2Stats.entrySet()) {
+                    combined.merge(e.getKey(), e.getValue(), Double::sum);
+                }
+            }
+
+            // 4-piece activation: active if >= 4 pieces equipped (stacks with 2-piece if both set!)
+            if (data.pieces >= 4 && !data.set4Stats.isEmpty()) {
+                for (Map.Entry<KitStatType, Double> e : data.set4Stats.entrySet()) {
+                    combined.merge(e.getKey(), e.getValue(), Double::sum);
+                }
+            }
+
+            // Fallback to legacy set_stats if neither tiered stat is defined
+            if (combined.isEmpty() && data.pieces >= data.requiredPieces && !data.legacyStats.isEmpty()) {
+                combined.putAll(data.legacyStats);
+            }
+
+            if (!combined.isEmpty()) {
+                if (qualifiedBonus == null || data.pieces > qualifiedBonus.piecesEquipped()) {
+                    qualifiedBonus = new ActiveBonus(data.setId, data.setName, combined, data.pieces);
+                }
             }
         }
 
@@ -244,9 +299,11 @@ public class KitArmorSetListener implements Listener {
                 ItemStack held = attacker.getInventory().getItemInMainHand();
                 if (held != null && !held.getType().isAir() && held.hasItemMeta()) {
                     PersistentDataContainer hPdc = held.getItemMeta().getPersistentDataContainer();
-                    String toolSetId = hPdc.get(plugin.getKitManager().getKeySetId(), PersistentDataType.STRING);
-                    if (toolSetId != null && toolSetId.equalsIgnoreCase(atkBonus.setId())) {
-                        mult += 0.25; // +25% extra attack for Tool Set Bonus!
+                    String toolSetId = getPdcString(hPdc, "set_id");
+                    String customToolStats = getPdcString(hPdc, "tool_stats");
+                    // If custom tool_stats are present, ToolSetBonusListener handles them. Only apply legacy +25% if no custom tool_stats exist.
+                    if (toolSetId != null && toolSetId.equalsIgnoreCase(atkBonus.setId()) && (customToolStats == null || customToolStats.isBlank())) {
+                        mult += 0.25; // +25% extra attack for Legacy Tool Set Bonus!
                         attacker.getWorld().spawnParticle(Particle.ENCHANTED_HIT, event.getEntity().getLocation().add(0, 1, 0), 12, 0.3, 0.3, 0.3, 0.1);
                     }
                 }
@@ -301,7 +358,9 @@ public class KitArmorSetListener implements Listener {
     private static class SetPieceData {
         private final String setId;
         private final String setName;
-        private final Map<KitStatType, Double> stats = new HashMap<>();
+        private final Map<KitStatType, Double> set2Stats = new HashMap<>();
+        private final Map<KitStatType, Double> set4Stats = new HashMap<>();
+        private final Map<KitStatType, Double> legacyStats = new HashMap<>();
         private final int requiredPieces;
         private int pieces = 0;
 

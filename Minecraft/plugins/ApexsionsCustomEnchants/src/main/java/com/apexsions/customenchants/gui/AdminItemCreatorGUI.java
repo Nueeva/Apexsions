@@ -48,7 +48,7 @@ public class AdminItemCreatorGUI implements InventoryHolder {
     public static final int SLOT_CHESTPLATE = 11;
     public static final int SLOT_LEGGINGS = 12;
     public static final int SLOT_BOOTS = 13;
-    public static final int SLOT_SET_STATUS = 15;
+    public static final int SLOT_SET_STATUS = 16;
 
     public static final int[] TOOL_SLOTS = {28, 29, 30, 31, 32, 33, 34};
 
@@ -59,8 +59,8 @@ public class AdminItemCreatorGUI implements InventoryHolder {
     private boolean setBonusConfigured = false;
     private String globalSetId = "";
     private String globalSetName = "";
-    private int globalRequiredPieces = 4;
-    private final Map<KitStatType, Double> globalStats = new LinkedHashMap<>();
+    private final Map<KitStatType, Double> globalSet2Stats = new LinkedHashMap<>();
+    private final Map<KitStatType, Double> globalSet4Stats = new LinkedHashMap<>();
 
     // State flags
     private boolean saveToPreset = false;
@@ -84,6 +84,14 @@ public class AdminItemCreatorGUI implements InventoryHolder {
         this.isNavigatingSubGUI = navigating;
     }
 
+    public String getGlobalSetId() {
+        return globalSetId;
+    }
+
+    public String getGlobalSetName() {
+        return globalSetName;
+    }
+
     public void updateItem(int slot, ItemStack newItem) {
         if (newItem == null || newItem.getType().isAir()) {
             placedItems.remove(slot);
@@ -92,7 +100,7 @@ public class AdminItemCreatorGUI implements InventoryHolder {
             placedItems.put(slot, processed);
         }
         // Only update fullset bonus if explicitly configured
-        if (setBonusConfigured && !globalSetId.isBlank() && !globalStats.isEmpty()) {
+        if (setBonusConfigured && !globalSetId.isBlank() && (!globalSet2Stats.isEmpty() || !globalSet4Stats.isEmpty())) {
             checkAndApplyFullsetBonus();
         }
     }
@@ -123,7 +131,7 @@ public class AdminItemCreatorGUI implements InventoryHolder {
         renderArmorSlot(SLOT_LEGGINGS, Material.IRON_LEGGINGS, "👖 LEGGINGS KOSONG", "Letakkan Leggings di slot ini");
         renderArmorSlot(SLOT_BOOTS, Material.IRON_BOOTS, "👢 BOOTS KOSONG", "Letakkan Boots di slot ini");
 
-        // 3. Armor Set Status & Configurator (Slot 15)
+        // 3. Set Bonus Status Slot (Slot 16)
         boolean fullset = isFullsetComplete();
         List<Component> statusLore = new ArrayList<>();
         if (!globalSetName.isBlank()) {
@@ -136,21 +144,29 @@ public class AdminItemCreatorGUI implements InventoryHolder {
         } else {
             statusLore.add(mm.deserialize("<gray>Set ID: <dark_gray>(Belum Diatur)</dark_gray></gray>"));
         }
-        statusLore.add(mm.deserialize("<gray>Syarat: <gold>" + globalRequiredPieces + " Pieces</gold></gray>"));
         statusLore.add(Component.empty());
         statusLore.add(mm.deserialize("<gray>Stat Bonus Aktif:</gray>"));
-        if (globalStats.isEmpty()) {
+        if (globalSet2Stats.isEmpty() && globalSet4Stats.isEmpty()) {
             statusLore.add(mm.deserialize("<dark_gray>● Belum ada stat bonus yang dipilih</dark_gray>"));
         } else {
-            for (Map.Entry<KitStatType, Double> e : globalStats.entrySet()) {
-                statusLore.add(mm.deserialize("<aqua>● " + e.getKey().getDisplayName() + ": <gold>" + e.getKey().formatValue(e.getValue()) + "</gold></aqua>"));
+            if (!globalSet2Stats.isEmpty()) {
+                statusLore.add(mm.deserialize("<green>● 2-Piece Bonus (" + globalSet2Stats.size() + " Efek):</green>"));
+                for (Map.Entry<KitStatType, Double> e : globalSet2Stats.entrySet()) {
+                    statusLore.add(mm.deserialize("<aqua>  - " + e.getKey().getDisplayName() + ": <gold>" + e.getKey().formatValue(e.getValue()) + "</gold></aqua>"));
+                }
+            }
+            if (!globalSet4Stats.isEmpty()) {
+                statusLore.add(mm.deserialize("<green>● 4-Piece Bonus (" + globalSet4Stats.size() + " Efek):</green>"));
+                for (Map.Entry<KitStatType, Double> e : globalSet4Stats.entrySet()) {
+                    statusLore.add(mm.deserialize("<aqua>  - " + e.getKey().getDisplayName() + ": <gold>" + e.getKey().formatValue(e.getValue()) + "</gold></aqua>"));
+                }
             }
         }
         statusLore.add(Component.empty());
         if (fullset) {
             statusLore.add(mm.deserialize("<green><bold>✓ FULLSET ARMOR LENGKAP TERPASANG (4/4)</bold></green>"));
-            if (setBonusConfigured && !globalStats.isEmpty()) {
-                statusLore.add(mm.deserialize("<gray>Set bonus & Tool bonus aktif diterapkan.</gray>"));
+            if (setBonusConfigured && (!globalSet2Stats.isEmpty() || !globalSet4Stats.isEmpty())) {
+                statusLore.add(mm.deserialize("<gray>Bonus 2-set dan 4-set aktif diterapkan bersamaan.</gray>"));
             } else {
                 statusLore.add(mm.deserialize("<yellow>Atur set bonus di bawah untuk mengaktifkan efek.</yellow>"));
             }
@@ -165,11 +181,11 @@ public class AdminItemCreatorGUI implements InventoryHolder {
         statusLore.add(Component.empty());
         statusLore.add(mm.deserialize("<yellow>▶ Klik untuk buka GUI Pengaturan Armor Set Bonus!</yellow>"));
 
-        Material iconMat = fullset && setBonusConfigured && !globalStats.isEmpty() ? Material.EMERALD : Material.CHAINMAIL_CHESTPLATE;
-        String iconTitle = setBonusConfigured && !globalStats.isEmpty()
+        Material iconMat = fullset ? Material.NETHER_STAR : Material.SHIELD;
+        String iconTitle = setBonusConfigured && (!globalSet2Stats.isEmpty() || !globalSet4Stats.isEmpty())
                 ? "<green><bold>[✓ SET BONUS DIATUR]</bold></green>"
                 : "<yellow><bold>[SET BONUS: BELUM DIATUR]</bold></yellow>";
-        ItemStack statusIcon = createItem(iconMat, iconTitle, statusLore, setBonusConfigured && !globalStats.isEmpty());
+        ItemStack statusIcon = createItem(iconMat, iconTitle, statusLore, fullset);
         inventory.setItem(SLOT_SET_STATUS, statusIcon);
 
         // 4. Tools & Weapons Section (Bottom Center: Slots 28..34)
@@ -254,7 +270,7 @@ public class AdminItemCreatorGUI implements InventoryHolder {
     }
 
     public void checkAndApplyFullsetBonus() {
-        if (!setBonusConfigured || globalSetId.isBlank() || globalStats.isEmpty()) return;
+        if (!setBonusConfigured || globalSetId.isBlank() || (globalSet2Stats.isEmpty() && globalSet4Stats.isEmpty())) return;
 
         // Apply armor set bonus if fullset complete
         if (isFullsetComplete()) {
@@ -266,7 +282,7 @@ public class AdminItemCreatorGUI implements InventoryHolder {
                 }
             }
 
-            // Also apply Tool Set Bonus to placed tools/weapons!
+            // Also link Set ID to placed tools/weapons so their bonuses activate!
             for (int tSlot : TOOL_SLOTS) {
                 ItemStack tool = placedItems.get(tSlot);
                 if (tool != null) {
@@ -286,14 +302,15 @@ public class AdminItemCreatorGUI implements InventoryHolder {
             pdc.remove(new NamespacedKey("apexsions", "set_name"));
             pdc.remove(new NamespacedKey("apexsions", "set_req"));
             pdc.remove(new NamespacedKey("apexsions", "set_stats"));
+            pdc.remove(new NamespacedKey("apexsions", "set2_stats"));
+            pdc.remove(new NamespacedKey("apexsions", "set4_stats"));
             pdc.remove(new NamespacedKey("apexsions", "set_type"));
             pdc.remove(new NamespacedKey("apexsions", "set_val"));
-            pdc.remove(new NamespacedKey("apexsions", "tool_bonus"));
 
             List<Component> lore = meta.hasLore() && meta.lore() != null ? new ArrayList<>(meta.lore()) : new ArrayList<>();
             lore.removeIf(c -> {
                 String plain = mm.serialize(c);
-                return plain.contains("SET BONUS") || plain.contains("Syarat:") || plain.contains("Efek:") || plain.contains("TOOL SET BONUS");
+                return plain.contains("SET BONUS") || plain.contains("Syarat:") || plain.contains("Efek:");
             });
             meta.lore(lore);
             is.setItemMeta(meta);
@@ -307,20 +324,32 @@ public class AdminItemCreatorGUI implements InventoryHolder {
         PersistentDataContainer pdc = meta.getPersistentDataContainer();
         pdc.set(new NamespacedKey("apexsions", "set_id"), PersistentDataType.STRING, globalSetId);
         pdc.set(new NamespacedKey("apexsions", "set_name"), PersistentDataType.STRING, globalSetName);
-        pdc.set(new NamespacedKey("apexsions", "set_req"), PersistentDataType.INTEGER, globalRequiredPieces);
 
-        StringBuilder sb = new StringBuilder();
-        for (Map.Entry<KitStatType, Double> e : globalStats.entrySet()) {
-            if (!sb.isEmpty()) sb.append(";");
-            sb.append(e.getKey().name()).append(":").append(e.getValue());
+        // Serialize set2_stats
+        StringBuilder sb2 = new StringBuilder();
+        for (Map.Entry<KitStatType, Double> e : globalSet2Stats.entrySet()) {
+            if (!sb2.isEmpty()) sb2.append(";");
+            sb2.append(e.getKey().name()).append(":").append(e.getValue());
         }
-        pdc.set(new NamespacedKey("apexsions", "set_stats"), PersistentDataType.STRING, sb.toString());
+        pdc.set(new NamespacedKey("apexsions", "set2_stats"), PersistentDataType.STRING, sb2.toString());
 
-        if (!globalStats.isEmpty()) {
-            Map.Entry<KitStatType, Double> first = globalStats.entrySet().iterator().next();
-            pdc.set(new NamespacedKey("apexsions", "set_type"), PersistentDataType.STRING, first.getKey().name());
-            pdc.set(new NamespacedKey("apexsions", "set_val"), PersistentDataType.DOUBLE, first.getValue());
+        // Serialize set4_stats
+        StringBuilder sb4 = new StringBuilder();
+        for (Map.Entry<KitStatType, Double> e : globalSet4Stats.entrySet()) {
+            if (!sb4.isEmpty()) sb4.append(";");
+            sb4.append(e.getKey().name()).append(":").append(e.getValue());
         }
+        pdc.set(new NamespacedKey("apexsions", "set4_stats"), PersistentDataType.STRING, sb4.toString());
+
+        // Backwards compatibility legacy set_stats
+        Map<KitStatType, Double> legacyMap = !globalSet4Stats.isEmpty() ? globalSet4Stats : globalSet2Stats;
+        StringBuilder sbLegacy = new StringBuilder();
+        for (Map.Entry<KitStatType, Double> e : legacyMap.entrySet()) {
+            if (!sbLegacy.isEmpty()) sbLegacy.append(";");
+            sbLegacy.append(e.getKey().name()).append(":").append(e.getValue());
+        }
+        pdc.set(new NamespacedKey("apexsions", "set_stats"), PersistentDataType.STRING, sbLegacy.toString());
+        pdc.set(new NamespacedKey("apexsions", "set_req"), PersistentDataType.INTEGER, !globalSet4Stats.isEmpty() ? 4 : 2);
 
         // Update lore
         List<Component> lore = meta.hasLore() && meta.lore() != null ? new ArrayList<>(meta.lore()) : new ArrayList<>();
@@ -331,9 +360,17 @@ public class AdminItemCreatorGUI implements InventoryHolder {
 
         lore.add(Component.empty());
         lore.add(mm.deserialize("<gradient:#e74c3c:#f39c12><bold>★ SET BONUS: " + PlainTextComponentSerializer.plainText().serialize(mm.deserialize(globalSetName)).toUpperCase() + " ★</bold></gradient>"));
-        lore.add(mm.deserialize("<gray>Syarat: <gold>" + globalRequiredPieces + " Pieces (Fullset)</gold></gray>"));
-        for (Map.Entry<KitStatType, Double> e : globalStats.entrySet()) {
-            lore.add(mm.deserialize("<gray>Efek: <aqua>" + e.getKey().getDisplayName() + " " + e.getKey().formatValue(e.getValue()) + "</aqua></gray>"));
+        if (!globalSet2Stats.isEmpty()) {
+            lore.add(mm.deserialize("<gray>Syarat: <gold>2 Pieces (Half Set)</gold></gray>"));
+            for (Map.Entry<KitStatType, Double> e : globalSet2Stats.entrySet()) {
+                lore.add(mm.deserialize("<gray>  ● Efek: <aqua>" + e.getKey().getDisplayName() + " " + e.getKey().formatValue(e.getValue()) + "</aqua></gray>"));
+            }
+        }
+        if (!globalSet4Stats.isEmpty()) {
+            lore.add(mm.deserialize("<gray>Syarat: <gold>4 Pieces (Full Set)</gold></gray>"));
+            for (Map.Entry<KitStatType, Double> e : globalSet4Stats.entrySet()) {
+                lore.add(mm.deserialize("<gray>  ● Efek: <aqua>" + e.getKey().getDisplayName() + " " + e.getKey().formatValue(e.getValue()) + "</aqua></gray>"));
+            }
         }
 
         meta.lore(lore);
@@ -346,20 +383,9 @@ public class AdminItemCreatorGUI implements InventoryHolder {
 
         PersistentDataContainer pdc = meta.getPersistentDataContainer();
         pdc.set(new NamespacedKey("apexsions", "set_id"), PersistentDataType.STRING, globalSetId);
-        pdc.set(new NamespacedKey("apexsions", "tool_bonus"), PersistentDataType.BYTE, (byte) 1);
-
-        List<Component> lore = meta.hasLore() && meta.lore() != null ? new ArrayList<>(meta.lore()) : new ArrayList<>();
-        lore.removeIf(c -> {
-            String plain = mm.serialize(c);
-            return plain.contains("TOOL SET BONUS") || plain.contains("Memakai Fullset Armor");
-        });
-
-        lore.add(Component.empty());
-        lore.add(mm.deserialize("<gradient:#e74c3c:#f39c12><bold>★ TOOL SET BONUS: " + PlainTextComponentSerializer.plainText().serialize(mm.deserialize(globalSetName)).toUpperCase() + " ★</bold></gradient>"));
-        lore.add(mm.deserialize("<gray>Syarat: <gold>Memakai Fullset Armor " + globalSetName + "</gold></gray>"));
-        lore.add(mm.deserialize("<gray>Efek: <aqua>Peningkatan Serangan +25% & Critical Strike</aqua></gray>"));
-
-        meta.lore(lore);
+        if (!globalSetName.isBlank()) {
+            pdc.set(new NamespacedKey("apexsions", "set_name"), PersistentDataType.STRING, globalSetName);
+        }
         is.setItemMeta(meta);
     }
 
@@ -398,7 +424,7 @@ public class AdminItemCreatorGUI implements InventoryHolder {
         }
 
         // Only update fullset bonus if bonus was configured
-        if (setBonusConfigured && !globalStats.isEmpty()) {
+        if (setBonusConfigured && (!globalSet2Stats.isEmpty() || !globalSet4Stats.isEmpty())) {
             checkAndApplyFullsetBonus();
         }
         player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1.0f, 1.2f);
@@ -418,8 +444,16 @@ public class AdminItemCreatorGUI implements InventoryHolder {
     }
 
     private Component formatPieceName(String baseName, String suffix) {
+        if (baseName == null || baseName.isBlank()) return Component.text(suffix);
         try {
             if (baseName.contains("<") && baseName.contains(">")) {
+                String clean = baseName.trim();
+                int lastCloseTag = clean.lastIndexOf("</");
+                if (lastCloseTag != -1) {
+                    String prefix = clean.substring(0, lastCloseTag);
+                    String closingTags = clean.substring(lastCloseTag);
+                    return mm.deserialize(prefix + " " + suffix + closingTags);
+                }
                 return mm.deserialize(baseName + " " + suffix);
             } else if (baseName.contains("&")) {
                 return net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer.legacyAmpersand().deserialize(baseName + " " + suffix);
@@ -520,7 +554,7 @@ public class AdminItemCreatorGUI implements InventoryHolder {
                 return;
             }
 
-            // Slot 15: Set Bonus Settings
+            // Slot 16: Set Bonus Settings
             if (rawSlot == SLOT_SET_STATUS) {
                 event.setCancelled(true);
                 this.isNavigatingSubGUI = true;
@@ -528,16 +562,18 @@ public class AdminItemCreatorGUI implements InventoryHolder {
                 if (ref == null) {
                     ref = placedItems.values().stream().findFirst().orElse(null);
                 }
-                new ArmorSetBonusPickerGUI(plugin, player, globalSetName, globalRequiredPieces, globalStats, ref, this,
-                        (savedName, savedReq, savedStats) -> {
+                new ArmorSetBonusPickerGUI(plugin, player, globalSetName, globalSet2Stats, globalSet4Stats, ref, this,
+                        (savedName, s2, s4) -> {
                             this.globalSetName = savedName;
-                            this.globalSetId = savedName.toLowerCase().replaceAll("[^a-z0-9_-]", "_");
-                            this.globalRequiredPieces = savedReq;
-                            this.globalStats.clear();
-                            this.globalStats.putAll(savedStats);
-                            this.setBonusConfigured = !savedStats.isEmpty();
+                            this.globalSetId = getPlainTextSafe(savedName).toLowerCase().replaceAll("[^a-z0-9_-]", "_");
+                            this.globalSet2Stats.clear();
+                            this.globalSet2Stats.putAll(s2);
+                            this.globalSet4Stats.clear();
+                            this.globalSet4Stats.putAll(s4);
+                            this.setBonusConfigured = (!globalSet2Stats.isEmpty() || !globalSet4Stats.isEmpty());
 
                             if (this.setBonusConfigured) {
+                                renameAllItems(savedName);
                                 checkAndApplyFullsetBonus();
                             } else {
                                 removeFullsetBonusFromAll();
@@ -589,6 +625,16 @@ public class AdminItemCreatorGUI implements InventoryHolder {
 
             ItemStack toPlace = cursor.clone();
             toPlace.setAmount(1);
+            if (!globalSetName.isBlank()) {
+                String suffix = switch (slot) {
+                    case SLOT_HELMET -> "Helmet";
+                    case SLOT_CHESTPLATE -> toPlace.getType() == Material.ELYTRA ? "Elytra" : "Chestplate";
+                    case SLOT_LEGGINGS -> "Leggings";
+                    case SLOT_BOOTS -> "Boots";
+                    default -> "Armor";
+                };
+                renamePiece(toPlace, globalSetName, suffix);
+            }
 
             if (cursor.getAmount() > 1) {
                 cursor.setAmount(cursor.getAmount() - 1);
@@ -636,6 +682,9 @@ public class AdminItemCreatorGUI implements InventoryHolder {
 
             ItemStack toPlace = cursor.clone();
             toPlace.setAmount(1);
+            if (!globalSetName.isBlank()) {
+                renamePiece(toPlace, globalSetName, getToolDisplaySuffix(toPlace));
+            }
 
             if (cursor.getAmount() > 1) {
                 cursor.setAmount(cursor.getAmount() - 1);
@@ -698,6 +747,16 @@ public class AdminItemCreatorGUI implements InventoryHolder {
         ItemStack clone = item.clone();
         clone.setAmount(1);
         item.setAmount(item.getAmount() - 1);
+        if (!globalSetName.isBlank()) {
+            String suffix = switch (slot) {
+                case SLOT_HELMET -> "Helmet";
+                case SLOT_CHESTPLATE -> clone.getType() == Material.ELYTRA ? "Elytra" : "Chestplate";
+                case SLOT_LEGGINGS -> "Leggings";
+                case SLOT_BOOTS -> "Boots";
+                default -> getToolDisplaySuffix(clone);
+            };
+            renamePiece(clone, globalSetName, suffix);
+        }
         updateItem(slot, clone);
         player.playSound(player.getLocation(), Sound.ITEM_ARMOR_EQUIP_NETHERITE, 1.0f, 1.2f);
         buildGUI();
@@ -819,6 +878,13 @@ public class AdminItemCreatorGUI implements InventoryHolder {
         return n.endsWith("_SWORD") || n.endsWith("_AXE") || n.endsWith("_PICKAXE") || n.endsWith("_SHOVEL") || n.endsWith("_HOE")
                 || is.getType() == Material.BOW || is.getType() == Material.CROSSBOW || is.getType() == Material.TRIDENT
                 || is.getType() == Material.MACE || is.getType() == Material.FISHING_ROD || is.getType() == Material.SHEARS;
+    }
+
+    public static boolean isWeapon(ItemStack is) {
+        if (is == null) return false;
+        String n = is.getType().name();
+        return n.endsWith("_SWORD") || n.endsWith("_AXE") || is.getType() == Material.BOW
+                || is.getType() == Material.CROSSBOW || is.getType() == Material.TRIDENT || is.getType() == Material.MACE;
     }
 
     private boolean isValidArmorForSlot(int slot, ItemStack is) {

@@ -87,22 +87,41 @@ public class ItemModifierGUI implements InventoryHolder {
                         mm.deserialize("<yellow>▶ Klik untuk memilih Vanilla Enchants via GUI</yellow>")
                 ), false));
 
-        // Slot 23: Armor Set Bonus Picker (only if item is armor)
+        // Slot 22: Rename Item in Chat
+        inventory.setItem(22, createItem(Material.NAME_TAG,
+                "<gradient:#f1c40f:#e67e22><bold>🏷 UBAH NAMA ITEM DI CHAT</bold></gradient>",
+                List.of(
+                        mm.deserialize("<gray>Ubah nama item ini secara spesifik.</gray>"),
+                        Component.empty(),
+                        mm.deserialize("<yellow>▶ Klik untuk mengetik nama baru di chat!</yellow>")
+                ), false));
+
+        // Slot 23: Armor or Tool Set Bonus Picker
         boolean isArmor = AdminItemCreatorGUI.isArmor(item);
+        boolean isTool = AdminItemCreatorGUI.isToolOrWeapon(item);
         if (isArmor) {
             inventory.setItem(23, createItem(Material.NETHERITE_CHESTPLATE,
                     "<gradient:#e74c3c:#f39c12><bold>🛡 PENGATURAN ARMOR SET BONUS</bold></gradient>",
                     List.of(
-                        mm.deserialize("<gray>Atur stat tempur persentase (Damage Reduction, Attack, Dodge, dll)</gray>"),
-                        mm.deserialize("<gray>serta syarat jumlah pieces secara visual via GUI!</gray>"),
-                        Component.empty(),
-                        mm.deserialize("<yellow>▶ Klik untuk mengatur Armor Set Bonus</yellow>")
+                            mm.deserialize("<gray>Atur stat 2-Piece, 4-Piece, atau keduanya,</gray>"),
+                            mm.deserialize("<gray>dengan sub-menu persentase per stat visual!</gray>"),
+                            Component.empty(),
+                            mm.deserialize("<yellow>▶ Klik untuk mengatur Armor Set Bonus</yellow>")
+                    ), true));
+        } else if (isTool) {
+            inventory.setItem(23, createItem(Material.NETHERITE_SWORD,
+                    "<gradient:#3498db:#e67e22><bold>⚔ PENGATURAN TOOL SET BONUS</bold></gradient>",
+                    List.of(
+                            mm.deserialize("<gray>Atur bonus atribut & sinergi unik item ini</gray>"),
+                            mm.deserialize("<gray>yang aktif bila memakai set armor yang cocok!</gray>"),
+                            Component.empty(),
+                            mm.deserialize("<yellow>▶ Klik untuk mengatur Tool Set Bonus</yellow>")
                     ), true));
         } else {
             inventory.setItem(23, createItem(Material.BARRIER,
-                    "<dark_gray><bold>🛡 ARMOR SET BONUS (TIDAK TERSEDIA)</bold></dark_gray>",
+                    "<dark_gray><bold>🛡 SET BONUS (TIDAK TERSEDIA)</bold></dark_gray>",
                     List.of(
-                            mm.deserialize("<gray>Set bonus hanya dapat dipasang pada armor.</gray>")
+                            mm.deserialize("<gray>Set bonus hanya dapat dipasang pada Armor & Tools.</gray>")
                     ), false));
         }
 
@@ -153,14 +172,53 @@ public class ItemModifierGUI implements InventoryHolder {
             return;
         }
 
-        // Armor Set Bonus Picker
-        if (slot == 23 && AdminItemCreatorGUI.isArmor(item)) {
+        // Slot 22: Rename Item in Chat
+        if (slot == 22) {
             player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1.0f, 1.2f);
-            new ArmorSetBonusPickerGUI(plugin, player, item, this, updated -> {
-                this.item = updated;
-                buildGUI();
-            }).open();
+            plugin.getItemRenameManager().startSession(
+                    player,
+                    "Ketik nama baru untuk item ini di chat (bisa menggunakan & atau MiniMessage):",
+                    newName -> {
+                        ItemMeta meta = item.getItemMeta();
+                        if (meta != null) {
+                            Component c;
+                            if (newName.contains("<") && newName.contains(">")) {
+                                c = mm.deserialize(newName);
+                            } else if (newName.contains("&")) {
+                                c = net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer.legacyAmpersand().deserialize(newName);
+                            } else {
+                                c = mm.deserialize("<gold><bold>" + newName + "</bold></gold>");
+                            }
+                            meta.displayName(c);
+                            item.setItemMeta(meta);
+                            player.sendMessage(mm.deserialize("<green>✓ Nama item berhasil diubah!</green>"));
+                        }
+                        this.open();
+                    },
+                    this::open
+            );
             return;
+        }
+
+        // Slot 23: Armor Set Bonus Picker or Tool Bonus Picker
+        if (slot == 23) {
+            if (AdminItemCreatorGUI.isArmor(item)) {
+                player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1.0f, 1.2f);
+                new ArmorSetBonusPickerGUI(plugin, player, item, this, updated -> {
+                    this.item = updated;
+                    buildGUI();
+                }).open();
+                return;
+            } else if (AdminItemCreatorGUI.isToolOrWeapon(item)) {
+                player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1.0f, 1.2f);
+                String cId = creatorGUI.getGlobalSetId();
+                String cName = creatorGUI.getGlobalSetName();
+                new ToolBonusPickerGUI(plugin, player, item, cId, cName, this, updated -> {
+                    this.item = updated;
+                    buildGUI();
+                }).open();
+                return;
+            }
         }
 
         // Reset Enchants
