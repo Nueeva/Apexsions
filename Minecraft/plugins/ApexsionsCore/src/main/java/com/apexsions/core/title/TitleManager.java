@@ -73,22 +73,22 @@ public class TitleManager {
     }
 
     private void registerDefaultTitles() {
-        registerTitle(new TitleItem("novice", "<gray>[Pengelana Awal]</gray>", "Gelar kehormatan untuk pemain pemula di server.", "apexsions.title.novice", new LevelCondition(1)));
-        registerTitle(new TitleItem("apprentice", "<green>[Petualang Muda]</green>", "Mulai memahami seluk beluk wilayah kerajaan.", "apexsions.title.apprentice", new LevelCondition(10)));
-        registerTitle(new TitleItem("warrior", "<yellow>[Ksatria Perang]</yellow>", "Telah menaklukkan berbagai rintangan tempur.", "apexsions.title.warrior", new LevelCondition(25)));
-        registerTitle(new TitleItem("champion", "<gradient:#f1c40f:#e67e22><bold>[Pahlawan Realm]</bold></gradient>", "Pahlawan teruji di seluruh penjuru kerajaan.", "apexsions.title.champion", new LevelCondition(50)));
-        registerTitle(new TitleItem("legend", "<gradient:#ff007f:#7928ca><bold>[Legenda Abadi]</bold></gradient>", "Nama yang terukir abadi dalam sejarah peradaban.", "apexsions.title.legend", new LevelCondition(75)));
-        registerTitle(new TitleItem("mythic", "<gradient:#ff0000:#ff7300:#fffb00><bold>[⚡ DEWA PERANG ⚡]</bold></gradient>", "Pencapaian level tertinggi puncak kejayaan.", "apexsions.title.mythic", new LevelCondition(100)));
+        registerTitle(new TitleItem("novice", "<gray>Pengelana Awal</gray>", "Gelar kehormatan untuk pemain pemula di server.", "apexsions.title.novice", new LevelCondition(1)));
+        registerTitle(new TitleItem("apprentice", "<green>Petualang Muda</green>", "Mulai memahami seluk beluk wilayah kerajaan.", "apexsions.title.apprentice", new LevelCondition(10)));
+        registerTitle(new TitleItem("warrior", "<yellow>Ksatria Perang</yellow>", "Telah menaklukkan berbagai rintangan tempur.", "apexsions.title.warrior", new LevelCondition(25)));
+        registerTitle(new TitleItem("champion", "<gradient:#f1c40f:#e67e22><bold>Pahlawan Realm</bold></gradient>", "Pahlawan teruji di seluruh penjuru kerajaan.", "apexsions.title.champion", new LevelCondition(50)));
+        registerTitle(new TitleItem("legend", "<gradient:#ff007f:#7928ca><bold>Legenda Abadi</bold></gradient>", "Nama yang terukir abadi dalam sejarah peradaban.", "apexsions.title.legend", new LevelCondition(75)));
+        registerTitle(new TitleItem("mythic", "<gradient:#ff0000:#ff7300:#fffb00><bold>⚡ DEWA PERANG ⚡</bold></gradient>", "Pencapaian level tertinggi puncak kejayaan.", "apexsions.title.mythic", new LevelCondition(100)));
 
-        registerTitle(new TitleItem("zenith_blade", "<gradient:#ffe900:#f39c12><bold>[Pedang Zenithar]</bold></gradient>", "Ksatria elit pelindung kota emas Zenithar.", "apexsions.title.zenith_blade", new KingdomCondition("ZENITHAR", 20)));
-        registerTitle(new TitleItem("sol_flame", "<gradient:#ff4d4d:#c0392b><bold>[Lentera Solterra]</bold></gradient>", "Penyala api semangat tempur peradaban Solterra.", "apexsions.title.sol_flame", new KingdomCondition("SOLTERRA", 20)));
-        registerTitle(new TitleItem("sylva_warden", "<gradient:#87ceeb:#2ecc71><bold>[Penjaga Sylvamoor]</bold></gradient>", "Penjaga kedamaian alam dan rimba Sylvamoor.", "apexsions.title.sylva_warden", new KingdomCondition("SYLVAMOOR", 20)));
+        registerTitle(new TitleItem("zenith_blade", "<gradient:#ffe900:#f39c12><bold>Pedang Zenithar</bold></gradient>", "Ksatria elit pelindung kota emas Zenithar.", "apexsions.title.zenith_blade", new KingdomCondition("ZENITHAR", 20)));
+        registerTitle(new TitleItem("sol_flame", "<gradient:#ff4d4d:#c0392b><bold>Lentera Solterra</bold></gradient>", "Penyala api semangat tempur peradaban Solterra.", "apexsions.title.sol_flame", new KingdomCondition("SOLTERRA", 20)));
+        registerTitle(new TitleItem("sylva_warden", "<gradient:#87ceeb:#2ecc71><bold>Penjaga Sylvamoor</bold></gradient>", "Penjaga kedamaian alam dan rimba Sylvamoor.", "apexsions.title.sylva_warden", new KingdomCondition("SYLVAMOOR", 20)));
 
-        registerTitle(new TitleItem("sultan", "<gradient:#2ecc71:#f1c40f><bold>[💰 SULTAN KERAJAAN]</bold></gradient>", "Gelar eksklusif bagi konglomerat dan donatur terkemuka.", "apexsions.title.sultan", new PermissionCondition("apexsions.title.sultan", "Rank Donatur / Sultan")));
+        registerTitle(new TitleItem("sultan", "<gradient:#2ecc71:#f1c40f><bold>💰 SULTAN KERAJAAN</bold></gradient>", "Gelar eksklusif bagi konglomerat dan donatur terkemuka.", "apexsions.title.sultan", new PermissionCondition("apexsions.title.sultan", "Rank Donatur / Sultan")));
         registerTitle(new TitleItem("raja_zenithar", "<gradient:#ffd700:#f39c12><bold>👑 Raja Zenithar</bold></gradient>", "Gelar suci bagi Penguasa Tertinggi Kerajaan Emas Zenithar.", "apexsions.title.raja_zenithar", new MonarchCondition("ZENITHAR")));
         registerTitle(new TitleItem("raja_solterra", "<gradient:#ff4757:#c0392b><bold>👑 Raja Solterra</bold></gradient>", "Gelar suci bagi Penguasa Tertinggi Kerajaan Api Solterra.", "apexsions.title.raja_solterra", new MonarchCondition("SOLTERRA")));
         registerTitle(new TitleItem("raja_sylvamoor", "<gradient:#2ed573:#1e90ff><bold>👑 Raja Sylvamoor</bold></gradient>", "Gelar suci bagi Penguasa Tertinggi Kerajaan Rimba Sylvamoor.", "apexsions.title.raja_sylvamoor", new MonarchCondition("SYLVAMOOR")));
-        registerTitle(new TitleItem("monarch", "<gradient:#f1c40f:#e74c3c><bold>[👑 SANG MAHARATU/RAJA]</bold></gradient>", "Gelar sakral pemegang tahta tertinggi kerajaan.", "apexsions.title.monarch", new MonarchCondition()));
+        registerTitle(new TitleItem("monarch", "<gradient:#f1c40f:#e74c3c><bold>👑 SANG MAHARATU/RAJA</bold></gradient>", "Gelar sakral pemegang tahta tertinggi kerajaan.", "apexsions.title.monarch", new MonarchCondition()));
     }
 
     public void registerTitle(TitleItem item) {
