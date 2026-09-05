@@ -1,0 +1,215 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-05T23:40:30Z",
+  "title": "Design System: Apexsions",
+  "extensions": {
+    "colorMeta": {
+      "primary": {
+        "role": "primary",
+        "displayName": "Imperial Noble Gold",
+        "canonical": "#d4a359",
+        "tonalRamp": [
+          "#3a270d",
+          "#5c4017",
+          "#7e5821",
+          "#9e7534",
+          "#d4a359",
+          "#e5b76d",
+          "#f3c37a",
+          "#fbe7c4"
+        ]
+      },
+      "status-online": {
+        "role": "secondary",
+        "displayName": "Mythic Emerald",
+        "canonical": "#10b981",
+        "tonalRamp": [
+          "#022c22",
+          "#064e3b",
+          "#065f46",
+          "#047857",
+          "#10b981",
+          "#34d399",
+          "#6ee7b7",
+          "#d1fae5"
+        ]
+      },
+      "neutral-surface": {
+        "role": "neutral",
+        "displayName": "Monolithic Surface",
+        "canonical": "#0f1523",
+        "tonalRamp": [
+          "#040609",
+          "#06080d",
+          "#090c13",
+          "#0f1523",
+          "#141c2e",
+          "#19243a",
+          "#273756",
+          "#4a5e84"
+        ]
+      },
+      "neutral-abyss": {
+        "role": "neutral",
+        "displayName": "Abyssal Obsidian",
+        "canonical": "#06080d",
+        "tonalRamp": [
+          "#020305",
+          "#040508",
+          "#06080d",
+          "#090c13",
+          "#0e131d",
+          "#141a27",
+          "#1e2638",
+          "#303b54"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Imperial Display",
+        "purpose": "Monumental hero proclamations and apex chapter titles."
+      },
+      "headline": {
+        "displayName": "Section Headline",
+        "purpose": "Major section divisions, modal banners, and ladder milestones."
+      },
+      "title": {
+        "displayName": "Card Title",
+        "purpose": "Card titles, package designations, and table labels."
+      },
+      "body": {
+        "displayName": "Narrative Body",
+        "purpose": "Core documentation, player guides, and lore paragraphs."
+      },
+      "label": {
+        "displayName": "Inscription Kicker",
+        "purpose": "Uppercase sub-kickers, telemetry tags, and category chips."
+      }
+    },
+    "shadows": [
+      {
+        "name": "card-monolith",
+        "value": "0 10px 28px -6px rgba(0, 0, 0, 0.7)",
+        "purpose": "Grounding downward shadow anchoring obsidian cards."
+      },
+      {
+        "name": "elevated-citadel",
+        "value": "0 18px 40px -8px rgba(0, 0, 0, 0.85)",
+        "purpose": "Deep separation shadow for modals and floating drawers."
+      },
+      {
+        "name": "sovereign-glow",
+        "value": "0 4px 14px rgba(212, 163, 89, 0.2)",
+        "purpose": "Luminous amber-gold halo for active sovereign actions."
+      }
+    ],
+    "motion": [
+      {
+        "name": "apx-transition",
+        "value": "all 0.25s cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "Default architectural transition for hover and focus states."
+      }
+    ],
+    "breakpoints": [
+      { "name": "sm", "value": "576px" },
+      { "name": "md", "value": "768px" },
+      { "name": "lg", "value": "992px" },
+      { "name": "xl", "value": "1200px" },
+      { "name": "xxl", "value": "1400px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Sovereign Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Forged noble gold action button for primary CTAs and join actions.",
+      "html": "<button class=\"ds-btn-sovereign\">ENTER CITADEL</button>",
+      "css": ".ds-btn-sovereign { background: linear-gradient(135deg, #9e7534 0%, #d4a359 100%); color: #07090e; font-family: 'Cinzel', Georgia, serif; font-weight: 800; font-size: 0.88rem; letter-spacing: 0.08em; padding: 12px 26px; border-radius: 4px; border: 1px solid #f3c37a; box-shadow: 0 4px 14px rgba(212, 163, 89, 0.2); cursor: pointer; transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1); display: inline-flex; align-items: center; justify-content: center; } .ds-btn-sovereign:hover { background: linear-gradient(135deg, #b88a44 0%, #f3c37a 100%); box-shadow: 0 6px 20px rgba(212, 163, 89, 0.35); transform: translateY(-1px); }"
+    },
+    {
+      "name": "Secondary Ghost Button",
+      "kind": "button",
+      "refersTo": "button-outline",
+      "description": "Translucent obsidian button for secondary navigation and external links.",
+      "html": "<button class=\"ds-btn-ghost\">EXPLORE LORE</button>",
+      "css": ".ds-btn-ghost { background: rgba(255, 255, 255, 0.04); color: #ffffff; font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 600; font-size: 0.9rem; padding: 12px 24px; border-radius: 4px; border: 1px solid rgba(255, 255, 255, 0.12); cursor: pointer; transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1); display: inline-flex; align-items: center; justify-content: center; } .ds-btn-ghost:hover { background: rgba(212, 163, 89, 0.12); border-color: rgba(212, 163, 89, 0.28); color: #f3c37a; }"
+    },
+    {
+      "name": "Monolithic Card",
+      "kind": "card",
+      "refersTo": "card-monolith",
+      "description": "Chiseled obsidian container for rank castes, features, and content modules.",
+      "html": "<div class=\"ds-card\"><div class=\"ds-card-header\">TIER SOVEREIGN</div><div class=\"ds-card-body\"><p>Commands the regional province with absolute authority and royal decree.</p></div></div>",
+      "css": ".ds-card { background: #0f1523; border: 1px solid rgba(212, 163, 89, 0.14); border-radius: 6px; box-shadow: 0 10px 28px -6px rgba(0, 0, 0, 0.7); overflow: hidden; transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1); } .ds-card:hover { border-color: rgba(212, 163, 89, 0.45); background: #19243a; } .ds-card-header { background: #141c2e; padding: 16px 20px; font-family: 'Cinzel', Georgia, serif; font-weight: 700; font-size: 1.05rem; color: #f3c37a; border-bottom: 1px solid rgba(212, 163, 89, 0.14); } .ds-card-body { padding: 20px; color: #f1f5f9; font-family: 'Plus Jakarta Sans', sans-serif; font-size: 0.95rem; line-height: 1.6; }"
+    },
+    {
+      "name": "Chasm Form Input",
+      "kind": "input",
+      "refersTo": "input-field",
+      "description": "Deep abyssal form control with high-contrast text and glowing gold focus.",
+      "html": "<input class=\"ds-input\" type=\"text\" placeholder=\"Search civilization records...\" />",
+      "css": ".ds-input { background-color: #0b101b; border: 1px solid rgba(255, 255, 255, 0.16); border-radius: 4px; color: #ffffff; font-family: 'Plus Jakarta Sans', sans-serif; font-size: 0.95rem; padding: 12px 16px; width: 100%; box-sizing: border-box; transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1); } .ds-input:focus { outline: none; background-color: #0d1422; border-color: #d4a359; box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.25); }"
+    },
+    {
+      "name": "Telemetry Status Pill",
+      "kind": "custom",
+      "refersTo": "status-online",
+      "description": "Live infrastructure indicator with animated heartbeat emerald pulse.",
+      "html": "<div class=\"ds-telemetry\"><span class=\"ds-pulse-dot\"></span><span class=\"ds-telemetry-text\">NETWORK OPERATIONAL</span></div>",
+      "css": ".ds-telemetry { display: inline-flex; align-items: center; gap: 8px; background: rgba(14, 19, 30, 0.8); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 4px; padding: 6px 14px; font-family: 'Plus Jakarta Sans', sans-serif; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; color: #10b981; } .ds-pulse-dot { width: 8px; height: 8px; background: #10b981; border-radius: 50%; display: inline-block; box-shadow: 0 0 8px rgba(16, 185, 129, 0.6); }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Monolithic Obsidian Citadel",
+    "overview": "Apexsions exists as the architectural zenith of civilization — unyielding, monumental, and ancient. Every surface is sculpted from abyssal volcanic obsidian layered over dark starry voids, bonded by precise veins of forged noble gold. The interface does not emulate flashy modern software or saturated casual gaming hubs; it commands solemn reverence through restraint, symmetry, and architectural permanence. Content floats on stratified obsidian planes (#06080d to #141c2e), illuminated by disciplined hairline gold borders (rgba(212, 163, 89, 0.28)) and high-contrast typography designed for effortless scanning.",
+    "keyCharacteristics": [
+      "Solemn Monumentality: Deep basal tones, generous breathing room, and architectural discipline replace chaotic neon clutter.",
+      "Imperial Restraint: Noble gold is treated as an imperial privilege, deployed strictly for sovereign actions, hierarchy progression, and active focus.",
+      "Architectural Geometry: Crisp 2px to 6px radii create chisel-cut stone planes rather than soft pillowy bubbles.",
+      "Uncompromised Contrast: Pure crisp whites (#ffffff, 16:1 ratio) and high-clarity slate tones preserve strict WCAG AA readability against midnight backdrops."
+    ],
+    "rules": [
+      {
+        "name": "The Imperial Rarity Rule",
+        "body": "Noble gold is an imperial currency; it must never coat more than 10% of any viewport. If everything glows gold, nothing feels sovereign.",
+        "section": "colors"
+      },
+      {
+        "name": "The Absolute White Ceiling Rule",
+        "body": "Only display titles, hero headlines, and active focus points may carry pure #ffffff. All continuous body copy uses #f1f5f9 to prevent optical fatigue.",
+        "section": "colors"
+      },
+      {
+        "name": "The Roman Inscription Rule",
+        "body": "All kicker badges, category headers, and brand marks must be set in uppercase Cinzel with wide letter-spacing (0.18em to 0.28em).",
+        "section": "typography"
+      },
+      {
+        "name": "The No-Script Rule",
+        "body": "Script fonts, handwritten cursive, or playful rounded comic typefaces are strictly prohibited across all surfaces.",
+        "section": "typography"
+      },
+      {
+        "name": "The Chiseled Edge Rule",
+        "body": "Cards and containers must define their boundaries through 1px hairline borders rather than heavy blurred drop shadows alone.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do maintain a minimum 4.5:1 WCAG contrast ratio for all secondary and body text against dark backgrounds.",
+      "Do use the official brand name Apexsions and tagline The Peak Civilizations exclusively.",
+      "Do preserve the chisel-cut architectural form language with 2px to 6px radii across all UI components.",
+      "Do pair uppercase Cinzel display headers with Plus Jakarta Sans body typography.",
+      "Do provide immediate visual feedback (such as 'COPIED' badge) when interactive telemetry elements like the server IP are clicked."
+    ],
+    "donts": [
+      "Don't add suffixes like 'Kingdom', 'Network', or 'SMP' to the Apexsions name.",
+      "Don't use neon purple, cyan, or rainbow gradient text effects.",
+      "Don't use pill-shaped (border-radius: 9999px) buttons or cards.",
+      "Don't use bouncy, cartoonish spring animations (keep transitions to smooth 200–250ms cubic-beziers).",
+      "Don't flood entire container backgrounds with gold; gold is strictly an accent and sovereign marker."
+    ]
+  }
+}

@@ -13,14 +13,14 @@
             <div class="apx-hero-brand-mark mb-2">
                 <span>APEXSIONS &bull; THE PEAK CIVILIZATIONS</span>
             </div>
-            <div class="apx-hero-hierarchy-axis">
-                <span class="apx-axis-step">FONDASI</span>
-                <span class="apx-axis-arrow">→</span>
-                <span class="apx-axis-step">KENAIKAN</span>
-                <span class="apx-axis-arrow">→</span>
-                <span class="apx-axis-step">OTORITAS</span>
-                <span class="apx-axis-arrow">→</span>
-                <span class="apx-axis-step apx-axis-apex">PUNCAK</span>
+            <div class="apx-hero-hierarchy-axis" aria-label="Tingkatan Hierarki Peradaban" role="list">
+                <span class="apx-axis-step" role="listitem">FONDASI</span>
+                <span class="apx-axis-arrow" aria-hidden="true">→</span>
+                <span class="apx-axis-step" role="listitem">KENAIKAN</span>
+                <span class="apx-axis-arrow" aria-hidden="true">→</span>
+                <span class="apx-axis-step" role="listitem">OTORITAS</span>
+                <span class="apx-axis-arrow" aria-hidden="true">→</span>
+                <span class="apx-axis-step apx-axis-apex" role="listitem">PUNCAK</span>
             </div>
         </div>
 
@@ -40,7 +40,7 @@
                     <a href="#getting-started" class="btn btn-apx-sovereign">
                         MASUK KE PERADABAN <i class="bi bi-arrow-right ms-2"></i>
                     </a>
-                    <div class="apx-hero-ip-block apx-copyable" data-apx-copy="apexsions.my.id" role="button" tabindex="0" title="Klik untuk menyalin IP Java">
+                    <div class="apx-hero-ip-block apx-copyable" data-apx-copy="apexsions.my.id" role="button" tabindex="0" title="Klik atau tekan Enter untuk menyalin IP Java" aria-label="Salin Alamat IP Server Java">
                         <span class="apx-ip-label">SERVER IP</span>
                         <span class="apx-ip-address font-monospace">apexsions.my.id</span>
                         <i class="bi bi-clipboard apx-ip-icon ms-1"></i>
@@ -53,20 +53,20 @@
         <div class="apx-hero-infrastructure">
             <!-- 1. Live Signal & Player Count -->
             <div class="apx-infra-item">
-                <span class="apx-pulse-dot" id="apxLiveDot"></span>
+                <span class="apx-pulse-dot" id="apxLiveDot" aria-hidden="true"></span>
                 <span class="apx-infra-status" id="apxLiveBadge">SERVER ONLINE</span>
                 <span class="apx-infra-divider">/</span>
                 <span class="apx-infra-val"><span id="apxOnlinePlayers">0</span> / <span id="apxMaxPlayers">500</span> Warga</span>
             </div>
 
             <!-- 2. Java Server IP (Click to copy) -->
-            <div class="apx-infra-item apx-copyable" data-apx-copy="apexsions.my.id" role="button" tabindex="0" title="Klik untuk menyalin IP Java">
+            <div class="apx-infra-item apx-copyable" data-apx-copy="apexsions.my.id" role="button" tabindex="0" title="Klik atau tekan Enter untuk menyalin IP Java" aria-label="Salin Alamat IP Server Java">
                 <span class="apx-infra-label">JAVA</span>
                 <span class="apx-infra-val font-monospace">apexsions.my.id</span>
             </div>
 
             <!-- 3. Bedrock Port & Version (Click to copy) -->
-            <div class="apx-infra-item apx-copyable" data-apx-copy="19132" role="button" tabindex="0" title="Klik untuk menyalin Port Bedrock">
+            <div class="apx-infra-item apx-copyable" data-apx-copy="19132" role="button" tabindex="0" title="Klik atau tekan Enter untuk menyalin Port Bedrock" aria-label="Salin Port Server Bedrock">
                 <span class="apx-infra-label">BEDROCK</span>
                 <span class="apx-infra-val font-monospace">19132</span>
                 <span class="apx-infra-meta">&bull; v<span id="apxVersion">1.21.4</span></span>
@@ -218,7 +218,7 @@
             <div class="col-lg-6">
                 <div class="apx-showcase-box">
                     <div class="apx-showcase-media">
-                        <img src="{{ theme_asset('img/realm-showcase.jpg') }}" alt="Apexsions Realm Scenery" class="apx-showcase-img">
+                        <img src="{{ theme_asset('img/realm-showcase.jpg') }}" alt="Panorama Bentang Alam Wilayah Kekaisaran Apexsions" class="apx-showcase-img" loading="lazy" decoding="async" width="800" height="450">
                         <div class="apx-showcase-overlay"></div>
                         <div class="apx-showcase-tag">ARSIP WILAYAH REALM</div>
                     </div>
@@ -241,7 +241,7 @@
 </section>
 
 <!-- Official Rank Hierarchy Showcase (Pure Visual Artwork & Clean Showcase) -->
-<section class="apx-section py-5" id="ranks" style="background: #06080d; border-top: 1px solid var(--apx-gold-border-subtle);">
+<section class="apx-section py-5" id="ranks" style="background: var(--apx-bg-deep); border-top: 1px solid var(--apx-gold-border-subtle);">
     <div class="container">
         <!-- Section Header -->
         <div class="text-center mb-5">
@@ -255,11 +255,11 @@
         </div>
 
         <!-- Interactive Strata Filter Navigation -->
-        <div class="apx-caste-nav">
-            <button type="button" class="apx-caste-filter-btn active" data-rank-filter="all">SEMUA KASTA (9)</button>
-            <button type="button" class="apx-caste-filter-btn" data-rank-filter="authority">DEWAN OTORITAS (3)</button>
-            <button type="button" class="apx-caste-filter-btn" data-rank-filter="nobles">ORDO BANGSAWAN (5)</button>
-            <button type="button" class="apx-caste-filter-btn" data-rank-filter="pioneers">WARGA PERINTIS (1)</button>
+        <div class="apx-caste-nav" role="tablist" aria-label="Filter Hierarki Kasta">
+            <button type="button" class="apx-caste-filter-btn active" data-rank-filter="all" role="tab" aria-selected="true">SEMUA KASTA (9)</button>
+            <button type="button" class="apx-caste-filter-btn" data-rank-filter="authority" role="tab" aria-selected="false">DEWAN OTORITAS (3)</button>
+            <button type="button" class="apx-caste-filter-btn" data-rank-filter="nobles" role="tab" aria-selected="false">ORDO BANGSAWAN (5)</button>
+            <button type="button" class="apx-caste-filter-btn" data-rank-filter="pioneers" role="tab" aria-selected="false">WARGA PERINTIS (1)</button>
         </div>
 
         <!-- The Architectural Social Ladder -->
@@ -575,7 +575,7 @@
 </section>
 
 <!-- Connected Rite of Passage (Onboarding Stepper Section) -->
-<section class="apx-section py-5" id="getting-started" style="background: rgba(8, 11, 18, 0.85); border-top: 1px solid rgba(255, 255, 255, 0.08);">
+<section class="apx-section py-5" id="getting-started" style="background: var(--apx-bg-base); border-top: 1px solid var(--apx-border);">
     <div class="container py-3">
         <div class="apx-section-header text-center mb-5">
             <div class="apx-section-kicker mb-2">GERBANG INISIASI</div>

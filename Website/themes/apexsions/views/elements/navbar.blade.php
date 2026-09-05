@@ -3,7 +3,7 @@
         <!-- Brand Logo & Title -->
         <a class="apx-navbar-brand" href="{{ route('home') }}">
             <div class="apx-brand-logo-box">
-                <img src="{{ theme_asset('img/logo.jpg') }}" alt="Apexsions Crest" class="apx-brand-logo-img">
+                <img src="{{ theme_asset('img/logo.jpg') }}" alt="Apexsions Crest" class="apx-brand-logo-img" width="42" height="42">
             </div>
             <div class="d-flex flex-column">
                 <span class="apx-brand-title">APEXSIONS</span>
@@ -44,7 +44,7 @@
                     </li>
                 @endif
                 <li class="nav-item">
-                    <a class="nav-link apx-nav-link" href="#" data-bs-toggle="modal" data-bs-target="#voteModal">
+                    <a class="nav-link apx-nav-link" href="#" role="button" data-bs-toggle="modal" data-bs-target="#voteModal">
                         Vote
                     </a>
                 </li>

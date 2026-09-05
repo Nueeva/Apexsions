@@ -116,11 +116,32 @@ a:hover {
     color: #ffffff;
 }
 
-/* Accessibility Focus Ring */
+/* Accessibility Focus Ring & Skip Link */
 :focus-visible {
     outline: 2px solid var(--apx-gold);
     outline-offset: 3px;
     border-radius: var(--apx-radius-sm);
+}
+
+.apx-skip-link {
+    position: fixed;
+    top: -120px;
+    left: 1.5rem;
+    background: var(--apx-gold);
+    color: #07090e !important;
+    font-weight: 700;
+    font-size: 0.88rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--apx-radius-sm);
+    border: 1px solid var(--apx-gold-light);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.8);
+    z-index: 9999;
+    text-decoration: none;
+    transition: top 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.apx-skip-link:focus {
+    top: 1.5rem;
 }
 
 /* Container Spacing for Non-Home Views */
@@ -821,6 +842,20 @@ a:hover {
     0% { transform: scale(0.9); opacity: 0.7; }
     50% { transform: scale(1.15); opacity: 1; }
     100% { transform: scale(0.9); opacity: 0.7; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto !important;
+    }
+    .apx-pulse-dot {
+        animation: none !important;
+        transform: none !important;
+        opacity: 1 !important;
+    }
+    *, ::before, ::after {
+        transition-duration: 0.05s !important;
+    }
 }
 
 /* ==============================================================================

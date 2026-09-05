@@ -10,6 +10,13 @@
     <meta name="description" content="@yield('description', setting('description', 'Apexsions - The Peak Civilizations'))">
     <meta name="theme-color" content="#090c13">
 
+    <!-- Open Graph & Social Cards -->
+    <meta property="og:title" content="@yield('title') | {{ site_name() }}">
+    <meta property="og:description" content="@yield('description', setting('description', 'Apexsions - The Peak Civilizations'))">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:image" content="{{ theme_asset('img/logo.jpg') }}">
+
     <!-- Google Fonts: Cinzel (Majestic Display) & Plus Jakarta Sans (Clean Interface) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -24,9 +31,12 @@
     @stack('styles')
 </head>
 <body class="apx-body">
+    <!-- Skip to Main Content (WCAG 2.4.1 Bypass Blocks) -->
+    <a href="#main-content" class="apx-skip-link">Lewati ke konten utama</a>
+
     @include('elements.navbar')
 
-    <main class="flex-grow-1">
+    <main class="flex-grow-1" id="main-content" tabindex="-1">
         <div id="status-message"></div>
 
         @if(request()->routeIs('home'))

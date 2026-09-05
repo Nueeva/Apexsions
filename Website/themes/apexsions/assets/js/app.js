@@ -2,9 +2,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // 1. One-Click Copy for Server Address & Port with Visual Feedback
     const copyElements = document.querySelectorAll('[data-apx-copy]');
     copyElements.forEach(el => {
-        el.addEventListener('click', (e) => {
-            e.preventDefault();
-            e.stopPropagation();
+        const handleCopy = (e) => {
+            if (e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
             const textToCopy = el.getAttribute('data-apx-copy') || 'apexsions.my.id';
             navigator.clipboard.writeText(textToCopy).then(() => {
                 const badgeEl = el.querySelector('.badge-copy');
@@ -28,6 +30,14 @@ document.addEventListener('DOMContentLoaded', () => {
             }).catch(err => {
                 console.warn('Clipboard write failed:', err);
             });
+        };
+
+        el.addEventListener('click', handleCopy);
+        el.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                handleCopy(e);
+            }
         });
     });
 
@@ -122,8 +132,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const rankCards = document.querySelectorAll('[data-rank-category]');
     rankPills.forEach(pill => {
         pill.addEventListener('click', () => {
-            rankPills.forEach(p => p.classList.remove('active'));
+            rankPills.forEach(p => {
+                p.classList.remove('active');
+                p.setAttribute('aria-selected', 'false');
+            });
             pill.classList.add('active');
+            pill.setAttribute('aria-selected', 'true');
 
             const filter = pill.getAttribute('data-rank-filter');
             rankCards.forEach(card => {
