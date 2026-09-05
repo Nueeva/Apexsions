@@ -136,7 +136,7 @@ public class SpecificBookShopGUI implements InventoryHolder {
                 lore.add(mm.deserialize("<gold>Maks Level:</gold> <yellow>" + CustomEnchant.toRoman(enchant.getMaxLevel()) + " (" + enchant.getMaxLevel() + ")</yellow>"));
                 lore.add(Component.empty());
                 lore.add(mm.deserialize("<green>● " + fixedSuccess + "% Success Rate (Pasti)</green>"));
-                lore.add(mm.deserialize("<red>● 30% Destroy Rate</red>"));
+                lore.add(mm.deserialize("<red>● " + (100 - fixedSuccess) + "% Destroy Rate</red>"));
                 lore.add(Component.empty());
                 lore.add(mm.deserialize("<gray>Harga Beli Langsung:</gray> <gold><bold>" + formattedCost + "</bold></gold>"));
                 lore.add(mm.deserialize("<dark_gray>(3x lipat harga gacha acak tier)</dark_gray>"));

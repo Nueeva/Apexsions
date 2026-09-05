@@ -96,7 +96,7 @@ public class EnchanterGUI implements InventoryHolder {
                 lore.add("<gray>Mata Uang:</gray> <yellow>" + grp.getCurrency().toUpperCase() + "</yellow>");
                 lore.add("");
                 lore.add("<green>● Success Rate: 40% - 100%</green>");
-                lore.add("<red>● Destroy Rate: 0% - 40%</red>");
+                lore.add("<red>● Destroy Rate: 0% - 60% (Auto 100% - Success)</red>");
                 lore.add("");
                 lore.add("<yellow>▶ Klik untuk gacha buku sihir!</yellow>");
             }

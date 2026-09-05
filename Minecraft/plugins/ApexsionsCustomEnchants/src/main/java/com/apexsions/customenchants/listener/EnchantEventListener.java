@@ -1144,7 +1144,12 @@ public class EnchantEventListener implements Listener {
                 final CustomEnchant finalBookEnchant = chosen;
                 plugin.getServer().getScheduler().runTask(plugin, () -> {
                     ItemStack customBook = plugin.getEnchantBookManager().createBook(finalBookEnchant, 1, 80, 20);
-                    player.getInventory().addItem(customBook);
+                    HashMap<Integer, ItemStack> overflow = player.getInventory().addItem(customBook);
+                    if (!overflow.isEmpty()) {
+                        for (ItemStack drop : overflow.values()) {
+                            player.getWorld().dropItemNaturally(player.getLocation(), drop);
+                        }
+                    }
                     player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 0.8f, 1.8f);
                     player.sendMessage(mm.deserialize("<gradient:#f1c40f:#e67e22><bold>✨ ENCHANTING TABLE BONUS BOOK!</bold></gradient> " +
                             "Kamu juga mendapatkan Buku Sihir <color:" + finalBookEnchant.getGroup().getColor() + "><bold>" + finalBookEnchant.getDisplayName() + " I</bold></color>!"));
@@ -1157,10 +1162,12 @@ public class EnchantEventListener implements Listener {
         // 1. isEnchantable() == true (Strictly excludes wings and non-table enchants)
         // 2. canApplyTo(item) == true (Item type must match)
         // 3. current level on item < maxLevel
+        // 4. Player enchant limit not exceeded
         List<CustomEnchant> eligible = plugin.getEnchantmentRegistry().getAllEnchantments().stream()
                 .filter(CustomEnchant::isEnchantable)
                 .filter(e -> e.canApplyTo(item))
                 .filter(e -> getEnchantLevel(item, e.getId()) < e.getMaxLevel())
+                .filter(e -> plugin.getEnchantLimitManager().canApplyEnchant(player, item, e))
                 .toList();
 
         if (eligible.isEmpty()) {

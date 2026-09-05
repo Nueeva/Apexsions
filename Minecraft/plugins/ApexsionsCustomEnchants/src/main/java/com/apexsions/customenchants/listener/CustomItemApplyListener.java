@@ -266,17 +266,18 @@ public class CustomItemApplyListener implements Listener {
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
         if (event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
-        if (event.getHand() != EquipmentSlot.HAND) return;
+        if (event.getHand() == null) return;
 
         Player player = event.getPlayer();
-        ItemStack item = player.getInventory().getItemInMainHand();
+        ItemStack item = player.getInventory().getItem(event.getHand());
+        if (item == null || item.getType().isAir()) return;
 
         if (plugin.getMagicDustManager().isMysteryDust(item)) {
             event.setCancelled(true);
             if (item.getAmount() > 1) {
                 item.setAmount(item.getAmount() - 1);
             } else {
-                player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
+                player.getInventory().setItem(event.getHand(), new ItemStack(Material.AIR));
             }
 
             ItemStack uncovered = plugin.getMagicDustManager().uncoverMysteryDust();
