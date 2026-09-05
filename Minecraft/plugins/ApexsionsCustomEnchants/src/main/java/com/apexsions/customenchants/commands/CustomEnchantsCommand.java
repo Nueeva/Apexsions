@@ -50,7 +50,7 @@ public class CustomEnchantsCommand implements CommandExecutor, TabCompleter {
         String sub = args[0].toLowerCase(Locale.ROOT);
         switch (sub) {
             case "shop", "books", "beli" -> {
-                new SpecificBookShopGUI(plugin, player, 1).open();
+                new com.apexsions.customenchants.gui.ShopCategorySelectGUI(plugin, player).open();
                 return true;
             }
             case "tinkerer", "tinker" -> {

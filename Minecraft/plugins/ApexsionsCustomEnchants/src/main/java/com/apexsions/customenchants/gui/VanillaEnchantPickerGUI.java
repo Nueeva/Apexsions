@@ -47,7 +47,27 @@ public class VanillaEnchantPickerGUI implements InventoryHolder {
         this.inventory = Bukkit.createInventory(this, 54, mm.deserialize("<gradient:#f1c40f:#e67e22><bold>📜 PILIH VANILLA ENCHANT 📜</bold></gradient>"));
 
         for (Enchantment e : Registry.ENCHANTMENT) {
-            allEnchants.add(e);
+            if (!e.getKey().getNamespace().equalsIgnoreCase("minecraft")) continue;
+            
+            // Check item compatibility
+            boolean compatible = e.canEnchantItem(item);
+            if (!compatible) {
+                Material m = item.getType();
+                String k = e.getKey().getKey();
+                if (m == Material.ELYTRA && (k.equals("unbreaking") || k.equals("mending") || k.equals("vanishing_curse") || k.equals("binding_curse"))) {
+                    compatible = true;
+                } else if (m == Material.SHEARS && (k.equals("efficiency") || k.equals("unbreaking") || k.equals("silk_touch") || k.equals("mending") || k.equals("vanishing_curse"))) {
+                    compatible = true;
+                } else if (m == Material.FISHING_ROD && (k.equals("luck_of_the_sea") || k.equals("lure") || k.equals("unbreaking") || k.equals("mending") || k.equals("vanishing_curse"))) {
+                    compatible = true;
+                } else if (m == Material.SHIELD && (k.equals("unbreaking") || k.equals("mending") || k.equals("vanishing_curse"))) {
+                    compatible = true;
+                }
+            }
+
+            if (compatible) {
+                allEnchants.add(e);
+            }
         }
         allEnchants.sort(Comparator.comparing(e -> e.getKey().getKey()));
 

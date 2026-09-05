@@ -36,6 +36,8 @@ public class KitManager {
     private final NamespacedKey keySetType;
     private final NamespacedKey keySetVal;
     private final NamespacedKey keySetReq;
+    private final NamespacedKey keySetStats;
+    private final NamespacedKey keyToolBonus;
 
     private File kitsFile;
     private FileConfiguration kitsConfig;
@@ -50,6 +52,8 @@ public class KitManager {
         this.keySetType = new NamespacedKey(plugin, "set_type");
         this.keySetVal = new NamespacedKey(plugin, "set_val");
         this.keySetReq = new NamespacedKey(plugin, "set_req");
+        this.keySetStats = new NamespacedKey(plugin, "set_stats");
+        this.keyToolBonus = new NamespacedKey(plugin, "tool_bonus");
 
         initFiles();
         loadKits();
@@ -459,5 +463,13 @@ public class KitManager {
 
     public NamespacedKey getKeySetReq() {
         return keySetReq;
+    }
+
+    public NamespacedKey getKeySetStats() {
+        return keySetStats;
+    }
+
+    public NamespacedKey getKeyToolBonus() {
+        return keyToolBonus;
     }
 }

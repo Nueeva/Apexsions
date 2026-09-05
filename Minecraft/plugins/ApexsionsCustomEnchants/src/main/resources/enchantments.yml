@@ -22,28 +22,28 @@ enchantments:
     group: "FABLED"
     max-level: 1
     applies: "PICKAXE"
-    description: "Chance for an ore block to turn into its block"
+    description: "Chance for an ore block to turn into it's block"
 
   planter:
     display-name: "Planter"
     group: "ULTIMATE"
     max-level: 3
     applies: "HOES"
-    description: "|-"
+    description: "Plant seeds in a 3x3 area by shift+right-clicking."
 
   potatoplanter:
     display-name: "Potato Planter"
     group: "ULTIMATE"
     max-level: 3
     applies: "HOES"
-    description: "|-"
+    description: "Plant potatoes in a 3x3 area by shift+right-clicking."
 
   carrotplanter:
     display-name: "Carrot Planter"
     group: "ULTIMATE"
     max-level: 3
     applies: "HOES"
-    description: "|-"
+    description: "Plant carrots in a 3x3 area by shift+right-clicking."
 
   replanter:
     display-name: "Replanter"
@@ -57,7 +57,7 @@ enchantments:
     group: "SIMPLE"
     max-level: 3
     applies: "SWORDS, BOW, CROSSBOW, TRIDENT"
-    description: "|-"
+    description: "Chance to strike lightning at the opponent."
 
   impact:
     display-name: "Impact"
@@ -71,7 +71,7 @@ enchantments:
     group: "LEGENDARY"
     max-level: 4
     applies: "TRIDENT"
-    description: "|-"
+    description: "Make your enemy bleed, if hit using melee attack."
 
   jellylegs:
     display-name: "Jelly Legs"
@@ -127,7 +127,7 @@ enchantments:
     group: "SIMPLE"
     max-level: 2
     applies: "PICKAXE"
-    description: "|-"
+    description: "Chance to regain air when mining under water."
 
   glowing:
     display-name: "Glowing"
@@ -141,7 +141,7 @@ enchantments:
     group: "SIMPLE"
     max-level: 3
     applies: "SWORDS, AXES"
-    description: "|-"
+    description: "Chance to have opponents head drop on death."
 
   forcefield:
     display-name: "Forcefield"
@@ -169,14 +169,14 @@ enchantments:
     group: "UNIQUE"
     max-level: 5
     applies: "SWORDS, AXES"
-    description: "|-"
+    description: "Chance of strength and mining fatigue."
 
   reflect:
     display-name: "Reflect"
     group: "UNIQUE"
     max-level: 5
     applies: "ARMOR"
-    description: "|-"
+    description: "Absorb enemy damage and reflect it back."
 
   ward:
     display-name: "Ward"
@@ -239,7 +239,7 @@ enchantments:
     group: "UNIQUE"
     max-level: 4
     applies: "SWORDS, AXES"
-    description: "|-"
+    description: "Chance to regain hunger while fighting."
 
   veinminer:
     display-name: "Vein Miner"
@@ -253,14 +253,14 @@ enchantments:
     group: "UNIQUE"
     max-level: 4
     applies: "TOOLS"
-    description: "|-"
+    description: "Automatically places blocks broken by tools in your inventory."
 
   explosivedemise:
     display-name: "Explosive Demise"
     group: "UNIQUE"
     max-level: 8
     applies: "LEGGINGS"
-    description: "|-"
+    description: "Summon creepers as your guards when near death."
 
   enderslayer:
     display-name: "Ender Slayer"
@@ -358,7 +358,7 @@ enchantments:
     group: "ELITE"
     max-level: 4
     applies: "AXE"
-    description: "|-"
+    description: "A chance to give your opponent the Wither and Blindness effects while dealing damage"
 
   netherslayer:
     display-name: "Nether Slayer"
@@ -372,7 +372,7 @@ enchantments:
     group: "ELITE"
     max-level: 3
     applies: "SWORDS"
-    description: "|-"
+    description: "A chance of causing blindness when attacking."
 
   allure:
     display-name: "Allure"
@@ -386,14 +386,14 @@ enchantments:
     group: "ELITE"
     max-level: 3
     applies: "ARMOR"
-    description: "|-"
+    description: "Can cause slowness to attacker when defending."
 
   paralyze:
     display-name: "Paralyze"
     group: "ELITE"
     max-level: 4
     applies: "SWORDS, AXES"
-    description: "|-"
+    description: "Gives lightning effect and a chance for slowness and slow swinging."
 
   poison:
     display-name: "Poison"
@@ -421,14 +421,14 @@ enchantments:
     group: "ELITE"
     max-level: 10
     applies: "WEAPONS AND TOOLS"
-    description: "|-"
+    description: "Protects weapons and tools durability, items will be take longer to break."
 
   snare:
     display-name: "Snare"
     group: "ELITE"
     max-level: 4
     applies: "BOWS"
-    description: "|-"
+    description: "Chance to slow and fatigue enemies with projectiles."
 
   springs:
     display-name: "Springs"
@@ -442,7 +442,7 @@ enchantments:
     group: "ELITE"
     max-level: 10
     applies: "BOOTS"
-    description: "|-"
+    description: "When hit you have a chance to spawn zombie hordes to distract and disorient your opponents."
 
   voodoo:
     display-name: "Voodoo"
@@ -470,7 +470,7 @@ enchantments:
     group: "ELITE"
     max-level: 8
     applies: "HELMET"
-    description: "|-"
+    description: "When you are near death, you will spawn a smoke bomb to distract your enemies."
 
   infernal:
     display-name: "Infernal"
@@ -484,35 +484,35 @@ enchantments:
     group: "ELITE"
     max-level: 3
     applies: "LEGGINGS"
-    description: "|-"
+    description: "Chance to extinguish yourself when on fire."
 
   shockwave:
     display-name: "Shockwave"
     group: "ELITE"
     max-level: 5
     applies: "CHESTPLATES"
-    description: "|-"
+    description: "Chance to push back your attacker when your health is low."
 
   vampire:
     display-name: "Vampire"
     group: "ELITE"
     max-level: 3
     applies: "SWORDS"
-    description: "|-"
+    description: "A chance to heal you for up to 3hp a few seconds after you strike."
 
   greatsword:
     display-name: "Greatsword"
     group: "ELITE"
     max-level: 5
     applies: "SWORD"
-    description: "|-"
+    description: "Multiplies damage against players who are wielding a Bow at the time they are hit."
 
   bowmaster:
     display-name: "Bowmaster"
     group: "ELITE"
     max-level: 5
     applies: "BOW, CROSSBOW, TRIDENT"
-    description: "|-"
+    description: "Multiplies damage against players who are wielding a Sword at the time they are hit."
 
   hardened:
     display-name: "Hardened"
@@ -540,7 +540,7 @@ enchantments:
     group: "ELITE"
     max-level: 8
     applies: "ARMOR"
-    description: "|-"
+    description: "When hit you have a chance to teleport directly behind you opponent."
 
   timber:
     display-name: "Timber"
@@ -554,14 +554,14 @@ enchantments:
     group: "ULTIMATE"
     max-level: 4
     applies: "WEAPONS"
-    description: "|-"
+    description: "Chance to distance yourself from your enemies and gain regeneration."
 
   cleave:
     display-name: "Cleave"
     group: "ULTIMATE"
     max-level: 7
     applies: "AXES"
-    description: "|-"
+    description: "Damages players within a radius that increases with the level of enchant."
 
   ambit:
     display-name: "Ambit"
@@ -617,21 +617,21 @@ enchantments:
     group: "ULTIMATE"
     max-level: 4
     applies: "SWORDS"
-    description: "|-"
+    description: "A chance of removing bad potion effects."
 
   ragdoll:
     display-name: "Ragdoll"
     group: "ULTIMATE"
     max-level: 4
     applies: "ARMOR"
-    description: "|-"
+    description: "Chance to be pushed back when getting hit."
 
   block:
     display-name: "Block"
     group: "ULTIMATE"
     max-level: 3
     applies: "SWORDS"
-    description: "|-"
+    description: "A chance to negate an attack and deal up to 4 damage back."
 
   trench:
     display-name: "Trench"
@@ -645,49 +645,49 @@ enchantments:
     group: "ULTIMATE"
     max-level: 9
     applies: "PICKAXES, SHOVELS"
-    description: "|-"
+    description: "Chance to dig tunnels and staircases in the direction you're facing."
 
   dodge:
     display-name: "Dodge"
     group: "ULTIMATE"
     max-level: 5
     applies: "ARMOR"
-    description: "|-"
+    description: "Chance to dodge physical enemy, chance increases when sneaking."
 
   fumble:
     display-name: "Fumble"
     group: "LEGENDARY"
     max-level: 3
     applies: "CHESTPLATE"
-    description: "|-"
+    description: "Chance to explode enemy when hit by their arrows."
 
   turmoil:
     display-name: "Turmoil"
     group: "LEGENDARY"
     max-level: 3
     applies: "ARMOR"
-    description: "|-"
+    description: "Chance to prevent opponents guards from spawning."
 
   guardians:
     display-name: "Guardians"
     group: "ULTIMATE"
     max-level: 10
     applies: "ARMOR"
-    description: "|-"
+    description: "A chance to spawn iron golems to assist you and watch over you."
 
   iceaspect:
     display-name: "Ice Aspect"
     group: "ULTIMATE"
     max-level: 3
     applies: "SWORDS"
-    description: "|-"
+    description: "A chance of causing the slowness effect on your enemy."
 
   momentum:
     display-name: "Momentum"
     group: "ELITE"
     max-level: 3
     applies: "ELYTRA"
-    description: "|-"
+    description: "Chance to gain speed boost with fireworks."
 
   reinforced:
     display-name: "Reinforced"
@@ -701,7 +701,7 @@ enchantments:
     group: "FABLED"
     max-level: 4
     applies: "TOOLS"
-    description: "|-"
+    description: "Upon breaking, item has a chance to lose this enchantment and repair half of its durability."
 
   implants:
     display-name: "Implants"
@@ -750,14 +750,14 @@ enchantments:
     group: "ULTIMATE"
     max-level: 2
     applies: "ARMOR"
-    description: "|-"
+    description: "Chance to gain Damage Resistance when defending."
 
   disappear:
     display-name: "Disappear"
     group: "ULTIMATE"
     max-level: 4
     applies: "ARMOR"
-    description: "|-"
+    description: "Chance to become invisible when low on health."
 
   confuse:
     display-name: "Confuse"
@@ -771,21 +771,21 @@ enchantments:
     group: "ULTIMATE"
     max-level: 4
     applies: "SWORDS"
-    description: "|-"
+    description: "Chance to deal extra durability damage to all enemy armor with every attack."
 
   shatter:
     display-name: "Shatter"
     group: "ULTIMATE"
     max-level: 4
     applies: "AXES"
-    description: "|-"
+    description: "Chance to deal extra durability damage to all enemy armor with every attack."
 
   heavy:
     display-name: "Heavy"
     group: "ULTIMATE"
     max-level: 5
     applies: "ARMOR"
-    description: "|-"
+    description: "Decreases damage from enemy bows by 2% per level."
 
   devour:
     display-name: "Devour"
@@ -820,21 +820,21 @@ enchantments:
     group: "ULTIMATE"
     max-level: 4
     applies: "BOW"
-    description: "|-"
+    description: "Greatly increases damage dealt to enemy players that have a bow in their hands."
 
   tank:
     display-name: "Tank"
     group: "ULTIMATE"
     max-level: 4
     applies: "ARMOR"
-    description: "|-"
+    description: "Chance to decreases damage from enemy axes by 2% per level."
 
   swordsman:
     display-name: "Swordsman"
     group: "ULTIMATE"
     max-level: 5
     applies: "ARMOR"
-    description: "|-"
+    description: "Chance to reduces incoming damage while wielding a sword by up to 22% at max level."
 
   critical:
     display-name: "Critical"
@@ -855,7 +855,7 @@ enchantments:
     group: "LEGENDARY"
     max-level: 3
     applies: "WEAPONS"
-    description: "|-"
+    description: "Strike monsters with lightning every 3 consecutive hits."
 
   netherling:
     display-name: "Netherling"
@@ -876,7 +876,7 @@ enchantments:
     group: "ULTIMATE"
     max-level: 3
     applies: "ARMOR"
-    description: "|-"
+    description: "Chance to be immune to explosive damage, at higher levels you have a chance to heal."
 
   spirits:
     display-name: "Spirits"
@@ -918,14 +918,14 @@ enchantments:
     group: "LEGENDARY"
     max-level: 5
     applies: "ELYTRA"
-    description: "|-"
+    description: "Chance of poisoning opponent and gaining regeneration."
 
   divert:
     display-name: "Divert"
     group: "LEGENDARY"
     max-level: 5
     applies: "ARMOR"
-    description: "|-"
+    description: "Chance of poisoning opponent and gaining regeneration."
 
   unholy:
     display-name: "Unholy"
@@ -946,7 +946,7 @@ enchantments:
     group: "LEGENDARY"
     max-level: 6
     applies: "BOOTS"
-    description: "|-"
+    description: "Chance to throw your attackers into the air."
 
   chunky:
     display-name: "Chunky"
@@ -967,7 +967,7 @@ enchantments:
     group: "LEGENDARY"
     max-level: 3
     applies: "ARMOR"
-    description: "|-"
+    description: "Chance to cure blindness and gain night vision when hit."
 
   doublestrike:
     display-name: "Double Strike"
@@ -1002,7 +1002,7 @@ enchantments:
     group: "LEGENDARY"
     max-level: 5
     applies: "SWORDS"
-    description: "|-"
+    description: "Chance to kill multiple monsters in radius."
 
   inquisitive:
     display-name: "Inquisitive"
@@ -1016,7 +1016,7 @@ enchantments:
     group: "LEGENDARY"
     max-level: 5
     applies: "SWORDS"
-    description: "|-"
+    description: "A chance to steal health when attacking."
 
   overload:
     display-name: "Overload"
@@ -1037,14 +1037,14 @@ enchantments:
     group: "LEGENDARY"
     max-level: 5
     applies: "AXE"
-    description: "|-"
+    description: "Repair your weapon in exchange for dealing less damage."
 
   immortal:
     display-name: "Immortal"
     group: "FABLED"
     max-level: 4
     applies: "ARMOR"
-    description: "|-"
+    description: "Chance to prevents your armor from taking durability damage."
 
   unbreakable:
     display-name: "Unbreakable"
@@ -1065,7 +1065,7 @@ enchantments:
     group: "LEGENDARY"
     max-level: 8
     applies: "SWORD"
-    description: "|-"
+    description: "Chance of unequipping random armor piece from your opponent."
 
   striker:
     display-name: "Striker"
@@ -1079,14 +1079,14 @@ enchantments:
     group: "ULTIMATE"
     max-level: 5
     applies: "BOW"
-    description: "|-"
+    description: "Headshots with bows deal double damage."
 
   deadshot:
     display-name: "Deadshot"
     group: "LEGENDARY"
     max-level: 5
     applies: "TRIDENT"
-    description: "|-"
+    description: "Headshots with tridents deal double damage."
 
   soulbound:
     display-name: "Soulbound"
@@ -1121,7 +1121,7 @@ enchantments:
     group: "FABLED"
     max-level: 5
     applies: "WEAPONS"
-    description: "|-"
+    description: "Chance to replace your opponents helmet to a pumpkin for a short time."
 
   strife:
     display-name: "Strife"
@@ -1156,7 +1156,7 @@ enchantments:
     group: "ULTIMATE"
     max-level: 3
     applies: "BOOTS"
-    description: "|-"
+    description: "Deal damage to nearby mobs when taking fall damage."
 
   suspend:
     display-name: "Suspend"
@@ -1198,49 +1198,49 @@ enchantments:
     group: "FABLED"
     max-level: 4
     applies: "WEAPONS"
-    description: "|-"
+    description: "Chance to deal double damage while leaving enemy blind. Costs 40 souls / activation."
 
   rush:
     display-name: "Rush"
     group: "FABLED"
     max-level: 3
     applies: "ELYTRA"
-    description: "|-"
+    description: "Chance of speed boost when taking off with elytra. Costs 10 souls / activation."
 
   diploid:
     display-name: "Diploid"
     group: "FABLED"
     max-level: 5
     applies: "SWORDS"
-    description: "|-"
+    description: "Chance to multiply mob drops. Costs 5 souls / activation."
 
   multiplication:
     display-name: "Multiplication"
     group: "FABLED"
     max-level: 5
     applies: "PICKAXE"
-    description: "|-"
+    description: "Chance to multiply ore drops. Costs 5 souls / activation."
 
   fuddle:
     display-name: "Fuddle"
     group: "ULTIMATE"
     max-level: 3
     applies: "SWORDS"
-    description: "Disorganize opponents hotbar."
+    description: "Disorganize opponent's hotbar."
 
   spiritmaster:
     display-name: "Spiritmaster"
     group: "FABLED"
     max-level: 3
     applies: "SWORDS"
-    description: "|-"
+    description: "Chance to get more souls from killing players."
 
   axeofspirits:
     display-name: "Axe of Spirits"
     group: "FABLED"
     max-level: 3
     applies: "AXES"
-    description: "|-"
+    description: "Chance to get more souls from killing players."
 
   soulminer:
     display-name: "Soulminer"
@@ -1275,5 +1275,5 @@ enchantments:
     group: "ULTIMATE"
     max-level: 3
     applies: "GOAT HORN"
-    description: "|-"
+    description: "Call your allies to your aid if you are in danger."
 

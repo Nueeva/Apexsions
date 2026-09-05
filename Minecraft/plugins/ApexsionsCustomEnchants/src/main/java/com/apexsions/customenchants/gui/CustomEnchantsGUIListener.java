@@ -5,6 +5,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.InventoryHolder;
 
 /**
@@ -27,6 +29,10 @@ public class CustomEnchantsGUIListener implements Listener {
         if (holder instanceof EnchanterGUI gui) {
             gui.handleClick(event);
         } else if (holder instanceof SpecificBookShopGUI gui) {
+            gui.handleClick(event);
+        } else if (holder instanceof ShopCategorySelectGUI gui) {
+            gui.handleClick(event);
+        } else if (holder instanceof AdminPresetsGUI gui) {
             gui.handleClick(event);
         } else if (holder instanceof AdminTierPricingGUI gui) {
             gui.handleClick(event);
@@ -56,12 +62,22 @@ public class CustomEnchantsGUIListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGH)
-    public void onInventoryDrag(org.bukkit.event.inventory.InventoryDragEvent event) {
+    public void onInventoryClose(InventoryCloseEvent event) {
+        InventoryHolder holder = event.getInventory().getHolder();
+        if (holder instanceof AdminItemCreatorGUI gui) {
+            gui.handleClose(event);
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGH)
+    public void onInventoryDrag(InventoryDragEvent event) {
         InventoryHolder holder = event.getInventory().getHolder();
         if (holder instanceof AdminItemCreatorGUI gui) {
             gui.handleDrag(event);
         } else if (holder instanceof EnchanterGUI
                 || holder instanceof SpecificBookShopGUI
+                || holder instanceof ShopCategorySelectGUI
+                || holder instanceof AdminPresetsGUI
                 || holder instanceof AdminTierPricingGUI
                 || holder instanceof AceAdminHubGUI
                 || holder instanceof AceEnchantsCatalogGUI

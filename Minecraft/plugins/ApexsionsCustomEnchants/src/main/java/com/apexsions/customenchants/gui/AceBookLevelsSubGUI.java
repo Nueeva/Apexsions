@@ -61,18 +61,27 @@ public class AceBookLevelsSubGUI implements InventoryHolder {
             int slot = lvl - 1;
             slotLevelMap.put(slot, lvl);
 
-            // Create 100% success rate admin book
-            ItemStack book = plugin.getEnchantBookManager().createBook(enchant, lvl, 100, 0);
-            ItemMeta meta = book.getItemMeta();
+            ItemStack star = new ItemStack(Material.FIREWORK_STAR, Math.min(64, lvl));
+            org.bukkit.inventory.meta.FireworkEffectMeta meta = (org.bukkit.inventory.meta.FireworkEffectMeta) star.getItemMeta();
             if (meta != null) {
-                List<Component> lore = meta.hasLore() && meta.lore() != null ? new ArrayList<>(meta.lore()) : new ArrayList<>();
+                meta.setEffect(org.bukkit.FireworkEffect.builder()
+                        .withColor(enchant.getGroup().getBukkitColor())
+                        .build());
+                meta.displayName(mm.deserialize("<color:" + enchant.getGroup().getColor() + "><bold>" + enchant.getDisplayName() + " " + CustomEnchant.toRoman(lvl) + "</bold></color>"));
+                List<Component> lore = new ArrayList<>();
+                lore.add(mm.deserialize("<gray>" + enchant.getDescription() + "</gray>"));
                 lore.add(Component.empty());
-                lore.add(mm.deserialize("<yellow>(!) <italic>Left-Click</italic> to obtain the book</yellow>"));
-                lore.add(mm.deserialize("<yellow>(!) <italic>Right-Click</italic> to enchant held item</yellow>"));
+                lore.add(mm.deserialize("<gold>Tier:</gold> " + enchant.getGroup().getDisplayName()));
+                lore.add(mm.deserialize("<gold>Applies to:</gold> <yellow>" + enchant.getAppliesTo() + "</yellow>"));
+                lore.add(mm.deserialize("<gold>Tingkat Level:</gold> <aqua>" + lvl + " / " + enchant.getMaxLevel() + "</aqua>"));
+                lore.add(Component.empty());
+                lore.add(mm.deserialize("<yellow>(!) <italic>Left-Click</italic> untuk mengambil buku (100% Success)</yellow>"));
+                lore.add(mm.deserialize("<yellow>(!) <italic>Right-Click</italic> untuk pasang ke item di tangan</yellow>"));
                 meta.lore(lore);
-                book.setItemMeta(meta);
+                meta.addItemFlags(org.bukkit.inventory.ItemFlag.HIDE_ATTRIBUTES);
+                star.setItemMeta(meta);
             }
-            inventory.setItem(slot, book);
+            inventory.setItem(slot, star);
         }
 
         // Back button on last slot

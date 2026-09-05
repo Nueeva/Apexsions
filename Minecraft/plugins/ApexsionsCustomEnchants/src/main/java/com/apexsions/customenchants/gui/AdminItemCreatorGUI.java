@@ -4,6 +4,7 @@ import com.apexsions.core.kit.KitStatType;
 import com.apexsions.customenchants.ApexsionsCustomEnchantsPlugin;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -12,6 +13,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
@@ -28,10 +30,11 @@ import java.util.*;
  * Interactive Admin Item & Fullset Armor Creator GUI (/ace create).
  * Features:
  * - 4 dedicated Top-Center slots for Fullset Armor (Helmet, Chestplate, Leggings, Boots).
- * - Auto-detection of Fullset Armor and automatic Set Bonus propagation.
+ * - Auto-detection of Fullset Armor and automatic Set Bonus & Tool Set Bonus propagation.
  * - 7 dedicated Bottom-Center slots for Weapons and Tools.
- * - Strict item-type validation (rejects invalid items).
- * - Clicking placed items opens dedicated ItemModifierGUI for visual enchant & stat editing.
+ * - Auto-return items on close (anti-loss).
+ * - Auto-naming entire set via chat.
+ * - Presets integration (toggle save to preset, open preset GUI).
  */
 public class AdminItemCreatorGUI implements InventoryHolder {
 
@@ -52,23 +55,35 @@ public class AdminItemCreatorGUI implements InventoryHolder {
     // Stored items in slots
     private final Map<Integer, ItemStack> placedItems = new HashMap<>();
 
-    // Global Set Bonus State for Fullset Armor
-    private boolean setBonusActive = false;
-    private String globalSetName = "Warlord";
-    private KitStatType globalStatType = KitStatType.DAMAGE_REDUCTION;
+    // Global Set Bonus State for Fullset Armor & Tools
+    private boolean setBonusActive = true;
+    private String globalSetId = "apexsions";
+    private String globalSetName = "<gradient:#e74c3c:#f39c12><bold>Apexsions</bold></gradient>";
     private int globalRequiredPieces = 4;
-    private double globalBonusValue = 20.0;
+    private final Map<KitStatType, Double> globalStats = new LinkedHashMap<>();
+
+    // State flags
+    private boolean saveToPreset = false;
+    private boolean isNavigatingSubGUI = false;
 
     public AdminItemCreatorGUI(ApexsionsCustomEnchantsPlugin plugin, Player player) {
         this.plugin = plugin;
         this.player = player;
         this.inventory = Bukkit.createInventory(this, 54, mm.deserialize("<gradient:#e74c3c:#f39c12><bold>🛠 APEXSIONS ITEM & FULLSET CREATOR 🛠</bold></gradient>"));
+
+        globalStats.put(KitStatType.DAMAGE_REDUCTION, 15.0);
+        globalStats.put(KitStatType.ATTACK_DAMAGE_BOOST, 20.0);
         buildGUI();
     }
 
     public void open() {
+        this.isNavigatingSubGUI = false;
         buildGUI();
         player.openInventory(inventory);
+    }
+
+    public void setNavigatingSubGUI(boolean navigating) {
+        this.isNavigatingSubGUI = navigating;
     }
 
     public void updateItem(int slot, ItemStack newItem) {
@@ -93,122 +108,144 @@ public class AdminItemCreatorGUI implements InventoryHolder {
         inventory.setItem(4, createItem(Material.BEACON,
                 "<gradient:#f1c40f:#e67e22><bold>✦ PUSAT PEMBUAT ITEM & FULLSET ARMOR ✦</bold></gradient>",
                 List.of(
-                        mm.deserialize("<gray>Seret (drag & drop) armor atau senjata/alat ke slot kosong di bawah.</gray>"),
-                        mm.deserialize("<gray>Sistem akan otomatis memvalidasi jenis item yang dimasukkan.</gray>"),
+                        mm.deserialize("<gray>Seret armor atau senjata/alat ke slot kosong di bawah.</gray>"),
+                        mm.deserialize("<gray>Sistem otomatis memvalidasi jenis item yang dimasukkan.</gray>"),
                         Component.empty(),
-                        mm.deserialize("<yellow>● Klik item yang sudah ditaruh untuk membuka GUI Edit Enchants & Stats!</yellow>"),
-                        mm.deserialize("<yellow>● Shift + Klik Kanan item untuk mengambilnya kembali ke inventaris.</yellow>")
+                        mm.deserialize("<yellow>● Klik item di slot untuk membuka GUI Edit Enchants & Stats!</yellow>"),
+                        mm.deserialize("<yellow>● Shift + Klik Kanan item untuk mengambilnya kembali ke tas.</yellow>")
                 ), true));
 
-        // Separator Row (Row 2: 18..26)
-        ItemStack sep = createItem(Material.GRAY_STAINED_GLASS_PANE, "<dark_gray>⛓</dark_gray>", null, false);
-        for (int i = 18; i < 27; i++) {
-            inventory.setItem(i, sep);
-        }
-        inventory.setItem(22, createItem(Material.ANVIL,
-                "<gold><bold>⚔ AREA SENJATA & PERALATAN (TOOLS) ⚔</bold></gold>",
-                List.of(
-                        mm.deserialize("<gray>Letakkan Pedang, Kapak, Pickaxe, Busur, dll pada slot di bawah.</gray>")
-                ), false));
+        // 2. Armor Section (Top Center: Slots 10, 11, 12, 13)
+        renderArmorSlot(SLOT_HELMET, Material.IRON_HELMET, "🪖 HELMET KOSONG", "Letakkan Helmet di slot ini");
+        renderArmorSlot(SLOT_CHESTPLATE, Material.IRON_CHESTPLATE, "🛡 CHESTPLATE KOSONG", "Letakkan Chestplate/Elytra di slot ini");
+        renderArmorSlot(SLOT_LEGGINGS, Material.IRON_LEGGINGS, "👖 LEGGINGS KOSONG", "Letakkan Leggings di slot ini");
+        renderArmorSlot(SLOT_BOOTS, Material.IRON_BOOTS, "👢 BOOTS KOSONG", "Letakkan Boots di slot ini");
 
-        // 2. Render 4 Armor Slots (Slots 10..13)
-        renderArmorSlot(SLOT_HELMET, Material.CHAINMAIL_HELMET, "<yellow>🪖 Slot Helmet (Kosong)</yellow>", "<gray>Seret Helmet ke slot ini.</gray>");
-        renderArmorSlot(SLOT_CHESTPLATE, Material.CHAINMAIL_CHESTPLATE, "<yellow>🦺 Slot Chestplate (Kosong)</yellow>", "<gray>Seret Chestplate ke slot ini.</gray>");
-        renderArmorSlot(SLOT_LEGGINGS, Material.CHAINMAIL_LEGGINGS, "<yellow>👖 Slot Leggings (Kosong)</yellow>", "<gray>Seret Leggings ke slot ini.</gray>");
-        renderArmorSlot(SLOT_BOOTS, Material.CHAINMAIL_BOOTS, "<yellow>🥾 Slot Boots (Kosong)</yellow>", "<gray>Seret Boots ke slot ini.</gray>");
-
-        // 3. Render Armor Set Status Indicator (Slot 15)
-        boolean isFullset = isFullsetComplete();
+        // 3. Armor Set Status & Configurator (Slot 15)
+        boolean fullset = isFullsetComplete();
         List<Component> statusLore = new ArrayList<>();
-        statusLore.add(isFullset
-                ? mm.deserialize("<green><bold>✓ FULLSET ARMOR LENGKAP TERDETEKSI!</bold></green>")
-                : mm.deserialize("<yellow><bold>⚠ BELUM FULLSET</bold> <gray>(Lengkapi 4 slot armor)</gray></yellow>"));
+        statusLore.add(mm.deserialize("<gray>Nama Set: <gold>" + globalSetName + "</gold></gray>"));
+        statusLore.add(mm.deserialize("<gray>Set ID: <yellow>" + globalSetId + "</yellow></gray>"));
+        statusLore.add(mm.deserialize("<gray>Syarat: <gold>" + globalRequiredPieces + " Pieces</gold></gray>"));
         statusLore.add(Component.empty());
-        statusLore.add(mm.deserialize("<gray>Status Set Bonus: " + (setBonusActive ? "<green><bold>AKTIF</bold></green>" : "<red><bold>NONAKTIF</bold></red>") + "</gray>"));
-        if (setBonusActive) {
-            statusLore.add(mm.deserialize("<gray>Nama Set: <gold>" + globalSetName + "</gold></gray>"));
-            statusLore.add(mm.deserialize("<gray>Tipe Stat: <aqua>" + globalStatType.getDisplayName() + "</aqua></gray>"));
-            statusLore.add(mm.deserialize("<gray>Besaran: <green>+" + (int) globalBonusValue + "%</green></gray>"));
-            statusLore.add(mm.deserialize("<gray>Syarat: <yellow>" + globalRequiredPieces + " Pieces</yellow></gray>"));
+        statusLore.add(mm.deserialize("<gray>Stat Bonus Aktif:</gray>"));
+        for (Map.Entry<KitStatType, Double> e : globalStats.entrySet()) {
+            statusLore.add(mm.deserialize("<aqua>● " + e.getKey().getDisplayName() + ": <gold>" + e.getKey().formatValue(e.getValue()) + "</gold></aqua>"));
         }
         statusLore.add(Component.empty());
-        statusLore.add(mm.deserialize("<yellow>▶ Klik untuk mengatur/mengaktifkan Armor Set Bonus Fullset via GUI!</yellow>"));
+        if (fullset) {
+            statusLore.add(mm.deserialize("<green><bold>✓ FULLSET ARMOR LENGKAP TERPASANG!</bold></green>"));
+            statusLore.add(mm.deserialize("<gray>Set bonus & Tool bonus otomatis diterapkan ke semua item.</gray>"));
+        } else {
+            statusLore.add(mm.deserialize("<red><bold>⚠ BELUM FULLSET (Armor belum 4 potong)</bold></red>"));
+            statusLore.add(mm.deserialize("<gray>Lengkapi 4 potong armor untuk mengaktifkan set bonus.</gray>"));
+        }
+        statusLore.add(Component.empty());
+        statusLore.add(mm.deserialize("<yellow>▶ Klik untuk buka GUI Pengaturan Armor Set Bonus!</yellow>"));
 
-        inventory.setItem(SLOT_SET_STATUS, createItem(
-                isFullset ? Material.NETHER_STAR : Material.SHIELD,
-                "<gradient:#e74c3c:#f39c12><bold>🛡 PENGATURAN FULLSET ARMOR BONUS 🛡</bold></gradient>",
-                statusLore,
-                setBonusActive
-        ));
+        ItemStack statusIcon = createItem(fullset ? Material.EMERALD : Material.REDSTONE,
+                fullset ? "<green><bold>[✓ FULLSET TERDETEKSI]</bold></green>" : "<red><bold>[⚠ BELUM FULLSET]</bold></red>",
+                statusLore, fullset);
+        inventory.setItem(SLOT_SET_STATUS, statusIcon);
 
-        // 4. Render 7 Tool/Weapon Slots (Slots 28..34)
-        for (int tSlot : TOOL_SLOTS) {
-            if (placedItems.containsKey(tSlot)) {
-                inventory.setItem(tSlot, placedItems.get(tSlot));
-            } else {
-                inventory.setItem(tSlot, createItem(Material.LIGHT_GRAY_STAINED_GLASS_PANE,
-                        "<gray>⚔ Slot Tool/Weapon (Kosong)</gray>",
-                        List.of(
-                                mm.deserialize("<dark_gray>Seret Pedang, Kapak, Pickaxe, atau Busur ke slot ini.</dark_gray>")
-                        ), false));
-            }
+        // 4. Tools & Weapons Section (Bottom Center: Slots 28..34)
+        for (int i = 0; i < TOOL_SLOTS.length; i++) {
+            int slot = TOOL_SLOTS[i];
+            renderToolSlot(slot, i + 1);
         }
 
-        // 5. Bottom Navigation & Action Bar (Row 5)
-        // Slot 45: Return all items
-        inventory.setItem(45, createItem(Material.HOPPER,
-                "<red><bold>❌ KEMBALIKAN SEMUA ITEM</bold></red>",
-                List.of(
-                        mm.deserialize("<gray>Kembalikan seluruh armor & tools di atas ke inventarismu.</gray>"),
-                        Component.empty(),
-                        mm.deserialize("<red>▶ Klik untuk mengambil kembali semua item</red>")
-                ), false));
+        // 5. Controls Row (Slots 45..53)
+        // Slot 45: Return All
+        inventory.setItem(45, createItem(Material.RED_CONCRETE, "<red><bold>⬅ KEMBALIKAN SEMUA ITEM</bold></red>", List.of(
+                mm.deserialize("<gray>Ambil kembali seluruh item di slot creator ke tasmu.</gray>")
+        ), false));
 
-        // Slot 49: Finish and claim all modified items
-        int totalPlaced = placedItems.size();
-        inventory.setItem(49, createItem(Material.EMERALD_BLOCK,
-                "<green><bold>✔ SELESAI & AMBIL SEMUA ITEM (" + totalPlaced + ")</bold></green>",
-                List.of(
-                        mm.deserialize("<gray>Terapkan seluruh enchant dan bonus,</gray>"),
-                        mm.deserialize("<gray>lalu ambil semua item ke inventaris pemainmu!</gray>"),
-                        Component.empty(),
-                        mm.deserialize("<green>▶ Klik untuk menyelesaikan pembuatan item</green>")
-                ), true));
+        // Slot 48: Rename Set / Prefix via Chat
+        inventory.setItem(48, createItem(Material.NAME_TAG, "<gradient:#f1c40f:#e67e22><bold>🏷 UBAH NAMA SET DI CHAT</bold></gradient>", List.of(
+                mm.deserialize("<gray>Nama Set Saat Ini: <gold>" + globalSetName + "</gold></gray>"),
+                mm.deserialize("<gray>Set ID: <yellow>" + globalSetId + "</yellow></gray>"),
+                Component.empty(),
+                mm.deserialize("<yellow>▶ Klik untuk ketik nama set di chat!</yellow>"),
+                mm.deserialize("<dark_gray>Otomatis me-rename seluruh armor & tools di slot</dark_gray>"),
+                mm.deserialize("<dark_gray>mengikuti pola: [Nama Set] [Tipe Item]</dark_gray>")
+        ), false));
 
-        // Slot 53: Exit / Close
-        inventory.setItem(53, createItem(Material.BARRIER,
-                "<red><bold>✖ KELUAR & TUTUP</bold></red>",
+        // Slot 49: Finish & Claim All
+        inventory.setItem(49, createItem(Material.EMERALD_BLOCK, "<gradient:#2ecc71:#27ae60><bold>✔ SELESAIKAN & AMBIL SEMUA SET</bold></gradient>", List.of(
+                mm.deserialize("<gray>Selesaikan proses enchant & pembuatan set,</gray>"),
+                mm.deserialize("<gray>lalu masukkan seluruh item ke inventaris.</gray>"),
+                Component.empty(),
+                mm.deserialize(saveToPreset ? "<green>● Set ini juga akan disimpan ke PRESET.</green>" : "<gray>● Tidak disimpan ke preset.</gray>"),
+                Component.empty(),
+                mm.deserialize("<green>▶ Klik untuk klaim semua item!</green>")
+        ), true));
+
+        // Slot 50: Toggle Save to Preset & Preset GUI
+        inventory.setItem(50, createItem(saveToPreset ? Material.ENDER_CHEST : Material.CHEST,
+                "<gradient:#9b59b6:#e74c3c><bold>📦 PRESET: " + (saveToPreset ? "<green>[SIMPAN AKTIF]</green>" : "<red>[SIMPAN NON-AKTIF]</red>") + "</bold></gradient>",
                 List.of(
-                        mm.deserialize("<gray>Tutup menu creator (item tersisa aman dikembalikan).</gray>")
-                ), false));
+                        mm.deserialize("<gray>Status: " + (saveToPreset ? "<green>Disimpan ke Preset saat Selesai</green>" : "<red>Tidak Disimpan ke Preset</red>") + "</gray>"),
+                        Component.empty(),
+                        mm.deserialize("<yellow>▶ Klik Kiri: Toggle Simpan ke Preset</yellow>"),
+                        mm.deserialize("<aqua>▶ Klik Kanan: Buka Menu Daftar Preset</aqua>")
+                ), saveToPreset));
+
+        // Slot 53: Exit & Return All (Safety)
+        inventory.setItem(53, createItem(Material.BARRIER, "<red><bold>✖ KELUAR & SIMPAN TAS</bold></red>", List.of(
+                mm.deserialize("<gray>Tutup creator dan kembalikan seluruh item ke tas.</gray>")
+        ), false));
     }
 
-    private void renderArmorSlot(int slot, Material placeholderMat, String title, String desc) {
+    private void renderArmorSlot(int slot, Material previewMat, String title, String guide) {
         if (placedItems.containsKey(slot)) {
-            inventory.setItem(slot, placedItems.get(slot));
+            ItemStack is = placedItems.get(slot);
+            inventory.setItem(slot, is);
         } else {
-            inventory.setItem(slot, createItem(placeholderMat, title, List.of(
-                    mm.deserialize(desc)
+            inventory.setItem(slot, createItem(previewMat, "<gold><bold>" + title + "</bold></gold>", List.of(
+                    mm.deserialize("<yellow>▶ " + guide + "</yellow>"),
+                    mm.deserialize("<gray>Hanya menerima perlengkapan armor yang sesuai.</gray>")
+            ), false));
+        }
+    }
+
+    private void renderToolSlot(int slot, int index) {
+        if (placedItems.containsKey(slot)) {
+            ItemStack is = placedItems.get(slot);
+            inventory.setItem(slot, is);
+        } else {
+            inventory.setItem(slot, createItem(Material.IRON_SWORD, "<aqua><bold>⚔ SLOT TOOL #" + index + " KOSONG</bold></aqua>", List.of(
+                    mm.deserialize("<yellow>▶ Seret Pedang, Kapak, Beliung, Panah, dll ke sini.</yellow>"),
+                    mm.deserialize("<gray>Hanya menerima Senjata dan Peralatan (Tools & Weapons).</gray>")
             ), false));
         }
     }
 
     public boolean isFullsetComplete() {
         return placedItems.containsKey(SLOT_HELMET) &&
-               placedItems.containsKey(SLOT_CHESTPLATE) &&
-               placedItems.containsKey(SLOT_LEGGINGS) &&
-               placedItems.containsKey(SLOT_BOOTS);
+                placedItems.containsKey(SLOT_CHESTPLATE) &&
+                placedItems.containsKey(SLOT_LEGGINGS) &&
+                placedItems.containsKey(SLOT_BOOTS);
     }
 
-    private void checkAndApplyFullsetBonus() {
+    public void checkAndApplyFullsetBonus() {
         if (!setBonusActive) return;
-        if (!isFullsetComplete()) return;
 
-        int[] armorSlots = {SLOT_HELMET, SLOT_CHESTPLATE, SLOT_LEGGINGS, SLOT_BOOTS};
-        for (int s : armorSlots) {
-            ItemStack piece = placedItems.get(s);
-            if (piece != null) {
-                applySetBonusToPiece(piece);
+        // Apply armor set bonus if fullset complete
+        if (isFullsetComplete()) {
+            int[] armorSlots = {SLOT_HELMET, SLOT_CHESTPLATE, SLOT_LEGGINGS, SLOT_BOOTS};
+            for (int s : armorSlots) {
+                ItemStack piece = placedItems.get(s);
+                if (piece != null) {
+                    applySetBonusToPiece(piece);
+                }
+            }
+
+            // Also apply Tool Set Bonus to placed tools/weapons!
+            for (int tSlot : TOOL_SLOTS) {
+                ItemStack tool = placedItems.get(tSlot);
+                if (tool != null) {
+                    applyToolBonusToPiece(tool);
+                }
             }
         }
     }
@@ -218,33 +255,132 @@ public class AdminItemCreatorGUI implements InventoryHolder {
         if (meta == null) return;
 
         PersistentDataContainer pdc = meta.getPersistentDataContainer();
-        pdc.set(new NamespacedKey("apexsions", "set_id"), PersistentDataType.STRING, globalSetName.toLowerCase());
+        pdc.set(new NamespacedKey("apexsions", "set_id"), PersistentDataType.STRING, globalSetId);
         pdc.set(new NamespacedKey("apexsions", "set_name"), PersistentDataType.STRING, globalSetName);
-        pdc.set(new NamespacedKey("apexsions", "set_type"), PersistentDataType.STRING, globalStatType.name());
-        pdc.set(new NamespacedKey("apexsions", "set_val"), PersistentDataType.DOUBLE, globalBonusValue);
         pdc.set(new NamespacedKey("apexsions", "set_req"), PersistentDataType.INTEGER, globalRequiredPieces);
+
+        StringBuilder sb = new StringBuilder();
+        for (Map.Entry<KitStatType, Double> e : globalStats.entrySet()) {
+            if (!sb.isEmpty()) sb.append(";");
+            sb.append(e.getKey().name()).append(":").append(e.getValue());
+        }
+        pdc.set(new NamespacedKey("apexsions", "set_stats"), PersistentDataType.STRING, sb.toString());
+
+        if (!globalStats.isEmpty()) {
+            Map.Entry<KitStatType, Double> first = globalStats.entrySet().iterator().next();
+            pdc.set(new NamespacedKey("apexsions", "set_type"), PersistentDataType.STRING, first.getKey().name());
+            pdc.set(new NamespacedKey("apexsions", "set_val"), PersistentDataType.DOUBLE, first.getValue());
+        }
 
         // Update lore
         List<Component> lore = meta.hasLore() && meta.lore() != null ? new ArrayList<>(meta.lore()) : new ArrayList<>();
         lore.removeIf(c -> {
             String plain = mm.serialize(c);
-            return plain.contains("SET BONUS") || plain.contains("Set Bonus:") || plain.contains("Pieces:");
+            return plain.contains("SET BONUS") || plain.contains("Syarat:") || plain.contains("Efek:");
         });
 
         lore.add(Component.empty());
-        lore.add(mm.deserialize("<gradient:#e74c3c:#f39c12><bold>★ SET BONUS: " + globalSetName.toUpperCase() + " ★</bold></gradient>"));
-        lore.add(mm.deserialize("<gray>Syarat: <gold>" + globalRequiredPieces + " Pieces</gold></gray>"));
-        lore.add(mm.deserialize("<gray>Efek: <aqua>" + globalStatType.getDisplayName() + " +" + (int) globalBonusValue + "%</aqua></gray>"));
+        lore.add(mm.deserialize("<gradient:#e74c3c:#f39c12><bold>★ SET BONUS: " + PlainTextComponentSerializer.plainText().serialize(mm.deserialize(globalSetName)).toUpperCase() + " ★</bold></gradient>"));
+        lore.add(mm.deserialize("<gray>Syarat: <gold>" + globalRequiredPieces + " Pieces (Fullset)</gold></gray>"));
+        for (Map.Entry<KitStatType, Double> e : globalStats.entrySet()) {
+            lore.add(mm.deserialize("<gray>Efek: <aqua>" + e.getKey().getDisplayName() + " " + e.getKey().formatValue(e.getValue()) + "</aqua></gray>"));
+        }
 
         meta.lore(lore);
         is.setItemMeta(meta);
+    }
+
+    private void applyToolBonusToPiece(ItemStack is) {
+        ItemMeta meta = is.getItemMeta();
+        if (meta == null) return;
+
+        PersistentDataContainer pdc = meta.getPersistentDataContainer();
+        pdc.set(new NamespacedKey("apexsions", "set_id"), PersistentDataType.STRING, globalSetId);
+        pdc.set(new NamespacedKey("apexsions", "tool_bonus"), PersistentDataType.BYTE, (byte) 1);
+
+        List<Component> lore = meta.hasLore() && meta.lore() != null ? new ArrayList<>(meta.lore()) : new ArrayList<>();
+        lore.removeIf(c -> {
+            String plain = mm.serialize(c);
+            return plain.contains("TOOL SET BONUS") || plain.contains("Memakai Fullset Armor");
+        });
+
+        lore.add(Component.empty());
+        lore.add(mm.deserialize("<gradient:#e74c3c:#f39c12><bold>★ TOOL SET BONUS: " + PlainTextComponentSerializer.plainText().serialize(mm.deserialize(globalSetName)).toUpperCase() + " ★</bold></gradient>"));
+        lore.add(mm.deserialize("<gray>Syarat: <gold>Memakai Fullset Armor " + globalSetName + "</gold></gray>"));
+        lore.add(mm.deserialize("<gray>Efek: <aqua>Peningkatan Serangan +25% & Critical Strike</aqua></gray>"));
+
+        meta.lore(lore);
+        is.setItemMeta(meta);
+    }
+
+    public void renameAllItems(String newBaseName) {
+        this.globalSetName = newBaseName;
+        String plain = PlainTextComponentSerializer.plainText().serialize(mm.deserialize(newBaseName)).trim();
+        this.globalSetId = plain.toLowerCase().replaceAll("[^a-z0-9_-]", "_");
+
+        // Rename helmet
+        if (placedItems.containsKey(SLOT_HELMET)) {
+            renamePiece(placedItems.get(SLOT_HELMET), newBaseName + " Helmet");
+        }
+        // Rename chestplate / elytra
+        if (placedItems.containsKey(SLOT_CHESTPLATE)) {
+            ItemStack cp = placedItems.get(SLOT_CHESTPLATE);
+            String label = cp.getType() == Material.ELYTRA ? "Elytra" : "Chestplate";
+            renamePiece(cp, newBaseName + " " + label);
+        }
+        // Rename leggings
+        if (placedItems.containsKey(SLOT_LEGGINGS)) {
+            renamePiece(placedItems.get(SLOT_LEGGINGS), newBaseName + " Leggings");
+        }
+        // Rename boots
+        if (placedItems.containsKey(SLOT_BOOTS)) {
+            renamePiece(placedItems.get(SLOT_BOOTS), newBaseName + " Boots");
+        }
+
+        // Rename tools
+        for (int tSlot : TOOL_SLOTS) {
+            ItemStack is = placedItems.get(tSlot);
+            if (is != null) {
+                String toolName = getToolDisplaySuffix(is);
+                renamePiece(is, newBaseName + " " + toolName);
+            }
+        }
+
+        checkAndApplyFullsetBonus();
+        player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1.0f, 1.2f);
+        player.sendMessage(mm.deserialize("<green><bold>✓ SUKSES!</bold> Seluruh armor dan tools diubah namanya menjadi <gold>" + newBaseName + " [Tipe]</gold>!</green>"));
+    }
+
+    private void renamePiece(ItemStack is, String newDisplayName) {
+        ItemMeta meta = is.getItemMeta();
+        if (meta != null) {
+            meta.displayName(mm.deserialize(newDisplayName));
+            is.setItemMeta(meta);
+        }
+    }
+
+    private String getToolDisplaySuffix(ItemStack is) {
+        if (is == null) return "Tool";
+        String n = is.getType().name();
+        if (n.endsWith("_SWORD")) return "Sword";
+        if (n.endsWith("_AXE")) return "Axe";
+        if (n.endsWith("_PICKAXE")) return "Pickaxe";
+        if (n.endsWith("_SHOVEL")) return "Shovel";
+        if (n.endsWith("_HOE")) return "Hoe";
+        if (is.getType() == Material.BOW) return "Bow";
+        if (is.getType() == Material.CROSSBOW) return "Crossbow";
+        if (is.getType() == Material.TRIDENT) return "Trident";
+        if (is.getType() == Material.MACE) return "Mace";
+        if (is.getType() == Material.FISHING_ROD) return "Fishing Rod";
+        if (is.getType() == Material.SHEARS) return "Shears";
+        return "Weapon";
     }
 
     public void handleClick(InventoryClickEvent event) {
         int rawSlot = event.getRawSlot();
         ItemStack cursor = event.getCursor();
 
-        // Check clicking on creator slots (top inventory 0..53)
+        // Creator slots (0..53)
         if (rawSlot >= 0 && rawSlot < 54) {
             // 1. Controls
             if (rawSlot == 53) {
@@ -261,29 +397,61 @@ public class AdminItemCreatorGUI implements InventoryHolder {
                 return;
             }
 
+            // Slot 48: Rename Set in Chat
+            if (rawSlot == 48) {
+                event.setCancelled(true);
+                this.isNavigatingSubGUI = true;
+                plugin.getItemRenameManager().startSession(
+                        player,
+                        "Masukkan nama dasar / prefix untuk seluruh set (contoh: <gradient:#e74c3c:#f39c12><bold>Apexsions</bold></gradient> atau &6&lApexsions):",
+                        this::renameAllItems,
+                        this::open
+                );
+                return;
+            }
+
+            // Slot 49: Finish & Claim All
             if (rawSlot == 49) {
                 event.setCancelled(true);
                 finishAndClaimAll();
                 return;
             }
 
-            // 2. Set Bonus Status Button (Slot 15)
+            // Slot 50: Toggle Preset / Open Preset GUI
+            if (rawSlot == 50) {
+                event.setCancelled(true);
+                if (event.getClick() == ClickType.RIGHT) {
+                    // Open Presets GUI
+                    this.isNavigatingSubGUI = true;
+                    new AdminPresetsGUI(plugin, player, this).open();
+                } else {
+                    // Toggle saveToPreset
+                    this.saveToPreset = !this.saveToPreset;
+                    player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1.0f, 1.2f);
+                    buildGUI();
+                }
+                return;
+            }
+
+            // Slot 15: Set Bonus Settings
             if (rawSlot == SLOT_SET_STATUS) {
                 event.setCancelled(true);
-                player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1.0f, 1.2f);
-                // Open visual set bonus picker
-                new ArmorSetBonusPickerGUI(plugin, player, null, this, updatedItem -> {}).open();
+                this.isNavigatingSubGUI = true;
+                ItemStack ref = placedItems.getOrDefault(SLOT_HELMET, placedItems.values().stream().findFirst().orElse(null));
+                new ArmorSetBonusPickerGUI(plugin, player, ref, this, updated -> {
+                    this.open();
+                }).open();
                 return;
             }
 
-            // 3. Armor Slots Interaction (Slots 10..13)
-            if (rawSlot == SLOT_HELMET || rawSlot == SLOT_CHESTPLATE || rawSlot == SLOT_LEGGINGS || rawSlot == SLOT_BOOTS) {
+            // 2. Armor Slots (10..13)
+            if (rawSlot >= SLOT_HELMET && rawSlot <= SLOT_BOOTS) {
                 event.setCancelled(true);
-                handleSlotPlacementOrEdit(rawSlot, cursor, event.getClick());
+                handleArmorSlotPlacementOrEdit(rawSlot, cursor, event.getClick());
                 return;
             }
 
-            // 4. Tool Slots Interaction (Slots 28..34)
+            // 3. Tool Slots (28..34)
             for (int tSlot : TOOL_SLOTS) {
                 if (rawSlot == tSlot) {
                     event.setCancelled(true);
@@ -292,29 +460,27 @@ public class AdminItemCreatorGUI implements InventoryHolder {
                 }
             }
 
-            // Other border/header clicks
+            // Cancel any other border click
             event.setCancelled(true);
-            return;
-        }
-
-        // Bottom inventory (Player's own inventory)
-        if (event.isShiftClick()) {
-            event.setCancelled(true);
-            ItemStack clicked = event.getCurrentItem();
-            if (clicked != null && !clicked.getType().isAir()) {
-                handleShiftClickPlacement(clicked);
+        } else {
+            // Player inventory click (shift click placement)
+            if (event.isShiftClick()) {
+                ItemStack clicked = event.getCurrentItem();
+                if (clicked != null && !clicked.getType().isAir()) {
+                    event.setCancelled(true);
+                    handleShiftClickPlacement(clicked);
+                }
             }
         }
     }
 
-    private void handleSlotPlacementOrEdit(int slot, ItemStack cursor, ClickType click) {
+    private void handleArmorSlotPlacementOrEdit(int slot, ItemStack cursor, ClickType click) {
         boolean hasPlaced = placedItems.containsKey(slot);
 
-        // Case A: Cursor has an item -> attempt to place it
         if (cursor != null && !cursor.getType().isAir()) {
             if (!isValidArmorForSlot(slot, cursor)) {
                 player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
-                player.sendMessage(mm.deserialize("<red>Item yang dimasukkan harus berupa " + getExpectedArmorName(slot) + "!</red>"));
+                player.sendMessage(mm.deserialize("<red>Item tersebut bukan merupakan <gold>" + getExpectedArmorName(slot) + "</gold> yang valid!</red>"));
                 return;
             }
 
@@ -334,24 +500,22 @@ public class AdminItemCreatorGUI implements InventoryHolder {
 
             updateItem(slot, toPlace);
             player.playSound(player.getLocation(), Sound.ITEM_ARMOR_EQUIP_NETHERITE, 1.0f, 1.2f);
-            player.sendMessage(mm.deserialize("<green>Berhasil meletakkan <gold>" + toPlace.getType().name() + "</gold> ke slot armor!</green>"));
+            player.sendMessage(mm.deserialize("<green>Berhasil meletakkan <gold>" + toPlace.getType().name() + "</gold>!</green>"));
             buildGUI();
             return;
         }
 
-        // Case B: Cursor is empty and slot has an item
         if (hasPlaced) {
             ItemStack placed = placedItems.get(slot);
             if (click == ClickType.SHIFT_RIGHT || click == ClickType.SHIFT_LEFT) {
-                // Shift click takes item back
                 placedItems.remove(slot);
                 player.getInventory().addItem(placed);
-                player.playSound(player.getLocation(), Sound.ENTITY_ITEM_PICKUP, 1.0f, 1.2f);
+                player.playSound(player.getLocation(), Sound.ENTITY_ITEM_PICKUP, 1.0f, 1.0f);
                 player.sendMessage(mm.deserialize("<yellow>Item dikembalikan ke inventaris.</yellow>"));
                 buildGUI();
             } else {
-                // Regular click opens visual Edit GUI!
                 player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1.0f, 1.2f);
+                this.isNavigatingSubGUI = true;
                 new ItemModifierGUI(plugin, player, placed, slot, this).open();
             }
         }
@@ -383,7 +547,7 @@ public class AdminItemCreatorGUI implements InventoryHolder {
 
             updateItem(slot, toPlace);
             player.playSound(player.getLocation(), Sound.ITEM_ARMOR_EQUIP_IRON, 1.0f, 1.2f);
-            player.sendMessage(mm.deserialize("<green>Berhasil meletakkan <gold>" + toPlace.getType().name() + "</gold> ke slot tools!</green>"));
+            player.sendMessage(mm.deserialize("<green>Berhasil meletakkan <gold>" + toPlace.getType().name() + "</gold>!</green>"));
             buildGUI();
             return;
         }
@@ -393,11 +557,12 @@ public class AdminItemCreatorGUI implements InventoryHolder {
             if (click == ClickType.SHIFT_RIGHT || click == ClickType.SHIFT_LEFT) {
                 placedItems.remove(slot);
                 player.getInventory().addItem(placed);
-                player.playSound(player.getLocation(), Sound.ENTITY_ITEM_PICKUP, 1.0f, 1.2f);
+                player.playSound(player.getLocation(), Sound.ENTITY_ITEM_PICKUP, 1.0f, 1.0f);
                 player.sendMessage(mm.deserialize("<yellow>Item dikembalikan ke inventaris.</yellow>"));
                 buildGUI();
             } else {
                 player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1.0f, 1.2f);
+                this.isNavigatingSubGUI = true;
                 new ItemModifierGUI(plugin, player, placed, slot, this).open();
             }
         }
@@ -448,7 +613,14 @@ public class AdminItemCreatorGUI implements InventoryHolder {
         }
         placedItems.clear();
         player.playSound(player.getLocation(), Sound.ENTITY_ITEM_PICKUP, 1.0f, 1.0f);
-        player.sendMessage(mm.deserialize("<yellow>Seluruh item telah dikembalikan ke inventarismu.</yellow>"));
+    }
+
+    public void handleClose(InventoryCloseEvent event) {
+        // If not navigating into a sub-GUI, return all items safely to player!
+        if (!isNavigatingSubGUI && !placedItems.isEmpty()) {
+            returnAllItems();
+            player.sendMessage(mm.deserialize("<yellow>Creator ditutup. Seluruh item telah dikembalikan secara aman ke inventarismu.</yellow>"));
+        }
     }
 
     public void finishAndClaimAll() {
@@ -458,6 +630,23 @@ public class AdminItemCreatorGUI implements InventoryHolder {
         }
 
         checkAndApplyFullsetBonus();
+
+        // If preset toggle active, save to preset!
+        if (saveToPreset) {
+            List<ItemStack> armorList = new ArrayList<>();
+            int[] aSlots = {SLOT_HELMET, SLOT_CHESTPLATE, SLOT_LEGGINGS, SLOT_BOOTS};
+            for (int s : aSlots) {
+                if (placedItems.containsKey(s)) armorList.add(placedItems.get(s).clone());
+            }
+
+            List<ItemStack> toolList = new ArrayList<>();
+            for (int tSlot : TOOL_SLOTS) {
+                if (placedItems.containsKey(tSlot)) toolList.add(placedItems.get(tSlot).clone());
+            }
+
+            plugin.getPresetManager().savePreset(globalSetId, globalSetName, armorList, toolList);
+            player.sendMessage(mm.deserialize("<green>✓ Set <gold>" + globalSetName + "</gold> berhasil disimpan ke daftar Preset!</green>"));
+        }
 
         int count = placedItems.size();
         for (ItemStack is : placedItems.values()) {
@@ -471,6 +660,7 @@ public class AdminItemCreatorGUI implements InventoryHolder {
             }
         }
         placedItems.clear();
+        this.isNavigatingSubGUI = true; // Prevent handleClose from running again
         player.closeInventory();
         player.playSound(player.getLocation(), Sound.UI_TOAST_CHALLENGE_COMPLETE, 1.0f, 1.2f);
         player.sendMessage(mm.deserialize("<green><bold>✓ SUKSES!</bold> <yellow>" + count + " Item</yellow> berkekuatan sihir berhasil diselesaikan dan masuk ke inventarismu!</green>"));
@@ -558,15 +748,5 @@ public class AdminItemCreatorGUI implements InventoryHolder {
     @Override
     public @NotNull Inventory getInventory() {
         return inventory;
-    }
-
-    public void setGlobalSetBonus(String name, KitStatType stat, int pieces, double value) {
-        this.setBonusActive = true;
-        this.globalSetName = name;
-        this.globalStatType = stat;
-        this.globalRequiredPieces = pieces;
-        this.globalBonusValue = value;
-        checkAndApplyFullsetBonus();
-        buildGUI();
     }
 }

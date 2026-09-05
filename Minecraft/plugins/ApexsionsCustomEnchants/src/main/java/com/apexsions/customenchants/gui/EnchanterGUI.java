@@ -185,7 +185,7 @@ public class EnchanterGUI implements InventoryHolder {
 
         if (slot == 49) { // Specific Book Shop
             player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.8f, 1.2f);
-            new SpecificBookShopGUI(plugin, player, 1).open();
+            new ShopCategorySelectGUI(plugin, player).open();
             return;
         }
 

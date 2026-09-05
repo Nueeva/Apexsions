@@ -27,6 +27,8 @@ public class ApexsionsCustomEnchantsPlugin extends JavaPlugin {
     private EnchantBookManager enchantBookManager;
     private MagicDustManager magicDustManager;
     private ScrollManager scrollManager;
+    private com.apexsions.customenchants.presets.PresetManager presetManager;
+    private com.apexsions.customenchants.items.ItemRenameManager itemRenameManager;
 
     @Override
     public void onEnable() {
@@ -43,11 +45,14 @@ public class ApexsionsCustomEnchantsPlugin extends JavaPlugin {
         this.enchantBookManager = new EnchantBookManager(this);
         this.magicDustManager = new MagicDustManager(this);
         this.scrollManager = new ScrollManager(this);
+        this.presetManager = new com.apexsions.customenchants.presets.PresetManager(this);
+        this.itemRenameManager = new com.apexsions.customenchants.items.ItemRenameManager(this);
 
         // Register Event Listeners
         getServer().getPluginManager().registerEvents(new CustomItemApplyListener(this), this);
         getServer().getPluginManager().registerEvents(new EnchantEventListener(this), this);
         getServer().getPluginManager().registerEvents(new CustomEnchantsGUIListener(this), this);
+        getServer().getPluginManager().registerEvents(this.itemRenameManager, this);
 
         // Register Commands
         CustomEnchantsCommand ceCmd = new CustomEnchantsCommand(this);
@@ -131,5 +136,13 @@ public class ApexsionsCustomEnchantsPlugin extends JavaPlugin {
 
     public double getSpecificBookDestroyChance() {
         return getConfig().getDouble("settings.specific-book-destroy-chance", 30.0);
+    }
+
+    public com.apexsions.customenchants.presets.PresetManager getPresetManager() {
+        return presetManager;
+    }
+
+    public com.apexsions.customenchants.items.ItemRenameManager getItemRenameManager() {
+        return itemRenameManager;
     }
 }

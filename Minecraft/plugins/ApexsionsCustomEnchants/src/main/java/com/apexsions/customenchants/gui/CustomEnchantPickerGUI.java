@@ -74,10 +74,16 @@ public class CustomEnchantPickerGUI implements InventoryHolder {
         inventory.setItem(0, createItem(Material.BLACK_STAINED_GLASS_PANE, "<dark_gray> </dark_gray>", null));
         inventory.setItem(8, createItem(Material.BLACK_STAINED_GLASS_PANE, "<dark_gray> </dark_gray>", null));
 
-        // 2. Gather filtered enchantments
-        List<CustomEnchant> list = new ArrayList<>(plugin.getEnchantmentRegistry().getAllEnchantments());
-        if (!groupFilter.equalsIgnoreCase("ALL")) {
-            list.removeIf(e -> !e.getGroup().getId().equalsIgnoreCase(groupFilter));
+        // 2. Gather filtered enchantments (auto-filtered to item compatibility)
+        List<CustomEnchant> list = new ArrayList<>();
+        for (CustomEnchant e : plugin.getEnchantmentRegistry().getAllEnchantments()) {
+            if (item != null && !item.getType().isAir() && !e.canApplyTo(item)) {
+                continue;
+            }
+            if (!groupFilter.equalsIgnoreCase("ALL") && !e.getGroup().getId().equalsIgnoreCase(groupFilter)) {
+                continue;
+            }
+            list.add(e);
         }
 
         int pageSize = 36;
