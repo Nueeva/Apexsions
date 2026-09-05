@@ -25,11 +25,7 @@ $now = Carbon::now();
 // --------------------------------------------------------------------------
 echo "[1/4] Synchronizing Shop Categories...\n";
 
-if (DB::getDriverName() === 'sqlite') {
-    DB::statement('PRAGMA foreign_keys = OFF;');
-} else {
-    DB::statement('SET FOREIGN_KEY_CHECKS = 0;');
-}
+DB::statement('PRAGMA foreign_keys = OFF;');
 
 DB::table('shop_packages')->truncate();
 DB::table('shop_categories')->truncate();
@@ -1001,12 +997,6 @@ MARKDOWN
 foreach ($wikiPages as $p) {
     DB::table('wiki_pages')->insert($p);
     echo "  -> Article added: {$p['title']} (Cat ID: {$p['category_id']})\n";
-}
-
-if (DB::getDriverName() === 'sqlite') {
-    DB::statement('PRAGMA foreign_keys = ON;');
-} else {
-    DB::statement('SET FOREIGN_KEY_CHECKS = 1;');
 }
 
 echo "\n==========================================================\n";
