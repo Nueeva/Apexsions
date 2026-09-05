@@ -190,14 +190,23 @@ if [ -f /var/www/azuriom/artisan ]; then
     php artisan config:clear || true
 fi
 
-# Ensure storage directories exist
+# Ensure storage directories and theme symlinks exist
 mkdir -p /var/www/azuriom/storage/framework/cache/data
 mkdir -p /var/www/azuriom/storage/framework/sessions
 mkdir -p /var/www/azuriom/storage/framework/views
 mkdir -p /var/www/azuriom/storage/logs
 mkdir -p /var/www/azuriom/bootstrap/cache
 
-chown -R www-data:www-data /var/www/azuriom
+mkdir -p /var/www/azuriom/resources/themes
+ln -sfn /var/www/azuriom/themes/apexsions /var/www/azuriom/resources/themes/apexsions
+
+mkdir -p /var/www/azuriom/public/themes
+ln -sfn /var/www/azuriom/themes/apexsions/assets /var/www/azuriom/public/themes/apexsions
+
+mkdir -p /var/www/azuriom/public/assets/themes
+ln -sfn /var/www/azuriom/themes/apexsions/assets /var/www/azuriom/public/assets/themes/apexsions
+
+chown -h -R www-data:www-data /var/www/azuriom
 chmod -R 775 /var/www/azuriom/storage /var/www/azuriom/bootstrap/cache
 
 systemctl restart php8.3-fpm
