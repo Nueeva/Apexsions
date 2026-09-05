@@ -393,46 +393,78 @@ foreach ($wikiCategories as $cat) {
 echo "\n[4/4] Synchronizing Wiki Detailed Articles...\n";
 
 $wikiPages = [
-    // --- KATEGORI 1: PANDUAN PEMULA & PERINTAH ---
+    // =========================================================================
+    // KATEGORI 1: PANDUAN PEMULA & PERINTAH (Cat ID: 1)
+    // =========================================================================
     [
         'category_id' => 1,
         'position' => 1,
-        'title' => 'Cara Bergabung ke Server Apexsions',
-        'slug' => 'cara-bergabung',
+        'title' => 'Panduan 15 Menit Pertama Warga Baru (Zero-to-Hero Roadmap)',
+        'slug' => 'panduan-15-menit-pertama',
         'content' => <<<MARKDOWN
-# Cara Bergabung ke Server Apexsions
+# Panduan 15 Menit Pertama: Dari Pengelana Menjadi Warga Berdaulat
 
-Apexsions adalah server peradaban Minecraft modular berarsitektur tinggi yang mendukung pemain **Java Edition** dan **Bedrock Edition** secara bersamaan.
-
----
-
-### Informasi Alamat Server (Koneksi)
-
-| Platform | Alamat IP / Host | Port | Versi Minecraft |
-| :--- | :--- | :--- | :--- |
-| **Java Edition** | `apexsions.my.id` | `25565` (Default) | **1.21.4** |
-| **Bedrock Edition** (HP/Win10/Console) | `apexsions.my.id` | **`19132`** | Versi Terbaru (Bedrock) |
+Selamat datang di **Apexsions: The Peak Civilizations**! Anda mungkin merasa semesta kerajaan ini begitu luas dan megah hingga bingung harus mulai dari mana. Jangan khawatir! Cukup ikuti peta jalan 15 menit berikut untuk langsung mandiri, memiliki rumah, dan mulai menghasilkan pundi-pundi Rupiah pertama Anda:
 
 ---
 
-### Langkah Mudah Memulai Bermain
-
-1. **Buka Minecraft Client:** Pastikan Anda menggunakan versi Minecraft **1.21.4**.
-2. **Pilih Menu Multiplayer:** Klik tombol **Add Server** (Tambah Server).
-3. **Masukkan Data Server:**
-   - **Server Name:** Apexsions
-   - **Server Address:** `apexsions.my.id`
-   - *(Untuk Bedrock, masukkan Port `19132`)*
-4. **Masuk ke Dunia:** Klik **Join Server**. Anda akan mendarat di pusat peradaban agung Apexsions.
-5. **Pilih Kerajaan Pertama Anda:** Ketik perintah `/kingdom` atau `/k` untuk memilih salah satu dari 3 Kerajaan berdaulat: **Zenithar**, **Solterra**, atau **Sylvamoor**.
+### ⏱ Menit 0–2: Tiba di Spawn & Ambil Bekal Perintis
+1. Anda akan mendarat di pelataran agung **Spawn Nexus**.
+2. Segera ketik perintah:
+   ```text
+   /kit starter
+   ```
+3. Anda akan menerima satu set perkakas awal, obor, roti makanan bergizi, dan buku panduan kerajaan.
+4. *Tip:* Jangan membuang buku panduan; simpan di inventory Anda sebagai kompas awal!
 
 ---
 
-### Integrasi Akun Web & Server
+### ⏱ Menit 2–5: Menuju Alam Bebas dengan Teleportasi Acak (/rtp)
+1. Jangan menghabiskan waktu berjalan kaki ratusan blok untuk keluar dari area spawn!
+2. Ketik perintah:
+   ```text
+   /rtp
+   ```
+3. Sistem `ApexsionsCore` akan secara otomatis mencari koordinat alam liar yang aman (bebas tebing curam dan genangan lahar) dalam hitungan detik.
 
-Untuk keamanan transaksi dan mengklaim hadiah starter pack:
-- Daftarkan akun Anda di portal web resmi: [apexsions.my.id](https://apexsions.my.id).
-- Gunakan perintah `/link` di dalam server jika diminta untuk menyinkronkan status keamanan profil Anda.
+---
+
+### ⏱ Menit 5–8: Menentukan Sumpah Kerajaan (/k)
+Di Apexsions, kekuatan Anda berlipat ganda saat bergabung dengan salah satu dari Tiga Kerajaan Berdaulat. Ketik `/k` untuk membuka antarmuka pemilihan:
+- ☀️ **Zenithar (Puncak Cakrawala):** Cocok untuk penambang & pembangun kastil. Memiliki buff `+15%` Kecepatan Menambang & Experience.
+- 🔥 **Solterra (Bara Api & Pasir):** Cocok untuk pejuang duel PvP & penakluk. Memiliki buff `+15%` Melee Damage & Kebal Api di wilayah sendiri.
+- 🌿 **Sylvamoor (Hutan Hayat & Laut):** Cocok untuk petani, peternak, dan saudagar. Memiliki buff `+20%` Hasil Panen & Regenerasi Nyawa.
+
+*Pilihlah kerajaan yang paling sesuai dengan gaya bermain favorit Anda!*
+
+---
+
+### ⏱ Menit 8–12: Tancapkan Panji Rumah Pertama Anda (/sethome)
+1. Kumpulkan beberapa blok kayu pohon dan buatlah meja kerja (*Crafting Table*).
+2. Bangun tempat berteduh sementara untuk melindungi diri dari monster malam.
+3. Kunci koordinat markas Anda dengan mengetik:
+   ```text
+   /sethome rumah
+   ```
+4. Kapan pun Anda tersesat di alam liar atau selesai berpetualang, cukup ketik `/home rumah` untuk kembali seketika.
+
+---
+
+### ⏱ Menit 12–15: Menghasilkan Rupiah Pertama di Pasar (/sell)
+1. Tebang kayu ekstra atau tambang batubara/besi di sekitar Anda.
+2. Buka antarmuka penjualan kilat dengan perintah:
+   ```text
+   /sell
+   ```
+3. Masukkan item yang ingin dijual ke dalam keranjang. Saldo Rupiah (`Rp`) Anda akan bertambah secara instan!
+4. Cek kekayaan Anda kapan saja dengan mengetik `/balance` atau `/money`.
+
+---
+
+### 🚀 Langkah Selanjutnya: Menuju Puncak Kejayaan
+- **Tingkatkan Level Karakter:** Tambang bijih mulia dan lawan monster untuk menaikkan level 1–100 dan membuka **Gelar Sequence** bergengsi.
+- **Klaim Wilayah Permanen:** Setelah kas Anda cukup, gunakan `/k claim` untuk mengunci tanah peradaban Anda dari segala bentuk penjarahan.
+- **Jelajahi Altar Sihir:** Buka `/ce` atau `/enchanter` untuk memperkuat senjata Anda dengan 182 sihir Custom Enchantments!
 MARKDOWN
         ,
         'created_at' => $now,
@@ -441,19 +473,62 @@ MARKDOWN
     [
         'category_id' => 1,
         'position' => 2,
-        'title' => 'Daftar Perintah Resmi Server (Commands Guide)',
+        'title' => 'Cara Bergabung ke Server Apexsions',
+        'slug' => 'cara-bergabung',
+        'content' => <<<MARKDOWN
+# Cara Bergabung ke Server Apexsions
+
+Apexsions adalah server peradaban Minecraft modular berarsitektur tinggi yang mendukung pemain **Java Edition** dan **Bedrock Edition** secara bersamaan (*Cross-Platform Geyser*).
+
+---
+
+### Informasi Alamat Server (Koneksi)
+
+| Platform | Alamat IP / Host | Port | Versi Minecraft |
+| :--- | :--- | :--- | :--- |
+| **Java Edition** (PC/Mac/Linux) | `apexsions.my.id` | `25565` (Default) | **1.21.4** |
+| **Bedrock Edition** (Android/iOS/Win10/Console) | `apexsions.my.id` | **`19132`** | Versi Terbaru (Bedrock) |
+
+---
+
+### Langkah Mudah Menghubungkan Client
+
+1. **Buka Minecraft Client:** Pastikan Anda menggunakan versi Minecraft **1.21.4**.
+2. **Pilih Menu Multiplayer:** Klik tombol **Add Server** (Tambah Server).
+3. **Masukkan Data Server:**
+   - **Server Name:** Apexsions
+   - **Server Address:** `apexsions.my.id`
+   - *(Khusus Bedrock, pastikan Port diisi `19132`)*
+4. **Masuk ke Dunia:** Klik **Join Server**. Anda akan disambut di lobi utama peradaban.
+5. **Klaim Bekal Awal:** Gunakan perintah `/kit starter` untuk langsung memulai petualangan Anda.
+
+---
+
+### Integrasi Akun Web & Server
+Untuk keamanan transaksi, riwayat lelang, dan klaim hadiah musiman:
+- Kunjungi portal web resmi: [apexsions.my.id](https://apexsions.my.id).
+- Gunakan perintah `/link` di dalam server jika diminta untuk menyinkronkan status keamanan profil Anda dengan portal web.
+MARKDOWN
+        ,
+        'created_at' => $now,
+        'updated_at' => $now,
+    ],
+    [
+        'category_id' => 1,
+        'position' => 3,
+        'title' => 'Daftar Perintah Resmi Server (Commands Cheat Sheet)',
         'slug' => 'daftar-perintah-resmi',
         'content' => <<<MARKDOWN
-# Daftar Perintah Resmi Server (Commands Guide)
+# Daftar Perintah Resmi Server (Commands Cheat Sheet)
 
-Berikut adalah daftar perintah resmi yang terdaftar aktif di ekosistem plugin Apexsions.
+Seluruh perintah resmi terdaftar aktif dan aman di bawah ekosistem plugin Apexsions. Gunakan panduan cepat ini sebagai referensi navigasi Anda:
 
 ---
 
 ### 1. Navigasi & Eksplorasi Dasar
 - `/spawn` — Teleportasi kembali ke titik pusat peradaban utama.
 - `/rtp` — Teleportasi acak ke alam liar yang aman untuk mendirikan pemukiman baru.
-- `/sethome <nama>` — Menandai koordinat rumah atau markas pribadi Anda.
+- `/sethome <nama>` — Menandai koordinat markas pribadi Anda.
 - `/home <nama>` — Teleportasi kembali ke titik rumah yang telah ditandai.
 - `/tpa <player>` — Mengirimkan permintaan teleportasi ramah ke pemain lain.
 - `/tpaccept` — Menerima permintaan teleportasi yang masuk.
@@ -461,29 +536,29 @@ Berikut adalah daftar perintah resmi yang terdaftar aktif di ekosistem plugin Ap
 ---
 
 ### 2. Kerajaan & Kedaulatan Wilayah (`ApexsionsCore`)
-- `/kingdom` atau `/k` — Membuka GUI pemilihan dan informasi 3 Kerajaan Berdaulat.
+- `/kingdom` atau `/k` — Membuka GUI pemilihan dan status Tiga Kerajaan Berdaulat.
 - `/k info [nama]` — Melihat status ibukota, buff aktif, dan raja kerajaan.
-- `/k claim` — Mengklaim chunk wilayah atas nama kerajaan Anda.
+- `/k claim` — Mengklaim chunk wilayah (16x16 blok) atas nama kerajaan Anda.
 - `/k map` — Melihat radar wilayah dan perbatasan kerajaan di sekeliling Anda.
-- `/k deposit <jumlah>` — Menyetorkan Rupiah ke kas perbendaharaan kerajaan.
+- `/k deposit <jumlah>` — Menyetorkan Rupiah ke kas perbendaharaan nexus kerajaan.
 
 ---
 
 ### 3. Ekonomi & Perdagangan (`ApexsionsEconomy` & `ApexsionsShop`)
-- `/money` atau `/balance` atau `/bal` — Memeriksa saldo dompet atomic Anda (Rupiah & Diamond).
+- `/money` atau `/balance` atau `/bal` — Memeriksa saldo dompet ganda (Rupiah `Rp` & Diamond `💎`).
 - `/pay <player> <jumlah>` — Mentransfer Rupiah secara instan dan aman ke pemain lain.
 - `/trade <player>` — Membuka antarmuka barter dua arah yang dilindungi sistem escrow.
 - `/ah` — Membuka Pasar Lelang (Auction House) 24 jam.
 - `/ah sell <harga>` — Mendaftarkan item yang sedang dipegang ke pasar lelang.
-- `/shop` — Membuka Toko Pasar Dinamis (Dynamic Market).
-- `/sell` — Menjual hasil tambang, panen, atau mob drop ke pasar dinamis.
+- `/shop` — Membuka katalog Toko Pasar Dinamis (*Dynamic Market*).
+- `/sell` — Menjual hasil tambang, panen, atau mob drop secara instan.
 
 ---
 
 ### 4. Perlengkapan, Kit & Sihir (`ApexsionsCore` & `ApexsionsCustomEnchants`)
 - `/kits` atau `/kit` — Membuka GUI daftar kit perlengkapan berkala Anda.
 - `/kit preview <nama>` — Melihat pratinjau isi perlengkapan dan set bonus armor.
-- `/enchanter` atau `/ce` — Membuka altar 182 Custom Enchantments.
+- `/enchanter` atau `/ce` — Membuka altar penempaan 182 Custom Enchantments.
 
 ---
 
@@ -491,7 +566,7 @@ Berikut adalah daftar perintah resmi yang terdaftar aktif di ekosistem plugin Ap
 - `/abp` — Membuka antarmuka utama progres Battlepass musiman.
 - `/abp quests` — Memeriksa daftar misi harian dan mingguan Anda.
 - `/ch g` — Beralih ke Kanal Chat Global.
-- `/ch k` — Beralih ke Kanal Chat Kerajaan (hanya terbaca sesama warga).
+- `/ch k` — Beralih ke Kanal Chat Kerajaan (rahasia internal sesama warga).
 - `/mail send <player> <pesan>` — Mengirimkan surat offline ke pemain lain.
 - `/report <player> <alasan>` — Melaporkan indikasi kecurangan ke meja piket staf.
 MARKDOWN
@@ -501,28 +576,27 @@ MARKDOWN
     ],
     [
         'category_id' => 1,
-        'position' => 3,
+        'position' => 4,
         'title' => 'Sistem Progresi Level 1–100 & Gelar Peradaban',
         'slug' => 'progresi-level-dan-gelar',
         'content' => <<<MARKDOWN
 # Sistem Progresi Level 1–100 & Gelar Peradaban
 
-Sistem progresi level di Apexsions (`ApexsionsCore`) dirancang untuk menghargai setiap dedikasi pemain dalam membangun peradaban. Level pemain berjalan dari **Level 1 hingga Level 100**, dilengkapi dengan sistem gelar dinamis yang terikat pada kerajaan yang Anda pilih.
+Sistem progresi level di Apexsions (`ApexsionsCore`) dirancang untuk menghargai setiap dedikasi pemain dalam membangun peradaban. Level pemain berjalan dari **Level 1 hingga Level 100**, dilengkapi dengan sistem gelar dinamis yang terikat pada kerajaan yang Anda bela.
 
 ---
 
 ### Sumber Perolehan Experience (XP)
-
-1. **Pertambangan (Mining):** Menambang emas murni, diamond, netherite, dan ancient debris memberikan limpahan XP peradaban.
+1. **Pertambangan (Mining):** Menambang batu bara, emas murni, diamond, dan ancient debris memberikan limpahan XP peradaban.
 2. **Pertempuran (Slaying):** Mengalahkan monster malam, raid pillager, serta boss monster.
 3. **Agraris (Farming):** Memanen gandum, wortel, tebu, dan nether wart dalam skala kerajaan.
 4. **Pembangunan & Kedaulatan:** Menyetorkan sumber daya ke nexus kerajaan dan berpartisipasi dalam pertempuran wilayah.
 
 ---
 
-### Gelar Resmi Berdasarkan Kerajaan (Tiap 10 Level)
+### Gelar Kehormatan Berdasarkan Kerajaan (Tiap 10 Level)
 
-Setiap mencapai milestone level baru, gelar kehormatan pada chat prefix Anda akan berubah secara otomatis:
+Setiap mencapai tonggak level baru, gelar kehormatan pada chat prefix Anda akan berubah secara otomatis:
 
 | Level Tier | Gelar Zenithar (Solar) | Gelar Solterra (Crimson) | Gelar Sylvamoor (Azure) |
 | :--- | :--- | :--- | :--- |
@@ -539,28 +613,77 @@ Setiap mencapai milestone level baru, gelar kehormatan pada chat prefix Anda aka
 
 ---
 
-### Hadiah Milestone Level
-
-Setiap kelipatan 10 level, Anda dapat mengklaim hadiah eksklusif melalui GUI `/rewards` yang berisi:
+### Hadiah Milestone Level (/rewards)
+Setiap kelipatan 10 level, Anda dapat mengklaim peti pusaka eksklusif melalui perintah `/rewards` yang berisi:
 - Koin Rupiah Server dan Diamond murni.
-- Buku Custom Enchantment tingkat tinggi.
-- Crate Keys langka & Voucher diskon pasar lelang.
+- Buku Custom Enchantment tingkat Legendary & Fabled.
+- Crate Keys langka & Voucher potongan pasar lelang.
 MARKDOWN
         ,
         'created_at' => $now,
         'updated_at' => $now,
     ],
 
-    // --- KATEGORI 2: TIGA KERAJAAN & KEDAULATAN ---
+    // =========================================================================
+    // KATEGORI 2: TIGA KERAJAAN & KEDAULATAN (Cat ID: 2)
+    // =========================================================================
     [
         'category_id' => 2,
         'position' => 1,
+        'title' => 'Babad Sejarah: Pecahnya Tiga Mahkota (The Great Fracture)',
+        'slug' => 'babad-sejarah-tiga-mahkota',
+        'content' => <<<MARKDOWN
+# Babad Sejarah: Pecahnya Tiga Mahkota (The Great Fracture)
+
+> *"Pada awal mula segala ciptaan, semesta bersatu dalam satu denyut nadi di bawah naungan Sang Leluhur. Namun keagungan yang terlalu menyilaukan melahirkan pecahan takdir yang tak terhindarkan."*<br>
+> — **Kitab Primordial Apexsions, Bab I: Bait Kehancuran**
+
+---
+
+### Era Keemasan Sang Leluhur (Age of the Ancestor)
+Berabad-abad silam, benua Apexsions tidak mengenal perbatasan maupun tembok pertahanan. Seluruh ras manusia, penempa batu, dan alkemis hidup di bawah bimbingan **The Ancestor**—entitas purba pencipta keseimbangan semesta. Di pusat dunia bertenggerlah **The Prime Crystal**, sebongkah permata raksasa pemancar harmoni yang menyuplai sihir, kesuburan tanah, dan kedamaian abadi.
+
+---
+
+### Malam Pecahnya Kristal Semesta (The Shattering of Apex)
+Namun kedamaian itu pecah pada malam gerhana kosmik. Lonjakan energi yang teramat dahsyat meretakkan The Prime Crystal menjadi tiga pecahan mahkota suci:
+1. **The Solar Crown (Mahkota Surya):** Melesat tinggi ke puncak cakrawala dan pegunungan salju abadi.
+2. **The Crimson Shard (Serpihan Bara):** Menancap ke perut bumi gurun membara, memuntahkan lahar dan obsidian hitam.
+3. **The Verdant Tear (Tetes Hayati):** Jatuh ke palung rimba perawan purba, meresap ke akar Pohon Dunia dan samudra kristal.
+
+Pecahnya kristal tersebut membagi pandangan hidup umat manusia menjadi tiga peradaban besar berdaulat yang saling bersumpah mempertahankan kedaulatannya masing-masing.
+
+---
+
+### Tiga Falsafah Hidup & Panji Kehormatan
+
+#### 1. Zenithar — Keteraturan, Akal Budi & Puncak Cakrawala
+Para pengikut Solar Crown percaya bahwa keselamatan peradaban dicapai melalui keteraturan hukum, ilmu pengetahuan arcanum, dan arsitektur megah yang menantang langit. Mereka membangun menara-menara putih keemasan di atas puncak awan, memuliakan cahaya matahari sebagai sumber kekuatan tertinggi.
+
+#### 2. Solterra — Keberanian Tempur, Penempaan Besi & Api Abadi
+Para ksatria Crimson Shard percaya bahwa hukum alam yang sejati adalah ketangguhan dalam menghadapi penderitaan. Di tengah terik padang pasir membara dan jurang lahar, mereka menempa zirah obsidian dan pedang baja terkuat. Bagi warga Solterra, kedaulatan tidak diminta, melainkan direbut dengan darah dan disiplin baja.
+
+#### 3. Sylvamoor — Keselarasan Hayati, Samudra & Pohon Dunia
+Para penjaga Verdant Tear menolak kekerasan buta maupun ambisi pencakar langit. Mereka memilih bersatu dengan denyut nadi rimba purba dan kedalaman samudra. Warga Sylvamoor adalah ahli biologi, peramu ramuan mistis, dan pelaut ulung yang menjaga keseimbangan ekologi semesta Apexsions.
+
+---
+
+### Ikrar Sumpah Pengelana
+Kini, setiap pengelana baru (*Wanderer*) yang menjejakkan kaki di dunia ini harus menjawab panggilan darahnya: Apakah Anda akan mendaki puncak cahaya **Zenithar**, menempa keberanian di kawah **Solterra**, atau merengkuh kedamaian rimba **Sylvamoor**? Pilihan Anda akan menentukan kawan, lawan, dan takdir peradaban Anda!
+MARKDOWN
+        ,
+        'created_at' => $now,
+        'updated_at' => $now,
+    ],
+    [
+        'category_id' => 2,
+        'position' => 2,
         'title' => 'Ensiklopedia 3 Kerajaan Berdaulat',
         'slug' => 'tiga-kerajaan-berdaulat',
         'content' => <<<MARKDOWN
 # Ensiklopedia Tiga Kerajaan Berdaulat
 
-Di Apexsions, dunia terbagi menjadi 3 kerajaan besar berdaulat yang memiliki sejarah, fisiologi wilayah, dan kekuatan mistis yang unik. Setiap pemain wajib memilih satu kerajaan sebagai tanah tumpah darahnya.
+Di Apexsions, tanah air terbagi menjadi 3 kerajaan besar berdaulat yang memiliki sejarah, fisiologi wilayah, dan kekuatan mistis yang unik. Setiap pemain wajib memilih satu kerajaan sebagai tanah tumpah darahnya.
 
 ---
 
@@ -616,36 +739,36 @@ MARKDOWN
     ],
     [
         'category_id' => 2,
-        'position' => 2,
+        'position' => 3,
         'title' => 'Klaim Wilayah Kerajaan & Proteksi Nexus',
         'slug' => 'klaim-wilayah-dan-nexus',
         'content' => <<<MARKDOWN
 # Klaim Wilayah Kerajaan & Proteksi Nexus
 
-Setiap inci tanah di Apexsions dilindungi oleh sistem kedaulatan tanah (`ApexsionsCore`). Pemain dapat memperluas wilayah pemukiman mereka dan melindunginya dari kehancuran maupun penjarahan.
+Setiap jengkal tanah di Apexsions dilindungi oleh sistem kedaulatan tanah (`ApexsionsCore`). Pemain dapat memperluas wilayah pemukiman mereka dan melindunginya dari kehancuran maupun penjarahan.
 
 ---
 
 ### Cara Mengklaim Wilayah Baru
-
 1. Berdirilah di chunk (area 16x16 blok) yang belum memiliki pemilik.
-2. Gunakan perintah `/k claim`.
+2. Gunakan perintah:
+   ```text
+   /k claim
+   ```
 3. Pastikan kas pribadi Anda memiliki saldo Rupiah yang mencukupi untuk biaya pemeliharaan awal.
 4. Periksa batas wilayah di sekeliling Anda dengan perintah `/k map`.
 
 ---
 
 ### Sistem Proteksi & Otoritas Chunk
-
 Setelah chunk diklaim atas nama kerajaan Anda:
-- Pemain dari kerajaan lain **tidak dapat** menghancurkan blok, menaruh blok, membuka peti (chest), ataupun menggunakan pintu dan tombol.
+- Pemain dari kerajaan lain **tidak dapat** menghancurkan blok, menaruh blok, membuka peti (*chest*), ataupun menggunakan pintu dan tombol.
 - Seluruh ledakan Creeper dan TNT di alam liar tidak akan merusak bangunan di dalam chunk yang terproteksi.
 - Hewan ternak dan tanaman Anda aman dari pencurian.
 
 ---
 
 ### Kas Nexus & Pajak Wilayah
-
 Setiap kerajaan memiliki **Nexus Inti**. Jika kas perbendaharaan kerajaan habis akibat tidak ada warga yang membayar pajak atau menyetor donasi melalui `/k deposit`, proteksi chunk dapat melemah dan masuk ke dalam status *Vulnerable* (Rentan Penaklukan).
 MARKDOWN
         ,
@@ -654,8 +777,8 @@ MARKDOWN
     ],
     [
         'category_id' => 2,
-        'position' => 3,
-        'title' => 'Perang Kerajaan (Kingdom War), Siege & Combat Tag',
+        'position' => 4,
+        'title' => 'Perang Kerajaan, Siege & Combat Tag',
         'slug' => 'perang-kerajaan-dan-combat-tag',
         'content' => <<<MARKDOWN
 # Perang Kerajaan, Siege & Combat Tag
@@ -665,17 +788,15 @@ Untuk menjaga keadilan dan mencegah kecurangan saat pertempuran PvP antar-perada
 ---
 
 ### Sistem Combat Tag (Anti-Combat Log)
-
 Setiap kali Anda memberikan serangan atau menerima serangan dari pemain lain:
 - Status **COMBAT TAG AKTIF** selama **15 Detik**.
 - Anda **DILARANG** melakukan perintah teleportasi (`/spawn`, `/home`, `/tpa`).
 - Anda **DILARANG** membuka peti lelang (`/ah`) atau toko (`/shop`).
-- **Hukuman Disconnect:** Jika Anda sengaja keluar dari permainan (Force Close / Alt+F4 / Disconnect) saat Combat Tag masih aktif, karakter Anda akan **mati seketika**, seluruh inventory Anda terjatuh di tanah, dan musuh dinyatakan sebagai pemenang duel!
+- **Hukuman Disconnect:** Jika Anda sengaja keluar dari permainan (*Force Close / Alt+F4 / Disconnect*) saat Combat Tag masih aktif, karakter Anda akan **mati seketika**, seluruh inventory Anda berhamburan di tanah, dan musuh dinyatakan sebagai pemenang duel!
 
 ---
 
 ### Siege & Penaklukan Wilayah (Kingdom War)
-
 1. **Jadwal Siege Terjadwal:** Perang perebutan wilayah hanya dapat dideklarasikan pada jadwal server resmi demi memastikan kedua pihak memiliki pasukan pembela.
 2. **Penyerbuan Nexus:** Pasukan penyerang harus menghancurkan Crystal Shield di titik klaim musuh sebelum dapat mengklaim hak atas tanah tersebut.
 3. **Pampasan Perang:** Kerajaan pemenang akan memperoleh 25% dari saldo kas nexus kerajaan yang kalah.
@@ -685,7 +806,9 @@ MARKDOWN
         'updated_at' => $now,
     ],
 
-    // --- KATEGORI 3: EKONOMI & PERDAGANGAN ---
+    // =========================================================================
+    // KATEGORI 3: EKONOMI & PERDAGANGAN (Cat ID: 3)
+    // =========================================================================
     [
         'category_id' => 3,
         'position' => 1,
@@ -694,7 +817,7 @@ MARKDOWN
         'content' => <<<MARKDOWN
 # Sistem Mata Uang: Rupiah (Rp) & Diamond (💎)
 
-Ekosistem ekonomi di Apexsions (`ApexsionsEconomy`) menggunakan arsitektur **Dual-Currency** dengan proteksi transaksi ACID (Atomic, Consistent, Isolated, Durable). Hal ini menjamin tidak akan pernah terjadi duplikasi uang, kehilangan saldo, maupun nilai negatif.
+Ekosistem ekonomi di Apexsions (`ApexsionsEconomy`) menggunakan arsitektur **Dual-Currency** dengan proteksi transaksi ACID (*Atomic, Consistent, Isolated, Durable*). Hal ini menjamin tidak akan pernah terjadi duplikasi uang, kehilangan saldo, maupun saldo bernilai negatif.
 
 ---
 
@@ -703,7 +826,7 @@ Ekosistem ekonomi di Apexsions (`ApexsionsEconomy`) menggunakan arsitektur **Dua
 | Mata Uang | Simbol | Sifat Mata Uang | Cara Memperoleh | Penggunaan Utama |
 | :--- | :---: | :--- | :--- | :--- |
 | **Rupiah** | `Rp` | Uang sirkulasi fiat harian | Menjual hasil tambang/panen di `/shop`, reward misi, gaji kerajaan | Pembelian item pasar dinamis, klaim wilayah, pajak nexus, barter |
-| **Diamond** | `💎` | Komoditas logam mulia bernilai tinggi | Menambang diamond ore di kedalaman Y < 0, reward event khusus | Membeli Custom Enchants kasta atas (Legendary & Fabled), item langka |
+| **Diamond** | `💎` | Logam mulia bernilai tinggi | Menambang diamond ore di kedalaman Y < 0, reward event khusus | Membeli Custom Enchants kasta atas (Legendary & Fabled), item langka |
 
 ---
 
@@ -724,7 +847,7 @@ MARKDOWN
         'content' => <<<MARKDOWN
 # Pasar Dinamis (Dynamic Market /shop & /sell)
 
-Toko server di Apexsions (`ApexsionsShop`) digerakkan oleh algoritma **Supply and Demand** otomatis. Harga komoditas tidak bersifat statis, melainkan bergerak dinamis sesuai volume transaksi pemain.
+Toko server di Apexsions (`ApexsionsShop`) digerakkan oleh algoritma **Supply and Demand** otomatis. Harga komoditas tidak bersifat statis, melainkan bergerak dinamis sesuai volume transaksi seluruh pemain di server.
 
 ---
 
@@ -739,9 +862,9 @@ Toko server di Apexsions (`ApexsionsShop`) digerakkan oleh algoritma **Supply an
 ---
 
 ### Mekanisme Fluktuasi Harga
-- Jika banyak pemain menjual satu komoditas secara massal (contoh: ribuan kentang), harga jual komoditas tersebut akan mengalami depresiasi (turun perlahan).
+- Jika banyak pemain menjual satu komoditas secara massal (contoh: puluhan ribu kentang), harga beli server untuk komoditas tersebut akan mengalami depresiasi (turun perlahan).
 - Jika pasar kekurangan stok dan banyak pemain membelinya, harga akan mengalami apresiasi (naik secara wajar).
-- Manfaatkan fluktuasi ini untuk menjadi pedagang peradaban yang sukses!
+- Manfaatkan fluktuasi ini untuk menjadi pedagang peradaban yang jeli!
 MARKDOWN
         ,
         'created_at' => $now,
@@ -759,7 +882,7 @@ Perdagangan antar-pemain di Apexsions difasilitasi oleh dua sistem mandiri yang 
 
 ---
 
-### 1. Pasar Lelang (Auction House `/ah`)
+### 1. Pasar Lelang (Auction House /ah)
 - Buka antarmuka lelang dengan perintah `/ah`.
 - Untuk menjual item yang sedang Anda pegang: ketik `/ah sell <harga>`.
 - Item akan tayang di etalase pasar selama **24 Jam**.
@@ -768,7 +891,7 @@ Perdagangan antar-pemain di Apexsions difasilitasi oleh dua sistem mandiri yang 
 
 ---
 
-### 2. Barter Window Escrow (`/trade <player>`)
+### 2. Barter Window Escrow (/trade <player>)
 - Kirimkan ajakan barter ke pemain yang berada dalam jarak pandang: `/trade <nama_pemain>`.
 - Antarmuka GUI dua sisi akan terbuka. Masukkan item atau ketik nominal Rupiah yang ingin ditukarkan.
 - Kedua belah pihak wajib mengklik tombol **KUNCI TAWARAN**, dilanjutkan dengan tombol **SETUJU FINAL**.
@@ -784,8 +907,49 @@ MARKDOWN
         'created_at' => $now,
         'updated_at' => $now,
     ],
+    [
+        'category_id' => 3,
+        'position' => 4,
+        'title' => 'Strategi Kemakmuran: Panduan Menjadi Saudagar Sukses',
+        'slug' => 'strategi-kemakmuran',
+        'content' => <<<MARKDOWN
+# Strategi Kemakmuran: Panduan Menjadi Saudagar Sukses
 
-    // --- KATEGORI 4: CUSTOM ENCHANTS & KITS ---
+Menjadi kaya raya di Apexsions bukanlah mimpi kosong. Banyak pemain pemula terjebak hanya dengan menggali batu biasa. Berikut adalah 4 rahasia para taipan ekonomi Apexsions dalam melipatgandakan kekayaan dari nol:
+
+---
+
+### 1. Eksploitasi Rute Tambang Dalam (Y: -58)
+- Gali hingga kedalaman `Y: -53` hingga `Y: -58` untuk memaksimalkan peluang menemukan Diamond Ore dan Deepslate Gold Ore.
+- **Wajib Gunakan Sihir:** Usahakan segera memiliki beliung ber-enchant `Fortune III` atau sihir kustom `Trench` & `Telepathy` agar hasil tambang berlipat 3x dan langsung masuk ke kantong.
+
+---
+
+### 2. Sinergi Pertanian Otomatis Sylvamoor
+- Jika Anda memilih kerajaan **Sylvamoor**, Anda memiliki buff alami `+20%` hasil panen.
+- Buat ladang tebu atau labu otomatis berskala 4 chunk.
+- Jual hasil panen secara berkala menggunakan perintah `/sell`. Ini adalah sumber pendapatan pasif paling stabil!
+
+---
+
+### 3. Seni "Market Timing" di Pasar Dinamis (/shop)
+- **Jangan Jual Massal saat Harga Jeblok:** Jika harga gandum sedang jatuh karena ada pemain lain yang baru menjual 50 peti gandum, simpan stok Anda di dalam peti.
+- Tunggu beberapa jam hingga algoritma pasar kembali menaikkan harga dasar, barulah jual seluruh stok simpanan Anda untuk keuntungan maksimal!
+
+---
+
+### 4. Flipping Buku Sihir di Auction House (/ah)
+- Banyak pemain baru yang membutuhkan uang cepat menjual buku kustom `Ultimate` atau `Legendary` di bawah harga pasar di `/ah`.
+- Beli buku murah tersebut, lalu jual kembali dengan harga normal atau simpan untuk meracik senjata dewa Anda sendiri. Selisih keuntungan bisa mencapai ratusan ribu Rupiah!
+MARKDOWN
+        ,
+        'created_at' => $now,
+        'updated_at' => $now,
+    ],
+
+    // =========================================================================
+    // KATEGORI 4: CUSTOM ENCHANTS & KITS (Cat ID: 4)
+    // =========================================================================
     [
         'category_id' => 4,
         'position' => 1,
@@ -843,7 +1007,7 @@ Untuk meminimalkan risiko kehancuran perlengkapan berharga saat penempaan sihir,
 ---
 
 ### 2. White Scroll (Gulungan Suci Pelindung)
-- **Fungsi:** Mencegah kehancuran item!
+- **Fungsi:** Mencegah kehancuran item berharga!
 - **Mekanisme:** Jika Anda menempelkan White Scroll pada senjata atau armor, item tersebut akan mendapatkan tanda `[PROTECTED]`. Jika proses enchant di kemudian hari gagal, item Anda **tidak akan hancur**, melainkan hanya White Scroll-nya saja yang terpakai.
 
 ---
@@ -894,8 +1058,69 @@ MARKDOWN
         'created_at' => $now,
         'updated_at' => $now,
     ],
+    [
+        'category_id' => 4,
+        'position' => 4,
+        'title' => 'Panduan Meta Build Sihir & Sinergi Persenjataan',
+        'slug' => 'panduan-meta-build-sihir',
+        'content' => <<<MARKDOWN
+# Panduan Meta Build Sihir & Sinergi Persenjataan
 
-    // --- KATEGORI 5: BATTLEPASS & KOMUNIKASI ---
+Memasuki kancah pertempuran peradaban tanpa strategi penempaan sihir adalah tindakan ceroboh. Berikut adalah 4 racikan build sihir (*custom enchantment metas*) terkuat yang telah teruji di arena perang Apexsions:
+
+---
+
+### 🛡 Build 1: "The Immortal Citadel" (Tank Utama / Pelindung Nexus)
+- **Fokus:** Daya tahan ekstrem terhadap serangan fisik keroyokan dan ledakan siege.
+- **Komposisi Armor:** Full Netherite dengan bonus set **Damage Reduction (-25%)**.
+- **Kombinasi Enchant Wajib:**
+  - `Overload III` — Menambahkan 4 bar hati ekstra permanen.
+  - `Aegis IV` — Menyerap 30% burst damage pertama yang masuk.
+  - `Enlighted III` — Meregenerasi darah saat terkena pukulan musuh.
+  - `Armored IV` — Mengurangi damage dari pedang ber-enchant tajam.
+
+---
+
+### ⚔ Build 2: "The Crimson Executioner" (PvP Duelist / High Burst)
+- **Fokus:** Melumpuhkan musuh dalam hitungan detik melalui kerusakan kritikal beruntun.
+- **Komposisi Armor:** Attack Boost Set (+35%).
+- **Kombinasi Enchant Senjata (Pedang Netherite):**
+  - `Rage VI` — Setiap serangan berturut-turut meningkatkan damage hingga +50%.
+  - `Double Strike IV` — Peluang 25% memicu dua tebasan dalam satu klik.
+  - `Bleed V` — Memberikan efek pendarahan yang mengabaikan armor lawan.
+  - `Lifesteal III` — Menyerap darah musuh untuk menyembuhkan diri sendiri.
+
+---
+
+### 💨 Build 3: "The Phantom Striker" (Assassin / Speed & Evasion)
+- **Fokus:** Kecepatan manuver tinggi, menghindar dari serangan, dan membutakan lawan.
+- **Komposisi Armor:** Dodge Chance Set (+20%) + Speed Boost Boots.
+- **Kombinasi Enchant Wajib:**
+  - `Gears III` & `Springs III` — Kecepatan lari dan lompatan ekstra tinggi.
+  - `Blind IV` — Peluang membutakan pandangan musuh saat menyerang.
+  - `Inquisitive IV` — Mendapatkan bonus XP berlipat saat menumbangkan lawan.
+
+---
+
+### ⛏ Build 4: "The Deep Excavator" (Pencetak Kekayaan Tambang)
+- **Fokus:** Menggali ribuan blok dalam hitungan menit untuk mendominasi pasar tambang.
+- **Komposisi Beliung:** Netherite Pickaxe.
+- **Kombinasi Enchant Wajib:**
+  - `Trench III` — Menggali area 3x3 blok sekaligus dalam satu ayunan!
+  - `Explosive III` — Memicu ledakan mikro yang merontokkan batuan tanpa merusak ore.
+  - `Telepathy I` — Seluruh hasil tambang langsung masuk ke inventory (anti-curi).
+  - `Experience V` — Menggandakan perolehan orb XP dari setiap batu yang hancur.
+
+*Peringatan Alkemis: Selalu tempelkan White Scroll pada perkakas utama Anda sebelum mengaplikasikan sihir tingkat Fabled!*
+MARKDOWN
+        ,
+        'created_at' => $now,
+        'updated_at' => $now,
+    ],
+
+    // =========================================================================
+    // KATEGORI 5: BATTLEPASS & KOMUNIKASI (Cat ID: 5)
+    // =========================================================================
     [
         'category_id' => 5,
         'position' => 1,
@@ -944,13 +1169,15 @@ Sistem komunikasi di Apexsions (`ApexsionsChat`) menggunakan format komponen Adv
 ### Tiga Saluran Kanal Chat Resmi
 - **Global Channel (`/ch g`):** Pesan Anda terbaca oleh seluruh pemain yang sedang online di seluruh dunia server.
 - **Kingdom Channel (`/ch k`):** Saluran khusus internal kerajaan. Pesan hanya dapat dibaca oleh rekan satu kerajaan Anda untuk merancang strategi perang atau diplomasi.
-- **Staff Channel (`/ch s`):** Kanal tertutup khusus para penjaga ketertiban (Herald, Warden, dan Ancestor).
+- **Staff Channel (`/ch s`):** Kanal tertutup khusus para penjaga ketertiban (Herald, Warden, Overseer, Architect, dan Ancestor).
 
 ---
 
 ### Format Tampilan Chat Modern
 Setiap pesan di chatroom menampilkan identitas lengkap peradaban Anda:
-`[G] [Lv. 45 Apex Templar] [⚜ SOVEREIGN] [✦ ZENITHAR] PlayerName ➔ Pesan Anda`
+```text
+[G] [Lv. 45 Apex Templar] [⚜ SOVEREIGN] [✦ ZENITHAR] PlayerName ➔ Pesan Anda
+```
 
 ---
 
@@ -962,15 +1189,56 @@ MARKDOWN
         'created_at' => $now,
         'updated_at' => $now,
     ],
+    [
+        'category_id' => 5,
+        'position' => 3,
+        'title' => 'Etika Komunitas, Roleplay & Kode Kehormatan Peradaban',
+        'slug' => 'etika-dan-kode-kehormatan',
+        'content' => <<<MARKDOWN
+# Etika Komunitas, Roleplay & Kode Kehormatan Peradaban
 
-    // --- KATEGORI 6: HIERARKI KASTA RESMI ---
+Apexsions dibangun di atas fondasi kehormatan, sportivitas, dan persahabatan antar-pemain. Untuk menjaga agar suasana permainan tetap seru dan beradab, setiap warga wajib mematuhi kode kehormatan berikut:
+
+---
+
+### 1. Integritas Permainan & Larangan Cheat
+- Dilarang keras menggunakan client pihak ketiga yang memberikan keuntungan curang (*X-Ray, Auto-Clicker, Fly Hack, Speed Hack, Killaura, Baritone*).
+- Sistem pendeteksi otomatis dan staf pengawas (*Overseer*) berhak memberikan sanksi blokir permanen tanpa peringatan bagi pelaku kecurangan.
+
+---
+
+### 2. Aturan Kedaulatan & Anti-Griefing
+- Bangunan di dalam chunk terproteksi haram diganggu.
+- Penyerbuan wilayah hanya sah jika dilakukan dalam kerangka mekanisme resmi **Kingdom War**.
+- Dilarang membuat jebakan portal (*portal trap*) atau jebakan teleportasi mematikan (*TP-trapping*).
+
+---
+
+### 3. Etika Berkomunikasi & Bebas Toksisitas
+- Kanal publik adalah ruang bersama. Dilarang menyebarkan ujaran kebencian, pelecehan personal, pornografi, maupun provokasi berbau SARA.
+- Bersikaplah ramah dan bantu pemain baru yang baru tiba di server.
+
+---
+
+### 4. Semangat Roleplay Kerajaan
+- Rivalitas antar-kerajaan (Zenithar vs Solterra vs Sylvamoor) adalah bumbu roleplay yang seru di dalam game.
+- Nikmati persaingan ini dengan kepala dingin dan jiwa ksatria. Jadikan perang sebagai ajang unjuk ketangkasan, bukan permusuhan di dunia nyata!
+MARKDOWN
+        ,
+        'created_at' => $now,
+        'updated_at' => $now,
+    ],
+
+    // =========================================================================
+    // KATEGORI 6: HIERARKI KASTA RESMI (Cat ID: 6)
+    // =========================================================================
     [
         'category_id' => 6,
         'position' => 1,
-        'title' => 'Struktur 11 Tingkatan Kasta Resmi Apexsions',
+        'title' => 'Struktur 5 Tingkat & 11 Kasta Resmi Apexsions',
         'slug' => 'hierarki-kasta',
         'content' => <<<MARKDOWN
-# Struktur Sebelas Tingkatan Kasta Resmi Apexsions
+# Struktur 5 Tingkat & 11 Kasta Resmi Apexsions
 
 Sumber kebenaran hierarki (`ranks.yml`) membagi peradaban Apexsions ke dalam **5 Tingkat & 11 Kasta Resmi** yang memiliki bobot (*weight*), wewenang, dan kehormatan masing-masing:
 
@@ -992,8 +1260,77 @@ Sumber kebenaran hierarki (`ranks.yml`) membagi peradaban Apexsions ke dalam **5
 
 ---
 
-### Integritas Kasta & LuckPerms
+### Integritas Kasta & Sinkronisasi LuckPerms
 Seluruh kasta donatur dan staf dikelola secara terpusat dan otomatis melalui sinkronisasi native **LuckPerms**, sehingga setiap pembelian paket di Webstore akan mengaktifkan kasta Anda di server dalam hitungan detik tanpa perlu restart server.
+MARKDOWN
+        ,
+        'created_at' => $now,
+        'updated_at' => $now,
+    ],
+    [
+        'category_id' => 6,
+        'position' => 2,
+        'title' => 'Jalur Kenaikan Spiritual: 10 Urutan Kehormatan (Sequence Pathways)',
+        'slug' => 'jalur-kenaikan-spiritual',
+        'content' => <<<MARKDOWN
+# Jalur Kenaikan Spiritual: 10 Urutan Kehormatan (Sequence Pathways)
+
+> *"Tingkat kekuatan bukanlah sekadar angka di atas kepalamu, melainkan tahapan metamorfosis jiwa dari debu fana menuju kemuliaan Ilahi."*<br>
+> — **Kanon Kenaikan Spiritual Apexsions**
+
+Di Apexsions, sistem level 1–100 mengadopsi konsep **Sequence Pathways** yang terinspirasi dari sastra fantasi peradaban. Grinding XP bukan sekadar menaikkan stat, melainkan perjalanan mendaki 10 Urutan Spiritual yang mengubah identitas, gelar prefix, dan takdir peran Anda di medan peradaban:
+
+---
+
+### ☀️ Jalur Penguasa Surya (Zenithar Pathway — The Sun & Heavens)
+Bagi mereka yang meniti jalan ketertiban arcanum dan kejayaan langit:
+- **Urutan 10: Acolyte of Zenith (Lv. 1–10)** — Murid perintis yang baru merasakan sentuhan pertama kehangatan surya.
+- **Urutan 9: Celestial Scout (Lv. 11–20)** — Pengintai langit yang memetakan jurang dan tebing puncak tertinggi.
+- **Urutan 8: Sky Warden (Lv. 21–30)** — Penjaga menara pengawas cakrawala dari serbuan makhluk kegelapan.
+- **Urutan 7: Astral Knight (Lv. 31–40)** — Ksatria berpedang cahaya bintang pelindung kaum tertindas.
+- **Urutan 6: Apex Templar (Lv. 41–50)** — Pendekar suci penjaga kuil kristal matahari yang kebal racun batin.
+- **Urutan 5: Star Commander (Lv. 51–60)** — Panglima armada langit yang memegang panji cahaya matahari terbit.
+- **Urutan 4: Solaris Archon (Lv. 61–70)** — Wujud setengah dewa yang mampu mengalirkan radiasi surya ke dalam senjatanya.
+- **Urutan 3: ⚡ High Celestial ⚡ (Lv. 71–80)** — Pengendali petir dan badai langit yang mampu mengubah arah pertempuran.
+- **Urutan 2: 👑 Zenith Paragon 👑 (Lv. 81–90)** — Teladan sempurna peradaban surya bertahtakan cahaya keemasan murni.
+- **Urutan 1: ✦ EMPEROR OF ZENITHAR ✦ (Lv. 91–100)** — Sang Kaisar Dirgantara, penguasa mutlak seluruh cakrawala Apexsions!
+
+---
+
+### 🔥 Jalur Panglima Bara (Solterra Pathway — The Fire & Iron)
+Bagi mereka yang memilih jalan darah, disiplin besi, dan pengorbanan tanpa batas:
+- **Urutan 10: Dune Wanderer (Lv. 1–10)** — Pengelana pasir bertelanjang kaki yang tahan haus di padang tandus.
+- **Urutan 9: Sun Scout (Lv. 11–20)** — Penjejak jejak musuh di bawah terik matahari yang membakar kulit.
+- **Urutan 8: Terra Blade (Lv. 21–30)** — Pendekar tangguh bersenjatakan pedang tempaan batu vulkanik purba.
+- **Urutan 7: Solar Knight (Lv. 31–40)** — Ksatria lapis baja merah yang kebal terhadap siraman magma cair.
+- **Urutan 6: Flame Vanguard (Lv. 41–50)** — Pasukan pelopor yang mendobrak gerbang benteng musuh dengan amukan api.
+- **Urutan 5: Dune Warlord (Lv. 51–60)** — Jenderal padang pasir yang disegani, penguasa tambang obsidian merah.
+- **Urutan 4: Solaris Champion (Lv. 61–70)** — Juara arena tanding yang mampu membelah kobaran api dengan tangan kosong.
+- **Urutan 3: 🔥 Sun Sovereign 🔥 (Lv. 71–80)** — Penguasa lahar dan letusan gunung yang menyulap pasir menjadi kaca.
+- **Urutan 2: ⚔ Solterra Overlord ⚔* (Lv. 81–90)** — Panglima perang agung yang memegang komando mutlak legiun besi.
+- **Urutan 1: ✦ LORD OF SOLTERRA ✦ (Lv. 91–100)** — Penguasa Abadi Tanah Merah, perwujudan kekuatan api primordial!
+
+---
+
+### 🌿 Jalur Penjaga Hayati (Sylvamoor Pathway — The Emerald Life)
+Bagi mereka yang menyatu dengan denyut pohon purba, kesembuhan, dan samudra:
+- **Urutan 10: Sylvan Citizen (Lv. 1–10)** — Warga rimba pemetik daun pertama dan penabur benih kehidupan.
+- **Urutan 9: Grove Keeper (Lv. 11–20)** — Penjaga kebun obat dan perawat bibit pohon dunia yang rapuh.
+- **Urutan 8: Forest Warden (Lv. 21–30)** — Pembela satwa liar dan penjaga tapal batas hutan dari penebangan liar.
+- **Urutan 7: Wild Knight (Lv. 31–40)** — Ksatria berzirah kayu besi purba yang bersenjatakan duri kristal laut.
+- **Urutan 6: Nature Commander (Lv. 41–50)** — Komandan pasukan rimba dan pawang binatang purba alam liar.
+- **Urutan 5: Druidic Lord (Lv. 51–60)** — Tetua peramu sihir kehidupan yang mampu menyembuhkan luka fatal kawan.
+- **Urutan 4: Verdant Archon (Lv. 61–70)** — Wujud mistis yang mampu memanggil akar bumi raksasa untuk membelenggu musuh.
+- **Urutan 3: 🌿 Elder Guardian 🌿 (Lv. 71–80)** — Pelindung suci jantung Pohon Dunia (*The World Tree*).
+- **Urutan 2: ⚜ Sylvan Sovereign ⚜ (Lv. 81–90)** — Penguasa seluruh hutan zamrud dan samudra kristal tak bertepi.
+- **Urutan 1: ✦ AVATAR OF SYLVAMOOR ✦ (Lv. 91–100)** — Inkarnasi Dewi Kehidupan, penguasa denyut nadi semesta ciptaan!
+
+---
+
+### Upacara Kenaikan Urutan & Hadiah (/rewards)
+Setiap kali Anda menembus batas urutan berikutnya (kelipatan 10 level):
+1. Prefix kehormatan Anda di obrolan chat akan berevolusi secara otomatis.
+2. Segera ketik `/rewards` untuk membuka peti pusaka yang berisi Rupiah, Diamond, dan gulungan sihir langka sebagai bekal pendakian spiritual Anda berikutnya!
 MARKDOWN
         ,
         'created_at' => $now,

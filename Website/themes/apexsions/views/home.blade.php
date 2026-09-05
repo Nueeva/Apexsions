@@ -39,9 +39,14 @@
 
                 <!-- Primary Sovereign Action & Separate Technical Infrastructure -->
                 <div class="apx-hero-action-group d-flex align-items-center gap-3 flex-wrap">
-                    <a href="#getting-started" class="btn btn-apx-sovereign">
-                        MASUK KE PERADABAN <i class="bi bi-arrow-right ms-2"></i>
+                    <a href="#features" class="btn btn-apx-sovereign">
+                        JELAJAHI PERADABAN <i class="bi bi-arrow-down ms-2"></i>
                     </a>
+                    @if(plugins()->isEnabled('wiki'))
+                        <a href="{{ route('wiki.index') }}" class="btn btn-apx-outline" style="padding: 0.75rem 1.4rem; font-weight: 600; font-size: 0.9rem; border-color: rgba(245, 158, 11, 0.4);">
+                            <i class="bi bi-journal-bookmark-fill text-warning me-2"></i> ENSIKLOPEDIA &amp; PANDUAN
+                        </a>
+                    @endif
                     <div class="apx-hero-ip-block apx-copyable" data-apx-copy="apexsions.my.id" role="button" tabindex="0" title="Klik atau tekan Enter untuk menyalin IP Java" aria-label="Salin Alamat IP Server Java">
                         <span class="apx-ip-label">SERVER IP</span>
                         <span class="apx-ip-address font-monospace">apexsions.my.id</span>
@@ -717,6 +722,29 @@
                             <i class="bi bi-person-plus me-1"></i> Daftar Akun Peradaban
                         </a>
                     @endauth
+            </div>
+        </div>
+
+        <!-- Callout Banner: Panduan 15 Menit Pertama Warga Baru -->
+        <div class="mt-4 p-4 rounded text-center position-relative overflow-hidden" style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(13, 18, 30, 0.85) 100%); border: 1px solid var(--apx-gold-border); border-radius: var(--apx-radius-md);">
+            <div class="row align-items-center">
+                <div class="col-lg-8 text-lg-start mb-3 mb-lg-0">
+                    <span class="badge mb-2" style="background: rgba(245, 158, 11, 0.2); color: var(--apx-gold-light); border: 1px solid var(--apx-gold-border); font-size: 0.72rem; letter-spacing: 0.08em;">
+                        <i class="bi bi-compass-fill me-1"></i> PANDUAN KILAT WARGA BARU
+                    </span>
+                    <h3 class="mb-1 text-white" style="font-family: 'Cinzel', Georgia, serif; font-size: 1.35rem;">
+                        Bingung Harus Melakukan Apa Setelah Mendarat di Spawn?
+                    </h3>
+                    <p class="text-muted small mb-0">
+                        Pelajari peta jalan 15 menit dari mengambil starter kit, memilih kerajaan, menandai rumah, hingga menghasilkan pundi Rupiah pertama.
+                    </p>
+                </div>
+                <div class="col-lg-4 text-lg-end">
+                    @if(plugins()->isEnabled('wiki'))
+                        <a href="{{ route('wiki.pages.show', ['panduan-pemula', 'panduan-15-menit-pertama']) }}" class="btn btn-apx-gold">
+                            <i class="bi bi-book-half me-1"></i> Buka Panduan 15 Menit
+                        </a>
+                    @endif
                 </div>
             </div>
         </div>

@@ -2140,6 +2140,96 @@ code:not(pre code) {
 /* ==========================================================================
    Apexsions Wiki & Encyclopedia System
    ========================================================================== */
+.apx-wiki-header {
+    background: linear-gradient(135deg, rgba(17, 24, 39, 0.85) 0%, rgba(10, 14, 23, 0.95) 100%);
+    border: 1px solid var(--apx-gold-border-subtle);
+    border-radius: var(--apx-radius-md);
+    padding: 1.75rem 2rem;
+    margin-bottom: 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+.apx-wiki-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--apx-gold), transparent);
+}
+
+.apx-wiki-title-area h1 {
+    font-family: 'Cinzel', Georgia, serif;
+    font-size: 1.85rem;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: 0.02em;
+}
+
+.apx-wiki-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.35rem 0.85rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--apx-gold-light);
+    background: rgba(245, 158, 11, 0.12);
+    border: 1px solid var(--apx-gold-border);
+    border-radius: 9999px;
+    margin-bottom: 0.5rem;
+}
+
+.apx-wiki-search-form {
+    min-width: 280px;
+    max-width: 420px;
+    width: 100%;
+}
+
+.apx-wiki-search-form .input-group {
+    background: rgba(13, 18, 30, 0.8);
+    border: 1px solid var(--apx-gold-border-subtle);
+    border-radius: var(--apx-radius-sm);
+    overflow: hidden;
+    transition: var(--apx-transition);
+}
+
+.apx-wiki-search-form .input-group:focus-within {
+    border-color: var(--apx-gold);
+    box-shadow: 0 0 15px rgba(245, 158, 11, 0.25);
+}
+
+.apx-wiki-search-form input.form-control {
+    background: transparent;
+    border: none;
+    padding: 0.65rem 1rem;
+    font-size: 0.92rem;
+    color: #ffffff;
+}
+
+.apx-wiki-search-form input.form-control::placeholder {
+    color: #64748b;
+}
+
+.apx-wiki-search-form input.form-control:focus {
+    box-shadow: none;
+    background: transparent;
+}
+
+.apx-wiki-search-form .btn-apx-gold {
+    border-radius: 0;
+    padding: 0.65rem 1.25rem;
+}
+
 .apx-wiki-sidebar .list-group-item {
     background: rgba(13, 18, 30, 0.6);
     border: 1px solid rgba(245, 158, 11, 0.12);
@@ -2297,4 +2387,39 @@ code:not(pre code) {
     height: 1px;
     background: linear-gradient(90deg, transparent, rgba(245, 158, 11, 0.35), transparent);
     margin: 2rem 0;
+}
+
+/* Search Results Page & Polish */
+.apx-wiki-search-card:hover {
+    border-color: var(--apx-gold) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(245, 158, 11, 0.12);
+}
+
+.hover-gold:hover {
+    color: var(--apx-gold-light) !important;
+}
+
+/* Callout Box for 15-Minute Guides */
+.apx-wiki-step-box {
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.08) 0%, rgba(13, 18, 30, 0.7) 100%);
+    border: 1px solid var(--apx-gold-border);
+    border-left: 4px solid var(--apx-gold);
+    border-radius: var(--apx-radius-sm);
+    padding: 1.25rem 1.5rem;
+    margin: 1.5rem 0;
+}
+
+.apx-wiki-step-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--apx-gold);
+    color: #0d121e;
+    font-weight: 800;
+    font-size: 0.85rem;
+    margin-right: 0.75rem;
 }
