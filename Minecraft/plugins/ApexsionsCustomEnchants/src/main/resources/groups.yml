@@ -1,0 +1,68 @@
+# ==============================================================================
+# Tier & Group Definitions for ApexsionsCustomEnchants
+# Supported Currencies: "rupiah", "diamond"
+# ==============================================================================
+
+groups:
+  SIMPLE:
+    display-name: "<gray><bold>SIMPLE TIER</bold></gray>"
+    color: "#aaaaaa"
+    icon: "COAL"
+    currency: "rupiah"
+    cost: 15000.0
+    enabled: true
+    coming-soon: false
+
+  UNIQUE:
+    display-name: "<green><bold>UNIQUE TIER</bold></green>"
+    color: "#55ff55"
+    icon: "COPPER_INGOT"
+    currency: "rupiah"
+    cost: 35000.0
+    enabled: true
+    coming-soon: false
+
+  ELITE:
+    display-name: "<aqua><bold>ELITE TIER</bold></aqua>"
+    color: "#55ffff"
+    icon: "IRON_INGOT"
+    currency: "rupiah"
+    cost: 75000.0
+    enabled: true
+    coming-soon: false
+
+  ULTIMATE:
+    display-name: "<yellow><bold>ULTIMATE TIER</bold></yellow>"
+    color: "#ffff55"
+    icon: "GOLD_INGOT"
+    currency: "rupiah"
+    cost: 150000.0
+    enabled: true
+    coming-soon: false
+
+  LEGENDARY:
+    display-name: "<gold><bold>LEGENDARY TIER</bold></gold>"
+    color: "#ffaa00"
+    icon: "EMERALD"
+    currency: "diamond"
+    cost: 25.0
+    enabled: true
+    coming-soon: false
+
+  FABLED:
+    display-name: "<light_purple><bold>FABLED TIER</bold></light_purple>"
+    color: "#ff55ff"
+    icon: "NETHERITE_INGOT"
+    currency: "diamond"
+    cost: 50.0
+    enabled: true
+    coming-soon: false
+
+  HEROIC:
+    display-name: "<gradient:#ff007f:#ff0000><bold>HEROIC TIER (GOD TIER)</bold></gradient>"
+    color: "#ff007f"
+    icon: "NETHER_STAR"
+    currency: "diamond"
+    cost: 100.0
+    enabled: false
+    coming-soon: true

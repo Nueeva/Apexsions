@@ -1,0 +1,212 @@
+# ==============================================================================
+# Custom Enchantments Definition for ApexsionsCustomEnchants
+# ==============================================================================
+
+enchantments:
+  # Combat
+  bleed:
+    display: "Bleed"
+    group: UNIQUE
+    max-level: 3
+    applies: "SWORD"
+    description: "Menyebabkan musuh berdarah dan kehilangan HP secara berkala."
+
+  lifesteal:
+    display: "Lifesteal"
+    group: ELITE
+    max-level: 3
+    applies: "SWORD"
+    description: "Memulihkan sebagian nyawamu saat memukul musuh."
+
+  vampire:
+    display: "Vampire"
+    group: ULTIMATE
+    max-level: 3
+    applies: "SWORD"
+    description: "Menghisap darah musuh dan memberikan efek regenerasi."
+
+  cleave:
+    display: "Cleave"
+    group: ELITE
+    max-level: 3
+    applies: "AXE"
+    description: "Menghantam semua musuh di sekitarmu secara bersamaan."
+
+  rage:
+    display: "Rage"
+    group: ULTIMATE
+    max-level: 4
+    applies: "SWORD"
+    description: "Semakin sering memukul berturut-turut, semakin dahsyat serangannya."
+
+  silence:
+    display: "Silence"
+    group: LEGENDARY
+    max-level: 4
+    applies: "SWORD"
+    description: "Membungkam sihir lawan sehingga tidak dapat menggunakan ability."
+
+  disarm:
+    display: "Disarm"
+    group: FABLED
+    max-level: 3
+    applies: "SWORD"
+    description: "Peluang melucuti senjata dari tangan lawan."
+
+  decapitation:
+    display: "Decapitation"
+    group: UNIQUE
+    max-level: 3
+    applies: "SWORD"
+    description: "Peluang memenggal kepala lawan saat terbunuh."
+
+  inquisitive:
+    display: "Inquisitive"
+    group: ULTIMATE
+    max-level: 4
+    applies: "SWORD"
+    description: "Melipatgandakan perolehan EXP dari mob yang dibunuh."
+
+  blind:
+    display: "Blind"
+    group: SIMPLE
+    max-level: 3
+    applies: "SWORD"
+    description: "Memberikan efek kebutaan sementara pada lawan."
+
+  paralyze:
+    display: "Paralyze"
+    group: ELITE
+    max-level: 3
+    applies: "SWORD"
+    description: "Melumpuhkan lawan dengan efek lambat dan kelelahan."
+
+  # Defense & Armor
+  gears:
+    display: "Gears"
+    group: SIMPLE
+    max-level: 3
+    applies: "BOOTS"
+    description: "Memberikan peningkatan kecepatan lari permanen."
+
+  springs:
+    display: "Springs"
+    group: UNIQUE
+    max-level: 3
+    applies: "BOOTS"
+    description: "Memberikan lompatan tinggi (Jump Boost) permanen."
+
+  obsidianshield:
+    display: "Obsidianshield"
+    group: ELITE
+    max-level: 1
+    applies: "CHESTPLATE"
+    description: "Memberikan kekebalan permanen terhadap api dan lahar."
+
+  overload:
+    display: "Overload"
+    group: LEGENDARY
+    max-level: 3
+    applies: "CHESTPLATE"
+    description: "Meningkatkan jumlah nyawa maksimal (Extra Hearts)."
+
+  enlightened:
+    display: "Enlightened"
+    group: ULTIMATE
+    max-level: 3
+    applies: "ARMOR"
+    description: "Peluang menyembuhkan dirimu saat menerima serangan musuh."
+
+  phoenix:
+    display: "Phoenix"
+    group: FABLED
+    max-level: 1
+    applies: "CHESTPLATE"
+    description: "Menyelamatkan dirimu dari kematian dengan memulihkan nyawa penuh."
+
+  cactus:
+    display: "Cactus"
+    group: UNIQUE
+    max-level: 2
+    applies: "ARMOR"
+    description: "Memantulkan sebagian damage kembali ke penyerang."
+
+  # Tools
+  haste:
+    display: "Haste"
+    group: SIMPLE
+    max-level: 3
+    applies: "PICKAXE"
+    description: "Memberikan efek Haste permanen saat memegang beliung."
+
+  autosmelt:
+    display: "AutoSmelt"
+    group: UNIQUE
+    max-level: 3
+    applies: "PICKAXE"
+    description: "Secara otomatis melebur bijih menjadi batangan logam."
+
+  telepathy:
+    display: "Telepathy"
+    group: ULTIMATE
+    max-level: 1
+    applies: "TOOLS"
+    description: "Mengirimkan block drop langsung ke inventory tanpa jatuh."
+
+  harvest:
+    display: "Harvest"
+    group: LEGENDARY
+    max-level: 3
+    applies: "PICKAXE"
+    description: "Menambang area 3x3 secara serentak."
+
+  gemify:
+    display: "Gemify"
+    group: FABLED
+    max-level: 3
+    applies: "PICKAXE"
+    description: "Peluang mengubah bongkahan batu menjadi permata berharga."
+
+  unbreakable:
+    display: "Unbreakable"
+    group: FABLED
+    max-level: 1
+    applies: "ALL"
+    description: "Membuat item kebal dari segala jenis kerusakan."
+
+  # Bows
+  multiarrow:
+    display: "MultiArrow"
+    group: ULTIMATE
+    max-level: 3
+    applies: "BOW"
+    description: "Menembakkan beberapa anak panah sekaligus dalam satu tembakan."
+
+  sniper:
+    display: "Sniper"
+    group: LEGENDARY
+    max-level: 3
+    applies: "BOW"
+    description: "Meningkatkan kecepatan anak panah dan memberikan bonus damage jarak jauh."
+
+  piercingarrow:
+    display: "Piercing"
+    group: ELITE
+    max-level: 3
+    applies: "BOW"
+    description: "Anak panah menembus pertahanan baju zirah lawan."
+
+  # Heroic (God Tier - Coming Soon)
+  godlyslayer:
+    display: "GodlySlayer"
+    group: HEROIC
+    max-level: 5
+    applies: "SWORD"
+    description: "Kekuatan dewa penumpas kegelapan."
+
+  immortality:
+    display: "Immortality"
+    group: HEROIC
+    max-level: 3
+    applies: "CHESTPLATE"
+    description: "Ketahanan mutlak para dewa."

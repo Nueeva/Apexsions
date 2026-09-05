@@ -26,6 +26,11 @@ if (-not (Test-Path $outLibs)) {
     New-Item -ItemType Directory -Path $outLibs -Force | Out-Null
 }
 
+$rootLibs = Join-Path (Split-Path -Parent $scriptDir) 'build\libs'
+if (-not (Test-Path $rootLibs)) {
+    New-Item -ItemType Directory -Path $rootLibs -Force | Out-Null
+}
+
 # Locate JDK 21
 $localJdk = Join-Path $scriptDir 'plugins\ApexsionsCore\jdk-21'
 $localJavac = Join-Path $localJdk 'bin\javac.exe'
@@ -61,12 +66,13 @@ if (-not $hasMaven) {
 }
 
 $allPlugins = @(
-    @{ Name = 'ApexsionsCore';       Path = 'plugins\ApexsionsCore' },
-    @{ Name = 'ApexsionsChat';       Path = 'plugins\ApexsionsChat' },
+    @{ Name = 'ApexsionsCore';           Path = 'plugins\ApexsionsCore' },
+    @{ Name = 'ApexsionsChat';           Path = 'plugins\ApexsionsChat' },
     @{ Name = 'ApexsionsEconomy';    Path = 'plugins\ApexsionsEconomy' },
     @{ Name = 'ApexsionsBattlepass'; Path = 'plugins\ApexsionsBattlepass' },
     @{ Name = 'ApexsionsShop';       Path = 'plugins\ApexsionsShop' },
-    @{ Name = 'ApexsionsMedia';      Path = 'plugins\ApexsionsMedia' }
+    @{ Name = 'ApexsionsMedia';      Path = 'plugins\ApexsionsMedia' },
+    @{ Name = 'ApexsionsCustomEnchants'; Path = 'plugins\ApexsionsCustomEnchants' }
 )
 
 function Test-PluginModified {
@@ -98,9 +104,8 @@ function Test-PluginModified {
     $srcDir = Join-Path $pluginDir 'src'
     if (Test-Path $srcDir) {
         $newestSrc = Get-ChildItem -Path $srcDir -Recurse -File -ErrorAction SilentlyContinue | 
-            Sort-Object LastWriteTimeUtc -Descending | 
-            Select-Object -First 1
-        if ($newestSrc -and ($newestSrc.LastWriteTimeUtc -gt $jarTime)) {
+            Measure-Object -Property LastWriteTimeUtc -Maximum
+        if ($newestSrc.Maximum -and ($newestSrc.Maximum -gt $jarTime)) {
             return $true
         }
     }
@@ -116,13 +121,14 @@ if ($All -or ($Plugin.ToLower() -eq 'all')) {
     $search = $Plugin.ToLower().Replace('apexsions', '')
     if ($search -eq 'bp') { $search = 'battlepass' }
     if ($search -eq 'eco') { $search = 'economy' }
+    if ($search -eq 'ace' -or $search -eq 'ce' -or $search -eq 'enchants' -or $search -eq 'enchant') { $search = 'customenchants' }
     foreach ($p in $allPlugins) {
         if ($p.Name.ToLower().Contains($search)) {
             $targetPlugins += $p
         }
     }
     if ($targetPlugins.Count -eq 0) {
-        Write-Host "Plugin '$Plugin' not found! Available options: Core, Chat, Economy (eco), Battlepass (bp), Shop, Media, all" -ForegroundColor Red
+        Write-Host "Plugin '$Plugin' not found! Available options: Core, Chat, Economy (eco), Battlepass (bp), Shop, Media, CustomEnchants (ace/ce), all" -ForegroundColor Red
         exit 1
     }
 } else {
@@ -217,6 +223,9 @@ function Build-Plugin-Fast {
             $size = [math]::Round($builtJar.Length / 1024, 2)
             Copy-Item -Force $builtJar.FullName (Join-Path $OutDirectory ($Name + '-1.0.0.jar'))
             Copy-Item -Force $builtJar.FullName (Join-Path $pluginDir ($Name + '-1.0.0.jar'))
+            if (Test-Path $rootLibs) {
+                Copy-Item -Force $builtJar.FullName (Join-Path $rootLibs ($Name + '-1.0.0.jar'))
+            }
         }
     }
 

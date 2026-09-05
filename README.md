@@ -11,7 +11,7 @@ Repository monorepo resmi untuk ekosistem **Apexsions**:
 ```text
 Apexsions/
 ├── Minecraft/             # Seluruh kode sumber, konfigurasi, dan build plugin Minecraft
-│   ├── plugins/          # 6 Plugin Suite (ApexsionsCore, Chat, Economy, Battlepass, Shop, Media)
+│   ├── plugins/          # 7 Plugin Suite (ApexsionsCore, Chat, Economy, Battlepass, Shop, Media, CustomEnchants)
 │   ├── docs/             # Dokumentasi teknis & arsitektur plugin
 │   ├── build.ps1         # Smart Turbo Multi-Compiler PowerShell
 │   ├── build.gradle      # Gradle root configuration
@@ -24,16 +24,17 @@ Apexsions/
 
 ---
 
-## 📦 1. Daftar 6 Plugin Suite Utama (di `Minecraft/plugins/`)
+## 📦 1. Daftar 7 Plugin Suite Utama (di `Minecraft/plugins/`)
 
 | Plugin | Versi | Status | Package Root Java | Deskripsi & Fokus Utama |
 | :--- | :---: | :---: | :--- | :--- |
-| **`ApexsionsCore`** | `1.0.0` | ![Active](https://img.shields.io/badge/Status-Active-brightgreen) | `com.apexsions.core.*` | Otoritas Wilayah Kerajaan (*Zenithar*, *Solterra*, *Sylvamoor*), Sistem Warp Navigasi GUI & Admin Editor GUI, Perlindungan PvP Teritorial Kerajaan, Progresi Leveling (13 XP Sources), BlueMap Polygons, Leaderboard GUI (`/kingdom top`), Kingdom War Manager, PvP Combat Tag (15s), Kingdom-Bounded `/rtp`, dan Enforcer TPA EssentialsX. |
+| **`ApexsionsCore`** | `1.0.0` | ![Active](https://img.shields.io/badge/Status-Active-brightgreen) | `com.apexsions.core.*` | Otoritas Wilayah Kerajaan (*Zenithar*, *Solterra*, *Sylvamoor*), Sistem Warp Navigasi GUI & Admin Editor GUI, Perlindungan PvP Teritorial Kerajaan, Progresi Leveling (13 XP Sources), BlueMap Polygons, Leaderboard GUI (`/kingdom top`), Kingdom War Manager, PvP Combat Tag (15s), Kingdom-Bounded `/rtp`, Enforcer TPA EssentialsX, dan Sistem Kit Kerajaan Terintegrasi (`/kits`) dengan Armor Set Bonus Berbasis Stat. |
 | **`ApexsionsChat`** | `1.0.0` | ![Active](https://img.shields.io/badge/Status-Active-brightgreen) | `com.apexsions.chat.*` | Komunikasi Kyori MiniMessage, Channel (*Global*, *Kingdom*, *Staff*), Chat Settings GUI (`/channel settings`), Pamer Item (`/showitem`), Surat Offline (`/mail`), Chat Games, dan Moderasi Lapis Tiga dengan Staff Reports GUI. |
 | **`ApexsionsEconomy`** | `1.0.0` | ![Active](https://img.shields.io/badge/Status-Active-brightgreen) | `com.apexsions.economy.*` | Multi-Currency (`Rupiah`, `Diamond`), Transfer Cepat (`/pay`), Pasar Lelang (`/ah`) dengan Escrow Claim, dan Barter/Trade 12-Slot dengan Pajak Transportasi Antar-Kerajaan. |
 | **`ApexsionsBattlepass`** | `1.0.0` | ![Active](https://img.shields.io/badge/Status-Active-brightgreen) | `com.apexsions.battlepass.*` | 200 Level BattlePass, Season Management, Quests (Daily, Weekly, Monthly), Tingkatan Pass (`FREE`, `PREMIUM`, `PREMIUM+`, `ULTIMATE`), dan Visual Admin GUI Editor 54-Slot (`/abp`). |
 | **`ApexsionsShop`** | `1.0.0` | ![Active](https://img.shields.io/badge/Status-Active-brightgreen) | `com.apexsions.shop.*` | Pasar Dinamis 6 Kategori, Rasio Jual **20%**, Formula Dinamis Multiplier Cuaca & Bioma Kerajaan, Price Clamping (50%-200%), Siaran Tren Pasar Berkelanjutan, Pajak Wilayah 10%, UI Ramah Sentuh/Bedrock, dan GUI Jual Cepat 45-Slot (`/sell`). |
 | **`ApexsionsMedia`** | `1.0.0` | ![Active](https://img.shields.io/badge/Status-Active-brightgreen) | `com.apexsions.media.*` | Render Banner/Logo Gambar Multi-Tile Asinkron (PNG/JPG/URL) dengan deteksi ukuran otomatis, Raytrace Line-of-Sight Hover Glowing, Actionbar Tooltips, Replikasi/Pindah Banner (`/media place`, `/media copy`), dan Interaksi Tautan Konfirmasi Web (`[Buka URL]` & `[Salin Clipboard]`). |
+| **`ApexsionsCustomEnchants`** | `1.0.0` | ![Active](https://img.shields.io/badge/Status-Active-brightgreen) | `com.apexsions.customenchants.*` | Sistem Custom Enchantment Mewah: Enchanter Gacha Dual-Currency (`/ce`), Toko Buku Spesifik 3x Harga, Mystery & Magic Dust Booster, White & Black Scrolls, Admin Hub (`/ace`), Replika Katalog `/ae admin` (`/ace enchants`), Interactive Item & Armor Set Builder (`/ace create`), dan Tinkerer Coming Soon. |
 
 ---
 
@@ -57,6 +58,17 @@ Apexsions/
 - **BlueMap Polygon Integration**: Visualisasi transparan wilayah kerajaan pada peta web real-time.
 - **Kingdom-Bounded `/rtp`**: Teleportasi acak aman yang mewajibkan pemain berada di teritori kerajaannya sendiri.
 - **Enforcer TPA EssentialsX**: Teleportasi `/tpa` wajib sesama anggota kerajaan dan kedua pemain wajib berada di dalam area kerajaan.
+- **Sistem Kit Kerajaan Terintegrasi (`/kits`)**:
+  - GUI Pemain 27/54-slot untuk preview isi kit (Klik Kiri) dan klaim langsung (Klik Kanan).
+  - Validasi hierarki rank LuckPerms (mengacu pada bobot resmi `ranks.yml`) dan pelacakan cooldown mandiri per kit.
+  - GUI Pembuat Kit Admin (`/kits create <id>`): Validasi ketat slot armor (maksimal 1 full set armor kepala hingga kaki; menolak duplikat helm atau armor di slot ekstra).
+  - **Armor Set Bonus Berbasis Stat**: Mendukung bonus persentase stat tempur (Bukan efek potion biasa!):
+    - `DAMAGE_REDUCTION`: Pengurangan damage masuk (%)
+    - `ATTACK_DAMAGE_BOOST`: Peningkatan damage keluar (%)
+    - `DODGE_CHANCE`: Peluang menghindari serangan total dengan partikel & suara swoosh (%)
+    - `CRITICAL_DAMAGE_BOOST`: Peningkatan kerusakan pukulan kritis (%)
+    - `EXTRA_MAX_HEALTH`: Peningkatan atribut hati maksimal
+    - `MOVEMENT_SPEED_BOOST`: Peningkatan kecepatan lari/gerak atribut
 
 ### 💬 ApexsionsChat
 - **Interactive Chat ID-Card & Social Profile GUI (27-Slot)**:
@@ -102,6 +114,28 @@ Apexsions/
 - **Interaksi URL Fleksibel**: Pilihan mode Chat MiniMessage (`[🌐 BUKA URL]` & `[📋 SALIN LINK]`) atau GUI Konfirmasi 27-slot.
 - **100% Vanilla & Bedrock Compatible**: Tanpa mod klien tambahan, didukung penuh oleh Geyser/Floodgate.
 
+### ⚡ ApexsionsCustomEnchants
+- **Dual-Currency Enchanter Gacha GUI (`/ce`)**:
+  - Gacha buku sihir acak per tier (`SIMPLE`, `UNIQUE`, `ELITE`, `ULTIMATE`, `LEGENDARY`, `FABLED`).
+  - Mendukung mata uang **Rupiah** dan **Diamond** via `ApexsionsEconomyAPI`.
+  - Tier `HEROIC` dikunci sebagai **Coming Soon** dengan visual interaktif eksklusif.
+- **Toko Buku Sihir Spesifik 54-Slot (`/ce shop`)**:
+  - Pembelian langsung buku sihir yang diinginkan dengan harga 3x lipat dari gacha acak tier tersebut.
+  - Peluang sukses terkalibrasi tetap **50%** di semua tier untuk menjaga stabilitas gameplay.
+- **28 Custom Enchantments Berkekuatan Tinggi**:
+  - Efek tempur & utilitas: Bleed, Lifesteal, Vampire, Cleave, Rage, Blind, Paralyze, Disarm, Cactus, Enlightened, Inquisitive, Obsidianshield, Overload, Phoenix, AutoSmelt, Telepathy, MultiArrow, Sniper, Unbreakable, dll.
+- **Magic Dust & Protection Scrolls**:
+  - **Mystery Dust**: Klik kanan untuk mengungkap Magic Dust atau Failed Secret Dust.
+  - **Magic Dust**: Menambah success rate buku sihir (+1% hingga +15%) saat di-drag-and-drop.
+  - **White Scroll**: Melindungi item dari kehancuran saat tempaan sihir gagal.
+  - **Black Scroll**: Mengekstrak custom enchant dari senjata/armor secara aman menjadi buku sihir.
+- **Central Admin Hub GUI (`/ace`)**:
+  - Mengetik `/ace` langsung membuka dashboard administrasi utama 45-slot.
+  - `/ace enchants`: Replika persis katalog `/ae admin` dari AdvancedEnchantments (45 sihir per halaman, pencarian nama/id, klik kiri untuk mendapatkan buku, klik kanan untuk menempa langsung ke item tangan).
+  - `/ace create`: Interactive Builder untuk membuat item kustom (base material, custom enchants, vanilla enchants) sekaligus **Custom Armor Set Bonus** non-kit.
+  - `/ace pricing`: Pengaturan harga gacha per tier, toggle Rupiah/Diamond, multiplier toko spesifik, dan peluang sukses buku.
+  - `/ce tinkerer`: Antarmuka Tinkerer Kerajaan (Coming Soon).
+
 ---
 
 ## 📜 3. Master Command List & Permissions Matrix
@@ -139,6 +173,12 @@ Apexsions/
 | `/ac setkingdom <p> <k>`| `/kc setk` | Memindahkan kerajaan pemain seketika (Admin) | `apexsionscore.admin` | `op` |
 | `/ac setlobby` | `/kc setlobby` | Mengatur titik spawn lobi saat ini (Multiverse-ready) | `apexsionscore.admin` | `op` |
 | `/ac info <p>` | `/kc info` | Memeriksa data progresi & kerajaan pemain (Admin) | `apexsionscore.admin` | `op` |
+| `/kits` | `/kit` | Membuka antarmuka kit kerajaan (Preview & Klaim) | `apexsionscore.kits` | `true` |
+| `/kits preview <id>` | - | Melihat isi item & armor set bonus suatu kit | `apexsionscore.kits` | `true` |
+| `/kits create <id>` | - | Membuka GUI Pembuat Kit Admin (Validasi 1 full set armor) | `apexsionscore.admin` | `op` |
+| `/kits delete <id>` | - | Menghapus kit kerajaan dari sistem | `apexsionscore.admin` | `op` |
+| `/kits list` | - | Menampilkan daftar seluruh kit aktif | `apexsionscore.admin` | `op` |
+| `/kits resetcd <p> <id>` | - | Mereset cooldown kit pemain tertentu | `apexsionscore.admin` | `op` |
 
 ### 💬 Modul ApexsionsChat
 | Perintah | Alias | Deskripsi | Hak Akses (Permission) | Default |
@@ -217,6 +257,22 @@ Apexsions/
 | `/media reload` | `/banner reload` | Memuat ulang konfigurasi & render banner | `apexsionsmedia.admin` | `op` |
 | `/media gui` | `/media admin`, `/banner gui` | Membuka Interactive Media Admin Management GUI | `apexsionsmedia.admin` | `op` |
 
+### ⚡ Modul ApexsionsCustomEnchants
+| Perintah | Alias | Deskripsi | Hak Akses (Permission) | Default |
+| :--- | :--- | :--- | :--- | :--- |
+| `/ce` | `/customenchants`, `/enchanter` | Membuka Enchanter Gacha Utama (Rupiah/Diamond) | `apexsions.ce.user` | `true` |
+| `/ce shop` | `/ce books` | Membuka Toko Buku Sihir Spesifik (3x harga, 50% sukses) | `apexsions.ce.user` | `true` |
+| `/ce tinkerer` | `/ce tinker` | Membuka antarmuka Tinkerer Kerajaan (Coming Soon) | `apexsions.ce.user` | `true` |
+| `/ce info <sihir>` | `/ce detail` | Menampilkan deskripsi, tier, target, & level maks sihir | `apexsions.ce.user` | `true` |
+| `/ace` | `/ace admin`, `/acehub` | Membuka Central Admin GUI Hub (Dashboard Terpusat) | `apexsions.admin` | `op` |
+| `/ace enchants [p/filter]` | `/ace catalog`, `/ace ae` | Membuka Katalog Replika `/ae admin` (45 enchant/page) | `apexsions.admin` | `op` |
+| `/ace create` | `/ace creator` | Interactive Item, Custom Enchant, & Armor Set Bonus Builder | `apexsions.admin` | `op` |
+| `/ace pricing` | `/ace prices` | Atur harga gacha tier, mata uang, multiplier toko, & odds | `apexsions.admin` | `op` |
+| `/ace givebook <p> <enchant> <lvl>` | - | Memberikan buku custom enchant ke pemain | `apexsions.admin` | `op` |
+| `/ace givedust <p> <type> [rate]` | - | Memberikan Mystery Dust atau Magic Dust ke pemain | `apexsions.admin` | `op` |
+| `/ace givescroll <p> <type>` | - | Memberikan White Scroll atau Black Scroll ke pemain | `apexsions.admin` | `op` |
+| `/ace reload` | - | Memuat ulang seluruh konfigurasi custom enchants | `apexsions.admin` | `op` |
+
 ---
 
 ## 🛠️ 4. Kompilasi & Build Otomatis
@@ -231,8 +287,9 @@ powershell -ExecutionPolicy Bypass -File .\build.ps1 Chat
 powershell -ExecutionPolicy Bypass -File .\build.ps1 Economy
 powershell -ExecutionPolicy Bypass -File .\build.ps1 Battlepass
 powershell -ExecutionPolicy Bypass -File .\build.ps1 Shop
+powershell -ExecutionPolicy Bypass -File .\build.ps1 CustomEnchants
 
-# 2. Kompilasi SELURUH 6 plugin suite serentak:
+# 2. Kompilasi SELURUH 7 plugin suite serentak:
 powershell -ExecutionPolicy Bypass -File .\build.ps1
 ```
 

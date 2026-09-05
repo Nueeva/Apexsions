@@ -104,6 +104,10 @@ public class ApexsionsCorePlugin extends JavaPlugin {
     private com.apexsions.core.cosmetics.CosmeticsManager cosmeticsManager;
     private com.apexsions.core.motd.MotdManager motdManager;
 
+    // Kits & Armor Set Bonus Engine
+    private com.apexsions.core.kit.KitManager kitManager;
+    private com.apexsions.core.kit.KitArmorSetListener kitArmorSetListener;
+
     // Public API
     private ApexsionsCoreAPI api;
 
@@ -195,6 +199,12 @@ public class ApexsionsCorePlugin extends JavaPlugin {
             this.territoryListener = new TerritoryListener(this);
             Bukkit.getPluginManager().registerEvents(territoryListener, this);
 
+            // Kits & Armor Set Bonus Engine
+            this.kitManager = new com.apexsions.core.kit.KitManager(this);
+            this.kitArmorSetListener = new com.apexsions.core.kit.KitArmorSetListener(this);
+            Bukkit.getPluginManager().registerEvents(kitArmorSetListener, this);
+            Bukkit.getPluginManager().registerEvents(new com.apexsions.core.kit.KitGUIListener(), this);
+
             // Server MOTD & Ping Manager
             this.motdManager = new com.apexsions.core.motd.MotdManager(this);
             Bukkit.getPluginManager().registerEvents(this.motdManager, this);
@@ -257,6 +267,9 @@ public class ApexsionsCorePlugin extends JavaPlugin {
         }
         if (cosmeticsManager != null) {
             cosmeticsManager.stop();
+        }
+        if (kitManager != null) {
+            kitManager.saveCooldownsAsync();
         }
 
         // Flush all cached player profiles safely to database
@@ -413,6 +426,19 @@ public class ApexsionsCorePlugin extends JavaPlugin {
             apexEnchantCmd.setExecutor(enchantHandler);
             apexEnchantCmd.setTabCompleter(enchantHandler);
         }
+
+        // /kits (aliases: /kit)
+        com.apexsions.core.kit.KitsCommand kitsHandler = new com.apexsions.core.kit.KitsCommand(this);
+        PluginCommand kitsCmd = getCommand("kits");
+        if (kitsCmd != null) {
+            kitsCmd.setExecutor(kitsHandler);
+            kitsCmd.setTabCompleter(kitsHandler);
+        }
+        PluginCommand kitCmd = getCommand("kit");
+        if (kitCmd != null) {
+            kitCmd.setExecutor(kitsHandler);
+            kitCmd.setTabCompleter(kitsHandler);
+        }
     }
 
     public static ApexsionsCorePlugin getInstance() { return instance; }
@@ -461,5 +487,7 @@ public class ApexsionsCorePlugin extends JavaPlugin {
     public FileConfiguration getChatConfig() { return configManager.getChatConfig(); }
     public TerritoryListener getTerritoryListener() { return territoryListener; }
     public com.apexsions.core.motd.MotdManager getMotdManager() { return motdManager; }
+    public com.apexsions.core.kit.KitManager getKitManager() { return kitManager; }
+    public com.apexsions.core.kit.KitArmorSetListener getKitArmorSetListener() { return kitArmorSetListener; }
     public ApexsionsCoreAPI getApi() { return api; }
 }

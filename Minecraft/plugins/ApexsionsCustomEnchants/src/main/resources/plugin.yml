@@ -1,0 +1,36 @@
+name: ApexsionsCustomEnchants
+version: '1.0.0'
+main: com.apexsions.customenchants.ApexsionsCustomEnchantsPlugin
+api-version: '1.21'
+prefix: ApexsionsCustomEnchants
+author: Nueeva
+description: Luxury Custom Enchantments Plugin for Apexsions with Dual Enchanter and Admin Tools.
+depend:
+  - ApexsionsCore
+softdepend:
+  - ApexsionsEconomy
+  - Vault
+
+commands:
+  ce:
+    aliases:
+      - customenchants
+      - enchanter
+    description: Buka Enchanter Gacha GUI dan Toko Buku Spesifik.
+    permission: apexsions.customenchants.use
+    usage: /ce [shop|tinkerer|info|help]
+  ace:
+    aliases:
+      - apexsionscustomenchants
+      - aceadmin
+    description: Buka Admin Hub GUI untuk kontrol penuh sihir custom, katalog, creator, dan pricing.
+    permission: apexsions.admin
+    usage: /ace [enchants|create|pricing|reload|givebook|givedust|givescroll]
+
+permissions:
+  apexsions.customenchants.use:
+    description: Akses menggunakan menu Enchanter /ce.
+    default: true
+  apexsions.admin:
+    description: Akses penuh administrasi /ace.
+    default: op

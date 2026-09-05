@@ -1,0 +1,33 @@
+# ==============================================================================
+# ApexsionsCustomEnchants — Luxury Custom Enchantment Engine
+# ==============================================================================
+
+settings:
+  # Multiplier harga pembelian buku spesifik di Toko Buku (/ce shop) dibanding harga gacha random
+  specific-book-price-multiplier: 3.0
+
+  # Persentase peluang sukses default untuk buku yang dibeli spesifik
+  specific-book-success-chance: 50.0
+
+  # Persentase peluang hancur default jika aplikasi buku gagal
+  specific-book-destroy-chance: 30.0
+
+  # Sound effects
+  sounds:
+    apply-success: "ENTITY_PLAYER_LEVELUP"
+    apply-failure: "ITEM_SHIELD_BREAK"
+    destroy-item: "ENTITY_ITEM_BREAK"
+    dust-apply: "BLOCK_ENCHANTMENT_TABLE_USE"
+
+tinkerer:
+  enabled: false
+  status: "coming_soon"
+
+messages:
+  prefix: "<gradient:#9b59b6:#e74c3c><bold>✦ SIHIR APEXSIONS ✦</bold></gradient> "
+  no-permission: "<red>Kamu tidak memiliki izin untuk melakukan ini!</red>"
+  book-applied: "<green><bold>✓ BERHASIL!</bold> Sihir <gold>%enchant% %level%</gold> berhasil diterapkan ke itemmu!</green>"
+  book-failed: "<red><bold>✖ GAGAL!</bold> Sihir gagal meresap ke dalam item!</red>"
+  book-destroyed: "<red><bold>☠ HANCUR!</bold> Item hancur lebur karena energi sihir yang tidak stabil!</red>"
+  white-scroll-saved: "<aqua><bold>🛡 WHITE SCROLL AKTIF!</bold> Itemmu terlindungi dari kehancuran!</aqua>"
+  not-enough-money: "<red>Saldo %currency% kamu tidak mencukupi! Dibutuhkan: <gold>%amount%</gold></red>"

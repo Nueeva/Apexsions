@@ -162,6 +162,18 @@ public class MasterAdminGUI implements InventoryHolder {
                         "<yellow>▶ Klik untuk buka Panel Media!</yellow>"
                 )));
 
+        // 8. Slot 31: ApexsionsCustomEnchants (/ace)
+        inventory.setItem(31, createModuleItem(Material.ENCHANTED_BOOK,
+                "<gradient:#9b59b6:#e74c3c><bold>⚡ APEXSIONS CUSTOM ENCHANTS</bold></gradient>",
+                List.of(
+                        "<gray>Kontrol sihir, tier pricing & custom items:</gray>",
+                        "<dark_gray>•</dark_gray> <yellow>Katalog Enchants (/ace enchants)</yellow>",
+                        "<dark_gray>•</dark_gray> <yellow>Admin Item Creator (/ace create)</yellow>",
+                        "<dark_gray>•</dark_gray> <yellow>Atur Harga Tier (Rupiah/Diamond)</yellow>",
+                        "",
+                        "<yellow>▶ Klik untuk buka Panel Custom Enchants!</yellow>"
+                )));
+
         // Bottom Row Slot 49: Close
         ItemStack closeBtn = new ItemStack(Material.BARRIER);
         ItemMeta closeMeta = closeBtn.getItemMeta();
@@ -319,6 +331,13 @@ public class MasterAdminGUI implements InventoryHolder {
         if (slot == 25) { // Media
             player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.8f, 1.2f);
             new MediaAdminSubGUI(plugin, player).open();
+            return;
+        }
+
+        if (slot == 31) { // ApexsionsCustomEnchants (/ace)
+            player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.8f, 1.2f);
+            player.closeInventory();
+            player.performCommand("ace");
         }
     }
 

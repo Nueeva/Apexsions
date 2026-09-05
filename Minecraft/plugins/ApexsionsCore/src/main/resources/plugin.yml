@@ -156,6 +156,16 @@ commands:
     description: Alias for /enchant.
     permission: apexsionscore.command.enchant
     usage: /apexenchant [player] <enchantment> <level>
+  kits:
+    aliases:
+      - kit
+    description: Open the Kingdom Kits menu to claim or preview equipment sets.
+    permission: apexsionscore.command.kits
+    usage: /kits [preview|claim|create|edit|delete|give|resetcooldown|list]
+  kit:
+    description: Alias for /kits.
+    permission: apexsionscore.command.kits
+    usage: /kit [preview|claim|create|edit|delete|give|resetcooldown|list]
 
 permissions:
   apexsionscore.command.enchant:

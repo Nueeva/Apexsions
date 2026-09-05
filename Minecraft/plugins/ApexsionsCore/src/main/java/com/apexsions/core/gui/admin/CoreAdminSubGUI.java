@@ -73,6 +73,15 @@ public class CoreAdminSubGUI implements InventoryHolder {
         }
         inventory.setItem(4, header);
 
+        // Slot 19: Kits Management GUI
+        inventory.setItem(19, createActionItem(Material.CHEST_MINECART, "<gradient:#f1c40f:#e67e22><bold>📦 KELOLA KITS KERJAAN 📦</bold></gradient>",
+                List.of("<gray>Kelola kit kerajaan, preview, & validasi armor set:</gray>",
+                        "<dark_gray>•</dark_gray> <yellow>Buka Menu Kits (/kits)</yellow>",
+                        "<dark_gray>•</dark_gray> <yellow>Builder Kit Baru (Maks 1 Full Set Armor)</yellow>",
+                        "<dark_gray>•</dark_gray> <yellow>Atur Armor Set Bonus Persentase Stat</yellow>",
+                        "",
+                        "<yellow>▶ Klik untuk buka Panel Kits!</yellow>")));
+
         // Slot 20: Warp Management GUI
         inventory.setItem(20, createActionItem(Material.ENDER_PEARL, "<gradient:#3498db:#2ecc71><bold>✦ WARP MANAGER ✦</bold></gradient>",
                 List.of("<gray>Kelola seluruh titik warp server.</gray>", "<yellow>▶ Klik untuk membuka Warp Admin GUI</yellow>")));
@@ -98,11 +107,14 @@ public class CoreAdminSubGUI implements InventoryHolder {
         inventory.setItem(24, createActionItem(Material.EMERALD_BLOCK, "<green><bold>👑 RAJA SYLVAMOOR</bold></green>",
                 List.of("<gray>Raja Saat Ini: <yellow>" + (kingSyl.isEmpty() ? "Belum Ditunjuk" : kingSyl) + "</yellow></gray>", "<yellow>▶ Klik untuk setel Raja Sylvamoor di chat</yellow>")));
 
-        // Slot 25: Custom Enchant Tool
-        inventory.setItem(25, createActionItem(Material.ENCHANTED_BOOK, "<gradient:#9b59b6:#8e44ad><bold>✨ CUSTOM ENCHANT TOOL ✨</bold></gradient>",
-                List.of("<gray>Beri enchantment custom hingga <gold>" + plugin.getConfigManager().getEnchantMultiplier() + "x vanilla limit</gold>.</gray>",
-                        "<gray>Formula: <yellow>Sharpness 20, Protection 12, Mending 4, dll.</yellow></gray>",
-                        "<yellow>▶ Klik untuk instruksi & panduan /enchant</yellow>")));
+        // Slot 25: Custom Enchant Tool & ACE Panel
+        inventory.setItem(25, createActionItem(Material.ENCHANTED_BOOK, "<gradient:#9b59b6:#8e44ad><bold>✨ APEXSIONS CUSTOM ENCHANTS ✨</bold></gradient>",
+                List.of("<gray>Akses admin sihir & tool enchant limit:</gray>",
+                        "<dark_gray>•</dark_gray> <yellow>Buka Admin Hub /ace</yellow>",
+                        "<dark_gray>•</dark_gray> <yellow>Enchant Tool limit (" + plugin.getConfigManager().getEnchantMultiplier() + "x vanilla limit)</yellow>",
+                        "",
+                        "<yellow>▶ [Klik Kiri] Buka Panel /ace</yellow>",
+                        "<aqua>▶ [Klik Kanan] Panduan /enchant</aqua>")));
 
         // Slot 28: Level Rewards Editor
         inventory.setItem(28, createActionItem(Material.CHEST, "<gradient:#f1c40f:#e67e22><bold>🎁 KELOLA HADIAH LEVEL 🎁</bold></gradient>",
@@ -140,6 +152,13 @@ public class CoreAdminSubGUI implements InventoryHolder {
         if (slot == 49) { // Back to Hub
             player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.7f, 1.0f);
             new MasterAdminGUI(plugin, player).open();
+            return;
+        }
+
+        if (slot == 19) { // Kits Management
+            player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.8f, 1.2f);
+            player.closeInventory();
+            new com.apexsions.core.kit.KitUserGUI(plugin, player).open();
             return;
         }
 
@@ -203,17 +222,23 @@ public class CoreAdminSubGUI implements InventoryHolder {
             return;
         }
 
-        if (slot == 25) { // Custom Enchant Tool Info
-            player.closeInventory();
-            player.playSound(player.getLocation(), Sound.BLOCK_ENCHANTMENT_TABLE_USE, 0.8f, 1.2f);
-            player.sendMessage(mm.deserialize("<gold><bold>════════════════════════════════════════</bold></gold>"));
-            player.sendMessage(mm.deserialize("<gradient:#9b59b6:#8e44ad><bold>✨ APEXSIONS CUSTOM ENCHANT GUIDE ✨</bold></gradient>"));
-            player.sendMessage(mm.deserialize("<gray>Pegang item di tangan utama, lalu jalankan command:</gray>"));
-            player.sendMessage(mm.deserialize("<yellow>/enchant <enchantment> <level></yellow> <gray>(cth: <gold>/enchant sharpness 20</gold>)</gray>"));
-            player.sendMessage(mm.deserialize("<yellow>/enchant <player> <enchantment> <level></yellow> <gray>(cth: <gold>/enchant " + player.getName() + " protection 12</gold>)</gray>"));
-            player.sendMessage(mm.deserialize("<yellow>/enchant remove <enchantment></yellow> <gray>atau level 0 untuk menghapus enchant.</gray>"));
-            player.sendMessage(mm.deserialize("<gray>Batas level: <gold>" + plugin.getConfigManager().getEnchantMultiplier() + "x vanilla limit</gold> (Protection: 12, Mending: 4, Sharpness: 20).</gray>"));
-            player.sendMessage(mm.deserialize("<gold><bold>════════════════════════════════════════</bold></gold>"));
+        if (slot == 25) { // Custom Enchant Tool & ACE Hub
+            if (event.isRightClick()) {
+                player.closeInventory();
+                player.playSound(player.getLocation(), Sound.BLOCK_ENCHANTMENT_TABLE_USE, 0.8f, 1.2f);
+                player.sendMessage(mm.deserialize("<gold><bold>════════════════════════════════════════</bold></gold>"));
+                player.sendMessage(mm.deserialize("<gradient:#9b59b6:#8e44ad><bold>✨ APEXSIONS CUSTOM ENCHANT GUIDE ✨</bold></gradient>"));
+                player.sendMessage(mm.deserialize("<gray>Pegang item di tangan utama, lalu jalankan command:</gray>"));
+                player.sendMessage(mm.deserialize("<yellow>/enchant <enchantment> <level></yellow> <gray>(cth: <gold>/enchant sharpness 20</gold>)</gray>"));
+                player.sendMessage(mm.deserialize("<yellow>/enchant <player> <enchantment> <level></yellow> <gray>(cth: <gold>/enchant " + player.getName() + " protection 12</gold>)</gray>"));
+                player.sendMessage(mm.deserialize("<yellow>/enchant remove <enchantment></yellow> <gray>atau level 0 untuk menghapus enchant.</gray>"));
+                player.sendMessage(mm.deserialize("<gray>Batas level: <gold>" + plugin.getConfigManager().getEnchantMultiplier() + "x vanilla limit</gold> (Protection: 12, Mending: 4, Sharpness: 20).</gray>"));
+                player.sendMessage(mm.deserialize("<gold><bold>════════════════════════════════════════</bold></gold>"));
+            } else {
+                player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.8f, 1.2f);
+                player.closeInventory();
+                player.performCommand("ace");
+            }
             return;
         }
 

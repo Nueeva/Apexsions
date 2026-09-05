@@ -38,3 +38,8 @@ Thumbs.db
 /Website/storage/*.key
 /Website/public/storage
 
+# Decompiler tools and output
+cfr.jar
+decompiled/
+
+
