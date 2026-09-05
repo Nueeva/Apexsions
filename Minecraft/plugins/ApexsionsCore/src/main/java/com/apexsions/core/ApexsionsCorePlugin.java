@@ -108,8 +108,9 @@ public class ApexsionsCorePlugin extends JavaPlugin {
     private com.apexsions.core.kit.KitManager kitManager;
     private com.apexsions.core.kit.KitArmorSetListener kitArmorSetListener;
 
-    // Public API
+    // Public API & Web Bridge
     private ApexsionsCoreAPI api;
+    private com.apexsions.core.integration.web.WebBridgeService webBridgeService;
 
     @Override
     public void onEnable() {
@@ -246,6 +247,10 @@ public class ApexsionsCorePlugin extends JavaPlugin {
             this.api = new ApexsionsCoreAPIImpl(this);
             ApexsionsCoreProvider.register(this.api);
 
+            // 11. Web Platform Status Bridge
+            this.webBridgeService = new com.apexsions.core.integration.web.WebBridgeService(this);
+            this.webBridgeService.start();
+
             long elapsed = System.currentTimeMillis() - startTime;
             getLogger().info("ApexsionsCore loaded and enabled successfully in " + elapsed + "ms!");
         } catch (Exception e) {
@@ -257,6 +262,11 @@ public class ApexsionsCorePlugin extends JavaPlugin {
     @Override
     public void onDisable() {
         getLogger().info("Disabling ApexsionsCore...");
+
+        // Stop Web Bridge Service
+        if (webBridgeService != null) {
+            webBridgeService.stop();
+        }
 
         // Unregister Public API
         ApexsionsCoreProvider.unregister();
@@ -489,5 +499,6 @@ public class ApexsionsCorePlugin extends JavaPlugin {
     public com.apexsions.core.motd.MotdManager getMotdManager() { return motdManager; }
     public com.apexsions.core.kit.KitManager getKitManager() { return kitManager; }
     public com.apexsions.core.kit.KitArmorSetListener getKitArmorSetListener() { return kitArmorSetListener; }
+    public com.apexsions.core.integration.web.WebBridgeService getWebBridgeService() { return webBridgeService; }
     public ApexsionsCoreAPI getApi() { return api; }
 }

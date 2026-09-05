@@ -1,150 +1,331 @@
 @extends('layouts.app')
 
-@section('title', 'Selamat Datang di Apexsions')
+@section('title', 'Beranda')
 
 @section('content')
-<!-- Hero Section -->
-<section class="apx-hero">
-    <div class="container">
-        <div class="apx-hero-badge">
-            <span class="apx-status-indicator"></span>
-            <span id="apxPlayerCount" data-server="apexsions.my.id">Memuat Status Server...</span>
-        </div>
+<!-- Panoramic Hero Section: Viewport Adaptive (Fits 100% Player Screen at Normal Zoom) -->
+<section class="apx-hero-panoramic">
+    <div class="apx-hero-panoramic-bg" style="background-image: linear-gradient(180deg, rgba(6, 8, 13, 0.75) 0%, rgba(9, 12, 19, 0.2) 40%, rgba(6, 8, 13, 0.85) 85%, #07090e 100%), url('{{ theme_asset('img/hero-panoramic.png') }}');"></div>
 
-        <h1 class="apx-hero-title">
-            JELAJAHI DUNIA <br>
-            <span class="apx-hero-gradient-text">APEXSIONS</span>
-        </h1>
-        <div class="apx-hero-tagline text-uppercase fw-bold text-info mb-3" style="letter-spacing: 2px;">
-            The Peak Civilizations
-        </div>
-
-        <p class="apx-hero-desc">
-            Rasakan sensasi petualangan epik dengan sistem Kingdom War, ekonomi multi-currency atomic, 
-            dan progres level yang mendalam. Mendukung penuh Java Edition dan Bedrock Edition.
-        </p>
-
-        <!-- Server IP Copy Widget -->
-        <div class="mb-5">
-            <div class="apx-ip-widget" id="apxIpWidget" data-ip="apexsions.my.id">
-                <div class="d-flex align-items-center gap-2">
-                    <span class="apx-status-indicator"></span>
-                    <span class="apx-ip-address">apexsions.my.id</span>
-                </div>
-                <button type="button" class="btn btn-apx-primary btn-sm px-3">
-                    <i class="bi bi-clipboard me-1"></i> Salin IP
-                </button>
+    <div class="container position-relative d-flex flex-column justify-content-between h-100 py-2" style="z-index: 2; flex: 1;">
+        <!-- Top Kicker & Action Verbs Row -->
+        <div class="d-flex justify-content-between align-items-center pt-2 mb-2">
+            <div class="d-flex align-items-center gap-3">
+                <span class="apx-kicker"><i class="bi bi-shield-shaded me-1"></i> THE PEAK CIVILIZATIONS</span>
+                <span class="apx-kicker-line"></span>
             </div>
-            <div class="mt-2 text-muted small">Port Bedrock: <code>19132</code> (Default)</div>
+            <div class="apx-hero-verbs d-none d-md-flex flex-column text-end">
+                <span>PLAY</span>
+                <span>BUILD</span>
+                <span>TRADE</span>
+                <span>RULE</span>
+            </div>
         </div>
 
-        <!-- Action CTAs -->
-        <div class="d-flex justify-content-center gap-3 flex-wrap">
-            @if(plugins()->isEnabled('shop'))
-                <a href="{{ route('shop.home') }}" class="btn btn-apx-primary px-4 py-3 fs-6">
-                    <i class="bi bi-bag-check-fill me-2"></i> Kunjungi Webstore
-                </a>
-            @endif
-            @if(plugins()->isEnabled('wiki'))
-                <a href="{{ route('wiki.home') }}" class="btn btn-apx-secondary px-4 py-3 fs-6">
-                    <i class="bi bi-book-half me-2"></i> Baca Wiki & Command
-                </a>
-            @endif
+        <!-- Main Headline & Subtitle -->
+        <div class="row my-auto py-2">
+            <div class="col-xl-8 col-lg-9">
+                <h1 class="apx-hero-headline">
+                    Build. Conquer. Belong.<br>
+                    <span class="text-gradient-gold">Apexsions.</span>
+                </h1>
+
+                <p class="apx-hero-subtext">
+                    Rasakan sensasi membangun kerajaan berdaulat, ekonomi atomik yang digerakkan oleh pemain, dan progres peradaban yang kompetitif di atas Minecraft 1.21.4.
+                </p>
+
+                <!-- Action CTAs -->
+                <div class="apx-hero-ctas d-flex align-items-center gap-3 flex-wrap">
+                    <button type="button" class="btn btn-apx-play" data-apx-copy="apexsions.my.id" aria-label="Mulai Bermain dan Salin IP">
+                        <i class="bi bi-play-fill me-1" style="font-size: 1.15rem;"></i> Mulai Bermain <i class="bi bi-chevron-right ms-2 small"></i>
+                    </button>
+
+                    @if(plugins()->isEnabled('shop'))
+                        <a href="{{ route('shop.home') }}" class="btn btn-apx-webstore">
+                            <i class="bi bi-bag me-2"></i> Webstore <i class="bi bi-chevron-right ms-2 small"></i>
+                        </a>
+                    @endif
+
+                    @if(plugins()->isEnabled('wiki'))
+                        <a href="{{ route('wiki.index') }}" class="btn btn-apx-webstore">
+                            <i class="bi bi-journal-text me-2"></i> Panduan Wiki <i class="bi bi-chevron-right ms-2 small"></i>
+                        </a>
+                    @endif
+                </div>
+            </div>
+        </div>
+
+        <!-- Horizontal Dark Glass Server Status Bar (Anchored Cleanly to Bottom of First Viewport) -->
+        <div class="apx-status-panoramic mt-auto">
+            <!-- 1. Server Online Status -->
+            <div class="apx-status-cell">
+                <span class="apx-pulse-dot" id="apxLiveDot"></span>
+                <div>
+                    <div class="apx-status-label text-success fw-bold" id="apxLiveBadge">SERVER ONLINE</div>
+                    <div class="apx-status-sub" id="apxLiveSub">Java &amp; Bedrock Siap</div>
+                </div>
+            </div>
+
+            <div class="apx-status-divider d-none d-md-block"></div>
+
+            <!-- 2. Server IP Address (Click to copy) -->
+            <div class="apx-status-cell apx-copyable" data-apx-copy="apexsions.my.id" role="button" tabindex="0" title="Klik untuk menyalin IP Java">
+                <i class="bi bi-globe2 apx-cell-icon"></i>
+                <div>
+                    <div class="apx-status-value">APEXSIONS.MY.ID</div>
+                    <div class="apx-status-sub">Alamat Server <span class="badge-copy"><i class="bi bi-clipboard"></i></span></div>
+                </div>
+            </div>
+
+            <div class="apx-status-divider d-none d-md-block"></div>
+
+            <!-- 3. Bedrock Port (Click to copy) -->
+            <div class="apx-status-cell apx-copyable" data-apx-copy="19132" role="button" tabindex="0" title="Klik untuk menyalin Port Bedrock">
+                <i class="bi bi-controller apx-cell-icon"></i>
+                <div>
+                    <div class="apx-status-value">19132</div>
+                    <div class="apx-status-sub">Bedrock Port <span class="badge-copy"><i class="bi bi-clipboard"></i></span></div>
+                </div>
+            </div>
+
+            <div class="apx-status-divider d-none d-lg-block"></div>
+
+            <!-- 4. Minecraft Version -->
+            <div class="apx-status-cell d-none d-lg-flex">
+                <i class="bi bi-box-seam apx-cell-icon"></i>
+                <div>
+                    <div class="apx-status-value" id="apxVersion">1.21.4</div>
+                    <div class="apx-status-sub">Versi Minecraft</div>
+                </div>
+            </div>
+
+            <div class="apx-status-divider d-none d-sm-block"></div>
+
+            <!-- 5. Online Players (Live Bridge Integration) -->
+            <div class="apx-status-cell">
+                <i class="bi bi-people apx-cell-icon"></i>
+                <div>
+                    <div class="apx-status-value"><span id="apxOnlinePlayers">0</span> / <span id="apxMaxPlayers">500</span></div>
+                    <div class="apx-status-sub">Pemain Online</div>
+                </div>
+            </div>
+
+            <div class="apx-status-divider d-none d-xl-block"></div>
+
+            <!-- 6. Tagline Pillar -->
+            <div class="apx-status-cell apx-status-motto d-none d-xl-flex">
+                <div class="text-end">
+                    <div class="apx-status-label text-gold fw-bold">A GREATER TOMORROW</div>
+                    <div class="apx-status-sub">BUILT TOGETHER</div>
+                </div>
+            </div>
         </div>
     </div>
 </section>
 
-<!-- Feature Showcase Section -->
-<section class="py-5">
-    <div class="container">
-        <div class="text-center mb-5">
-            <h2 class="fw-bold fs-1">Fitur Unggulan Ekosistem</h2>
-            <p class="text-muted">Dibangun khusus dengan plugin suite modular berkinerja tinggi</p>
+<!-- Section: A WORLD BUILT BY PLAYERS (2-Column Asymmetric Showcase) -->
+<section class="apx-section apx-world-section position-relative overflow-hidden" id="features">
+    <div class="apx-watermark-bg" aria-hidden="true">APEXSIONS</div>
+
+    <div class="container position-relative" style="z-index: 2;">
+        <!-- Header / Intro -->
+        <div class="apx-section-intro mb-5">
+            <div class="d-flex align-items-center gap-3 mb-2">
+                <span class="apx-kicker">MENGAPA APEXSIONS</span>
+                <span class="apx-kicker-line"></span>
+            </div>
+            <h2 class="apx-world-title mb-3">
+                A WORLD BUILT <span class="text-gradient-gold">BY PLAYERS</span>
+            </h2>
+            <p class="apx-world-lead text-muted" style="max-width: 680px; font-size: 1.05rem; line-height: 1.7;">
+                Apexsions adalah lebih dari sekadar server Minecraft. Ini adalah dunia yang dibentuk oleh pemain: tempat kerajaan lahir, ekonomi bergerak, dan peradaban berkembang.
+            </p>
         </div>
 
-        <div class="row g-4">
-            <!-- Kingdom & Region -->
-            <div class="col-md-6 col-lg-3">
-                <div class="apx-card">
-                    <div class="apx-card-icon">
+        <!-- 2-Column Showcase Row -->
+        <div class="row g-4 align-items-stretch mb-5">
+            <!-- Left Column: 3 Sleek Feature Cards -->
+            <div class="col-lg-6 d-flex flex-column justify-content-between gap-3">
+                <!-- Feature 1: Kerajaan -->
+                <div class="apx-player-card">
+                    <div class="apx-player-icon">
                         <i class="bi bi-shield-shaded"></i>
                     </div>
-                    <h4 class="fw-bold mb-2">Kingdom War</h4>
-                    <p class="text-muted small mb-0">
-                        Bentuk aliansi kerajaan, kuasai teritorial region strategis, dan hadapi pertempuran war antar-faksi yang terorganisir.
-                    </p>
-                </div>
-            </div>
-
-            <!-- Economy & Trade -->
-            <div class="col-md-6 col-lg-3">
-                <div class="apx-card">
-                    <div class="apx-card-icon">
-                        <i class="bi bi-cash-coin"></i>
+                    <div class="apx-player-content">
+                        <h4 class="apx-player-heading">Kerajaan</h4>
+                        <p class="apx-player-desc">
+                            Dirikan kerajaan, bentuk aliansi, perluas wilayah, dan tinggalkan warisan dalam sejarah peradaban Apexsions.
+                        </p>
+                        <a href="#ranks" class="apx-player-link">
+                            JELAJAHI <i class="bi bi-arrow-right ms-1"></i>
+                        </a>
                     </div>
-                    <h4 class="fw-bold mb-2">Atomic Economy</h4>
-                    <p class="text-muted small mb-0">
-                        Transaksi aman bebas duplikasi dengan Auction House, Barter, Escrow, dan pasar dinamis yang responsif terhadap tren server.
-                    </p>
                 </div>
-            </div>
 
-            <!-- Progression & Ranks -->
-            <div class="col-md-6 col-lg-3">
-                <div class="apx-card">
-                    <div class="apx-card-icon">
-                        <i class="bi bi-stars"></i>
+                <!-- Feature 2: Ekonomi -->
+                <div class="apx-player-card">
+                    <div class="apx-player-icon">
+                        <i class="bi bi-coin"></i>
                     </div>
-                    <h4 class="fw-bold mb-2">Rank & Progres</h4>
-                    <p class="text-muted small mb-0">
-                        Hierarki rank resmi dari Wanderer hingga Ancestor dengan animasi eksklusif, XP booster, dan reward level otomatis.
-                    </p>
-                </div>
-            </div>
-
-            <!-- Crossplay Identity -->
-            <div class="col-md-6 col-lg-3">
-                <div class="apx-card">
-                    <div class="apx-card-icon">
-                        <i class="bi bi-phone-flip"></i>
-                    </div>
-                    <h4 class="fw-bold mb-2">Cross-Platform</h4>
-                    <p class="text-muted small mb-0">
-                        Integrasi mulus Java & Bedrock (Floodgate) dengan akun web terpadu untuk pengiriman reward otomatis tanpa hambatan.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- News & Posts Section -->
-@if(isset($posts) && $posts->isNotEmpty())
-<section class="py-5 border-top border-secondary border-opacity-25">
-    <div class="container">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <div>
-                <h3 class="fw-bold mb-0">Berita & Pembaruan Server</h3>
-                <p class="text-muted small mb-0">Informasi update patch dan pengumuman terbaru</p>
-            </div>
-        </div>
-
-        <div class="row g-4">
-            @foreach($posts->take(3) as $post)
-                <div class="col-md-4">
-                    <div class="apx-card">
-                        @if($post->hasImage())
-                            <img src="{{ $post->imageUrl() }}" alt="{{ $post->title }}" class="img-fluid rounded mb-3" style="height: 180px; width: 100%; object-fit: cover;">
+                    <div class="apx-player-content">
+                        <h4 class="apx-player-heading">Ekonomi</h4>
+                        <p class="apx-player-desc">
+                            Sistem ekonomi pemain yang dinamis, bebas, dan saling terhubung di seluruh kerajaan dengan proteksi transaksi atomic.
+                        </p>
+                        @if(plugins()->isEnabled('shop'))
+                            <a href="{{ route('shop.home') }}" class="apx-player-link">
+                                PELAJARI <i class="bi bi-arrow-right ms-1"></i>
+                            </a>
+                        @else
+                            <a href="#ranks" class="apx-player-link">
+                                PELAJARI <i class="bi bi-arrow-right ms-1"></i>
+                            </a>
                         @endif
-                        <span class="badge bg-primary mb-2">{{ $post->published_at->format('d M Y') }}</span>
-                        <h5 class="fw-bold mb-2">{{ $post->title }}</h5>
-                        <p class="text-muted small mb-3">{{ Str::limit(strip_tags($post->content), 100) }}</p>
-                        <a href="{{ route('posts.show', $post) }}" class="btn btn-sm btn-outline-light">Baca Selengkapnya</a>
                     </div>
                 </div>
-            @endforeach
+
+                <!-- Feature 3: Peradaban -->
+                <div class="apx-player-card">
+                    <div class="apx-player-icon">
+                        <i class="bi bi-bank"></i>
+                    </div>
+                    <div class="apx-player-content">
+                        <h4 class="apx-player-heading">Peradaban</h4>
+                        <p class="apx-player-desc">
+                            Bangun infrastruktur megah, kembangkan kota, dan dorong kemajuan bersama komunitas petualang yang suportif.
+                        </p>
+                        <a href="#getting-started" class="apx-player-link apx-link-gold">
+                            MULAI SEKARANG <i class="bi bi-arrow-right ms-1"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Photographic Realm Showcase Card -->
+            <div class="col-lg-6">
+                <div class="apx-showcase-box">
+                    <div class="apx-showcase-media">
+                        <img src="{{ theme_asset('img/realm-showcase.jpg') }}" alt="Apexsions Realm Scenery" class="apx-showcase-img">
+                        <div class="apx-showcase-overlay"></div>
+                        <div class="apx-showcase-tag">SAME PLAYERS / NEW HORIZONS</div>
+                    </div>
+                    <div class="apx-showcase-footer">
+                        <div>
+                            <h4 class="apx-showcase-title">DUNIA TANPA BATAS</h4>
+                            <p class="apx-showcase-sub">Dari kota <strong class="text-white">megah</strong> hingga alam liar yang belum terjamah.</p>
+                        </div>
+                        <div class="apx-showcase-nav">
+                            <button type="button" class="btn-showcase-arrow" aria-label="Sebelumnya" title="Foto Sebelumnya">
+                                <i class="bi bi-chevron-left"></i>
+                            </button>
+                            <button type="button" class="btn-showcase-arrow" aria-label="Berikutnya" title="Foto Berikutnya">
+                                <i class="bi bi-chevron-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section Footnote Accents -->
+        <div class="d-flex justify-content-between align-items-center pt-3 border-top border-secondary border-opacity-15 text-uppercase small flex-wrap gap-2" style="letter-spacing: 0.16em; color: var(--apx-text-dim);">
+            <div>PEOPLE BUILD WORLDS &bull; WORLDS BUILD PEOPLE</div>
+            <div class="d-flex align-items-center gap-2">
+                <span>THE PEAK CIVILIZATIONS</span>
+                <span class="apx-kicker-line" style="width: 45px;"></span>
+            </div>
         </div>
     </div>
 </section>
-@endif
+
+<!-- Official Rank Hierarchy Showcase (Pure Visual Artwork & Clean Showcase) -->
+<section class="apx-section py-5" id="ranks" style="background: #06080d; border-top: 1px solid var(--apx-gold-border-subtle);">
+    <div class="container">
+        <!-- Section Header -->
+        <div class="text-center mb-4">
+            <div class="d-inline-flex align-items-center gap-2 mb-2">
+                <span class="apx-kicker"><i class="bi bi-shield-shaded me-1"></i> STRUKTUR KEKUASAAN</span>
+            </div>
+            <h2 class="apx-world-title mb-2">
+                HIERARKI <span class="text-gradient-gold">KASTA RESMI</span>
+            </h2>
+            <p class="text-muted mx-auto" style="max-width: 620px; font-size: 0.98rem;">
+                Sembilan tingkatan peradaban berdaulat di Apexsions, dari warga perintis hingga sang leluhur pendiri kerajaan.
+            </p>
+        </div>
+
+        <!-- 9 Ranks 3D Visual Artwork Showcase (Self-Contained Masterpiece from User) -->
+        <div class="apx-rank-showcase-wrap mx-auto">
+            <img src="{{ theme_asset('img/rank-hierarchy-showcase.jpg') }}" alt="Hierarki Kasta Apexsions - 9 Tingkat Kasta Resmi" class="apx-rank-showcase-img">
+        </div>
+
+        <!-- Action Call to Action -->
+        <div class="text-center mt-4">
+            <div class="d-flex justify-content-center align-items-center gap-3 flex-wrap">
+                @if(plugins()->isEnabled('shop'))
+                    <a href="{{ route('shop.home') }}" class="btn btn-apx-play px-4 py-2">
+                        <i class="bi bi-crown me-2"></i> Jelajahi Kasta di Webstore <i class="bi bi-chevron-right ms-1 small"></i>
+                    </a>
+                @endif
+                @if(plugins()->isEnabled('wiki'))
+                    <a href="{{ route('wiki.index') }}" class="btn btn-apx-webstore px-4 py-2">
+                        <i class="bi bi-journal-text me-2"></i> Panduan Lengkap Wiki <i class="bi bi-chevron-right ms-1 small"></i>
+                    </a>
+                @endif
+            </div>
+            <div class="mt-3">
+                <span class="apx-trust-badge">
+                    <i class="bi bi-shield-check text-warning me-1"></i> Seluruh hak istimewa &amp; donasi terintegrasi otomatis ke Minecraft 1.21.4
+                </span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Getting Started Walkthrough -->
+<section class="apx-section py-5" id="getting-started" style="background: rgba(10, 14, 23, 0.7); border-top: 1px solid var(--apx-gold-border-subtle);">
+    <div class="container py-3">
+        <div class="apx-section-header">
+            <span class="apx-section-tag"><i class="bi bi-lightning-charge-fill me-1"></i> Langkah Mudah</span>
+            <h2 class="apx-section-title">Cara Bergabung ke <span class="text-gradient-gold">Server</span></h2>
+            <p class="text-muted mx-auto" style="max-width: 600px; font-size: 0.98rem;">Hanya membutuhkan 3 langkah sederhana untuk memulai petualangan peradaban Anda.</p>
+        </div>
+
+        <div class="row g-4 text-center">
+            <div class="col-md-4">
+                <div class="apx-feature-card">
+                    <div class="apx-card-icon-wrap apx-icon-gold mx-auto">
+                        <i class="bi bi-box-seam"></i>
+                    </div>
+                    <h4 class="fw-bold mb-2">1. Pasang Client</h4>
+                    <p class="text-muted small mb-0">
+                        Gunakan Minecraft versi <strong>1.21.4</strong> (tersedia untuk Java Edition &amp; Bedrock Edition).
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="apx-feature-card">
+                    <div class="apx-card-icon-wrap apx-icon-emerald mx-auto">
+                        <i class="bi bi-controller"></i>
+                    </div>
+                    <h4 class="fw-bold mb-2">2. Masukkan Alamat IP</h4>
+                    <p class="text-muted small mb-0">
+                        Ketik <code>apexsions.my.id</code> pada daftar Multiplayer. Port Bedrock: <code>19132</code>.
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="apx-feature-card">
+                    <div class="apx-card-icon-wrap apx-icon-blue mx-auto">
+                        <i class="bi bi-person-badge"></i>
+                    </div>
+                    <h4 class="fw-bold mb-2">3. Tautkan Akun Web</h4>
+                    <p class="text-muted small mb-0">
+                        Registrasi akun web untuk mengklaim starter reward dan kemudahan transaksi di Webstore.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 @endsection

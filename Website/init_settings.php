@@ -13,4 +13,7 @@ Setting::updateSettings([
     'description' => 'The Peak Civilizations',
 ]);
 
+themes()->changeTheme('apexsions');
+
 echo 'Settings updated successfully! Current theme: ' . setting('theme') . PHP_EOL;
+echo 'Theme loaded: ' . themes()->currentTheme() . PHP_EOL;

@@ -180,6 +180,9 @@ if [ -f /var/www/azuriom/artisan ]; then
     echo "Running database migrations..."
     php artisan migrate --force || true
 
+    echo "Seeding default roles, settings, and permissions..."
+    php artisan db:seed --force || true
+
     echo "Creating storage symlink..."
     php artisan storage:link || true
 

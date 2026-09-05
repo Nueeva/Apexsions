@@ -1,30 +1,27 @@
-@component('mail::layout')
+<x-mail::layout>
     {{-- Header --}}
-    @slot('header')
-        @component('mail::header', ['url' => config('app.url')])
-            {{ site_name() }}
-        @endcomponent
-    @endslot
+    <x-slot:header>
+        <x-mail::header :url="config('app.url')">
+            {{ config('app.name') }}
+        </x-mail::header>
+    </x-slot:header>
 
     {{-- Body --}}
     {{ $slot }}
 
     {{-- Subcopy --}}
     @isset($subcopy)
-        @slot('subcopy')
-            @component('mail::subcopy')
+        <x-slot:subcopy>
+            <x-mail::subcopy>
                 {{ $subcopy }}
-            @endcomponent
-        @endslot
+            </x-mail::subcopy>
+        </x-slot:subcopy>
     @endisset
 
     {{-- Footer --}}
-    @slot('footer')
-        @component('mail::footer')
-            @lang('mail.copyright', [
-                'year' => date('Y'),
-                'name' => site_name(),
-            ])
-        @endcomponent
-    @endslot
-@endcomponent
+    <x-slot:footer>
+        <x-mail::footer>
+            © {{ date('Y') }} {{ config('app.name') }}. @lang('All rights reserved.')
+        </x-mail::footer>
+    </x-slot:footer>
+</x-mail::layout>
