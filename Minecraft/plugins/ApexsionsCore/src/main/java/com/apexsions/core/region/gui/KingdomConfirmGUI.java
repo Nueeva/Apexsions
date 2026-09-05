@@ -165,7 +165,8 @@ public class KingdomConfirmGUI implements Listener {
             }
 
             PlayerData data = dataOpt.get();
-            if (data.hasRegion()) {
+            boolean isAdmin = player.hasPermission("apexsionscore.admin") || player.isOp();
+            if (data.hasRegion() && !isAdmin) {
                 player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
                 player.sendMessage(mm.deserialize("<red>Kamu sudah bersumpah setia pada suatu kerajaan!</red>"));
                 player.closeInventory();
@@ -178,9 +179,11 @@ public class KingdomConfirmGUI implements Listener {
                 return;
             }
 
-            // Save selected region
-            data.setRegionId(region.getId());
-            plugin.getPlayerDataService().save(data);
+            // Save selected region and apply buffs immediately
+            plugin.getPlayerDataService().updateRegion(player.getUniqueId(), region.getId());
+            if (plugin.getKingdomBuffManager() != null) {
+                plugin.getKingdomBuffManager().applyBuffs(player);
+            }
 
             player.closeInventory();
             player.playSound(player.getLocation(), Sound.UI_TOAST_CHALLENGE_COMPLETE, 1.0f, 1.0f);
@@ -188,7 +191,7 @@ public class KingdomConfirmGUI implements Listener {
             // 1. Show spectacular on-screen Title & Subtitle
             Title.Times times = Title.Times.times(Duration.ofMillis(400), Duration.ofMillis(3500), Duration.ofMillis(1000));
             Title title = Title.title(
-                    mm.deserialize("<gradient:#f1c40f:#e67e22><bold>⚔ " + region.getKey().toUpperCase() + " ⚔</bold></gradient>"),
+                    mm.deserialize("<gradient:#f1c40f:#e67e22><bold>" + region.getKey().toUpperCase() + "</bold></gradient>"),
                     mm.deserialize("<yellow>Selamat Datang di Kerajaan <white>" + region.getDisplayName() + "</white>!</yellow>"),
                     times
             );

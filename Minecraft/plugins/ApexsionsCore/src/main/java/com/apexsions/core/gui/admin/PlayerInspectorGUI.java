@@ -99,11 +99,17 @@ public class PlayerInspectorGUI implements InventoryHolder {
         inventory.setItem(22, createActionItem(Material.NETHER_STAR, "<gold><bold>👑 SET LEVEL BEBAS</bold></gold>",
                 List.of("<gray>Atur Level Karakter target (1 - 100).</gray>", "<yellow>▶ Klik untuk input angka level via GUI</yellow>")));
         inventory.setItem(23, createActionItem(Material.GOLD_INGOT, "<gold><bold>⚜ PINDAH KE ZENITHAR</bold></gold>",
-                List.of("<gray>Ubah afiliasi kerajaan menjadi <gradient:#ffe900:#f39c12><bold>Zenithar</bold></gradient>.</gray>", "<yellow>▶ Klik untuk tetapkan kerajaan</yellow>")));
+                List.of("<gray>Ubah afiliasi kerajaan menjadi <gradient:#ffe900:#f39c12><bold>Zenithar</bold></gradient>.</gray>",
+                        "<yellow>▶ Klik Kiri untuk tetapkan kerajaan</yellow>",
+                        "<red>▶ Klik Kanan untuk reset (Belum Memilih)</red>")));
         inventory.setItem(24, createActionItem(Material.BLAZE_POWDER, "<red><bold>⚜ PINDAH KE SOLTERRA</bold></red>",
-                List.of("<gray>Ubah afiliasi kerajaan menjadi <gradient:#ff4d4d:#c0392b><bold>Solterra</bold></gradient>.</gray>", "<yellow>▶ Klik untuk tetapkan kerajaan</yellow>")));
+                List.of("<gray>Ubah afiliasi kerajaan menjadi <gradient:#ff4d4d:#c0392b><bold>Solterra</bold></gradient>.</gray>",
+                        "<yellow>▶ Klik Kiri untuk tetapkan kerajaan</yellow>",
+                        "<red>▶ Klik Kanan untuk reset (Belum Memilih)</red>")));
         inventory.setItem(25, createActionItem(Material.LILY_PAD, "<green><bold>⚜ PINDAH KE SYLVAMOOR</bold></green>",
-                List.of("<gray>Ubah afiliasi kerajaan menjadi <gradient:#87ceeb:#3498db><bold>Sylvamoor</bold></gradient>.</gray>", "<yellow>▶ Klik untuk tetapkan kerajaan</yellow>")));
+                List.of("<gray>Ubah afiliasi kerajaan menjadi <gradient:#87ceeb:#3498db><bold>Sylvamoor</bold></gradient>.</gray>",
+                        "<yellow>▶ Klik Kiri untuk tetapkan kerajaan</yellow>",
+                        "<red>▶ Klik Kanan untuk reset (Belum Memilih)</red>")));
 
         String pKingdom = plugin.getApi().getPlayerRegionKey(target.getUniqueId());
         String kingName = plugin.getConfigManager().getKingdomKing(pKingdom);
@@ -306,16 +312,17 @@ public class PlayerInspectorGUI implements InventoryHolder {
             );
             return;
         }
-        if (slot == 23) { // Zenithar
-            changeKingdom("ZENITHAR");
-            return;
-        }
-        if (slot == 24) { // Solterra
-            changeKingdom("SOLTERRA");
-            return;
-        }
-        if (slot == 25) { // Sylvamoor
-            changeKingdom("SYLVAMOOR");
+        if (slot == 23 || slot == 24 || slot == 25) {
+            if (event.isRightClick()) {
+                plugin.getPlayerDataService().updateRegion(target.getUniqueId(), null);
+                admin.sendMessage(mm.deserialize("<yellow>✓ Afiliasi kerajaan " + target.getName() + " berhasil di-reset (Belum Memilih)!</yellow>"));
+                target.sendMessage(mm.deserialize("<yellow>⚠️ Afiliasi kerajaanmu telah di-reset oleh administrator. Kamu dapat memilih kembali via <gold>/kingdom choose</gold>.</yellow>"));
+                admin.playSound(admin.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 0.8f, 1.0f);
+                buildGUI();
+                return;
+            }
+            String kKey = (slot == 23) ? "ZENITHAR" : (slot == 24 ? "SOLTERRA" : "SYLVAMOOR");
+            changeKingdom(kKey);
             return;
         }
         if (slot == 26) { // Toggle Monarch

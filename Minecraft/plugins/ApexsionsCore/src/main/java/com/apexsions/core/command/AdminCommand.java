@@ -86,6 +86,15 @@ public class AdminCommand implements CommandExecutor, TabCompleter {
                 handleSetRegion(sender, args[1], args[2]);
                 break;
 
+            case "resetregion":
+            case "resetkingdom":
+                if (args.length < 2) {
+                    sender.sendMessage(miniMessage.deserialize("<red>Usage: /ac resetkingdom <player></red>"));
+                    return true;
+                }
+                handleResetRegion(sender, args[1]);
+                break;
+
             case "setlobby":
                 if (!(sender instanceof Player player)) {
                     sender.sendMessage(miniMessage.deserialize("<red>Only players can set the lobby location.</red>"));
@@ -237,15 +246,21 @@ public class AdminCommand implements CommandExecutor, TabCompleter {
         }
 
         Region region = regionOpt.get();
-        plugin.getPlayerDataService().getCached(target.getUniqueId()).ifPresent(data -> {
-            data.setRegionId(region.getId());
-            plugin.getPlayerDataService().save(data);
-            sender.sendMessage(miniMessage.deserialize("<green>Set kingdom of " + target.getName() + " to " + region.getKey() + ".</green>"));
-            target.sendMessage(miniMessage.deserialize("<green>Your allegiance has been transferred to " + region.getDisplayName() + " by an administrator.</green>"));
-            if (plugin.getKingdomBuffManager() != null) {
-                plugin.getKingdomBuffManager().applyBuffs(target);
-            }
-        });
+        plugin.getPlayerDataService().updateRegion(target.getUniqueId(), region.getId());
+        sender.sendMessage(miniMessage.deserialize("<green>Set kingdom of " + target.getName() + " to " + region.getKey() + ".</green>"));
+        target.sendMessage(miniMessage.deserialize("<green>Your allegiance has been transferred to " + region.getDisplayName() + " by an administrator.</green>"));
+    }
+
+    private void handleResetRegion(CommandSender sender, String playerName) {
+        Player target = Bukkit.getPlayer(playerName);
+        if (target == null) {
+            sender.sendMessage(miniMessage.deserialize("<red>Player not found or offline.</red>"));
+            return;
+        }
+
+        plugin.getPlayerDataService().updateRegion(target.getUniqueId(), null);
+        sender.sendMessage(miniMessage.deserialize("<green>Reset kingdom allegiance of " + target.getName() + ".</green>"));
+        target.sendMessage(miniMessage.deserialize("<yellow>Your kingdom allegiance has been reset by an administrator. You may choose again using <gold>/kingdom choose</gold>.</yellow>"));
     }
 
     private void handleInfo(CommandSender sender, String playerName) {
@@ -273,6 +288,7 @@ public class AdminCommand implements CommandExecutor, TabCompleter {
         sender.sendMessage(miniMessage.deserialize("<yellow>/ac setlevel <player> <level></yellow> <gray>- Set player level (1-100)</gray>"));
         sender.sendMessage(miniMessage.deserialize("<yellow>/ac addxp <player> <amount></yellow> <gray>- Grant progression XP</gray>"));
         sender.sendMessage(miniMessage.deserialize("<yellow>/ac setkingdom <player> <kingdomKey></yellow> <gray>- Transfer player kingdom</gray>"));
+        sender.sendMessage(miniMessage.deserialize("<yellow>/ac resetkingdom <player></yellow> <gray>- Reset player kingdom allegiance</gray>"));
         sender.sendMessage(miniMessage.deserialize("<yellow>/ac setlobby</yellow> <gray>- Set lobby spawn to your current location/world</gray>"));
         sender.sendMessage(miniMessage.deserialize("<yellow>/ac info <player></yellow> <gray>- Inspect player progression data</gray>"));
     }
@@ -280,13 +296,13 @@ public class AdminCommand implements CommandExecutor, TabCompleter {
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (args.length == 1) {
-            List<String> list = Arrays.asList("reload", "war", "setlevel", "addxp", "setkingdom", "setlobby", "info");
+            List<String> list = Arrays.asList("reload", "war", "setlevel", "addxp", "setkingdom", "resetkingdom", "setlobby", "info");
             return filter(list, args[0]);
         }
         if (args.length == 2 && args[0].equalsIgnoreCase("war")) {
             return filter(Arrays.asList("start", "stop", "status"), args[1]);
         }
-        if (args.length == 2 && (args[0].equalsIgnoreCase("setlevel") || args[0].equalsIgnoreCase("addxp") || args[0].equalsIgnoreCase("setkingdom") || args[0].equalsIgnoreCase("info"))) {
+        if (args.length == 2 && (args[0].equalsIgnoreCase("setlevel") || args[0].equalsIgnoreCase("addxp") || args[0].equalsIgnoreCase("setkingdom") || args[0].equalsIgnoreCase("resetkingdom") || args[0].equalsIgnoreCase("info"))) {
             return null; // Player names
         }
         if (args.length == 3 && args[0].equalsIgnoreCase("war") && args[1].equalsIgnoreCase("start")) {

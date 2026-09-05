@@ -65,7 +65,12 @@ public class KingdomBuffListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onKingdomChoose(com.apexsions.core.event.KingdomRegionChooseEvent event) {
-        Bukkit.getScheduler().runTaskLater(plugin, () -> buffManager.applyBuffs(event.getPlayer()), 3L);
+        buffManager.applyBuffs(event.getPlayer());
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onKingdomChange(com.apexsions.core.event.KingdomRegionChangeEvent event) {
+        buffManager.applyBuffs(event.getPlayer());
     }
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)

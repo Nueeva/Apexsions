@@ -287,15 +287,32 @@ public class KingdomInfoGUI implements Listener {
                 actionBtn.setItemMeta(m);
             }
         } else if (playerRegId != null) {
-            actionBtn = new ItemStack(Material.BARRIER);
-            ItemMeta m = actionBtn.getItemMeta();
-            if (m != null) {
-                m.displayName(mm.deserialize("<red><bold>🔒 TERKUNCI</bold></red>"));
-                m.lore(List.of(
-                        Component.empty(),
-                        mm.deserialize("<gray>Anda sudah terikat pada kerajaan lain!</gray>")
-                ));
-                actionBtn.setItemMeta(m);
+            boolean isAdmin = player.hasPermission("apexsionscore.admin") || player.isOp();
+            if (isAdmin) {
+                actionBtn = new ItemStack(Material.GOLDEN_SWORD);
+                ItemMeta m = actionBtn.getItemMeta();
+                if (m != null) {
+                    m.displayName(mm.deserialize("<gradient:#f1c40f:#e67e22><bold>⚡ PINDAH KERAJAAN (ADMIN OVERRIDE) ⚡</bold></gradient>"));
+                    m.lore(List.of(
+                            Component.empty(),
+                            mm.deserialize("<yellow>Klik untuk pindah sumpah setia ke " + region.getDisplayName() + ".</yellow>"),
+                            mm.deserialize("<gold>• Hak istimewa Administrator</gold>")
+                    ));
+                    m.addEnchant(Enchantment.UNBREAKING, 1, true);
+                    m.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES);
+                    actionBtn.setItemMeta(m);
+                }
+            } else {
+                actionBtn = new ItemStack(Material.BARRIER);
+                ItemMeta m = actionBtn.getItemMeta();
+                if (m != null) {
+                    m.displayName(mm.deserialize("<red><bold>🔒 TERKUNCI</bold></red>"));
+                    m.lore(List.of(
+                            Component.empty(),
+                            mm.deserialize("<gray>Anda sudah terikat pada kerajaan lain!</gray>")
+                    ));
+                    actionBtn.setItemMeta(m);
+                }
             }
         } else {
             actionBtn = new ItemStack(Material.NETHERITE_SWORD);
@@ -359,7 +376,8 @@ public class KingdomInfoGUI implements Listener {
             }
 
             PlayerData data = pDataOpt.get();
-            if (data.hasRegion()) {
+            boolean isAdmin = player.hasPermission("apexsionscore.admin") || player.isOp();
+            if (data.hasRegion() && !isAdmin) {
                 player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
                 player.sendMessage(mm.deserialize("<red>Kamu sudah bersumpah setia pada suatu kerajaan!</red>"));
                 return;

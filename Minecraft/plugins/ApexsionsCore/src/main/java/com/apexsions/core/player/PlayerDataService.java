@@ -3,6 +3,8 @@ package com.apexsions.core.player;
 import com.apexsions.core.ApexsionsCorePlugin;
 import com.apexsions.core.cache.PlayerCache;
 import com.apexsions.core.database.PlayerRepository;
+import com.apexsions.core.event.KingdomRegionChangeEvent;
+import com.apexsions.core.region.Region;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -68,7 +70,32 @@ public class PlayerDataService {
     }
 
     public CompletableFuture<Void> updateRegion(UUID playerUuid, UUID regionId) {
-        cache.get(playerUuid).ifPresent(data -> data.setRegionId(regionId));
+        cache.get(playerUuid).ifPresent(data -> {
+            UUID oldRegionId = data.getRegionId();
+            data.setRegionId(regionId);
+
+            Player player = Bukkit.getPlayer(playerUuid);
+            if (player != null && player.isOnline()) {
+                Region oldRegion = oldRegionId != null ? plugin.getRegionManager().getRegion(oldRegionId).orElse(null) : null;
+                Region newRegion = regionId != null ? plugin.getRegionManager().getRegion(regionId).orElse(null) : null;
+
+                Runnable task = () -> {
+                    if (newRegion != null) {
+                        KingdomRegionChangeEvent changeEvent = new KingdomRegionChangeEvent(player, oldRegion, newRegion);
+                        Bukkit.getPluginManager().callEvent(changeEvent);
+                    }
+                    if (plugin.getKingdomBuffManager() != null) {
+                        plugin.getKingdomBuffManager().applyBuffs(player);
+                    }
+                };
+
+                if (Bukkit.isPrimaryThread()) {
+                    task.run();
+                } else {
+                    Bukkit.getScheduler().runTask(plugin, task);
+                }
+            }
+        });
         return repository.updateRegion(playerUuid, regionId);
     }
 

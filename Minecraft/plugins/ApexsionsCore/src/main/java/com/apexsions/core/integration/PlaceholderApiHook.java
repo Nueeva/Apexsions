@@ -257,9 +257,9 @@ public class PlaceholderApiHook extends PlaceholderExpansion {
                     if (regOpt.isPresent()) {
                         String k = regOpt.get().getKey().toUpperCase();
                         return switch (k) {
-                            case "ZENITHAR" -> "<gradient:#ffd700:#ffa502><bold>[👑 ZENITHAR]</bold></gradient>";
-                            case "SOLTERRA" -> "<gradient:#ff4757:#ff6b81><bold>[🔥 SOLTERRA]</bold></gradient>";
-                            case "SYLVAMOOR" -> "<gradient:#2ed573:#1e90ff><bold>[🌿 SYLVAMOOR]</bold></gradient>";
+                            case "ZENITHAR" -> "<gradient:#ffd700:#ffa502><bold>[ZENITHAR]</bold></gradient>";
+                            case "SOLTERRA" -> "<gradient:#ff4757:#ff6b81><bold>[SOLTERRA]</bold></gradient>";
+                            case "SYLVAMOOR" -> "<gradient:#2ed573:#1e90ff><bold>[SYLVAMOOR]</bold></gradient>";
                             default -> "<gradient:#70a1ff:#1e90ff><bold>[" + k + "]</bold></gradient>";
                         };
                     }

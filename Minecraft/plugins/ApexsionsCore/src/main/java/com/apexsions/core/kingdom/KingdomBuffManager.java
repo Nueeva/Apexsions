@@ -65,6 +65,10 @@ public class KingdomBuffManager {
         }
     }
 
+    public void refreshBuffs(Player player) {
+        applyBuffs(player);
+    }
+
     public void applyBuffs(Player player) {
         if (player == null || !player.isOnline()) return;
 
@@ -101,6 +105,12 @@ public class KingdomBuffManager {
                 addModifier(player, Attribute.LUCK, keyLuck, 0.7, AttributeModifier.Operation.ADD_NUMBER);
             }
         }
+
+        // Clamp health if it exceeds max health
+        AttributeInstance maxHealthAttr = player.getAttribute(Attribute.MAX_HEALTH);
+        if (maxHealthAttr != null && player.getHealth() > maxHealthAttr.getValue()) {
+            player.setHealth(maxHealthAttr.getValue());
+        }
     }
 
     public void removeBuffs(Player player) {
@@ -111,24 +121,35 @@ public class KingdomBuffManager {
         if (miningAttribute != null) {
             removeModifier(player, miningAttribute, keyMining);
         }
+
+        // Remove lingering heartbeat potion effects if switching kingdom
+        player.removePotionEffect(PotionEffectType.HUNGER);
+        player.removePotionEffect(PotionEffectType.WEAKNESS);
+        player.removePotionEffect(PotionEffectType.HASTE);
+
+        // Clamp health if current health exceeds max health after modifier removal
+        AttributeInstance maxHealthAttr = player.getAttribute(Attribute.MAX_HEALTH);
+        if (maxHealthAttr != null && player.getHealth() > maxHealthAttr.getValue()) {
+            player.setHealth(maxHealthAttr.getValue());
+        }
     }
 
     private void addModifier(Player player, Attribute attribute, NamespacedKey key, double amount, AttributeModifier.Operation operation) {
         AttributeInstance inst = player.getAttribute(attribute);
         if (inst == null) return;
-        for (AttributeModifier mod : inst.getModifiers()) {
-            if (mod.getKey().equals(key)) {
-                return;
-            }
-        }
+        // Purge any existing modifier for this key to prevent stale values blocking the new modifier
+        removeModifier(player, attribute, key);
         inst.addModifier(new AttributeModifier(key, amount, operation));
     }
 
     private void removeModifier(Player player, Attribute attribute, NamespacedKey key) {
         AttributeInstance inst = player.getAttribute(attribute);
         if (inst == null) return;
+        try {
+            inst.removeModifier(key);
+        } catch (Throwable ignored) {}
         for (AttributeModifier mod : new ArrayList<>(inst.getModifiers())) {
-            if (mod.getKey().equals(key)) {
+            if (mod.getKey().equals(key) || mod.getName().equalsIgnoreCase(key.getKey())) {
                 inst.removeModifier(mod);
             }
         }

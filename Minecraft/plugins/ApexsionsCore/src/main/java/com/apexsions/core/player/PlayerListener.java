@@ -65,7 +65,7 @@ public class PlayerListener implements Listener {
                             java.time.Duration.ofMillis(1000)
                     );
                     net.kyori.adventure.title.Title welcomeTitle = net.kyori.adventure.title.Title.title(
-                            miniMessage.deserialize("<gradient:#f1c40f:#e67e22><bold>APEXSIONS KINGDOM</bold></gradient>"),
+                            miniMessage.deserialize("<gradient:#f1c40f:#e67e22><bold>APEXSIONS</bold></gradient>"),
                             miniMessage.deserialize("<yellow>Selamat Datang, <white>" + player.getName() + "</white>!</yellow>"),
                             times
                     );
