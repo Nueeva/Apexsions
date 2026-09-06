@@ -188,10 +188,15 @@ public class ItemEditDialogFlow {
         for (int i = startIndex; i < endIndex; i++) {
             CustomEnchant ce = filtered.get(i);
             int curLvl = plugin.getEnchantmentRegistry().getEnchantLevel(item, ce);
+            String groupColor = (ce.getGroup() != null && ce.getGroup().getColor() != null && !ce.getGroup().getColor().isBlank())
+                    ? ce.getGroup().getColor()
+                    : "#f1c40f";
+            String colorTag = "<color:" + groupColor + ">";
+            String closeTag = "</color>";
             String label = curLvl > 0
-                    ? "<green>✔ " + ce.getDisplayName() + " <gold>Lv." + CustomEnchant.toRoman(curLvl) + "</gold></green>"
-                    : "<aqua>✦ " + ce.getDisplayName() + "</aqua>";
-            String tooltip = "Tier: " + ce.getGroup().getDisplayName() + " | Max: " + ce.getMaxLevel()
+                    ? "<green>✔ </green>" + colorTag + "<bold>" + ce.getDisplayName() + "</bold>" + closeTag + " <gold>Lv." + CustomEnchant.toRoman(curLvl) + "</gold>"
+                    : colorTag + "✦ <bold>" + ce.getDisplayName() + "</bold>" + closeTag;
+            String tooltip = "Tier: " + (ce.getGroup() != null ? ce.getGroup().getDisplayName() : "Unknown") + " | Max: " + ce.getMaxLevel()
                     + "\n" + ce.getDescription() + "\n▶ Klik untuk mengatur level";
 
             buttons.add(new DialogButtonData(label, tooltip,
@@ -245,12 +250,18 @@ public class ItemEditDialogFlow {
         if (item == null || player == null || !player.isOnline()) return;
 
         int curLvl = plugin.getEnchantmentRegistry().getEnchantLevel(item, ce);
+        String groupColor = (ce.getGroup() != null && ce.getGroup().getColor() != null && !ce.getGroup().getColor().isBlank())
+                ? ce.getGroup().getColor()
+                : "#f1c40f";
+        String colorTag = "<color:" + groupColor + ">";
+        String closeTag = "</color>";
+
         StringBuilder desc = new StringBuilder();
-        desc.append("<gray>Tier: <gold>").append(ce.getGroup().getDisplayName()).append("</gold></gray>\n");
+        desc.append("<gray>Tier: </gray>").append(colorTag).append("<bold>").append(ce.getGroup().getDisplayName()).append("</bold>").append(closeTag).append("\n");
         desc.append("<gray>Target: <aqua>").append(ce.getAppliesTo()).append("</aqua></gray>\n");
         desc.append("<gray>Level Maks: <gold>").append(ce.getMaxLevel()).append("</gold></gray>\n");
         desc.append("<yellow>").append(ce.getDescription()).append("</yellow>\n");
-        desc.append("<gray>Status: ").append(curLvl > 0 ? "<green>Terpasang Level " + CustomEnchant.toRoman(curLvl) + "</green>" : "<dark_gray>Belum Terpasang</dark_gray>").append("</gray>");
+        desc.append("<gray>Status: ").append(curLvl > 0 ? "<green>Terpasang Level " + CustomEnchant.toRoman(curLvl) + " (" + curLvl + ")</green>" : "<dark_gray>Belum Terpasang</dark_gray>").append("</gray>");
 
         List<DialogButtonData> buttons = new ArrayList<>();
         for (int lvl = 1; lvl <= ce.getMaxLevel(); lvl++) {
@@ -258,7 +269,7 @@ public class ItemEditDialogFlow {
             boolean isCurrent = (curLvl == selectedLevel);
             String label = isCurrent
                     ? "<green><bold>✔ Level " + CustomEnchant.toRoman(lvl) + " (" + lvl + ")</bold></green>"
-                    : "<gold><bold>Level " + CustomEnchant.toRoman(lvl) + " (" + lvl + ")</bold></gold>";
+                    : colorTag + "<bold>Level " + CustomEnchant.toRoman(lvl) + " (" + lvl + ")</bold>" + closeTag;
             String tooltip = isCurrent ? "Level ini sedang aktif pada item" : "Pasang sihir ini pada Level " + lvl;
 
             buttons.add(new DialogButtonData(label, tooltip, () -> {
@@ -287,7 +298,7 @@ public class ItemEditDialogFlow {
                 plugin,
                 player,
                 item,
-                "<gradient:#9b59b6:#f1c40f><bold>🔮 ATUR LEVEL: " + ce.getDisplayName().toUpperCase() + "</bold></gradient>",
+                colorTag + "<bold>🔮 ATUR LEVEL: " + ce.getDisplayName().toUpperCase() + "</bold>" + closeTag,
                 desc.toString(),
                 buttons,
                 exitBtn,
@@ -436,7 +447,10 @@ public class ItemEditDialogFlow {
         for (Map.Entry<CustomEnchant, Integer> entry : activeCE.entrySet()) {
             CustomEnchant ce = entry.getKey();
             int lvl = entry.getValue();
-            String label = "<red>✂ [Custom] </red><gold>" + ce.getDisplayName() + " " + CustomEnchant.toRoman(lvl) + "</gold>";
+            String groupColor = (ce.getGroup() != null && ce.getGroup().getColor() != null && !ce.getGroup().getColor().isBlank())
+                    ? ce.getGroup().getColor()
+                    : "#f1c40f";
+            String label = "<red>✂ [Custom] </red><color:" + groupColor + "><bold>" + ce.getDisplayName() + "</bold></color> <gold>" + CustomEnchant.toRoman(lvl) + "</gold>";
             String tooltip = "Klik untuk menghapus sihir " + ce.getDisplayName() + " dari item";
 
             buttons.add(new DialogButtonData(label, tooltip, () -> {

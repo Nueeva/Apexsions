@@ -68,11 +68,12 @@ if (-not $hasMaven) {
 $allPlugins = @(
     @{ Name = 'ApexsionsCore';           Path = 'plugins\ApexsionsCore' },
     @{ Name = 'ApexsionsChat';           Path = 'plugins\ApexsionsChat' },
-    @{ Name = 'ApexsionsEconomy';    Path = 'plugins\ApexsionsEconomy' },
-    @{ Name = 'ApexsionsBattlepass'; Path = 'plugins\ApexsionsBattlepass' },
-    @{ Name = 'ApexsionsShop';       Path = 'plugins\ApexsionsShop' },
-    @{ Name = 'ApexsionsMedia';      Path = 'plugins\ApexsionsMedia' },
-    @{ Name = 'ApexsionsCustomEnchants'; Path = 'plugins\ApexsionsCustomEnchants' }
+    @{ Name = 'ApexsionsEconomy';        Path = 'plugins\ApexsionsEconomy' },
+    @{ Name = 'ApexsionsBattlepass';     Path = 'plugins\ApexsionsBattlepass' },
+    @{ Name = 'ApexsionsShop';           Path = 'plugins\ApexsionsShop' },
+    @{ Name = 'ApexsionsMedia';          Path = 'plugins\ApexsionsMedia' },
+    @{ Name = 'ApexsionsCustomEnchants'; Path = 'plugins\ApexsionsCustomEnchants' },
+    @{ Name = 'ApexsionsCrate';          Path = 'plugins\ApexsionsCrate' }
 )
 
 function Test-PluginModified {
@@ -122,13 +123,14 @@ if ($All -or ($Plugin.ToLower() -eq 'all')) {
     if ($search -eq 'bp') { $search = 'battlepass' }
     if ($search -eq 'eco') { $search = 'economy' }
     if ($search -eq 'ace' -or $search -eq 'ce' -or $search -eq 'enchants' -or $search -eq 'enchant') { $search = 'customenchants' }
+    if ($search -eq 'crate' -or $search -eq 'crates') { $search = 'crate' }
     foreach ($p in $allPlugins) {
         if ($p.Name.ToLower().Contains($search)) {
             $targetPlugins += $p
         }
     }
     if ($targetPlugins.Count -eq 0) {
-        Write-Host "Plugin '$Plugin' not found! Available options: Core, Chat, Economy (eco), Battlepass (bp), Shop, Media, CustomEnchants (ace/ce), all" -ForegroundColor Red
+        Write-Host "Plugin '$Plugin' not found! Available options: Core, Chat, Economy (eco), Battlepass (bp), Shop, Media, CustomEnchants (ace/ce), Crate (crates), all" -ForegroundColor Red
         exit 1
     }
 } else {
