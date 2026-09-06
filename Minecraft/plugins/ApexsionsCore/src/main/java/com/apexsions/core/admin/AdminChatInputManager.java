@@ -37,7 +37,7 @@ public class AdminChatInputManager implements Listener {
         // Cancel existing session if any
         cancelSession(admin.getUniqueId(), false);
 
-        // Open input directly via dual-platform GUI (Bedrock Native Form / Java 26.2 Dialog / VirtualKeypad)
+        // Open input directly via dual-platform GUI (Bedrock Native Form / Java 26.2 Dialog / AnvilTextInputGUI)
         com.apexsions.core.gui.input.ApexsionsInputManager.openTextInput(
                 plugin,
                 admin,

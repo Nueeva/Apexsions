@@ -115,7 +115,15 @@ public class PaperDialogAdapter {
                 }
             }
             if (textInputMethod != null) {
-                Object textInputBuilder = textInputMethod.invoke(null, "input_key", Component.text("Value"));
+                Object textInputBuilder = textInputMethod.invoke(null, "input_key", Component.text("Input"));
+                for (Method m : textInputBuilder.getClass().getMethods()) {
+                    if (m.getName().equals("labelVisible") && m.getParameterCount() == 1 && m.getParameterTypes()[0] == boolean.class) {
+                        try {
+                            m.invoke(textInputBuilder, false);
+                            break;
+                        } catch (Throwable ignored) {}
+                    }
+                }
                 if (defaultText != null && !defaultText.isBlank()) {
                     for (Method m : textInputBuilder.getClass().getMethods()) {
                         if ((m.getName().equals("initial") || m.getName().equals("defaultValue") || m.getName().equals("value") || m.getName().equals("initialValue"))
@@ -239,18 +247,21 @@ public class PaperDialogAdapter {
             Object okButton = null;
             Object backButton = null;
 
+            Component okComp = mm.deserialize("<green>✔</green> <white><b>OK</b></white>");
+            Component backComp = mm.deserialize("<yellow>⬅</yellow> <white><b>BACK</b></white>");
+
             for (Method m : actionButtonClass.getMethods()) {
                 if (m.getName().equals("create")) {
                     if (m.getParameterCount() == 4) {
                         try {
-                            okButton = m.invoke(null, Component.text("✔ OK"), null, 200, okAction);
-                            backButton = m.invoke(null, Component.text("⬅ BACK"), null, 200, backAction);
+                            okButton = m.invoke(null, okComp, null, 200, okAction);
+                            backButton = m.invoke(null, backComp, null, 200, backAction);
                             break;
                         } catch (Throwable ignored) {}
                     } else if (m.getParameterCount() == 2) {
                         try {
-                            okButton = m.invoke(null, Component.text("✔ OK"), okAction);
-                            backButton = m.invoke(null, Component.text("⬅ BACK"), backAction);
+                            okButton = m.invoke(null, okComp, okAction);
+                            backButton = m.invoke(null, backComp, backAction);
                             break;
                         } catch (Throwable ignored) {}
                     }
@@ -261,11 +272,11 @@ public class PaperDialogAdapter {
                 for (Method m : actionButtonClass.getMethods()) {
                     if (m.getName().equals("builder") && m.getParameterCount() == 1) {
                         try {
-                            Object b1 = m.invoke(null, Component.text("✔ OK"));
+                            Object b1 = m.invoke(null, okComp);
                             b1.getClass().getMethod("action", dialogActionClass).invoke(b1, okAction);
                             okButton = b1.getClass().getMethod("build").invoke(b1);
 
-                            Object b2 = m.invoke(null, Component.text("⬅ BACK"));
+                            Object b2 = m.invoke(null, backComp);
                             b2.getClass().getMethod("action", dialogActionClass).invoke(b2, backAction);
                             backButton = b2.getClass().getMethod("build").invoke(b2);
                             break;
