@@ -100,7 +100,7 @@ public class AdminShopItemEditorMenu extends Gui {
                             "&7Item ini &adapat di-stack&7.",
                             "&7Maksimum stack: &f" + previewStack.getMaxStackSize(),
                             " ",
-                            "&eKlik untuk mengubah jumlah via chat >"
+                            "&eKlik untuk mengubah jumlah via GUI >"
                     ))
                     .build(), event -> {
                 plugin.getChatInputManager().startNumericInput(player, "Masukkan jumlah item baru (1 - " + previewStack.getMaxStackSize() + "):", newAmount -> {
@@ -177,7 +177,7 @@ public class AdminShopItemEditorMenu extends Gui {
                 .lore(List.of(
                         "&7Harga pembelian item di katalog shop.",
                         " ",
-                        "&eKlik untuk memasukkan harga via chat >"
+                        "&eKlik untuk memasukkan harga via GUI >"
                 ))
                 .build(), event -> {
             plugin.getChatInputManager().startDoubleInput(player, "Masukkan nominal harga baru:", newPrice -> {
@@ -192,7 +192,7 @@ public class AdminShopItemEditorMenu extends Gui {
                 .lore(List.of(
                         "&7Batas pembelian per pemain (0 = tidak terbatas).",
                         " ",
-                        "&eKlik untuk mengubah via chat >"
+                        "&eKlik untuk mengubah via GUI >"
                 ))
                 .build(), event -> {
             plugin.getChatInputManager().startNumericInput(player, "Masukkan batas pembelian (0 untuk unlimited):", limit -> {

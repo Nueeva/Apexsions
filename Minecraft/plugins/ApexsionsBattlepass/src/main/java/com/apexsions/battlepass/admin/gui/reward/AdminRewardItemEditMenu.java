@@ -87,7 +87,7 @@ public class AdminRewardItemEditMenu extends Gui {
                                 "&7Item ini &adapat di-stack&7.",
                                 "&7Maksimum stack: &f" + itemStack.getMaxStackSize(),
                                 " ",
-                                "&eKlik untuk mengubah jumlah via chat >"
+                                "&eKlik untuk mengubah jumlah via GUI >"
                         ))
                         .build(), event -> {
                     plugin.getChatInputManager().startNumericInput(player, "Masukkan jumlah item baru (1 - " + itemStack.getMaxStackSize() + "):", newAmount -> {
@@ -121,7 +121,7 @@ public class AdminRewardItemEditMenu extends Gui {
             String amountDisplay = "rupiah".equalsIgnoreCase(item.getCurrencyId()) ? ("Rp." + item.getAmount()) : (item.getAmount() + " " + item.getCurrencyId().toUpperCase());
             setButton(19, new GuiButton(new ItemBuilder(Material.GOLD_INGOT)
                     .name("&e&l[💰] UBAH JUMLAH SALDO (Saat ini: " + amountDisplay + ")")
-                    .lore(List.of("&7Atur nominal saldo yang diberikan.", " ", "&eKlik untuk mengubah via chat >"))
+                    .lore(List.of("&7Atur nominal saldo yang diberikan.", " ", "&eKlik untuk mengubah via GUI >"))
                     .build(), event -> {
                 plugin.getChatInputManager().startNumericInput(player, "Masukkan nominal saldo baru:", newAmount -> {
                     String name = "rupiah".equalsIgnoreCase(item.getCurrencyId()) ? ("Rp." + newAmount) : (newAmount + " " + item.getCurrencyId().toUpperCase());
@@ -133,18 +133,18 @@ public class AdminRewardItemEditMenu extends Gui {
             }));
 
             // Currency Switcher (100% GUI Buttons)
-            setButton(21, new GuiButton(new ItemBuilder(Material.EMERALD)
-                    .name("&a&l[🪙] GANTI MATA UANG (Saat ini: " + item.getCurrencyId().toUpperCase() + ")")
+            setButton(21, new GuiButton(new ItemBuilder(Material.SUNFLOWER)
+                    .name("&6&l[🔄] GANTI MATA UANG (Saat ini: " + item.getCurrencyId().toUpperCase() + ")")
                     .lore(List.of(
-                            "&7Klik untuk beralih mata uang:",
-                            "&8- &fRupiah (Rp.)",
-                            "&8- &fDiamond",
-                            "&8- &fBattle Coins",
+                            "&7Klik untuk beralih tipe mata uang:",
+                            "&f- Rupiah",
+                            "&f- Coins",
+                            "&f- Diamond",
                             " ",
-                            "&aKlik untuk beralih >"
+                            "&eKlik untuk beralih >"
                     ))
                     .build(), event -> {
-                String[] currs = { "rupiah", "diamond", "battle_coins" };
+                String[] currs = new String[]{"rupiah", "coins", "diamond"};
                 int next = 0;
                 for (int i = 0; i < currs.length; i++) {
                     if (currs[i].equalsIgnoreCase(item.getCurrencyId())) {
@@ -166,7 +166,7 @@ public class AdminRewardItemEditMenu extends Gui {
                             "&7Perintah saat ini:",
                             "&f" + (item.getName() != null ? item.getName() : "None"),
                             " ",
-                            "&bKlik untuk mengubah command via chat >"
+                            "&bKlik untuk mengubah command via GUI >"
                     ))
                     .build(), event -> {
                 plugin.getChatInputManager().startInput(player, "Masukkan command baru (gunakan placeholder %player%):", newCmd -> {

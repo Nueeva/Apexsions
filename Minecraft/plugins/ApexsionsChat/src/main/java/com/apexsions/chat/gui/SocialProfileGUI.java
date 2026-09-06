@@ -114,7 +114,18 @@ public class SocialProfileGUI extends BaseChatGUI {
 
         if (slot == 10) { // Whisper /msg
             viewer.closeInventory();
-            viewer.sendMessage(mm.deserialize("<yellow>Ketik pesanmu di chat dengan format: <white>/msg " + target.getName() + " <pesan></white></yellow>"));
+            com.apexsions.chat.gui.input.ChatInputGUI.openInput(
+                    plugin,
+                    viewer,
+                    "KIRIM BISIKAN: " + target.getName(),
+                    "Ketik pesan bisikan rahasia ke " + target.getName() + ":",
+                    "",
+                    input -> {
+                        if (input.isBlank()) return;
+                        viewer.performCommand("msg " + target.getName() + " " + input);
+                    },
+                    () -> viewer.openInventory(inventory)
+            );
             viewer.playSound(viewer.getLocation(), Sound.UI_BUTTON_CLICK, 0.8f, 1.2f);
             return;
         }
@@ -128,14 +139,36 @@ public class SocialProfileGUI extends BaseChatGUI {
 
         if (slot == 14) { // Mail
             viewer.closeInventory();
-            viewer.sendMessage(mm.deserialize("<yellow>Gunakan perintah <white>/mail send " + target.getName() + " <pesan></white> untuk mengirim surat resmi.</yellow>"));
+            com.apexsions.chat.gui.input.ChatInputGUI.openInput(
+                    plugin,
+                    viewer,
+                    "KIRIM SURAT: " + target.getName(),
+                    "Ketik isi surat resmi untuk " + target.getName() + ":",
+                    "",
+                    input -> {
+                        if (input.isBlank()) return;
+                        viewer.performCommand("mail send " + target.getName() + " " + input);
+                    },
+                    () -> viewer.openInventory(inventory)
+            );
             viewer.playSound(viewer.getLocation(), Sound.UI_BUTTON_CLICK, 0.8f, 1.2f);
             return;
         }
 
         if (slot == 16) { // Report
             viewer.closeInventory();
-            viewer.sendMessage(mm.deserialize("<red>Gunakan format: <white>/report " + target.getName() + " <alasan></white> untuk melaporkan pemain.</red>"));
+            com.apexsions.chat.gui.input.ChatInputGUI.openInput(
+                    plugin,
+                    viewer,
+                    "LAPORKAN: " + target.getName(),
+                    "Ketik alasan pelaporan pemain " + target.getName() + ":",
+                    "",
+                    input -> {
+                        if (input.isBlank()) return;
+                        viewer.performCommand("report " + target.getName() + " " + input);
+                    },
+                    () -> viewer.openInventory(inventory)
+            );
             viewer.playSound(viewer.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 0.8f, 1.0f);
             return;
         }

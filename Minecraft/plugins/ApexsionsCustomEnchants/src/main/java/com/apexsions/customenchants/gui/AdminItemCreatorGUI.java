@@ -223,14 +223,14 @@ public class AdminItemCreatorGUI implements InventoryHolder {
                 mm.deserialize("<gray>Ambil kembali seluruh item di slot creator ke tasmu.</gray>")
         ), false));
 
-        // Slot 48: Rename Set / Prefix via Chat
+        // Slot 48: Rename Set / Prefix via GUI
         String nameDisplay = globalSetName.isBlank() ? "<dark_gray>(Belum Diatur)</dark_gray>" : "<gold>" + globalSetName + "</gold>";
         String idDisplay = globalSetId.isBlank() ? "<dark_gray>(Belum Diatur)</dark_gray>" : "<yellow>" + globalSetId + "</yellow>";
-        inventory.setItem(48, createItem(Material.NAME_TAG, "<gradient:#f1c40f:#e67e22><bold>🏷 UBAH NAMA SET DI CHAT</bold></gradient>", List.of(
+        inventory.setItem(48, createItem(Material.NAME_TAG, "<gradient:#f1c40f:#e67e22><bold>🏷 UBAH NAMA SET VIA GUI</bold></gradient>", List.of(
                 mm.deserialize("<gray>Nama Set Saat Ini: " + nameDisplay + "</gray>"),
                 mm.deserialize("<gray>Set ID: " + idDisplay + "</gray>"),
                 Component.empty(),
-                mm.deserialize("<yellow>▶ Klik untuk ketik nama set di chat!</yellow>"),
+                mm.deserialize("<yellow>▶ Klik untuk masukkan nama set via GUI!</yellow>"),
                 mm.deserialize("<dark_gray>Otomatis me-rename seluruh armor & tools di slot</dark_gray>"),
                 mm.deserialize("<dark_gray>mengikuti pola: [Nama Set] [Tipe Item]</dark_gray>")
         ), false));

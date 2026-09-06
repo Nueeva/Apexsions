@@ -89,7 +89,7 @@ public class AdminQuestEditorMenu extends Gui {
                         "&7Nama Saat Ini: &f" + questName,
                         "&7Deskripsi: &7" + questDesc,
                         " ",
-                        "&eKlik untuk mengubah nama & deskripsi via chat >"
+                        "&eKlik untuk mengubah nama & deskripsi via GUI >"
                 ))
                 .build(), event -> {
             plugin.getChatInputManager().startInput(player, "Masukkan nama quest baru:", name -> {
@@ -145,7 +145,7 @@ public class AdminQuestEditorMenu extends Gui {
                 .lore(List.of(
                         "&7Jumlah target yang harus diselesaikan pemain.",
                         " ",
-                        "&eKlik untuk mengubah jumlah via chat >"
+                        "&eKlik untuk mengubah jumlah via GUI >"
                 ))
                 .build(), event -> {
             plugin.getChatInputManager().startNumericInput(player, "Masukkan jumlah target yang dibutuhkan (1 - 10000):", amt -> {
@@ -160,7 +160,7 @@ public class AdminQuestEditorMenu extends Gui {
                 .lore(List.of(
                         "&7Hadiah XP BattlePass saat quest selesai.",
                         " ",
-                        "&eKlik untuk mengubah reward XP via chat >"
+                        "&eKlik untuk mengubah reward XP via GUI >"
                 ))
                 .build(), event -> {
             plugin.getChatInputManager().startNumericInput(player, "Masukkan jumlah reward XP (1 - 100000):", xp -> {
@@ -175,7 +175,7 @@ public class AdminQuestEditorMenu extends Gui {
                 .lore(List.of(
                         "&7Hadiah Battle Coins saat quest selesai.",
                         " ",
-                        "&eKlik untuk mengubah reward Coins via chat >"
+                        "&eKlik untuk mengubah reward Coins via GUI >"
                 ))
                 .build(), event -> {
             plugin.getChatInputManager().startNumericInput(player, "Masukkan jumlah reward Coins (0 - 100000):", coins -> {

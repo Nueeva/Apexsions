@@ -65,13 +65,17 @@ public class ChatInputManager implements Listener {
     }
 
     public void startInput(Player player, String prompt, Consumer<String> onInput, Runnable onCancel, long timeoutSeconds) {
-        player.closeInventory();
-        activeSessions.put(player.getUniqueId(), new ChatInputSession(player, prompt, onInput, onCancel, timeoutSeconds));
-        player.sendMessage("Â§8=======================================");
-        player.sendMessage("Â§6Â§lINPUT REQUIRED:");
-        player.sendMessage("Â§e" + prompt);
-        player.sendMessage("Â§7Ketik jawaban Anda di chat, atau ketik Â§c'batal' Â§7untuk membatalkan.");
-        player.sendMessage("Â§8=======================================");
+        boolean isNumeric = prompt != null && (prompt.toLowerCase().contains("nominal") || prompt.toLowerCase().contains("harga") || prompt.toLowerCase().contains("jumlah") || prompt.toLowerCase().contains("saldo"));
+        com.apexsions.economy.gui.input.EconomyInputManager.openInput(
+                plugin,
+                player,
+                "ECONOMY INPUT",
+                prompt,
+                "",
+                isNumeric,
+                onInput,
+                onCancel
+        );
     }
 
     public void startNumericInput(Player player, String prompt, Consumer<Integer> onNumber, Runnable onCancel, int min, int max) {

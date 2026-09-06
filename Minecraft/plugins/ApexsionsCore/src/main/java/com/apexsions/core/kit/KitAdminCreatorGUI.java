@@ -136,7 +136,7 @@ public class KitAdminCreatorGUI implements InventoryHolder {
                 "<gray>Aturan Penempatan Item:</gray>",
                 "<yellow>1. Slot Armor Atas:</yellow> <white>Maksimal 1 full set (Helm, Baju, Celana, Sepatu).</white>",
                 "<yellow>2. Slot Bawah:</yellow> <aqua>Item ekstra untuk diberikan kepada player.</aqua>",
-                "<yellow>3. Ubah Jumlah Item:</yellow> <green>Klik item ekstra stackable untuk ubah via chat!</green>"
+                "<yellow>3. Ubah Jumlah Item:</yellow> <green>Klik item ekstra stackable untuk ubah via GUI!</green>"
         )));
 
         // Header slot 4: Kit ID & Name
@@ -238,7 +238,7 @@ public class KitAdminCreatorGUI implements InventoryHolder {
         } else {
             inventory.setItem(slot, createControlItem(Material.CHEST, "<aqua><bold>📦 ITEM EKSTRA #" + index + "</bold></aqua>", List.of(
                     "<yellow>▶ Seret item/alat/senjata tambahan ke sini.</yellow>",
-                    "<gray>Klik item yang ditaruh untuk mengubah jumlahnya via chat!</gray>"
+                    "<gray>Klik item yang ditaruh untuk mengubah jumlahnya via GUI!</gray>"
             )));
         }
     }
@@ -412,18 +412,29 @@ public class KitAdminCreatorGUI implements InventoryHolder {
                 return;
             }
 
-            // Stackable check -> change amount via chat
+            // Stackable check -> change amount via GUI
             if (placed.getMaxStackSize() > 1) {
                 this.isNavigatingSubGUI = true;
-                activeAmountSessions.put(player.getUniqueId(), new AmountChatSession(player, this, slot, placed));
-                player.closeInventory();
-                player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1.0f, 1.5f);
-                player.sendMessage(mm.deserialize("<gradient:#f1c40f:#e67e22><bold>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</bold></gradient>"));
-                player.sendMessage(mm.deserialize("<gold><bold>🔢 UBAH JUMLAH ITEM VIA CHAT</bold></gold>"));
-                player.sendMessage(mm.deserialize("<gray>Item:</gray> <yellow>" + placed.getType().name() + "</yellow> (Maks Stack: " + placed.getMaxStackSize() + ")"));
-                player.sendMessage(mm.deserialize("<yellow>Ketik angka jumlah (1 s/d " + placed.getMaxStackSize() + ") di chat:</yellow>"));
-                player.sendMessage(mm.deserialize("<gray>Ketik <red>cancel</red> untuk membatalkan.</gray>"));
-                player.sendMessage(mm.deserialize("<gradient:#f1c40f:#e67e22><bold>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</bold></gradient>"));
+                com.apexsions.core.gui.input.ApexsionsInputManager.openNumericInput(
+                        plugin,
+                        player,
+                        "JUMLAH ITEM KIT",
+                        "Ubah jumlah " + placed.getType().name(),
+                        placed.getAmount(),
+                        1,
+                        placed.getMaxStackSize(),
+                        amount -> {
+                            this.isNavigatingSubGUI = false;
+                            placed.setAmount(amount);
+                            player.sendMessage(mm.deserialize("<green>✓ Berhasil mengubah jumlah item menjadi <gold>" + amount + "</gold>!</green>"));
+                            player.playSound(player.getLocation(), Sound.ENTITY_ITEM_PICKUP, 1.0f, 1.2f);
+                            open();
+                        },
+                        () -> {
+                            this.isNavigatingSubGUI = false;
+                            open();
+                        }
+                );
             } else {
                 player.sendMessage(mm.deserialize("<yellow>Item ini tidak dapat di-stack (Maks 1).</yellow>"));
             }

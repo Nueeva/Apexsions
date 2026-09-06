@@ -74,13 +74,13 @@ public class MediaAdminSubGUI implements InventoryHolder {
 
         // Actions (Slots 20, 21, 22, 23, 31)
         inventory.setItem(20, createActionItem(Material.ITEM_FRAME, "<gold><bold>🖼 BUAT BANNER INTERAKTIF</bold></gold>",
-                List.of("<gray>Buat display banner baru pada lokasimu saat ini.</gray>", "<yellow>▶ Klik untuk input nama banner di chat</yellow>")));
+                List.of("<gray>Buat display banner baru pada lokasimu saat ini.</gray>", "<yellow>▶ Klik untuk input nama banner via GUI</yellow>")));
 
         inventory.setItem(21, createActionItem(Material.GLOW_ITEM_FRAME, "<aqua><bold>📜 DAFTAR BANNER AKTIF</bold></aqua>",
                 List.of("<gray>Tampilkan daftar banner aktif yang terpasang di server.</gray>", "<yellow>▶ Klik untuk lihat daftar di chat</yellow>")));
 
         inventory.setItem(22, createActionItem(Material.COMPASS, "<light_purple><bold>🔗 ATUR AKSI KLIK URL BANNER</bold></light_purple>",
-                List.of("<gray>Setel tautan web / Discord / Store saat banner diklik.</gray>", "<yellow>▶ Klik untuk atur URL di chat</yellow>")));
+                List.of("<gray>Setel tautan web / Discord / Store saat banner diklik.</gray>", "<yellow>▶ Klik untuk atur URL via GUI</yellow>")));
 
         inventory.setItem(23, createActionItem(Material.GLOWSTONE_DUST, "<yellow><bold>✨ TOGGLE RAYTRACE GLOW</bold></yellow>",
                 List.of("<gray>Aktifkan/nonaktifkan efek hover glow saat disorot.</gray>", "<yellow>▶ Klik untuk toggle efek</yellow>")));

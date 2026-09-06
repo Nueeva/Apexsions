@@ -37,26 +37,22 @@ public class AdminChatInputManager implements Listener {
         // Cancel existing session if any
         cancelSession(admin.getUniqueId(), false);
 
-        admin.closeInventory();
-        admin.sendMessage(mm.deserialize("<gold><bold>════════════════ [ APEXSIONS INPUT ] ════════════════</bold></gold>"));
-        admin.sendMessage(mm.deserialize("<yellow>" + promptMessage + "</yellow>"));
-        admin.sendMessage(mm.deserialize("<gray>Ketik nilaimu di chat sekarang. Ketik <red><bold>cancel</bold></red> untuk membatalkan.</gray>"));
-        admin.sendMessage(mm.deserialize("<dark_gray>Sesi akan kedaluwarsa secara otomatis dalam 30 detik.</dark_gray>"));
-        admin.sendMessage(mm.deserialize("<gold><bold>═════════════════════════════════════════════════════</bold></gold>"));
-        admin.playSound(admin.getLocation(), Sound.BLOCK_NOTE_BLOCK_BELL, 0.8f, 1.2f);
-
-        BukkitTask timeoutTask = Bukkit.getScheduler().runTaskLater(plugin, () -> {
-            if (activeSessions.containsKey(admin.getUniqueId())) {
-                activeSessions.remove(admin.getUniqueId());
-                if (admin.isOnline()) {
-                    admin.sendMessage(mm.deserialize("<red>⏱ Sesi input chat telah kedaluwarsa (timeout 30 detik).</red>"));
-                    admin.playSound(admin.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
+        // Open input directly via dual-platform GUI (Bedrock Native Form / Java 26.2 Dialog / VirtualKeypad)
+        com.apexsions.core.gui.input.ApexsionsInputManager.openTextInput(
+                plugin,
+                admin,
+                "APEXSIONS ADMIN INPUT",
+                promptMessage,
+                "",
+                input -> {
+                    activeSessions.remove(admin.getUniqueId());
+                    onInput.accept(input);
+                },
+                () -> {
+                    activeSessions.remove(admin.getUniqueId());
                     if (onCancel != null) onCancel.run();
                 }
-            }
-        }, 30 * 20L); // 30 seconds
-
-        activeSessions.put(admin.getUniqueId(), new InputSession(onInput, onCancel, timeoutTask));
+        );
     }
 
     public void cancelSession(UUID uuid, boolean notify) {

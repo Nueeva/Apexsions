@@ -89,7 +89,7 @@ public class CoreAdminSubGUI implements InventoryHolder {
         // Slot 21: Set King Zenithar
         String kingZ = plugin.getConfigManager().getKingdomKing("ZENITHAR");
         inventory.setItem(21, createActionItem(Material.GOLD_BLOCK, "<gold><bold>👑 RAJA ZENITHAR</bold></gold>",
-                List.of("<gray>Raja Saat Ini: <yellow>" + (kingZ.isEmpty() ? "Belum Ditunjuk" : kingZ) + "</yellow></gray>", "<yellow>▶ Klik untuk setel Raja Zenithar di chat</yellow>")));
+                List.of("<gray>Raja Saat Ini: <yellow>" + (kingZ.isEmpty() ? "Belum Ditunjuk" : kingZ) + "</yellow></gray>", "<yellow>▶ Klik untuk setel Raja Zenithar via GUI</yellow>")));
 
         // Slot 22: Kingdom War Controls
         boolean isWar = plugin.getWarManager().isWarActive();
@@ -100,12 +100,12 @@ public class CoreAdminSubGUI implements InventoryHolder {
         // Slot 23: Set King Solterra
         String kingS = plugin.getConfigManager().getKingdomKing("SOLTERRA");
         inventory.setItem(23, createActionItem(Material.REDSTONE_BLOCK, "<red><bold>👑 RAJA SOLTERRA</bold></red>",
-                List.of("<gray>Raja Saat Ini: <yellow>" + (kingS.isEmpty() ? "Belum Ditunjuk" : kingS) + "</yellow></gray>", "<yellow>▶ Klik untuk setel Raja Solterra di chat</yellow>")));
+                List.of("<gray>Raja Saat Ini: <yellow>" + (kingS.isEmpty() ? "Belum Ditunjuk" : kingS) + "</yellow></gray>", "<yellow>▶ Klik untuk setel Raja Solterra via GUI</yellow>")));
 
         // Slot 24: Set King Sylvamoor
         String kingSyl = plugin.getConfigManager().getKingdomKing("SYLVAMOOR");
         inventory.setItem(24, createActionItem(Material.EMERALD_BLOCK, "<green><bold>👑 RAJA SYLVAMOOR</bold></green>",
-                List.of("<gray>Raja Saat Ini: <yellow>" + (kingSyl.isEmpty() ? "Belum Ditunjuk" : kingSyl) + "</yellow></gray>", "<yellow>▶ Klik untuk setel Raja Sylvamoor di chat</yellow>")));
+                List.of("<gray>Raja Saat Ini: <yellow>" + (kingSyl.isEmpty() ? "Belum Ditunjuk" : kingSyl) + "</yellow></gray>", "<yellow>▶ Klik untuk setel Raja Sylvamoor via GUI</yellow>")));
 
         // Slot 25: Custom Enchant Tool & ACE Panel
         inventory.setItem(25, createActionItem(Material.ENCHANTED_BOOK, "<gradient:#9b59b6:#8e44ad><bold>✨ APEXSIONS CUSTOM ENCHANTS ✨</bold></gradient>",

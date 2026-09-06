@@ -83,9 +83,9 @@ public class ChatAdminSubGUI implements InventoryHolder {
         inventory.setItem(22, createActionItem(Material.BUCKET, "<gradient:#e67e22:#d35400><bold>🧹 BERSIHKAN OBROLAN GLOBAL</bold></gradient>",
                 List.of("<gray>Bersihkan riwayat obrolan layar seluruh pemain.</gray>", "<yellow>▶ Klik untuk bersihkan chat</yellow>")));
 
-        // Slot 23: Broadcast Global Announcement (Chat Input)
+        // Slot 23: Broadcast Global Announcement (GUI Input)
         inventory.setItem(23, createActionItem(Material.OAK_SIGN, "<yellow><bold>📢 SIARKAN PENGUMUMAN (BROADCAST)</bold></yellow>",
-                List.of("<gray>Kirim pengumuman resmi ke seluruh server.</gray>", "<yellow>▶ Klik untuk input teks di chat</yellow>")));
+                List.of("<gray>Kirim pengumuman resmi ke seluruh server.</gray>", "<yellow>▶ Klik untuk input teks via GUI</yellow>")));
 
         // Slot 24: Start Chat Game
         inventory.setItem(24, createActionItem(Material.FIREWORK_ROCKET, "<gradient:#2ecc71:#27ae60><bold>🎯 MULAI CHAT MINI-GAME</bold></gradient>",

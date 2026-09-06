@@ -99,7 +99,7 @@ public class PlayerManagerGUI implements InventoryHolder {
             searchMeta.lore(List.of(
                     mm.deserialize("<gray>Cari pemain berdasarkan username spesifik.</gray>"),
                     Component.empty(),
-                    mm.deserialize("<yellow>▶ Klik untuk input teks pencarian di chat</yellow>")
+                    mm.deserialize("<yellow>▶ Klik untuk input teks pencarian via GUI</yellow>")
             ));
             searchItem.setItemMeta(searchMeta);
         }

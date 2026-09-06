@@ -71,13 +71,13 @@ public class EconomyAdminSubGUI implements InventoryHolder {
         }
         inventory.setItem(4, header);
 
-        // Slot 20: Give Rupiah (Chat Input)
+        // Slot 20: Give Rupiah (GUI Input)
         inventory.setItem(20, createActionItem(Material.EMERALD, "<green><bold>💵 TRANSFER SALDO RUPIAH</bold></green>",
-                List.of("<gray>Kirim saldo Rupiah ke pemain.</gray>", "<yellow>▶ Klik untuk input di chat</yellow>")));
+                List.of("<gray>Kirim saldo Rupiah ke pemain.</gray>", "<yellow>▶ Klik untuk input via GUI</yellow>")));
 
-        // Slot 21: Give Diamond (Chat Input)
+        // Slot 21: Give Diamond (GUI Input)
         inventory.setItem(21, createActionItem(Material.DIAMOND, "<aqua><bold>💎 TRANSFER SALDO DIAMOND 💎</bold></aqua>",
-                List.of("<gray>Kirim saldo Diamond 💎 ke pemain.</gray>", "<yellow>▶ Klik untuk input di chat</yellow>")));
+                List.of("<gray>Kirim saldo Diamond 💎 ke pemain.</gray>", "<yellow>▶ Klik untuk input via GUI</yellow>")));
 
         // Slot 22: Open Auction House
         inventory.setItem(22, createActionItem(Material.GOLD_INGOT, "<gold><bold>🏛 BUKA AUCTION HOUSE (/ah)</bold></gold>",

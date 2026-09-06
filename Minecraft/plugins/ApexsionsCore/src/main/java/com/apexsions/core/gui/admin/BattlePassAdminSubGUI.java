@@ -74,7 +74,7 @@ public class BattlePassAdminSubGUI implements InventoryHolder {
 
         // Actions (Slots 20, 21, 22, 23, 24, 31)
         inventory.setItem(20, createActionItem(Material.GOLD_BLOCK, "<gold><bold>🏆 BERIKAN PREMIUM PASS</bold></gold>",
-                List.of("<gray>Beri Premium BattlePass ke pemain.</gray>", "<yellow>▶ Klik untuk pilih pemain di chat</yellow>")));
+                List.of("<gray>Beri Premium BattlePass ke pemain.</gray>", "<yellow>▶ Klik untuk pilih pemain via GUI</yellow>")));
 
         inventory.setItem(21, createActionItem(Material.WRITABLE_BOOK, "<aqua><bold>🔄 RESET QUEST HARIAN (DAILY)</bold></aqua>",
                 List.of("<gray>Paksa reset seluruh quest harian pemain aktif.</gray>", "<yellow>▶ Klik untuk eksekusi reset</yellow>")));
@@ -86,7 +86,7 @@ public class BattlePassAdminSubGUI implements InventoryHolder {
                 List.of("<gray>Putar rotasi komoditas toko BattlePass sekarang.</gray>", "<yellow>▶ Klik untuk putar rotasi toko</yellow>")));
 
         inventory.setItem(24, createActionItem(Material.EXPERIENCE_BOTTLE, "<yellow><bold>⭐ SET TIER BATTLEPASS PEMAIN</bold></yellow>",
-                List.of("<gray>Atur pencapaian Tier BattlePass pemain.</gray>", "<yellow>▶ Klik untuk input di chat</yellow>")));
+                List.of("<gray>Atur pencapaian Tier BattlePass pemain.</gray>", "<yellow>▶ Klik untuk input via GUI</yellow>")));
 
         inventory.setItem(31, createActionItem(Material.REDSTONE_BLOCK, "<red><bold>⚡ RELOAD APEXSIONS BATTLEPASS</bold></red>",
                 List.of("<gray>Muat ulang seluruh file konfigurasi & quest BP.</gray>", "<yellow>▶ Klik untuk reload</yellow>")));

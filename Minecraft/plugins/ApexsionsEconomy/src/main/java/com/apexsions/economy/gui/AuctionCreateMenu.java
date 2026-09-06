@@ -67,7 +67,7 @@ public class AuctionCreateMenu extends Gui {
                 .lore(List.of(
                         "&7Harga pembelian langsung (Instant Buyout).",
                         " ",
-                        "&eKlik untuk mengubah harga via chat >"
+                        "&eKlik untuk mengubah harga via GUI >"
                 ))
                 .build(), event -> {
             plugin.getChatInputManager().startInput(player, "Masukkan harga lelang (contoh: 1000, 10k, 1.5jt, 2m):", input -> {

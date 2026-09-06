@@ -61,7 +61,7 @@ public class TradePlayerSelectMenu extends Gui {
                 .name("&e&l[🔍] KETIK NAMA PEMAIN")
                 .lore(List.of(
                         "&7Kirim permintaan trade dengan",
-                        "&7mengetik nama pemain di chat.",
+                        "&7mengetik nama pemain via GUI.",
                         " ",
                         "&eKlik untuk memasukkan nama >"
                 ))

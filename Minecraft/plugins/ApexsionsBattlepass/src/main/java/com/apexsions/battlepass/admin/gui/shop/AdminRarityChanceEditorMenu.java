@@ -88,7 +88,7 @@ public class AdminRarityChanceEditorMenu extends Gui {
                     .lore(List.of(
                             "&7Peluang Saat Ini: &e" + String.format("%.1f%%", pct),
                             " ",
-                            "&eKlik untuk mengubah persentase via chat >"
+                            "&eKlik untuk mengubah persentase via GUI >"
                     ))
                     .build(), event -> {
                 plugin.getChatInputManager().startDoubleInput(player, "Masukkan persentase (%) peluang untuk " + r.getDisplayName() + " (0 - 100):", newPct -> {

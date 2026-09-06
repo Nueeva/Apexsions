@@ -168,7 +168,7 @@ public class AdminRewardLevelEditorMenu extends Gui {
                 .lore(List.of(
                         "&7Ubah XP yang dibutuhkan untuk mencapai level ini.",
                         " ",
-                        "&eKlik untuk mengubah via chat >"
+                        "&eKlik untuk mengubah via GUI >"
                 ))
                 .build(), event -> {
             plugin.getChatInputManager().startNumericInput(player, "Masukkan required XP baru untuk Level " + level + ":", newXp -> {

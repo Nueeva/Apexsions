@@ -54,7 +54,7 @@ public class MyAuctionItemEditMenu extends Gui {
                         "&7Ubah harga barang lelang Anda.",
                         "&7Harga saat ini: &a" + NumberFormatUtil.format(listing.getPrice(), curr),
                         " ",
-                        "&eKlik untuk memasukkan harga baru via chat >"
+                        "&eKlik untuk memasukkan harga baru via GUI >"
                 ))
                 .build(), event -> {
             plugin.getChatInputManager().startInput(player, "Masukkan harga lelang baru untuk " + itemName + " (contoh: 500, 10k, 1.5jt):", input -> {

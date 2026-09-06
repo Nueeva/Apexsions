@@ -65,13 +65,17 @@ public class ChatInputManager implements Listener {
     }
 
     public void startInput(Player player, String prompt, Consumer<String> onInput, Runnable onCancel, long timeoutSeconds) {
-        player.closeInventory();
-        activeSessions.put(player.getUniqueId(), new ChatInputSession(player, prompt, onInput, onCancel, timeoutSeconds));
-        player.sendMessage("§8=======================================");
-        player.sendMessage("§6§lINPUT REQUIRED:");
-        player.sendMessage("§e" + prompt);
-        player.sendMessage("§7Ketik jawaban Anda di chat, atau ketik §c'batal' §7untuk membatalkan.");
-        player.sendMessage("§8=======================================");
+        boolean isNumeric = prompt != null && (prompt.toLowerCase().contains("jumlah") || prompt.toLowerCase().contains("harga") || prompt.toLowerCase().contains("persentase") || prompt.toLowerCase().contains("nominal") || prompt.toLowerCase().contains("level") || prompt.toLowerCase().contains("xp"));
+        com.apexsions.battlepass.gui.input.BattlepassInputManager.openInput(
+                plugin,
+                player,
+                "BATTLEPASS INPUT",
+                prompt,
+                "",
+                isNumeric,
+                onInput,
+                onCancel
+        );
     }
 
     public void startNumericInput(Player player, String prompt, Consumer<Integer> onNumber, Runnable onCancel, int min, int max) {

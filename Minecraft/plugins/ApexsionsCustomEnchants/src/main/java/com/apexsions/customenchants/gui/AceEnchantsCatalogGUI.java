@@ -230,7 +230,7 @@ public class AceEnchantsCatalogGUI implements InventoryHolder {
                 "<gray>Pencarian: <yellow>" + (searchFilter != null ? searchFilter : "Tidak Ada") + "</yellow></gray>",
                 Component.empty(),
                 "<green>▶ Left-Click untuk Reset Semua Filter</green>",
-                "<yellow>▶ Right-Click untuk Cari via Chat</yellow>"
+                "<yellow>▶ Right-Click untuk Cari via GUI</yellow>"
         )));
     }
 
@@ -324,8 +324,20 @@ public class AceEnchantsCatalogGUI implements InventoryHolder {
         // Slot 52: Reset or Search
         if (slot == 52) {
             if (click.isRightClick()) {
-                player.closeInventory();
-                player.sendMessage(mm.deserialize("<gold>Ketik di chat untuk mencari atau jalankan perintah: <yellow>/ace enchants <kata_kunci></yellow></gold>"));
+                com.apexsions.customenchants.gui.input.EnchantsInputManager.openInput(
+                        plugin,
+                        player,
+                        "CARI ENCHANT",
+                        "Masukkan kata kunci nama enchant:",
+                        searchFilter != null ? searchFilter : "",
+                        query -> {
+                            this.searchFilter = query.isBlank() ? null : query.trim();
+                            this.page = 1;
+                            refreshFilteredList();
+                            open();
+                        },
+                        this::open
+                );
             } else {
                 rarityFilter = "ALL";
                 categoryFilter = "ALL";

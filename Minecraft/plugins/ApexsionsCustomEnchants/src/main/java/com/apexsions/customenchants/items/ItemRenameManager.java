@@ -42,15 +42,28 @@ public class ItemRenameManager implements Listener {
     }
 
     public void startSession(Player player, String prompt, Consumer<String> onInput, Runnable onCancel) {
-        activeSessions.put(player.getUniqueId(), new RenameSession(player, prompt, onInput, onCancel));
-        player.closeInventory();
-        player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1.0f, 1.5f);
-        player.sendMessage(mm.deserialize("<gradient:#f1c40f:#e67e22><bold>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</bold></gradient>"));
-        player.sendMessage(mm.deserialize("<gold><bold>🏷 INPUT NAMA DI CHAT</bold></gold>"));
-        player.sendMessage(mm.deserialize("<gray>" + prompt + "</gray>"));
-        player.sendMessage(mm.deserialize("<yellow>Mendukung kode warna <aqua>&a&l</aqua> atau tag MiniMessage <aqua><gold><bold></aqua>.</yellow>"));
-        player.sendMessage(mm.deserialize("<gray>Ketik <red><bold>cancel</bold></red> untuk membatalkan.</gray>"));
-        player.sendMessage(mm.deserialize("<gradient:#f1c40f:#e67e22><bold>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</bold></gradient>"));
+        com.apexsions.customenchants.gui.input.EnchantsInputManager.openInput(
+                plugin,
+                player,
+                "RENAME ITEM",
+                prompt,
+                "",
+                plainText -> {
+                    activeSessions.remove(player.getUniqueId());
+                    String formatted = plainText;
+                    if (plainText.contains("&")) {
+                        Component c = legacySerializer.deserialize(plainText);
+                        formatted = mm.serialize(c);
+                    } else if (!plainText.contains("<") && !plainText.contains(">")) {
+                        formatted = "<gold><bold>" + plainText + "</bold></gold>";
+                    }
+                    onInput.accept(formatted);
+                },
+                () -> {
+                    activeSessions.remove(player.getUniqueId());
+                    if (onCancel != null) onCancel.run();
+                }
+        );
     }
 
     public boolean hasActiveSession(UUID uuid) {

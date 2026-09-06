@@ -192,7 +192,7 @@ public class CreatorHubGUI implements InventoryHolder {
                     player,
                     ChatInputSessionManager.SessionType.SUBMIT_VIDEO,
                     null,
-                    "<yellow>Silakan ketik atau tempelkan <aqua>URL Video YouTube</aqua> atau <light_purple>URL Video TikTok</light_purple> kamu di chat:</yellow>",
+                    "<yellow>Silakan masukkan atau tempelkan <aqua>URL Video YouTube</aqua> atau <light_purple>URL Video TikTok</light_purple> kamu via GUI:</yellow>",
                     input -> plugin.getCreatorManager().processVideoSubmission(player, input)
             );
             return;
@@ -213,7 +213,7 @@ public class CreatorHubGUI implements InventoryHolder {
                         player,
                         ChatInputSessionManager.SessionType.LINK_YOUTUBE,
                         Platform.YOUTUBE,
-                        "<yellow>Masukkan <aqua>Channel ID (UC...)</aqua> atau <aqua>Handle (@nama)</aqua> YouTube kamu di chat:</yellow>",
+                        "<yellow>Masukkan <aqua>Channel ID (UC...)</aqua> atau <aqua>Handle (@nama)</aqua> YouTube kamu via GUI:</yellow>",
                         input -> {
                             plugin.getCreatorManager().startLinking(player, Platform.YOUTUBE, input).thenAccept(code -> {
                                 player.sendMessage(mm.deserialize(
@@ -245,7 +245,7 @@ public class CreatorHubGUI implements InventoryHolder {
                         player,
                         ChatInputSessionManager.SessionType.LINK_TIKTOK,
                         Platform.TIKTOK,
-                        "<yellow>Masukkan <light_purple>Username TikTok (@username)</light_purple> kamu di chat:</yellow>",
+                        "<yellow>Masukkan <light_purple>Username TikTok (@username)</light_purple> kamu via GUI:</yellow>",
                         input -> {
                             plugin.getCreatorManager().startLinking(player, Platform.TIKTOK, input).thenCompose(code ->
                                     plugin.getCreatorManager().verifyLinking(player, Platform.TIKTOK)

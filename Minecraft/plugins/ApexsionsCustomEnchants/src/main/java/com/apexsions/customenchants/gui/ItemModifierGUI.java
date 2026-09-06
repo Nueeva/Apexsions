@@ -87,13 +87,13 @@ public class ItemModifierGUI implements InventoryHolder {
                         mm.deserialize("<yellow>▶ Klik untuk memilih Vanilla Enchants via GUI</yellow>")
                 ), false));
 
-        // Slot 22: Rename Item in Chat
+        // Slot 22: Rename Item via GUI
         inventory.setItem(22, createItem(Material.NAME_TAG,
-                "<gradient:#f1c40f:#e67e22><bold>🏷 UBAH NAMA ITEM DI CHAT</bold></gradient>",
+                "<gradient:#f1c40f:#e67e22><bold>🏷 UBAH NAMA ITEM</bold></gradient>",
                 List.of(
                         mm.deserialize("<gray>Ubah nama item ini secara spesifik.</gray>"),
                         Component.empty(),
-                        mm.deserialize("<yellow>▶ Klik untuk mengetik nama baru di chat!</yellow>")
+                        mm.deserialize("<yellow>▶ Klik untuk ubah nama baru via GUI!</yellow>")
                 ), false));
 
         // Slot 23: Armor or Tool Set Bonus Picker
@@ -192,7 +192,7 @@ public class ItemModifierGUI implements InventoryHolder {
             player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1.0f, 1.2f);
             plugin.getItemRenameManager().startSession(
                     player,
-                    "Ketik nama baru untuk item ini di chat (bisa menggunakan & atau MiniMessage):",
+                    "Masukkan nama baru untuk item ini via GUI (bisa menggunakan & atau MiniMessage):",
                     newName -> {
                         ItemMeta meta = item.getItemMeta();
                         if (meta != null) {

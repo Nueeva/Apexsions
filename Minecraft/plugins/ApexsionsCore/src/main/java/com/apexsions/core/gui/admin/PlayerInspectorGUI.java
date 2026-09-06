@@ -85,9 +85,9 @@ public class PlayerInspectorGUI implements InventoryHolder {
         inventory.setItem(14, createActionItem(Material.GOLD_BLOCK, "<gold><bold>+ Rp 1.000.000</bold></gold>",
                 List.of("<gray>Tambah saldo target sebesar <gold>Rp 1.000.000</gold>.</gray>", "<yellow>▶ Klik untuk tambah</yellow>")));
         inventory.setItem(15, createActionItem(Material.RAW_GOLD, "<yellow><bold>💰 SET SALDO RUPIAH</bold></yellow>",
-                List.of("<gray>Tentukan nominal saldo Rupiah target secara bebas.</gray>", "<yellow>▶ Klik untuk input nominal di chat</yellow>")));
+                List.of("<gray>Tentukan nominal saldo Rupiah target secara bebas.</gray>", "<yellow>▶ Klik untuk input nominal via GUI</yellow>")));
         inventory.setItem(16, createActionItem(Material.DIAMOND, "<aqua><bold>💎 ATUR SALDO DIAMOND 💎</bold></aqua>",
-                List.of("<gray>Berikan atau kurangi saldo Diamond 💎 pemain.</gray>", "<yellow>▶ Klik untuk input nominal di chat</yellow>")));
+                List.of("<gray>Berikan atau kurangi saldo Diamond 💎 pemain.</gray>", "<yellow>▶ Klik untuk input nominal via GUI</yellow>")));
 
         // ════════════════ ROW 3: PROGRESSION, KINGDOM & MONARCH (Slots 19..26) ════════════════
         inventory.setItem(19, createActionItem(Material.REDSTONE, "<red><bold>-1 Level</bold></red>",
@@ -97,7 +97,7 @@ public class PlayerInspectorGUI implements InventoryHolder {
         inventory.setItem(21, createActionItem(Material.EXPERIENCE_BOTTLE, "<aqua><bold>+ 1.000 XP</bold></aqua>",
                 List.of("<gray>Beri 1.000 Progression XP.</gray>", "<yellow>▶ Klik untuk tambah XP</yellow>")));
         inventory.setItem(22, createActionItem(Material.NETHER_STAR, "<gold><bold>👑 SET LEVEL BEBAS</bold></gold>",
-                List.of("<gray>Atur Level Karakter target (1 - 100).</gray>", "<yellow>▶ Klik untuk input angka level di chat</yellow>")));
+                List.of("<gray>Atur Level Karakter target (1 - 100).</gray>", "<yellow>▶ Klik untuk input angka level via GUI</yellow>")));
         inventory.setItem(23, createActionItem(Material.GOLD_INGOT, "<gold><bold>⚜ PINDAH KE ZENITHAR</bold></gold>",
                 List.of("<gray>Ubah afiliasi kerajaan menjadi <gradient:#ffe900:#f39c12><bold>Zenithar</bold></gradient>.</gray>", "<yellow>▶ Klik untuk tetapkan kerajaan</yellow>")));
         inventory.setItem(24, createActionItem(Material.BLAZE_POWDER, "<red><bold>⚜ PINDAH KE SOLTERRA</bold></red>",

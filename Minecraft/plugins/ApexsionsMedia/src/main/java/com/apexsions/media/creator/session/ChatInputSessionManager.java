@@ -30,16 +30,19 @@ public class ChatInputSessionManager {
     }
 
     public void startSession(Player player, SessionType type, Platform platform, String promptText, Consumer<String> callback) {
-        long expiry = System.currentTimeMillis() + 60_000L; // 60 seconds timeout
-        activeSessions.put(player.getUniqueId(), new InputSession(type, platform, expiry, callback));
-
-        player.closeInventory();
-        player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1.0f, 1.5f);
-        player.sendMessage(mm.deserialize(
-                "\n<gradient:#3498db:#2ecc71><bold>✦ SESI INPUT KREATOR ✦</bold></gradient>\n" +
-                promptText + "\n" +
-                "<gray>Ketik <red>cancel</red> di chat untuk membatalkan sesi ini (Batas waktu: 60 detik).</gray>\n"
-        ));
+        String defaultPrefix = (type == SessionType.LINK_YOUTUBE) ? "https://youtube.com/" : ((type == SessionType.LINK_TIKTOK) ? "https://tiktok.com/@" : "https://");
+        com.apexsions.media.creator.gui.input.MediaInputManager.openInput(
+                plugin,
+                player,
+                "INPUT KREATOR",
+                promptText,
+                defaultPrefix,
+                url -> {
+                    activeSessions.remove(player.getUniqueId());
+                    callback.accept(url);
+                },
+                () -> activeSessions.remove(player.getUniqueId())
+        );
     }
 
     public boolean hasActiveSession(UUID uuid) {
