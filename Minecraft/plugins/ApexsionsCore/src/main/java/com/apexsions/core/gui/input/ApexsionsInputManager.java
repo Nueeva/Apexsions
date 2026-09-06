@@ -23,9 +23,9 @@ public class ApexsionsInputManager {
             }
         }
 
-        // 2. Java Edition Minecraft 26.2 Native Dialog check
-        if (PaperDialogAdapter.isSupported()) {
-            if (PaperDialogAdapter.showInput(plugin, player, title, prompt, defaultText, onInput, onCancel)) {
+        // 2. Java Edition Minecraft 26.2 Native Dialog check (Paper & Bungee support)
+        if (NativeDialogAdapter.isSupported()) {
+            if (NativeDialogAdapter.showInput(plugin, player, title, prompt, defaultText, onInput, onCancel)) {
                 return;
             }
         }

@@ -15,8 +15,8 @@ public class MediaInputManager {
             }
         }
 
-        if (PaperDialogAdapter.isSupported()) {
-            if (PaperDialogAdapter.showInput(plugin, player, title, prompt, defaultText, onInput, onCancel)) {
+        if (NativeDialogAdapter.isSupported()) {
+            if (NativeDialogAdapter.showInput(plugin, player, title, prompt, defaultText, onInput, onCancel)) {
                 return;
             }
         }
