@@ -352,16 +352,16 @@ Commit dan push adalah dua tindakan berbeda.
 
 Agent boleh membuat commit setelah validation berhasil.
 
-Agent **tidak boleh menganggap push sebagai default**.
+**Autonomous Push Mandate:**
+Setiap kali perubahan kode, konfigurasi, perbaikan bug, atau penambahan fitur telah selesai divalidasi secara lokal (build/lint sukses) dan di-commit, agent **WAJIB langsung melakukan push ke GitHub (`origin/main`)** tanpa harus menunggu konfirmasi atau perintah manual terpisah dari user ("selalu push ke github kalau ada perubahan").
 
-Push hanya dilakukan jika:
+Tetap terapkan protokol Pre-Push Safety:
+1. Jalankan `git fetch origin`
+2. Pastikan tidak ada konflik dengan remote (lakukan rebase aman jika terdapat remote commit baru)
+3. Pastikan targeted build/validasi lokal lulus 100%
+4. Push ke `origin/main` (DILARANG force push ke shared branch).
 
-1. task secara eksplisit meminta push; atau
-2. repository workflow secara eksplisit mengizinkan autonomous push.
-
-Target branch harus diverifikasi sebelum push.
-
-DILARANG force push ke shared branch.
+Target branch harus diverifikasi sebelum push (`main`).
 
 ---
 

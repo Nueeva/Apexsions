@@ -179,6 +179,9 @@ git diff
 
 Before pushing, fetch again and check for newly arrived remote commits.
 
+### Automatic Push Rule
+Per repository mandate, once changes are validated and committed, automatically push commits to `origin/main` using safe push practices (fetch, rebase if needed, verify diff, and push without `--force`).
+
 ---
 
 # 06. Existing Architecture First
