@@ -41,23 +41,26 @@ public class ArmorSetBonusPickerGUI implements InventoryHolder {
     private final Map<KitStatType, Double> set2Stats = new LinkedHashMap<>();
     private final Map<KitStatType, Double> set4Stats = new LinkedHashMap<>();
 
-    private static final List<String> PRESET_NAMES = List.of("Apexsions", "Warlord", "Gladiator", "Titan", "Phantom", "Sovereign", "Shadow", "Immortal");
-    private int nameIndex = 0;
-
     @FunctionalInterface
     public interface SetBonusSaveCallback {
         void onSave(String setName, Map<KitStatType, Double> set2Stats, Map<KitStatType, Double> set4Stats);
     }
     private final SetBonusSaveCallback onConfigSave;
 
-    // Single item modifier constructor
+    // Single item modifier constructor with initial set name
     public ArmorSetBonusPickerGUI(ApexsionsCustomEnchantsPlugin plugin, Player player, ItemStack item,
-                                  InventoryHolder returnGUI, Consumer<ItemStack> onUpdate) {
-        this(plugin, player, "", null, null, item, returnGUI, (savedName, s2, s4) -> {
+                                  String initialSetName, InventoryHolder returnGUI, Consumer<ItemStack> onUpdate) {
+        this(plugin, player, initialSetName, null, null, item, returnGUI, (savedName, s2, s4) -> {
             if (onUpdate != null && item != null) {
                 onUpdate.accept(item);
             }
         });
+    }
+
+    // Single item modifier constructor fallback
+    public ArmorSetBonusPickerGUI(ApexsionsCustomEnchantsPlugin plugin, Player player, ItemStack item,
+                                  InventoryHolder returnGUI, Consumer<ItemStack> onUpdate) {
+        this(plugin, player, item, "", returnGUI, onUpdate);
     }
 
     // Global creator constructor
@@ -153,16 +156,17 @@ public class ArmorSetBonusPickerGUI implements InventoryHolder {
 
         // Slot 4: Header
         String nameDisplay = (setName == null || setName.isBlank()) ? "<dark_gray>(Belum Diatur)</dark_gray>" : "<gold>" + setName + "</gold>";
-        String idDisplay = (setName == null || setName.isBlank()) ? "kosong" : setName.toLowerCase().replaceAll("[^a-z0-9_-]", "_");
+        String effectiveId = getSetId();
+        String idDisplay = (effectiveId == null || effectiveId.isBlank()) ? "mengikuti nama set" : effectiveId;
 
         inventory.setItem(4, createItem(Material.NETHER_STAR,
                 "<gold><bold>🛡 PENGATURAN TIER ARMOR SET BONUS 🛡</bold></gold>",
                 List.of(
                         mm.deserialize("<gray>Nama Set: " + nameDisplay + "</gray>"),
-                        mm.deserialize("<gray>ID Set: <yellow>" + idDisplay + "</yellow></gray>"),
+                        mm.deserialize("<gray>ID Set: <yellow>" + idDisplay + "</yellow> <dark_gray>(Otomatis dari GUI Utama)</dark_gray></gray>"),
                         Component.empty(),
                         mm.deserialize("<yellow>Atur efek bonus untuk 2 Pieces, 4 Pieces, atau keduanya!</yellow>"),
-                        mm.deserialize("<gray>Jika pemain memakai 4 potong armor, kedua efek aktif bersamaan.</gray>")
+                        mm.deserialize("<gray>ID bonus otomatis mengikuti nama set yang dibuat di GUI Utama.</gray>")
                 ), true));
 
         // Slot 20: 2-Piece Bonus Option
@@ -203,15 +207,6 @@ public class ArmorSetBonusPickerGUI implements InventoryHolder {
                 "<gold><bold>👑 PENGATURAN BONUS 4-PIECE (FULL SET)</bold></gold>",
                 lore4, !set4Stats.isEmpty()));
 
-        // Slot 40: Set Name Rotator / Info
-        inventory.setItem(40, createItem(Material.NAME_TAG,
-                "<yellow><bold>🏷 NAMA / ID SET: " + nameDisplay + "</bold></yellow>",
-                List.of(
-                        mm.deserialize("<gray>ID Set: <yellow>" + idDisplay + "</yellow></gray>"),
-                        Component.empty(),
-                        mm.deserialize("<yellow>▶ Klik untuk ganti preset nama set!</yellow>")
-                ), false));
-
         // Slot 41: Clear all
         inventory.setItem(41, createItem(Material.LAVA_BUCKET,
                 "<red><bold>✖ HAPUS SELURUH SET BONUS</bold></red>",
@@ -231,7 +226,8 @@ public class ArmorSetBonusPickerGUI implements InventoryHolder {
         // Slot 49: Apply & Return Safely
         boolean hasAny = !set2Stats.isEmpty() || !set4Stats.isEmpty();
         List<Component> applyLore = new ArrayList<>();
-        applyLore.add(mm.deserialize("<gray>Set: <gold>" + (setName.isBlank() ? "Custom Set" : setName) + "</gold></gray>"));
+        String setLabel = (setName == null || setName.isBlank()) ? "Set Armor" : setName;
+        applyLore.add(mm.deserialize("<gray>Set: <gold>" + setLabel + "</gold></gray>"));
         applyLore.add(Component.empty());
         applyLore.add(mm.deserialize(set2Stats.isEmpty() ? "<gray>● 2-Piece: Nonaktif</gray>" : "<green>● 2-Piece: " + set2Stats.size() + " Efek Aktif</green>"));
         applyLore.add(mm.deserialize(set4Stats.isEmpty() ? "<gray>● 4-Piece: Nonaktif</gray>" : "<green>● 4-Piece: " + set4Stats.size() + " Efek Aktif</green>"));
@@ -241,6 +237,15 @@ public class ArmorSetBonusPickerGUI implements InventoryHolder {
         inventory.setItem(49, createItem(Material.EMERALD_BLOCK,
                 "<green><bold>✔ TERAPKAN KE ITEM</bold></green>",
                 applyLore, hasAny));
+    }
+
+    public String getSetId() {
+        if (setName != null && !setName.isBlank()) {
+            String plain = AdminItemCreatorGUI.getPlainTextSafe(setName);
+            String id = plain.toLowerCase().replaceAll("[^a-z0-9_-]", "_");
+            if (!id.isBlank()) return id;
+        }
+        return "apexsions";
     }
 
     public void handleClick(InventoryClickEvent event) {
@@ -268,20 +273,7 @@ public class ArmorSetBonusPickerGUI implements InventoryHolder {
             return;
         }
 
-        // 4. Name Rotator (Slot 40)
-        if (slot == 40) {
-            if (setName == null || setName.isBlank()) {
-                nameIndex = 0;
-            } else {
-                nameIndex = (nameIndex + 1) % PRESET_NAMES.size();
-            }
-            this.setName = PRESET_NAMES.get(nameIndex);
-            player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1.0f, 1.1f);
-            buildGUI();
-            return;
-        }
-
-        // 5. Clear All (Slot 41)
+        // 4. Clear All (Slot 41)
         if (slot == 41) {
             set2Stats.clear();
             set4Stats.clear();
@@ -292,7 +284,7 @@ public class ArmorSetBonusPickerGUI implements InventoryHolder {
             return;
         }
 
-        // 6. Apply & Save (Slot 49)
+        // 5. Apply & Save (Slot 49)
         if (slot == 49) {
             if (set2Stats.isEmpty() && set4Stats.isEmpty()) {
                 if (onConfigSave == null) {
@@ -302,7 +294,7 @@ public class ArmorSetBonusPickerGUI implements InventoryHolder {
                 player.sendMessage(mm.deserialize("<yellow>Tidak ada stat bonus yang diatur. Bonus dikosongkan.</yellow>"));
             } else {
                 if (setName == null || setName.isBlank()) {
-                    setName = PRESET_NAMES.get(0);
+                    setName = "Apexsions";
                 }
                 if (onConfigSave == null) {
                     applyBonusToItem();
@@ -338,9 +330,10 @@ public class ArmorSetBonusPickerGUI implements InventoryHolder {
         if (meta == null) return;
 
         PersistentDataContainer pdc = meta.getPersistentDataContainer();
-        String setId = setName.toLowerCase().replaceAll("[^a-z0-9_-]", "_");
+        String setId = getSetId();
+        String cleanName = (setName != null && !setName.isBlank()) ? setName : "Apexsions";
         pdc.set(new NamespacedKey("apexsions", "set_id"), PersistentDataType.STRING, setId);
-        pdc.set(new NamespacedKey("apexsions", "set_name"), PersistentDataType.STRING, setName);
+        pdc.set(new NamespacedKey("apexsions", "set_name"), PersistentDataType.STRING, cleanName);
 
         // Serialize set2_stats
         StringBuilder sb2 = new StringBuilder();
@@ -374,7 +367,9 @@ public class ArmorSetBonusPickerGUI implements InventoryHolder {
         // Update Lore
         List<Component> lore = meta.hasLore() && meta.lore() != null ? new ArrayList<>(meta.lore()) : new ArrayList<>();
         lore.add(Component.empty());
-        lore.add(mm.deserialize("<gold><bold>★ SET BONUS: <yellow>" + setName.toUpperCase() + "</yellow> ★</bold></gold>"));
+        String displayHeader = AdminItemCreatorGUI.getPlainTextSafe(cleanName).toUpperCase();
+        if (displayHeader.isBlank()) displayHeader = "APEXSIONS";
+        lore.add(mm.deserialize("<gold><bold>★ SET BONUS: <yellow>" + displayHeader + "</yellow> ★</bold></gold>"));
         if (!set2Stats.isEmpty()) {
             lore.add(mm.deserialize("<gray>Syarat: <yellow>2 Pieces (Half Set)</yellow></gray>"));
             for (Map.Entry<KitStatType, Double> e : set2Stats.entrySet()) {

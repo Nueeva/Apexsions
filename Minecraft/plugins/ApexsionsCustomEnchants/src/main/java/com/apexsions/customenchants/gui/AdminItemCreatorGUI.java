@@ -285,6 +285,35 @@ public class AdminItemCreatorGUI implements InventoryHolder {
         }
     }
 
+    public String getEffectiveSetName() {
+        if (globalSetName != null && !globalSetName.isBlank()) {
+            return globalSetName;
+        }
+        for (int slot : new int[]{SLOT_HELMET, SLOT_CHESTPLATE, SLOT_LEGGINGS, SLOT_BOOTS}) {
+            ItemStack piece = placedItems.get(slot);
+            if (piece != null && piece.hasItemMeta()) {
+                ItemMeta meta = piece.getItemMeta();
+                PersistentDataContainer pdc = meta.getPersistentDataContainer();
+                NamespacedKey kName = new NamespacedKey("apexsions", "set_name");
+                if (pdc.has(kName, PersistentDataType.STRING)) {
+                    String n = pdc.get(kName, PersistentDataType.STRING);
+                    if (n != null && !n.isBlank()) return n;
+                }
+                if (meta.hasDisplayName()) {
+                    String plain = PlainTextComponentSerializer.plainText().serialize(meta.displayName()).trim();
+                    for (String suffix : new String[]{" Helmet", " Chestplate", " Elytra", " Leggings", " Boots"}) {
+                        if (plain.endsWith(suffix)) {
+                            plain = plain.substring(0, plain.length() - suffix.length()).trim();
+                            break;
+                        }
+                    }
+                    if (!plain.isBlank()) return plain;
+                }
+            }
+        }
+        return "Apexsions";
+    }
+
     public boolean isFullsetComplete() {
         return placedItems.containsKey(SLOT_HELMET) &&
                 placedItems.containsKey(SLOT_CHESTPLATE) &&
@@ -608,10 +637,23 @@ public class AdminItemCreatorGUI implements InventoryHolder {
                 if (ref == null) {
                     ref = placedItems.values().stream().findFirst().orElse(null);
                 }
+
+                if (this.globalSetName.isBlank()) {
+                    this.globalSetName = getEffectiveSetName();
+                    this.globalSetId = getPlainTextSafe(this.globalSetName).toLowerCase().replaceAll("[^a-z0-9_-]", "_");
+                    if (this.globalSetId.isBlank()) this.globalSetId = "apexsions";
+                }
+
                 new ArmorSetBonusPickerGUI(plugin, player, globalSetName, globalSet2Stats, globalSet4Stats, ref, this,
                         (savedName, s2, s4) -> {
-                            this.globalSetName = savedName;
-                            this.globalSetId = getPlainTextSafe(savedName).toLowerCase().replaceAll("[^a-z0-9_-]", "_");
+                            // ID bonus armor set otomatis mengikuti nama set yang dibuat di GUI Utama
+                            if (this.globalSetName.isBlank()) {
+                                this.globalSetName = (savedName != null && !savedName.isBlank()) ? savedName : "Apexsions";
+                            }
+                            this.globalSetId = getPlainTextSafe(this.globalSetName).toLowerCase().replaceAll("[^a-z0-9_-]", "_");
+                            if (this.globalSetId.isBlank()) {
+                                this.globalSetId = "apexsions";
+                            }
                             this.globalSet2Stats.clear();
                             this.globalSet2Stats.putAll(s2);
                             this.globalSet4Stats.clear();
@@ -619,7 +661,6 @@ public class AdminItemCreatorGUI implements InventoryHolder {
                             this.setBonusConfigured = (!globalSet2Stats.isEmpty() || !globalSet4Stats.isEmpty());
 
                             if (this.setBonusConfigured) {
-                                renameAllItems(savedName);
                                 checkAndApplyFullsetBonus();
                             } else {
                                 removeFullsetBonusFromAll();

@@ -220,7 +220,8 @@ public class ItemModifierGUI implements InventoryHolder {
         if (slot == 23) {
             if (AdminItemCreatorGUI.isArmor(item)) {
                 player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1.0f, 1.2f);
-                new ArmorSetBonusPickerGUI(plugin, player, item, this, updated -> {
+                String sName = (creatorGUI != null) ? creatorGUI.getEffectiveSetName() : "";
+                new ArmorSetBonusPickerGUI(plugin, player, item, sName, this, updated -> {
                     this.item = updated;
                     creatorGUI.updateItem(sourceSlot, this.item);
                     buildGUI();
