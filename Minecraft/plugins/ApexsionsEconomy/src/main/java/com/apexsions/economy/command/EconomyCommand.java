@@ -24,8 +24,70 @@ public class EconomyCommand implements CommandExecutor, TabCompleter {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if (args.length > 0) {
+            String sub = args[0].toLowerCase();
+
+            // Admin subcommands (accessible by Console or Players with admin permission)
+            if (sub.equals("give") || sub.equals("add") || sub.equals("take") || sub.equals("remove") || sub.equals("set") || sub.equals("reload")) {
+                if (!sender.hasPermission("apexsionseconomy.admin") && !sender.hasPermission("apexpassionseconomy.admin")) {
+                    sender.sendMessage("§cAnda tidak memiliki izin untuk menggunakan perintah admin ekonomi.");
+                    return true;
+                }
+
+                if (sub.equals("reload")) {
+                    plugin.reload();
+                    sender.sendMessage("§a[ApexsionsEconomy] Konfigurasi dan mata uang berhasil di-reload!");
+                    return true;
+                }
+
+                if (args.length < 3) {
+                    sender.sendMessage("§cPenggunaan: /" + label + " " + sub + " <player> <amount> [rupiah|diamond]");
+                    return true;
+                }
+
+                String targetName = args[1];
+                org.bukkit.OfflinePlayer target = Bukkit.getOfflinePlayer(targetName);
+                if (target.getUniqueId() == null) {
+                    sender.sendMessage("§cPemain " + targetName + " tidak valid.");
+                    return true;
+                }
+
+                double amount;
+                try {
+                    amount = NumberFormatUtil.parse(args[2]);
+                } catch (Exception e) {
+                    sender.sendMessage("§cJumlah tidak valid!");
+                    return true;
+                }
+
+                String currId = (args.length >= 4) ? args[3].toLowerCase() : "rupiah";
+                Currency currency = plugin.getCurrencyRegistry().get(currId);
+                if (currency == null) {
+                    sender.sendMessage("§cMata uang " + currId + " tidak dikenali!");
+                    return true;
+                }
+
+                switch (sub) {
+                    case "give", "add" -> {
+                        plugin.getCurrencyService().addBalance(target.getUniqueId(), currency.getId(), amount);
+                        sender.sendMessage("§aBerhasil memberikan §e" + NumberFormatUtil.format(amount, currency) + " §akepada §e" + targetName);
+                    }
+                    case "take", "remove" -> {
+                        plugin.getCurrencyService().removeBalance(target.getUniqueId(), currency.getId(), amount);
+                        sender.sendMessage("§cBerhasil mengurangi §e" + NumberFormatUtil.format(amount, currency) + " §cdari §e" + targetName);
+                    }
+                    case "set" -> {
+                        plugin.getCurrencyService().setBalance(target.getUniqueId(), currency.getId(), amount);
+                        sender.sendMessage("§aBerhasil menyetel saldo " + currency.getDisplayName() + " §e" + targetName + " §amenjadi §e" + NumberFormatUtil.format(amount, currency));
+                    }
+                }
+                return true;
+            }
+        }
+
+        // GUI & Player-specific features require an in-game Player
         if (!(sender instanceof Player player)) {
-            sender.sendMessage("§cPerintah ini hanya dapat dijalankan oleh player!");
+            sender.sendMessage("§cPenggunaan Console: /" + label + " <give|take|set|reload> [player] [amount] [currency]");
             return true;
         }
 
@@ -63,7 +125,17 @@ public class EconomyCommand implements CommandExecutor, TabCompleter {
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         if (args.length == 1) {
-            return List.of("menu", "bal", "info", "top", "deposit", "bank");
+            List<String> list = new ArrayList<>(List.of("menu", "bal", "info", "top", "deposit", "bank"));
+            if (sender.hasPermission("apexsionseconomy.admin") || sender.hasPermission("apexpassionseconomy.admin")) {
+                list.addAll(List.of("give", "take", "set", "reload"));
+            }
+            return list.stream().filter(s -> s.startsWith(args[0].toLowerCase())).toList();
+        }
+        if (args.length == 2 && List.of("give", "take", "set", "add", "remove").contains(args[0].toLowerCase())) {
+            return null; // Bukkit handles online player list
+        }
+        if (args.length == 4 && List.of("give", "take", "set", "add", "remove").contains(args[0].toLowerCase())) {
+            return plugin.getCurrencyRegistry().getAll().stream().map(Currency::getId).filter(id -> id.startsWith(args[3].toLowerCase())).toList();
         }
         return List.of();
     }

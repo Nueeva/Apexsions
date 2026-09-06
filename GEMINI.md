@@ -558,8 +558,8 @@ Gunakan fitur Java 21 secara wajar.
 ## Minecraft Platform
 
 ```text
-Paper API 1.21.4-R0.1-SNAPSHOT
-Minecraft 1.21.4
+Paper API (Minecraft 26.2)
+Target Runtime: Minecraft 26.2
 ```
 
 Jangan mengubah target platform tanpa explicit project decision.

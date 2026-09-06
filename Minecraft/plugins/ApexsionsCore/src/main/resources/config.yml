@@ -65,7 +65,7 @@ rtp:
 # Pengaturan di bawah tetap berfungsi sebagai fallback jika motd.yml tidak ditemukan.
 motd:
   enabled: true
-  line-1: "      <gradient:#f1c40f:#e67e22><bold>✦ APEXSIONS KINGDOM ✦</bold></gradient> <gray>•</gray> <aqua><bold>[1.21.4]</bold></aqua>"
+  line-1: "                 <gradient:#c0392b:#8e1b1b><bold>APEXSIONS</bold></gradient> <dark_gray>|</dark_gray> <aqua><bold>26.2</bold></aqua>"
   lines-2:
     - "   <gradient:#00c6ff:#0072ff>⚔ PERANG TIGA KERAJAAN & EKONOMI REALM ⚔</gradient>"
     - "  <gradient:#2ecc71:#f1c40f>🌟 MUSIM BARU TELAH DIBUKA • GABUNG SEKARANG! 🌟</gradient>"

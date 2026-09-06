@@ -185,19 +185,20 @@ public class AdminCommand implements CommandExecutor, TabCompleter {
     }
 
     private void handleSetLevel(CommandSender sender, String playerName, String levelStr) {
-        Player target = Bukkit.getPlayer(playerName);
-        if (target == null) {
-            sender.sendMessage(miniMessage.deserialize("<red>Player not found or offline.</red>"));
-            return;
-        }
-
+        int newLevel;
         try {
-            int newLevel = Integer.parseInt(levelStr);
+            newLevel = Integer.parseInt(levelStr);
             if (newLevel < 1 || newLevel > 100) {
                 sender.sendMessage(miniMessage.deserialize("<red>Level must be between 1 and 100.</red>"));
                 return;
             }
+        } catch (NumberFormatException e) {
+            sender.sendMessage(miniMessage.deserialize("<red>Invalid level number.</red>"));
+            return;
+        }
 
+        Player target = Bukkit.getPlayer(playerName);
+        if (target != null) {
             plugin.getPlayerDataService().getCached(target.getUniqueId()).ifPresent(data -> {
                 data.setLevel(newLevel);
                 long reqXp = plugin.getLevelFormula().getXpForLevel(newLevel);
@@ -206,30 +207,67 @@ public class AdminCommand implements CommandExecutor, TabCompleter {
                 sender.sendMessage(miniMessage.deserialize("<green>Set level of " + target.getName() + " to " + newLevel + ".</green>"));
                 target.sendMessage(miniMessage.deserialize("<green>Your level has been set to " + newLevel + " by an administrator.</green>"));
             });
-        } catch (NumberFormatException e) {
-            sender.sendMessage(miniMessage.deserialize("<red>Invalid level number.</red>"));
-        }
-    }
-
-    private void handleAddXp(CommandSender sender, String playerName, String amountStr) {
-        Player target = Bukkit.getPlayer(playerName);
-        if (target == null) {
-            sender.sendMessage(miniMessage.deserialize("<red>Player not found or offline.</red>"));
             return;
         }
 
+        // Support offline player via asynchronous persistence
+        org.bukkit.OfflinePlayer offline = Bukkit.getOfflinePlayer(playerName);
+        if (offline.getUniqueId() == null) {
+            sender.sendMessage(miniMessage.deserialize("<red>Player '" + playerName + "' not found.</red>"));
+            return;
+        }
+
+        String targetName = offline.getName() != null ? offline.getName() : playerName;
+        plugin.getPlayerDataService().loadOrCreate(offline.getUniqueId(), targetName).thenAccept(data -> {
+            data.setLevel(newLevel);
+            long reqXp = plugin.getLevelFormula().getXpForLevel(newLevel);
+            data.setXp(reqXp);
+            plugin.getPlayerDataService().save(data);
+            sender.sendMessage(miniMessage.deserialize("<green>Set level of " + targetName + " (offline) to " + newLevel + ".</green>"));
+        }).exceptionally(ex -> {
+            sender.sendMessage(miniMessage.deserialize("<red>Failed to set level for offline player: " + ex.getMessage() + "</red>"));
+            return null;
+        });
+    }
+
+    private void handleAddXp(CommandSender sender, String playerName, String amountStr) {
+        long amount;
         try {
-            long amount = Long.parseLong(amountStr);
+            amount = Long.parseLong(amountStr);
             if (amount <= 0) {
                 sender.sendMessage(miniMessage.deserialize("<red>Amount must be greater than 0.</red>"));
                 return;
             }
-
-            plugin.getXpService().awardXp(target.getUniqueId(), amount, XpSource.ADMIN);
-            sender.sendMessage(miniMessage.deserialize("<green>Added " + amount + " XP to " + target.getName() + ".</green>"));
         } catch (NumberFormatException e) {
             sender.sendMessage(miniMessage.deserialize("<red>Invalid XP amount.</red>"));
+            return;
         }
+
+        Player target = Bukkit.getPlayer(playerName);
+        if (target != null) {
+            plugin.getXpService().awardXp(target.getUniqueId(), amount, XpSource.ADMIN);
+            sender.sendMessage(miniMessage.deserialize("<green>Added " + amount + " XP to " + target.getName() + ".</green>"));
+            return;
+        }
+
+        // Support offline player via asynchronous persistence
+        org.bukkit.OfflinePlayer offline = Bukkit.getOfflinePlayer(playerName);
+        if (offline.getUniqueId() == null) {
+            sender.sendMessage(miniMessage.deserialize("<red>Player '" + playerName + "' not found.</red>"));
+            return;
+        }
+
+        String targetName = offline.getName() != null ? offline.getName() : playerName;
+        plugin.getPlayerDataService().loadOrCreate(offline.getUniqueId(), targetName).thenAccept(data -> {
+            long newXp = data.getXp() + amount;
+            data.setXp(newXp);
+            plugin.getLevelManager().reconcileLevel(data, null);
+            plugin.getPlayerDataService().save(data);
+            sender.sendMessage(miniMessage.deserialize("<green>Added " + amount + " XP to " + targetName + " (offline).</green>"));
+        }).exceptionally(ex -> {
+            sender.sendMessage(miniMessage.deserialize("<red>Failed to award XP to offline player: " + ex.getMessage() + "</red>"));
+            return null;
+        });
     }
 
     private void handleSetRegion(CommandSender sender, String playerName, String regionKey) {

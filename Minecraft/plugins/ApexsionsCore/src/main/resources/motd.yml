@@ -6,7 +6,7 @@
 enabled: true
 
 # Baris pertama : Nama Server & Tagline Resmi (Clean & Minimalist)
-line-1: "             <gradient:#c0392b:#8e1b1b><bold>APEXSIONS</bold></gradient> <dark_gray>|</dark_gray> <aqua><bold>1.21 - 1.26.2</bold></aqua>"
+line-1: "                 <gradient:#c0392b:#8e1b1b><bold>APEXSIONS</bold></gradient> <dark_gray>|</dark_gray> <aqua><bold>26.2</bold></aqua>"
 
 # Baris kedua: Versi Dukungan (Center-Aligned)
 lines-2:

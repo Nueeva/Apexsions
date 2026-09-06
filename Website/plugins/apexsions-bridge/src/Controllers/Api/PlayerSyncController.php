@@ -107,41 +107,41 @@ class PlayerSyncController extends Controller
     }
 
     /**
-     * Map in-game LuckPerms rank to Azuriom Role.
+     * Map in-game LuckPerms rank to Azuriom Role with official power and colors.
      */
     protected function syncUserRole($user, string $rankKey): void
     {
-        $roleNameMap = [
-            'ancestor' => 'Ancestor',
-            'architect' => 'Architect',
-            'overseer' => 'Overseer',
-            'warden' => 'Warden',
-            'herald' => 'Herald',
-            'sions' => 'Sions',
-            'emperor' => 'Emperor',
-            'sovereign' => 'Sovereign',
-            'archon' => 'Archon',
-            'ascendant' => 'Ascendant',
-            'wanderer' => 'Wanderer',
+        $rankConfigMap = [
+            'ancestor' => ['name' => 'Ancestor', 'power' => 100, 'color' => '#eab308'],
+            'architect' => ['name' => 'Architect', 'power' => 95, 'color' => '#00ffff'],
+            'overseer' => ['name' => 'Overseer', 'power' => 95, 'color' => '#9333ea'],
+            'warden' => ['name' => 'Warden', 'power' => 90, 'color' => '#3b82f6'],
+            'herald' => ['name' => 'Herald', 'power' => 80, 'color' => '#10b981'],
+            'sions' => ['name' => 'Sions', 'power' => 70, 'color' => '#f43f5e'],
+            'emperor' => ['name' => 'Emperor', 'power' => 60, 'color' => '#ec4899'],
+            'sovereign' => ['name' => 'Sovereign', 'power' => 50, 'color' => '#a855f7'],
+            'archon' => ['name' => 'Archon', 'power' => 40, 'color' => '#06b6d4'],
+            'ascendant' => ['name' => 'Ascendant', 'power' => 30, 'color' => '#22c55e'],
+            'wanderer' => ['name' => 'Wanderer', 'power' => 10, 'color' => '#9ca3af'],
         ];
 
-        $targetRoleName = $roleNameMap[$rankKey] ?? null;
-        if (!$targetRoleName) {
+        $cfg = $rankConfigMap[strtolower($rankKey)] ?? null;
+        if (!$cfg) {
             return;
         }
 
+        $targetRoleName = $cfg['name'];
         $role = Role::whereRaw('LOWER(name) = ?', [strtolower($targetRoleName)])->first();
 
-        // If role doesn't exist yet, try creating it with standard user permissions or find fallback
-        if (!$role && $rankKey !== 'wanderer') {
+        if (!$role) {
             try {
                 $role = Role::create([
                     'name' => $targetRoleName,
-                    'color' => '#f39c12',
-                    'power' => 10,
+                    'color' => $cfg['color'],
+                    'power' => $cfg['power'],
                 ]);
             } catch (\Throwable $e) {
-                // Ignore role creation error if restricted
+                Log::warning('[Apexsions Bridge] Could not create role ' . $targetRoleName . ': ' . $e->getMessage());
             }
         }
 
