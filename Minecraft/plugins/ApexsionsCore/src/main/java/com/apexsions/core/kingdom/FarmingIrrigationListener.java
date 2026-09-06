@@ -49,10 +49,15 @@ public class FarmingIrrigationListener implements Listener {
         if (event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
         if (event.getHand() != EquipmentSlot.HAND && event.getHand() != EquipmentSlot.OFF_HAND) return;
 
+        Player player = event.getPlayer();
+        // Prevent off-hand duplicate execution if main hand already holds a valid tool/item
+        if (event.getHand() == EquipmentSlot.OFF_HAND && !player.getInventory().getItemInMainHand().getType().isAir()) {
+            return;
+        }
+
         Block clickedBlock = event.getClickedBlock();
         if (clickedBlock == null) return;
 
-        Player player = event.getPlayer();
         ItemStack item = event.getItem();
         if (item == null) return;
 
@@ -61,12 +66,24 @@ public class FarmingIrrigationListener implements Listener {
             Block targetFarmland = resolveFarmland(clickedBlock);
             if (targetFarmland != null) {
                 event.setCancelled(true);
+
+                Farmland farmData = (Farmland) targetFarmland.getBlockData();
+                Block above = targetFarmland.getRelative(BlockFace.UP);
+                boolean hasGrowingCrop = above.getBlockData() instanceof org.bukkit.block.data.Ageable ageable
+                        && ageable.getAge() < ageable.getMaximumAge();
+
+                if (farmData.getMoisture() >= 7 && !hasGrowingCrop) {
+                    player.sendActionBar(mm.deserialize("<yellow>💧 Lahan pertanian ini sudah sangat basah dan lembap!</yellow>"));
+                    player.playSound(targetFarmland.getLocation(), Sound.BLOCK_NOTE_BLOCK_SNARE, 0.5f, 1.5f);
+                    return;
+                }
+
                 hydrateFarmland(targetFarmland);
 
                 // Small 25% chance to stimulate crop growth when watered
-                Block above = targetFarmland.getRelative(BlockFace.UP);
-                if (above.getBlockData() instanceof org.bukkit.block.data.Ageable ageable) {
-                    if (ageable.getAge() < ageable.getMaximumAge() && java.util.concurrent.ThreadLocalRandom.current().nextDouble() < 0.25) {
+                if (hasGrowingCrop) {
+                    org.bukkit.block.data.Ageable ageable = (org.bukkit.block.data.Ageable) above.getBlockData();
+                    if (java.util.concurrent.ThreadLocalRandom.current().nextDouble() < 0.25) {
                         ageable.setAge(ageable.getAge() + 1);
                         above.setBlockData(ageable, true);
                     }
@@ -210,9 +227,11 @@ public class FarmingIrrigationListener implements Listener {
 
         if (item.getItemMeta() instanceof PotionMeta meta) {
             try {
-                if (meta.getBasePotionType() != null && meta.getBasePotionType() == PotionType.WATER) {
-                    return true;
+                if (meta.getBasePotionType() != null) {
+                    return meta.getBasePotionType() == PotionType.WATER;
                 }
+                // Plain un-typed water bottle fallback
+                return !meta.hasCustomEffects();
             } catch (Throwable ignored) {
             }
         }
@@ -243,7 +262,7 @@ public class FarmingIrrigationListener implements Listener {
             for (int z = bz - 4; z <= bz + 4; z++) {
                 for (int y = by; y <= by + 1; y++) {
                     Block candidate = world.getBlockAt(x, y, z);
-                    if (candidate.getType() == Material.WATER) {
+                    if (candidate.getType() == Material.WATER || (candidate.getBlockData() instanceof org.bukkit.block.data.Waterlogged wl && wl.isWaterlogged())) {
                         return true;
                     }
                 }
