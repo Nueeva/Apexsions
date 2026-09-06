@@ -252,6 +252,7 @@ public class ApexsionsCorePlugin extends JavaPlugin {
             this.kingdomBuffManager.start();
             this.kingdomBuffListener = new com.apexsions.core.kingdom.KingdomBuffListener(this, kingdomBuffManager);
             Bukkit.getPluginManager().registerEvents(kingdomBuffListener, this);
+            Bukkit.getPluginManager().registerEvents(new com.apexsions.core.kingdom.FarmingIrrigationListener(this), this);
 
             // 11. Public API
             this.api = new ApexsionsCoreAPIImpl(this);

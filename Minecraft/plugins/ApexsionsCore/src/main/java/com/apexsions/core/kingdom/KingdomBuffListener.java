@@ -5,6 +5,7 @@ import com.apexsions.core.region.Region;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.block.data.type.Farmland;
 import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
@@ -227,19 +228,42 @@ public class KingdomBuffListener implements Listener {
         if (regionOpt.isEmpty()) return;
 
         String key = regionOpt.get().getKey().toUpperCase();
-        if (key.equals("SYLVAMOOR")) {
-            // Kelembapan tanaman stabil (tidak mudah kering)
-            event.setCancelled(true);
-            if (event.getBlock().getBlockData() instanceof Farmland farmland) {
-                farmland.setMoisture(7);
-                event.getBlock().setBlockData(farmland, false);
+        if (!(event.getBlock().getBlockData() instanceof Farmland currentFarmland)) return;
+
+        int currentMoisture = currentFarmland.getMoisture();
+
+        if (event.getNewState().getBlockData() instanceof Farmland newFarmland) {
+            int newMoisture = newFarmland.getMoisture();
+
+            // 1. Hidrasi alami (kelembapan meningkat karena air di dekatnya)
+            // JANGAN DIBATALKAN agar tanah menyerap air secara alami tanpa mematikan tanaman!
+            if (newMoisture > currentMoisture) {
+                return;
             }
-        } else if (key.equals("SOLTERRA")) {
-            // Tumbuhan lebih cepat kering (25% chance extra moisture reduction)
-            if (event.getNewState().getBlockData() instanceof Farmland newFarmland) {
-                if (ThreadLocalRandom.current().nextDouble() < 0.25 && newFarmland.getMoisture() > 0) {
-                    newFarmland.setMoisture(Math.max(0, newFarmland.getMoisture() - 1));
-                    event.getNewState().setBlockData(newFarmland);
+
+            // 2. Pengeringan tanah (kelembapan menurun)
+            if (key.equals("SYLVAMOOR")) {
+                // Sylvamoor Buff: Kelembapan tanaman stabil (tidak mengering)
+                // Cukup batalkan event penurunan kelembapan tanpa memanggil setBlockData() re-entrant!
+                event.setCancelled(true);
+            } else if (key.equals("SOLTERRA")) {
+                // Solterra Debuff: Tumbuhan agak lebih cepat kering
+                if (newMoisture > 0 && ThreadLocalRandom.current().nextDouble() < 0.30) {
+                    Bukkit.getScheduler().runTask(plugin, () -> {
+                        if (event.getBlock().getBlockData() instanceof Farmland f && f.getMoisture() > 0) {
+                            f.setMoisture(Math.max(0, f.getMoisture() - 1));
+                            event.getBlock().setBlockData(f, true);
+                        }
+                    });
+                }
+            }
+        } else if (event.getNewState().getType() == Material.DIRT) {
+            // Farmland berusaha kembali menjadi DIRT karena kekeringan
+            if (key.equals("SYLVAMOOR")) {
+                // Di Sylvamoor, proteksi farmland agar tidak berubah menjadi tanah biasa jika ada tanaman di atasnya
+                Block above = event.getBlock().getRelative(0, 1, 0);
+                if (!above.getType().isAir()) {
+                    event.setCancelled(true);
                 }
             }
         }
