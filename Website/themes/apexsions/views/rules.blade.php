@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('title', 'Peraturan Server & Sistem Pencegahan')
+@section('description', 'Peraturan resmi peradaban Minecraft Apexsions: tata krama chat, integritas gameplay, etika perang kerajaan, perlindungan teritori, dan sanksi pelanggaran.')
 
 @section('content')
 <div class="apx-rules-page py-5">

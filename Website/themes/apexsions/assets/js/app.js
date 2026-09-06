@@ -44,6 +44,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // 2. Live Minecraft Server Bridge Integration
     const fetchServerStatus = () => {
         const playersEl = document.getElementById('apxOnlinePlayers');
+        const playerStatusTextEl = document.getElementById('apxPlayerStatusText');
+        const playerNumbersEl = document.getElementById('apxPlayerNumbers');
         const footerPlayersEl = document.getElementById('apxFooterPlayers');
         const footerMaxPlayersEl = document.getElementById('apxFooterMaxPlayers');
         const footerVersionEl = document.getElementById('apxFooterVersion');
@@ -56,12 +58,25 @@ document.addEventListener('DOMContentLoaded', () => {
         const liveDotEl = document.getElementById('apxLiveDot');
 
         const applyStatus = (online, players, maxPlayers, version) => {
-            if (playersEl) playersEl.textContent = players ?? 0;
-            if (footerPlayersEl) footerPlayersEl.textContent = players ?? 0;
-            if (maxPlayersEl) maxPlayersEl.textContent = maxPlayers ?? 500;
-            if (footerMaxPlayersEl) footerMaxPlayersEl.textContent = maxPlayers ?? 500;
+            const count = parseInt(players, 10) || 0;
+            if (playersEl) playersEl.textContent = count;
+            if (footerPlayersEl) footerPlayersEl.textContent = count;
+            if (maxPlayersEl) maxPlayersEl.textContent = maxPlayers ?? 200;
+            if (footerMaxPlayersEl) footerMaxPlayersEl.textContent = maxPlayers ?? 200;
             if (versionEl && version) versionEl.textContent = version;
             if (footerVersionEl && version) footerVersionEl.textContent = version;
+
+            // Dynamic 0-player friendly fallback in hero
+            if (playerStatusTextEl && playerNumbersEl) {
+                if (online && count > 0) {
+                    playerStatusTextEl.classList.add('d-none');
+                    playerNumbersEl.classList.remove('d-none');
+                } else {
+                    playerStatusTextEl.classList.remove('d-none');
+                    playerNumbersEl.classList.add('d-none');
+                    playerStatusTextEl.innerHTML = online ? 'Gerbang Terbuka &bull; Siap Menjelajah' : 'Dunia Sedang Beristirahat';
+                }
+            }
 
             if (online) {
                 if (liveBadgeEl) liveBadgeEl.textContent = 'SERVER ONLINE';

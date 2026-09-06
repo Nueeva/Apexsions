@@ -44,7 +44,7 @@
                     @if(plugins()->isEnabled('wiki'))
                         <li><a href="{{ route('wiki.index') }}"><i class="bi bi-journal-text me-2"></i> Arsip Wiki</a></li>
                     @endif
-                    <li><a href="#" role="button" data-bs-toggle="modal" data-bs-target="#voteModal"><i class="bi bi-trophy me-2"></i> Dukung Vote</a></li>
+                    <li><a href="{{ route('vote') }}"><i class="bi bi-trophy me-2"></i> Dukung Vote</a></li>
                 </ul>
             </div>
 
@@ -57,7 +57,7 @@
                         <li><a href="{{ route('wiki.index') }}"><i class="bi bi-book me-2"></i> Ensiklopedia Pemain</a></li>
                     @endif
                     <li><a href="{{ route('rules') }}"><i class="bi bi-shield-check me-2"></i> Peraturan Resmi</a></li>
-                    <li><a href="#kebijakan"><i class="bi bi-file-earmark-lock me-2"></i> Ketentuan Transaksi</a></li>
+                    <li><a href="{{ route('terms') }}"><i class="bi bi-file-earmark-lock me-2"></i> Ketentuan Transaksi</a></li>
                     <li><a href="https://discord.gg/apexsions" target="_blank" rel="noopener noreferrer"><i class="bi bi-headset me-2"></i> Pusat Bantuan</a></li>
                 </ul>
             </div>
@@ -103,9 +103,9 @@
                 <!-- Right Legal -->
                 <div class="col-lg-4 text-center text-lg-end">
                     <div class="small mb-1">
-                        <a href="#terms" class="text-muted text-decoration-none me-2">Syarat &amp; Ketentuan</a>
+                        <a href="{{ route('terms') }}" class="text-muted text-decoration-none me-2">Syarat &amp; Ketentuan</a>
                         <span class="text-muted">&bull;</span>
-                        <a href="#privacy" class="text-muted text-decoration-none mx-2">Kebijakan Privasi</a>
+                        <a href="{{ route('privacy') }}" class="text-muted text-decoration-none mx-2">Kebijakan Privasi</a>
                         <span class="text-muted">&bull;</span>
                         <a href="https://discord.gg/apexsions" target="_blank" rel="noopener noreferrer" class="text-muted text-decoration-none ms-2">Kontak</a>
                     </div>

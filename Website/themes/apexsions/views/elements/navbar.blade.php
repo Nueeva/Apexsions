@@ -56,7 +56,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link apx-nav-link" href="#" role="button" data-bs-toggle="modal" data-bs-target="#voteModal">
+                    <a class="nav-link apx-nav-link @if(request()->routeIs('vote')) active @endif" href="{{ route('vote') }}">
                         Vote
                     </a>
                 </li>
@@ -115,56 +115,3 @@
         </div>
     </div>
 </nav>
-
-<!-- Modal Vote Apexsions -->
-<div class="modal fade" id="voteModal" tabindex="-1" aria-labelledby="voteModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content" style="background: var(--apx-bg-surface-raised); border: 1px solid var(--apx-gold-border); border-radius: var(--apx-radius-md); box-shadow: 0 20px 40px rgba(0,0,0,0.85);">
-            <div class="modal-header border-bottom border-secondary pb-3">
-                <div class="d-flex align-items-center gap-2">
-                    <i class="bi bi-trophy-fill text-warning fs-4"></i>
-                    <h5 class="modal-title text-white fw-bold" id="voteModalLabel">Vote Apexsions</h5>
-                </div>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Tutup"></button>
-            </div>
-            <div class="modal-body py-4">
-                <p class="text-muted mb-4">
-                    Dukung server Apexsions setiap 24 jam dan dapatkan hadiah langsung di dalam server:
-                </p>
-
-                <div class="p-3 mb-4 rounded-3" style="background: rgba(245, 158, 11, 0.08); border: 1px dashed var(--apx-gold-border);">
-                    <div class="d-flex align-items-center gap-2 mb-2">
-                        <i class="bi bi-gift-fill text-warning"></i>
-                        <span class="fw-bold text-warning">Reward Setiap Vote:</span>
-                    </div>
-                    <ul class="mb-0 ps-3 text-white small">
-                        <li>1x Apex Vote Crate Key</li>
-                        <li>500 Koin Gold Server</li>
-                        <li>50 Progression XP</li>
-                    </ul>
-                </div>
-
-                <div class="d-grid gap-2">
-                    <a href="https://minecraft-mp.com" target="_blank" rel="noopener noreferrer" class="btn btn-apx-outline d-flex justify-content-between align-items-center py-2 px-3">
-                        <span><i class="bi bi-box-arrow-up-right me-2 text-warning"></i> Vote di Minecraft-MP</span>
-                        <span class="badge bg-warning text-dark">Link 1</span>
-                    </a>
-                    <a href="https://topg.org" target="_blank" rel="noopener noreferrer" class="btn btn-apx-outline d-flex justify-content-between align-items-center py-2 px-3">
-                        <span><i class="bi bi-box-arrow-up-right me-2 text-warning"></i> Vote di TopG</span>
-                        <span class="badge bg-warning text-dark">Link 2</span>
-                    </a>
-                    <a href="https://planetminecraft.com" target="_blank" rel="noopener noreferrer" class="btn btn-apx-outline d-flex justify-content-between align-items-center py-2 px-3">
-                        <span><i class="bi bi-box-arrow-up-right me-2 text-warning"></i> Vote di PlanetMinecraft</span>
-                        <span class="badge bg-warning text-dark">Link 3</span>
-                    </a>
-                </div>
-            </div>
-            <div class="modal-footer border-top border-secondary pt-3">
-                <small class="text-muted me-auto">
-                    Ketik <code class="text-warning">/claim</code> di dalam game setelah vote.
-                </small>
-                <button type="button" class="btn btn-apx-gold btn-sm px-3" data-bs-dismiss="modal">Tutup</button>
-            </div>
-        </div>
-    </div>
-</div>

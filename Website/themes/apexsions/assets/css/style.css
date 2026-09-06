@@ -3259,3 +3259,65 @@ code:not(pre code) {
 .apx-sanction-table tr:last-child td {
     border-bottom: none !important;
 }
+
+/* ==============================================================================
+   Vote & Legal Architecture (Apexsions Sovereign Layout)
+   ============================================================================== */
+.apx-vote-card {
+    background: var(--apx-bg-deep);
+    border: 1px solid var(--apx-gold-border-subtle);
+    border-radius: var(--apx-radius-md);
+    padding: 1.75rem;
+    transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.apx-vote-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--apx-gold-border);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6), 0 0 20px rgba(245, 158, 11, 0.1);
+}
+
+.apx-vote-number {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--apx-text-dim);
+    letter-spacing: 0.1em;
+}
+
+.apx-badge-cooldown {
+    background: rgba(255, 255, 255, 0.05);
+    color: #94a3b8;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 0.35rem 0.65rem;
+    border-radius: var(--apx-radius-xs);
+}
+
+.apx-vote-icon-box {
+    width: 48px;
+    height: 48px;
+    border-radius: var(--apx-radius-sm);
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.apx-legal-card {
+    background: var(--apx-bg-deep);
+    border: 1px solid var(--apx-border);
+    border-radius: var(--apx-radius-md);
+    transition: border-color 0.2s ease;
+}
+
+.apx-legal-card:hover {
+    border-color: var(--apx-gold-border-subtle);
+}
+
+.apx-legal-num {
+    font-weight: 800;
+    letter-spacing: 0.05em;
+}

@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('title', 'Beranda')
+@section('description', 'Server Minecraft Survival Kingdom RP 26.2 dengan 11 kasta sosial, 3 kerajaan berdaulat, ekonomi Rupiah & Diamond, dan Kingdom War mingguan. Crossplay Java & Bedrock.')
 
 @section('content')
 <!-- Panoramic Hero Section: Viewport Adaptive (Fits 100% Player Screen at Normal Zoom) -->
@@ -58,7 +59,7 @@
                 <span class="apx-pulse-dot" id="apxLiveDot" aria-hidden="true"></span>
                 <span class="apx-infra-status" id="apxLiveBadge">SERVER ONLINE</span>
                 <span class="apx-infra-divider">/</span>
-                <span class="apx-infra-val"><span id="apxOnlinePlayers">0</span> / <span id="apxMaxPlayers">200</span> Warga</span>
+                <span class="apx-infra-val" id="apxPlayerCountContainer"><span id="apxPlayerStatusText">Gerbang Terbuka &bull; Siap Menjelajah</span><span id="apxPlayerNumbers" class="d-none"><span id="apxOnlinePlayers">0</span> / <span id="apxMaxPlayers">200</span> Warga</span></span>
             </div>
 
             <!-- 2. Java Server IP (Click to copy) -->
@@ -495,7 +496,7 @@
                                 <span class="apx-caste-weight">WEIGHT 60</span>
                             </div>
                             <h3 class="apx-caste-name">Emperor</h3>
-                            <div class="apx-caste-prefix"><i class="bi bi-gem"></i> [⚔ EMPEROR]</div>
+                            <div class="apx-caste-prefix"><i class="bi bi-gem"></i> ⚔ EMPEROR</div>
                             <p class="apx-caste-desc">
                                 Bangsawan penakluk berwibawa tinggi. Penguasa langit dengan hak terbang di wilayah klaim.
                             </p>
@@ -523,7 +524,7 @@
                                 <span class="apx-caste-weight">WEIGHT 50</span>
                             </div>
                             <h3 class="apx-caste-name">Sovereign</h3>
-                            <div class="apx-caste-prefix"><i class="bi bi-feather"></i> [⚜ SOVEREIGN]</div>
+                            <div class="apx-caste-prefix"><i class="bi bi-feather"></i> ⚜ SOVEREIGN</div>
                             <p class="apx-caste-desc">
                                 Tuan tanah emas peradaban. Menguasai jalur niaga bebas tarif dagang lintas kerajaan.
                             </p>
@@ -551,7 +552,7 @@
                                 <span class="apx-caste-weight">WEIGHT 40</span>
                             </div>
                             <h3 class="apx-caste-name">Archon</h3>
-                            <div class="apx-caste-prefix"><i class="bi bi-lightning-charge"></i> [💎 ARCHON]</div>
+                            <div class="apx-caste-prefix"><i class="bi bi-lightning-charge"></i> 💎 ARCHON</div>
                             <p class="apx-caste-desc">
                                 Kaum perajin kristal dan cendekiawan realm. Menikmati utilitas workbench portabel di mana saja.
                             </p>
@@ -579,7 +580,7 @@
                                 <span class="apx-caste-weight">WEIGHT 30</span>
                             </div>
                             <h3 class="apx-caste-name">Ascendant</h3>
-                            <div class="apx-caste-prefix"><i class="bi bi-flower1"></i> [☘ ASCENDANT]</div>
+                            <div class="apx-caste-prefix"><i class="bi bi-flower1"></i> ☘ ASCENDANT</div>
                             <p class="apx-caste-desc">
                                 Warga terhormat yang membuktikan dedikasinya. Prioritas antrean masuk dan perbekalan harian.
                             </p>
@@ -615,7 +616,7 @@
                                 <span class="apx-caste-tier-badge">WARGA PERINTIS</span>
                             </div>
                             <h3 class="apx-caste-name mb-1">Wanderer</h3>
-                            <div class="apx-caste-prefix"><i class="bi bi-compass"></i> WANDERER</div>
+                            <div class="apx-caste-prefix"><i class="bi bi-compass"></i> 🧭 WANDERER</div>
                             <span class="text-dim small">Pijakan Awal Seluruh Warga Baru</span>
                         </div>
                         <div class="col-lg-5 col-md-7">
@@ -642,14 +643,14 @@
         <!-- Section Action Footer -->
         <div class="text-center mt-5">
             <div class="d-flex justify-content-center align-items-center gap-3 flex-wrap">
+                @if(plugins()->isEnabled('wiki'))
+                    <a href="{{ route('wiki.show', 'hierarki-kasta') }}" class="btn btn-apx-gold px-4 py-2">
+                        <i class="bi bi-journal-text me-2"></i> Panduan Lengkap Kasta
+                    </a>
+                @endif
                 @if(plugins()->isEnabled('shop'))
                     <a href="{{ route('shop.categories.show', 'rank-donatur') }}" class="btn btn-apx-outline px-4 py-2">
                         <i class="bi bi-crown me-2"></i> Jelajahi Kasta di Webstore
-                    </a>
-                @endif
-                @if(plugins()->isEnabled('wiki'))
-                    <a href="{{ route('wiki.show', 'hierarki-kasta') }}" class="btn btn-apx-outline px-4 py-2">
-                        <i class="bi bi-journal-text me-2"></i> Panduan Lengkap Kasta
                     </a>
                 @endif
             </div>
@@ -681,7 +682,7 @@
                         </div>
                         <div>
                             <div class="text-dim small font-monospace" style="font-size: 0.72rem;">RUNTIME CORE</div>
-                            <h4 class="h6 mb-0 text-white fw-bold">Paper 26.2 &bull; Java 21</h4>
+                            <h3 class="h6 mb-0 text-white fw-bold">Paper 26.2 &bull; Java 21</h3>
                         </div>
                     </div>
                     <p class="text-muted small mb-0" style="line-height: 1.6;">
@@ -699,7 +700,7 @@
                         </div>
                         <div>
                             <div class="text-dim small font-monospace" style="font-size: 0.72rem;">KEDAULATAN &amp; PERANG</div>
-                            <h4 class="h6 mb-0 text-white fw-bold">ApexsionsCore</h4>
+                            <h3 class="h6 mb-0 text-white fw-bold">ApexsionsCore</h3>
                         </div>
                     </div>
                     <p class="text-muted small mb-0" style="line-height: 1.6;">
@@ -717,7 +718,7 @@
                         </div>
                         <div>
                             <div class="text-dim small font-monospace" style="font-size: 0.72rem;">KOMUNIKASI MODERN</div>
-                            <h4 class="h6 mb-0 text-white fw-bold">ApexsionsChat</h4>
+                            <h3 class="h6 mb-0 text-white fw-bold">ApexsionsChat</h3>
                         </div>
                     </div>
                     <p class="text-muted small mb-0" style="line-height: 1.6;">
@@ -735,7 +736,7 @@
                         </div>
                         <div>
                             <div class="text-dim small font-monospace" style="font-size: 0.72rem;">FINANSIAL ATOMIK</div>
-                            <h4 class="h6 mb-0 text-white fw-bold">ApexsionsEconomy</h4>
+                            <h3 class="h6 mb-0 text-white fw-bold">ApexsionsEconomy</h3>
                         </div>
                     </div>
                     <p class="text-muted small mb-0" style="line-height: 1.6;">
@@ -753,7 +754,7 @@
                         </div>
                         <div>
                             <div class="text-dim small font-monospace" style="font-size: 0.72rem;">PASAR DINAMIS</div>
-                            <h4 class="h6 mb-0 text-white fw-bold">ApexsionsShop</h4>
+                            <h3 class="h6 mb-0 text-white fw-bold">ApexsionsShop</h3>
                         </div>
                     </div>
                     <p class="text-muted small mb-0" style="line-height: 1.6;">
@@ -771,7 +772,7 @@
                         </div>
                         <div>
                             <div class="text-dim small font-monospace" style="font-size: 0.72rem;">SIHIR &amp; PENEMPAAN</div>
-                            <h4 class="h6 mb-0 text-white fw-bold">ApexsionsCustomEnchants</h4>
+                            <h3 class="h6 mb-0 text-white fw-bold">ApexsionsCustomEnchants</h3>
                         </div>
                     </div>
                     <p class="text-muted small mb-0" style="line-height: 1.6;">
@@ -789,7 +790,7 @@
                                 <i class="bi bi-trophy-fill"></i>
                             </div>
                             <div>
-                                <h4 class="h6 mb-1 text-white fw-bold">ApexsionsBattlepass &bull; Musim Kedaulatan</h4>
+                                <h3 class="h6 mb-1 text-white fw-bold">ApexsionsBattlepass &bull; Musim Kedaulatan</h3>
                                 <p class="text-muted small mb-0">100 level jalur hadiah musiman, sistem rotasi toko berputar (/abp shop), dan misi berkala.</p>
                             </div>
                         </div>
@@ -798,7 +799,7 @@
                                 <i class="bi bi-badge-ad-fill"></i>
                             </div>
                             <div>
-                                <h4 class="h6 mb-1 text-white fw-bold">ApexsionsMedia &bull; In-Game Multimedia</h4>
+                                <h3 class="h6 mb-1 text-white fw-bold">ApexsionsMedia &bull; In-Game Multimedia</h3>
                                 <p class="text-muted small mb-0">Banner resolusi tinggi, logo interaktif di lobi, efek pendaran raytrace, dan tautan pintar.</p>
                             </div>
                         </div>
@@ -825,7 +826,7 @@
             <!-- Step 1: Pasang Klien -->
             <div class="apx-step-monolith">
                 <div class="apx-step-phase-label mb-3">TAHAP PERTAMA</div>
-                <h4 class="apx-step-title">Klien Minecraft 26.2</h4>
+                <h3 class="apx-step-title">Klien Minecraft 26.2</h3>
                 <p class="apx-step-desc">
                     Gunakan Minecraft versi resmi atau launcher pilihanmu pada versi <strong>26.2</strong>. Mendukung penuh koneksi <strong>Java Edition &amp; Bedrock Edition</strong>.
                 </p>
@@ -837,7 +838,7 @@
             <!-- Step 2: Tembus Gerbang (Salin IP) -->
             <div class="apx-step-monolith">
                 <div class="apx-step-phase-label mb-3">TAHAP KEDUA</div>
-                <h4 class="apx-step-title">Alamat Server &amp; Port</h4>
+                <h3 class="apx-step-title">Alamat Server &amp; Port</h3>
                 <p class="apx-step-desc">
                     Buka menu Multiplayer dan masukkan alamat server <code>apexsions.my.id:32348</code>. Untuk pemain Bedrock, hubungkan melalui Port <code>32348</code>.
                 </p>
@@ -851,7 +852,7 @@
             <!-- Step 3: Ikrar Peradaban -->
             <div class="apx-step-monolith">
                 <div class="apx-step-phase-label mb-3">TAHAP KETIGA</div>
-                <h4 class="apx-step-title">Autentikasi Akun (/link)</h4>
+                <h3 class="apx-step-title">Autentikasi Akun (/link)</h3>
                 <p class="apx-step-desc">
                     Setelah berada di lobi server, ketik perintah <code>/link</code> untuk menerima kode autentikasi rahasia guna menautkan akun dengan portal web.
                 </p>

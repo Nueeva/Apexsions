@@ -7,12 +7,12 @@
 
     <title>@yield('title') | {{ site_name() }}</title>
 
-    <meta name="description" content="@yield('description', setting('description', 'Apexsions - The Peak Civilizations'))">
+    <meta name="description" content="@yield('description', setting('description', 'Server Minecraft Survival Kingdom RP 26.2 dengan 11 kasta sosial, 3 kerajaan berdaulat, ekonomi Rupiah & Diamond, dan Kingdom War mingguan. Crossplay Java & Bedrock.'))">
     <meta name="theme-color" content="#090c13">
 
     <!-- Open Graph & Social Cards -->
     <meta property="og:title" content="@yield('title') | {{ site_name() }}">
-    <meta property="og:description" content="@yield('description', setting('description', 'Apexsions - The Peak Civilizations'))">
+    <meta property="og:description" content="@yield('description', setting('description', 'Server Minecraft Survival Kingdom RP 26.2 dengan 11 kasta sosial, 3 kerajaan berdaulat, ekonomi Rupiah & Diamond, dan Kingdom War mingguan. Crossplay Java & Bedrock.'))">
     <meta property="og:type" content="website">
     <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:image" content="{{ theme_asset('img/logo.jpg') }}&v={{ @filemtime(public_path('assets/themes/apexsions/img/logo.jpg')) ?: '3' }}">
