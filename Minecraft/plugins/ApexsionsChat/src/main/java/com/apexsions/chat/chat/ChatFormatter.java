@@ -84,6 +84,8 @@ public class ChatFormatter {
 
         String rankBadge = switch (rank.toLowerCase()) {
             case "ancestor" -> "<gradient:#8B0000:#FF0000><bold>👑 ANCESTOR</bold></gradient>";
+            case "architect" -> "<gradient:#8E2DE2:#4A00E0><bold>📐 ARCHITECT</bold></gradient>";
+            case "overseer" -> "<gradient:#FFD700:#FFA500><bold>👁 OVERSEER</bold></gradient>";
             case "warden" -> "<gradient:#1e3c72:#2a5298><bold>🛡 WARDEN</bold></gradient>";
             case "herald" -> "<gradient:#f857a6:#ff5858><bold>📜 HERALD</bold></gradient>";
             case "sions" -> "<gradient:#00FFFF:#FFD700><bold>✦ SIONS ✦</bold></gradient>";

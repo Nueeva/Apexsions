@@ -236,6 +236,8 @@ public class PlaceholderApiHook extends PlaceholderExpansion {
                     String rank = plugin.getLuckPermsHook().getPlayerRankKey(offlinePlayer.getPlayer());
                     return switch (rank.toLowerCase()) {
                         case "ancestor", "owner" -> "<gradient:#8B0000:#FF0000><bold>👑 ANCESTOR</bold></gradient>";
+                        case "architect" -> "<gradient:#8E2DE2:#4A00E0><bold>📐 ARCHITECT</bold></gradient>";
+                        case "overseer" -> "<gradient:#FFD700:#FFA500><bold>👁 OVERSEER</bold></gradient>";
                         case "warden", "admin" -> "<gradient:#1e3c72:#2a5298><bold>🛡 WARDEN</bold></gradient>";
                         case "herald", "mod" -> "<gradient:#f857a6:#ff5858><bold>📜 HERALD</bold></gradient>";
                         case "sions" -> "<gradient:#00FFFF:#FFD700><bold>✦ SIONS ✦</bold></gradient>";
@@ -353,7 +355,7 @@ public class PlaceholderApiHook extends PlaceholderExpansion {
                     if (p.isOp() || p.hasPermission("apexsions.staff")) return true;
                     if (plugin.getLuckPermsHook() != null) {
                         String r = plugin.getLuckPermsHook().getPlayerRankKey(p).toLowerCase();
-                        return r.equals("ancestor") || r.equals("warden") || r.equals("herald") || r.equals("owner") || r.equals("admin") || r.equals("mod");
+                        return r.equals("ancestor") || r.equals("architect") || r.equals("overseer") || r.equals("warden") || r.equals("herald") || r.equals("owner") || r.equals("admin") || r.equals("mod");
                     }
                     return false;
                 })

@@ -70,7 +70,7 @@ public class KitAdminCreatorGUI implements InventoryHolder {
     private boolean isNavigatingSubGUI = false;
 
     private static final List<String> RANKS = List.of(
-            "wanderer", "ascendant", "archon", "sovereign", "emperor", "sions", "herald", "warden", "ancestor"
+            "wanderer", "ascendant", "archon", "sovereign", "emperor", "sions", "herald", "warden", "overseer", "architect", "ancestor"
     );
 
     private static final List<Long> COOLDOWNS = List.of(

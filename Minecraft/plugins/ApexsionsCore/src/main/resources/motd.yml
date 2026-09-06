@@ -5,15 +5,12 @@
 # Aktifkan atau nonaktifkan custom MOTD server
 enabled: true
 
-# Baris pertama MOTD (Mendukung Kyori Adventure / MiniMessage gradien & format warna)
-line-1: "      <gradient:#f1c40f:#e67e22><bold>✦ APEXSIONS KINGDOM ✦</bold></gradient> <gray>•</gray> <aqua><bold>[1.21.4]</bold></aqua>"
+# Baris pertama : Nama Server & Tagline Resmi (Clean & Minimalist)
+line-1: "             <gradient:#c0392b:#8e1b1b><bold>APEXSIONS</bold></gradient> <dark_gray>|</dark_gray> <aqua><bold>1.21 - 1.26.2</bold></aqua>"
 
-# Baris kedua MOTD (Diambil secara acak dari salah satu baris di bawah ini saat ping)
+# Baris kedua: Versi Dukungan (Center-Aligned)
 lines-2:
-  - "   <gradient:#00c6ff:#0072ff>⚔ PERANG TIGA KERAJAAN & EKONOMI REALM ⚔</gradient>"
-  - "  <gradient:#2ecc71:#f1c40f>🌟 MUSIM BARU TELAH DIBUKA • GABUNG SEKARANG! 🌟</gradient>"
-  - "   <gradient:#e74c3c:#f39c12>👑 PILIH KERAJAANMU: ZENITHAR • SOLTERRA • SYLVAMOOR</gradient>"
-  - "   <gradient:#9b59b6:#3498db>✨ DAFTAR CREATOR YOUTUBE & TIKTOK • DAPATKAN REWARD! ✨</gradient>"
+  - "                   <gray>The Peak Civilizations</gray>"
 
 # Pengaturan Jumlah Slot Pemain di Tampilan Server List
 player-count:

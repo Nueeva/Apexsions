@@ -96,9 +96,10 @@ public class ImageRenderer {
 
                 BufferedImage scaled = new BufferedImage(targetW, targetH, BufferedImage.TYPE_INT_ARGB);
                 Graphics2D g2d = scaled.createGraphics();
-                g2d.setColor(java.awt.Color.WHITE);
-                g2d.fillRect(0, 0, targetW, targetH);
-                g2d.drawImage(original.getScaledInstance(targetW, targetH, Image.SCALE_SMOOTH), 0, 0, null);
+                g2d.setRenderingHint(java.awt.RenderingHints.KEY_INTERPOLATION, java.awt.RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+                g2d.setRenderingHint(java.awt.RenderingHints.KEY_RENDERING, java.awt.RenderingHints.VALUE_RENDER_QUALITY);
+                g2d.setRenderingHint(java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON);
+                g2d.drawImage(original, 0, 0, targetW, targetH, null);
                 g2d.dispose();
 
                 byte[][][] tiles = new byte[widthTiles][heightTiles][128 * 128];
