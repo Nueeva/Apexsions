@@ -79,8 +79,8 @@ public class KingdomBuffManager {
             case "SYLVAMOOR" -> {
                 // Darah +2 HP (+1 Heart)
                 addModifier(player, Attribute.MAX_HEALTH, keyHealth, 2.0, AttributeModifier.Operation.ADD_NUMBER);
-                // Luck +12%
-                addModifier(player, Attribute.LUCK, keyLuck, 0.12, AttributeModifier.Operation.ADD_NUMBER);
+                // Luck +12% (1.2 pada loot table)
+                addModifier(player, Attribute.LUCK, keyLuck, 1.2, AttributeModifier.Operation.ADD_NUMBER);
                 // Mining speed -10% if attribute available
                 if (miningAttribute != null) {
                     addModifier(player, miningAttribute, keyMining, -0.10, AttributeModifier.Operation.ADD_SCALAR);
@@ -97,8 +97,8 @@ public class KingdomBuffManager {
             case "ZENITHAR" -> {
                 // Speed +5%
                 addModifier(player, Attribute.MOVEMENT_SPEED, keySpeed, 0.05, AttributeModifier.Operation.ADD_SCALAR);
-                // Luck +7%
-                addModifier(player, Attribute.LUCK, keyLuck, 0.07, AttributeModifier.Operation.ADD_NUMBER);
+                // Luck +7% (0.7 pada loot table)
+                addModifier(player, Attribute.LUCK, keyLuck, 0.7, AttributeModifier.Operation.ADD_NUMBER);
             }
         }
     }
@@ -142,6 +142,10 @@ public class KingdomBuffManager {
                 if (player.getLocation().getY() > 110.0) {
                     player.addPotionEffect(new PotionEffect(PotionEffectType.HUNGER, 50, 0, true, false, true));
                     player.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 50, 0, true, false, true));
+                }
+                // Fallback Mining Fatigue if mining attribute not available on platform
+                if (miningAttribute == null) {
+                    player.addPotionEffect(new PotionEffect(PotionEffectType.MINING_FATIGUE, 50, 0, true, false, false));
                 }
             } else if (kingdom.equalsIgnoreCase("SOLTERRA")) {
                 // Fallback subtle Haste for mining speed if attribute not available

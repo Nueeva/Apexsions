@@ -242,6 +242,9 @@ public class AdminCommand implements CommandExecutor, TabCompleter {
             plugin.getPlayerDataService().save(data);
             sender.sendMessage(miniMessage.deserialize("<green>Set kingdom of " + target.getName() + " to " + region.getKey() + ".</green>"));
             target.sendMessage(miniMessage.deserialize("<green>Your allegiance has been transferred to " + region.getDisplayName() + " by an administrator.</green>"));
+            if (plugin.getKingdomBuffManager() != null) {
+                plugin.getKingdomBuffManager().applyBuffs(target);
+            }
         });
     }
 

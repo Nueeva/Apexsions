@@ -138,8 +138,9 @@ public class KingdomBuffListener implements Listener {
                 || cause == EntityDamageEvent.DamageCause.HOT_FLOOR
                 || cause == EntityDamageEvent.DamageCause.CAMPFIRE) {
             if (kingdom.equalsIgnoreCase("SYLVAMOOR")) {
-                // Sylvamoor: Damage terbakar +15%
+                // Sylvamoor: Damage terbakar +15% (debuff murni)
                 event.setDamage(event.getDamage() * 1.15);
+                return;
             }
         }
 
@@ -162,8 +163,15 @@ public class KingdomBuffListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
-        // A. Attacker adjustments
-        if (event.getDamager() instanceof Player attacker) {
+        // A. Attacker adjustments (Supports both direct melee and ranged projectile attacks)
+        Player attacker = null;
+        if (event.getDamager() instanceof Player p) {
+            attacker = p;
+        } else if (event.getDamager() instanceof org.bukkit.entity.Projectile proj && proj.getShooter() instanceof Player p) {
+            attacker = p;
+        }
+
+        if (attacker != null) {
             String attackerKingdom = buffManager.getPlayerKingdomKey(attacker.getUniqueId());
             switch (attackerKingdom) {
                 case "SOLTERRA" -> {
