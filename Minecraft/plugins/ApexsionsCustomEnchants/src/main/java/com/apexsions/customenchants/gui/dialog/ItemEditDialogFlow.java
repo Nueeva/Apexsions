@@ -317,9 +317,12 @@ public class ItemEditDialogFlow {
             int curLvl = item.getEnchantmentLevel(ve);
             String name = getVanillaName(ve);
             String label = curLvl > 0
-                    ? "<green>✔ " + name + " <gold>Lv." + curLvl + "</gold></green>"
+                    ? "<green>✔ " + name + " <gold>" + CustomEnchant.toRoman(curLvl) + " (" + curLvl + ")</gold></green>"
                     : "<yellow>✦ " + name + "</yellow>";
-            String tooltip = "Level Maksimal: " + ve.getMaxLevel() + "\n▶ Klik untuk memilih level";
+            String tooltip = "Level Maks Vanilla: " + CustomEnchant.toRoman(ve.getMaxLevel()) + " (" + ve.getMaxLevel() + ")\n"
+                    + "Pilihan Level: I s/d XX (Level 1 - 20)\n"
+                    + (curLvl > 0 ? "Status: Level " + CustomEnchant.toRoman(curLvl) + " (" + curLvl + ") aktif\n" : "")
+                    + "▶ Klik untuk memilih level";
 
             buttons.add(new DialogButtonData(label, tooltip,
                     () -> openVanillaEnchantLevel(plugin, player, item, sourceSlot, creatorGUI, ve, p)));
@@ -335,7 +338,7 @@ public class ItemEditDialogFlow {
         }
 
         String desc = "<gray>Ditemukan <gold>" + available.size() + " sihir Vanilla</gold> (Halaman <yellow>" + p + "/" + totalPages + "</yellow>).\n"
-                + "Pilih sihir di bawah untuk memasang atau mengubah tingkat levelnya:</gray>";
+                + "Pilih sihir di bawah untuk memasang atau mengubah tingkat levelnya (Level I s/d XX):</gray>";
 
         DialogButtonData exitBtn = new DialogButtonData("<gray><bold>⬅ KEMBALI KE MENU EDIT ITEM</bold></gray>", "Kembali ke menu edit item utama",
                 () -> openRoot(plugin, player, item, sourceSlot, creatorGUI));
@@ -362,28 +365,31 @@ public class ItemEditDialogFlow {
 
         int curLvl = item.getEnchantmentLevel(ve);
         String name = getVanillaName(ve);
-        int maxLvl = Math.max(1, ve.getMaxLevel());
+        int maxVanillaLvl = Math.max(1, ve.getMaxLevel());
+        int maxLvl = 20;
 
         StringBuilder desc = new StringBuilder();
         desc.append("<gray>Vanilla Enchant: <gold>").append(name).append("</gold></gray>\n");
-        desc.append("<gray>Level Maksimal: <aqua>").append(maxLvl).append("</aqua></gray>\n");
-        desc.append("<gray>Status: ").append(curLvl > 0 ? "<green>Terpasang Level " + curLvl + "</green>" : "<dark_gray>Belum Terpasang</dark_gray>").append("</gray>");
+        desc.append("<gray>Level Maks Vanilla: <aqua>").append(CustomEnchant.toRoman(maxVanillaLvl)).append(" (").append(maxVanillaLvl).append(")</aqua></gray>\n");
+        desc.append("<gray>Pilihan Level: <gold>I s/d XX (Level 1 - 20)</gold></gray>\n");
+        desc.append("<gray>Status: ").append(curLvl > 0 ? "<green>Terpasang Level " + CustomEnchant.toRoman(curLvl) + " (" + curLvl + ")</green>" : "<dark_gray>Belum Terpasang</dark_gray>").append("</gray>");
 
         List<DialogButtonData> buttons = new ArrayList<>();
         for (int lvl = 1; lvl <= maxLvl; lvl++) {
             final int selectedLevel = lvl;
             boolean isCurrent = (curLvl == selectedLevel);
+            String roman = CustomEnchant.toRoman(lvl);
             String label = isCurrent
-                    ? "<green><bold>✔ Level " + lvl + "</bold></green>"
-                    : "<gold><bold>Level " + lvl + "</bold></gold>";
-            String tooltip = isCurrent ? "Level ini sedang aktif" : "Pasang enchant ini pada Level " + lvl;
+                    ? "<green><bold>✔ Level " + roman + " (" + lvl + ")</bold></green>"
+                    : "<gold><bold>Level " + roman + " (" + lvl + ")</bold></gold>";
+            String tooltip = isCurrent ? "Level " + roman + " (" + lvl + ") sedang aktif" : "Pasang enchant ini pada Level " + roman + " (" + lvl + ")";
 
             buttons.add(new DialogButtonData(label, tooltip, () -> {
                 item.addUnsafeEnchantment(ve, selectedLevel);
                 ItemStack updated = plugin.getEnchantmentRegistry().updateLoreAndGlint(item);
                 if (creatorGUI != null) creatorGUI.updateItem(sourceSlot, updated);
                 player.playSound(player.getLocation(), Sound.BLOCK_ENCHANTMENT_TABLE_USE, 1.0f, 1.2f);
-                player.sendMessage(mm.deserialize("<green>✓ Berhasil memasang enchant <gold>" + name + " " + selectedLevel + "</gold>!</green>"));
+                player.sendMessage(mm.deserialize("<green>✓ Berhasil memasang enchant <gold>" + name + " " + roman + " (" + selectedLevel + ")</gold>!</green>"));
                 openVanillaEnchants(plugin, player, updated, sourceSlot, creatorGUI, prevPage);
             }));
         }
@@ -406,11 +412,11 @@ public class ItemEditDialogFlow {
                 plugin,
                 player,
                 item,
-                "<gradient:#f1c40f:#e67e22><bold>📜 ATUR LEVEL: " + name.toUpperCase() + "</bold></gradient>",
+                "<gradient:#f1c40f:#e67e22><bold>📜 ATUR LEVEL: " + name.toUpperCase() + " (I - XX)</bold></gradient>",
                 desc.toString(),
                 buttons,
                 exitBtn,
-                2
+                4
         );
     }
 
@@ -419,7 +425,7 @@ public class ItemEditDialogFlow {
     // ==========================================================
 
     public static void openRemoveEnchants(ApexsionsCustomEnchantsPlugin plugin, Player player, ItemStack item, int sourceSlot,
-                                          AdminItemCreatorGUI creatorGUI) {
+                                           AdminItemCreatorGUI creatorGUI) {
         if (item == null || player == null || !player.isOnline()) return;
 
         Map<CustomEnchant, Integer> activeCE = plugin.getEnchantmentRegistry().getEnchantsOnItem(item);
@@ -446,8 +452,8 @@ public class ItemEditDialogFlow {
             Enchantment ve = entry.getKey();
             int lvl = entry.getValue();
             String name = getVanillaName(ve);
-            String label = "<red>✂ [Vanilla] </red><yellow>" + name + " " + lvl + "</yellow>";
-            String tooltip = "Klik untuk menghapus enchant " + name + " dari item";
+            String label = "<red>✂ [Vanilla] </red><yellow>" + name + " " + CustomEnchant.toRoman(lvl) + " (" + lvl + ")</yellow>";
+            String tooltip = "Klik untuk menghapus enchant " + name + " " + CustomEnchant.toRoman(lvl) + " (" + lvl + ") dari item";
 
             buttons.add(new DialogButtonData(label, tooltip, () -> {
                 item.removeEnchantment(ve);

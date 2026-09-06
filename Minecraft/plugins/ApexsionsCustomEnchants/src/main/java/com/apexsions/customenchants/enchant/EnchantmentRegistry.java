@@ -206,6 +206,8 @@ public class EnchantmentRegistry {
                 String line = "<gray>" + vName + " " + CustomEnchant.toRoman(entry.getValue()) + "</gray>";
                 newLore.add(mm.deserialize(line));
             }
+        } else {
+            meta.removeItemFlags(ItemFlag.HIDE_ENCHANTS);
         }
 
         // 3. Prepend custom enchant lore lines in full Roman numerals
