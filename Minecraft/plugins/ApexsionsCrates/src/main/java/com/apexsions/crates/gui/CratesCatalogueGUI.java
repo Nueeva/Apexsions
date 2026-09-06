@@ -150,13 +150,6 @@ public class CratesCatalogueGUI implements InventoryHolder {
             Crate crate = slotCrates.get(slot);
             ClickType click = event.getClick();
 
-            // Left Click -> Preview GUI
-            if (click.isLeftClick()) {
-                player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.8f, 1.2f);
-                new CratePreviewGUI(plugin, player, crate).open();
-                return;
-            }
-
             // Shift Click -> Instant Open
             if (click.isShiftClick()) {
                 player.closeInventory();
@@ -168,7 +161,12 @@ public class CratesCatalogueGUI implements InventoryHolder {
             if (click.isRightClick()) {
                 player.closeInventory();
                 plugin.openCrate(player, crate, true);
+                return;
             }
+
+            // Default (Left Click, Bedrock tap, Gamepad select) -> Preview GUI
+            player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.8f, 1.2f);
+            new CratePreviewGUI(plugin, player, crate).open();
         }
     }
 
