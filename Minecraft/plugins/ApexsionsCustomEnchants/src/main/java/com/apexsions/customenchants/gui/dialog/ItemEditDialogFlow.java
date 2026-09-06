@@ -42,6 +42,9 @@ public class ItemEditDialogFlow {
         if (creatorGUI != null) {
             creatorGUI.setNavigatingSubGUI(true);
         }
+        if (player.getOpenInventory().getTopInventory().getType() != org.bukkit.event.inventory.InventoryType.CRAFTING) {
+            player.closeInventory();
+        }
 
         Map<CustomEnchant, Integer> activeCE = plugin.getEnchantmentRegistry().getEnchantsOnItem(item);
         int activeVanilla = item.getEnchantments().size();

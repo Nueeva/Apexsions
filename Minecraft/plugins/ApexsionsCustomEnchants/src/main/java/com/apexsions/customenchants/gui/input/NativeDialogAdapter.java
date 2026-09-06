@@ -999,6 +999,11 @@ public class NativeDialogAdapter {
     ) {
         if (player == null || !player.isOnline() || item == null) return false;
 
+        // Ensure any container inventory is closed immediately so no chest GUI lingers or flashes behind the dialog
+        if (player.getOpenInventory().getTopInventory().getType() != org.bukkit.event.inventory.InventoryType.CRAFTING) {
+            player.closeInventory();
+        }
+
         // 1. Bedrock Floodgate Simple Form
         if (BedrockFormAdapter.isBedrockPlayer(player)) {
             if (BedrockFormAdapter.openMultiActionForm(plugin, player, item, title, description, buttons, exitButton)) {
@@ -1246,7 +1251,15 @@ public class NativeDialogAdapter {
         if (callback == null) return;
         InvocationHandler handler = (proxy, method, args) -> {
             if (method.getName().equals("handle")) {
-                Bukkit.getScheduler().runTask(plugin, callback);
+                if (Bukkit.isPrimaryThread()) {
+                    try {
+                        callback.run();
+                    } catch (Throwable t) {
+                        plugin.getLogger().warning("[NativeDialogAdapter] NightCore button callback error: " + t.getMessage());
+                    }
+                } else {
+                    Bukkit.getScheduler().runTask(plugin, callback);
+                }
             }
             return null;
         };
@@ -1361,7 +1374,15 @@ public class NativeDialogAdapter {
                 return "PaperActionCallback@" + Integer.toHexString(System.identityHashCode(proxy));
             }
             if (callback != null) {
-                Bukkit.getScheduler().runTask(plugin, callback);
+                if (Bukkit.isPrimaryThread()) {
+                    try {
+                        callback.run();
+                    } catch (Throwable t) {
+                        plugin.getLogger().warning("[NativeDialogAdapter] Paper button callback error: " + t.getMessage());
+                    }
+                } else {
+                    Bukkit.getScheduler().runTask(plugin, callback);
+                }
             }
             return null;
         };

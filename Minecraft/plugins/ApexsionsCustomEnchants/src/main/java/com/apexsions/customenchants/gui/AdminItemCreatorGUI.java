@@ -2,6 +2,7 @@ package com.apexsions.customenchants.gui;
 
 import com.apexsions.core.kit.KitStatType;
 import com.apexsions.customenchants.ApexsionsCustomEnchantsPlugin;
+import com.apexsions.customenchants.gui.dialog.ItemEditDialogFlow;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
@@ -756,7 +757,8 @@ public class AdminItemCreatorGUI implements InventoryHolder {
             } else {
                 player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1.0f, 1.2f);
                 this.isNavigatingSubGUI = true;
-                new ItemModifierGUI(plugin, player, placed, slot, this).open();
+                player.closeInventory();
+                ItemEditDialogFlow.openRoot(plugin, player, placed, slot, this);
             }
         }
     }
@@ -806,7 +808,8 @@ public class AdminItemCreatorGUI implements InventoryHolder {
             } else {
                 player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1.0f, 1.2f);
                 this.isNavigatingSubGUI = true;
-                new ItemModifierGUI(plugin, player, placed, slot, this).open();
+                player.closeInventory();
+                ItemEditDialogFlow.openRoot(plugin, player, placed, slot, this);
             }
         }
     }
