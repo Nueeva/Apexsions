@@ -1,13 +1,16 @@
 package su.nightexpress.excellentcrates.editor.crate;
 
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.MenuType;
 import org.jetbrains.annotations.NotNull;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import su.nightexpress.excellentcrates.CratesPlugin;
 import su.nightexpress.excellentcrates.api.crate.Reward;
 import su.nightexpress.excellentcrates.api.crate.RewardType;
@@ -62,15 +65,6 @@ public class RewardListMenu extends LinkedMenu<CratesPlugin, RewardListMenu.Data
         .appendClick("Klik untuk buka Dialog GUI")
         .build();
 
-    private static final IconLocale LOCALE_EMPTY_SLOT = LangEntry.iconBuilder("Editor.Button.Rewards.EmptySlot")
-        .accentColor(GREEN)
-        .name(GREEN.and(BOLD).wrap("➕ Slot Kosong (Tambah Reward)"))
-        .appendInfo("Klik slot ini dengan item di kursor Anda,")
-        .appendInfo("atau klik langsung item di inventory Anda,")
-        .appendInfo("untuk menambahkan reward baru ke crate.")
-        .br()
-        .appendClick("Klik untuk menambah item")
-        .build();
 
     private static final IconLocale LOCALE_SORTING = LangEntry.iconBuilder("Editor.Button.Rewards.Sorting")
         .name("Sort Rewards")
@@ -121,13 +115,6 @@ public class RewardListMenu extends LinkedMenu<CratesPlugin, RewardListMenu.Data
 
         this.addItem(MenuItem.buildNextPage(this, 41));
         this.addItem(MenuItem.buildPreviousPage(this, 39));
-
-        this.addItem(NightItem.fromType(Material.GRAY_STAINED_GLASS_PANE)
-            .setHideTooltip(true)
-            .toMenuItem()
-            .setSlots(IntStream.range(0, 36).toArray())
-            .setPriority(-1)
-        );
 
         this.addItem(NightItem.fromType(Material.BLACK_STAINED_GLASS_PANE)
             .setHideTooltip(true)
@@ -233,30 +220,45 @@ public class RewardListMenu extends LinkedMenu<CratesPlugin, RewardListMenu.Data
         );
 
         this.autoFill(viewer);
-
-        int rewardCount = data.crate.getRewards().size();
-        if (rewardCount < 36) {
-            viewer.addItem(NightItem.fromType(Material.LIME_STAINED_GLASS_PANE)
-                .localized(LOCALE_EMPTY_SLOT)
-                .toMenuItem().setSlots(rewardCount).setHandler((viewer1, event) -> {
-                    Player player = viewer1.getPlayer();
-                    ItemStack cursor = event.getCursor();
-                    if (cursor != null && !cursor.getType().isAir()) {
-                        ItemStack copy = new ItemStack(cursor);
-                        event.getView().setCursor(null);
-                        Players.addItem(player, copy);
-                        this.dialogs.show(player, RewardDialogs.CREATION, new RewardCreationDialog.Data(data.crate, copy), () -> this.flush(player));
-                    } else {
-                        player.sendMessage(net.kyori.adventure.text.minimessage.MiniMessage.miniMessage().deserialize("<yellow>Pegang item di kursor Anda lalu klik slot ini, atau klik langsung item di inventory Anda untuk menambahkan reward!</yellow>"));
-                    }
-                }).build()
-            );
-        }
     }
 
     @Override
     protected void onReady(@NotNull MenuViewer viewer, @NotNull Inventory inventory) {
 
+    }
+
+    @Override
+    public void onDrag(@NotNull MenuViewer viewer, @NotNull InventoryDragEvent event) {
+        super.onDrag(viewer, event);
+
+        ItemStack dragged = event.getOldCursor();
+        if (dragged == null || dragged.getType().isAir()) return;
+
+        Data data = this.getLink(viewer);
+        Player player = viewer.getPlayer();
+
+        boolean added = false;
+        for (int rawSlot : event.getRawSlots()) {
+            if (rawSlot >= 0 && rawSlot < 36) {
+                ItemStack current = event.getView().getTopInventory().getItem(rawSlot);
+                if (current == null || current.getType().isAir()) {
+                    event.setCancelled(true);
+                    ItemStack toAdd = dragged.clone();
+                    AdaptedItem adapt = ItemHelper.adapt(toAdd, true);
+                    Reward reward = RewardFactory.wizardCreation(this.plugin, data.crate, toAdd, RewardType.ITEM, adapt);
+                    data.crate.addReward(reward);
+                    data.crate.markDirty();
+                    added = true;
+                    break;
+                }
+            }
+        }
+
+        if (added) {
+            player.sendMessage(MiniMessage.miniMessage().deserialize("<green>✓ Berhasil menambahkan item ke reward crate!</green>"));
+            player.playSound(player.getLocation(), Sound.ENTITY_ITEM_PICKUP, 1.0f, 1.2f);
+            this.runNextTick(() -> this.flush(viewer));
+        }
     }
 
     @Override
@@ -266,42 +268,40 @@ public class RewardListMenu extends LinkedMenu<CratesPlugin, RewardListMenu.Data
         Data data = this.getLink(viewer);
         Player player = viewer.getPlayer();
 
-        if (result.isInventory()) {
-            if (data.massMode) {
-                ItemStack itemStack = event.getCurrentItem();
-                if (itemStack == null || itemStack.getType().isAir()) return;
-
-                AdaptedItem adapt = ItemHelper.adapt(itemStack, true);
-                Reward reward = RewardFactory.wizardCreation(this.plugin, data.crate, itemStack, data.massModeType, adapt);
-                data.crate.addReward(reward);
-                data.crate.markDirty();
-                this.runNextTick(() -> this.flush(viewer));
-                return;
-            }
-
-            // Direct click on player inventory item: opens RewardCreationDialog without anvil drag!
+        // 1. Shift-click from player inventory into empty crate reward slot
+        if (result.isInventory() && event.isShiftClick()) {
             ItemStack clicked = event.getCurrentItem();
             if (clicked != null && !clicked.getType().isAir()) {
                 event.setCancelled(true);
-                ItemStack copy = new ItemStack(clicked);
-                this.dialogs.show(player, RewardDialogs.CREATION, new RewardCreationDialog.Data(data.crate, copy), () -> this.flush(player));
+                ItemStack toAdd = clicked.clone();
+                AdaptedItem adapt = ItemHelper.adapt(toAdd, true);
+                Reward reward = RewardFactory.wizardCreation(this.plugin, data.crate, toAdd, RewardType.ITEM, adapt);
+                data.crate.addReward(reward);
+                data.crate.markDirty();
+                player.sendMessage(MiniMessage.miniMessage().deserialize("<green>✓ Berhasil menambahkan item ke reward crate!</green>"));
+                player.playSound(player.getLocation(), Sound.ENTITY_ITEM_PICKUP, 1.0f, 1.2f);
+                this.runNextTick(() -> this.flush(viewer));
                 return;
             }
-        } else {
-            // Click inside crate rewards grid (slots 0 to 35)
-            int slot = event.getRawSlot();
-            if (slot >= 0 && slot < 36) {
-                ItemStack cursor = event.getCursor();
-                if (cursor != null && !cursor.getType().isAir()) {
-                    ItemStack current = event.getCurrentItem();
-                    if (current == null || current.getType() == Material.GRAY_STAINED_GLASS_PANE || current.getType() == Material.LIME_STAINED_GLASS_PANE) {
-                        event.setCancelled(true);
-                        ItemStack copy = new ItemStack(cursor);
-                        event.getView().setCursor(null);
-                        Players.addItem(player, copy);
-                        this.dialogs.show(player, RewardDialogs.CREATION, new RewardCreationDialog.Data(data.crate, copy), () -> this.flush(player));
-                    }
-                }
+        }
+
+        // 2. Drag / Drop / Place from cursor directly into an empty slot in slots 0 to 35
+        int rawSlot = event.getRawSlot();
+        if (rawSlot >= 0 && rawSlot < 36) {
+            ItemStack current = event.getCurrentItem();
+            boolean isEmptySlot = (current == null || current.getType().isAir());
+            ItemStack cursor = event.getCursor();
+            if (isEmptySlot && cursor != null && !cursor.getType().isAir()) {
+                event.setCancelled(true);
+                ItemStack toAdd = cursor.clone();
+                AdaptedItem adapt = ItemHelper.adapt(toAdd, true);
+                Reward reward = RewardFactory.wizardCreation(this.plugin, data.crate, toAdd, RewardType.ITEM, adapt);
+                data.crate.addReward(reward);
+                data.crate.markDirty();
+                player.sendMessage(MiniMessage.miniMessage().deserialize("<green>✓ Berhasil menambahkan item ke reward crate!</green>"));
+                player.playSound(player.getLocation(), Sound.ENTITY_ITEM_PICKUP, 1.0f, 1.2f);
+                this.runNextTick(() -> this.flush(viewer));
+                return;
             }
         }
     }
