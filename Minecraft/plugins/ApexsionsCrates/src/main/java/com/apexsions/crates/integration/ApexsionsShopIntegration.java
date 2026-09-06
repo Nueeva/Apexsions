@@ -1,4 +1,4 @@
-package com.apexsions.crate.integration;
+package com.apexsions.crates.integration;
 
 import com.apexsions.shop.api.ApexsionsShopAPI;
 import com.apexsions.shop.api.ApexsionsShopProvider;

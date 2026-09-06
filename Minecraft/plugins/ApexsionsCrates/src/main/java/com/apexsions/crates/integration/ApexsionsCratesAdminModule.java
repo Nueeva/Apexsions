@@ -1,7 +1,7 @@
-package com.apexsions.crate.integration;
+package com.apexsions.crates.integration;
 
 import com.apexsions.core.admin.AdminModule;
-import com.apexsions.crate.ApexsionsCratePlugin;
+import com.apexsions.crates.ApexsionsCratesPlugin;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Material;
@@ -9,12 +9,12 @@ import org.bukkit.entity.Player;
 
 import java.util.List;
 
-public class ApexsionsCrateAdminModule implements AdminModule {
+public class ApexsionsCratesAdminModule implements AdminModule {
 
-    private final ApexsionsCratePlugin plugin;
+    private final ApexsionsCratesPlugin plugin;
     private final MiniMessage mm = MiniMessage.miniMessage();
 
-    public ApexsionsCrateAdminModule(ApexsionsCratePlugin plugin) {
+    public ApexsionsCratesAdminModule(ApexsionsCratesPlugin plugin) {
         this.plugin = plugin;
     }
 

@@ -1,11 +1,11 @@
-package com.apexsions.crate.integration;
+package com.apexsions.crates.integration;
 
 import com.apexsions.battlepass.api.ApexsionsBattlepassAPI;
 import com.apexsions.battlepass.api.ApexsionsBattlepassProvider;
 import com.apexsions.core.api.ApexsionsCoreAPI;
 import com.apexsions.core.api.ApexsionsCoreProvider;
 import com.apexsions.core.level.xp.XpSource;
-import com.apexsions.crate.ApexsionsCratePlugin;
+import com.apexsions.crates.ApexsionsCratesPlugin;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -16,10 +16,10 @@ import su.nightexpress.excellentcrates.api.event.CrateOpenEvent;
 
 public class ApexsionsIntegrationListener implements Listener {
 
-    private final ApexsionsCratePlugin plugin;
+    private final ApexsionsCratesPlugin plugin;
     private final MiniMessage mm = MiniMessage.miniMessage();
 
-    public ApexsionsIntegrationListener(ApexsionsCratePlugin plugin) {
+    public ApexsionsIntegrationListener(ApexsionsCratesPlugin plugin) {
         this.plugin = plugin;
     }
 

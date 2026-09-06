@@ -38,8 +38,7 @@ import java.util.List;
 import java.util.stream.IntStream;
 
 import static su.nightexpress.excellentcrates.Placeholders.*;
-import static su.nightexpress.nightcore.util.text.night.wrapper.TagWrappers.GREEN;
-import static su.nightexpress.nightcore.util.text.night.wrapper.TagWrappers.SOFT_YELLOW;
+import static su.nightexpress.nightcore.util.text.night.wrapper.TagWrappers.*;
 
 public class RewardListMenu extends LinkedMenu<CratesPlugin, RewardListMenu.Data> implements Filled<Reward>, LangContainer {
 
@@ -53,10 +52,24 @@ public class RewardListMenu extends LinkedMenu<CratesPlugin, RewardListMenu.Data
         .appendClick("Click to edit")
         .build();
 
-    private static final IconLocale LOCALE_CREATION = LangEntry.iconBuilder("Editor.Button.Rewards.Creation")
+    private static final IconLocale LOCALE_CURRENCY_REWARD = LangEntry.iconBuilder("Editor.Button.Rewards.Currency")
         .accentColor(GREEN)
-        .name("Reward Creation")
-        .appendInfo("Drop item on " + GREEN.wrap("this") + " button", "to create a new reward of it.")
+        .name(SOFT_YELLOW.and(BOLD).wrap("💰 Tambah Reward Currency"))
+        .appendInfo("Tambahkan hadiah saldo ekonomi:")
+        .appendInfo(GREEN.wrap("• Rupiah (IDR):") + " Item Glowing Emerald")
+        .appendInfo(AQUA.wrap("• Diamond:") + " Item Glowing Diamond")
+        .br()
+        .appendClick("Klik untuk buka Dialog GUI")
+        .build();
+
+    private static final IconLocale LOCALE_EMPTY_SLOT = LangEntry.iconBuilder("Editor.Button.Rewards.EmptySlot")
+        .accentColor(GREEN)
+        .name(GREEN.and(BOLD).wrap("➕ Slot Kosong (Tambah Reward)"))
+        .appendInfo("Klik slot ini dengan item di kursor Anda,")
+        .appendInfo("atau klik langsung item di inventory Anda,")
+        .appendInfo("untuk menambahkan reward baru ke crate.")
+        .br()
+        .appendClick("Klik untuk menambah item")
         .build();
 
     private static final IconLocale LOCALE_SORTING = LangEntry.iconBuilder("Editor.Button.Rewards.Sorting")
@@ -123,16 +136,9 @@ public class RewardListMenu extends LinkedMenu<CratesPlugin, RewardListMenu.Data
             .setPriority(-1)
         );
 
-        this.addItem(Material.ANVIL, LOCALE_CREATION, 42, (viewer, event, data) -> {
+        this.addItem(Material.ANVIL, LOCALE_CURRENCY_REWARD, 42, (viewer, event, data) -> {
             Player player = viewer.getPlayer();
-            ItemStack cursor = event.getCursor();
-            if (cursor == null || cursor.getType().isAir()) return;
-
-            ItemStack copy = new ItemStack(cursor);
-            event.getView().setCursor(null);
-            Players.addItem(player, copy);
-
-            this.dialogs.show(player, RewardDialogs.CREATION, new RewardCreationDialog.Data(data.crate, copy), () -> this.flush(player));
+            this.dialogs.show(player, RewardDialogs.CURRENCY, data.crate, () -> this.flush(player));
         });
 
         this.addItem(Material.COMPARATOR, LOCALE_SORTING, 38, (viewer, event, data) -> {
@@ -227,6 +233,25 @@ public class RewardListMenu extends LinkedMenu<CratesPlugin, RewardListMenu.Data
         );
 
         this.autoFill(viewer);
+
+        int rewardCount = data.crate.getRewards().size();
+        if (rewardCount < 36) {
+            viewer.addItem(NightItem.fromType(Material.LIME_STAINED_GLASS_PANE)
+                .localized(LOCALE_EMPTY_SLOT)
+                .toMenuItem().setSlots(rewardCount).setHandler((viewer1, event) -> {
+                    Player player = viewer1.getPlayer();
+                    ItemStack cursor = event.getCursor();
+                    if (cursor != null && !cursor.getType().isAir()) {
+                        ItemStack copy = new ItemStack(cursor);
+                        event.getView().setCursor(null);
+                        Players.addItem(player, copy);
+                        this.dialogs.show(player, RewardDialogs.CREATION, new RewardCreationDialog.Data(data.crate, copy), () -> this.flush(player));
+                    } else {
+                        player.sendMessage(net.kyori.adventure.text.minimessage.MiniMessage.miniMessage().deserialize("<yellow>Pegang item di kursor Anda lalu klik slot ini, atau klik langsung item di inventory Anda untuk menambahkan reward!</yellow>"));
+                    }
+                }).build()
+            );
+        }
     }
 
     @Override
@@ -238,21 +263,46 @@ public class RewardListMenu extends LinkedMenu<CratesPlugin, RewardListMenu.Data
     public void onClick(@NotNull MenuViewer viewer, @NotNull ClickResult result, @NotNull InventoryClickEvent event) {
         super.onClick(viewer, result, event);
 
-        if (!result.isInventory()) return;
-
         Data data = this.getLink(viewer);
-        if (!data.massMode) {
-            event.setCancelled(false);
-            return;
+        Player player = viewer.getPlayer();
+
+        if (result.isInventory()) {
+            if (data.massMode) {
+                ItemStack itemStack = event.getCurrentItem();
+                if (itemStack == null || itemStack.getType().isAir()) return;
+
+                AdaptedItem adapt = ItemHelper.adapt(itemStack, true);
+                Reward reward = RewardFactory.wizardCreation(this.plugin, data.crate, itemStack, data.massModeType, adapt);
+                data.crate.addReward(reward);
+                data.crate.markDirty();
+                this.runNextTick(() -> this.flush(viewer));
+                return;
+            }
+
+            // Direct click on player inventory item: opens RewardCreationDialog without anvil drag!
+            ItemStack clicked = event.getCurrentItem();
+            if (clicked != null && !clicked.getType().isAir()) {
+                event.setCancelled(true);
+                ItemStack copy = new ItemStack(clicked);
+                this.dialogs.show(player, RewardDialogs.CREATION, new RewardCreationDialog.Data(data.crate, copy), () -> this.flush(player));
+                return;
+            }
+        } else {
+            // Click inside crate rewards grid (slots 0 to 35)
+            int slot = event.getRawSlot();
+            if (slot >= 0 && slot < 36) {
+                ItemStack cursor = event.getCursor();
+                if (cursor != null && !cursor.getType().isAir()) {
+                    ItemStack current = event.getCurrentItem();
+                    if (current == null || current.getType() == Material.GRAY_STAINED_GLASS_PANE || current.getType() == Material.LIME_STAINED_GLASS_PANE) {
+                        event.setCancelled(true);
+                        ItemStack copy = new ItemStack(cursor);
+                        event.getView().setCursor(null);
+                        Players.addItem(player, copy);
+                        this.dialogs.show(player, RewardDialogs.CREATION, new RewardCreationDialog.Data(data.crate, copy), () -> this.flush(player));
+                    }
+                }
+            }
         }
-
-        ItemStack itemStack = event.getCurrentItem();
-        if (itemStack == null || itemStack.getType().isAir()) return;
-
-        AdaptedItem adapt = ItemHelper.adapt(itemStack, true);
-        Reward reward = RewardFactory.wizardCreation(this.plugin, data.crate, itemStack, data.massModeType, adapt);
-        data.crate.addReward(reward);
-        data.crate.markDirty();
-        this.runNextTick(() -> this.flush(viewer));
     }
 }

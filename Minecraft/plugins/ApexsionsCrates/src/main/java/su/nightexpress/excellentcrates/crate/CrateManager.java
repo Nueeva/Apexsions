@@ -232,6 +232,7 @@ public class CrateManager extends AbstractManager<CratesPlugin> {
         this.dialogs.register(RewardDialogs.WEIGHT, () -> new RewardWeightDialog(this.plugin));
         this.dialogs.register(RewardDialogs.PERMISSIONS, RewardPermissionsDialog::new);
         this.dialogs.register(RewardDialogs.LIMITS, RewardLimitsDialog::new);
+        this.dialogs.register(RewardDialogs.CURRENCY, () -> new CurrencyRewardDialog(this.plugin));
 
         this.dialogs.register(CostDialogs.CREATION, CostCreationDialog::new);
         this.dialogs.register(CostDialogs.NAME, CostNameDialog::new);

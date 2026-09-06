@@ -73,7 +73,7 @@ $allPlugins = @(
     @{ Name = 'ApexsionsShop';           Path = 'plugins\ApexsionsShop' },
     @{ Name = 'ApexsionsMedia';          Path = 'plugins\ApexsionsMedia' },
     @{ Name = 'ApexsionsCustomEnchants'; Path = 'plugins\ApexsionsCustomEnchants' },
-    @{ Name = 'ApexsionsCrate';          Path = 'plugins\ApexsionsCrate' }
+    @{ Name = 'ApexsionsCrates';         Path = 'plugins\ApexsionsCrates' }
 )
 
 function Test-PluginModified {
@@ -123,14 +123,14 @@ if ($All -or ($Plugin.ToLower() -eq 'all')) {
     if ($search -eq 'bp') { $search = 'battlepass' }
     if ($search -eq 'eco') { $search = 'economy' }
     if ($search -eq 'ace' -or $search -eq 'ce' -or $search -eq 'enchants' -or $search -eq 'enchant') { $search = 'customenchants' }
-    if ($search -eq 'crate' -or $search -eq 'crates') { $search = 'crate' }
+    if ($search -eq 'crate' -or $search -eq 'crates') { $search = 'crates' }
     foreach ($p in $allPlugins) {
         if ($p.Name.ToLower().Contains($search)) {
             $targetPlugins += $p
         }
     }
     if ($targetPlugins.Count -eq 0) {
-        Write-Host "Plugin '$Plugin' not found! Available options: Core, Chat, Economy (eco), Battlepass (bp), Shop, Media, CustomEnchants (ace/ce), Crate (crates), all" -ForegroundColor Red
+        Write-Host "Plugin '$Plugin' not found! Available options: Core, Chat, Economy (eco), Battlepass (bp), Shop, Media, CustomEnchants (ace/ce), Crates (crate), all" -ForegroundColor Red
         exit 1
     }
 } else {

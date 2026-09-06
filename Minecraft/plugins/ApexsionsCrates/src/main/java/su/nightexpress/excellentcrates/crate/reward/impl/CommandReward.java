@@ -87,7 +87,19 @@ public class CommandReward extends AbstractReward {
         Replacer replacer = this.createContentReplacer(player).replace(Placeholders.forPlayerWithPAPI(player));
 
         this.getCommands().forEach(command -> {
-            Players.dispatchCommand(player, replacer.apply(command));
+            String applied = replacer.apply(command);
+            if (applied.startsWith("ecoadmin give ") && com.apexsions.economy.api.ApexsionsEconomyProvider.isAvailable()) {
+                String[] parts = applied.split(" ");
+                if (parts.length >= 5) {
+                    try {
+                        double amt = Double.parseDouble(parts[3]);
+                        String cur = parts[4];
+                        com.apexsions.economy.api.ApexsionsEconomyProvider.get().deposit(player.getUniqueId(), cur, amt);
+                        return;
+                    } catch (Exception ignored) {}
+                }
+            }
+            Players.dispatchCommand(player, applied);
         });
     }
 

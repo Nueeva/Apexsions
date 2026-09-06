@@ -1,26 +1,26 @@
-package com.apexsions.crate;
+package com.apexsions.crates;
 
 import com.apexsions.core.api.ApexsionsCoreProvider;
-import com.apexsions.crate.integration.ApexsionsCrateAdminModule;
-import com.apexsions.crate.integration.ApexsionsIntegrationListener;
+import com.apexsions.crates.integration.ApexsionsCratesAdminModule;
+import com.apexsions.crates.integration.ApexsionsIntegrationListener;
 import org.jetbrains.annotations.NotNull;
 import su.nightexpress.excellentcrates.CratesPlugin;
 import su.nightexpress.excellentcrates.config.Config;
 import su.nightexpress.excellentcrates.config.Perms;
 import su.nightexpress.nightcore.config.PluginDetails;
 
-public class ApexsionsCratePlugin extends CratesPlugin {
+public class ApexsionsCratesPlugin extends CratesPlugin {
 
-    private static ApexsionsCratePlugin instance;
+    private static ApexsionsCratesPlugin instance;
 
-    public static ApexsionsCratePlugin getInstance() {
+    public static ApexsionsCratesPlugin getInstance() {
         return instance;
     }
 
     @Override
     @NotNull
     protected PluginDetails getDefaultDetails() {
-        return PluginDetails.create("ApexsionsCrate", new String[]{"crate", "crates", "apexsionscrate", "ecrates", "excellentcrates", "case", "cases"})
+        return PluginDetails.create("ApexsionsCrates", new String[]{"crate", "crates", "apexsionscrate", "apexsionscrates", "ecrates", "excellentcrates", "case", "cases"})
                 .setConfigClass(Config.class)
                 .setPermissionsClass(Perms.class);
     }
@@ -36,14 +36,14 @@ public class ApexsionsCratePlugin extends CratesPlugin {
         // Register into Master Admin Hub (/admingui)
         if (ApexsionsCoreProvider.isAvailable()) {
             try {
-                ApexsionsCoreProvider.get().registerAdminModule(new ApexsionsCrateAdminModule(this));
-                getLogger().info("Successfully registered ApexsionsCrate into ApexsionsCore Master Admin Hub.");
+                ApexsionsCoreProvider.get().registerAdminModule(new ApexsionsCratesAdminModule(this));
+                getLogger().info("Successfully registered ApexsionsCrates into ApexsionsCore Master Admin Hub.");
             } catch (Exception e) {
                 getLogger().warning("Failed to register into ApexsionsCore Master Admin Hub: " + e.getMessage());
             }
         }
 
-        getLogger().info("ApexsionsCrate v" + getDescription().getVersion() + " enabled successfully with full ecosystem integrations!");
+        getLogger().info("ApexsionsCrates v" + getDescription().getVersion() + " enabled successfully with full ecosystem integrations!");
     }
 
     @Override

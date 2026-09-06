@@ -1,6 +1,6 @@
-main: com.apexsions.crate.ApexsionsCratePlugin
+main: com.apexsions.crates.ApexsionsCratesPlugin
 version: '${project.version}'
-name: ApexsionsCrate
+name: ApexsionsCrates
 author: Apexsions Development Team (Baseline: NightExpress)
 description: Luxury Crate, Key, and Milestone Progression Ecosystem for Apexsions.
 depend: [ nightcore ]

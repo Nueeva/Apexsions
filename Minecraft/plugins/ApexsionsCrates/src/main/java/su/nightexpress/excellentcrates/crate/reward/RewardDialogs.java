@@ -20,4 +20,5 @@ public class RewardDialogs {
     public static final DialogKey<Reward>                    WEIGHT      = new DialogKey<>("reward_weight");
     public static final DialogKey<Reward>                    PERMISSIONS = new DialogKey<>("reward_permissions");
     public static final DialogKey<Reward>                    LIMITS      = new DialogKey<>("reward_limits");
+    public static final DialogKey<Crate>                     CURRENCY    = new DialogKey<>("reward_currency");
 }
