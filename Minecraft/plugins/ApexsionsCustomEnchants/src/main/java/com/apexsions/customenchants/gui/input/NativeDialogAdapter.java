@@ -10,6 +10,7 @@ import org.bukkit.plugin.Plugin;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -965,5 +966,407 @@ public class NativeDialogAdapter {
         } catch (Throwable t) {
             return null;
         }
+    }
+
+    // ==========================================
+    // ITEM MODIFIER DIALOG GUI (ITEM IN TOP CENTER)
+    // ==========================================
+
+    public static boolean showItemModifierDialog(
+            Plugin plugin,
+            Player player,
+            org.bukkit.inventory.ItemStack item,
+            String description,
+            boolean isArmor,
+            boolean isTool,
+            int activeCE,
+            int activeVanilla,
+            Runnable onCustomEnchants,
+            Runnable onVanillaEnchants,
+            Runnable onRenameItem,
+            Runnable onSetBonus,
+            Runnable onRemoveEnchants,
+            Runnable onResetEnchants,
+            Runnable onBack
+    ) {
+        if (player == null || !player.isOnline() || item == null) return false;
+
+        // 1. Bedrock Floodgate Simple Form
+        if (BedrockFormAdapter.isBedrockPlayer(player)) {
+            int totalActive = activeCE + activeVanilla;
+            if (BedrockFormAdapter.openItemModifierForm(
+                    plugin, player, item, description, isArmor, isTool, totalActive,
+                    onCustomEnchants, onVanillaEnchants, onRenameItem, onSetBonus, onRemoveEnchants, onResetEnchants, onBack
+            )) {
+                return true;
+            }
+        }
+
+        // 2. NightCore Native Dialog (Exact engine used by ExcellentCrates on 26.2)
+        if (isNightCoreSupported()) {
+            if (showNightCoreItemModifierDialog(
+                    plugin, player, item, description, isArmor, isTool, activeCE, activeVanilla,
+                    onCustomEnchants, onVanillaEnchants, onRenameItem, onSetBonus, onRemoveEnchants, onResetEnchants, onBack
+            )) {
+                return true;
+            }
+        }
+
+        // 3. Native Paper Dialog API
+        if (isPaperSupported()) {
+            if (showPaperItemModifierDialog(
+                    plugin, player, item, description, isArmor, isTool, activeCE, activeVanilla,
+                    onCustomEnchants, onVanillaEnchants, onRenameItem, onSetBonus, onRemoveEnchants, onResetEnchants, onBack
+            )) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private static boolean showNightCoreItemModifierDialog(
+            Plugin plugin,
+            Player player,
+            org.bukkit.inventory.ItemStack item,
+            String description,
+            boolean isArmor,
+            boolean isTool,
+            int activeCE,
+            int activeVanilla,
+            Runnable onCustomEnchants,
+            Runnable onVanillaEnchants,
+            Runnable onRenameItem,
+            Runnable onSetBonus,
+            Runnable onRemoveEnchants,
+            Runnable onResetEnchants,
+            Runnable onBack
+    ) {
+        try {
+            Class<?> dialogsClass = findClass("su.nightexpress.nightcore.ui.dialog.Dialogs");
+            Class<?> dialogBasesClass = findClass("su.nightexpress.nightcore.ui.dialog.build.DialogBases");
+            Class<?> dialogBodiesClass = findClass("su.nightexpress.nightcore.ui.dialog.build.DialogBodies");
+            Class<?> dialogButtonsClass = findClass("su.nightexpress.nightcore.ui.dialog.build.DialogButtons");
+            Class<?> dialogActionsClass = findClass("su.nightexpress.nightcore.ui.dialog.build.DialogActions");
+            Class<?> dialogTypesClass = findClass("su.nightexpress.nightcore.ui.dialog.build.DialogTypes");
+            Class<?> dialogResponseHandlerClass = findClass("su.nightexpress.nightcore.bridge.dialog.response.DialogResponseHandler");
+            Class<?> wrappedDialogBuilderClass = findClass("su.nightexpress.nightcore.bridge.dialog.wrap.WrappedDialog$Builder", "su.nightexpress.nightcore.bridge.dialog.wrap.WrappedDialog.Builder");
+
+            if (dialogsClass == null || dialogBasesClass == null || dialogBodiesClass == null || dialogButtonsClass == null
+                    || dialogActionsClass == null || dialogTypesClass == null || dialogResponseHandlerClass == null || wrappedDialogBuilderClass == null) {
+                return false;
+            }
+
+            // 1. Item Dialog Body (item rendered at top center)
+            Method itemBodyMethod = null;
+            for (Method m : dialogBodiesClass.getMethods()) {
+                if (m.getName().equals("item") && m.getParameterCount() == 1 && m.getParameterTypes()[0] == org.bukkit.inventory.ItemStack.class) {
+                    itemBodyMethod = m;
+                    break;
+                }
+            }
+            if (itemBodyMethod == null) return false;
+
+            Object itemBodyBuilder = itemBodyMethod.invoke(null, item.clone());
+            String cleanDesc = (description != null && !description.isBlank()) ? description : "Pilih opsi pengaturan item:";
+            Method plainMsgM = dialogBodiesClass.getMethod("plainMessage", String.class);
+            Object plainDesc = plainMsgM.invoke(null, cleanDesc);
+
+            for (Method m : itemBodyBuilder.getClass().getMethods()) {
+                if (m.getName().equals("description") && m.getParameterCount() == 1) {
+                    m.invoke(itemBodyBuilder, plainDesc);
+                    break;
+                }
+            }
+            Object itemBody = itemBodyBuilder.getClass().getMethod("build").invoke(itemBodyBuilder);
+
+            // 2. Base Builder
+            Method baseBuilderM = dialogBasesClass.getMethod("builder", String.class);
+            Object baseBuilder = baseBuilderM.invoke(null, "<gradient:#e74c3c:#f39c12><bold>🛠 EDIT ITEM & ENCHANTS 🛠</bold></gradient>");
+            for (Method m : baseBuilder.getClass().getMethods()) {
+                if (m.getName().equals("body")) {
+                    if (m.getParameterCount() == 1 && List.class.isAssignableFrom(m.getParameterTypes()[0])) {
+                        m.invoke(baseBuilder, List.of(itemBody));
+                        break;
+                    } else if (m.getParameterCount() == 1 && m.getParameterTypes()[0].isArray()) {
+                        Object arr = java.lang.reflect.Array.newInstance(m.getParameterTypes()[0].getComponentType(), 1);
+                        java.lang.reflect.Array.set(arr, 0, itemBody);
+                        m.invoke(baseBuilder, arr);
+                        break;
+                    }
+                }
+            }
+            Object base = baseBuilder.getClass().getMethod("build").invoke(baseBuilder);
+
+            // 3. Action Buttons
+            Method btnActionM = dialogButtonsClass.getMethod("action", String.class, String.class);
+            Method customClickM = dialogActionsClass.getMethod("customClick", String.class);
+
+            List<Object> buttonList = new ArrayList<>();
+
+            buttonList.add(createNightCoreButton(btnActionM, customClickM, "🔮 KELOLA CUSTOM ENCHANTS", "Buka katalog 182 Custom Enchantments", "custom_enchants"));
+            buttonList.add(createNightCoreButton(btnActionM, customClickM, "📜 KELOLA VANILLA ENCHANTS", "Buka katalog sihir Vanilla Minecraft", "vanilla_enchants"));
+            buttonList.add(createNightCoreButton(btnActionM, customClickM, "🏷 UBAH NAMA ITEM", "Ubah nama item via GUI Dialog", "rename_item"));
+
+            if (isArmor) {
+                buttonList.add(createNightCoreButton(btnActionM, customClickM, "🛡 ATUR ARMOR SET BONUS", "Atur bonus 2-piece dan 4-piece visual", "set_bonus"));
+            } else if (isTool) {
+                buttonList.add(createNightCoreButton(btnActionM, customClickM, "⚔ ATUR TOOL SET BONUS", "Atur bonus atribut & sinergi tool", "set_bonus"));
+            }
+
+            int totalActive = activeCE + activeVanilla;
+            if (totalActive > 0) {
+                buttonList.add(createNightCoreButton(btnActionM, customClickM, "✂ HAPUS ENCHANT TERTENTU", "Lepas sihir satu per satu (" + totalActive + " aktif)", "remove_enchant"));
+            }
+
+            buttonList.add(createNightCoreButton(btnActionM, customClickM, "🗑 RESET SEMUA ENCHANT", "Hapus seluruh sihir dari item", "reset_enchants"));
+
+            // 4. Exit / Back Button
+            Object backBtn = createNightCoreButton(btnActionM, customClickM, "⬅ KEMBALI KE ITEM CREATOR", "Simpan dan kembali ke creator", "back");
+
+            // 5. MultiAction Dialog Type
+            Object multiActionBuilder = null;
+            for (Method m : dialogTypesClass.getMethods()) {
+                if (m.getName().equals("multiAction")) {
+                    if (List.class.isAssignableFrom(m.getParameterTypes()[0])) {
+                        multiActionBuilder = m.invoke(null, buttonList);
+                        break;
+                    } else if (m.getParameterTypes()[0].isArray()) {
+                        Object arr = java.lang.reflect.Array.newInstance(m.getParameterTypes()[0].getComponentType(), buttonList.size());
+                        for (int i = 0; i < buttonList.size(); i++) java.lang.reflect.Array.set(arr, i, buttonList.get(i));
+                        multiActionBuilder = m.invoke(null, arr);
+                        break;
+                    }
+                }
+            }
+            if (multiActionBuilder == null) return false;
+
+            for (Method m : multiActionBuilder.getClass().getMethods()) {
+                if (m.getName().equals("exitAction") && m.getParameterCount() == 1) {
+                    m.invoke(multiActionBuilder, backBtn);
+                }
+                if (m.getName().equals("columns") && m.getParameterCount() == 1) {
+                    m.invoke(multiActionBuilder, 2);
+                }
+            }
+            Object dialogType = multiActionBuilder.getClass().getMethod("build").invoke(multiActionBuilder);
+
+            // 6. WrappedDialog Builder & Handlers
+            Object dialogBuilder = wrappedDialogBuilderClass.getDeclaredConstructor().newInstance();
+            for (Method m : dialogBuilder.getClass().getMethods()) {
+                if (m.getName().equals("base") && m.getParameterCount() == 1) {
+                    m.invoke(dialogBuilder, base);
+                }
+                if (m.getName().equals("type") && m.getParameterCount() == 1) {
+                    m.invoke(dialogBuilder, dialogType);
+                }
+            }
+
+            Method handleResponseM = dialogBuilder.getClass().getMethod("handleResponse", String.class, dialogResponseHandlerClass);
+            registerNightCoreHandler(handleResponseM, dialogBuilder, dialogResponseHandlerClass, "custom_enchants", plugin, onCustomEnchants);
+            registerNightCoreHandler(handleResponseM, dialogBuilder, dialogResponseHandlerClass, "vanilla_enchants", plugin, onVanillaEnchants);
+            registerNightCoreHandler(handleResponseM, dialogBuilder, dialogResponseHandlerClass, "rename_item", plugin, onRenameItem);
+            registerNightCoreHandler(handleResponseM, dialogBuilder, dialogResponseHandlerClass, "set_bonus", plugin, onSetBonus);
+            registerNightCoreHandler(handleResponseM, dialogBuilder, dialogResponseHandlerClass, "remove_enchant", plugin, onRemoveEnchants);
+            registerNightCoreHandler(handleResponseM, dialogBuilder, dialogResponseHandlerClass, "reset_enchants", plugin, onResetEnchants);
+            registerNightCoreHandler(handleResponseM, dialogBuilder, dialogResponseHandlerClass, "back", plugin, onBack);
+            registerNightCoreHandler(handleResponseM, dialogBuilder, dialogResponseHandlerClass, "cancel", plugin, onBack);
+
+            // 7. Build and Show
+            Object wrappedDialog = dialogBuilder.getClass().getMethod("build").invoke(dialogBuilder);
+            Method showDialogM = null;
+            for (Method m : dialogsClass.getMethods()) {
+                if (m.getName().equals("showDialog") && m.getParameterCount() == 3) {
+                    showDialogM = m;
+                    break;
+                }
+            }
+            if (showDialogM != null) {
+                showDialogM.invoke(null, player, wrappedDialog, onBack);
+            } else {
+                dialogsClass.getMethod("showDialog", Player.class, wrappedDialog.getClass()).invoke(null, player, wrappedDialog);
+            }
+
+            return true;
+        } catch (Throwable t) {
+            plugin.getLogger().warning("[NativeDialogAdapter] NightCore item modifier dialog error: " + t.getMessage());
+            return false;
+        }
+    }
+
+    private static Object createNightCoreButton(Method btnActionM, Method customClickM, String label, String tooltip, String actionId) throws Exception {
+        Object btnBuilder = btnActionM.invoke(null, label, tooltip);
+        Object action = customClickM.invoke(null, actionId);
+        for (Method m : btnBuilder.getClass().getMethods()) {
+            if (m.getName().equals("action") && m.getParameterCount() == 1) {
+                m.invoke(btnBuilder, action);
+                break;
+            }
+        }
+        return btnBuilder.getClass().getMethod("build").invoke(btnBuilder);
+    }
+
+    private static void registerNightCoreHandler(Method handleResponseM, Object dialogBuilder, Class<?> handlerClass,
+                                                 String actionId, Plugin plugin, Runnable callback) throws Exception {
+        if (callback == null) return;
+        InvocationHandler handler = (proxy, method, args) -> {
+            if (method.getName().equals("handle")) {
+                Bukkit.getScheduler().runTask(plugin, callback);
+            }
+            return null;
+        };
+        Object proxy = Proxy.newProxyInstance(handlerClass.getClassLoader(), new Class<?>[]{handlerClass}, handler);
+        handleResponseM.invoke(dialogBuilder, actionId, proxy);
+    }
+
+    private static boolean showPaperItemModifierDialog(
+            Plugin plugin,
+            Player player,
+            org.bukkit.inventory.ItemStack item,
+            String description,
+            boolean isArmor,
+            boolean isTool,
+            int activeCE,
+            int activeVanilla,
+            Runnable onCustomEnchants,
+            Runnable onVanillaEnchants,
+            Runnable onRenameItem,
+            Runnable onSetBonus,
+            Runnable onRemoveEnchants,
+            Runnable onResetEnchants,
+            Runnable onBack
+    ) {
+        try {
+            Class<?> dialogClass = findClass("io.papermc.paper.dialog.Dialog");
+            Class<?> dialogBaseClass = findClass("io.papermc.paper.registry.data.dialog.DialogBase", "io.papermc.paper.dialog.DialogBase");
+            Class<?> dialogBodyClass = findClass("io.papermc.paper.registry.data.dialog.body.DialogBody", "io.papermc.paper.dialog.DialogBody");
+            Class<?> dialogTypeClass = findClass("io.papermc.paper.registry.data.dialog.type.DialogType", "io.papermc.paper.dialog.DialogType");
+            Class<?> actionButtonClass = findClass("io.papermc.paper.registry.data.dialog.action.ActionButton", "io.papermc.paper.dialog.ActionButton");
+            Class<?> dialogActionClass = findClass("io.papermc.paper.registry.data.dialog.action.DialogAction", "io.papermc.paper.dialog.DialogAction");
+            Class<?> dialogActionCallbackClass = findClass("io.papermc.paper.registry.data.dialog.action.DialogActionCallback", "io.papermc.paper.dialog.DialogActionCallback");
+
+            if (dialogClass == null || dialogBaseClass == null || dialogBodyClass == null || actionButtonClass == null || dialogActionClass == null) {
+                return false;
+            }
+
+            Component titleComp = mm.deserialize("<gradient:#e74c3c:#f39c12><bold>🛠 EDIT ITEM & ENCHANTS 🛠</bold></gradient>");
+            Method baseBuilderMethod = dialogBaseClass.getMethod("builder", Component.class);
+            Object baseBuilder = baseBuilderMethod.invoke(null, titleComp);
+
+            Component descComp = mm.deserialize(description != null ? description : "Pilih opsi pengaturan item:");
+            Method plainDescM = dialogBodyClass.getMethod("plainMessage", Component.class);
+            Object plainDesc = plainDescM.invoke(null, descComp);
+
+            Method itemBodyM = null;
+            for (Method m : dialogBodyClass.getMethods()) {
+                if (m.getName().equals("item")) {
+                    itemBodyM = m;
+                    break;
+                }
+            }
+            if (itemBodyM != null) {
+                Object itemBody = null;
+                if (itemBodyM.getParameterCount() == 6) {
+                    itemBody = itemBodyM.invoke(null, item.clone(), plainDesc, true, true, 200, 200);
+                } else if (itemBodyM.getParameterCount() == 2) {
+                    itemBody = itemBodyM.invoke(null, item.clone(), plainDesc);
+                }
+                if (itemBody != null) {
+                    baseBuilder.getClass().getMethod("body", List.class).invoke(baseBuilder, List.of(itemBody));
+                }
+            }
+
+            Object dialogBase = baseBuilder.getClass().getMethod("build").invoke(baseBuilder);
+
+            Class<?> callbackInterface = dialogActionCallbackClass != null ? dialogActionCallbackClass : java.util.function.BiConsumer.class;
+            List<Object> paperButtons = new ArrayList<>();
+
+            paperButtons.add(createPaperActionButton(actionButtonClass, dialogActionClass, callbackInterface, plugin,
+                    mm.deserialize("<purple><bold>🔮 KELOLA CUSTOM ENCHANTS</bold></purple>"),
+                    mm.deserialize("<gray>Buka katalog 182 Custom Enchantments</gray>"), onCustomEnchants));
+
+            paperButtons.add(createPaperActionButton(actionButtonClass, dialogActionClass, callbackInterface, plugin,
+                    mm.deserialize("<yellow><bold>📜 KELOLA VANILLA ENCHANTS</bold></yellow>"),
+                    mm.deserialize("<gray>Buka katalog sihir Vanilla Minecraft</gray>"), onVanillaEnchants));
+
+            paperButtons.add(createPaperActionButton(actionButtonClass, dialogActionClass, callbackInterface, plugin,
+                    mm.deserialize("<gold><bold>🏷 UBAH NAMA ITEM</bold></gold>"),
+                    mm.deserialize("<gray>Ubah nama item via GUI Dialog</gray>"), onRenameItem));
+
+            if (isArmor) {
+                paperButtons.add(createPaperActionButton(actionButtonClass, dialogActionClass, callbackInterface, plugin,
+                        mm.deserialize("<blue><bold>🛡 ATUR ARMOR SET BONUS</bold></blue>"),
+                        mm.deserialize("<gray>Atur bonus 2-piece dan 4-piece visual</gray>"), onSetBonus));
+            } else if (isTool) {
+                paperButtons.add(createPaperActionButton(actionButtonClass, dialogActionClass, callbackInterface, plugin,
+                        mm.deserialize("<aqua><bold>⚔ ATUR TOOL SET BONUS</bold></aqua>"),
+                        mm.deserialize("<gray>Atur bonus atribut & sinergi tool</gray>"), onSetBonus));
+            }
+
+            int totalActive = activeCE + activeVanilla;
+            if (totalActive > 0) {
+                paperButtons.add(createPaperActionButton(actionButtonClass, dialogActionClass, callbackInterface, plugin,
+                        mm.deserialize("<red><bold>✂ HAPUS ENCHANT TERTENTU</bold></red>"),
+                        mm.deserialize("<gray>Lepas sihir satu per satu (" + totalActive + " aktif)</gray>"), onRemoveEnchants));
+            }
+
+            paperButtons.add(createPaperActionButton(actionButtonClass, dialogActionClass, callbackInterface, plugin,
+                    mm.deserialize("<red><bold>🗑 RESET SEMUA ENCHANT</bold></red>"),
+                    mm.deserialize("<gray>Hapus seluruh sihir dari item</gray>"), onResetEnchants));
+
+            Object backButton = createPaperActionButton(actionButtonClass, dialogActionClass, callbackInterface, plugin,
+                    mm.deserialize("<gray><bold>⬅ KEMBALI KE CREATOR</bold></gray>"),
+                    mm.deserialize("<gray>Simpan dan kembali ke creator</gray>"), onBack);
+
+            Object multiActionType = null;
+            for (Method m : dialogTypeClass.getMethods()) {
+                if (m.getName().equals("multiAction")) {
+                    if (m.getParameterCount() == 3) {
+                        multiActionType = m.invoke(null, paperButtons, backButton, 2);
+                        break;
+                    } else if (m.getParameterCount() == 2) {
+                        multiActionType = m.invoke(null, paperButtons, backButton);
+                        break;
+                    }
+                }
+            }
+            if (multiActionType == null) return false;
+
+            Method createDialogMethod = dialogClass.getMethod("create", dialogBaseClass, dialogTypeClass);
+            Object dialogObj = createDialogMethod.invoke(null, dialogBase, multiActionType);
+
+            Method showDialogMethod = player.getClass().getMethod("showDialog", dialogClass);
+            showDialogMethod.invoke(player, dialogObj);
+            return true;
+        } catch (Throwable t) {
+            plugin.getLogger().warning("[NativeDialogAdapter] Paper item modifier dialog error: " + t.getMessage());
+            return false;
+        }
+    }
+
+    private static Object createPaperActionButton(Class<?> actionButtonClass, Class<?> dialogActionClass, Class<?> callbackInterface,
+                                                  Plugin plugin, Component label, Component tooltip, Runnable callback) throws Exception {
+        InvocationHandler clickHandler = (proxy, method, args) -> {
+            if (method.getDeclaringClass() == Object.class) {
+                if (method.getName().equals("equals")) return proxy == (args != null && args.length > 0 ? args[0] : null);
+                if (method.getName().equals("hashCode")) return System.identityHashCode(proxy);
+                return "PaperActionCallback@" + Integer.toHexString(System.identityHashCode(proxy));
+            }
+            if (callback != null) {
+                Bukkit.getScheduler().runTask(plugin, callback);
+            }
+            return null;
+        };
+        Object callbackProxy = Proxy.newProxyInstance(callbackInterface.getClassLoader(), new Class<?>[]{callbackInterface}, clickHandler);
+        Method customActionMethod = null;
+        for (Method m : dialogActionClass.getMethods()) {
+            if (m.getParameterCount() == 1 && m.getParameterTypes()[0].isAssignableFrom(callbackInterface)) {
+                customActionMethod = m;
+                break;
+            }
+        }
+        Object action = customActionMethod != null ? customActionMethod.invoke(null, callbackProxy) : null;
+        Method createButtonMethod = actionButtonClass.getMethod("create", Component.class, Component.class, int.class, dialogActionClass);
+        return createButtonMethod.invoke(null, label, tooltip, 150, action);
     }
 }

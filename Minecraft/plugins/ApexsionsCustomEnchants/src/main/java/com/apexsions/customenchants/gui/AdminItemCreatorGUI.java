@@ -107,6 +107,10 @@ public class AdminItemCreatorGUI implements InventoryHolder {
         this.isNavigatingSubGUI = navigating;
     }
 
+    public boolean isNavigatingSubGUI() {
+        return this.isNavigatingSubGUI;
+    }
+
     public String getGlobalSetId() {
         return globalSetId;
     }

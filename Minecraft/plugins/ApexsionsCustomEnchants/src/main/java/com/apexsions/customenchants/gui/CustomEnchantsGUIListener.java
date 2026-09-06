@@ -102,10 +102,16 @@ public class CustomEnchantsGUIListener implements Listener {
         // If closing any sub-GUI or external window while having an active creator session
         AdminItemCreatorGUI creator = AdminItemCreatorGUI.getActiveCreator(player.getUniqueId());
         if (creator != null) {
+            if (creator.isNavigatingSubGUI()) {
+                return;
+            }
             org.bukkit.Bukkit.getScheduler().runTask(plugin, () -> {
                 if (!player.isOnline()) {
                     creator.returnAllItems();
                     AdminItemCreatorGUI.unregisterActiveCreator(player.getUniqueId());
+                    return;
+                }
+                if (creator.isNavigatingSubGUI()) {
                     return;
                 }
                 Inventory top = player.getOpenInventory().getTopInventory();

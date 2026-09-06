@@ -168,7 +168,9 @@ public class VanillaEnchantPickerGUI implements InventoryHolder {
 
         if (slot == 45) {
             player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1.0f, 1.0f);
-            if (returnGUI != null) {
+            if (returnGUI instanceof ItemModifierGUI modifier) {
+                modifier.open();
+            } else if (returnGUI != null) {
                 player.openInventory(returnGUI.getInventory());
             } else {
                 player.closeInventory();
