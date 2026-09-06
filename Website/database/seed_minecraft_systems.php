@@ -486,19 +486,19 @@ Apexsions adalah server peradaban Minecraft modular berarsitektur tinggi yang me
 
 | Platform | Alamat IP / Host | Port | Versi Minecraft |
 | :--- | :--- | :--- | :--- |
-| **Java Edition** (PC/Mac/Linux) | `apexsions.my.id` | `25565` (Default) | **1.21.4** |
-| **Bedrock Edition** (Android/iOS/Win10/Console) | `apexsions.my.id` | **`19132`** | Versi Terbaru (Bedrock) |
+| **Java Edition** (PC/Mac/Linux) | `apexsions.my.id` | `32348` | **26.2** (Paper API) |
+| **Bedrock Edition** (Android/iOS/Win10/Console) | `apexsions.my.id` | **`32348`** | Versi Terbaru (Bedrock) |
 
 ---
 
 ### Langkah Mudah Menghubungkan Client
 
-1. **Buka Minecraft Client:** Pastikan Anda menggunakan versi Minecraft **1.21.4**.
+1. **Buka Minecraft Client:** Pastikan Anda menggunakan versi Minecraft **26.2** (Java Edition) atau Bedrock versi terbaru.
 2. **Pilih Menu Multiplayer:** Klik tombol **Add Server** (Tambah Server).
 3. **Masukkan Data Server:**
    - **Server Name:** Apexsions
-   - **Server Address:** `apexsions.my.id`
-   - *(Khusus Bedrock, pastikan Port diisi `19132`)*
+   - **Server Address:** `apexsions.my.id:32348`
+   - *(Khusus Bedrock, pastikan Port diisi `32348`)*
 4. **Masuk ke Dunia:** Klik **Join Server**. Anda akan disambut di lobi utama peradaban.
 5. **Klaim Bekal Awal:** Gunakan perintah `/kit starter` untuk langsung memulai petualangan Anda.
 

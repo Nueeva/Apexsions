@@ -39,12 +39,12 @@
         @endguest
     </div>
 @else
-    <div class="card mb-4 text-center p-3" style="background: var(--apx-bg-surface); border: 1px solid var(--apx-gold-border-subtle);">
+    <div class="card mb-4 text-center p-3" style="background: var(--apx-bg-surface); border: 1px solid var(--apx-gold-border-subtle); border-radius: var(--apx-radius-md);">
         <div class="mb-2 text-warning fs-3">
             <i class="bi bi-person-badge"></i>
         </div>
         <h5 class="mb-1" style="font-family: 'Cinzel', Georgia, serif; color: #ffffff;">Akun Pemain</h5>
-        <p class="small text-muted mb-3">Masuk untuk melihat keranjang dan klaim perk otomatis ke dalam in-game.</p>
+        <p class="small text-muted mb-3" style="line-height: 1.5;">Masuk untuk melihat keranjang dan klaim perk otomatis ke dalam in-game.</p>
         <a href="{{ route('shop.login') }}" class="btn btn-apx-gold">
             <i class="bi bi-box-arrow-in-right me-1"></i> {{ trans('auth.login') }}
         </a>
@@ -75,21 +75,28 @@
 </div>
 
 <!-- Direct WhatsApp Helpdesk Widget -->
-<div class="card mb-4" style="background: var(--apx-bg-surface); border: 1px solid var(--apx-gold-border-subtle);">
-    <div class="card-header py-2 px-3 small text-white fw-bold d-flex align-items-center justify-content-between" style="background: rgba(34, 197, 94, 0.08);">
+<div class="card mb-4" style="background: var(--apx-bg-surface); border: 1px solid var(--apx-gold-border-subtle); border-radius: var(--apx-radius-md);">
+    <div class="card-header py-2 px-3 small text-white fw-bold d-flex align-items-center justify-content-between" style="background: rgba(34, 197, 94, 0.08); border-bottom: 1px solid rgba(34, 197, 94, 0.2);">
         <span><i class="bi bi-whatsapp text-success me-1"></i> BANTUAN &amp; FOUNDER</span>
         <span class="badge bg-success bg-opacity-25 text-success font-monospace" style="font-size: 0.65rem;">ONLINE</span>
     </div>
     <div class="card-body p-3">
-        <p class="small text-muted mb-2" style="font-size: 0.8rem; line-height: 1.4;">Butuh panduan donasi atau konfirmasi manual? Hubungi salah satu Founder resmi kami:</p>
-        <div class="d-grid gap-1">
-            @foreach(config('services.whatsapp.admins', []) as $admin)
+        <p class="small text-muted mb-3" style="font-size: 0.8rem; line-height: 1.4;">Butuh panduan donasi atau konfirmasi manual? Hubungi salah satu Founder resmi kami:</p>
+        <div class="d-grid gap-2">
+            @php
+                $sidebarAdmins = config('services.whatsapp.admins', [
+                    ['name' => 'Rifqi', 'number' => '6281212994597', 'role' => 'Founder'],
+                    ['name' => 'Friell', 'number' => '6285883161047', 'role' => 'Founder'],
+                    ['name' => 'Favian', 'number' => '6287729112281', 'role' => 'Founder'],
+                ]);
+            @endphp
+            @foreach($sidebarAdmins as $admin)
                 @php
                     $cleanNum = preg_replace('/[^0-9]/', '', $admin['number']);
                 @endphp
-                <a href="https://wa.me/{{ $cleanNum }}?text={{ rawurlencode('Halo Admin ' . $admin['name'] . ' Apexsions, saya ingin konsultasi atau pesan paket Webstore.') }}" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-success d-flex align-items-center justify-content-between px-2 py-1" style="font-size: 0.78rem;">
+                <a href="https://wa.me/{{ $cleanNum }}?text={{ rawurlencode('Halo Founder ' . $admin['name'] . ' Apexsions, saya ingin konsultasi atau memesan paket Webstore.') }}" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-success d-flex align-items-center justify-content-between px-2 py-2" style="font-size: 0.8rem;">
                     <span><i class="bi bi-whatsapp me-1"></i> WA {{ $admin['name'] }}</span>
-                    <span class="badge bg-secondary bg-opacity-25 text-white font-monospace" style="font-size: 0.65rem;">{{ $admin['role'] }}</span>
+                    <span class="badge bg-secondary bg-opacity-25 text-white font-monospace" style="font-size: 0.65rem;">{{ $admin['role'] ?? 'Founder' }}</span>
                 </a>
             @endforeach
         </div>
@@ -98,8 +105,8 @@
 
 <!-- Monthly Server Goal Widget -->
 @if($goal >= 0)
-    <div class="card mb-4" style="background: var(--apx-bg-surface); border: 1px solid var(--apx-gold-border-subtle);">
-        <div class="card-header">
+    <div class="card mb-4" style="background: var(--apx-bg-surface); border: 1px solid var(--apx-gold-border-subtle); border-radius: var(--apx-radius-md);">
+        <div class="card-header" style="background: var(--apx-bg-surface-raised); border-bottom: 1px solid var(--apx-border);">
             <i class="bi bi-graph-up text-warning me-1"></i> {{ trans('shop::messages.goal.title') }}
         </div>
         <div class="card-body">
@@ -116,8 +123,8 @@
 
 <!-- Top Donator Widget -->
 @if($topCustomer !== null)
-    <div class="card mb-4" style="background: var(--apx-bg-surface); border: 1px solid var(--apx-gold-border-subtle);">
-        <div class="card-header">
+    <div class="card mb-4" style="background: var(--apx-bg-surface); border: 1px solid var(--apx-gold-border-subtle); border-radius: var(--apx-radius-md);">
+        <div class="card-header" style="background: var(--apx-bg-surface-raised); border-bottom: 1px solid var(--apx-border);">
             <i class="bi bi-trophy-fill text-warning me-1"></i> {{ trans('shop::messages.top.title') }}
         </div>
         <div class="card-body d-flex align-items-center gap-3">
@@ -135,13 +142,13 @@
 
 <!-- Recent Payments Widget -->
 @if($recentPayments !== null)
-    <div class="card mb-4" style="background: var(--apx-bg-surface); border: 1px solid var(--apx-gold-border-subtle);">
-        <div class="card-header">
+    <div class="card mb-4" style="background: var(--apx-bg-surface); border: 1px solid var(--apx-gold-border-subtle); border-radius: var(--apx-radius-md);">
+        <div class="card-header" style="background: var(--apx-bg-surface-raised); border-bottom: 1px solid var(--apx-border);">
             <i class="bi bi-clock-history text-warning me-1"></i> {{ trans('shop::messages.recent.title') }}
         </div>
         <div class="list-group list-group-flush">
             @forelse($recentPayments as $payment)
-                <div class="list-group-item d-flex align-items-center gap-2 px-3 py-2">
+                <div class="list-group-item d-flex align-items-center gap-2 px-3 py-2" style="background: var(--apx-bg-surface); border-color: rgba(255, 255, 255, 0.06);">
                     <img src="{{ $payment->user->getAvatar(36) }}" class="rounded" alt="{{ $payment->user->name }}" width="32">
                     <div class="flex-grow-1 overflow-hidden">
                         <div class="text-truncate fw-bold small text-white">{{ $payment->user->name }}</div>
@@ -154,7 +161,7 @@
                     @endif
                 </div>
             @empty
-                <div class="list-group-item text-muted small text-center py-3">
+                <div class="list-group-item text-muted small text-center py-3" style="background: var(--apx-bg-surface);">
                     {{ trans('shop::messages.recent.empty') }}
                 </div>
             @endforelse

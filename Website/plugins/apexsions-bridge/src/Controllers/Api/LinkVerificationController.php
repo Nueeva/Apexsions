@@ -191,7 +191,7 @@ class LinkVerificationController extends Controller
             'max_players' => (int) ($validated['max_players'] ?? 500),
             'player_list' => $validated['players'] ?? [],
             'tps' => (float) ($validated['tps'] ?? 20.0),
-            'version' => $validated['version'] ?? '1.21.4',
+            'version' => $validated['version'] ?? '26.2',
             'last_heartbeat' => now()->timestamp,
         ];
 
@@ -226,7 +226,7 @@ class LinkVerificationController extends Controller
                         'max_players' => (int) ($data['max_players'] ?? 200),
                         'player_list' => [],
                         'tps' => 20.0,
-                        'version' => '1.21.4',
+                        'version' => '26.2',
                         'last_heartbeat' => now()->timestamp,
                     ];
                     return response()->json($payload);
@@ -248,7 +248,7 @@ class LinkVerificationController extends Controller
                     'max_players' => (int) ($res['players']['max'] ?? 200),
                     'player_list' => array_column($res['players']['sample'] ?? [], 'name'),
                     'tps' => 20.0,
-                    'version' => $res['version']['name'] ?? '1.21.4',
+                    'version' => $res['version']['name'] ?? '26.2',
                     'last_heartbeat' => now()->timestamp,
                 ];
             } catch (\Throwable $e) {
@@ -266,7 +266,7 @@ class LinkVerificationController extends Controller
             'max_players' => 200,
             'player_list' => [],
             'tps' => 20.0,
-            'version' => '1.21.4',
+            'version' => '26.2',
             'last_heartbeat' => null,
         ]);
     }

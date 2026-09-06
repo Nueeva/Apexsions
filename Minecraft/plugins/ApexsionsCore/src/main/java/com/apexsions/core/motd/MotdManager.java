@@ -29,7 +29,7 @@ public class MotdManager implements Listener {
             return;
         }
 
-        String line1 = config.getString("line-1", config.getString("motd.line-1", "      <gradient:#f1c40f:#e67e22><bold>✦ APEXSIONS KINGDOM ✦</bold></gradient> <gray>•</gray> <aqua><bold>[1.21.4]</bold></aqua>"));
+        String line1 = config.getString("line-1", config.getString("motd.line-1", "      <gradient:#f1c40f:#e67e22><bold>✦ APEXSIONS ✦</bold></gradient> <gray>•</gray> <aqua><bold>[26.2]</bold></aqua>"));
         List<String> line2List = config.contains("lines-2") ? config.getStringList("lines-2") : config.getStringList("motd.lines-2");
         String line2;
         if (line2List == null || line2List.isEmpty()) {

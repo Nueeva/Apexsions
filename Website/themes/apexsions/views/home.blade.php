@@ -71,7 +71,7 @@
             <div class="apx-infra-item apx-copyable" data-apx-copy="32348" role="button" tabindex="0" title="Klik atau tekan Enter untuk menyalin Port Bedrock" aria-label="Salin Port Server Bedrock">
                 <span class="apx-infra-label">BEDROCK</span>
                 <span class="apx-infra-val font-monospace">32348</span>
-                <span class="apx-infra-meta">&bull; v<span id="apxVersion">1.21.4</span></span>
+                <span class="apx-infra-meta">&bull; v<span id="apxVersion">26.2</span></span>
             </div>
         </div>
     </div>
@@ -657,6 +657,158 @@
     </div>
 </section>
 
+<!-- Section: ARSITEKTUR & EKOSISTEM SERVER 26.2 (7 Plugins + Paper API + Java 21) -->
+<section class="apx-section py-5" id="architecture" style="background: linear-gradient(180deg, var(--apx-bg-deep) 0%, var(--apx-bg-base) 100%); border-top: 1px solid var(--apx-gold-border-subtle);">
+    <div class="container py-2">
+        <div class="text-center mb-5">
+            <div class="apx-section-kicker mb-2">INFRASTRUKTUR TEKNOLOGI</div>
+            <h2 class="apx-world-title mb-2">
+                Arsitektur Server &amp; Ekosistem Modular 26.2
+            </h2>
+            <p class="text-muted mx-auto" style="max-width: 680px; font-size: 1rem; line-height: 1.7;">
+                Apexsions dirancang di atas <strong>Paper API Minecraft 26.2</strong> dan <strong>Java 21 LTS</strong>. Tujuh plugin modular karya mandiri menggerakkan seluruh pilar kedaulatan, ekonomi atomik, dan sihir penempaan secara instan dan tanpa lag.
+            </p>
+        </div>
+
+        <!-- 7 Plugins Architecture Grid -->
+        <div class="row g-4 mb-4">
+            <!-- 1. Paper 26.2 & Java 21 Core Runtime -->
+            <div class="col-lg-4 col-md-6">
+                <div class="apx-card-panel h-100 p-4" style="background: var(--apx-bg-surface); border: 1px solid var(--apx-gold-border-subtle); border-radius: var(--apx-radius-md);">
+                    <div class="d-flex align-items-center gap-3 mb-3">
+                        <div class="d-flex align-items-center justify-content-center" style="width: 44px; height: 44px; border-radius: 10px; background: rgba(59, 130, 246, 0.15); color: #60a5fa; font-size: 1.3rem; border: 1px solid rgba(59, 130, 246, 0.3);">
+                            <i class="bi bi-cpu-fill"></i>
+                        </div>
+                        <div>
+                            <div class="text-dim small font-monospace" style="font-size: 0.72rem;">RUNTIME CORE</div>
+                            <h4 class="h6 mb-0 text-white fw-bold">Paper 26.2 &bull; Java 21</h4>
+                        </div>
+                    </div>
+                    <p class="text-muted small mb-0" style="line-height: 1.6;">
+                        Arsitektur chunk asinkron generasi terbaru, mitigasi packet loss, dan latensi ultra-rendah untuk crossplay mulus Java &amp; Bedrock Geyser.
+                    </p>
+                </div>
+            </div>
+
+            <!-- 2. ApexsionsCore -->
+            <div class="col-lg-4 col-md-6">
+                <div class="apx-card-panel h-100 p-4" style="background: var(--apx-bg-surface); border: 1px solid var(--apx-gold-border-subtle); border-radius: var(--apx-radius-md);">
+                    <div class="d-flex align-items-center gap-3 mb-3">
+                        <div class="d-flex align-items-center justify-content-center" style="width: 44px; height: 44px; border-radius: 10px; background: rgba(245, 158, 11, 0.15); color: var(--apx-gold); font-size: 1.3rem; border: 1px solid var(--apx-gold-border);">
+                            <i class="bi bi-shield-shaded"></i>
+                        </div>
+                        <div>
+                            <div class="text-dim small font-monospace" style="font-size: 0.72rem;">KEDAULATAN &amp; PERANG</div>
+                            <h4 class="h6 mb-0 text-white fw-bold">ApexsionsCore</h4>
+                        </div>
+                    </div>
+                    <p class="text-muted small mb-0" style="line-height: 1.6;">
+                        Tiga kerajaan otonom, progresi pemain 100 level, sistem perang wilayah mingguan (Kingdom War), RTP, Combat Tag, dan inspektur master.
+                    </p>
+                </div>
+            </div>
+
+            <!-- 3. ApexsionsChat -->
+            <div class="col-lg-4 col-md-6">
+                <div class="apx-card-panel h-100 p-4" style="background: var(--apx-bg-surface); border: 1px solid var(--apx-gold-border-subtle); border-radius: var(--apx-radius-md);">
+                    <div class="d-flex align-items-center gap-3 mb-3">
+                        <div class="d-flex align-items-center justify-content-center" style="width: 44px; height: 44px; border-radius: 10px; background: rgba(168, 85, 247, 0.15); color: #c084fc; font-size: 1.3rem; border: 1px solid rgba(168, 85, 247, 0.3);">
+                            <i class="bi bi-chat-dots-fill"></i>
+                        </div>
+                        <div>
+                            <div class="text-dim small font-monospace" style="font-size: 0.72rem;">KOMUNIKASI MODERN</div>
+                            <h4 class="h6 mb-0 text-white fw-bold">ApexsionsChat</h4>
+                        </div>
+                    </div>
+                    <p class="text-muted small mb-0" style="line-height: 1.6;">
+                        Kyori Adventure &amp; MiniMessage, 6 kanal percakapan terisolasi, kartu profil sosial interaktif, dan meja pelaporan staf terpadu.
+                    </p>
+                </div>
+            </div>
+
+            <!-- 4. ApexsionsEconomy -->
+            <div class="col-lg-4 col-md-6">
+                <div class="apx-card-panel h-100 p-4" style="background: var(--apx-bg-surface); border: 1px solid var(--apx-gold-border-subtle); border-radius: var(--apx-radius-md);">
+                    <div class="d-flex align-items-center gap-3 mb-3">
+                        <div class="d-flex align-items-center justify-content-center" style="width: 44px; height: 44px; border-radius: 10px; background: rgba(34, 197, 94, 0.15); color: #4ade80; font-size: 1.3rem; border: 1px solid rgba(34, 197, 94, 0.3);">
+                            <i class="bi bi-bank2"></i>
+                        </div>
+                        <div>
+                            <div class="text-dim small font-monospace" style="font-size: 0.72rem;">FINANSIAL ATOMIK</div>
+                            <h4 class="h6 mb-0 text-white fw-bold">ApexsionsEconomy</h4>
+                        </div>
+                    </div>
+                    <p class="text-muted small mb-0" style="line-height: 1.6;">
+                        Transaksi multi-mata uang ACID atomik anti-duplikasi, rekening bersama (Escrow) rumah lelang, dan barter aman antar-pemain.
+                    </p>
+                </div>
+            </div>
+
+            <!-- 5. ApexsionsShop -->
+            <div class="col-lg-4 col-md-6">
+                <div class="apx-card-panel h-100 p-4" style="background: var(--apx-bg-surface); border: 1px solid var(--apx-gold-border-subtle); border-radius: var(--apx-radius-md);">
+                    <div class="d-flex align-items-center gap-3 mb-3">
+                        <div class="d-flex align-items-center justify-content-center" style="width: 44px; height: 44px; border-radius: 10px; background: rgba(234, 179, 8, 0.15); color: #facc15; font-size: 1.3rem; border: 1px solid rgba(234, 179, 8, 0.3);">
+                            <i class="bi bi-shop"></i>
+                        </div>
+                        <div>
+                            <div class="text-dim small font-monospace" style="font-size: 0.72rem;">PASAR DINAMIS</div>
+                            <h4 class="h6 mb-0 text-white fw-bold">ApexsionsShop</h4>
+                        </div>
+                    </div>
+                    <p class="text-muted small mb-0" style="line-height: 1.6;">
+                        Pasar komoditas dinamis berbasis penawaran-permintaan real-time, tren fluktuasi harga pasar, dan GUI penjualan kilat (/sellgui).
+                    </p>
+                </div>
+            </div>
+
+            <!-- 6. ApexsionsCustomEnchants -->
+            <div class="col-lg-4 col-md-6">
+                <div class="apx-card-panel h-100 p-4" style="background: var(--apx-bg-surface); border: 1px solid var(--apx-gold-border-subtle); border-radius: var(--apx-radius-md);">
+                    <div class="d-flex align-items-center gap-3 mb-3">
+                        <div class="d-flex align-items-center justify-content-center" style="width: 44px; height: 44px; border-radius: 10px; background: rgba(236, 72, 153, 0.15); color: #f472b6; font-size: 1.3rem; border: 1px solid rgba(236, 72, 153, 0.3);">
+                            <i class="bi bi-magic"></i>
+                        </div>
+                        <div>
+                            <div class="text-dim small font-monospace" style="font-size: 0.72rem;">SIHIR &amp; PENEMPAAN</div>
+                            <h4 class="h6 mb-0 text-white fw-bold">ApexsionsCustomEnchants</h4>
+                        </div>
+                    </div>
+                    <p class="text-muted small mb-0" style="line-height: 1.6;">
+                        182 Custom Enchants 7 tingkatan, opsi Vanilla Enchant hingga Level 20, dan antarmuka Native Dialog zero-flicker untuk Java &amp; Bedrock.
+                    </p>
+                </div>
+            </div>
+
+            <!-- 7. ApexsionsBattlepass & Media -->
+            <div class="col-lg-12">
+                <div class="apx-card-panel p-4" style="background: linear-gradient(135deg, rgba(20, 28, 46, 0.9) 0%, rgba(11, 16, 26, 0.95) 100%); border: 1px solid var(--apx-gold-border-subtle); border-radius: var(--apx-radius-md);">
+                    <div class="row align-items-center gy-3">
+                        <div class="col-md-6 d-flex align-items-center gap-3">
+                            <div class="d-flex align-items-center justify-content-center flex-shrink-0" style="width: 48px; height: 48px; border-radius: 12px; background: rgba(245, 158, 11, 0.15); color: var(--apx-gold); font-size: 1.4rem; border: 1px solid var(--apx-gold-border);">
+                                <i class="bi bi-trophy-fill"></i>
+                            </div>
+                            <div>
+                                <h4 class="h6 mb-1 text-white fw-bold">ApexsionsBattlepass &bull; Musim Kedaulatan</h4>
+                                <p class="text-muted small mb-0">100 level jalur hadiah musiman, sistem rotasi toko berputar (/abp shop), dan misi berkala.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6 d-flex align-items-center gap-3">
+                            <div class="d-flex align-items-center justify-content-center flex-shrink-0" style="width: 48px; height: 48px; border-radius: 12px; background: rgba(56, 189, 248, 0.15); color: #38bdf8; font-size: 1.4rem; border: 1px solid rgba(56, 189, 248, 0.3);">
+                                <i class="bi bi-badge-ad-fill"></i>
+                            </div>
+                            <div>
+                                <h4 class="h6 mb-1 text-white fw-bold">ApexsionsMedia &bull; In-Game Multimedia</h4>
+                                <p class="text-muted small mb-0">Banner resolusi tinggi, logo interaktif di lobi, efek pendaran raytrace, dan tautan pintar.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
 <!-- Connected Rite of Passage (Onboarding Stepper Section) -->
 <section class="apx-section py-5" id="getting-started" style="background: var(--apx-bg-base); border-top: 1px solid var(--apx-border);">
     <div class="container py-3">
@@ -673,9 +825,9 @@
             <!-- Step 1: Pasang Klien -->
             <div class="apx-step-monolith">
                 <div class="apx-step-phase-label mb-3">TAHAP PERTAMA</div>
-                <h4 class="apx-step-title">Klien Minecraft 1.21.4</h4>
+                <h4 class="apx-step-title">Klien Minecraft 26.2</h4>
                 <p class="apx-step-desc">
-                    Gunakan Minecraft versi resmi atau launcher pilihanmu pada versi <strong>1.21.4</strong>. Mendukung penuh koneksi <strong>Java Edition &amp; Bedrock Edition</strong>.
+                    Gunakan Minecraft versi resmi atau launcher pilihanmu pada versi <strong>26.2</strong>. Mendukung penuh koneksi <strong>Java Edition &amp; Bedrock Edition</strong>.
                 </p>
                 <div class="apx-step-action mt-auto">
                     <span class="text-dim small">Java &amp; Bedrock Crossplay</span>

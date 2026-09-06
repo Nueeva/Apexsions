@@ -24,10 +24,10 @@
                     </div>
                 </a>
                 <p class="apx-footer-desc text-muted small pe-lg-4 mb-4" style="line-height: 1.8;">
-                    Apexsions adalah peradaban berdaulat yang dibentuk oleh komunitas. Tatanan kerajaan otonom, sistem pasar atomik, dan progres kasta sosial yang kompetitif di atas Minecraft 1.21.4.
+                    Apexsions adalah peradaban berdaulat yang dibentuk oleh komunitas. Tatanan kerajaan otonom, sistem pasar atomik, dan progres kasta sosial yang kompetitif di atas Minecraft 26.2.
                 </p>
                 <div class="apx-footer-verbs small text-uppercase" style="letter-spacing: 0.16em; color: #64748b; font-weight: 600; font-size: 0.72rem;">
-                    MINECRAFT 1.21.4 &bull; REALM BERDAULAT
+                    MINECRAFT 26.2 &bull; REALM BERDAULAT
                 </div>
             </div>
 

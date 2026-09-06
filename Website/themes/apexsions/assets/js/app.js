@@ -103,7 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
             })
             .then(data => {
                 if (data && typeof data.online !== 'undefined') {
-                    applyStatus(Boolean(data.online), data.players ?? 0, data.max_players ?? 200, data.version || '1.21.4');
+                    applyStatus(Boolean(data.online), data.players ?? 0, data.max_players ?? 200, data.version || '26.2');
                 } else {
                     throw new Error('Invalid bridge payload');
                 }
@@ -114,13 +114,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     .then(res => res.json())
                     .then(mcData => {
                         if (mcData && mcData.online) {
-                            applyStatus(true, mcData.players?.online ?? 0, mcData.players?.max ?? 200, mcData.version?.name_clean || '1.21.4');
+                            applyStatus(true, mcData.players?.online ?? 0, mcData.players?.max ?? 200, mcData.version?.name_clean || '26.2');
                         } else {
-                            applyStatus(false, 0, 200, '1.21.4');
+                            applyStatus(false, 0, 200, '26.2');
                         }
                     })
                     .catch(() => {
-                        applyStatus(false, 0, 200, '1.21.4');
+                        applyStatus(false, 0, 200, '26.2');
                     });
             });
     };

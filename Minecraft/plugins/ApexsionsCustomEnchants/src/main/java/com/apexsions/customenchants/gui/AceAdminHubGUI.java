@@ -51,7 +51,7 @@ public class AceAdminHubGUI implements InventoryHolder {
 
         // Header slot 4: Overview
         inventory.setItem(4, createItem(Material.NETHER_STAR, "<gradient:#f1c40f:#e67e22><bold>⚡ APEXSIONS CUSTOM ENCHANTS ⚡</bold></gradient>", List.of(
-                "<gray>Versi:</gray> <gold>v1.0.0 (Paper 1.21.4)</gold>",
+                "<gray>Versi:</gray> <gold>v1.0.0 (Paper 26.2)</gold>",
                 "<gray>Total Sihir:</gray> <yellow>" + plugin.getEnchantmentRegistry().getAllEnchantments().size() + " Enchantments</yellow>",
                 "<gray>Total Tier:</gray> <yellow>7 Kasta Groups</yellow>",
                 "",

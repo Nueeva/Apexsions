@@ -57,7 +57,7 @@ return [
         'admins' => [
             [
                 'name' => env('WHATSAPP_ADMIN_1_NAME', 'Rifqi'),
-                'number' => env('WHATSAPP_ADMIN_1_NUMBER', '6285883161047'),
+                'number' => env('WHATSAPP_ADMIN_1_NUMBER', '6281212994597'),
                 'role' => 'Founder',
             ],
             [
@@ -67,7 +67,7 @@ return [
             ],
             [
                 'name' => env('WHATSAPP_ADMIN_3_NAME', 'Favian'),
-                'number' => env('WHATSAPP_ADMIN_3_NUMBER', '6285883161047'),
+                'number' => env('WHATSAPP_ADMIN_3_NUMBER', '6287729112281'),
                 'role' => 'Founder',
             ],
         ],

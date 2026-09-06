@@ -64,7 +64,7 @@ public class CoreAdminSubGUI implements InventoryHolder {
             hMeta.displayName(mm.deserialize("<gradient:#f1c40f:#e67e22><bold>👑 KONTROL SENTRAL APEXSIONS CORE 👑</bold></gradient>"));
             hMeta.lore(List.of(
                     mm.deserialize("<gray>Plugin:</gray> <gold>ApexsionsCore v1.0.0</gold>"),
-                    mm.deserialize("<gray>Status:</gray> <green>● Running (Paper 1.21.4)</green>"),
+                    mm.deserialize("<gray>Status:</gray> <green>● Running (Paper 26.2)</green>"),
                     mm.deserialize("<gray>Total Kerajaan:</gray> <yellow>" + plugin.getRegionManager().getRegions().size() + " Kerajaan</yellow>"),
                     Component.empty(),
                     mm.deserialize("<yellow>Pilih opsi di bawah untuk kontrol kerajaan & navigasi.</yellow>")
