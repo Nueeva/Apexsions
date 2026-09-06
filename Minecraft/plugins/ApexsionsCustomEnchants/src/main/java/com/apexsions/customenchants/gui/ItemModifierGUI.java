@@ -2,6 +2,7 @@ package com.apexsions.customenchants.gui;
 
 import com.apexsions.customenchants.ApexsionsCustomEnchantsPlugin;
 import com.apexsions.customenchants.enchant.CustomEnchant;
+import com.apexsions.customenchants.gui.dialog.ItemEditDialogFlow;
 import com.apexsions.customenchants.gui.input.NativeDialogAdapter;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -60,134 +61,7 @@ public class ItemModifierGUI implements InventoryHolder {
 
     public boolean openDialogModifier() {
         if (item == null || player == null || !player.isOnline()) return false;
-
-        Map<CustomEnchant, Integer> activeCE = plugin.getEnchantmentRegistry().getEnchantsOnItem(item);
-        int activeVanilla = item.getEnchantments().size();
-        boolean isArmor = AdminItemCreatorGUI.isArmor(item);
-        boolean isTool = AdminItemCreatorGUI.isToolOrWeapon(item);
-
-        StringBuilder desc = new StringBuilder();
-        desc.append("<gray>Custom Enchants: <gold>").append(activeCE.size()).append(" sihir aktif</gold></gray>\n");
-        desc.append("<gray>Vanilla Enchants: <aqua>").append(activeVanilla).append(" enchant aktif</aqua></gray>\n");
-
-        if (isArmor) {
-            String sName = (creatorGUI != null) ? creatorGUI.getEffectiveSetName() : "";
-            if (sName != null && !sName.isBlank()) {
-                desc.append("<gray>Armor Set Sinergi: <yellow>").append(sName).append("</yellow></gray>\n");
-            }
-        } else if (isTool) {
-            String cName = (creatorGUI != null) ? creatorGUI.getGlobalSetName() : "";
-            if (cName != null && !cName.isBlank()) {
-                desc.append("<gray>Tool Set Sinergi: <yellow>").append(cName).append("</yellow></gray>\n");
-            }
-        }
-        desc.append("<dark_gray>Pilih menu konfigurasi di bawah:</dark_gray>");
-
-        return NativeDialogAdapter.showItemModifierDialog(
-                plugin,
-                player,
-                item,
-                desc.toString(),
-                isArmor,
-                isTool,
-                activeCE.size(),
-                activeVanilla,
-                () -> {
-                    // Custom Enchants Picker
-                    player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1.0f, 1.2f);
-                    new CustomEnchantPickerGUI(plugin, player, item, this, updated -> {
-                        this.item = updated;
-                        if (creatorGUI != null) creatorGUI.updateItem(sourceSlot, this.item);
-                        this.open();
-                    }).open();
-                },
-                () -> {
-                    // Vanilla Enchants Picker
-                    player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1.0f, 1.2f);
-                    new VanillaEnchantPickerGUI(plugin, player, item, this, updated -> {
-                        this.item = updated;
-                        if (creatorGUI != null) creatorGUI.updateItem(sourceSlot, this.item);
-                        this.open();
-                    }).open();
-                },
-                () -> {
-                    // Rename Item via GUI
-                    player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1.0f, 1.2f);
-                    plugin.getItemRenameManager().startSession(
-                            player,
-                            "Masukkan nama baru untuk item ini (bisa menggunakan & atau MiniMessage):",
-                            newName -> {
-                                ItemMeta meta = item.getItemMeta();
-                                if (meta != null) {
-                                    Component c;
-                                    if (newName.contains("<") && newName.contains(">")) {
-                                        c = mm.deserialize(newName);
-                                    } else if (newName.contains("&")) {
-                                        c = net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer.legacyAmpersand().deserialize(newName);
-                                    } else {
-                                        c = mm.deserialize("<gold><bold>" + newName + "</bold></gold>");
-                                    }
-                                    meta.displayName(c);
-                                    item.setItemMeta(meta);
-                                    if (creatorGUI != null) creatorGUI.updateItem(sourceSlot, item);
-                                    player.sendMessage(mm.deserialize("<green>✓ Nama item berhasil diubah!</green>"));
-                                }
-                                this.open();
-                            },
-                            this::open
-                    );
-                },
-                () -> {
-                    // Armor Set or Tool Bonus Picker
-                    player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1.0f, 1.2f);
-                    if (isArmor) {
-                        String sName = (creatorGUI != null) ? creatorGUI.getEffectiveSetName() : "";
-                        new ArmorSetBonusPickerGUI(plugin, player, item, sName, this, updated -> {
-                            this.item = updated;
-                            if (creatorGUI != null) creatorGUI.updateItem(sourceSlot, this.item);
-                            this.open();
-                        }).open();
-                    } else if (isTool) {
-                        String cId = (creatorGUI != null) ? creatorGUI.getGlobalSetId() : "";
-                        String cName = (creatorGUI != null) ? creatorGUI.getGlobalSetName() : "";
-                        new ToolBonusPickerGUI(plugin, player, item, cId, cName, this, updated -> {
-                            this.item = updated;
-                            if (creatorGUI != null) creatorGUI.updateItem(sourceSlot, this.item);
-                            this.open();
-                        }).open();
-                    }
-                },
-                () -> {
-                    // Selective Enchant Remover
-                    player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1.0f, 1.2f);
-                    new RemoveEnchantsGUI(plugin, player, item, this, updated -> {
-                        this.item = updated;
-                        if (creatorGUI != null) creatorGUI.updateItem(sourceSlot, this.item);
-                        this.open();
-                    }).open();
-                },
-                () -> {
-                    // Reset Enchants
-                    for (CustomEnchant ce : plugin.getEnchantmentRegistry().getAllEnchantments()) {
-                        item = plugin.getEnchantmentRegistry().removeEnchant(item, ce);
-                    }
-                    for (Enchantment ve : new ArrayList<>(item.getEnchantments().keySet())) {
-                        item.removeEnchantment(ve);
-                    }
-                    if (creatorGUI != null) creatorGUI.updateItem(sourceSlot, item);
-                    player.playSound(player.getLocation(), Sound.BLOCK_GRINDSTONE_USE, 1.0f, 1.0f);
-                    player.sendMessage(mm.deserialize("<yellow>Seluruh enchantment berhasil dihapus dari item!</yellow>"));
-                    this.open();
-                },
-                () -> {
-                    // Back to Creator
-                    player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1.0f, 1.0f);
-                    if (creatorGUI != null) {
-                        creatorGUI.updateItem(sourceSlot, item);
-                        creatorGUI.open();
-                    }
-                }
-        );
+        return ItemEditDialogFlow.openRoot(plugin, player, item, sourceSlot, creatorGUI);
     }
 
     public ItemStack getItem() {

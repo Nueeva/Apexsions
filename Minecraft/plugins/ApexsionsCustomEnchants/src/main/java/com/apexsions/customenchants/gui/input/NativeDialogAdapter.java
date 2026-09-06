@@ -971,6 +971,57 @@ public class NativeDialogAdapter {
     // ==========================================
     // ITEM MODIFIER DIALOG GUI (ITEM IN TOP CENTER)
     // ==========================================
+    public static class DialogButtonData {
+        private final String label;
+        private final String tooltip;
+        private final Runnable callback;
+
+        public DialogButtonData(String label, String tooltip, Runnable callback) {
+            this.label = label != null ? label : "";
+            this.tooltip = tooltip != null ? tooltip : "";
+            this.callback = callback;
+        }
+
+        public String getLabel() { return label; }
+        public String getTooltip() { return tooltip; }
+        public Runnable getCallback() { return callback; }
+    }
+
+    public static boolean showMultiActionDialog(
+            Plugin plugin,
+            Player player,
+            org.bukkit.inventory.ItemStack item,
+            String title,
+            String description,
+            List<DialogButtonData> buttons,
+            DialogButtonData exitButton,
+            int columns
+    ) {
+        if (player == null || !player.isOnline() || item == null) return false;
+
+        // 1. Bedrock Floodgate Simple Form
+        if (BedrockFormAdapter.isBedrockPlayer(player)) {
+            if (BedrockFormAdapter.openMultiActionForm(plugin, player, item, title, description, buttons, exitButton)) {
+                return true;
+            }
+        }
+
+        // 2. NightCore Native Dialog (Exact engine used by ExcellentCrates on 26.2)
+        if (isNightCoreSupported()) {
+            if (showNightCoreMultiActionDialog(plugin, player, item, title, description, buttons, exitButton, columns)) {
+                return true;
+            }
+        }
+
+        // 3. Native Paper Dialog API
+        if (isPaperSupported()) {
+            if (showPaperMultiActionDialog(plugin, player, item, title, description, buttons, exitButton, columns)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 
     public static boolean showItemModifierDialog(
             Plugin plugin,
@@ -989,58 +1040,47 @@ public class NativeDialogAdapter {
             Runnable onResetEnchants,
             Runnable onBack
     ) {
-        if (player == null || !player.isOnline() || item == null) return false;
+        List<DialogButtonData> buttons = new ArrayList<>();
+        buttons.add(new DialogButtonData("<purple><bold>🔮 KELOLA CUSTOM ENCHANTS</bold></purple>", "Buka katalog 182 Custom Enchantments", onCustomEnchants));
+        buttons.add(new DialogButtonData("<yellow><bold>📜 KELOLA VANILLA ENCHANTS</bold></yellow>", "Buka katalog sihir Vanilla Minecraft", onVanillaEnchants));
+        buttons.add(new DialogButtonData("<gold><bold>🏷 UBAH NAMA ITEM</bold></gold>", "Ubah nama item via GUI Dialog", onRenameItem));
 
-        // 1. Bedrock Floodgate Simple Form
-        if (BedrockFormAdapter.isBedrockPlayer(player)) {
-            int totalActive = activeCE + activeVanilla;
-            if (BedrockFormAdapter.openItemModifierForm(
-                    plugin, player, item, description, isArmor, isTool, totalActive,
-                    onCustomEnchants, onVanillaEnchants, onRenameItem, onSetBonus, onRemoveEnchants, onResetEnchants, onBack
-            )) {
-                return true;
-            }
+        if (isArmor) {
+            buttons.add(new DialogButtonData("<blue><bold>🛡 ATUR ARMOR SET BONUS</bold></blue>", "Atur bonus 2-piece dan 4-piece visual", onSetBonus));
+        } else if (isTool) {
+            buttons.add(new DialogButtonData("<aqua><bold>⚔ ATUR TOOL SET BONUS</bold></aqua>", "Atur bonus atribut & sinergi tool", onSetBonus));
         }
 
-        // 2. NightCore Native Dialog (Exact engine used by ExcellentCrates on 26.2)
-        if (isNightCoreSupported()) {
-            if (showNightCoreItemModifierDialog(
-                    plugin, player, item, description, isArmor, isTool, activeCE, activeVanilla,
-                    onCustomEnchants, onVanillaEnchants, onRenameItem, onSetBonus, onRemoveEnchants, onResetEnchants, onBack
-            )) {
-                return true;
-            }
+        int totalActive = activeCE + activeVanilla;
+        if (totalActive > 0) {
+            buttons.add(new DialogButtonData("<red><bold>✂ HAPUS ENCHANT TERTENTU</bold></red>", "Lepas sihir satu per satu (" + totalActive + " aktif)", onRemoveEnchants));
         }
 
-        // 3. Native Paper Dialog API
-        if (isPaperSupported()) {
-            if (showPaperItemModifierDialog(
-                    plugin, player, item, description, isArmor, isTool, activeCE, activeVanilla,
-                    onCustomEnchants, onVanillaEnchants, onRenameItem, onSetBonus, onRemoveEnchants, onResetEnchants, onBack
-            )) {
-                return true;
-            }
-        }
+        buttons.add(new DialogButtonData("<red><bold>🗑 RESET SEMUA ENCHANT</bold></red>", "Hapus seluruh sihir dari item", onResetEnchants));
 
-        return false;
+        DialogButtonData exitBtn = new DialogButtonData("<gray><bold>⬅ KEMBALI KE ITEM CREATOR</bold></gray>", "Simpan dan kembali ke creator", onBack);
+
+        return showMultiActionDialog(
+                plugin,
+                player,
+                item,
+                "<gradient:#e74c3c:#f39c12><bold>🛠 EDIT ITEM & ENCHANTS 🛠</bold></gradient>",
+                description,
+                buttons,
+                exitBtn,
+                2
+        );
     }
 
-    private static boolean showNightCoreItemModifierDialog(
+    private static boolean showNightCoreMultiActionDialog(
             Plugin plugin,
             Player player,
             org.bukkit.inventory.ItemStack item,
+            String title,
             String description,
-            boolean isArmor,
-            boolean isTool,
-            int activeCE,
-            int activeVanilla,
-            Runnable onCustomEnchants,
-            Runnable onVanillaEnchants,
-            Runnable onRenameItem,
-            Runnable onSetBonus,
-            Runnable onRemoveEnchants,
-            Runnable onResetEnchants,
-            Runnable onBack
+            List<DialogButtonData> buttons,
+            DialogButtonData exitButton,
+            int columns
     ) {
         try {
             Class<?> dialogsClass = findClass("su.nightexpress.nightcore.ui.dialog.Dialogs");
@@ -1068,7 +1108,7 @@ public class NativeDialogAdapter {
             if (itemBodyMethod == null) return false;
 
             Object itemBodyBuilder = itemBodyMethod.invoke(null, item.clone());
-            String cleanDesc = (description != null && !description.isBlank()) ? description : "Pilih opsi pengaturan item:";
+            String cleanDesc = (description != null && !description.isBlank()) ? description : "";
             Method plainMsgM = dialogBodiesClass.getMethod("plainMessage", String.class);
             Object plainDesc = plainMsgM.invoke(null, cleanDesc);
 
@@ -1082,7 +1122,7 @@ public class NativeDialogAdapter {
 
             // 2. Base Builder
             Method baseBuilderM = dialogBasesClass.getMethod("builder", String.class);
-            Object baseBuilder = baseBuilderM.invoke(null, "<gradient:#e74c3c:#f39c12><bold>🛠 EDIT ITEM & ENCHANTS 🛠</bold></gradient>");
+            Object baseBuilder = baseBuilderM.invoke(null, (title != null && !title.isBlank()) ? title : "APEXSIONS");
             for (Method m : baseBuilder.getClass().getMethods()) {
                 if (m.getName().equals("body")) {
                     if (m.getParameterCount() == 1 && List.class.isAssignableFrom(m.getParameterTypes()[0])) {
@@ -1103,26 +1143,18 @@ public class NativeDialogAdapter {
             Method customClickM = dialogActionsClass.getMethod("customClick", String.class);
 
             List<Object> buttonList = new ArrayList<>();
-
-            buttonList.add(createNightCoreButton(btnActionM, customClickM, "🔮 KELOLA CUSTOM ENCHANTS", "Buka katalog 182 Custom Enchantments", "custom_enchants"));
-            buttonList.add(createNightCoreButton(btnActionM, customClickM, "📜 KELOLA VANILLA ENCHANTS", "Buka katalog sihir Vanilla Minecraft", "vanilla_enchants"));
-            buttonList.add(createNightCoreButton(btnActionM, customClickM, "🏷 UBAH NAMA ITEM", "Ubah nama item via GUI Dialog", "rename_item"));
-
-            if (isArmor) {
-                buttonList.add(createNightCoreButton(btnActionM, customClickM, "🛡 ATUR ARMOR SET BONUS", "Atur bonus 2-piece dan 4-piece visual", "set_bonus"));
-            } else if (isTool) {
-                buttonList.add(createNightCoreButton(btnActionM, customClickM, "⚔ ATUR TOOL SET BONUS", "Atur bonus atribut & sinergi tool", "set_bonus"));
+            if (buttons != null) {
+                for (int i = 0; i < buttons.size(); i++) {
+                    DialogButtonData b = buttons.get(i);
+                    buttonList.add(createNightCoreButton(btnActionM, customClickM, b.getLabel(), b.getTooltip(), "btn_" + i));
+                }
             }
-
-            int totalActive = activeCE + activeVanilla;
-            if (totalActive > 0) {
-                buttonList.add(createNightCoreButton(btnActionM, customClickM, "✂ HAPUS ENCHANT TERTENTU", "Lepas sihir satu per satu (" + totalActive + " aktif)", "remove_enchant"));
-            }
-
-            buttonList.add(createNightCoreButton(btnActionM, customClickM, "🗑 RESET SEMUA ENCHANT", "Hapus seluruh sihir dari item", "reset_enchants"));
 
             // 4. Exit / Back Button
-            Object backBtn = createNightCoreButton(btnActionM, customClickM, "⬅ KEMBALI KE ITEM CREATOR", "Simpan dan kembali ke creator", "back");
+            Object backBtn = null;
+            if (exitButton != null) {
+                backBtn = createNightCoreButton(btnActionM, customClickM, exitButton.getLabel(), exitButton.getTooltip(), "exit_action");
+            }
 
             // 5. MultiAction Dialog Type
             Object multiActionBuilder = null;
@@ -1142,11 +1174,11 @@ public class NativeDialogAdapter {
             if (multiActionBuilder == null) return false;
 
             for (Method m : multiActionBuilder.getClass().getMethods()) {
-                if (m.getName().equals("exitAction") && m.getParameterCount() == 1) {
+                if (m.getName().equals("exitAction") && m.getParameterCount() == 1 && backBtn != null) {
                     m.invoke(multiActionBuilder, backBtn);
                 }
                 if (m.getName().equals("columns") && m.getParameterCount() == 1) {
-                    m.invoke(multiActionBuilder, 2);
+                    m.invoke(multiActionBuilder, Math.max(1, columns));
                 }
             }
             Object dialogType = multiActionBuilder.getClass().getMethod("build").invoke(multiActionBuilder);
@@ -1163,14 +1195,17 @@ public class NativeDialogAdapter {
             }
 
             Method handleResponseM = dialogBuilder.getClass().getMethod("handleResponse", String.class, dialogResponseHandlerClass);
-            registerNightCoreHandler(handleResponseM, dialogBuilder, dialogResponseHandlerClass, "custom_enchants", plugin, onCustomEnchants);
-            registerNightCoreHandler(handleResponseM, dialogBuilder, dialogResponseHandlerClass, "vanilla_enchants", plugin, onVanillaEnchants);
-            registerNightCoreHandler(handleResponseM, dialogBuilder, dialogResponseHandlerClass, "rename_item", plugin, onRenameItem);
-            registerNightCoreHandler(handleResponseM, dialogBuilder, dialogResponseHandlerClass, "set_bonus", plugin, onSetBonus);
-            registerNightCoreHandler(handleResponseM, dialogBuilder, dialogResponseHandlerClass, "remove_enchant", plugin, onRemoveEnchants);
-            registerNightCoreHandler(handleResponseM, dialogBuilder, dialogResponseHandlerClass, "reset_enchants", plugin, onResetEnchants);
-            registerNightCoreHandler(handleResponseM, dialogBuilder, dialogResponseHandlerClass, "back", plugin, onBack);
-            registerNightCoreHandler(handleResponseM, dialogBuilder, dialogResponseHandlerClass, "cancel", plugin, onBack);
+            if (buttons != null) {
+                for (int i = 0; i < buttons.size(); i++) {
+                    DialogButtonData b = buttons.get(i);
+                    registerNightCoreHandler(handleResponseM, dialogBuilder, dialogResponseHandlerClass, "btn_" + i, plugin, b.getCallback());
+                }
+            }
+
+            Runnable exitRunnable = (exitButton != null && exitButton.getCallback() != null) ? exitButton.getCallback() : () -> {};
+            registerNightCoreHandler(handleResponseM, dialogBuilder, dialogResponseHandlerClass, "exit_action", plugin, exitRunnable);
+            registerNightCoreHandler(handleResponseM, dialogBuilder, dialogResponseHandlerClass, "back", plugin, exitRunnable);
+            registerNightCoreHandler(handleResponseM, dialogBuilder, dialogResponseHandlerClass, "cancel", plugin, exitRunnable);
 
             // 7. Build and Show
             Object wrappedDialog = dialogBuilder.getClass().getMethod("build").invoke(dialogBuilder);
@@ -1182,14 +1217,14 @@ public class NativeDialogAdapter {
                 }
             }
             if (showDialogM != null) {
-                showDialogM.invoke(null, player, wrappedDialog, onBack);
+                showDialogM.invoke(null, player, wrappedDialog, exitRunnable);
             } else {
                 dialogsClass.getMethod("showDialog", Player.class, wrappedDialog.getClass()).invoke(null, player, wrappedDialog);
             }
 
             return true;
         } catch (Throwable t) {
-            plugin.getLogger().warning("[NativeDialogAdapter] NightCore item modifier dialog error: " + t.getMessage());
+            plugin.getLogger().warning("[NativeDialogAdapter] NightCore multi-action dialog error: " + t.getMessage());
             return false;
         }
     }
@@ -1219,22 +1254,15 @@ public class NativeDialogAdapter {
         handleResponseM.invoke(dialogBuilder, actionId, proxy);
     }
 
-    private static boolean showPaperItemModifierDialog(
+    private static boolean showPaperMultiActionDialog(
             Plugin plugin,
             Player player,
             org.bukkit.inventory.ItemStack item,
+            String title,
             String description,
-            boolean isArmor,
-            boolean isTool,
-            int activeCE,
-            int activeVanilla,
-            Runnable onCustomEnchants,
-            Runnable onVanillaEnchants,
-            Runnable onRenameItem,
-            Runnable onSetBonus,
-            Runnable onRemoveEnchants,
-            Runnable onResetEnchants,
-            Runnable onBack
+            List<DialogButtonData> buttons,
+            DialogButtonData exitButton,
+            int columns
     ) {
         try {
             Class<?> dialogClass = findClass("io.papermc.paper.dialog.Dialog");
@@ -1249,11 +1277,11 @@ public class NativeDialogAdapter {
                 return false;
             }
 
-            Component titleComp = mm.deserialize("<gradient:#e74c3c:#f39c12><bold>🛠 EDIT ITEM & ENCHANTS 🛠</bold></gradient>");
+            Component titleComp = mm.deserialize((title != null && !title.isBlank()) ? title : "APEXSIONS");
             Method baseBuilderMethod = dialogBaseClass.getMethod("builder", Component.class);
             Object baseBuilder = baseBuilderMethod.invoke(null, titleComp);
 
-            Component descComp = mm.deserialize(description != null ? description : "Pilih opsi pengaturan item:");
+            Component descComp = mm.deserialize((description != null && !description.isBlank()) ? description : "");
             Method plainDescM = dialogBodyClass.getMethod("plainMessage", Component.class);
             Object plainDesc = plainDescM.invoke(null, descComp);
 
@@ -1281,48 +1309,28 @@ public class NativeDialogAdapter {
             Class<?> callbackInterface = dialogActionCallbackClass != null ? dialogActionCallbackClass : java.util.function.BiConsumer.class;
             List<Object> paperButtons = new ArrayList<>();
 
-            paperButtons.add(createPaperActionButton(actionButtonClass, dialogActionClass, callbackInterface, plugin,
-                    mm.deserialize("<purple><bold>🔮 KELOLA CUSTOM ENCHANTS</bold></purple>"),
-                    mm.deserialize("<gray>Buka katalog 182 Custom Enchantments</gray>"), onCustomEnchants));
-
-            paperButtons.add(createPaperActionButton(actionButtonClass, dialogActionClass, callbackInterface, plugin,
-                    mm.deserialize("<yellow><bold>📜 KELOLA VANILLA ENCHANTS</bold></yellow>"),
-                    mm.deserialize("<gray>Buka katalog sihir Vanilla Minecraft</gray>"), onVanillaEnchants));
-
-            paperButtons.add(createPaperActionButton(actionButtonClass, dialogActionClass, callbackInterface, plugin,
-                    mm.deserialize("<gold><bold>🏷 UBAH NAMA ITEM</bold></gold>"),
-                    mm.deserialize("<gray>Ubah nama item via GUI Dialog</gray>"), onRenameItem));
-
-            if (isArmor) {
-                paperButtons.add(createPaperActionButton(actionButtonClass, dialogActionClass, callbackInterface, plugin,
-                        mm.deserialize("<blue><bold>🛡 ATUR ARMOR SET BONUS</bold></blue>"),
-                        mm.deserialize("<gray>Atur bonus 2-piece dan 4-piece visual</gray>"), onSetBonus));
-            } else if (isTool) {
-                paperButtons.add(createPaperActionButton(actionButtonClass, dialogActionClass, callbackInterface, plugin,
-                        mm.deserialize("<aqua><bold>⚔ ATUR TOOL SET BONUS</bold></aqua>"),
-                        mm.deserialize("<gray>Atur bonus atribut & sinergi tool</gray>"), onSetBonus));
+            if (buttons != null) {
+                for (DialogButtonData b : buttons) {
+                    paperButtons.add(createPaperActionButton(actionButtonClass, dialogActionClass, callbackInterface, plugin,
+                            mm.deserialize(b.getLabel()),
+                            mm.deserialize(b.getTooltip()),
+                            b.getCallback()));
+                }
             }
 
-            int totalActive = activeCE + activeVanilla;
-            if (totalActive > 0) {
-                paperButtons.add(createPaperActionButton(actionButtonClass, dialogActionClass, callbackInterface, plugin,
-                        mm.deserialize("<red><bold>✂ HAPUS ENCHANT TERTENTU</bold></red>"),
-                        mm.deserialize("<gray>Lepas sihir satu per satu (" + totalActive + " aktif)</gray>"), onRemoveEnchants));
+            Object backButton = null;
+            if (exitButton != null) {
+                backButton = createPaperActionButton(actionButtonClass, dialogActionClass, callbackInterface, plugin,
+                        mm.deserialize(exitButton.getLabel()),
+                        mm.deserialize(exitButton.getTooltip()),
+                        exitButton.getCallback());
             }
-
-            paperButtons.add(createPaperActionButton(actionButtonClass, dialogActionClass, callbackInterface, plugin,
-                    mm.deserialize("<red><bold>🗑 RESET SEMUA ENCHANT</bold></red>"),
-                    mm.deserialize("<gray>Hapus seluruh sihir dari item</gray>"), onResetEnchants));
-
-            Object backButton = createPaperActionButton(actionButtonClass, dialogActionClass, callbackInterface, plugin,
-                    mm.deserialize("<gray><bold>⬅ KEMBALI KE CREATOR</bold></gray>"),
-                    mm.deserialize("<gray>Simpan dan kembali ke creator</gray>"), onBack);
 
             Object multiActionType = null;
             for (Method m : dialogTypeClass.getMethods()) {
                 if (m.getName().equals("multiAction")) {
                     if (m.getParameterCount() == 3) {
-                        multiActionType = m.invoke(null, paperButtons, backButton, 2);
+                        multiActionType = m.invoke(null, paperButtons, backButton, Math.max(1, columns));
                         break;
                     } else if (m.getParameterCount() == 2) {
                         multiActionType = m.invoke(null, paperButtons, backButton);
@@ -1339,7 +1347,7 @@ public class NativeDialogAdapter {
             showDialogMethod.invoke(player, dialogObj);
             return true;
         } catch (Throwable t) {
-            plugin.getLogger().warning("[NativeDialogAdapter] Paper item modifier dialog error: " + t.getMessage());
+            plugin.getLogger().warning("[NativeDialogAdapter] Paper multi-action dialog error: " + t.getMessage());
             return false;
         }
     }

@@ -4,7 +4,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
+import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import java.util.function.Consumer;
 
@@ -207,6 +211,102 @@ public class BedrockFormAdapter {
                 return null;
             };
             Object cancelProxy = java.lang.reflect.Proxy.newProxyInstance(
+                    Runnable.class.getClassLoader(),
+                    new Class<?>[]{Runnable.class},
+                    cancelHandler
+            );
+            try {
+                builder.getClass().getMethod("closedOrInvalidResultHandler", Runnable.class).invoke(builder, cancelProxy);
+            } catch (NoSuchMethodException ignored) {
+                try {
+                    builder.getClass().getMethod("closedResultHandler", Runnable.class).invoke(builder, cancelProxy);
+                } catch (NoSuchMethodException ignored2) {}
+            }
+
+            Object form = builder.getClass().getMethod("build").invoke(builder);
+            Class<?> formClass = Class.forName("org.geysermc.cumulus.form.Form");
+            apiClass.getMethod("sendForm", UUID.class, formClass).invoke(api, player.getUniqueId(), form);
+            return true;
+        } catch (Throwable t) {
+            return false;
+        }
+    }
+
+    public static boolean openMultiActionForm(
+            Plugin plugin,
+            Player player,
+            org.bukkit.inventory.ItemStack item,
+            String title,
+            String description,
+            List<NativeDialogAdapter.DialogButtonData> buttons,
+            NativeDialogAdapter.DialogButtonData exitButton
+    ) {
+        if (!isBedrockPlayer(player)) return false;
+
+        try {
+            Class<?> apiClass = Class.forName("org.geysermc.floodgate.api.FloodgateApi");
+            Object api = apiClass.getMethod("getInstance").invoke(null);
+
+            Class<?> simpleFormClass = Class.forName("org.geysermc.cumulus.form.SimpleForm");
+            Method builderMethod = simpleFormClass.getMethod("builder");
+            Object builder = builderMethod.invoke(null);
+
+            String cleanTitle = title != null ? title.replaceAll("<[^>]*>", "").replaceAll("§[0-9a-fk-orA-FK-OR]", "") : "APEXSIONS";
+            builder.getClass().getMethod("title", String.class).invoke(builder, cleanTitle);
+
+            String cleanDesc = description != null
+                    ? description.replaceAll("<[^>]*>", "").replaceAll("§[0-9a-fk-orA-FK-OR]", "")
+                    : "";
+            builder.getClass().getMethod("content", String.class).invoke(builder, cleanDesc);
+
+            List<Runnable> actions = new ArrayList<>();
+            if (buttons != null) {
+                for (NativeDialogAdapter.DialogButtonData b : buttons) {
+                    String label = b.getLabel() != null ? b.getLabel().replaceAll("<[^>]*>", "").replaceAll("§[0-9a-fk-orA-FK-OR]", "") : "Opsi";
+                    builder.getClass().getMethod("button", String.class).invoke(builder, label);
+                    actions.add(b.getCallback());
+                }
+            }
+
+            if (exitButton != null) {
+                String exitLabel = exitButton.getLabel() != null ? exitButton.getLabel().replaceAll("<[^>]*>", "").replaceAll("§[0-9a-fk-orA-FK-OR]", "") : "Kembali";
+                builder.getClass().getMethod("button", String.class).invoke(builder, exitLabel);
+                actions.add(exitButton.getCallback());
+            }
+
+            Runnable exitRunnable = (exitButton != null && exitButton.getCallback() != null) ? exitButton.getCallback() : () -> {};
+
+            InvocationHandler validHandler = (proxy, method, args) -> {
+                if (method.getName().equals("accept") || method.getName().equals("handle")) {
+                    Object response = args[0];
+                    if (response != null) {
+                        Method clickedM = response.getClass().getMethod("clickedButtonId");
+                        int clickedId = (Integer) clickedM.invoke(response);
+                        if (clickedId >= 0 && clickedId < actions.size()) {
+                            Runnable r = actions.get(clickedId);
+                            if (r != null) {
+                                Bukkit.getScheduler().runTask(plugin, r);
+                            }
+                        }
+                    }
+                }
+                return null;
+            };
+
+            Class<?> consumerClass = Class.forName("org.geysermc.cumulus.util.FormImage").getClassLoader()
+                    .loadClass("java.util.function.Consumer");
+            Object validProxy = Proxy.newProxyInstance(
+                    consumerClass.getClassLoader(),
+                    new Class<?>[]{consumerClass},
+                    validHandler
+            );
+            builder.getClass().getMethod("validResultHandler", consumerClass).invoke(builder, validProxy);
+
+            InvocationHandler cancelHandler = (proxy, method, args) -> {
+                Bukkit.getScheduler().runTask(plugin, exitRunnable);
+                return null;
+            };
+            Object cancelProxy = Proxy.newProxyInstance(
                     Runnable.class.getClassLoader(),
                     new Class<?>[]{Runnable.class},
                     cancelHandler
