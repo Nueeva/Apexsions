@@ -99,6 +99,9 @@ public class LinkCommand implements CommandExecutor, TabCompleter {
                             Bukkit.broadcast(miniMessage.deserialize("<gradient:#c0392b:#8e1b1b><b>APEXSIONS</b></gradient> <dark_gray>»</dark_gray> <yellow>" + player.getName() + "</yellow> <gray>telah menautkan akunnya ke portal web resmi!</gray>"));
                         }
                     }
+
+                    // Immediately sync full player stats and role to web platform
+                    bridge.syncPlayerAsync(player);
                 } else {
                     player.sendMessage(miniMessage.deserialize("<red><bold>GAGAL:</bold> " + result.message() + "</red>"));
                     try {

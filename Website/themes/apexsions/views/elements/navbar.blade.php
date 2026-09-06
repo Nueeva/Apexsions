@@ -43,6 +43,13 @@
                         </a>
                     </li>
                 @endif
+                @if(Route::has('leaderboard'))
+                    <li class="nav-item">
+                        <a class="nav-link apx-nav-link @if(request()->routeIs('leaderboard')) active @endif" href="{{ route('leaderboard') }}">
+                            Leaderboard
+                        </a>
+                    </li>
+                @endif
                 <li class="nav-item">
                     <a class="nav-link apx-nav-link @if(request()->routeIs('rules')) active @endif" href="{{ route('rules') }}">
                         Peraturan

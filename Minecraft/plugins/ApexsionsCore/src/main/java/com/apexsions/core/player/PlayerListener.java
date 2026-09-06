@@ -55,7 +55,14 @@ public class PlayerListener implements Listener {
             plugin.getLevelManager().reconcileLevel(data, player);
         });
         
-        // 3. First-join guidance
+        // 4. Synchronize player stats with Web Platform after authentication / rank init
+        Bukkit.getScheduler().runTaskLater(plugin, () -> {
+            if (player.isOnline() && plugin.getWebBridgeService() != null) {
+                plugin.getWebBridgeService().syncPlayerAsync(player);
+            }
+        }, 40L);
+
+        // 5. First-join guidance
         if (!player.hasPlayedBefore()) {
             Bukkit.getScheduler().runTaskLater(plugin, () -> {
                 if (player.isOnline()) {
@@ -80,6 +87,9 @@ public class PlayerListener implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void onQuit(PlayerQuitEvent event) {
+        if (plugin.getWebBridgeService() != null) {
+            plugin.getWebBridgeService().syncPlayerAsync(event.getPlayer());
+        }
         plugin.getPlayerDataService().flush(event.getPlayer().getUniqueId());
     }
 }

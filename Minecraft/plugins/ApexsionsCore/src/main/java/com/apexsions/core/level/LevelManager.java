@@ -189,6 +189,11 @@ public class LevelManager {
                 }
             });
         }
+
+        // Synchronize updated level and stats with web platform
+        if (player != null && player.isOnline() && plugin.getWebBridgeService() != null) {
+            plugin.getWebBridgeService().syncPlayerAsync(player);
+        }
     }
 
     public void setLevel(UUID uuid, int level) {
