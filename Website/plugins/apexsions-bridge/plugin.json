@@ -1,0 +1,13 @@
+{
+    "id": "apexsions-bridge",
+    "name": "Apexsions Minecraft Bridge & Identity",
+    "version": "1.0.0",
+    "description": "Multi-identity Minecraft account linking (Java Online, Java Offline, Bedrock Floodgate) and asynchronous delivery queue for Apexsions.",
+    "url": "https://apexsions.my.id",
+    "author": "Apexsions Development Team",
+    "azuriom_api": "1.2.0",
+    "providers": [
+        "\\Azuriom\\Plugin\\ApexsionsBridge\\Providers\\ApexsionsBridgeServiceProvider",
+        "\\Azuriom\\Plugin\\ApexsionsBridge\\Providers\\RouteServiceProvider"
+    ]
+}

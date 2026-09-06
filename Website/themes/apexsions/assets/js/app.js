@@ -97,29 +97,31 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         fetch('/api/apexsions-bridge/status')
-            .then(res => res.json())
+            .then(res => {
+                if (!res.ok) throw new Error('Bridge status HTTP ' + res.status);
+                return res.json();
+            })
             .then(data => {
                 if (data && typeof data.online !== 'undefined') {
-                    applyStatus(data.online, data.players, data.max_players, data.version);
+                    applyStatus(Boolean(data.online), data.players ?? 0, data.max_players ?? 200, data.version || '1.21.4');
                 } else {
-                    // Fallback to mcstatus public lookup
-                    fetch('https://api.mcstatus.io/v2/status/java/apexsions.my.id')
-                        .then(res => res.json())
-                        .then(mcData => {
-                            if (mcData && mcData.online) {
-                                applyStatus(true, mcData.players?.online ?? 0, mcData.players?.max ?? 500, mcData.version?.name_clean ?? '1.21.4');
-                            } else {
-                                applyStatus(false, 0, 500, '1.21.4');
-                            }
-                        })
-                        .catch(() => {
-                            applyStatus(true, 0, 500, '1.21.4');
-                        });
+                    throw new Error('Invalid bridge payload');
                 }
             })
             .catch(() => {
-                // Graceful default
-                applyStatus(true, 0, 500, '1.21.4');
+                // Robust Fallback: mcstatus public lookup with active server port 32348
+                fetch('https://api.mcstatus.io/v2/status/java/apexsions.my.id:32348')
+                    .then(res => res.json())
+                    .then(mcData => {
+                        if (mcData && mcData.online) {
+                            applyStatus(true, mcData.players?.online ?? 0, mcData.players?.max ?? 200, mcData.version?.name_clean || '1.21.4');
+                        } else {
+                            applyStatus(false, 0, 200, '1.21.4');
+                        }
+                    })
+                    .catch(() => {
+                        applyStatus(false, 0, 200, '1.21.4');
+                    });
             });
     };
 

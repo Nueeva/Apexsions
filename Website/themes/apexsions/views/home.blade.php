@@ -42,9 +42,9 @@
                     <a href="#features" class="btn btn-apx-sovereign">
                         JELAJAHI PERADABAN <i class="bi bi-arrow-down ms-2"></i>
                     </a>
-                    <div class="apx-hero-ip-block apx-copyable" data-apx-copy="apexsions.my.id" role="button" tabindex="0" title="Klik atau tekan Enter untuk menyalin IP Java" aria-label="Salin Alamat IP Server Java">
+                    <div class="apx-hero-ip-block apx-copyable" data-apx-copy="apexsions.my.id:32348" role="button" tabindex="0" title="Klik atau tekan Enter untuk menyalin IP Java" aria-label="Salin Alamat IP Server Java">
                         <span class="apx-ip-label">SERVER IP</span>
-                        <span class="apx-ip-address font-monospace">apexsions.my.id</span>
+                        <span class="apx-ip-address font-monospace">apexsions.my.id:32348</span>
                         <i class="bi bi-clipboard apx-ip-icon ms-1"></i>
                     </div>
                 </div>
@@ -58,19 +58,19 @@
                 <span class="apx-pulse-dot" id="apxLiveDot" aria-hidden="true"></span>
                 <span class="apx-infra-status" id="apxLiveBadge">SERVER ONLINE</span>
                 <span class="apx-infra-divider">/</span>
-                <span class="apx-infra-val"><span id="apxOnlinePlayers">0</span> / <span id="apxMaxPlayers">500</span> Warga</span>
+                <span class="apx-infra-val"><span id="apxOnlinePlayers">0</span> / <span id="apxMaxPlayers">200</span> Warga</span>
             </div>
 
             <!-- 2. Java Server IP (Click to copy) -->
-            <div class="apx-infra-item apx-copyable" data-apx-copy="apexsions.my.id" role="button" tabindex="0" title="Klik atau tekan Enter untuk menyalin IP Java" aria-label="Salin Alamat IP Server Java">
+            <div class="apx-infra-item apx-copyable" data-apx-copy="apexsions.my.id:32348" role="button" tabindex="0" title="Klik atau tekan Enter untuk menyalin IP Java" aria-label="Salin Alamat IP Server Java">
                 <span class="apx-infra-label">JAVA</span>
-                <span class="apx-infra-val font-monospace">apexsions.my.id</span>
+                <span class="apx-infra-val font-monospace">apexsions.my.id:32348</span>
             </div>
 
             <!-- 3. Bedrock Port & Version (Click to copy) -->
-            <div class="apx-infra-item apx-copyable" data-apx-copy="19132" role="button" tabindex="0" title="Klik atau tekan Enter untuk menyalin Port Bedrock" aria-label="Salin Port Server Bedrock">
+            <div class="apx-infra-item apx-copyable" data-apx-copy="32348" role="button" tabindex="0" title="Klik atau tekan Enter untuk menyalin Port Bedrock" aria-label="Salin Port Server Bedrock">
                 <span class="apx-infra-label">BEDROCK</span>
-                <span class="apx-infra-val font-monospace">19132</span>
+                <span class="apx-infra-val font-monospace">32348</span>
                 <span class="apx-infra-meta">&bull; v<span id="apxVersion">1.21.4</span></span>
             </div>
         </div>
@@ -687,11 +687,11 @@
                 <div class="apx-step-phase-label mb-3">TAHAP KEDUA</div>
                 <h4 class="apx-step-title">Alamat Server &amp; Port</h4>
                 <p class="apx-step-desc">
-                    Buka menu Multiplayer dan masukkan alamat server <code>apexsions.my.id</code>. Untuk pemain Bedrock, hubungkan melalui Port <code>19132</code>.
+                    Buka menu Multiplayer dan masukkan alamat server <code>apexsions.my.id:32348</code>. Untuk pemain Bedrock, hubungkan melalui Port <code>32348</code>.
                 </p>
                 <div class="apx-step-action mt-auto">
-                    <button type="button" class="btn btn-apx-outline btn-sm w-100 py-2" data-apx-copy="apexsions.my.id" aria-label="Salin Alamat Server">
-                        <i class="bi bi-clipboard me-1"></i> Salin IP &bull; apexsions.my.id
+                    <button type="button" class="btn btn-apx-outline btn-sm w-100 py-2" data-apx-copy="apexsions.my.id:32348" aria-label="Salin Alamat Server">
+                        <i class="bi bi-clipboard me-1"></i> Salin IP &bull; apexsions.my.id:32348
                     </button>
                 </div>
             </div>

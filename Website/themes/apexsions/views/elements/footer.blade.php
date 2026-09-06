@@ -73,9 +73,9 @@
                 </ul>
 
                 <!-- Telemetry Line in Footer (Architectural Box, Click to copy) -->
-                <div class="apx-footer-quick-copy apx-copyable d-inline-flex align-items-center gap-2 px-3 py-2" data-apx-copy="apexsions.my.id" role="button" tabindex="0" title="Klik atau tekan Enter untuk menyalin IP Java" aria-label="Salin Alamat IP Server Java">
+                <div class="apx-footer-quick-copy apx-copyable d-inline-flex align-items-center gap-2 px-3 py-2" data-apx-copy="apexsions.my.id:32348" role="button" tabindex="0" title="Klik atau tekan Enter untuk menyalin IP Java" aria-label="Salin Alamat IP Server Java">
                     <span class="apx-pulse-dot" style="width: 6px; height: 6px;" aria-hidden="true"></span>
-                    <span class="small font-monospace text-white">apexsions.my.id</span>
+                    <span class="small font-monospace text-white">apexsions.my.id:32348</span>
                     <i class="bi bi-clipboard text-dim small ms-1"></i>
                 </div>
             </div>

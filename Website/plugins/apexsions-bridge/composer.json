@@ -1,0 +1,10 @@
+{
+    "name": "apexsions/apexsions-bridge",
+    "type": "azuriom-plugin",
+    "description": "Multi-identity Minecraft account linking and asynchronous delivery queue for Apexsions.",
+    "autoload": {
+        "psr-4": {
+            "Azuriom\\Plugin\\ApexsionsBridge\\": "src/"
+        }
+    }
+}
