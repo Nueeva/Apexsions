@@ -6,13 +6,13 @@ import com.apexsions.core.api.ApexsionsCoreAPI;
 import com.apexsions.core.api.ApexsionsCoreProvider;
 import com.apexsions.core.level.xp.XpSource;
 import com.apexsions.crates.ApexsionsCratesPlugin;
+import com.apexsions.crates.api.CrateOpenEvent;
+import com.apexsions.crates.api.CrateRewardWinEvent;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import su.nightexpress.excellentcrates.api.event.CrateObtainRewardEvent;
-import su.nightexpress.excellentcrates.api.event.CrateOpenEvent;
 
 public class ApexsionsIntegrationListener implements Listener {
 
@@ -32,7 +32,7 @@ public class ApexsionsIntegrationListener implements Listener {
             try {
                 ApexsionsCoreAPI coreAPI = ApexsionsCoreProvider.get();
                 coreAPI.addXp(player.getUniqueId(), 25L, XpSource.CUSTOM);
-                player.sendMessage(mm.deserialize("<gradient:#f1c40f:#e67e22>✦ +25 Core XP</gradient> <gray>(Membuka Crate " + event.getCrate().getName() + ")</gray>"));
+                player.sendMessage(mm.deserialize("<gradient:#f1c40f:#e67e22>✦ +25 Core XP</gradient> <gray>(Membuka Peti " + event.getCrate().getName() + ")</gray>"));
             } catch (Exception ignored) {}
         }
 
@@ -47,25 +47,22 @@ public class ApexsionsIntegrationListener implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onRewardObtain(CrateObtainRewardEvent event) {
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onRewardWin(CrateRewardWinEvent event) {
         Player player = event.getPlayer();
-
-        // Bonus XP on high-tier rewards
-        if (event.getReward() != null) {
-            double weight = event.getReward().getWeight();
-            if (weight > 0 && weight <= 5.0) { // Rare reward (weight <= 5%)
-                if (ApexsionsCoreProvider.isAvailable()) {
-                    try {
-                        ApexsionsCoreProvider.get().addXp(player.getUniqueId(), 100L, XpSource.CUSTOM);
-                        player.sendMessage(mm.deserialize("<gold><bold>★ JACKPOT REWARD! +100 Bonus Core XP!</bold></gold>"));
-                    } catch (Exception ignored) {}
-                }
-                if (ApexsionsBattlepassProvider.isAvailable()) {
-                    try {
-                        ApexsionsBattlepassProvider.get().addPlayerXp(player.getUniqueId(), 50);
-                    } catch (Exception ignored) {}
-                }
+        if (event.getReward().getRarity().getTier() >= 5) { // Legendary or higher
+            if (ApexsionsCoreProvider.isAvailable()) {
+                try {
+                    ApexsionsCoreAPI coreAPI = ApexsionsCoreProvider.get();
+                    coreAPI.addXp(player.getUniqueId(), 100L, XpSource.CUSTOM);
+                    player.sendMessage(mm.deserialize("<gold><bold>★ JACKPOT REWARD! +100 Bonus Core XP!</bold></gold>"));
+                } catch (Exception ignored) {}
+            }
+            if (ApexsionsBattlepassProvider.isAvailable()) {
+                try {
+                    ApexsionsBattlepassAPI bpAPI = ApexsionsBattlepassProvider.get();
+                    bpAPI.addPlayerXp(player.getUniqueId(), 50);
+                } catch (Exception ignored) {}
             }
         }
     }

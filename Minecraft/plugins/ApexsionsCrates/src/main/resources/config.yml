@@ -1,0 +1,34 @@
+# ==============================================================================
+#            APEXSIONS CRATES — LUXURY CRATE & MILESTONE SYSTEM
+# ==============================================================================
+# Brand: Apexsions | Tagline: The Peak Civilizations
+# Native Paper 1.21.4 / 26.2 Engine with MiniMessage Adventure formatting
+
+settings:
+  prefix: "<gradient:#f39c12:#e74c3c><bold>CRATES</bold></gradient> <dark_gray>»</dark_gray> "
+  holograms-enabled: true
+  hologram-height-offset: 1.25
+  instant-skip-permission: "apexsions.crates.skip"
+  broadcast-min-rarity: "LEGENDARY" # COMMON, UNCOMMON, RARE, EPIC, LEGENDARY, MYTHIC, APEX
+
+animation:
+  roulette:
+    spin-ticks: 80 # Total ticks for roulette spin (4 seconds)
+    tick-sound: "BLOCK_NOTE_BLOCK_PLING"
+    win-sound: "UI_TOAST_CHALLENGE_COMPLETE"
+    firework-on-win: true
+  world-chest:
+    particles: "PORTAL"
+    particle-count: 25
+
+database:
+  type: "SQLITE" # SQLITE or POSTGRESQL
+  sqlite:
+    file: "crates_data.db"
+  postgresql:
+    host: "localhost"
+    port: 5432
+    database: "apexsions"
+    username: "postgres"
+    password: "password"
+    ssl: false

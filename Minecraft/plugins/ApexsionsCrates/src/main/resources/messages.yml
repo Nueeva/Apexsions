@@ -1,0 +1,25 @@
+# ==============================================================================
+#                 APEXSIONS CRATES — MESSAGES & LOCALIZATION
+# ==============================================================================
+
+no-permission: "<red>Anda tidak memiliki izin untuk menggunakan fitur peti ini.</red>"
+crate-not-found: "<red>Peti dengan ID <yellow>%crate%</yellow> tidak ditemukan.</red>"
+key-not-found: "<red>Kunci dengan ID <yellow>%key%</yellow> tidak ditemukan.</red>"
+player-not-found: "<red>Pemain <yellow>%player%</yellow> tidak sedang online.</red>"
+need-key: "<red>Anda membutuhkan <yellow>%key%</yellow> untuk membuka peti ini!</red>"
+opening-in-progress: "<red>Anda sedang membuka peti lain! Selesaikan terlebih dahulu.</red>"
+
+# Key operations
+key-given-sender: "<green>Berhasil memberikan <white>%amount%x</white> kunci <yellow>%key%</yellow> ke <aqua>%player%</aqua>.</green>"
+key-given-receiver: "<green>Anda menerima <white>%amount%x</white> kunci <yellow>%key%</yellow>!</green>"
+key-taken-sender: "<yellow>Berhasil menarik <white>%amount%x</white> kunci <yellow>%key%</yellow> dari <aqua>%player%</aqua>.</yellow>"
+key-balance: "<gray>Saldo Kunci Virtual Anda:</gray>"
+
+# Admin commands
+crate-set-success: "<green>Berhasil menautkan blok ini sebagai Peti <yellow>%crate%</yellow>!</green>"
+crate-removed-success: "<yellow>Peti pada lokasi ini berhasil dihapus.</yellow>"
+crate-reload-success: "<green>Seluruh konfigurasi Peti, Kunci, dan Hologram berhasil dimuat ulang!</green>"
+
+# Milestone & win broadcast
+broadcast-win: "<gradient:#f1c40f:#e67e22><bold>CRATES</bold></gradient> <dark_gray>»</dark_gray> <aqua>%player%</aqua> <gray>memenangkan</gray> %reward% <gray>dari Peti</gray> %crate%<gray>!</gray>"
+milestone-reached: "<gradient:#3498db:#2ecc71><bold>MILESTONE TERCAPAI!</bold></gradient> <gray>Anda telah membuka</gray> <yellow>%count%x</yellow> <gray>Peti</gray> %crate%<gray>!</gray>"

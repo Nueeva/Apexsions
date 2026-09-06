@@ -1,0 +1,66 @@
+# ==============================================================================
+#                  APEXSIONS CRATE — NOVICE CRATE PRESET
+# ==============================================================================
+id: "novice"
+name: "<gradient:#2ecc71:#27ae60><bold>PETI NOVICE</bold></gradient>"
+block-material: "CHEST"
+animation-type: "ROULETTE"
+required-key: "novice"
+hologram:
+  enabled: true
+  lines:
+    - "<gradient:#2ecc71:#27ae60><bold>✦ PETI NOVICE PERADABAN ✦</bold></gradient>"
+    - "<gray>Klik-Kiri untuk <yellow>Preview Hadiah</yellow></gray>"
+    - "<gray>Klik-Kanan dengan <green>Kunci Novice</green> untuk Buka</gray>"
+
+milestones:
+  10:
+    name: "<green>Milestone 10 Buka</green>"
+    reward-commands:
+      - "give %player% iron_ingot 32"
+    broadcast: "<gray>✦ %player% mencapai Milestone 10 Peti Novice.</gray>"
+
+rewards:
+  iron_tools:
+    name: "<white><bold>Set Alat Besi Lengkap</bold></white>"
+    rarity: "COMMON"
+    weight: 40.0
+    material: "IRON_SWORD"
+    commands:
+      - "give %player% iron_sword 1"
+      - "give %player% iron_pickaxe 1"
+      - "give %player% iron_axe 1"
+    core-xp: 15
+    battlepass-xp: 10
+
+  starter_coins:
+    name: "<gold><bold>5.000 Apex Coins</bold></gold>"
+    rarity: "UNCOMMON"
+    weight: 35.0
+    material: "GOLD_INGOT"
+    commands:
+      - "eco give %player% 5000"
+    core-xp: 25
+    battlepass-xp: 15
+
+  golden_apples:
+    name: "<yellow><bold>8x Apel Emas</bold></yellow>"
+    rarity: "RARE"
+    weight: 15.0
+    material: "GOLDEN_APPLE"
+    amount: 8
+    commands:
+      - "give %player% golden_apple 8"
+    core-xp: 50
+    battlepass-xp: 30
+
+  luxury_key_drop:
+    name: "<gold><bold>1x Kunci Peti Luxury</bold></gold>"
+    rarity: "EPIC"
+    weight: 10.0
+    material: "TRIPWIRE_HOOK"
+    commands:
+      - "crate key give %player% luxury 1"
+    broadcast: true
+    core-xp: 100
+    battlepass-xp: 50

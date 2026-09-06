@@ -1,15 +1,43 @@
-main: com.apexsions.crates.ApexsionsCratesPlugin
-version: '1.0.0'
 name: ApexsionsCrates
-author: 'Apexsions Development Team (Baseline: NightExpress)'
+version: '1.0.0'
+main: com.apexsions.crates.ApexsionsCratesPlugin
+api-version: '1.21'
+prefix: ApexsionsCrates
+author: Nueeva
 description: Luxury Crate, Key, and Milestone Progression Ecosystem for Apexsions.
-depend: [ nightcore ]
+
 softdepend:
   - ApexsionsCore
   - ApexsionsEconomy
   - ApexsionsShop
   - ApexsionsBattlepass
   - PlaceholderAPI
-  - ProtocolLib
-  - packetevents
-api-version: '1.21'
+
+commands:
+  crate:
+    description: Menu utama player untuk membuka, melihat kunci, dan preview peti hadiah Apexsions.
+    aliases:
+      - crates
+      - case
+      - peti
+    permission: apexsions.crates.use
+    usage: /crate [preview|keys|open]
+  acrates:
+    description: Perintah administratif untuk mengelola Crate, Kunci, Editor, dan Lokasi Peti.
+    aliases:
+      - crateadmin
+      - acrate
+      - cratesadmin
+    permission: apexsions.crates.admin
+    usage: /acrates [editor|key|set|remove|reload|list]
+
+permissions:
+  apexsions.crates.use:
+    description: Akses membuka menu player peti dan preview.
+    default: true
+  apexsions.crates.preview:
+    description: Akses melihat preview reward crate.
+    default: true
+  apexsions.crates.admin:
+    description: Akses penuh administrasi Crate Apexsions.
+    default: op
