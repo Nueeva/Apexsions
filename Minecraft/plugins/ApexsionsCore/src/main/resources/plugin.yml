@@ -14,6 +14,9 @@ softdepend:
   - Multiverse-Core
   - AuthMe
   - Floodgate
+  - nightcore
+  - NightCore
+  - ExcellentCrates
 
 
 commands:

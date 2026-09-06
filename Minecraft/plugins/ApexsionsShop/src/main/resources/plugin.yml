@@ -30,3 +30,8 @@ permissions:
   apexsionsshop.admin:
     description: "Akses admin shop reload dan bypass"
     default: op
+
+softdepend:
+  - nightcore
+  - NightCore
+  - ExcellentCrates

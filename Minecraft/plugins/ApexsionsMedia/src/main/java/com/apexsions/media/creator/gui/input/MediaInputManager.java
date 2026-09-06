@@ -8,19 +8,12 @@ import java.util.function.Consumer;
 public class MediaInputManager {
 
     public static void openInput(Plugin plugin, Player player, String title, String prompt, String defaultText,
+                                 boolean numericOnly, Consumer<String> onInput, Runnable onCancel) {
+        CustomInputTextGUI.open(plugin, player, title, prompt, defaultText, onInput, onCancel);
+    }
+
+    public static void openInput(Plugin plugin, Player player, String title, String prompt, String defaultText,
                                  Consumer<String> onInput, Runnable onCancel) {
-        if (BedrockFormAdapter.isBedrockPlayer(player)) {
-            if (BedrockFormAdapter.openInputForm(plugin, player, title, prompt, defaultText, onInput, onCancel)) {
-                return;
-            }
-        }
-
-        if (NativeDialogAdapter.isSupported()) {
-            if (NativeDialogAdapter.showInput(plugin, player, title, prompt, defaultText, onInput, onCancel)) {
-                return;
-            }
-        }
-
-        new AnvilTextInputGUI(plugin, player, title, prompt, defaultText, onInput, onCancel).open();
+        CustomInputTextGUI.open(plugin, player, title, prompt, defaultText, onInput, onCancel);
     }
 }

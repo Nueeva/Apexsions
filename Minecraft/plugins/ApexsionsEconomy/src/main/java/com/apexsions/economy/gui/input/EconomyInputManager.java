@@ -9,18 +9,11 @@ public class EconomyInputManager {
 
     public static void openInput(Plugin plugin, Player player, String title, String prompt, String defaultText,
                                  boolean numericOnly, Consumer<String> onInput, Runnable onCancel) {
-        if (BedrockFormAdapter.isBedrockPlayer(player)) {
-            if (BedrockFormAdapter.openInputForm(plugin, player, title, prompt, defaultText, onInput, onCancel)) {
-                return;
-            }
-        }
+        CustomInputTextGUI.open(plugin, player, title, prompt, defaultText, onInput, onCancel);
+    }
 
-        if (NativeDialogAdapter.isSupported()) {
-            if (NativeDialogAdapter.showInput(plugin, player, title, prompt, defaultText, onInput, onCancel)) {
-                return;
-            }
-        }
-
-        new AnvilTextInputGUI(plugin, player, title, prompt, defaultText, onInput, onCancel).open();
+    public static void openInput(Plugin plugin, Player player, String title, String prompt, String defaultText,
+                                 Consumer<String> onInput, Runnable onCancel) {
+        CustomInputTextGUI.open(plugin, player, title, prompt, defaultText, onInput, onCancel);
     }
 }

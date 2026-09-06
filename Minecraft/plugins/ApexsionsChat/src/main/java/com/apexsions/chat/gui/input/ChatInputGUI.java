@@ -7,25 +7,19 @@ import java.util.function.Consumer;
 
 /**
  * Unified GUI Input helper for ApexsionsChat.
- * Routes input requests cleanly through Bedrock Forms for Bedrock players,
- * Minecraft 26.2 Dialogs for Java 26.2 players, and AnvilTextInputGUI as fallback.
+ * Routes input requests cleanly through CustomInputTextGUI
+ * (Bedrock Native Forms, Minecraft 26.2 Dialogs, NightCore Dialog API, Paper Dialog API).
+ * NEVER uses chest keypad slots or anvil inventories.
  */
 public class ChatInputGUI {
 
     public static void openInput(Plugin plugin, Player player, String title, String prompt, String defaultText,
                                  Consumer<String> onInput, Runnable onCancel) {
-        if (BedrockFormAdapter.isBedrockPlayer(player)) {
-            if (BedrockFormAdapter.openInputForm(plugin, player, title, prompt, defaultText, onInput, onCancel)) {
-                return;
-            }
-        }
+        CustomInputTextGUI.open(plugin, player, title, prompt, defaultText, onInput, onCancel);
+    }
 
-        if (NativeDialogAdapter.isSupported()) {
-            if (NativeDialogAdapter.showInput(plugin, player, title, prompt, defaultText, onInput, onCancel)) {
-                return;
-            }
-        }
-
-        new AnvilTextInputGUI(plugin, player, title, prompt, defaultText, onInput, onCancel).open();
+    public static void openInput(Plugin plugin, Player player, String title, String prompt, String defaultText,
+                                 Consumer<String> onInput) {
+        CustomInputTextGUI.open(plugin, player, title, prompt, defaultText, onInput, null);
     }
 }

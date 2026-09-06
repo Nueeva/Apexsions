@@ -14,241 +14,318 @@ import java.util.List;
 import java.util.function.Consumer;
 
 /**
- * Adapter to interact with Minecraft 1.21.4+ Native Dialog API.
- * Supports both Paper API (io.papermc.paper.dialog.*) and Spigot/Bungee API (net.md_5.bungee.api.dialog.*).
+ * Adapter to interact with Minecraft 1.21.4+ / 26.2 Native Dialog API.
+ * Supports:
+ * 1. NightCore UI Dialog API (su.nightexpress.nightcore.ui.dialog.Dialogs) - Exact engine used by ExcellentCrates
+ * 2. Paper API (io.papermc.paper.dialog.Dialog)
+ * 3. Spigot/Bungee API (net.md_5.bungee.api.dialog.Dialog)
  */
 public class NativeDialogAdapter {
 
+    private static Boolean nightcoreSupported = null;
     private static Boolean paperSupported = null;
     private static Boolean bungeeSupported = null;
     private static final MiniMessage mm = MiniMessage.miniMessage();
     private static final LegacyComponentSerializer legacy = LegacyComponentSerializer.legacyAmpersand();
 
     public static Class<?> findClass(String... names) {
+        ClassLoader[] loaders = new ClassLoader[]{
+                NativeDialogAdapter.class.getClassLoader(),
+                Thread.currentThread().getContextClassLoader(),
+                Bukkit.class.getClassLoader()
+        };
         for (String name : names) {
+            for (ClassLoader cl : loaders) {
+                if (cl == null) continue;
+                try {
+                    return Class.forName(name, true, cl);
+                } catch (Throwable ignored) {}
+            }
             try {
                 return Class.forName(name);
             } catch (Throwable ignored) {}
+            for (String pName : new String[]{"nightcore", "NightCore", "ExcellentCrates", "excellentcrates"}) {
+                try {
+                    Plugin p = Bukkit.getPluginManager().getPlugin(pName);
+                    if (p != null) {
+                        return Class.forName(name, true, p.getClass().getClassLoader());
+                    }
+                } catch (Throwable ignored) {}
+            }
         }
         return null;
     }
 
-    public static boolean isSupported() {
+    public static boolean isNightCoreSupported() {
+        if (nightcoreSupported == null) {
+            nightcoreSupported = findClass("su.nightexpress.nightcore.ui.dialog.Dialogs") != null;
+        }
+        return nightcoreSupported;
+    }
+
+    public static boolean isPaperSupported() {
         if (paperSupported == null) {
             paperSupported = findClass("io.papermc.paper.dialog.Dialog") != null;
         }
+        return paperSupported;
+    }
+
+    public static boolean isBungeeSupported() {
         if (bungeeSupported == null) {
             bungeeSupported = findClass("net.md_5.bungee.api.dialog.Dialog") != null;
         }
-        return paperSupported || bungeeSupported;
+        return bungeeSupported;
+    }
+
+    public static boolean isSupported() {
+        return isNightCoreSupported() || isPaperSupported() || isBungeeSupported();
     }
 
     public static boolean showInput(Plugin plugin, Player player, String title, String prompt, String defaultText,
                                     Consumer<String> onInput, Runnable onCancel) {
         if (!isSupported()) return false;
 
-        if (paperSupported) {
+        // 1. Prioritize NightCore Dialogs (exact mechanism used by ExcellentCrates)
+        if (isNightCoreSupported()) {
+            boolean shown = showNightCoreInput(plugin, player, title, prompt, defaultText, onInput, onCancel);
+            if (shown) return true;
+        }
+
+        // 2. Try Native Paper Dialog API
+        if (isPaperSupported()) {
             boolean shown = showPaperInput(plugin, player, title, prompt, defaultText, onInput, onCancel);
             if (shown) return true;
-            if (bungeeSupported) {
-                return showBungeeInput(plugin, player, title, prompt, defaultText, onInput, onCancel);
-            }
-            return false;
-        } else if (bungeeSupported) {
+        }
+
+        // 3. Try Bungee/Spigot Dialog API
+        if (isBungeeSupported()) {
             return showBungeeInput(plugin, player, title, prompt, defaultText, onInput, onCancel);
         }
+
         return false;
     }
 
-    private static boolean showBungeeInput(Plugin plugin, Player player, String title, String prompt, String defaultText,
-                                           Consumer<String> onInput, Runnable onCancel) {
+    // ==========================================
+    // 1. NIGHTCORE DIALOG IMPLEMENTATION (EXCELLENTCRATES)
+    // ==========================================
+    private static boolean showNightCoreInput(Plugin plugin, Player player, String title, String prompt, String defaultText,
+                                              Consumer<String> onInput, Runnable onCancel) {
         try {
-            Class<?> dialogClass = findClass("net.md_5.bungee.api.dialog.Dialog");
-            Class<?> dialogBaseClass = findClass("net.md_5.bungee.api.dialog.DialogBase");
-            Class<?> dialogBodyClass = findClass("net.md_5.bungee.api.dialog.body.PlainMessageBody", "net.md_5.bungee.api.dialog.body.DialogBody");
-            Class<?> dialogInputClass = findClass("net.md_5.bungee.api.dialog.input.TextInput");
-            Class<?> dialogTypeClass = findClass("net.md_5.bungee.api.dialog.type.NoticeDialog", "net.md_5.bungee.api.dialog.NoticeDialog");
-            Class<?> actionButtonClass = findClass("net.md_5.bungee.api.dialog.ActionButton");
-            Class<?> staticActionClass = findClass("net.md_5.bungee.api.dialog.action.StaticAction", "net.md_5.bungee.api.dialog.action.Action");
-            Class<?> customActionClass = findClass("net.md_5.bungee.api.dialog.action.CustomClickAction");
-            Class<?> baseComponentClass = findClass("net.md_5.bungee.api.chat.BaseComponent");
-            Class<?> textComponentClass = findClass("net.md_5.bungee.api.chat.TextComponent");
+            Class<?> dialogsClass = findClass("su.nightexpress.nightcore.ui.dialog.Dialogs");
+            Class<?> dialogBasesClass = findClass("su.nightexpress.nightcore.ui.dialog.build.DialogBases");
+            Class<?> dialogBodiesClass = findClass("su.nightexpress.nightcore.ui.dialog.build.DialogBodies");
+            Class<?> dialogInputsClass = findClass("su.nightexpress.nightcore.ui.dialog.build.DialogInputs");
+            Class<?> dialogButtonsClass = findClass("su.nightexpress.nightcore.ui.dialog.build.DialogButtons");
+            Class<?> dialogTypesClass = findClass("su.nightexpress.nightcore.ui.dialog.build.DialogTypes");
+            Class<?> dialogResponseHandlerClass = findClass("su.nightexpress.nightcore.bridge.dialog.response.DialogResponseHandler");
+            Class<?> wrappedDialogBuilderClass = findClass("su.nightexpress.nightcore.bridge.dialog.wrap.WrappedDialog$Builder", "su.nightexpress.nightcore.bridge.dialog.wrap.WrappedDialog.Builder");
 
-            if (dialogClass == null || dialogBaseClass == null || dialogBodyClass == null || dialogInputClass == null || actionButtonClass == null) {
-                plugin.getLogger().warning("[NativeDialogAdapter] Bungee Dialog classes incomplete.");
+            if (dialogsClass == null || dialogBasesClass == null || dialogBodiesClass == null || dialogInputsClass == null
+                    || dialogButtonsClass == null || dialogTypesClass == null || dialogResponseHandlerClass == null || wrappedDialogBuilderClass == null) {
                 return false;
             }
 
-            // Convert Adventure Component to Bungee Component
-            Component titleComp = (title != null && !title.isBlank())
-                    ? (title.contains("<") || title.contains("&") ? mm.deserialize(title) : Component.text(title))
-                    : mm.deserialize("<gold><b>INPUT</b></gold>");
-            Component promptComp = (prompt != null && !prompt.isBlank())
-                    ? (prompt.contains("<") || prompt.contains("&") ? mm.deserialize(prompt) : Component.text(prompt))
-                    : mm.deserialize("<yellow>Masukkan teks:</yellow>");
-            Component okComp = mm.deserialize("<green>✔</green> <white><b>OK</b></white>");
+            String cleanTitle = (title != null && !title.isBlank()) ? title : "INPUT";
+            String cleanPrompt = (prompt != null && !prompt.isBlank()) ? prompt : "Silakan masukkan teks:";
+            String initialText = (defaultText != null) ? defaultText.trim() : "";
 
-            Object bungeeTitle = getBungeeComponent(textComponentClass, titleComp);
-            Object bungeePrompt = getBungeeComponent(textComponentClass, promptComp);
-            Object bungeeOk = getBungeeComponent(textComponentClass, okComp);
+            // 1. Base Builder
+            Method baseBuilderM = dialogBasesClass.getMethod("builder", String.class);
+            Object baseBuilder = baseBuilderM.invoke(null, cleanTitle);
 
-            // 1. Build DialogInput
-            Object textInput = null;
-            for (java.lang.reflect.Constructor<?> c : dialogInputClass.getConstructors()) {
-                if (c.getParameterCount() == 7) {
-                    textInput = c.newInstance("input_key", 200, bungeePrompt, false, (defaultText != null ? defaultText.trim() : ""), 256, null);
-                    break;
-                } else if (c.getParameterCount() == 6) { 
-                    textInput = c.newInstance("input_key", 200, bungeePrompt, false, (defaultText != null ? defaultText.trim() : ""), 256);
-                    break;
-                }
-            }
-
-            // 2. Build DialogBody
-            Object plainBody = null;
-            for (java.lang.reflect.Constructor<?> c : dialogBodyClass.getConstructors()) {
-                if (c.getParameterCount() == 2) {
-                    plainBody = c.newInstance(bungeePrompt, 200);
-                    break;
-                } else if (c.getParameterCount() == 1) {
-                    plainBody = c.newInstance(bungeePrompt);
-                    break;
-                }
-            }
-
-            // 3. Build DialogBase
-            Class<?> afterActionEnum = findClass("net.md_5.bungee.api.dialog.DialogBase$AfterAction");
-            Object afterActionClose = null;
-            if (afterActionEnum != null) {
-                for (Object constant : afterActionEnum.getEnumConstants()) {
-                    if (constant.toString().equals("CLOSE")) {
-                        afterActionClose = constant;
+            // 2. Body: DialogBodies.plainMessage(cleanPrompt)
+            Method plainBodyM = dialogBodiesClass.getMethod("plainMessage", String.class);
+            Object plainBody = plainBodyM.invoke(null, cleanPrompt);
+            for (Method m : baseBuilder.getClass().getMethods()) {
+                if (m.getName().equals("body")) {
+                    if (m.getParameterCount() == 1 && List.class.isAssignableFrom(m.getParameterTypes()[0])) {
+                        m.invoke(baseBuilder, List.of(plainBody));
+                        break;
+                    } else if (m.getParameterCount() == 1 && m.getParameterTypes()[0].isArray()) {
+                        Object arr = java.lang.reflect.Array.newInstance(m.getParameterTypes()[0].getComponentType(), 1);
+                        java.lang.reflect.Array.set(arr, 0, plainBody);
+                        m.invoke(baseBuilder, arr);
                         break;
                     }
                 }
             }
-            
-            Object dialogBase = null;
-            for (java.lang.reflect.Constructor<?> c : dialogBaseClass.getConstructors()) {
-                if (c.getParameterCount() == 7) {
-                    dialogBase = c.newInstance(bungeeTitle, null, List.of(textInput), List.of(plainBody), true, false, afterActionClose);
-                    break;
-                }
-            }
 
-            // 4. Build ActionButton
-            Object action = null;
-            if (customActionClass != null) {
-                for (java.lang.reflect.Constructor<?> c : customActionClass.getConstructors()) {
-                    if (c.getParameterCount() == 1 && c.getParameterTypes()[0] == String.class) {
-                        action = c.newInstance("apexsions:input");
+            // 3. TextInput: DialogInputs.text("input_key", "").labelVisible(false).build()
+            Method textInputM = dialogInputsClass.getMethod("text", String.class, String.class);
+            Object textBuilder = textInputM.invoke(null, "input_key", "");
+            if (!initialText.isEmpty()) {
+                for (Method m : textBuilder.getClass().getMethods()) {
+                    if (m.getName().equals("initial") && m.getParameterCount() == 1 && m.getParameterTypes()[0] == String.class) {
+                        m.invoke(textBuilder, initialText);
                         break;
                     }
                 }
             }
-            if (action == null) return false;
-
-            Object okButton = null;
-            for (java.lang.reflect.Constructor<?> c : actionButtonClass.getConstructors()) {
-                if (c.getParameterCount() == 4) {
-                    okButton = c.newInstance(bungeeOk, null, 200, action);
+            for (Method m : textBuilder.getClass().getMethods()) {
+                if (m.getName().equals("labelVisible") && m.getParameterCount() == 1 && m.getParameterTypes()[0] == boolean.class) {
+                    m.invoke(textBuilder, false);
                     break;
                 }
             }
-            
-            // 5. Build DialogType (NoticeDialog)
-            Object noticeDialogType = null;
-            for (java.lang.reflect.Constructor<?> c : dialogTypeClass.getConstructors()) {
-                if (c.getParameterCount() == 2) {
-                    noticeDialogType = c.newInstance(dialogBase, okButton);
+            Object textInput = textBuilder.getClass().getMethod("build").invoke(textBuilder);
+
+            for (Method m : baseBuilder.getClass().getMethods()) {
+                if (m.getName().equals("inputs")) {
+                    if (m.getParameterCount() == 1 && List.class.isAssignableFrom(m.getParameterTypes()[0])) {
+                        m.invoke(baseBuilder, List.of(textInput));
+                        break;
+                    } else if (m.getParameterCount() == 1 && m.getParameterTypes()[0].isArray()) {
+                        Object arr = java.lang.reflect.Array.newInstance(m.getParameterTypes()[0].getComponentType(), 1);
+                        java.lang.reflect.Array.set(arr, 0, textInput);
+                        m.invoke(baseBuilder, arr);
+                        break;
+                    }
+                }
+            }
+
+            Object base = baseBuilder.getClass().getMethod("build").invoke(baseBuilder);
+
+            // 4. Buttons: DialogButtons.ok(), DialogButtons.back()
+            Method okButtonM = dialogButtonsClass.getMethod("ok");
+            Object okButton = okButtonM.invoke(null);
+
+            Method backButtonM = dialogButtonsClass.getMethod("back");
+            Object backButton = backButtonM.invoke(null);
+
+            // 5. Type: DialogTypes.multiAction(okButton).exitAction(backButton).build()
+            Object multiActionBuilder = null;
+            for (Method m : dialogTypesClass.getMethods()) {
+                if (m.getName().equals("multiAction")) {
+                    if (m.getParameterTypes()[0].isArray()) {
+                        Object arr = java.lang.reflect.Array.newInstance(m.getParameterTypes()[0].getComponentType(), 1);
+                        java.lang.reflect.Array.set(arr, 0, okButton);
+                        multiActionBuilder = m.invoke(null, arr);
+                        break;
+                    } else if (List.class.isAssignableFrom(m.getParameterTypes()[0])) {
+                        multiActionBuilder = m.invoke(null, List.of(okButton));
+                        break;
+                    }
+                }
+            }
+
+            if (multiActionBuilder == null) return false;
+
+            for (Method m : multiActionBuilder.getClass().getMethods()) {
+                if (m.getName().equals("exitAction") && m.getParameterCount() == 1) {
+                    m.invoke(multiActionBuilder, backButton);
                     break;
                 }
             }
-            if (noticeDialogType == null) return false;
 
-            // 6. Show it
-            Object playerSpigot = player.getClass().getMethod("spigot").invoke(player);
-            Method showDialogMethod = playerSpigot.getClass().getMethod("showDialog", findClass("net.md_5.bungee.api.dialog.Dialog"));
-            showDialogMethod.invoke(playerSpigot, noticeDialogType);
-            
-            // 7. Register a temporary event listener for PlayerCustomClickEvent
-            Class<? extends org.bukkit.event.Event> eventClass = (Class<? extends org.bukkit.event.Event>) findClass("org.bukkit.event.player.PlayerCustomClickEvent");
-            if (eventClass != null) {
-                org.bukkit.event.Listener dummyListener = new org.bukkit.event.Listener() {};
-                org.bukkit.plugin.EventExecutor executor = (listener, event) -> {
-                    if (!eventClass.isInstance(event)) return;
-                    try {
-                        Method getPlayerMethod = eventClass.getMethod("getPlayer");
-                        Player eventPlayer = (Player) getPlayerMethod.invoke(event);
-                        
-                        if (!eventPlayer.equals(player)) return;
-                        
-                        Method getIdMethod = eventClass.getMethod("getId");
-                        Object namespacedKey = getIdMethod.invoke(event); // NamespacedKey
-                        String keyStr = namespacedKey != null ? namespacedKey.toString() : "";
-                        
-                        if (!keyStr.equals("apexsions:input")) return;
+            Object dialogType = multiActionBuilder.getClass().getMethod("build").invoke(multiActionBuilder);
 
-                        Method getDataMethod = eventClass.getMethod("getData");
-                        Object jsonElement = getDataMethod.invoke(event); // JsonElement
-                        
-                        String textVal = "";
-                        if (jsonElement != null) {
-                            try {
-                                Method isJsonObject = jsonElement.getClass().getMethod("isJsonObject");
-                                if ((boolean) isJsonObject.invoke(jsonElement)) {
-                                    Method getAsJsonObject = jsonElement.getClass().getMethod("getAsJsonObject");
-                                    Object jsonObj = getAsJsonObject.invoke(jsonElement);
-                                    Method getMethod = jsonObj.getClass().getMethod("get", String.class);
-                                    Object jsonVal = getMethod.invoke(jsonObj, "input_key");
-                                    if (jsonVal != null) {
-                                        Method getAsString = jsonVal.getClass().getMethod("getAsString");
-                                        textVal = (String) getAsString.invoke(jsonVal);
-                                    }
-                                }
-                            } catch (Throwable ignored) {}
+            // 6. Build WrappedDialog
+            Object dialogBuilder = wrappedDialogBuilderClass.getDeclaredConstructor().newInstance();
+            for (Method m : dialogBuilder.getClass().getMethods()) {
+                if (m.getName().equals("base") && m.getParameterCount() == 1) {
+                    m.invoke(dialogBuilder, base);
+                    break;
+                }
+            }
+            for (Method m : dialogBuilder.getClass().getMethods()) {
+                if (m.getName().equals("type") && m.getParameterCount() == 1) {
+                    m.invoke(dialogBuilder, dialogType);
+                    break;
+                }
+            }
+
+            // 7. Response Handler for "ok" and "back"
+            InvocationHandler okHandler = (proxy, method, args) -> {
+                if (method.getName().equals("handle")) {
+                    Object nbtHolder = (args != null && args.length > 2) ? args[2] : null;
+                    String extracted = extractNightCoreText(nbtHolder, "input_key");
+                    final String res = (extracted != null) ? extracted.trim() : "";
+                    Bukkit.getScheduler().runTask(plugin, () -> {
+                        try {
+                            onInput.accept(res);
+                        } catch (Throwable ex) {
+                            player.sendMessage("§cError: " + ex.getMessage());
                         }
-                        
-                        final String finalResult = textVal != null ? textVal.trim() : "";
-                        Bukkit.getScheduler().runTask(plugin, () -> {
-                            try {
-                                onInput.accept(finalResult);
-                            } catch (Throwable ex) {
-                                player.sendMessage("§cError: " + ex.getMessage());
-                            }
-                        });
-                        
-                        // Unregister after first successful callback
-                        org.bukkit.event.HandlerList.unregisterAll(dummyListener);
-                    } catch (Throwable ignored) {}
+                    });
+                }
+                return null;
+            };
+
+            Object okProxy = Proxy.newProxyInstance(dialogResponseHandlerClass.getClassLoader(), new Class<?>[]{dialogResponseHandlerClass}, okHandler);
+            Method handleResponseM = dialogBuilder.getClass().getMethod("handleResponse", String.class, dialogResponseHandlerClass);
+            handleResponseM.invoke(dialogBuilder, "ok", okProxy);
+            handleResponseM.invoke(dialogBuilder, "confirm", okProxy);
+            handleResponseM.invoke(dialogBuilder, "apply", okProxy);
+
+            if (onCancel != null) {
+                InvocationHandler backHandler = (proxy, method, args) -> {
+                    if (method.getName().equals("handle")) {
+                        Bukkit.getScheduler().runTask(plugin, onCancel);
+                    }
+                    return null;
                 };
-                
-                Bukkit.getPluginManager().registerEvent(eventClass, dummyListener, org.bukkit.event.EventPriority.NORMAL, executor, plugin);
+                Object backProxy = Proxy.newProxyInstance(dialogResponseHandlerClass.getClassLoader(), new Class<?>[]{dialogResponseHandlerClass}, backHandler);
+                handleResponseM.invoke(dialogBuilder, "back", backProxy);
+                handleResponseM.invoke(dialogBuilder, "cancel", backProxy);
+            }
+
+            Object wrappedDialog = dialogBuilder.getClass().getMethod("build").invoke(dialogBuilder);
+
+            // 8. Dialogs.showDialog(player, wrappedDialog, onCancel)
+            Method showDialogM = null;
+            for (Method m : dialogsClass.getMethods()) {
+                if (m.getName().equals("showDialog") && m.getParameterCount() == 3) {
+                    showDialogM = m;
+                    break;
+                }
+            }
+            if (showDialogM != null) {
+                showDialogM.invoke(null, player, wrappedDialog, onCancel);
+            } else {
+                dialogsClass.getMethod("showDialog", Player.class, wrappedDialog.getClass()).invoke(null, player, wrappedDialog);
             }
 
             return true;
         } catch (Throwable t) {
-            plugin.getLogger().severe("[NativeDialogAdapter] Error showing Bungee Dialog: " + t.getMessage());
+            plugin.getLogger().warning("[NativeDialogAdapter] NightCore dialog unavailable or error: " + t.getMessage());
             return false;
         }
     }
 
-    private static Object getBungeeComponent(Class<?> textComponentClass, Component adv) {
+    private static String extractNightCoreText(Object nbtHolder, String key) {
+        if (nbtHolder == null) return "";
         try {
-            String legacyStr = legacy.serialize(adv);
-            Method fromLegacyMethod = textComponentClass.getMethod("fromLegacyText", String.class);
-            Object array = fromLegacyMethod.invoke(null, legacyStr);
-            for (java.lang.reflect.Constructor<?> c : textComponentClass.getConstructors()) {
-                if (c.getParameterCount() == 1 && c.getParameterTypes()[0].isArray()) {
-                    return c.newInstance(array);
+            Method getTextM = nbtHolder.getClass().getMethod("getText", String.class);
+            Object opt = getTextM.invoke(nbtHolder, key);
+            if (opt instanceof java.util.Optional<?> o && o.isPresent()) {
+                return (String) o.get();
+            }
+            opt = getTextM.invoke(nbtHolder, "id");
+            if (opt instanceof java.util.Optional<?> o2 && o2.isPresent()) {
+                return (String) o2.get();
+            }
+        } catch (Throwable ignored) {}
+
+        try {
+            Method payloadM = nbtHolder.getClass().getMethod("payload");
+            Object payload = payloadM.invoke(nbtHolder);
+            if (payload instanceof com.google.gson.JsonObject json) {
+                if (json.has(key)) {
+                    return json.get(key).getAsString();
+                } else if (json.has("id")) {
+                    return json.get("id").getAsString();
+                } else if (!json.entrySet().isEmpty()) {
+                    return json.entrySet().iterator().next().getValue().getAsString();
                 }
             }
-            return ((Object[]) array)[0];
-        } catch (Throwable t) {
-            return null;
-        }
+        } catch (Throwable ignored) {}
+
+        return "";
     }
 
+    // ==========================================
+    // 2. PAPER NATIVE DIALOG IMPLEMENTATION
+    // ==========================================
     private static boolean showPaperInput(Plugin plugin, Player player, String title, String prompt, String defaultText,
                                           Consumer<String> onInput, Runnable onCancel) {
         try {
@@ -282,7 +359,6 @@ public class NativeDialogAdapter {
             Object bodyItem = plainMessageMethod.invoke(null, promptComp);
             baseBuilder.getClass().getMethod("body", List.class).invoke(baseBuilder, List.of(bodyItem));
 
-            // Create TextDialogInput using robust dynamic parameter matcher
             Object textInput = createTextInput(dialogInputClass, textDialogInputClass, "input_key", Component.text("Input"), defaultText);
             if (textInput != null) {
                 baseBuilder.getClass().getMethod("inputs", List.class).invoke(baseBuilder, List.of(textInput));
@@ -396,7 +472,6 @@ public class NativeDialogAdapter {
             }
 
             if (dialogInstance == null) {
-                plugin.getLogger().warning("[NativeDialogAdapter] Could not instantiate Paper Dialog instance.");
                 return false;
             }
 
@@ -423,14 +498,13 @@ public class NativeDialogAdapter {
 
             return false;
         } catch (Throwable t) {
-            plugin.getLogger().severe("[NativeDialogAdapter] Error showing Paper Dialog: " + t.getMessage());
+            plugin.getLogger().warning("[NativeDialogAdapter] Paper Dialog unavailable or error: " + t.getMessage());
             return false;
         }
     }
 
     private static Object createTextInput(Class<?> dialogInputClass, Class<?> textDialogInputClass,
                                           String key, Component label, String defaultText) {
-        // Option 1: Look on TextDialogInput for static builder / text / of / create
         if (textDialogInputClass != null) {
             for (Method m : textDialogInputClass.getMethods()) {
                 if (java.lang.reflect.Modifier.isStatic(m.getModifiers())) {
@@ -448,9 +522,7 @@ public class NativeDialogAdapter {
             }
         }
 
-        // Option 2: Look on dialogInputClass for static text / builder / of / create
         if (dialogInputClass != null) {
-            // First pass: try 2-parameter or 1-parameter method
             for (Method m : dialogInputClass.getMethods()) {
                 if (java.lang.reflect.Modifier.isStatic(m.getModifiers()) && m.getName().equals("text")) {
                     if (m.getParameterCount() == 2 || m.getParameterCount() == 1) {
@@ -466,7 +538,6 @@ public class NativeDialogAdapter {
                 }
             }
 
-            // Second pass: try any parameter count (e.g. 7 parameters)
             for (Method m : dialogInputClass.getMethods()) {
                 if (java.lang.reflect.Modifier.isStatic(m.getModifiers()) && (m.getName().equals("text") || m.getName().equals("create") || m.getName().equals("of"))) {
                     try {
@@ -481,7 +552,6 @@ public class NativeDialogAdapter {
             }
         }
 
-        // Option 3: Check constructors
         Class<?> targetClass = (textDialogInputClass != null) ? textDialogInputClass : dialogInputClass;
         if (targetClass != null) {
             for (java.lang.reflect.Constructor<?> c : targetClass.getConstructors()) {
@@ -528,12 +598,12 @@ public class NativeDialogAdapter {
                 }
                 intCount++;
             } else if (pt == boolean.class || pt == Boolean.class) {
-                args[i] = false; // multiline or labelVisible
+                args[i] = false;
             } else if (pt.isEnum()) {
                 Object[] constants = pt.getEnumConstants();
                 args[i] = (constants != null && constants.length > 0) ? constants[0] : null;
             } else {
-                args[i] = null; // validator / filter / multiline options
+                args[i] = null;
             }
         }
         return args;
@@ -587,7 +657,6 @@ public class NativeDialogAdapter {
     private static Object createActionButton(Class<?> actionButtonClass, Class<?> dialogActionClass, Component label, Object action) {
         if (actionButtonClass == null) return null;
 
-        // 1. Try static create/of methods
         for (Method m : actionButtonClass.getMethods()) {
             if (java.lang.reflect.Modifier.isStatic(m.getModifiers()) && (m.getName().equals("create") || m.getName().equals("of"))) {
                 Class<?>[] pTypes = m.getParameterTypes();
@@ -613,7 +682,6 @@ public class NativeDialogAdapter {
             }
         }
 
-        // 2. Try builder methods
         for (Method m : actionButtonClass.getMethods()) {
             if (java.lang.reflect.Modifier.isStatic(m.getModifiers()) && m.getName().equals("builder")) {
                 try {
@@ -641,7 +709,6 @@ public class NativeDialogAdapter {
     private static Object createDialogType(Class<?> dialogTypeClass, Object okButton, Object backButton) {
         if (dialogTypeClass == null) return null;
 
-        // 1. Confirmation type (with OK and BACK)
         for (Method m : dialogTypeClass.getMethods()) {
             if (java.lang.reflect.Modifier.isStatic(m.getModifiers()) && m.getName().equals("confirmation")) {
                 if (m.getParameterCount() == 2 && backButton != null) {
@@ -658,7 +725,6 @@ public class NativeDialogAdapter {
             }
         }
 
-        // 2. Notice type
         for (Method m : dialogTypeClass.getMethods()) {
             if (java.lang.reflect.Modifier.isStatic(m.getModifiers()) && m.getName().equals("notice")) {
                 if (m.getParameterCount() == 1) {
@@ -667,24 +733,6 @@ public class NativeDialogAdapter {
                         if (res != null) return res;
                     } catch (Throwable ignored) {}
                 }
-            }
-        }
-
-        // 3. Builder
-        for (Method m : dialogTypeClass.getMethods()) {
-            if (java.lang.reflect.Modifier.isStatic(m.getModifiers()) && m.getName().equals("builder")) {
-                try {
-                    Object b = m.invoke(null);
-                    if (b != null) {
-                        for (Method bm : b.getClass().getMethods()) {
-                            if (bm.getParameterCount() == 1) {
-                                try { bm.invoke(b, okButton); } catch (Throwable ignored) {}
-                            }
-                        }
-                        Method buildM = b.getClass().getMethod("build");
-                        return buildM.invoke(b);
-                    }
-                } catch (Throwable ignored) {}
             }
         }
 
@@ -736,5 +784,186 @@ public class NativeDialogAdapter {
         }
 
         return "";
+    }
+
+    // ==========================================
+    // 3. BUNGEE / SPIGOT DIALOG IMPLEMENTATION
+    // ==========================================
+    private static boolean showBungeeInput(Plugin plugin, Player player, String title, String prompt, String defaultText,
+                                           Consumer<String> onInput, Runnable onCancel) {
+        try {
+            Class<?> dialogClass = findClass("net.md_5.bungee.api.dialog.Dialog");
+            Class<?> dialogBaseClass = findClass("net.md_5.bungee.api.dialog.DialogBase");
+            Class<?> dialogBodyClass = findClass("net.md_5.bungee.api.dialog.body.PlainMessageBody", "net.md_5.bungee.api.dialog.body.DialogBody");
+            Class<?> dialogInputClass = findClass("net.md_5.bungee.api.dialog.input.TextInput");
+            Class<?> dialogTypeClass = findClass("net.md_5.bungee.api.dialog.type.NoticeDialog", "net.md_5.bungee.api.dialog.NoticeDialog");
+            Class<?> actionButtonClass = findClass("net.md_5.bungee.api.dialog.ActionButton");
+            Class<?> customActionClass = findClass("net.md_5.bungee.api.dialog.action.CustomClickAction");
+            Class<?> textComponentClass = findClass("net.md_5.bungee.api.chat.TextComponent");
+
+            if (dialogClass == null || dialogBaseClass == null || dialogBodyClass == null || dialogInputClass == null || actionButtonClass == null) {
+                return false;
+            }
+
+            Component titleComp = (title != null && !title.isBlank())
+                    ? (title.contains("<") || title.contains("&") ? mm.deserialize(title) : Component.text(title))
+                    : mm.deserialize("<gold><b>INPUT</b></gold>");
+            Component promptComp = (prompt != null && !prompt.isBlank())
+                    ? (prompt.contains("<") || prompt.contains("&") ? mm.deserialize(prompt) : Component.text(prompt))
+                    : mm.deserialize("<yellow>Masukkan teks:</yellow>");
+            Component okComp = mm.deserialize("<green>✔</green> <white><b>OK</b></white>");
+
+            Object bungeeTitle = getBungeeComponent(textComponentClass, titleComp);
+            Object bungeePrompt = getBungeeComponent(textComponentClass, promptComp);
+            Object bungeeOk = getBungeeComponent(textComponentClass, okComp);
+
+            Object textInput = null;
+            for (java.lang.reflect.Constructor<?> c : dialogInputClass.getConstructors()) {
+                if (c.getParameterCount() == 7) {
+                    textInput = c.newInstance("input_key", 200, bungeePrompt, false, (defaultText != null ? defaultText.trim() : ""), 256, null);
+                    break;
+                }
+            }
+            if (textInput == null) return false;
+
+            Object plainBody = null;
+            for (java.lang.reflect.Constructor<?> c : dialogBodyClass.getConstructors()) {
+                if (c.getParameterCount() == 2) {
+                    plainBody = c.newInstance(bungeePrompt, 200);
+                    break;
+                } else if (c.getParameterCount() == 1) {
+                    plainBody = c.newInstance(bungeePrompt);
+                    break;
+                }
+            }
+            if (plainBody == null) return false;
+
+            Class<?> afterActionEnum = findClass("net.md_5.bungee.api.dialog.DialogBase$AfterAction", "net.md_5.bungee.api.dialog.DialogBase.AfterAction");
+            Object afterActionClose = null;
+            if (afterActionEnum != null) {
+                for (Object constant : afterActionEnum.getEnumConstants()) {
+                    if (constant.toString().equals("CLOSE")) {
+                        afterActionClose = constant;
+                        break;
+                    }
+                }
+            }
+
+            Object dialogBase = null;
+            for (java.lang.reflect.Constructor<?> c : dialogBaseClass.getConstructors()) {
+                if (c.getParameterCount() == 7) {
+                    dialogBase = c.newInstance(bungeeTitle, null, List.of(textInput), List.of(plainBody), true, false, afterActionClose);
+                    break;
+                }
+            }
+            if (dialogBase == null) return false;
+
+            Object action = null;
+            if (customActionClass != null) {
+                for (java.lang.reflect.Constructor<?> c : customActionClass.getConstructors()) {
+                    if (c.getParameterCount() == 1 && c.getParameterTypes()[0] == String.class) {
+                        action = c.newInstance("apexsions:input");
+                        break;
+                    }
+                }
+            }
+            if (action == null) return false;
+
+            Object okButton = null;
+            for (java.lang.reflect.Constructor<?> c : actionButtonClass.getConstructors()) {
+                if (c.getParameterCount() == 4) {
+                    okButton = c.newInstance(bungeeOk, null, 200, action);
+                    break;
+                }
+            }
+            if (okButton == null) return false;
+
+            Object noticeDialogType = null;
+            for (java.lang.reflect.Constructor<?> c : dialogTypeClass.getConstructors()) {
+                if (c.getParameterCount() == 2) {
+                    noticeDialogType = c.newInstance(dialogBase, okButton);
+                    break;
+                }
+            }
+            if (noticeDialogType == null) return false;
+
+            Object playerSpigot = player.getClass().getMethod("spigot").invoke(player);
+            Method showDialogMethod = playerSpigot.getClass().getMethod("showDialog", findClass("net.md_5.bungee.api.dialog.Dialog"));
+            showDialogMethod.invoke(playerSpigot, noticeDialogType);
+
+            Class<? extends org.bukkit.event.Event> eventClass = (Class<? extends org.bukkit.event.Event>) findClass("org.bukkit.event.player.PlayerCustomClickEvent");
+            if (eventClass != null) {
+                org.bukkit.event.Listener dummyListener = new org.bukkit.event.Listener() {};
+                org.bukkit.plugin.EventExecutor executor = (listener, event) -> {
+                    if (!eventClass.isInstance(event)) return;
+                    try {
+                        Method getPlayerMethod = eventClass.getMethod("getPlayer");
+                        Player eventPlayer = (Player) getPlayerMethod.invoke(event);
+
+                        if (!eventPlayer.equals(player)) return;
+
+                        Method getIdMethod = eventClass.getMethod("getId");
+                        Object namespacedKey = getIdMethod.invoke(event);
+                        String keyStr = namespacedKey != null ? namespacedKey.toString() : "";
+
+                        if (!keyStr.equals("apexsions:input")) return;
+
+                        Method getDataMethod = eventClass.getMethod("getData");
+                        Object jsonElement = getDataMethod.invoke(event);
+
+                        String textVal = "";
+                        if (jsonElement != null) {
+                            try {
+                                Method isJsonObject = jsonElement.getClass().getMethod("isJsonObject");
+                                if ((boolean) isJsonObject.invoke(jsonElement)) {
+                                    Method getAsJsonObject = jsonElement.getClass().getMethod("getAsJsonObject");
+                                    Object jsonObj = getAsJsonObject.invoke(jsonElement);
+                                    Method getMethod = jsonObj.getClass().getMethod("get", String.class);
+                                    Object jsonVal = getMethod.invoke(jsonObj, "input_key");
+                                    if (jsonVal != null) {
+                                        Method getAsString = jsonVal.getClass().getMethod("getAsString");
+                                        textVal = (String) getAsString.invoke(jsonVal);
+                                    }
+                                }
+                            } catch (Throwable ignored) {}
+                        }
+
+                        final String finalResult = textVal != null ? textVal.trim() : "";
+                        Bukkit.getScheduler().runTask(plugin, () -> {
+                            try {
+                                onInput.accept(finalResult);
+                            } catch (Throwable ex) {
+                                player.sendMessage("§cError: " + ex.getMessage());
+                            }
+                        });
+
+                        org.bukkit.event.HandlerList.unregisterAll(dummyListener);
+                    } catch (Throwable ignored) {}
+                };
+
+                Bukkit.getPluginManager().registerEvent(eventClass, dummyListener, org.bukkit.event.EventPriority.NORMAL, executor, plugin);
+            }
+
+            return true;
+        } catch (Throwable t) {
+            plugin.getLogger().warning("[NativeDialogAdapter] Bungee Dialog unavailable or error: " + t.getMessage());
+            return false;
+        }
+    }
+
+    private static Object getBungeeComponent(Class<?> textComponentClass, Component adv) {
+        try {
+            String legacyStr = legacy.serialize(adv);
+            Method fromLegacyMethod = textComponentClass.getMethod("fromLegacyText", String.class);
+            Object array = fromLegacyMethod.invoke(null, legacyStr);
+            for (java.lang.reflect.Constructor<?> c : textComponentClass.getConstructors()) {
+                if (c.getParameterCount() == 1 && c.getParameterTypes()[0].isArray()) {
+                    return c.newInstance(array);
+                }
+            }
+            return ((Object[]) array)[0];
+        } catch (Throwable t) {
+            return null;
+        }
     }
 }

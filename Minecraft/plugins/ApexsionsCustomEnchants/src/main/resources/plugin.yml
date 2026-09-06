@@ -8,6 +8,9 @@ description: Luxury Custom Enchantments Plugin for Apexsions with Dual Enchanter
 depend:
   - ApexsionsCore
 softdepend:
+  - nightcore
+  - NightCore
+  - ExcellentCrates
   - ApexsionsEconomy
   - Vault
 

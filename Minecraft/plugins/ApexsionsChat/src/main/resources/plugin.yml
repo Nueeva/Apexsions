@@ -5,6 +5,9 @@ api-version: '1.21'
 author: Antigravity
 description: Dedicated chat, community communication, moderation, reports, chat games, item showcase, announcements, and offline mail for Apexsions.
 softdepend:
+  - nightcore
+  - NightCore
+  - ExcellentCrates
   - ApexsionsCore
   - LuckPerms
   - Vault

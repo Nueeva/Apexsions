@@ -30,3 +30,8 @@ permissions:
   apexsionsmedia.creator.admin:
     description: Administrative access to manage and reset creator profiles.
     default: op
+
+softdepend:
+  - nightcore
+  - NightCore
+  - ExcellentCrates
