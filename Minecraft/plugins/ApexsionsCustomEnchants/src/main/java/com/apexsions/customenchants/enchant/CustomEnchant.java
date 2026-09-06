@@ -69,6 +69,10 @@ public class CustomEnchant {
         return "<color:" + group.getColor() + ">" + displayName + "</color>";
     }
 
+    public int getRarityWeight() {
+        return group != null ? group.getRarityWeight() : 0;
+    }
+
     public String getTargets() {
         return appliesTo;
     }

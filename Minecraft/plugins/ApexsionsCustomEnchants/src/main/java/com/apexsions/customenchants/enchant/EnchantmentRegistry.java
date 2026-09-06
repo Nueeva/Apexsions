@@ -111,14 +111,28 @@ public class EnchantmentRegistry {
         if (meta == null) return map;
 
         PersistentDataContainer pdc = meta.getPersistentDataContainer();
+        List<Map.Entry<CustomEnchant, Integer>> list = new ArrayList<>();
         for (CustomEnchant enchant : enchantments.values()) {
             NamespacedKey key = new NamespacedKey(plugin, "ce_" + enchant.getId());
             if (pdc.has(key, PersistentDataType.INTEGER)) {
                 int lvl = pdc.getOrDefault(key, PersistentDataType.INTEGER, 0);
                 if (lvl > 0) {
-                    map.put(enchant, lvl);
+                    list.add(Map.entry(enchant, lvl));
                 }
             }
+        }
+
+        list.sort((e1, e2) -> {
+            int w1 = e1.getKey().getRarityWeight();
+            int w2 = e2.getKey().getRarityWeight();
+            if (w1 != w2) {
+                return Integer.compare(w2, w1);
+            }
+            return e1.getKey().getDisplayName().compareToIgnoreCase(e2.getKey().getDisplayName());
+        });
+
+        for (Map.Entry<CustomEnchant, Integer> entry : list) {
+            map.put(entry.getKey(), entry.getValue());
         }
         return map;
     }
@@ -210,19 +224,34 @@ public class EnchantmentRegistry {
             meta.removeItemFlags(ItemFlag.HIDE_ENCHANTS);
         }
 
-        // 3. Prepend custom enchant lore lines in full Roman numerals
-        boolean hasAnyCustom = false;
+        // 3. Prepend custom enchant lore lines in full Roman numerals, sorted by rarity (Highest first)
+        List<Map.Entry<CustomEnchant, Integer>> appliedCustom = new ArrayList<>();
         for (CustomEnchant enchant : enchantments.values()) {
             NamespacedKey key = new NamespacedKey(plugin, "ce_" + enchant.getId());
             if (pdc.has(key, PersistentDataType.INTEGER)) {
                 int lvl = pdc.getOrDefault(key, PersistentDataType.INTEGER, 0);
                 if (lvl > 0) {
-                    hasAnyCustom = true;
-                    String color = enchant.getGroup().getColor();
-                    String line = "<color:" + color + ">" + enchant.getDisplayName() + " " + CustomEnchant.toRoman(lvl) + "</color>";
-                    newLore.add(mm.deserialize(line));
+                    appliedCustom.add(Map.entry(enchant, lvl));
                 }
             }
+        }
+
+        appliedCustom.sort((e1, e2) -> {
+            int w1 = e1.getKey().getRarityWeight();
+            int w2 = e2.getKey().getRarityWeight();
+            if (w1 != w2) {
+                return Integer.compare(w2, w1); // Highest rarity first!
+            }
+            return e1.getKey().getDisplayName().compareToIgnoreCase(e2.getKey().getDisplayName());
+        });
+
+        boolean hasAnyCustom = !appliedCustom.isEmpty();
+        for (Map.Entry<CustomEnchant, Integer> entry : appliedCustom) {
+            CustomEnchant enchant = entry.getKey();
+            int lvl = entry.getValue();
+            String color = enchant.getGroup().getColor();
+            String line = "<color:" + color + ">" + enchant.getDisplayName() + " " + CustomEnchant.toRoman(lvl) + "</color>";
+            newLore.add(mm.deserialize(line));
         }
 
         // Append base lore

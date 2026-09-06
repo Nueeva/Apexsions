@@ -113,4 +113,17 @@ public class EnchantmentGroup {
             default -> org.bukkit.Color.WHITE;
         };
     }
+
+    public int getRarityWeight() {
+        return switch (id.toUpperCase()) {
+            case "HEROIC" -> 700;
+            case "FABLED" -> 600;
+            case "LEGENDARY" -> 500;
+            case "ULTIMATE" -> 400;
+            case "ELITE" -> 300;
+            case "UNIQUE" -> 200;
+            case "SIMPLE" -> 100;
+            default -> 50;
+        };
+    }
 }

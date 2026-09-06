@@ -100,12 +100,21 @@ public class ItemEditDialogFlow {
                         () -> openRoot(plugin, player, item, sourceSlot, creatorGUI)
                 )));
 
-        if (isArmor) {
-            buttons.add(new DialogButtonData("<blue><bold>🛡 ATUR ARMOR SET BONUS</bold></blue>", "Atur bonus 2-piece dan 4-piece visual",
-                    () -> openArmorSetBonus(plugin, player, item, sourceSlot, creatorGUI)));
-        } else if (isTool) {
-            buttons.add(new DialogButtonData("<aqua><bold>⚔ ATUR TOOL SET BONUS</bold></aqua>", "Atur bonus atribut & sinergi tool",
-                    () -> openToolBonus(plugin, player, item, sourceSlot, creatorGUI)));
+        if (isTool) {
+            boolean isSetBonusActive = (creatorGUI != null && creatorGUI.isSetBonusConfigured());
+            if (isSetBonusActive) {
+                String setName = (creatorGUI.getGlobalSetName() != null && !creatorGUI.getGlobalSetName().isBlank()) 
+                        ? creatorGUI.getGlobalSetName() 
+                        : "Set Armor";
+                buttons.add(new DialogButtonData("<aqua><bold>⚔ ATUR TOOL SET BONUS</bold></aqua>", "Atur sinergi atribut tool dengan " + setName,
+                        () -> openToolBonus(plugin, player, item, sourceSlot, creatorGUI)));
+            } else {
+                buttons.add(new DialogButtonData("<gray><italic>⚔ TOOL SET BONUS (NONAKTIF)</italic></gray>", "Aktifkan Bonus Set Armor di menu utama terlebih dahulu!", () -> {
+                    player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
+                    player.sendMessage(mm.deserialize("<red>⚠ Bonus Set Armor belum dinyalakan! Silakan atur dan aktifkan Bonus Set Armor terlebih dahulu di tombol Set Bonus (Slot 15) pada Creator Utama.</red>"));
+                    openRoot(plugin, player, item, sourceSlot, creatorGUI);
+                }));
+            }
         }
 
         int totalActive = activeCE.size() + activeVanilla;
@@ -155,6 +164,15 @@ public class ItemEditDialogFlow {
             }
             filtered.add(ce);
         }
+
+        filtered.sort((c1, c2) -> {
+            int w1 = c1.getRarityWeight();
+            int w2 = c2.getRarityWeight();
+            if (w1 != w2) {
+                return Integer.compare(w2, w1);
+            }
+            return c1.getDisplayName().compareToIgnoreCase(c2.getDisplayName());
+        });
 
         int pageSize = 6;
         int totalPages = Math.max(1, (int) Math.ceil((double) filtered.size() / pageSize));

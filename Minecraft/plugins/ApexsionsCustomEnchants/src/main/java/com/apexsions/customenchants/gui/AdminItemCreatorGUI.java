@@ -82,6 +82,11 @@ public class AdminItemCreatorGUI implements InventoryHolder {
         return placedItems;
     }
 
+    public boolean isSetBonusConfigured() {
+        return setBonusConfigured && (!globalSet2Stats.isEmpty() || !globalSet4Stats.isEmpty());
+    }
+
+
     // State flags
     private boolean saveToPreset = false;
     private boolean isNavigatingSubGUI = false;
