@@ -1,7 +1,7 @@
 # Apexsions Ecosystem — Monorepo
 
 Repository monorepo resmi untuk ekosistem **Apexsions**:
-- 🎮 **`Minecraft/`**: Plugin suite Minecraft server profesional (Paper 1.21.4 / Java 21)
+- 🎮 **`Minecraft/`**: Plugin suite Minecraft server profesional (Paper 26.2 / Java 21)
 - 🌐 **`Website/`**: Portal web, storefront, dan integrasi ekosistem Apexsions
 
 ---
@@ -168,11 +168,12 @@ Apexsions/
 | `/ac war start <K1> <K2> [m]`| - | Memulai perang resmi antar kerajaan (Admin) | `apexsionscore.admin` | `op` |
 | `/ac war stop` | - | Menghentikan perang kerajaan aktif (Admin) | `apexsionscore.admin` | `op` |
 | `/ac war status` | - | Memeriksa status aktif perang kerajaan (Admin) | `apexsionscore.admin` | `op` |
-| `/ac setlevel <p> <lvl>`| `/kc setlevel` | Mengatur level pemain langsung (Admin) | `apexsionscore.admin` | `op` |
-| `/ac addxp <p> <amt>` | `/kc addxp` | Menambahkan XP pemain (Admin) | `apexsionscore.admin` | `op` |
+| `/ac setlevel <p> <lvl>`| `/kc setlevel` | Mengatur level pemain langsung (Admin - Online & Offline) | `apexsionscore.admin` | `op` |
+| `/ac addxp <p> <amt>` | `/kc addxp` | Menambahkan XP pemain langsung (Admin - Online & Offline) | `apexsionscore.admin` | `op` |
 | `/ac setkingdom <p> <k>`| `/kc setk` | Memindahkan kerajaan pemain seketika (Admin) | `apexsionscore.admin` | `op` |
 | `/ac setlobby` | `/kc setlobby` | Mengatur titik spawn lobi saat ini (Multiverse-ready) | `apexsionscore.admin` | `op` |
 | `/ac info <p>` | `/kc info` | Memeriksa data progresi & kerajaan pemain (Admin) | `apexsionscore.admin` | `op` |
+| `/link [pin]` | `/tautkan` | Menautkan akun in-game dengan portal web Azuriom | `apexsionscore.link` | `true` |
 | `/kits` | `/kit` | Membuka antarmuka kit kerajaan (Preview & Klaim) | `apexsionscore.kits` | `true` |
 | `/kits preview <id>` | - | Melihat isi item & armor set bonus suatu kit | `apexsionscore.kits` | `true` |
 | `/kits create <id>` | - | Membuka GUI Pembuat Kit Admin (Validasi 1 full set armor) | `apexsionscore.admin` | `op` |
@@ -203,16 +204,16 @@ Apexsions/
 ### 💰 Modul ApexsionsEconomy
 | Perintah | Alias | Deskripsi | Hak Akses (Permission) | Default |
 | :--- | :--- | :--- | :--- | :---: |
-| `/economy` | `/eco`, `/bal`, `/uang` | Membuka menu utama saldo pemain | `apexsionseconomy.use` | `true` |
+| `/economy` | `/eco`, `/bal`, `/uang` | Membuka menu saldo. Mendukung `/eco <give\|take\|set>` (Console & Player) | `apexsionseconomy.use` | `true` |
 | `/baltop` | `/topbal` | Menampilkan papan peringkat kekayaan server | `apexsionseconomy.use` | `true` |
 | `/pay <p> <amt> [curr]` | `/transfer`, `/kirimuang` | Mentransfer uang ke pemain lain | `apexsionseconomy.pay` | `true` |
 | `/ah` | `/lelang`, `/auction` | Membuka pasar lelang & brankas escrow | `apexsionseconomy.ah` | `true` |
 | `/trade [pemain]` | `/barter`, `/tukar` | Membuka menu barter item & saldo | `apexsionseconomy.trade` | `true` |
 | `/trade toggle` | - | Mengaktifkan/menonaktifkan request trade | `apexsionseconomy.trade` | `true` |
 | `/ecoadmin reload` | `/apexeconomy reload`, `/adminpay reload` | Memuat ulang konfigurasi ekonomi & mata uang (Admin) | `apexsionseconomy.admin` | `op` |
-| `/ecoadmin give <p> <amt> [curr]`| - | Menambah saldo Rupiah/Diamond pemain (Admin) | `apexsionseconomy.admin` | `op` |
-| `/ecoadmin take <p> <amt> [curr]`| - | Mengurangi saldo Rupiah/Diamond pemain (Admin) | `apexsionseconomy.admin` | `op` |
-| `/ecoadmin set <p> <amt> [curr]` | - | Mengatur saldo Rupiah/Diamond pemain (Admin) | `apexsionseconomy.admin` | `op` |
+| `/ecoadmin give <p> <amt> [curr]`| `/eco give` | Menambah saldo Rupiah/Diamond pemain (Admin & Console) | `apexsionseconomy.admin` | `op` |
+| `/ecoadmin take <p> <amt> [curr]`| `/eco take` | Mengurangi saldo Rupiah/Diamond pemain (Admin & Console) | `apexsionseconomy.admin` | `op` |
+| `/ecoadmin set <p> <amt> [curr]` | `/eco set` | Mengatur saldo Rupiah/Diamond pemain (Admin & Console) | `apexsionseconomy.admin` | `op` |
 
 ### 🎫 Modul ApexsionsBattlepass
 | Perintah | Alias | Deskripsi | Hak Akses (Permission) | Default |

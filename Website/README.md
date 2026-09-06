@@ -49,11 +49,12 @@ Website/
 - Admin configuration for Client Key, Server Key, Merchant ID, and Sandbox/Production toggle.
 - Standardized Snap payload generation and SHA-512 webhook signature verification stub.
 
-### 2. Minecraft Identity & Account Linking (`plugins/apexsions-bridge`)
+### 2. Minecraft Identity, WebBridge & Rank Sync (`plugins/apexsions-bridge`)
 - Supports **Java Online**, **Java Offline**, and **Bedrock Floodgate** identity classes (§16 & §70).
 - Users request a 6-digit PIN on the web portal (valid for 5 minutes).
 - In-game command `/link <code>` calls `/api/apexsions-bridge/verify` to securely link UUID and username.
-- Decoupled `deliveries` table enables asynchronous command execution when players are online.
+- **11-Tier Official Rank Synchronization**: Bidirectional rank syncing from in-game LuckPerms to Azuriom Web roles (`Ancestor` [100], `Architect` [95], `Overseer` [95], `Warden` [90], `Herald` [80], `Sions` [70], `Emperor` [60], `Sovereign` [50], `Archon` [40], `Ascendant` [30], `Wanderer` [10]) with official branding colors and power levels.
+- **Decoupled Asynchronous Deliveries**: The `deliveries` table enables queued command dispatching via Console, safely rewarding players whether they are currently online or offline (`/eco give/take/set`, `/ac addxp`, `/ac setlevel`).
 
 ### 3. Apexsions Brand Theme (`themes/apexsions`)
 - Modern dark aesthetic tailored for the Apexsions ecosystem with glassmorphism cards.

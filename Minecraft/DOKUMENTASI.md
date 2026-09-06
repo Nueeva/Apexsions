@@ -1,10 +1,10 @@
-# Dokumentasi Master Apexsions Plugin Suite — Minecraft 1.21.4 / Paper 26.2
+# Dokumentasi Master Apexsions Plugin Suite — Minecraft 26.2 (The Peak Civilizations)
 
-Dokumentasi resmi yang merangkum arsitektur menyeluruh, interaksi antar-plugin, matriks izin & perintah, konfigurasi modular, serta integrasi gameplay untuk 6 plugin utama di ekosistem **Apexsions**.
+Dokumentasi resmi yang merangkum arsitektur menyeluruh, interaksi antar-plugin, matriks izin & perintah, konfigurasi modular, serta integrasi gameplay untuk 7 plugin utama di ekosistem **Apexsions**.
 
 ---
 
-## 🏛️ 1. Ikhtisar Arsitektur 6 Plugin (Plugin Ecosystem Matrix)
+## 🏛️ 1. Ikhtisar Arsitektur 7 Plugin (Plugin Ecosystem Matrix)
 
 ```
                             ┌────────────────────────┐
@@ -19,20 +19,21 @@ Dokumentasi resmi yang merangkum arsitektur menyeluruh, interaksi antar-plugin, 
 │ (Chat & Mod Sec) │          │ (AH, Trade, Pay)  │          │ (Quests & Passes) │
 └──────────────────┘          └─────────┬─────────┘          └───────────────────┘
                                         │
-                    ┌───────────────────┴───────────────────┐
-                    ▼                                       ▼
-          ┌───────────────────┐                   ┌───────────────────┐
-          │  ApexsionsShop    │                   │  ApexsionsMedia   │
-          │ (Dynamic Markets) │                   │(Interactive Visual│
-          └───────────────────┘                   └───────────────────┘
+                    ┌───────────────────┼───────────────────┐
+                    ▼                   ▼                   ▼
+          ┌───────────────────┐┌───────────────────┐┌───────────────────────┐
+          │  ApexsionsShop    ││  ApexsionsMedia   ││ApexsionsCustomEnchants│
+          │ (Dynamic Markets) ││(Interactive Visual││ (Enchanter & Sets)    │
+          └───────────────────┘└───────────────────┘└───────────────────────┘
 ```
 
-1. **`ApexsionsCore`** (`com.apexsions.core.*`): Otoritas wilayah 3 Kerajaan (`Zenithar`, `Solterra`, `Sylvamoor`), progresi level (1-100) & 13 sumber XP, BlueMap polygon rendering, sistem `/rtp` terikat kerajaan, Kingdom War Manager, PvP Combat Tag (15s), proteksi PvP teritorial kerajaan, Title Vault GUI, Particle Cosmetics GUI, sistem Warp GUI & Admin Warp Manager, Player Inspector GUI, dan pencegahan TPA lintas-wilayah EssentialsX.
+1. **`ApexsionsCore`** (`com.apexsions.core.*`): Otoritas wilayah 3 Kerajaan (`Zenithar`, `Solterra`, `Sylvamoor`), progresi level (1-100) & 13 sumber XP, BlueMap polygon rendering, sistem `/rtp` terikat kerajaan, Kingdom War Manager, PvP Combat Tag (15s), proteksi PvP teritorial kerajaan, Title Vault GUI, Particle Cosmetics GUI, sistem Warp GUI & Admin Warp Manager, Player Inspector GUI, kit kerajaan terintegrasi (`/kits`), WebBridge asynchronous delivery queue (Online & Offline), dan NightCore Native Dialog Input GUI (`CustomInputTextGUI`) untuk Paper 26.2.
 2. **`ApexsionsChat`** (`com.apexsions.chat.*`): Sistem komunikasi Adventure/MiniMessage dengan channel (`Global`, `Kingdom`, `Staff`), preferensi obrolan GUI (`/channel settings`), ID-Card sosial (`/channel profile <p>`), pamer item (`/showitem`), surat offline (`/mail`), chat games, pengumuman otomatis, sistem nickname kustom & token rename (`/nick`, `/realname`), dan sistem moderasi lapis tiga dengan Staff Reports Investigation Desk 54-slot (`/reports`).
-3. **`ApexsionsEconomy`** (`com.apexsions.economy.*`): Multi-Currency atomic (`Rupiah`, `Diamond`), Transfer (`/pay`), Pasar Lelang (`/ah`) dengan Escrow Claim, dan Sistem Barter/Trade 12-Slot terintegrasi kerajaan & pajak transportasi lintas-kerajaan.
+3. **`ApexsionsEconomy`** (`com.apexsions.economy.*`): Multi-Currency atomic (`Rupiah`, `Diamond`), Transfer (`/pay`), Pasar Lelang (`/ah`) dengan Escrow Claim, Sistem Barter/Trade 12-Slot terintegrasi kerajaan & pajak transportasi lintas-kerajaan, serta dukungan penuh console / web delivery (`/eco give/take/set/reload`).
 4. **`ApexsionsBattlepass`** (`com.apexsions.battlepass.*`): Season battlepass 200 level, Quests (Daily, Weekly, Monthly), Tingkatan Pass (`FREE`, `PREMIUM`, `PREMIUM+`, `ULTIMATE`), Toko Rotasi (*Dynamic Shop*), dan Editor Admin GUI 54-Slot (`/abp`).
 5. **`ApexsionsShop`** (`com.apexsions.shop.*`): Pasar & toko dinamis 6 kategori (`blocks`, `farming`, `food`, `ores`, `mob_drops`, `dyes`), rasio jual dasar **20%**, formula multiplier cuaca & bioma kerajaan, price clamping (50%-200%), siaran tren pasar berkala, dashboard tren `/shop trends`, pajak wilayah 10%, UI ramah sentuh/Bedrock, dan GUI jual cepat 45-slot (`/sell`).
 6. **`ApexsionsMedia`** (`com.apexsions.media.*`): Sistem render banner/logo gambar multi-tile asinkron (PNG/JPG/URL), raytrace line-of-sight hover glowing & actionbar tooltip, serta aksi interaksi tautan URL web/salin clipboard terkonfirmasi (100% vanilla & Bedrock compatible).
+7. **`ApexsionsCustomEnchants`** (`com.apexsions.customenchants.*`): Dual-Currency Enchanter Gacha GUI (`/ce`), Toko Buku Sihir Spesifik 54-Slot (`/ce shop`), 28 Custom Enchantments berkekuatan tinggi, Mystery & Magic Dust, White & Black Scrolls, Central Admin Hub (`/ace`), Katalog `/ace enchants`, dan Interactive Armor Set Builder (`/ace create`) dengan sinkronisasi ID otomatis.
 
 ---
 
@@ -89,11 +90,12 @@ Dokumentasi resmi yang merangkum arsitektur menyeluruh, interaksi antar-plugin, 
 | `/ac war start <K1> <K2> [m]`| - | Memulai perang resmi antar-kerajaan (Admin) | `apexsionscore.admin` | `op` |
 | `/ac war stop` | - | Menghentikan paksa perang kerajaan aktif (Admin) | `apexsionscore.admin` | `op` |
 | `/ac war status` | - | Memeriksa status dan sisa waktu perang kerajaan aktif | `apexsionscore.admin` | `op` |
-| `/ac setlevel <player> <1-100>`| - | Mengatur level pemain secara langsung | `apexsionscore.admin` | `op` |
-| `/ac addxp <player> <amount>`| - | Menambahkan XP progresi ke pemain | `apexsionscore.admin` | `op` |
-| `/ac setkingdom <player> <kingdom>`| - | Memindahkan kerajaan pemain seketika | `apexsionscore.admin` | `op` |
-| `/ac setlobby` | - | Menetapkan koordinat lobby/spawn di lokasi berdiri | `apexsionscore.admin` | `op` |
-| `/ac info <player>` | - | Memeriksa rincian level, XP, kerajaan, dan klaim reward pemain | `apexsionscore.admin` | `op` |
+| `/ac setlevel <player> <1-100>`| `/kc setlevel` | Mengatur level pemain secara langsung (Online & Offline) | `apexsionscore.admin` | `op` |
+| `/ac addxp <player> <amount>`| `/kc addxp` | Menambahkan XP progresi ke pemain (Online & Offline) | `apexsionscore.admin` | `op` |
+| `/ac setkingdom <player> <kingdom>`| `/kc setk` | Memindahkan kerajaan pemain seketika | `apexsionscore.admin` | `op` |
+| `/ac setlobby` | `/kc setlobby` | Menetapkan koordinat lobby/spawn di lokasi berdiri | `apexsionscore.admin` | `op` |
+| `/ac info <player>` | `/kc info` | Memeriksa rincian level, XP, kerajaan, dan klaim reward pemain | `apexsionscore.admin` | `op` |
+| `/link [pin]` | `/tautkan` | Menautkan akun in-game dengan portal web Azuriom | `apexsionscore.link` | `true` |
 
 ---
 
@@ -125,16 +127,16 @@ Dokumentasi resmi yang merangkum arsitektur menyeluruh, interaksi antar-plugin, 
 ### 💰 ApexsionsEconomy
 | Perintah | Alias | Deskripsi | Hak Akses | Default |
 | :--- | :--- | :--- | :--- | :---: |
-| `/economy` | `/eco`, `/uang`, `/bal` | Membuka menu utama saldo pemain | `apexsionseconomy.use` | `true` |
+| `/economy` | `/eco`, `/uang`, `/bal` | Membuka menu saldo. Mendukung `/eco <give\|take\|set>` via Player & Console | `apexsionseconomy.use` | `true` |
 | `/baltop` | `/topbal` | Menampilkan peringkat kekayaan server | `apexsionseconomy.use` | `true` |
 | `/pay <p> <amt> [curr]` | `/transfer`, `/kirimuang` | Mentransfer uang ke pemain lain | `apexsionseconomy.pay` | `true` |
 | `/ah` | `/lelang`, `/auction` | Membuka pasar lelang & brankas klaim escrow | `apexsionseconomy.ah` | `true` |
 | `/trade [pemain]` | `/barter`, `/tukar` | Membuka menu barter item & saldo | `apexsionseconomy.trade` | `true` |
 | `/trade toggle` | - | Toggle mengaktifkan / menonaktifkan ajakan trade | `apexsionseconomy.trade` | `true` |
 | `/ecoadmin reload` | `/apexeconomy reload`, `/adminpay reload` | Reload konfigurasi ekonomi, mata uang, & tarif trade/ah | `apexsionseconomy.admin` | `op` |
-| `/ecoadmin give <p> <amt> [curr]`| - | Menambahkan saldo Rupiah / Diamond ke pemain | `apexsionseconomy.admin` | `op` |
-| `/ecoadmin take <p> <amt> [curr]`| - | Mengurangi saldo Rupiah / Diamond dari pemain | `apexsionseconomy.admin` | `op` |
-| `/ecoadmin set <p> <amt> [curr]` | - | Menyetel saldo Rupiah / Diamond pemain secara langsung | `apexsionseconomy.admin` | `op` |
+| `/ecoadmin give <p> <amt> [curr]`| `/eco give` | Menambahkan saldo Rupiah / Diamond ke pemain (Player & Console) | `apexsionseconomy.admin` | `op` |
+| `/ecoadmin take <p> <amt> [curr]`| `/eco take` | Mengurangi saldo Rupiah / Diamond dari pemain (Player & Console) | `apexsionseconomy.admin` | `op` |
+| `/ecoadmin set <p> <amt> [curr]` | `/eco set` | Menyetel saldo Rupiah / Diamond pemain secara langsung (Player & Console) | `apexsionseconomy.admin` | `op` |
 
 ---
 
@@ -194,6 +196,20 @@ Dokumentasi resmi yang merangkum arsitektur menyeluruh, interaksi antar-plugin, 
 
 ---
 
+### ⚡ ApexsionsCustomEnchants
+| Perintah | Alias | Deskripsi | Hak Akses | Default |
+| :--- | :--- | :--- | :--- | :---: |
+| `/ce` | `/enchanter`, `/customenchants` | Membuka Enchanter Gacha Dual-Currency GUI | `apexsionscustomenchants.use` | `true` |
+| `/ce shop` | `/ceshop` | Membuka Toko Buku Sihir Spesifik 54-Slot | `apexsionscustomenchants.use` | `true` |
+| `/ce tinkerer` | `/tinkerer` | Membuka antarmuka Tinkerer Kerajaan (Coming Soon) | `apexsionscustomenchants.use` | `true` |
+| `/ace` | `/customenchantsadmin` | Central Admin Hub GUI (45-Slot) | `apexsionscustomenchants.admin` | `op` |
+| `/ace enchants` | `/ae admin` | Katalog interaktif replika AdvancedEnchantments | `apexsionscustomenchants.admin` | `op` |
+| `/ace create` | - | Interactive Item & Armor Set Builder dengan sinkronisasi ID | `apexsionscustomenchants.admin` | `op` |
+| `/ace pricing` | - | Konfigurasi harga gacha, rate, dan multiplier | `apexsionscustomenchants.admin` | `op` |
+| `/ace reload` | - | Reload konfigurasi custom enchants, tiers, dan sets | `apexsionscustomenchants.admin` | `op` |
+
+---
+
 ## ⚡ 4. Panduan Kompilasi Multi-Compiler (`build.ps1`)
 
 Untuk efisiensi dan kecepatan pengembangan, **HANYA** kompilasi plugin yang mengalami perubahan kode:
@@ -206,7 +222,8 @@ powershell -ExecutionPolicy Bypass -File .\build.ps1 Economy
 powershell -ExecutionPolicy Bypass -File .\build.ps1 Battlepass
 powershell -ExecutionPolicy Bypass -File .\build.ps1 Shop
 powershell -ExecutionPolicy Bypass -File .\build.ps1 Media
+powershell -ExecutionPolicy Bypass -File .\build.ps1 CustomEnchants
 
-# 2. Kompilasi Seluruh Suite (Gunakan HANYA jika semua 6 modul berubah):
+# 2. Kompilasi Seluruh Suite (Gunakan HANYA jika semua 7 modul berubah):
 powershell -ExecutionPolicy Bypass -File .\build.ps1 -all
 ```
