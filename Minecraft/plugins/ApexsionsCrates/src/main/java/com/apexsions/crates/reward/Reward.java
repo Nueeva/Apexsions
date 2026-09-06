@@ -128,10 +128,26 @@ public class Reward {
     }
 
     public void give(Player player) {
-        // 1. Run commands
-        for (String cmd : commands) {
-            String processed = cmd.replace("%player%", player.getName()).trim();
-            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), processed);
+        // 1. Run commands or deliver material item if no commands specified
+        if (commands != null && !commands.isEmpty()) {
+            for (String cmd : commands) {
+                String processed = cmd.replace("%player%", player.getName()).trim();
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), processed);
+            }
+        } else if (material != null && material != Material.AIR) {
+            ItemStack stack = new ItemStack(material, amount);
+            ItemMeta meta = stack.getItemMeta();
+            if (meta != null) {
+                meta.displayName(getDisplayName());
+                if (customModelData > 0) meta.setCustomModelData(customModelData);
+                stack.setItemMeta(meta);
+            }
+            java.util.HashMap<Integer, ItemStack> leftover = player.getInventory().addItem(stack);
+            if (!leftover.isEmpty()) {
+                for (ItemStack drop : leftover.values()) {
+                    player.getWorld().dropItemNaturally(player.getLocation(), drop);
+                }
+            }
         }
 
         // 2. Economy reward

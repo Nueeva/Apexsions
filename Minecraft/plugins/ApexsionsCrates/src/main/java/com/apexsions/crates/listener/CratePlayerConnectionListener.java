@@ -36,4 +36,17 @@ public class CratePlayerConnectionListener implements Listener {
             }
         }
     }
+
+    @EventHandler
+    public void onChunkUnload(org.bukkit.event.world.ChunkUnloadEvent event) {
+        for (CrateLocation cl : plugin.getCrateManager().getLocations()) {
+            if (cl.getWorld().equals(event.getWorld().getName())) {
+                int chunkX = cl.getX() >> 4;
+                int chunkZ = cl.getZ() >> 4;
+                if (chunkX == event.getChunk().getX() && chunkZ == event.getChunk().getZ()) {
+                    plugin.getHologramManager().removeHologram(cl);
+                }
+            }
+        }
+    }
 }
