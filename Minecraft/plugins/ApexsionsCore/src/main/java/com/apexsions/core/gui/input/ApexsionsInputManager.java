@@ -10,7 +10,7 @@ import java.util.function.Consumer;
  * Automatically selects the best input method for the player:
  * - Bedrock Edition -> Floodgate Native CustomForm (Modal GUI input)
  * - Java Edition 26.2 -> Paper Native Dialog GUI (Screenshot match)
- * - Java Fallback -> Universal Virtual Keypad GUI
+ * - Java Fallback -> Universal Anvil Text Input GUI (Typing on keyboard, no chest GUI)
  */
 public class ApexsionsInputManager {
 
@@ -30,8 +30,8 @@ public class ApexsionsInputManager {
             }
         }
 
-        // 3. Fallback: Universal In-Game Virtual Keypad GUI
-        new VirtualKeypadGUI(plugin, player, title, prompt, defaultText, numericOnly, onInput, onCancel).open();
+        // 3. Fallback: Native Text Input GUI via Anvil (real keyboard typing, not a chest GUI)
+        new AnvilTextInputGUI(plugin, player, title, prompt, defaultText, onInput, onCancel).open();
     }
 
     public static void openTextInput(Plugin plugin, Player player, String title, String prompt, String defaultText,

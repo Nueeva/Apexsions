@@ -8,7 +8,7 @@ import java.util.function.Consumer;
 /**
  * Unified GUI Input helper for ApexsionsChat.
  * Routes input requests cleanly through Bedrock Forms for Bedrock players,
- * Minecraft 26.2 Dialogs for Java 26.2 players, and VirtualKeypadGUI as fallback.
+ * Minecraft 26.2 Dialogs for Java 26.2 players, and AnvilTextInputGUI as fallback.
  */
 public class ChatInputGUI {
 
@@ -26,6 +26,6 @@ public class ChatInputGUI {
             }
         }
 
-        new VirtualKeypadGUI(plugin, player, title, prompt, defaultText, onInput, onCancel).open();
+        new AnvilTextInputGUI(plugin, player, title, prompt, defaultText, onInput, onCancel).open();
     }
 }

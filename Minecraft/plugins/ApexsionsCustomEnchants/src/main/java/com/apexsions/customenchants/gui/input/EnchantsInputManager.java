@@ -21,6 +21,6 @@ public class EnchantsInputManager {
             }
         }
 
-        new VirtualKeypadGUI(plugin, player, title, prompt, defaultText, onInput, onCancel).open();
+        new AnvilTextInputGUI(plugin, player, title, prompt, defaultText, onInput, onCancel).open();
     }
 }

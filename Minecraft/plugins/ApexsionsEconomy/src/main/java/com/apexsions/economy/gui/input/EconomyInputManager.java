@@ -21,6 +21,6 @@ public class EconomyInputManager {
             }
         }
 
-        new VirtualKeypadGUI(plugin, player, title, prompt, defaultText, numericOnly, onInput, onCancel).open();
+        new AnvilTextInputGUI(plugin, player, title, prompt, defaultText, onInput, onCancel).open();
     }
 }
