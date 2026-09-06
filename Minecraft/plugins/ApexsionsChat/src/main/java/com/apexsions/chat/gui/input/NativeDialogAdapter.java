@@ -48,10 +48,16 @@ public class NativeDialogAdapter {
         if (!isSupported()) return false;
 
         if (paperSupported) {
-            return showPaperInput(plugin, player, title, prompt, defaultText, onInput, onCancel);
-        } else {
+            boolean shown = showPaperInput(plugin, player, title, prompt, defaultText, onInput, onCancel);
+            if (shown) return true;
+            if (bungeeSupported) {
+                return showBungeeInput(plugin, player, title, prompt, defaultText, onInput, onCancel);
+            }
+            return false;
+        } else if (bungeeSupported) {
             return showBungeeInput(plugin, player, title, prompt, defaultText, onInput, onCancel);
         }
+        return false;
     }
 
     private static boolean showBungeeInput(Plugin plugin, Player player, String title, String prompt, String defaultText,
@@ -74,10 +80,14 @@ public class NativeDialogAdapter {
             }
 
             // Convert Adventure Component to Bungee Component
-            Component titleComp = mm.deserialize(title != null ? title : "<gold><b>INPUT</b></gold>");
-            Component promptComp = mm.deserialize(prompt != null ? prompt : "<yellow>Masukkan teks:</yellow>");
+            Component titleComp = (title != null && !title.isBlank())
+                    ? (title.contains("<") || title.contains("&") ? mm.deserialize(title) : Component.text(title))
+                    : mm.deserialize("<gold><b>INPUT</b></gold>");
+            Component promptComp = (prompt != null && !prompt.isBlank())
+                    ? (prompt.contains("<") || prompt.contains("&") ? mm.deserialize(prompt) : Component.text(prompt))
+                    : mm.deserialize("<yellow>Masukkan teks:</yellow>");
             Component okComp = mm.deserialize("<green>✔</green> <white><b>OK</b></white>");
-            
+
             Object bungeeTitle = getBungeeComponent(textComponentClass, titleComp);
             Object bungeePrompt = getBungeeComponent(textComponentClass, promptComp);
             Object bungeeOk = getBungeeComponent(textComponentClass, okComp);
@@ -184,7 +194,6 @@ public class NativeDialogAdapter {
                         
                         String textVal = "";
                         if (jsonElement != null) {
-                            // Extract "input_key" from JsonObject
                             try {
                                 Method isJsonObject = jsonElement.getClass().getMethod("isJsonObject");
                                 if ((boolean) isJsonObject.invoke(jsonElement)) {
@@ -197,9 +206,7 @@ public class NativeDialogAdapter {
                                         textVal = (String) getAsString.invoke(jsonVal);
                                     }
                                 }
-                            } catch (Throwable t2) {
-                                // Ignore
-                            }
+                            } catch (Throwable ignored) {}
                         }
                         
                         final String finalResult = textVal != null ? textVal.trim() : "";
@@ -222,7 +229,6 @@ public class NativeDialogAdapter {
             return true;
         } catch (Throwable t) {
             plugin.getLogger().severe("[NativeDialogAdapter] Error showing Bungee Dialog: " + t.getMessage());
-            t.printStackTrace();
             return false;
         }
     }
@@ -250,14 +256,24 @@ public class NativeDialogAdapter {
             Class<?> dialogBaseClass = findClass("io.papermc.paper.registry.data.dialog.DialogBase", "io.papermc.paper.dialog.DialogBase");
             Class<?> dialogBodyClass = findClass("io.papermc.paper.registry.data.dialog.body.DialogBody", "io.papermc.paper.dialog.DialogBody");
             Class<?> dialogInputClass = findClass("io.papermc.paper.registry.data.dialog.input.DialogInput", "io.papermc.paper.dialog.DialogInput");
+            Class<?> textDialogInputClass = findClass("io.papermc.paper.registry.data.dialog.input.TextDialogInput", "io.papermc.paper.dialog.input.TextDialogInput");
             Class<?> dialogTypeClass = findClass("io.papermc.paper.registry.data.dialog.type.DialogType", "io.papermc.paper.dialog.DialogType");
             Class<?> actionButtonClass = findClass("io.papermc.paper.registry.data.dialog.action.ActionButton", "io.papermc.paper.dialog.ActionButton");
             Class<?> dialogActionClass = findClass("io.papermc.paper.registry.data.dialog.action.DialogAction", "io.papermc.paper.dialog.DialogAction");
             Class<?> dialogActionCallbackClass = findClass("io.papermc.paper.registry.data.dialog.action.DialogActionCallback", "io.papermc.paper.dialog.DialogActionCallback");
             Class<?> clickCallbackOptionsClass = findClass("net.kyori.adventure.text.event.ClickCallback$Options", "net.kyori.adventure.text.event.ClickCallback.Options");
 
-            Component titleComp = mm.deserialize(title != null ? title : "<gold><b>INPUT</b></gold>");
-            Component promptComp = mm.deserialize(prompt != null ? prompt : "<yellow>Masukkan teks:</yellow>");
+            if (dialogClass == null || dialogBaseClass == null || dialogBodyClass == null || dialogInputClass == null) {
+                return false;
+            }
+
+            Component titleComp = (title != null && !title.isBlank())
+                    ? (title.contains("<") || title.contains("&") ? mm.deserialize(title) : Component.text(title))
+                    : mm.deserialize("<gold><b>INPUT</b></gold>");
+
+            Component promptComp = (prompt != null && !prompt.isBlank())
+                    ? (prompt.contains("<") || prompt.contains("&") ? mm.deserialize(prompt) : Component.text(prompt))
+                    : mm.deserialize("<yellow>Masukkan teks:</yellow>");
 
             Method baseBuilderMethod = dialogBaseClass.getMethod("builder", Component.class);
             Object baseBuilder = baseBuilderMethod.invoke(null, titleComp);
@@ -266,35 +282,12 @@ public class NativeDialogAdapter {
             Object bodyItem = plainMessageMethod.invoke(null, promptComp);
             baseBuilder.getClass().getMethod("body", List.class).invoke(baseBuilder, List.of(bodyItem));
 
-            Method textInputMethod = null;
-            for (Method m : dialogInputClass.getMethods()) {
-                if (m.getName().equals("text") && m.getParameterCount() >= 2) {
-                    textInputMethod = m;
-                    break;
-                }
-            }
-            if (textInputMethod != null) {
-                Object textInputBuilder = textInputMethod.invoke(null, "input_key", Component.text("Input"));
-                for (Method m : textInputBuilder.getClass().getMethods()) {
-                    if (m.getName().equals("labelVisible") && m.getParameterCount() == 1 && m.getParameterTypes()[0] == boolean.class) {
-                        try { m.invoke(textInputBuilder, false); break; } catch (Throwable ignored) {}
-                    }
-                }
-                if (defaultText != null && !defaultText.isBlank()) {
-                    for (Method m : textInputBuilder.getClass().getMethods()) {
-                        if ((m.getName().equals("initial") || m.getName().equals("defaultValue") || m.getName().equals("value") || m.getName().equals("initialValue"))
-                                && m.getParameterCount() == 1 && m.getParameterTypes()[0] == String.class) {
-                            try { m.invoke(textInputBuilder, defaultText.trim()); break; } catch (Throwable ignored) {}
-                        }
-                    }
-                }
-                Object textInput = textInputBuilder;
-                try {
-                    Method buildM = textInputBuilder.getClass().getMethod("build");
-                    textInput = buildM.invoke(textInputBuilder);
-                } catch (Throwable ignored) {}
+            // Create TextDialogInput using robust dynamic parameter matcher
+            Object textInput = createTextInput(dialogInputClass, textDialogInputClass, "input_key", Component.text("Input"), defaultText);
+            if (textInput != null) {
                 baseBuilder.getClass().getMethod("inputs", List.class).invoke(baseBuilder, List.of(textInput));
             }
+
             Object dialogBase = baseBuilder.getClass().getMethod("build").invoke(baseBuilder);
 
             Object clickOptions = null;
@@ -307,150 +300,441 @@ public class NativeDialogAdapter {
             }
 
             InvocationHandler okHandler = (proxy, method, args) -> {
-                if (method.getName().equals("accept") || method.getName().equals("handle") || method.getName().equals("apply") || method.getName().equals("run")) {
-                    Object responseView = (args != null && args.length > 0) ? args[0] : null;
-                    String textVal = "";
-                    if (responseView != null) {
-                        try {
-                            Method getTextM = responseView.getClass().getMethod("getText", String.class);
-                            textVal = (String) getTextM.invoke(responseView, "input_key");
-                        } catch (Throwable t1) {
-                            try {
-                                Method getM = responseView.getClass().getMethod("get", String.class);
-                                Object res = getM.invoke(responseView, "input_key");
-                                textVal = (res != null) ? res.toString() : "";
-                            } catch (Throwable t2) {
-                                for (Method m : responseView.getClass().getMethods()) {
-                                    if (m.getParameterCount() == 1 && m.getParameterTypes()[0] == String.class && m.getReturnType() != void.class) {
-                                        try {
-                                            Object res = m.invoke(responseView, "input_key");
-                                            if (res != null) {
-                                                textVal = res.toString();
-                                                break;
-                                            }
-                                        } catch (Throwable ignored) {}
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    final String finalResult = textVal != null ? textVal.trim() : "";
-                    Bukkit.getScheduler().runTask(plugin, () -> {
-                        try {
-                            onInput.accept(finalResult);
-                        } catch (Throwable ex) {
-                            player.sendMessage("§cError: " + ex.getMessage());
-                        }
-                    });
+                if (method.getDeclaringClass() == Object.class) {
+                    if (method.getName().equals("equals")) return proxy == (args != null && args.length > 0 ? args[0] : null);
+                    if (method.getName().equals("hashCode")) return System.identityHashCode(proxy);
+                    if (method.getName().equals("toString")) return "DialogOkCallbackProxy@" + Integer.toHexString(System.identityHashCode(proxy));
+                    return null;
                 }
+                Object responseView = (args != null && args.length > 0) ? args[0] : null;
+                String textVal = extractTextValue(responseView, "input_key");
+                final String finalResult = textVal != null ? textVal.trim() : "";
+                Bukkit.getScheduler().runTask(plugin, () -> {
+                    try {
+                        onInput.accept(finalResult);
+                    } catch (Throwable ex) {
+                        player.sendMessage("§cError: " + ex.getMessage());
+                    }
+                });
                 return null;
             };
 
             Class<?> callbackInterface = dialogActionCallbackClass != null ? dialogActionCallbackClass : java.util.function.BiConsumer.class;
             Object okCallback = Proxy.newProxyInstance(callbackInterface.getClassLoader(), new Class<?>[]{callbackInterface}, okHandler);
 
-            Object okAction = null;
-            for (Method m : dialogActionClass.getMethods()) {
-                if (m.getName().equals("customClick")) {
-                    if (m.getParameterCount() == 2 && clickOptions != null) {
-                        try { okAction = m.invoke(null, okCallback, clickOptions); break; } catch (Throwable ignored) {}
-                    } else if (m.getParameterCount() == 1) {
-                        try { okAction = m.invoke(null, okCallback); break; } catch (Throwable ignored) {}
-                    }
-                }
-            }
+            Object okAction = createDialogAction(dialogActionClass, okCallback, clickOptions);
 
             InvocationHandler backHandler = (proxy, method, args) -> {
-                if (onCancel != null) { Bukkit.getScheduler().runTask(plugin, onCancel); }
+                if (method.getDeclaringClass() == Object.class) {
+                    if (method.getName().equals("equals")) return proxy == (args != null && args.length > 0 ? args[0] : null);
+                    if (method.getName().equals("hashCode")) return System.identityHashCode(proxy);
+                    if (method.getName().equals("toString")) return "DialogBackCallbackProxy@" + Integer.toHexString(System.identityHashCode(proxy));
+                    return null;
+                }
+                if (onCancel != null) {
+                    Bukkit.getScheduler().runTask(plugin, onCancel);
+                }
                 return null;
             };
             Object backCallback = Proxy.newProxyInstance(callbackInterface.getClassLoader(), new Class<?>[]{callbackInterface}, backHandler);
 
-            Object backAction = null;
-            for (Method m : dialogActionClass.getMethods()) {
-                if (m.getName().equals("customClick")) {
-                    if (m.getParameterCount() == 2 && clickOptions != null) {
-                        try { backAction = m.invoke(null, backCallback, clickOptions); break; } catch (Throwable ignored) {}
-                    } else if (m.getParameterCount() == 1) {
-                        try { backAction = m.invoke(null, backCallback); break; } catch (Throwable ignored) {}
-                    }
-                }
-            }
-
-            Object okButton = null;
-            Object backButton = null;
+            Object backAction = createDialogAction(dialogActionClass, backCallback, clickOptions);
 
             Component okComp = mm.deserialize("<green>✔</green> <white><b>OK</b></white>");
             Component backComp = mm.deserialize("<yellow>⬅</yellow> <white><b>BACK</b></white>");
 
-            for (Method m : actionButtonClass.getMethods()) {
-                if (m.getName().equals("create")) {
-                    if (m.getParameterCount() == 4) {
-                        try { okButton = m.invoke(null, okComp, null, 200, okAction); backButton = m.invoke(null, backComp, null, 200, backAction); break; } catch (Throwable ignored) {}
-                    } else if (m.getParameterCount() == 2) {
-                        try { okButton = m.invoke(null, okComp, okAction); backButton = m.invoke(null, backComp, backAction); break; } catch (Throwable ignored) {}
-                    }
-                }
-            }
+            Object okButton = createActionButton(actionButtonClass, dialogActionClass, okComp, okAction);
+            Object backButton = createActionButton(actionButtonClass, dialogActionClass, backComp, backAction);
 
-            if (okButton == null) {
-                for (Method m : actionButtonClass.getMethods()) {
-                    if (m.getName().equals("builder") && m.getParameterCount() == 1) {
-                        try {
-                            Object b1 = m.invoke(null, okComp);
-                            b1.getClass().getMethod("action", dialogActionClass).invoke(b1, okAction);
-                            okButton = b1.getClass().getMethod("build").invoke(b1);
-                            Object b2 = m.invoke(null, backComp);
-                            b2.getClass().getMethod("action", dialogActionClass).invoke(b2, backAction);
-                            backButton = b2.getClass().getMethod("build").invoke(b2);
-                            break;
-                        } catch (Throwable ignored) {}
-                    }
-                }
-            }
-
-            Object dialogType = null;
-            for (Method m : dialogTypeClass.getMethods()) {
-                if (m.getName().equals("confirmation") && m.getParameterCount() == 2) {
-                    try { dialogType = m.invoke(null, okButton, backButton); break; } catch (Throwable ignored) {}
-                }
-            }
-            if (dialogType == null) {
-                for (Method m : dialogTypeClass.getMethods()) {
-                    if (m.getName().equals("notice") && m.getParameterCount() == 1) {
-                        try { dialogType = m.invoke(null, okButton); break; } catch (Throwable ignored) {}
-                    }
-                }
-            }
+            Object dialogType = createDialogType(dialogTypeClass, okButton, backButton);
 
             final Object finalBase = dialogBase;
             final Object finalType = dialogType;
             final Class<?> finalBaseClass = dialogBaseClass;
             final Class<?> finalTypeClass = dialogTypeClass;
 
-            Consumer<Object> dialogBuilderConsumer = builder -> {
-                try {
-                    Object empty = builder.getClass().getMethod("empty").invoke(builder);
-                    empty.getClass().getMethod("base", finalBaseClass).invoke(empty, finalBase);
-                    empty.getClass().getMethod("type", finalTypeClass).invoke(empty, finalType);
-                } catch (Throwable t) {
-                    throw new RuntimeException(t);
-                }
-            };
+            Object dialogInstance = null;
 
-            Method createDialogMethod = dialogClass.getMethod("create", Consumer.class);
-            Object dialogInstance = createDialogMethod.invoke(null, dialogBuilderConsumer);
+            // Option A: Dialog.create(Consumer<Dialog.Builder>)
+            try {
+                Method createDialogMethod = dialogClass.getMethod("create", Consumer.class);
+                Consumer<Object> dialogBuilderConsumer = builder -> {
+                    try {
+                        Object empty = builder.getClass().getMethod("empty").invoke(builder);
+                        empty.getClass().getMethod("base", finalBaseClass).invoke(empty, finalBase);
+                        empty.getClass().getMethod("type", finalTypeClass).invoke(empty, finalType);
+                    } catch (Throwable t) {
+                        throw new RuntimeException(t);
+                    }
+                };
+                dialogInstance = createDialogMethod.invoke(null, dialogBuilderConsumer);
+            } catch (Throwable ignored) {}
 
-            for (Method m : Player.class.getMethods()) {
-                if (m.getName().equals("showDialog") && m.getParameterCount() == 1) {
-                    m.invoke(player, dialogInstance);
-                    return true;
+            // Option B: Dialog.create(DialogBase, DialogType)
+            if (dialogInstance == null) {
+                for (Method m : dialogClass.getMethods()) {
+                    if (java.lang.reflect.Modifier.isStatic(m.getModifiers()) && (m.getName().equals("create") || m.getName().equals("of"))) {
+                        if (m.getParameterCount() == 2) {
+                            try {
+                                dialogInstance = m.invoke(null, finalBase, finalType);
+                                if (dialogInstance != null) break;
+                            } catch (Throwable ignored) {}
+                        }
+                    }
                 }
             }
+
+            // Option C: Dialog.builder()
+            if (dialogInstance == null) {
+                try {
+                    Method builderM = dialogClass.getMethod("builder");
+                    Object b = builderM.invoke(null);
+                    b.getClass().getMethod("base", finalBaseClass).invoke(b, finalBase);
+                    b.getClass().getMethod("type", finalTypeClass).invoke(b, finalType);
+                    dialogInstance = b.getClass().getMethod("build").invoke(b);
+                } catch (Throwable ignored) {}
+            }
+
+            if (dialogInstance == null) {
+                plugin.getLogger().warning("[NativeDialogAdapter] Could not instantiate Paper Dialog instance.");
+                return false;
+            }
+
+            // Show on player
+            for (Method m : player.getClass().getMethods()) {
+                if (m.getName().equals("showDialog") && m.getParameterCount() == 1) {
+                    try {
+                        m.invoke(player, dialogInstance);
+                        return true;
+                    } catch (Throwable ignored) {}
+                }
+            }
+
+            for (Class<?> iface : player.getClass().getInterfaces()) {
+                for (Method m : iface.getMethods()) {
+                    if (m.getName().equals("showDialog") && m.getParameterCount() == 1) {
+                        try {
+                            m.invoke(player, dialogInstance);
+                            return true;
+                        } catch (Throwable ignored) {}
+                    }
+                }
+            }
+
             return false;
         } catch (Throwable t) {
             plugin.getLogger().severe("[NativeDialogAdapter] Error showing Paper Dialog: " + t.getMessage());
             return false;
         }
+    }
+
+    private static Object createTextInput(Class<?> dialogInputClass, Class<?> textDialogInputClass,
+                                          String key, Component label, String defaultText) {
+        // Option 1: Look on TextDialogInput for static builder / text / of / create
+        if (textDialogInputClass != null) {
+            for (Method m : textDialogInputClass.getMethods()) {
+                if (java.lang.reflect.Modifier.isStatic(m.getModifiers())) {
+                    if (m.getName().equals("builder") || m.getName().equals("text") || m.getName().equals("create") || m.getName().equals("of")) {
+                        try {
+                            Object[] args = buildDynamicArguments(m, key, label, defaultText);
+                            Object res = m.invoke(null, args);
+                            if (res != null) {
+                                Object built = configureAndBuildTextInput(res, defaultText);
+                                if (built != null) return built;
+                            }
+                        } catch (Throwable ignored) {}
+                    }
+                }
+            }
+        }
+
+        // Option 2: Look on dialogInputClass for static text / builder / of / create
+        if (dialogInputClass != null) {
+            // First pass: try 2-parameter or 1-parameter method
+            for (Method m : dialogInputClass.getMethods()) {
+                if (java.lang.reflect.Modifier.isStatic(m.getModifiers()) && m.getName().equals("text")) {
+                    if (m.getParameterCount() == 2 || m.getParameterCount() == 1) {
+                        try {
+                            Object[] args = buildDynamicArguments(m, key, label, defaultText);
+                            Object res = m.invoke(null, args);
+                            if (res != null) {
+                                Object built = configureAndBuildTextInput(res, defaultText);
+                                if (built != null) return built;
+                            }
+                        } catch (Throwable ignored) {}
+                    }
+                }
+            }
+
+            // Second pass: try any parameter count (e.g. 7 parameters)
+            for (Method m : dialogInputClass.getMethods()) {
+                if (java.lang.reflect.Modifier.isStatic(m.getModifiers()) && (m.getName().equals("text") || m.getName().equals("create") || m.getName().equals("of"))) {
+                    try {
+                        Object[] args = buildDynamicArguments(m, key, label, defaultText);
+                        Object res = m.invoke(null, args);
+                        if (res != null) {
+                            Object built = configureAndBuildTextInput(res, defaultText);
+                            if (built != null) return built;
+                        }
+                    } catch (Throwable ignored) {}
+                }
+            }
+        }
+
+        // Option 3: Check constructors
+        Class<?> targetClass = (textDialogInputClass != null) ? textDialogInputClass : dialogInputClass;
+        if (targetClass != null) {
+            for (java.lang.reflect.Constructor<?> c : targetClass.getConstructors()) {
+                try {
+                    Object[] args = buildDynamicConstructorArguments(c, key, label, defaultText);
+                    Object res = c.newInstance(args);
+                    if (res != null) return res;
+                } catch (Throwable ignored) {}
+            }
+        }
+
+        return null;
+    }
+
+    private static Object[] buildDynamicArguments(Method m, String key, Component label, String defaultText) {
+        return fillParameters(m.getParameterTypes(), key, label, defaultText);
+    }
+
+    private static Object[] buildDynamicConstructorArguments(java.lang.reflect.Constructor<?> c, String key, Component label, String defaultText) {
+        return fillParameters(c.getParameterTypes(), key, label, defaultText);
+    }
+
+    private static Object[] fillParameters(Class<?>[] paramTypes, String key, Component label, String defaultText) {
+        Object[] args = new Object[paramTypes.length];
+        int stringCount = 0;
+        int intCount = 0;
+
+        for (int i = 0; i < paramTypes.length; i++) {
+            Class<?> pt = paramTypes[i];
+            if (pt == String.class) {
+                if (stringCount == 0) {
+                    args[i] = key;
+                } else {
+                    args[i] = (defaultText != null ? defaultText.trim() : "");
+                }
+                stringCount++;
+            } else if (Component.class.isAssignableFrom(pt) || pt.getName().contains("Component")) {
+                args[i] = (label != null ? label : Component.text("Input"));
+            } else if (pt == int.class || pt == Integer.class) {
+                if (intCount == 0) {
+                    args[i] = 200; // width
+                } else {
+                    args[i] = 256; // max_length
+                }
+                intCount++;
+            } else if (pt == boolean.class || pt == Boolean.class) {
+                args[i] = false; // multiline or labelVisible
+            } else if (pt.isEnum()) {
+                Object[] constants = pt.getEnumConstants();
+                args[i] = (constants != null && constants.length > 0) ? constants[0] : null;
+            } else {
+                args[i] = null; // validator / filter / multiline options
+            }
+        }
+        return args;
+    }
+
+    private static Object configureAndBuildTextInput(Object target, String defaultText) {
+        if (target == null) return null;
+        for (Method m : target.getClass().getMethods()) {
+            if (m.getName().equals("labelVisible") && m.getParameterCount() == 1 && m.getParameterTypes()[0] == boolean.class) {
+                try { m.invoke(target, false); } catch (Throwable ignored) {}
+            } else if (m.getName().equals("width") && m.getParameterCount() == 1 && (m.getParameterTypes()[0] == int.class || m.getParameterTypes()[0] == Integer.class)) {
+                try { m.invoke(target, 200); } catch (Throwable ignored) {}
+            } else if (m.getName().equals("maxLength") && m.getParameterCount() == 1 && (m.getParameterTypes()[0] == int.class || m.getParameterTypes()[0] == Integer.class)) {
+                try { m.invoke(target, 256); } catch (Throwable ignored) {}
+            } else if ((m.getName().equals("initial") || m.getName().equals("defaultValue") || m.getName().equals("value") || m.getName().equals("initialValue"))
+                    && m.getParameterCount() == 1 && m.getParameterTypes()[0] == String.class) {
+                if (defaultText != null && !defaultText.isBlank()) {
+                    try { m.invoke(target, defaultText.trim()); } catch (Throwable ignored) {}
+                }
+            }
+        }
+        try {
+            Method buildM = target.getClass().getMethod("build");
+            return buildM.invoke(target);
+        } catch (Throwable ignored) {
+            return target;
+        }
+    }
+
+    private static Object createDialogAction(Class<?> dialogActionClass, Object callback, Object clickOptions) {
+        if (dialogActionClass == null || callback == null) return null;
+        for (Method m : dialogActionClass.getMethods()) {
+            if (java.lang.reflect.Modifier.isStatic(m.getModifiers()) &&
+                    (m.getName().equals("customClick") || m.getName().equals("click") || m.getName().equals("of") || m.getName().equals("action"))) {
+                if (m.getParameterCount() == 2 && clickOptions != null) {
+                    try {
+                        Object res = m.invoke(null, callback, clickOptions);
+                        if (res != null) return res;
+                    } catch (Throwable ignored) {}
+                } else if (m.getParameterCount() == 1) {
+                    try {
+                        Object res = m.invoke(null, callback);
+                        if (res != null) return res;
+                    } catch (Throwable ignored) {}
+                }
+            }
+        }
+        return null;
+    }
+
+    private static Object createActionButton(Class<?> actionButtonClass, Class<?> dialogActionClass, Component label, Object action) {
+        if (actionButtonClass == null) return null;
+
+        // 1. Try static create/of methods
+        for (Method m : actionButtonClass.getMethods()) {
+            if (java.lang.reflect.Modifier.isStatic(m.getModifiers()) && (m.getName().equals("create") || m.getName().equals("of"))) {
+                Class<?>[] pTypes = m.getParameterTypes();
+                Object[] args = new Object[pTypes.length];
+                for (int i = 0; i < pTypes.length; i++) {
+                    Class<?> pt = pTypes[i];
+                    if (Component.class.isAssignableFrom(pt) || pt.getName().contains("Component")) {
+                        args[i] = label;
+                    } else if (dialogActionClass != null && dialogActionClass.isAssignableFrom(pt)) {
+                        args[i] = action;
+                    } else if (pt == int.class || pt == Integer.class) {
+                        args[i] = 200;
+                    } else if (pt == Object.class) {
+                        args[i] = action;
+                    } else {
+                        args[i] = null;
+                    }
+                }
+                try {
+                    Object res = m.invoke(null, args);
+                    if (res != null) return res;
+                } catch (Throwable ignored) {}
+            }
+        }
+
+        // 2. Try builder methods
+        for (Method m : actionButtonClass.getMethods()) {
+            if (java.lang.reflect.Modifier.isStatic(m.getModifiers()) && m.getName().equals("builder")) {
+                try {
+                    Object b = (m.getParameterCount() == 1) ? m.invoke(null, label) : m.invoke(null);
+                    if (b != null) {
+                        for (Method bm : b.getClass().getMethods()) {
+                            if ((bm.getName().equals("action") || bm.getName().equals("dialogAction")) && bm.getParameterCount() == 1) {
+                                try { bm.invoke(b, action); } catch (Throwable ignored) {}
+                            } else if ((bm.getName().equals("label") || bm.getName().equals("text")) && bm.getParameterCount() == 1 && Component.class.isAssignableFrom(bm.getParameterTypes()[0])) {
+                                try { bm.invoke(b, label); } catch (Throwable ignored) {}
+                            } else if (bm.getName().equals("width") && bm.getParameterCount() == 1 && (bm.getParameterTypes()[0] == int.class || bm.getParameterTypes()[0] == Integer.class)) {
+                                try { bm.invoke(b, 200); } catch (Throwable ignored) {}
+                            }
+                        }
+                        Method buildM = b.getClass().getMethod("build");
+                        return buildM.invoke(b);
+                    }
+                } catch (Throwable ignored) {}
+            }
+        }
+
+        return null;
+    }
+
+    private static Object createDialogType(Class<?> dialogTypeClass, Object okButton, Object backButton) {
+        if (dialogTypeClass == null) return null;
+
+        // 1. Confirmation type (with OK and BACK)
+        for (Method m : dialogTypeClass.getMethods()) {
+            if (java.lang.reflect.Modifier.isStatic(m.getModifiers()) && m.getName().equals("confirmation")) {
+                if (m.getParameterCount() == 2 && backButton != null) {
+                    try {
+                        Object res = m.invoke(null, okButton, backButton);
+                        if (res != null) return res;
+                    } catch (Throwable ignored) {}
+                } else if (m.getParameterCount() == 1) {
+                    try {
+                        Object res = m.invoke(null, okButton);
+                        if (res != null) return res;
+                    } catch (Throwable ignored) {}
+                }
+            }
+        }
+
+        // 2. Notice type
+        for (Method m : dialogTypeClass.getMethods()) {
+            if (java.lang.reflect.Modifier.isStatic(m.getModifiers()) && m.getName().equals("notice")) {
+                if (m.getParameterCount() == 1) {
+                    try {
+                        Object res = m.invoke(null, okButton);
+                        if (res != null) return res;
+                    } catch (Throwable ignored) {}
+                }
+            }
+        }
+
+        // 3. Builder
+        for (Method m : dialogTypeClass.getMethods()) {
+            if (java.lang.reflect.Modifier.isStatic(m.getModifiers()) && m.getName().equals("builder")) {
+                try {
+                    Object b = m.invoke(null);
+                    if (b != null) {
+                        for (Method bm : b.getClass().getMethods()) {
+                            if (bm.getParameterCount() == 1) {
+                                try { bm.invoke(b, okButton); } catch (Throwable ignored) {}
+                            }
+                        }
+                        Method buildM = b.getClass().getMethod("build");
+                        return buildM.invoke(b);
+                    }
+                } catch (Throwable ignored) {}
+            }
+        }
+
+        return null;
+    }
+
+    private static String extractTextValue(Object responseView, String expectedKey) {
+        if (responseView == null) return "";
+        try {
+            Method m = responseView.getClass().getMethod("getText", String.class);
+            Object res = m.invoke(responseView, expectedKey);
+            if (res != null) return res.toString();
+        } catch (Throwable ignored) {}
+
+        try {
+            Method m = responseView.getClass().getMethod("getString", String.class);
+            Object res = m.invoke(responseView, expectedKey);
+            if (res != null) return res.toString();
+        } catch (Throwable ignored) {}
+
+        try {
+            Method m = responseView.getClass().getMethod("get", String.class);
+            Object res = m.invoke(responseView, expectedKey);
+            if (res != null) return res.toString();
+        } catch (Throwable ignored) {}
+
+        try {
+            Method m = responseView.getClass().getMethod("text", String.class);
+            Object res = m.invoke(responseView, expectedKey);
+            if (res != null) return res.toString();
+        } catch (Throwable ignored) {}
+
+        for (Method m : responseView.getClass().getMethods()) {
+            if (m.getParameterCount() == 1 && m.getParameterTypes()[0] == String.class && m.getReturnType() != void.class) {
+                try {
+                    Object res = m.invoke(responseView, expectedKey);
+                    if (res != null) return res.toString();
+                } catch (Throwable ignored) {}
+            }
+        }
+
+        for (Method m : responseView.getClass().getMethods()) {
+            if ((m.getName().equals("value") || m.getName().equals("text") || m.getName().equals("input")) && m.getParameterCount() == 0) {
+                try {
+                    Object res = m.invoke(responseView);
+                    if (res != null) return res.toString();
+                } catch (Throwable ignored) {}
+            }
+        }
+
+        return "";
     }
 }
