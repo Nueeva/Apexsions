@@ -47,6 +47,16 @@ class AccountLinkController extends Controller
             return back()->with('error', 'Username Minecraft ini telah ditautkan dan diverifikasi oleh akun lain.');
         }
 
+        // Enforce max 1 Java and 1 Bedrock account per web user
+        $existingEdition = MinecraftAccount::where('user_id', auth()->id())
+            ->where('edition', $edition)
+            ->whereNotNull('verified_at')
+            ->first();
+
+        if ($existingEdition && strcasecmp($existingEdition->minecraft_username, $username) !== 0) {
+            return back()->with('error', "Anda sudah memiliki akun {$edition} yang terverifikasi ({$existingEdition->minecraft_username}). Lepaskan akun tersebut jika ingin mengganti akun.");
+        }
+
         // Generate 6-digit secure PIN with 5-minute validity window
         $code = str_pad((string) random_int(100000, 999999), 6, '0', STR_PAD_LEFT);
 

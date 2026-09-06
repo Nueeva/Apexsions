@@ -311,6 +311,14 @@ public class ApexsionsCorePlugin extends JavaPlugin {
     }
 
     private void registerCommands() {
+        // /link
+        com.apexsions.core.command.LinkCommand linkHandler = new com.apexsions.core.command.LinkCommand(this);
+        PluginCommand linkCmd = getCommand("link");
+        if (linkCmd != null) {
+            linkCmd.setExecutor(linkHandler);
+            linkCmd.setTabCompleter(linkHandler);
+        }
+
         // /lobby
         PluginCommand lobbyCmd = getCommand("lobby");
         if (lobbyCmd != null) {

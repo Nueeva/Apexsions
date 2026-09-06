@@ -11,6 +11,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.logging.Level;
 
 /**
@@ -109,4 +110,54 @@ public class WebBridgeService {
             plugin.getLogger().log(Level.FINE, "[WebBridge] Heartbeat generation error: " + ex.getMessage());
         }
     }
+
+    public CompletableFuture<LinkResult> verifyLink(Player player, String pin) {
+        if (!enabled) {
+            return CompletableFuture.completedFuture(new LinkResult(false, "Sistem Web Bridge sedang dinonaktifkan di server."));
+        }
+
+        boolean isBedrock = com.apexsions.core.gui.input.BedrockFormAdapter.isBedrockPlayer(player);
+        String uuidStr = player.getUniqueId().toString();
+        String username = player.getName();
+
+        String jsonPayload = String.format(
+                "{\"pin\":\"%s\",\"player_uuid\":\"%s\",\"player_username\":\"%s\",\"is_bedrock\":%b}",
+                escapeJson(pin), escapeJson(uuidStr), escapeJson(username), isBedrock
+        );
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(apiUrl + "/verify"))
+                .timeout(Duration.ofSeconds(10))
+                .header("Content-Type", "application/json")
+                .header("Accept", "application/json")
+                .header("X-Apexsions-Key", apiKey)
+                .POST(HttpRequest.BodyPublishers.ofString(jsonPayload))
+                .build();
+
+        return httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString())
+                .thenApply(response -> {
+                    int code = response.statusCode();
+                    String body = response.body();
+                    try {
+                        com.google.gson.JsonObject obj = com.google.gson.JsonParser.parseString(body).getAsJsonObject();
+                        String status = obj.has("status") ? obj.get("status").getAsString() : "";
+                        String message = obj.has("message") ? obj.get("message").getAsString() : "Respons tidak dikenal dari server web.";
+                        boolean success = "success".equalsIgnoreCase(status) && (code == 200 || code == 201);
+                        return new LinkResult(success, message);
+                    } catch (Exception e) {
+                        if (code == 200) {
+                            return new LinkResult(true, "Akun berhasil ditautkan!");
+                        }
+                        return new LinkResult(false, "Gagal memproses verifikasi dari web platform (Status HTTP: " + code + ").");
+                    }
+                })
+                .exceptionally(ex -> new LinkResult(false, "Tidak dapat menghubungi server web Apexsions: " + ex.getMessage()));
+    }
+
+    private String escapeJson(String input) {
+        if (input == null) return "";
+        return input.replace("\\", "\\\\").replace("\"", "\\\"");
+    }
+
+    public record LinkResult(boolean success, String message) {}
 }

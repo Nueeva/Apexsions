@@ -2,12 +2,14 @@
 
 namespace Azuriom\Plugin\ApexsionsBridge\Models;
 
-use Azuriom\Models\Model;
+use Azuriom\Models\Traits\HasTablePrefix;
 use Azuriom\Models\User;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class MinecraftAccount extends Model
 {
+    use HasTablePrefix;
     /**
      * The table associated with the model.
      */

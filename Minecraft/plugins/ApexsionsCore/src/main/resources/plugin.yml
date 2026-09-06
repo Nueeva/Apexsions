@@ -12,9 +12,15 @@ softdepend:
   - BlueMap
   - Citizens
   - Multiverse-Core
+  - AuthMe
+  - Floodgate
 
 
 commands:
+  link:
+    description: Link in-game Minecraft account to Apexsions web platform.
+    permission: apexsionscore.command.link
+    usage: /link <pin>
   lobby:
     description: Teleport to the main server lobby.
     permission: apexsionscore.command.lobby
@@ -196,6 +202,9 @@ permissions:
   apexsionscore.warp.bypass:
     description: Bypasses warp teleportation countdown delay.
     default: op
+  apexsionscore.command.link:
+    description: Allows linking in-game account to web account.
+    default: true
   apexsionscore.command.lobby:
     description: Allows teleporting to the lobby.
     default: true

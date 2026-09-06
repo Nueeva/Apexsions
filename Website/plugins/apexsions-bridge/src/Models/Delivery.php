@@ -2,10 +2,12 @@
 
 namespace Azuriom\Plugin\ApexsionsBridge\Models;
 
-use Azuriom\Models\Model;
+use Azuriom\Models\Traits\HasTablePrefix;
+use Illuminate\Database\Eloquent\Model;
 
 class Delivery extends Model
 {
+    use HasTablePrefix;
     /**
      * The table associated with the model.
      */

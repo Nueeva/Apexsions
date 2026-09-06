@@ -108,3 +108,13 @@ web-bridge:
   enabled: true
   api-url: "http://web.apexsions.my.id/api/apexsions-bridge"
   api-key: "apexsions_bridge_key_live_2026"
+  link-rewards:
+    # Mengaktifkan hadiah otomatis in-game saat pemain berhasil menjalankan /link <pin>
+    enabled: true
+    # Hadiah Kingdom EXP
+    xp: 500
+    # Hadiah Koin / Mata Uang Ekonomi
+    coins: 10000.0
+    # Siarkan pesan pengumuman ke seluruh server saat pemain menautkan akun
+    broadcast: true
+
