@@ -110,7 +110,7 @@
                                 <i class="bi {{ $currentKingdom['icon'] }}"></i> {{ $currentKingdom['name'] }}
                             </span>
                             @if($linkedAccount->level_title)
-                                <span class="text-muted ms-2">• {{ $linkedAccount->level_title }}</span>
+                                <span class="text-muted ms-2">• {{ strip_tags($linkedAccount->level_title) }}</span>
                             @endif
                         </div>
 

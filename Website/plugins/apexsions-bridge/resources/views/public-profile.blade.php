@@ -94,7 +94,7 @@
                     <div class="row g-3 border-top border-secondary border-opacity-25 pt-3 text-secondary small">
                         <div class="col-sm-6">
                             <span class="d-block text-muted">Gelar Tingkat:</span>
-                            <span class="text-white fw-bold">{{ $account->level_title ?: 'Pengelana Awal' }}</span>
+                            <span class="text-white fw-bold">{{ strip_tags($account->level_title ?: 'Pengelana Awal') }}</span>
                         </div>
                         <div class="col-sm-6">
                             <span class="d-block text-muted">Terakhir Aktif:</span>

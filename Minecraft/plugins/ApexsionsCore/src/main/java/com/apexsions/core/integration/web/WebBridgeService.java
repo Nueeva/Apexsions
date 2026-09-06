@@ -31,6 +31,7 @@ public class WebBridgeService {
     private final HttpClient httpClient;
     private BukkitTask heartbeatTask;
     private BukkitTask deliveryTask;
+    private BukkitTask playerSyncTask;
 
     private String apiUrl;
     private String apiKey;
@@ -60,6 +61,9 @@ public class WebBridgeService {
         // Schedule async delivery queue polling every 10 seconds (200 ticks)
         this.deliveryTask = Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, this::pollDeliveries, 100L, 200L);
 
+        // Schedule periodic player synchronization for all online players every 30 seconds (600 ticks)
+        this.playerSyncTask = Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, this::syncAllOnlinePlayers, 120L, 600L);
+
         plugin.getLogger().info("[WebBridge] Web bridge daemon active. Heartbeat & Delivery polling scheduled to: " + apiUrl);
     }
 
@@ -71,6 +75,10 @@ public class WebBridgeService {
         if (deliveryTask != null && !deliveryTask.isCancelled()) {
             deliveryTask.cancel();
             deliveryTask = null;
+        }
+        if (playerSyncTask != null && !playerSyncTask.isCancelled()) {
+            playerSyncTask.cancel();
+            playerSyncTask = null;
         }
     }
 
@@ -231,6 +239,18 @@ public class WebBridgeService {
     }
 
     /**
+     * Periodically synchronize all currently online players' stats to the web platform.
+     */
+    public void syncAllOnlinePlayers() {
+        if (!enabled) return;
+        for (Player p : Bukkit.getOnlinePlayers()) {
+            if (p != null && p.isOnline()) {
+                syncPlayerAsync(p);
+            }
+        }
+    }
+
+    /**
      * Synchronize a player's complete in-game statistics (rank, level, xp, kingdom, titles, balances)
      * to the Apexsions Web Platform asynchronously.
      */
@@ -260,6 +280,12 @@ public class WebBridgeService {
         long reqXp = plugin.getLevelManager() != null ? plugin.getLevelManager().getRequiredXpForNextLevel(level) : 100;
         String levelTitle = plugin.getLevelManager() != null ? plugin.getLevelManager().getLevelTitle(uuid) : "Citizen";
         String activeTitle = (data != null && data.getActiveTitle() != null) ? data.getActiveTitle() : "";
+
+        levelTitle = cleanMiniMessageTags(levelTitle);
+        if (levelTitle.isBlank()) {
+            levelTitle = "Citizen";
+        }
+        activeTitle = cleanMiniMessageTags(activeTitle);
 
         String kingdomKey = "NONE";
         String kingdomDisplay = "Belum Memilih";
@@ -396,6 +422,17 @@ public class WebBridgeService {
     private String escapeJson(String input) {
         if (input == null) return "";
         return input.replace("\\", "\\\\").replace("\"", "\\\"");
+    }
+
+    private String cleanMiniMessageTags(String text) {
+        if (text == null || text.isBlank()) {
+            return "";
+        }
+        try {
+            return net.kyori.adventure.text.minimessage.MiniMessage.miniMessage().stripTags(text).trim();
+        } catch (Throwable t) {
+            return text.replaceAll("<[^>]*>", "").trim();
+        }
     }
 
     public record LinkResult(boolean success, String message) {}

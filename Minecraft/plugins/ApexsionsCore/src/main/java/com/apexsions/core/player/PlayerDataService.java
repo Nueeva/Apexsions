@@ -94,6 +94,10 @@ public class PlayerDataService {
                 } else {
                     Bukkit.getScheduler().runTask(plugin, task);
                 }
+
+                if (plugin.getWebBridgeService() != null) {
+                    plugin.getWebBridgeService().syncPlayerAsync(player);
+                }
             }
         });
         return repository.updateRegion(playerUuid, regionId);
