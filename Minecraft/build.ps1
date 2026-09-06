@@ -220,7 +220,7 @@ function Build-Plugin-Fast {
 
     if ($ok) {
         $targetDir = Join-Path $pluginDir 'target'
-        $builtJar = Get-ChildItem -Path (Join-Path $targetDir ($Name + '-*.jar')) -Exclude '*shaded*', '*original*' -ErrorAction SilentlyContinue | Select-Object -First 1
+        $builtJar = Get-ChildItem -Path (Join-Path $targetDir ($Name + '-*.jar')) -Exclude '*shaded*', '*original*', '*sources*', '*javadoc*' -ErrorAction SilentlyContinue | Where-Object { $_.Name -notmatch '-(sources|javadoc|original|shaded)\.jar$' } | Select-Object -First 1
         if ($builtJar) {
             $size = [math]::Round($builtJar.Length / 1024, 2)
             Copy-Item -Force $builtJar.FullName (Join-Path $OutDirectory ($Name + '-1.0.0.jar'))
