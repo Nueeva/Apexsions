@@ -79,15 +79,27 @@ public class ChatListener implements Listener {
         // 1. Luxury Join Message with MiniMessage
         if (plugin.getConfigManager().getMainConfig().getBoolean("join-quit-messages.enabled", true)) {
             String rank = "<gray>[Wanderer]</gray>";
+            String kingdom = "Belum Memilih";
             if (plugin.getApexsionsCoreHook() != null && plugin.getApexsionsCoreHook().isAvailable()) {
                 var prof = plugin.getApexsionsCoreHook().getPlayerChatProfile(uuid);
-                if (prof != null) rank = prof.rank();
+                if (prof != null) {
+                    rank = prof.rank();
+                    kingdom = prof.kingdomDisplayName();
+                }
             } else if (plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isAvailable()) {
                 rank = plugin.getLuckPermsHook().getPlayerRank(player);
             }
-            event.joinMessage(miniMessage.deserialize(
-                    "<dark_gray>[</dark_gray><green><bold>+</bold></green><dark_gray>]</dark_gray> " + rank + " <white><bold>" + player.getName() + "</bold></white> <gray>bergabung ke server</gray>"
-            ));
+
+            String template = plugin.getConfigManager().getMainConfig().getString(
+                    "join-quit-messages.join-format",
+                    "<dark_gray>[</dark_gray><green><bold>+</bold></green><dark_gray>]</dark_gray> {rank} <white><bold>{player}</bold></white> <gray>bergabung ke server</gray>"
+            );
+            String formatted = template
+                    .replace("{rank}", rank)
+                    .replace("{player}", player.getName())
+                    .replace("{kingdom}", kingdom);
+
+            event.joinMessage(miniMessage.deserialize(formatted));
         }
 
         // 2. Check unread offline mail asynchronously
@@ -114,15 +126,27 @@ public class ChatListener implements Listener {
 
         if (plugin.getConfigManager().getMainConfig().getBoolean("join-quit-messages.enabled", true)) {
             String rank = "<gray>[Wanderer]</gray>";
+            String kingdom = "Belum Memilih";
             if (plugin.getApexsionsCoreHook() != null && plugin.getApexsionsCoreHook().isAvailable()) {
                 var prof = plugin.getApexsionsCoreHook().getPlayerChatProfile(uuid);
-                if (prof != null) rank = prof.rank();
+                if (prof != null) {
+                    rank = prof.rank();
+                    kingdom = prof.kingdomDisplayName();
+                }
             } else if (plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isAvailable()) {
                 rank = plugin.getLuckPermsHook().getPlayerRank(player);
             }
-            event.quitMessage(miniMessage.deserialize(
-                    "<dark_gray>[</dark_gray><red><bold>-</bold></red><dark_gray>]</dark_gray> " + rank + " <white><bold>" + player.getName() + "</bold></white> <gray>meninggalkan server</gray>"
-            ));
+
+            String template = plugin.getConfigManager().getMainConfig().getString(
+                    "join-quit-messages.quit-format",
+                    "<dark_gray>[</dark_gray><red><bold>-</bold></red><dark_gray>]</dark_gray> {rank} <white><bold>{player}</bold></white> <gray>meninggalkan server</gray>"
+            );
+            String formatted = template
+                    .replace("{rank}", rank)
+                    .replace("{player}", player.getName())
+                    .replace("{kingdom}", kingdom);
+
+            event.quitMessage(miniMessage.deserialize(formatted));
         }
     }
 }

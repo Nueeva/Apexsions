@@ -57,4 +57,7 @@ item-showcase:
 # Luxury Join and Quit server broadcast messages
 join-quit-messages:
   enabled: true
+  # Placeholders: {rank}, {player}, {kingdom}
+  join-format: "<dark_gray>[</dark_gray><green><bold>+</bold></green><dark_gray>]</dark_gray> {rank} <white><bold>{player}</bold></white> <gray>bergabung ke server</gray>"
+  quit-format: "<dark_gray>[</dark_gray><red><bold>-</bold></red><dark_gray>]</dark_gray> {rank} <white><bold>{player}</bold></white> <gray>meninggalkan server</gray>"
 
