@@ -53,4 +53,24 @@ return [
         'redirect' => '/user/login/callback',
     ],
 
+    'whatsapp' => [
+        'admins' => [
+            [
+                'name' => env('WHATSAPP_ADMIN_1_NAME', 'Rifqi'),
+                'number' => env('WHATSAPP_ADMIN_1_NUMBER', '6285883161047'),
+                'role' => 'Founder',
+            ],
+            [
+                'name' => env('WHATSAPP_ADMIN_2_NAME', 'Friell'),
+                'number' => env('WHATSAPP_ADMIN_2_NUMBER', '6285883161047'),
+                'role' => 'Founder',
+            ],
+            [
+                'name' => env('WHATSAPP_ADMIN_3_NAME', 'Favian'),
+                'number' => env('WHATSAPP_ADMIN_3_NUMBER', '6285883161047'),
+                'role' => 'Founder',
+            ],
+        ],
+    ],
+
 ];

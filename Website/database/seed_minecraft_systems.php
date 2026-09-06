@@ -683,6 +683,24 @@ MARKDOWN
         'content' => <<<MARKDOWN
 # Ensiklopedia Tiga Kerajaan Berdaulat
 
+<div class="fandom-infobox">
+    <div class="fandom-infobox-header">
+        <h4 class="fandom-infobox-title">TIGA KERAJAAN</h4>
+        <div class="fandom-infobox-subtitle">Kedaulatan Realm Apexsions</div>
+    </div>
+    <div class="fandom-infobox-image">
+        <img src="/assets/themes/apexsions/img/hero-warrior.jpg" alt="Tiga Kerajaan">
+    </div>
+    <table class="fandom-infobox-table">
+        <tr><td class="fandom-infobox-label">Kerajaan 1</td><td class="fandom-infobox-value"><strong style="color: #fde047;">Zenithar</strong> (Surya &amp; Cakrawala)</td></tr>
+        <tr><td class="fandom-infobox-label">Kerajaan 2</td><td class="fandom-infobox-value"><strong style="color: #f87171;">Solterra</strong> (Bara Api &amp; Besi)</td></tr>
+        <tr><td class="fandom-infobox-label">Kerajaan 3</td><td class="fandom-infobox-value"><strong style="color: #4ade80;">Sylvamoor</strong> (Rimba &amp; Samudra)</td></tr>
+        <tr><td class="fandom-infobox-label">Perintah Pilih</td><td class="fandom-infobox-value"><code>/k</code> atau <code>/k join &lt;nama&gt;</code></td></tr>
+        <tr><td class="fandom-infobox-label">Pajak Wilayah</td><td class="fandom-infobox-value">10% Kas Kerajaan</td></tr>
+        <tr><td class="fandom-infobox-label">Biaya Perdagangan</td><td class="fandom-infobox-value">Internal: Rp 0 • Lintas: Rp 5.000</td></tr>
+    </table>
+</div>
+
 Di Apexsions, tanah air terbagi menjadi 3 kerajaan besar berdaulat yang memiliki sejarah, fisiologi wilayah, dan kekuatan mistis yang unik. Setiap pemain wajib memilih satu kerajaan sebagai tanah tumpah darahnya.
 
 ---
@@ -957,6 +975,24 @@ MARKDOWN
         'slug' => 'custom-enchantments',
         'content' => <<<MARKDOWN
 # 182 Custom Enchantments & 7 Tingkatan Tier
+
+<div class="fandom-infobox">
+    <div class="fandom-infobox-header">
+        <h4 class="fandom-infobox-title">ALTAR PENEMPAAN</h4>
+        <div class="fandom-infobox-subtitle">ApexsionsCustomEnchants</div>
+    </div>
+    <div class="fandom-infobox-image">
+        <img src="/assets/themes/apexsions/img/package-sovereign.jpg" alt="Altar Sihir Apexsions">
+    </div>
+    <table class="fandom-infobox-table">
+        <tr><td class="fandom-infobox-label">Total Sihir</td><td class="fandom-infobox-value">182 Enchantments Kustom</td></tr>
+        <tr><td class="fandom-infobox-label">Tingkatan Tier</td><td class="fandom-infobox-value">7 Kasta (Simple s/d Heroic)</td></tr>
+        <tr><td class="fandom-infobox-label">Akses Altar</td><td class="fandom-infobox-value"><code>/enchanter</code> atau <code>/ce</code></td></tr>
+        <tr><td class="fandom-infobox-label">Editor Native</td><td class="fandom-infobox-value"><code>/ace create</code> (Paper Dialog)</td></tr>
+        <tr><td class="fandom-infobox-label">Perlindungan</td><td class="fandom-infobox-value">White Scroll, Magic Dust</td></tr>
+        <tr><td class="fandom-infobox-label">Target Gear</td><td class="fandom-infobox-value">Pedang, Armor, Busur, Alat Tambang</td></tr>
+    </table>
+</div>
 
 `ApexsionsCustomEnchants` menghadirkan sistem sihir persenjataan tercanggih dengan **182 Enchantments kustom** yang terbagi ke dalam **7 Tingkatan Kasta Sihir**.
 
@@ -1239,6 +1275,24 @@ MARKDOWN
         'slug' => 'hierarki-kasta',
         'content' => <<<MARKDOWN
 # Struktur 5 Tingkat & 11 Kasta Resmi Apexsions
+
+<div class="fandom-infobox">
+    <div class="fandom-infobox-header">
+        <h4 class="fandom-infobox-title">HIERARKI KASTA</h4>
+        <div class="fandom-infobox-subtitle">ranks.yml • Sumber Kebenaran Resmi</div>
+    </div>
+    <div class="fandom-infobox-image">
+        <img src="/assets/themes/apexsions/img/package-archon.jpg" alt="Hierarki Kasta Apexsions">
+    </div>
+    <table class="fandom-infobox-table">
+        <tr><td class="fandom-infobox-label">Tier Tertinggi</td><td class="fandom-infobox-value"><strong style="color: #fde047;">Tier V: Ancestor</strong> (Weight 100)</td></tr>
+        <tr><td class="fandom-infobox-label">Tier Otoritas</td><td class="fandom-infobox-value">Architect &amp; Overseer (Weight 95)</td></tr>
+        <tr><td class="fandom-infobox-label">Tier Administrasi</td><td class="fandom-infobox-value">Warden (90) &amp; Herald (80)</td></tr>
+        <tr><td class="fandom-infobox-label">Tier Donatur</td><td class="fandom-infobox-value">Sions, Emperor, Sovereign, Archon, Ascendant</td></tr>
+        <tr><td class="fandom-infobox-label">Kasta Default</td><td class="fandom-infobox-value">Wanderer (Weight 10)</td></tr>
+        <tr><td class="fandom-infobox-label">Sistem Izin</td><td class="fandom-infobox-value">LuckPerms Native Vault Sync</td></tr>
+    </table>
+</div>
 
 Sumber kebenaran hierarki (`ranks.yml`) membagi peradaban Apexsions ke dalam **5 Tingkat & 11 Kasta Resmi** yang memiliki bobot (*weight*), wewenang, dan kehormatan masing-masing:
 

@@ -33,6 +33,37 @@
         <p>Tingkatkan kasta dan kedaulatan peradabanmu di realm Apexsions dengan mandat kasta dan perolehan sumber daya resmi.</p>
     </div>
 
+    <!-- WhatsApp Direct Order Notice -->
+    <div class="card mb-4" style="background: linear-gradient(135deg, rgba(34, 197, 94, 0.08) 0%, rgba(15, 23, 42, 0.9) 100%); border: 1px solid rgba(34, 197, 94, 0.35); border-radius: var(--apx-radius-md);">
+        <div class="card-body p-3 p-md-4 d-flex align-items-center justify-content-between flex-wrap gap-3">
+            <div class="d-flex align-items-center gap-3">
+                <div class="d-flex align-items-center justify-content-center flex-shrink-0" style="width: 46px; height: 46px; border-radius: 50%; background: rgba(34, 197, 94, 0.2); color: #4ade80; font-size: 1.5rem; border: 1px solid rgba(34, 197, 94, 0.4);">
+                    <i class="bi bi-whatsapp"></i>
+                </div>
+                <div>
+                    <div class="fw-bold text-white mb-1" style="font-size: 1rem;">
+                        <i class="bi bi-patch-check-fill text-success me-1"></i> Pemesanan Langsung via WhatsApp Founder
+                    </div>
+                    <div class="text-muted small" style="line-height: 1.5;">
+                        Gerbang otomatis Midtrans sedang disiapkan. Transaksi saat ini diproses manual &amp; aman langsung oleh 3 Founder:
+                        <strong class="text-white">Rifqi</strong>, <strong class="text-white">Friell</strong>, dan <strong class="text-white">Favian</strong>.
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex align-items-center gap-2 flex-wrap">
+                @foreach(config('services.whatsapp.admins', []) as $adm)
+                    @php
+                        $cleanPhone = preg_replace('/[^0-9]/', '', $adm['number']);
+                    @endphp
+                    <a href="https://wa.me/{{ $cleanPhone }}?text={{ rawurlencode('Halo Admin ' . $adm['name'] . ', saya ingin konsultasi seputar Webstore Apexsions.') }}" target="_blank" rel="noopener noreferrer" class="apx-shop-founder-pill">
+                        <i class="bi bi-whatsapp text-success"></i>
+                        <span>WA {{ $adm['name'] }}</span>
+                    </a>
+                @endforeach
+            </div>
+        </div>
+    </div>
+
     <div class="row" id="shop">
         <!-- Sidebar Navigation & User Info -->
         <div class="col-lg-3 apx-shop-sidebar">
@@ -70,6 +101,27 @@
                         } elseif (str_contains($packageName, 'booster')) {
                             $fallbackIcon = 'bi bi-lightning-charge-fill';
                         }
+
+                        $userIgn = (auth()->check() ? auth()->user()->name : null) ?? 'Username_Minecraft_Kamu';
+                        $userEmail = auth()->check() ? auth()->user()->email : '-';
+                        $priceFormatted = shop_format_amount($package->getPrice());
+
+                        $waBaseText = "Halo Admin Apexsions! Saya ingin memesan paket dari Webstore resmi:\n\n"
+                            . "👑 Paket: " . $package->name . "\n"
+                            . "💰 Harga: " . $priceFormatted . "\n"
+                            . "📂 Kategori: " . $category->name . "\n"
+                            . "🎮 Akun Minecraft (IGN): " . $userIgn . "\n"
+                            . "📧 Email Akun: " . $userEmail . "\n\n"
+                            . "Mohon nomor rekening/QRIS dan instruksi aktivasi peradaban. Terima kasih!";
+
+                        $admins = config('services.whatsapp.admins', [
+                            ['name' => 'Rifqi', 'number' => '6285883161047', 'role' => 'Founder'],
+                            ['name' => 'Friell', 'number' => '6285883161047', 'role' => 'Founder'],
+                            ['name' => 'Favian', 'number' => '6285883161047', 'role' => 'Founder'],
+                        ]);
+                        $primaryAdmin = $admins[0] ?? ['name' => 'Admin', 'number' => '6285883161047'];
+                        $primaryCleanNum = preg_replace('/[^0-9]/', '', $primaryAdmin['number']);
+                        $primaryWaUrl = 'https://wa.me/' . $primaryCleanNum . '?text=' . rawurlencode($waBaseText);
                     @endphp
 
                     <div class="col-md-6 col-xl-4">
@@ -125,7 +177,7 @@
                                 @endif
 
                                 <!-- Key Highlights -->
-                                <ul class="list-unstyled small mb-4 text-muted" style="line-height: 1.8;">
+                                <ul class="list-unstyled small mb-3 text-muted" style="line-height: 1.8;">
                                     @if(str_contains($packageName, 'sions'))
                                         <li class="d-flex align-items-center gap-2"><i class="bi bi-check2-circle text-warning"></i><span class="text-light">Prefix Mahkota ✦ SIONS ✦</span></li>
                                         <li class="d-flex align-items-center gap-2"><i class="bi bi-check2-circle text-warning"></i><span class="text-light">Seluruh Kit + Kit Sions Eksklusif</span></li>
@@ -167,9 +219,31 @@
                                     @endif
                                 </ul>
 
-                                <div class="apx-package-footer mt-auto">
-                                    <a href="#" class="btn btn-apx-gold w-100 py-2" data-package-url="{{ route('shop.packages.show', $package) }}">
-                                        <i class="bi bi-bag-check-fill me-1"></i> {{ trans('shop::messages.buy') }}
+                                <!-- Founder Selection Pills -->
+                                <div class="mb-3 pt-2 border-top border-secondary border-opacity-15">
+                                    <div class="small text-muted mb-2 d-flex align-items-center justify-content-between" style="font-size: 0.76rem;">
+                                        <span><i class="bi bi-whatsapp text-success me-1"></i> Pilih Founder:</span>
+                                        <span class="text-dim">Pesan Langsung</span>
+                                    </div>
+                                    <div class="d-flex flex-wrap gap-1">
+                                        @foreach($admins as $adm)
+                                            @php
+                                                $admNum = preg_replace('/[^0-9]/', '', $adm['number']);
+                                                $admUrl = 'https://wa.me/' . $admNum . '?text=' . rawurlencode($waBaseText);
+                                            @endphp
+                                            <a href="{{ $admUrl }}" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-success py-1 px-2 d-flex align-items-center gap-1" style="font-size: 0.75rem;" title="Pesan paket ini via Founder {{ $adm['name'] }}">
+                                                <i class="bi bi-whatsapp"></i> {{ $adm['name'] }}
+                                            </a>
+                                        @endforeach
+                                    </div>
+                                </div>
+
+                                <div class="apx-package-footer mt-auto d-flex flex-column gap-2">
+                                    <a href="{{ $primaryWaUrl }}" target="_blank" rel="noopener noreferrer" class="btn btn-apx-wa w-100 py-2">
+                                        <i class="bi bi-whatsapp me-1"></i> Pesan via WhatsApp
+                                    </a>
+                                    <a href="#" class="btn btn-apx-outline w-100 py-1 small" data-package-url="{{ route('shop.packages.show', $package) }}">
+                                        <i class="bi bi-info-circle me-1"></i> Rincian &amp; Benefit
                                     </a>
                                 </div>
                             </div>

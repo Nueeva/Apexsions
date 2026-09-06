@@ -1742,6 +1742,308 @@ a:hover {
     margin-top: auto;
 }
 
+/* WhatsApp Order Buttons */
+.btn-apx-wa {
+    background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+    color: #ffffff !important;
+    font-weight: 700;
+    border: 1px solid #4ade80;
+    border-radius: var(--apx-radius-sm);
+    box-shadow: 0 4px 14px rgba(34, 197, 94, 0.3);
+    transition: var(--apx-transition);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    text-decoration: none;
+}
+
+.btn-apx-wa:hover {
+    background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
+    color: #ffffff !important;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(34, 197, 94, 0.45);
+}
+
+.btn-apx-wa-outline {
+    background: rgba(34, 197, 94, 0.1);
+    color: #4ade80 !important;
+    border: 1px solid rgba(34, 197, 94, 0.4);
+    font-weight: 600;
+    border-radius: var(--apx-radius-sm);
+    transition: var(--apx-transition);
+}
+
+.btn-apx-wa-outline:hover {
+    background: #16a34a;
+    color: #ffffff !important;
+    border-color: #22c55e;
+}
+
+.apx-shop-founder-pill {
+    background: rgba(34, 197, 94, 0.12);
+    border: 1px solid rgba(34, 197, 94, 0.35);
+    color: #86efac;
+    border-radius: 999px;
+    padding: 0.35rem 0.85rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    transition: var(--apx-transition);
+}
+
+.apx-shop-founder-pill:hover {
+    background: #16a34a;
+    color: #ffffff;
+    border-color: #4ade80;
+    transform: translateY(-1px);
+}
+
+/* ==============================================================================
+   Fandom Gamepedia-Style Wiki Components
+   ============================================================================== */
+.fandom-infobox {
+    float: right;
+    width: 330px;
+    max-width: 100%;
+    margin: 0 0 1.5rem 1.5rem;
+    background: var(--apx-bg-surface-raised);
+    border: 1px solid var(--apx-gold-border);
+    border-radius: var(--apx-radius-md);
+    box-shadow: var(--apx-shadow-elevated);
+    overflow: hidden;
+    font-size: 0.88rem;
+    line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+    .fandom-infobox {
+        float: none;
+        width: 100%;
+        margin: 0 0 1.5rem 0;
+    }
+}
+
+.fandom-infobox-header {
+    background: linear-gradient(135deg, #2b1f0d 0%, #171108 100%);
+    border-bottom: 2px solid var(--apx-gold);
+    padding: 0.85rem 1rem;
+    text-align: center;
+}
+
+.fandom-infobox-title {
+    font-family: 'Cinzel', Georgia, serif;
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--apx-gold-light);
+    margin: 0;
+    letter-spacing: 0.04em;
+}
+
+.fandom-infobox-subtitle {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--apx-text-dim);
+    margin-top: 0.2rem;
+}
+
+.fandom-infobox-image {
+    padding: 1.25rem 1rem;
+    text-align: center;
+    background: radial-gradient(circle at 50% 50%, rgba(245, 158, 11, 0.12) 0%, rgba(10, 14, 24, 0.95) 75%);
+    border-bottom: 1px solid var(--apx-border);
+}
+
+.fandom-infobox-image img {
+    max-height: 130px;
+    max-width: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.7));
+}
+
+.fandom-infobox-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.fandom-infobox-table tr {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.fandom-infobox-table tr:nth-child(even) {
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.fandom-infobox-label {
+    width: 42%;
+    padding: 0.6rem 0.85rem;
+    color: var(--apx-gold-muted);
+    font-weight: 700;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    vertical-align: top;
+}
+
+.fandom-infobox-value {
+    padding: 0.6rem 0.85rem;
+    color: #ffffff;
+    vertical-align: top;
+}
+
+/* Fandom Table of Contents */
+.fandom-toc {
+    background: var(--apx-bg-surface-raised);
+    border: 1px solid var(--apx-gold-border-subtle);
+    border-radius: var(--apx-radius-md);
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 2rem;
+    display: inline-block;
+    min-width: 280px;
+    max-width: 100%;
+}
+
+.fandom-toc-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--apx-border);
+}
+
+.fandom-toc-title {
+    font-family: 'Cinzel', Georgia, serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--apx-gold);
+    margin: 0;
+    letter-spacing: 0.08em;
+}
+
+.fandom-toc-list {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 0;
+    counter-reset: toc-counter;
+}
+
+.fandom-toc-list li {
+    counter-increment: toc-counter;
+    margin-bottom: 0.35rem;
+    font-size: 0.88rem;
+}
+
+.fandom-toc-list li::before {
+    content: counter(toc-counter) ". ";
+    color: var(--apx-gold);
+    font-weight: 700;
+    font-size: 0.8rem;
+}
+
+.fandom-toc-list a {
+    color: var(--apx-text-sub);
+    text-decoration: none;
+    transition: var(--apx-transition);
+}
+
+.fandom-toc-list a:hover {
+    color: var(--apx-gold-light);
+    text-decoration: underline;
+}
+
+/* Fandom Lore Quotes / Excerpts */
+.fandom-lore-box {
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.06) 0%, rgba(15, 20, 32, 0.85) 100%);
+    border: 1px solid var(--apx-gold-border);
+    border-left: 5px solid var(--apx-gold);
+    border-radius: var(--apx-radius-sm);
+    padding: 1.25rem 1.75rem;
+    margin: 1.75rem 0;
+    font-style: italic;
+    color: #fef08a;
+    position: relative;
+}
+
+.fandom-lore-author {
+    margin-top: 0.6rem;
+    font-style: normal;
+    font-size: 0.82rem;
+    text-align: right;
+    color: var(--apx-gold-muted);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+/* Fandom Stat & Comparison Tables */
+.fandom-stat-table {
+    width: 100%;
+    margin: 1.5rem 0;
+    border-collapse: separate;
+    border-spacing: 0;
+    border: 1px solid var(--apx-gold-border-subtle);
+    border-radius: var(--apx-radius-md);
+    overflow: hidden;
+    font-size: 0.9rem;
+}
+
+.fandom-stat-table th {
+    background: linear-gradient(180deg, #20170a 0%, #151007 100%);
+    color: var(--apx-gold-light);
+    font-family: 'Cinzel', Georgia, serif;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    padding: 0.85rem 1rem;
+    border-bottom: 2px solid var(--apx-gold-border);
+    text-align: left;
+}
+
+.fandom-stat-table td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    color: var(--apx-text-sub);
+}
+
+.fandom-stat-table tr:nth-child(even) td {
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.fandom-stat-table tr:hover td {
+    background: rgba(245, 158, 11, 0.06);
+    color: #ffffff;
+}
+
+/* One-Click Command Copy Button */
+.apx-code-block-wrap {
+    position: relative;
+    margin: 1rem 0;
+}
+
+.apx-code-copy-btn {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    background: rgba(245, 158, 11, 0.15);
+    border: 1px solid var(--apx-gold-border-subtle);
+    color: var(--apx-gold-light);
+    border-radius: var(--apx-radius-sm);
+    padding: 0.25rem 0.6rem;
+    font-size: 0.72rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--apx-transition);
+}
+
+.apx-code-copy-btn:hover {
+    background: var(--apx-gold);
+    color: #000000;
+}
+
 /* ==============================================================================
    Wiki Encyclopedia & Documentation Views
    ============================================================================== */
@@ -1833,6 +2135,11 @@ a:hover {
     color: #ffffff;
     margin-top: 1.75rem;
     margin-bottom: 1rem;
+}
+
+.apx-wiki-body > h1:first-child,
+.apx-wiki-body > .fandom-infobox + h1 {
+    display: none;
 }
 
 .apx-wiki-article-card p {

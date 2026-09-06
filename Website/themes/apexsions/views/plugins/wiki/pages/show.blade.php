@@ -57,17 +57,37 @@
                 <div class="tab-pane fade @if($page->is($catPage)) show active @endif" id="page-{{ $catPage->id }}" role="tabpanel">
                     <article class="apx-wiki-article-card">
                         <!-- Breadcrumb navigation inside article -->
-                        <div class="d-flex align-items-center gap-2 text-muted small mb-3">
-                            <a href="{{ route('wiki.index') }}" class="text-muted">Wiki</a>
-                            <span>/</span>
-                            <span class="text-warning">{{ $page->category->name }}</span>
-                            <span>/</span>
-                            <span class="text-white">{{ $catPage->title }}</span>
+                        <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 text-muted small mb-3">
+                            <div class="d-flex align-items-center gap-2">
+                                <a href="{{ route('wiki.index') }}" class="text-muted text-decoration-none">
+                                    <i class="bi bi-house-door me-1"></i> Wiki
+                                </a>
+                                <span>/</span>
+                                <span class="text-warning">{{ $page->category->name }}</span>
+                                <span>/</span>
+                                <span class="text-white">{{ $catPage->title }}</span>
+                            </div>
+
+                            <div class="d-flex align-items-center gap-2">
+                                <button type="button" class="btn btn-sm btn-outline-secondary py-0 px-2" style="font-size: 0.75rem;" onclick="navigator.clipboard.writeText(window.location.href); alert('Tautan dokumen berhasil disalin!');">
+                                    <i class="bi bi-share me-1"></i> Bagikan
+                                </button>
+                            </div>
                         </div>
 
-                        <h1 class="mb-4" style="font-family: 'Cinzel', Georgia, serif; font-size: 2rem; color: #ffffff; border-bottom: 2px solid var(--apx-gold-border-subtle); padding-bottom: 0.75rem;">
-                            {{ $catPage->title }}
-                        </h1>
+                        <!-- Article Header & Meta Bar -->
+                        <div class="mb-4 pb-3 border-bottom border-secondary border-opacity-20">
+                            <h1 class="mb-2" style="font-family: 'Cinzel', Georgia, serif; font-size: clamp(1.6rem, 3vw, 2.2rem); color: #ffffff;">
+                                {{ $catPage->title }}
+                            </h1>
+                            <div class="d-flex align-items-center flex-wrap gap-3 text-muted small">
+                                <span><i class="bi bi-shield-check text-warning me-1"></i> Dokumen Resmi Apexsions</span>
+                                <span>•</span>
+                                <span><i class="bi bi-cpu text-info me-1"></i> Paper API MC 26.2</span>
+                                <span>•</span>
+                                <span><i class="bi bi-clock me-1"></i> ~{{ max(1, ceil(str_word_count(strip_tags($catPage->content)) / 180)) }} menit baca</span>
+                            </div>
+                        </div>
 
                         <div class="apx-wiki-body">
                             {!! \Illuminate\Support\Str::markdown($catPage->content) !!}
@@ -104,5 +124,42 @@
                 selectWikiPage(target, true);
             }
         };
+
+        // Fandom Table & Code Copy Enhancers
+        document.addEventListener('DOMContentLoaded', function () {
+            // Style markdown tables with responsive wrapper & fandom-stat-table class
+            document.querySelectorAll('.apx-wiki-body table').forEach(tbl => {
+                if (!tbl.classList.contains('fandom-stat-table') && !tbl.classList.contains('fandom-infobox-table')) {
+                    tbl.classList.add('fandom-stat-table');
+                    const wrap = document.createElement('div');
+                    wrap.className = 'table-responsive mb-4';
+                    tbl.parentNode.insertBefore(wrap, tbl);
+                    wrap.appendChild(tbl);
+                }
+            });
+
+            // Add one-click copy button to code blocks
+            document.querySelectorAll('.apx-wiki-body pre').forEach(pre => {
+                const wrap = document.createElement('div');
+                wrap.className = 'apx-code-block-wrap';
+                pre.parentNode.insertBefore(wrap, pre);
+                wrap.appendChild(pre);
+
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'apx-code-copy-btn';
+                btn.innerHTML = '<i class="bi bi-clipboard me-1"></i> Salin';
+                btn.addEventListener('click', () => {
+                    const code = pre.querySelector('code') ? pre.querySelector('code').innerText : pre.innerText;
+                    navigator.clipboard.writeText(code.trim()).then(() => {
+                        btn.innerHTML = '<i class="bi bi-check2 me-1 text-success"></i> Tersalin!';
+                        setTimeout(() => {
+                            btn.innerHTML = '<i class="bi bi-clipboard me-1"></i> Salin';
+                        }, 2000);
+                    });
+                });
+                wrap.appendChild(btn);
+            });
+        });
     </script>
 @endpush

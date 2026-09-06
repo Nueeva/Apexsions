@@ -74,6 +74,28 @@
     @endforeach
 </div>
 
+<!-- Direct WhatsApp Helpdesk Widget -->
+<div class="card mb-4" style="background: var(--apx-bg-surface); border: 1px solid var(--apx-gold-border-subtle);">
+    <div class="card-header py-2 px-3 small text-white fw-bold d-flex align-items-center justify-content-between" style="background: rgba(34, 197, 94, 0.08);">
+        <span><i class="bi bi-whatsapp text-success me-1"></i> BANTUAN &amp; FOUNDER</span>
+        <span class="badge bg-success bg-opacity-25 text-success font-monospace" style="font-size: 0.65rem;">ONLINE</span>
+    </div>
+    <div class="card-body p-3">
+        <p class="small text-muted mb-2" style="font-size: 0.8rem; line-height: 1.4;">Butuh panduan donasi atau konfirmasi manual? Hubungi salah satu Founder resmi kami:</p>
+        <div class="d-grid gap-1">
+            @foreach(config('services.whatsapp.admins', []) as $admin)
+                @php
+                    $cleanNum = preg_replace('/[^0-9]/', '', $admin['number']);
+                @endphp
+                <a href="https://wa.me/{{ $cleanNum }}?text={{ rawurlencode('Halo Admin ' . $admin['name'] . ' Apexsions, saya ingin konsultasi atau pesan paket Webstore.') }}" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-success d-flex align-items-center justify-content-between px-2 py-1" style="font-size: 0.78rem;">
+                    <span><i class="bi bi-whatsapp me-1"></i> WA {{ $admin['name'] }}</span>
+                    <span class="badge bg-secondary bg-opacity-25 text-white font-monospace" style="font-size: 0.65rem;">{{ $admin['role'] }}</span>
+                </a>
+            @endforeach
+        </div>
+    </div>
+</div>
+
 <!-- Monthly Server Goal Widget -->
 @if($goal >= 0)
     <div class="card mb-4" style="background: var(--apx-bg-surface); border: 1px solid var(--apx-gold-border-subtle);">

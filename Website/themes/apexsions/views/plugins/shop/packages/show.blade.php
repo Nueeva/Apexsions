@@ -9,6 +9,50 @@
         </div>
         <div class="modal-body p-4" style="color: var(--apx-text-sub); line-height: 1.7;">
             {!! \Illuminate\Support\Str::markdown($package->description) !!}
+
+            @php
+                $userIgn = (auth()->check() ? auth()->user()->name : null) ?? 'Username_Minecraft_Kamu';
+                $userEmail = auth()->check() ? auth()->user()->email : '-';
+                $priceFormatted = shop_format_amount($package->getPrice());
+                $categoryName = $package->category ? $package->category->name : 'Paket Server';
+
+                $waBaseText = "Halo Admin Apexsions! Saya ingin memesan paket dari Webstore resmi:\n\n"
+                    . "👑 Paket: " . $package->name . "\n"
+                    . "💰 Harga: " . $priceFormatted . "\n"
+                    . "📂 Kategori: " . $categoryName . "\n"
+                    . "🎮 Akun Minecraft (IGN): " . $userIgn . "\n"
+                    . "📧 Email Akun: " . $userEmail . "\n\n"
+                    . "Mohon nomor rekening/QRIS dan instruksi aktivasi peradaban. Terima kasih!";
+
+                $admins = config('services.whatsapp.admins', [
+                    ['name' => 'Rifqi', 'number' => '6285883161047', 'role' => 'Founder'],
+                    ['name' => 'Friell', 'number' => '6285883161047', 'role' => 'Founder'],
+                    ['name' => 'Favian', 'number' => '6285883161047', 'role' => 'Founder'],
+                ]);
+            @endphp
+
+            <!-- WhatsApp Direct Order Notice in Modal -->
+            <div class="p-3 mt-4 rounded-3" style="background: linear-gradient(135deg, rgba(34, 197, 94, 0.09) 0%, rgba(15, 23, 42, 0.95) 100%); border: 1px solid rgba(34, 197, 94, 0.35);">
+                <div class="d-flex align-items-center gap-2 mb-2 text-white fw-bold">
+                    <i class="bi bi-whatsapp text-success fs-5"></i>
+                    <span>Pesan Langsung via WhatsApp Founder:</span>
+                </div>
+                <p class="text-muted small mb-3" style="line-height: 1.5;">
+                    Gateway Midtrans sedang dalam proses pengajuan. Pilih salah satu Founder untuk memulai chat WhatsApp dengan data pesanan Anda yang otomatis terisi:
+                </p>
+                <div class="d-flex flex-wrap gap-2">
+                    @foreach($admins as $adm)
+                        @php
+                            $admNum = preg_replace('/[^0-9]/', '', $adm['number']);
+                            $admUrl = 'https://wa.me/' . $admNum . '?text=' . rawurlencode($waBaseText);
+                        @endphp
+                        <a href="{{ $admUrl }}" target="_blank" rel="noopener noreferrer" class="btn btn-apx-wa px-3 py-2 flex-grow-1" style="font-size: 0.85rem;">
+                            <i class="bi bi-whatsapp"></i>
+                            <span>Hubungi {{ $adm['name'] }} (Founder)</span>
+                        </a>
+                    @endforeach
+                </div>
+            </div>
         </div>
         <div class="modal-footer d-flex justify-content-between align-items-center" style="background: var(--apx-bg-surface-raised); border-top: 1px solid var(--apx-border);">
             <div class="d-flex align-items-baseline gap-2">
@@ -20,58 +64,16 @@
                 </span>
             </div>
 
-            <div>
-                @if($shopUser !== null)
-                    @if($package->isSubscription())
-                        @if($package->isUserSubscribed($shopUser))
-                            <a href="{{ route('shop.profile') }}" class="btn btn-apx-outline">
-                                {{ trans('shop::messages.actions.manage') }}
-                            </a>
-                        @else
-                            <form action="{{ route('shop.subscriptions.select', $package) }}" method="POST" class="d-inline">
-                                @csrf
-                                <button type="submit" class="btn btn-apx-gold">
-                                    {{ trans('shop::messages.actions.subscribe') }}
-                                </button>
-                            </form>
-                        @endif
-                    @elseif($package->isInCart())
-                        <form action="{{ route('shop.cart.remove', $package) }}" method="POST" class="d-inline">
-                            @csrf
-                            <button type="submit" class="btn btn-danger">
-                                <i class="bi bi-cart-x me-1"></i> {{ trans('messages.actions.remove') }}
-                            </button>
-                        </form>
-                    @elseif($package->global_limit === 0)
-                        <span class="text-muted small"><i class="bi bi-x-circle me-1"></i> {{ trans('shop::messages.packages.unavailable') }}</span>
-                    @elseif($package->getMaxQuantity() < 1)
-                        <span class="text-muted small"><i class="bi bi-x-circle me-1"></i> {{ trans('shop::messages.packages.limit') }}</span>
-                    @elseif(! $package->hasBoughtRequirements())
-                        <span class="text-muted small"><i class="bi bi-x-circle me-1"></i> {{ trans('shop::messages.packages.requirements') }}</span>
-                    @else
-                        <form action="{{ route('shop.packages.buy', $package) }}" method="POST" class="d-inline-flex align-items-center gap-2">
-                            @csrf
-
-                            @if($package->custom_price)
-                                <label for="price" class="form-label mb-0 small">{{ trans('shop::messages.fields.price') }}:</label>
-                                <input type="number" step="0.01" min="{{ $package->getPrice() }}" size="5" class="form-control form-control-sm" style="width: 100px;" name="price" id="price" value="{{ $package->getPrice() }}">
-                            @endif
-
-                            @if($package->has_quantity)
-                                <label for="quantity" class="form-label mb-0 small">{{ trans('shop::messages.fields.quantity') }}:</label>
-                                <input type="number" min="1" max="{{ $package->getMaxQuantity() }}" size="5" class="form-control form-control-sm" style="width: 80px;" name="quantity" id="quantity" value="1" required>
-                            @endif
-
-                            <button type="submit" class="btn btn-apx-gold">
-                                <i class="bi bi-cart-plus me-1"></i> {{ trans('shop::messages.buy') }}
-                            </button>
-                        </form>
-                    @endif
-                @else
-                    <a href="{{ route('shop.login') }}" class="btn btn-apx-gold">
-                        <i class="bi bi-box-arrow-in-right me-1"></i> {{ trans('auth.login') }}
-                    </a>
-                @endif
+            <div class="d-flex align-items-center gap-2">
+                <button type="button" class="btn btn-apx-outline" data-bs-dismiss="modal">Tutup</button>
+                @php
+                    $primaryAdmin = $admins[0] ?? ['name' => 'Rifqi', 'number' => '6285883161047'];
+                    $primaryNum = preg_replace('/[^0-9]/', '', $primaryAdmin['number']);
+                    $primaryUrl = 'https://wa.me/' . $primaryNum . '?text=' . rawurlencode($waBaseText);
+                @endphp
+                <a href="{{ $primaryUrl }}" target="_blank" rel="noopener noreferrer" class="btn btn-apx-wa">
+                    <i class="bi bi-whatsapp me-1"></i> Pesan Cepat Sekarang
+                </a>
             </div>
         </div>
     </div>
