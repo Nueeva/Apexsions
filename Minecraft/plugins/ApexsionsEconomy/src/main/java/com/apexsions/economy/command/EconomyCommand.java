@@ -53,14 +53,35 @@ public class EconomyCommand implements CommandExecutor, TabCompleter {
                 }
 
                 double amount;
-                try {
-                    amount = NumberFormatUtil.parse(args[2]);
-                } catch (Exception e) {
-                    sender.sendMessage("§cJumlah tidak valid!");
-                    return true;
+                String currId = "rupiah";
+
+                if (args.length >= 4) {
+                    if (plugin.getCurrencyRegistry().get(args[2].toLowerCase()) != null) {
+                        currId = args[2].toLowerCase();
+                        try {
+                            amount = NumberFormatUtil.parse(args[3]);
+                        } catch (Exception e) {
+                            sender.sendMessage("§cJumlah tidak valid: " + args[3]);
+                            return true;
+                        }
+                    } else {
+                        currId = args[3].toLowerCase();
+                        try {
+                            amount = NumberFormatUtil.parse(args[2]);
+                        } catch (Exception e) {
+                            sender.sendMessage("§cJumlah tidak valid: " + args[2]);
+                            return true;
+                        }
+                    }
+                } else {
+                    try {
+                        amount = NumberFormatUtil.parse(args[2]);
+                    } catch (Exception e) {
+                        sender.sendMessage("§cJumlah tidak valid: " + args[2]);
+                        return true;
+                    }
                 }
 
-                String currId = (args.length >= 4) ? args[3].toLowerCase() : "rupiah";
                 Currency currency = plugin.getCurrencyRegistry().get(currId);
                 if (currency == null) {
                     sender.sendMessage("§cMata uang " + currId + " tidak dikenali!");
