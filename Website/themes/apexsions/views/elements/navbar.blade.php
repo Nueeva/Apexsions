@@ -140,7 +140,7 @@
                     <ul class="mb-0 ps-3 text-white small">
                         <li>1x Apex Vote Crate Key</li>
                         <li>500 Koin Gold Server</li>
-                        <li>250 Progression XP</li>
+                        <li>50 Progression XP</li>
                     </ul>
                 </div>
 

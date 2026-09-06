@@ -6,7 +6,7 @@
       type: "BREAK_BLOCK"
       target-block: "STONE"
       target-amount: 256
-      reward-xp: 175
+      reward-xp: 20
       reward-coins: 12
 
     w1_mine_deepslate:
@@ -15,7 +15,7 @@
       type: "MINE_BLOCK"
       target-block: "DEEPSLATE"
       target-amount: 150
-      reward-xp: 200
+      reward-xp: 25
       reward-coins: 13
 
     w1_mine_coal:
@@ -24,7 +24,7 @@
       type: "MINE_BLOCK"
       target-block: "COAL_ORE"
       target-amount: 80
-      reward-xp: 250
+      reward-xp: 30
       reward-coins: 14
 
     w1_mine_iron:
@@ -33,7 +33,7 @@
       type: "MINE_BLOCK"
       target-block: "IRON_ORE"
       target-amount: 60
-      reward-xp: 300
+      reward-xp: 40
       reward-coins: 15
 
     w1_mine_copper:
@@ -42,7 +42,7 @@
       type: "MINE_BLOCK"
       target-block: "COPPER_ORE"
       target-amount: 64
-      reward-xp: 175
+      reward-xp: 20
       reward-coins: 16
 
     w1_mine_gold:
@@ -51,7 +51,7 @@
       type: "MINE_BLOCK"
       target-block: "GOLD_ORE"
       target-amount: 40
-      reward-xp: 200
+      reward-xp: 25
       reward-coins: 17
 
     w1_mine_lapis:
@@ -60,7 +60,7 @@
       type: "MINE_BLOCK"
       target-block: "LAPIS_ORE"
       target-amount: 36
-      reward-xp: 250
+      reward-xp: 30
       reward-coins: 18
 
     w1_mine_redstone:
@@ -69,7 +69,7 @@
       type: "MINE_BLOCK"
       target-block: "REDSTONE_ORE"
       target-amount: 48
-      reward-xp: 300
+      reward-xp: 40
       reward-coins: 12
 
     w1_mine_diamond:
@@ -78,7 +78,7 @@
       type: "MINE_BLOCK"
       target-block: "DIAMOND_ORE"
       target-amount: 12
-      reward-xp: 175
+      reward-xp: 20
       reward-coins: 13
 
     w1_mine_obsidian:
@@ -87,7 +87,7 @@
       type: "MINE_BLOCK"
       target-block: "OBSIDIAN"
       target-amount: 24
-      reward-xp: 200
+      reward-xp: 25
       reward-coins: 14
 
   2:
@@ -97,7 +97,7 @@
       type: "BREAK_BLOCK"
       target-block: "NETHERRACK"
       target-amount: 200
-      reward-xp: 250
+      reward-xp: 30
       reward-coins: 15
 
     w2_mine_quartz:
@@ -106,7 +106,7 @@
       type: "MINE_BLOCK"
       target-block: "NETHER_QUARTZ_ORE"
       target-amount: 50
-      reward-xp: 300
+      reward-xp: 40
       reward-coins: 16
 
     w2_mine_ancient_debris:
@@ -115,7 +115,7 @@
       type: "MINE_BLOCK"
       target-block: "ANCIENT_DEBRIS"
       target-amount: 4
-      reward-xp: 175
+      reward-xp: 20
       reward-coins: 17
 
     w2_mine_amethyst:
@@ -124,7 +124,7 @@
       type: "MINE_BLOCK"
       target-block: "AMETHYST_BLOCK"
       target-amount: 32
-      reward-xp: 200
+      reward-xp: 25
       reward-coins: 18
 
     w2_mine_tuff:
@@ -133,7 +133,7 @@
       type: "BREAK_BLOCK"
       target-block: "TUFF"
       target-amount: 100
-      reward-xp: 250
+      reward-xp: 30
       reward-coins: 12
 
     w2_mine_diorite:
@@ -142,7 +142,7 @@
       type: "BREAK_BLOCK"
       target-block: "DIORITE"
       target-amount: 80
-      reward-xp: 300
+      reward-xp: 40
       reward-coins: 13
 
     w2_mine_granite:
@@ -151,7 +151,7 @@
       type: "BREAK_BLOCK"
       target-block: "GRANITE"
       target-amount: 80
-      reward-xp: 175
+      reward-xp: 20
       reward-coins: 14
 
     w2_mine_andesite:
@@ -160,7 +160,7 @@
       type: "BREAK_BLOCK"
       target-block: "ANDESITE"
       target-amount: 80
-      reward-xp: 200
+      reward-xp: 25
       reward-coins: 15
 
     w2_mine_blackstone:
@@ -169,7 +169,7 @@
       type: "BREAK_BLOCK"
       target-block: "BLACKSTONE"
       target-amount: 100
-      reward-xp: 250
+      reward-xp: 30
       reward-coins: 16
 
     w2_mine_basalt:
@@ -178,7 +178,7 @@
       type: "BREAK_BLOCK"
       target-block: "BASALT"
       target-amount: 80
-      reward-xp: 300
+      reward-xp: 40
       reward-coins: 17
 
   3:
@@ -188,7 +188,7 @@
       type: "BREAK_BLOCK"
       target-block: "OAK_LOG"
       target-amount: 100
-      reward-xp: 175
+      reward-xp: 20
       reward-coins: 18
 
     w3_wood_birch:
@@ -197,7 +197,7 @@
       type: "BREAK_BLOCK"
       target-block: "BIRCH_LOG"
       target-amount: 100
-      reward-xp: 200
+      reward-xp: 25
       reward-coins: 12
 
     w3_wood_spruce:
@@ -206,7 +206,7 @@
       type: "BREAK_BLOCK"
       target-block: "SPRUCE_LOG"
       target-amount: 100
-      reward-xp: 250
+      reward-xp: 30
       reward-coins: 13
 
     w3_wood_jungle:
@@ -215,7 +215,7 @@
       type: "BREAK_BLOCK"
       target-block: "JUNGLE_LOG"
       target-amount: 100
-      reward-xp: 300
+      reward-xp: 40
       reward-coins: 14
 
     w3_wood_acacia:
@@ -224,7 +224,7 @@
       type: "BREAK_BLOCK"
       target-block: "ACACIA_LOG"
       target-amount: 100
-      reward-xp: 175
+      reward-xp: 20
       reward-coins: 15
 
     w3_wood_dark_oak:
@@ -233,7 +233,7 @@
       type: "BREAK_BLOCK"
       target-block: "DARK_OAK_LOG"
       target-amount: 100
-      reward-xp: 200
+      reward-xp: 25
       reward-coins: 16
 
     w3_wood_mangrove:
@@ -242,7 +242,7 @@
       type: "BREAK_BLOCK"
       target-block: "MANGROVE_LOG"
       target-amount: 100
-      reward-xp: 250
+      reward-xp: 30
       reward-coins: 17
 
     w3_wood_cherry:
@@ -251,7 +251,7 @@
       type: "BREAK_BLOCK"
       target-block: "CHERRY_LOG"
       target-amount: 100
-      reward-xp: 300
+      reward-xp: 40
       reward-coins: 18
 
     w3_wood_crimson:
@@ -260,7 +260,7 @@
       type: "BREAK_BLOCK"
       target-block: "CRIMSON_STEM"
       target-amount: 80
-      reward-xp: 175
+      reward-xp: 20
       reward-coins: 12
 
     w3_wood_warped:
@@ -269,7 +269,7 @@
       type: "BREAK_BLOCK"
       target-block: "WARPED_STEM"
       target-amount: 80
-      reward-xp: 200
+      reward-xp: 25
       reward-coins: 13
 
   4:
@@ -279,7 +279,7 @@
       type: "KILL_ENTITY"
       target-entity: "ZOMBIE"
       target-amount: 50
-      reward-xp: 250
+      reward-xp: 30
       reward-coins: 14
 
     w4_kill_skeleton:
@@ -288,7 +288,7 @@
       type: "KILL_ENTITY"
       target-entity: "SKELETON"
       target-amount: 40
-      reward-xp: 300
+      reward-xp: 40
       reward-coins: 15
 
     w4_kill_spider:
@@ -297,7 +297,7 @@
       type: "KILL_ENTITY"
       target-entity: "SPIDER"
       target-amount: 40
-      reward-xp: 175
+      reward-xp: 20
       reward-coins: 16
 
     w4_kill_cave_spider:
@@ -306,7 +306,7 @@
       type: "KILL_ENTITY"
       target-entity: "CAVE_SPIDER"
       target-amount: 20
-      reward-xp: 200
+      reward-xp: 25
       reward-coins: 17
 
     w4_kill_creeper:
@@ -315,7 +315,7 @@
       type: "KILL_ENTITY"
       target-entity: "CREEPER"
       target-amount: 25
-      reward-xp: 250
+      reward-xp: 30
       reward-coins: 18
 
     w4_kill_enderman:
@@ -324,7 +324,7 @@
       type: "KILL_ENTITY"
       target-entity: "ENDERMAN"
       target-amount: 15
-      reward-xp: 300
+      reward-xp: 40
       reward-coins: 12
 
     w4_kill_drowned:
@@ -333,7 +333,7 @@
       type: "KILL_ENTITY"
       target-entity: "DROWNED"
       target-amount: 30
-      reward-xp: 175
+      reward-xp: 20
       reward-coins: 13
 
     w4_kill_husk:
@@ -342,7 +342,7 @@
       type: "KILL_ENTITY"
       target-entity: "HUSK"
       target-amount: 30
-      reward-xp: 200
+      reward-xp: 25
       reward-coins: 14
 
     w4_kill_stray:
@@ -351,7 +351,7 @@
       type: "KILL_ENTITY"
       target-entity: "STRAY"
       target-amount: 25
-      reward-xp: 250
+      reward-xp: 30
       reward-coins: 15
 
     w4_kill_witch:
@@ -360,7 +360,7 @@
       type: "KILL_ENTITY"
       target-entity: "WITCH"
       target-amount: 10
-      reward-xp: 300
+      reward-xp: 40
       reward-coins: 16
 
   5:
@@ -370,7 +370,7 @@
       type: "KILL_ENTITY"
       target-entity: "SLIME"
       target-amount: 30
-      reward-xp: 175
+      reward-xp: 20
       reward-coins: 17
 
     w5_kill_magma_cube:
@@ -379,7 +379,7 @@
       type: "KILL_ENTITY"
       target-entity: "MAGMA_CUBE"
       target-amount: 25
-      reward-xp: 200
+      reward-xp: 25
       reward-coins: 18
 
     w5_kill_blaze:
@@ -388,7 +388,7 @@
       type: "KILL_ENTITY"
       target-entity: "BLAZE"
       target-amount: 20
-      reward-xp: 250
+      reward-xp: 30
       reward-coins: 12
 
     w5_kill_wither_skeleton:
@@ -397,7 +397,7 @@
       type: "KILL_ENTITY"
       target-entity: "WITHER_SKELETON"
       target-amount: 15
-      reward-xp: 300
+      reward-xp: 40
       reward-coins: 13
 
     w5_kill_piglin:
@@ -406,7 +406,7 @@
       type: "KILL_ENTITY"
       target-entity: "PIGLIN"
       target-amount: 30
-      reward-xp: 175
+      reward-xp: 20
       reward-coins: 14
 
     w5_kill_zombified_piglin:
@@ -415,7 +415,7 @@
       type: "KILL_ENTITY"
       target-entity: "ZOMBIFIED_PIGLIN"
       target-amount: 35
-      reward-xp: 200
+      reward-xp: 25
       reward-coins: 15
 
     w5_kill_hoglin:
@@ -424,7 +424,7 @@
       type: "KILL_ENTITY"
       target-entity: "HOGLIN"
       target-amount: 15
-      reward-xp: 250
+      reward-xp: 30
       reward-coins: 16
 
     w5_kill_ghast:
@@ -433,7 +433,7 @@
       type: "KILL_ENTITY"
       target-entity: "GHAST"
       target-amount: 8
-      reward-xp: 300
+      reward-xp: 40
       reward-coins: 17
 
     w5_kill_phantom:
@@ -442,7 +442,7 @@
       type: "KILL_ENTITY"
       target-entity: "PHANTOM"
       target-amount: 12
-      reward-xp: 175
+      reward-xp: 20
       reward-coins: 18
 
     w5_kill_pillager:
@@ -451,7 +451,7 @@
       type: "KILL_ENTITY"
       target-entity: "PILLAGER"
       target-amount: 20
-      reward-xp: 200
+      reward-xp: 25
       reward-coins: 12
 
   6:
@@ -461,7 +461,7 @@
       type: "KILL_ENTITY"
       target-entity: "VINDICATOR"
       target-amount: 10
-      reward-xp: 250
+      reward-xp: 30
       reward-coins: 13
 
     w6_kill_ravager:
@@ -470,7 +470,7 @@
       type: "KILL_ENTITY"
       target-entity: "RAVAGER"
       target-amount: 3
-      reward-xp: 300
+      reward-xp: 40
       reward-coins: 14
 
     w6_kill_guardian:
@@ -479,7 +479,7 @@
       type: "KILL_ENTITY"
       target-entity: "GUARDIAN"
       target-amount: 15
-      reward-xp: 175
+      reward-xp: 20
       reward-coins: 15
 
     w6_kill_player:
@@ -487,7 +487,7 @@
       description: "Kalahkan 5 Pemain dalam duel."
       type: "KILL_PLAYER"
       target-amount: 5
-      reward-xp: 200
+      reward-xp: 25
       reward-coins: 16
 
     w6_harvest_wheat:
@@ -496,7 +496,7 @@
       type: "HARVEST_CROPS"
       target-block: "WHEAT"
       target-amount: 120
-      reward-xp: 250
+      reward-xp: 30
       reward-coins: 17
 
     w6_harvest_carrots:
@@ -505,7 +505,7 @@
       type: "HARVEST_CROPS"
       target-block: "CARROTS"
       target-amount: 120
-      reward-xp: 300
+      reward-xp: 40
       reward-coins: 18
 
     w6_harvest_potatoes:
@@ -514,7 +514,7 @@
       type: "HARVEST_CROPS"
       target-block: "POTATOES"
       target-amount: 120
-      reward-xp: 175
+      reward-xp: 20
       reward-coins: 12
 
     w6_harvest_beetroots:
@@ -523,7 +523,7 @@
       type: "HARVEST_CROPS"
       target-block: "BEETROOTS"
       target-amount: 80
-      reward-xp: 200
+      reward-xp: 25
       reward-coins: 13
 
     w6_harvest_nether_wart:
@@ -532,7 +532,7 @@
       type: "HARVEST_CROPS"
       target-block: "NETHER_WART"
       target-amount: 80
-      reward-xp: 250
+      reward-xp: 30
       reward-coins: 14
 
     w6_harvest_sugarcane:
@@ -541,7 +541,7 @@
       type: "BREAK_BLOCK"
       target-block: "SUGAR_CANE"
       target-amount: 100
-      reward-xp: 300
+      reward-xp: 40
       reward-coins: 15
 
   7:
@@ -551,7 +551,7 @@
       type: "BREAK_BLOCK"
       target-block: "BAMBOO"
       target-amount: 120
-      reward-xp: 175
+      reward-xp: 20
       reward-coins: 16
 
     w7_harvest_cactus:
@@ -560,7 +560,7 @@
       type: "BREAK_BLOCK"
       target-block: "CACTUS"
       target-amount: 80
-      reward-xp: 200
+      reward-xp: 25
       reward-coins: 17
 
     w7_harvest_melon:
@@ -569,7 +569,7 @@
       type: "BREAK_BLOCK"
       target-block: "MELON"
       target-amount: 40
-      reward-xp: 250
+      reward-xp: 30
       reward-coins: 18
 
     w7_harvest_pumpkin:
@@ -578,7 +578,7 @@
       type: "BREAK_BLOCK"
       target-block: "PUMPKIN"
       target-amount: 40
-      reward-xp: 300
+      reward-xp: 40
       reward-coins: 12
 
     w7_harvest_cocoa:
@@ -587,7 +587,7 @@
       type: "BREAK_BLOCK"
       target-block: "COCOA"
       target-amount: 60
-      reward-xp: 175
+      reward-xp: 20
       reward-coins: 13
 
     w7_harvest_sweet_berries:
@@ -596,7 +596,7 @@
       type: "BREAK_BLOCK"
       target-block: "SWEET_BERRY_BUSH"
       target-amount: 80
-      reward-xp: 200
+      reward-xp: 25
       reward-coins: 14
 
     w7_craft_bread:
@@ -605,7 +605,7 @@
       type: "CRAFT_ITEM"
       target-item: "BREAD"
       target-amount: 64
-      reward-xp: 250
+      reward-xp: 30
       reward-coins: 15
 
     w7_craft_torches:
@@ -614,7 +614,7 @@
       type: "CRAFT_ITEM"
       target-item: "TORCH"
       target-amount: 128
-      reward-xp: 300
+      reward-xp: 40
       reward-coins: 16
 
     w7_craft_iron_block:
@@ -623,7 +623,7 @@
       type: "CRAFT_ITEM"
       target-item: "IRON_BLOCK"
       target-amount: 12
-      reward-xp: 175
+      reward-xp: 20
       reward-coins: 17
 
     w7_craft_gold_block:
@@ -632,7 +632,7 @@
       type: "CRAFT_ITEM"
       target-item: "GOLD_BLOCK"
       target-amount: 8
-      reward-xp: 200
+      reward-xp: 25
       reward-coins: 18
 
   8:
@@ -642,7 +642,7 @@
       type: "CRAFT_ITEM"
       target-item: "DIAMOND_BLOCK"
       target-amount: 4
-      reward-xp: 250
+      reward-xp: 30
       reward-coins: 12
 
     w8_craft_books:
@@ -651,7 +651,7 @@
       type: "CRAFT_ITEM"
       target-item: "BOOK"
       target-amount: 32
-      reward-xp: 300
+      reward-xp: 40
       reward-coins: 13
 
     w8_craft_arrows:
@@ -660,7 +660,7 @@
       type: "CRAFT_ITEM"
       target-item: "ARROW"
       target-amount: 128
-      reward-xp: 175
+      reward-xp: 20
       reward-coins: 14
 
     w8_craft_golden_apple:
@@ -669,7 +669,7 @@
       type: "CRAFT_ITEM"
       target-item: "GOLDEN_APPLE"
       target-amount: 8
-      reward-xp: 200
+      reward-xp: 25
       reward-coins: 15
 
     w8_craft_shields:
@@ -678,7 +678,7 @@
       type: "CRAFT_ITEM"
       target-item: "SHIELD"
       target-amount: 6
-      reward-xp: 250
+      reward-xp: 30
       reward-coins: 16
 
     w8_craft_pistons:
@@ -687,7 +687,7 @@
       type: "CRAFT_ITEM"
       target-item: "PISTON"
       target-amount: 16
-      reward-xp: 300
+      reward-xp: 40
       reward-coins: 17
 
     w8_smelt_iron:
@@ -696,7 +696,7 @@
       type: "SMELT_ITEM"
       target-item: "IRON_INGOT"
       target-amount: 64
-      reward-xp: 175
+      reward-xp: 20
       reward-coins: 18
 
     w8_smelt_gold:
@@ -705,7 +705,7 @@
       type: "SMELT_ITEM"
       target-item: "GOLD_INGOT"
       target-amount: 48
-      reward-xp: 200
+      reward-xp: 25
       reward-coins: 12
 
     w8_smelt_copper:
@@ -714,7 +714,7 @@
       type: "SMELT_ITEM"
       target-item: "COPPER_INGOT"
       target-amount: 64
-      reward-xp: 250
+      reward-xp: 30
       reward-coins: 13
 
     w8_smelt_glass:
@@ -723,7 +723,7 @@
       type: "SMELT_ITEM"
       target-item: "GLASS"
       target-amount: 64
-      reward-xp: 300
+      reward-xp: 40
       reward-coins: 14
 
   9:
@@ -733,7 +733,7 @@
       type: "SMELT_ITEM"
       target-item: "STONE"
       target-amount: 64
-      reward-xp: 175
+      reward-xp: 20
       reward-coins: 15
 
     w9_smelt_beef:
@@ -742,7 +742,7 @@
       type: "SMELT_ITEM"
       target-item: "COOKED_BEEF"
       target-amount: 64
-      reward-xp: 200
+      reward-xp: 25
       reward-coins: 16
 
     w9_smelt_pork:
@@ -751,7 +751,7 @@
       type: "SMELT_ITEM"
       target-item: "COOKED_PORKCHOP"
       target-amount: 64
-      reward-xp: 250
+      reward-xp: 30
       reward-coins: 17
 
     w9_smelt_mutton:
@@ -760,7 +760,7 @@
       type: "SMELT_ITEM"
       target-item: "COOKED_MUTTON"
       target-amount: 48
-      reward-xp: 300
+      reward-xp: 40
       reward-coins: 18
 
     w9_smelt_salmon:
@@ -769,7 +769,7 @@
       type: "SMELT_ITEM"
       target-item: "COOKED_SALMON"
       target-amount: 48
-      reward-xp: 175
+      reward-xp: 20
       reward-coins: 12
 
     w9_fish_general:
@@ -777,7 +777,7 @@
       description: "Pancing 30 ikan dari perairan."
       type: "FISH"
       target-amount: 30
-      reward-xp: 200
+      reward-xp: 25
       reward-coins: 13
 
     w9_breed_cows:
@@ -786,7 +786,7 @@
       type: "BREED_ANIMALS"
       target-entity: "COW"
       target-amount: 16
-      reward-xp: 250
+      reward-xp: 30
       reward-coins: 14
 
     w9_breed_sheep:
@@ -795,7 +795,7 @@
       type: "BREED_ANIMALS"
       target-entity: "SHEEP"
       target-amount: 16
-      reward-xp: 300
+      reward-xp: 40
       reward-coins: 15
 
     w9_breed_pigs:
@@ -804,7 +804,7 @@
       type: "BREED_ANIMALS"
       target-entity: "PIG"
       target-amount: 16
-      reward-xp: 175
+      reward-xp: 20
       reward-coins: 16
 
     w9_breed_chickens:
@@ -813,7 +813,7 @@
       type: "BREED_ANIMALS"
       target-entity: "CHICKEN"
       target-amount: 20
-      reward-xp: 200
+      reward-xp: 25
       reward-coins: 17
 
   10:
@@ -823,7 +823,7 @@
       type: "BREED_ANIMALS"
       target-entity: "HORSE"
       target-amount: 6
-      reward-xp: 250
+      reward-xp: 30
       reward-coins: 18
 
     w10_breed_wolves:
@@ -832,7 +832,7 @@
       type: "BREED_ANIMALS"
       target-entity: "WOLF"
       target-amount: 6
-      reward-xp: 300
+      reward-xp: 40
       reward-coins: 12
 
     w10_eat_steak:
@@ -841,7 +841,7 @@
       type: "CONSUME_FOOD"
       target-item: "COOKED_BEEF"
       target-amount: 32
-      reward-xp: 175
+      reward-xp: 20
       reward-coins: 13
 
     w10_eat_golden_carrot:
@@ -850,7 +850,7 @@
       type: "CONSUME_FOOD"
       target-item: "GOLDEN_CARROT"
       target-amount: 20
-      reward-xp: 200
+      reward-xp: 25
       reward-coins: 14
 
     w10_eat_golden_apple:
@@ -859,7 +859,7 @@
       type: "CONSUME_FOOD"
       target-item: "GOLDEN_APPLE"
       target-amount: 6
-      reward-xp: 250
+      reward-xp: 30
       reward-coins: 15
 
     w10_enchant_tools:
@@ -868,7 +868,7 @@
       type: "ENCHANT_ITEM"
       target-item: "DIAMOND_PICKAXE"
       target-amount: 8
-      reward-xp: 300
+      reward-xp: 40
       reward-coins: 16
 
     w10_enchant_weapons:
@@ -877,7 +877,7 @@
       type: "ENCHANT_ITEM"
       target-item: "DIAMOND_SWORD"
       target-amount: 8
-      reward-xp: 175
+      reward-xp: 20
       reward-coins: 17
 
     w10_gain_exp_large:
@@ -885,7 +885,7 @@
       description: "Kumpulkan 600 EXP point."
       type: "EXP_GAIN"
       target-amount: 600
-      reward-xp: 200
+      reward-xp: 25
       reward-coins: 18
 
     w10_place_torches:
@@ -894,7 +894,7 @@
       type: "PLACE_BLOCK"
       target-block: "TORCH"
       target-amount: 64
-      reward-xp: 250
+      reward-xp: 30
       reward-coins: 12
 
     w10_place_cobble:
@@ -903,7 +903,7 @@
       type: "PLACE_BLOCK"
       target-block: "COBBLESTONE"
       target-amount: 128
-      reward-xp: 300
+      reward-xp: 40
       reward-coins: 13
 
   11:
@@ -913,7 +913,7 @@
       type: "PLACE_BLOCK"
       target-block: "STONE_BRICKS"
       target-amount: 100
-      reward-xp: 175
+      reward-xp: 20
       reward-coins: 14
 
     w11_place_glass:
@@ -922,7 +922,7 @@
       type: "PLACE_BLOCK"
       target-block: "GLASS"
       target-amount: 64
-      reward-xp: 200
+      reward-xp: 25
       reward-coins: 15
 
     w11_place_scaffolding:
@@ -931,7 +931,7 @@
       type: "PLACE_BLOCK"
       target-block: "SCAFFOLDING"
       target-amount: 64
-      reward-xp: 250
+      reward-xp: 30
       reward-coins: 16
 
     w11_mine_clay_blocks:
@@ -940,7 +940,7 @@
       type: "MINE_BLOCK"
       target-block: "CLAY"
       target-amount: 48
-      reward-xp: 300
+      reward-xp: 40
       reward-coins: 17
 
     w11_mine_sandstone:
@@ -949,7 +949,7 @@
       type: "MINE_BLOCK"
       target-block: "SANDSTONE"
       target-amount: 64
-      reward-xp: 175
+      reward-xp: 20
       reward-coins: 18
 
     w11_mine_prismarine:
@@ -958,7 +958,7 @@
       type: "MINE_BLOCK"
       target-block: "PRISMARINE"
       target-amount: 48
-      reward-xp: 200
+      reward-xp: 25
       reward-coins: 12
 
     w11_mine_sea_lantern:
@@ -967,7 +967,7 @@
       type: "MINE_BLOCK"
       target-block: "SEA_LANTERN"
       target-amount: 16
-      reward-xp: 250
+      reward-xp: 30
       reward-coins: 13
 
     w11_mine_glowstone:
@@ -976,7 +976,7 @@
       type: "MINE_BLOCK"
       target-block: "GLOWSTONE"
       target-amount: 40
-      reward-xp: 300
+      reward-xp: 40
       reward-coins: 14
 
     w11_mine_magma_block:
@@ -985,7 +985,7 @@
       type: "MINE_BLOCK"
       target-block: "MAGMA_BLOCK"
       target-amount: 40
-      reward-xp: 175
+      reward-xp: 20
       reward-coins: 15
 
     w11_mine_soul_sand:
@@ -994,7 +994,7 @@
       type: "BREAK_BLOCK"
       target-block: "SOUL_SAND"
       target-amount: 64
-      reward-xp: 200
+      reward-xp: 25
       reward-coins: 16
 
   12:
@@ -1004,7 +1004,7 @@
       type: "BREAK_BLOCK"
       target-block: "SOUL_SOIL"
       target-amount: 64
-      reward-xp: 250
+      reward-xp: 30
       reward-coins: 17
 
     w12_mine_end_stone:
@@ -1013,7 +1013,7 @@
       type: "MINE_BLOCK"
       target-block: "END_STONE"
       target-amount: 128
-      reward-xp: 300
+      reward-xp: 40
       reward-coins: 18
 
     w12_mine_purpur:
@@ -1022,7 +1022,7 @@
       type: "MINE_BLOCK"
       target-block: "PURPUR_BLOCK"
       target-amount: 48
-      reward-xp: 175
+      reward-xp: 20
       reward-coins: 12
 
     w12_kill_shulker:
@@ -1031,7 +1031,7 @@
       type: "KILL_ENTITY"
       target-entity: "SHULKER"
       target-amount: 8
-      reward-xp: 200
+      reward-xp: 25
       reward-coins: 13
 
     w12_kill_endermite:
@@ -1040,7 +1040,7 @@
       type: "KILL_ENTITY"
       target-entity: "ENDERMITE"
       target-amount: 15
-      reward-xp: 250
+      reward-xp: 30
       reward-coins: 14
 
     w12_kill_silverfish:
@@ -1049,7 +1049,7 @@
       type: "KILL_ENTITY"
       target-entity: "SILVERFISH"
       target-amount: 20
-      reward-xp: 300
+      reward-xp: 40
       reward-coins: 15
 
     w12_kill_iron_golem:
@@ -1058,7 +1058,7 @@
       type: "KILL_ENTITY"
       target-entity: "IRON_GOLEM"
       target-amount: 3
-      reward-xp: 175
+      reward-xp: 20
       reward-coins: 16
 
     w12_kill_evoker:
@@ -1067,7 +1067,7 @@
       type: "KILL_ENTITY"
       target-entity: "EVOKER"
       target-amount: 3
-      reward-xp: 200
+      reward-xp: 25
       reward-coins: 17
 
     w12_craft_anvil:
@@ -1076,7 +1076,7 @@
       type: "CRAFT_ITEM"
       target-item: "ANVIL"
       target-amount: 2
-      reward-xp: 250
+      reward-xp: 30
       reward-coins: 18
 
     w12_craft_enchanting_table:
@@ -1085,6 +1085,6 @@
       type: "CRAFT_ITEM"
       target-item: "ENCHANTING_TABLE"
       target-amount: 1
-      reward-xp: 300
+      reward-xp: 40
       reward-coins: 12
 

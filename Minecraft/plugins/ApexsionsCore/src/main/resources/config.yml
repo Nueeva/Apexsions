@@ -112,7 +112,7 @@ web-bridge:
     # Mengaktifkan hadiah otomatis in-game saat pemain berhasil menjalankan /link <pin>
     enabled: true
     # Hadiah Kingdom EXP
-    xp: 500
+    xp: 50
     # Hadiah Koin / Mata Uang Ekonomi
     coins: 10000.0
     # Siarkan pesan pengumuman ke seluruh server saat pemain menautkan akun

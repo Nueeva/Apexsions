@@ -125,13 +125,13 @@ class ProfileManagementController extends Controller
         Delivery::create([
             'player_uuid' => $account->minecraft_uuid,
             'player_username' => $account->minecraft_username,
-            'command' => 'ac addxp ' . $account->minecraft_username . ' 100',
+            'command' => 'ac addxp ' . $account->minecraft_username . ' 25',
             'status' => 'PENDING',
         ]);
 
         // Set cooldown for 24 hours
         cache()->put($cacheKey, Carbon::now()->toIso8601String(), 86400);
 
-        return back()->with('success', '🎉 Berhasil mengklaim Hadiah Harian Web (+Rp 5.000 & +100 EXP)! Hadiah akan langsung masuk ke karakter Anda.');
+        return back()->with('success', '🎉 Berhasil mengklaim Hadiah Harian Web (+Rp 5.000 & +25 EXP)! Hadiah akan langsung masuk ke karakter Anda.');
     }
 }

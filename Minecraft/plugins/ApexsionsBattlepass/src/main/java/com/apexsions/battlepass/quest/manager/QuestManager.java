@@ -225,7 +225,8 @@ public class QuestManager {
                     try {
                         com.apexsions.core.api.ApexsionsCoreAPI coreApi = com.apexsions.core.api.ApexsionsCoreProvider.get();
                         if (coreApi != null) {
-                            coreApi.addXp(player.getUniqueId(), Math.max(50, quest.getRewardXp() / 2), com.apexsions.core.level.xp.XpSource.BATTLEPASS_QUEST);
+                            long coreXp = Math.max(2, Math.round(quest.getRewardXp() * 0.25));
+                            coreApi.addXp(player.getUniqueId(), coreXp, com.apexsions.core.level.xp.XpSource.BATTLEPASS_QUEST);
                         }
                     } catch (Throwable ignored) {}
                 }

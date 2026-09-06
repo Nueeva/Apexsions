@@ -182,7 +182,7 @@ public class QuantitySelectMenu extends ShopGui {
 
         if (plugin.getEconomyHook().withdraw(player, totalCost)) {
             player.getInventory().addItem(toAdd);
-            long xpEarned = Math.max(1, (long) (totalCost / 50.0));
+            long xpEarned = Math.min(20, Math.max(1, (long) (totalCost / 1000.0)));
             plugin.getKingdomCoreHook().addXp(player.getUniqueId(), xpEarned);
 
             player.sendMessage(MM.deserialize(plugin.getConfig().getString("messages.prefix", "") +
@@ -223,7 +223,7 @@ public class QuantitySelectMenu extends ShopGui {
         plugin.getEconomyHook().deposit(player, payout);
         plugin.getSupplyScannerService().recordSale(shopItem.getMaterial(), actualQuantity);
 
-        long xpEarned = Math.max(1, (long) (payout / 50.0));
+        long xpEarned = Math.min(20, Math.max(1, (long) (payout / 1000.0)));
         plugin.getKingdomCoreHook().addXp(player.getUniqueId(), xpEarned);
 
         player.sendMessage(MM.deserialize(plugin.getConfig().getString("messages.prefix", "") +

@@ -6,7 +6,7 @@
       type: "BREAK_BLOCK"
       target-block: "STONE"
       target-amount: 1000
-      reward-xp: 375
+      reward-xp: 60
       reward-coins: 25
 
     m1_deepslate_conqueror:
@@ -15,7 +15,7 @@
       type: "MINE_BLOCK"
       target-block: "DEEPSLATE"
       target-amount: 600
-      reward-xp: 450
+      reward-xp: 75
       reward-coins: 26
 
     m1_diamond_emperor:
@@ -24,7 +24,7 @@
       type: "MINE_BLOCK"
       target-block: "DIAMOND_ORE"
       target-amount: 48
-      reward-xp: 500
+      reward-xp: 85
       reward-coins: 27
 
     m1_ancient_debris_lord:
@@ -33,7 +33,7 @@
       type: "MINE_BLOCK"
       target-block: "ANCIENT_DEBRIS"
       target-amount: 16
-      reward-xp: 550
+      reward-xp: 100
       reward-coins: 28
 
     m1_emerald_tycoon:
@@ -42,7 +42,7 @@
       type: "MINE_BLOCK"
       target-block: "EMERALD_ORE"
       target-amount: 24
-      reward-xp: 375
+      reward-xp: 60
       reward-coins: 29
 
     m1_gold_rush_king:
@@ -51,7 +51,7 @@
       type: "MINE_BLOCK"
       target-block: "GOLD_ORE"
       target-amount: 150
-      reward-xp: 450
+      reward-xp: 75
       reward-coins: 30
 
     m1_iron_industrialist:
@@ -60,7 +60,7 @@
       type: "MINE_BLOCK"
       target-block: "IRON_ORE"
       target-amount: 200
-      reward-xp: 500
+      reward-xp: 85
       reward-coins: 31
 
     m1_redstone_genius:
@@ -69,7 +69,7 @@
       type: "MINE_BLOCK"
       target-block: "REDSTONE_ORE"
       target-amount: 160
-      reward-xp: 550
+      reward-xp: 100
       reward-coins: 32
 
     m1_obsidian_titan:
@@ -78,7 +78,7 @@
       type: "MINE_BLOCK"
       target-block: "OBSIDIAN"
       target-amount: 100
-      reward-xp: 375
+      reward-xp: 60
       reward-coins: 33
 
     m1_quartz_archon:
@@ -87,7 +87,7 @@
       type: "MINE_BLOCK"
       target-block: "NETHER_QUARTZ_ORE"
       target-amount: 200
-      reward-xp: 450
+      reward-xp: 75
       reward-coins: 34
 
   2:
@@ -97,7 +97,7 @@
       type: "BREAK_BLOCK"
       target-block: "OAK_LOG"
       target-amount: 500
-      reward-xp: 500
+      reward-xp: 85
       reward-coins: 35
 
     m2_spruce_logger:
@@ -106,7 +106,7 @@
       type: "BREAK_BLOCK"
       target-block: "SPRUCE_LOG"
       target-amount: 300
-      reward-xp: 550
+      reward-xp: 100
       reward-coins: 25
 
     m2_dark_oak_logger:
@@ -115,7 +115,7 @@
       type: "BREAK_BLOCK"
       target-block: "DARK_OAK_LOG"
       target-amount: 300
-      reward-xp: 375
+      reward-xp: 60
       reward-coins: 26
 
     m2_jungle_explorer:
@@ -124,7 +124,7 @@
       type: "BREAK_BLOCK"
       target-block: "JUNGLE_LOG"
       target-amount: 300
-      reward-xp: 450
+      reward-xp: 75
       reward-coins: 27
 
     m2_nether_fungi_logger:
@@ -133,7 +133,7 @@
       type: "BREAK_BLOCK"
       target-block: "CRIMSON_STEM"
       target-amount: 250
-      reward-xp: 500
+      reward-xp: 85
       reward-coins: 28
 
     m2_monster_hunter_champion:
@@ -142,7 +142,7 @@
       type: "KILL_ENTITY"
       target-entity: "ZOMBIE"
       target-amount: 200
-      reward-xp: 550
+      reward-xp: 100
       reward-coins: 29
 
     m2_skeleton_destroyer:
@@ -151,7 +151,7 @@
       type: "KILL_ENTITY"
       target-entity: "SKELETON"
       target-amount: 150
-      reward-xp: 375
+      reward-xp: 60
       reward-coins: 30
 
     m2_creeper_annihilator:
@@ -160,7 +160,7 @@
       type: "KILL_ENTITY"
       target-entity: "CREEPER"
       target-amount: 100
-      reward-xp: 450
+      reward-xp: 75
       reward-coins: 31
 
     m2_spider_extirpator:
@@ -169,7 +169,7 @@
       type: "KILL_ENTITY"
       target-entity: "SPIDER"
       target-amount: 120
-      reward-xp: 500
+      reward-xp: 85
       reward-coins: 32
 
     m2_enderman_nemesis:
@@ -178,7 +178,7 @@
       type: "KILL_ENTITY"
       target-entity: "ENDERMAN"
       target-amount: 50
-      reward-xp: 550
+      reward-xp: 100
       reward-coins: 33
 
   3:
@@ -188,7 +188,7 @@
       type: "KILL_ENTITY"
       target-entity: "BLAZE"
       target-amount: 80
-      reward-xp: 375
+      reward-xp: 60
       reward-coins: 34
 
     m3_wither_skull_hunter:
@@ -197,7 +197,7 @@
       type: "KILL_ENTITY"
       target-entity: "WITHER_SKELETON"
       target-amount: 60
-      reward-xp: 450
+      reward-xp: 75
       reward-coins: 35
 
     m3_ghast_sniper:
@@ -206,7 +206,7 @@
       type: "KILL_ENTITY"
       target-entity: "GHAST"
       target-amount: 25
-      reward-xp: 500
+      reward-xp: 85
       reward-coins: 25
 
     m3_ocean_conqueror:
@@ -215,7 +215,7 @@
       type: "KILL_ENTITY"
       target-entity: "GUARDIAN"
       target-amount: 50
-      reward-xp: 550
+      reward-xp: 100
       reward-coins: 26
 
     m3_raid_champion:
@@ -224,7 +224,7 @@
       type: "KILL_ENTITY"
       target-entity: "PILLAGER"
       target-amount: 60
-      reward-xp: 375
+      reward-xp: 60
       reward-coins: 27
 
     m3_pvp_warlord:
@@ -232,7 +232,7 @@
       description: "Kalahkan 20 Pemain di medan tempur."
       type: "KILL_PLAYER"
       target-amount: 20
-      reward-xp: 450
+      reward-xp: 75
       reward-coins: 28
 
     m3_grand_farmer_wheat:
@@ -241,7 +241,7 @@
       type: "HARVEST_CROPS"
       target-block: "WHEAT"
       target-amount: 500
-      reward-xp: 500
+      reward-xp: 85
       reward-coins: 29
 
     m3_grand_farmer_carrots:
@@ -250,7 +250,7 @@
       type: "HARVEST_CROPS"
       target-block: "CARROTS"
       target-amount: 500
-      reward-xp: 550
+      reward-xp: 100
       reward-coins: 30
 
     m3_grand_farmer_potatoes:
@@ -259,7 +259,7 @@
       type: "HARVEST_CROPS"
       target-block: "POTATOES"
       target-amount: 500
-      reward-xp: 375
+      reward-xp: 60
       reward-coins: 31
 
     m3_grand_farmer_netherwart:
@@ -268,7 +268,7 @@
       type: "HARVEST_CROPS"
       target-block: "NETHER_WART"
       target-amount: 300
-      reward-xp: 450
+      reward-xp: 75
       reward-coins: 32
 
   4:
@@ -278,7 +278,7 @@
       type: "BREAK_BLOCK"
       target-block: "SUGAR_CANE"
       target-amount: 400
-      reward-xp: 500
+      reward-xp: 85
       reward-coins: 33
 
     m4_grand_bamboo:
@@ -287,7 +287,7 @@
       type: "BREAK_BLOCK"
       target-block: "BAMBOO"
       target-amount: 500
-      reward-xp: 550
+      reward-xp: 100
       reward-coins: 34
 
     m4_master_fisherman:
@@ -295,7 +295,7 @@
       description: "Tangkap 100 ikan dari perairan."
       type: "FISH"
       target-amount: 100
-      reward-xp: 375
+      reward-xp: 60
       reward-coins: 35
 
     m4_master_breeder_cow:
@@ -304,7 +304,7 @@
       type: "BREED_ANIMALS"
       target-entity: "COW"
       target-amount: 50
-      reward-xp: 450
+      reward-xp: 75
       reward-coins: 25
 
     m4_master_breeder_sheep:
@@ -313,7 +313,7 @@
       type: "BREED_ANIMALS"
       target-entity: "SHEEP"
       target-amount: 50
-      reward-xp: 500
+      reward-xp: 85
       reward-coins: 26
 
     m4_master_breeder_pig:
@@ -322,7 +322,7 @@
       type: "BREED_ANIMALS"
       target-entity: "PIG"
       target-amount: 50
-      reward-xp: 550
+      reward-xp: 100
       reward-coins: 27
 
     m4_master_breeder_chicken:
@@ -331,7 +331,7 @@
       type: "BREED_ANIMALS"
       target-entity: "CHICKEN"
       target-amount: 60
-      reward-xp: 375
+      reward-xp: 60
       reward-coins: 28
 
     m4_grand_smelter_iron:
@@ -340,7 +340,7 @@
       type: "SMELT_ITEM"
       target-item: "IRON_INGOT"
       target-amount: 300
-      reward-xp: 450
+      reward-xp: 75
       reward-coins: 29
 
     m4_grand_smelter_gold:
@@ -349,7 +349,7 @@
       type: "SMELT_ITEM"
       target-item: "GOLD_INGOT"
       target-amount: 200
-      reward-xp: 500
+      reward-xp: 85
       reward-coins: 30
 
     m4_grand_smelter_glass:
@@ -358,7 +358,7 @@
       type: "SMELT_ITEM"
       target-item: "GLASS"
       target-amount: 250
-      reward-xp: 550
+      reward-xp: 100
       reward-coins: 31
 
   5:
@@ -368,7 +368,7 @@
       type: "SMELT_ITEM"
       target-item: "COOKED_BEEF"
       target-amount: 250
-      reward-xp: 375
+      reward-xp: 60
       reward-coins: 32
 
     m5_grand_crafter_bread:
@@ -377,7 +377,7 @@
       type: "CRAFT_ITEM"
       target-item: "BREAD"
       target-amount: 250
-      reward-xp: 450
+      reward-xp: 75
       reward-coins: 33
 
     m5_grand_crafter_torches:
@@ -386,7 +386,7 @@
       type: "CRAFT_ITEM"
       target-item: "TORCH"
       target-amount: 500
-      reward-xp: 500
+      reward-xp: 85
       reward-coins: 34
 
     m5_grand_crafter_diamond_block:
@@ -395,7 +395,7 @@
       type: "CRAFT_ITEM"
       target-item: "DIAMOND_BLOCK"
       target-amount: 16
-      reward-xp: 550
+      reward-xp: 100
       reward-coins: 35
 
     m5_grand_crafter_golden_apple:
@@ -404,7 +404,7 @@
       type: "CRAFT_ITEM"
       target-item: "GOLDEN_APPLE"
       target-amount: 32
-      reward-xp: 375
+      reward-xp: 60
       reward-coins: 25
 
     m5_master_enchanter:
@@ -413,7 +413,7 @@
       type: "ENCHANT_ITEM"
       target-item: "DIAMOND_SWORD"
       target-amount: 30
-      reward-xp: 450
+      reward-xp: 75
       reward-coins: 26
 
     m5_gourmet_golden_carrots:
@@ -422,7 +422,7 @@
       type: "CONSUME_FOOD"
       target-item: "GOLDEN_CARROT"
       target-amount: 64
-      reward-xp: 500
+      reward-xp: 85
       reward-coins: 27
 
     m5_gourmet_golden_apples:
@@ -431,7 +431,7 @@
       type: "CONSUME_FOOD"
       target-item: "GOLDEN_APPLE"
       target-amount: 20
-      reward-xp: 550
+      reward-xp: 100
       reward-coins: 28
 
     m5_exp_overlord:
@@ -439,7 +439,7 @@
       description: "Kumpulkan 3,000 EXP point."
       type: "EXP_GAIN"
       target-amount: 3000
-      reward-xp: 375
+      reward-xp: 60
       reward-coins: 29
 
     m5_grand_builder:
@@ -448,6 +448,6 @@
       type: "PLACE_BLOCK"
       target-block: "STONE_BRICKS"
       target-amount: 500
-      reward-xp: 450
+      reward-xp: 75
       reward-coins: 30
 

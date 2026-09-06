@@ -81,7 +81,7 @@ public class LinkCommand implements CommandExecutor, TabCompleter {
                     // Distribute linking rewards if configured
                     boolean rewardsEnabled = plugin.getConfig().getBoolean("web-bridge.link-rewards.enabled", true);
                     if (rewardsEnabled) {
-                        int xpReward = plugin.getConfig().getInt("web-bridge.link-rewards.xp", 500);
+                        int xpReward = plugin.getConfig().getInt("web-bridge.link-rewards.xp", 50);
                         double coinsReward = plugin.getConfig().getDouble("web-bridge.link-rewards.coins", 10000.0);
 
                         if (xpReward > 0 && plugin.getLevelManager() != null) {
