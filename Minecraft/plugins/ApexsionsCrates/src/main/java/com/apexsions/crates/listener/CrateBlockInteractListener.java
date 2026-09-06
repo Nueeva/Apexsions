@@ -60,12 +60,17 @@ public class CrateBlockInteractListener implements Listener {
             }
 
             String reqKey = crate.getRequiredKeyId();
+            boolean isInstant = player.isSneaking();
 
             // Check Physical Key first
             if (plugin.getKeyManager().hasPhysicalKey(player, reqKey, 1)) {
                 if (plugin.getKeyManager().takePhysicalKey(player, reqKey, 1)) {
                     plugin.getCrateManager().applyCooldown(player.getUniqueId(), crate.getId(), crate.getCooldownSeconds());
-                    plugin.startOpeningSession(player, crate, false, block.getLocation());
+                    if (isInstant) {
+                        plugin.openCrateInstant(player, crate, false);
+                    } else {
+                        plugin.startOpeningSession(player, crate, false, block.getLocation());
+                    }
                 }
                 return;
             }
@@ -75,8 +80,25 @@ public class CrateBlockInteractListener implements Listener {
                 org.bukkit.Bukkit.getScheduler().runTask(plugin, () -> {
                     if (success) {
                         plugin.getCrateManager().applyCooldown(player.getUniqueId(), crate.getId(), crate.getCooldownSeconds());
-                        plugin.startOpeningSession(player, crate, true, block.getLocation());
+                        if (isInstant) {
+                            plugin.openCrateInstant(player, crate, true);
+                        } else {
+                            plugin.startOpeningSession(player, crate, true, block.getLocation());
+                        }
                     } else {
+                        // Locked feedback: pushback and sound
+                        player.playSound(block.getLocation(), org.bukkit.Sound.BLOCK_CHEST_LOCKED, 1.0f, 0.8f);
+                        org.bukkit.util.Vector push = player.getLocation().toVector()
+                                .subtract(block.getLocation().add(0.5, 0.5, 0.5).toVector())
+                                .normalize().multiply(0.45).setY(0.2);
+                        if (!Double.isNaN(push.getX()) && !Double.isNaN(push.getZ())) {
+                            player.setVelocity(push);
+                        }
+
+                        player.sendActionBar(MiniMessage.miniMessage().deserialize(
+                                "<red>Peti Terkunci! Anda butuh <gold>Kunci " + reqKey + "</gold></red>"
+                        ));
+
                         String msg = plugin.getMessages().getString("need-key", "<red>Anda membutuhkan kunci <yellow>%key%</yellow> untuk membuka peti ini!</red>");
                         player.sendMessage(MiniMessage.miniMessage().deserialize(msg.replace("%key%", reqKey)));
                     }

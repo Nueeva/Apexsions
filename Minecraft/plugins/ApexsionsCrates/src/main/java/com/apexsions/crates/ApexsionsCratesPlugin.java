@@ -64,6 +64,7 @@ public class ApexsionsCratesPlugin extends JavaPlugin implements ApexsionsCrates
         saveResourceIfNotExists("messages.yml");
         saveResourceIfNotExists("crates/luxury.yml");
         saveResourceIfNotExists("crates/novice.yml");
+        saveResourceIfNotExists("crates/mythic.yml");
 
         loadMessages();
 
@@ -98,6 +99,7 @@ public class ApexsionsCratesPlugin extends JavaPlugin implements ApexsionsCrates
         getServer().getPluginManager().registerEvents(new CrateBlockInteractListener(this), this);
         getServer().getPluginManager().registerEvents(new CratesGUIListener(this), this);
         getServer().getPluginManager().registerEvents(new CratePlayerConnectionListener(this), this);
+        getServer().getPluginManager().registerEvents(new com.apexsions.crates.listener.CrateKeySecurityListener(this), this);
         getServer().getPluginManager().registerEvents(new ApexsionsIntegrationListener(this), this);
 
         // 6. Register Commands
@@ -116,7 +118,7 @@ public class ApexsionsCratesPlugin extends JavaPlugin implements ApexsionsCrates
         }
 
         // 7. Register PAPI expansion if available
-        if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+        if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
             new ApexsionsCratesPAPI(this).register();
         }
 
@@ -126,12 +128,12 @@ public class ApexsionsCratesPlugin extends JavaPlugin implements ApexsionsCrates
                 ApexsionsCoreProvider.get().registerAdminModule(new ApexsionsCratesAdminModule(this));
                 getLogger().info("Successfully registered ApexsionsCrates into ApexsionsCore Master Admin Hub.");
             } catch (Exception e) {
-                getLogger().warning("Failed to register into Master Admin Hub: " + e.getMessage());
+                getLogger().warning("Failed to register into ApexsionsCore Master Admin Hub: " + e.getMessage());
             }
         }
 
         getLogger().info("==================================================");
-        getLogger().info("  ApexsionsCrates v" + getDescription().getVersion() + " Enabled Successfully");
+        getLogger().info("  ApexsionsCrates v" + getDescription().getVersion() + " Enabled");
         getLogger().info("  Native Luxury Crate & Milestone Architecture");
         getLogger().info("==================================================");
     }
@@ -181,10 +183,10 @@ public class ApexsionsCratesPlugin extends JavaPlugin implements ApexsionsCrates
         }
     }
 
-    private void saveResourceIfNotExists(String resourcePath) {
-        File file = new File(getDataFolder(), resourcePath);
-        if (!file.exists()) {
-            saveResource(resourcePath, false);
+    private void saveResourceIfNotExists(String path) {
+        File f = new File(getDataFolder(), path);
+        if (!f.exists()) {
+            saveResource(path, false);
         }
     }
 
@@ -220,6 +222,10 @@ public class ApexsionsCratesPlugin extends JavaPlugin implements ApexsionsCrates
         activeSessions.remove(uuid);
     }
 
+    public void endOpeningSession(UUID uuid) {
+        unregisterSession(uuid);
+    }
+
     public void startOpeningSession(Player player, Crate crate, boolean virtualKey, Location crateLoc) {
         CrateOpenEvent event = new CrateOpenEvent(player, crate, virtualKey);
         Bukkit.getPluginManager().callEvent(event);
@@ -230,12 +236,45 @@ public class ApexsionsCratesPlugin extends JavaPlugin implements ApexsionsCrates
             session = new InstantOpening(this, player, crate, virtualKey);
         } else if (crate.getAnimationType() == CrateAnimationType.IN_WORLD) {
             session = new InWorldOpening(this, player, crate, virtualKey, crateLoc);
+        } else if (crate.getAnimationType() == CrateAnimationType.SELECTABLE) {
+            session = new com.apexsions.crates.animation.SelectableOpening(this, player, crate, virtualKey);
         } else {
             session = new RouletteOpening(this, player, crate, virtualKey);
         }
 
         activeSessions.put(player.getUniqueId(), session);
         session.start();
+    }
+
+    public boolean openCrateInstant(Player player, Crate crate, boolean useVirtualKey) {
+        if (player == null || crate == null) return false;
+        if (isOpening(player.getUniqueId())) return false;
+
+        String reqKey = crate.getRequiredKeyId();
+        if (useVirtualKey) {
+            repository.takeVirtualKeys(player.getUniqueId(), reqKey, 1).thenAccept(success -> {
+                Bukkit.getScheduler().runTask(this, () -> {
+                    if (success) {
+                        OpeningSession session = new InstantOpening(this, player, crate, true);
+                        activeSessions.put(player.getUniqueId(), session);
+                        session.start();
+                    } else {
+                        player.sendMessage(net.kyori.adventure.text.minimessage.MiniMessage.miniMessage().deserialize(
+                                "<red>Saldo kunci virtual <yellow>" + reqKey + "</yellow> Anda tidak mencukupi!</red>"
+                        ));
+                    }
+                });
+            });
+            return true;
+        } else {
+            if (keyManager.takePhysicalKey(player, reqKey, 1)) {
+                OpeningSession session = new InstantOpening(this, player, crate, false);
+                activeSessions.put(player.getUniqueId(), session);
+                session.start();
+                return true;
+            }
+            return false;
+        }
     }
 
     // --- ApexsionsCratesAPI Implementation ---

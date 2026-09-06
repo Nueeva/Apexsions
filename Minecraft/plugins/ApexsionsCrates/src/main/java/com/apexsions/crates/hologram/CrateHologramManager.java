@@ -3,6 +3,7 @@ package com.apexsions.crates.hologram;
 import com.apexsions.crates.ApexsionsCratesPlugin;
 import com.apexsions.crates.crate.Crate;
 import com.apexsions.crates.crate.CrateLocation;
+import com.apexsions.crates.key.CrateKey;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Color;
@@ -11,7 +12,9 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.World;
 import org.bukkit.entity.Display;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.ItemDisplay;
 import org.bukkit.entity.TextDisplay;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 
 import java.util.*;
@@ -21,7 +24,7 @@ public class CrateHologramManager {
 
     private final ApexsionsCratesPlugin plugin;
     private final NamespacedKey holoKey;
-    private final Map<CrateLocation, UUID> activeHolograms = new ConcurrentHashMap<>();
+    private final Map<CrateLocation, List<UUID>> activeHolograms = new ConcurrentHashMap<>();
 
     public CrateHologramManager(ApexsionsCratesPlugin plugin) {
         this.plugin = plugin;
@@ -37,12 +40,14 @@ public class CrateHologramManager {
     }
 
     public void removeAllHolograms() {
-        for (Map.Entry<CrateLocation, UUID> entry : activeHolograms.entrySet()) {
+        for (Map.Entry<CrateLocation, List<UUID>> entry : activeHolograms.entrySet()) {
             Location loc = entry.getKey().toBukkitLocation();
             if (loc != null && loc.getWorld() != null) {
-                Entity entity = loc.getWorld().getEntity(entry.getValue());
-                if (entity != null && entity.isValid()) {
-                    entity.remove();
+                for (UUID id : entry.getValue()) {
+                    Entity entity = loc.getWorld().getEntity(id);
+                    if (entity != null && entity.isValid()) {
+                        entity.remove();
+                    }
                 }
             }
         }
@@ -62,10 +67,11 @@ public class CrateHologramManager {
         Crate crate = plugin.getCrateManager().getCrate(cl.getCrateId());
         if (crate == null || !crate.isHologramEnabled()) return;
 
-        double offset = plugin.getConfig().getDouble("settings.hologram-height-offset", 1.25);
-        Location spawnLoc = loc.clone().add(0.5, offset, 0.5);
+        List<UUID> spawnedIds = new ArrayList<>();
+        double textOffset = plugin.getConfig().getDouble("settings.hologram-height-offset", 1.45);
+        Location textLoc = loc.clone().add(0.5, textOffset, 0.5);
 
-        // Build composite multiline component
+        // 1. TextDisplay for Hologram Lines
         Component composite = Component.empty();
         List<String> lines = crate.getHologramLines();
         if (lines.isEmpty()) {
@@ -85,37 +91,55 @@ public class CrateHologramManager {
 
         final Component finalComponent = composite;
         try {
-            TextDisplay display = loc.getWorld().spawn(spawnLoc, TextDisplay.class, entity -> {
+            TextDisplay textDisplay = loc.getWorld().spawn(textLoc, TextDisplay.class, entity -> {
                 entity.text(finalComponent);
                 entity.setBillboard(Display.Billboard.CENTER);
                 entity.setDefaultBackground(false);
-                entity.setBackgroundColor(Color.fromARGB(80, 0, 0, 0));
+                entity.setBackgroundColor(Color.fromARGB(90, 0, 0, 0));
                 entity.setShadowed(true);
                 entity.getPersistentDataContainer().set(holoKey, PersistentDataType.BYTE, (byte) 1);
             });
+            spawnedIds.add(textDisplay.getUniqueId());
 
-            activeHolograms.put(cl, display.getUniqueId());
+            // 2. Floating 3D ItemDisplay above crate block
+            if (plugin.getConfig().getBoolean("settings.hologram-item-enabled", true)) {
+                Location itemLoc = loc.clone().add(0.5, 0.65, 0.5);
+                CrateKey key = plugin.getKeyManager().getKey(crate.getRequiredKeyId());
+                ItemStack displayStack = (key != null) ? key.createItem(plugin, 1) : new ItemStack(crate.getBlockMaterial());
+
+                ItemDisplay itemDisplay = loc.getWorld().spawn(itemLoc, ItemDisplay.class, entity -> {
+                    entity.setItemStack(displayStack);
+                    entity.setItemDisplayTransform(ItemDisplay.ItemDisplayTransform.GROUND);
+                    entity.setBillboard(Display.Billboard.CENTER);
+                    entity.getPersistentDataContainer().set(holoKey, PersistentDataType.BYTE, (byte) 1);
+                });
+                spawnedIds.add(itemDisplay.getUniqueId());
+            }
+
+            activeHolograms.put(cl, spawnedIds);
         } catch (Exception e) {
             plugin.getLogger().warning("Failed to spawn hologram at " + cl.getWorld() + "," + cl.getX() + ": " + e.getMessage());
         }
     }
 
     public void removeHologram(CrateLocation cl) {
-        UUID id = activeHolograms.remove(cl);
-        if (id == null) return;
+        List<UUID> ids = activeHolograms.remove(cl);
+        if (ids == null) return;
 
         Location loc = cl.toBukkitLocation();
         if (loc != null && loc.getWorld() != null) {
-            Entity entity = loc.getWorld().getEntity(id);
-            if (entity != null && entity.isValid()) {
-                entity.remove();
+            for (UUID id : ids) {
+                Entity entity = loc.getWorld().getEntity(id);
+                if (entity != null && entity.isValid()) {
+                    entity.remove();
+                }
             }
         }
     }
 
     public void cleanupOrphanHologramsInWorld(World world) {
         if (world == null) return;
-        for (Entity entity : world.getEntitiesByClass(TextDisplay.class)) {
+        for (Entity entity : world.getEntitiesByClasses(TextDisplay.class, ItemDisplay.class)) {
             if (entity.getPersistentDataContainer().has(holoKey, PersistentDataType.BYTE)) {
                 entity.remove();
             }

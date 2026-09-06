@@ -158,7 +158,21 @@ public class CrateAdminCommand implements CommandExecutor, TabCompleter {
                 virtual = true;
             }
 
-            if (action.equals("give")) {
+            if (action.equals("giveall")) {
+                int count = 0;
+                for (Player online : Bukkit.getOnlinePlayers()) {
+                    if (virtual) {
+                        plugin.getRepository().addVirtualKeys(online.getUniqueId(), keyId, amount);
+                        online.sendMessage(MiniMessage.miniMessage().deserialize("<green>★ Anda menerima <white>" + amount + "x</white> kunci virtual <yellow>" + key.getName() + "</yellow> dari server event!</green>"));
+                    } else {
+                        plugin.getKeyManager().givePhysicalKey(online, keyId, amount);
+                        online.sendMessage(MiniMessage.miniMessage().deserialize("<green>★ Anda menerima <white>" + amount + "x</white> kunci fisik <yellow>" + key.getName() + "</yellow> dari server event!</green>"));
+                    }
+                    count++;
+                }
+                sender.sendMessage(MiniMessage.miniMessage().deserialize("<green>Berhasil membagikan <white>" + amount + "x</white> kunci <yellow>" + key.getName() + "</yellow> ke seluruh <aqua>" + count + "</aqua> pemain online!</green>"));
+                return true;
+            } else if (action.equals("give")) {
                 if (virtual) {
                     plugin.getRepository().addVirtualKeys(target.getUniqueId(), keyId, amount);
                     sender.sendMessage(MiniMessage.miniMessage().deserialize("<green>Berhasil menambahkan <white>" + amount + "x</white> kunci virtual <yellow>" + key.getName() + "</yellow> ke <aqua>" + target.getName() + "</aqua>.</green>"));
@@ -185,6 +199,32 @@ public class CrateAdminCommand implements CommandExecutor, TabCompleter {
             }
         }
 
+        // /acrates tp <crateId>
+        if (args[0].equalsIgnoreCase("tp")) {
+            if (!(sender instanceof Player player)) {
+                sender.sendMessage(MiniMessage.miniMessage().deserialize("<red>Perintah ini hanya bisa dijalankan oleh pemain.</red>"));
+                return true;
+            }
+
+            if (args.length < 2) {
+                player.sendMessage(MiniMessage.miniMessage().deserialize("<red>Penggunaan: /acrates tp <id_peti></red>"));
+                return true;
+            }
+
+            for (CrateLocation cl : plugin.getCrateManager().getLocations()) {
+                if (cl.getCrateId().equalsIgnoreCase(args[1])) {
+                    Location loc = cl.toBukkitLocation();
+                    if (loc != null) {
+                        player.teleport(loc.add(0.5, 1.0, 0.5));
+                        player.sendMessage(MiniMessage.miniMessage().deserialize("<green>Teleport ke lokasi Peti <yellow>" + args[1] + "</yellow>!</green>"));
+                        return true;
+                    }
+                }
+            }
+            player.sendMessage(MiniMessage.miniMessage().deserialize("<red>Tidak ditemukan lokasi fisik di dunia untuk peti <yellow>" + args[1] + "</yellow>.</red>"));
+            return true;
+        }
+
         sender.sendMessage(MiniMessage.miniMessage().deserialize("""
             <gradient:#f39c12:#e74c3c><bold>=== APEXSIONS CRATES ADMIN ===</bold></gradient>
             <yellow>/acrates editor</yellow> <gray>- Buka Control Panel Admin.</gray>
@@ -203,16 +243,16 @@ public class CrateAdminCommand implements CommandExecutor, TabCompleter {
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         List<String> completions = new ArrayList<>();
         if (args.length == 1) {
-            List<String> sub = List.of("editor", "set", "remove", "key", "list", "reload");
+            List<String> sub = List.of("editor", "set", "remove", "key", "list", "tp", "reload");
             for (String s : sub) {
                 if (s.toLowerCase().startsWith(args[0].toLowerCase())) completions.add(s);
             }
-        } else if (args.length == 2 && args[0].equalsIgnoreCase("set")) {
+        } else if (args.length == 2 && (args[0].equalsIgnoreCase("set") || args[0].equalsIgnoreCase("tp"))) {
             for (Crate c : plugin.getCrateManager().getCrates()) {
                 if (c.getId().toLowerCase().startsWith(args[1].toLowerCase())) completions.add(c.getId());
             }
         } else if (args.length == 2 && args[0].equalsIgnoreCase("key")) {
-            List<String> actions = List.of("give", "take", "set");
+            List<String> actions = List.of("give", "giveall", "take", "set");
             for (String a : actions) {
                 if (a.toLowerCase().startsWith(args[1].toLowerCase())) completions.add(a);
             }

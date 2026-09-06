@@ -73,6 +73,7 @@ public class CrateAdminHubGUI implements InventoryHolder {
             lore.add("");
             lore.add("<yellow>▶ Klik Kiri: Preview Hadiah Peti</yellow>");
             lore.add("<gold>▶ Klik Kanan: Ambil 1x Kunci Fisik</gold>");
+            lore.add("<aqua>▶ Shift-Klik Kanan: Beri 5x Kunci Virtual</aqua>");
 
             ItemStack crateItem = createItem(crate.getBlockMaterial(), crate.getName(), lore);
             inventory.setItem(slot, crateItem);
@@ -99,11 +100,15 @@ public class CrateAdminHubGUI implements InventoryHolder {
 
         if (slotCrates.containsKey(slot)) {
             Crate crate = slotCrates.get(slot);
-            if (event.isLeftClick()) {
-                new CratePreviewGUI(plugin, admin, crate).open();
+            if (event.isShiftClick() && event.isRightClick()) {
+                plugin.getRepository().addVirtualKeys(admin.getUniqueId(), crate.getRequiredKeyId(), 5).thenAccept(v -> {
+                    admin.sendMessage(MiniMessage.miniMessage().deserialize("<green>Berhasil menambahkan <yellow>5x</yellow> Kunci Virtual <gold>" + crate.getRequiredKeyId() + "</gold> ke akun Anda!</green>"));
+                });
             } else if (event.isRightClick()) {
                 plugin.getKeyManager().givePhysicalKey(admin, crate.getRequiredKeyId(), 1);
                 admin.sendMessage(MiniMessage.miniMessage().deserialize("<green>Diberikan 1x Kunci <yellow>" + crate.getRequiredKeyId() + "</yellow> ke inventory Anda.</green>"));
+            } else if (event.isLeftClick()) {
+                new CratePreviewGUI(plugin, admin, crate).open();
             }
         }
     }

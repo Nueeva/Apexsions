@@ -56,26 +56,18 @@ public class CratePreviewGUI implements InventoryHolder {
             inventory.setItem(i, pane);
         }
 
-        // Close button at 49
+        // Navigation buttons
+        inventory.setItem(45, createItem(Material.ARROW, "<yellow><bold>« Kembali ke Katalog</bold></yellow>", List.of("<gray>Klik untuk kembali ke daftar peti.</gray>")));
         inventory.setItem(49, createItem(Material.BARRIER, "<red><bold>Tutup Menu</bold></red>", List.of("<gray>Klik untuk menutup preview.</gray>")));
+        inventory.setItem(53, createItem(Material.CHEST, "<gradient:#2ed573:#1e90ff><bold>Buka Peti Sekarang</bold></gradient>", List.of(
+                "<gray>Buka peti ini langsung menggunakan</gray>",
+                "<gray>kunci fisik atau virtual Anda.</gray>",
+                "",
+                "<green>▶ Klik Kiri: Buka Normal</green>",
+                "<gold>▶ Shift-Klik: Buka Instan</gold>"
+        )));
 
-        // Milestone info at slot 4
-        plugin.getRepository().getCrateOpenCount(player.getUniqueId(), crate.getId()).thenAccept(count -> {
-            Bukkit.getScheduler().runTask(plugin, () -> {
-                List<String> mileLore = new ArrayList<>();
-                mileLore.add("<gray>Total Dibuka: <yellow>" + count + "x</yellow></gray>");
-                mileLore.add("");
-                mileLore.add("<gold><bold>Pencapaian Milestone:</bold></gold>");
-                for (Map.Entry<Integer, Milestone> entry : crate.getMilestones().entrySet()) {
-                    boolean unlocked = count >= entry.getKey();
-                    String status = unlocked ? "<green>✔ Tercapai</green>" : "<red>✘ Belum (" + (entry.getKey() - count) + "x lagi)</red>";
-                    mileLore.add("<dark_gray>•</dark_gray> <yellow>" + entry.getKey() + " Buka: </yellow>" + entry.getValue().getName() + " - " + status);
-                }
-                inventory.setItem(4, createItem(Material.NETHER_STAR, "<gradient:#f1c40f:#e67e22><bold>STATISTIK & MILESTONE</bold></gradient>", mileLore));
-            });
-        });
-
-        // Key info at slot 45
+        // Key info at slot 47
         String reqKey = crate.getRequiredKeyId();
         boolean hasPhys = plugin.getKeyManager().hasPhysicalKey(player, reqKey, 1);
         plugin.getRepository().getVirtualKeys(player.getUniqueId(), reqKey).thenAccept(virtCount -> {
@@ -83,7 +75,7 @@ public class CratePreviewGUI implements InventoryHolder {
                 List<String> keyLore = new ArrayList<>();
                 keyLore.add("<gray>Kunci Fisik: " + (hasPhys ? "<green>Ada di inventory</green>" : "<red>Tidak ada</red>") + "</gray>");
                 keyLore.add("<gray>Kunci Virtual: <yellow>" + virtCount + " Kunci</yellow></gray>");
-                inventory.setItem(45, createItem(Material.TRIPWIRE_HOOK, "<gold><bold>STATUS KUNCI</bold></gold>", keyLore));
+                inventory.setItem(47, createItem(Material.TRIPWIRE_HOOK, "<gold><bold>STATUS KUNCI</bold></gold>", keyLore));
             });
         });
 
@@ -98,8 +90,24 @@ public class CratePreviewGUI implements InventoryHolder {
 
     public void handleClick(InventoryClickEvent event) {
         event.setCancelled(true);
-        if (event.getRawSlot() == 49) {
+        int slot = event.getRawSlot();
+        if (slot == 49) {
             player.closeInventory();
+            return;
+        }
+
+        if (slot == 45) {
+            new CratesCatalogueGUI(plugin, player).open();
+            return;
+        }
+
+        if (slot == 53) {
+            player.closeInventory();
+            if (event.isShiftClick()) {
+                plugin.openCrateInstant(player, crate, true);
+            } else {
+                plugin.openCrate(player, crate, true);
+            }
         }
     }
 

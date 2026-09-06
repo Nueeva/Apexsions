@@ -28,6 +28,10 @@ public class CratesGUIListener implements Listener {
             if (event.getRawSlot() == 22) { // Skip button
                 roulette.skip();
             }
+        } else if (holder instanceof com.apexsions.crates.animation.SelectableOpening selectable) {
+            selectable.handleClick(event);
+        } else if (holder instanceof CratesCatalogueGUI catalogue) {
+            catalogue.handleClick(event);
         } else if (holder instanceof CratePreviewGUI preview) {
             preview.handleClick(event);
         } else if (holder instanceof CrateVirtualKeysGUI keysGUI) {
@@ -41,6 +45,8 @@ public class CratesGUIListener implements Listener {
     public void onInventoryDrag(InventoryDragEvent event) {
         InventoryHolder holder = event.getInventory().getHolder();
         if (holder instanceof RouletteOpening ||
+            holder instanceof com.apexsions.crates.animation.SelectableOpening ||
+            holder instanceof CratesCatalogueGUI ||
             holder instanceof CratePreviewGUI ||
             holder instanceof CrateVirtualKeysGUI ||
             holder instanceof CrateAdminHubGUI) {
