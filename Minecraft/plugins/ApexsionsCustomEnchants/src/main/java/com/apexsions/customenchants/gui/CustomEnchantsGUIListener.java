@@ -35,6 +35,8 @@ public class CustomEnchantsGUIListener implements Listener {
             gui.handleClick(event);
         } else if (holder instanceof AdminPresetsGUI gui) {
             gui.handleClick(event);
+        } else if (holder instanceof PresetPreviewGUI gui) {
+            gui.handleClick(event);
         } else if (holder instanceof AdminTierPricingGUI gui) {
             gui.handleClick(event);
         } else if (holder instanceof AceAdminHubGUI gui) {
@@ -85,7 +87,8 @@ public class CustomEnchantsGUIListener implements Listener {
                 || holder instanceof EnchantLevelPickerGUI
                 || holder instanceof VanillaLevelPickerGUI
                 || holder instanceof RemoveEnchantsGUI
-                || holder instanceof AdminPresetsGUI;
+                || holder instanceof AdminPresetsGUI
+                || holder instanceof PresetPreviewGUI;
     }
 
     @EventHandler(priority = EventPriority.HIGH)
@@ -165,7 +168,8 @@ public class CustomEnchantsGUIListener implements Listener {
                 || holder instanceof StatValuePickerGUI
                 || holder instanceof ToolBonusPickerGUI
                 || holder instanceof ToolStatValuePickerGUI
-                || holder instanceof RemoveEnchantsGUI) {
+                || holder instanceof RemoveEnchantsGUI
+                || holder instanceof PresetPreviewGUI) {
             for (int rawSlot : event.getRawSlots()) {
                 if (rawSlot < event.getInventory().getSize()) {
                     event.setCancelled(true);

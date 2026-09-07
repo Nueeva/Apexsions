@@ -1,6 +1,7 @@
 package com.apexsions.customenchants.gui;
 
 import com.apexsions.customenchants.ApexsionsCustomEnchantsPlugin;
+import com.apexsions.customenchants.items.ColorUtil;
 import com.apexsions.customenchants.presets.PresetManager;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -77,7 +78,7 @@ public class AdminPresetsGUI implements InventoryHolder {
             lore.add(mm.deserialize("<gold>● " + p.armorPieces().size() + " Potong Armor</gold>"));
             lore.add(mm.deserialize("<aqua>● " + p.toolPieces().size() + " Senjata / Tools</aqua>"));
             lore.add(Component.empty());
-            lore.add(mm.deserialize("<green><bold>▶ Klik Kiri: Ambil seluruh item set!</bold></green>"));
+            lore.add(mm.deserialize("<gradient:#3498db:#2ecc71><bold>▶ Klik: Lihat Preview Set & Ambil</bold></gradient>"));
             lore.add(mm.deserialize("<red><bold>▶ Shift + Klik Kanan: Hapus preset ini!</bold></red>"));
 
             ItemStack item = createItem(iconMat, p.displayName(), lore, true);
@@ -138,47 +139,31 @@ public class AdminPresetsGUI implements InventoryHolder {
             boolean deleted = plugin.getPresetManager().deletePreset(p.id());
             if (deleted) {
                 player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_BREAK, 1.0f, 1.0f);
-                player.sendMessage(mm.deserialize("<red>Preset <gold>" + p.id() + "</gold> berhasil dihapus!</red>"));
+                player.sendMessage(mm.deserialize("<red>Preset </red>")
+                        .append(ColorUtil.parse(p.displayName()))
+                        .append(mm.deserialize("<red> berhasil dihapus!</red>")));
                 buildGUI();
             }
             return;
         }
 
         if (event.getClick() == ClickType.LEFT || event.getClick() == ClickType.RIGHT) {
-            // Claim all items in preset
-            int totalGiven = 0;
-            List<ItemStack> allItems = new ArrayList<>();
-            for (ItemStack is : p.armorPieces()) {
-                if (is != null && !is.getType().isAir()) {
-                    allItems.add(plugin.getEnchantmentRegistry().updateLoreAndGlint(is.clone()));
-                }
-            }
-            for (ItemStack is : p.toolPieces()) {
-                if (is != null && !is.getType().isAir()) {
-                    allItems.add(plugin.getEnchantmentRegistry().updateLoreAndGlint(is.clone()));
-                }
-            }
-
-            for (ItemStack is : allItems) {
-                HashMap<Integer, ItemStack> overflow = player.getInventory().addItem(is);
-                if (!overflow.isEmpty()) {
-                    for (ItemStack drop : overflow.values()) {
-                        player.getWorld().dropItemNaturally(player.getLocation(), drop);
-                    }
-                }
-                totalGiven++;
-            }
-
-            player.playSound(player.getLocation(), Sound.UI_TOAST_CHALLENGE_COMPLETE, 1.0f, 1.2f);
-            player.sendMessage(mm.deserialize("<green><bold>✓ BERHASIL!</bold> Mengambil <yellow>" + totalGiven + " item</yellow> dari preset <gold>" + p.displayName() + "</gold>!</green>"));
+            // Buka Preview GUI terlebih dahulu sebelum mengambil item
+            player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1.0f, 1.2f);
+            new PresetPreviewGUI(plugin, player, p, this).open();
+            return;
         }
+    }
+
+    public InventoryHolder getReturnGUI() {
+        return returnGUI;
     }
 
     private ItemStack createItem(Material mat, String name, List<Component> lore, boolean glow) {
         ItemStack item = new ItemStack(mat);
         ItemMeta meta = item.getItemMeta();
         if (meta != null) {
-            meta.displayName(mm.deserialize(name));
+            meta.displayName(ColorUtil.parse(name));
             if (lore != null) meta.lore(lore);
             if (glow) {
                 meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);

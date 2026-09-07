@@ -1022,7 +1022,8 @@ public class AdminItemCreatorGUI implements InventoryHolder {
                     top.getHolder() instanceof VanillaEnchantPickerGUI ||
                     top.getHolder() instanceof EnchantLevelPickerGUI ||
                     top.getHolder() instanceof VanillaLevelPickerGUI ||
-                    top.getHolder() instanceof AdminPresetsGUI) {
+                    top.getHolder() instanceof AdminPresetsGUI ||
+                    top.getHolder() instanceof PresetPreviewGUI) {
                     return; // Still navigating our plugin's GUIs, do NOT return items!
                 }
             }
@@ -1061,7 +1062,9 @@ public class AdminItemCreatorGUI implements InventoryHolder {
             String idToSave = globalSetId.isBlank() ? "preset_" + System.currentTimeMillis() : globalSetId;
             String nameToSave = globalSetName.isBlank() ? "Custom Set" : globalSetName;
             plugin.getPresetManager().savePreset(idToSave, nameToSave, armorList, toolList);
-            player.sendMessage(mm.deserialize("<green>✓ Set <gold>" + nameToSave + "</gold> berhasil disimpan ke daftar Preset!</green>"));
+            player.sendMessage(mm.deserialize("<green>✓ Set </green>")
+                    .append(ColorUtil.parse(nameToSave))
+                    .append(mm.deserialize("<green> berhasil disimpan ke daftar Preset!</green>")));
         }
 
         int count = placedItems.size();
