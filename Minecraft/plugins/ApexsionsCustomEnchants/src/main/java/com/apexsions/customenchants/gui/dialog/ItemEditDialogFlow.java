@@ -93,11 +93,6 @@ public class ItemEditDialogFlow {
                         () -> openRoot(plugin, player, item, sourceSlot, creatorGUI)
                 )));
 
-        if (isArmor) {
-            buttons.add(new DialogButtonData("<blue><bold>🛡 ATUR ARMOR SET BONUS</bold></blue>", "Konfigurasi efek sinergi 2-Piece dan 4-Piece Set",
-                    () -> openArmorSetBonus(plugin, player, item, sourceSlot, creatorGUI)));
-        }
-
         if (isTool) {
             boolean isSetBonusActive = (creatorGUI != null && creatorGUI.isSetBonusConfigured());
             if (isSetBonusActive) {

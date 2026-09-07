@@ -119,19 +119,9 @@ public class ItemModifierGUI implements InventoryHolder {
                         mm.deserialize("<yellow>▶ Klik untuk ubah nama baru via GUI!</yellow>")
                 ), false));
 
-        // Slot 23: Armor or Tool Set Bonus Picker
-        boolean isArmor = AdminItemCreatorGUI.isArmor(item);
+        // Slot 23: Tool Set Bonus Picker (Armor Set Bonus is configured in its own dedicated GUI)
         boolean isTool = AdminItemCreatorGUI.isToolOrWeapon(item);
-        if (isArmor) {
-            inventory.setItem(23, createItem(Material.NETHERITE_CHESTPLATE,
-                    "<gradient:#e74c3c:#f39c12><bold>🛡 PENGATURAN ARMOR SET BONUS</bold></gradient>",
-                    List.of(
-                            mm.deserialize("<gray>Atur stat 2-Piece, 4-Piece, atau keduanya,</gray>"),
-                            mm.deserialize("<gray>dengan sub-menu persentase per stat visual!</gray>"),
-                            Component.empty(),
-                            mm.deserialize("<yellow>▶ Klik untuk mengatur Armor Set Bonus</yellow>")
-                    ), true));
-        } else if (isTool) {
+        if (isTool) {
             inventory.setItem(23, createItem(Material.NETHERITE_SWORD,
                     "<gradient:#3498db:#e67e22><bold>⚔ PENGATURAN TOOL SET BONUS</bold></gradient>",
                     List.of(
@@ -141,11 +131,7 @@ public class ItemModifierGUI implements InventoryHolder {
                             mm.deserialize("<yellow>▶ Klik untuk mengatur Tool Set Bonus</yellow>")
                     ), true));
         } else {
-            inventory.setItem(23, createItem(Material.BARRIER,
-                    "<dark_gray><bold>🛡 SET BONUS (TIDAK TERSEDIA)</bold></dark_gray>",
-                    List.of(
-                            mm.deserialize("<gray>Set bonus hanya dapat dipasang pada Armor & Tools.</gray>")
-                    ), false));
+            inventory.setItem(23, createItem(Material.GRAY_STAINED_GLASS_PANE, " ", List.of(), false));
         }
 
         // Slot 24: Selective Enchant Remover
@@ -233,14 +219,9 @@ public class ItemModifierGUI implements InventoryHolder {
             return;
         }
 
-        // Slot 23: Armor Set Bonus Picker or Tool Bonus Picker (Dialog GUI Flow)
+        // Slot 23: Tool Bonus Picker (Dialog GUI Flow)
         if (slot == 23) {
-            if (AdminItemCreatorGUI.isArmor(item)) {
-                player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1.0f, 1.2f);
-                player.closeInventory();
-                ItemEditDialogFlow.openArmorSetBonus(plugin, player, item, sourceSlot, creatorGUI);
-                return;
-            } else if (AdminItemCreatorGUI.isToolOrWeapon(item)) {
+            if (AdminItemCreatorGUI.isToolOrWeapon(item)) {
                 player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1.0f, 1.2f);
                 player.closeInventory();
                 ItemEditDialogFlow.openToolBonus(plugin, player, item, sourceSlot, creatorGUI);
