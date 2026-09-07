@@ -130,7 +130,8 @@ public class ChatGameManager {
                 FileConfiguration config = plugin.getConfigManager().getGamesConfig();
                 String gameKey = (game instanceof QuickMathGame) ? "math" : "unscramble";
                 long defaultXp = config.getLong("games.rewards.xp.amount", 150);
-                long xp = config.getLong("games." + gameKey + ".reward-xp", defaultXp);
+                long rawXp = config.getLong("games." + gameKey + ".reward-xp", defaultXp);
+                final long xp = (rawXp <= 0 || rawXp == 15) ? 150 : rawXp; // Enforce 150 XP for all chat games
                 boolean xpEnabled = config.getBoolean("games.rewards.xp.enabled", true) && xp > 0;
 
                 String rewardText = xpEnabled
@@ -169,7 +170,7 @@ public class ChatGameManager {
 
         FileConfiguration config = plugin.getConfigManager().getGamesConfig();
 
-        // 1. ApexsionsCore XP Reward
+        // 1. ApexsionsCore XP Reward (Level EXP)
         if (xpEnabled) {
             plugin.getApexsionsCoreHook().addXp(player.getUniqueId(), xp);
             int currentLvl = plugin.getApexsionsCoreHook().getPlayerLevel(player.getUniqueId());
@@ -180,9 +181,9 @@ public class ChatGameManager {
             }
         }
 
-        // 2. Vault Economy Reward
-        double money = config.getDouble("games.rewards.vault-money.amount", 2500);
-        if (config.getBoolean("games.rewards.vault-money.enabled", true) && money > 0) {
+        // 2. Vault Economy Reward (disabled by default, level exp only)
+        double money = config.getDouble("games.rewards.vault-money.amount", 0);
+        if (config.getBoolean("games.rewards.vault-money.enabled", false) && money > 0) {
             if (plugin.getVaultHook() != null && plugin.getVaultHook().hasEconomy()) {
                 plugin.getVaultHook().deposit(player, money);
                 if (player.isOnline()) {
@@ -191,10 +192,10 @@ public class ChatGameManager {
             }
         }
 
-        // 3. Command Rewards
+        // 3. Command Rewards (filter out gold_nugget)
         List<String> commands = config.getStringList("games.rewards.commands");
         for (String cmd : commands) {
-            if (cmd != null && !cmd.isBlank()) {
+            if (cmd != null && !cmd.isBlank() && !cmd.toLowerCase().contains("gold_nugget")) {
                 String executable = cmd.replace("{player}", player.getName());
                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(), executable);
             }
