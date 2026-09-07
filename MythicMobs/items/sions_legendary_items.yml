@@ -1,0 +1,41 @@
+# ============================================================
+# APEXSIONS: LEGENDARY ARTIFACTS
+# ============================================================
+
+# 1. Pedang Kebanggaan Kaisar Sions
+ValeriusVoidblade:
+  Id: NETHERITE_SWORD
+  Display: '<gradient:#f1c40f:#8e44ad><bold>⚔ Valerius Voidblade ⚔</bold></gradient>'
+  Enchantments:
+    - SHARPNESS:6
+    - UNBREAKING:5
+    - SWEEPING_EDGE:4
+    - FIRE_ASPECT:2
+  Lore:
+    - '<dark_purple>Pedang pribadi Kaisar Valerius yang ditempa</dark_purple>'
+    - '<dark_purple>dari kristal hitam Dark Dimension.</dark_purple>'
+    - ''
+    - '<yellow>Efek Pasif: Menimbulkan efek Blindness & Wither</yellow>'
+    - '<yellow>pada musuh setiap pukulan tebasan.</yellow>'
+    - ''
+    - '<gold><bold>TIER: ANCIENT ARTIFACT (SIONS)</bold></gold>'
+  Hide:
+    - ENCHANTS
+    - ATTRIBUTES
+
+# 2. Mahkota Kaisar (Bisa Dijual / Dipakai)
+CrownOfSions:
+  Id: NETHERITE_HELMET
+  Display: '<gradient:#f39c12:#f1c40f><bold>👑 Mahkota Dinasti Sions</bold></gradient>'
+  Enchantments:
+    - PROTECTION:5
+    - UNBREAKING:4
+    - RESPIRATION:3
+  Lore:
+    - '<gray>Simbol kekuasaan tertinggi di era sebelum</gray>'
+    - '<gray>peradaban terbelah menjadi 3 kerajaan.</gray>'
+    - ''
+    - '<green>Memberikan +4 Max Health permanen saat dipakai.</green>'
+    - '<yellow>Bernilai tinggi jika dijual ke Kolektor Kerajaan.</yellow>'
+    - ''
+    - '<gold><bold>TIER: S-RANK RELIC</bold></gold>'

@@ -1,0 +1,17 @@
+# ==========================================
+# APEXSIONS: DARK DIMENSION SKILLS
+# ==========================================
+
+DarkShockwave:
+  Skills:
+    - effect:particles{p=squid_ink;a=80;hs=4;vs=0.5} @self
+    - effect:sound{s=entity.wither.shoot;v=1.5;p=0.5} @self
+    - damage{a=18;pk=true} @PlayersInRadius{r=6}
+    - throw{velocity=8;velocityY=4} @PlayersInRadius{r=6}
+
+VoidPull:
+  Skills:
+    - effect:particles{p=reverse_portal;a=40;hs=1;vs=1} @Target
+    - effect:sound{s=block.beacon.deactivate;v=1.2;p=0.6} @self
+    - pull{v=5} @Target
+    - potion{type=BLINDNESS;duration=60;level=1} @Target

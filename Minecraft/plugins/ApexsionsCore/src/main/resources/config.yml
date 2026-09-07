@@ -149,15 +149,41 @@ sions-temporal:
   scan:
     default-min-y: 50
     default-max-y: 200
-  # Penguncian peti & kontainer kuno di wilayah Sions dengan kunci bos
+  # Penguncian peti & kontainer kuno di wilayah Sions dengan sistem 3-Tier Kunci
   container-lock:
     enabled: true
-    # Apakah kunci dikonsumsi (berkurang 1) saat membuka peti
-    consume-key: false
-    # Definisi kunci default (juga dapat di-override in-game via /sions setkey)
-    key:
-      material: "TRIPWIRE_HOOK"
-      name: "<gradient:#8e44ad:#d4af37><bold>Sions Ancient Key</bold></gradient>"
-      lore:
-        - "<gray>Kunci relik kuno peninggalan peradaban rahasia Sions.</gray>"
-        - "<dark_purple>Dapat membuka segel peti berharga di dalam kerajaan.</dark_purple>"
+    # Apakah kunci dikonsumsi (berkurang 1) saat membuka peti pertama kali dalam siklus temporal
+    consume-key: true
+    # Pemetaan jenis blok container secara otomatis ke tier kunci:
+    # COMMON: CHEST, BARREL
+    # ELITE: TRAPPED_CHEST, DISPENSER, DROPPER, HOPPER, FURNACE, BLAST_FURNACE, SMOKER
+    # BOSS: SHULKER_BOX, ENDER_CHEST, VAULT
+    keys:
+      common:
+        material: "TRIPWIRE_HOOK"
+        name: "<gradient:#bdc3c7:#7f8c8d><bold>Kunci Kuno Sions</bold></gradient>"
+        lore:
+          - "<gray>Kunci perunggu berkarat yang diselubungi</gray>"
+          - "<gray>energi samar reruntuhan masa lampau.</gray>"
+          - ""
+          - "<yellow>Tingkat:</yellow> <white>Biasa (Common)</white>"
+          - "<yellow>Kegunaan:</yellow> <gray>Membuka Peti & Tong Reruntuhan Sions</gray>"
+      elite:
+        material: "AMETHYST_SHARD"
+        name: "<gradient:#f1c40f:#d35400><bold>Kunci Khazanah Ksatria Sions</bold></gradient>"
+        lore:
+          - "<gold>Kunci kristal berkilauan yang ditempa</gold>"
+          - "<gold>oleh para ksatria pelindung imperium.</gold>"
+          - ""
+          - "<yellow>Tingkat:</yellow> <gold><bold>Elit (Elite)</bold></gold>"
+          - "<yellow>Kegunaan:</yellow> <gray>Membuka Peti Jebakan & Khazanah Ksatria</gray>"
+      boss:
+        material: "ECHO_SHARD"
+        name: "<gradient:#9b59b6:#e74c3c><bold>Kunci Void Kaisar Valerius</bold></gradient>"
+        lore:
+          - "<dark_purple>Kunci pusaka yang bergetar hebat memancarkan</dark_purple>"
+          - "<dark_purple>kekuatan kehampaan terdalam Dimensi Void.</dark_purple>"
+          - ""
+          - "<yellow>Tingkat:</yellow> <light_purple><bold>Kaisar (Raid Boss Tier)</bold></light_purple>"
+          - "<yellow>Kegunaan:</yellow> <gray>Membuka Peti Shulker Pusaka Tahta Kaisar</gray>"
+

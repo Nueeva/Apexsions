@@ -1,0 +1,22 @@
+# ==========================================
+# APEXSIONS: ANCIENT SIONS RELICS & DROPS
+# ==========================================
+
+SionsAncientRelic:
+  Id: ECHO_SHARD
+  Display: '<gradient:#f1c40f:#e67e22><bold>Pecahan Relik Kuno Sions</bold></gradient>'
+  Lore:
+    - '<gray>Puing peradaban besar masa lalu yang hancur</gray>'
+    - '<gray>akibat eksperimen kekuatan Dark Dimension.</gray>'
+    - ''
+    - '<yellow>Dapat dijual di Kingdom Shop atau ditukar</yellow>'
+    - '<yellow>dengan Apex Coins di masa depan.</yellow>'
+
+CorruptedDarkCore:
+  Id: NETHER_STAR
+  Display: '<gradient:#8e44ad:#2c3e50><bold>Corrupted Void Core</bold></gradient>'
+  Lore:
+    - '<dark_purple>Inti energi gelap yang masih berdenyut.</dark_purple>'
+    - '<gray>Berasal dari reruntuhan terdalam Sions.</gray>'
+    - ''
+    - '<red>Material crafting langka tingkat tinggi.</red>'

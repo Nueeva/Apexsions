@@ -2,6 +2,7 @@ package com.apexsions.core.command;
 
 import com.apexsions.core.ApexsionsCorePlugin;
 import com.apexsions.core.region.Region;
+import com.apexsions.core.sions.SionsKeyTier;
 import com.apexsions.core.sions.SionsTemporalService;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
@@ -128,16 +129,21 @@ public class SionsCommand implements CommandExecutor, TabCompleter {
                     sender.sendMessage(miniMessage.deserialize("<red>Perintah ini hanya dapat digunakan oleh pemain in-game.</red>"));
                     return true;
                 }
-                boolean success = s.setKeyItemFromHand(player);
+                SionsKeyTier tier = SionsKeyTier.COMMON;
+                if (args.length >= 2) {
+                    tier = SionsKeyTier.fromString(args[1]);
+                }
+                boolean success = s.setKeyItemFromHand(player, tier);
                 if (success) {
-                    player.sendMessage(miniMessage.deserialize("<green>✔ Item di tangan utama berhasil ditetapkan sebagai kunci resmi pembuka peti Kerajaan Sions!</green>"));
+                    player.sendMessage(miniMessage.deserialize("<green>✔ Item di tangan utama berhasil ditetapkan sebagai template kunci resmi tier <gold>" + tier.getDisplayName() + "</gold>!</green>"));
                     player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, 1.0f, 1.5f);
                 } else {
-                    player.sendMessage(miniMessage.deserialize("<red>Silakan pegang item yang ingin dijadikan kunci resmi di tangan utama Anda.</red>"));
+                    player.sendMessage(miniMessage.deserialize("<red>Silakan pegang item yang ingin dijadikan kunci di tangan utama Anda.</red>"));
                 }
             }
             case "givekey" -> {
                 Player target = (sender instanceof Player p) ? p : null;
+                SionsKeyTier tier = SionsKeyTier.COMMON;
                 int amount = 1;
 
                 if (args.length >= 2) {
@@ -145,30 +151,41 @@ public class SionsCommand implements CommandExecutor, TabCompleter {
                     if (candidate != null) {
                         target = candidate;
                     } else {
+                        // Could be tier or amount
                         try {
                             amount = Integer.parseInt(args[1]);
-                        } catch (NumberFormatException ignored) {}
+                        } catch (NumberFormatException e) {
+                            tier = SionsKeyTier.fromString(args[1]);
+                        }
                     }
                 }
 
                 if (args.length >= 3) {
                     try {
                         amount = Integer.parseInt(args[2]);
+                    } catch (NumberFormatException e) {
+                        tier = SionsKeyTier.fromString(args[2]);
+                    }
+                }
+
+                if (args.length >= 4) {
+                    try {
+                        amount = Integer.parseInt(args[3]);
                     } catch (NumberFormatException ignored) {}
                 }
 
                 if (target == null) {
-                    sender.sendMessage(miniMessage.deserialize("<red>Tentukan nama pemain target: /sions givekey <player> [amount]</red>"));
+                    sender.sendMessage(miniMessage.deserialize("<red>Penggunaan: /sions givekey <player> [common|elite|boss] [amount]</red>"));
                     return true;
                 }
 
-                ItemStack keyItem = s.createKeyItem(amount);
+                ItemStack keyItem = s.createKeyItem(tier, amount);
                 target.getInventory().addItem(keyItem);
-                target.sendMessage(miniMessage.deserialize("<green>✔ Anda telah menerima <gold>" + amount + "x</gold> <gradient:#8e44ad:#d4af37><bold>Sions Ancient Key</bold></gradient>!</green>"));
+                target.sendMessage(miniMessage.deserialize("<green>✔ Anda telah menerima <gold>" + amount + "x</gold> " + tier.getDefaultFormattedName() + "<green>!</green>"));
                 target.playSound(target.getLocation(), Sound.ENTITY_ITEM_PICKUP, 1.0f, 1.2f);
 
                 if (!target.equals(sender)) {
-                    sender.sendMessage(miniMessage.deserialize("<green>✔ Berhasil memberikan <gold>" + amount + "x</gold> Sions Ancient Key kepada <aqua>" + target.getName() + "</aqua>.</green>"));
+                    sender.sendMessage(miniMessage.deserialize("<green>✔ Berhasil memberikan <gold>" + amount + "x</gold> " + tier.getDefaultFormattedName() + " <green>kepada <aqua>" + target.getName() + "</aqua>.</green>"));
                 }
             }
             case "bypass" -> {
@@ -213,8 +230,8 @@ public class SionsCommand implements CommandExecutor, TabCompleter {
         sender.sendMessage(miniMessage.deserialize("<gold>/sions set [minY] [maxY]</gold> <gray>➔ Kunci kondisi dunia saat ini sebagai baseline permanen</gray>"));
         sender.sendMessage(miniMessage.deserialize("<gold>/sions status</gold> <gray>➔ Cek jumlah block terubah, baseline, dan timer reset</gray>"));
         sender.sendMessage(miniMessage.deserialize("<gold>/sions restore</gold> <gray>➔ Trigger rekonstruksi manual seketika</gray>"));
-        sender.sendMessage(miniMessage.deserialize("<gold>/sions setkey</gold> <gray>➔ Jadikan item di tangan sebagai kunci pembuka peti Sions</gray>"));
-        sender.sendMessage(miniMessage.deserialize("<gold>/sions givekey [player] [qty]</gold> <gray>➔ Berikan Sions Ancient Key untuk reward/testing</gray>"));
+        sender.sendMessage(miniMessage.deserialize("<gold>/sions setkey [common|elite|boss]</gold> <gray>➔ Jadikan item di tangan sebagai template kunci tier tersebut</gray>"));
+        sender.sendMessage(miniMessage.deserialize("<gold>/sions givekey [player] [common|elite|boss] [qty]</gold> <gray>➔ Berikan kunci Sions sesuai tier</gray>"));
         sender.sendMessage(miniMessage.deserialize("<gold>/sions bypass</gold> <gray>➔ Toggle mode edit permanen bagi arsitek/admin</gray>"));
         sender.sendMessage(miniMessage.deserialize("<gold>/sions tp</gold> <gray>➔ Teleport ke koordinat pusat Kerajaan Sions</gray>"));
     }
@@ -231,6 +248,8 @@ public class SionsCommand implements CommandExecutor, TabCompleter {
                 }
             }
             return matches;
+        } else if (args.length == 2 && args[0].equalsIgnoreCase("setkey")) {
+            return List.of("common", "elite", "boss");
         } else if (args.length == 2 && args[0].equalsIgnoreCase("givekey")) {
             List<String> players = new ArrayList<>();
             for (Player p : Bukkit.getOnlinePlayers()) {
@@ -239,6 +258,10 @@ public class SionsCommand implements CommandExecutor, TabCompleter {
                 }
             }
             return players;
+        } else if (args.length == 3 && args[0].equalsIgnoreCase("givekey")) {
+            return List.of("common", "elite", "boss");
+        } else if (args.length == 4 && args[0].equalsIgnoreCase("givekey")) {
+            return List.of("1", "4", "16", "64");
         } else if (args.length == 2 && (args[0].equalsIgnoreCase("set") || args[0].equalsIgnoreCase("snapshot"))) {
             return List.of("50", "40", "0", "-64");
         } else if (args.length == 3 && (args[0].equalsIgnoreCase("set") || args[0].equalsIgnoreCase("snapshot"))) {

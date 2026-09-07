@@ -274,6 +274,7 @@ public class SionsTemporalService {
             }
         }
 
+        this.unlockedChestsThisCycle.clear();
         this.nextResetTimeMs = System.currentTimeMillis() + (intervalMinutes * 60L * 1000L);
         return restoredCount;
     }
@@ -417,25 +418,56 @@ public class SionsTemporalService {
     }
 
     // =========================================================================
-    // Sions Ancient Key Management & Validation
+    // Sions Ancient Key Management & Validation (Multi-Tier)
     // =========================================================================
 
+    private final Set<BlockCoord> unlockedChestsThisCycle = ConcurrentHashMap.newKeySet();
+
+    public boolean isChestUnlockedThisCycle(Block block) {
+        if (block == null) return false;
+        return unlockedChestsThisCycle.contains(new BlockCoord(block.getX(), block.getY(), block.getZ()));
+    }
+
+    public void markChestUnlockedThisCycle(Block block) {
+        if (block == null) return;
+        unlockedChestsThisCycle.add(new BlockCoord(block.getX(), block.getY(), block.getZ()));
+    }
+
     /**
-     * Creates an authentic Sions Ancient Key item stack.
+     * Resolves the container tier based on block material or custom tagging.
      */
-    public ItemStack createKeyItem(int amount) {
+    public SionsKeyTier getContainerTier(Block block) {
+        if (block == null) return SionsKeyTier.COMMON;
+        Material type = block.getType();
+        String name = type.name();
+        if (name.contains("SHULKER_BOX") || type == Material.ENDER_CHEST) {
+            return SionsKeyTier.BOSS;
+        }
+        if (type == Material.TRAPPED_CHEST || type == Material.DISPENSER || type == Material.DROPPER || type == Material.HOPPER) {
+            return SionsKeyTier.ELITE;
+        }
+        return SionsKeyTier.COMMON;
+    }
+
+    /**
+     * Creates an authentic Sions Key of the specified tier.
+     */
+    public ItemStack createKeyItem(SionsKeyTier tier, int amount) {
         FileConfiguration config = plugin.getConfig();
-        String matName = config.getString("sions-temporal.container-lock.key.material", "TRIPWIRE_HOOK");
+        String path = "sions-temporal.container-lock.keys." + tier.getId() + ".";
+        String fallbackMat = tier == SionsKeyTier.BOSS ? "ECHO_SHARD" : (tier == SionsKeyTier.ELITE ? "AMETHYST_SHARD" : "TRIPWIRE_HOOK");
+        String matName = config.getString(path + "material", fallbackMat);
         Material mat = Material.matchMaterial(matName);
+        if (mat == null) mat = Material.matchMaterial(fallbackMat);
         if (mat == null) mat = Material.TRIPWIRE_HOOK;
 
         ItemStack key = new ItemStack(mat, Math.max(1, amount));
         ItemMeta meta = key.getItemMeta();
         if (meta != null) {
-            String nameFormat = config.getString("sions-temporal.container-lock.key.name", "<gradient:#8e44ad:#d4af37><bold>Sions Ancient Key</bold></gradient>");
+            String nameFormat = config.getString(path + "name", tier.getDefaultFormattedName());
             meta.displayName(miniMessage.deserialize(nameFormat));
 
-            List<String> loreLines = config.getStringList("sions-temporal.container-lock.key.lore");
+            List<String> loreLines = config.getStringList(path + "lore");
             if (loreLines != null && !loreLines.isEmpty()) {
                 List<net.kyori.adventure.text.Component> compLore = new ArrayList<>();
                 for (String line : loreLines) {
@@ -444,31 +476,48 @@ public class SionsTemporalService {
                 meta.lore(compLore);
             }
 
-            meta.getPersistentDataContainer().set(keySionsPdc, PersistentDataType.BOOLEAN, true);
+            // Set PDC tag with tier name
+            meta.getPersistentDataContainer().set(keySionsPdc, PersistentDataType.STRING, tier.getId());
             key.setItemMeta(meta);
         }
         return key;
     }
 
+    public ItemStack createKeyItem(int amount) {
+        return createKeyItem(SionsKeyTier.COMMON, amount);
+    }
+
     /**
-     * Checks whether an item stack qualifies as the Sions Ancient Key.
+     * Checks whether an item stack qualifies as the Sions Key of a given tier.
      */
-    public boolean isSionsKey(ItemStack item) {
+    public boolean isSionsKey(ItemStack item, SionsKeyTier targetTier) {
         if (item == null || item.getType() == Material.AIR) return false;
         ItemMeta meta = item.getItemMeta();
         if (meta == null) return false;
 
-        // 1. Check persistent PDC tag
-        if (meta.getPersistentDataContainer().has(keySionsPdc, PersistentDataType.BOOLEAN)) {
+        // 1. Check persistent PDC string tag
+        String tag = meta.getPersistentDataContainer().get(keySionsPdc, PersistentDataType.STRING);
+        if (tag != null) {
+            return tag.equalsIgnoreCase(targetTier.getId());
+        }
+
+        // 2. Check legacy boolean PDC tag (treated as COMMON)
+        if (targetTier == SionsKeyTier.COMMON && meta.getPersistentDataContainer().has(keySionsPdc, PersistentDataType.BOOLEAN)) {
             return true;
         }
 
-        // 2. Check Display Name matching config
-        String configName = plugin.getConfig().getString("sions-temporal.container-lock.key.name", "Sions Ancient Key");
+        // 3. Check display name matching keywords
         net.kyori.adventure.text.Component display = meta.displayName();
         if (display != null) {
-            String serialized = miniMessage.serialize(display);
-            if (serialized.equalsIgnoreCase(configName) || serialized.contains("Sions Ancient Key") || meta.getDisplayName().contains("Sions Ancient Key")) {
+            String serialized = miniMessage.serialize(display).toLowerCase();
+            String legacy = meta.hasDisplayName() ? meta.getDisplayName().toLowerCase() : "";
+            if (targetTier == SionsKeyTier.BOSS && (serialized.contains("kaisar") || serialized.contains("valerius") || legacy.contains("kaisar") || legacy.contains("boss"))) {
+                return true;
+            }
+            if (targetTier == SionsKeyTier.ELITE && (serialized.contains("ksatria") || serialized.contains("khazanah") || legacy.contains("ksatria") || legacy.contains("elite"))) {
+                return true;
+            }
+            if (targetTier == SionsKeyTier.COMMON && (serialized.contains("kuno sions") || serialized.contains("sions ancient key") || legacy.contains("sions ancient key"))) {
                 return true;
             }
         }
@@ -476,28 +525,36 @@ public class SionsTemporalService {
         return false;
     }
 
+    public boolean isSionsKey(ItemStack item) {
+        return isSionsKey(item, SionsKeyTier.COMMON) || isSionsKey(item, SionsKeyTier.ELITE) || isSionsKey(item, SionsKeyTier.BOSS);
+    }
+
     /**
-     * Checks whether a player possesses at least one Sions Key in their inventory.
+     * Checks whether a player possesses a key for the given tier.
      */
-    public boolean hasSionsKey(Player player) {
+    public boolean hasSionsKey(Player player, SionsKeyTier tier) {
         if (player == null) return false;
         for (ItemStack item : player.getInventory().getContents()) {
-            if (isSionsKey(item)) {
+            if (isSionsKey(item, tier)) {
                 return true;
             }
         }
         return false;
     }
 
+    public boolean hasSionsKey(Player player) {
+        return hasSionsKey(player, SionsKeyTier.COMMON);
+    }
+
     /**
-     * Consumes 1 Sions Key from player's inventory if enabled.
+     * Consumes 1 Sions Key of the specified tier from player's inventory if enabled.
      */
-    public boolean consumeSionsKey(Player player) {
+    public boolean consumeSionsKey(Player player, SionsKeyTier tier) {
         if (player == null) return false;
         if (!isConsumeKeyOnUse()) return true;
 
         for (ItemStack item : player.getInventory().getContents()) {
-            if (isSionsKey(item)) {
+            if (isSionsKey(item, tier)) {
                 int amount = item.getAmount();
                 if (amount > 1) {
                     item.setAmount(amount - 1);
@@ -510,10 +567,14 @@ public class SionsTemporalService {
         return false;
     }
 
+    public boolean consumeSionsKey(Player player) {
+        return consumeSionsKey(player, SionsKeyTier.COMMON);
+    }
+
     /**
-     * Sets the item currently held in player's main hand as the official key item in config.yml.
+     * Sets the item currently held in player's main hand as the official key template for the given tier.
      */
-    public boolean setKeyItemFromHand(Player player) {
+    public boolean setKeyItemFromHand(Player player, SionsKeyTier tier) {
         if (player == null) return false;
         ItemStack hand = player.getInventory().getItemInMainHand();
         if (hand.getType() == Material.AIR) {
@@ -521,11 +582,12 @@ public class SionsTemporalService {
         }
 
         FileConfiguration config = plugin.getConfig();
-        config.set("sions-temporal.container-lock.key.material", hand.getType().name());
+        String path = "sions-temporal.container-lock.keys." + tier.getId() + ".";
+        config.set(path + "material", hand.getType().name());
 
         ItemMeta meta = hand.getItemMeta();
         if (meta != null && meta.hasDisplayName()) {
-            config.set("sions-temporal.container-lock.key.name", miniMessage.serialize(meta.displayName()));
+            config.set(path + "name", miniMessage.serialize(meta.displayName()));
         }
 
         if (meta != null && meta.hasLore() && meta.lore() != null) {
@@ -533,10 +595,14 @@ public class SionsTemporalService {
             for (net.kyori.adventure.text.Component c : meta.lore()) {
                 rawLore.add(miniMessage.serialize(c));
             }
-            config.set("sions-temporal.container-lock.key.lore", rawLore);
+            config.set(path + "lore", rawLore);
         }
 
         plugin.saveConfig();
         return true;
+    }
+
+    public boolean setKeyItemFromHand(Player player) {
+        return setKeyItemFromHand(player, SionsKeyTier.COMMON);
     }
 }

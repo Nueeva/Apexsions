@@ -1,0 +1,47 @@
+EmperorValerius:
+  Type: WITHER_SKELETON
+  Display: '<#c0392b><bold>[RAID BOSS Lv.100]</bold> <gradient:#f1c40f:#8e44ad>Valerius, Sang Kaisar Kegelapan</gradient>'
+  Health: 3500
+  Damage: 38
+  Armor: 25
+  Options:
+    KnockbackResistance: 1.0
+    MovementSpeed: 0.28
+    FollowRange: 35
+    Despawn: false
+  BossBar:
+    Enabled: true
+    Title: '<gradient:#f1c40f:#8e44ad>Valerius — Kaisar Terakhir Peradaban Sions</gradient>'
+    Color: PURPLE
+    Style: SEGMENTED_12
+    Range: 50
+  Equipment:
+    - ValeriusVoidblade HAND
+    - NETHERITE_HELMET HEAD
+    - NETHERITE_CHESTPLATE CHEST
+  Drops:
+    - SionsBossKey 1 1.0                # 100% Kunci Void Kaisar (Dijamin Drop)
+    - ValeriusVoidblade 1 0.15          # 15% drop pedang dewa
+    - CrownOfSions 1 0.25               # 25% drop mahkota relik
+    - CorruptedDarkCore 4-8 1.0
+    - SionsAncientRelic 15-30 1.0
+    - exp 1500 1.0
+  Skills:
+    # Intro Cinematic Suara & Pesan Global
+    - message{m="<red><bold>[VALERIUS]</bold></red> <gray>Berani sekali debu-debu fana mengusik tahta kekaisaran yang tertidur...!</gray>"} @PlayersInRadius{r=40} ~onSpawn
+    - sound{s=entity.ender_dragon.growl;v=2;p=0.5} @PlayersInRadius{r=40} ~onSpawn
+
+    # FASE 1: Serangan Pedang Tebasan Gelombang Void
+    - skill{s=VoidSlash} @Target ~onTimer:120 ?targetWithin{d=10}
+
+    # FASE 2 (HP = 60%): Invulnerability & Summon Minions
+    - skill{s=ValeriusShieldPhase} @self ~onDamaged =60% 1.0
+
+    # FASE 3 (HP < 25%): Enrage! Hujan Meteor Kegelapan di Arena
+    - message{m="<dark_red><bold>[VALERIUS ENRAGE]</bold></dark_red> <red>HANCURLAH BERSAMA DIMENSI KEGELAPAN!</red>"} @PlayersInRadius{r=40} ~onDamaged =25% 1.0
+    - potion{type=SPEED;duration=9999;level=1} @self ~onDamaged =25% 1.0
+    - skill{s=VoidCataclysmRain} @self ~onTimer:200 =0%-25%
+
+    # Kematian Boss: Pesan Megah ke Seluruh Server
+    - message{m="<gradient:#f1c40f:#e67e22><bold>⚔ APEXSIONS RAID ⚔</bold></gradient> <gray>Kaisar Kuno <yellow>Valerius</yellow> telah berhasil ditumbangkan di Reruntuhan Sions!</gray>"} @Server ~onDeath
+    - sound{s=ui.toast.challenge_complete;v=1.5;p=1.0} @PlayersInRadius{r=50} ~onDeath

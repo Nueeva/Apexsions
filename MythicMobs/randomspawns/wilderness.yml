@@ -1,0 +1,33 @@
+# ============================================================
+# APEXSIONS: WILDERNESS LEVELED MONSTERS RANDOM SPAWNS
+# ============================================================
+
+WildForestStalkerSpawn:
+  MobType: WildForestStalker
+  Worlds: world
+  Chance: 0.15
+  Priority: 1
+  Action: REPLACE
+  Conditions:
+    - outside true
+    - night true
+
+WildDuneReaperSpawn:
+  MobType: WildDuneReaper
+  Worlds: world
+  Chance: 0.12
+  Priority: 1
+  Action: REPLACE
+  Conditions:
+    - outside true
+    - night true
+
+WildCanyonSavageSpawn:
+  MobType: WildCanyonSavage
+  Worlds: world
+  Chance: 0.10
+  Priority: 1
+  Action: REPLACE
+  Conditions:
+    - outside true
+    - night true

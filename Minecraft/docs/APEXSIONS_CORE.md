@@ -178,17 +178,24 @@ Wilayah misterius kerajaan keempat yang tersembunyi dari peradaban umum:
    - Memulihkan blok yang dihancurkan (*break*), diletakkan (*place*), diledakkan TNT/Creeper (*explosion*), terbakar (*fire*), dan mencair/memudar (*fade*).
 3. **Anti-Duplikasi Sumber Daya (`prevent-item-drops: true`)**:
    - Blok yang dihancurkan oleh pemain biasa di dalam wilayah Sions tidak menjatuhkan item drop, mencegah eksploitasi grinding ore/mineral sebelum reset temporal berlangsung.
-4. **Peti Kuno & Segel Wadah (`SionsContainerLockListener`)**:
-   - Seluruh container (Chest, Barrel, Shulker Box, Hopper, Furnace, Dispenser) di wilayah Sions terkunci oleh segel gaib kuno.
-   - Pemain biasa tidak dapat membuka atau menghancurkan container kecuali mengantongi **Kunci Kuno Sions** (`Sions Ancient Key` / NBT tag `sions_key: true`).
-   - Admin dapat menetapkan item khusus dari tangan menggunakan `/sions setkey` atau memberikan kunci dengan `/sions givekey`.
-5. **Peringatan Proksimitas Temporal Terarah**:
+4. **Hierarki 3-Tier Peti Kuno & Segel Wadah (`SionsContainerLockListener`)**:
+   - Seluruh container di wilayah Sions terkunci oleh segel gaib kuno berdasarkan 3 tingkatan (tier):
+     - **Peti Biasa (`common`)**: Normal Chest & Barrel. Membutuhkan **Kunci Kuno Sions** (`SionsCommonKey`). Peluang drop 15% dari Cecunguk Minions.
+     - **Peti Khazanah Ksatria (`elite`)**: Trapped Chest, Dispenser, Dropper, Hopper. Membutuhkan **Kunci Khazanah Ksatria Sions** (`SionsEliteKey`). Peluang drop 35%–50% dari Ksatria & Sentinel Elit.
+     - **Peti Tahta Kaisar (`boss`)**: Shulker Box, Ender Chest, Vault. Membutuhkan **Kunci Void Kaisar Valerius** (`SionsBossKey`). Dijamin 100% drop dari Raid Boss Emperor Valerius.
+   - Kunci dikonsumsi 1x pakai saat pertama kali membuka peti dalam 1 siklus temporal. Selama siklus 60 menit berjalan, peti yang telah dibuka tetap dapat diakses tanpa mengonsumsi kunci tambahan, lalu terkunci kembali saat reset temporal berlangsung.
+5. **Integrasi MythicMobs & Spawner Ekosistem Sions**:
+   - **Raid Boss Terkuat (`EmperorValerius` Lv.100)**: Spawner permanen di koordinat `-6089, 93, -3454` dengan cooldown respawn **4 jam (14.400s)**.
+   - **Ksatria Elit Sions (`SionsVoidKnight` Lv.50 / Sentinel Lv.55)**: Spawner permanen di barak pertahanan `-6126, 92, -3459` dengan cooldown **30 menit (1.800s)**.
+   - **Cecunguk Minions (`SionsLegionnaire`, `SionsVoidCrawler`)**: Otomatis spawn berkala di dalam wilayah teritorial Sions (`sions_ruins_spawns.yml`).
+   - **Wilderness Leveled Mobs (Lv.5–15)**: Monster alam liar berlevel ringan (`WildForestStalker`, `WildDuneReaper`, `WildCanyonSavage`) spawn alami di luar zona aman peradaban.
+6. **Peringatan Proksimitas Temporal Terarah**:
    - Hitung mundur menjelang anomali temporal (10 menit, 5 menit, 1 menit, dan 10 detik) disiarkan secara khusus kepada pemain yang **berada di dalam teritori Sions** melalui Chat, Actionbar, dan efek audio atmosferik (`BLOCK_BELL_RESONATE`, `BLOCK_CONDUIT_DEACTIVATE`, `BLOCK_END_PORTAL_SPAWN`).
-6. **Alat Kelola Admin (`/sions`)**:
+7. **Alat Kelola Admin (`/sions`)**:
    - `/sions status`: Memeriksa status temporal, hitung mundur reset, dan jumlah modifikasi.
    - `/sions set [minY] [maxY]`: Memindai seluruh poligon wilayah Sions dan mengunci kondisi awal struktur ke disk.
    - `/sions restore`: Memicu pemulihan instan darurat tanpa menunggu countdown 60 menit.
-   - `/sions setkey`: Mengonversi item di tangan menjadi kunci pembuka peti kuno Sions.
-   - `/sions givekey [p] [qty]`: Memberikan Kunci Kuno Sions kepada pemain.
+   - `/sions setkey [common|elite|boss]`: Mengonversi item di tangan menjadi template kunci tier yang dipilih.
+   - `/sions givekey <player> [common|elite|boss] [qty]`: Memberikan kunci Sions sesuai tier kepada pemain target.
    - `/sions bypass`: Mode membangun khusus staf/arsitek agar modifikasi blok permanen dan tidak di-rollback.
 
