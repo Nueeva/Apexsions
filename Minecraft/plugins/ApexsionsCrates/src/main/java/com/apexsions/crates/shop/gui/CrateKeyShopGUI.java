@@ -109,22 +109,6 @@ public class CrateKeyShopGUI implements InventoryHolder {
             closeBtn.setItemMeta(closeMeta);
         }
         inventory.setItem(49, closeBtn);
-
-        // Slot 45: Admin Settings if player has admin permission
-        if (player.hasPermission("apexsions.admin") || player.hasPermission("apexsions.crates.admin")) {
-            ItemStack adminBtn = new ItemStack(Material.COMMAND_BLOCK);
-            ItemMeta aMeta = adminBtn.getItemMeta();
-            if (aMeta != null) {
-                aMeta.displayName(mm.deserialize("<gold><bold>⚙ PENGATURAN TOKO (ADMIN)</bold></gold>"));
-                aMeta.lore(List.of(
-                        mm.deserialize("<gray>Atur harga, kunci yang dijual, & mata uang.</gray>"),
-                        Component.empty(),
-                        mm.deserialize("<yellow>▶ Klik untuk membuka panel admin!</yellow>")
-                ));
-                adminBtn.setItemMeta(aMeta);
-            }
-            inventory.setItem(45, adminBtn);
-        }
     }
 
     private ItemStack createHeaderItem() {
@@ -212,12 +196,6 @@ public class CrateKeyShopGUI implements InventoryHolder {
         if (slot == 49) {
             player.closeInventory();
             player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.7f, 1.0f);
-            return;
-        }
-
-        if (slot == 45 && (player.hasPermission("apexsions.admin") || player.hasPermission("apexsions.crates.admin"))) {
-            player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.8f, 1.2f);
-            new CrateKeyShopAdminGUI(plugin, player).open();
             return;
         }
 
