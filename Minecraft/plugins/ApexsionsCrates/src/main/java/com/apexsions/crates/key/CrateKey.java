@@ -1,91 +1,176 @@
 package com.apexsions.crates.key;
 
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
-import org.bukkit.enchantments.Enchantment;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.persistence.PersistentDataType;
-import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
+import com.apexsions.crates.CratesPlugin;
+import com.apexsions.crates.Placeholders;
+import com.apexsions.crates.config.Keys;
+import com.apexsions.crates.config.Lang;
+import com.apexsions.crates.util.ItemHelper;
+import su.nightexpress.nightcore.bridge.item.AdaptedItem;
+import su.nightexpress.nightcore.config.FileConfig;
+import su.nightexpress.nightcore.manager.ConfigBacked;
+import su.nightexpress.nightcore.util.ItemUtil;
+import su.nightexpress.nightcore.util.PDCUtil;
+import su.nightexpress.nightcore.util.bukkit.NightItem;
+import su.nightexpress.nightcore.util.problem.ProblemCollector;
+import su.nightexpress.nightcore.util.problem.ProblemReporter;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.function.UnaryOperator;
 
-public class CrateKey {
+public class CrateKey implements ConfigBacked {
 
+    private final Path path;
     private final String id;
-    private final String name;
-    private final Material material;
-    private final boolean glowing;
-    private final int customModelData;
-    private final List<String> lore;
 
-    public CrateKey(String id, String name, Material material, boolean glowing, int customModelData, List<String> lore) {
+    private String      name;
+    private boolean     virtual;
+    private AdaptedItem item;
+    private boolean     itemStackable;
+
+    private boolean dirty;
+
+    public CrateKey(@NotNull CratesPlugin plugin, @NotNull Path path, @NotNull String id) {
+        this.path = path;
         this.id = id;
-        this.name = name != null ? name : "Kunci " + id;
-        this.material = material != null ? material : Material.TRIPWIRE_HOOK;
-        this.glowing = glowing;
-        this.customModelData = customModelData;
-        this.lore = lore != null ? lore : new ArrayList<>();
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public Component getDisplayName() {
-        return MiniMessage.miniMessage().deserialize(name);
-    }
-
-    public Material getMaterial() {
-        return material;
-    }
-
-    public boolean isGlowing() {
-        return glowing;
-    }
-
-    public int getCustomModelData() {
-        return customModelData;
-    }
-
-    public List<String> getLore() {
-        return lore;
-    }
-
-    public ItemStack createItem(Plugin plugin, int amount) {
-        ItemStack item = new ItemStack(material, Math.max(1, amount));
-        ItemMeta meta = item.getItemMeta();
-        if (meta != null) {
-            meta.displayName(getDisplayName());
-            if (customModelData > 0) {
-                meta.setCustomModelData(customModelData);
-            }
-
-            List<Component> componentLore = new ArrayList<>();
-            for (String l : lore) {
-                componentLore.add(MiniMessage.miniMessage().deserialize(l));
-            }
-            meta.lore(componentLore);
-
-            if (glowing) {
-                meta.addEnchant(Enchantment.LUCK_OF_THE_SEA, 1, true);
-                meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-            }
-
-            // Exploit-proof PersistentDataContainer tag
-            NamespacedKey key = new NamespacedKey(plugin, "crate_key_id");
-            meta.getPersistentDataContainer().set(key, PersistentDataType.STRING, id);
-
-            item.setItemMeta(meta);
+    public void load() throws IllegalStateException {
+        if (!this.hasFile()) {
+            // TODO Throw
+            return;
         }
+
+        this.loadConfig().edit(this::load);
+    }
+
+    private void load(@NotNull FileConfig config) throws IllegalStateException {
+        this.setName(config.getString("Name", this.getId()));
+        this.setVirtual(config.getBoolean("Virtual"));
+
+        if (config.contains("Item")) {
+            NightItem item = config.getCosmeticItem("Item");
+            AdaptedItem adaptedItem = ItemHelper.vanilla(item.getItemStack());
+
+            config.remove("Item");
+            config.set("ItemData", adaptedItem);
+        }
+
+        this.setItem(ItemHelper.read(config, "ItemData").orElse(ItemHelper.vanilla(new ItemStack(Material.TRIAL_KEY))));
+        this.setItemStackable(config.getBoolean("ItemStackable", true));
+    }
+
+    public void saveForce() {
+        this.markDirty();
+        this.saveIfDirty();
+    }
+
+    public void saveIfDirty() {
+        if (this.dirty) {
+            this.loadConfig().edit(this::write);
+            this.dirty = false;
+        }
+    }
+
+    private void write(@NotNull FileConfig config) {
+        config.set("Name", this.name);
+        config.set("Virtual", this.virtual);
+        config.set("ItemData", this.item);
+        config.set("ItemStackable", this.itemStackable);
+    }
+
+    @NotNull
+    public UnaryOperator<String> replacePlaceholders() {
+        return Placeholders.KEY.replacer(this);
+    }
+
+    public ProblemReporter collectProblems() {
+        ProblemReporter reporter = new ProblemCollector(this.name, this.path.toString());
+
+        if (!this.item.isValid()) reporter.report(Lang.INSPECTIONS_GENERIC_ITEM.get(false));
+
+        return reporter;
+    }
+
+    public void markDirty() {
+        this.dirty = true;
+    }
+
+    public boolean hasFile() {
+        return Files.exists(this.path);
+    }
+
+    public boolean hasProblems() {
+        return !this.collectProblems().isEmpty();
+    }
+
+    @Override
+    @NotNull
+    public Path getPath() {
+        return this.path;
+    }
+
+    @NotNull
+    public String getId() {
+        return this.id;
+    }
+
+    @NotNull
+    public String getName() {
+        return this.name;
+    }
+
+    public void setName(@NotNull String name) {
+        this.name = name;
+    }
+
+    public boolean isVirtual() {
+        return this.virtual;
+    }
+
+    public void setVirtual(boolean virtual) {
+        this.virtual = virtual;
+    }
+
+    @NotNull
+    public ItemStack getRawItem() {
+        return this.getItemStack(false);
+    }
+
+    @NotNull
+    public ItemStack getItemStack() {
+        return this.getItemStack(true);
+    }
+
+    @NotNull
+    public ItemStack getItemStack(boolean fullData) {
+        ItemStack item = ItemHelper.toItemStack(this.item);
+        ItemUtil.editMeta(item, meta -> {
+            if (fullData) {
+                meta.setMaxStackSize(this.itemStackable ? null : 1);
+                PDCUtil.set(meta, Keys.keyId, this.getId());
+            }
+        });
         return item;
+    }
+
+    public boolean isItemStackable() {
+        return this.itemStackable;
+    }
+
+    public void setItemStackable(boolean itemStackable) {
+        this.itemStackable = itemStackable;
+    }
+
+    @NotNull
+    public AdaptedItem getItem() {
+        return this.item;
+    }
+
+    public void setItem(@NotNull AdaptedItem item) {
+        this.item = item;
     }
 }

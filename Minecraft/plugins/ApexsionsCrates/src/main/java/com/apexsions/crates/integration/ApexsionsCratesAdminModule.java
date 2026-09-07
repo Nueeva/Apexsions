@@ -2,7 +2,6 @@ package com.apexsions.crates.integration;
 
 import com.apexsions.core.admin.AdminModule;
 import com.apexsions.crates.ApexsionsCratesPlugin;
-import com.apexsions.crates.gui.CrateAdminHubGUI;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Material;
@@ -38,13 +37,13 @@ public class ApexsionsCratesAdminModule implements AdminModule {
     public List<Component> getDescription(Player player) {
         return List.of(
                 mm.deserialize("<gray>Kelola Crate, Kunci, Milestones & Editor.</gray>"),
-                mm.deserialize("<yellow>▶ Klik untuk membuka Control Panel Crate</yellow>")
+                mm.deserialize("<yellow>▶ Klik untuk membuka Editor Crate Interaktif</yellow>")
         );
     }
 
     @Override
     public String getPermission() {
-        return "apexsions.crates.admin";
+        return "apexsions.admin";
     }
 
     @Override
@@ -54,6 +53,6 @@ public class ApexsionsCratesAdminModule implements AdminModule {
 
     @Override
     public void open(Player admin) {
-        new CrateAdminHubGUI(plugin, admin).open();
+        plugin.getEditorManager().openEditor(admin);
     }
 }

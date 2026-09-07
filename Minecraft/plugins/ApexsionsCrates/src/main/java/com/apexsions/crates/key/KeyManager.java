@@ -1,116 +1,317 @@
 package com.apexsions.crates.key;
 
-import com.apexsions.crates.ApexsionsCratesPlugin;
+import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.persistence.PersistentDataType;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import com.apexsions.crates.CratesPlugin;
+import com.apexsions.crates.config.Config;
+import com.apexsions.crates.config.Keys;
+import com.apexsions.crates.crate.cost.type.impl.KeyCostType;
+import com.apexsions.crates.dialog.DialogRegistry;
+import com.apexsions.crates.dialog.key.KeyCreationDialog;
+import com.apexsions.crates.dialog.key.KeyItemDialog;
+import com.apexsions.crates.dialog.key.KeyNameDialog;
+import com.apexsions.crates.key.dialog.KeyDialogs;
+import com.apexsions.crates.registry.CratesRegistries;
+import com.apexsions.crates.user.CrateUser;
+import com.apexsions.crates.util.ItemHelper;
+import su.nightexpress.nightcore.config.FileConfig;
+import su.nightexpress.nightcore.manager.AbstractManager;
+import su.nightexpress.nightcore.util.*;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.*;
+import java.util.function.Predicate;
 
-public class KeyManager {
+public class KeyManager extends AbstractManager<CratesPlugin> {
 
-    private final ApexsionsCratesPlugin plugin;
-    private final Map<String, CrateKey> keys = new LinkedHashMap<>();
-    private final NamespacedKey keyTag;
+    private final DialogRegistry dialogs;
 
-    public KeyManager(ApexsionsCratesPlugin plugin) {
-        this.plugin = plugin;
-        this.keyTag = new NamespacedKey(plugin, "crate_key_id");
+    private final Map<String, CrateKey> keyByIdMap;
+
+    public KeyManager(@NotNull CratesPlugin plugin, @NotNull DialogRegistry dialogs) {
+        super(plugin);
+        this.dialogs = dialogs;
+        this.keyByIdMap = new HashMap<>();
     }
 
-    public void loadKeys(FileConfiguration config) {
-        keys.clear();
-        ConfigurationSection section = config.getConfigurationSection("keys");
-        if (section == null) return;
+    @Override
+    protected void onLoad() {
+        this.loadCost();
+        this.loadKeys();
+        this.loadDialogs();
+        this.plugin.runTask(task -> this.reportProblems()); // When everything is loaded.
 
-        for (String keyId : section.getKeys(false)) {
-            ConfigurationSection sec = section.getConfigurationSection(keyId);
-            if (sec == null) continue;
+        this.addListener(new KeyListener(this.plugin, this));
+        this.addAsyncTask(this::saveKeys, Config.CRATE_SAVE_INTERVAL.get()); // TODO Config
+    }
 
-            String name = sec.getString("name", "Kunci " + keyId);
-            Material mat = Material.matchMaterial(sec.getString("material", "TRIPWIRE_HOOK"));
-            if (mat == null) mat = Material.TRIPWIRE_HOOK;
-            boolean glowing = sec.getBoolean("glowing", true);
-            int cmd = sec.getInt("custom-model-data", 0);
-            List<String> lore = sec.getStringList("lore");
+    @Override
+    protected void onShutdown() {
+        this.saveKeys();
+        this.keyByIdMap.clear();
+    }
 
-            CrateKey crateKey = new CrateKey(keyId.toLowerCase(), name, mat, glowing, cmd, lore);
-            keys.put(keyId.toLowerCase(), crateKey);
+    private void loadCost() {
+        CratesRegistries.registerCostType(new KeyCostType(this.plugin, this, this.dialogs));
+    }
+
+    private void loadKeys() {
+        for (File file : FileUtil.getFiles(plugin.getDataFolder() + Config.DIR_KEYS, true)) {
+            String id = Strings.varStyle(FileConfig.getName(file)).orElseThrow(); // TODO Handle
+            this.loadKey(new CrateKey(this.plugin, file.toPath(), id));
         }
-
-        plugin.getLogger().info("Loaded " + keys.size() + " crate keys from keys.yml.");
+        this.plugin.info("Loaded " + this.keyByIdMap.size() + " crate keys.");
     }
 
-    public Collection<CrateKey> getKeys() {
-        return Collections.unmodifiableCollection(keys.values());
-    }
-
-    public CrateKey getKey(String id) {
-        if (id == null) return null;
-        return keys.get(id.toLowerCase());
-    }
-
-    public boolean isKeyItem(ItemStack item, String expectedKeyId) {
-        if (item == null || !item.hasItemMeta()) return false;
-        String id = item.getItemMeta().getPersistentDataContainer().get(keyTag, PersistentDataType.STRING);
-        if (id == null) return false;
-        return expectedKeyId == null || id.equalsIgnoreCase(expectedKeyId);
-    }
-
-    public String getKeyIdFromItem(ItemStack item) {
-        if (item == null || !item.hasItemMeta()) return null;
-        return item.getItemMeta().getPersistentDataContainer().get(keyTag, PersistentDataType.STRING);
-    }
-
-    public boolean hasPhysicalKey(Player player, String keyId, int amount) {
-        if (player == null || keyId == null || amount <= 0) return false;
-        int count = 0;
-        for (ItemStack item : player.getInventory().getContents()) {
-            if (isKeyItem(item, keyId)) {
-                count += item.getAmount();
-                if (count >= amount) return true;
-            }
+    private void loadKey(@NotNull CrateKey key) {
+        try {
+            key.load();
+            this.keyByIdMap.put(key.getId(), key);
         }
-        return false;
+        catch (IllegalStateException exception) {
+            this.plugin.error("Key not loaded: '" + key.getPath() + "'.");
+            exception.printStackTrace();
+        }
     }
 
-    public boolean takePhysicalKey(Player player, String keyId, int amount) {
-        if (!hasPhysicalKey(player, keyId, amount)) return false;
-        PlayerInventory inv = player.getInventory();
-        int remaining = amount;
+    private void loadDialogs() {
+        this.dialogs.register(KeyDialogs.CREATION, KeyCreationDialog::new);
+        this.dialogs.register(KeyDialogs.NAME, KeyNameDialog::new);
+        this.dialogs.register(KeyDialogs.ITEM, KeyItemDialog::new);
+    }
 
-        for (int i = 0; i < inv.getSize(); i++) {
-            ItemStack item = inv.getItem(i);
-            if (isKeyItem(item, keyId)) {
-                int itemAmount = item.getAmount();
-                if (itemAmount <= remaining) {
-                    remaining -= itemAmount;
-                    inv.setItem(i, null);
-                } else {
-                    item.setAmount(itemAmount - remaining);
-                    remaining = 0;
-                }
-                if (remaining <= 0) break;
-            }
-        }
+    private void saveKeys() {
+        this.getKeys().forEach(CrateKey::saveIfDirty);
+    }
+
+    private void reportProblems() {
+        this.getKeys().forEach(key -> key.collectProblems().print(this.plugin.getLogger()));
+    }
+
+    public boolean createKey(@NotNull String id) {
+        Path path = Path.of(this.plugin.getDataFolder() + Config.DIR_KEYS, FileConfig.withExtension(id));
+        FileUtil.createFileIfNotExists(path);
+
+        CrateKey key = new CrateKey(this.plugin, path, id);
+        key.setName(StringUtil.capitalizeFully(id) + " Key");
+        key.setVirtual(false);
+
+        ItemStack item = new ItemStack(Material.TRIPWIRE_HOOK);
+        ItemUtil.editMeta(item, meta -> {
+            meta.setDisplayName(key.getName());
+        });
+
+        key.setItem(ItemHelper.vanilla(item));
+        key.saveForce();
+
+        this.loadKey(key);
         return true;
     }
 
-    public void givePhysicalKey(Player player, String keyId, int amount) {
-        CrateKey key = getKey(keyId);
-        if (key == null || player == null || amount <= 0) return;
+    public boolean delete(@NotNull CrateKey key) {
+        try {
+            if (!Files.deleteIfExists(key.getPath())) return false;
+        }
+        catch (IOException exception) {
+            exception.printStackTrace();
+            return false;
+        }
 
-        ItemStack item = key.createItem(plugin, amount);
-        HashMap<Integer, ItemStack> leftover = player.getInventory().addItem(item);
-        if (!leftover.isEmpty()) {
-            for (ItemStack left : leftover.values()) {
-                player.getWorld().dropItemNaturally(player.getLocation(), left);
+        this.keyByIdMap.remove(key.getId());
+        return true;
+    }
+
+    public boolean dropKeyItem(@NotNull CrateKey key, @NotNull Location location) {
+        World world = location.getWorld();
+        if (world == null) return false;
+
+        world.dropItemNaturally(location, key.getItemStack());
+        return true;
+    }
+
+    public int countKeys() {
+        return this.keyByIdMap.size();
+    }
+
+    public boolean hasKeys() {
+        return !this.keyByIdMap.isEmpty();
+    }
+
+    public boolean hasKey(@NotNull String id) {
+        return this.keyByIdMap.containsKey(id);
+    }
+
+    @NotNull
+    public Map<String, CrateKey> getKeyByIdMap() {
+        return this.keyByIdMap;
+    }
+
+    @NotNull
+    public Set<CrateKey> getKeys() {
+        return new HashSet<>(this.keyByIdMap.values());
+    }
+
+    @NotNull
+    public List<String> getKeyIds() {
+        return new ArrayList<>(this.keyByIdMap.keySet());
+    }
+
+    @Nullable
+    public CrateKey getKeyById(@NotNull String id) {
+        return this.keyByIdMap.get(id.toLowerCase());
+    }
+
+    @Nullable
+    public CrateKey getKeyByItem(@NotNull ItemStack item) {
+        String id = PDCUtil.getString(item, Keys.keyId).orElse(null);
+        return id == null ? null : this.getKeyById(id);
+    }
+
+    @Nullable
+    public ItemStack getFirstKeyStack(@NotNull Player player, @NotNull CrateKey key) {
+        Predicate<ItemStack> predicate = this.getItemStackPredicate(key);
+        for (ItemStack item : player.getInventory().getContents()) {
+            if (item != null && !item.getType().isAir() && predicate.test(item)) {
+                return item;
             }
         }
+        return null;
+    }
+
+    public boolean isValidKey(@NotNull String keyId) {
+        return this.getKeyById(keyId) != null;
+    }
+
+    public boolean isKey(@NotNull ItemStack item) {
+        return this.getKeyByItem(item) != null;
+    }
+
+    public boolean isKey(@NotNull ItemStack item, @NotNull CrateKey key) {
+        return this.getItemStackPredicate(key).test(item);
+    }
+
+    public int getKeysAmount(@NotNull Player player, @NotNull CrateKey key) {
+        if (key.isVirtual()) {
+            CrateUser user = plugin.getUserManager().getOrFetch(player);
+            return user.countKeys(key);
+        }
+        return Players.countItem(player, this.getItemStackPredicate(key));
+    }
+
+    public boolean hasKey(@NotNull Player player, @NotNull CrateKey key) {
+        if (key.isVirtual()) return this.getKeysAmount(player, key) > 0;
+
+        return this.getFirstKeyStack(player, key) != null;
+    }
+
+    public void giveKeysOnHold(@NotNull Player player) {
+        CrateUser user = plugin.getUserManager().getOrFetch(player);
+        user.getKeysOnHold().forEach((keyId, amount) -> {
+            CrateKey crateKey = this.getKeyById(keyId);
+            if (crateKey == null) return;
+
+            this.giveKey(player, crateKey, amount);
+        });
+        user.cleanKeysOnHold();
+        this.plugin.getUserManager().save(user);
+    }
+
+    public void setKey(@NotNull CrateUser user, @NotNull CrateKey key, int amount) {
+        Player player = user.getPlayer();
+        if (player != null) {
+            this.setKey(player, key, amount);
+            return;
+        }
+
+        if (key.isVirtual()) {
+            user.setKeys(key.getId(), amount);
+        }
+    }
+
+    public void setKey(@NotNull Player player, @NotNull CrateKey key, int amount) {
+        if (key.isVirtual()) {
+            CrateUser user = plugin.getUserManager().getOrFetch(player);
+            user.setKeys(key.getId(), amount);
+            plugin.getUserManager().save(user);
+        }
+        else {
+            ItemStack keyItem = key.getItemStack();
+            int has = Players.countItem(player, keyItem);
+            if (has > amount) {
+                Players.takeItem(player, keyItem, has - amount);
+            }
+            else if (has < amount) {
+                Players.addItem(player, keyItem, amount - has);
+            }
+        }
+        //return true;
+    }
+
+    public void giveKey(@NotNull CrateUser user, @NotNull CrateKey key, int amount) {
+        Player player = user.getPlayer();
+        if (player != null) {
+            this.giveKey(player, key, amount);
+            return;
+        }
+
+        if (key.isVirtual()) {
+            user.addKeys(key.getId(), amount);
+        }
+        else {
+            user.addKeysOnHold(key.getId(), amount);
+        }
+    }
+
+    public void giveKey(@NotNull Player player, @NotNull CrateKey key, int amount) {
+        if (key.isVirtual()) {
+            CrateUser user = plugin.getUserManager().getOrFetch(player);
+            user.addKeys(key.getId(), amount);
+            plugin.getUserManager().save(user);
+        }
+        else {
+            ItemStack keyItem = key.getItemStack();
+            keyItem.setAmount(amount < 0 ? Math.abs(amount) : amount);
+            Players.addItem(player, keyItem);
+        }
+    }
+
+    public void takeKey(@NotNull CrateUser user, @NotNull CrateKey key, int amount) {
+        Player player = user.getPlayer();
+        if (player != null) {
+            this.takeKey(player, key, amount);
+            return;
+        }
+
+        if (key.isVirtual()) {
+            user.takeKeys(key.getId(), amount);
+        }
+    }
+
+    public void takeKey(@NotNull Player player, @NotNull CrateKey key, int amount) {
+        if (key.isVirtual()) {
+            CrateUser user = plugin.getUserManager().getOrFetch(player);
+            user.takeKeys(key.getId(), amount);
+            plugin.getUserManager().save(user);
+        }
+        else {
+            Predicate<ItemStack> predicate = this.getItemStackPredicate(key);
+            int has = Players.countItem(player, predicate);
+            if (has < amount) amount = has;
+
+            Players.takeItem(player, predicate, amount);
+        }
+    }
+
+    @NotNull
+    private Predicate<ItemStack> getItemStackPredicate(@NotNull CrateKey key) {
+        return stack -> this.getKeyByItem(stack) == key;
     }
 }
