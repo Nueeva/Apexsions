@@ -110,11 +110,36 @@ class ProfileManagementController extends Controller
 
         // Daily cooldown check (24 hours)
         $cacheKey = 'daily_web_reward_' . $account->id;
-        if (cache()->has($cacheKey)) {
-            return back()->with('error', 'Anda sudah mengklaim hadiah harian hari ini. Silakan coba lagi besok!');
+        $claimedAt = $account->last_daily_reward_at;
+        if (!$claimedAt && cache()->has($cacheKey)) {
+            $claimedAtStr = cache()->get($cacheKey);
+            $claimedAt = $claimedAtStr ? Carbon::parse($claimedAtStr) : null;
         }
 
-        // Enqueue in-game rewards (+5,000 Rupiah & +100 EXP)
+        if ($claimedAt) {
+            $nextClaimAt = $claimedAt->copy()->addDay();
+            if ($nextClaimAt->isFuture()) {
+                $now = Carbon::now();
+                $diffHours = $now->diffInHours($nextClaimAt);
+                $diffMinutes = $now->copy()->addHours($diffHours)->diffInMinutes($nextClaimAt) % 60;
+                $formattedTime = $nextClaimAt->timezone('Asia/Jakarta')->format('H:i');
+
+                $timeParts = [];
+                if ($diffHours > 0) {
+                    $timeParts[] = "{$diffHours} jam";
+                }
+                if ($diffMinutes > 0) {
+                    $timeParts[] = "{$diffMinutes} menit";
+                }
+                if (empty($timeParts)) {
+                    $timeParts[] = "beberapa detik";
+                }
+
+                return back()->with('error', 'Anda sudah mengklaim hadiah harian hari ini. Klaim berikutnya dapat dilakukan dalam ' . implode(' ', $timeParts) . ' (pukul ' . $formattedTime . ' WIB).');
+            }
+        }
+
+        // Enqueue in-game rewards (+5,000 Rupiah & +25 EXP)
         Delivery::create([
             'player_uuid' => $account->minecraft_uuid,
             'player_username' => $account->minecraft_username,
@@ -129,8 +154,12 @@ class ProfileManagementController extends Controller
             'status' => 'PENDING',
         ]);
 
-        // Set cooldown for 24 hours
-        cache()->put($cacheKey, Carbon::now()->toIso8601String(), 86400);
+        // Persist cooldown timestamp to database and cache (24 hours)
+        $now = Carbon::now();
+        $account->last_daily_reward_at = $now;
+        $account->save();
+
+        cache()->put($cacheKey, $now->toIso8601String(), 86400);
 
         return back()->with('success', '🎉 Berhasil mengklaim Hadiah Harian Web (+Rp 5.000 & +25 EXP)! Hadiah akan langsung masuk ke karakter Anda.');
     }

@@ -41,6 +41,7 @@ class MinecraftAccount extends Model
         'verification_expires_at',
         'verified_at',
         'last_seen_at',
+        'last_daily_reward_at',
     ];
 
     /**
@@ -56,6 +57,7 @@ class MinecraftAccount extends Model
         'verification_expires_at' => 'datetime',
         'verified_at' => 'datetime',
         'last_seen_at' => 'datetime',
+        'last_daily_reward_at' => 'datetime',
     ];
 
     /**

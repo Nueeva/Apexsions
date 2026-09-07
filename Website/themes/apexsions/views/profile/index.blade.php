@@ -37,6 +37,24 @@
     if ($linkedAccount && $linkedAccount->required_xp > 0) {
         $xpPercent = min(100, max(0, round(($linkedAccount->xp / $linkedAccount->required_xp) * 100)));
     }
+
+    // Daily reward cooldown calculation
+    $rewardCacheKey = $linkedAccount ? 'daily_web_reward_' . $linkedAccount->id : null;
+    $claimedAt = null;
+    if ($linkedAccount) {
+        $claimedAt = $linkedAccount->last_daily_reward_at;
+        if (!$claimedAt && $rewardCacheKey && cache()->has($rewardCacheKey)) {
+            $claimedAtStr = cache()->get($rewardCacheKey);
+            $claimedAt = $claimedAtStr ? \Carbon\Carbon::parse($claimedAtStr) : null;
+        }
+    }
+    $nextClaimAt = $claimedAt ? $claimedAt->copy()->addDay() : null;
+    $canClaimReward = !$nextClaimAt || $nextClaimAt->isPast();
+    $secondsRemaining = (!$canClaimReward && $nextClaimAt) ? (int) max(0, \Carbon\Carbon::now()->diffInSeconds($nextClaimAt, false)) : 0;
+    $hoursRemaining = (int) floor($secondsRemaining / 3600);
+    $minutesRemaining = (int) floor(($secondsRemaining % 3600) / 60);
+    $secsRemaining = (int) ($secondsRemaining % 60);
+    $nextClaimFormatted = $nextClaimAt ? $nextClaimAt->timezone('Asia/Jakarta')->format('H:i') : '';
 @endphp
 
 @section('content')
@@ -57,20 +75,6 @@
             @endif
         </div>
     </div>
-
-    @if(session('success'))
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            <i class="bi bi-check-circle-fill me-2"></i> {{ session('success') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    @endif
-
-    @if(session('error'))
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            <i class="bi bi-exclamation-triangle-fill me-2"></i> {{ session('error') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    @endif
 
     <!-- ==================== APEXSIONS IN-GAME CHARACTER HERO CARD ==================== -->
     <div class="card bg-dark border-gold mb-4 overflow-hidden shadow-lg position-relative" style="background: radial-gradient(circle at top right, rgba(243, 156, 18, 0.12), rgba(18, 22, 34, 0.95) 70%) !important;">
@@ -145,14 +149,52 @@
                     <!-- Quick Action Buttons Column -->
                     <div class="col-lg-3 text-center text-lg-end">
                         <div class="d-grid gap-2">
-                            <form action="{{ url('/profile/minecraft/claim-reward') }}" method="POST">
-                                @csrf
-                                <button type="submit" class="btn btn-warning w-100 fw-bold shadow-sm">
-                                    <i class="bi bi-gift-fill me-1"></i> Klaim Hadiah Harian
-                                </button>
-                            </form>
+                            @if($canClaimReward)
+                                <div class="card bg-black bg-opacity-50 border border-warning border-opacity-40 p-3 rounded text-center mb-1 shadow-sm">
+                                    <div class="d-flex align-items-center justify-content-between mb-2">
+                                        <span class="badge bg-warning text-dark fw-bold">
+                                            <i class="bi bi-stars"></i> Bonus Harian
+                                        </span>
+                                        <span class="badge bg-success bg-opacity-25 text-success border border-success border-opacity-25">
+                                            <i class="bi bi-check-circle"></i> Siap Diklaim
+                                        </span>
+                                    </div>
+                                    <div class="small text-secondary mb-2" style="font-size: 0.78rem;">
+                                        Dapatkan <strong>+Rp 5.000</strong> & <strong>+25 EXP</strong> in-game setiap 24 jam!
+                                    </div>
+                                    <form action="{{ url('/profile/minecraft/claim-reward') }}" method="POST">
+                                        @csrf
+                                        <button type="submit" class="btn btn-warning w-100 fw-bold shadow-sm py-2">
+                                            <i class="bi bi-gift-fill me-1"></i> Klaim Hadiah Harian
+                                        </button>
+                                    </form>
+                                </div>
+                            @else
+                                <div class="card bg-black bg-opacity-50 border border-secondary border-opacity-25 p-3 rounded text-center mb-1 shadow-sm">
+                                    <div class="d-flex align-items-center justify-content-between mb-2">
+                                        <span class="badge bg-secondary bg-opacity-50 text-light">
+                                            <i class="bi bi-gift"></i> Hadiah Harian
+                                        </span>
+                                        <span class="badge bg-success bg-opacity-25 text-success border border-success border-opacity-25">
+                                            <i class="bi bi-check2-circle"></i> Sudah Diklaim
+                                        </span>
+                                    </div>
+                                    <div class="small text-muted mb-1" style="font-size: 0.78rem;">
+                                        Klaim berikutnya tersedia dalam:
+                                    </div>
+                                    <div class="font-monospace fw-bold text-warning fs-5 my-1" id="dailyRewardCountdown" data-seconds="{{ $secondsRemaining }}">
+                                        {{ sprintf('%02d:%02d:%02d', $hoursRemaining, $minutesRemaining, $secsRemaining) }}
+                                    </div>
+                                    <div class="small text-secondary mb-2" style="font-size: 0.75rem;">
+                                        <i class="bi bi-clock-history me-1"></i> Tersedia besok pukul <strong>{{ $nextClaimFormatted }} WIB</strong>
+                                    </div>
+                                    <button type="button" class="btn btn-secondary w-100 btn-sm disabled" disabled style="opacity: 0.65; cursor: not-allowed;">
+                                        <i class="bi bi-hourglass-split me-1"></i> Sedang Cooldown
+                                    </button>
+                                </div>
+                            @endif
 
-                            <button type="button" class="btn btn-outline-light w-100" data-bs-toggle="modal" data-bs-target="#resetPasswordModal">
+                            <button type="button" class="btn btn-outline-light w-100 mt-1" data-bs-toggle="modal" data-bs-target="#resetPasswordModal">
                                 <i class="bi bi-key-fill me-1"></i> Reset Password In-Game
                             </button>
 
@@ -339,3 +381,42 @@
 </div>
 @endif
 @endsection
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const timerElem = document.getElementById('dailyRewardCountdown');
+    if (!timerElem) return;
+
+    let remainingSeconds = parseInt(timerElem.getAttribute('data-seconds'), 10) || 0;
+
+    function formatTime(totalSec) {
+        if (totalSec <= 0) return '00:00:00';
+        const hours = Math.floor(totalSec / 3600);
+        const minutes = Math.floor((totalSec % 3600) / 60);
+        const seconds = totalSec % 60;
+        return [
+            String(hours).padStart(2, '0'),
+            String(minutes).padStart(2, '0'),
+            String(seconds).padStart(2, '0')
+        ].join(':');
+    }
+
+    if (remainingSeconds > 0) {
+        const interval = setInterval(function() {
+            remainingSeconds--;
+            if (remainingSeconds <= 0) {
+                clearInterval(interval);
+                timerElem.textContent = '00:00:00';
+                setTimeout(function() {
+                    window.location.reload();
+                }, 1000);
+            } else {
+                timerElem.textContent = formatTime(remainingSeconds);
+            }
+        }, 1000);
+    }
+});
+</script>
+@endpush
+
