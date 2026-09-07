@@ -9,6 +9,7 @@ import com.apexsions.battlepass.gui.util.ItemBuilder;
 import com.apexsions.battlepass.pass.PassTier;
 import com.apexsions.battlepass.player.PlayerData;
 import com.apexsions.battlepass.reward.RewardItem;
+import com.apexsions.battlepass.reward.RewardType;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -331,7 +332,16 @@ public class RewardsMenu extends Gui {
         lore.add(" ");
         lore.add("&7Isi Hadiah Level Ini:");
         for (RewardItem ri : rewards) {
-            lore.add(" &8● &f" + ri.getAmount() + "x " + ri.getDisplayName());
+            if (ri.getType() == RewardType.ITEM) {
+                String disp = ri.getDisplayName();
+                if (ri.getName() != null && !ri.getName().isBlank() && disp.toLowerCase().contains(ri.getAmount() + "x")) {
+                    lore.add(" &8● &f" + disp);
+                } else {
+                    lore.add(" &8● &f" + ri.getAmount() + "x " + disp);
+                }
+            } else {
+                lore.add(" &8● " + ri.getDisplayName());
+            }
         }
         lore.add(" ");
 

@@ -4,82 +4,82 @@ levels:
     rewards:
       citizen:
         - type: ITEM
-          material: WHEAT
-          amount: 16
+          material: RAW_IRON
+          amount: 6
         - type: ITEM
           material: COOKED_BEEF
-          amount: 12
+          amount: 8
       sio:
         - type: ITEM
-          material: RAW_IRON_BLOCK
+          material: SHEARS
           amount: 1
         - type: ITEM
-          material: EXPERIENCE_BOTTLE
-          amount: 16
+          material: GOLD_INGOT
+          amount: 12
       exsio:
         - type: ITEM
-          material: LAPIS_LAZULI
-          amount: 24
+          material: LEATHER
+          amount: 20
         - type: ITEM
-          material: GOLDEN_CARROT
-          amount: 16
+          material: RAW_GOLD_BLOCK
+          amount: 2
   2:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: RAW_IRON
-          amount: 1
+          material: BREAD
+          amount: 7
         - type: ITEM
           material: TORCH
-          amount: 16
+          amount: 15
         - type: ITEM
-          material: APPLE
-          amount: 8
+          material: RAW_COPPER
+          amount: 6
       sio:
         - type: ITEM
-          material: GOLD_INGOT
+          material: COPPER_BLOCK
+          amount: 2
+        - type: ITEM
+          material: DIAMOND
           amount: 1
         - type: ITEM
-          material: REDSTONE
-          amount: 16
-        - type: ITEM
-          material: IRON_INGOT
-          amount: 6
+          material: FIREWORK_ROCKET
+          amount: 15
       exsio:
         - type: CURRENCY
           amount: 35
           name: '&e35 Battle Coins'
         - type: ITEM
-          material: LEATHER
-          amount: 16
+          material: OBSIDIAN
+          amount: 12
   3:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: RAW_COPPER
-          amount: 10
+          material: APPLE
+          amount: 14
       sio:
         - type: CURRENCY
           amount: 25
           name: '&e25 Battle Coins'
         - type: ITEM
-          material: STONE
-          amount: 16
+          material: LAPIS_BLOCK
+          amount: 1
         - type: ITEM
-          material: GOLD_INGOT
-          amount: 4
+          material: COPPER_BLOCK
+          amount: 2
       exsio:
         - type: MONEY
           amount: 20000
           name: '&aRp 20.000'
         - type: ITEM
-          material: ARROW
-          amount: 16
+          material: NAME_TAG
+          amount: 2
         - type: ITEM
           material: OBSIDIAN
-          amount: 6
+          amount: 8
   4:
     required-xp: 100
     rewards:
@@ -88,56 +88,56 @@ levels:
           amount: 20
           name: '&e20 Battle Coins'
         - type: ITEM
-          material: COAL
-          amount: 8
+          material: BREAD
+          amount: 12
       sio:
         - type: ITEM
-          material: CARROT
-          amount: 16
+          material: GOLDEN_APPLE
+          amount: 2
         - type: ITEM
-          material: EXPERIENCE_BOTTLE
+          material: COOKED_SALMON
           amount: 16
       exsio:
         - type: ITEM
-          material: CHAINMAIL_HELMET
-          amount: 1
+          material: GOLD_BLOCK
+          amount: 2
         - type: ITEM
-          material: GOLDEN_CARROT
-          amount: 16
+          material: SADDLE
+          amount: 2
   5:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: TORCH
-          amount: 8
+          material: RAW_IRON
+          amount: 3
         - type: ITEM
-          material: TORCH
-          amount: 16
+          material: COOKED_BEEF
+          amount: 5
         - type: ITEM
-          material: APPLE
-          amount: 8
+          material: LEATHER
+          amount: 5
       sio:
         - type: MONEY
           amount: 8000
           name: '&aRp 8.000'
         - type: ITEM
-          material: IRON_INGOT
-          amount: 2
+          material: ARROW
+          amount: 22
         - type: ITEM
-          material: GOLD_INGOT
-          amount: 4
+          material: SHIELD
+          amount: 1
       exsio:
         - type: CURRENCY
           currency-id: diamond
           amount: 6
           name: '&b6 Diamond 💎'
         - type: ITEM
-          material: RAW_GOLD_BLOCK
-          amount: 1
+          material: GOLDEN_APPLE
+          amount: 2
         - type: ITEM
-          material: OBSIDIAN
-          amount: 6
+          material: CHAINMAIL_HELMET
+          amount: 1
   6:
     required-xp: 100
     rewards:
@@ -146,46 +146,46 @@ levels:
           amount: 3000
           name: '&aRp 3.000'
         - type: ITEM
-          material: OAK_LOG
+          material: BAKED_POTATO
           amount: 12
       sio:
         - type: ITEM
-          material: COOKED_PORKCHOP
-          amount: 14
+          material: GOLD_INGOT
+          amount: 21
       exsio:
         - type: CURRENCY
           amount: 45
           name: '&e45 Battle Coins'
         - type: ITEM
-          material: GOLD_INGOT
-          amount: 6
+          material: OBSIDIAN
+          amount: 12
   7:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: APPLE
-          amount: 6
+          material: BOW
+          amount: 1
         - type: ITEM
-          material: COOKED_BEEF
-          amount: 12
+          material: OAK_LOG
+          amount: 16
       sio:
         - type: CURRENCY
           amount: 35
           name: '&e35 Battle Coins'
         - type: ITEM
-          material: RAW_IRON_BLOCK
+          material: GOLDEN_APPLE
           amount: 1
         - type: ITEM
-          material: GOLD_INGOT
-          amount: 4
+          material: COOKED_SALMON
+          amount: 11
       exsio:
         - type: ITEM
           material: LAPIS_LAZULI
-          amount: 24
+          amount: 32
         - type: ITEM
-          material: GOLDEN_CARROT
-          amount: 16
+          material: CHAINMAIL_HELMET
+          amount: 1
   8:
     required-xp: 100
     rewards:
@@ -194,26 +194,26 @@ levels:
           amount: 25
           name: '&e25 Battle Coins'
         - type: ITEM
-          material: BREAD
-          amount: 8
+          material: LAPIS_LAZULI
+          amount: 16
       sio:
         - type: CURRENCY
           currency-id: diamond
           amount: 3
           name: '&b3 Diamond 💎'
         - type: ITEM
-          material: GOLD_INGOT
-          amount: 3
+          material: COOKED_SALMON
+          amount: 16
       exsio:
         - type: ITEM
+          material: OBSIDIAN
+          amount: 7
+        - type: ITEM
           material: LEATHER
-          amount: 8
+          amount: 13
         - type: ITEM
-          material: ENDER_PEARL
-          amount: 4
-        - type: ITEM
-          material: EMERALD
-          amount: 8
+          material: RAW_GOLD_BLOCK
+          amount: 1
   9:
     required-xp: 100
     rewards:
@@ -224,99 +224,99 @@ levels:
           name: '&b1 Diamond 💎'
         - type: ITEM
           material: WHEAT
-          amount: 8
+          amount: 14
         - type: ITEM
-          material: BREAD
-          amount: 8
+          material: ARROW
+          amount: 14
       sio:
         - type: ITEM
-          material: STONE
-          amount: 57
+          material: SHEARS
+          amount: 2
       exsio:
         - type: MONEY
           amount: 25000
           name: '&aRp 25.000'
         - type: ITEM
-          material: ARROW
-          amount: 16
+          material: NAME_TAG
+          amount: 2
         - type: ITEM
           material: OBSIDIAN
-          amount: 6
+          amount: 8
   10:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: RAW_IRON
-          amount: 3
-        - type: ITEM
-          material: COOKED_BEEF
+          material: COAL
           amount: 12
+        - type: ITEM
+          material: WHEAT
+          amount: 20
       sio:
         - type: MONEY
           amount: 10000
           name: '&aRp 10.000'
         - type: ITEM
-          material: CARROT
-          amount: 16
+          material: LAPIS_BLOCK
+          amount: 2
       exsio:
         - type: ITEM
-          material: CHAINMAIL_HELMET
+          material: SPYGLASS
           amount: 1
         - type: ITEM
-          material: GOLDEN_CARROT
-          amount: 16
+          material: DIAMOND
+          amount: 3
   11:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: LEATHER
+          material: BOW
+          amount: 1
+        - type: ITEM
+          material: OAK_LOG
+          amount: 10
+        - type: ITEM
+          material: RAW_IRON
           amount: 3
-        - type: ITEM
-          material: TORCH
-          amount: 16
-        - type: ITEM
-          material: APPLE
-          amount: 8
       sio:
         - type: ITEM
-          material: GOLD_INGOT
-          amount: 3
+          material: DIAMOND
+          amount: 1
         - type: ITEM
-          material: REDSTONE
-          amount: 16
+          material: FIREWORK_ROCKET
+          amount: 15
         - type: ITEM
           material: IRON_INGOT
-          amount: 6
+          amount: 7
       exsio:
         - type: CURRENCY
           amount: 55
           name: '&e55 Battle Coins'
         - type: ITEM
-          material: GOLD_BLOCK
+          material: SPYGLASS
           amount: 1
         - type: ITEM
           material: OBSIDIAN
-          amount: 6
+          amount: 8
   12:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: ARROW
-          amount: 28
+          material: BREAD
+          amount: 21
       sio:
         - type: CURRENCY
           amount: 40
           name: '&e40 Battle Coins'
         - type: ITEM
-          material: IRON_INGOT
-          amount: 8
+          material: ARROW
+          amount: 32
       exsio:
         - type: ITEM
-          material: GOLD_INGOT
-          amount: 21
+          material: REDSTONE_BLOCK
+          amount: 7
   13:
     required-xp: 100
     rewards:
@@ -325,25 +325,25 @@ levels:
           amount: 4000
           name: '&aRp 4.000'
         - type: ITEM
-          material: COAL
-          amount: 8
+          material: TORCH
+          amount: 16
         - type: ITEM
-          material: BREAD
-          amount: 8
+          material: RAW_COPPER
+          amount: 7
       sio:
         - type: ITEM
-          material: IRON_BLOCK
-          amount: 1
-        - type: ITEM
-          material: EXPERIENCE_BOTTLE
+          material: COOKED_SALMON
           amount: 16
+        - type: ITEM
+          material: BOOKSHELF
+          amount: 4
       exsio:
         - type: ITEM
-          material: REDSTONE_BLOCK
-          amount: 3
+          material: GOLD_BLOCK
+          amount: 2
         - type: ITEM
-          material: GOLDEN_CARROT
-          amount: 16
+          material: SADDLE
+          amount: 2
   14:
     required-xp: 100
     rewards:
@@ -352,121 +352,121 @@ levels:
           amount: 30
           name: '&e30 Battle Coins'
         - type: ITEM
-          material: COPPER_INGOT
-          amount: 8
+          material: RAW_COPPER
+          amount: 10
       sio:
         - type: ITEM
-          material: COOKED_BEEF
-          amount: 8
-        - type: ITEM
-          material: REDSTONE
-          amount: 16
-        - type: ITEM
           material: IRON_INGOT
-          amount: 6
+          amount: 7
+        - type: ITEM
+          material: LAPIS_BLOCK
+          amount: 1
+        - type: ITEM
+          material: COPPER_BLOCK
+          amount: 2
       exsio:
         - type: CURRENCY
           currency-id: diamond
           amount: 8
           name: '&b8 Diamond 💎'
         - type: ITEM
-          material: LAPIS_BLOCK
-          amount: 3
+          material: OBSIDIAN
+          amount: 12
   15:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: IRON_INGOT
-          amount: 7
+          material: RAW_IRON
+          amount: 10
       sio:
         - type: ITEM
-          material: LAPIS_LAZULI
-          amount: 28
+          material: GOLDEN_APPLE
+          amount: 3
       exsio:
         - type: MONEY
           amount: 30000
           name: '&aRp 30.000'
         - type: ITEM
-          material: SADDLE
+          material: SPYGLASS
           amount: 1
         - type: ITEM
-          material: OBSIDIAN
-          amount: 6
+          material: DIAMOND
+          amount: 2
   16:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: COOKED_BEEF
-          amount: 8
-        - type: ITEM
-          material: COOKED_BEEF
+          material: BAKED_POTATO
           amount: 12
+        - type: ITEM
+          material: APPLE
+          amount: 8
       sio:
         - type: MONEY
           amount: 12000
           name: '&aRp 12.000'
         - type: ITEM
-          material: REDSTONE
-          amount: 16
+          material: IRON_INGOT
+          amount: 12
       exsio:
         - type: ITEM
-          material: NAME_TAG
-          amount: 2
+          material: GOLDEN_APPLE
+          amount: 4
         - type: ITEM
-          material: GOLDEN_CARROT
-          amount: 16
+          material: LEATHER
+          amount: 20
   17:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: BOW
-          amount: 1
-        - type: ITEM
-          material: TORCH
-          amount: 16
-        - type: ITEM
-          material: APPLE
-          amount: 8
-      sio:
-        - type: ITEM
-          material: GOLD_INGOT
+          material: IRON_INGOT
           amount: 3
         - type: ITEM
-          material: REDSTONE
-          amount: 16
+          material: LAPIS_LAZULI
+          amount: 10
         - type: ITEM
-          material: IRON_INGOT
-          amount: 6
+          material: BOW
+          amount: 1
+      sio:
+        - type: ITEM
+          material: ARROW
+          amount: 20
+        - type: ITEM
+          material: SHIELD
+          amount: 1
+        - type: ITEM
+          material: REDSTONE_BLOCK
+          amount: 1
       exsio:
         - type: CURRENCY
           amount: 65
           name: '&e65 Battle Coins'
         - type: ITEM
-          material: SPYGLASS
+          material: RAW_GOLD_BLOCK
           amount: 1
         - type: ITEM
-          material: OBSIDIAN
-          amount: 6
+          material: SPYGLASS
+          amount: 1
   18:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: OAK_LOG
+          material: ARROW
           amount: 36
       sio:
         - type: CURRENCY
           amount: 45
           name: '&e45 Battle Coins'
         - type: ITEM
-          material: IRON_INGOT
-          amount: 8
+          material: DIAMOND
+          amount: 2
       exsio:
         - type: ITEM
-          material: GOLD_BLOCK
+          material: CHAINMAIL_HELMET
           amount: 2
   19:
     required-xp: 100
@@ -476,77 +476,77 @@ levels:
           amount: 5000
           name: '&aRp 5.000'
         - type: ITEM
-          material: LEATHER
-          amount: 3
+          material: CARROT
+          amount: 11
         - type: ITEM
           material: BREAD
           amount: 8
       sio:
         - type: ITEM
-          material: IRON_BLOCK
-          amount: 1
+          material: GOLDEN_APPLE
+          amount: 2
         - type: ITEM
-          material: EXPERIENCE_BOTTLE
+          material: COOKED_SALMON
           amount: 16
       exsio:
         - type: ITEM
-          material: GOLD_INGOT
-          amount: 12
+          material: LAPIS_LAZULI
+          amount: 32
         - type: ITEM
-          material: GOLDEN_CARROT
-          amount: 16
+          material: CHAINMAIL_HELMET
+          amount: 1
   20:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: ARROW
-          amount: 8
-        - type: ITEM
-          material: TORCH
-          amount: 16
+          material: BAKED_POTATO
+          amount: 7
         - type: ITEM
           material: APPLE
-          amount: 8
+          amount: 5
+        - type: ITEM
+          material: COAL
+          amount: 7
       sio:
         - type: CURRENCY
           currency-id: diamond
           amount: 5
           name: '&b5 Diamond 💎'
         - type: ITEM
-          material: COOKED_BEEF
-          amount: 16
+          material: GOLD_INGOT
+          amount: 12
       exsio:
         - type: ITEM
-          material: REDSTONE_BLOCK
+          material: OBSIDIAN
+          amount: 7
+        - type: ITEM
+          material: LEATHER
+          amount: 13
+        - type: ITEM
+          material: RAW_GOLD_BLOCK
           amount: 1
-        - type: ITEM
-          material: ENDER_PEARL
-          amount: 4
-        - type: ITEM
-          material: EMERALD
-          amount: 8
   21:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: COAL
-          amount: 28
+          material: BOW
+          amount: 2
       sio:
         - type: ITEM
-          material: LAPIS_LAZULI
-          amount: 28
+          material: GOLD_INGOT
+          amount: 21
       exsio:
         - type: MONEY
           amount: 35000
           name: '&aRp 35.000'
         - type: ITEM
-          material: LAPIS_BLOCK
-          amount: 1
+          material: NAME_TAG
+          amount: 2
         - type: ITEM
           material: OBSIDIAN
-          amount: 6
+          amount: 8
   22:
     required-xp: 100
     rewards:
@@ -555,74 +555,74 @@ levels:
           amount: 35
           name: '&e35 Battle Coins'
         - type: ITEM
-          material: COPPER_INGOT
-          amount: 8
+          material: BAKED_POTATO
+          amount: 12
       sio:
         - type: ITEM
-          material: REDSTONE
-          amount: 16
+          material: BOOKSHELF
+          amount: 4
         - type: ITEM
-          material: EXPERIENCE_BOTTLE
-          amount: 16
+          material: SHEARS
+          amount: 1
       exsio:
         - type: ITEM
           material: SADDLE
-          amount: 1
+          amount: 2
         - type: ITEM
-          material: GOLDEN_CARROT
-          amount: 16
+          material: GOLDEN_APPLE
+          amount: 4
   23:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: IRON_INGOT
-          amount: 2
-        - type: ITEM
           material: TORCH
-          amount: 16
+          amount: 15
         - type: ITEM
-          material: APPLE
-          amount: 8
+          material: RAW_COPPER
+          amount: 6
+        - type: ITEM
+          material: IRON_INGOT
+          amount: 3
       sio:
         - type: MONEY
           amount: 15000
           name: '&aRp 15.000'
         - type: ITEM
-          material: GOLD_INGOT
-          amount: 3
+          material: COPPER_BLOCK
+          amount: 2
         - type: ITEM
-          material: GOLD_INGOT
-          amount: 4
+          material: DIAMOND
+          amount: 1
       exsio:
         - type: CURRENCY
           currency-id: diamond
           amount: 12
           name: '&b12 Diamond 💎'
         - type: ITEM
-          material: NAME_TAG
+          material: SPYGLASS
           amount: 1
         - type: ITEM
           material: OBSIDIAN
-          amount: 6
+          amount: 8
   24:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: COOKED_BEEF
-          amount: 14
+          material: COAL
+          amount: 21
       sio:
         - type: ITEM
-          material: IRON_INGOT
-          amount: 14
+          material: COOKED_SALMON
+          amount: 28
       exsio:
         - type: CURRENCY
           amount: 75
           name: '&e75 Battle Coins'
         - type: ITEM
-          material: SPYGLASS
-          amount: 1
+          material: GOLD_INGOT
+          amount: 16
   25:
     required-xp: 100
     rewards:
@@ -632,55 +632,55 @@ levels:
           amount: 2
           name: '&b2 Diamond 💎'
         - type: ITEM
-          material: BOW
-          amount: 1
+          material: WHEAT
+          amount: 14
         - type: ITEM
-          material: BREAD
-          amount: 8
+          material: ARROW
+          amount: 14
       sio:
         - type: ITEM
-          material: IRON_BLOCK
-          amount: 1
+          material: FIREWORK_ROCKET
+          amount: 24
         - type: ITEM
-          material: EXPERIENCE_BOTTLE
-          amount: 16
+          material: IRON_INGOT
+          amount: 12
       exsio:
         - type: ITEM
-          material: GOLD_BLOCK
-          amount: 1
+          material: LAPIS_LAZULI
+          amount: 32
         - type: ITEM
-          material: GOLDEN_CARROT
-          amount: 16
+          material: RAW_GOLD_BLOCK
+          amount: 2
   26:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: OAK_LOG
-          amount: 10
+          material: COOKED_BEEF
+          amount: 5
         - type: ITEM
-          material: TORCH
-          amount: 16
+          material: LEATHER
+          amount: 5
         - type: ITEM
-          material: APPLE
-          amount: 8
+          material: BAKED_POTATO
+          amount: 7
       sio:
         - type: CURRENCY
           amount: 55
           name: '&e55 Battle Coins'
         - type: ITEM
-          material: COOKED_BEEF
-          amount: 16
+          material: SHEARS
+          amount: 1
       exsio:
         - type: ITEM
-          material: GOLD_INGOT
-          amount: 6
+          material: OBSIDIAN
+          amount: 7
         - type: ITEM
-          material: ENDER_PEARL
-          amount: 4
+          material: LAPIS_LAZULI
+          amount: 20
         - type: ITEM
-          material: EMERALD
-          amount: 8
+          material: RAW_GOLD_BLOCK
+          amount: 1
   27:
     required-xp: 100
     rewards:
@@ -689,118 +689,118 @@ levels:
           amount: 6000
           name: '&aRp 6.000'
         - type: ITEM
-          material: LEATHER
-          amount: 3
+          material: RAW_IRON
+          amount: 4
         - type: ITEM
-          material: BREAD
-          amount: 8
+          material: COOKED_BEEF
+          amount: 5
       sio:
         - type: ITEM
-          material: LAPIS_LAZULI
-          amount: 28
+          material: SHEARS
+          amount: 2
       exsio:
         - type: ITEM
-          material: REDSTONE_BLOCK
-          amount: 5
+          material: GOLDEN_APPLE
+          amount: 7
   28:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: ARROW
+          material: OAK_LOG
           amount: 16
         - type: ITEM
-          material: COOKED_BEEF
-          amount: 12
+          material: RAW_IRON
+          amount: 6
       sio:
         - type: ITEM
-          material: REDSTONE
+          material: COOKED_SALMON
           amount: 16
         - type: ITEM
-          material: EXPERIENCE_BOTTLE
-          amount: 16
+          material: BOOKSHELF
+          amount: 4
       exsio:
         - type: ITEM
-          material: LAPIS_BLOCK
-          amount: 3
+          material: GOLD_BLOCK
+          amount: 2
         - type: ITEM
-          material: GOLDEN_CARROT
-          amount: 16
+          material: SADDLE
+          amount: 2
   29:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: COAL
-          amount: 8
+          material: CARROT
+          amount: 10
+        - type: ITEM
+          material: BREAD
+          amount: 7
         - type: ITEM
           material: TORCH
-          amount: 16
-        - type: ITEM
-          material: APPLE
-          amount: 8
+          amount: 15
       sio:
         - type: ITEM
-          material: GOLD_INGOT
-          amount: 3
-        - type: ITEM
-          material: REDSTONE
-          amount: 16
-        - type: ITEM
           material: IRON_INGOT
-          amount: 6
+          amount: 7
+        - type: ITEM
+          material: LAPIS_BLOCK
+          amount: 1
+        - type: ITEM
+          material: COPPER_BLOCK
+          amount: 2
       exsio:
         - type: MONEY
           amount: 45000
           name: '&aRp 45.000'
         - type: ITEM
-          material: SADDLE
-          amount: 1
+          material: NAME_TAG
+          amount: 2
         - type: ITEM
           material: OBSIDIAN
-          amount: 6
+          amount: 8
   30:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: COPPER_INGOT
-          amount: 14
+          material: BAKED_POTATO
+          amount: 21
       sio:
         - type: ITEM
-          material: IRON_INGOT
-          amount: 14
+          material: GOLDEN_APPLE
+          amount: 3
       exsio:
         - type: ITEM
-          material: NAME_TAG
-          amount: 3
+          material: LAPIS_BLOCK
+          amount: 7
   31:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: COOKED_BEEF
-          amount: 12
+          material: WHEAT
+          amount: 20
         - type: ITEM
-          material: COOKED_BEEF
-          amount: 12
+          material: ARROW
+          amount: 20
       sio:
         - type: MONEY
           amount: 20000
           name: '&aRp 20.000'
         - type: ITEM
-          material: GOLDEN_APPLE
-          amount: 1
+          material: COPPER_BLOCK
+          amount: 2
         - type: ITEM
-          material: GOLD_INGOT
-          amount: 4
+          material: DIAMOND
+          amount: 1
       exsio:
         - type: ITEM
-          material: OBSIDIAN
-          amount: 8
+          material: LAPIS_BLOCK
+          amount: 4
         - type: ITEM
-          material: GOLDEN_CARROT
-          amount: 16
+          material: SPYGLASS
+          amount: 1
   32:
     required-xp: 100
     rewards:
@@ -809,65 +809,65 @@ levels:
           amount: 40
           name: '&e40 Battle Coins'
         - type: ITEM
-          material: COOKED_BEEF
+          material: COAL
           amount: 12
       sio:
         - type: ITEM
-          material: LAPIS_BLOCK
+          material: COPPER_BLOCK
+          amount: 2
+        - type: ITEM
+          material: DIAMOND
           amount: 1
         - type: ITEM
-          material: REDSTONE
-          amount: 16
-        - type: ITEM
-          material: IRON_INGOT
-          amount: 6
+          material: FIREWORK_ROCKET
+          amount: 15
       exsio:
         - type: ITEM
-          material: GOLDEN_APPLE
+          material: OBSIDIAN
+          amount: 7
+        - type: ITEM
+          material: LAPIS_LAZULI
+          amount: 20
+        - type: ITEM
+          material: CHAINMAIL_HELMET
           amount: 1
-        - type: ITEM
-          material: ENDER_PEARL
-          amount: 4
-        - type: ITEM
-          material: EMERALD
-          amount: 8
   33:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: COOKED_BEEF
-          amount: 21
+          material: TORCH
+          amount: 43
       sio:
         - type: ITEM
-          material: REDSTONE_BLOCK
-          amount: 3
+          material: BOOKSHELF
+          amount: 7
       exsio:
         - type: CURRENCY
           amount: 90
           name: '&e90 Battle Coins'
         - type: ITEM
-          material: EMERALD_BLOCK
-          amount: 1
+          material: REDSTONE_BLOCK
+          amount: 2
         - type: ITEM
-          material: OBSIDIAN
-          amount: 6
+          material: NAME_TAG
+          amount: 2
   34:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: COOKED_BEEF
-          amount: 12
+          material: LAPIS_LAZULI
+          amount: 16
         - type: ITEM
-          material: COOKED_BEEF
-          amount: 12
+          material: BOW
+          amount: 1
       sio:
         - type: ITEM
-          material: GOLDEN_CARROT
-          amount: 12
+          material: GOLDEN_APPLE
+          amount: 2
         - type: ITEM
-          material: EXPERIENCE_BOTTLE
+          material: COOKED_SALMON
           amount: 16
       exsio:
         - type: CURRENCY
@@ -875,60 +875,60 @@ levels:
           amount: 15
           name: '&b15 Diamond 💎'
         - type: ITEM
-          material: GOLD_BLOCK
-          amount: 3
+          material: CHAINMAIL_HELMET
+          amount: 1
   35:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: COOKED_BEEF
-          amount: 6
+          material: WHEAT
+          amount: 13
         - type: ITEM
-          material: TORCH
-          amount: 16
+          material: ARROW
+          amount: 13
         - type: ITEM
-          material: APPLE
-          amount: 8
+          material: CARROT
+          amount: 10
       sio:
         - type: CURRENCY
           currency-id: diamond
           amount: 7
           name: '&b7 Diamond 💎'
         - type: ITEM
-          material: GOLD_INGOT
-          amount: 6
-        - type: ITEM
-          material: GOLD_INGOT
-          amount: 4
-      exsio:
-        - type: ITEM
-          material: ENDER_EYE
+          material: COPPER_BLOCK
           amount: 2
         - type: ITEM
-          material: ENDER_PEARL
-          amount: 4
+          material: DIAMOND
+          amount: 1
+      exsio:
         - type: ITEM
-          material: EMERALD
-          amount: 8
+          material: OBSIDIAN
+          amount: 7
+        - type: ITEM
+          material: LAPIS_LAZULI
+          amount: 20
+        - type: ITEM
+          material: RAW_GOLD_BLOCK
+          amount: 1
   36:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
           material: COOKED_BEEF
-          amount: 21
+          amount: 14
       sio:
         - type: CURRENCY
           amount: 65
           name: '&e65 Battle Coins'
         - type: ITEM
-          material: IRON_BLOCK
-          amount: 2
+          material: SHIELD
+          amount: 1
       exsio:
         - type: ITEM
-          material: DIAMOND
-          amount: 3
+          material: LEATHER
+          amount: 36
   37:
     required-xp: 100
     rewards:
@@ -937,136 +937,136 @@ levels:
           amount: 8000
           name: '&aRp 8.000'
         - type: ITEM
-          material: COOKED_BEEF
-          amount: 6
+          material: LEATHER
+          amount: 5
         - type: ITEM
-          material: BREAD
+          material: BAKED_POTATO
           amount: 8
       sio:
         - type: ITEM
-          material: GOLDEN_APPLE
-          amount: 2
+          material: BOOKSHELF
+          amount: 4
         - type: ITEM
-          material: EXPERIENCE_BOTTLE
-          amount: 16
+          material: SHEARS
+          amount: 1
       exsio:
         - type: ITEM
-          material: OBSIDIAN
-          amount: 8
+          material: LAPIS_LAZULI
+          amount: 32
         - type: ITEM
-          material: GOLDEN_CARROT
-          amount: 16
+          material: RAW_GOLD_BLOCK
+          amount: 2
   38:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: COOKED_BEEF
-          amount: 6
+          material: LAPIS_LAZULI
+          amount: 10
         - type: ITEM
-          material: TORCH
-          amount: 16
+          material: BOW
+          amount: 1
         - type: ITEM
-          material: APPLE
-          amount: 8
+          material: OAK_LOG
+          amount: 10
       sio:
         - type: ITEM
           material: LAPIS_BLOCK
           amount: 1
         - type: ITEM
-          material: REDSTONE
-          amount: 16
+          material: COPPER_BLOCK
+          amount: 2
         - type: ITEM
-          material: IRON_INGOT
-          amount: 6
+          material: DIAMOND
+          amount: 1
       exsio:
         - type: ITEM
-          material: GOLDEN_APPLE
+          material: RAW_GOLD_BLOCK
           amount: 1
         - type: ITEM
-          material: ENDER_PEARL
-          amount: 4
+          material: SPYGLASS
+          amount: 1
         - type: ITEM
-          material: EMERALD
-          amount: 8
+          material: OBSIDIAN
+          amount: 7
   39:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: COOKED_BEEF
-          amount: 21
+          material: CARROT
+          amount: 28
       sio:
         - type: ITEM
-          material: REDSTONE_BLOCK
-          amount: 3
+          material: COOKED_SALMON
+          amount: 28
       exsio:
         - type: MONEY
           amount: 55000
           name: '&aRp 55.000'
         - type: ITEM
-          material: EMERALD_BLOCK
+          material: CHAINMAIL_HELMET
           amount: 1
         - type: ITEM
-          material: OBSIDIAN
-          amount: 6
+          material: REDSTONE_BLOCK
+          amount: 2
   40:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: COOKED_BEEF
-          amount: 12
+          material: RAW_COPPER
+          amount: 10
         - type: ITEM
-          material: COOKED_BEEF
-          amount: 12
+          material: IRON_INGOT
+          amount: 6
       sio:
         - type: ITEM
-          material: GOLDEN_CARROT
-          amount: 12
+          material: SHIELD
+          amount: 1
         - type: ITEM
-          material: EXPERIENCE_BOTTLE
-          amount: 16
+          material: REDSTONE_BLOCK
+          amount: 2
       exsio:
         - type: ITEM
-          material: GOLD_BLOCK
-          amount: 3
+          material: SPYGLASS
+          amount: 1
         - type: ITEM
-          material: GOLDEN_CARROT
-          amount: 16
+          material: DIAMOND
+          amount: 3
   41:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: COOKED_BEEF
-          amount: 6
-        - type: ITEM
-          material: TORCH
-          amount: 16
-        - type: ITEM
           material: APPLE
-          amount: 8
+          amount: 5
+        - type: ITEM
+          material: COAL
+          amount: 7
+        - type: ITEM
+          material: WHEAT
+          amount: 13
       sio:
         - type: MONEY
           amount: 25000
           name: '&aRp 25.000'
         - type: ITEM
-          material: GOLD_INGOT
-          amount: 6
+          material: EXPERIENCE_BOTTLE
+          amount: 11
         - type: ITEM
-          material: GOLD_INGOT
-          amount: 4
+          material: ARROW
+          amount: 22
       exsio:
         - type: ITEM
-          material: ENDER_EYE
+          material: LAPIS_BLOCK
           amount: 2
         - type: ITEM
-          material: ENDER_PEARL
-          amount: 4
+          material: SPYGLASS
+          amount: 1
         - type: ITEM
-          material: EMERALD
-          amount: 8
+          material: DIAMOND
+          amount: 1
   42:
     required-xp: 100
     rewards:
@@ -1075,70 +1075,70 @@ levels:
           amount: 50
           name: '&e50 Battle Coins'
         - type: ITEM
-          material: COOKED_BEEF
-          amount: 12
+          material: ARROW
+          amount: 20
       sio:
         - type: ITEM
-          material: IRON_BLOCK
+          material: LAPIS_BLOCK
           amount: 3
       exsio:
         - type: ITEM
-          material: DIAMOND
-          amount: 3
+          material: LEATHER
+          amount: 36
   43:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: COOKED_BEEF
-          amount: 12
+          material: LEATHER
+          amount: 8
         - type: ITEM
-          material: COOKED_BEEF
+          material: BAKED_POTATO
           amount: 12
       sio:
         - type: ITEM
-          material: GOLDEN_APPLE
-          amount: 2
-        - type: ITEM
-          material: EXPERIENCE_BOTTLE
+          material: COOKED_SALMON
           amount: 16
+        - type: ITEM
+          material: BOOKSHELF
+          amount: 4
       exsio:
         - type: ITEM
-          material: OBSIDIAN
-          amount: 8
+          material: LAPIS_LAZULI
+          amount: 32
         - type: ITEM
-          material: GOLDEN_CARROT
-          amount: 16
+          material: RAW_GOLD_BLOCK
+          amount: 2
   44:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: COOKED_BEEF
+          material: RAW_COPPER
           amount: 6
-        - type: ITEM
-          material: TORCH
-          amount: 16
-        - type: ITEM
-          material: APPLE
-          amount: 8
-      sio:
-        - type: ITEM
-          material: LAPIS_BLOCK
-          amount: 1
-        - type: ITEM
-          material: REDSTONE
-          amount: 16
         - type: ITEM
           material: IRON_INGOT
-          amount: 6
+          amount: 3
+        - type: ITEM
+          material: LAPIS_LAZULI
+          amount: 10
+      sio:
+        - type: ITEM
+          material: DIAMOND
+          amount: 1
+        - type: ITEM
+          material: FIREWORK_ROCKET
+          amount: 15
+        - type: ITEM
+          material: GOLDEN_APPLE
+          amount: 1
       exsio:
         - type: CURRENCY
           amount: 110
           name: '&e110 Battle Coins'
         - type: ITEM
-          material: GOLDEN_APPLE
-          amount: 3
+          material: SPYGLASS
+          amount: 1
   45:
     required-xp: 100
     rewards:
@@ -1148,35 +1148,35 @@ levels:
           amount: 3
           name: '&b3 Diamond 💎'
         - type: ITEM
-          material: COOKED_BEEF
-          amount: 6
+          material: TORCH
+          amount: 16
         - type: ITEM
-          material: BREAD
-          amount: 8
+          material: RAW_COPPER
+          amount: 7
       sio:
         - type: ITEM
-          material: REDSTONE_BLOCK
+          material: GOLDEN_APPLE
           amount: 3
       exsio:
         - type: ITEM
-          material: EMERALD_BLOCK
-          amount: 3
+          material: OBSIDIAN
+          amount: 21
   46:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: COOKED_BEEF
+          material: BREAD
           amount: 12
         - type: ITEM
-          material: COOKED_BEEF
-          amount: 12
+          material: TORCH
+          amount: 24
       sio:
         - type: CURRENCY
           amount: 75
           name: '&e75 Battle Coins'
         - type: ITEM
-          material: GOLDEN_CARROT
+          material: IRON_INGOT
           amount: 12
       exsio:
         - type: CURRENCY
@@ -1184,8 +1184,8 @@ levels:
           amount: 18
           name: '&b18 Diamond 💎'
         - type: ITEM
-          material: GOLD_BLOCK
-          amount: 3
+          material: CHAINMAIL_HELMET
+          amount: 1
   47:
     required-xp: 100
     rewards:
@@ -1194,77 +1194,77 @@ levels:
           amount: 10000
           name: '&aRp 10.000'
         - type: ITEM
-          material: COOKED_BEEF
-          amount: 6
+          material: APPLE
+          amount: 5
         - type: ITEM
-          material: BREAD
+          material: COAL
           amount: 8
       sio:
         - type: ITEM
-          material: GOLD_INGOT
-          amount: 6
-        - type: ITEM
-          material: REDSTONE
-          amount: 16
-        - type: ITEM
-          material: IRON_INGOT
-          amount: 6
-      exsio:
-        - type: ITEM
-          material: ENDER_EYE
+          material: COPPER_BLOCK
           amount: 2
         - type: ITEM
-          material: ENDER_PEARL
-          amount: 4
+          material: DIAMOND
+          amount: 1
         - type: ITEM
-          material: EMERALD
-          amount: 8
+          material: FIREWORK_ROCKET
+          amount: 15
+      exsio:
+        - type: ITEM
+          material: RAW_GOLD_BLOCK
+          amount: 1
+        - type: ITEM
+          material: GOLD_BLOCK
+          amount: 1
+        - type: ITEM
+          material: SADDLE
+          amount: 1
   48:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: COOKED_BEEF
-          amount: 21
+          material: LAPIS_LAZULI
+          amount: 28
       sio:
         - type: ITEM
-          material: IRON_BLOCK
-          amount: 3
+          material: BOOKSHELF
+          amount: 7
       exsio:
         - type: MONEY
           amount: 65000
           name: '&aRp 65.000'
         - type: ITEM
-          material: DIAMOND
-          amount: 2
+          material: OBSIDIAN
+          amount: 12
   49:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: COOKED_BEEF
-          amount: 12
+          material: RAW_IRON
+          amount: 6
         - type: ITEM
           material: COOKED_BEEF
-          amount: 12
+          amount: 8
       sio:
         - type: CURRENCY
           currency-id: diamond
           amount: 9
           name: '&b9 Diamond 💎'
         - type: ITEM
-          material: GOLDEN_APPLE
+          material: SHEARS
           amount: 1
         - type: ITEM
           material: GOLD_INGOT
-          amount: 4
+          amount: 8
       exsio:
         - type: ITEM
-          material: OBSIDIAN
-          amount: 8
+          material: LEATHER
+          amount: 20
         - type: ITEM
-          material: GOLDEN_CARROT
-          amount: 16
+          material: RAW_GOLD_BLOCK
+          amount: 2
   50:
     required-xp: 100
     rewards:
@@ -1309,73 +1309,73 @@ levels:
     rewards:
       citizen:
         - type: ITEM
-          material: EXPERIENCE_BOTTLE
-          amount: 28
+          material: REDSTONE
+          amount: 57
       sio:
         - type: ITEM
-          material: ENDER_PEARL
-          amount: 7
+          material: HEART_OF_THE_SEA
+          amount: 2
       exsio:
         - type: ITEM
-          material: GOLDEN_APPLE
-          amount: 7
+          material: NETHERITE_SCRAP
+          amount: 2
   52:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: BOOKSHELF
-          amount: 2
-        - type: ITEM
-          material: COOKED_BEEF
-          amount: 12
-      sio:
-        - type: ITEM
-          material: OBSIDIAN
-          amount: 8
-        - type: ITEM
           material: EXPERIENCE_BOTTLE
-          amount: 16
-      exsio:
-        - type: ITEM
-          material: CRYING_OBSIDIAN
-          amount: 8
+          amount: 20
         - type: ITEM
           material: GOLDEN_CARROT
           amount: 16
+      sio:
+        - type: ITEM
+          material: SPECTRAL_ARROW
+          amount: 32
+        - type: ITEM
+          material: ENDER_EYE
+          amount: 6
+      exsio:
+        - type: ITEM
+          material: ENDER_PEARL
+          amount: 16
+        - type: ITEM
+          material: NETHERITE_SCRAP
+          amount: 1
   53:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
+          material: AMETHYST_SHARD
+          amount: 5
+        - type: ITEM
+          material: GOLD_INGOT
+          amount: 5
+        - type: ITEM
           material: SPECTRAL_ARROW
-          amount: 8
-        - type: ITEM
-          material: TORCH
-          amount: 16
-        - type: ITEM
-          material: APPLE
-          amount: 8
+          amount: 13
       sio:
         - type: ITEM
           material: GOLD_BLOCK
           amount: 1
         - type: ITEM
-          material: REDSTONE
-          amount: 16
+          material: GOLDEN_APPLE
+          amount: 1
         - type: ITEM
-          material: IRON_INGOT
-          amount: 6
+          material: ENDER_EYE
+          amount: 3
       exsio:
         - type: CURRENCY
           amount: 130
           name: '&e130 Battle Coins'
         - type: ITEM
-          material: DIAMOND_SWORD
+          material: BREWING_STAND
           amount: 1
         - type: ITEM
-          material: OBSIDIAN
-          amount: 6
+          material: DIAMOND
+          amount: 5
   54:
     required-xp: 100
     rewards:
@@ -1388,39 +1388,39 @@ levels:
           amount: 85
           name: '&e85 Battle Coins'
         - type: ITEM
-          material: DIAMOND
-          amount: 2
+          material: SPYGLASS
+          amount: 1
       exsio:
         - type: ITEM
-          material: DIAMOND
-          amount: 10
+          material: GHAST_TEAR
+          amount: 7
   55:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: IRON_BLOCK
-          amount: 1
+          material: REDSTONE
+          amount: 32
         - type: ITEM
-          material: COOKED_BEEF
-          amount: 12
+          material: SWEET_BERRIES
+          amount: 32
       sio:
         - type: MONEY
           amount: 30000
           name: '&aRp 30.000'
         - type: ITEM
-          material: BLAZE_ROD
-          amount: 1
+          material: OBSIDIAN
+          amount: 11
         - type: ITEM
-          material: GOLD_INGOT
-          amount: 4
+          material: SADDLE
+          amount: 1
       exsio:
         - type: ITEM
-          material: OBSIDIAN
-          amount: 16
+          material: DIAMOND_SWORD
+          amount: 1
         - type: ITEM
-          material: GOLDEN_CARROT
-          amount: 16
+          material: NETHER_QUARTZ
+          amount: 32
   56:
     required-xp: 100
     rewards:
@@ -1429,49 +1429,49 @@ levels:
           amount: 60
           name: '&e60 Battle Coins'
         - type: ITEM
-          material: GOLD_INGOT
-          amount: 6
+          material: GOLDEN_CARROT
+          amount: 16
       sio:
         - type: ITEM
-          material: EMERALD
-          amount: 8
+          material: NAME_TAG
+          amount: 1
         - type: ITEM
-          material: REDSTONE
-          amount: 16
+          material: GLOW_BERRIES
+          amount: 20
         - type: ITEM
-          material: IRON_INGOT
-          amount: 6
+          material: DIAMOND
+          amount: 2
       exsio:
         - type: ITEM
-          material: EMERALD_BLOCK
+          material: GOLDEN_APPLE
+          amount: 3
+        - type: ITEM
+          material: GHAST_TEAR
           amount: 2
         - type: ITEM
-          material: ENDER_PEARL
-          amount: 4
-        - type: ITEM
-          material: EMERALD
-          amount: 8
+          material: EXPERIENCE_BOTTLE
+          amount: 26
   57:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: EXPERIENCE_BOTTLE
+          material: GOLDEN_CARROT
           amount: 28
       sio:
         - type: ITEM
-          material: ENDER_PEARL
-          amount: 7
+          material: SADDLE
+          amount: 2
       exsio:
         - type: MONEY
           amount: 75000
           name: '&aRp 75.000'
         - type: ITEM
-          material: GOLDEN_APPLE
-          amount: 2
+          material: EXPERIENCE_BOTTLE
+          amount: 28
         - type: ITEM
-          material: OBSIDIAN
-          amount: 6
+          material: ANVIL
+          amount: 1
   58:
     required-xp: 100
     rewards:
@@ -1480,148 +1480,148 @@ levels:
           amount: 12000
           name: '&aRp 12.000'
         - type: ITEM
-          material: BOOKSHELF
-          amount: 2
+          material: SPECTRAL_ARROW
+          amount: 20
       sio:
         - type: ITEM
-          material: OBSIDIAN
-          amount: 8
+          material: GOLDEN_APPLE
+          amount: 3
         - type: ITEM
-          material: EXPERIENCE_BOTTLE
-          amount: 16
+          material: ENDER_EYE
+          amount: 6
       exsio:
         - type: ITEM
-          material: CRYING_OBSIDIAN
-          amount: 8
+          material: NETHERITE_SCRAP
+          amount: 1
         - type: ITEM
-          material: GOLDEN_CARROT
-          amount: 16
+          material: EMERALD_BLOCK
+          amount: 4
   59:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: SPECTRAL_ARROW
-          amount: 8
+          material: GLOWSTONE
+          amount: 7
         - type: ITEM
-          material: TORCH
-          amount: 16
+          material: AMETHYST_SHARD
+          amount: 5
         - type: ITEM
-          material: APPLE
-          amount: 8
+          material: GOLD_INGOT
+          amount: 5
       sio:
         - type: ITEM
-          material: GOLD_BLOCK
+          material: DIAMOND
+          amount: 2
+        - type: ITEM
+          material: EXPERIENCE_BOTTLE
+          amount: 20
+        - type: ITEM
+          material: EMERALD_BLOCK
           amount: 1
-        - type: ITEM
-          material: REDSTONE
-          amount: 16
-        - type: ITEM
-          material: IRON_INGOT
-          amount: 6
       exsio:
         - type: CURRENCY
           currency-id: diamond
           amount: 20
           name: '&b20 Diamond 💎'
         - type: ITEM
+          material: OBSIDIAN
+          amount: 14
+        - type: ITEM
           material: DIAMOND_SWORD
           amount: 1
-        - type: ITEM
-          material: OBSIDIAN
-          amount: 6
   60:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: COOKED_PORKCHOP
-          amount: 28
+          material: SWEET_BERRIES
+          amount: 57
       sio:
         - type: ITEM
-          material: DIAMOND
+          material: GOLD_BLOCK
           amount: 3
       exsio:
         - type: ITEM
-          material: DIAMOND
-          amount: 10
+          material: GHAST_TEAR
+          amount: 7
   61:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: IRON_BLOCK
-          amount: 1
+          material: GOLDEN_CARROT
+          amount: 16
         - type: ITEM
-          material: COOKED_BEEF
-          amount: 12
+          material: REDSTONE
+          amount: 32
       sio:
         - type: ITEM
-          material: BLAZE_ROD
-          amount: 3
+          material: SADDLE
+          amount: 1
         - type: ITEM
-          material: EXPERIENCE_BOTTLE
-          amount: 16
+          material: HEART_OF_THE_SEA
+          amount: 1
       exsio:
         - type: CURRENCY
           amount: 145
           name: '&e145 Battle Coins'
         - type: ITEM
-          material: OBSIDIAN
-          amount: 8
+          material: EXPERIENCE_BOTTLE
+          amount: 28
         - type: ITEM
-          material: OBSIDIAN
-          amount: 6
+          material: ANVIL
+          amount: 1
   62:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
           material: GOLD_INGOT
-          amount: 3
+          amount: 5
         - type: ITEM
-          material: TORCH
-          amount: 16
+          material: SPECTRAL_ARROW
+          amount: 13
         - type: ITEM
-          material: APPLE
-          amount: 8
+          material: CROSSBOW
+          amount: 1
       sio:
         - type: CURRENCY
           amount: 95
           name: '&e95 Battle Coins'
         - type: ITEM
-          material: EMERALD
-          amount: 16
+          material: NAME_TAG
+          amount: 2
       exsio:
         - type: ITEM
-          material: EMERALD_BLOCK
-          amount: 2
+          material: ANVIL
+          amount: 1
         - type: ITEM
-          material: ENDER_PEARL
-          amount: 4
+          material: OBSIDIAN
+          amount: 13
         - type: ITEM
-          material: EMERALD
-          amount: 8
+          material: CRYING_OBSIDIAN
+          amount: 7
   63:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
           material: EXPERIENCE_BOTTLE
-          amount: 28
+          amount: 36
       sio:
         - type: MONEY
           amount: 35000
           name: '&aRp 35.000'
         - type: ITEM
-          material: ENDER_PEARL
-          amount: 2
+          material: EMERALD_BLOCK
+          amount: 1
         - type: ITEM
-          material: GOLD_INGOT
-          amount: 4
+          material: NAME_TAG
+          amount: 1
       exsio:
         - type: ITEM
-          material: GOLDEN_APPLE
+          material: GHAST_TEAR
           amount: 7
   64:
     required-xp: 100
@@ -1631,74 +1631,74 @@ levels:
           amount: 70
           name: '&e70 Battle Coins'
         - type: ITEM
-          material: BOOKSHELF
-          amount: 2
+          material: GOLD_INGOT
+          amount: 8
       sio:
         - type: ITEM
-          material: OBSIDIAN
-          amount: 8
+          material: GOLD_BLOCK
+          amount: 2
         - type: ITEM
-          material: EXPERIENCE_BOTTLE
-          amount: 16
+          material: GOLDEN_APPLE
+          amount: 3
       exsio:
         - type: ITEM
-          material: CRYING_OBSIDIAN
-          amount: 8
+          material: EMERALD_BLOCK
+          amount: 4
         - type: ITEM
-          material: GOLDEN_CARROT
-          amount: 16
+          material: GHAST_TEAR
+          amount: 4
   65:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: SPECTRAL_ARROW
-          amount: 8
+          material: CROSSBOW
+          amount: 1
         - type: ITEM
-          material: TORCH
-          amount: 16
+          material: GLOWSTONE
+          amount: 7
         - type: ITEM
-          material: APPLE
-          amount: 8
+          material: AMETHYST_SHARD
+          amount: 5
       sio:
         - type: CURRENCY
           currency-id: diamond
           amount: 11
           name: '&b11 Diamond 💎'
         - type: ITEM
-          material: GOLD_BLOCK
-          amount: 1
+          material: IRON_BLOCK
+          amount: 2
         - type: ITEM
-          material: GOLD_INGOT
-          amount: 4
+          material: SPECTRAL_ARROW
+          amount: 22
       exsio:
         - type: ITEM
           material: DIAMOND_SWORD
           amount: 1
         - type: ITEM
-          material: ENDER_PEARL
-          amount: 4
+          material: NETHER_QUARTZ
+          amount: 20
         - type: ITEM
-          material: EMERALD
-          amount: 8
+          material: BREWING_STAND
+          amount: 1
   66:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: COOKED_PORKCHOP
-          amount: 28
+          material: REDSTONE
+          amount: 57
       sio:
         - type: ITEM
-          material: DIAMOND
-          amount: 3
+          material: HEART_OF_THE_SEA
+          amount: 2
       exsio:
         - type: MONEY
           amount: 85000
           name: '&aRp 85.000'
         - type: ITEM
-          material: DIAMOND
-          amount: 6
+          material: ANVIL
+          amount: 1
   67:
     required-xp: 100
     rewards:
@@ -1707,25 +1707,25 @@ levels:
           amount: 14000
           name: '&aRp 14.000'
         - type: ITEM
-          material: IRON_BLOCK
-          amount: 1
+          material: SWEET_BERRIES
+          amount: 22
         - type: ITEM
-          material: BREAD
-          amount: 8
+          material: COOKED_PORKCHOP
+          amount: 11
       sio:
-        - type: ITEM
-          material: BLAZE_ROD
-          amount: 3
-        - type: ITEM
-          material: EXPERIENCE_BOTTLE
-          amount: 16
-      exsio:
         - type: ITEM
           material: OBSIDIAN
           amount: 16
         - type: ITEM
-          material: GOLDEN_CARROT
-          amount: 16
+          material: SADDLE
+          amount: 1
+      exsio:
+        - type: ITEM
+          material: BREWING_STAND
+          amount: 2
+        - type: ITEM
+          material: DIAMOND
+          amount: 8
   68:
     required-xp: 100
     rewards:
@@ -1735,105 +1735,27 @@ levels:
           amount: 4
           name: '&b4 Diamond 💎'
         - type: ITEM
-          material: GOLD_INGOT
-          amount: 6
+          material: COOKED_PORKCHOP
+          amount: 16
       sio:
         - type: ITEM
-          material: EMERALD
-          amount: 8
+          material: EXPERIENCE_BOTTLE
+          amount: 20
         - type: ITEM
-          material: REDSTONE
-          amount: 16
+          material: EMERALD_BLOCK
+          amount: 1
         - type: ITEM
-          material: IRON_INGOT
-          amount: 6
+          material: NAME_TAG
+          amount: 1
       exsio:
         - type: CURRENCY
           currency-id: diamond
           amount: 24
           name: '&b24 Diamond 💎'
         - type: ITEM
-          material: EMERALD_BLOCK
-          amount: 4
+          material: ENDER_PEARL
+          amount: 16
   69:
-    required-xp: 100
-    rewards:
-      citizen:
-        - type: ITEM
-          material: EXPERIENCE_BOTTLE
-          amount: 28
-      sio:
-        - type: ITEM
-          material: ENDER_PEARL
-          amount: 7
-      exsio:
-        - type: CURRENCY
-          amount: 165
-          name: '&e165 Battle Coins'
-        - type: ITEM
-          material: GOLDEN_APPLE
-          amount: 2
-        - type: ITEM
-          material: OBSIDIAN
-          amount: 6
-  70:
-    required-xp: 100
-    rewards:
-      citizen:
-        - type: ITEM
-          material: BOOKSHELF
-          amount: 2
-        - type: ITEM
-          material: COOKED_BEEF
-          amount: 12
-      sio:
-        - type: ITEM
-          material: OBSIDIAN
-          amount: 8
-        - type: ITEM
-          material: EXPERIENCE_BOTTLE
-          amount: 16
-      exsio:
-        - type: ITEM
-          material: CRYING_OBSIDIAN
-          amount: 8
-        - type: ITEM
-          material: GOLDEN_CARROT
-          amount: 16
-  71:
-    required-xp: 100
-    rewards:
-      citizen:
-        - type: ITEM
-          material: SPECTRAL_ARROW
-          amount: 8
-        - type: ITEM
-          material: TORCH
-          amount: 16
-        - type: ITEM
-          material: APPLE
-          amount: 8
-      sio:
-        - type: MONEY
-          amount: 40000
-          name: '&aRp 40.000'
-        - type: ITEM
-          material: GOLD_BLOCK
-          amount: 1
-        - type: ITEM
-          material: GOLD_INGOT
-          amount: 4
-      exsio:
-        - type: ITEM
-          material: DIAMOND_SWORD
-          amount: 1
-        - type: ITEM
-          material: ENDER_PEARL
-          amount: 4
-        - type: ITEM
-          material: EMERALD
-          amount: 8
-  72:
     required-xp: 100
     rewards:
       citizen:
@@ -1841,39 +1763,117 @@ levels:
           material: COOKED_PORKCHOP
           amount: 28
       sio:
+        - type: ITEM
+          material: GOLDEN_APPLE
+          amount: 5
+      exsio:
+        - type: CURRENCY
+          amount: 165
+          name: '&e165 Battle Coins'
+        - type: ITEM
+          material: GHAST_TEAR
+          amount: 2
+        - type: ITEM
+          material: EXPERIENCE_BOTTLE
+          amount: 28
+  70:
+    required-xp: 100
+    rewards:
+      citizen:
+        - type: ITEM
+          material: REDSTONE
+          amount: 32
+        - type: ITEM
+          material: SWEET_BERRIES
+          amount: 32
+      sio:
+        - type: ITEM
+          material: HEART_OF_THE_SEA
+          amount: 1
+        - type: ITEM
+          material: GOLD_BLOCK
+          amount: 2
+      exsio:
+        - type: ITEM
+          material: NETHER_QUARTZ
+          amount: 32
+        - type: ITEM
+          material: BREWING_STAND
+          amount: 2
+  71:
+    required-xp: 100
+    rewards:
+      citizen:
+        - type: ITEM
+          material: SPECTRAL_ARROW
+          amount: 13
+        - type: ITEM
+          material: CROSSBOW
+          amount: 1
+        - type: ITEM
+          material: GLOWSTONE
+          amount: 7
+      sio:
+        - type: MONEY
+          amount: 40000
+          name: '&aRp 40.000'
+        - type: ITEM
+          material: EMERALD_BLOCK
+          amount: 1
+        - type: ITEM
+          material: NAME_TAG
+          amount: 1
+      exsio:
+        - type: ITEM
+          material: CRYING_OBSIDIAN
+          amount: 7
+        - type: ITEM
+          material: BLAZE_ROD
+          amount: 5
+        - type: ITEM
+          material: ENDER_PEARL
+          amount: 10
+  72:
+    required-xp: 100
+    rewards:
+      citizen:
+        - type: ITEM
+          material: GOLDEN_CARROT
+          amount: 28
+      sio:
         - type: CURRENCY
           amount: 110
           name: '&e110 Battle Coins'
         - type: ITEM
-          material: DIAMOND
-          amount: 2
+          material: IRON_BLOCK
+          amount: 3
       exsio:
         - type: ITEM
-          material: DIAMOND
-          amount: 10
+          material: GHAST_TEAR
+          amount: 7
   73:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: IRON_BLOCK
-          amount: 1
-        - type: ITEM
-          material: COOKED_BEEF
-          amount: 12
-      sio:
-        - type: ITEM
-          material: BLAZE_ROD
-          amount: 3
+          material: COOKED_PORKCHOP
+          amount: 16
         - type: ITEM
           material: EXPERIENCE_BOTTLE
-          amount: 16
+          amount: 20
+      sio:
+        - type: ITEM
+          material: GLOW_BERRIES
+          amount: 32
+        - type: ITEM
+          material: DIAMOND
+          amount: 4
       exsio:
         - type: ITEM
-          material: OBSIDIAN
-          amount: 16
+          material: GHAST_TEAR
+          amount: 4
         - type: ITEM
-          material: GOLDEN_CARROT
+          material: ENDER_PEARL
           amount: 16
   74:
     required-xp: 100
@@ -1883,74 +1883,74 @@ levels:
           amount: 80
           name: '&e80 Battle Coins'
         - type: ITEM
-          material: GOLD_INGOT
-          amount: 6
+          material: SWEET_BERRIES
+          amount: 32
       sio:
         - type: ITEM
-          material: EMERALD
-          amount: 8
-        - type: ITEM
-          material: REDSTONE
-          amount: 16
-        - type: ITEM
-          material: IRON_INGOT
-          amount: 6
-      exsio:
-        - type: ITEM
-          material: EMERALD_BLOCK
+          material: DIAMOND
           amount: 2
         - type: ITEM
-          material: ENDER_PEARL
-          amount: 4
+          material: EXPERIENCE_BOTTLE
+          amount: 20
         - type: ITEM
-          material: EMERALD
-          amount: 8
+          material: EMERALD_BLOCK
+          amount: 1
+      exsio:
+        - type: ITEM
+          material: BLAZE_ROD
+          amount: 5
+        - type: ITEM
+          material: BREWING_STAND
+          amount: 1
+        - type: ITEM
+          material: OBSIDIAN
+          amount: 13
   75:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: EXPERIENCE_BOTTLE
-          amount: 28
+          material: SWEET_BERRIES
+          amount: 57
       sio:
         - type: ITEM
-          material: ENDER_PEARL
-          amount: 7
+          material: GOLD_BLOCK
+          amount: 3
       exsio:
         - type: MONEY
           amount: 95000
           name: '&aRp 95.000'
         - type: ITEM
-          material: GOLDEN_APPLE
-          amount: 2
+          material: EXPERIENCE_BOTTLE
+          amount: 28
         - type: ITEM
-          material: OBSIDIAN
-          amount: 6
+          material: ANVIL
+          amount: 1
   76:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: GOLDEN_APPLE
-          amount: 1
+          material: GOLDEN_CARROT
+          amount: 16
         - type: ITEM
-          material: COOKED_BEEF
-          amount: 12
+          material: REDSTONE
+          amount: 32
       sio:
         - type: CURRENCY
           currency-id: diamond
           amount: 13
           name: '&b13 Diamond 💎'
         - type: ITEM
-          material: ENDER_PEARL
-          amount: 8
+          material: DIAMOND
+          amount: 4
       exsio:
         - type: ITEM
-          material: OBSIDIAN
-          amount: 24
+          material: EXPERIENCE_BOTTLE
+          amount: 40
         - type: ITEM
-          material: GOLDEN_CARROT
-          amount: 16
+          material: ANVIL
+          amount: 1
   77:
     required-xp: 100
     rewards:
@@ -1959,153 +1959,81 @@ levels:
           amount: 16000
           name: '&aRp 16.000'
         - type: ITEM
-          material: CROSSBOW
+          material: GOLD_BLOCK
           amount: 1
         - type: ITEM
-          material: BREAD
-          amount: 8
+          material: PUMPKIN_PIE
+          amount: 11
       sio:
         - type: ITEM
-          material: OBSIDIAN
-          amount: 6
+          material: IRON_BLOCK
+          amount: 1
         - type: ITEM
-          material: REDSTONE
-          amount: 16
+          material: SPECTRAL_ARROW
+          amount: 20
         - type: ITEM
-          material: IRON_INGOT
-          amount: 6
+          material: ENDER_EYE
+          amount: 3
       exsio:
         - type: ITEM
-          material: ENDER_PEARL
-          amount: 8
+          material: DIAMOND_SWORD
+          amount: 1
         - type: ITEM
-          material: ENDER_PEARL
-          amount: 4
+          material: NETHER_QUARTZ
+          amount: 20
         - type: ITEM
-          material: EMERALD
-          amount: 8
+          material: BREWING_STAND
+          amount: 1
   78:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: GOLDEN_CARROT
-          amount: 28
+          material: EXPERIENCE_BOTTLE
+          amount: 36
       sio:
         - type: ITEM
-          material: DIAMOND
-          amount: 7
+          material: IRON_BLOCK
+          amount: 5
       exsio:
         - type: CURRENCY
           amount: 185
           name: '&e185 Battle Coins'
         - type: ITEM
-          material: DIAMOND_BLOCK
+          material: NETHERITE_SCRAP
           amount: 1
   79:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: IRON_BLOCK
-          amount: 2
+          material: SWEET_BERRIES
+          amount: 32
         - type: ITEM
-          material: COOKED_BEEF
-          amount: 12
+          material: COOKED_PORKCHOP
+          amount: 16
       sio:
         - type: MONEY
           amount: 45000
           name: '&aRp 45.000'
         - type: ITEM
-          material: GHAST_TEAR
+          material: SADDLE
           amount: 1
         - type: ITEM
-          material: GOLD_INGOT
-          amount: 4
+          material: HEART_OF_THE_SEA
+          amount: 1
       exsio:
         - type: CURRENCY
           currency-id: diamond
           amount: 27
           name: '&b27 Diamond 💎'
         - type: ITEM
-          material: ANCIENT_DEBRIS
-          amount: 1
-        - type: ITEM
-          material: OBSIDIAN
-          amount: 6
-  80:
-    required-xp: 100
-    rewards:
-      citizen:
-        - type: ITEM
-          material: GOLD_BLOCK
-          amount: 1
-        - type: ITEM
-          material: TORCH
-          amount: 16
-        - type: ITEM
-          material: APPLE
-          amount: 8
-      sio:
-        - type: ITEM
-          material: GOLDEN_APPLE
-          amount: 1
-        - type: ITEM
-          material: REDSTONE
-          amount: 16
-        - type: ITEM
-          material: IRON_INGOT
-          amount: 6
-      exsio:
-        - type: ITEM
-          material: NETHERITE_SCRAP
-          amount: 1
-        - type: ITEM
-          material: ENDER_PEARL
-          amount: 4
-        - type: ITEM
-          material: EMERALD
-          amount: 8
-  81:
-    required-xp: 100
-    rewards:
-      citizen:
-        - type: ITEM
           material: EXPERIENCE_BOTTLE
-          amount: 43
-      sio:
+          amount: 28
         - type: ITEM
-          material: SLIME_BLOCK
-          amount: 5
-      exsio:
-        - type: ITEM
-          material: ENCHANTED_GOLDEN_APPLE
-          amount: 2
-  82:
-    required-xp: 100
-    rewards:
-      citizen:
-        - type: ITEM
-          material: GOLDEN_APPLE
+          material: ANVIL
           amount: 1
-        - type: ITEM
-          material: COOKED_BEEF
-          amount: 12
-      sio:
-        - type: CURRENCY
-          amount: 120
-          name: '&e120 Battle Coins'
-        - type: ITEM
-          material: ENDER_PEARL
-          amount: 8
-      exsio:
-        - type: ITEM
-          material: OBSIDIAN
-          amount: 24
-        - type: ITEM
-          material: GOLDEN_CARROT
-          amount: 16
-  83:
+  80:
     required-xp: 100
     rewards:
       citizen:
@@ -2113,31 +2041,103 @@ levels:
           material: CROSSBOW
           amount: 1
         - type: ITEM
-          material: TORCH
-          amount: 16
+          material: GLOWSTONE
+          amount: 7
         - type: ITEM
-          material: APPLE
-          amount: 8
+          material: AMETHYST_SHARD
+          amount: 5
       sio:
         - type: ITEM
-          material: OBSIDIAN
-          amount: 6
+          material: GLOW_BERRIES
+          amount: 20
+        - type: ITEM
+          material: DIAMOND
+          amount: 2
+        - type: ITEM
+          material: EXPERIENCE_BOTTLE
+          amount: 20
+      exsio:
+        - type: ITEM
+          material: ANVIL
+          amount: 1
+        - type: ITEM
+          material: EMERALD_BLOCK
+          amount: 2
+        - type: ITEM
+          material: DIAMOND_SWORD
+          amount: 1
+  81:
+    required-xp: 100
+    rewards:
+      citizen:
         - type: ITEM
           material: REDSTONE
-          amount: 16
+          amount: 57
+      sio:
         - type: ITEM
-          material: IRON_INGOT
-          amount: 6
+          material: HEART_OF_THE_SEA
+          amount: 2
+      exsio:
+        - type: ITEM
+          material: NETHERITE_SCRAP
+          amount: 2
+  82:
+    required-xp: 100
+    rewards:
+      citizen:
+        - type: ITEM
+          material: EXPERIENCE_BOTTLE
+          amount: 20
+        - type: ITEM
+          material: GOLDEN_CARROT
+          amount: 16
+      sio:
+        - type: CURRENCY
+          amount: 120
+          name: '&e120 Battle Coins'
+        - type: ITEM
+          material: NAME_TAG
+          amount: 2
+      exsio:
+        - type: ITEM
+          material: ANVIL
+          amount: 1
+        - type: ITEM
+          material: OBSIDIAN
+          amount: 20
+  83:
+    required-xp: 100
+    rewards:
+      citizen:
+        - type: ITEM
+          material: AMETHYST_SHARD
+          amount: 5
+        - type: ITEM
+          material: GOLD_INGOT
+          amount: 5
+        - type: ITEM
+          material: SPECTRAL_ARROW
+          amount: 13
+      sio:
+        - type: ITEM
+          material: GOLD_BLOCK
+          amount: 1
+        - type: ITEM
+          material: GOLDEN_APPLE
+          amount: 1
+        - type: ITEM
+          material: ENDER_EYE
+          amount: 3
       exsio:
         - type: ITEM
           material: ENDER_PEARL
-          amount: 8
+          amount: 10
         - type: ITEM
-          material: ENDER_PEARL
-          amount: 4
+          material: NETHERITE_SCRAP
+          amount: 1
         - type: ITEM
-          material: EMERALD
-          amount: 8
+          material: EMERALD_BLOCK
+          amount: 2
   84:
     required-xp: 100
     rewards:
@@ -2146,43 +2146,43 @@ levels:
           amount: 90
           name: '&e90 Battle Coins'
         - type: ITEM
-          material: GOLDEN_CARROT
-          amount: 16
+          material: GOLD_BLOCK
+          amount: 1
       sio:
         - type: ITEM
-          material: DIAMOND
-          amount: 7
+          material: EXPERIENCE_BOTTLE
+          amount: 57
       exsio:
         - type: ITEM
-          material: DIAMOND_BLOCK
-          amount: 2
+          material: BREWING_STAND
+          amount: 3
   85:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: IRON_BLOCK
-          amount: 2
+          material: REDSTONE
+          amount: 32
         - type: ITEM
-          material: COOKED_BEEF
-          amount: 12
+          material: SWEET_BERRIES
+          amount: 32
       sio:
         - type: ITEM
-          material: GHAST_TEAR
-          amount: 2
+          material: HEART_OF_THE_SEA
+          amount: 1
         - type: ITEM
-          material: EXPERIENCE_BOTTLE
-          amount: 16
+          material: GOLD_BLOCK
+          amount: 2
       exsio:
         - type: MONEY
           amount: 105000
           name: '&aRp 105.000'
         - type: ITEM
-          material: ANCIENT_DEBRIS
-          amount: 1
+          material: EXPERIENCE_BOTTLE
+          amount: 28
         - type: ITEM
-          material: OBSIDIAN
-          amount: 6
+          material: ANVIL
+          amount: 1
   86:
     required-xp: 100
     rewards:
@@ -2192,26 +2192,26 @@ levels:
           amount: 5
           name: '&b5 Diamond 💎'
         - type: ITEM
-          material: GOLD_BLOCK
-          amount: 1
+          material: GOLDEN_CARROT
+          amount: 16
       sio:
         - type: CURRENCY
           currency-id: diamond
           amount: 15
           name: '&b15 Diamond 💎'
         - type: ITEM
-          material: GOLDEN_APPLE
-          amount: 3
+          material: SADDLE
+          amount: 1
       exsio:
         - type: ITEM
-          material: NETHERITE_SCRAP
+          material: ANVIL
           amount: 1
         - type: ITEM
-          material: ENDER_PEARL
-          amount: 4
+          material: OBSIDIAN
+          amount: 13
         - type: ITEM
-          material: EMERALD
-          amount: 8
+          material: CRYING_OBSIDIAN
+          amount: 7
   87:
     required-xp: 100
     rewards:
@@ -2220,170 +2220,170 @@ levels:
           amount: 18000
           name: '&aRp 18.000'
         - type: ITEM
-          material: EXPERIENCE_BOTTLE
-          amount: 12
+          material: GOLD_INGOT
+          amount: 5
         - type: ITEM
-          material: BREAD
-          amount: 8
+          material: SPECTRAL_ARROW
+          amount: 14
       sio:
         - type: ITEM
-          material: SLIME_BLOCK
-          amount: 5
+          material: SADDLE
+          amount: 2
       exsio:
         - type: ITEM
-          material: ENCHANTED_GOLDEN_APPLE
+          material: NETHERITE_SCRAP
           amount: 2
   88:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: GOLDEN_APPLE
-          amount: 1
-        - type: ITEM
-          material: COOKED_BEEF
-          amount: 12
-      sio:
-        - type: ITEM
-          material: ENDER_PEARL
-          amount: 8
+          material: COOKED_PORKCHOP
+          amount: 16
         - type: ITEM
           material: EXPERIENCE_BOTTLE
-          amount: 16
+          amount: 20
+      sio:
+        - type: ITEM
+          material: SPECTRAL_ARROW
+          amount: 32
+        - type: ITEM
+          material: ENDER_EYE
+          amount: 6
       exsio:
         - type: CURRENCY
           amount: 205
           name: '&e205 Battle Coins'
         - type: ITEM
-          material: OBSIDIAN
-          amount: 24
+          material: CRYING_OBSIDIAN
+          amount: 12
   89:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: CROSSBOW
-          amount: 1
+          material: GLOWSTONE
+          amount: 7
         - type: ITEM
-          material: TORCH
-          amount: 16
+          material: AMETHYST_SHARD
+          amount: 5
         - type: ITEM
-          material: APPLE
-          amount: 8
+          material: GOLD_INGOT
+          amount: 5
       sio:
         - type: MONEY
           amount: 50000
           name: '&aRp 50.000'
         - type: ITEM
-          material: OBSIDIAN
-          amount: 6
+          material: SPECTRAL_ARROW
+          amount: 22
         - type: ITEM
-          material: GOLD_INGOT
+          material: ENDER_EYE
           amount: 4
       exsio:
         - type: ITEM
-          material: ENDER_PEARL
-          amount: 8
+          material: DIAMOND_SWORD
+          amount: 1
         - type: ITEM
-          material: ENDER_PEARL
-          amount: 4
+          material: NETHER_QUARTZ
+          amount: 20
         - type: ITEM
-          material: EMERALD
-          amount: 8
+          material: BREWING_STAND
+          amount: 1
   90:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: GOLDEN_CARROT
-          amount: 28
+          material: SWEET_BERRIES
+          amount: 57
       sio:
         - type: ITEM
-          material: DIAMOND
-          amount: 7
+          material: GOLD_BLOCK
+          amount: 3
       exsio:
         - type: ITEM
-          material: DIAMOND_BLOCK
-          amount: 2
+          material: GHAST_TEAR
+          amount: 7
   91:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: IRON_BLOCK
-          amount: 2
+          material: GOLDEN_CARROT
+          amount: 16
         - type: ITEM
-          material: COOKED_BEEF
-          amount: 12
+          material: REDSTONE
+          amount: 32
       sio:
         - type: ITEM
-          material: GHAST_TEAR
-          amount: 2
+          material: SADDLE
+          amount: 1
         - type: ITEM
-          material: EXPERIENCE_BOTTLE
-          amount: 16
+          material: HEART_OF_THE_SEA
+          amount: 1
       exsio:
         - type: CURRENCY
           currency-id: diamond
           amount: 30
           name: '&b30 Diamond 💎'
         - type: ITEM
-          material: ANCIENT_DEBRIS
-          amount: 1
+          material: EXPERIENCE_BOTTLE
+          amount: 28
         - type: ITEM
-          material: OBSIDIAN
-          amount: 6
+          material: ANVIL
+          amount: 1
   92:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: GOLD_BLOCK
+          material: GOLD_INGOT
+          amount: 5
+        - type: ITEM
+          material: SPECTRAL_ARROW
+          amount: 13
+        - type: ITEM
+          material: CROSSBOW
           amount: 1
-        - type: ITEM
-          material: TORCH
-          amount: 16
-        - type: ITEM
-          material: APPLE
-          amount: 8
       sio:
         - type: CURRENCY
           amount: 135
           name: '&e135 Battle Coins'
         - type: ITEM
-          material: GOLDEN_APPLE
-          amount: 3
+          material: NAME_TAG
+          amount: 2
       exsio:
         - type: ITEM
-          material: NETHERITE_SCRAP
+          material: ANVIL
           amount: 1
         - type: ITEM
-          material: ENDER_PEARL
-          amount: 4
+          material: OBSIDIAN
+          amount: 13
         - type: ITEM
-          material: EMERALD
-          amount: 8
+          material: CRYING_OBSIDIAN
+          amount: 7
   93:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
           material: EXPERIENCE_BOTTLE
-          amount: 43
+          amount: 36
       sio:
         - type: ITEM
-          material: SLIME_BLOCK
-          amount: 5
+          material: SADDLE
+          amount: 2
       exsio:
         - type: MONEY
           amount: 115000
           name: '&aRp 115.000'
         - type: ITEM
-          material: ENCHANTED_GOLDEN_APPLE
-          amount: 1
+          material: CRYING_OBSIDIAN
+          amount: 8
         - type: ITEM
-          material: OBSIDIAN
-          amount: 6
+          material: BLAZE_ROD
+          amount: 5
   94:
     required-xp: 100
     rewards:
@@ -2392,22 +2392,22 @@ levels:
           amount: 100
           name: '&e100 Battle Coins'
         - type: ITEM
-          material: GOLDEN_APPLE
-          amount: 1
+          material: GOLD_INGOT
+          amount: 8
       sio:
         - type: ITEM
-          material: ENDER_PEARL
-          amount: 8
+          material: GOLD_BLOCK
+          amount: 2
         - type: ITEM
-          material: EXPERIENCE_BOTTLE
-          amount: 16
+          material: GOLDEN_APPLE
+          amount: 3
       exsio:
         - type: ITEM
-          material: OBSIDIAN
-          amount: 24
+          material: DIAMOND_SWORD
+          amount: 1
         - type: ITEM
-          material: GOLDEN_CARROT
-          amount: 16
+          material: NETHER_QUARTZ
+          amount: 32
   95:
     required-xp: 100
     rewards:
@@ -2416,48 +2416,48 @@ levels:
           material: CROSSBOW
           amount: 1
         - type: ITEM
-          material: TORCH
-          amount: 16
+          material: GLOWSTONE
+          amount: 7
         - type: ITEM
-          material: APPLE
-          amount: 8
+          material: AMETHYST_SHARD
+          amount: 5
       sio:
         - type: ITEM
-          material: OBSIDIAN
-          amount: 6
+          material: GLOW_BERRIES
+          amount: 20
         - type: ITEM
-          material: REDSTONE
-          amount: 16
+          material: DIAMOND
+          amount: 2
         - type: ITEM
-          material: IRON_INGOT
-          amount: 6
+          material: EXPERIENCE_BOTTLE
+          amount: 20
       exsio:
         - type: ITEM
-          material: ENDER_PEARL
-          amount: 8
+          material: NETHER_QUARTZ
+          amount: 20
         - type: ITEM
-          material: ENDER_PEARL
-          amount: 4
+          material: ANVIL
+          amount: 1
         - type: ITEM
-          material: EMERALD
-          amount: 8
+          material: EMERALD_BLOCK
+          amount: 2
   96:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: GOLDEN_CARROT
-          amount: 28
+          material: REDSTONE
+          amount: 57
       sio:
         - type: ITEM
-          material: DIAMOND
-          amount: 7
+          material: HEART_OF_THE_SEA
+          amount: 2
       exsio:
         - type: CURRENCY
           amount: 230
           name: '&e230 Battle Coins'
         - type: ITEM
-          material: DIAMOND_BLOCK
+          material: ANVIL
           amount: 1
   97:
     required-xp: 100
@@ -2467,77 +2467,77 @@ levels:
           amount: 20000
           name: '&aRp 20.000'
         - type: ITEM
-          material: IRON_BLOCK
-          amount: 1
+          material: SWEET_BERRIES
+          amount: 22
         - type: ITEM
-          material: BREAD
-          amount: 8
+          material: COOKED_PORKCHOP
+          amount: 11
       sio:
         - type: ITEM
-          material: GHAST_TEAR
-          amount: 2
-        - type: ITEM
-          material: EXPERIENCE_BOTTLE
+          material: OBSIDIAN
           amount: 16
-      exsio:
         - type: ITEM
-          material: ANCIENT_DEBRIS
+          material: SADDLE
           amount: 1
-        - type: ITEM
-          material: GOLDEN_CARROT
-          amount: 16
-  98:
-    required-xp: 100
-    rewards:
-      citizen:
-        - type: ITEM
-          material: GOLD_BLOCK
-          amount: 1
-        - type: ITEM
-          material: TORCH
-          amount: 16
-        - type: ITEM
-          material: APPLE
-          amount: 8
-      sio:
-        - type: MONEY
-          amount: 55000
-          name: '&aRp 55.000'
-        - type: ITEM
-          material: GOLDEN_APPLE
-          amount: 3
       exsio:
         - type: ITEM
           material: NETHERITE_SCRAP
           amount: 1
         - type: ITEM
-          material: ENDER_PEARL
-          amount: 4
+          material: GOLDEN_APPLE
+          amount: 5
+  98:
+    required-xp: 100
+    rewards:
+      citizen:
         - type: ITEM
-          material: EMERALD
-          amount: 8
+          material: AMETHYST_SHARD
+          amount: 5
+        - type: ITEM
+          material: GOLD_INGOT
+          amount: 5
+        - type: ITEM
+          material: SPECTRAL_ARROW
+          amount: 13
+      sio:
+        - type: MONEY
+          amount: 55000
+          name: '&aRp 55.000'
+        - type: ITEM
+          material: NAME_TAG
+          amount: 2
+      exsio:
+        - type: ITEM
+          material: ANVIL
+          amount: 1
+        - type: ITEM
+          material: OBSIDIAN
+          amount: 13
+        - type: ITEM
+          material: CRYING_OBSIDIAN
+          amount: 7
   99:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: EXPERIENCE_BOTTLE
-          amount: 43
+          material: COOKED_PORKCHOP
+          amount: 28
       sio:
         - type: CURRENCY
           currency-id: diamond
           amount: 17
           name: '&b17 Diamond 💎'
         - type: ITEM
-          material: SLIME_BLOCK
-          amount: 1
+          material: DIAMOND
+          amount: 2
         - type: ITEM
-          material: GOLD_INGOT
-          amount: 4
+          material: EXPERIENCE_BOTTLE
+          amount: 22
       exsio:
         - type: ITEM
-          material: ENCHANTED_GOLDEN_APPLE
-          amount: 2
+          material: GHAST_TEAR
+          amount: 7
   100:
     required-xp: 100
     rewards:
@@ -2583,112 +2583,112 @@ levels:
       citizen:
         - type: ITEM
           material: FIREWORK_ROCKET
-          amount: 16
+          amount: 20
         - type: ITEM
-          material: TORCH
-          amount: 16
+          material: ENDER_PEARL
+          amount: 5
         - type: ITEM
-          material: APPLE
-          amount: 8
+          material: BLAZE_POWDER
+          amount: 5
       sio:
         - type: ITEM
-          material: DIAMOND_BLOCK
+          material: ANCIENT_DEBRIS
           amount: 1
         - type: ITEM
-          material: REDSTONE
-          amount: 16
+          material: DRAGON_BREATH
+          amount: 3
         - type: ITEM
-          material: IRON_INGOT
-          amount: 6
+          material: EMERALD_BLOCK
+          amount: 2
       exsio:
+        - type: ITEM
+          material: SHULKER_SHELL
+          amount: 2
+        - type: ITEM
+          material: ENCHANTED_GOLDEN_APPLE
+          amount: 1
         - type: ITEM
           material: TRIDENT
           amount: 1
-        - type: ITEM
-          material: ENDER_PEARL
-          amount: 4
-        - type: ITEM
-          material: EMERALD
-          amount: 8
   102:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: DIAMOND
+          material: GOLD_BLOCK
           amount: 3
       sio:
         - type: ITEM
-          material: DIAMOND
-          amount: 10
+          material: NETHERITE_SCRAP
+          amount: 2
       exsio:
         - type: ITEM
-          material: DIAMOND_BLOCK
-          amount: 3
+          material: EXPERIENCE_BOTTLE
+          amount: 115
   103:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: GOLDEN_CARROT
-          amount: 24
+          material: DIAMOND
+          amount: 3
         - type: ITEM
-          material: COOKED_BEEF
-          amount: 12
+          material: IRON_BLOCK
+          amount: 4
       sio:
         - type: ITEM
-          material: EMERALD_BLOCK
-          amount: 4
-        - type: ITEM
-          material: EXPERIENCE_BOTTLE
+          material: CRYING_OBSIDIAN
           amount: 16
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 2
       exsio:
         - type: CURRENCY
           amount: 250
           name: '&e250 Battle Coins'
         - type: ITEM
           material: ANCIENT_DEBRIS
-          amount: 1
+          amount: 2
         - type: ITEM
-          material: OBSIDIAN
-          amount: 6
+          material: DRAGON_BREATH
+          amount: 5
   104:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
+          material: BLAZE_POWDER
+          amount: 5
+        - type: ITEM
+          material: GLISTERING_MELON_SLICE
+          amount: 10
+        - type: ITEM
           material: EMERALD
-          amount: 6
-        - type: ITEM
-          material: TORCH
-          amount: 16
-        - type: ITEM
-          material: APPLE
-          amount: 8
+          amount: 10
       sio:
         - type: CURRENCY
           amount: 150
           name: '&e150 Battle Coins'
         - type: ITEM
-          material: GOLDEN_CARROT
-          amount: 32
+          material: EXPERIENCE_BOTTLE
+          amount: 48
       exsio:
         - type: ITEM
-          material: NETHERITE_SCRAP
+          material: NETHERITE_INGOT
           amount: 1
         - type: ITEM
-          material: ENDER_PEARL
-          amount: 4
+          material: SHULKER_BOX
+          amount: 1
         - type: ITEM
-          material: EMERALD
-          amount: 8
+          material: ANCIENT_DEBRIS
+          amount: 1
   105:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: IRON_BLOCK
-          amount: 5
+          material: PRISMARINE_SHARD
+          amount: 28
       sio:
         - type: MONEY
           amount: 60000
@@ -2697,12 +2697,12 @@ levels:
           material: SHULKER_SHELL
           amount: 1
         - type: ITEM
-          material: GOLD_INGOT
-          amount: 4
+          material: EXPERIENCE_BOTTLE
+          amount: 33
       exsio:
         - type: ITEM
-          material: SHULKER_SHELL
-          amount: 3
+          material: NETHERITE_INGOT
+          amount: 2
   106:
     required-xp: 100
     rewards:
@@ -2711,55 +2711,55 @@ levels:
           amount: 120
           name: '&e120 Battle Coins'
         - type: ITEM
-          material: EXPERIENCE_BOTTLE
-          amount: 32
+          material: BLAZE_POWDER
+          amount: 8
       sio:
         - type: ITEM
-          material: ANCIENT_DEBRIS
+          material: DRAGON_BREATH
+          amount: 6
+        - type: ITEM
+          material: EMERALD_BLOCK
+          amount: 4
+      exsio:
+        - type: ITEM
+          material: NETHERITE_INGOT
           amount: 1
         - type: ITEM
           material: EXPERIENCE_BOTTLE
-          amount: 16
-      exsio:
-        - type: ITEM
-          material: WITHER_SKELETON_SKULL
-          amount: 1
-        - type: ITEM
-          material: GOLDEN_CARROT
-          amount: 16
+          amount: 64
   107:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
+          material: EMERALD
+          amount: 10
+        - type: ITEM
           material: FIREWORK_ROCKET
-          amount: 16
+          amount: 20
         - type: ITEM
-          material: TORCH
-          amount: 16
-        - type: ITEM
-          material: APPLE
-          amount: 8
+          material: ENDER_PEARL
+          amount: 5
       sio:
         - type: ITEM
-          material: DIAMOND_BLOCK
+          material: ANCIENT_DEBRIS
           amount: 1
         - type: ITEM
-          material: REDSTONE
-          amount: 16
+          material: DRAGON_BREATH
+          amount: 3
         - type: ITEM
-          material: IRON_INGOT
-          amount: 6
+          material: EMERALD_BLOCK
+          amount: 2
       exsio:
         - type: MONEY
           amount: 125000
           name: '&aRp 125.000'
         - type: ITEM
-          material: TRIDENT
+          material: END_CRYSTAL
           amount: 1
         - type: ITEM
-          material: OBSIDIAN
-          amount: 6
+          material: SHULKER_BOX
+          amount: 1
   108:
     required-xp: 100
     rewards:
@@ -2768,156 +2768,156 @@ levels:
           amount: 22000
           name: '&aRp 22.000'
         - type: ITEM
-          material: DIAMOND
-          amount: 2
+          material: MAGMA_CREAM
+          amount: 8
       sio:
         - type: ITEM
-          material: DIAMOND
-          amount: 10
+          material: NETHERITE_SCRAP
+          amount: 2
       exsio:
         - type: ITEM
-          material: DIAMOND_BLOCK
+          material: END_CRYSTAL
           amount: 3
   109:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: GOLDEN_CARROT
-          amount: 24
+          material: PRISMARINE_SHARD
+          amount: 16
         - type: ITEM
-          material: COOKED_BEEF
-          amount: 12
+          material: DIAMOND
+          amount: 3
       sio:
         - type: ITEM
-          material: EMERALD_BLOCK
-          amount: 4
-        - type: ITEM
-          material: EXPERIENCE_BOTTLE
+          material: CRYING_OBSIDIAN
           amount: 16
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 2
       exsio:
         - type: CURRENCY
           currency-id: diamond
           amount: 33
           name: '&b33 Diamond 💎'
         - type: ITEM
-          material: ANCIENT_DEBRIS
+          material: SHULKER_BOX
           amount: 1
         - type: ITEM
-          material: OBSIDIAN
-          amount: 6
+          material: NETHERITE_SCRAP
+          amount: 1
   110:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: EMERALD
-          amount: 6
+          material: ENDER_PEARL
+          amount: 5
         - type: ITEM
-          material: TORCH
-          amount: 16
+          material: BLAZE_POWDER
+          amount: 5
         - type: ITEM
-          material: APPLE
-          amount: 8
+          material: GLISTERING_MELON_SLICE
+          amount: 10
       sio:
         - type: ITEM
-          material: GOLDEN_CARROT
-          amount: 16
+          material: EXPERIENCE_BOTTLE
+          amount: 31
         - type: ITEM
-          material: REDSTONE
-          amount: 16
+          material: CRYING_OBSIDIAN
+          amount: 10
         - type: ITEM
-          material: IRON_INGOT
-          amount: 6
+          material: DIAMOND_BLOCK
+          amount: 1
       exsio:
         - type: ITEM
-          material: NETHERITE_SCRAP
+          material: END_CRYSTAL
           amount: 1
         - type: ITEM
-          material: ENDER_PEARL
-          amount: 4
+          material: TRIDENT
+          amount: 1
         - type: ITEM
-          material: EMERALD
-          amount: 8
+          material: TOTEM_OF_UNDYING
+          amount: 1
   111:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: IRON_BLOCK
-          amount: 5
+          material: OBSIDIAN
+          amount: 21
       sio:
         - type: ITEM
-          material: SHULKER_SHELL
+          material: ENCHANTED_GOLDEN_APPLE
           amount: 2
       exsio:
         - type: CURRENCY
           amount: 275
           name: '&e275 Battle Coins'
         - type: ITEM
-          material: SHULKER_SHELL
-          amount: 1
+          material: ANCIENT_DEBRIS
+          amount: 2
         - type: ITEM
-          material: OBSIDIAN
-          amount: 6
+          material: DRAGON_BREATH
+          amount: 5
   112:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: EXPERIENCE_BOTTLE
-          amount: 32
+          material: IRON_BLOCK
+          amount: 4
         - type: ITEM
-          material: COOKED_BEEF
-          amount: 12
+          material: GOLD_BLOCK
+          amount: 2
       sio:
         - type: CURRENCY
           amount: 165
           name: '&e165 Battle Coins'
         - type: ITEM
-          material: ANCIENT_DEBRIS
-          amount: 1
+          material: EXPERIENCE_BOTTLE
+          amount: 48
       exsio:
         - type: ITEM
-          material: WITHER_SKELETON_SKULL
-          amount: 1
+          material: TOTEM_OF_UNDYING
+          amount: 2
         - type: ITEM
-          material: GOLDEN_CARROT
-          amount: 16
+          material: NETHERITE_INGOT
+          amount: 1
   113:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
+          material: GLISTERING_MELON_SLICE
+          amount: 10
+        - type: ITEM
+          material: EMERALD
+          amount: 10
+        - type: ITEM
           material: FIREWORK_ROCKET
-          amount: 16
-        - type: ITEM
-          material: TORCH
-          amount: 16
-        - type: ITEM
-          material: APPLE
-          amount: 8
+          amount: 20
       sio:
         - type: CURRENCY
           currency-id: diamond
           amount: 18
           name: '&b18 Diamond 💎'
         - type: ITEM
+          material: SHULKER_SHELL
+          amount: 1
+        - type: ITEM
+          material: EXPERIENCE_BOTTLE
+          amount: 33
+      exsio:
+        - type: ITEM
+          material: ENCHANTED_GOLDEN_APPLE
+          amount: 1
+        - type: ITEM
           material: DIAMOND_BLOCK
           amount: 1
         - type: ITEM
-          material: GOLD_INGOT
-          amount: 4
-      exsio:
-        - type: ITEM
-          material: TRIDENT
+          material: TOTEM_OF_UNDYING
           amount: 1
-        - type: ITEM
-          material: ENDER_PEARL
-          amount: 4
-        - type: ITEM
-          material: EMERALD
-          amount: 8
   114:
     required-xp: 100
     rewards:
@@ -2927,43 +2927,43 @@ levels:
           amount: 6
           name: '&b6 Diamond 💎'
         - type: ITEM
-          material: DIAMOND
+          material: GOLDEN_APPLE
           amount: 2
       sio:
         - type: ITEM
-          material: DIAMOND
-          amount: 10
+          material: NETHERITE_SCRAP
+          amount: 2
       exsio:
         - type: ITEM
-          material: DIAMOND_BLOCK
-          amount: 3
+          material: SHULKER_SHELL
+          amount: 7
   115:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: GOLDEN_CARROT
-          amount: 24
-        - type: ITEM
-          material: COOKED_BEEF
+          material: OBSIDIAN
           amount: 12
+        - type: ITEM
+          material: PRISMARINE_SHARD
+          amount: 16
       sio:
         - type: MONEY
           amount: 65000
           name: '&aRp 65.000'
         - type: ITEM
-          material: EMERALD_BLOCK
-          amount: 2
+          material: SHULKER_SHELL
+          amount: 1
         - type: ITEM
-          material: GOLD_INGOT
-          amount: 4
+          material: EXPERIENCE_BOTTLE
+          amount: 33
       exsio:
         - type: ITEM
-          material: ANCIENT_DEBRIS
+          material: ENCHANTED_GOLDEN_APPLE
           amount: 2
         - type: ITEM
-          material: GOLDEN_CARROT
-          amount: 16
+          material: DIAMOND_BLOCK
+          amount: 3
   116:
     required-xp: 100
     rewards:
@@ -2972,49 +2972,49 @@ levels:
           amount: 135
           name: '&e135 Battle Coins'
         - type: ITEM
-          material: EMERALD
-          amount: 12
+          material: GOLD_BLOCK
+          amount: 2
       sio:
         - type: ITEM
-          material: GOLDEN_CARROT
-          amount: 16
+          material: EXPERIENCE_BOTTLE
+          amount: 31
         - type: ITEM
-          material: REDSTONE
-          amount: 16
+          material: CRYING_OBSIDIAN
+          amount: 10
         - type: ITEM
-          material: IRON_INGOT
-          amount: 6
+          material: DIAMOND_BLOCK
+          amount: 1
       exsio:
+        - type: ITEM
+          material: SHULKER_BOX
+          amount: 1
         - type: ITEM
           material: NETHERITE_SCRAP
           amount: 1
         - type: ITEM
-          material: ENDER_PEARL
-          amount: 4
-        - type: ITEM
-          material: EMERALD
-          amount: 8
+          material: SHULKER_SHELL
+          amount: 2
   117:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: IRON_BLOCK
-          amount: 5
+          material: GOLD_BLOCK
+          amount: 3
       sio:
         - type: ITEM
-          material: SHULKER_SHELL
+          material: ENCHANTED_GOLDEN_APPLE
           amount: 2
       exsio:
         - type: MONEY
           amount: 135000
           name: '&aRp 135.000'
         - type: ITEM
-          material: SHULKER_SHELL
+          material: TRIDENT
           amount: 1
         - type: ITEM
-          material: OBSIDIAN
-          amount: 6
+          material: NETHERITE_SCRAP
+          amount: 1
   118:
     required-xp: 100
     rewards:
@@ -3023,45 +3023,45 @@ levels:
           amount: 25000
           name: '&aRp 25.000'
         - type: ITEM
-          material: EXPERIENCE_BOTTLE
+          material: FIREWORK_ROCKET
           amount: 32
       sio:
         - type: ITEM
-          material: ANCIENT_DEBRIS
-          amount: 1
+          material: DRAGON_BREATH
+          amount: 6
         - type: ITEM
-          material: EXPERIENCE_BOTTLE
-          amount: 16
+          material: EMERALD_BLOCK
+          amount: 4
       exsio:
         - type: ITEM
-          material: WITHER_SKELETON_SKULL
-          amount: 1
+          material: ANCIENT_DEBRIS
+          amount: 3
         - type: ITEM
-          material: GOLDEN_CARROT
-          amount: 16
+          material: SHULKER_SHELL
+          amount: 4
   119:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: FIREWORK_ROCKET
-          amount: 16
+          material: BLAZE_POWDER
+          amount: 5
         - type: ITEM
-          material: TORCH
-          amount: 16
+          material: GLISTERING_MELON_SLICE
+          amount: 10
         - type: ITEM
-          material: APPLE
-          amount: 8
+          material: EMERALD
+          amount: 10
       sio:
         - type: ITEM
-          material: DIAMOND_BLOCK
+          material: ANCIENT_DEBRIS
           amount: 1
         - type: ITEM
-          material: REDSTONE
-          amount: 16
+          material: DRAGON_BREATH
+          amount: 3
         - type: ITEM
-          material: IRON_INGOT
-          amount: 6
+          material: EMERALD_BLOCK
+          amount: 2
       exsio:
         - type: CURRENCY
           amount: 300
@@ -3070,154 +3070,154 @@ levels:
           material: TRIDENT
           amount: 1
         - type: ITEM
-          material: OBSIDIAN
-          amount: 6
+          material: TOTEM_OF_UNDYING
+          amount: 1
   120:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: DIAMOND
-          amount: 3
+          material: PRISMARINE_SHARD
+          amount: 28
       sio:
         - type: ITEM
-          material: DIAMOND
-          amount: 10
+          material: NETHERITE_SCRAP
+          amount: 2
       exsio:
         - type: ITEM
-          material: DIAMOND_BLOCK
+          material: TOTEM_OF_UNDYING
           amount: 3
   121:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: GOLDEN_CARROT
-          amount: 24
+          material: GOLD_BLOCK
+          amount: 2
         - type: ITEM
-          material: COOKED_BEEF
+          material: OBSIDIAN
           amount: 12
       sio:
         - type: ITEM
-          material: EMERALD_BLOCK
-          amount: 4
-        - type: ITEM
-          material: EXPERIENCE_BOTTLE
+          material: CRYING_OBSIDIAN
           amount: 16
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 2
       exsio:
         - type: CURRENCY
           currency-id: diamond
           amount: 36
           name: '&b36 Diamond 💎'
         - type: ITEM
-          material: ANCIENT_DEBRIS
+          material: NETHERITE_INGOT
           amount: 1
         - type: ITEM
-          material: OBSIDIAN
-          amount: 6
+          material: EXPERIENCE_BOTTLE
+          amount: 44
   122:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
           material: EMERALD
-          amount: 6
+          amount: 10
         - type: ITEM
-          material: TORCH
-          amount: 16
+          material: FIREWORK_ROCKET
+          amount: 20
         - type: ITEM
-          material: APPLE
-          amount: 8
+          material: ENDER_PEARL
+          amount: 5
       sio:
         - type: CURRENCY
           amount: 185
           name: '&e185 Battle Coins'
         - type: ITEM
-          material: GOLDEN_CARROT
-          amount: 32
+          material: EXPERIENCE_BOTTLE
+          amount: 48
       exsio:
         - type: ITEM
-          material: NETHERITE_SCRAP
+          material: DIAMOND_BLOCK
           amount: 1
         - type: ITEM
-          material: ENDER_PEARL
-          amount: 4
+          material: TOTEM_OF_UNDYING
+          amount: 1
         - type: ITEM
-          material: EMERALD
-          amount: 8
+          material: NETHERITE_INGOT
+          amount: 1
   123:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
           material: IRON_BLOCK
-          amount: 5
+          amount: 7
       sio:
         - type: ITEM
-          material: SHULKER_SHELL
+          material: ENCHANTED_GOLDEN_APPLE
           amount: 2
       exsio:
         - type: ITEM
-          material: SHULKER_SHELL
-          amount: 3
+          material: ANCIENT_DEBRIS
+          amount: 5
   124:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: EXPERIENCE_BOTTLE
-          amount: 32
+          material: PRISMARINE_SHARD
+          amount: 16
         - type: ITEM
-          material: COOKED_BEEF
-          amount: 12
+          material: DIAMOND
+          amount: 3
       sio:
         - type: CURRENCY
           currency-id: diamond
           amount: 20
           name: '&b20 Diamond 💎'
         - type: ITEM
-          material: ANCIENT_DEBRIS
-          amount: 1
-      exsio:
-        - type: ITEM
-          material: WITHER_SKELETON_SKULL
-          amount: 1
-        - type: ITEM
-          material: GOLDEN_CARROT
-          amount: 16
-  125:
-    required-xp: 100
-    rewards:
-      citizen:
-        - type: ITEM
-          material: FIREWORK_ROCKET
-          amount: 16
-        - type: ITEM
-          material: TORCH
-          amount: 16
-        - type: ITEM
-          material: APPLE
-          amount: 8
-      sio:
-        - type: MONEY
-          amount: 70000
-          name: '&aRp 70.000'
-        - type: ITEM
-          material: DIAMOND_BLOCK
-          amount: 1
-        - type: ITEM
-          material: GOLD_INGOT
-          amount: 4
+          material: EXPERIENCE_BOTTLE
+          amount: 48
       exsio:
         - type: ITEM
           material: TRIDENT
           amount: 1
         - type: ITEM
-          material: ENDER_PEARL
-          amount: 4
+          material: NETHERITE_SCRAP
+          amount: 2
+  125:
+    required-xp: 100
+    rewards:
+      citizen:
         - type: ITEM
-          material: EMERALD
-          amount: 8
+          material: ENDER_PEARL
+          amount: 5
+        - type: ITEM
+          material: BLAZE_POWDER
+          amount: 5
+        - type: ITEM
+          material: GLISTERING_MELON_SLICE
+          amount: 10
+      sio:
+        - type: MONEY
+          amount: 70000
+          name: '&aRp 70.000'
+        - type: ITEM
+          material: SHULKER_SHELL
+          amount: 1
+        - type: ITEM
+          material: EXPERIENCE_BOTTLE
+          amount: 33
+      exsio:
+        - type: ITEM
+          material: ANCIENT_DEBRIS
+          amount: 1
+        - type: ITEM
+          material: DRAGON_BREATH
+          amount: 5
+        - type: ITEM
+          material: ENCHANTED_GOLDEN_APPLE
+          amount: 1
   126:
     required-xp: 100
     rewards:
@@ -3226,43 +3226,43 @@ levels:
           amount: 150
           name: '&e150 Battle Coins'
         - type: ITEM
-          material: DIAMOND
-          amount: 3
+          material: GOLDEN_CARROT
+          amount: 24
       sio:
         - type: ITEM
-          material: DIAMOND_BLOCK
+          material: ANCIENT_DEBRIS
           amount: 3
       exsio:
         - type: ITEM
-          material: NETHERITE_INGOT
-          amount: 2
+          material: DIAMOND_BLOCK
+          amount: 5
   127:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: EMERALD_BLOCK
-          amount: 2
+          material: IRON_BLOCK
+          amount: 4
         - type: ITEM
-          material: COOKED_BEEF
-          amount: 12
+          material: GOLD_BLOCK
+          amount: 2
       sio:
         - type: ITEM
-          material: SHULKER_SHELL
-          amount: 2
-        - type: ITEM
-          material: EXPERIENCE_BOTTLE
+          material: CRYING_OBSIDIAN
           amount: 16
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 2
       exsio:
         - type: MONEY
           amount: 145000
           name: '&aRp 145.000'
         - type: ITEM
-          material: ENCHANTED_GOLDEN_APPLE
-          amount: 1
+          material: DRAGON_BREATH
+          amount: 5
         - type: ITEM
-          material: OBSIDIAN
-          amount: 6
+          material: END_CRYSTAL
+          amount: 1
   128:
     required-xp: 100
     rewards:
@@ -3271,107 +3271,29 @@ levels:
           amount: 28000
           name: '&aRp 28.000'
         - type: ITEM
-          material: GOLD_BLOCK
-          amount: 2
+          material: DIAMOND
+          amount: 3
       sio:
         - type: ITEM
-          material: DRAGON_BREATH
-          amount: 2
+          material: EXPERIENCE_BOTTLE
+          amount: 31
         - type: ITEM
-          material: REDSTONE
-          amount: 16
-        - type: ITEM
-          material: IRON_INGOT
-          amount: 6
-      exsio:
+          material: CRYING_OBSIDIAN
+          amount: 10
         - type: ITEM
           material: DIAMOND_BLOCK
           amount: 1
-        - type: ITEM
-          material: ENDER_PEARL
-          amount: 4
-        - type: ITEM
-          material: EMERALD
-          amount: 8
-  129:
-    required-xp: 100
-    rewards:
-      citizen:
-        - type: ITEM
-          material: EXPERIENCE_BOTTLE
-          amount: 86
-      sio:
+      exsio:
         - type: ITEM
           material: TOTEM_OF_UNDYING
-          amount: 2
-      exsio:
-        - type: CURRENCY
-          amount: 330
-          name: '&e330 Battle Coins'
-        - type: ITEM
-          material: ANCIENT_DEBRIS
           amount: 1
         - type: ITEM
-          material: OBSIDIAN
-          amount: 6
-  130:
-    required-xp: 100
-    rewards:
-      citizen:
-        - type: ITEM
-          material: GOLDEN_APPLE
-          amount: 2
-        - type: ITEM
-          material: COOKED_BEEF
-          amount: 12
-      sio:
-        - type: ITEM
-          material: NETHERITE_SCRAP
+          material: NETHERITE_INGOT
           amount: 1
-        - type: ITEM
-          material: EXPERIENCE_BOTTLE
-          amount: 16
-      exsio:
         - type: ITEM
           material: SHULKER_BOX
           amount: 1
-        - type: ITEM
-          material: GOLDEN_CARROT
-          amount: 16
-  131:
-    required-xp: 100
-    rewards:
-      citizen:
-        - type: ITEM
-          material: ENDER_PEARL
-          amount: 4
-        - type: ITEM
-          material: TORCH
-          amount: 16
-        - type: ITEM
-          material: APPLE
-          amount: 8
-      sio:
-        - type: ITEM
-          material: ANCIENT_DEBRIS
-          amount: 1
-        - type: ITEM
-          material: REDSTONE
-          amount: 16
-        - type: ITEM
-          material: IRON_INGOT
-          amount: 6
-      exsio:
-        - type: ITEM
-          material: HEAVY_CORE
-          amount: 1
-        - type: ITEM
-          material: ENDER_PEARL
-          amount: 4
-        - type: ITEM
-          material: EMERALD
-          amount: 8
-  132:
+  129:
     required-xp: 100
     rewards:
       citizen:
@@ -3379,44 +3301,122 @@ levels:
           material: DIAMOND
           amount: 5
       sio:
+        - type: ITEM
+          material: ENCHANTED_GOLDEN_APPLE
+          amount: 2
+      exsio:
+        - type: CURRENCY
+          amount: 330
+          name: '&e330 Battle Coins'
+        - type: ITEM
+          material: NETHERITE_INGOT
+          amount: 1
+        - type: ITEM
+          material: SHULKER_BOX
+          amount: 1
+  130:
+    required-xp: 100
+    rewards:
+      citizen:
+        - type: ITEM
+          material: OBSIDIAN
+          amount: 12
+        - type: ITEM
+          material: PRISMARINE_SHARD
+          amount: 16
+      sio:
+        - type: ITEM
+          material: DRAGON_BREATH
+          amount: 6
+        - type: ITEM
+          material: EMERALD_BLOCK
+          amount: 4
+      exsio:
+        - type: ITEM
+          material: EXPERIENCE_BOTTLE
+          amount: 64
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 3
+  131:
+    required-xp: 100
+    rewards:
+      citizen:
+        - type: ITEM
+          material: FIREWORK_ROCKET
+          amount: 20
+        - type: ITEM
+          material: ENDER_PEARL
+          amount: 5
+        - type: ITEM
+          material: BLAZE_POWDER
+          amount: 5
+      sio:
+        - type: ITEM
+          material: ANCIENT_DEBRIS
+          amount: 1
+        - type: ITEM
+          material: DRAGON_BREATH
+          amount: 3
+        - type: ITEM
+          material: EMERALD_BLOCK
+          amount: 2
+      exsio:
+        - type: ITEM
+          material: SHULKER_SHELL
+          amount: 2
+        - type: ITEM
+          material: ENCHANTED_GOLDEN_APPLE
+          amount: 1
+        - type: ITEM
+          material: TRIDENT
+          amount: 1
+  132:
+    required-xp: 100
+    rewards:
+      citizen:
+        - type: ITEM
+          material: GOLD_BLOCK
+          amount: 3
+      sio:
         - type: CURRENCY
           amount: 205
           name: '&e205 Battle Coins'
         - type: ITEM
-          material: DIAMOND_BLOCK
-          amount: 2
+          material: EXPERIENCE_BOTTLE
+          amount: 48
       exsio:
         - type: ITEM
-          material: NETHERITE_INGOT
+          material: SHULKER_BOX
           amount: 2
   133:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: EMERALD_BLOCK
-          amount: 2
+          material: DIAMOND
+          amount: 3
         - type: ITEM
-          material: COOKED_BEEF
-          amount: 12
+          material: IRON_BLOCK
+          amount: 4
       sio:
         - type: ITEM
-          material: SHULKER_SHELL
-          amount: 2
-        - type: ITEM
-          material: EXPERIENCE_BOTTLE
+          material: CRYING_OBSIDIAN
           amount: 16
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 2
       exsio:
         - type: CURRENCY
           currency-id: diamond
           amount: 40
           name: '&b40 Diamond 💎'
         - type: ITEM
-          material: ENCHANTED_GOLDEN_APPLE
+          material: NETHERITE_SCRAP
           amount: 1
         - type: ITEM
-          material: OBSIDIAN
-          amount: 6
+          material: SHULKER_SHELL
+          amount: 2
   134:
     required-xp: 100
     rewards:
@@ -3426,49 +3426,49 @@ levels:
           amount: 7
           name: '&b7 Diamond 💎'
         - type: ITEM
-          material: GOLD_BLOCK
-          amount: 2
+          material: PRISMARINE_SHARD
+          amount: 16
       sio:
         - type: ITEM
-          material: DRAGON_BREATH
-          amount: 2
+          material: EXPERIENCE_BOTTLE
+          amount: 31
         - type: ITEM
-          material: REDSTONE
-          amount: 16
-        - type: ITEM
-          material: IRON_INGOT
-          amount: 6
-      exsio:
+          material: CRYING_OBSIDIAN
+          amount: 10
         - type: ITEM
           material: DIAMOND_BLOCK
           amount: 1
+      exsio:
         - type: ITEM
-          material: ENDER_PEARL
-          amount: 4
+          material: SHULKER_SHELL
+          amount: 2
         - type: ITEM
-          material: EMERALD
-          amount: 8
+          material: ENCHANTED_GOLDEN_APPLE
+          amount: 1
+        - type: ITEM
+          material: ANCIENT_DEBRIS
+          amount: 1
   135:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: EXPERIENCE_BOTTLE
-          amount: 86
+          material: PRISMARINE_SHARD
+          amount: 28
       sio:
         - type: MONEY
           amount: 75000
           name: '&aRp 75.000'
         - type: ITEM
-          material: TOTEM_OF_UNDYING
+          material: SHULKER_SHELL
           amount: 1
         - type: ITEM
-          material: GOLD_INGOT
-          amount: 4
+          material: EXPERIENCE_BOTTLE
+          amount: 33
       exsio:
         - type: ITEM
-          material: ANCIENT_DEBRIS
-          amount: 5
+          material: NETHERITE_INGOT
+          amount: 2
   136:
     required-xp: 100
     rewards:
@@ -3477,55 +3477,55 @@ levels:
           amount: 165
           name: '&e165 Battle Coins'
         - type: ITEM
-          material: GOLDEN_APPLE
-          amount: 2
+          material: BLAZE_POWDER
+          amount: 8
       sio:
         - type: ITEM
-          material: NETHERITE_SCRAP
-          amount: 1
+          material: DRAGON_BREATH
+          amount: 6
         - type: ITEM
-          material: EXPERIENCE_BOTTLE
-          amount: 16
+          material: EMERALD_BLOCK
+          amount: 4
       exsio:
+        - type: ITEM
+          material: END_CRYSTAL
+          amount: 2
         - type: ITEM
           material: SHULKER_BOX
           amount: 1
-        - type: ITEM
-          material: GOLDEN_CARROT
-          amount: 16
   137:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
+          material: EMERALD
+          amount: 10
+        - type: ITEM
+          material: FIREWORK_ROCKET
+          amount: 20
+        - type: ITEM
           material: ENDER_PEARL
-          amount: 4
-        - type: ITEM
-          material: TORCH
-          amount: 16
-        - type: ITEM
-          material: APPLE
-          amount: 8
+          amount: 5
       sio:
         - type: ITEM
           material: ANCIENT_DEBRIS
           amount: 1
         - type: ITEM
-          material: REDSTONE
-          amount: 16
+          material: DRAGON_BREATH
+          amount: 3
         - type: ITEM
-          material: IRON_INGOT
-          amount: 6
+          material: EMERALD_BLOCK
+          amount: 2
       exsio:
         - type: MONEY
           amount: 155000
           name: '&aRp 155.000'
         - type: ITEM
-          material: HEAVY_CORE
+          material: END_CRYSTAL
           amount: 1
         - type: ITEM
-          material: OBSIDIAN
-          amount: 6
+          material: SHULKER_BOX
+          amount: 1
   138:
     required-xp: 100
     rewards:
@@ -3534,156 +3534,156 @@ levels:
           amount: 30000
           name: '&aRp 30.000'
         - type: ITEM
-          material: DIAMOND
-          amount: 3
+          material: MAGMA_CREAM
+          amount: 8
       sio:
         - type: ITEM
-          material: DIAMOND_BLOCK
-          amount: 3
+          material: NETHERITE_SCRAP
+          amount: 2
       exsio:
         - type: ITEM
-          material: NETHERITE_INGOT
-          amount: 2
+          material: ENCHANTED_GOLDEN_APPLE
+          amount: 3
   139:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: EMERALD_BLOCK
-          amount: 2
+          material: PRISMARINE_SHARD
+          amount: 16
         - type: ITEM
-          material: COOKED_BEEF
-          amount: 12
+          material: DIAMOND
+          amount: 3
       sio:
         - type: ITEM
-          material: SHULKER_SHELL
-          amount: 2
-        - type: ITEM
-          material: EXPERIENCE_BOTTLE
+          material: CRYING_OBSIDIAN
           amount: 16
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 2
       exsio:
         - type: CURRENCY
           amount: 360
           name: '&e360 Battle Coins'
         - type: ITEM
-          material: ENCHANTED_GOLDEN_APPLE
+          material: TRIDENT
           amount: 1
         - type: ITEM
-          material: OBSIDIAN
-          amount: 6
+          material: TOTEM_OF_UNDYING
+          amount: 1
   140:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: GOLD_BLOCK
-          amount: 1
+          material: ENDER_PEARL
+          amount: 5
         - type: ITEM
-          material: TORCH
-          amount: 16
+          material: BLAZE_POWDER
+          amount: 5
         - type: ITEM
-          material: APPLE
-          amount: 8
+          material: GLISTERING_MELON_SLICE
+          amount: 10
       sio:
         - type: ITEM
-          material: DRAGON_BREATH
-          amount: 2
+          material: EXPERIENCE_BOTTLE
+          amount: 31
         - type: ITEM
-          material: REDSTONE
-          amount: 16
-        - type: ITEM
-          material: IRON_INGOT
-          amount: 6
-      exsio:
+          material: CRYING_OBSIDIAN
+          amount: 10
         - type: ITEM
           material: DIAMOND_BLOCK
           amount: 1
+      exsio:
         - type: ITEM
-          material: ENDER_PEARL
-          amount: 4
+          material: END_CRYSTAL
+          amount: 1
         - type: ITEM
-          material: EMERALD
-          amount: 8
+          material: TRIDENT
+          amount: 1
+        - type: ITEM
+          material: TOTEM_OF_UNDYING
+          amount: 1
   141:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: EXPERIENCE_BOTTLE
-          amount: 86
+          material: OBSIDIAN
+          amount: 21
       sio:
         - type: CURRENCY
           currency-id: diamond
           amount: 22
           name: '&b22 Diamond 💎'
         - type: ITEM
-          material: TOTEM_OF_UNDYING
+          material: SHULKER_SHELL
           amount: 1
         - type: ITEM
-          material: GOLD_INGOT
-          amount: 4
+          material: EXPERIENCE_BOTTLE
+          amount: 33
       exsio:
         - type: ITEM
-          material: ANCIENT_DEBRIS
-          amount: 5
+          material: ENCHANTED_GOLDEN_APPLE
+          amount: 3
   142:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: GOLDEN_APPLE
-          amount: 2
+          material: IRON_BLOCK
+          amount: 4
         - type: ITEM
-          material: COOKED_BEEF
-          amount: 12
+          material: GOLD_BLOCK
+          amount: 2
       sio:
         - type: CURRENCY
           amount: 225
           name: '&e225 Battle Coins'
         - type: ITEM
-          material: NETHERITE_SCRAP
-          amount: 1
+          material: EXPERIENCE_BOTTLE
+          amount: 48
       exsio:
         - type: ITEM
-          material: SHULKER_BOX
-          amount: 1
+          material: DRAGON_BREATH
+          amount: 8
         - type: ITEM
-          material: GOLDEN_CARROT
-          amount: 16
+          material: END_CRYSTAL
+          amount: 2
   143:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: ENDER_PEARL
-          amount: 4
+          material: GLISTERING_MELON_SLICE
+          amount: 10
         - type: ITEM
-          material: TORCH
-          amount: 16
+          material: EMERALD
+          amount: 10
         - type: ITEM
-          material: APPLE
-          amount: 8
+          material: FIREWORK_ROCKET
+          amount: 20
       sio:
         - type: ITEM
           material: ANCIENT_DEBRIS
           amount: 1
         - type: ITEM
-          material: REDSTONE
-          amount: 16
+          material: DRAGON_BREATH
+          amount: 3
         - type: ITEM
-          material: IRON_INGOT
-          amount: 6
+          material: EMERALD_BLOCK
+          amount: 2
       exsio:
         - type: CURRENCY
           currency-id: diamond
           amount: 42
           name: '&b42 Diamond 💎'
         - type: ITEM
-          material: HEAVY_CORE
-          amount: 1
+          material: EXPERIENCE_BOTTLE
+          amount: 44
         - type: ITEM
-          material: OBSIDIAN
-          amount: 6
+          material: DIAMOND_BLOCK
+          amount: 2
   144:
     required-xp: 100
     rewards:
@@ -3696,39 +3696,39 @@ levels:
           amount: 80000
           name: '&aRp 80.000'
         - type: ITEM
-          material: DIAMOND_BLOCK
-          amount: 2
+          material: EXPERIENCE_BOTTLE
+          amount: 48
       exsio:
         - type: ITEM
-          material: NETHERITE_INGOT
-          amount: 2
+          material: SHULKER_SHELL
+          amount: 7
   145:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: EMERALD_BLOCK
-          amount: 2
-        - type: ITEM
-          material: COOKED_BEEF
+          material: OBSIDIAN
           amount: 12
+        - type: ITEM
+          material: PRISMARINE_SHARD
+          amount: 16
       sio:
         - type: ITEM
-          material: SHULKER_SHELL
-          amount: 2
-        - type: ITEM
-          material: EXPERIENCE_BOTTLE
+          material: CRYING_OBSIDIAN
           amount: 16
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 2
       exsio:
         - type: MONEY
           amount: 165000
           name: '&aRp 165.000'
         - type: ITEM
-          material: ENCHANTED_GOLDEN_APPLE
-          amount: 1
+          material: EXPERIENCE_BOTTLE
+          amount: 44
         - type: ITEM
-          material: OBSIDIAN
-          amount: 6
+          material: ANCIENT_DEBRIS
+          amount: 2
   146:
     required-xp: 100
     rewards:
@@ -3741,45 +3741,45 @@ levels:
           amount: 2
       sio:
         - type: ITEM
-          material: DRAGON_BREATH
-          amount: 2
+          material: EXPERIENCE_BOTTLE
+          amount: 31
         - type: ITEM
-          material: REDSTONE
-          amount: 16
-        - type: ITEM
-          material: IRON_INGOT
-          amount: 6
-      exsio:
+          material: CRYING_OBSIDIAN
+          amount: 10
         - type: ITEM
           material: DIAMOND_BLOCK
           amount: 1
+      exsio:
         - type: ITEM
-          material: ENDER_PEARL
-          amount: 4
+          material: SHULKER_BOX
+          amount: 1
         - type: ITEM
-          material: EMERALD
-          amount: 8
+          material: NETHERITE_SCRAP
+          amount: 1
+        - type: ITEM
+          material: SHULKER_SHELL
+          amount: 2
   147:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: EXPERIENCE_BOTTLE
-          amount: 86
+          material: GOLD_BLOCK
+          amount: 3
       sio:
         - type: ITEM
-          material: TOTEM_OF_UNDYING
+          material: ENCHANTED_GOLDEN_APPLE
           amount: 2
       exsio:
         - type: CURRENCY
           amount: 400
           name: '&e400 Battle Coins'
         - type: ITEM
-          material: ANCIENT_DEBRIS
-          amount: 1
+          material: DIAMOND_BLOCK
+          amount: 2
         - type: ITEM
-          material: OBSIDIAN
-          amount: 6
+          material: TOTEM_OF_UNDYING
+          amount: 1
   148:
     required-xp: 100
     rewards:
@@ -3788,55 +3788,55 @@ levels:
           amount: 35000
           name: '&aRp 35.000'
         - type: ITEM
-          material: GOLDEN_APPLE
-          amount: 2
+          material: FIREWORK_ROCKET
+          amount: 32
       sio:
         - type: ITEM
-          material: NETHERITE_SCRAP
-          amount: 1
+          material: DRAGON_BREATH
+          amount: 6
         - type: ITEM
-          material: EXPERIENCE_BOTTLE
-          amount: 16
+          material: EMERALD_BLOCK
+          amount: 4
       exsio:
         - type: ITEM
-          material: SHULKER_BOX
-          amount: 1
+          material: NETHERITE_SCRAP
+          amount: 2
         - type: ITEM
-          material: GOLDEN_CARROT
-          amount: 16
+          material: NETHERITE_INGOT
+          amount: 1
   149:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: ENDER_PEARL
-          amount: 4
+          material: BLAZE_POWDER
+          amount: 5
         - type: ITEM
-          material: TORCH
-          amount: 16
+          material: GLISTERING_MELON_SLICE
+          amount: 10
         - type: ITEM
-          material: APPLE
-          amount: 8
+          material: EMERALD
+          amount: 10
       sio:
         - type: ITEM
           material: ANCIENT_DEBRIS
           amount: 1
         - type: ITEM
-          material: REDSTONE
-          amount: 16
+          material: DRAGON_BREATH
+          amount: 3
         - type: ITEM
-          material: IRON_INGOT
-          amount: 6
+          material: EMERALD_BLOCK
+          amount: 2
       exsio:
         - type: ITEM
-          material: HEAVY_CORE
+          material: TRIDENT
           amount: 1
         - type: ITEM
-          material: ENDER_PEARL
-          amount: 4
+          material: TOTEM_OF_UNDYING
+          amount: 1
         - type: ITEM
-          material: EMERALD
-          amount: 8
+          material: END_CRYSTAL
+          amount: 1
   150:
     required-xp: 100
     rewards:
@@ -3881,212 +3881,59 @@ levels:
     rewards:
       citizen:
         - type: ITEM
-          material: EMERALD_BLOCK
-          amount: 3
+          material: ENCHANTED_GOLDEN_APPLE
+          amount: 1
         - type: ITEM
-          material: COOKED_BEEF
+          material: ENDER_EYE
           amount: 12
       sio:
         - type: ITEM
+          material: HEAVY_CORE
+          amount: 1
+        - type: ITEM
           material: NETHERITE_SCRAP
           amount: 2
-        - type: ITEM
-          material: EXPERIENCE_BOTTLE
-          amount: 16
       exsio:
         - type: ITEM
           material: NETHERITE_BLOCK
           amount: 1
         - type: ITEM
-          material: GOLDEN_CARROT
-          amount: 16
+          material: SHULKER_BOX
+          amount: 2
   152:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: TOTEM_OF_UNDYING
-          amount: 1
-        - type: ITEM
-          material: TORCH
-          amount: 16
-        - type: ITEM
-          material: APPLE
-          amount: 8
-      sio:
-        - type: ITEM
-          material: NETHERITE_INGOT
-          amount: 1
-        - type: ITEM
-          material: REDSTONE
-          amount: 16
-        - type: ITEM
-          material: IRON_INGOT
-          amount: 6
-      exsio:
-        - type: ITEM
-          material: BEACON
-          amount: 1
-        - type: ITEM
-          material: ENDER_PEARL
-          amount: 4
-        - type: ITEM
-          material: EMERALD
-          amount: 8
-  153:
-    required-xp: 100
-    rewards:
-      citizen:
-        - type: ITEM
-          material: EXPERIENCE_BOTTLE
-          amount: 115
-      sio:
-        - type: ITEM
-          material: SHULKER_BOX
-          amount: 2
-      exsio:
-        - type: CURRENCY
-          amount: 450
-          name: '&e450 Battle Coins'
-        - type: ITEM
-          material: ENCHANTED_GOLDEN_APPLE
-          amount: 1
-        - type: ITEM
-          material: OBSIDIAN
-          amount: 6
-  154:
-    required-xp: 100
-    rewards:
-      citizen:
-        - type: ITEM
-          material: GOLDEN_CARROT
-          amount: 48
-        - type: ITEM
-          material: COOKED_BEEF
-          amount: 12
-      sio:
-        - type: CURRENCY
-          amount: 275
-          name: '&e275 Battle Coins'
-        - type: ITEM
-          material: ENCHANTED_GOLDEN_APPLE
-          amount: 1
-      exsio:
-        - type: ITEM
-          material: TOTEM_OF_UNDYING
-          amount: 2
-        - type: ITEM
-          material: GOLDEN_CARROT
-          amount: 16
-  155:
-    required-xp: 100
-    rewards:
-      citizen:
-        - type: ITEM
-          material: DIAMOND_BLOCK
-          amount: 1
-        - type: ITEM
-          material: TORCH
-          amount: 16
-        - type: ITEM
-          material: APPLE
-          amount: 8
-      sio:
-        - type: MONEY
-          amount: 90000
-          name: '&aRp 90.000'
-        - type: ITEM
-          material: DIAMOND_BLOCK
-          amount: 1
-        - type: ITEM
-          material: GOLD_INGOT
-          amount: 4
-      exsio:
-        - type: ITEM
-          material: WITHER_SKELETON_SKULL
-          amount: 1
-        - type: ITEM
-          material: ENDER_PEARL
-          amount: 4
-        - type: ITEM
-          material: EMERALD
-          amount: 8
-  156:
-    required-xp: 100
-    rewards:
-      citizen:
-        - type: CURRENCY
-          amount: 220
-          name: '&e220 Battle Coins'
-        - type: ITEM
           material: EMERALD_BLOCK
-          amount: 3
-      sio:
+          amount: 1
         - type: ITEM
           material: NETHERITE_SCRAP
-          amount: 3
-      exsio:
-        - type: ITEM
-          material: NETHERITE_INGOT
-          amount: 3
-  157:
-    required-xp: 100
-    rewards:
-      citizen:
-        - type: ITEM
-          material: TOTEM_OF_UNDYING
           amount: 1
         - type: ITEM
-          material: COOKED_BEEF
-          amount: 12
+          material: SHULKER_SHELL
+          amount: 1
       sio:
         - type: ITEM
-          material: NETHERITE_INGOT
+          material: GOLD_BLOCK
+          amount: 3
+        - type: ITEM
+          material: OMINOUS_BOTTLE
           amount: 1
         - type: ITEM
-          material: EXPERIENCE_BOTTLE
-          amount: 16
+          material: ENCHANTED_GOLDEN_APPLE
+          amount: 1
       exsio:
-        - type: MONEY
-          amount: 175000
-          name: '&aRp 175.000'
         - type: ITEM
           material: NETHERITE_BLOCK
           amount: 1
         - type: ITEM
-          material: OBSIDIAN
-          amount: 6
-  158:
-    required-xp: 100
-    rewards:
-      citizen:
-        - type: MONEY
-          amount: 40000
-          name: '&aRp 40.000'
-        - type: ITEM
-          material: EXPERIENCE_BOTTLE
-          amount: 64
-      sio:
-        - type: ITEM
           material: SHULKER_BOX
           amount: 1
         - type: ITEM
-          material: REDSTONE
-          amount: 16
-        - type: ITEM
-          material: IRON_INGOT
-          amount: 6
-      exsio:
-        - type: ITEM
-          material: BEACON
-          amount: 1
-        - type: ITEM
-          material: ENDER_PEARL
-          amount: 4
-        - type: ITEM
-          material: EMERALD
-          amount: 8
-  159:
+          material: EXPERIENCE_BOTTLE
+          amount: 41
+  153:
     required-xp: 100
     rewards:
       citizen:
@@ -4095,122 +3942,275 @@ levels:
           amount: 86
       sio:
         - type: ITEM
-          material: ENCHANTED_GOLDEN_APPLE
+          material: EMERALD_BLOCK
+          amount: 10
+      exsio:
+        - type: CURRENCY
+          amount: 450
+          name: '&e450 Battle Coins'
+        - type: ITEM
+          material: NETHER_STAR
+          amount: 1
+        - type: ITEM
+          material: WIND_CHARGE
+          amount: 22
+  154:
+    required-xp: 100
+    rewards:
+      citizen:
+        - type: ITEM
+          material: ECHO_SHARD
           amount: 2
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 1
+      sio:
+        - type: CURRENCY
+          amount: 275
+          name: '&e275 Battle Coins'
+        - type: ITEM
+          material: HEAVY_CORE
+          amount: 1
+      exsio:
+        - type: ITEM
+          material: NETHERITE_INGOT
+          amount: 2
+        - type: ITEM
+          material: ENCHANTED_GOLDEN_APPLE
+          amount: 3
+  155:
+    required-xp: 100
+    rewards:
+      citizen:
+        - type: ITEM
+          material: SHULKER_SHELL
+          amount: 1
+        - type: ITEM
+          material: DRAGON_BREATH
+          amount: 2
+        - type: ITEM
+          material: DIAMOND
+          amount: 5
+      sio:
+        - type: MONEY
+          amount: 90000
+          name: '&aRp 90.000'
+        - type: ITEM
+          material: TOTEM_OF_UNDYING
+          amount: 1
+        - type: ITEM
+          material: GOLD_BLOCK
+          amount: 4
+      exsio:
+        - type: ITEM
+          material: NETHERITE_INGOT
+          amount: 1
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 3
+        - type: ITEM
+          material: NETHER_STAR
+          amount: 1
+  156:
+    required-xp: 100
+    rewards:
+      citizen:
+        - type: CURRENCY
+          amount: 220
+          name: '&e220 Battle Coins'
+        - type: ITEM
+          material: EXPERIENCE_BOTTLE
+          amount: 64
+      sio:
+        - type: ITEM
+          material: HEAVY_CORE
+          amount: 2
+      exsio:
+        - type: ITEM
+          material: NETHERITE_BLOCK
+          amount: 2
+  157:
+    required-xp: 100
+    rewards:
+      citizen:
+        - type: ITEM
+          material: GOLDEN_CARROT
+          amount: 48
+        - type: ITEM
+          material: ENCHANTED_GOLDEN_APPLE
+          amount: 1
+      sio:
+        - type: ITEM
+          material: EMERALD_BLOCK
+          amount: 6
+        - type: ITEM
+          material: BREEZE_ROD
+          amount: 4
+      exsio:
+        - type: MONEY
+          amount: 175000
+          name: '&aRp 175.000'
+        - type: ITEM
+          material: SHULKER_BOX
+          amount: 1
+        - type: ITEM
+          material: EXPERIENCE_BOTTLE
+          amount: 44
+  158:
+    required-xp: 100
+    rewards:
+      citizen:
+        - type: MONEY
+          amount: 40000
+          name: '&aRp 40.000'
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 1
+      sio:
+        - type: ITEM
+          material: EMERALD_BLOCK
+          amount: 3
+        - type: ITEM
+          material: BREEZE_ROD
+          amount: 2
+        - type: ITEM
+          material: NETHERITE_INGOT
+          amount: 1
+      exsio:
+        - type: ITEM
+          material: ENCHANTED_GOLDEN_APPLE
+          amount: 1
+        - type: ITEM
+          material: NETHER_STAR
+          amount: 1
+        - type: ITEM
+          material: WIND_CHARGE
+          amount: 20
+  159:
+    required-xp: 100
+    rewards:
+      citizen:
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 2
+      sio:
+        - type: ITEM
+          material: GOLD_BLOCK
+          amount: 10
       exsio:
         - type: CURRENCY
           currency-id: diamond
           amount: 45
           name: '&b45 Diamond 💎'
         - type: ITEM
-          material: ENCHANTED_GOLDEN_APPLE
-          amount: 1
+          material: EXPERIENCE_BOTTLE
+          amount: 44
         - type: ITEM
-          material: OBSIDIAN
-          amount: 6
+          material: OMINOUS_TRIAL_KEY
+          amount: 1
   160:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: DIAMOND_BLOCK
-          amount: 1
-        - type: ITEM
-          material: COOKED_BEEF
+          material: ENDER_EYE
           amount: 12
+        - type: ITEM
+          material: ECHO_SHARD
+          amount: 2
       sio:
         - type: ITEM
-          material: DIAMOND_BLOCK
-          amount: 3
+          material: BREEZE_ROD
+          amount: 4
         - type: ITEM
-          material: EXPERIENCE_BOTTLE
-          amount: 16
+          material: NETHERITE_INGOT
+          amount: 1
       exsio:
         - type: ITEM
-          material: TOTEM_OF_UNDYING
-          amount: 2
+          material: WIND_CHARGE
+          amount: 32
         - type: ITEM
-          material: GOLDEN_CARROT
-          amount: 16
+          material: TOTEM_OF_UNDYING
+          amount: 3
   161:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: EMERALD_BLOCK
+          material: NETHERITE_SCRAP
           amount: 1
         - type: ITEM
-          material: TORCH
-          amount: 16
+          material: SHULKER_SHELL
+          amount: 1
         - type: ITEM
-          material: APPLE
-          amount: 8
+          material: DRAGON_BREATH
+          amount: 2
       sio:
         - type: CURRENCY
           currency-id: diamond
           amount: 25
           name: '&b25 Diamond 💎'
         - type: ITEM
-          material: NETHERITE_SCRAP
-          amount: 1
-        - type: ITEM
-          material: GOLD_INGOT
+          material: EMERALD_BLOCK
           amount: 4
+        - type: ITEM
+          material: BREEZE_ROD
+          amount: 2
       exsio:
         - type: ITEM
-          material: WITHER_SKELETON_SKULL
+          material: NETHERITE_BLOCK
           amount: 1
         - type: ITEM
-          material: ENDER_PEARL
-          amount: 4
+          material: DIAMOND_BLOCK
+          amount: 3
         - type: ITEM
-          material: EMERALD
-          amount: 8
+          material: NETHER_STAR
+          amount: 1
   162:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: TOTEM_OF_UNDYING
+          material: ENCHANTED_GOLDEN_APPLE
           amount: 2
       sio:
         - type: CURRENCY
           amount: 330
           name: '&e330 Battle Coins'
         - type: ITEM
-          material: NETHERITE_INGOT
-          amount: 1
+          material: BREEZE_ROD
+          amount: 4
       exsio:
         - type: ITEM
-          material: NETHERITE_INGOT
+          material: OMINOUS_TRIAL_KEY
           amount: 3
   163:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: EXPERIENCE_BOTTLE
-          amount: 64
-        - type: ITEM
-          material: COOKED_BEEF
-          amount: 12
-      sio:
-        - type: ITEM
-          material: SHULKER_BOX
+          material: DIAMOND_BLOCK
           amount: 1
         - type: ITEM
-          material: EXPERIENCE_BOTTLE
-          amount: 16
+          material: GOLDEN_CARROT
+          amount: 48
+      sio:
+        - type: ITEM
+          material: TOTEM_OF_UNDYING
+          amount: 2
+        - type: ITEM
+          material: GOLD_BLOCK
+          amount: 6
       exsio:
         - type: CURRENCY
           amount: 500
           name: '&e500 Battle Coins'
         - type: ITEM
-          material: NETHERITE_BLOCK
+          material: MACE
           amount: 1
         - type: ITEM
-          material: OBSIDIAN
-          amount: 6
+          material: NETHERITE_INGOT
+          amount: 1
   164:
     required-xp: 100
     rewards:
@@ -4220,49 +4220,49 @@ levels:
           amount: 7
           name: '&b7 Diamond 💎'
         - type: ITEM
-          material: GOLDEN_CARROT
-          amount: 48
+          material: ECHO_SHARD
+          amount: 2
       sio:
+        - type: ITEM
+          material: EXPERIENCE_BOTTLE
+          amount: 41
+        - type: ITEM
+          material: HEAVY_CORE
+          amount: 1
+        - type: ITEM
+          material: NETHERITE_SCRAP
+          amount: 1
+      exsio:
+        - type: ITEM
+          material: MACE
+          amount: 1
+        - type: ITEM
+          material: NETHERITE_INGOT
+          amount: 1
         - type: ITEM
           material: ENCHANTED_GOLDEN_APPLE
           amount: 1
-        - type: ITEM
-          material: REDSTONE
-          amount: 16
-        - type: ITEM
-          material: IRON_INGOT
-          amount: 6
-      exsio:
-        - type: ITEM
-          material: BEACON
-          amount: 1
-        - type: ITEM
-          material: ENDER_PEARL
-          amount: 4
-        - type: ITEM
-          material: EMERALD
-          amount: 8
   165:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: DIAMOND_BLOCK
-          amount: 2
+          material: ECHO_SHARD
+          amount: 3
       sio:
         - type: MONEY
           amount: 95000
           name: '&aRp 95.000'
         - type: ITEM
-          material: DIAMOND_BLOCK
+          material: ENCHANTED_GOLDEN_APPLE
           amount: 1
         - type: ITEM
-          material: GOLD_INGOT
-          amount: 4
+          material: EXPERIENCE_BOTTLE
+          amount: 44
       exsio:
         - type: ITEM
-          material: ENCHANTED_GOLDEN_APPLE
-          amount: 5
+          material: BEACON
+          amount: 2
   166:
     required-xp: 100
     rewards:
@@ -4271,55 +4271,55 @@ levels:
           amount: 270
           name: '&e270 Battle Coins'
         - type: ITEM
-          material: EMERALD_BLOCK
-          amount: 3
+          material: DRAGON_BREATH
+          amount: 4
       sio:
         - type: ITEM
-          material: NETHERITE_SCRAP
-          amount: 2
+          material: DIAMOND_BLOCK
+          amount: 3
         - type: ITEM
-          material: EXPERIENCE_BOTTLE
-          amount: 16
+          material: EMERALD_BLOCK
+          amount: 6
       exsio:
         - type: ITEM
-          material: TOTEM_OF_UNDYING
-          amount: 2
+          material: EXPERIENCE_BOTTLE
+          amount: 64
         - type: ITEM
-          material: GOLDEN_CARROT
-          amount: 16
+          material: OMINOUS_TRIAL_KEY
+          amount: 2
   167:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
+          material: EMERALD_BLOCK
+          amount: 1
+        - type: ITEM
+          material: NETHERITE_SCRAP
+          amount: 1
+        - type: ITEM
+          material: SHULKER_SHELL
+          amount: 1
+      sio:
+        - type: ITEM
+          material: SHULKER_BOX
+          amount: 1
+        - type: ITEM
           material: TOTEM_OF_UNDYING
           amount: 1
         - type: ITEM
-          material: TORCH
-          amount: 16
-        - type: ITEM
-          material: APPLE
-          amount: 8
-      sio:
-        - type: ITEM
-          material: NETHERITE_INGOT
+          material: HEAVY_CORE
           amount: 1
-        - type: ITEM
-          material: REDSTONE
-          amount: 16
-        - type: ITEM
-          material: IRON_INGOT
-          amount: 6
       exsio:
         - type: MONEY
           amount: 185000
           name: '&aRp 185.000'
         - type: ITEM
-          material: WITHER_SKELETON_SKULL
+          material: NETHER_STAR
           amount: 1
         - type: ITEM
-          material: OBSIDIAN
-          amount: 6
+          material: WIND_CHARGE
+          amount: 22
   168:
     required-xp: 100
     rewards:
@@ -4328,17 +4328,93 @@ levels:
           amount: 45000
           name: '&aRp 45.000'
         - type: ITEM
-          material: EXPERIENCE_BOTTLE
-          amount: 64
+          material: CRYING_OBSIDIAN
+          amount: 16
+      sio:
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 5
+      exsio:
+        - type: ITEM
+          material: MACE
+          amount: 2
+  169:
+    required-xp: 100
+    rewards:
+      citizen:
+        - type: ITEM
+          material: ECHO_SHARD
+          amount: 2
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 1
       sio:
         - type: ITEM
           material: SHULKER_BOX
+          amount: 1
+        - type: ITEM
+          material: EXPERIENCE_BOTTLE
+          amount: 64
+      exsio:
+        - type: CURRENCY
+          currency-id: diamond
+          amount: 47
+          name: '&b47 Diamond 💎'
+        - type: ITEM
+          material: TOTEM_OF_UNDYING
+          amount: 2
+        - type: ITEM
+          material: NETHER_STAR
+          amount: 1
+  170:
+    required-xp: 100
+    rewards:
+      citizen:
+        - type: ITEM
+          material: SHULKER_SHELL
+          amount: 1
+        - type: ITEM
+          material: DRAGON_BREATH
+          amount: 2
+        - type: ITEM
+          material: DIAMOND
+          amount: 5
+      sio:
+        - type: ITEM
+          material: NETHERITE_SCRAP
+          amount: 1
+        - type: ITEM
+          material: ENCHANTED_GOLDEN_APPLE
+          amount: 1
+        - type: ITEM
+          material: EXPERIENCE_BOTTLE
+          amount: 41
+      exsio:
+        - type: ITEM
+          material: NETHER_STAR
+          amount: 1
+        - type: ITEM
+          material: OMINOUS_TRIAL_KEY
+          amount: 1
+        - type: ITEM
+          material: TOTEM_OF_UNDYING
+          amount: 1
+  171:
+    required-xp: 100
+    rewards:
+      citizen:
+        - type: ITEM
+          material: ENDER_EYE
+          amount: 21
+      sio:
+        - type: ITEM
+          material: NETHERITE_INGOT
           amount: 2
       exsio:
         - type: ITEM
-          material: NETHERITE_INGOT
-          amount: 3
-  169:
+          material: EXPERIENCE_BOTTLE
+          amount: 115
+  172:
     required-xp: 100
     rewards:
       citizen:
@@ -4346,173 +4422,97 @@ levels:
           material: GOLDEN_CARROT
           amount: 48
         - type: ITEM
-          material: COOKED_BEEF
-          amount: 12
-      sio:
-        - type: ITEM
           material: ENCHANTED_GOLDEN_APPLE
           amount: 1
-        - type: ITEM
-          material: EXPERIENCE_BOTTLE
-          amount: 16
-      exsio:
-        - type: CURRENCY
-          currency-id: diamond
-          amount: 47
-          name: '&b47 Diamond 💎'
-        - type: ITEM
-          material: NETHERITE_BLOCK
-          amount: 1
-        - type: ITEM
-          material: OBSIDIAN
-          amount: 6
-  170:
-    required-xp: 100
-    rewards:
-      citizen:
-        - type: ITEM
-          material: DIAMOND_BLOCK
-          amount: 1
-        - type: ITEM
-          material: TORCH
-          amount: 16
-        - type: ITEM
-          material: APPLE
-          amount: 8
-      sio:
-        - type: ITEM
-          material: DIAMOND_BLOCK
-          amount: 1
-        - type: ITEM
-          material: REDSTONE
-          amount: 16
-        - type: ITEM
-          material: IRON_INGOT
-          amount: 6
-      exsio:
-        - type: ITEM
-          material: BEACON
-          amount: 1
-        - type: ITEM
-          material: ENDER_PEARL
-          amount: 4
-        - type: ITEM
-          material: EMERALD
-          amount: 8
-  171:
-    required-xp: 100
-    rewards:
-      citizen:
-        - type: ITEM
-          material: EMERALD_BLOCK
-          amount: 5
-      sio:
-        - type: ITEM
-          material: NETHERITE_SCRAP
-          amount: 3
-      exsio:
-        - type: ITEM
-          material: ENCHANTED_GOLDEN_APPLE
-          amount: 5
-  172:
-    required-xp: 100
-    rewards:
-      citizen:
-        - type: ITEM
-          material: TOTEM_OF_UNDYING
-          amount: 1
-        - type: ITEM
-          material: COOKED_BEEF
-          amount: 12
       sio:
         - type: CURRENCY
           amount: 400
           name: '&e400 Battle Coins'
         - type: ITEM
-          material: NETHERITE_INGOT
+          material: SHULKER_BOX
           amount: 1
       exsio:
         - type: ITEM
-          material: TOTEM_OF_UNDYING
-          amount: 2
+          material: EXPERIENCE_BOTTLE
+          amount: 64
         - type: ITEM
-          material: GOLDEN_CARROT
-          amount: 16
+          material: OMINOUS_TRIAL_KEY
+          amount: 2
   173:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: EXPERIENCE_BOTTLE
-          amount: 32
+          material: DIAMOND
+          amount: 5
         - type: ITEM
-          material: TORCH
-          amount: 16
-        - type: ITEM
-          material: APPLE
-          amount: 8
-      sio:
-        - type: ITEM
-          material: SHULKER_BOX
+          material: EMERALD_BLOCK
           amount: 1
         - type: ITEM
-          material: REDSTONE
-          amount: 16
+          material: NETHERITE_SCRAP
+          amount: 1
+      sio:
         - type: ITEM
-          material: IRON_INGOT
-          amount: 6
+          material: DIAMOND_BLOCK
+          amount: 1
+        - type: ITEM
+          material: GOLD_BLOCK
+          amount: 3
+        - type: ITEM
+          material: OMINOUS_BOTTLE
+          amount: 1
       exsio:
         - type: CURRENCY
           amount: 550
           name: '&e550 Battle Coins'
         - type: ITEM
-          material: WITHER_SKELETON_SKULL
+          material: NETHER_STAR
           amount: 1
         - type: ITEM
-          material: OBSIDIAN
-          amount: 6
+          material: WIND_CHARGE
+          amount: 22
   174:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: GOLDEN_CARROT
-          amount: 86
+          material: DIAMOND_BLOCK
+          amount: 2
       sio:
         - type: ITEM
-          material: ENCHANTED_GOLDEN_APPLE
+          material: SHULKER_BOX
           amount: 2
       exsio:
         - type: ITEM
-          material: NETHERITE_INGOT
-          amount: 3
+          material: WIND_CHARGE
+          amount: 57
   175:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: DIAMOND_BLOCK
-          amount: 1
-        - type: ITEM
-          material: COOKED_BEEF
+          material: ENDER_EYE
           amount: 12
+        - type: ITEM
+          material: ECHO_SHARD
+          amount: 2
       sio:
         - type: MONEY
           amount: 50000
           name: '&aRp 50.000'
         - type: ITEM
-          material: DIAMOND_BLOCK
+          material: NETHERITE_INGOT
           amount: 1
         - type: ITEM
-          material: GOLD_INGOT
-          amount: 4
+          material: DIAMOND_BLOCK
+          amount: 2
       exsio:
+        - type: ITEM
+          material: MACE
+          amount: 1
         - type: ITEM
           material: NETHERITE_BLOCK
           amount: 1
-        - type: ITEM
-          material: GOLDEN_CARROT
-          amount: 16
   176:
     required-xp: 100
     rewards:
@@ -4521,49 +4521,49 @@ levels:
           amount: 350
           name: '&e350 Battle Coins'
         - type: ITEM
-          material: EXPERIENCE_BOTTLE
-          amount: 64
+          material: ENCHANTED_GOLDEN_APPLE
+          amount: 1
       sio:
+        - type: ITEM
+          material: NETHERITE_SCRAP
+          amount: 1
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 1
+        - type: ITEM
+          material: EMERALD_BLOCK
+          amount: 3
+      exsio:
+        - type: ITEM
+          material: WIND_CHARGE
+          amount: 20
         - type: ITEM
           material: NETHERITE_BLOCK
           amount: 1
         - type: ITEM
-          material: REDSTONE
-          amount: 16
-        - type: ITEM
-          material: IRON_INGOT
-          amount: 6
-      exsio:
-        - type: ITEM
           material: BEACON
           amount: 1
-        - type: ITEM
-          material: ENDER_PEARL
-          amount: 4
-        - type: ITEM
-          material: EMERALD
-          amount: 8
   177:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: GOLD_BLOCK
-          amount: 7
+          material: ENCHANTED_GOLDEN_APPLE
+          amount: 2
       sio:
         - type: ITEM
-          material: TOTEM_OF_UNDYING
-          amount: 3
+          material: NETHERITE_INGOT
+          amount: 2
       exsio:
         - type: MONEY
           amount: 195000
           name: '&aRp 195.000'
         - type: ITEM
-          material: ENCHANTED_GOLDEN_APPLE
-          amount: 2
+          material: NETHER_STAR
+          amount: 1
         - type: ITEM
-          material: OBSIDIAN
-          amount: 6
+          material: WIND_CHARGE
+          amount: 22
   178:
     required-xp: 100
     rewards:
@@ -4576,143 +4576,143 @@ levels:
           amount: 1
       sio:
         - type: ITEM
-          material: ENCHANTED_GOLDEN_APPLE
+          material: OMINOUS_BOTTLE
           amount: 2
         - type: ITEM
-          material: EXPERIENCE_BOTTLE
-          amount: 16
+          material: ENCHANTED_GOLDEN_APPLE
+          amount: 2
       exsio:
         - type: ITEM
-          material: WITHER_SKELETON_SKULL
-          amount: 3
+          material: DIAMOND_BLOCK
+          amount: 5
         - type: ITEM
-          material: GOLDEN_CARROT
-          amount: 16
+          material: NETHER_STAR
+          amount: 1
   179:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: ENCHANTED_GOLDEN_APPLE
+          material: DRAGON_BREATH
+          amount: 2
+        - type: ITEM
+          material: DIAMOND
+          amount: 5
+        - type: ITEM
+          material: EMERALD_BLOCK
           amount: 1
-        - type: ITEM
-          material: TORCH
-          amount: 16
-        - type: ITEM
-          material: APPLE
-          amount: 8
       sio:
         - type: CURRENCY
           currency-id: diamond
           amount: 25
           name: '&b25 Diamond 💎'
         - type: ITEM
-          material: DIAMOND_BLOCK
-          amount: 2
+          material: NETHERITE_SCRAP
+          amount: 1
         - type: ITEM
-          material: GOLD_INGOT
-          amount: 4
+          material: ENCHANTED_GOLDEN_APPLE
+          amount: 1
       exsio:
         - type: CURRENCY
           currency-id: diamond
           amount: 50
           name: '&b50 Diamond 💎'
         - type: ITEM
-          material: NETHERITE_UPGRADE_SMITHING_TEMPLATE
+          material: SHULKER_BOX
           amount: 1
         - type: ITEM
-          material: OBSIDIAN
-          amount: 6
+          material: EXPERIENCE_BOTTLE
+          amount: 44
   180:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: DIAMOND_BLOCK
+          material: ECHO_SHARD
           amount: 3
       sio:
         - type: ITEM
-          material: NETHERITE_INGOT
-          amount: 2
+          material: DIAMOND_BLOCK
+          amount: 5
       exsio:
         - type: ITEM
-          material: NETHERITE_BLOCK
+          material: SHULKER_BOX
           amount: 3
   181:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: EXPERIENCE_BOTTLE
-          amount: 64
+          material: ENCHANTED_GOLDEN_APPLE
+          amount: 1
         - type: ITEM
-          material: COOKED_BEEF
+          material: ENDER_EYE
           amount: 12
       sio:
         - type: ITEM
-          material: NETHERITE_BLOCK
-          amount: 1
+          material: BREEZE_ROD
+          amount: 4
         - type: ITEM
-          material: EXPERIENCE_BOTTLE
-          amount: 16
+          material: NETHERITE_INGOT
+          amount: 1
       exsio:
         - type: ITEM
-          material: HEAVY_CORE
-          amount: 1
+          material: OMINOUS_TRIAL_KEY
+          amount: 2
         - type: ITEM
-          material: GOLDEN_CARROT
-          amount: 16
+          material: DIAMOND_BLOCK
+          amount: 5
   182:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: GOLD_BLOCK
-          amount: 2
+          material: EMERALD_BLOCK
+          amount: 1
         - type: ITEM
-          material: TORCH
-          amount: 16
+          material: NETHERITE_SCRAP
+          amount: 1
         - type: ITEM
-          material: APPLE
-          amount: 8
+          material: SHULKER_SHELL
+          amount: 1
       sio:
         - type: CURRENCY
           amount: 500
           name: '&e500 Battle Coins'
         - type: ITEM
-          material: TOTEM_OF_UNDYING
+          material: ENCHANTED_GOLDEN_APPLE
           amount: 2
       exsio:
+        - type: ITEM
+          material: TOTEM_OF_UNDYING
+          amount: 1
         - type: ITEM
           material: BEACON
           amount: 1
         - type: ITEM
-          material: ENDER_PEARL
-          amount: 4
-        - type: ITEM
-          material: EMERALD
-          amount: 8
+          material: MACE
+          amount: 1
   183:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: NETHERITE_SCRAP
-          amount: 2
+          material: GOLDEN_CARROT
+          amount: 86
       sio:
         - type: ITEM
-          material: ENCHANTED_GOLDEN_APPLE
-          amount: 3
+          material: NETHERITE_INGOT
+          amount: 2
       exsio:
         - type: CURRENCY
           amount: 600
           name: '&e600 Battle Coins'
         - type: ITEM
+          material: OMINOUS_TRIAL_KEY
+          amount: 1
+        - type: ITEM
           material: ENCHANTED_GOLDEN_APPLE
           amount: 2
-        - type: ITEM
-          material: OBSIDIAN
-          amount: 6
   184:
     required-xp: 100
     rewards:
@@ -4722,55 +4722,55 @@ levels:
           amount: 7
           name: '&b7 Diamond 💎'
         - type: ITEM
-          material: ENCHANTED_GOLDEN_APPLE
-          amount: 1
+          material: EMERALD_BLOCK
+          amount: 3
       sio:
         - type: ITEM
-          material: DIAMOND_BLOCK
-          amount: 4
+          material: HEAVY_CORE
+          amount: 1
         - type: ITEM
-          material: EXPERIENCE_BOTTLE
-          amount: 16
+          material: NETHERITE_SCRAP
+          amount: 2
       exsio:
         - type: ITEM
-          material: WITHER_SKELETON_SKULL
+          material: TOTEM_OF_UNDYING
           amount: 3
         - type: ITEM
-          material: GOLDEN_CARROT
-          amount: 16
+          material: SHULKER_BOX
+          amount: 2
   185:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: DIAMOND_BLOCK
+          material: SHULKER_SHELL
           amount: 1
         - type: ITEM
-          material: TORCH
-          amount: 16
+          material: DRAGON_BREATH
+          amount: 2
         - type: ITEM
-          material: APPLE
-          amount: 8
+          material: DIAMOND
+          amount: 5
       sio:
         - type: MONEY
           amount: 60000
           name: '&aRp 60.000'
         - type: ITEM
-          material: NETHERITE_INGOT
+          material: OMINOUS_BOTTLE
           amount: 1
         - type: ITEM
-          material: GOLD_INGOT
-          amount: 4
+          material: SHULKER_BOX
+          amount: 1
       exsio:
         - type: ITEM
-          material: NETHERITE_UPGRADE_SMITHING_TEMPLATE
+          material: NETHERITE_BLOCK
           amount: 1
         - type: ITEM
-          material: ENDER_PEARL
-          amount: 4
+          material: DIAMOND_BLOCK
+          amount: 3
         - type: ITEM
-          material: EMERALD
-          amount: 8
+          material: EXPERIENCE_BOTTLE
+          amount: 41
   186:
     required-xp: 100
     rewards:
@@ -4783,39 +4783,39 @@ levels:
           amount: 64
       sio:
         - type: ITEM
-          material: NETHERITE_BLOCK
-          amount: 2
+          material: BREEZE_ROD
+          amount: 7
       exsio:
         - type: ITEM
-          material: NETHERITE_BLOCK
-          amount: 3
+          material: TOTEM_OF_UNDYING
+          amount: 5
   187:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: GOLD_BLOCK
-          amount: 4
+          material: GOLDEN_CARROT
+          amount: 48
         - type: ITEM
-          material: COOKED_BEEF
-          amount: 12
+          material: ENCHANTED_GOLDEN_APPLE
+          amount: 1
       sio:
         - type: ITEM
-          material: TOTEM_OF_UNDYING
-          amount: 2
+          material: GOLD_BLOCK
+          amount: 6
         - type: ITEM
-          material: EXPERIENCE_BOTTLE
-          amount: 16
+          material: OMINOUS_BOTTLE
+          amount: 2
       exsio:
         - type: MONEY
           amount: 215000
           name: '&aRp 215.000'
         - type: ITEM
-          material: HEAVY_CORE
+          material: BEACON
           amount: 1
         - type: ITEM
-          material: OBSIDIAN
-          amount: 6
+          material: MACE
+          amount: 1
   188:
     required-xp: 100
     rewards:
@@ -4824,126 +4824,75 @@ levels:
           amount: 9000
           name: '&aRp 9.000'
         - type: ITEM
-          material: NETHERITE_SCRAP
+          material: DIAMOND_BLOCK
           amount: 1
       sio:
         - type: ITEM
-          material: ENCHANTED_GOLDEN_APPLE
+          material: GOLD_BLOCK
+          amount: 3
+        - type: ITEM
+          material: OMINOUS_BOTTLE
           amount: 1
         - type: ITEM
-          material: REDSTONE
-          amount: 16
-        - type: ITEM
-          material: IRON_INGOT
-          amount: 6
+          material: SHULKER_BOX
+          amount: 1
       exsio:
         - type: ITEM
-          material: BEACON
+          material: TOTEM_OF_UNDYING
           amount: 1
         - type: ITEM
-          material: ENDER_PEARL
-          amount: 4
+          material: NETHER_STAR
+          amount: 1
         - type: ITEM
-          material: EMERALD
-          amount: 8
+          material: WIND_CHARGE
+          amount: 20
   189:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: ENCHANTED_GOLDEN_APPLE
+          material: DIAMOND_BLOCK
           amount: 2
       sio:
         - type: ITEM
-          material: DIAMOND_BLOCK
-          amount: 7
+          material: HEAVY_CORE
+          amount: 2
       exsio:
         - type: CURRENCY
           currency-id: diamond
           amount: 45
           name: '&b45 Diamond 💎'
         - type: ITEM
-          material: ENCHANTED_GOLDEN_APPLE
-          amount: 2
+          material: MACE
+          amount: 1
         - type: ITEM
-          material: OBSIDIAN
-          amount: 6
+          material: NETHERITE_INGOT
+          amount: 1
   190:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: DIAMOND_BLOCK
-          amount: 2
-        - type: ITEM
-          material: COOKED_BEEF
+          material: ENDER_EYE
           amount: 12
+        - type: ITEM
+          material: ECHO_SHARD
+          amount: 2
       sio:
         - type: ITEM
-          material: NETHERITE_INGOT
-          amount: 1
-        - type: ITEM
-          material: EXPERIENCE_BOTTLE
-          amount: 16
-      exsio:
-        - type: ITEM
-          material: WITHER_SKELETON_SKULL
+          material: DIAMOND_BLOCK
           amount: 3
         - type: ITEM
-          material: GOLDEN_CARROT
-          amount: 16
-  191:
-    required-xp: 100
-    rewards:
-      citizen:
-        - type: ITEM
-          material: EXPERIENCE_BOTTLE
-          amount: 32
-        - type: ITEM
-          material: TORCH
-          amount: 16
-        - type: ITEM
-          material: APPLE
-          amount: 8
-      sio:
-        - type: ITEM
-          material: NETHERITE_BLOCK
-          amount: 1
-        - type: ITEM
-          material: REDSTONE
-          amount: 16
-        - type: ITEM
-          material: IRON_INGOT
+          material: EMERALD_BLOCK
           amount: 6
       exsio:
         - type: ITEM
-          material: NETHERITE_UPGRADE_SMITHING_TEMPLATE
-          amount: 1
-        - type: ITEM
-          material: ENDER_PEARL
-          amount: 4
-        - type: ITEM
-          material: EMERALD
-          amount: 8
-  192:
-    required-xp: 100
-    rewards:
-      citizen:
-        - type: ITEM
-          material: GOLD_BLOCK
-          amount: 7
-      sio:
-        - type: CURRENCY
-          amount: 600
-          name: '&e600 Battle Coins'
+          material: OMINOUS_TRIAL_KEY
+          amount: 2
         - type: ITEM
           material: TOTEM_OF_UNDYING
-          amount: 2
-      exsio:
-        - type: ITEM
-          material: NETHERITE_BLOCK
           amount: 3
-  193:
+  191:
     required-xp: 100
     rewards:
       citizen:
@@ -4951,77 +4900,128 @@ levels:
           material: NETHERITE_SCRAP
           amount: 1
         - type: ITEM
-          material: COOKED_BEEF
-          amount: 12
-      sio:
-        - type: ITEM
-          material: ENCHANTED_GOLDEN_APPLE
-          amount: 2
-        - type: ITEM
-          material: EXPERIENCE_BOTTLE
-          amount: 16
-      exsio:
-        - type: CURRENCY
-          amount: 450
-          name: '&e450 Battle Coins'
-        - type: ITEM
-          material: HEAVY_CORE
+          material: SHULKER_SHELL
           amount: 1
         - type: ITEM
-          material: OBSIDIAN
-          amount: 6
-  194:
+          material: DRAGON_BREATH
+          amount: 2
+      sio:
+        - type: ITEM
+          material: EMERALD_BLOCK
+          amount: 3
+        - type: ITEM
+          material: BREEZE_ROD
+          amount: 2
+        - type: ITEM
+          material: SHULKER_BOX
+          amount: 1
+      exsio:
+        - type: ITEM
+          material: OMINOUS_TRIAL_KEY
+          amount: 1
+        - type: ITEM
+          material: TOTEM_OF_UNDYING
+          amount: 1
+        - type: ITEM
+          material: BEACON
+          amount: 1
+  192:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
           material: ENCHANTED_GOLDEN_APPLE
+          amount: 2
+      sio:
+        - type: CURRENCY
+          amount: 600
+          name: '&e600 Battle Coins'
+        - type: ITEM
+          material: OMINOUS_BOTTLE
+          amount: 2
+      exsio:
+        - type: ITEM
+          material: NETHERITE_INGOT
+          amount: 3
+  193:
+    required-xp: 100
+    rewards:
+      citizen:
+        - type: ITEM
+          material: DIAMOND_BLOCK
           amount: 1
         - type: ITEM
-          material: TORCH
-          amount: 16
+          material: GOLDEN_CARROT
+          amount: 48
+      sio:
         - type: ITEM
-          material: APPLE
-          amount: 8
+          material: EXPERIENCE_BOTTLE
+          amount: 64
+        - type: ITEM
+          material: HEAVY_CORE
+          amount: 1
+      exsio:
+        - type: CURRENCY
+          amount: 450
+          name: '&e450 Battle Coins'
+        - type: ITEM
+          material: MACE
+          amount: 1
+        - type: ITEM
+          material: NETHERITE_INGOT
+          amount: 1
+  194:
+    required-xp: 100
+    rewards:
+      citizen:
+        - type: ITEM
+          material: DRAGON_BREATH
+          amount: 2
+        - type: ITEM
+          material: DIAMOND
+          amount: 5
+        - type: ITEM
+          material: EMERALD_BLOCK
+          amount: 1
       sio:
         - type: CURRENCY
           currency-id: diamond
           amount: 10
           name: '&b10 Diamond 💎'
         - type: ITEM
-          material: DIAMOND_BLOCK
-          amount: 4
+          material: SHULKER_BOX
+          amount: 1
       exsio:
         - type: ITEM
-          material: BEACON
+          material: WIND_CHARGE
+          amount: 20
+        - type: ITEM
+          material: NETHERITE_BLOCK
           amount: 1
         - type: ITEM
-          material: ENDER_PEARL
-          amount: 4
-        - type: ITEM
-          material: EMERALD
-          amount: 8
+          material: DIAMOND_BLOCK
+          amount: 3
   195:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: DIAMOND_BLOCK
+          material: ECHO_SHARD
           amount: 3
       sio:
         - type: MONEY
           amount: 10000
           name: '&aRp 10.000'
         - type: ITEM
-          material: NETHERITE_INGOT
+          material: HEAVY_CORE
           amount: 1
         - type: ITEM
-          material: GOLD_INGOT
-          amount: 4
+          material: NETHERITE_SCRAP
+          amount: 1
       exsio:
         - type: ITEM
-          material: ENCHANTED_GOLDEN_APPLE
-          amount: 7
+          material: SHULKER_BOX
+          amount: 3
   196:
     required-xp: 100
     rewards:
@@ -5030,73 +5030,73 @@ levels:
           amount: 860
           name: '&e860 Battle Coins'
         - type: ITEM
-          material: EXPERIENCE_BOTTLE
-          amount: 64
+          material: DRAGON_BREATH
+          amount: 4
       sio:
+        - type: ITEM
+          material: BREEZE_ROD
+          amount: 4
+        - type: ITEM
+          material: NETHERITE_INGOT
+          amount: 1
+      exsio:
+        - type: ITEM
+          material: MACE
+          amount: 1
         - type: ITEM
           material: NETHERITE_BLOCK
           amount: 1
-        - type: ITEM
-          material: EXPERIENCE_BOTTLE
-          amount: 16
-      exsio:
-        - type: ITEM
-          material: WITHER_SKELETON_SKULL
-          amount: 3
-        - type: ITEM
-          material: GOLDEN_CARROT
-          amount: 16
   197:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: GOLD_BLOCK
-          amount: 2
+          material: EMERALD_BLOCK
+          amount: 1
         - type: ITEM
-          material: TORCH
-          amount: 16
+          material: NETHERITE_SCRAP
+          amount: 1
         - type: ITEM
-          material: APPLE
-          amount: 8
+          material: SHULKER_SHELL
+          amount: 1
       sio:
+        - type: ITEM
+          material: SHULKER_BOX
+          amount: 1
         - type: ITEM
           material: TOTEM_OF_UNDYING
           amount: 1
         - type: ITEM
-          material: REDSTONE
-          amount: 16
-        - type: ITEM
-          material: IRON_INGOT
-          amount: 6
+          material: HEAVY_CORE
+          amount: 1
       exsio:
         - type: MONEY
           amount: 255000
           name: '&aRp 255.000'
         - type: ITEM
-          material: NETHERITE_UPGRADE_SMITHING_TEMPLATE
+          material: NETHER_STAR
           amount: 1
         - type: ITEM
-          material: OBSIDIAN
-          amount: 6
+          material: WIND_CHARGE
+          amount: 22
   198:
     required-xp: 100
     rewards:
       citizen:
         - type: ITEM
-          material: NETHERITE_SCRAP
-          amount: 2
+          material: GOLDEN_CARROT
+          amount: 86
       sio:
         - type: CURRENCY
           amount: 580
           name: '&e580 Battle Coins'
         - type: ITEM
-          material: ENCHANTED_GOLDEN_APPLE
-          amount: 2
+          material: SHULKER_BOX
+          amount: 1
       exsio:
         - type: ITEM
-          material: NETHERITE_BLOCK
-          amount: 3
+          material: WIND_CHARGE
+          amount: 57
   199:
     required-xp: 100
     rewards:
@@ -5109,26 +5109,26 @@ levels:
           material: ENCHANTED_GOLDEN_APPLE
           amount: 1
         - type: ITEM
-          material: BREAD
+          material: ENDER_EYE
           amount: 8
       sio:
         - type: ITEM
           material: DIAMOND_BLOCK
-          amount: 4
+          amount: 3
         - type: ITEM
-          material: EXPERIENCE_BOTTLE
-          amount: 16
+          material: EMERALD_BLOCK
+          amount: 6
       exsio:
         - type: CURRENCY
           currency-id: diamond
           amount: 2
           name: '&b2 Diamond 💎'
         - type: ITEM
-          material: HEAVY_CORE
+          material: OMINOUS_TRIAL_KEY
           amount: 1
         - type: ITEM
-          material: OBSIDIAN
-          amount: 6
+          material: TOTEM_OF_UNDYING
+          amount: 2
   200:
     required-xp: 100
     rewards:

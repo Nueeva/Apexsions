@@ -65,15 +65,18 @@ public class RewardPreviewMenu extends Gui {
 
             List<String> lore = new ArrayList<>();
             lore.add("&7Tipe: &e" + ri.getType().name());
-            lore.add("&7Jumlah: &a" + ri.getAmount() + "x");
-            if (ri.getType() == RewardType.CURRENCY) {
+            if (ri.getType() == RewardType.ITEM) {
+                lore.add("&7Jumlah: &a" + ri.getAmount() + "x");
+            } else if (ri.getType() == RewardType.CURRENCY) {
                 if ("rupiah".equalsIgnoreCase(ri.getCurrencyId())) {
-                    lore.add("&7Nominal: &aRp." + ri.getAmount());
+                    lore.add("&7Nominal: &aRp " + String.format("%,d", (long) ri.getAmount()).replace(",", "."));
                 } else if ("diamond".equalsIgnoreCase(ri.getCurrencyId())) {
                     lore.add("&7Nominal: &b" + ri.getAmount() + " Diamond 💎");
                 } else {
                     lore.add("&7Nominal: &e" + ri.getAmount() + " Coins");
                 }
+            } else if (ri.getType() == RewardType.MONEY) {
+                lore.add("&7Nominal: &aRp " + String.format("%,d", (long) ri.getAmount()).replace(",", "."));
             }
             if (!ri.getCommands().isEmpty()) {
                 lore.add("&7Perintah: &b" + String.join(", ", ri.getCommands()));
