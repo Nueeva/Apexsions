@@ -90,14 +90,21 @@ public class RewardsMenu extends Gui {
                 .build()));
 
         // Player Stats Card (Slot 8)
+        boolean isMax = data.getLevel() >= maxLevel;
+        int xpPerCoin = plugin.getConfig().getInt("battlepass.max-level-overflow.xp-per-coin", 10);
+        List<String> statsLore = new ArrayList<>();
+        statsLore.add("&7Level: &e" + data.getLevel() + " &8/ &f" + maxLevel + (isMax ? " &6[MAX]" : ""));
+        if (isMax) {
+            statsLore.add("&7XP Berlebih: &a" + data.getXp() + " &8/ &e" + xpPerCoin + " XP &8(➔ +1 Coin)");
+        } else {
+            statsLore.add("&7XP: &a" + data.getXp() + " &8/ &f" + reqXp);
+        }
+        statsLore.add("&7Battle Coins: &e" + plugin.getCurrencyService().format(data.getCurrency()));
+
         setButton(8, new GuiButton(new ItemBuilder(Material.PLAYER_HEAD)
                 .skullOwner(player)
                 .name("&e&l" + player.getName())
-                .lore(List.of(
-                        "&7Level: &e" + data.getLevel() + " &8/ &f" + maxLevel,
-                        "&7XP: &a" + data.getXp() + " &8/ &f" + reqXp,
-                        "&7Battle Coins: &e" + plugin.getCurrencyService().format(data.getCurrency())
-                ))
+                .lore(statsLore)
                 .build()));
 
         // ══════════════════════════════════════════════════════════════════════

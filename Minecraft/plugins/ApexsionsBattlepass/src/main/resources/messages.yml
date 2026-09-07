@@ -15,6 +15,7 @@ season-ended: "%prefix%&cSeason saat ini telah berakhir."
 # XP & Level Messages
 xp-gained: "%prefix%&a+ %amount% XP Battle Pass!"
 level-up: "%prefix%&6&lLEVEL UP! &aSelamat! Battle Pass Anda telah naik ke &eLevel %level%&a!"
+max-level-overflow-converted: "%prefix%&6&lMAX LEVEL BONUS! &e+%coins% %currency% &aditambahkan ke saldo Anda &8(&7Konversi %xp% XP berlebih&8)&a!"
 
 # Reward Messages
 reward-claimed: "%prefix%&aBerhasil mengklaim reward level &e%level% &8(&f%pass% Pass&8)&a!"

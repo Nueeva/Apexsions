@@ -48,9 +48,17 @@ public class MainMenu extends Gui {
         bpInfoLore.add("&7Saldo: &eRp." + String.format("%,.0f", rupiahBal));
         bpInfoLore.add("&7Jenis Pass: &b" + String.join(", ", effectivePasses).toUpperCase());
         bpInfoLore.add(" ");
-        bpInfoLore.add("&7Level: &e" + data.getLevel() + " &8/ &f" + plugin.getRewardManager().getMaxLevel());
-        bpInfoLore.add("&7Exp: &a" + data.getXp() + " &8/ &f" + reqXp + " XP");
-        bpInfoLore.add("&7Progress: " + xpBar);
+        int maxLevel = plugin.getRewardManager().getMaxLevel();
+        boolean isMax = data.getLevel() >= maxLevel;
+        bpInfoLore.add("&7Level: &e" + data.getLevel() + " &8/ &f" + maxLevel + (isMax ? " &6[MAX]" : ""));
+        if (isMax) {
+            int xpPerCoin = plugin.getConfig().getInt("battlepass.max-level-overflow.xp-per-coin", 10);
+            bpInfoLore.add("&7Exp Berlebih: &a" + data.getXp() + " &8/ &e" + xpPerCoin + " XP &7(➔ +1 Coin)");
+            bpInfoLore.add("&7Progress: &6MAX LEVEL &8(&e" + data.getXp() + "/" + xpPerCoin + " XP ➔ +1 Coin&8)");
+        } else {
+            bpInfoLore.add("&7Exp: &a" + data.getXp() + " &8/ &f" + reqXp + " XP");
+            bpInfoLore.add("&7Progress: " + xpBar);
+        }
         bpInfoLore.add("&7Sisa Waktu Season: &e" + plugin.getSeasonManager().getTimeLeftFormatted());
 
         setButton(13, new GuiButton(new ItemBuilder(Material.PLAYER_HEAD)

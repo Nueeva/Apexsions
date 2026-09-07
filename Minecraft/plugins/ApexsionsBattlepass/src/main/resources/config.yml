@@ -16,6 +16,10 @@ battlepass:
   # xp-mode: FIXED (sama per level) atau CUSTOM (mengikuti list required-xp per level)
   xp-mode: "FIXED"
   default-required-xp: 100
+  # Konversi XP saat level maksimal tercapai (setiap X XP berlebih -> 1 Battle Coin)
+  max-level-overflow:
+    enabled: true
+    xp-per-coin: 10
 
 
 # Daily Quest & Shop Reset Settings

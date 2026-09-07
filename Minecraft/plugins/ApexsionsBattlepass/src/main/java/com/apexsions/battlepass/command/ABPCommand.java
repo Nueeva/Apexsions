@@ -92,6 +92,7 @@ public class ABPCommand implements CommandExecutor, TabCompleter {
                     PlayerData data = plugin.getPlayerManager().getPlayerData(target);
                     if (data != null) {
                         data.setLevel(lvl);
+                        plugin.getXpService().checkLevelUp(target, data);
                         sender.sendMessage("§aBerhasil mengatur level §e" + target.getName() + " §amenjadi §e" + lvl);
                     }
                 } catch (NumberFormatException e) {

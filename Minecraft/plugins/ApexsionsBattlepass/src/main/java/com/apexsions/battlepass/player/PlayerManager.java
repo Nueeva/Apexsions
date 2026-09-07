@@ -30,6 +30,11 @@ public class PlayerManager {
     public void loadPlayerData(Player player, int currentSeasonId) {
         repository.loadPlayerData(player.getUniqueId(), currentSeasonId).thenAccept(data -> {
             playerDataCache.put(player.getUniqueId(), data);
+            org.bukkit.Bukkit.getScheduler().runTask(plugin, () -> {
+                if (player.isOnline()) {
+                    plugin.getXpService().checkLevelUp(player, data);
+                }
+            });
         });
     }
 
