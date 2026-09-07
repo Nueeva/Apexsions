@@ -18,7 +18,9 @@ import com.apexsions.chat.database.NicknameRepository;
 import com.apexsions.chat.database.ReportRepository;
 import com.apexsions.chat.game.ChatGameManager;
 import com.apexsions.chat.gui.GUIListener;
+import com.apexsions.chat.death.DeathListener;
 import com.apexsions.chat.integration.ApexsionsCoreHook;
+import com.apexsions.chat.integration.AuthMeHook;
 import com.apexsions.chat.integration.LuckPermsHook;
 import com.apexsions.chat.integration.PlaceholderApiHook;
 import com.apexsions.chat.integration.VaultHook;
@@ -50,6 +52,7 @@ public class ApexsionsChatPlugin extends JavaPlugin implements ApexsionsChatAPI 
     private NicknameRepository nicknameRepository;
 
     private ApexsionsCoreHook apexsionsCoreHook;
+    private AuthMeHook authMeHook;
     private LuckPermsHook luckPermsHook;
     private VaultHook vaultHook;
     private PlaceholderApiHook placeholderApiHook;
@@ -63,6 +66,8 @@ public class ApexsionsChatPlugin extends JavaPlugin implements ApexsionsChatAPI 
     private AnnouncementManager announcementManager;
     private NicknameService nicknameService;
     private NickColorGUI nickColorGUI;
+    private ChatListener chatListener;
+    private DeathListener deathListener;
 
     @Override
     public void onEnable() {
@@ -89,6 +94,7 @@ public class ApexsionsChatPlugin extends JavaPlugin implements ApexsionsChatAPI 
 
         // 4. Hooks
         this.apexsionsCoreHook = new ApexsionsCoreHook(this);
+        this.authMeHook = new AuthMeHook(this);
         this.luckPermsHook = new LuckPermsHook(this);
         this.vaultHook = new VaultHook(this);
         if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
@@ -107,16 +113,26 @@ public class ApexsionsChatPlugin extends JavaPlugin implements ApexsionsChatAPI 
         this.announcementManager = new AnnouncementManager(this);
         this.nicknameService = new NicknameService(this, nicknameRepository);
         this.nickColorGUI = new NickColorGUI(this);
+        this.chatListener = new ChatListener(this);
+        this.deathListener = new DeathListener(this);
 
         // 6. Register Public API
         ApexsionsChatProvider.register(this);
 
         // 7. Register Commands & Listeners
         registerCommands();
-        getServer().getPluginManager().registerEvents(new ChatListener(this), this);
+        getServer().getPluginManager().registerEvents(chatListener, this);
+        getServer().getPluginManager().registerEvents(deathListener, this);
         getServer().getPluginManager().registerEvents(new GUIListener(this), this);
         getServer().getPluginManager().registerEvents(new NicknameListener(this), this);
         getServer().getPluginManager().registerEvents(nickColorGUI, this);
+
+        // Dynamically register AuthMe login callbacks for delayed join messages
+        if (authMeHook.isAvailable()) {
+            authMeHook.registerAuthEvents(player -> {
+                chatListener.broadcastJoin(player);
+            });
+        }
 
         for (Player p : Bukkit.getOnlinePlayers()) {
             nicknameService.loadPlayer(p);
@@ -240,6 +256,7 @@ public class ApexsionsChatPlugin extends JavaPlugin implements ApexsionsChatAPI 
     public ModerationLogRepository getModerationLogRepository() { return moderationLogRepository; }
 
     public ApexsionsCoreHook getApexsionsCoreHook() { return apexsionsCoreHook; }
+    public AuthMeHook getAuthMeHook() { return authMeHook; }
     public LuckPermsHook getLuckPermsHook() { return luckPermsHook; }
     public VaultHook getVaultHook() { return vaultHook; }
 
@@ -252,4 +269,6 @@ public class ApexsionsChatPlugin extends JavaPlugin implements ApexsionsChatAPI 
     public AnnouncementManager getAnnouncementManager() { return announcementManager; }
     public NicknameService getNicknameService() { return nicknameService; }
     public NickColorGUI getNickColorGUI() { return nickColorGUI; }
+    public ChatListener getChatListener() { return chatListener; }
+    public DeathListener getDeathListener() { return deathListener; }
 }

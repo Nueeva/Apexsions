@@ -189,7 +189,7 @@ settings:
                 enable: false
     useWelcomeMessage: true
     broadcastWelcomeMessage: false
-    delayJoinMessage: true
+    delayJoinMessage: false
     customJoinMessage: ''
     removeUnloggedLeaveMessage: true
     removeJoinMessage: false

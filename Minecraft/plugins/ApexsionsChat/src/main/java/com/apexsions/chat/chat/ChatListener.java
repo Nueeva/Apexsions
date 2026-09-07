@@ -71,12 +71,54 @@ public class ChatListener implements Listener {
         event.renderer((source, sourceDisplayName, message, viewer) -> formattedComponent);
     }
 
+    private final java.util.Set<UUID> announcedJoins = java.util.concurrent.ConcurrentHashMap.newKeySet();
+
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void onPlayerJoinPre(PlayerJoinEvent event) {
+        // Nullify join message at LOWEST so other delayed-join plugins (like AuthMe) capture null
+        if (plugin.getConfigManager().getMainConfig().getBoolean("join-quit-messages.enabled", true)
+                && plugin.getConfigManager().getMainConfig().getBoolean("join-quit-messages.delay-until-login", true)
+                && plugin.getAuthMeHook() != null && plugin.getAuthMeHook().isAvailable()
+                && !plugin.getAuthMeHook().isAuthenticated(event.getPlayer())) {
+            event.joinMessage(null);
+        }
+    }
+
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
+
+        if (!plugin.getConfigManager().getMainConfig().getBoolean("join-quit-messages.enabled", true)) {
+            event.joinMessage(null);
+            checkUnreadMail(player);
+            return;
+        }
+
+        boolean delayUntilLogin = plugin.getConfigManager().getMainConfig().getBoolean("join-quit-messages.delay-until-login", true);
+        if (delayUntilLogin && plugin.getAuthMeHook() != null && plugin.getAuthMeHook().isAvailable()) {
+            if (!plugin.getAuthMeHook().isAuthenticated(player)) {
+                // Player has not yet authenticated via AuthMe; suppress join message until login
+                event.joinMessage(null);
+                return;
+            }
+        }
+
+        // Already authenticated or AuthMe not active: announce immediately
+        broadcastJoin(player, event);
+    }
+
+    public void broadcastJoin(Player player) {
+        broadcastJoin(player, null);
+    }
+
+    public void broadcastJoin(Player player, PlayerJoinEvent event) {
+        if (player == null || !player.isOnline()) return;
         UUID uuid = player.getUniqueId();
 
-        // 1. Luxury Join Message with MiniMessage
+        if (!announcedJoins.add(uuid)) {
+            return; // Already announced in this session
+        }
+
         if (plugin.getConfigManager().getMainConfig().getBoolean("join-quit-messages.enabled", true)) {
             String rank = "<gray>[Wanderer]</gray>";
             String kingdom = "Belum Memilih";
@@ -99,10 +141,19 @@ public class ChatListener implements Listener {
                     .replace("{player}", player.getName())
                     .replace("{kingdom}", kingdom);
 
-            event.joinMessage(miniMessage.deserialize(formatted));
+            Component joinComp = miniMessage.deserialize(formatted);
+            if (event != null) {
+                event.joinMessage(joinComp);
+            } else {
+                Bukkit.broadcast(joinComp);
+            }
         }
 
-        // 2. Check unread offline mail asynchronously
+        checkUnreadMail(player);
+    }
+
+    private void checkUnreadMail(Player player) {
+        UUID uuid = player.getUniqueId();
         plugin.getMailRepository().countUnreadMailAsync(uuid).thenAccept(unreadCount -> {
             if (unreadCount > 0 && player.isOnline()) {
                 Bukkit.getScheduler().runTaskLater(plugin, () -> {
@@ -114,7 +165,7 @@ public class ChatListener implements Listener {
                             player.playSound(player.getLocation(), Sound.ITEM_BOOK_PAGE_TURN, 1.0f, 1.0f);
                         } catch (Exception ignored) {}
                     }
-                }, 40L); // 2 seconds after join
+                }, 40L); // 2 seconds after join announcement
             }
         });
     }
@@ -123,6 +174,15 @@ public class ChatListener implements Listener {
     public void onPlayerQuit(org.bukkit.event.player.PlayerQuitEvent event) {
         Player player = event.getPlayer();
         UUID uuid = player.getUniqueId();
+        boolean wasAnnounced = announcedJoins.remove(uuid);
+
+        // If player never authenticated and delayed join is active, silence quit broadcast
+        if (plugin.getAuthMeHook() != null && plugin.getAuthMeHook().isAvailable()) {
+            if (!plugin.getAuthMeHook().isAuthenticated(player) && !wasAnnounced) {
+                event.quitMessage(null);
+                return;
+            }
+        }
 
         if (plugin.getConfigManager().getMainConfig().getBoolean("join-quit-messages.enabled", true)) {
             String rank = "<gray>[Wanderer]</gray>";

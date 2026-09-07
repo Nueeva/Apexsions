@@ -44,6 +44,11 @@ sounds:
     sound: "BLOCK_NOTE_BLOCK_BASS"
     volume: 1.0
     pitch: 0.8
+  death:
+    enabled: true
+    sound: "ENTITY_PLAYER_DEATH"
+    volume: 1.0
+    pitch: 1.0
 
 # Item showcase settings
 item-showcase:
@@ -57,7 +62,41 @@ item-showcase:
 # Luxury Join and Quit server broadcast messages
 join-quit-messages:
   enabled: true
+  # Tunda pesan join sampai pemain berhasil login (via AuthMe / session login)
+  delay-until-login: true
   # Placeholders: {rank}, {player}, {kingdom}
   join-format: "<dark_gray>[</dark_gray><green><bold>+</bold></green><dark_gray>]</dark_gray> {rank} <white><bold>{player}</bold></white> <gray>bergabung ke server</gray>"
   quit-format: "<dark_gray>[</dark_gray><red><bold>-</bold></red><dark_gray>]</dark_gray> {rank} <white><bold>{player}</bold></white> <gray>meninggalkan server</gray>"
 
+# Luxury Death Broadcast System (Apexsions Cinematic Theme)
+# Placeholders:
+#   <victim_rank>    - Rank display name pemain yang gugur
+#   <victim>         - Nama pemain yang gugur
+#   <victim_kingdom> - Kerajaan pemain yang gugur
+#   <killer_rank>    - Rank pemain penyerang (untuk PvP)
+#   <killer>         - Nama pemain / mob / raid boss penyerang
+#   <weapon>         - Nama senjata dengan native hover tooltip (lore, enchantments, stats)
+death-messages:
+  enabled: true
+  # PvP
+  pvp: "<dark_gray>[</dark_gray><red><bold>☠</bold></red><dark_gray>]</dark_gray> <victim_rank> <victim> <gray>ditebas oleh</gray> <killer_rank> <killer> <gray>menggunakan</gray> <weapon>"
+  pvp-bare-hands: "<dark_gray>[</dark_gray><red><bold>☠</bold></red><dark_gray>]</dark_gray> <victim_rank> <victim> <gray>dihabisi oleh</gray> <killer_rank> <killer> <gray>dengan tangan kosong</gray>"
+  # PvE (Mob / MythicMobs / Raid Boss)
+  mob: "<dark_gray>[</dark_gray><red><bold>☠</bold></red><dark_gray>]</dark_gray> <victim_rank> <victim> <gray>dibantai oleh</gray> <killer> <gray>menggunakan</gray> <weapon>"
+  mob-bare-hands: "<dark_gray>[</dark_gray><red><bold>☠</bold></red><dark_gray>]</dark_gray> <victim_rank> <victim> <gray>dibantai oleh</gray> <killer>"
+  # Environment & Hazard
+  fall: "<dark_gray>[</dark_gray><red><bold>☠</bold></red><dark_gray>]</dark_gray> <victim_rank> <victim> <gray>jatuh dari ketinggian dan remuk di tanah</gray>"
+  lava: "<dark_gray>[</dark_gray><red><bold>☠</bold></red><dark_gray>]</dark_gray> <victim_rank> <victim> <gray>tenggelam dalam lautan lahar panas</gray>"
+  fire: "<dark_gray>[</dark_gray><red><bold>☠</bold></red><dark_gray>]</dark_gray> <victim_rank> <victim> <gray>hangus terbakar menjadi abu</gray>"
+  drown: "<dark_gray>[</dark_gray><red><bold>☠</bold></red><dark_gray>]</dark_gray> <victim_rank> <victim> <gray>kehabisan nafas di dasar air</gray>"
+  explosion: "<dark_gray>[</dark_gray><red><bold>☠</bold></red><dark_gray>]</dark_gray> <victim_rank> <victim> <gray>hancur berkeping-keping akibat ledakan dahsyat</gray>"
+  void: "<dark_gray>[</dark_gray><red><bold>☠</bold></red><dark_gray>]</dark_gray> <victim_rank> <victim> <gray>lenyap tertelan oleh jurang kehampaan</gray>"
+  suicide: "<dark_gray>[</dark_gray><red><bold>☠</bold></red><dark_gray>]</dark_gray> <victim_rank> <victim> <gray>mengakhiri hidupnya sendiri</gray>"
+  magic: "<dark_gray>[</dark_gray><red><bold>☠</bold></red><dark_gray>]</dark_gray> <victim_rank> <victim> <gray>tewas akibat sihir racun kegelapan</gray>"
+  wither: "<dark_gray>[</dark_gray><red><bold>☠</bold></red><dark_gray>]</dark_gray> <victim_rank> <victim> <gray>membusuk oleh kutukan wither</gray>"
+  starvation: "<dark_gray>[</dark_gray><red><bold>☠</bold></red><dark_gray>]</dark_gray> <victim_rank> <victim> <gray>mati kelaparan di antah berantah</gray>"
+  lightning: "<dark_gray>[</dark_gray><red><bold>☠</bold></red><dark_gray>]</dark_gray> <victim_rank> <victim> <gray>disambar oleh kilatan petir ilahi</gray>"
+  suffocation: "<dark_gray>[</dark_gray><red><bold>☠</bold></red><dark_gray>]</dark_gray> <victim_rank> <victim> <gray>tewas terhimpit dinding bebatuan</gray>"
+  sonic-boom: "<dark_gray>[</dark_gray><red><bold>☠</bold></red><dark_gray>]</dark_gray> <victim_rank> <victim> <gray>terhempas oleh jeritan sonik kegelapan</gray>"
+  # Generic Fallback
+  generic: "<dark_gray>[</dark_gray><red><bold>☠</bold></red><dark_gray>]</dark_gray> <victim_rank> <victim> <gray>telah gugur ke alam baka</gray>"
