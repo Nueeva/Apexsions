@@ -11,11 +11,11 @@
             <div class="mb-3">
                 @if($page->category->parent !== null)
                     <a href="{{ route('wiki.show', $page->category->parent) }}" class="btn btn-apx-outline btn-sm w-100 mb-3">
-                        <i class="bi bi-chevron-left me-1"></i> Kembali ke Kategori
+                        <i class="bi bi-chevron-left me-1"></i> <span data-i18n="wiki_back_category">Kembali ke Kategori</span>
                     </a>
                 @else
                     <a href="{{ route('wiki.index') }}" class="btn btn-apx-outline btn-sm w-100 mb-3">
-                        <i class="bi bi-chevron-left me-1"></i> Semua Kategori Wiki
+                        <i class="bi bi-chevron-left me-1"></i> <span data-i18n="wiki_all_categories">Semua Kategori Wiki</span>
                     </a>
                 @endif
             </div>
@@ -25,7 +25,7 @@
                     @foreach($page->category->categories as $subCategory)
                         @can('view', $subCategory)
                             <a href="{{ route('wiki.show', [$subCategory]) }}" class="list-group-item">
-                                <i class="{{ $subCategory->icon ?? 'bi bi-folder2' }} text-warning me-2"></i> {{ $subCategory->name }}
+                                <i class="{{ $subCategory->icon ?? 'bi bi-folder2' }} text-warning me-2"></i> <span data-wiki-cat-name="{{ $subCategory->id }}">{{ $subCategory->name }}</span>
                             </a>
                         @endcan
                     @endforeach
@@ -34,7 +34,7 @@
 
             <div class="card mb-3" style="background: var(--apx-bg-surface); border: 1px solid var(--apx-gold-border-subtle);">
                 <div class="card-header py-2 px-3 small">
-                    <i class="bi bi-list-nested me-1 text-warning"></i> DAFTAR ARTIKEL
+                    <i class="bi bi-list-nested me-1 text-warning"></i> <span data-i18n="wiki_article_list">DAFTAR ARTIKEL</span>
                 </div>
                 <div class="list-group list-group-flush" role="tablist">
                     @foreach($page->category->pages as $catPage)
@@ -44,7 +44,7 @@
                            data-bs-toggle="tab" data-bs-target="#page-{{ $catPage->id }}" role="tab"
                            aria-controls="page-{{ $catPage->id }}" aria-selected="{{ $page->is($catPage) ? 'true' : 'false' }}">
                             <i class="bi bi-file-earmark-text me-2 text-warning"></i>
-                            {{ $catPage->title }}
+                            <span data-wiki-title-id="{{ $catPage->id }}">{{ $catPage->title }}</span>
                         </a>
                     @endforeach
                 </div>
@@ -60,36 +60,36 @@
                         <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 text-muted small mb-3">
                             <div class="d-flex align-items-center gap-2">
                                 <a href="{{ route('wiki.index') }}" class="text-muted text-decoration-none">
-                                    <i class="bi bi-house-door me-1"></i> Wiki
+                                    <i class="bi bi-house-door me-1"></i> <span data-i18n="nav_wiki">Wiki</span>
                                 </a>
                                 <span>/</span>
-                                <span class="text-warning">{{ $page->category->name }}</span>
+                                <span class="text-warning" data-wiki-cat-name="{{ $page->category->id }}">{{ $page->category->name }}</span>
                                 <span>/</span>
-                                <span class="text-white">{{ $catPage->title }}</span>
+                                <span class="text-white" data-wiki-title-id="{{ $catPage->id }}">{{ $catPage->title }}</span>
                             </div>
 
                             <div class="d-flex align-items-center gap-2">
-                                <button type="button" class="btn btn-sm btn-outline-secondary py-0 px-2" style="font-size: 0.75rem;" onclick="navigator.clipboard.writeText(window.location.href); alert('Tautan dokumen berhasil disalin!');">
-                                    <i class="bi bi-share me-1"></i> Bagikan
+                                <button type="button" class="btn btn-sm btn-outline-secondary py-0 px-2" style="font-size: 0.75rem;" onclick="navigator.clipboard.writeText(window.location.href); alert(document.documentElement.lang === 'en' ? 'Document link copied!' : 'Tautan dokumen berhasil disalin!');">
+                                    <i class="bi bi-share me-1"></i> <span data-i18n="wiki_share">Bagikan</span>
                                 </button>
                             </div>
                         </div>
 
                         <!-- Article Header & Meta Bar -->
                         <div class="mb-4 pb-3 border-bottom border-secondary border-opacity-20">
-                            <h1 class="mb-2" style="font-family: 'Cinzel', Georgia, serif; font-size: clamp(1.6rem, 3vw, 2.2rem); color: #ffffff;">
+                            <h1 class="mb-2" data-wiki-title-id="{{ $catPage->id }}" style="font-family: 'Cinzel', Georgia, serif; font-size: clamp(1.6rem, 3vw, 2.2rem); color: #ffffff;">
                                 {{ $catPage->title }}
                             </h1>
                             <div class="d-flex align-items-center flex-wrap gap-3 text-muted small">
-                                <span><i class="bi bi-shield-check text-warning me-1"></i> Dokumen Resmi Apexsions</span>
+                                <span><i class="bi bi-shield-check text-warning me-1"></i> <span data-i18n="wiki_official_doc">Dokumen Resmi Apexsions</span></span>
                                 <span>•</span>
                                 <span><i class="bi bi-cpu text-info me-1"></i> Paper API MC 26.2</span>
                                 <span>•</span>
-                                <span><i class="bi bi-clock me-1"></i> ~{{ max(1, ceil(str_word_count(strip_tags($catPage->content)) / 180)) }} menit baca</span>
+                                <span><i class="bi bi-clock me-1"></i> ~{{ max(1, ceil(str_word_count(strip_tags($catPage->content)) / 180)) }} <span data-i18n="wiki_min_read">menit baca</span></span>
                             </div>
                         </div>
 
-                        <div class="apx-wiki-body">
+                        <div class="apx-wiki-body" data-wiki-body-id="{{ $catPage->id }}" data-wiki-slug="{{ $catPage->slug }}">
                             {!! \Illuminate\Support\Str::markdown($catPage->content) !!}
                         </div>
                     </article>
@@ -148,13 +148,14 @@
                 const btn = document.createElement('button');
                 btn.type = 'button';
                 btn.className = 'apx-code-copy-btn';
-                btn.innerHTML = '<i class="bi bi-clipboard me-1"></i> Salin';
+                btn.innerHTML = '<i class="bi bi-clipboard me-1"></i> <span data-i18n="wiki_copy_code">Salin</span>';
                 btn.addEventListener('click', () => {
                     const code = pre.querySelector('code') ? pre.querySelector('code').innerText : pre.innerText;
                     navigator.clipboard.writeText(code.trim()).then(() => {
-                        btn.innerHTML = '<i class="bi bi-check2 me-1 text-success"></i> Tersalin!';
+                        const isEn = document.documentElement.lang === 'en';
+                        btn.innerHTML = `<i class="bi bi-check2 me-1 text-success"></i> ${isEn ? 'Copied!' : 'Tersalin!'}`;
                         setTimeout(() => {
-                            btn.innerHTML = '<i class="bi bi-clipboard me-1"></i> Salin';
+                            btn.innerHTML = `<i class="bi bi-clipboard me-1"></i> <span>${isEn ? 'Copy' : 'Salin'}</span>`;
                         }, 2000);
                     });
                 });

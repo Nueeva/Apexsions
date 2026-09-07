@@ -34,7 +34,10 @@
                 <!-- Pasal 1 -->
                 <div class="apx-legal-card p-4 p-lg-5 mb-4 rounded" style="background: var(--apx-bg-deep); border: 1px solid var(--apx-border);">
                     <div class="d-flex align-items-center gap-3 mb-3">
-                        <span class="apx-legal-num text-gold font-monospace fs-4">01</span>
+                        <div class="text-center" style="min-width: 50px;">
+                        <span class="d-block text-gold font-monospace fw-bold" style="font-size: 0.65rem; letter-spacing: 0.12em;" data-i18n="legal_article_word">PASAL</span>
+                        <span class="apx-legal-num text-gold font-monospace fs-4 lh-1">01</span>
+                    </div>
                         <div>
                             <h2 class="h5 text-white mb-0 font-cinzel" data-i18n="terms_art1_title">Sifat Produk Virtual &amp; Pengiriman Instan</h2>
                             <span class="text-dim small" data-i18n="terms_art1_sub">Ketentuan Pengiriman Barang Digital Non-Fisik</span>
@@ -52,7 +55,10 @@
                 <!-- Pasal 2 -->
                 <div class="apx-legal-card p-4 p-lg-5 mb-4 rounded" style="background: var(--apx-bg-deep); border: 1px solid var(--apx-border);">
                     <div class="d-flex align-items-center gap-3 mb-3">
-                        <span class="apx-legal-num text-gold font-monospace fs-4">02</span>
+                        <div class="text-center" style="min-width: 50px;">
+                        <span class="d-block text-gold font-monospace fw-bold" style="font-size: 0.65rem; letter-spacing: 0.12em;" data-i18n="legal_article_word">PASAL</span>
+                        <span class="apx-legal-num text-gold font-monospace fs-4 lh-1">02</span>
+                    </div>
                         <div>
                             <h2 class="h5 text-white mb-0 font-cinzel" data-i18n="terms_art2_title">Kanal Pembayaran Resmi &amp; Verifikasi</h2>
                             <span class="text-dim small" data-i18n="terms_art2_sub">Saluran Transaksi Terverifikasi Manajemen</span>
@@ -85,7 +91,10 @@
                 <!-- Pasal 3 -->
                 <div class="apx-legal-card p-4 p-lg-5 mb-4 rounded" style="background: var(--apx-bg-deep); border: 1px solid var(--apx-border);">
                     <div class="d-flex align-items-center gap-3 mb-3">
-                        <span class="apx-legal-num text-gold font-monospace fs-4">03</span>
+                        <div class="text-center" style="min-width: 50px;">
+                        <span class="d-block text-gold font-monospace fw-bold" style="font-size: 0.65rem; letter-spacing: 0.12em;" data-i18n="legal_article_word">PASAL</span>
+                        <span class="apx-legal-num text-gold font-monospace fs-4 lh-1">03</span>
+                    </div>
                         <div>
                             <h2 class="h5 text-white mb-0 font-cinzel" data-i18n="terms_art3_title">Kebijakan Pengembalian Dana &amp; Anti-Chargeback</h2>
                             <span class="text-dim small" data-i18n="terms_art3_sub">Klausul Final Transaksi &amp; Penegakan Integritas</span>
@@ -103,7 +112,10 @@
                 <!-- Pasal 4 -->
                 <div class="apx-legal-card p-4 p-lg-5 mb-4 rounded" style="background: var(--apx-bg-deep); border: 1px solid var(--apx-border);">
                     <div class="d-flex align-items-center gap-3 mb-3">
-                        <span class="apx-legal-num text-gold font-monospace fs-4">04</span>
+                        <div class="text-center" style="min-width: 50px;">
+                        <span class="d-block text-gold font-monospace fw-bold" style="font-size: 0.65rem; letter-spacing: 0.12em;" data-i18n="legal_article_word">PASAL</span>
+                        <span class="apx-legal-num text-gold font-monospace fs-4 lh-1">04</span>
+                    </div>
                         <div>
                             <h2 class="h5 text-white mb-0 font-cinzel" data-i18n="terms_art4_title">Kepatuhan Hukum &amp; Batasan Hak Donatur</h2>
                             <span class="text-dim small" data-i18n="terms_art4_sub">Donasi Bukan Merupakan Kekebalan Hukum (Immunity)</span>
@@ -120,7 +132,10 @@
                 <!-- Pasal 5 -->
                 <div class="apx-legal-card p-4 p-lg-5 mb-4 rounded" style="background: var(--apx-bg-deep); border: 1px solid var(--apx-border);">
                     <div class="d-flex align-items-center gap-3 mb-3">
-                        <span class="apx-legal-num text-gold font-monospace fs-4">05</span>
+                        <div class="text-center" style="min-width: 50px;">
+                        <span class="d-block text-gold font-monospace fw-bold" style="font-size: 0.65rem; letter-spacing: 0.12em;" data-i18n="legal_article_word">PASAL</span>
+                        <span class="apx-legal-num text-gold font-monospace fs-4 lh-1">05</span>
+                    </div>
                         <div>
                             <h2 class="h5 text-white mb-0 font-cinzel" data-i18n="terms_art5_title">Kesesuaian Minecraft Commercial Usage Guidelines (EULA)</h2>
                             <span class="text-dim small" data-i18n="terms_art5_sub">Kepatuhan Standar Mojang Studios &amp; Microsoft</span>

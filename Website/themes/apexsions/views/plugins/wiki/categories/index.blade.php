@@ -78,11 +78,11 @@
                                 </span>
                             </div>
 
-                            <h3 class="card-title mb-2" style="font-family: 'Cinzel', Georgia, serif; font-size: 1.25rem; color: #ffffff;">
+                            <h3 class="card-title mb-2" data-wiki-cat-name="{{ $category->id }}" style="font-family: 'Cinzel', Georgia, serif; font-size: 1.25rem; color: #ffffff;">
                                 {{ $category->name }}
                             </h3>
 
-                            <p class="text-muted small mb-3 flex-grow-1" style="line-height: 1.6;">
+                            <p class="text-muted small mb-3 flex-grow-1" data-wiki-cat-desc="{{ $category->id }}" style="line-height: 1.6;">
                                 Pelajari seluk-beluk {{ strtolower($category->name) }}, aturan wilayah, dan panduan mekanik server Apexsions.
                             </p>
 
@@ -91,19 +91,19 @@
                                 <ul class="list-unstyled mb-0" style="font-size: 0.8rem; line-height: 1.7;">
                                     @foreach($category->pages->take(3) as $pg)
                                         <li class="text-truncate text-dim">
-                                            <i class="bi bi-file-text text-warning me-1"></i> {{ $pg->title }}
+                                            <i class="bi bi-file-text text-warning me-1"></i> <span data-wiki-title-id="{{ $pg->id }}">{{ $pg->title }}</span>
                                         </li>
                                     @endforeach
                                     @if($category->pages->count() > 3)
                                         <li class="text-muted fst-italic" style="font-size: 0.75rem;">
-                                            +{{ $category->pages->count() - 3 }} artikel lainnya...
+                                            <span data-wiki-more-articles="{{ $category->id }}" data-count="{{ $category->pages->count() - 3 }}">+{{ $category->pages->count() - 3 }} artikel lainnya...</span>
                                         </li>
                                     @endif
                                 </ul>
                             </div>
 
                             <div class="d-flex align-items-center justify-content-between text-warning fw-bold small mt-auto pt-2">
-                                <span>Buka Ensiklopedia</span>
+                                <span data-i18n="wiki_open_encyclopedia">Buka Ensiklopedia</span>
                                 <i class="bi bi-arrow-right"></i>
                             </div>
                         </div>

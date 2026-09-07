@@ -65,14 +65,14 @@
                         <div class="apx-rule-item">
                             <div class="d-flex justify-content-between align-items-start mb-2">
                                 <h3 class="apx-rule-item-title" data-i18n="rules_r1_1_title">1. Spam, Flood &amp; Huruf Kapital Berlebihan</h3>
-                                <span class="badge bg-warning-subtle text-warning border border-warning-subtle">Sanksi: Mute</span>
+                                <span class="badge bg-warning-subtle text-warning border border-warning-subtle" data-i18n="rules_s_mute">Sanksi: Mute</span>
                             </div>
                             <p class="apx-rule-item-desc" data-i18n="rules_r1_1_desc">
                                 Dilarang keras mengirim pesan berulang-ulang dalam tempo cepat, membombardir kolom obrolan dengan simbol atau spasi kosong, serta menggunakan huruf kapital (Caps-Lock) melebihi batas wajar yang mengganggu kenyamanan membaca pemain lain.
                             </p>
                             <div class="apx-prevention-box">
                                 <div class="apx-prevention-header">
-                                    <i class="bi bi-shield-check text-emerald me-1"></i> BENTUK PENCEGAHAN SISTEM AKTIF:
+                                    <i class="bi bi-shield-check text-emerald me-1"></i> <span data-i18n="rules_prevention_title">BENTUK PENCEGAHAN SISTEM AKTIF:</span>
                                 </div>
                                 <div class="apx-prevention-text" data-i18n="rules_r1_1_prev">
                                     Server menjalankan modul <code>SpamChecker</code> otomatis dengan sliding-window limiter (maksimal 3 pesan per 4 detik, jeda minimal 1.2 detik), algoritma kesamaan teks Levenshtein 80%, serta peredam otomatis huruf kapital (Caps dampener) yang secara langsung mengubah teks teriak menjadi huruf kecil normal.
@@ -84,14 +84,14 @@
                         <div class="apx-rule-item">
                             <div class="d-flex justify-content-between align-items-start mb-2">
                                 <h3 class="apx-rule-item-title" data-i18n="rules_r1_2_title">2. Bahasa Kasar, Provokasi &amp; Konten Tidak Pantas</h3>
-                                <span class="badge bg-warning-subtle text-warning border border-warning-subtle">Sanksi: Peringatan / Mute</span>
+                                <span class="badge bg-warning-subtle text-warning border border-warning-subtle" data-i18n="rules_s_warn_mute">Sanksi: Peringatan / Mute</span>
                             </div>
                             <p class="apx-rule-item-desc" data-i18n="rules_r1_2_desc">
                                 Dilarang menggunakan makian vulgar, kata-kata kotor, percakapan bermuatan seksual eksplisit, maupun provokasi toksik yang berniat memancing amarah antarpemain baik pada saluran chat global, saluran kerajaan, maupun pesan pribadi (whisper/tell).
                             </p>
                             <div class="apx-prevention-box">
                                 <div class="apx-prevention-header">
-                                    <i class="bi bi-shield-check text-emerald me-1"></i> BENTUK PENCEGAHAN SISTEM AKTIF:
+                                    <i class="bi bi-shield-check text-emerald me-1"></i> <span data-i18n="rules_prevention_title">BENTUK PENCEGAHAN SISTEM AKTIF:</span>
                                 </div>
                                 <div class="apx-prevention-text" data-i18n="rules_r1_2_prev">
                                     Enjin <code>ProfanityChecker</code> dengan normalisasi leetspeak secara otomatis memblokir dan menyensor istilah tabu sebelum diteruskan ke layar publik, serta secara senyap menandai akun untuk dipantau oleh asisten moderasi.
@@ -103,14 +103,14 @@
                         <div class="apx-rule-item">
                             <div class="d-flex justify-content-between align-items-start mb-2">
                                 <h3 class="apx-rule-item-title" data-i18n="rules_r1_3_title">3. Bullying, Perilaku Toksik &amp; Pelecehan Personal</h3>
-                                <span class="badge bg-danger-subtle text-danger border border-danger-subtle">Sanksi: Mute &bull; Temp Ban</span>
+                                <span class="badge bg-danger-subtle text-danger border border-danger-subtle" data-i18n-html="rules_s_mute_tempban">Sanksi: Mute &bull; Temp Ban</span>
                             </div>
                             <p class="apx-rule-item-desc" data-i18n="rules_r1_3_desc">
                                 Dilarang merendahkan martabat, mempermalukan, mengintimidasi, atau melakukan perundungan siber secara terus-menerus kepada warga tertentu. Persaingan kasta atau perang kerajaan harus tetap berlangsung dalam koridor sportivitas bermain peran (roleplay), bukan permusuhan pribadi.
                             </p>
                             <div class="apx-prevention-box">
                                 <div class="apx-prevention-header">
-                                    <i class="bi bi-shield-check text-emerald me-1"></i> BENTUK PENCEGAHAN SISTEM AKTIF:
+                                    <i class="bi bi-shield-check text-emerald me-1"></i> <span data-i18n="rules_prevention_title">BENTUK PENCEGAHAN SISTEM AKTIF:</span>
                                 </div>
                                 <div class="apx-prevention-text" data-i18n="rules_r1_3_prev">
                                     Fitur <code>/report &lt;player&gt; &lt;alasan&gt;</code> langsung membekukan rekaman obrolan 50 baris terakhir ke dalam antrean investigasi <code>StaffReportsDesk</code> untuk diverifikasi tanpa celah manipulasi bukti tangkapan layar.
@@ -122,14 +122,14 @@
                         <div class="apx-rule-item mb-0">
                             <div class="d-flex justify-content-between align-items-start mb-2">
                                 <h3 class="apx-rule-item-title" data-i18n="rules_r1_4_title">4. Ujaran Kebencian &amp; Pelecehan SARA / Negara / Keluarga</h3>
-                                <span class="badge bg-danger text-white">Sanksi: Permanent Ban</span>
+                                <span class="badge bg-danger text-white" data-i18n="rules_s_perm_ban">Sanksi: Permanent Ban</span>
                             </div>
                             <p class="apx-rule-item-desc" data-i18n="rules_r1_4_desc">
                                 Dilarang tanpa pengecualian melontarkan ujaran kebencian berlatar belakang Suku, Agama, Ras, Antargolongan (SARA), menistakan simbol kenegaraan, maupun menghina anggota keluarga pemain lain secara tersurat maupun tersirat.
                             </p>
                             <div class="apx-prevention-box">
                                 <div class="apx-prevention-header">
-                                    <i class="bi bi-shield-check text-emerald me-1"></i> BENTUK PENCEGAHAN SISTEM AKTIF:
+                                    <i class="bi bi-shield-check text-emerald me-1"></i> <span data-i18n="rules_prevention_title">BENTUK PENCEGAHAN SISTEM AKTIF:</span>
                                 </div>
                                 <div class="apx-prevention-text" data-i18n="rules_r1_4_prev">
                                     Modul <code>HateSpeechChecker</code> menerapkan proteksi blokir instan berbobot tinggi. Pelanggaran kategori ini otomatis menerbitkan peringatan prioritas tinggi ke terminal pengawas dan mematikan akses bicara pemain secara seketika.
@@ -159,14 +159,14 @@
                         <div class="apx-rule-item">
                             <div class="d-flex justify-content-between align-items-start mb-2">
                                 <h3 class="apx-rule-item-title" data-i18n="rules_r2_1_title">1. Penggunaan Cheat, Hack Client &amp; Modifikasi Ilegal</h3>
-                                <span class="badge bg-danger text-white">Sanksi: Permanent Ban</span>
+                                <span class="badge bg-danger text-white" data-i18n="rules_s_perm_ban">Sanksi: Permanent Ban</span>
                             </div>
                             <p class="apx-rule-item-desc" data-i18n="rules_r2_1_desc">
                                 Dilarang keras memakai software/mod pihak ketiga yang memberikan keunggulan tidak adil, termasuk namun tidak terbatas pada X-Ray (resource pack tembus pandang atau mod), Baritone, Litematica Printer otomatis, Auto-Clicker, Killaura, Fly, Speed, Jesus, dan free-cam tak resmi.
                             </p>
                             <div class="apx-prevention-box">
                                 <div class="apx-prevention-header">
-                                    <i class="bi bi-shield-check text-emerald me-1"></i> BENTUK PENCEGAHAN SISTEM AKTIF:
+                                    <i class="bi bi-shield-check text-emerald me-1"></i> <span data-i18n="rules_prevention_title">BENTUK PENCEGAHAN SISTEM AKTIF:</span>
                                 </div>
                                 <div class="apx-prevention-text" data-i18n="rules_r2_1_prev">
                                     Pencegahan server-side membatasi jangkauan raytrace interaksi blok, menyamarkan data block ore di bawah tanah (anti-xray native engine), membatasi CPS interaksi, serta mendeteksi anomali transmisi paket pergerakan pemain.
@@ -178,14 +178,14 @@
                         <div class="apx-rule-item">
                             <div class="d-flex justify-content-between align-items-start mb-2">
                                 <h3 class="apx-rule-item-title" data-i18n="rules_r2_2_title">2. Eksploitasi Bug, Glitch &amp; Duplikasi Sumber Daya</h3>
-                                <span class="badge bg-danger text-white">Sanksi: Rollback Data &bull; Permanent Ban</span>
+                                <span class="badge bg-danger text-white" data-i18n-html="rules_s_rollback_permban">Sanksi: Rollback Data &bull; Permanent Ban</span>
                             </div>
                             <p class="apx-rule-item-desc" data-i18n="rules_r2_2_desc">
                                 Dilarang memanfaatkan kelemahan kode Minecraft, celah game, atau bug plugin untuk menggandakan item, memperbanyak saldo Rupiah, atau menerobos batasan sistem. Segala temuan bug wajib dilaporkan kepada pengelola server demi integritas bersama.
                             </p>
                             <div class="apx-prevention-box">
                                 <div class="apx-prevention-header">
-                                    <i class="bi bi-shield-check text-emerald me-1"></i> BENTUK PENCEGAHAN SISTEM AKTIF:
+                                    <i class="bi bi-shield-check text-emerald me-1"></i> <span data-i18n="rules_prevention_title">BENTUK PENCEGAHAN SISTEM AKTIF:</span>
                                 </div>
                                 <div class="apx-prevention-text" data-i18n="rules_r2_2_prev">
                                     Modul ekonomi <code>ApexsionsEconomy</code> menerapkan arsitektur transaksi atomik ACID dengan penguncian state (lock-boundary). Item dan saldo tidak pernah dapat dipindahkan secara ganda dalam satuan tick yang sama.
@@ -197,14 +197,14 @@
                         <div class="apx-rule-item">
                             <div class="d-flex justify-content-between align-items-start mb-2">
                                 <h3 class="apx-rule-item-title" data-i18n="rules_r2_3_title">3. Griefing &amp; Pencurian di Luar Mekanisme Perang Resmi</h3>
-                                <span class="badge bg-danger-subtle text-danger border border-danger-subtle">Sanksi: Rollback Wilayah &bull; Temp Ban</span>
+                                <span class="badge bg-danger-subtle text-danger border border-danger-subtle" data-i18n-html="rules_s_rollback_tempban">Sanksi: Rollback Wilayah &bull; Temp Ban</span>
                             </div>
                             <p class="apx-rule-item-desc" data-i18n="rules_r2_3_desc">
                                 Dilarang merusak, membongkar paksa, atau mencuri harta di dalam wilayah kerajaan berdaulat dan rumah warga lain tanpa izin pemilik, kecuali saat peristiwa resmi Kingdom War dideklarasikan sesuai protokol perang.
                             </p>
                             <div class="apx-prevention-box">
                                 <div class="apx-prevention-header">
-                                    <i class="bi bi-shield-check text-emerald me-1"></i> BENTUK PENCEGAHAN SISTEM AKTIF:
+                                    <i class="bi bi-shield-check text-emerald me-1"></i> <span data-i18n="rules_prevention_title">BENTUK PENCEGAHAN SISTEM AKTIF:</span>
                                 </div>
                                 <div class="apx-prevention-text" data-i18n="rules_r2_3_prev">
                                     Sistem proteksi <code>TerritoryListener</code> dan <code>RegionManager</code> secara otomatis membatalkan event pembongkaran blok, penempatan blok, dan pembukaan peti oleh pemain non-warga wilayah berdaulat.
@@ -216,14 +216,14 @@
                         <div class="apx-rule-item">
                             <div class="d-flex justify-content-between align-items-start mb-2">
                                 <h3 class="apx-rule-item-title" data-i18n="rules_r2_4_title">4. Eksploitasi Redstone &amp; Mesin Perontok Server (Lag Machine)</h3>
-                                <span class="badge bg-warning-subtle text-warning border border-warning-subtle">Sanksi: Sita Mesin &bull; Temp Ban</span>
+                                <span class="badge bg-warning-subtle text-warning border border-warning-subtle" data-i18n-html="rules_s_confiscate_tempban">Sanksi: Sita Mesin &bull; Temp Ban</span>
                             </div>
                             <p class="apx-rule-item-desc" data-i18n="rules_r2_4_desc">
                                 Dilarang membuat clock loop redstone tanpa tombol pemutus, mesin pelempar item berlebihan, instalasi piston masif tanpa peredam, atau mekanisme yang sengaja dirancang untuk menurunkan TPS (Ticks Per Second) server.
                             </p>
                             <div class="apx-prevention-box">
                                 <div class="apx-prevention-header">
-                                    <i class="bi bi-shield-check text-emerald me-1"></i> BENTUK PENCEGAHAN SISTEM AKTIF:
+                                    <i class="bi bi-shield-check text-emerald me-1"></i> <span data-i18n="rules_prevention_title">BENTUK PENCEGAHAN SISTEM AKTIF:</span>
                                 </div>
                                 <div class="apx-prevention-text" data-i18n="rules_r2_4_prev">
                                     Sistem watchdog otomatis membatasi frekuensi pergantian sinyal redstone. Sirkuit loop yang berdetik melebihi batas toleransi per tick server akan otomatis dibekukan dan diputus demi kestabilan 20 TPS server.
@@ -235,14 +235,14 @@
                         <div class="apx-rule-item mb-0">
                             <div class="d-flex justify-content-between align-items-start mb-2">
                                 <h3 class="apx-rule-item-title" data-i18n="rules_r2_5_title">5. Combat Logging (Kabur Saat Bertarung)</h3>
-                                <span class="badge bg-warning-subtle text-warning border border-warning-subtle">Sanksi: Kematian Otomatis &bull; Drop Item</span>
+                                <span class="badge bg-warning-subtle text-warning border border-warning-subtle" data-i18n-html="rules_s_death_drop">Sanksi: Kematian Otomatis &bull; Drop Item</span>
                             </div>
                             <p class="apx-rule-item-desc" data-i18n="rules_r2_5_desc">
                                 Dilarang keluar dari server secara sengaja (disconnect/alt+F4) saat sedang berada dalam pertempuran aktif melawan pemain lain guna menghindari kematian atau kehilangan perlengkapan.
                             </p>
                             <div class="apx-prevention-box">
                                 <div class="apx-prevention-header">
-                                    <i class="bi bi-shield-check text-emerald me-1"></i> BENTUK PENCEGAHAN SISTEM AKTIF:
+                                    <i class="bi bi-shield-check text-emerald me-1"></i> <span data-i18n="rules_prevention_title">BENTUK PENCEGAHAN SISTEM AKTIF:</span>
                                 </div>
                                 <div class="apx-prevention-text" data-i18n="rules_r2_5_prev">
                                     Modul <code>CombatTag</code> mengunci status pertarungan selama 15 detik. Jika pemain disconnect saat combat tag menyala, server otomatis mengeksekusi karakter, mendrop seluruh inventory di titik logout, dan mencatat status kekalahan.
@@ -272,14 +272,14 @@
                         <div class="apx-rule-item">
                             <div class="d-flex justify-content-between align-items-start mb-2">
                                 <h3 class="apx-rule-item-title" data-i18n="rules_r3_1_title">1. Berbohong kepada Staf &amp; Penghindaran Sanksi (Ban Evasion)</h3>
-                                <span class="badge bg-danger text-white">Sanksi: Blacklist Permanen</span>
+                                <span class="badge bg-danger text-white" data-i18n="rules_s_blacklist">Sanksi: Blacklist Permanen</span>
                             </div>
                             <p class="apx-rule-item-desc" data-i18n="rules_r3_1_desc">
                                 Dilarang memberikan keterangan palsu dalam proses investigasi staf, memalsukan bukti laporan, atau membuat akun baru/alternatif untuk bermain kembali saat akun utama sedang menjalani masa hukuman sanksi.
                             </p>
                             <div class="apx-prevention-box">
                                 <div class="apx-prevention-header">
-                                    <i class="bi bi-shield-check text-emerald me-1"></i> BENTUK PENCEGAHAN SISTEM AKTIF:
+                                    <i class="bi bi-shield-check text-emerald me-1"></i> <span data-i18n="rules_prevention_title">BENTUK PENCEGAHAN SISTEM AKTIF:</span>
                                 </div>
                                 <div class="apx-prevention-text" data-i18n="rules_r3_1_prev">
                                     Pemeriksaan authoritative UUID dan jejak koneksi IP mendeteksi hubungan akun alternatif secara otomatis. Login baru yang terasosiasi dengan akun terkena sanksi aktif akan otomatis ditolak oleh gerbang inisiasi.
@@ -291,14 +291,14 @@
                         <div class="apx-rule-item">
                             <div class="d-flex justify-content-between align-items-start mb-2">
                                 <h3 class="apx-rule-item-title" data-i18n="rules_r3_2_title">2. Batasan Multi-Akun (Alt Accounts)</h3>
-                                <span class="badge bg-warning-subtle text-warning border border-warning-subtle">Sanksi: Pembekuan Akun Alt</span>
+                                <span class="badge bg-warning-subtle text-warning border border-warning-subtle" data-i18n="rules_s_freeze_alt">Sanksi: Pembekuan Akun Alt</span>
                             </div>
                             <p class="apx-rule-item-desc" data-i18n="rules_r3_2_desc">
                                 Setiap pemain hanya diperkenankan memiliki maksimal 2 (dua) akun Minecraft pribadi. Dilarang menggunakan akun alternatif untuk menimbun starter kit, menduduki kasta ganda di kerajaan berlawanan, atau memanipulasi voting dan pasar lelang.
                             </p>
                             <div class="apx-prevention-box">
                                 <div class="apx-prevention-header">
-                                    <i class="bi bi-shield-check text-emerald me-1"></i> BENTUK PENCEGAHAN SISTEM AKTIF:
+                                    <i class="bi bi-shield-check text-emerald me-1"></i> <span data-i18n="rules_prevention_title">BENTUK PENCEGAHAN SISTEM AKTIF:</span>
                                 </div>
                                 <div class="apx-prevention-text" data-i18n="rules_r3_2_prev">
                                     Protokol penautan <code>/link</code> portal web menerapkan pembatasan satu akun berdaulat terverifikasi per kartu warga guna menjaga pemerataan perolehan reward harian dan integritas ekonomi.
@@ -310,14 +310,14 @@
                         <div class="apx-rule-item mb-0">
                             <div class="d-flex justify-content-between align-items-start mb-2">
                                 <h3 class="apx-rule-item-title" data-i18n="rules_r3_3_title">3. Penyamaran Identitas &amp; Penghormatan Staf</h3>
-                                <span class="badge bg-danger-subtle text-danger border border-danger-subtle">Sanksi: Mute &bull; Temp Ban</span>
+                                <span class="badge bg-danger-subtle text-danger border border-danger-subtle" data-i18n-html="rules_s_mute_tempban">Sanksi: Mute &bull; Temp Ban</span>
                             </div>
                             <p class="apx-rule-item-desc" data-i18n="rules_r3_3_desc">
                                 Dilarang meniru nama, prefix, gelar, atau berpura-pura menjadi anggota staf Apexsions (Warden, Herald, Overseer, Architect, Ancestor) untuk memeras atau memperdaya warga. Kritik terhadap keputusan staf disampaikan secara beradab melalui tiket resmi.
                             </p>
                             <div class="apx-prevention-box">
                                 <div class="apx-prevention-header">
-                                    <i class="bi bi-shield-check text-emerald me-1"></i> BENTUK PENCEGAHAN SISTEM AKTIF:
+                                    <i class="bi bi-shield-check text-emerald me-1"></i> <span data-i18n="rules_prevention_title">BENTUK PENCEGAHAN SISTEM AKTIF:</span>
                                 </div>
                                 <div class="apx-prevention-text" data-i18n="rules_r3_3_prev">
                                     Sistem hirarki kasta <code>ranks.yml</code> memblokir perubahan display name atau prefix nickname (<code>/nick</code>) yang mengandung kata kunci staf yang telah diproteksi oleh izin otoritas.
@@ -347,14 +347,14 @@
                         <div class="apx-rule-item">
                             <div class="d-flex justify-content-between align-items-start mb-2">
                                 <h3 class="apx-rule-item-title" data-i18n="rules_r4_1_title">1. Promosi &amp; Iklan Server Luar Tanpa Izin</h3>
-                                <span class="badge bg-danger text-white">Sanksi: Mute Permanen &bull; Banned</span>
+                                <span class="badge bg-danger text-white" data-i18n-html="rules_s_perm_mute_ban">Sanksi: Mute Permanen &bull; Banned</span>
                             </div>
                             <p class="apx-rule-item-desc" data-i18n="rules_r4_1_desc">
                                 Dilarang menyebarkan alamat IP server Minecraft lain, link komunitas Discord luar, atau tautan promosi komersial tanpa persetujuan resmi dari pihak pengelola Apexsions.
                             </p>
                             <div class="apx-prevention-box">
                                 <div class="apx-prevention-header">
-                                    <i class="bi bi-shield-check text-emerald me-1"></i> BENTUK PENCEGAHAN SISTEM AKTIF:
+                                    <i class="bi bi-shield-check text-emerald me-1"></i> <span data-i18n="rules_prevention_title">BENTUK PENCEGAHAN SISTEM AKTIF:</span>
                                 </div>
                                 <div class="apx-prevention-text" data-i18n="rules_r4_1_prev">
                                     Modul <code>AdvertisementChecker</code> memindai pesan secara real-time dengan regex IPv4, nama domain global dan nasional (termasuk <code>.my.id</code>, <code>.id</code>, <code>.com</code>, dll.), serta link undangan Discord luar, dan langsung membatalkan pengiriman pesan ke publik.
@@ -366,14 +366,14 @@
                         <div class="apx-rule-item">
                             <div class="d-flex justify-content-between align-items-start mb-2">
                                 <h3 class="apx-rule-item-title" data-i18n="rules_r4_2_title">2. Doxxing, Pembocoran Data Pribadi &amp; Ancaman Serangan Cyber</h3>
-                                <span class="badge bg-danger text-white">Sanksi: Permanent Ban &bull; Hukum Pidana</span>
+                                <span class="badge bg-danger text-white" data-i18n-html="rules_s_perm_ban_legal">Sanksi: Permanent Ban &bull; Hukum Pidana</span>
                             </div>
                             <p class="apx-rule-item-desc" data-i18n="rules_r4_2_desc">
                                 Dilarang keras mempublikasikan informasi data pribadi orang lain (nama asli, alamat rumah, nomor kontak, media sosial privat) tanpa izin, serta dilarang melontarkan ancaman serangan DDoS atau eksploitasi jaringan.
                             </p>
                             <div class="apx-prevention-box">
                                 <div class="apx-prevention-header">
-                                    <i class="bi bi-shield-check text-emerald me-1"></i> BENTUK PENCEGAHAN SISTEM AKTIF:
+                                    <i class="bi bi-shield-check text-emerald me-1"></i> <span data-i18n="rules_prevention_title">BENTUK PENCEGAHAN SISTEM AKTIF:</span>
                                 </div>
                                 <div class="apx-prevention-text" data-i18n="rules_r4_2_prev">
                                     Infrastruktur Apexsions dilindungi mitigasi DDoS tingkat enterprise, enkripsi SSL/TLS berlapis, dan kebijakan isolasi data sensitif di mana credential pemain tidak pernah terekspos di log obrolan server.
@@ -385,14 +385,14 @@
                         <div class="apx-rule-item mb-0">
                             <div class="d-flex justify-content-between align-items-start mb-2">
                                 <h3 class="apx-rule-item-title" data-i18n="rules_r4_3_title">3. Penipuan Transaksi Riil &amp; Pelanggaran UU ITE</h3>
-                                <span class="badge bg-danger text-white">Sanksi: Permanent Ban</span>
+                                <span class="badge bg-danger text-white" data-i18n="rules_s_perm_ban">Sanksi: Permanent Ban</span>
                             </div>
                             <p class="apx-rule-item-desc" data-i18n="rules_r4_3_desc">
                                 Segala bentuk penipuan finansial uang riil (Rupiah), jual beli akun curian, transaksi pasar gelap di luar Webstore resmi, atau aktivitas yang melanggar Undang-Undang Informasi dan Transaksi Elektronik (UU ITE) Republik Indonesia dilarang mutlak.
                             </p>
                             <div class="apx-prevention-box">
                                 <div class="apx-prevention-header">
-                                    <i class="bi bi-shield-check text-emerald me-1"></i> BENTUK PENCEGAHAN SISTEM AKTIF:
+                                    <i class="bi bi-shield-check text-emerald me-1"></i> <span data-i18n="rules_prevention_title">BENTUK PENCEGAHAN SISTEM AKTIF:</span>
                                 </div>
                                 <div class="apx-prevention-text" data-i18n="rules_r4_3_prev">
                                     Semua transaksi webstore diproses melalui gateway pembayaran resmi bersertifikat dengan pencatatan audit log permanen dan sistem pengiriman item terverifikasi langsung ke inventori in-game.

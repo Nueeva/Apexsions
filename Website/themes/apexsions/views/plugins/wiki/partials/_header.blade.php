@@ -3,7 +3,7 @@
         <div class="apx-wiki-badge">
             <i class="bi bi-journal-bookmark-fill me-1"></i> <span data-i18n="wiki_badge">ENSIKLOPEDIA &amp; PANDUAN</span>
         </div>
-        <h1 class="mb-0">{{ $title }}</h1>
+        <h1 class="mb-0" data-wiki-header-title="true">{{ $title }}</h1>
     </div>
 
     <div class="apx-wiki-search-form">

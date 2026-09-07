@@ -34,7 +34,10 @@
                 <!-- Pasal 1 -->
                 <div class="apx-legal-card p-4 p-lg-5 mb-4 rounded" style="background: var(--apx-bg-deep); border: 1px solid var(--apx-border);">
                     <div class="d-flex align-items-center gap-3 mb-3">
-                        <span class="apx-legal-num text-gold font-monospace fs-4">01</span>
+                        <div class="text-center" style="min-width: 50px;">
+                        <span class="d-block text-gold font-monospace fw-bold" style="font-size: 0.65rem; letter-spacing: 0.12em;" data-i18n="legal_article_word">PASAL</span>
+                        <span class="apx-legal-num text-gold font-monospace fs-4 lh-1">01</span>
+                    </div>
                         <div>
                             <h2 class="h5 text-white mb-0 font-cinzel" data-i18n="privacy_art1_title">Informasi yang Kami Himpun</h2>
                             <span class="text-dim small" data-i18n="privacy_art1_sub">Data Esensial untuk Menjalankan Ekosistem Peradaban</span>
@@ -53,7 +56,10 @@
                 <!-- Pasal 2 -->
                 <div class="apx-legal-card p-4 p-lg-5 mb-4 rounded" style="background: var(--apx-bg-deep); border: 1px solid var(--apx-border);">
                     <div class="d-flex align-items-center gap-3 mb-3">
-                        <span class="apx-legal-num text-gold font-monospace fs-4">02</span>
+                        <div class="text-center" style="min-width: 50px;">
+                        <span class="d-block text-gold font-monospace fw-bold" style="font-size: 0.65rem; letter-spacing: 0.12em;" data-i18n="legal_article_word">PASAL</span>
+                        <span class="apx-legal-num text-gold font-monospace fs-4 lh-1">02</span>
+                    </div>
                         <div>
                             <h2 class="h5 text-white mb-0 font-cinzel" data-i18n="privacy_art2_title">Tujuan &amp; Pemanfaatan Data</h2>
                             <span class="text-dim small" data-i18n="privacy_art2_sub">Optimalisasi Layanan &amp; Integritas Permainan</span>
@@ -72,7 +78,10 @@
                 <!-- Pasal 3 -->
                 <div class="apx-legal-card p-4 p-lg-5 mb-4 rounded" style="background: var(--apx-bg-deep); border: 1px solid var(--apx-border);">
                     <div class="d-flex align-items-center gap-3 mb-3">
-                        <span class="apx-legal-num text-gold font-monospace fs-4">03</span>
+                        <div class="text-center" style="min-width: 50px;">
+                        <span class="d-block text-gold font-monospace fw-bold" style="font-size: 0.65rem; letter-spacing: 0.12em;" data-i18n="legal_article_word">PASAL</span>
+                        <span class="apx-legal-num text-gold font-monospace fs-4 lh-1">03</span>
+                    </div>
                         <div>
                             <h2 class="h5 text-white mb-0 font-cinzel" data-i18n="privacy_art3_title">Keamanan Finansial &amp; Transaksi</h2>
                             <span class="text-dim small" data-i18n="privacy_art3_sub">Nol Penyimpanan Informasi Finansial Sensitif</span>
@@ -86,7 +95,10 @@
                 <!-- Pasal 4 -->
                 <div class="apx-legal-card p-4 p-lg-5 mb-4 rounded" style="background: var(--apx-bg-deep); border: 1px solid var(--apx-border);">
                     <div class="d-flex align-items-center gap-3 mb-3">
-                        <span class="apx-legal-num text-gold font-monospace fs-4">04</span>
+                        <div class="text-center" style="min-width: 50px;">
+                        <span class="d-block text-gold font-monospace fw-bold" style="font-size: 0.65rem; letter-spacing: 0.12em;" data-i18n="legal_article_word">PASAL</span>
+                        <span class="apx-legal-num text-gold font-monospace fs-4 lh-1">04</span>
+                    </div>
                         <div>
                             <h2 class="h5 text-white mb-0 font-cinzel" data-i18n="privacy_art4_title">Kerahasiaan Mutlak Tanpa Pihak Ketiga</h2>
                             <span class="text-dim small" data-i18n="privacy_art4_sub">Komitmen Perlindungan Privasi Komunitas</span>
@@ -100,7 +112,10 @@
                 <!-- Pasal 5 -->
                 <div class="apx-legal-card p-4 p-lg-5 mb-4 rounded" style="background: var(--apx-bg-deep); border: 1px solid var(--apx-border);">
                     <div class="d-flex align-items-center gap-3 mb-3">
-                        <span class="apx-legal-num text-gold font-monospace fs-4">05</span>
+                        <div class="text-center" style="min-width: 50px;">
+                        <span class="d-block text-gold font-monospace fw-bold" style="font-size: 0.65rem; letter-spacing: 0.12em;" data-i18n="legal_article_word">PASAL</span>
+                        <span class="apx-legal-num text-gold font-monospace fs-4 lh-1">05</span>
+                    </div>
                         <div>
                             <h2 class="h5 text-white mb-0 font-cinzel" data-i18n="privacy_art5_title">Hak Warga atas Pengendalian Akun</h2>
                             <span class="text-dim small" data-i18n="privacy_art5_sub">Otentikasi Dua Faktor (2FA) &amp; Penghapusan Data</span>

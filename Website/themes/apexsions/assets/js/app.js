@@ -371,7 +371,47 @@ const APX_I18N = {
         wiki_back_index: 'Kembali ke Indeks Wiki',
         wiki_open_guide: 'Buka Panduan Lengkap',
         wiki_no_results: 'Tidak Ada Hasil Ditemukan',
-        wiki_all_categories: 'Jelajahi Seluruh Kategori'
+        wiki_all_categories: 'Jelajahi Seluruh Kategori',
+        // Legal and Rules Additions
+        legal_article_word: 'PASAL',
+        rules_prevention_title: 'BENTUK PENCEGAHAN SISTEM AKTIF:',
+        rules_s_mute: 'Sanksi: Mute',
+        rules_s_warn_mute: 'Sanksi: Peringatan / Mute',
+        rules_s_mute_tempban: 'Sanksi: Mute &bull; Temp Ban',
+        rules_s_perm_ban: 'Sanksi: Permanent Ban',
+        rules_s_rollback_permban: 'Sanksi: Rollback Data &bull; Permanent Ban',
+        rules_s_rollback_tempban: 'Sanksi: Rollback Wilayah &bull; Temp Ban',
+        rules_s_confiscate_tempban: 'Sanksi: Sita Mesin &bull; Temp Ban',
+        rules_s_death_drop: 'Sanksi: Kematian Otomatis &bull; Drop Item',
+        rules_s_blacklist: 'Sanksi: Blacklist Permanen',
+        rules_s_freeze_alt: 'Sanksi: Pembekuan Akun Alt',
+        rules_s_perm_mute_ban: 'Sanksi: Mute Permanen &bull; Banned',
+        rules_s_perm_ban_legal: 'Sanksi: Permanent Ban &bull; Hukum Pidana',
+
+        // Wiki Show & Navigation Additions
+        wiki_back_category: 'Kembali ke Kategori',
+        wiki_article_list: 'DAFTAR ARTIKEL',
+        wiki_share: 'Bagikan',
+        wiki_official_doc: 'Dokumen Resmi Apexsions',
+        wiki_min_read: 'menit baca',
+        wiki_copy_code: 'Salin',
+        wiki_open_encyclopedia: 'Buka Ensiklopedia',
+
+        // Posts / News Articles
+        posts_breadcrumb: 'Warta & Artikel',
+        posts_header_kicker: 'WARTA & DOKUMEN RESMI',
+        posts_header_title: 'Warta & Artikel Peradaban',
+        posts_header_desc: 'Ikuti seluruh rilis fitur terbaru, catatan pembaruan server, berita perang kerajaan, serta artikel komunitas resmi Apexsions.',
+        posts_search_placeholder: 'Cari warta atau artikel...',
+        posts_empty_title: 'Belum Ada Warta Diterbitkan',
+        posts_empty_desc: 'Seluruh dokumentasi dan panduan mekanik dapat Anda pelajari secara mendalam melalui portal Ensiklopedia Wiki resmi.',
+        posts_read_more: 'Baca Artikel',
+        posts_back: 'Kembali ke Daftar Artikel',
+        posts_comments_title: 'Komentar & Diskusi Warga',
+        posts_leave_comment: 'Tulis Komentar',
+        posts_comment_placeholder: 'Sampaikan pandangan Anda dengan sopan...',
+        posts_send_comment: 'Kirim Komentar',
+        posts_guest_comment: 'Silakan masuk ke akun untuk berpartisipasi dalam diskusi.',
     },
     en: {
         // Navigation
@@ -743,7 +783,47 @@ const APX_I18N = {
         wiki_back_index: 'Return to Wiki Index',
         wiki_open_guide: 'Read Full Guide',
         wiki_no_results: 'No Results Found',
-        wiki_all_categories: 'Browse All Categories'
+        wiki_all_categories: 'Browse All Categories',
+        // Legal and Rules Additions
+        legal_article_word: 'ARTICLE',
+        rules_prevention_title: 'ACTIVE SYSTEM PREVENTION MECHANISM:',
+        rules_s_mute: 'Sanction: Mute',
+        rules_s_warn_mute: 'Sanction: Warning / Mute',
+        rules_s_mute_tempban: 'Sanction: Mute &bull; Temp Ban',
+        rules_s_perm_ban: 'Sanction: Permanent Ban',
+        rules_s_rollback_permban: 'Sanction: Data Rollback &bull; Permanent Ban',
+        rules_s_rollback_tempban: 'Sanction: Region Rollback &bull; Temp Ban',
+        rules_s_confiscate_tempban: 'Sanction: Machine Confiscation &bull; Temp Ban',
+        rules_s_death_drop: 'Sanction: Auto-Death &bull; Drop Inventory',
+        rules_s_blacklist: 'Sanction: Permanent Blacklist',
+        rules_s_freeze_alt: 'Sanction: Alt Account Freeze',
+        rules_s_perm_mute_ban: 'Sanction: Permanent Mute &bull; Banned',
+        rules_s_perm_ban_legal: 'Sanction: Permanent Ban &bull; Criminal Prosecution',
+
+        // Wiki Show & Navigation Additions
+        wiki_back_category: 'Back to Category',
+        wiki_article_list: 'ARTICLE LIST',
+        wiki_share: 'Share',
+        wiki_official_doc: 'Apexsions Official Document',
+        wiki_min_read: 'min read',
+        wiki_copy_code: 'Copy',
+        wiki_open_encyclopedia: 'Open Encyclopedia',
+
+        // Posts / News Articles
+        posts_breadcrumb: 'Dispatches & Articles',
+        posts_header_kicker: 'OFFICIAL DISPATCHES & ARTICLES',
+        posts_header_title: 'Civilization Dispatches & Articles',
+        posts_header_desc: 'Follow all recent feature releases, server patch notes, kingdom war chronicles, and official Apexsions community articles.',
+        posts_search_placeholder: 'Search dispatches or articles...',
+        posts_empty_title: 'No Dispatches Published Yet',
+        posts_empty_desc: 'You can explore all server documentation, mechanical guides, and lore via our official Wiki Encyclopedia.',
+        posts_read_more: 'Read Article',
+        posts_back: 'Return to Articles List',
+        posts_comments_title: 'Citizen Discussions & Comments',
+        posts_leave_comment: 'Leave a Comment',
+        posts_comment_placeholder: 'Share your respectful thoughts...',
+        posts_send_comment: 'Post Comment',
+        posts_guest_comment: 'Please sign in to participate in discussions.',
     }
 };
 
@@ -875,6 +955,59 @@ document.addEventListener('DOMContentLoaded', () => {
                     el.setAttribute('placeholder', dict[key]);
                 }
             });
+
+            
+            // Translate Wiki Dynamic Content
+            if (typeof WIKI_DATA !== 'undefined') {
+                document.querySelectorAll('[data-wiki-cat-name]').forEach(el => {
+                    const catId = el.getAttribute('data-wiki-cat-name');
+                    if (WIKI_DATA.categories[catId]) {
+                        el.textContent = WIKI_DATA.categories[catId][targetLang] || el.textContent;
+                    }
+                });
+
+                document.querySelectorAll('[data-wiki-cat-desc]').forEach(el => {
+                    const catId = el.getAttribute('data-wiki-cat-desc');
+                    if (WIKI_DATA.categories[catId]) {
+                        const k = targetLang === 'en' ? 'desc_en' : 'desc_id';
+                        el.textContent = WIKI_DATA.categories[catId][k] || el.textContent;
+                    }
+                });
+
+                document.querySelectorAll('[data-wiki-header-title]').forEach(el => {
+                    for (const catId in WIKI_DATA.categories) {
+                        const cat = WIKI_DATA.categories[catId];
+                        if (el.textContent.trim() === cat.id || el.textContent.trim() === cat.en) {
+                            el.textContent = cat[targetLang];
+                            break;
+                        }
+                    }
+                });
+
+                document.querySelectorAll('[data-wiki-title-id]').forEach(el => {
+                    const pageId = el.getAttribute('data-wiki-title-id');
+                    if (WIKI_DATA.pages[pageId]) {
+                        el.textContent = WIKI_DATA.pages[pageId][targetLang] || el.textContent;
+                    }
+                });
+
+                document.querySelectorAll('[data-wiki-more-articles]').forEach(el => {
+                    const count = el.getAttribute('data-count') || '0';
+                    el.textContent = targetLang === 'en' ? `+${count} more articles...` : `+${count} artikel lainnya...`;
+                });
+
+                document.querySelectorAll('[data-wiki-body-id]').forEach(el => {
+                    const pageId = el.getAttribute('data-wiki-body-id');
+                    if (!el.hasAttribute('data-original-html')) {
+                        el.setAttribute('data-original-html', el.innerHTML);
+                    }
+                    if (targetLang === 'en' && WIKI_DATA.bodies && WIKI_DATA.bodies[pageId]) {
+                        el.innerHTML = WIKI_DATA.bodies[pageId];
+                    } else if (targetLang === 'id') {
+                        el.innerHTML = el.getAttribute('data-original-html');
+                    }
+                });
+            }
 
             try {
                 localStorage.setItem('apx_locale', targetLang);
@@ -1146,3 +1279,468 @@ document.addEventListener('DOMContentLoaded', () => {
 
     initScrollAnimations();
 });
+
+
+// ==========================================================================
+// Apexsions Bilingual Wiki Data & English Body Content
+// ==========================================================================
+const WIKI_DATA = {
+    categories: {
+        '1': { id: 'Panduan Pemula & Perintah', en: 'Beginner Guides & Commands', desc_id: 'Pelajari seluk-beluk panduan pemula & perintah, aturan wilayah, dan panduan mekanik server Apexsions.', desc_en: 'Master beginner guides, foundational commands, kingdom rules, and core gameplay mechanics.' },
+        '2': { id: 'Tiga Kerajaan & Kedaulatan', en: 'Three Kingdoms & Sovereignty', desc_id: 'Pelajari seluk-beluk tiga kerajaan & kedaulatan, aturan wilayah, dan panduan mekanik server Apexsions.', desc_en: 'Explore the 3 sovereign realms, ancient historical lore, territorial nexus claims, and war protocols.' },
+        '3': { id: 'Ekonomi & Perdagangan', en: 'Economy & Commerce', desc_id: 'Pelajari seluk-beluk ekonomi & perdagangan, aturan wilayah, dan panduan mekanik server Apexsions.', desc_en: 'Discover atomic currency exchange, dynamic markets, auction houses, and barter escrow mechanics.' },
+        '4': { id: 'Custom Enchants & Kits', en: 'Custom Enchants & Kits', desc_id: 'Pelajari seluk-beluk custom enchants & kits, aturan wilayah, dan panduan mekanik server Apexsions.', desc_en: 'Inspect 182 custom enchantments across 7 tiers, magic scrolls, dust, and native class armor set bonuses.' },
+        '5': { id: 'Battlepass & Komunikasi', en: 'Battlepass & Communication', desc_id: 'Pelajari seluk-beluk battlepass & komunikasi, aturan wilayah, dan panduan mekanik server Apexsions.', desc_en: 'Understand 100-tier seasonal quest lines, EXP rotating shops, chat channels, and community reporting desk.' },
+        '6': { id: 'Hierarki Kasta Resmi', en: 'Official Caste Hierarchy', desc_id: 'Pelajari seluk-beluk hierarki kasta resmi, aturan wilayah, dan panduan mekanik server Apexsions.', desc_en: 'Learn the 5-tier social structure, 11 official castes, and 10 spiritual sequence pathways.' }
+    },
+    pages: {
+        '1': { id: 'Panduan 15 Menit Pertama Warga Baru (Zero-to-Hero Roadmap)', en: 'First 15 Minutes Guide for New Citizens (Zero-to-Hero Roadmap)' },
+        '2': { id: 'Cara Bergabung ke Server Apexsions', en: 'How to Join Apexsions Server' },
+        '3': { id: 'Daftar Perintah Resmi Server (Commands Cheat Sheet)', en: 'Official Server Commands Cheat Sheet' },
+        '4': { id: 'Sistem Progresi Level 1–100 & Gelar Peradaban', en: 'Level 1–100 Progression System & Civilization Titles' },
+        '5': { id: 'Babad Sejarah: Runtuhnya Kekaisaran Sions & Eksodus Akbar (The Fall of Sions)', en: 'Historical Lore: Fall of the Sions Empire & The Great Exodus' },
+        '6': { id: 'Ensiklopedia 3 Kerajaan Berdaulat & Kondisi Wilayah', en: 'Encyclopedia of 3 Sovereign Kingdoms & Regional Traits' },
+        '7': { id: 'Klaim Wilayah Kerajaan & Proteksi Nexus', en: 'Kingdom Territory Claims & Nexus Protection' },
+        '8': { id: 'Perang Kerajaan, Siege & Combat Tag', en: 'Kingdom Wars, Sieges & Combat Tag System' },
+        '9': { id: 'Sistem Mata Uang: Rupiah (Rp) & Diamond (💎)', en: 'Currency System: Rupiah (Rp) & Diamond (💎)' },
+        '10': { id: 'Pasar Dinamis (Dynamic Market /shop & /sell)', en: 'Dynamic Market (/shop & /sell)' },
+        '11': { id: 'Pasar Lelang (/ah) & Barter Escrow (/trade)', en: 'Auction House (/ah) & Barter Escrow (/trade)' },
+        '12': { id: 'Strategi Kemakmuran: Panduan Menjadi Saudagar Sukses', en: 'Prosperity Strategy: Merchant Success Guide' },
+        '13': { id: '182 Custom Enchantments & 7 Tingkatan Tier', en: '182 Custom Enchantments & 7 Tier Ranks' },
+        '14': { id: 'Gulungan Sihir (Scrolls), Magic Dust & Scrambler', en: 'Magic Scrolls, Magic Dust & Scrambler' },
+        '15': { id: 'Sistem Native Kits & Bonus Set Armor Berbasis Stat', en: 'Native Kits System & Stat-Based Armor Set Bonuses' },
+        '16': { id: 'Panduan Meta Build Sihir & Sinergi Persenjataan', en: 'Meta Sorcery Builds & Weapon Synergy Guide' },
+        '17': { id: 'Battlepass Musiman: Quests & EXP Shop', en: 'Seasonal Battlepass: Quests & EXP Shop' },
+        '18': { id: 'Kanal Chat, Kingdom Tags & Layanan Pelaporan', en: 'Chat Channels, Kingdom Tags & Staff Reports Desk' },
+        '19': { id: 'Etika Komunitas, Roleplay & Kode Kehormatan Peradaban', en: 'Community Ethics, Roleplay & Civilization Code of Honor' },
+        '20': { id: 'Struktur 5 Tingkat & 11 Kasta Resmi Apexsions', en: '5-Tier Structure & 11 Official Castes of Apexsions' },
+        '21': { id: 'Jalur Kenaikan Spiritual: 10 Urutan Kehormatan (Sequence Pathways)', en: 'Spiritual Ascension: 10 Sequence Pathways' }
+    },
+    bodies: {
+        '1': `<h1>First 15 Minutes Guide: From Wanderer to Sovereign Citizen</h1>
+<p>Welcome to <strong>Apexsions: The Peak Civilizations</strong>! You might feel the vastness of this kingdom universe is overwhelming at first glance. Fear not! Simply follow this 15-minute roadmap to become self-sufficient, establish your first shelter, and earn your initial Rupiah:</p>
+<hr>
+<h3>⏱ Minutes 0–2: Arrival at Spawn &amp; Claim Starter Kit</h3>
+<ol>
+<li>You will materialize at the grand court of <strong>Spawn Nexus</strong>.</li>
+<li>Immediately execute the command:
+<div class="apx-code-block-wrap"><pre><code>/kit starter</code></pre></div></li>
+<li>You will receive a complete set of foundational tools, torches, nutritious bread, and the kingdom guidebook.</li>
+<li><em>Tip:</em> Never discard your guidebook; keep it as your initial compass!</li>
+</ol>
+<hr>
+<h3>⏱ Minutes 2–5: Teleport to Wilderness with Random Teleport (/rtp)</h3>
+<ol>
+<li>Do not waste precious time walking hundreds of blocks away from spawn!</li>
+<li>Type:
+<div class="apx-code-block-wrap"><pre><code>/rtp</code></pre></div></li>
+<li>The <code>ApexsionsCore</code> engine automatically finds safe wilderness coordinates (free of steep drops or lava pools) in seconds.</li>
+</ol>
+<hr>
+<h3>⏱ Minutes 5–8: Swear Allegiance to a Kingdom (/k)</h3>
+<p>In Apexsions, your power multiplies upon joining one of the Three Sovereign Kingdoms. Type <code>/k</code> to open the selection interface:</p>
+<ul>
+<li>☀️ <strong>Zenithar (Celestial Horizon):</strong> Suited for miners and castle architects. Grants <code>+15%</code> Mining Speed &amp; Experience Buff.</li>
+<li>🔥 <strong>Solterra (Crimson Flames &amp; Sands):</strong> Tailored for PvP duelists and conquerors. Grants <code>+15%</code> Melee Damage &amp; Fire Immunity in homeland.</li>
+<li>🌿 <strong>Sylvamoor (Living Canopy &amp; Oceans):</strong> Perfect for farmers, breeders, and merchants. Grants <code>+20%</code> Crop Harvests &amp; Health Regeneration.</li>
+</ul>
+<p><em>Choose the realm that best aligns with your playstyle!</em></p>
+<hr>
+<h3>⏱ Minutes 8–12: Plant Your Home Banner (/sethome)</h3>
+<ol>
+<li>Harvest several wood logs and construct a Crafting Table.</li>
+<li>Build a temporary shelter to protect against nocturnal threats.</li>
+<li>Lock your outpost coordinates by typing:
+<div class="apx-code-block-wrap"><pre><code>/sethome home</code></pre></div></li>
+<li>Whenever lost in the wilderness or returning from an expedition, simply type <code>/home home</code> to return instantly.</li>
+</ol>
+<hr>
+<h3>⏱ Minutes 12–15: Earn Your First Rupiah at the Market (/sell)</h3>
+<ol>
+<li>Gather surplus logs, coal, or raw iron nearby.</li>
+<li>Open the quick selling portal via:
+<div class="apx-code-block-wrap"><pre><code>/sell</code></pre></div></li>
+<li>Deposit items you wish to sell into the merchant basket. Your Rupiah (<code>Rp</code>) balance updates instantly!</li>
+<li>Check your financial treasury anytime with <code>/balance</code> or <code>/money</code>.</li>
+</ol>
+<hr>
+<h3>🚀 Next Steps: Journey to the Pinnacle</h3>
+<ul>
+<li><strong>Advance Character Level:</strong> Mine precious ores and defeat monsters to progress from Level 1 to 100 and unlock prestigious <strong>Sequence Titles</strong>.</li>
+<li><strong>Claim Sovereign Territory:</strong> Once your treasury permits, utilize <code>/k claim</code> to secure your civilization lands from raiding and griefing.</li>
+<li><strong>Explore the Sorcery Altar:</strong> Access <code>/ce</code> or <code>/enchanter</code> to empower your armaments with 182 custom enchantments!</li>
+</ul>`,
+
+        '2': `<h1>How to Join Apexsions Server</h1>
+<p>Apexsions is a high-performance modular Minecraft civilization server supporting both <strong>Java Edition</strong> and <strong>Bedrock Edition</strong> players concurrently via cross-platform Geyser technology.</p>
+<hr>
+<h3>Server Connection Information</h3>
+<div class="table-responsive mb-4"><table class="table fandom-stat-table">
+<thead><tr><th>Platform</th><th>Host / IP Address</th><th>Port</th><th>Minecraft Version</th></tr></thead>
+<tbody>
+<tr><td><strong>Java Edition</strong> (PC / Mac / Linux)</td><td><code>apexsions.my.id</code></td><td><code>32348</code></td><td><strong>26.2</strong> (Paper API)</td></tr>
+<tr><td><strong>Bedrock Edition</strong> (Mobile / Win10 / Console)</td><td><code>apexsions.my.id</code></td><td><strong><code>32348</code></strong></td><td>Latest Bedrock Version</td></tr>
+</tbody>
+</table></div>
+<hr>
+<h3>Quick Connection Steps</h3>
+<ol>
+<li><strong>Launch Minecraft:</strong> Ensure you are running Minecraft <strong>26.2</strong> (Java Edition) or the latest Bedrock release.</li>
+<li><strong>Multiplayer Menu:</strong> Click <strong>Add Server</strong>.</li>
+<li><strong>Enter Credentials:</strong>
+<ul>
+<li><strong>Server Name:</strong> Apexsions</li>
+<li><strong>Server Address:</strong> <code>apexsions.my.id:32348</code></li>
+<li><em>(For Bedrock, explicitly set Port to <code>32348</code>)</em></li>
+</ul></li>
+<li><strong>Join Realm:</strong> Click <strong>Join Server</strong>. You will be welcomed at the central civilization plaza.</li>
+<li><strong>Claim Equipment:</strong> Use <code>/kit starter</code> to immediately embark on your journey.</li>
+</ol>
+<hr>
+<h3>Account Web Integration</h3>
+<p>For transaction security, auction history, and seasonal rewards:</p>
+<ul>
+<li>Visit the official portal: <a href="https://web.apexsions.my.id" class="text-gold">web.apexsions.my.id</a>.</li>
+<li>Use the <code>/link</code> command in-game when prompted to synchronize your identity with the web platform.</li>
+</ul>`,
+
+        '3': `<h1>Official Server Commands Cheat Sheet</h1>
+<p>All official commands operate safely under the Apexsions plugin suite. Use this quick reference guide for effortless navigation:</p>
+<hr>
+<h3>1. Navigation &amp; Basic Exploration</h3>
+<ul>
+<li><code>/spawn</code> — Teleport back to the primary civilization hub.</li>
+<li><code>/rtp</code> — Randomly teleport into safe wilderness to found a settlement.</li>
+<li><code>/sethome &lt;name&gt;</code> — Set coordinates for your personal outpost.</li>
+<li><code>/home &lt;name&gt;</code> — Teleport back to your marked home waypoint.</li>
+<li><code>/tpa &lt;player&gt;</code> — Send a friendly teleport request to another citizen.</li>
+<li><code>/tpaccept</code> — Accept incoming teleport requests.</li>
+</ul>
+<hr>
+<h3>2. Kingdoms &amp; Territorial Sovereignty (<code>ApexsionsCore</code>)</h3>
+<ul>
+<li><code>/kingdom</code> or <code>/k</code> — Open the Three Sovereign Kingdoms interface.</li>
+<li><code>/k info [name]</code> — Inspect capital status, active buffs, and kingdom leadership.</li>
+<li><code>/k claim</code> — Claim a 16x16 block chunk in the name of your kingdom.</li>
+<li><code>/k map</code> — Display a real-time territorial boundary radar.</li>
+<li><code>/k deposit &lt;amount&gt;</code> — Deposit Rupiah into your kingdom nexus treasury.</li>
+</ul>
+<hr>
+<h3>3. Economy &amp; Trade (<code>ApexsionsEconomy</code> &amp; <code>ApexsionsShop</code>)</h3>
+<ul>
+<li><code>/money</code> or <code>/balance</code> or <code>/bal</code> — Inspect dual balances (Rupiah <code>Rp</code> &amp; Diamond <code>💎</code>).</li>
+<li><code>/pay &lt;player&gt; &lt;amount&gt;</code> — Transfer Rupiah securely to another player.</li>
+<li><code>/trade &lt;player&gt;</code> — Open a two-way barter window secured by atomic escrow.</li>
+<li><code>/ah</code> — Browse the 24-hour Auction House.</li>
+<li><code>/ah sell &lt;price&gt;</code> — List held item on the auction marketplace.</li>
+<li><code>/shop</code> — Open the Dynamic Market catalog.</li>
+<li><code>/sell</code> — Sell raw ores, crops, or mob drops instantaneously.</li>
+</ul>
+<hr>
+<h3>4. Armaments, Kits &amp; Sorcery</h3>
+<ul>
+<li><code>/kits</code> or <code>/kit</code> — Open periodic gear kits interface.</li>
+<li><code>/kit preview &lt;name&gt;</code> — Preview kit contents and armor set stat bonuses.</li>
+<li><code>/enchanter</code> or <code>/ce</code> — Open the 182 Custom Enchantments forge altar.</li>
+</ul>
+<hr>
+<h3>5. Battlepass &amp; Communications</h3>
+<ul>
+<li><code>/abp</code> — Open seasonal Battlepass progression dashboard.</li>
+<li><code>/abp quests</code> — View active daily and weekly quest objectives.</li>
+<li><code>/ch g</code> — Switch to Global Chat channel.</li>
+<li><code>/ch k</code> — Switch to Kingdom Chat channel (internal secrecy).</li>
+<li><code>/mail send &lt;player&gt; &lt;message&gt;</code> — Send offline messages to other players.</li>
+<li><code>/report &lt;player&gt; &lt;reason&gt;</code> — Report suspicious behavior to the staff desk.</li>
+</ul>`,
+
+        '4': `<h1>Level 1–100 Progression System &amp; Civilization Titles</h1>
+<p>The progression architecture in <code>ApexsionsCore</code> rewards citizen dedication in building civilization. Progression spans <strong>Level 1 through Level 100</strong>, paired with dynamic honorific titles bound to your sworn allegiance.</p>
+<hr>
+<h3>Experience (XP) Sources</h3>
+<ol>
+<li><strong>Mining:</strong> Extracting coal, pure gold, diamonds, and ancient debris yields abundant civilization XP.</li>
+<li><strong>Combat:</strong> Slaying monsters, repelling pillager raids, and slaying dungeon bosses.</li>
+<li><strong>Agrarian Cultivation:</strong> Harvesting wheat, carrots, sugarcane, and nether wart on kingdom scales.</li>
+<li><strong>Construction &amp; Sovereignty:</strong> Donating resources to kingdom nexuses and defending borders.</li>
+</ol>
+<hr>
+<h3>Honorific Titles by Kingdom (Every 10 Levels)</h3>
+<p>Upon reaching milestone tiers, your chat prefix automatically elevates:</p>
+<div class="table-responsive mb-4"><table class="table fandom-stat-table">
+<thead><tr><th>Tier</th><th>Zenithar (Solar)</th><th>Solterra (Crimson)</th><th>Sylvamoor (Azure)</th></tr></thead>
+<tbody>
+<tr><td><strong>Lv. 1–10</strong></td><td>Acolyte of Zenith</td><td>Dune Wanderer</td><td>Sylvan Citizen</td></tr>
+<tr><td><strong>Lv. 11–20</strong></td><td>Celestial Scout</td><td>Sun Scout</td><td>Grove Keeper</td></tr>
+<tr><td><strong>Lv. 21–30</strong></td><td>Sky Warden</td><td>Terra Blade</td><td>Forest Warden</td></tr>
+<tr><td><strong>Lv. 31–40</strong></td><td>Astral Knight</td><td>Solar Knight</td><td>Wild Knight</td></tr>
+<tr><td><strong>Lv. 41–50</strong></td><td>Apex Templar</td><td>Flame Vanguard</td><td>Nature Commander</td></tr>
+<tr><td><strong>Lv. 51–60</strong></td><td>Star Commander</td><td>Dune Warlord</td><td>Druidic Lord</td></tr>
+<tr><td><strong>Lv. 61–70</strong></td><td>Solaris Archon</td><td>Solaris Champion</td><td>Verdant Archon</td></tr>
+<tr><td><strong>Lv. 71–80</strong></td><td>⚡ High Celestial ⚡</td><td>🔥 Sun Sovereign 🔥</td><td>🌿 Elder Guardian 🌿</td></tr>
+<tr><td><strong>Lv. 81–90</strong></td><td>👑 Zenith Paragon 👑</td><td>⚔ Solterra Overlord ⚔</td><td>⚜ Sylvan Sovereign ⚜</td></tr>
+<tr><td><strong>Lv. 91–100</strong></td><td>✦ EMPEROR OF ZENITHAR ✦</td><td>✦ LORD OF SOLTERRA ✦</td><td>✦ AVATAR OF SYLVAMOOR ✦</td></tr>
+</tbody>
+</table></div>
+<hr>
+<h3>Milestone Chest Rewards (/rewards)</h3>
+<p>At every 10th level, claim an exclusive relic chest via <code>/rewards</code> containing:</p>
+<ul>
+<li>Server Rupiah and Pure Diamonds.</li>
+<li>Legendary &amp; Fabled Custom Enchantment tomes.</li>
+<li>Rare Crate Keys &amp; Auction tax reduction vouchers.</li>
+</ul>`,
+
+        '5': `<h1>Historical Lore: Fall of the Sions Empire &amp; The Great Exodus</h1>
+<blockquote><em>"Long ago, one banner sheltered the whole firmament. But when pride breached the gates of the Dark Dimension to breed an undefeatable legion, our ancestral lands collapsed into the abyss of oblivion."</em><br>— <strong>Sacred Realm Archives, Chronicles of Sions, Book I: Canto of Ruin</strong></blockquote>
+<hr>
+<h3>The Golden Era of the Sions Empire</h3>
+<p>Centuries ago, the entirety of Apexsions was united under a single boundless imperium: the <strong>Sions Empire</strong>. No perimeter walls divided the provinces; civilization flourished in architectural splendor, economic abundance, and pristine legal harmony.</p>
+<p>Throughout its history, the empire upheld one sacred decree: <strong>never delve into dark sorcery or forbidden dimensions</strong>. The Sions people relied purely on engineering marvels, elemental natural magic, and chivalric discipline.</p>
+<hr>
+<h3>Forbidden Ambition &amp; The Dark Dimension Cataclysm</h3>
+<p>Peace was shattered by the hubris of the last emperor. Obsessed with perpetual expansion, the sovereign secretly instructed royal scholars to pierce reality's fabric and unseal the <strong>Dark Dimension</strong> to infuse dark vitality into imperial soldiers.</p>
+<p>Having never adapted to dark energy, the rift erupted into a cosmic dark vortex (<em>The Dark Rift Cataclysm</em>). The heavens ruptured, the ancestral capital shattered into dust, and the Sions throne dissolved in a single catastrophic night.</p>
+<hr>
+<h3>The Great Exodus in Three Directions</h3>
+<p>From the apocalyptic ash, survivors rallied and fled toward three compass directions, giving birth to the <strong>Three Sovereign Kingdoms</strong>:</p>
+<h4>1. Zenithar (Eastward / Zenith) — Royal Dynasty &amp; Elite Cavalry</h4>
+<p>Those who held the inner palace—the <strong>Royal Bloodline</strong> and imperial honor guard—fled east toward high mountain crags and the celestial horizon (<em>Zenith</em>). They built the <em>Solarium Spire Citadel</em>, preserving court etiquette and royal cavalry discipline.</p>
+<h4>2. Sylvamoor (Westward) — Laborers, Agrarians &amp; Rangers</h4>
+<p>The workforce—builders, stone artisans, agrarians, and ranger militias—escaped west. Renouncing imperial hubris, they settled in the primordial ancient canopy and crystal seas, founding <em>Eldergrove Sanctuary</em> to live in sacred harmony with the World Tree.</p>
+<h4>3. Solterra (Southward) — Battle Mages &amp; Front-Line Veterans</h4>
+<p>The supreme battle arcanists and hardened frontline veterans migrated south into volcanic calderas and arid canyons. There, they erected <em>Ignis Bastion Fortress</em>, fusing flame sorcery with brutal martial prowess to conquer a deadly frontier.</p>
+<hr>
+<h3>The Central Epicenter Mystery (Terra Interdicta)</h3>
+<p>In the exact center of the uncharted wilderness lies the colossal sunken ruins of the old imperial palace. Veiled in dimensional anomalies and anomaly fogs, it holds legendary treasures guarded by <strong>high-tier mutated legions</strong> exposed to eternal dark energy.</p>`,
+
+        '6': `<h1>Encyclopedia of 3 Sovereign Kingdoms &amp; Territorial Conditions</h1>
+<div class="table-responsive mb-4"><table class="table fandom-stat-table">
+<thead><tr><th>Kingdom</th><th>Direction</th><th>Capital</th><th>Tax</th><th>Primary Attribute Buffs</th></tr></thead>
+<tbody>
+<tr><td><strong class="text-warning">Zenithar</strong></td><td>East</td><td>Solarium Spire Citadel</td><td>25%</td><td>+5% Speed, +7% Luck, +6% All Damage &amp; Defense, -5% Enemy Crit</td></tr>
+<tr><td><strong class="text-danger">Solterra</strong></td><td>South</td><td>Ignis Bastion Fortress</td><td>20%</td><td>+15% All Damage, +10% Crit Damage, +10% Mining Speed, 65% Ore Sell Ratio</td></tr>
+<tr><td><strong class="text-success">Sylvamoor</strong></td><td>West</td><td>Eldergrove Sanctuary</td><td>15%</td><td>+2 Max HP (11 Hearts), +12% Luck, +7% Mob Drops, High Physical Defense</td></tr>
+</tbody>
+</table></div>
+<hr>
+<h3>1. Zenithar (Celestial Horizon &amp; Solar Realm)</h3>
+<ul>
+<li><strong>Founders:</strong> Imperial dynasty survivors &amp; elite palace cavalry.</li>
+<li><strong>Capital:</strong> Solarium Spire Citadel <code>world (-3028, 64, -5597)</code></li>
+<li><strong>Official Buffs:</strong> +5% Movement Speed, +7% Luck, +6% Total Damage &amp; Defense, -5% Enemy Crit Damage.</li>
+<li><strong>Debuffs:</strong> +7% Poison Vulnerability, food restores 1 fewer hunger point due to aristocratic lifestyle.</li>
+</ul>
+<hr>
+<h3>2. Solterra (Crimson Earth &amp; Volcanic Empire)</h3>
+<ul>
+<li><strong>Founders:</strong> Master combat arcanists &amp; front-line military veterans.</li>
+<li><strong>Capital:</strong> Ignis Bastion Fortress <code>world (-5843, 65, 889)</code></li>
+<li><strong>Official Buffs:</strong> +15% Damage, +10% Crit Damage, +10% Mining Speed, High Ore Selling Ratio (65%).</li>
+<li><strong>Debuffs:</strong> -2 Max HP (9 Hearts total), +8% Incoming Damage, +7% Faster Hunger depletion.</li>
+</ul>
+<hr>
+<h3>3. Sylvamoor (Ancient Canopy &amp; Crystal Ocean Realm)</h3>
+<ul>
+<li><strong>Founders:</strong> Working class builders, agrarians, and wildwood rangers.</li>
+<li><strong>Capital:</strong> Eldergrove Sanctuary <code>world (-9666, 64, -4812)</code></li>
+<li><strong>Official Buffs:</strong> +2 Max HP (11 Hearts total), +12% Luck, +7% Mob Drops, Eternal Soil Hydration.</li>
+<li><strong>Debuffs:</strong> Altitude Sickness at Y > 110, +15% Fire Vulnerability, -10% PvP Damage &amp; Mining Speed.</li>
+</ul>`,
+
+        '7': `<h1>Kingdom Territory Claims &amp; Nexus Protection</h1>
+<p>Territorial sovereignty in Apexsions is safeguarded by <code>ApexsionsCore</code>. Citizens can officially stake claims to preserve their structures, farms, and storage against griefing and unauthorized intrusion.</p>
+<hr>
+<h3>How to Claim Territory</h3>
+<ol>
+<li>Navigate to the unowned chunk (16x16 blocks from bedrock to sky) you wish to claim.</li>
+<li>Verify territorial boundaries with:
+<div class="apx-code-block-wrap"><pre><code>/k map</code></pre></div></li>
+<li>Claim the chunk for your kingdom:
+<div class="apx-code-block-wrap"><pre><code>/k claim</code></pre></div></li>
+<li>Each chunk requires a small initial fee from your personal Rupiah balance, which contributes to the kingdom treasury.</li>
+</ol>
+<hr>
+<h3>The Kingdom Nexus</h3>
+<p>Each kingdom capital houses an invincible <strong>Nexus Core</strong>. Citizens can deposit funds using <code>/k deposit &lt;amount&gt;</code> to upgrade kingdom-wide infrastructure, territorial shields, and wartime defensive arrays.</p>`,
+
+        '8': `<h1>Kingdom Wars, Sieges &amp; Combat Tag System</h1>
+<p>When diplomatic negotiations collapse, warfare ignites across borders under strictly enforced protocols.</p>
+<hr>
+<h3>Wartime Protocols &amp; Sieges</h3>
+<ul>
+<li><strong>Scheduled Sieges:</strong> Battles occur during declared wartime windows to ensure fair competition.</li>
+<li><strong>Nexus Vulnerability:</strong> Attackers must breach outer defensive fortifications before channeling siege energy into enemy nexus obelisks.</li>
+<li><strong>Territory Conquest:</strong> Victorious kingdoms claim contested frontier chunks and collect reparations.</li>
+</ul>
+<hr>
+<h3>Combat Tag System</h3>
+<p>During active combat against other citizens:</p>
+<ul>
+<li>Your status locks into <strong>Combat Tag</strong> for 15 seconds.</li>
+<li>Teleportation commands (<code>/spawn</code>, <code>/home</code>, <code>/rtp</code>) are disabled.</li>
+<li><strong>Combat Logging Penalty:</strong> Disconnecting while tagged results in instant character death, dropping your complete inventory at logout coordinates.</li>
+</ul>`,
+
+        '9': `<h1>Currency System: Rupiah (Rp) &amp; Diamond (💎)</h1>
+<p>Apexsions utilizes a robust dual-currency economy backed by atomic ACID transactions in <code>ApexsionsEconomy</code>.</p>
+<hr>
+<h3>The Two Currencies</h3>
+<ol>
+<li><strong>Rupiah (<code>Rp</code>) — Fiat Sovereign Balance:</strong> Primary trading currency used for server shops (<code>/shop</code>), quick selling (<code>/sell</code>), kingdom taxes, and auction bidding.</li>
+<li><strong>Diamonds (<code>💎</code>) — Material Hard Currency:</strong> Pure physical gemstones used for high-tier crafting, elite bartering, and ancient relic exchanges.</li>
+</ol>
+<hr>
+<h3>Checking Balances &amp; Transfers</h3>
+<ul>
+<li><code>/balance</code> or <code>/money</code> — View both currency balances simultaneously.</li>
+<li><code>/pay &lt;player&gt; &lt;amount&gt;</code> — Transfer Rupiah with cryptographic safety.</li>
+</ul>`,
+
+        '10': `<h1>Dynamic Market (/shop &amp; /sell)</h1>
+<p>The economy in <code>ApexsionsShop</code> employs dynamic supply-demand pricing to ensure market vitality and prevent inflation.</p>
+<hr>
+<h3>How Dynamic Pricing Works</h3>
+<ul>
+<li><strong>Heavy Influx (Over-supply):</strong> If citizens flood the market with one item (e.g., cobblestone or iron), its buy/sell value gradually dips.</li>
+<li><strong>Scarcity (High Demand):</strong> As supply drops, purchasing prices and selling rewards automatically appreciate.</li>
+<li><strong>Regional Selling Buff:</strong> Solterra citizens enjoy a permanent 65% minimum ore sale value due to their industrial heritage.</li>
+</ul>`,
+
+        '11': `<h1>Auction House (/ah) &amp; Barter Escrow (/trade)</h1>
+<p>Peer-to-peer commerce is protected against theft and deceit through automated escrow systems.</p>
+<hr>
+<h3>Auction House (/ah)</h3>
+<ul>
+<li><code>/ah</code> — Browse all citizen listings sorted by price, category, and rarity.</li>
+<li><code>/ah sell &lt;price&gt;</code> — List your held item for global purchase. Listings remain active for 24 hours.</li>
+</ul>
+<hr>
+<h3>Barter Escrow (/trade)</h3>
+<ul>
+<li>Initiate secure trade: <code>/trade &lt;player&gt;</code>.</li>
+<li>Both players lock items into the trading matrix.</li>
+<li>Both parties must confirm the trade twice. If inventory space is insufficient, items safely return to original owners.</li>
+</ul>`,
+
+        '12': `<h1>Prosperity Strategy: Merchant Success Guide</h1>
+<p>Mastering commerce is the most reliable pathway to royal nobility in Apexsions.</p>
+<hr>
+<h3>Proven Strategies for New Merchants</h3>
+<ol>
+<li><strong>Specialize by Kingdom Buff:</strong> Sylvamoor citizens should dominate food and crop markets; Solterra citizens should focus on raw mineral smelting.</li>
+<li><strong>Monitor Market Price Swings:</strong> Sell mined ores when global inventory dips to capture peak multipliers.</li>
+<li><strong>Enchanted Armaments Trade:</strong> Forge custom-enchanted weapons and armor sets to sell at high premiums on <code>/ah</code>.</li>
+</ol>`,
+
+        '13': `<h1>182 Custom Enchantments &amp; 7 Tier Ranks</h1>
+<p>Apexsions features an expansive library of 182 custom enchantments categorized across 7 balanced tiers.</p>
+<hr>
+<h3>The 7 Enchantment Ranks</h3>
+<div class="table-responsive mb-4"><table class="table fandom-stat-table">
+<thead><tr><th>Tier</th><th>Color Code</th><th>Nature &amp; Rarity</th></tr></thead>
+<tbody>
+<tr><td><strong>Tier I: Simple</strong></td><td>Gray</td><td>Basic utilities, minor stat upgrades, quality of life.</td></tr>
+<tr><td><strong>Tier II: Unique</strong></td><td>Green</td><td>Specialized environmental adaptations and tool buffs.</td></tr>
+<tr><td><strong>Tier III: Elite</strong></td><td>Aqua</td><td>Potent combat enhancements and mobility skills.</td></tr>
+<tr><td><strong>Tier IV: Ultimate</strong></td><td>Gold</td><td>Major combat abilities and defensive auras.</td></tr>
+<tr><td><strong>Tier V: Legendary</strong></td><td>Orange</td><td>Devastating combat spells and passive regeneration.</td></tr>
+<tr><td><strong>Tier VI: Fabled</strong></td><td>Red</td><td>Cataclysmic spell effects and rare set triggers.</td></tr>
+<tr><td><strong>Tier VII: Mythic</strong></td><td>Purple</td><td>God-tier relics with game-altering cosmic abilities.</td></tr>
+</tbody>
+</table></div>
+<p>Open the enchanting altar anytime via <code>/ce</code> or <code>/enchanter</code>.</p>`,
+
+        '14': `<h1>Magic Scrolls, Magic Dust &amp; Scrambler</h1>
+<p>Safely manage and optimize your custom enchantments using magical alchemy items:</p>
+<ul>
+<li><strong>Magic Dust:</strong> Increases success rate percentage on enchantment tomes.</li>
+<li><strong>White Scrolls:</strong> Protects your weapon or armor piece from breaking if an enchantment fails.</li>
+<li><strong>Black Scrolls:</strong> Extracts a random custom enchantment from an item into an applicable book.</li>
+<li><strong>Scrambler:</strong> Randomizes the success and destroy chances of an enchantment book.</li>
+</ul>`,
+
+        '15': `<h1>Native Kits System &amp; Stat-Based Armor Set Bonuses</h1>
+<p>Donator ranks and leveling milestones grant access to comprehensive gear kits (<code>/kits</code>).</p>
+<hr>
+<h3>Armor Set Bonuses</h3>
+<p>Wearing a full cohesive armor set (Helmet, Chestplate, Leggings, Boots) activates passive combat synergies:</p>
+<ul>
+<li><strong>Knight Set:</strong> +10% Resistance against physical damage.</li>
+<li><strong>Arcane Set:</strong> +15% Spell critical chance and reduced cooldowns.</li>
+<li><strong>Ranger Set:</strong> +20% Arrow velocity and perpetual Swiftness II.</li>
+</ul>`,
+
+        '16': `<h1>Meta Sorcery Builds &amp; Weapon Synergy Guide</h1>
+<p>Combine custom enchantments strategically to construct dominant PvP and PvE configurations:</p>
+<ul>
+<li><strong>Vampiric Berserker:</strong> Combine <em>Lifesteal V</em>, <em>Rage VI</em>, and <em>Bleed IV</em> for overwhelming sustained melee DPS.</li>
+<li><strong>Impenetrable Bastion:</strong> Stack <em>Overload V</em> (+Max Health), <em>Armored IV</em>, and <em>Enlighted IV</em> for near-invulnerable defense.</li>
+<li><strong>Phantom Archer:</strong> Utilize <em>Sniper V</em>, <em>Piercing IV</em>, and <em>Venom IV</em> to neutralize opponents from extreme range.</li>
+</ul>`,
+
+        '17': `<h1>Seasonal Battlepass: Quests &amp; EXP Shop</h1>
+<p>Every season brings 100 tiers of progression in <code>ApexsionsBattlepass</code> with free and premium pathways.</p>
+<hr>
+<h3>Quests &amp; EXP Points</h3>
+<ul>
+<li><code>/abp quests</code> — Complete daily farming, mining, and monster hunting objectives.</li>
+<li><strong>EXP Shop:</strong> Spend Battlepass points in rotating weekly storefronts for cosmetic particle trails, titles, and exclusive crate keys.</li>
+</ul>`,
+
+        '18': `<h1>Chat Channels, Kingdom Tags &amp; Staff Reports Desk</h1>
+<p>The communication network in <code>ApexsionsChat</code> keeps public interaction orderly and vibrant.</p>
+<hr>
+<h3>Chat Channels</h3>
+<ul>
+<li><code>/ch g</code> — Global Chat (Visible realm-wide to all citizens).</li>
+<li><code>/ch k</code> — Kingdom Chat (Encrypted to citizens of your realm).</li>
+<li><code>/mail send &lt;player&gt; &lt;msg&gt;</code> — Deliver messages to offline citizens.</li>
+</ul>
+<hr>
+<h3>Staff Reporting Desk (/report)</h3>
+<p>Witness rule infractions? Type <code>/report &lt;player&gt; &lt;reason&gt;</code> to snapshot the last 50 lines of chat and player coordinates directly to active moderators.</p>`,
+
+        '19': `<h1>Community Ethics, Roleplay &amp; Civilization Code of Honor</h1>
+<p>Apexsions thrives on healthy competition, immersion, and mutual respect.</p>
+<ul>
+<li><strong>Distinguish Roleplay from Personal Hostility:</strong> Kingdom rivalries should remain in-character. Harassment or toxicity is strictly penalized.</li>
+<li><strong>Fair Competition:</strong> Exploiting unintended game bugs or client modifications is forbidden.</li>
+<li><strong>Support New Citizens:</strong> Guiding newcomers strengthens your kingdom's workforce and global standing.</li>
+</ul>`,
+
+        '20': `<h1>5-Tier Structure &amp; 11 Official Castes of Apexsions</h1>
+<p>The social structure is divided into 5 authoritative tiers governed by <code>ranks.yml</code>:</p>
+<div class="table-responsive mb-4"><table class="table fandom-stat-table">
+<thead><tr><th>Tier</th><th>Rank</th><th>Weight</th><th>Role &amp; Responsibilities</th></tr></thead>
+<tbody>
+<tr><td>Tier V</td><td><code>ancestor</code></td><td>100</td><td>The Ancestor / Founder (Apex Sovereign)</td></tr>
+<tr><td>Tier IV</td><td><code>architect</code></td><td>95</td><td>Realm Architect / Technical Authority</td></tr>
+<tr><td>Tier IV</td><td><code>overseer</code></td><td>95</td><td>Integrity, Balance &amp; Community Overseer</td></tr>
+<tr><td>Tier III</td><td><code>warden</code></td><td>90</td><td>Head Staff / Server Administrator</td></tr>
+<tr><td>Tier III</td><td><code>herald</code></td><td>80</td><td>Staff Moderator &amp; Player Guide</td></tr>
+<tr><td>Tier II</td><td><code>sions</code></td><td>70</td><td>Apex Donator / Pinnacle Civilization Rank</td></tr>
+<tr><td>Tier II</td><td><code>emperor</code></td><td>60</td><td>Noble Donator Tier 4</td></tr>
+<tr><td>Tier II</td><td><code>sovereign</code></td><td>50</td><td>Noble Donator Tier 3</td></tr>
+<tr><td>Tier II</td><td><code>archon</code></td><td>40</td><td>Noble Donator Tier 2</td></tr>
+<tr><td>Tier II</td><td><code>ascendant</code></td><td>30</td><td>Pioneer Donator Tier 1</td></tr>
+<tr><td>Tier I</td><td><code>wanderer</code></td><td>10</td><td>New Citizen / Foundation of the Realm</td></tr>
+</tbody>
+</table></div>`,
+
+        '21': `<h1>Spiritual Ascension: 10 Sequence Pathways</h1>
+<p>Beyond material rank, citizens may ascend through 10 Sequence Pathways by achieving in-game milestones:</p>
+<ol>
+<li><strong>Sequence 9:</strong> The Seeker — Exploration of all 3 kingdom capitals.</li>
+<li><strong>Sequence 8:</strong> The Artisan — Crafting 100 masterwork armaments.</li>
+<li><strong>Sequence 7:</strong> The Tactician — Leading 10 successful kingdom skirmishes.</li>
+<li><strong>Sequence 6:</strong> The Alchemist — Synthesizing 50 custom magic scrolls.</li>
+<li><strong>Sequence 5:</strong> The Arbiter — Resolving territorial disputes honorably.</li>
+<li><strong>Sequence 4:</strong> The Warlord — Inflicting over 100,000 damage in official wars.</li>
+<li><strong>Sequence 3:</strong> The Grand Architect — Contributing 1,000,000 Rp to nexus upgrades.</li>
+<li><strong>Sequence 2:</strong> The Archon — Reaching Level 100 with flawless honor.</li>
+<li><strong>Sequence 1:</strong> The Sovereign Vanguard — Holding highest seasonal Battlepass rank.</li>
+<li><strong>Sequence 0:</strong> The Ascended Divinity — The legendary champion of the civilization.</li>
+</ol>`
+    }
+};
