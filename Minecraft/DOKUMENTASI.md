@@ -304,10 +304,61 @@ Di titik pusat alam liar (Wilderness) di antara ketiga kerajaan, berdiri **Rerun
     ├── Kit Perang Khusus Siege & Perlengkapan Tempur Artileri
     └── Sistem Aliansi Diplomasi Sementara Antar-Dua Kerajaan
 
-  [Fase 4: Sinkronisasi Jaringan Web Terpadu] (VISI JANGKA PANJANG)
-    ├── WebBridge v2: WebSocket Real-time Sinkronisasi Status Server
-    ├── Peta Wilayah Dinamis & Klasemen Perang Live di Portal Web
-    ├── Sistem Tiket Laporan & Player Inspector Terkoneksi Web Dashboard
-    └── Automasi Payment Gateway Webstore Terpadu Resmi
+  [Fase 4: Sinkronisasi Jaringan Web Terpadu] (STATUS: AKTIF / TEREALISASI)
+    ├── WebBridge v1: Sinkronisasi REST API Dua Arah (Minecraft <-> Azuriom Web)
+    ├── Sistem Terjemahan Bilingual Menyeluruh (ID 🇮🇩 & EN 🇬🇧) via Engine APX_I18N
+    ├── Papan Peringkat Tiga Kerajaan & Dewan Kehormatan Realm (/leaderboard)
+    ├── URL Profil Publik Berbasis ID Unik (/player/{uuid}) & 301 Canonical Redirect
+    └── Penautan Akun In-Game /link, Klaim Hadiah Harian & Self-Service Profil Web
 ```
+
+---
+
+## 🌐 8. Arsitektur Jembatan Web & Portal Ekosistem (`Website/` & `apexsions-bridge`)
+
+Ekosistem Apexsions mengintegrasikan server Minecraft (Paper 26.2) dengan portal web produksi Azuriom secara mulus menggunakan plugin jembatan **`apexsions-bridge`** dan arsitektur tema kustom **`themes/apexsions`**.
+
+### A. Sinkronisasi Data Dua Arah (`ApexsionsCore` $\leftrightarrow$ `apexsions-bridge`):
+1. **Endpoint REST API Terproteksi**:
+   - `POST http://web.apexsions.my.id/api/apexsions-bridge/sync-player`
+   - Diproteksi menggunakan secret key live: `apexsions_bridge_key_live_2026`.
+   - Mengirimkan payload JSON asinkron dari `WebBridgeService` di `ApexsionsCore` saat pemain bergabung (*Join*), keluar (*Quit*), naik level (*LevelUp*), ubah kerajaan, ubah saldo Rupiah/Diamond, atau ubah gelar aktif.
+2. **Entitas Model `MinecraftAccount` di Database Web**:
+   - Menyimpan `minecraft_uuid`, `minecraft_username`, `edition` (JAVA / BEDROCK), `level`, `xp`, `rank`, `kingdom`, `balance_rupiah`, `balance_diamond`, `unlocked_titles`, `active_title`, `verified_at`, dan `last_daily_reward_at`.
+3. **Penautan Akun Mandiri (`/link`)**:
+   - Pemain menjalankan `/link` di Minecraft untuk mendapatkan 6-digit PIN acak berbatas waktu (15 menit).
+   - Memasukkan PIN pada form web `/link` memverifikasi kepemilikan akun Minecraft secara aman.
+
+### B. Dewan Kehormatan & Papan Peringkat (`/leaderboard`):
+1. **Dominasi Tiga Kerajaan**:
+   - Menghitung agregat total populasi dan akumulasi kekuatan level peradaban untuk *Zenithar*, *Solterra*, dan *Sylvamoor*.
+2. **Top 10 Pengelana & Konglomerat**:
+   - Tabel 1: 10 Pemain dengan Level & XP tertinggi (badge rank donatur/kasta resmi).
+   - Tabel 2: 10 Pemain terkaya dengan saldo Rupiah (Rp) dan Diamond murni (💎).
+   - Seluruh baris pemain memiliki tautan menuju profil unik `/player/{uuid}`.
+
+### C. Keamanan Profil Publik & URL Berbasis ID Unik (`/player/{identifier}`):
+1. **Perlindungan Privasi Standar Web Modern**:
+   - Menghapus ketergantungan pada username mentah di URL profil publik untuk mencegah *user enumeration* dan penargetan bot pihak ketiga.
+   - Menggunakan **UUID resmi Mojang/Bedrock** (atau primary key ID unik akun) sebagai slug resmi: `/player/7b153d42-48d3-3192-a404-f98405035c0e`.
+2. **Automatic 301 Canonical Redirect**:
+   - Permintaan ke URL username lama (`/player/NamaPemain`) secara otomatis dialihkan dengan status **HTTP 301 Moved Permanently** ke URL ID unik.
+
+### D. Sistem Terjemahan Bilingual Menyeluruh (ID 🇮🇩 & EN 🇬🇧):
+1. **Engine `APX_I18N` Klien**:
+   - Terintegrasi di `Website/themes/apexsions/assets/js/app.js` (mirrored ke public assets).
+   - Beroperasi instan tanpa reload browser, mempertahankan posisi scroll dan state halaman.
+   - Membaca preferensi bahasa dari `localStorage` (default `id`).
+2. **Cakupan Kamus Lengkap**:
+   - Navigasi & Hero
+   - 11 Kasta Sosial (Ancestor s/d Wanderer)
+   - Profil Akun & Hadiah Harian
+   - Penautan Minecraft (`/link`)
+   - Webstore Donasi, Keranjang & Riwayat Transaksi
+   - Leaderboard & Kartu Profil 3D Karakter
+   - Aturan Server (4 Pilar & Pencegahan Sistem)
+   - Kebijakan Privasi & Syarat Ketentuan
+   - Vote Server & Warta Berita Komunitas
+   - Ensiklopedia Wiki & Hasil Pencarian
+
 

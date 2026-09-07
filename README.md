@@ -400,10 +400,62 @@ Perjalanan pengembangan Apexsions dirancang secara terstruktur melalui 4 fase ev
     ├── Kit Perang Khusus Siege & Perlengkapan Tempur Artileri
     └── Sistem Aliansi Diplomasi Sementara Antar-Dua Kerajaan
 
-  [Fase 4: Sinkronisasi Jaringan Web Terpadu] (VISI JANGKA PANJANG)
-    ├── WebBridge v2: WebSocket Real-time Sinkronisasi Status Server
-    ├── Peta Wilayah Dinamis & Klasemen Perang Live di Portal Web
-    ├── Sistem Tiket Laporan & Player Inspector Terkoneksi Web Dashboard
-    └── Automasi Payment Gateway Webstore Terpadu Resmi
+  [Fase 4: Sinkronisasi Jaringan Web Terpadu] (STATUS: AKTIF / TEREALISASI)
+    ├── WebBridge v1: Sinkronisasi REST API Dua Arah (Minecraft <-> Azuriom Web)
+    ├── Sistem Terjemahan Bilingual Menyeluruh (ID 🇮🇩 & EN 🇬🇧) via Engine APX_I18N
+    ├── Papan Peringkat Tiga Kerajaan & Dewan Kehormatan Realm (/leaderboard)
+    ├── URL Profil Publik Berbasis ID Unik (/player/{uuid}) & 301 Canonical Redirect
+    └── Penautan Akun In-Game /link, Klaim Hadiah Harian & Self-Service Profil Web
 ```
+
+---
+
+## 🌐 9. Platform Web & Integrasi ApexsionsBridge (`Website/`)
+
+Portal web resmi Apexsions dibangun di atas platform **Azuriom** dengan tema khusus (*Custom Theme Apexsions*) dan plugin jembatan kustom **`apexsions-bridge`** yang menghubungkan dunia Minecraft dengan situs web secara langsung.
+
+### A. Fitur Utama Portal Web (`http://web.apexsions.my.id`):
+1. **Beranda & Sistem Kasta Interaktif (`/`)**:
+   - Menampilkan Hero visual peradaban, status server Minecraft 26.2, IP server satu-klik salin (`mc.apexsions.my.id`), tab informasi 3 Kerajaan berdaulat (*Zenithar*, *Solterra*, *Sylvamoor*), dan kartu 11 hierarki kasta resmi (*Ancestor* hingga *Wanderer*) lengkap dengan perk & tombol aksi.
+2. **Papan Peringkat Peradaban (`/leaderboard`)**:
+   - **Dominasi Tiga Kerajaan**: Statistik langsung total populasi warga dan akumulasi level kekuatan peradaban tiap kerajaan.
+   - **Top 10 Level & Pengalaman (EXP)**: Klasemen 10 pengelana dengan level dan XP tertinggi di server.
+   - **Top 10 Konglomerat Realm (Saldo)**: Klasemen 10 pemain terkaya berdasarkan saldo Rupiah dan Diamond murni.
+   - **Tautan Profil Publik Berbasis ID Unik**: Seluruh nama pemain di leaderboard mengarah ke URL profil publik unik (`/player/{uuid}`).
+3. **Inspeksi Profil Publik Pemain (`/player/{identifier}`)**:
+   - **Keamanan & Privasi Standar Industri**: URL profil publik menggunakan **UUID resmi Minecraft** (atau ID unik akun) menggantikan format username lama, mencegah *user scraping* dan *enumeration*.
+   - **Automatic 301 Canonical Redirect**: Akses ke URL lama (`/player/{username}`) secara otomatis dialihkan (301 Permanent Redirect) ke URL ID unik pemain.
+   - **Kartu Karakter 3D Render**: Visualisasi avatar tubuh 3D Minecraft karakter live, badge rank donatur, badge kerajaan, persentase progress bar level/XP, gelar tingkat, UUID, dan status verifikasi akun.
+4. **Penautan Akun In-Game (`/link`)**:
+   - Pemain mengetik `/link` di dalam server Minecraft untuk mendapatkan kode PIN 6 digit unik.
+   - Masukkan PIN di portal web untuk menyinkronkan akun Minecraft dengan akun web secara instan.
+5. **Manajemen Mandiri Profil Warga (`/profile`)**:
+   - Melihat saldo sinkronisasi (Rupiah & Diamond), status klaim hadiah harian (*Daily Reward*), ubah password akun Minecraft, ubah gelar aktif (*Active Title*), dan pemutusan tautan akun (*Unlink*).
+6. **Webstore Donasi & Checkout WhatsApp (`/shop`)**:
+   - Katalog paket donasi rank & item dengan badge durasi (*Permanen / 30 Hari*), keranjang belanja (*Cart*), target donasi bulanan (*Goal Widget*), dan integrasi pemesanan langsung WhatsApp Founder/Admin.
+7. **Arsip Hukum & Ensiklopedia Wiki (`/rules`, `/terms`, `/privacy`, `/wiki`)**:
+   - 4 Pilar aturan server beserta matriks sistem pencegahan aktif (*Levenshtein SpamChecker*, *ProfanityChecker*), syarat transaksi, kebijakan privasi data akun, dan portal fandom ensiklopedia lengkap.
+
+### B. Sistem Terjemahan Bilingual Menyeluruh (ID 🇮🇩 & EN 🇬🇧):
+- **Engine JavaScript Klien `APX_I18N`**: Diterapkan di `Website/themes/apexsions/assets/js/app.js` dengan kamus lengkap untuk Bahasa Indonesia (`id`) dan English (`en`).
+- **Peralihan Instan Tanpa Reload**: Pengguna dapat mengganti bahasa kapan saja melalui pemilih bahasa (*Language Switcher*) di bilah navigasi atas (Navbar).
+- **Penyimpanan Preferensi**: Pilihan bahasa tersimpan otomatis di `localStorage` peramban pengguna.
+- **Cakupan 100% Elemen Web**:
+  - Navigasi, hero, dan slogan kedaulatan
+  - Kartu & perk 11 kasta peradaban
+  - Profil pengguna, saldo, dan status daily reward
+  - Halaman tautkan akun (`/link`) dan instruksi PIN
+  - Toko, detail paket, keranjang belanja, dan riwayat transaksi
+  - Papan peringkat (`/leaderboard`) & kartu inspeksi profil publik (`/player/{uuid}`)
+  - Seluruh pasal aturan server, pencegahan sistem, syarat transaksi, dan kebijakan privasi
+  - Halaman vote reward dan artikel warta berita
+  - Ensiklopedia wiki (banner portal, topik populer, hasil pencarian, dan artikel)
+
+### C. Kredensial & Server Produksi (Production VPS):
+- **Alamat IP VPS**: `89.144.53.100` (Port SSH: `22`)
+- **Domain Web Live**: `http://web.apexsions.my.id` (atau `http://89.144.53.100`)
+- **Web Root Directory**: `/var/www/azuriom`
+- **Jalur Tema Kustom**: `/var/www/azuriom/themes/apexsions`
+- **Jalur Plugin Jembatan**: `/var/www/azuriom/plugins/apexsions-bridge`
+
 

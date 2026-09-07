@@ -30,10 +30,10 @@
     <!-- Header Title -->
     <div class="text-center mb-5">
         <div class="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill bg-warning bg-opacity-10 border border-warning border-opacity-25 text-warning small mb-3">
-            <i class="bi bi-trophy-fill"></i> DEWAN KEHORMATAN APEXSIONS
+            <i class="bi bi-trophy-fill"></i> <span data-i18n="leaderboard_kicker">DEWAN KEHORMATAN APEXSIONS</span>
         </div>
-        <h1 class="display-5 fw-bold font-cinzel text-gold mb-2">Papan Peringkat Peradaban</h1>
-        <p class="text-secondary max-w-600 mx-auto">
+        <h1 class="display-5 fw-bold font-cinzel text-gold mb-2" data-i18n="leaderboard_title">Papan Peringkat Peradaban</h1>
+        <p class="text-secondary max-w-600 mx-auto" data-i18n="leaderboard_desc">
             Catatan kejayaan pengembara terhebat, kekayaan konglomerat kerajaan, dan dominasi faksi Tiga Kerajaan di seluruh realm Apexsions.
         </p>
     </div>
@@ -49,17 +49,17 @@
                                 <i class="bi {{ $kData['name'] === 'Zenithar' ? 'bi-sun-fill' : ($kData['name'] === 'Solterra' ? 'bi-fire' : 'bi-tree-fill') }}"></i>
                             </span>
                         </div>
-                        <h3 class="h4 fw-bold text-white font-cinzel mb-1">{{ $kData['name'] }}</h3>
+                        <h3 class="h4 fw-bold text-white font-cinzel mb-1" data-i18n="kingdom_{{ strtolower($kKey) }}_name">{{ $kData['name'] }}</h3>
                         <p class="text-muted small mb-3">{{ $kData['tagline'] }}</p>
 
                         <div class="row g-2 border-top border-secondary border-opacity-25 pt-3">
                             <div class="col-6">
-                                <span class="text-muted small d-block">Populasi:</span>
-                                <span class="h5 fw-bold text-white mb-0">{{ number_format($kData['count']) }}</span> <small class="text-muted">Warga</small>
+                                <span class="text-muted small d-block" data-i18n="leaderboard_population">Populasi:</span>
+                                <span class="h5 fw-bold text-white mb-0">{{ number_format($kData['count']) }}</span> <small class="text-muted" data-i18n="leaderboard_citizens">Warga</small>
                             </div>
                             <div class="col-6">
-                                <span class="text-muted small d-block">Kekuatan Level:</span>
-                                <span class="h5 fw-bold" style="color: {{ $kData['color'] }};">{{ number_format($kData['total_levels']) }}</span> <small class="text-muted">Lv</small>
+                                <span class="text-muted small d-block" data-i18n="leaderboard_power_level">Kekuatan Level:</span>
+                                <span class="h5 fw-bold" style="color: {{ $kData['color'] }};">{{ number_format($kData['total_levels']) }}</span> <small class="text-muted" data-i18n="leaderboard_lv">Lv</small>
                             </div>
                         </div>
                     </div>
@@ -75,9 +75,9 @@
             <div class="card bg-dark border-secondary border-opacity-25 h-100 shadow">
                 <div class="card-header bg-black bg-opacity-30 border-secondary border-opacity-25 p-3 d-flex align-items-center justify-content-between">
                     <h2 class="h5 fw-bold text-gold font-cinzel mb-0">
-                        <i class="bi bi-star-fill text-warning me-2"></i> Top 10 Level & Pengalaman (EXP)
+                        <i class="bi bi-star-fill text-warning me-2"></i> <span data-i18n="leaderboard_top_level_title">Top 10 Level &amp; Pengalaman (EXP)</span>
                     </h2>
-                    <span class="badge bg-warning bg-opacity-20 text-warning">Progresi</span>
+                    <span class="badge bg-warning bg-opacity-20 text-warning" data-i18n="leaderboard_badge_progression">Progresi</span>
                 </div>
                 <div class="card-body p-0">
                     <div class="table-responsive">
@@ -85,9 +85,9 @@
                             <thead class="text-secondary small text-uppercase bg-black bg-opacity-40">
                                 <tr>
                                     <th class="ps-3 py-3" style="width: 60px;">#</th>
-                                    <th>Pemain</th>
-                                    <th>Rank</th>
-                                    <th class="text-end pe-3">Level & XP</th>
+                                    <th data-i18n="leaderboard_th_player">Pemain</th>
+                                    <th data-i18n="leaderboard_th_rank">Rank</th>
+                                    <th class="text-end pe-3" data-i18n="leaderboard_th_level_xp">Level &amp; XP</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -105,7 +105,7 @@
                                             @endif
                                         </td>
                                         <td>
-                                            <a href="{{ url('/player/' . $p->minecraft_username) }}" class="text-decoration-none text-white d-flex align-items-center gap-2">
+                                            <a href="{{ url('/player/' . ($p->minecraft_uuid ?: $p->id)) }}" class="text-decoration-none text-white d-flex align-items-center gap-2">
                                                 <img src="https://mc-heads.net/avatar/{{ $p->minecraft_uuid ?: $p->minecraft_username }}/32" alt="{{ $p->minecraft_username }}" class="rounded" width="32" height="32">
                                                 <div>
                                                     <span class="fw-bold">{{ $p->minecraft_username }}</span>
@@ -127,7 +127,7 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="4" class="text-center py-4 text-muted">Belum ada data pemain terverifikasi.</td>
+                                        <td colspan="4" class="text-center py-4 text-muted" data-i18n="leaderboard_empty_players">Belum ada data pemain terverifikasi.</td>
                                     </tr>
                                 @endforelse
                             </tbody>
@@ -142,9 +142,9 @@
             <div class="card bg-dark border-secondary border-opacity-25 h-100 shadow">
                 <div class="card-header bg-black bg-opacity-30 border-secondary border-opacity-25 p-3 d-flex align-items-center justify-content-between">
                     <h2 class="h5 fw-bold text-gold font-cinzel mb-0">
-                        <i class="bi bi-cash-coin text-success me-2"></i> Top 10 Konglomerat Realm (Saldo)
+                        <i class="bi bi-cash-coin text-success me-2"></i> <span data-i18n="leaderboard_top_balance_title">Top 10 Konglomerat Realm (Saldo)</span>
                     </h2>
-                    <span class="badge bg-success bg-opacity-20 text-success">Ekonomi</span>
+                    <span class="badge bg-success bg-opacity-20 text-success" data-i18n="leaderboard_badge_economy">Ekonomi</span>
                 </div>
                 <div class="card-body p-0">
                     <div class="table-responsive">
@@ -152,9 +152,9 @@
                             <thead class="text-secondary small text-uppercase bg-black bg-opacity-40">
                                 <tr>
                                     <th class="ps-3 py-3" style="width: 60px;">#</th>
-                                    <th>Pemain</th>
-                                    <th>Kerajaan</th>
-                                    <th class="text-end pe-3">Kekayaan</th>
+                                    <th data-i18n="leaderboard_th_player">Pemain</th>
+                                    <th data-i18n="leaderboard_th_kingdom">Kerajaan</th>
+                                    <th class="text-end pe-3" data-i18n="leaderboard_th_wealth">Kekayaan</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -172,14 +172,14 @@
                                             @endif
                                         </td>
                                         <td>
-                                            <a href="{{ url('/player/' . $p->minecraft_username) }}" class="text-decoration-none text-white d-flex align-items-center gap-2">
+                                            <a href="{{ url('/player/' . ($p->minecraft_uuid ?: $p->id)) }}" class="text-decoration-none text-white d-flex align-items-center gap-2">
                                                 <img src="https://mc-heads.net/avatar/{{ $p->minecraft_uuid ?: $p->minecraft_username }}/32" alt="{{ $p->minecraft_username }}" class="rounded" width="32" height="32">
                                                 <span class="fw-bold">{{ $p->minecraft_username }}</span>
                                             </a>
                                         </td>
                                         <td>
                                             <span class="badge" style="background: {{ $kInfo['color'] }}20; color: {{ $kInfo['color'] }}; border: 1px solid {{ $kInfo['color'] }}40;">
-                                                <i class="bi {{ $kInfo['icon'] }}"></i> {{ $kInfo['name'] }}
+                                                <i class="bi {{ $kInfo['icon'] }}"></i> <span data-i18n="kingdom_{{ strtolower($kKey) }}_name">{{ $kInfo['name'] }}</span>
                                             </span>
                                         </td>
                                         <td class="text-end pe-3">
@@ -189,7 +189,7 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="4" class="text-center py-4 text-muted">Belum ada data kekayaan pemain.</td>
+                                        <td colspan="4" class="text-center py-4 text-muted" data-i18n="leaderboard_empty_economy">Belum ada data kekayaan pemain.</td>
                                     </tr>
                                 @endforelse
                             </tbody>

@@ -39,7 +39,7 @@
 <div class="container py-5">
     <div class="mb-4">
         <a href="{{ url('/leaderboard') }}" class="btn btn-outline-secondary btn-sm">
-            <i class="bi bi-arrow-left me-1"></i> Kembali ke Papan Peringkat
+            <i class="bi bi-arrow-left me-1"></i> <span data-i18n="profile_pub_back">Kembali ke Papan Peringkat</span>
         </a>
     </div>
 
@@ -70,7 +70,7 @@
                             {{ $currentRankInfo['name'] }}
                         </span>
                         <span class="badge px-3 py-2" style="background: {{ $currentKingdom['color'] }}20; color: {{ $currentKingdom['color'] }}; border: 1px solid {{ $currentKingdom['color'] }}40;">
-                            <i class="bi {{ $currentKingdom['icon'] }} me-1"></i> Kerajaan {{ $currentKingdom['name'] }}
+                            <i class="bi {{ $currentKingdom['icon'] }} me-1"></i> <span data-i18n="profile_pub_kingdom_prefix">Kerajaan</span> <span data-i18n="kingdom_{{ strtolower($currentKingdomKey) }}_name">{{ $currentKingdom['name'] }}</span>
                         </span>
                         @if($account->active_title)
                             <span class="badge bg-warning text-dark fw-bold px-3 py-2">
@@ -82,7 +82,7 @@
                     <!-- Level Progress Bar -->
                     <div class="mb-4">
                         <div class="d-flex justify-content-between text-sm mb-1">
-                            <span class="fw-bold text-gold"><i class="bi bi-lightning-charge-fill"></i> Level {{ $account->level }}</span>
+                            <span class="fw-bold text-gold"><i class="bi bi-lightning-charge-fill"></i> <span data-i18n="profile_pub_level_badge">Level</span> {{ $account->level }}</span>
                             <span class="text-muted">{{ number_format($account->xp) }} / {{ number_format($account->required_xp) }} XP ({{ $xpPercent }}%)</span>
                         </div>
                         <div class="progress" style="height: 12px; background-color: rgba(255,255,255,0.1); border-radius: 6px;">
@@ -93,20 +93,26 @@
                     <!-- Detailed Meta Info Grid -->
                     <div class="row g-3 border-top border-secondary border-opacity-25 pt-3 text-secondary small">
                         <div class="col-sm-6">
-                            <span class="d-block text-muted">Gelar Tingkat:</span>
-                            <span class="text-white fw-bold">{{ strip_tags($account->level_title ?: 'Pengelana Awal') }}</span>
+                            <span class="d-block text-muted" data-i18n="profile_pub_tier_title">Gelar Tingkat:</span>
+                            <span class="text-white fw-bold">
+                                @if($account->level_title)
+                                    {{ strip_tags($account->level_title) }}
+                                @else
+                                    <span data-i18n="profile_pub_default_title">Pengelana Awal</span>
+                                @endif
+                            </span>
                         </div>
                         <div class="col-sm-6">
-                            <span class="d-block text-muted">Terakhir Aktif:</span>
+                            <span class="d-block text-muted" data-i18n="profile_pub_last_seen">Terakhir Aktif:</span>
                             <span class="text-white fw-bold">{{ $account->last_seen_at ? $account->last_seen_at->diffForHumans() : 'Baru Saja' }}</span>
                         </div>
                         <div class="col-sm-6">
-                            <span class="d-block text-muted">Minecraft UUID:</span>
+                            <span class="d-block text-muted" data-i18n="profile_pub_uuid">Minecraft UUID:</span>
                             <span class="text-white font-monospace small">{{ $account->minecraft_uuid ?: '-' }}</span>
                         </div>
                         <div class="col-sm-6">
-                            <span class="d-block text-muted">Status Akun:</span>
-                            <span class="text-success fw-bold"><i class="bi bi-patch-check-fill me-1"></i> Terverifikasi Resmi</span>
+                            <span class="d-block text-muted" data-i18n="profile_pub_status">Status Akun:</span>
+                            <span class="text-success fw-bold"><i class="bi bi-patch-check-fill me-1"></i> <span data-i18n="profile_pub_verified">Terverifikasi Resmi</span></span>
                         </div>
                     </div>
                 </div>

@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Route;
 
 // Public Routes
 Route::get('/leaderboard', [LeaderboardController::class, 'index'])->name('leaderboard');
-Route::get('/player/{username}', [PublicProfileController::class, 'show'])->name('player.show');
+Route::get('/player/{identifier}', [PublicProfileController::class, 'show'])->name('player.show');
 
 // Authenticated User Routes
 Route::middleware('auth')->group(function () {

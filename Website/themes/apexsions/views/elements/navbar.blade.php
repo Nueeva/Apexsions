@@ -43,9 +43,9 @@
                         </a>
                     </li>
                 @endif
-                @if(Route::has('leaderboard'))
+                @if(Route::has('leaderboard') || Route::has('apexsions-bridge.leaderboard'))
                     <li class="nav-item">
-                        <a class="nav-link apx-nav-link @if(request()->routeIs('leaderboard')) active @endif" href="{{ route('leaderboard') }}" data-i18n="nav_leaderboard">
+                        <a class="nav-link apx-nav-link @if(request()->is('leaderboard*')) active @endif" href="{{ url('/leaderboard') }}" data-i18n="nav_leaderboard">
                             Leaderboard
                         </a>
                     </li>

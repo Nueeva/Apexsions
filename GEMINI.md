@@ -596,6 +596,27 @@ Full build:
 
 Gunakan `-all` hanya jika seluruh plugin memang terdampak perubahan global.
 
+## Web Platform Baseline (Azuriom & WebBridge)
+
+```text
+PHP 8.2 / 8.3 LTS (Laravel / Azuriom)
+Theme: themes/apexsions (Dark-gold cinematic civilization, Vanilla CSS & JS)
+Bridge Plugin: plugins/apexsions-bridge
+WebBridge Endpoint: http://web.apexsions.my.id/api/apexsions-bridge/sync-player
+Bridge Secret Key: apexsions_bridge_key_live_2026
+```
+
+### Standar Bilingual Menyeluruh (APX_I18N)
+- Engine terjemahan klien berada di `themes/apexsions/assets/js/app.js` (dan wajib sinkron dengan `public/assets/themes/apexsions/js/app.js`).
+- Seluruh teks antarmuka wajib diberi atribut `data-i18n`, `data-i18n-html`, atau `data-i18n-placeholder`.
+- Kamus bilingual memuat pasangan Bahasa Indonesia (`id`) dan English (`en`).
+- Pilihan bahasa pengguna disimpan di `localStorage` dan bertransisi instan tanpa reload halaman.
+
+### Standar Keamanan URL Profil Publik
+- Profil publik wajib menggunakan **ID Unik** (UUID resmi Minecraft atau database ID): `/player/{uuid}`.
+- Dilarang menjadikan username sebagai slug URL resmi untuk melindungi privasi pemain dari scraper / username enumeration.
+- Seluruh rute lama berbasis username wajib dialihkan menggunakan **HTTP 301 Permanent Redirect** ke URL ID unik.
+
 ---
 
 # 12. Build Rule

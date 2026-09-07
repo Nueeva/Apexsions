@@ -677,6 +677,41 @@ const APX_I18N = {
 
         // Posts
         posts_likes: 'Menyukai',
+
+        // Leaderboard
+        leaderboard_kicker: 'DEWAN KEHORMATAN APEXSIONS',
+        leaderboard_title: 'Papan Peringkat Peradaban',
+        leaderboard_desc: 'Catatan kejayaan pengembara terhebat, kekayaan konglomerat kerajaan, dan dominasi faksi Tiga Kerajaan di seluruh realm Apexsions.',
+        leaderboard_population: 'Populasi:',
+        leaderboard_citizens: 'Warga',
+        leaderboard_power_level: 'Kekuatan Level:',
+        leaderboard_lv: 'Lv',
+        leaderboard_top_level_title: 'Top 10 Level & Pengalaman (EXP)',
+        leaderboard_badge_progression: 'Progresi',
+        leaderboard_top_balance_title: 'Top 10 Konglomerat Realm (Saldo)',
+        leaderboard_badge_economy: 'Ekonomi',
+        leaderboard_th_player: 'Pemain',
+        leaderboard_th_rank: 'Rank',
+        leaderboard_th_level_xp: 'Level & XP',
+        leaderboard_th_kingdom: 'Kerajaan',
+        leaderboard_th_wealth: 'Kekayaan',
+        leaderboard_empty_players: 'Belum ada data pemain terverifikasi.',
+        leaderboard_empty_economy: 'Belum ada data kekayaan pemain.',
+
+        // Public Profile & Kingdoms
+        profile_pub_back: 'Kembali ke Papan Peringkat',
+        profile_pub_kingdom_prefix: 'Kerajaan',
+        profile_pub_level_badge: 'Level',
+        profile_pub_tier_title: 'Gelar Tingkat:',
+        profile_pub_default_title: 'Pengelana Awal',
+        profile_pub_last_seen: 'Terakhir Aktif:',
+        profile_pub_uuid: 'Minecraft UUID:',
+        profile_pub_status: 'Status Akun:',
+        profile_pub_verified: 'Terverifikasi Resmi',
+        kingdom_zenithar_name: 'Zenithar',
+        kingdom_solterra_name: 'Solterra',
+        kingdom_sylvamoor_name: 'Sylvamoor',
+        kingdom_none_name: 'Tanpa Kerajaan',
     },
     en: {
         // Navigation
@@ -1354,6 +1389,41 @@ const APX_I18N = {
 
         // Posts
         posts_likes: 'Likes',
+
+        // Leaderboard
+        leaderboard_kicker: 'APEXSIONS HALL OF FAME',
+        leaderboard_title: 'Civilization Leaderboard',
+        leaderboard_desc: 'Hall of records celebrating the greatest adventurers, conglomerate wealth, and Three Kingdoms faction dominance across Apexsions.',
+        leaderboard_population: 'Population:',
+        leaderboard_citizens: 'Citizens',
+        leaderboard_power_level: 'Total Power:',
+        leaderboard_lv: 'Lv',
+        leaderboard_top_level_title: 'Top 10 Level & Experience (EXP)',
+        leaderboard_badge_progression: 'Progression',
+        leaderboard_top_balance_title: 'Top 10 Realm Conglomerates (Balance)',
+        leaderboard_badge_economy: 'Economy',
+        leaderboard_th_player: 'Player',
+        leaderboard_th_rank: 'Rank',
+        leaderboard_th_level_xp: 'Level & XP',
+        leaderboard_th_kingdom: 'Kingdom',
+        leaderboard_th_wealth: 'Wealth',
+        leaderboard_empty_players: 'No verified player data recorded yet.',
+        leaderboard_empty_economy: 'No player wealth data recorded yet.',
+
+        // Public Profile & Kingdoms
+        profile_pub_back: 'Back to Leaderboards',
+        profile_pub_kingdom_prefix: 'Kingdom',
+        profile_pub_level_badge: 'Level',
+        profile_pub_tier_title: 'Tier Title:',
+        profile_pub_default_title: 'Initial Wanderer',
+        profile_pub_last_seen: 'Last Seen:',
+        profile_pub_uuid: 'Minecraft UUID:',
+        profile_pub_status: 'Account Status:',
+        profile_pub_verified: 'Officially Verified',
+        kingdom_zenithar_name: 'Zenithar',
+        kingdom_solterra_name: 'Solterra',
+        kingdom_sylvamoor_name: 'Sylvamoor',
+        kingdom_none_name: 'No Kingdom',
     }
 };
 
