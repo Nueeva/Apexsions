@@ -51,6 +51,10 @@ public class ConfigManager {
     // Lobby
     private Location lobbyLocation;
 
+    // Spawn & Respawn Settings
+    private boolean respawnAtKingdom = true;
+    private boolean overrideBedSpawn = false;
+
     // Level Formula
     private int levelMin;
     private int levelMax;
@@ -119,6 +123,10 @@ public class ConfigManager {
         } else {
             this.lobbyLocation = null;
         }
+
+        // Spawn & Respawn Settings
+        this.respawnAtKingdom = mainConfig.getBoolean("spawn.respawn-at-kingdom", true);
+        this.overrideBedSpawn = mainConfig.getBoolean("spawn.override-bed-spawn", false);
 
         // Level
         this.levelMin = mainConfig.getInt("level.min", 1);
@@ -286,6 +294,13 @@ public class ConfigManager {
         }
     }
 
+    public void setKingdomCapitalCoordinates(String kingdomKey, String coords) {
+        if (kingdomsConfig != null) {
+            kingdomsConfig.set("regions." + kingdomKey.toUpperCase() + ".capital.coordinates", coords);
+            saveKingdomsConfig();
+        }
+    }
+
     public void saveKingdomsConfig() {
         if (kingdomsConfig != null) {
             try {
@@ -299,6 +314,9 @@ public class ConfigManager {
             }
         }
     }
+
+    public boolean isRespawnAtKingdom() { return respawnAtKingdom; }
+    public boolean isOverrideBedSpawn() { return overrideBedSpawn; }
 
     public String getDefaultRegion() { return "None"; }
 

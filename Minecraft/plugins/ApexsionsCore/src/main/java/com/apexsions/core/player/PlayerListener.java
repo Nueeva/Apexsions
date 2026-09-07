@@ -1,8 +1,10 @@
 package com.apexsions.core.player;
 
 import com.apexsions.core.ApexsionsCorePlugin;
+import com.apexsions.core.region.Region;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -10,6 +12,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
+
+import java.util.Optional;
 
 /**
  * Listens for player connection events to manage cached profiles and first-join guidance.
@@ -83,6 +88,32 @@ public class PlayerListener implements Listener {
                 }
             }, 30L); // 1.5 seconds delay after initial spawn
         }
+    }
+
+    @EventHandler(priority = EventPriority.HIGH)
+    public void onPlayerRespawn(PlayerRespawnEvent event) {
+        Player player = event.getPlayer();
+
+        if (!plugin.getConfigManager().isRespawnAtKingdom()) {
+            return;
+        }
+
+        boolean overrideBed = plugin.getConfigManager().isOverrideBedSpawn();
+        if ((event.isBedSpawn() || event.isAnchorSpawn()) && !overrideBed) {
+            return;
+        }
+
+        plugin.getPlayerDataService().getCached(player.getUniqueId()).ifPresent(data -> {
+            if (data.hasRegion()) {
+                Optional<Region> regionOpt = plugin.getRegionManager().getRegion(data.getRegionId());
+                if (regionOpt.isPresent()) {
+                    Optional<Location> spawnLoc = regionOpt.get().getBukkitSpawnLocation();
+                    if (spawnLoc.isPresent()) {
+                        event.setRespawnLocation(spawnLoc.get());
+                    }
+                }
+            }
+        });
     }
 
     @EventHandler(priority = EventPriority.NORMAL)

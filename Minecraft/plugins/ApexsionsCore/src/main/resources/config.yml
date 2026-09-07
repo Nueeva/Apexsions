@@ -32,6 +32,12 @@ locations:
     yaw: 0.0
     pitch: 0.0
 
+spawn:
+  # Pemain yang telah memilih kerajaan otomatis respawn di ibukota kerajaan saat mati (jika tidak ada bed/anchor)
+  respawn-at-kingdom: true
+  # Jika true, pemain SELALU respawn di ibukota kerajaan saat mati mengabaikan kasur/bed spawn
+  override-bed-spawn: false
+
 level:
   min: 1
   max: 100

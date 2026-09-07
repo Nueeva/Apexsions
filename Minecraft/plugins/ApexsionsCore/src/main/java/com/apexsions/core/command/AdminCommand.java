@@ -107,6 +107,20 @@ public class AdminCommand implements CommandExecutor, TabCompleter {
                         String.format("%.1f", player.getLocation().getZ()) + ")!</green>"));
                 break;
 
+            case "setspawn":
+            case "setcapital":
+            case "setkingdomspawn":
+                if (!(sender instanceof Player pSpawn)) {
+                    sender.sendMessage(miniMessage.deserialize("<red>Only players can set kingdom capital spawn location.</red>"));
+                    return true;
+                }
+                if (args.length < 2) {
+                    sender.sendMessage(miniMessage.deserialize("<red>Usage: /ac setspawn <ZENITHAR|SOLTERRA|SYLVAMOOR></red>"));
+                    return true;
+                }
+                handleSetSpawn(pSpawn, args[1]);
+                break;
+
             case "info":
                 if (args.length < 2) {
                     sender.sendMessage(miniMessage.deserialize("<red>Usage: /ac info <player></red>"));
@@ -319,6 +333,41 @@ public class AdminCommand implements CommandExecutor, TabCompleter {
         }, () -> sender.sendMessage(miniMessage.deserialize("<red>No cached data found for player.</red>")));
     }
 
+    private void handleSetSpawn(Player player, String kingdomKey) {
+        String key = kingdomKey.toUpperCase();
+        Optional<Region> regionOpt = plugin.getRegionManager().getRegion(key);
+        if (regionOpt.isEmpty()) {
+            player.sendMessage(miniMessage.deserialize("<red>Kerajaan <yellow>" + key + "</yellow> tidak ditemukan! Pilihan: ZENITHAR, SOLTERRA, SYLVAMOOR.</red>"));
+            return;
+        }
+
+        Region region = regionOpt.get();
+        org.bukkit.Location loc = player.getLocation();
+        region.setWorldName(loc.getWorld().getName());
+        region.setSpawnX(loc.getX());
+        region.setSpawnY(loc.getY());
+        region.setSpawnZ(loc.getZ());
+        region.setSpawnYaw(loc.getYaw());
+        region.setSpawnPitch(loc.getPitch());
+
+        // 1. Save to Database & active region registry
+        plugin.getRegionManager().registerRegion(region);
+
+        // 2. Update config kingdoms.yml
+        String coordStr = String.format("%s (%d, %d, %d)", 
+                loc.getWorld().getName(), 
+                loc.getBlockX(), 
+                loc.getBlockY(), 
+                loc.getBlockZ());
+        plugin.getConfigManager().setKingdomCapitalCoordinates(key, coordStr);
+
+        player.playSound(loc, org.bukkit.Sound.BLOCK_BEACON_ACTIVATE, 1.0f, 1.2f);
+        player.sendMessage(miniMessage.deserialize("<green>✓ Titik spawn ibukota kerajaan <yellow><bold>" + region.getDisplayName() + "</bold></yellow> berhasil disetel ke world <aqua>" + loc.getWorld().getName() + "</aqua> pada koordinat <gold>(" + 
+                String.format("%.1f", loc.getX()) + ", " + 
+                String.format("%.1f", loc.getY()) + ", " + 
+                String.format("%.1f", loc.getZ()) + ")</gold>!</green>"));
+    }
+
     private void sendHelp(CommandSender sender) {
         sender.sendMessage(miniMessage.deserialize("<gold><bold>=== ApexsionsCore Admin Commands ===</bold></gold>"));
         sender.sendMessage(miniMessage.deserialize("<yellow>/ac reload</yellow> <gray>- Reload all modular configs & markers</gray>"));
@@ -328,17 +377,21 @@ public class AdminCommand implements CommandExecutor, TabCompleter {
         sender.sendMessage(miniMessage.deserialize("<yellow>/ac setkingdom <player> <kingdomKey></yellow> <gray>- Transfer player kingdom</gray>"));
         sender.sendMessage(miniMessage.deserialize("<yellow>/ac resetkingdom <player></yellow> <gray>- Reset player kingdom allegiance</gray>"));
         sender.sendMessage(miniMessage.deserialize("<yellow>/ac setlobby</yellow> <gray>- Set lobby spawn to your current location/world</gray>"));
+        sender.sendMessage(miniMessage.deserialize("<yellow>/ac setspawn <kingdom></yellow> <gray>- Set kingdom capital spawn to your current location</gray>"));
         sender.sendMessage(miniMessage.deserialize("<yellow>/ac info <player></yellow> <gray>- Inspect player progression data</gray>"));
     }
 
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (args.length == 1) {
-            List<String> list = Arrays.asList("reload", "war", "setlevel", "addxp", "setkingdom", "resetkingdom", "setlobby", "info");
+            List<String> list = Arrays.asList("reload", "war", "setlevel", "addxp", "setkingdom", "resetkingdom", "setlobby", "setspawn", "info");
             return filter(list, args[0]);
         }
         if (args.length == 2 && args[0].equalsIgnoreCase("war")) {
             return filter(Arrays.asList("start", "stop", "status"), args[1]);
+        }
+        if (args.length == 2 && (args[0].equalsIgnoreCase("setspawn") || args[0].equalsIgnoreCase("setcapital") || args[0].equalsIgnoreCase("setkingdomspawn"))) {
+            return filter(new ArrayList<>(plugin.getRegionManager().getRegions().stream().map(Region::getKey).toList()), args[1]);
         }
         if (args.length == 2 && (args[0].equalsIgnoreCase("setlevel") || args[0].equalsIgnoreCase("addxp") || args[0].equalsIgnoreCase("setkingdom") || args[0].equalsIgnoreCase("resetkingdom") || args[0].equalsIgnoreCase("info"))) {
             return null; // Player names

@@ -250,29 +250,21 @@ public class CoreAdminSubGUI implements InventoryHolder {
 
         if (slot == 29) { // Set Lobby Spawn
             player.performCommand("ac setlobby");
-            player.playSound(player.getLocation(), Sound.BLOCK_BEACON_ACTIVATE, 0.8f, 1.5f);
-            player.sendMessage(mm.deserialize("<green>✓ Titik spawn lobby berhasil disetel pada posisimu!</green>"));
             return;
         }
 
         if (slot == 30) { // Set Spawn Zenithar
             player.performCommand("ac setspawn ZENITHAR");
-            player.playSound(player.getLocation(), Sound.BLOCK_BEACON_ACTIVATE, 0.8f, 1.5f);
-            player.sendMessage(mm.deserialize("<green>✓ Titik spawn Zenithar berhasil disetel pada posisimu!</green>"));
             return;
         }
 
         if (slot == 31) { // Set Spawn Solterra
             player.performCommand("ac setspawn SOLTERRA");
-            player.playSound(player.getLocation(), Sound.BLOCK_BEACON_ACTIVATE, 0.8f, 1.5f);
-            player.sendMessage(mm.deserialize("<green>✓ Titik spawn Solterra berhasil disetel pada posisimu!</green>"));
             return;
         }
 
         if (slot == 32) { // Set Spawn Sylvamoor
             player.performCommand("ac setspawn SYLVAMOOR");
-            player.playSound(player.getLocation(), Sound.BLOCK_BEACON_ACTIVATE, 0.8f, 1.5f);
-            player.sendMessage(mm.deserialize("<green>✓ Titik spawn Sylvamoor berhasil disetel pada posisimu!</green>"));
             return;
         }
 

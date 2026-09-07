@@ -124,6 +124,19 @@ public class KingdomCommand implements CommandExecutor, TabCompleter {
                 handleUnsetKing(sender, args);
                 break;
 
+            case "setspawn":
+            case "setcapital":
+                if (!sender.hasPermission("apexsionscore.admin") && !sender.isOp()) {
+                    sender.sendMessage(miniMessage.deserialize("<red>Anda tidak memiliki izin untuk mengatur titik spawn kerajaan!</red>"));
+                    return true;
+                }
+                if (args.length < 2) {
+                    sender.sendMessage(miniMessage.deserialize("<red>Penggunaan: <yellow>/kingdom setspawn <ZENITHAR|SOLTERRA|SYLVAMOOR></yellow></red>"));
+                    return true;
+                }
+                player.performCommand("ac setspawn " + args[1]);
+                break;
+
             default:
                 sender.sendMessage(miniMessage.deserialize("<gold><bold>Apexsions Kingdom Commands:</bold></gold>"));
                 sender.sendMessage(miniMessage.deserialize("<yellow>/kingdom</yellow> <gray>- Teleport to your kingdom spawn</gray>"));
@@ -135,6 +148,7 @@ public class KingdomCommand implements CommandExecutor, TabCompleter {
                 sender.sendMessage(miniMessage.deserialize("<yellow>/kingdom xp</yellow> <gray>- Open 13 XP gameplay sources and guide GUI</gray>"));
                 sender.sendMessage(miniMessage.deserialize("<yellow>/level</yellow> <gray>- Quick shortcut to your character profile & level progress</gray>"));
                 if (sender.hasPermission("apexsionscore.admin")) {
+                    sender.sendMessage(miniMessage.deserialize("<gold>/kingdom setspawn <kingdom></gold> <gray>- Atur titik spawn ibukota kerajaan</gray>"));
                     sender.sendMessage(miniMessage.deserialize("<gold>/kingdom setking <kingdom> <player></gold> <gray>- Angkat Raja baru kerajaan</gray>"));
                     sender.sendMessage(miniMessage.deserialize("<gold>/kingdom unsetking <kingdom></gold> <gray>- Cabut gelar Raja kerajaan</gray>"));
                 }
@@ -291,6 +305,8 @@ public class KingdomCommand implements CommandExecutor, TabCompleter {
             List<String> list = new ArrayList<>(Arrays.asList("choose", "info", "top", "profile", "rewards", "claim", "xp", "guide", "level", "rtp", "wild", "wilderness"));
             if (sender.hasPermission("apexsionscore.admin")) {
                 list.add("admin");
+                list.add("setspawn");
+                list.add("setcapital");
                 list.add("setking");
                 list.add("unsetking");
                 list.add("removeking");
@@ -302,7 +318,7 @@ public class KingdomCommand implements CommandExecutor, TabCompleter {
                 }
             }
             return result;
-        } else if (args.length == 2 && (args[0].equalsIgnoreCase("setking") || args[0].equalsIgnoreCase("unsetking") || args[0].equalsIgnoreCase("removeking"))) {
+        } else if (args.length == 2 && (args[0].equalsIgnoreCase("setking") || args[0].equalsIgnoreCase("unsetking") || args[0].equalsIgnoreCase("removeking") || args[0].equalsIgnoreCase("setspawn") || args[0].equalsIgnoreCase("setcapital"))) {
             return Arrays.asList("ZENITHAR", "SOLTERRA", "SYLVAMOOR");
         } else if (args.length == 2 && (args[0].equalsIgnoreCase("rewards") || args[0].equalsIgnoreCase("reward"))) {
             if (sender.hasPermission("apexsionscore.admin")) {
