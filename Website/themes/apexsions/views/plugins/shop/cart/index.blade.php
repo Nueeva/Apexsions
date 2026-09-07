@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
-@section('title', trans('shop::messages.cart.title') . ' | Webstore Apexsions')
+@section('title', trans('shop::messages.cart.title') . ' — Webstore Resmi')
+@section('description', 'Periksa keranjang belanja paket donasi dan barang virtual server Minecraft Apexsions Anda.')
 
 @push('styles')
     <style>

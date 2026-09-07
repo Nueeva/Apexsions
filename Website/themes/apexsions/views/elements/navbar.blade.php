@@ -20,55 +20,83 @@
         <div class="collapse navbar-collapse" id="navbarMain">
             <ul class="navbar-nav mx-auto mb-2 mb-lg-0 apx-nav-list">
                 <li class="nav-item">
-                    <a class="nav-link apx-nav-link @if(request()->routeIs('home') && !request()->has('page')) active @endif" href="{{ route('home') }}">
+                    <a class="nav-link apx-nav-link @if(request()->routeIs('home') && !request()->has('page')) active @endif" href="{{ route('home') }}" data-i18n="nav_home">
                         Beranda
                     </a>
                 </li>
                 @if(plugins()->isEnabled('shop'))
                     <li class="nav-item">
-                        <a class="nav-link apx-nav-link @if(request()->is('shop*')) active @endif" href="{{ route('shop.home') }}">
+                        <a class="nav-link apx-nav-link @if(request()->is('shop*')) active @endif" href="{{ route('shop.home') }}" data-i18n="nav_shop">
                             Webstore
                         </a>
                     </li>
                 @endif
                 <li class="nav-item">
-                    <a class="nav-link apx-nav-link" href="{{ route('home') }}#features">
+                    <a class="nav-link apx-nav-link" href="{{ route('home') }}#features" data-i18n="nav_features">
                         Fitur
                     </a>
                 </li>
                 @if(plugins()->isEnabled('wiki'))
                     <li class="nav-item">
-                        <a class="nav-link apx-nav-link @if(request()->is('wiki*')) active @endif" href="{{ route('wiki.index') }}">
+                        <a class="nav-link apx-nav-link @if(request()->is('wiki*')) active @endif" href="{{ route('wiki.index') }}" data-i18n="nav_wiki">
                             Wiki
                         </a>
                     </li>
                 @endif
                 @if(Route::has('leaderboard'))
                     <li class="nav-item">
-                        <a class="nav-link apx-nav-link @if(request()->routeIs('leaderboard')) active @endif" href="{{ route('leaderboard') }}">
+                        <a class="nav-link apx-nav-link @if(request()->routeIs('leaderboard')) active @endif" href="{{ route('leaderboard') }}" data-i18n="nav_leaderboard">
                             Leaderboard
                         </a>
                     </li>
                 @endif
                 <li class="nav-item">
-                    <a class="nav-link apx-nav-link @if(request()->routeIs('rules')) active @endif" href="{{ route('rules') }}">
+                    <a class="nav-link apx-nav-link @if(request()->routeIs('rules')) active @endif" href="{{ route('rules') }}" data-i18n="nav_rules">
                         Peraturan
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link apx-nav-link @if(request()->routeIs('vote')) active @endif" href="{{ route('vote') }}">
+                    <a class="nav-link apx-nav-link @if(request()->routeIs('vote')) active @endif" href="{{ route('vote') }}" data-i18n="nav_vote">
                         Vote
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link apx-nav-link" href="https://discord.gg/apexsions" target="_blank" rel="noopener noreferrer">
+                    <a class="nav-link apx-nav-link" href="https://discord.gg/apexsions" target="_blank" rel="noopener noreferrer" data-i18n="nav_discord">
                         Discord
                     </a>
                 </li>
             </ul>
 
-            <!-- Right Actions: Cart & User Profile Box -->
+            <!-- Right Actions: Language Switcher, Cart & User Profile Box -->
             <div class="d-flex align-items-center gap-2 mt-3 mt-lg-0">
+                <!-- Language Accessibility Switcher (ID / EN) -->
+                <div class="dropdown apx-lang-dropdown-wrapper">
+                    <button class="btn apx-lang-btn dropdown-toggle d-flex align-items-center gap-1" type="button" id="apxLangDropdown" data-bs-toggle="dropdown" aria-expanded="false" title="Pilih Bahasa / Select Language" aria-label="Pilih Bahasa / Select Language">
+                        <i class="bi bi-translate text-gold"></i>
+                        <span class="apx-lang-current-label fw-bold">ID</span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end shadow-lg apx-nav-dropdown apx-lang-menu" aria-labelledby="apxLangDropdown">
+                        <li>
+                            <button type="button" class="dropdown-item py-2 d-flex align-items-center justify-content-between apx-lang-choice active" data-apx-lang="id">
+                                <span class="d-flex align-items-center gap-2">
+                                    <span class="apx-flag-emoji">🇮🇩</span>
+                                    <span class="apx-lang-name">Bahasa Indonesia</span>
+                                </span>
+                                <i class="bi bi-check2 text-gold apx-lang-active-check" data-lang-check="id"></i>
+                            </button>
+                        </li>
+                        <li>
+                            <button type="button" class="dropdown-item py-2 d-flex align-items-center justify-content-between apx-lang-choice" data-apx-lang="en">
+                                <span class="d-flex align-items-center gap-2">
+                                    <span class="apx-flag-emoji">🇬🇧</span>
+                                    <span class="apx-lang-name">English</span>
+                                </span>
+                                <i class="bi bi-check2 text-gold apx-lang-active-check d-none" data-lang-check="en"></i>
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+
                 @if(plugins()->isEnabled('shop') && Route::has('shop.cart.index') && request()->is('shop*'))
                     <a href="{{ route('shop.cart.index') }}" class="apx-nav-cart-btn" title="Keranjang Belanja">
                         <i class="bi bi-cart3"></i>
@@ -84,32 +112,32 @@
                         </button>
                         <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end shadow-lg apx-nav-dropdown">
                             <li class="px-3 py-2 border-bottom border-secondary border-opacity-25 mb-1">
-                                <small class="text-muted d-block" style="font-size: 0.7rem; letter-spacing: 0.08em;">AKUN TERDAFTAR</small>
+                                <small class="text-muted d-block" style="font-size: 0.7rem; letter-spacing: 0.08em;" data-i18n="nav_acc_registered">AKUN TERDAFTAR</small>
                                 <span class="fw-bold text-white">{{ auth()->user()->name }}</span>
                             </li>
-                            <li><a class="dropdown-item py-2" href="{{ route('profile.index') }}"><i class="bi bi-person me-2 text-dim"></i> Profil Pemain</a></li>
+                            <li><a class="dropdown-item py-2" href="{{ route('profile.index') }}"><i class="bi bi-person me-2 text-dim"></i> <span data-i18n="nav_profile">Profil Pemain</span></a></li>
                             @if(plugins()->isEnabled('apexsions-bridge'))
-                                <li><a class="dropdown-item py-2" href="{{ route('apexsions-bridge.link.index') }}"><i class="bi bi-controller me-2 text-dim"></i> Tautkan Minecraft</a></li>
+                                <li><a class="dropdown-item py-2" href="{{ route('apexsions-bridge.link.index') }}"><i class="bi bi-controller me-2 text-dim"></i> <span data-i18n="nav_link_mc">Tautkan Minecraft</span></a></li>
                             @endif
                             @if(plugins()->isEnabled('shop') && Route::has('shop.payments.index'))
-                                <li><a class="dropdown-item py-2" href="{{ route('shop.payments.index') }}"><i class="bi bi-receipt me-2 text-dim"></i> Riwayat Belanja</a></li>
+                                <li><a class="dropdown-item py-2" href="{{ route('shop.payments.index') }}"><i class="bi bi-receipt me-2 text-dim"></i> <span data-i18n="nav_order_history">Riwayat Belanja</span></a></li>
                             @endif
                             @can('admin-access')
                                 <li><hr class="dropdown-divider border-secondary border-opacity-25"></li>
-                                <li><a class="dropdown-item py-2 text-white fw-bold" href="{{ route('admin.dashboard') }}"><i class="bi bi-speedometer2 me-2 text-gold"></i> Admin Panel</a></li>
+                                <li><a class="dropdown-item py-2 text-white fw-bold" href="{{ route('admin.dashboard') }}"><i class="bi bi-speedometer2 me-2 text-gold"></i> <span data-i18n="nav_admin_panel">Admin Panel</span></a></li>
                             @endcan
                             <li><hr class="dropdown-divider border-secondary border-opacity-25"></li>
                             <li>
                                 <form action="{{ route('logout') }}" method="POST">
                                     @csrf
-                                    <button type="submit" class="dropdown-item py-2 text-danger"><i class="bi bi-box-arrow-right me-2"></i> Keluar</button>
+                                    <button type="submit" class="dropdown-item py-2 text-danger"><i class="bi bi-box-arrow-right me-2"></i> <span data-i18n="nav_logout">Keluar</span></button>
                                 </form>
                             </li>
                         </ul>
                     </div>
                 @else
-                    <a href="{{ route('login') }}" class="btn btn-apx-outline btn-sm px-3 py-2">Masuk</a>
-                    <a href="{{ route('register') }}" class="btn btn-apx-gold btn-sm px-3 py-2">Daftar</a>
+                    <a href="{{ route('login') }}" class="btn btn-apx-outline btn-sm px-3 py-2" data-i18n="nav_login">Masuk</a>
+                    <a href="{{ route('register') }}" class="btn btn-apx-gold btn-sm px-3 py-2" data-i18n="nav_register">Daftar</a>
                 @endauth
             </div>
         </div>

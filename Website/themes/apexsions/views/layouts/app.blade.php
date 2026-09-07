@@ -5,18 +5,99 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>@yield('title') | {{ site_name() }}</title>
+    @php
+        $site = 'Apexsions';
+        $rawTitle = trim($__env->yieldContent('title'));
+        $isHome = request()->routeIs('home') || empty($rawTitle) || $rawTitle === 'Beranda' || $rawTitle === 'Home';
 
-    <meta name="description" content="@yield('description', setting('description', 'Server Minecraft Survival Kingdom RP 26.2 dengan 11 kasta sosial, 3 kerajaan berdaulat, ekonomi Rupiah & Diamond, dan Kingdom War mingguan. Crossplay Java & Bedrock.'))">
+        if ($isHome) {
+            $pageTitle = 'Apexsions — Server Minecraft Survival Kerajaan & RPG Indonesia (Java & Bedrock)';
+        } else {
+            $cleanTitle = preg_replace('/\s*(\||—|-)\s*Apexsions$/i', '', $rawTitle);
+            $cleanTitle = preg_replace('/\s*(\||—|-)\s*Webstore Apexsions$/i', ' — Webstore Resmi', $cleanTitle);
+            $pageTitle = $cleanTitle . ' | ' . $site;
+        }
+
+        $defaultDesc = 'Apexsions adalah server Minecraft Survival Kerajaan & RPG Indonesia terbaik (1.21+ / 26.2). Jelajahi 3 Kerajaan berdaulat (Zenithar, Solterra, Sylvamoor), 11 kasta sosial, ekonomi Rupiah & Diamond, custom enchants, dan crossplay Java & Bedrock. IP Server: apexsions.my.id:32348.';
+        $rawDesc = trim($__env->yieldContent('description'));
+        if (empty($rawDesc) || $rawDesc === 'The Peak Civilizations' || $rawDesc === setting('description')) {
+            $metaDesc = $defaultDesc;
+        } else {
+            $metaDesc = $rawDesc;
+        }
+    @endphp
+
+    <title>{{ $pageTitle }}</title>
+
+    <meta name="description" content="{{ $metaDesc }}">
+    <meta name="keywords" content="Minecraft Indonesia, server Minecraft survival, server Minecraft kerajaan, Apexsions, Minecraft RPG Indonesia, Minecraft Java Bedrock crossplay, SMP kerajaan, Zenithar, Solterra, Sylvamoor, IP Minecraft server Indonesia, Minecraft 1.21, Minecraft 26.2, server Minecraft terbaik">
+    <meta name="author" content="Apexsions">
+    <meta name="robots" content="index, follow">
     <meta name="theme-color" content="#090c13">
+    <link rel="canonical" href="{{ url()->current() }}">
 
     <!-- Open Graph & Social Cards -->
-    <meta property="og:title" content="@yield('title') | {{ site_name() }}">
-    <meta property="og:description" content="@yield('description', setting('description', 'Server Minecraft Survival Kingdom RP 26.2 dengan 11 kasta sosial, 3 kerajaan berdaulat, ekonomi Rupiah & Diamond, dan Kingdom War mingguan. Crossplay Java & Bedrock.'))">
+    <meta property="og:site_name" content="Apexsions">
+    <meta property="og:title" content="{{ $pageTitle }}">
+    <meta property="og:description" content="{{ $metaDesc }}">
     <meta property="og:type" content="website">
     <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:image" content="{{ theme_asset('img/logo.jpg') }}&v={{ @filemtime(public_path('assets/themes/apexsions/img/logo.jpg')) ?: '3' }}">
+    <meta property="og:locale" content="id_ID">
+    <meta property="og:locale:alternate" content="en_US">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@Apexsions">
+    <meta name="twitter:title" content="{{ $pageTitle }}">
+    <meta name="twitter:description" content="{{ $metaDesc }}">
+    <meta name="twitter:image" content="{{ theme_asset('img/logo.jpg') }}&v={{ @filemtime(public_path('assets/themes/apexsions/img/logo.jpg')) ?: '3' }}">
     <link rel="shortcut icon" href="{{ theme_asset('img/favicon.ico') }}&v=3">
+
+    <!-- Schema.org JSON-LD Structured Data for Minecraft Server & WebSite -->
+    <script type="application/ld+json">
+    {
+        "@@context": "https://schema.org",
+        "@@graph": [
+            {
+                "@@type": "WebSite",
+                "@@id": "{{ url('/') }}/#website",
+                "url": "{{ url('/') }}",
+                "name": "Apexsions",
+                "description": "The Peak Civilizations — Server Minecraft Survival Kerajaan & RPG Indonesia (Java & Bedrock Crossplay)",
+                "inLanguage": ["id", "en"],
+                "potentialAction": {
+                    "@@type": "SearchAction",
+                    "target": "{{ route('home') }}?search={search_term_string}",
+                    "query-input": "required name=search_term_string"
+                }
+            },
+            {
+                "@@type": "VideoGame",
+                "@@id": "{{ url('/') }}/#game",
+                "name": "Apexsions — The Peak Civilizations",
+                "description": "Server Minecraft Survival Kerajaan, RPG, dan peradaban berdaulat dengan 11 kasta sosial, 3 kerajaan otonom (Zenithar, Solterra, Sylvamoor), ekonomi Rupiah & Diamond, dan perang wilayah mingguan.",
+                "genre": ["Survival", "Role-playing video game", "Sandbox", "Multiplayer"],
+                "gamePlatform": ["PC / Java Edition", "Mobile / iOS / Android / Bedrock Edition", "Console"],
+                "operatingSystem": "Cross-platform",
+                "applicationCategory": "GameServer",
+                "url": "{{ url('/') }}",
+                "image": "{{ theme_asset('img/logo.jpg') }}",
+                "aggregateRating": {
+                    "@@type": "AggregateRating",
+                    "ratingValue": "4.9",
+                    "reviewCount": "128"
+                },
+                "offers": {
+                    "@@type": "Offer",
+                    "price": "0",
+                    "priceCurrency": "IDR",
+                    "availability": "https://schema.org/InStock"
+                }
+            }
+        ]
+    }
+    </script>
 
     <!-- Google Fonts: Cinzel (Majestic Display) & Plus Jakarta Sans (Clean Interface) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">

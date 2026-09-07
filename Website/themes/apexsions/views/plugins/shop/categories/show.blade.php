@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
-@section('title', $category->name . ' | Webstore Apexsions')
+@section('title', $category->name . ' — Webstore Resmi')
+@section('description', 'Jelajahi paket ' . $category->name . ' di Webstore Resmi Apexsions. Pembelian aman, aktivasi otomatis instan di dalam server Minecraft (Java & Bedrock).')
 
 @push('footer-scripts')
     <script>

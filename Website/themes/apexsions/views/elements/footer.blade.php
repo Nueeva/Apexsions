@@ -23,48 +23,48 @@
                         <span class="apx-brand-tagline">THE PEAK CIVILIZATIONS</span>
                     </div>
                 </a>
-                <p class="apx-footer-desc text-muted small pe-lg-4 mb-4" style="line-height: 1.8;">
+                <p class="apx-footer-desc text-muted small pe-lg-4 mb-4" style="line-height: 1.8;" data-i18n="footer_desc">
                     Apexsions adalah peradaban berdaulat yang dibentuk oleh komunitas. Tatanan kerajaan otonom, sistem pasar atomik, dan progres kasta sosial yang kompetitif di atas Minecraft 26.2.
                 </p>
-                <div class="apx-footer-verbs small text-uppercase" style="letter-spacing: 0.16em; color: #64748b; font-weight: 600; font-size: 0.72rem;">
+                <div class="apx-footer-verbs small text-uppercase" style="letter-spacing: 0.16em; color: #64748b; font-weight: 600; font-size: 0.72rem;" data-i18n="footer_subline">
                     MINECRAFT 26.2 &bull; REALM BERDAULAT
                 </div>
             </div>
 
             <!-- Column 1: Peradaban -->
             <div class="col-lg-2 col-md-3 col-6 apx-footer-nav-col">
-                <div class="apx-footer-heading">PERADABAN</div>
+                <div class="apx-footer-heading" data-i18n="footer_col_civ">PERADABAN</div>
                 <ul class="apx-footer-list">
-                    <li><a href="{{ route('home') }}"><i class="bi bi-house me-2"></i> Beranda</a></li>
+                    <li><a href="{{ route('home') }}"><i class="bi bi-house me-2"></i> <span data-i18n="nav_home">Beranda</span></a></li>
                     @if(plugins()->isEnabled('shop'))
-                        <li><a href="{{ route('shop.home') }}"><i class="bi bi-cart3 me-2"></i> Webstore</a></li>
+                        <li><a href="{{ route('shop.home') }}"><i class="bi bi-cart3 me-2"></i> <span data-i18n="nav_shop">Webstore</span></a></li>
                     @endif
-                    <li><a href="{{ route('home') }}#features"><i class="bi bi-shield-shaded me-2"></i> Tiga Kerajaan</a></li>
-                    <li><a href="{{ route('home') }}#ranks"><i class="bi bi-crown me-2"></i> Hierarki Kasta</a></li>
+                    <li><a href="{{ route('home') }}#features"><i class="bi bi-shield-shaded me-2"></i> <span data-i18n="footer_three_kingdoms">Tiga Kerajaan</span></a></li>
+                    <li><a href="{{ route('home') }}#ranks"><i class="bi bi-crown me-2"></i> <span data-i18n="footer_caste_hierarchy">Hierarki Kasta</span></a></li>
                     @if(plugins()->isEnabled('wiki'))
-                        <li><a href="{{ route('wiki.index') }}"><i class="bi bi-journal-text me-2"></i> Arsip Wiki</a></li>
+                        <li><a href="{{ route('wiki.index') }}"><i class="bi bi-journal-text me-2"></i> <span data-i18n="footer_wiki_archive">Arsip Wiki</span></a></li>
                     @endif
-                    <li><a href="{{ route('vote') }}"><i class="bi bi-trophy me-2"></i> Dukung Vote</a></li>
+                    <li><a href="{{ route('vote') }}"><i class="bi bi-trophy me-2"></i> <span data-i18n="footer_vote_support">Dukung Vote</span></a></li>
                 </ul>
             </div>
 
             <!-- Column 2: Panduan & Kebijakan -->
             <div class="col-lg-3 col-md-3 col-6 apx-footer-nav-col">
-                <div class="apx-footer-heading">PANDUAN &amp; ATURAN</div>
+                <div class="apx-footer-heading" data-i18n="footer_col_guides">PANDUAN &amp; ATURAN</div>
                 <ul class="apx-footer-list">
-                    <li><a href="{{ route('home') }}#getting-started"><i class="bi bi-compass me-2"></i> Cara Bergabung</a></li>
+                    <li><a href="{{ route('home') }}#getting-started"><i class="bi bi-compass me-2"></i> <span data-i18n="footer_how_to_join">Cara Bergabung</span></a></li>
                     @if(plugins()->isEnabled('wiki'))
-                        <li><a href="{{ route('wiki.index') }}"><i class="bi bi-book me-2"></i> Ensiklopedia Pemain</a></li>
+                        <li><a href="{{ route('wiki.index') }}"><i class="bi bi-book me-2"></i> <span data-i18n="footer_encyclopedia">Ensiklopedia Pemain</span></a></li>
                     @endif
-                    <li><a href="{{ route('rules') }}"><i class="bi bi-shield-check me-2"></i> Peraturan Resmi</a></li>
-                    <li><a href="{{ route('terms') }}"><i class="bi bi-file-earmark-lock me-2"></i> Ketentuan Transaksi</a></li>
-                    <li><a href="https://discord.gg/apexsions" target="_blank" rel="noopener noreferrer"><i class="bi bi-headset me-2"></i> Pusat Bantuan</a></li>
+                    <li><a href="{{ route('rules') }}"><i class="bi bi-shield-check me-2"></i> <span data-i18n="footer_official_rules">Peraturan Resmi</span></a></li>
+                    <li><a href="{{ route('terms') }}"><i class="bi bi-file-earmark-lock me-2"></i> <span data-i18n="footer_terms_trans">Ketentuan Transaksi</span></a></li>
+                    <li><a href="https://discord.gg/apexsions" target="_blank" rel="noopener noreferrer"><i class="bi bi-headset me-2"></i> <span data-i18n="footer_help_center">Pusat Bantuan</span></a></li>
                 </ul>
             </div>
 
             <!-- Column 3: Komunitas & Diplomasi -->
             <div class="col-lg-3 col-md-6 col-12 apx-footer-nav-col">
-                <div class="apx-footer-heading">DIPLOMASI KOMUNITAS</div>
+                <div class="apx-footer-heading" data-i18n="footer_col_community">DIPLOMASI KOMUNITAS</div>
                 <ul class="apx-footer-list mb-4">
                     <li><a href="https://discord.gg/apexsions" target="_blank" rel="noopener noreferrer"><i class="bi bi-discord me-2 text-primary"></i> Discord Komunitas</a></li>
                     <li><a href="https://youtube.com/@apexsions" target="_blank" rel="noopener noreferrer"><i class="bi bi-youtube me-2 text-danger"></i> YouTube Peradaban</a></li>
@@ -93,8 +93,8 @@
             <div class="row align-items-center gy-3">
                 <!-- Left Copyright -->
                 <div class="col-lg-4 text-center text-lg-start">
-                    <div class="text-white small mb-1">&copy; {{ date('Y') }} Apexsions. Seluruh hak cipta dilindungi.</div>
-                    <div class="text-muted" style="font-size: 0.78rem;">Dibangun bersama komunitas, untuk peradaban yang berdaulat.</div>
+                    <div class="text-white small mb-1">&copy; {{ date('Y') }} <span data-i18n="footer_copyright">Apexsions. Seluruh hak cipta dilindungi.</span></div>
+                    <div class="text-muted" style="font-size: 0.78rem;" data-i18n="footer_sub_copyright">Dibangun bersama komunitas, untuk peradaban yang berdaulat.</div>
                 </div>
 
                 <!-- Center Emblem -->
@@ -110,11 +110,11 @@
                 <!-- Right Legal -->
                 <div class="col-lg-4 text-center text-lg-end">
                     <div class="small mb-1">
-                        <a href="{{ route('terms') }}" class="text-muted text-decoration-none me-2">Syarat &amp; Ketentuan</a>
+                        <a href="{{ route('terms') }}" class="text-muted text-decoration-none me-2" data-i18n="footer_terms">Syarat &amp; Ketentuan</a>
                         <span class="text-muted">&bull;</span>
-                        <a href="{{ route('privacy') }}" class="text-muted text-decoration-none mx-2">Kebijakan Privasi</a>
+                        <a href="{{ route('privacy') }}" class="text-muted text-decoration-none mx-2" data-i18n="footer_privacy">Kebijakan Privasi</a>
                         <span class="text-muted">&bull;</span>
-                        <a href="https://discord.gg/apexsions" target="_blank" rel="noopener noreferrer" class="text-muted text-decoration-none ms-2">Kontak</a>
+                        <a href="https://discord.gg/apexsions" target="_blank" rel="noopener noreferrer" class="text-muted text-decoration-none ms-2" data-i18n="footer_contact">Kontak</a>
                     </div>
                     <div class="text-muted fst-italic" style="font-size: 0.78rem; font-family: Georgia, serif;">
                         Same Blocks, Bigger Stories.

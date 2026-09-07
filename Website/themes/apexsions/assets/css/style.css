@@ -3321,3 +3321,74 @@ code:not(pre code) {
     font-weight: 800;
     letter-spacing: 0.05em;
 }
+
+/* ==========================================================================
+   Apexsions Language Accessibility Switcher (ID / EN)
+   ========================================================================== */
+.apx-lang-dropdown-wrapper {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+}
+
+.apx-lang-btn {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #e2e8f0;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    padding: 0.38rem 0.75rem;
+    border-radius: var(--apx-radius-sm);
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.apx-lang-btn:hover,
+.apx-lang-btn:focus,
+.apx-lang-btn[aria-expanded="true"] {
+    background: rgba(212, 163, 89, 0.12);
+    border-color: var(--apx-gold-border);
+    color: #ffffff;
+    box-shadow: 0 0 12px rgba(212, 163, 89, 0.2);
+}
+
+.apx-lang-menu {
+    min-width: 195px;
+    border-radius: var(--apx-radius-md);
+    background: rgba(14, 18, 28, 0.98) !important;
+    border: 1px solid var(--apx-gold-border-subtle) !important;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.75) !important;
+    padding: 0.4rem 0;
+}
+
+.apx-lang-choice {
+    font-size: 0.84rem;
+    font-weight: 500;
+    color: #cbd5e1;
+    transition: all 0.15s ease;
+    border: none;
+    background: transparent;
+    width: 100%;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+}
+
+.apx-lang-choice:hover,
+.apx-lang-choice.active {
+    background: rgba(212, 163, 89, 0.12);
+    color: #ffffff;
+}
+
+.apx-flag-emoji {
+    font-size: 1.15rem;
+    line-height: 1;
+}
+
+.apx-lang-current-label {
+    font-size: 0.76rem;
+    letter-spacing: 0.06em;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+}
