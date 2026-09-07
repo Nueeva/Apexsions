@@ -167,9 +167,22 @@ public class ApexsionsCoreAPIImpl implements ApexsionsCoreAPI {
         String kingName = plugin.getConfigManager().getKingdomKing(kingdomKey);
         boolean isMonarch = kingName != null && pName.equalsIgnoreCase(kingName);
 
-        double balance = (player != null && plugin.getVaultHook() != null && plugin.getVaultHook().hasEconomy())
-                ? plugin.getVaultHook().getBalance(player)
-                : 0.0;
+        double balance = 0.0;
+        try {
+            if (org.bukkit.Bukkit.getPluginManager().isPluginEnabled("ApexsionsEconomy")) {
+                Class<?> providerClass = Class.forName("com.apexsions.economy.api.ApexsionsEconomyProvider");
+                Object ecoApi = providerClass.getMethod("get").invoke(null);
+                if (ecoApi != null) {
+                    balance = (double) ecoApi.getClass().getMethod("getBalance", UUID.class, String.class).invoke(ecoApi, uuid, "rupiah");
+                }
+            }
+        } catch (Throwable ignored) {}
+
+        if (balance <= 0.0 && player != null && plugin.getVaultHook() != null && plugin.getVaultHook().hasEconomy()) {
+            try {
+                balance = plugin.getVaultHook().getBalance(player);
+            } catch (Throwable ignored) {}
+        }
 
         int ping = player != null ? player.getPing() : 0;
         int hp = player != null ? (int) Math.ceil(player.getHealth()) : 20;
