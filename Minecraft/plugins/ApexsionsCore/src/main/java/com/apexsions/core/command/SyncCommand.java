@@ -61,7 +61,32 @@ public class SyncCommand implements CommandExecutor, TabCompleter {
 
         bridge.syncPlayerAsync(player);
 
-        player.sendMessage(miniMessage.deserialize("<gradient:#f39c12:#f1c40f><bold>APEXSIONS SYNC</bold></gradient> <dark_gray>»</dark_gray> <green>Berhasil! Level Peradaban, Saldo, dan BattlePass Anda telah diperbarui di web.</green>"));
+        player.sendMessage(miniMessage.deserialize("<gradient:#f39c12:#f1c40f><bold>APEXSIONS SYNC</bold></gradient> <dark_gray>»</dark_gray> <green>Sinkronisasi berhasil! Data akun telah dikirim ke portal web:</green>"));
+        
+        // Detailed feedback so player can confirm values
+        try {
+            int civLvl = plugin.getPlayerDataService().getCached(uuid).map(com.apexsions.core.player.PlayerData::getLevel).orElse(1);
+            long civXp = plugin.getPlayerDataService().getCached(uuid).map(com.apexsions.core.player.PlayerData::getXp).orElse(0L);
+            long reqCivXp = plugin.getLevelManager() != null ? plugin.getLevelManager().getRequiredXpForNextLevel(civLvl) : 500;
+            
+            player.sendMessage(miniMessage.deserialize(" <dark_gray>•</dark_gray> <gray>Level Peradaban:</gray> <gold>Lv. " + civLvl + "</gold> <dark_gray>(" + civXp + "/" + reqCivXp + " XP)</dark_gray>"));
+        } catch (Throwable ignored) {}
+
+        try {
+            if (org.bukkit.Bukkit.getPluginManager().isPluginEnabled("ApexsionsBattlepass")) {
+                Class<?> bpProviderClass = Class.forName("com.apexsions.battlepass.api.ApexsionsBattlepassProvider");
+                Object bpApi = bpProviderClass.getMethod("get").invoke(null);
+                if (bpApi != null) {
+                    int bpTier = (int) bpApi.getClass().getMethod("getPlayerTier", UUID.class).invoke(bpApi, uuid);
+                    int bpXp = (int) bpApi.getClass().getMethod("getPlayerXp", UUID.class).invoke(bpApi, uuid);
+                    boolean isPrem = (boolean) bpApi.getClass().getMethod("hasPremiumPass", UUID.class).invoke(bpApi, uuid);
+                    String badge = isPrem ? "<gold>[PREMIUM PASS]</gold>" : "<gray>[FREE PASS]</gray>";
+                    player.sendMessage(miniMessage.deserialize(" <dark_gray>•</dark_gray> <gray>BattlePass:</gray> <yellow>Tier " + bpTier + "</yellow> <dark_gray>(" + bpXp + " XP)</dark_gray> " + badge));
+                }
+            }
+        } catch (Throwable ignored) {}
+
+        player.sendMessage(miniMessage.deserialize(" <dark_gray>•</dark_gray> <gray>Cek profil web:</gray> <click:open_url:'http://web.apexsions.my.id/profile'><underlined><aqua>web.apexsions.my.id/profile</aqua></underlined></click>"));
         return true;
     }
 

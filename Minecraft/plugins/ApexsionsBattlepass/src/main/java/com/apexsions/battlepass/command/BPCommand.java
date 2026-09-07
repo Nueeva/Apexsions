@@ -46,7 +46,7 @@ public class BPCommand implements CommandExecutor, TabCompleter {
                 new QuestMainMenu(plugin, player, null).open();
                 return true;
             }
-            case "rewards", "reward" -> {
+            case "rewards", "reward", "pass", "passes" -> {
                 new RewardsMenu(plugin, player, null).open();
                 return true;
             }
@@ -54,18 +54,19 @@ public class BPCommand implements CommandExecutor, TabCompleter {
                 new DailyShopMenu(plugin, player, null).open();
                 return true;
             }
-            case "info", "stats" -> {
+            case "info", "stats", "status", "level", "xp", "progress", "tier" -> {
                 PlayerData data = plugin.getPlayerManager().getPlayerData(player);
                 if (data != null) {
                     int reqXp = plugin.getRewardManager().getRequiredXp(data.getLevel());
                     player.sendMessage("§8=======================================");
                     player.sendMessage("§6§lBATTLE PASS STATISTIK - §e" + player.getName());
                     player.sendMessage("§7Season: §e" + plugin.getSeasonManager().getCurrentSeason().getName());
-                    player.sendMessage("§7Level: §e" + data.getLevel() + " §8/ §f" + plugin.getRewardManager().getMaxLevel());
-                    player.sendMessage("§7XP: §a" + data.getXp() + " §8/ §f" + reqXp);
+                    player.sendMessage("§7Tier / Level: §e" + data.getLevel() + " §8/ §f" + plugin.getRewardManager().getMaxLevel());
+                    player.sendMessage("§7Progress XP: §a" + data.getXp() + " §8/ §f" + reqXp);
                     player.sendMessage("§7Battle Coins: §e" + plugin.getCurrencyService().format(data.getCurrency()));
                     player.sendMessage("§7Pass Aktif: §b" + String.join(", ", data.getPasses()).toUpperCase());
                     player.sendMessage("§7Sisa Waktu Season: §a" + plugin.getSeasonManager().getTimeLeftFormatted());
+                    player.sendMessage("§8» §7Ketik §e/sync §7untuk sinkronkan data ke website.");
                     player.sendMessage("§8=======================================");
                 }
                 return true;
@@ -74,10 +75,11 @@ public class BPCommand implements CommandExecutor, TabCompleter {
                 player.sendMessage("§8=======================================");
                 player.sendMessage("§6§lAPEXSIONS BATTLEPASS §8- §eBantuan Player");
                 player.sendMessage("§e/bp §7- Buka Menu Utama BattlePass GUI");
-                player.sendMessage("§e/bp info §7- Lihat statistik BattlePass Anda");
+                player.sendMessage("§e/bp info §7(atau §e/bp tier§7) - Lihat progres & statistik BattlePass");
+                player.sendMessage("§e/bp rewards §7- Buka Menu Klaim Hadiah Tier Pass");
                 player.sendMessage("§e/bp quests §7- Buka Menu Quests Harian & Mingguan");
-                player.sendMessage("§e/bp rewards §7- Buka Menu Klaim Hadiah Level");
                 player.sendMessage("§e/bp shop §7- Buka BattlePass Shop");
+                player.sendMessage("§e/sync §7- Sinkronkan data ke web portal");
                 player.sendMessage("§8=======================================");
                 return true;
             }
@@ -93,8 +95,9 @@ public class BPCommand implements CommandExecutor, TabCompleter {
             List<String> list = new ArrayList<>();
             list.add("open");
             list.add("info");
-            list.add("quests");
+            list.add("tier");
             list.add("rewards");
+            list.add("quests");
             list.add("shop");
             list.add("help");
             return list;

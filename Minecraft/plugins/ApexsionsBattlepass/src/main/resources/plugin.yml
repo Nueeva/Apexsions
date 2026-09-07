@@ -4,7 +4,7 @@ main: com.apexsions.battlepass.ApexsionsBattlepass
 api-version: '1.20'
 authors: [ApexTeam]
 description: Apexsions Battlepass - Modular, Modern, Scalable Battle Pass Plugin for Minecraft
-softdepend: [Vault, PlaceholderAPI, ApexsionsEconomy]
+softdepend: [Vault, PlaceholderAPI, ApexsionsEconomy, nightcore, NightCore, ExcellentCrates]
 commands:
   bp:
     description: Main player command for Apexsions Battlepass
@@ -40,10 +40,3 @@ permissions:
   apexsionsbattlepass.pass.vip:
     description: Permission for VIP Pass tier
     default: false
-
-
-
-softdepend:
-  - nightcore
-  - NightCore
-  - ExcellentCrates

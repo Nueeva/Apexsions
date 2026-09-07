@@ -174,7 +174,7 @@
                             <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-2">
                                 <div class="d-flex align-items-center gap-2">
                                     <span class="text-gold fw-bold small"><i class="bi bi-trophy-fill text-warning me-1"></i> <span data-i18n="profile_bp_title">BattlePass: Musim Peradaban</span></span>
-                                    <span class="badge bg-gold text-dark fw-bold px-2 py-1"><span data-i18n="profile_bp_tier">Tier</span> {{ $linkedAccount->battlepass_tier ?? 1 }}</span>
+                                    <span class="badge px-2 py-1 font-monospace fw-bold" style="background: rgba(245, 158, 11, 0.25); color: #fde047; border: 1px solid #f59e0b; font-size: 0.85rem;"><span data-i18n="profile_bp_tier">Tier</span> {{ $linkedAccount->battlepass_tier ?? 1 }}</span>
                                 </div>
                                 <div>
                                     @if($linkedAccount->battlepass_has_premium)

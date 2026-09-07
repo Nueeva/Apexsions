@@ -20,7 +20,21 @@ public class PlayerManager {
     }
 
     public PlayerData getPlayerData(UUID uuid) {
-        return playerDataCache.get(uuid);
+        if (uuid == null) return null;
+        PlayerData data = playerDataCache.get(uuid);
+        if (data == null) {
+            int currentSeasonId = (plugin.getSeasonManager() != null && plugin.getSeasonManager().getCurrentSeason() != null)
+                    ? plugin.getSeasonManager().getCurrentSeason().getId() : 1;
+            try {
+                data = repository.loadPlayerData(uuid, currentSeasonId).get(1, java.util.concurrent.TimeUnit.SECONDS);
+            } catch (Exception ignored) {}
+
+            if (data == null) {
+                data = new PlayerData(uuid, currentSeasonId);
+            }
+            playerDataCache.put(uuid, data);
+        }
+        return data;
     }
 
     public PlayerData getPlayerData(Player player) {

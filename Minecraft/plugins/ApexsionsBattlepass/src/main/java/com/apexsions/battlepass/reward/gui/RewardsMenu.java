@@ -45,7 +45,19 @@ public class RewardsMenu extends Gui {
     }
 
     public RewardsMenu(ApexsionsBattlepass plugin, Player player, Gui parent) {
-        this(plugin, player, parent, 1);
+        this(plugin, player, parent, calculatePlayerActivePage(plugin, player));
+    }
+
+    private static int calculatePlayerActivePage(ApexsionsBattlepass plugin, Player player) {
+        if (plugin == null || player == null) return 1;
+        try {
+            PlayerData data = plugin.getPlayerManager().getPlayerData(player);
+            if (data != null) {
+                int lvl = Math.max(1, data.getLevel());
+                return (lvl - 1) / LEVELS_PER_PAGE + 1;
+            }
+        } catch (Throwable ignored) {}
+        return 1;
     }
 
     @Override
