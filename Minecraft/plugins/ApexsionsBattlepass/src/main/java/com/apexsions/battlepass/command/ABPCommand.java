@@ -72,8 +72,10 @@ public class ABPCommand implements CommandExecutor, TabCompleter {
                 PlayerData data = plugin.getPlayerManager().getPlayerData(target);
                 if (data != null) {
                     data.addPass(passType);
+                    plugin.getRepository().savePlayerData(data);
                     sender.sendMessage("§aBerhasil memberikan pass §e" + passType.toUpperCase() + " §akepada §e" + target.getName());
                     target.sendMessage("§aSelamat! Anda telah mendapatkan §e" + passType.toUpperCase() + " Pass§a!");
+                    com.apexsions.battlepass.progression.BattlePassXpService.syncPlayerIfCorePresent(target);
                 }
                 return true;
             }
@@ -93,7 +95,9 @@ public class ABPCommand implements CommandExecutor, TabCompleter {
                     if (data != null) {
                         data.setLevel(lvl);
                         plugin.getXpService().checkLevelUp(target, data);
+                        plugin.getRepository().savePlayerData(data);
                         sender.sendMessage("§aBerhasil mengatur level §e" + target.getName() + " §amenjadi §e" + lvl);
+                        com.apexsions.battlepass.progression.BattlePassXpService.syncPlayerIfCorePresent(target);
                     }
                 } catch (NumberFormatException e) {
                     sender.sendMessage("§cLevel harus berupa angka.");

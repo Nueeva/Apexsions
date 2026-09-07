@@ -28,6 +28,11 @@ commands:
     description: Link in-game Minecraft account to Apexsions web platform.
     permission: apexsionscore.command.link
     usage: /link <pin>
+  sync:
+    aliases:
+      - websync
+    description: Synchronize player profile, balances, and BattlePass with web platform.
+    usage: /sync
   lobby:
     description: Teleport to the main server lobby.
     permission: apexsionscore.command.lobby

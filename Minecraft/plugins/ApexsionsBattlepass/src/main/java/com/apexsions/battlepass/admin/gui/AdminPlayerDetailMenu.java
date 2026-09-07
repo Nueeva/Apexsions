@@ -107,6 +107,9 @@ public class AdminPlayerDetailMenu extends Gui {
                 finalData.setLevel(finalData.getLevel() + 1);
             }
             plugin.getRepository().savePlayerData(finalData);
+            if (op.getPlayer() != null) {
+                com.apexsions.battlepass.progression.BattlePassXpService.syncPlayerIfCorePresent(op.getPlayer());
+            }
             player.sendMessage("§aLevel §e" + targetName + " §asekarang: §e" + finalData.getLevel());
             open();
         }));

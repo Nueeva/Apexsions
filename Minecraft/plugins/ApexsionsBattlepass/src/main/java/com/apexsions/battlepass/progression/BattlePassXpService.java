@@ -31,6 +31,8 @@ public class BattlePassXpService {
         player.sendMessage(plugin.getMessage("xp-gained").replace("%amount%", String.valueOf(amount)));
 
         checkLevelUp(player, data);
+        plugin.getRepository().savePlayerData(data);
+        syncPlayerIfCorePresent(player);
     }
 
     public void checkLevelUp(Player player, PlayerData data) {
@@ -96,5 +98,18 @@ public class BattlePassXpService {
 
     public int getRequiredXp(int level) {
         return plugin.getRewardManager().getRequiredXp(level);
+    }
+
+    public static void syncPlayerIfCorePresent(Player player) {
+        if (player == null) return;
+        try {
+            org.bukkit.plugin.Plugin core = org.bukkit.Bukkit.getPluginManager().getPlugin("ApexsionsCore");
+            if (core != null && core.isEnabled()) {
+                Object bridge = core.getClass().getMethod("getWebBridgeService").invoke(core);
+                if (bridge != null) {
+                    bridge.getClass().getMethod("syncPlayerAsync", Player.class).invoke(bridge, player);
+                }
+            }
+        } catch (Throwable ignored) {}
     }
 }

@@ -278,6 +278,7 @@ public class ApexsionsCorePlugin extends JavaPlugin {
             // 13. Web Platform Status Bridge
             this.webBridgeService = new com.apexsions.core.integration.web.WebBridgeService(this);
             this.webBridgeService.start();
+            registerBattlePassEventListener();
 
             long elapsed = System.currentTimeMillis() - startTime;
             getLogger().info("ApexsionsCore loaded and enabled successfully in " + elapsed + "ms!");
@@ -339,6 +340,14 @@ public class ApexsionsCorePlugin extends JavaPlugin {
         if (linkCmd != null) {
             linkCmd.setExecutor(linkHandler);
             linkCmd.setTabCompleter(linkHandler);
+        }
+
+        // /sync (aliases: /websync)
+        com.apexsions.core.command.SyncCommand syncHandler = new com.apexsions.core.command.SyncCommand(this);
+        PluginCommand syncCmd = getCommand("sync");
+        if (syncCmd != null) {
+            syncCmd.setExecutor(syncHandler);
+            syncCmd.setTabCompleter(syncHandler);
         }
 
         // /lobby
@@ -557,4 +566,27 @@ public class ApexsionsCorePlugin extends JavaPlugin {
     public com.apexsions.core.integration.web.WebBridgeService getWebBridgeService() { return webBridgeService; }
     public com.apexsions.core.sions.SionsTemporalService getSionsTemporalService() { return sionsTemporalService; }
     public ApexsionsCoreAPI getApi() { return api; }
+
+    private void registerBattlePassEventListener() {
+        try {
+            Class<?> eventClass = Class.forName("com.apexsions.battlepass.api.event.BattlePassLevelUpEvent");
+            Class<? extends org.bukkit.event.Event> bukkitEventClass = eventClass.asSubclass(org.bukkit.event.Event.class);
+            getServer().getPluginManager().registerEvent(
+                bukkitEventClass,
+                new org.bukkit.event.Listener() {},
+                org.bukkit.event.EventPriority.MONITOR,
+                (l, event) -> {
+                    try {
+                        org.bukkit.entity.Player p = (org.bukkit.entity.Player) event.getClass().getMethod("getPlayer").invoke(event);
+                        if (p != null && webBridgeService != null) {
+                            webBridgeService.syncPlayerAsync(p);
+                        }
+                    } catch (Throwable ignored) {}
+                },
+                this,
+                true
+            );
+            getLogger().info("[WebBridge] Dynamic BattlePass level-up listener hooked successfully.");
+        } catch (Throwable ignored) {}
+    }
 }

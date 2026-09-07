@@ -84,13 +84,18 @@
                         @endif
                     </div>
 
-                    <!-- Level Progress Bar -->
-                    <div class="mb-3">
-                        <div class="d-flex justify-content-between text-sm mb-1">
-                            <span class="fw-bold text-gold"><i class="bi bi-lightning-charge-fill"></i> <span data-i18n="profile_pub_level_badge">Level</span> {{ $account->level }}</span>
-                            <span class="text-muted">{{ number_format($account->xp) }} / {{ number_format($account->required_xp) }} XP ({{ $xpPercent }}%)</span>
+                    <!-- Core Civilization Level & XP Bar -->
+                    <div class="mb-3 p-2 px-3 rounded bg-black bg-opacity-30 border border-secondary border-opacity-25">
+                        <div class="d-flex justify-content-between align-items-center text-sm mb-1">
+                            <span class="fw-bold text-gold">
+                                <i class="bi bi-shield-shaded text-warning me-1"></i>
+                                <span data-i18n="profile_core_level_label">Level Peradaban</span> {{ $account->level }}
+                            </span>
+                            <span class="text-muted small">
+                                <span data-i18n="profile_core_xp_label">Exp Karakter</span>: {{ number_format($account->xp) }} / {{ number_format($account->required_xp) }} XP ({{ $xpPercent }}%)
+                            </span>
                         </div>
-                        <div class="progress" style="height: 10px; background-color: rgba(255,255,255,0.1); border-radius: 5px;">
+                        <div class="progress" style="height: 8px; background-color: rgba(255,255,255,0.1); border-radius: 4px;">
                             <div class="progress-bar bg-warning progress-bar-striped progress-bar-animated" role="progressbar" style="width: {{ $xpPercent }}%;" aria-valuenow="{{ $xpPercent }}" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
                     </div>
@@ -118,10 +123,10 @@
                     </div>
 
                     <!-- BattlePass Season Progress Card -->
-                    <div class="p-3 rounded bg-black bg-opacity-40 border border-gold border-opacity-30 mb-3">
+                    <div class="p-3 rounded bg-black bg-opacity-40 border border-gold border-opacity-40 mb-3">
                         <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-2">
                             <div class="d-flex align-items-center gap-2">
-                                <span class="text-gold fw-bold small"><i class="bi bi-shield-shaded me-1"></i> <span data-i18n="profile_bp_title">Musim Peradaban (BattlePass)</span></span>
+                                <span class="text-gold fw-bold small"><i class="bi bi-trophy-fill text-warning me-1"></i> <span data-i18n="profile_bp_title">BattlePass: Musim Peradaban</span></span>
                                 <span class="badge bg-gold text-dark fw-bold px-2 py-1"><span data-i18n="profile_bp_tier">Tier</span> {{ $account->battlepass_tier ?? 1 }}</span>
                             </div>
                             <div>
@@ -137,7 +142,7 @@
                             </div>
                         </div>
                         <div class="d-flex justify-content-between text-sm mb-1">
-                            <span class="text-secondary small" data-i18n="profile_bp_xp">Progress Musim:</span>
+                            <span class="text-secondary small"><span data-i18n="profile_bp_xp">Progress Tier Pass</span>:</span>
                             <span class="text-white small fw-bold">{{ number_format($account->battlepass_xp ?? 0) }} / {{ number_format($account->battlepass_required_xp ?? 100) }} XP ({{ $bpXpPercent }}%)</span>
                         </div>
                         <div class="progress" style="height: 8px; background-color: rgba(255,255,255,0.08); border-radius: 4px;">

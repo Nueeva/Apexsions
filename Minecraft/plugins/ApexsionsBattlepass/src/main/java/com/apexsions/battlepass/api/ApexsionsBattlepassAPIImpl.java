@@ -49,7 +49,7 @@ public class ApexsionsBattlepassAPIImpl implements ApexsionsBattlepassAPI {
     @Override
     public boolean hasPremiumPass(@NotNull UUID uuid) {
         PlayerData p = plugin.getPlayerManager().getPlayerData(uuid);
-        return p != null && p.hasPass("premium");
+        return p != null && (p.hasPass("premium") || p.hasPass("exsio") || p.hasPass("sio"));
     }
 
     @Override
