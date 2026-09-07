@@ -137,7 +137,10 @@ $$\text{XP Dibutuhkan}(L) = \lfloor 100 \times L^{1.5} + (L \times 50) \rfloor$$
 | `/ac setlobby` | `/kc setlobby` | Mengatur titik spawn lobi saat ini | `apexsionscore.admin` | `op` |
 | `/ac info <p>` | `/kc info` | Memeriksa rincian level, XP, dan kerajaan pemain | `apexsionscore.admin` | `op` |
 | `/sions [status]` | - | Memeriksa status temporal engine & blok termodifikasi | `apexsionscore.admin.sions` | `op` |
-| `/sions restore` | - | Memulihkan paksa seluruh blok termodifikasi seketika | `apexsionscore.admin.sions` | `op` |
+| `/sions set [minY] [maxY]` | `/sions snapshot` | Mengambil snapshot baseline permanen seluruh blok wilayah Sions | `apexsionscore.admin.sions` | `op` |
+| `/sions restore` | - | Memulihkan paksa seluruh blok ke baseline seketika | `apexsionscore.admin.sions` | `op` |
+| `/sions setkey` | - | Mengubah item di tangan menjadi Kunci Kuno Resmi Sions | `apexsionscore.admin.sions` | `op` |
+| `/sions givekey [p] [qty]` | - | Memberikan Kunci Kuno Sions resmi kepada pemain | `apexsionscore.admin.sions` | `op` |
 | `/sions bypass` | - | Toggle mode bypass admin (modifikasi tanpa direkam) | `apexsionscore.admin.sions` | `op` |
 | `/sions tp` | - | Teleportasi langsung ke titik pusat ibukota Sions | `apexsionscore.admin.sions` | `op` |
 
@@ -171,11 +174,21 @@ Wilayah misterius kerajaan keempat yang tersembunyi dari peradaban umum:
 2. **Hourly Snapshot Temporal Engine (`SionsTemporalService`)**:
    - Berjalan otomatis secara berkala setiap **60 menit (per jam)** untuk mereset seluruh wilayah kembali ke kondisi semula.
    - Pola **Snapshot In-Memory Asli (`putIfAbsent`)**: Menghafal keadaan blok awal (*pristine state*) sebelum dimodifikasi. Modifikasi berulang tidak menimpa blok awal.
+   - **Baseline Snapshot Terkompresi (`/sions set`)**: Admin dapat mengunci kondisi awal seluruh struktur Sions ke file biner terkompresi GZIP (`sions_baseline.dat`). Saat server restart atau reset hourly terjadi, blok akan dipulihkan presisi sesuai snapshot baseline ini.
    - Memulihkan blok yang dihancurkan (*break*), diletakkan (*place*), diledakkan TNT/Creeper (*explosion*), terbakar (*fire*), dan mencair/memudar (*fade*).
 3. **Anti-Duplikasi Sumber Daya (`prevent-item-drops: true`)**:
    - Blok yang dihancurkan oleh pemain biasa di dalam wilayah Sions tidak menjatuhkan item drop, mencegah eksploitasi grinding ore/mineral sebelum reset temporal berlangsung.
-4. **Alat Kelola Admin (`/sions`)**:
-   - `/sions status`: Memeriksa jumlah blok yang sedang termodifikasi dan countdown hitung mundur hingga pemulihan berkala berikutnya.
+4. **Peti Kuno & Segel Wadah (`SionsContainerLockListener`)**:
+   - Seluruh container (Chest, Barrel, Shulker Box, Hopper, Furnace, Dispenser) di wilayah Sions terkunci oleh segel gaib kuno.
+   - Pemain biasa tidak dapat membuka atau menghancurkan container kecuali mengantongi **Kunci Kuno Sions** (`Sions Ancient Key` / NBT tag `sions_key: true`).
+   - Admin dapat menetapkan item khusus dari tangan menggunakan `/sions setkey` atau memberikan kunci dengan `/sions givekey`.
+5. **Peringatan Proksimitas Temporal Terarah**:
+   - Hitung mundur menjelang anomali temporal (10 menit, 5 menit, 1 menit, dan 10 detik) disiarkan secara khusus kepada pemain yang **berada di dalam teritori Sions** melalui Chat, Actionbar, dan efek audio atmosferik (`BLOCK_BELL_RESONATE`, `BLOCK_CONDUIT_DEACTIVATE`, `BLOCK_END_PORTAL_SPAWN`).
+6. **Alat Kelola Admin (`/sions`)**:
+   - `/sions status`: Memeriksa status temporal, hitung mundur reset, dan jumlah modifikasi.
+   - `/sions set [minY] [maxY]`: Memindai seluruh poligon wilayah Sions dan mengunci kondisi awal struktur ke disk.
    - `/sions restore`: Memicu pemulihan instan darurat tanpa menunggu countdown 60 menit.
+   - `/sions setkey`: Mengonversi item di tangan menjadi kunci pembuka peti kuno Sions.
+   - `/sions givekey [p] [qty]`: Memberikan Kunci Kuno Sions kepada pemain.
    - `/sions bypass`: Mode membangun khusus staf/arsitek agar modifikasi blok permanen dan tidak di-rollback.
 

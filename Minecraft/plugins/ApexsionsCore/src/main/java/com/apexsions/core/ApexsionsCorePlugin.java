@@ -259,6 +259,7 @@ public class ApexsionsCorePlugin extends JavaPlugin {
             this.sionsTemporalService = new com.apexsions.core.sions.SionsTemporalService(this);
             this.sionsTemporalService.start();
             Bukkit.getPluginManager().registerEvents(new com.apexsions.core.sions.SionsTemporalListener(sionsTemporalService), this);
+            Bukkit.getPluginManager().registerEvents(new com.apexsions.core.sions.SionsContainerLockListener(sionsTemporalService), this);
 
             // 10. Commands
             registerCommands();
