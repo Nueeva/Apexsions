@@ -1,39 +1,62 @@
-/* Apexsions — The Peak Civilizations. Design system: Monolithic Obsidian & Noble Gold. */
+/* Apexsions — The Peak Civilizations. Design system: Monolithic Obsidian, Celestial Ivory & Royal Gold. */
 
 :root {
-    /* Color Palette */
-    --apx-bg-deep: #06080d;
-    --apx-bg-base: #090c13;
-    --apx-bg-surface: #0f1523;
-    --apx-bg-surface-raised: #141c2e;
-    --apx-bg-surface-hover: #19243a;
-    --apx-bg-input: #0b101b;
+    /* ==========================================================================
+       Obsidian & Void Black Architecture (The Peak Civilizations)
+       ========================================================================== */
+    --apx-void-black: #090A0D;      /* Background Utama / Deepest Void */
+    --apx-deep-obsidian: #111318;   /* Elemen Deep Surface / Elevated Base */
+    --apx-obsidian: #181A20;        /* Primary Surface / Cards / Panels */
+    --apx-soft-obsidian: #292C33;   /* Raised Surface / Inputs / Hover */
 
-    /* Imperial Civilization Noble Gold */
-    --apx-gold: #d4a359;
-    --apx-gold-light: #f3c37a;
-    --apx-gold-dark: #9e7534;
-    --apx-gold-glow: rgba(212, 163, 89, 0.15);
-    --apx-gold-border: rgba(212, 163, 89, 0.28);
-    --apx-gold-border-subtle: rgba(212, 163, 89, 0.14);
+    --apx-bg-deep: var(--apx-void-black);
+    --apx-bg-base: var(--apx-void-black);
+    --apx-bg-surface: var(--apx-obsidian);
+    --apx-bg-surface-raised: var(--apx-deep-obsidian);
+    --apx-bg-surface-hover: var(--apx-soft-obsidian);
+    --apx-bg-input: var(--apx-deep-obsidian);
 
-    /* Mythic Emerald / Online Status */
+    /* ==========================================================================
+       Imperial Royal & Radiant Gold Hierarchy
+       ========================================================================== */
+    --apx-gold-radiant: #F1D58A;    /* Radiant Gold */
+    --apx-gold-light: #E8C878;      /* Light Gold / Highlight & Glow */
+    --apx-gold: #C9A45C;            /* Royal Gold / Primary Accent */
+    --apx-gold-antique: #9E7B3E;    /* Antique Gold */
+    --apx-gold-dark: #72552A;       /* Deep Gold */
+
+    --apx-gold-glow: rgba(201, 164, 92, 0.18);
+    --apx-gold-border: rgba(201, 164, 92, 0.30);
+    --apx-gold-border-subtle: rgba(201, 164, 92, 0.15);
+
+    /* ==========================================================================
+       Mythic Emerald / Online Status
+       ========================================================================== */
     --apx-emerald: #10b981;
     --apx-emerald-light: #34d399;
     --apx-emerald-dark: #047857;
     --apx-emerald-glow: rgba(16, 185, 129, 0.25);
 
-    /* High-Contrast WCAG AA Typography */
-    --apx-text-main: #ffffff; /* Crisp Pure White: 16:1 contrast ratio */
-    --apx-text-sub: #f1f5f9;  /* Off-White for body copy: 14:1 contrast ratio */
-    --apx-text-muted: #cbd5e1;/* Light Slate for secondary text: 9:1 contrast ratio */
-    --apx-text-dim: #94a3b8;  /* Muted Labels: 6:1 contrast ratio */
+    /* ==========================================================================
+       Celestial Ivory & Marble Typography (WCAG AAA High-Contrast > 17:1)
+       ========================================================================== */
+    --apx-ivory-light: #FFFDF8;     /* Ivory Light / Pure Highlight */
+    --apx-ivory-celestial: #F4EFE6; /* Celestial Ivory / Primary Headings & Brand */
+    --apx-ivory-marble: #DDD7CC;    /* Marble / Primary Body Copy */
+    --apx-ivory-stone: #B8B1A5;     /* Stone / Secondary Text & Muted Labels */
 
-    /* Borders & Shadows */
-    --apx-border: rgba(255, 255, 255, 0.12);
-    --apx-border-hover: rgba(212, 163, 89, 0.45);
-    --apx-shadow-card: 0 10px 28px -6px rgba(0, 0, 0, 0.7);
-    --apx-shadow-elevated: 0 18px 40px -8px rgba(0, 0, 0, 0.85);
+    --apx-text-main: var(--apx-ivory-celestial);
+    --apx-text-sub: var(--apx-ivory-marble);
+    --apx-text-muted: var(--apx-ivory-stone);
+    --apx-text-dim: #8E877D;
+
+    /* ==========================================================================
+       Borders & Shadows
+       ========================================================================== */
+    --apx-border: rgba(244, 239, 230, 0.10);
+    --apx-border-hover: rgba(201, 164, 92, 0.45);
+    --apx-shadow-card: 0 10px 28px -6px rgba(0, 0, 0, 0.75);
+    --apx-shadow-elevated: 0 18px 40px -8px rgba(0, 0, 0, 0.90);
 
     /* Radii & Timing */
     --apx-radius-lg: 8px;
@@ -63,7 +86,7 @@ html {
 
 body.apx-body {
     background-color: var(--apx-bg-deep);
-    background-image: linear-gradient(180deg, #05070a 0%, #080c13 50%, #06080d 100%);
+    background-image: linear-gradient(180deg, #07080a 0%, #090A0D 50%, #111318 100%);
     background-attachment: fixed;
     color: var(--apx-text-sub);
     font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -333,10 +356,10 @@ a:hover {
    Custom Action Buttons
    ============================================================================== */
 .btn-apx-gold, .btn-primary {
-    background: linear-gradient(135deg, #9e7534 0%, #d4a359 100%) !important;
-    color: #07090e !important;
+    background: linear-gradient(135deg, var(--apx-gold-antique) 0%, var(--apx-gold) 100%) !important;
+    color: #090A0D !important;
     font-weight: 700 !important;
-    border: 1px solid rgba(212, 163, 89, 0.5) !important;
+    border: 1px solid rgba(201, 164, 92, 0.5) !important;
     border-radius: var(--apx-radius-sm) !important;
     padding: 0.75rem 1.6rem !important;
     min-height: 44px;
@@ -345,20 +368,20 @@ a:hover {
     justify-content: center;
     gap: 0.5rem;
     transition: var(--apx-transition);
-    box-shadow: 0 4px 14px rgba(212, 163, 89, 0.2) !important;
+    box-shadow: 0 4px 14px rgba(201, 164, 92, 0.25) !important;
     text-decoration: none;
     cursor: pointer;
 }
 
 .btn-apx-gold:hover, .btn-primary:hover {
-    background: linear-gradient(135deg, #b88a44 0%, #f3c37a 100%) !important;
-    color: #07090e !important;
-    box-shadow: 0 6px 20px rgba(212, 163, 89, 0.35) !important;
+    background: linear-gradient(135deg, var(--apx-gold) 0%, var(--apx-gold-light) 100%) !important;
+    color: #090A0D !important;
+    box-shadow: 0 6px 20px rgba(201, 164, 92, 0.40) !important;
 }
 
 .btn-apx-outline, .btn-outline-primary {
     background: rgba(255, 255, 255, 0.04) !important;
-    color: #ffffff !important;
+    color: var(--apx-text-main) !important;
     font-weight: 600 !important;
     border: 1px solid var(--apx-border) !important;
     border-radius: var(--apx-radius-sm) !important;
@@ -373,7 +396,7 @@ a:hover {
 }
 
 .btn-apx-outline:hover, .btn-outline-primary:hover {
-    background: rgba(212, 163, 89, 0.12) !important;
+    background: rgba(201, 164, 92, 0.12) !important;
     border-color: var(--apx-gold-border) !important;
     color: var(--apx-gold-light) !important;
 }
@@ -393,15 +416,15 @@ a:hover {
    Navbar & Navigation Bar (ChatGPT Reference Floating Header)
    ============================================================================== */
 .apx-navbar {
-    background: rgba(6, 8, 13, 0.98) !important;
+    background: rgba(9, 10, 13, 0.98) !important;
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+    border-bottom: 1px solid rgba(244, 239, 230, 0.08) !important;
     padding: 0.85rem 0;
     position: sticky;
     top: 0;
     z-index: 1030;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7);
     transition: var(--apx-transition);
 }
 
@@ -417,7 +440,7 @@ a:hover {
     height: 42px;
     border-radius: var(--apx-radius-sm);
     border: 1px solid var(--apx-gold-border);
-    background: rgba(12, 16, 26, 0.95);
+    background: rgba(17, 19, 24, 0.95);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -968,12 +991,12 @@ a:hover {
 .apx-weight-pill.gold {
     color: var(--apx-gold);
     border-color: var(--apx-gold-border);
-    background: rgba(212, 163, 89, 0.08);
+    background: rgba(201, 164, 92, 0.08);
 }
 
 /* Tier V: The Apex Pedestal (Ancestor - Weight 100) */
 .apx-card-apex {
-    background: rgba(14, 18, 28, 0.95);
+    background: rgba(17, 19, 24, 0.95);
     border: 1px solid var(--apx-gold-border);
     border-top: 2px solid var(--apx-gold) !important;
     padding: 2.25rem 2rem;
@@ -2982,7 +3005,7 @@ code:not(pre code) {
 .apx-transition-backdrop {
     position: absolute;
     inset: 0;
-    background: radial-gradient(circle at 50% 48%, rgba(15, 21, 35, 0.98) 0%, rgba(6, 8, 13, 0.99) 70%, #06080d 100%);
+    background: radial-gradient(circle at 50% 48%, rgba(24, 26, 32, 0.98) 0%, rgba(17, 19, 24, 0.99) 70%, #090A0D 100%);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
 }
@@ -3006,7 +3029,7 @@ code:not(pre code) {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -65%);
-    background: radial-gradient(circle, rgba(212, 163, 89, 0.4) 0%, rgba(212, 163, 89, 0.1) 45%, transparent 70%);
+    background: radial-gradient(circle, rgba(201, 164, 92, 0.4) 0%, rgba(201, 164, 92, 0.1) 45%, transparent 70%);
     border-radius: 50%;
     filter: blur(22px);
     pointer-events: none;
@@ -3032,18 +3055,18 @@ code:not(pre code) {
     width: 100%;
     height: 100%;
     object-fit: contain;
-    filter: drop-shadow(0 0 16px rgba(212, 163, 89, 0.45));
+    filter: drop-shadow(0 0 16px rgba(201, 164, 92, 0.45));
     animation: apxTransitionLogoPulse 2.4s ease-in-out infinite;
 }
 
 @keyframes apxTransitionLogoPulse {
     0%, 100% {
         transform: scale(0.96);
-        filter: drop-shadow(0 0 14px rgba(212, 163, 89, 0.4));
+        filter: drop-shadow(0 0 14px rgba(201, 164, 92, 0.4));
     }
     50% {
         transform: scale(1.04);
-        filter: drop-shadow(0 0 32px rgba(212, 163, 89, 0.85));
+        filter: drop-shadow(0 0 32px rgba(201, 164, 92, 0.85));
     }
 }
 
@@ -3159,7 +3182,7 @@ code:not(pre code) {
 .apx-rule-icon-box {
     width: 48px;
     height: 48px;
-    background: rgba(212, 163, 89, 0.12);
+    background: rgba(201, 164, 92, 0.12);
     border: 1px solid var(--apx-gold-border);
     border-radius: var(--apx-radius-sm);
     display: flex;
@@ -3362,16 +3385,16 @@ code:not(pre code) {
 .apx-lang-btn:hover,
 .apx-lang-btn:focus,
 .apx-lang-btn[aria-expanded="true"] {
-    background: rgba(212, 163, 89, 0.12);
+    background: rgba(201, 164, 92, 0.12);
     border-color: var(--apx-gold-border);
-    color: #ffffff;
-    box-shadow: 0 0 12px rgba(212, 163, 89, 0.2);
+    color: var(--apx-text-main);
+    box-shadow: 0 0 12px rgba(201, 164, 92, 0.25);
 }
 
 .apx-lang-menu {
     min-width: 195px;
     border-radius: var(--apx-radius-md);
-    background: rgba(14, 18, 28, 0.98) !important;
+    background: rgba(24, 26, 32, 0.98) !important;
     border: 1px solid var(--apx-gold-border-subtle) !important;
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
@@ -3382,7 +3405,7 @@ code:not(pre code) {
 .apx-lang-choice {
     font-size: 0.84rem;
     font-weight: 500;
-    color: #cbd5e1;
+    color: var(--apx-text-sub);
     transition: all 0.15s ease;
     border: none;
     background: transparent;
@@ -3393,8 +3416,8 @@ code:not(pre code) {
 
 .apx-lang-choice:hover,
 .apx-lang-choice.active {
-    background: rgba(212, 163, 89, 0.12);
-    color: #ffffff;
+    background: rgba(201, 164, 92, 0.12);
+    color: var(--apx-text-main);
 }
 
 .apx-flag-emoji {
