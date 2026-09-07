@@ -1,0 +1,14 @@
+id: "exsio"
+display-name: "&d&lExsio Pass"
+permission: "apexsionsbattlepass.pass.exsio"
+default-owned: false
+icon: "NETHERITE_UPGRADE_SMITHING_TEMPLATE"
+priority: 30
+lore:
+  - "&7Pass Berbayar Tertinggi Apexsions."
+  - "&7Membuka seluruh hadiah Exsio, Sio, dan Citizen Pass!"
+  - "&7Dilengkapi reward prestise paling langka di server!"
+reward-access:
+  - "citizen"
+  - "sio"
+  - "exsio"

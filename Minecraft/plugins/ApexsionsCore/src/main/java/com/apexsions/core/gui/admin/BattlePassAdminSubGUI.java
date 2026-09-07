@@ -73,8 +73,8 @@ public class BattlePassAdminSubGUI implements InventoryHolder {
         inventory.setItem(4, header);
 
         // Actions (Slots 20, 21, 22, 23, 24, 31)
-        inventory.setItem(20, createActionItem(Material.GOLD_BLOCK, "<gold><bold>🏆 BERIKAN PREMIUM PASS</bold></gold>",
-                List.of("<gray>Beri Premium BattlePass ke pemain.</gray>", "<yellow>▶ Klik untuk pilih pemain via GUI</yellow>")));
+        inventory.setItem(20, createActionItem(Material.GOLD_BLOCK, "<gold><bold>🏆 BERIKAN SIO / EXSIO PASS</bold></gold>",
+                List.of("<gray>Beri Sio / Exsio BattlePass ke pemain.</gray>", "<yellow>▶ Klik untuk input via GUI</yellow>")));
 
         inventory.setItem(21, createActionItem(Material.WRITABLE_BOOK, "<aqua><bold>🔄 RESET QUEST HARIAN (DAILY)</bold></aqua>",
                 List.of("<gray>Paksa reset seluruh quest harian pemain aktif.</gray>", "<yellow>▶ Klik untuk eksekusi reset</yellow>")));
@@ -103,10 +103,13 @@ public class BattlePassAdminSubGUI implements InventoryHolder {
 
         if (slot == 20) { // Give Pass
             plugin.getAdminChatInputManager().startSession(admin,
-                    "Ketik nama pemain yang ingin diberikan Premium Pass:",
-                    targetName -> {
-                        admin.performCommand("abp givepass " + targetName + " premium");
-                        admin.sendMessage(mm.deserialize("<green>✓ Perintah Give Pass dieksekusi untuk <yellow>" + targetName + "</yellow>!</green>"));
+                    "Ketik nama pemain dan tier pass (contoh: PlayerName sio atau PlayerName exsio):",
+                    input -> {
+                        String[] parts = input.trim().split("\\s+");
+                        String targetName = parts[0];
+                        String passTier = parts.length > 1 ? parts[1].toLowerCase() : "sio";
+                        admin.performCommand("abp givepass " + targetName + " " + passTier);
+                        admin.sendMessage(mm.deserialize("<green>✓ Perintah Give Pass dieksekusi untuk <yellow>" + targetName + "</yellow> (Tier: <gold>" + passTier.toUpperCase() + "</gold>)!</green>"));
                         open();
                     },
                     this::open

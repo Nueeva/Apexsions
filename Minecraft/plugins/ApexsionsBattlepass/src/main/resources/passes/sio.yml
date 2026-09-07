@@ -1,0 +1,12 @@
+id: "sio"
+display-name: "&6&lSio Pass"
+permission: "apexsionsbattlepass.pass.sio"
+default-owned: false
+icon: "GOLD_BLOCK"
+priority: 20
+lore:
+  - "&7Pass Berbayar eksklusif Apexsions."
+  - "&7Membuka seluruh hadiah Sio dan Citizen Pass!"
+reward-access:
+  - "citizen"
+  - "sio"

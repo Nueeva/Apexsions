@@ -149,11 +149,11 @@ public class AdminPlayerDetailMenu extends Gui {
                 .lore(List.of(
                         "&7Buka akses pass untuk pemain ini.",
                         " ",
-                        "&a[Klik Kiri] &7Berikan &6Premium Pass",
-                        "&e[Klik Kanan] &7Berikan &dUltimate Pass"
+                        "&a[Klik Kiri] &7Berikan &6Sio Pass",
+                        "&e[Klik Kanan] &7Berikan &dExsio Pass"
                 ))
                 .build(), event -> {
-            String passTier = (event.getClick() == ClickType.RIGHT) ? "ultimate" : "premium";
+            String passTier = (event.getClick() == ClickType.RIGHT) ? "exsio" : "sio";
             finalData.addPass(passTier);
             plugin.getRepository().savePlayerData(finalData);
             player.sendMessage("§aBerhasil memberikan pass §e" + passTier.toUpperCase() + " §akepada §e" + targetName);

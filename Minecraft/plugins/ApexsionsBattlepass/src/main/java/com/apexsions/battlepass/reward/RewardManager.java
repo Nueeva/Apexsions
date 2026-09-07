@@ -106,8 +106,9 @@ public class RewardManager {
                                 String perm = map.containsKey("permission") ? String.valueOf(map.get("permission")) : null;
                                 String itemData = map.containsKey("item-data") ? String.valueOf(map.get("item-data")) : null;
                                 String currencyId = map.containsKey("currency-id") ? String.valueOf(map.get("currency-id")) : "battle_coins";
+                                boolean previewable = map.containsKey("previewable") && Boolean.parseBoolean(String.valueOf(map.get("previewable")));
 
-                                items.add(new RewardItem(type, mat, amount, name, commands, perm, itemData, currencyId));
+                                items.add(new RewardItem(type, mat, amount, name, commands, perm, itemData, currencyId, previewable));
                             }
                             passMap.put(passKey.toLowerCase(), items);
                         }
@@ -141,6 +142,7 @@ public class RewardManager {
                         if (ri.getPermission() != null) map.put("permission", ri.getPermission());
                         if (ri.getItemData() != null) map.put("item-data", ri.getItemData());
                         if (ri.getCurrencyId() != null) map.put("currency-id", ri.getCurrencyId());
+                        map.put("previewable", ri.isPreviewable());
                         list.add(map);
                     }
                     config.set(path + ".rewards." + passKey, list);
@@ -170,7 +172,41 @@ public class RewardManager {
     public List<RewardItem> getRewards(int level, String passId) {
         Map<String, List<RewardItem>> map = levelRewards.get(level);
         if (map == null) return List.of();
-        return map.getOrDefault(passId.toLowerCase(), List.of());
+        if (passId == null) return List.of();
+
+        String norm = com.apexsions.battlepass.pass.PassManager.normalizePassId(passId);
+
+        // 1. Direct match with normalized passId
+        List<RewardItem> direct = map.get(norm);
+        if (direct != null && !direct.isEmpty()) {
+            return direct;
+        }
+
+        // 2. Direct match with original passId
+        List<RewardItem> orig = map.get(passId.toLowerCase());
+        if (orig != null && !orig.isEmpty()) {
+            return orig;
+        }
+
+        // 3. Fallbacks for legacy mappings
+        if (norm.equals("citizen")) {
+            List<RewardItem> freeList = map.get("free");
+            if (freeList != null && !freeList.isEmpty()) return freeList;
+        } else if (norm.equals("sio")) {
+            List<RewardItem> premList = map.get("premium");
+            if (premList != null && !premList.isEmpty()) return premList;
+            List<RewardItem> plusList = map.get("premium-plus");
+            if (plusList != null && !plusList.isEmpty()) return plusList;
+        } else if (norm.equals("exsio")) {
+            List<RewardItem> ultList = map.get("ultimate");
+            if (ultList != null && !ultList.isEmpty()) return ultList;
+            List<RewardItem> vipList = map.get("vip");
+            if (vipList != null && !vipList.isEmpty()) return vipList;
+            List<RewardItem> plusList = map.get("premium-plus");
+            if (plusList != null && !plusList.isEmpty()) return plusList;
+        }
+
+        return List.of();
     }
 
     public void setRewards(int level, String passId, List<RewardItem> rewards) {

@@ -303,9 +303,11 @@ public class LevelRewardsGUI implements Listener {
                     ? "<red>🔒 👑 HADIAH PUNCAK LEVEL 100</red>"
                     : "<red>🔒 ★ Milestone Lv." + lvl + "</red>";
 
+            List<String> lockedDetails = new ArrayList<>(details);
+            lockedDetails.add("<yellow>» Klik untuk preview isi hadiah «</yellow>");
             item = createRewardCard(icon,
                     title,
-                    details,
+                    lockedDetails,
                     "<red>Terkunci — Capai Level " + lvl + "</red>", true);
         }
 
@@ -462,18 +464,36 @@ public class LevelRewardsGUI implements Listener {
         // 7. Check Milestone Reward Slot (Slot 22 on Pages 2..10)
         if (currentPage >= 2 && currentPage <= 10 && slot == MILESTONE_SLOT) {
             int milestoneLevel = (currentPage - 1) * 10 + 1;
-            boolean claimed = plugin.getRewardManager().claimReward(player, milestoneLevel);
-            if (claimed) {
-                open(player, currentPage);
+            Optional<PlayerData> dataOpt = plugin.getPlayerDataService().getCached(player.getUniqueId());
+            if (dataOpt.isPresent()) {
+                PlayerData data = dataOpt.get();
+                if (data.getLevel() >= milestoneLevel && !data.isRewardClaimed(milestoneLevel)) {
+                    boolean claimed = plugin.getRewardManager().claimReward(player, milestoneLevel);
+                    if (claimed) {
+                        open(player, currentPage);
+                    }
+                } else {
+                    // Preview Milestone Reward
+                    plugin.getMilestoneRewardPreviewGUI().open(player, milestoneLevel, currentPage);
+                }
             }
             return;
         }
 
         // 8. Check Level 100 Reward Slot (Slot 22 on Page 11)
         if (currentPage == 11 && slot == FINAL_LEVEL_100_SLOT) {
-            boolean claimed = plugin.getRewardManager().claimReward(player, 100);
-            if (claimed) {
-                open(player, currentPage);
+            Optional<PlayerData> dataOpt = plugin.getPlayerDataService().getCached(player.getUniqueId());
+            if (dataOpt.isPresent()) {
+                PlayerData data = dataOpt.get();
+                if (data.getLevel() >= 100 && !data.isRewardClaimed(100)) {
+                    boolean claimed = plugin.getRewardManager().claimReward(player, 100);
+                    if (claimed) {
+                        open(player, currentPage);
+                    }
+                } else {
+                    // Preview Level 100 Reward
+                    plugin.getMilestoneRewardPreviewGUI().open(player, 100, 11);
+                }
             }
             return;
         }

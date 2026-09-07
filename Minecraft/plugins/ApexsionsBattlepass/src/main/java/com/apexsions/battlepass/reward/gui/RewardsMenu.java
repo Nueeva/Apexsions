@@ -10,12 +10,22 @@ import com.apexsions.battlepass.pass.PassTier;
 import com.apexsions.battlepass.player.PlayerData;
 import com.apexsions.battlepass.reward.RewardItem;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Horizontal 4-Row BattlePass Rewards Menu:
+ * - Row 1 (Slots 0-8): Top Bar / Season Info / Player Stats
+ * - Row 2 (Slots 9-17): Exsio Pass (Slot 9: Label, Slots 10-17: Rewards)
+ * - Row 3 (Slots 18-26): Sio Pass (Slot 18: Label, Slots 19-26: Rewards)
+ * - Row 4 (Slots 27-35): Progress Level (Slot 27: Label, Slots 28-35: Level Status)
+ * - Row 5 (Slots 36-44): Citizen Pass (Slot 36: Label, Slots 37-44: Rewards)
+ * - Row 6 (Slots 45-53): Bottom Navigation & Claim All
+ */
 public class RewardsMenu extends Gui {
 
     public enum RewardState {
@@ -25,7 +35,7 @@ public class RewardsMenu extends Gui {
         LOCKED_PASS
     }
 
-    private static final int LEVELS_PER_PAGE = 4;
+    private static final int LEVELS_PER_PAGE = 8;
     private final int page;
 
     public RewardsMenu(ApexsionsBattlepass plugin, Player player, Gui parent, int page) {
@@ -39,103 +49,221 @@ public class RewardsMenu extends Gui {
 
     @Override
     public void initialize() {
-        fillBorder();
+        fillBackground(Material.BLACK_STAINED_GLASS_PANE);
 
         PlayerData data = plugin.getPlayerManager().getPlayerData(player);
         if (data == null) return;
 
         int maxLevel = plugin.getRewardManager().getMaxLevel();
-        int maxPages = (int) Math.ceil((double) maxLevel / LEVELS_PER_PAGE);
+        int maxPages = Math.max(1, (int) Math.ceil((double) maxLevel / LEVELS_PER_PAGE));
         int validPage = Math.max(1, Math.min(maxPages, page));
 
         String seasonTimeLeft = plugin.getSeasonManager().getTimeLeftFormatted();
+        int reqXp = plugin.getRewardManager().getRequiredXp(data.getLevel());
 
-        // 1. Column Headers (Row 0)
-        setButton(1, new GuiButton(new ItemBuilder(Material.OAK_SIGN).name("&f&lLEVEL").build()));
-        setButton(2, new GuiButton(new ItemBuilder(Material.CHEST).name("&f&l[FREE]").build()));
-        setButton(3, new GuiButton(new ItemBuilder(Material.GOLD_BLOCK).name("&6&l[PREMIUM]").build()));
-        setButton(4, new GuiButton(new ItemBuilder(Material.DIAMOND_BLOCK).name("&b&l[PREMIUM+]").build()));
-        setButton(5, new GuiButton(new ItemBuilder(Material.NETHERITE_BLOCK).name("&5&l[ULTIMATE]").build()));
+        boolean hasExsio = plugin.getPassManager().canAccessRewardTier(data.getPasses(), "exsio");
+        boolean hasSio = plugin.getPassManager().canAccessRewardTier(data.getPasses(), "sio");
 
-        // Season Countdown Banner (Slot 7)
-        setButton(7, new GuiButton(new ItemBuilder(Material.CLOCK)
-                .name("&6&lSISA WAKTU SEASON")
+        // ══════════════════════════════════════════════════════════════════════
+        // 1. ROW 1: Top Bar & Season Info (Slots 0 to 8)
+        // ══════════════════════════════════════════════════════════════════════
+        String ownedPassTitle = hasExsio ? "&d&lExsio Pass (Tertinggi)" : (hasSio ? "&6&lSio Pass (Berbayar)" : "&f&lCitizen Pass (Gratis)");
+        setButton(0, new GuiButton(new ItemBuilder(hasExsio ? Material.NETHERITE_UPGRADE_SMITHING_TEMPLATE : (hasSio ? Material.GOLD_BLOCK : Material.BOOK))
+                .name("&6&lSTATUS PASS KAMU")
                 .lore(List.of(
-                        "&7Season ends in: &e" + seasonTimeLeft,
-                        "&7Raih level " + maxLevel + " untuk mengklaim seluruh hadiah!"
+                        "&7Pass Aktif: " + ownedPassTitle,
+                        "&7Citizen Pass: &aDimiliki (Gratis)",
+                        "&7Sio Pass: " + (hasSio ? "&aDimiliki ✓" : "&cBelum Dimiliki ✖"),
+                        "&7Exsio Pass: " + (hasExsio ? "&aDimiliki ✓" : "&cBelum Dimiliki ✖")
                 ))
                 .build()));
 
+        // Season Countdown Banner (Slot 4)
+        setButton(4, new GuiButton(new ItemBuilder(Material.CLOCK)
+                .name("&e&lSEASON: &6&l" + plugin.getSeasonManager().getCurrentSeason().getName())
+                .lore(List.of(
+                        "&7Sisa Waktu Season: &e" + seasonTimeLeft,
+                        "&7Maksimum Level: &b" + maxLevel,
+                        "&7Capai level " + maxLevel + " untuk seluruh reward!"
+                ))
+                .build()));
 
         // Player Stats Card (Slot 8)
-        int reqXp = plugin.getRewardManager().getRequiredXp(data.getLevel());
         setButton(8, new GuiButton(new ItemBuilder(Material.PLAYER_HEAD)
                 .skullOwner(player)
                 .name("&e&l" + player.getName())
                 .lore(List.of(
                         "&7Level: &e" + data.getLevel() + " &8/ &f" + maxLevel,
                         "&7XP: &a" + data.getXp() + " &8/ &f" + reqXp,
-                        "&7Passes: &b" + String.join(", ", data.getPasses()).toUpperCase(),
-                        "&7Coins: &e" + plugin.getCurrencyService().format(data.getCurrency())
+                        "&7Battle Coins: &e" + plugin.getCurrencyService().format(data.getCurrency())
                 ))
                 .build()));
 
-        // 2. Render 4 Level Rows
+        // ══════════════════════════════════════════════════════════════════════
+        // 2. ROW LABELS (Column 0: Slots 9, 18, 27, 36)
+        // ══════════════════════════════════════════════════════════════════════
+        // Baris ke-2: Exsio Pass Label (Slot 9)
+        setButton(9, new GuiButton(new ItemBuilder(Material.NETHERITE_UPGRADE_SMITHING_TEMPLATE)
+                .name("&d&l[✦] EXSIO PASS")
+                .lore(List.of(
+                        "&7Pass Berbayar Tertinggi",
+                        "&7Akses reward prestise paling langka!",
+                        " ",
+                        "&7Status: " + (hasExsio ? "&a&lDIMILIKI ✓" : "&c&lBELUM DIMILIKI 🔒")
+                ))
+                .build()));
+
+        // Baris ke-3: Sio Pass Label (Slot 18)
+        setButton(18, new GuiButton(new ItemBuilder(Material.GOLD_BLOCK)
+                .name("&6&l[★] SIO PASS")
+                .lore(List.of(
+                        "&7Pass Berbayar",
+                        "&7Akses reward berlimpah Sio & Citizen!",
+                        " ",
+                        "&7Status: " + (hasSio ? "&a&lDIMILIKI ✓" : "&c&lBELUM DIMILIKI 🔒")
+                ))
+                .build()));
+
+        // Baris ke-4: Progress Level Label (Slot 27)
+        setButton(27, new GuiButton(new ItemBuilder(Material.COMPASS)
+                .name("&b&l[◆] PROGRESS LEVEL")
+                .lore(List.of(
+                        "&7Level Karakter: &e" + data.getLevel() + " &8/ &f" + maxLevel,
+                        "&7XP Saat Ini: &a" + data.getXp() + " &8/ &f" + reqXp,
+                        " ",
+                        "&7Garis tengah menunjukkan pencapaian level kamu."
+                ))
+                .build()));
+
+        // Baris ke-5: Citizen Pass Label (Slot 36)
+        setButton(36, new GuiButton(new ItemBuilder(Material.CHEST)
+                .name("&f&l[✿] CITIZEN PASS")
+                .lore(List.of(
+                        "&7Pass Gratis Semua Warga",
+                        "&7Dapat diklaim langsung tanpa biaya!",
+                        " ",
+                        "&7Status: &a&lDIMILIKI (GRATIS) ✓"
+                ))
+                .build()));
+
+        // ══════════════════════════════════════════════════════════════════════
+        // 3. HORIZONTAL 8-LEVEL COLUMNS (Slots 10-17, 19-26, 28-35, 37-44)
+        // ══════════════════════════════════════════════════════════════════════
         int startLevel = (validPage - 1) * LEVELS_PER_PAGE + 1;
-        int[] rowLevelSlots  = { 10, 19, 28, 37 };
-        int[] rowFreeSlots   = { 11, 20, 29, 38 };
-        int[] rowPremSlots   = { 12, 21, 30, 39 };
-        int[] rowPlusSlots   = { 13, 22, 31, 40 };
-        int[] rowUltSlots    = { 14, 23, 32, 41 };
 
         for (int i = 0; i < LEVELS_PER_PAGE; i++) {
             int level = startLevel + i;
-            if (level > maxLevel) break;
+            if (level > maxLevel) {
+                // Empty slots beyond maxLevel
+                setButton(10 + i, new GuiButton(new ItemBuilder(Material.BARRIER).name("&8[ Maksimum Level ]").build()));
+                setButton(19 + i, new GuiButton(new ItemBuilder(Material.BARRIER).name("&8[ Maksimum Level ]").build()));
+                setButton(28 + i, new GuiButton(new ItemBuilder(Material.BARRIER).name("&8[ Maksimum Level ]").build()));
+                setButton(37 + i, new GuiButton(new ItemBuilder(Material.BARRIER).name("&8[ Maksimum Level ]").build()));
+                continue;
+            }
 
-            int slotLvl = rowLevelSlots[i];
-            int slotFree = rowFreeSlots[i];
-            int slotPrem = rowPremSlots[i];
-            int slotPlus = rowPlusSlots[i];
-            int slotUlt  = rowUltSlots[i];
+            int slotExsio   = 10 + i;
+            int slotSio     = 19 + i;
+            int slotLevel   = 28 + i;
+            int slotCitizen = 37 + i;
 
-            boolean levelReached = data.getLevel() >= level;
-            Material lvlMat = levelReached ? Material.LIME_STAINED_GLASS_PANE : Material.RED_STAINED_GLASS_PANE;
-            setButton(slotLvl, new GuiButton(new ItemBuilder(lvlMat)
-                    .name("&e&lLevel " + level)
-                    .lore(List.of(
-                            levelReached ? "&a✔ Level Terpenuhi" : "&c🔒 Membutuhkan Level " + level,
-                            "&7Required XP: &f" + plugin.getRewardManager().getRequiredXp(level)
-                    ))
-                    .build()));
+            // Baris ke-2: Exsio Pass Reward
+            setButton(slotExsio, createRewardButton(data, level, "exsio"));
 
-            // 4 Pass Tier Reward Buttons
-            setButton(slotFree, createRewardButton(data, level, "free"));
-            setButton(slotPrem, createRewardButton(data, level, "premium"));
-            setButton(slotPlus, createRewardButton(data, level, "premium-plus"));
-            setButton(slotUlt,  createRewardButton(data, level, "ultimate"));
+            // Baris ke-3: Sio Pass Reward
+            setButton(slotSio, createRewardButton(data, level, "sio"));
+
+            // Baris ke-4: Progress Level Indicator
+            setButton(slotLevel, createLevelProgressButton(data, level));
+
+            // Baris ke-5: Citizen Pass Reward
+            setButton(slotCitizen, createRewardButton(data, level, "citizen"));
         }
 
-        // 3. Navigation Controls (Row 5)
+        // ══════════════════════════════════════════════════════════════════════
+        // 4. ROW 6: Navigation & Claim All (Slots 45 to 53)
+        // ══════════════════════════════════════════════════════════════════════
         setButton(45, new BackButton(this, parent));
 
         if (validPage > 1) {
-            setButton(47, new GuiButton(new ItemBuilder(Material.ARROW).name("&e◀ Halaman " + (validPage - 1)).build(), event -> {
+            setButton(48, new GuiButton(new ItemBuilder(Material.ARROW).name("&e◀ Halaman " + (validPage - 1)).build(), event -> {
                 new RewardsMenu(plugin, player, parent, validPage - 1).open();
             }));
         }
 
-        setButton(49, new GuiButton(new ItemBuilder(Material.MAP).name("&7Halaman &e" + validPage + " &8/ &f" + maxPages).build()));
+        setButton(49, new GuiButton(new ItemBuilder(Material.BOOK)
+                .name("&7Halaman &e" + validPage + " &8/ &f" + maxPages)
+                .lore(List.of(
+                        "&7Menampilkan Level &e" + startLevel + " - " + Math.min(maxLevel, startLevel + LEVELS_PER_PAGE - 1),
+                        "&7Total Level: &f" + maxLevel
+                ))
+                .build()));
 
         if (validPage < maxPages) {
-            setButton(51, new GuiButton(new ItemBuilder(Material.ARROW).name("&eHalaman " + (validPage + 1) + " ▶").build(), event -> {
+            setButton(50, new GuiButton(new ItemBuilder(Material.ARROW).name("&eHalaman " + (validPage + 1) + " ▶").build(), event -> {
                 new RewardsMenu(plugin, player, parent, validPage + 1).open();
             }));
         }
 
-        setButton(53, new CloseButton());
+        // Claim All Button (Slot 53)
+        int unclaimedCount = countUnclaimed(data, maxLevel);
+        if (unclaimedCount > 0) {
+            setButton(53, new GuiButton(new ItemBuilder(Material.HOPPER)
+                    .name("&a&l[✔] KLAIM SEMUA HADIAH (" + unclaimedCount + ")")
+                    .lore(List.of(
+                            "&7Klaim seluruh hadiah yang sudah terbuka",
+                            "&7secara otomatis sekaligus.",
+                            " ",
+                            "&e▶ Klik untuk klaim semua sekarang!"
+                    ))
+                    .build(), event -> {
+                int claimed = claimAll(data, maxLevel);
+                if (claimed > 0) {
+                    player.sendMessage("§aBerhasil mengklaim §e" + claimed + " §ahadiah BattlePass!");
+                    player.playSound(player.getLocation(), Sound.UI_TOAST_CHALLENGE_COMPLETE, 1.0f, 1.2f);
+                    open();
+                }
+            }));
+        } else {
+            setButton(53, new CloseButton());
+        }
+    }
 
-        // 4. Fill every remaining empty slot across all 54 slots
-        fillBackground(Material.BLACK_STAINED_GLASS_PANE);
+    private GuiButton createLevelProgressButton(PlayerData data, int level) {
+        int reqXp = plugin.getRewardManager().getRequiredXp(level);
+        if (data.getLevel() >= level) {
+            // Level Selesai
+            return new GuiButton(new ItemBuilder(Material.LIME_STAINED_GLASS_PANE)
+                    .name("&a&lLevel " + level + " &7(Selesai ✓)")
+                    .lore(List.of(
+                            "&7XP Diperlukan: &a" + reqXp + " XP",
+                            " ",
+                            "&a✔ Level ini telah selesai dicapai!"
+                    ))
+                    .build());
+        } else if (data.getLevel() == level - 1) {
+            // Sedang Berjalan
+            int remaining = Math.max(0, reqXp - data.getXp());
+            return new GuiButton(new ItemBuilder(Material.YELLOW_STAINED_GLASS_PANE)
+                    .name("&e&lLevel " + level + " &7(Sedang Berjalan ⏳)")
+                    .lore(List.of(
+                            "&7Progres XP: &e" + data.getXp() + " &8/ &f" + reqXp + " XP",
+                            "&7Kurang: &c" + remaining + " XP &7lagi untuk naik level!",
+                            " ",
+                            "&eSelesaikan misi untuk mendapatkan XP!"
+                    ))
+                    .build());
+        } else {
+            // Terkunci
+            return new GuiButton(new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE)
+                    .name("&7&lLevel " + level + " &c(Terkunci 🔒)")
+                    .lore(List.of(
+                            "&7XP Diperlukan: &f" + reqXp + " XP",
+                            " ",
+                            "&cCapai level sebelumnya untuk membuka level ini."
+                    ))
+                    .build());
+        }
     }
 
     private GuiButton createRewardButton(PlayerData data, int level, String passId) {
@@ -167,6 +295,9 @@ public class RewardsMenu extends Gui {
             state = RewardState.CLAIMABLE;
         }
 
+        // Check if preview is allowed for this reward
+        boolean canPreview = (level % 50 == 0) || rewards.stream().anyMatch(RewardItem::isPreviewable);
+
         Material displayMat = getPassDisplayMaterial(passId, state);
 
         List<String> lore = new ArrayList<>();
@@ -192,25 +323,45 @@ public class RewardsMenu extends Gui {
             case LOCKED_PASS -> {
                 lore.add("&c🔒 TERKUNCI — BUTUH " + passName + " PASS");
                 lore.add("&7Beli atau miliki " + passName + " untuk membuka hadiah!");
+                if (canPreview) {
+                    lore.add(" ");
+                    lore.add("&b▶ Klik untuk melihat Preview Hadiah!");
+                }
                 ItemStack item = new ItemBuilder(displayMat)
                         .name("&c[TERKUNCI] &f" + passName + " &8- Level " + level)
                         .lore(lore)
                         .hideAttributes()
                         .build();
                 return new GuiButton(item, event -> {
-                    player.sendMessage(plugin.getMessage("reward-pass-locked").replace("%pass%", passName));
+                    if (canPreview) {
+                        new RewardPreviewMenu(plugin, player, level, passId, rewards, this).open();
+                        player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.8f, 1.2f);
+                    } else {
+                        player.sendMessage(plugin.getMessage("reward-pass-locked").replace("%pass%", passName));
+                        player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
+                    }
                 });
             }
             case LOCKED_LEVEL -> {
                 lore.add("&c🔒 TERKUNCI — LEVEL BELUM TERCAPAI");
                 lore.add("&7Raih Level " + level + " untuk membuka hadiah ini.");
+                if (canPreview) {
+                    lore.add(" ");
+                    lore.add("&b▶ Klik untuk melihat Preview Hadiah!");
+                }
                 ItemStack item = new ItemBuilder(displayMat)
                         .name("&c[TERKUNCI] &f" + passName + " &8- Level " + level)
                         .lore(lore)
                         .hideAttributes()
                         .build();
                 return new GuiButton(item, event -> {
-                    player.sendMessage(plugin.getMessage("reward-level-not-reached").replace("%level%", String.valueOf(level)));
+                    if (canPreview) {
+                        new RewardPreviewMenu(plugin, player, level, passId, rewards, this).open();
+                        player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.8f, 1.2f);
+                    } else {
+                        player.sendMessage(plugin.getMessage("reward-level-not-reached").replace("%level%", String.valueOf(level)));
+                        player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
+                    }
                 });
             }
             case CLAIMABLE -> {
@@ -219,10 +370,12 @@ public class RewardsMenu extends Gui {
                         .name("&a&l[BISA DIKLAIM] &f" + passName + " &8- Level " + level)
                         .lore(lore)
                         .hideAttributes()
+                        .glow()
                         .build();
                 return new GuiButton(item, event -> {
-                    if (plugin.getRewardManager().claimReward(player, level, passId)) {
-                        open(); // In-place refresh
+                    boolean success = plugin.getRewardManager().claimReward(player, level, passId);
+                    if (success) {
+                        open(); // Re-render this page
                     }
                 });
             }
@@ -232,59 +385,55 @@ public class RewardsMenu extends Gui {
     }
 
     private Material getPassDisplayMaterial(String passId, RewardState state) {
-        String p = passId.toLowerCase();
-        switch (p) {
-            case "free":
-                return switch (state) {
-                    case CLAIMABLE -> Material.CHEST;
-                    case CLAIMED -> Material.MINECART;
-                    case LOCKED_LEVEL -> Material.IRON_BARS;
-                    case LOCKED_PASS -> Material.BARRIER;
-                };
-            case "premium":
-                return switch (state) {
-                    case CLAIMABLE -> Material.GOLD_BLOCK;
-                    case CLAIMED -> Material.GOLD_INGOT;
-                    case LOCKED_LEVEL -> Material.CHAIN;
-                    case LOCKED_PASS -> Material.REDSTONE_BLOCK;
-                };
-            case "vip":
-                return switch (state) {
-                    case CLAIMABLE -> Material.EMERALD_BLOCK;
-                    case CLAIMED -> Material.EMERALD;
-                    case LOCKED_LEVEL -> Material.COPPER_BLOCK;
-                    case LOCKED_PASS -> Material.RAW_COPPER_BLOCK;
-                };
-            case "elite":
-                return switch (state) {
-                    case CLAIMABLE -> Material.AMETHYST_BLOCK;
-                    case CLAIMED -> Material.AMETHYST_SHARD;
-                    case LOCKED_LEVEL -> Material.PURPLE_STAINED_GLASS_PANE;
-                    case LOCKED_PASS -> Material.PURPLE_CONCRETE;
-                };
-            case "premium-plus":
-            case "premium_plus":
-            case "plus":
-                return switch (state) {
-                    case CLAIMABLE -> Material.DIAMOND_BLOCK;
-                    case CLAIMED -> Material.DIAMOND;
-                    case LOCKED_LEVEL -> Material.CYAN_STAINED_GLASS_PANE;
-                    case LOCKED_PASS -> Material.LAPIS_BLOCK;
-                };
-            case "ultimate":
-                return switch (state) {
-                    case CLAIMABLE -> Material.NETHERITE_BLOCK;
-                    case CLAIMED -> Material.NETHERITE_INGOT;
-                    case LOCKED_LEVEL -> Material.NETHER_BRICKS;
-                    case LOCKED_PASS -> Material.CRYING_OBSIDIAN;
-                };
-            default:
-                return switch (state) {
-                    case CLAIMABLE -> Material.ENDER_CHEST;
-                    case CLAIMED -> Material.HOPPER_MINECART;
-                    case LOCKED_LEVEL -> Material.IRON_BARS;
-                    case LOCKED_PASS -> Material.BARRIER;
-                };
+        String norm = com.apexsions.battlepass.pass.PassManager.normalizePassId(passId);
+        return switch (norm) {
+            case "exsio" -> switch (state) {
+                case CLAIMED -> Material.MINECART;
+                case CLAIMABLE -> Material.NETHERITE_UPGRADE_SMITHING_TEMPLATE;
+                case LOCKED_PASS, LOCKED_LEVEL -> Material.ANCIENT_DEBRIS;
+            };
+            case "sio" -> switch (state) {
+                case CLAIMED -> Material.MINECART;
+                case CLAIMABLE -> Material.GOLD_BLOCK;
+                case LOCKED_PASS, LOCKED_LEVEL -> Material.RAW_GOLD_BLOCK;
+            };
+            default -> switch (state) { // citizen
+                case CLAIMED -> Material.MINECART;
+                case CLAIMABLE -> Material.CHEST;
+                case LOCKED_PASS, LOCKED_LEVEL -> Material.BARREL;
+            };
+        };
+    }
+
+    private int countUnclaimed(PlayerData data, int maxLevel) {
+        int count = 0;
+        for (int lvl = 1; lvl <= maxLevel; lvl++) {
+            if (data.getLevel() < lvl) continue;
+            for (String passId : List.of("citizen", "sio", "exsio")) {
+                if (plugin.getPassManager().canAccessRewardTier(data.getPasses(), passId)) {
+                    if (!data.isRewardClaimed(lvl, passId) && !plugin.getRewardManager().getRewards(lvl, passId).isEmpty()) {
+                        count++;
+                    }
+                }
+            }
         }
+        return count;
+    }
+
+    private int claimAll(PlayerData data, int maxLevel) {
+        int claimed = 0;
+        for (int lvl = 1; lvl <= maxLevel; lvl++) {
+            if (data.getLevel() < lvl) continue;
+            for (String passId : List.of("citizen", "sio", "exsio")) {
+                if (plugin.getPassManager().canAccessRewardTier(data.getPasses(), passId)) {
+                    if (!data.isRewardClaimed(lvl, passId)) {
+                        if (plugin.getRewardManager().claimReward(player, lvl, passId)) {
+                            claimed++;
+                        }
+                    }
+                }
+            }
+        }
+        return claimed;
     }
 }

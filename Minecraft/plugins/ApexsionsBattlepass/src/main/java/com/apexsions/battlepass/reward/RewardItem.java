@@ -17,8 +17,9 @@ public class RewardItem {
     private final String permission;
     private final String itemData; // Base64 serialized ItemStack
     private final String currencyId; // ApexsionsEconomy Currency ID
+    private final boolean previewable;
 
-    public RewardItem(RewardType type, Material material, int amount, String name, List<String> commands, String permission, String itemData, String currencyId) {
+    public RewardItem(RewardType type, Material material, int amount, String name, List<String> commands, String permission, String itemData, String currencyId, boolean previewable) {
         this.type = type != null ? type : RewardType.ITEM;
         this.material = material != null ? material : Material.CHEST;
         this.amount = amount > 0 ? amount : 1;
@@ -27,17 +28,22 @@ public class RewardItem {
         this.permission = permission;
         this.itemData = itemData;
         this.currencyId = currencyId != null ? currencyId : "battle_coins";
+        this.previewable = previewable;
+    }
+
+    public RewardItem(RewardType type, Material material, int amount, String name, List<String> commands, String permission, String itemData, String currencyId) {
+        this(type, material, amount, name, commands, permission, itemData, currencyId, false);
     }
 
     public RewardItem(RewardType type, Material material, int amount, String name, List<String> commands, String permission) {
-        this(type, material, amount, name, commands, permission, null, "battle_coins");
+        this(type, material, amount, name, commands, permission, null, "battle_coins", false);
     }
 
     public static RewardItem fromItemStack(ItemStack item) {
         if (item == null || item.getType() == Material.AIR) return null;
         String base64 = ItemSerializer.toBase64(item);
         String name = ItemSerializer.getItemDisplayName(item);
-        return new RewardItem(RewardType.ITEM, item.getType(), item.getAmount(), name, List.of(), null, base64, null);
+        return new RewardItem(RewardType.ITEM, item.getType(), item.getAmount(), name, List.of(), null, base64, null, false);
     }
 
     public ItemStack toItemStack() {
@@ -65,4 +71,5 @@ public class RewardItem {
     public String getPermission() { return permission; }
     public String getItemData() { return itemData; }
     public String getCurrencyId() { return currencyId; }
+    public boolean isPreviewable() { return previewable; }
 }

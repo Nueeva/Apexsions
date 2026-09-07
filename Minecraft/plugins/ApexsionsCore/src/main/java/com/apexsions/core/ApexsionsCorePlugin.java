@@ -65,6 +65,7 @@ public class ApexsionsCorePlugin extends JavaPlugin {
     private KingdomProfileGUI kingdomProfileGUI;
     private KingdomTopGUI kingdomTopGUI;
     private LevelRewardsGUI levelRewardsGUI;
+    private com.apexsions.core.region.gui.MilestoneRewardPreviewGUI milestoneRewardPreviewGUI;
     private XpGuideGUI xpGuideGUI;
 
     // War & Combat
@@ -160,6 +161,9 @@ public class ApexsionsCorePlugin extends JavaPlugin {
 
             this.levelRewardsGUI = new LevelRewardsGUI(this);
             Bukkit.getPluginManager().registerEvents(levelRewardsGUI, this);
+
+            this.milestoneRewardPreviewGUI = new com.apexsions.core.region.gui.MilestoneRewardPreviewGUI(this);
+            Bukkit.getPluginManager().registerEvents(milestoneRewardPreviewGUI, this);
 
             this.xpGuideGUI = new XpGuideGUI(this);
             Bukkit.getPluginManager().registerEvents(xpGuideGUI, this);
@@ -498,6 +502,7 @@ public class ApexsionsCorePlugin extends JavaPlugin {
     public com.apexsions.core.title.TitleManager getTitleManager() { return titleManager; }
     public com.apexsions.core.cosmetics.CosmeticsManager getCosmeticsManager() { return cosmeticsManager; }
     public LevelRewardsGUI getLevelRewardsGUI() { return levelRewardsGUI; }
+    public com.apexsions.core.region.gui.MilestoneRewardPreviewGUI getMilestoneRewardPreviewGUI() { return milestoneRewardPreviewGUI; }
     public XpGuideGUI getXpGuideGUI() { return xpGuideGUI; }
     public LevelFormula getLevelFormula() { return levelFormula; }
     public LevelTitleResolver getLevelTitleResolver() { return levelTitleResolver; }

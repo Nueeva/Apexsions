@@ -38,10 +38,9 @@ public class AdminRewardMenu extends Gui {
 
         // 1. Column Headers (Row 0)
         setButton(1, new GuiButton(new ItemBuilder(Material.OAK_SIGN).name("&f&lLEVEL").build()));
-        setButton(2, new GuiButton(new ItemBuilder(Material.CHEST).name("&f&l[FREE]").build()));
-        setButton(3, new GuiButton(new ItemBuilder(Material.GOLD_BLOCK).name("&6&l[PREMIUM]").build()));
-        setButton(4, new GuiButton(new ItemBuilder(Material.BEACON).name("&e&l[PREMIUM+]").build()));
-        setButton(5, new GuiButton(new ItemBuilder(Material.NETHERITE_BLOCK).name("&5&l[ULTIMATE]").build()));
+        setButton(2, new GuiButton(new ItemBuilder(Material.CHEST).name("&f&l[CITIZEN]").build()));
+        setButton(3, new GuiButton(new ItemBuilder(Material.GOLD_BLOCK).name("&6&l[SIO]").build()));
+        setButton(4, new GuiButton(new ItemBuilder(Material.NETHERITE_BLOCK).name("&5&l[EXSIO]").build()));
 
         // Admin Info Banner (Slot 7)
         setButton(7, new GuiButton(new ItemBuilder(Material.COMMAND_BLOCK)
@@ -69,21 +68,19 @@ public class AdminRewardMenu extends Gui {
 
         // 2. Render 4 Level Rows
         int startLevel = (validPage - 1) * LEVELS_PER_PAGE + 1;
-        int[] rowLevelSlots  = { 10, 19, 28, 37 };
-        int[] rowFreeSlots   = { 11, 20, 29, 38 };
-        int[] rowPremSlots   = { 12, 21, 30, 39 };
-        int[] rowPlusSlots   = { 13, 22, 31, 40 };
-        int[] rowUltSlots    = { 14, 23, 32, 41 };
+        int[] rowLevelSlots   = { 10, 19, 28, 37 };
+        int[] rowCitizenSlots = { 11, 20, 29, 38 };
+        int[] rowSioSlots     = { 12, 21, 30, 39 };
+        int[] rowExsioSlots   = { 13, 22, 31, 40 };
 
         for (int i = 0; i < LEVELS_PER_PAGE; i++) {
             int level = startLevel + i;
             if (level > maxLevel) break;
 
-            int slotLvl = rowLevelSlots[i];
-            int slotFree = rowFreeSlots[i];
-            int slotPrem = rowPremSlots[i];
-            int slotPlus = rowPlusSlots[i];
-            int slotUlt  = rowUltSlots[i];
+            int slotLvl     = rowLevelSlots[i];
+            int slotCitizen = rowCitizenSlots[i];
+            int slotSio     = rowSioSlots[i];
+            int slotExsio   = rowExsioSlots[i];
 
             setButton(slotLvl, new GuiButton(new ItemBuilder(Material.EXPERIENCE_BOTTLE)
                     .name("&e&lLevel " + level)
@@ -92,10 +89,9 @@ public class AdminRewardMenu extends Gui {
                     ))
                     .build()));
 
-            setButton(slotFree, createTierInspectButton(level, "free"));
-            setButton(slotPrem, createTierInspectButton(level, "premium"));
-            setButton(slotPlus, createTierInspectButton(level, "premium-plus"));
-            setButton(slotUlt,  createTierInspectButton(level, "ultimate"));
+            setButton(slotCitizen, createTierInspectButton(level, "citizen"));
+            setButton(slotSio,     createTierInspectButton(level, "sio"));
+            setButton(slotExsio,   createTierInspectButton(level, "exsio"));
         }
 
         // 3. Navigation Controls (Row 5)

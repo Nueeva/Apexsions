@@ -31,6 +31,7 @@ public class PlayerData {
         this.level = 1;
         this.xp = 0;
         this.currency = 0;
+        this.passes.add("citizen");
         this.passes.add("free");
         this.dailyRefreshCount = 0;
         this.totalRefreshCount = 0;
@@ -97,10 +98,22 @@ public class PlayerData {
     }
 
     public boolean hasPass(String passId) {
-        return passes.contains(passId.toLowerCase());
+        if (passId == null) return false;
+        String norm = com.apexsions.battlepass.pass.PassManager.normalizePassId(passId);
+        if (norm.equals("citizen") || norm.equals("free")) return true;
+        for (String p : passes) {
+            String normP = com.apexsions.battlepass.pass.PassManager.normalizePassId(p);
+            if (normP.equals(norm)) return true;
+            if (normP.equals("exsio")) return true;
+            if (normP.equals("sio") && (norm.equals("sio") || norm.equals("citizen"))) return true;
+        }
+        return false;
     }
 
     public void addPass(String passId) {
+        if (passId == null) return;
+        String norm = com.apexsions.battlepass.pass.PassManager.normalizePassId(passId);
+        passes.add(norm);
         passes.add(passId.toLowerCase());
     }
 
@@ -109,10 +122,13 @@ public class PlayerData {
     }
 
     public boolean isRewardClaimed(int level, String passId) {
-        return claimedRewards.contains(level + "_" + passId.toLowerCase());
+        String norm = com.apexsions.battlepass.pass.PassManager.normalizePassId(passId);
+        return claimedRewards.contains(level + "_" + norm) || claimedRewards.contains(level + "_" + passId.toLowerCase());
     }
 
     public void setRewardClaimed(int level, String passId) {
+        String norm = com.apexsions.battlepass.pass.PassManager.normalizePassId(passId);
+        claimedRewards.add(level + "_" + norm);
         claimedRewards.add(level + "_" + passId.toLowerCase());
     }
 

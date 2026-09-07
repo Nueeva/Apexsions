@@ -1,25 +1,26 @@
 passes:
-  free:
-    name: "&f&lFree Pass"
-    permission: "apexsionsbattlepass.pass.free"
+  citizen:
+    name: "&f&lCitizen Pass"
+    permission: "apexsionsbattlepass.pass.citizen"
     default-owned: true
-    icon: "CHEST"
+    icon: "BOOK"
     lore:
-      - "&7Pass bawaan untuk semua pemain."
+      - "&7Pass bawaan gratis untuk semua warga Apexsions."
 
-  premium:
-    name: "&6&lPremium Pass"
-    permission: "apexsionsbattlepass.pass.premium"
+  sio:
+    name: "&6&lSio Pass"
+    permission: "apexsionsbattlepass.pass.sio"
     default-owned: false
     icon: "GOLD_BLOCK"
     lore:
-      - "&7Pass eksklusif dengan reward berlimpah!"
-      - "&7Dapatkan di webstore kami atau gunakan &e/abp buy"
+      - "&7Pass berbayar eksklusif Apexsions!"
+      - "&7Membuka hadiah Sio & Citizen Pass."
 
-  vip:
-    name: "&b&lVIP Pass"
-    permission: "apexsionsbattlepass.pass.vip"
+  exsio:
+    name: "&d&lExsio Pass"
+    permission: "apexsionsbattlepass.pass.exsio"
     default-owned: false
-    icon: "DIAMOND_BLOCK"
+    icon: "NETHERITE_UPGRADE_SMITHING_TEMPLATE"
     lore:
-      - "&7Pass tertinggi dengan bonus khusus!"
+      - "&7Pass berbayar tertinggi dengan reward paling langka!"
+      - "&7Membuka seluruh hadiah Exsio, Sio, & Citizen Pass."

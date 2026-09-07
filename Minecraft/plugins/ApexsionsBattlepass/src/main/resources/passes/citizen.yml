@@ -1,0 +1,11 @@
+id: "citizen"
+display-name: "&f&lCitizen Pass"
+permission: "apexsionsbattlepass.pass.citizen"
+default-owned: true
+icon: "BOOK"
+priority: 10
+lore:
+  - "&7Pass bawaan gratis untuk seluruh warga Apexsions."
+  - "&7Dapat diklaim langsung seiring kenaikan level."
+reward-access:
+  - "citizen"

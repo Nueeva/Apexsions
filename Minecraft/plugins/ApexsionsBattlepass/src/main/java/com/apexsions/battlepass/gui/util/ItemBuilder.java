@@ -74,6 +74,18 @@ public class ItemBuilder {
         return this;
     }
 
+    public ItemBuilder glow() {
+        if (meta != null) {
+            try {
+                meta.setEnchantmentGlintOverride(true);
+            } catch (Throwable ignored) {
+                meta.addEnchant(org.bukkit.enchantments.Enchantment.UNBREAKING, 1, true);
+                meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+            }
+        }
+        return this;
+    }
+
     public ItemStack build() {
         if (meta != null) {
             itemStack.setItemMeta(meta);
