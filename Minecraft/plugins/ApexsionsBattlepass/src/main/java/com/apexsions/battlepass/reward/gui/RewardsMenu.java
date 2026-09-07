@@ -231,32 +231,48 @@ public class RewardsMenu extends Gui {
 
     private GuiButton createLevelProgressButton(PlayerData data, int level) {
         int reqXp = plugin.getRewardManager().getRequiredXp(level);
+        boolean isMilestone = (level % 50 == 0);
+
         if (data.getLevel() >= level) {
             // Level Selesai
-            return new GuiButton(new ItemBuilder(Material.LIME_STAINED_GLASS_PANE)
-                    .name("&a&lLevel " + level + " &7(Selesai ✓)")
+            Material mat = isMilestone ? Material.BEACON : Material.LIME_STAINED_GLASS_PANE;
+            String name = isMilestone
+                    ? "&b&l★ MILESTONE LEVEL " + level + " &a(Selesai ✓) ★"
+                    : "&a&lLevel " + level + " &7(Selesai ✓)";
+            ItemBuilder builder = new ItemBuilder(mat)
+                    .name(name)
                     .lore(List.of(
                             "&7XP Diperlukan: &a" + reqXp + " XP",
                             " ",
                             "&a✔ Level ini telah selesai dicapai!"
-                    ))
-                    .build());
+                    ));
+            if (isMilestone) builder.glow();
+            return new GuiButton(builder.build());
         } else if (data.getLevel() == level - 1) {
             // Sedang Berjalan
             int remaining = Math.max(0, reqXp - data.getXp());
-            return new GuiButton(new ItemBuilder(Material.YELLOW_STAINED_GLASS_PANE)
-                    .name("&e&lLevel " + level + " &7(Sedang Berjalan ⏳)")
+            Material mat = isMilestone ? Material.SEA_LANTERN : Material.YELLOW_STAINED_GLASS_PANE;
+            String name = isMilestone
+                    ? "&e&l★ MILESTONE LEVEL " + level + " &e(Sedang Dituju ⏳) ★"
+                    : "&e&lLevel " + level + " &7(Sedang Berjalan ⏳)";
+            ItemBuilder builder = new ItemBuilder(mat)
+                    .name(name)
                     .lore(List.of(
                             "&7Progres XP: &e" + data.getXp() + " &8/ &f" + reqXp + " XP",
                             "&7Kurang: &c" + remaining + " XP &7lagi untuk naik level!",
                             " ",
                             "&eSelesaikan misi untuk mendapatkan XP!"
-                    ))
-                    .build());
+                    ));
+            if (isMilestone) builder.glow();
+            return new GuiButton(builder.build());
         } else {
             // Terkunci
-            return new GuiButton(new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE)
-                    .name("&7&lLevel " + level + " &c(Terkunci 🔒)")
+            Material mat = isMilestone ? Material.AMETHYST_CLUSTER : Material.GRAY_STAINED_GLASS_PANE;
+            String name = isMilestone
+                    ? "&d&l★ MILESTONE LEVEL " + level + " &c(Terkunci 🔒) ★"
+                    : "&7&lLevel " + level + " &c(Terkunci 🔒)";
+            return new GuiButton(new ItemBuilder(mat)
+                    .name(name)
                     .lore(List.of(
                             "&7XP Diperlukan: &f" + reqXp + " XP",
                             " ",
@@ -296,11 +312,20 @@ public class RewardsMenu extends Gui {
         }
 
         // Check preview type: Special for milestone every 50 levels or specialPreview flag
-        boolean isSpecial = (level % 50 == 0) || rewards.stream().anyMatch(RewardItem::isSpecialPreview);
+        boolean isMilestone = (level % 50 == 0);
+        boolean isSpecial = isMilestone || rewards.stream().anyMatch(RewardItem::isSpecialPreview);
 
-        Material displayMat = getPassDisplayMaterial(passId, state);
+        Material displayMat = getPassDisplayMaterial(passId, state, isMilestone);
 
         List<String> lore = new ArrayList<>();
+        if (isMilestone) {
+            lore.add("&d&l━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+            lore.add("&e&l   ★ HADIAH SPESIAL MILESTONE ★");
+            lore.add("&7  Pencapaian Puncak Tiap 50 Level!");
+            lore.add("&d&l━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+            lore.add(" ");
+        }
+
         lore.add("&7Tier Pass: &f" + passName);
         lore.add("&7Syarat Level: &eLevel " + level);
         lore.add(" ");
@@ -310,27 +335,38 @@ public class RewardsMenu extends Gui {
         }
         lore.add(" ");
 
+        String passPrefix = switch (com.apexsions.battlepass.pass.PassManager.normalizePassId(passId)) {
+            case "exsio" -> "&d&l👑 [EXSIO]";
+            case "sio" -> "&6&l★ [SIO]";
+            default -> "&e&l✦ [CITIZEN]";
+        };
+
         switch (state) {
             case CLAIMED -> {
                 lore.add("&a✔ SUDAH DIKLAIM");
-                ItemStack item = new ItemBuilder(displayMat)
-                        .name("&a[DIKLAIM] &f" + passName + " &8- Level " + level)
+                String title = isMilestone
+                        ? "&a[DIKLAIM] " + passPrefix + " &6★ HADIAH SPESIAL LV." + level + " ★"
+                        : "&a[DIKLAIM] &f" + passName + " &8- Level " + level;
+                ItemBuilder builder = new ItemBuilder(displayMat)
+                        .name(title)
                         .lore(lore)
-                        .hideAttributes()
-                        .build();
-                return new GuiButton(item, null);
+                        .hideAttributes();
+                return new GuiButton(builder.build(), null);
             }
             case LOCKED_PASS -> {
                 lore.add("&c🔒 TERKUNCI — BUTUH " + passName + " PASS");
                 lore.add("&7Beli atau miliki " + passName + " untuk membuka hadiah!");
                 lore.add(" ");
                 lore.add(isSpecial ? "&6👑 Klik untuk melihat Preview Istimewa!" : "&b▶ Klik untuk melihat Preview Hadiah!");
-                ItemStack item = new ItemBuilder(displayMat)
-                        .name("&c[TERKUNCI] &f" + passName + " &8- Level " + level)
+                String title = isMilestone
+                        ? "&c[TERKUNCI] " + passPrefix + " &6★ HADIAH SPESIAL LV." + level + " ★"
+                        : "&c[TERKUNCI] &f" + passName + " &8- Level " + level;
+                ItemBuilder builder = new ItemBuilder(displayMat)
+                        .name(title)
                         .lore(lore)
-                        .hideAttributes()
-                        .build();
-                return new GuiButton(item, event -> {
+                        .hideAttributes();
+                if (isMilestone) builder.glow();
+                return new GuiButton(builder.build(), event -> {
                     if (isSpecial) {
                         new SpecialRewardPreviewMenu(plugin, player, level, passId, rewards, this).open();
                     } else {
@@ -344,12 +380,15 @@ public class RewardsMenu extends Gui {
                 lore.add("&7Raih Level " + level + " untuk membuka hadiah ini.");
                 lore.add(" ");
                 lore.add(isSpecial ? "&6👑 Klik untuk melihat Preview Istimewa!" : "&b▶ Klik untuk melihat Preview Hadiah!");
-                ItemStack item = new ItemBuilder(displayMat)
-                        .name("&c[TERKUNCI] &f" + passName + " &8- Level " + level)
+                String title = isMilestone
+                        ? "&c[TERKUNCI] " + passPrefix + " &6★ HADIAH SPESIAL LV." + level + " ★"
+                        : "&c[TERKUNCI] &f" + passName + " &8- Level " + level;
+                ItemBuilder builder = new ItemBuilder(displayMat)
+                        .name(title)
                         .lore(lore)
-                        .hideAttributes()
-                        .build();
-                return new GuiButton(item, event -> {
+                        .hideAttributes();
+                if (isMilestone) builder.glow();
+                return new GuiButton(builder.build(), event -> {
                     if (isSpecial) {
                         new SpecialRewardPreviewMenu(plugin, player, level, passId, rewards, this).open();
                     } else {
@@ -360,13 +399,15 @@ public class RewardsMenu extends Gui {
             }
             case CLAIMABLE -> {
                 lore.add("&a&l[KLIK UNTUK KLAIM HADIAH SEKARANG]");
-                ItemStack item = new ItemBuilder(displayMat)
-                        .name("&a&l[BISA DIKLAIM] &f" + passName + " &8- Level " + level)
+                String title = isMilestone
+                        ? "&6&l★ [BISA DIKLAIM] " + passPrefix + " HADIAH SPESIAL LV." + level + " ★"
+                        : "&a&l[BISA DIKLAIM] &f" + passName + " &8- Level " + level;
+                ItemBuilder builder = new ItemBuilder(displayMat)
+                        .name(title)
                         .lore(lore)
                         .hideAttributes()
-                        .glow()
-                        .build();
-                return new GuiButton(item, event -> {
+                        .glow();
+                return new GuiButton(builder.build(), event -> {
                     boolean success = plugin.getRewardManager().claimReward(player, level, passId);
                     if (success) {
                         open(); // Re-render this page
@@ -378,8 +419,28 @@ public class RewardsMenu extends Gui {
         return new GuiButton(new ItemStack(Material.AIR), null);
     }
 
-    private Material getPassDisplayMaterial(String passId, RewardState state) {
+    private Material getPassDisplayMaterial(String passId, RewardState state, boolean isMilestone) {
         String norm = com.apexsions.battlepass.pass.PassManager.normalizePassId(passId);
+        if (isMilestone) {
+            return switch (norm) {
+                case "exsio" -> switch (state) {
+                    case CLAIMED -> Material.MINECART;
+                    case CLAIMABLE -> Material.NETHER_STAR;
+                    case LOCKED_PASS, LOCKED_LEVEL -> Material.RESPAWN_ANCHOR;
+                };
+                case "sio" -> switch (state) {
+                    case CLAIMED -> Material.MINECART;
+                    case CLAIMABLE -> Material.TOTEM_OF_UNDYING;
+                    case LOCKED_PASS, LOCKED_LEVEL -> Material.GILDED_BLACKSTONE;
+                };
+                default -> switch (state) { // citizen
+                    case CLAIMED -> Material.MINECART;
+                    case CLAIMABLE -> Material.ENDER_CHEST;
+                    case LOCKED_PASS, LOCKED_LEVEL -> Material.CHISELED_BOOKSHELF;
+                };
+            };
+        }
+
         return switch (norm) {
             case "exsio" -> switch (state) {
                 case CLAIMED -> Material.MINECART;
