@@ -1,6 +1,8 @@
 package com.apexsions.core.sions;
 
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
@@ -69,6 +71,9 @@ public class SionsContainerLockListener implements Listener {
             } else {
                 player.sendMessage(miniMessage.deserialize("<green>🔓 Segel kuno terbuka dengan " + keyFormattedName + " <green>Anda!</green>"));
             }
+
+            // Roll custom enchants loot reward
+            grantContainerCustomEnchantLoot(player, tier, block.getLocation());
             return;
         }
 
@@ -100,5 +105,60 @@ public class SionsContainerLockListener implements Listener {
         event.setCancelled(true);
         player.playSound(block.getLocation(), Sound.BLOCK_CHEST_LOCKED, 1.0f, 0.6f);
         player.sendMessage(miniMessage.deserialize("<red>🔒 Anda tidak dapat menghancurkan peti relik Kerajaan Sions!</red>"));
+    }
+
+    private void grantContainerCustomEnchantLoot(Player player, SionsKeyTier tier, Location loc) {
+        if (Bukkit.getPluginManager().getPlugin("ApexsionsCustomEnchants") == null) {
+            return;
+        }
+
+        double roll = Math.random();
+        String command = null;
+        String rewardName = null;
+
+        if (tier == SionsKeyTier.BOSS) {
+            // Guaranteed high-tier rewards from Boss Chest
+            if (roll < 0.35) {
+                command = "ace givebook " + player.getName() + " thunderlord 3 100 0";
+                rewardName = "<gradient:#f1c40f:#d35400><bold>Buku Sihir: Thunderlord III (100% Success)</bold></gradient>";
+            } else if (roll < 0.70) {
+                command = "ace givebook " + player.getName() + " unholy 5 100 0";
+                rewardName = "<gradient:#9b59b6:#e74c3c><bold>Buku Sihir: Unholy V (100% Success)</bold></gradient>";
+            } else {
+                command = "ace givescroll " + player.getName() + " white";
+                rewardName = "<white><bold>White Scroll (Perlindungan Item)</bold></white>";
+            }
+        } else if (tier == SionsKeyTier.ELITE) {
+            // 50% chance for Elite loot
+            if (roll < 0.20) {
+                command = "ace givebook " + player.getName() + " critical 3 85 15";
+                rewardName = "<yellow><bold>Buku Sihir: Critical III</bold></yellow>";
+            } else if (roll < 0.40) {
+                command = "ace givebook " + player.getName() + " ward 3 85 15";
+                rewardName = "<blue><bold>Buku Sihir: Ward III</bold></blue>";
+            } else if (roll < 0.55) {
+                command = "ace givedust " + player.getName() + " magic 25";
+                rewardName = "<light_purple><bold>Magic Dust (+25% Success Rate)</bold></light_purple>";
+            }
+        } else if (tier == SionsKeyTier.COMMON) {
+            // 25% chance for Common loot
+            if (roll < 0.15) {
+                command = "ace givebook " + player.getName() + " strike 2 75 25";
+                rewardName = "<gray><bold>Buku Sihir: Strike II</bold></gray>";
+            } else if (roll < 0.30) {
+                command = "ace givedust " + player.getName() + " mystery";
+                rewardName = "<dark_purple><bold>Mystery Dust</bold></dark_purple>";
+            }
+        }
+
+        if (command != null) {
+            final String finalCmd = command;
+            final String finalReward = rewardName;
+            Bukkit.getScheduler().runTask(Bukkit.getPluginManager().getPlugin("ApexsionsCore"), () -> {
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), finalCmd);
+                player.sendMessage(miniMessage.deserialize("<gold>✨ Khazanah Kuno: </gold><gray>Anda menemukan </gray>" + finalReward + "<gray> dari dalam peti!</gray>"));
+                player.playSound(loc, Sound.UI_TOAST_CHALLENGE_COMPLETE, 0.8f, 1.4f);
+            });
+        }
     }
 }

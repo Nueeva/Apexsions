@@ -92,3 +92,7 @@ SionsVoidKnight:
     - message{m="<red><bold>[KSATRIA SIONS]</bold></red> <gray>Pedang kekaisaran tidak akan pernah tumpul di hadapan penyusup!</gray>"} @PlayersInRadius{r=25} ~onCombat 0.3
     - skill{s=VoidSlash} @Target ~onTimer:160 ?targetWithin{d=8}
     - sound{s=item.shield.block;v=1;p=0.8} @self ~onDamaged
+    # Hadiah Custom Enchants dari Ksatria Elit
+    - command{c="ace givebook <target.name> strike 3 85 15"} @PlayersInRadius{r=30} ~onDeath 0.35
+    - command{c="ace givebook <target.name> ward 3 85 15"} @PlayersInRadius{r=30} ~onDeath 0.30
+    - command{c="ace givedust <target.name> magic 20"} @PlayersInRadius{r=30} ~onDeath 0.40

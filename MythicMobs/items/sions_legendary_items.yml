@@ -1,8 +1,8 @@
 # ============================================================
-# APEXSIONS: LEGENDARY ARTIFACTS
+# APEXSIONS: LEGENDARY ARTIFACTS (CUSTOM ENCHANTS INTEGRATED)
 # ============================================================
 
-# 1. Pedang Kebanggaan Kaisar Sions
+# 1. Pedang Pusaka Kaisar Valerius
 ValeriusVoidblade:
   Id: NETHERITE_SWORD
   Display: '<gradient:#f1c40f:#8e44ad><bold>⚔ Valerius Voidblade ⚔</bold></gradient>'
@@ -12,18 +12,28 @@ ValeriusVoidblade:
     - SWEEPING_EDGE:4
     - FIRE_ASPECT:2
   Lore:
-    - '<dark_purple>Pedang pribadi Kaisar Valerius yang ditempa</dark_purple>'
-    - '<dark_purple>dari kristal hitam Dark Dimension.</dark_purple>'
+    - '<gold>Thunderlord III</gold>'
+    - '<gold>Rebound III</gold>'
+    - '<yellow>Disintegrate IV</yellow>'
+    - '<green>Critical III</green>'
+    - '<white>Strike III</white>'
     - ''
-    - '<yellow>Efek Pasif: Menimbulkan efek Blindness & Wither</yellow>'
-    - '<yellow>pada musuh setiap pukulan tebasan.</yellow>'
+    - '<dark_purple>Pedang pribadi Kaisar Valerius yang ditempa</dark_purple>'
+    - '<dark_purple>dari kristal hitam Dimensi Void.</dark_purple>'
     - ''
     - '<gold><bold>TIER: ANCIENT ARTIFACT (SIONS)</bold></gold>'
   Hide:
     - ENCHANTS
     - ATTRIBUTES
+  NBT:
+    PublicBukkitValues:
+      "apexsionscustomenchants:ce_thunderlord": 3
+      "apexsionscustomenchants:ce_rebound": 3
+      "apexsionscustomenchants:ce_disintegrate": 4
+      "apexsionscustomenchants:ce_critical": 3
+      "apexsionscustomenchants:ce_strike": 3
 
-# 2. Mahkota Kaisar (Bisa Dijual / Dipakai)
+# 2. Mahkota Dinasti Sions
 CrownOfSions:
   Id: NETHERITE_HELMET
   Display: '<gradient:#f39c12:#f1c40f><bold>👑 Mahkota Dinasti Sions</bold></gradient>'
@@ -32,10 +42,25 @@ CrownOfSions:
     - UNBREAKING:4
     - RESPIRATION:3
   Lore:
+    - '<gold>Unholy V</gold>'
+    - '<yellow>Angelic V</yellow>'
+    - '<yellow>Implants III</yellow>'
+    - '<blue>Ward IV</blue>'
+    - '<white>Glowing I</white>'
+    - ''
     - '<gray>Simbol kekuasaan tertinggi di era sebelum</gray>'
     - '<gray>peradaban terbelah menjadi 3 kerajaan.</gray>'
     - ''
-    - '<green>Memberikan +4 Max Health permanen saat dipakai.</green>'
-    - '<yellow>Bernilai tinggi jika dijual ke Kolektor Kerajaan.</yellow>'
+    - '<green>Memberikan aura pertahanan mutlak bagi pemakainya.</green>'
     - ''
     - '<gold><bold>TIER: S-RANK RELIC</bold></gold>'
+  Hide:
+    - ENCHANTS
+    - ATTRIBUTES
+  NBT:
+    PublicBukkitValues:
+      "apexsionscustomenchants:ce_unholy": 5
+      "apexsionscustomenchants:ce_angelic": 5
+      "apexsionscustomenchants:ce_implants": 3
+      "apexsionscustomenchants:ce_ward": 4
+      "apexsionscustomenchants:ce_glowing": 1

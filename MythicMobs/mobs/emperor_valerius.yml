@@ -45,3 +45,9 @@ EmperorValerius:
     # Kematian Boss: Pesan Megah ke Seluruh Server
     - message{m="<gradient:#f1c40f:#e67e22><bold>⚔ APEXSIONS RAID ⚔</bold></gradient> <gray>Kaisar Kuno <yellow>Valerius</yellow> telah berhasil ditumbangkan di Reruntuhan Sions!</gray>"} @Server ~onDeath
     - sound{s=ui.toast.challenge_complete;v=1.5;p=1.0} @PlayersInRadius{r=50} ~onDeath
+
+    # Hadiah Custom Enchants Langka untuk Penakluk Raid Boss
+    - command{c="ace givebook <target.name> thunderlord 3 100 0"} @PlayersInRadius{r=50} ~onDeath 0.60
+    - command{c="ace givebook <target.name> unholy 5 100 0"} @PlayersInRadius{r=50} ~onDeath 0.50
+    - command{c="ace givescroll <target.name> white"} @PlayersInRadius{r=50} ~onDeath 0.75
+    - command{c="ace givedust <target.name> magic 30"} @PlayersInRadius{r=50} ~onDeath 0.80
