@@ -130,6 +130,24 @@
             </div>
         </div>
     </div>
+    <script>
+        (function() {
+            function apxDismiss() {
+                var el = document.getElementById('apxPageTransition');
+                if (el) {
+                    el.classList.remove('is-navigating', 'is-entering');
+                    el.classList.add('is-loaded');
+                }
+            }
+            if (document.readyState === 'interactive' || document.readyState === 'complete') {
+                setTimeout(apxDismiss, 60);
+            } else {
+                document.addEventListener('DOMContentLoaded', function() { setTimeout(apxDismiss, 60); });
+                window.addEventListener('load', apxDismiss);
+            }
+            setTimeout(apxDismiss, 400);
+        })();
+    </script>
 
     <!-- Skip to Main Content (WCAG 2.4.1 Bypass Blocks) -->
     <a href="#main-content" class="apx-skip-link">Lewati ke konten utama</a>

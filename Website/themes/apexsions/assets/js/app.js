@@ -297,7 +297,87 @@ const APX_I18N = {
 };
 
 document.addEventListener('DOMContentLoaded', () => {
-    // 0. Bilingual Internationalization Engine
+    // 0. Cinematic Inter-Page Transition Dismissal (Highest Priority)
+    const initPageTransitions = () => {
+        const overlay = document.getElementById('apxPageTransition');
+        if (!overlay) return;
+
+        const dismissTransition = () => {
+            overlay.classList.remove('is-navigating', 'is-entering');
+            overlay.classList.add('is-loaded');
+        };
+
+        // Immediate first-tick dismissal
+        dismissTransition();
+        requestAnimationFrame(dismissTransition);
+        setTimeout(dismissTransition, 40);
+
+        window.addEventListener('pageshow', dismissTransition);
+        window.addEventListener('load', dismissTransition);
+
+        document.addEventListener('mouseover', (e) => {
+            const link = e.target.closest('a');
+            if (!link || !link.href) return;
+            if (link.origin !== window.location.origin) return;
+            if (link.hasAttribute('data-prefetched')) return;
+
+            link.setAttribute('data-prefetched', 'true');
+            const prefetchLink = document.createElement('link');
+            prefetchLink.rel = 'prefetch';
+            prefetchLink.href = link.href;
+            document.head.appendChild(prefetchLink);
+        }, { passive: true });
+
+        document.addEventListener('click', (e) => {
+            const link = e.target.closest('a');
+            if (!link) return;
+
+            const href = link.getAttribute('href');
+            if (!href) return;
+
+            if (href.startsWith('#') || href.startsWith('javascript:') || href.startsWith('mailto:') || href.startsWith('tel:')) {
+                return;
+            }
+
+            if (link.target === '_blank' || e.ctrlKey || e.metaKey || e.shiftKey || e.altKey) {
+                return;
+            }
+            if (link.hasAttribute('data-bs-toggle') || link.hasAttribute('data-apx-copy') || link.hasAttribute('download')) {
+                return;
+            }
+
+            try {
+                const targetUrl = new URL(link.href, window.location.origin);
+                if (targetUrl.origin !== window.location.origin) {
+                    return;
+                }
+
+                if (targetUrl.pathname === window.location.pathname && targetUrl.search === window.location.search && targetUrl.hash) {
+                    return;
+                }
+
+                if (targetUrl.href === window.location.href) {
+                    return;
+                }
+
+                e.preventDefault();
+                overlay.classList.remove('is-loaded');
+                overlay.classList.add('is-navigating');
+
+                setTimeout(() => {
+                    window.location.href = targetUrl.href;
+                }, 200);
+
+                setTimeout(() => {
+                    dismissTransition();
+                }, 2000);
+            } catch (err) {}
+        });
+    };
+
+    initPageTransitions();
+
+    // 1. Bilingual Internationalization Engine
     const initLanguageSwitcher = () => {
         const langChoices = document.querySelectorAll('.apx-lang-choice');
         const langLabelEl = document.querySelector('.apx-lang-current-label');
@@ -344,9 +424,11 @@ document.addEventListener('DOMContentLoaded', () => {
             } catch (e) {}
 
             // Re-evaluate dynamic telemetry text in new language
-            if (typeof fetchServerStatus === 'function') {
-                fetchServerStatus();
-            }
+            try {
+                if (typeof fetchServerStatus === 'function') {
+                    fetchServerStatus();
+                }
+            } catch (err) {}
         };
 
         langChoices.forEach(choice => {
@@ -414,8 +496,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // 2. Live Minecraft Server Bridge Integration
-    const fetchServerStatus = () => {
+    // 3. Live Minecraft Server Bridge Integration (Hoisted Function)
+    function fetchServerStatus() {
         const playersEl = document.getElementById('apxOnlinePlayers');
         const playerStatusTextEl = document.getElementById('apxPlayerStatusText');
         const playerNumbersEl = document.getElementById('apxPlayerNumbers');
@@ -514,7 +596,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         applyStatus(false, 0, 200, '26.2');
                     });
             });
-    };
+    }
 
     fetchServerStatus();
     setInterval(fetchServerStatus, 30000);
@@ -541,86 +623,6 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     });
-
-    // 4. Cinematic Inter-Page Transition
-    const initPageTransitions = () => {
-        const overlay = document.getElementById('apxPageTransition');
-        if (!overlay) return;
-
-        const dismissTransition = () => {
-            overlay.classList.remove('is-navigating', 'is-entering');
-            overlay.classList.add('is-loaded');
-        };
-
-        requestAnimationFrame(() => {
-            setTimeout(dismissTransition, 80);
-        });
-
-        window.addEventListener('pageshow', () => {
-            dismissTransition();
-        });
-
-        document.addEventListener('mouseover', (e) => {
-            const link = e.target.closest('a');
-            if (!link || !link.href) return;
-            if (link.origin !== window.location.origin) return;
-            if (link.hasAttribute('data-prefetched')) return;
-
-            link.setAttribute('data-prefetched', 'true');
-            const prefetchLink = document.createElement('link');
-            prefetchLink.rel = 'prefetch';
-            prefetchLink.href = link.href;
-            document.head.appendChild(prefetchLink);
-        }, { passive: true });
-
-        document.addEventListener('click', (e) => {
-            const link = e.target.closest('a');
-            if (!link) return;
-
-            const href = link.getAttribute('href');
-            if (!href) return;
-
-            if (href.startsWith('#') || href.startsWith('javascript:') || href.startsWith('mailto:') || href.startsWith('tel:')) {
-                return;
-            }
-
-            if (link.target === '_blank' || e.ctrlKey || e.metaKey || e.shiftKey || e.altKey) {
-                return;
-            }
-            if (link.hasAttribute('data-bs-toggle') || link.hasAttribute('data-apx-copy') || link.hasAttribute('download')) {
-                return;
-            }
-
-            try {
-                const targetUrl = new URL(link.href, window.location.origin);
-                if (targetUrl.origin !== window.location.origin) {
-                    return;
-                }
-
-                if (targetUrl.pathname === window.location.pathname && targetUrl.search === window.location.search && targetUrl.hash) {
-                    return;
-                }
-
-                if (targetUrl.href === window.location.href) {
-                    return;
-                }
-
-                e.preventDefault();
-                overlay.classList.remove('is-loaded');
-                overlay.classList.add('is-navigating');
-
-                setTimeout(() => {
-                    window.location.href = targetUrl.href;
-                }, 200);
-
-                setTimeout(() => {
-                    dismissTransition();
-                }, 2000);
-            } catch (err) {}
-        });
-    };
-
-    initPageTransitions();
 
     // 5. Cinematic Scroll Reveal Animations
     const initScrollAnimations = () => {

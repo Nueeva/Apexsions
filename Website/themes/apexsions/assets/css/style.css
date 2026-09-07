@@ -2949,11 +2949,26 @@ code:not(pre code) {
     transition: opacity 0.22s cubic-bezier(0.22, 1, 0.36, 1), transform 0.25s cubic-bezier(0.22, 1, 0.36, 1) !important;
 }
 
+@keyframes apxEmergencyFadeOut {
+    0%, 70% {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+    }
+    100% {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        transform: scale(1.025) translateY(-8px);
+    }
+}
+
 .apx-page-transition.is-entering {
     opacity: 1;
     visibility: visible;
     pointer-events: auto;
     transform: scale(1);
+    animation: apxEmergencyFadeOut 0.75s cubic-bezier(0.22, 1, 0.36, 1) 0.15s forwards;
 }
 
 .apx-page-transition.is-loaded {
