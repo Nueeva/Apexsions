@@ -50,14 +50,8 @@ public class ItemRenameManager implements Listener {
                 "",
                 plainText -> {
                     activeSessions.remove(player.getUniqueId());
-                    String formatted = plainText;
-                    if (plainText.contains("&")) {
-                        Component c = legacySerializer.deserialize(plainText);
-                        formatted = mm.serialize(c);
-                    } else if (!plainText.contains("<") && !plainText.contains(">")) {
-                        formatted = "<gold><bold>" + plainText + "</bold></gold>";
-                    }
-                    onInput.accept(formatted);
+                    String input = plainText != null ? plainText.trim() : "";
+                    onInput.accept(input);
                 },
                 () -> {
                     activeSessions.remove(player.getUniqueId());
@@ -103,17 +97,7 @@ public class ItemRenameManager implements Listener {
             return;
         }
 
-        // Process color codes / formatting
-        String formatted = plainText;
-        if (plainText.contains("&")) {
-            Component c = legacySerializer.deserialize(plainText);
-            formatted = mm.serialize(c);
-        } else if (!plainText.contains("<") && !plainText.contains(">")) {
-            // Default color if no codes provided
-            formatted = "<gold><bold>" + plainText + "</bold></gold>";
-        }
-
-        final String finalInput = formatted;
+        final String finalInput = plainText;
         Bukkit.getScheduler().runTask(plugin, () -> {
             try {
                 session.onInput.accept(finalInput);

@@ -3,6 +3,7 @@ package com.apexsions.customenchants.gui;
 import com.apexsions.core.kit.KitStatType;
 import com.apexsions.customenchants.ApexsionsCustomEnchantsPlugin;
 import com.apexsions.customenchants.gui.dialog.ItemEditDialogFlow;
+import com.apexsions.customenchants.items.ColorUtil;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
@@ -168,7 +169,7 @@ public class AdminItemCreatorGUI implements InventoryHolder {
         boolean fullset = isFullsetComplete();
         List<Component> statusLore = new ArrayList<>();
         if (!globalSetName.isBlank()) {
-            statusLore.add(mm.deserialize("<gray>Nama Set: <gold>" + globalSetName + "</gold></gray>"));
+            statusLore.add(mm.deserialize("<gray>Nama Set: </gray>").append(ColorUtil.parse(globalSetName)));
         } else {
             statusLore.add(mm.deserialize("<gray>Nama Set: <dark_gray>(Belum Diatur)</dark_gray></gray>"));
         }
@@ -234,16 +235,14 @@ public class AdminItemCreatorGUI implements InventoryHolder {
         ), false));
 
         // Slot 48: Rename Set / Prefix via GUI
-        String nameDisplay = globalSetName.isBlank() ? "<dark_gray>(Belum Diatur)</dark_gray>" : "<gold>" + globalSetName + "</gold>";
-        String idDisplay = globalSetId.isBlank() ? "<dark_gray>(Belum Diatur)</dark_gray>" : "<yellow>" + globalSetId + "</yellow>";
-        inventory.setItem(48, createItem(Material.NAME_TAG, "<gradient:#f1c40f:#e67e22><bold>🏷 UBAH NAMA SET VIA GUI</bold></gradient>", List.of(
-                mm.deserialize("<gray>Nama Set Saat Ini: " + nameDisplay + "</gray>"),
-                mm.deserialize("<gray>Set ID: " + idDisplay + "</gray>"),
-                Component.empty(),
-                mm.deserialize("<yellow>▶ Klik untuk masukkan nama set via GUI!</yellow>"),
-                mm.deserialize("<dark_gray>Otomatis me-rename seluruh armor & tools di slot</dark_gray>"),
-                mm.deserialize("<dark_gray>mengikuti pola: [Nama Set] [Tipe Item]</dark_gray>")
-        ), false));
+        List<Component> renameSetLore = new ArrayList<>();
+        renameSetLore.add(mm.deserialize("<gray>Nama Set Saat Ini: </gray>").append(!globalSetName.isBlank() ? ColorUtil.parse(globalSetName) : mm.deserialize("<dark_gray>(Belum Diatur)</dark_gray>")));
+        renameSetLore.add(mm.deserialize("<gray>Set ID: <yellow>" + (!globalSetId.isBlank() ? globalSetId : "(Belum Diatur)") + "</yellow></gray>"));
+        renameSetLore.add(Component.empty());
+        renameSetLore.add(mm.deserialize("<yellow>▶ Klik untuk masukkan nama set via GUI!</yellow>"));
+        renameSetLore.add(mm.deserialize("<dark_gray>Otomatis me-rename seluruh armor & tools di slot</dark_gray>"));
+        renameSetLore.add(mm.deserialize("<dark_gray>mengikuti pola: [Nama Set] [Tipe Item]</dark_gray>"));
+        inventory.setItem(48, createItem(Material.NAME_TAG, "<gradient:#f1c40f:#e67e22><bold>🏷 UBAH NAMA SET VIA GUI</bold></gradient>", renameSetLore, false));
 
         // Slot 49: Finish & Claim All
         inventory.setItem(49, createItem(Material.EMERALD_BLOCK, "<gradient:#2ecc71:#27ae60><bold>✔ SELESAIKAN & AMBIL SEMUA SET</bold></gradient>", List.of(
@@ -299,7 +298,10 @@ public class AdminItemCreatorGUI implements InventoryHolder {
         if (globalSetName != null && !globalSetName.isBlank()) {
             return globalSetName;
         }
-        for (int slot : new int[]{SLOT_HELMET, SLOT_CHESTPLATE, SLOT_LEGGINGS, SLOT_BOOTS}) {
+        List<Integer> allSlots = new ArrayList<>(List.of(SLOT_HELMET, SLOT_CHESTPLATE, SLOT_LEGGINGS, SLOT_BOOTS));
+        for (int ts : TOOL_SLOTS) allSlots.add(ts);
+
+        for (int slot : allSlots) {
             ItemStack piece = placedItems.get(slot);
             if (piece != null && piece.hasItemMeta()) {
                 ItemMeta meta = piece.getItemMeta();
@@ -311,7 +313,8 @@ public class AdminItemCreatorGUI implements InventoryHolder {
                 }
                 if (meta.hasDisplayName()) {
                     String plain = PlainTextComponentSerializer.plainText().serialize(meta.displayName()).trim();
-                    for (String suffix : new String[]{" Helmet", " Chestplate", " Elytra", " Leggings", " Boots"}) {
+                    for (String suffix : new String[]{" Helmet", " Chestplate", " Elytra", " Leggings", " Boots",
+                            " Sword", " Axe", " Pickaxe", " Shovel", " Hoe", " Bow", " Crossbow", " Trident", " Mace", " Fishing Rod", " Shears", " Shield"}) {
                         if (plain.endsWith(suffix)) {
                             plain = plain.substring(0, plain.length() - suffix.length()).trim();
                             break;
@@ -334,22 +337,20 @@ public class AdminItemCreatorGUI implements InventoryHolder {
     public void checkAndApplyFullsetBonus() {
         if (!setBonusConfigured || globalSetId.isBlank() || (globalSet2Stats.isEmpty() && globalSet4Stats.isEmpty())) return;
 
-        // Apply armor set bonus if fullset complete
-        if (isFullsetComplete()) {
-            int[] armorSlots = {SLOT_HELMET, SLOT_CHESTPLATE, SLOT_LEGGINGS, SLOT_BOOTS};
-            for (int s : armorSlots) {
-                ItemStack piece = placedItems.get(s);
-                if (piece != null) {
-                    applySetBonusToPiece(piece);
-                }
+        // Apply armor set bonus to placed armor pieces
+        int[] armorSlots = {SLOT_HELMET, SLOT_CHESTPLATE, SLOT_LEGGINGS, SLOT_BOOTS};
+        for (int s : armorSlots) {
+            ItemStack piece = placedItems.get(s);
+            if (piece != null) {
+                applySetBonusToPiece(piece);
             }
+        }
 
-            // Also link Set ID to placed tools/weapons so their bonuses activate!
-            for (int tSlot : TOOL_SLOTS) {
-                ItemStack tool = placedItems.get(tSlot);
-                if (tool != null) {
-                    applyToolBonusToPiece(tool);
-                }
+        // Also link Set ID to placed tools/weapons so their bonuses activate!
+        for (int tSlot : TOOL_SLOTS) {
+            ItemStack tool = placedItems.get(tSlot);
+            if (tool != null) {
+                applyToolBonusToPiece(tool);
             }
         }
     }
@@ -516,7 +517,9 @@ public class AdminItemCreatorGUI implements InventoryHolder {
             checkAndApplyFullsetBonus();
         }
         player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1.0f, 1.2f);
-        player.sendMessage(mm.deserialize("<green><bold>✓ SUKSES!</bold> Seluruh armor dan tools diubah namanya menjadi <gold>" + newBaseName + " [Tipe]</gold>!</green>"));
+        player.sendMessage(mm.deserialize("<green><bold>✓ SUKSES!</bold> Seluruh armor dan tools diubah namanya menjadi </green>")
+                .append(ColorUtil.parse(newBaseName))
+                .append(mm.deserialize("<green> [Tipe]!</green>")));
     }
 
     private void renamePiece(ItemStack is, String newBaseName, String suffix) {
@@ -529,37 +532,11 @@ public class AdminItemCreatorGUI implements InventoryHolder {
     }
 
     private Component formatPieceName(String baseName, String suffix) {
-        if (baseName == null || baseName.isBlank()) return Component.text(suffix);
-        try {
-            if (baseName.contains("<") && baseName.contains(">")) {
-                String clean = baseName.trim();
-                int lastCloseTag = clean.lastIndexOf("</");
-                if (lastCloseTag != -1) {
-                    String prefix = clean.substring(0, lastCloseTag);
-                    String closingTags = clean.substring(lastCloseTag);
-                    return mm.deserialize(prefix + " " + suffix + closingTags);
-                }
-                return mm.deserialize(baseName + " " + suffix);
-            } else if (baseName.contains("&")) {
-                return net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer.legacyAmpersand().deserialize(baseName + " " + suffix);
-            } else {
-                return mm.deserialize("<gold><bold>" + baseName + " " + suffix + "</bold></gold>");
-            }
-        } catch (Exception e) {
-            return Component.text(baseName + " " + suffix);
-        }
+        return ColorUtil.formatPieceName(baseName, suffix);
     }
 
     public static String getPlainTextSafe(String text) {
-        if (text == null || text.isBlank()) return "";
-        try {
-            if (text.contains("&")) {
-                return PlainTextComponentSerializer.plainText().serialize(net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer.legacyAmpersand().deserialize(text)).trim();
-            }
-            return PlainTextComponentSerializer.plainText().serialize(MiniMessage.miniMessage().deserialize(text)).trim();
-        } catch (Exception e) {
-            return text.replaceAll("<[^>]*>", "").replaceAll("&[0-9a-fk-orA-FK-OR]", "").trim();
-        }
+        return ColorUtil.toPlainText(text);
     }
 
     private String getToolDisplaySuffix(ItemStack is) {
@@ -710,6 +687,146 @@ public class AdminItemCreatorGUI implements InventoryHolder {
         }
     }
 
+    public static boolean isPlainItem(ItemStack is) {
+        if (is == null || !is.hasItemMeta()) return true;
+        ItemMeta meta = is.getItemMeta();
+        if (meta == null) return true;
+        if (meta.hasDisplayName()) return false;
+        PersistentDataContainer pdc = meta.getPersistentDataContainer();
+        return !pdc.has(new NamespacedKey("apexsions", "set_name"), PersistentDataType.STRING)
+                && !pdc.has(new NamespacedKey("apexsions", "set_id"), PersistentDataType.STRING)
+                && !pdc.has(new NamespacedKey("apexsions", "tool_bonus"), PersistentDataType.STRING)
+                && !pdc.has(new NamespacedKey("apexsions", "set2_stats"), PersistentDataType.STRING)
+                && !pdc.has(new NamespacedKey("apexsions", "set4_stats"), PersistentDataType.STRING);
+    }
+
+    public static void parseStatString(String raw, Map<KitStatType, Double> target) {
+        if (raw == null || raw.isBlank()) return;
+        for (String p : raw.split(";")) {
+            String[] kv = p.split(":");
+            if (kv.length == 2) {
+                try {
+                    KitStatType st = KitStatType.valueOf(kv[0].trim());
+                    double val = Double.parseDouble(kv[1].trim());
+                    target.put(st, val);
+                } catch (Exception ignored) {}
+            }
+        }
+    }
+
+    private void autoReadFromItem(ItemStack item, int slot) {
+        if (item == null || item.getType().isAir() || !item.hasItemMeta()) return;
+        ItemMeta meta = item.getItemMeta();
+        if (meta == null) return;
+
+        PersistentDataContainer pdc = meta.getPersistentDataContainer();
+        boolean detectedAny = false;
+
+        // 1. Auto-read Set Name from PDC or item display name
+        NamespacedKey kName = new NamespacedKey("apexsions", "set_name");
+        String detectedName = null;
+        if (pdc.has(kName, PersistentDataType.STRING)) {
+            detectedName = pdc.get(kName, PersistentDataType.STRING);
+        }
+        if ((detectedName == null || detectedName.isBlank()) && meta.hasDisplayName()) {
+            String plain = PlainTextComponentSerializer.plainText().serialize(meta.displayName()).trim();
+            for (String suffix : new String[]{" Helmet", " Chestplate", " Elytra", " Leggings", " Boots",
+                    " Sword", " Axe", " Pickaxe", " Shovel", " Hoe", " Bow", " Crossbow", " Trident", " Mace", " Fishing Rod", " Shears", " Shield"}) {
+                if (plain.endsWith(suffix)) {
+                    plain = plain.substring(0, plain.length() - suffix.length()).trim();
+                    if (!plain.isBlank()) {
+                        detectedName = plain;
+                        break;
+                    }
+                }
+            }
+        }
+
+        if (detectedName != null && !detectedName.isBlank()) {
+            if (this.globalSetName.isBlank()) {
+                this.globalSetName = detectedName;
+                detectedAny = true;
+            }
+        }
+
+        // 2. Auto-read Set ID
+        NamespacedKey kId = new NamespacedKey("apexsions", "set_id");
+        String detectedId = null;
+        if (pdc.has(kId, PersistentDataType.STRING)) {
+            detectedId = pdc.get(kId, PersistentDataType.STRING);
+        }
+        if (detectedId == null || detectedId.isBlank()) {
+            NamespacedKey kTool = new NamespacedKey("apexsions", "tool_bonus");
+            if (pdc.has(kTool, PersistentDataType.STRING)) {
+                detectedId = pdc.get(kTool, PersistentDataType.STRING);
+            }
+        }
+        if (detectedId != null && !detectedId.isBlank()) {
+            if (this.globalSetId.isBlank()) {
+                this.globalSetId = detectedId;
+                detectedAny = true;
+            }
+        } else if (!this.globalSetName.isBlank() && this.globalSetId.isBlank()) {
+            this.globalSetId = ColorUtil.toPlainText(this.globalSetName).toLowerCase().replaceAll("[^a-z0-9_-]", "_");
+        }
+
+        // 3. Auto-read 2-Piece Stats
+        NamespacedKey k2 = new NamespacedKey("apexsions", "set2_stats");
+        if (pdc.has(k2, PersistentDataType.STRING)) {
+            String raw2 = pdc.get(k2, PersistentDataType.STRING);
+            if (raw2 != null && !raw2.isBlank()) {
+                if (this.globalSet2Stats.isEmpty()) {
+                    parseStatString(raw2, this.globalSet2Stats);
+                    if (!this.globalSet2Stats.isEmpty()) {
+                        detectedAny = true;
+                    }
+                }
+            }
+        }
+
+        // 4. Auto-read 4-Piece Stats
+        NamespacedKey k4 = new NamespacedKey("apexsions", "set4_stats");
+        if (pdc.has(k4, PersistentDataType.STRING)) {
+            String raw4 = pdc.get(k4, PersistentDataType.STRING);
+            if (raw4 != null && !raw4.isBlank()) {
+                if (this.globalSet4Stats.isEmpty()) {
+                    parseStatString(raw4, this.globalSet4Stats);
+                    if (!this.globalSet4Stats.isEmpty()) {
+                        detectedAny = true;
+                    }
+                }
+            }
+        }
+
+        // 5. Legacy set_stats fallback
+        if (this.globalSet2Stats.isEmpty() && this.globalSet4Stats.isEmpty()) {
+            NamespacedKey kStats = new NamespacedKey("apexsions", "set_stats");
+            if (pdc.has(kStats, PersistentDataType.STRING)) {
+                String rawLegacy = pdc.get(kStats, PersistentDataType.STRING);
+                int req = pdc.getOrDefault(new NamespacedKey("apexsions", "set_req"), PersistentDataType.INTEGER, 4);
+                if (req == 2) {
+                    parseStatString(rawLegacy, this.globalSet2Stats);
+                } else {
+                    parseStatString(rawLegacy, this.globalSet4Stats);
+                }
+                if (!this.globalSet2Stats.isEmpty() || !this.globalSet4Stats.isEmpty()) {
+                    detectedAny = true;
+                }
+            }
+        }
+
+        if (!this.globalSet2Stats.isEmpty() || !this.globalSet4Stats.isEmpty()) {
+            this.setBonusConfigured = true;
+        }
+
+        if (detectedAny && !this.globalSetName.isBlank()) {
+            player.playSound(player.getLocation(), Sound.BLOCK_BEACON_ACTIVATE, 0.7f, 1.4f);
+            player.sendMessage(mm.deserialize("<green>✓ Terdeteksi Set: </green>")
+                    .append(ColorUtil.parse(this.globalSetName))
+                    .append(mm.deserialize("<green>! Properti dan set bonus otomatis dibaca.</green>")));
+        }
+    }
+
     private void handleArmorSlotPlacementOrEdit(int slot, ItemStack cursor, ClickType click) {
         boolean hasPlaced = placedItems.containsKey(slot);
 
@@ -722,7 +839,12 @@ public class AdminItemCreatorGUI implements InventoryHolder {
 
             ItemStack toPlace = cursor.clone();
             toPlace.setAmount(1);
-            if (!globalSetName.isBlank()) {
+
+            // 1. Auto-read existing set data from item FIRST
+            autoReadFromItem(toPlace, slot);
+
+            // 2. Only rename if item is a plain unconfigured item
+            if (!globalSetName.isBlank() && isPlainItem(toPlace)) {
                 String suffix = switch (slot) {
                     case SLOT_HELMET -> "Helmet";
                     case SLOT_CHESTPLATE -> toPlace.getType() == Material.ELYTRA ? "Elytra" : "Chestplate";
@@ -780,7 +902,12 @@ public class AdminItemCreatorGUI implements InventoryHolder {
 
             ItemStack toPlace = cursor.clone();
             toPlace.setAmount(1);
-            if (!globalSetName.isBlank()) {
+
+            // 1. Auto-read existing set data from tool FIRST
+            autoReadFromItem(toPlace, slot);
+
+            // 2. Only rename if item is plain
+            if (!globalSetName.isBlank() && isPlainItem(toPlace)) {
                 renamePiece(toPlace, globalSetName, getToolDisplaySuffix(toPlace));
             }
 
@@ -846,7 +973,12 @@ public class AdminItemCreatorGUI implements InventoryHolder {
         ItemStack clone = item.clone();
         clone.setAmount(1);
         item.setAmount(item.getAmount() - 1);
-        if (!globalSetName.isBlank()) {
+
+        // 1. Auto-read existing set data FIRST
+        autoReadFromItem(clone, slot);
+
+        // 2. Only rename if item is plain
+        if (!globalSetName.isBlank() && isPlainItem(clone)) {
             String suffix = switch (slot) {
                 case SLOT_HELMET -> "Helmet";
                 case SLOT_CHESTPLATE -> clone.getType() == Material.ELYTRA ? "Elytra" : "Chestplate";

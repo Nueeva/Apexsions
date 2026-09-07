@@ -6,6 +6,7 @@ import com.apexsions.customenchants.enchant.CustomEnchant;
 import com.apexsions.customenchants.gui.AdminItemCreatorGUI;
 import com.apexsions.customenchants.gui.input.NativeDialogAdapter;
 import com.apexsions.customenchants.gui.input.NativeDialogAdapter.DialogButtonData;
+import com.apexsions.customenchants.items.ColorUtil;
 import com.apexsions.customenchants.tools.ToolStatType;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -82,15 +83,7 @@ public class ItemEditDialogFlow {
                         newName -> {
                             ItemMeta meta = item.getItemMeta();
                             if (meta != null) {
-                                Component c;
-                                if (newName.contains("<") && newName.contains(">")) {
-                                    c = mm.deserialize(newName);
-                                } else if (newName.contains("&")) {
-                                    c = net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer.legacyAmpersand().deserialize(newName);
-                                } else {
-                                    c = mm.deserialize("<gold><bold>" + newName + "</bold></gold>");
-                                }
-                                meta.displayName(c);
+                                meta.displayName(ColorUtil.parse(newName));
                                 item.setItemMeta(meta);
                                 if (creatorGUI != null) creatorGUI.updateItem(sourceSlot, item);
                                 player.sendMessage(mm.deserialize("<green>✓ Nama item berhasil diubah!</green>"));
@@ -545,7 +538,9 @@ public class ItemEditDialogFlow {
                         String cleanName = (newName != null && !newName.isBlank()) ? newName.trim() : "Apexsions";
                         saveArmorSetBonusToItem(item, cleanName, set2Stats, set4Stats);
                         if (creatorGUI != null) creatorGUI.updateItem(sourceSlot, item);
-                        player.sendMessage(mm.deserialize("<green>✓ Nama Set Armor diubah menjadi <gold>" + cleanName + "</gold>!</green>"));
+                        player.sendMessage(mm.deserialize("<green>✓ Nama Set Armor diubah menjadi </green>")
+                                .append(ColorUtil.parse(cleanName))
+                                .append(mm.deserialize("<green>!</green>")));
                         openArmorSetBonus(plugin, player, item, sourceSlot, creatorGUI);
                     },
                     () -> openArmorSetBonus(plugin, player, item, sourceSlot, creatorGUI)

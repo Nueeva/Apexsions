@@ -4,6 +4,7 @@ import com.apexsions.customenchants.ApexsionsCustomEnchantsPlugin;
 import com.apexsions.customenchants.enchant.CustomEnchant;
 import com.apexsions.customenchants.gui.dialog.ItemEditDialogFlow;
 import com.apexsions.customenchants.gui.input.NativeDialogAdapter;
+import com.apexsions.customenchants.items.ColorUtil;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
@@ -220,15 +221,7 @@ public class ItemModifierGUI implements InventoryHolder {
                     newName -> {
                         ItemMeta meta = item.getItemMeta();
                         if (meta != null) {
-                            Component c;
-                            if (newName.contains("<") && newName.contains(">")) {
-                                c = mm.deserialize(newName);
-                            } else if (newName.contains("&")) {
-                                c = net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer.legacyAmpersand().deserialize(newName);
-                            } else {
-                                c = mm.deserialize("<gold><bold>" + newName + "</bold></gold>");
-                            }
-                            meta.displayName(c);
+                            meta.displayName(ColorUtil.parse(newName));
                             item.setItemMeta(meta);
                             if (creatorGUI != null) creatorGUI.updateItem(sourceSlot, item);
                             player.sendMessage(mm.deserialize("<green>✓ Nama item berhasil diubah!</green>"));
