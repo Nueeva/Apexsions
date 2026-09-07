@@ -68,10 +68,10 @@
                 <span class="apx-infra-val font-monospace">apexsions.my.id:32348</span>
             </div>
 
-            <!-- 3. Bedrock Port & Version (Click to copy) -->
-            <div class="apx-infra-item apx-copyable" data-apx-copy="32348" role="button" tabindex="0" title="Klik atau tekan Enter untuk menyalin Port Bedrock" aria-label="Salin Port Server Bedrock">
+            <!-- 3. Bedrock IP, Port & Version (Click to copy) -->
+            <div class="apx-infra-item apx-copyable" data-apx-copy="IP: apexsions.my.id | Port: 32348" role="button" tabindex="0" title="Klik atau tekan Enter untuk menyalin IP dan Port Bedrock" aria-label="Salin IP dan Port Server Bedrock">
                 <span class="apx-infra-label">BEDROCK</span>
-                <span class="apx-infra-val font-monospace">32348</span>
+                <span class="apx-infra-val font-monospace">IP: apexsions.my.id &bull; Port: 32348</span>
                 <span class="apx-infra-meta">&bull; v<span id="apxVersion">26.2</span></span>
             </div>
         </div>
@@ -689,11 +689,14 @@
                 <div class="apx-step-phase-label mb-3">TAHAP KEDUA</div>
                 <h3 class="apx-step-title">Alamat Server &amp; Port</h3>
                 <p class="apx-step-desc">
-                    Buka menu Multiplayer dan masukkan alamat server <code>apexsions.my.id:32348</code>. Untuk pemain Bedrock, hubungkan melalui Port <code>32348</code>.
+                    Buka menu Multiplayer dan masukkan alamat server <code>apexsions.my.id:32348</code>. Untuk pemain Bedrock, masukkan IP <code>apexsions.my.id</code> dengan Port <code>32348</code>.
                 </p>
-                <div class="apx-step-action mt-auto">
-                    <button type="button" class="btn btn-apx-outline btn-sm w-100 py-2" data-apx-copy="apexsions.my.id:32348" aria-label="Salin Alamat Server">
-                        <i class="bi bi-clipboard me-1"></i> Salin IP &bull; apexsions.my.id:32348
+                <div class="apx-step-action mt-auto d-flex flex-column gap-2">
+                    <button type="button" class="btn btn-apx-outline btn-sm w-100 py-2" data-apx-copy="apexsions.my.id:32348" aria-label="Salin Alamat Server Java">
+                        <i class="bi bi-laptop me-1"></i> Salin Java &bull; apexsions.my.id:32348
+                    </button>
+                    <button type="button" class="btn btn-apx-outline btn-sm w-100 py-2" data-apx-copy="IP: apexsions.my.id | Port: 32348" aria-label="Salin IP dan Port Bedrock">
+                        <i class="bi bi-phone me-1"></i> Salin Bedrock &bull; IP: apexsions.my.id | Port: 32348
                     </button>
                 </div>
             </div>

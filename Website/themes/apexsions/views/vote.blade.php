@@ -233,10 +233,17 @@
                         <p class="text-muted small mb-4" style="line-height: 1.8;">
                             Setelah memberikan suara, sambungkan klien Anda ke dunia Apexsions untuk segera membuka peti keberuntungan di pelataran spawn utama.
                         </p>
-                        <div class="p-3 rounded mb-4 d-inline-flex align-items-center gap-3 apx-copyable" data-apx-copy="apexsions.my.id:32348" role="button" tabindex="0" title="Klik untuk menyalin IP" aria-label="Salin Alamat Server Java">
-                            <span class="apx-pulse-dot" style="width: 8px; height: 8px;"></span>
-                            <span class="font-monospace text-white small">apexsions.my.id:32348</span>
-                            <i class="bi bi-clipboard text-gold small ms-2"></i>
+                        <div class="d-flex flex-wrap gap-2 mb-4">
+                            <div class="p-3 rounded d-inline-flex align-items-center gap-3 apx-copyable" data-apx-copy="apexsions.my.id:32348" role="button" tabindex="0" title="Klik untuk menyalin IP Java" aria-label="Salin Alamat Server Java" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);">
+                                <span class="apx-pulse-dot" style="width: 8px; height: 8px;"></span>
+                                <span class="font-monospace text-white small">JAVA: apexsions.my.id:32348</span>
+                                <i class="bi bi-clipboard text-gold small ms-2"></i>
+                            </div>
+                            <div class="p-3 rounded d-inline-flex align-items-center gap-3 apx-copyable" data-apx-copy="IP: apexsions.my.id | Port: 32348" role="button" tabindex="0" title="Klik untuk menyalin IP dan Port Bedrock" aria-label="Salin IP dan Port Server Bedrock" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);">
+                                <span class="badge bg-secondary" style="font-size: 0.65rem; padding: 2px 5px;">BEDROCK</span>
+                                <span class="font-monospace text-white small">IP: apexsions.my.id | Port: 32348</span>
+                                <i class="bi bi-clipboard text-gold small ms-2"></i>
+                            </div>
                         </div>
                     </div>
                     <div class="d-flex align-items-center justify-content-center justify-content-lg-start gap-3 flex-wrap">
