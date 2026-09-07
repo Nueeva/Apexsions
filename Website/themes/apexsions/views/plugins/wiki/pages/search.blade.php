@@ -14,7 +14,7 @@
                 @endif
             </div>
             <a href="{{ route('wiki.index') }}" class="btn btn-apx-outline btn-sm">
-                <i class="bi bi-arrow-left me-1"></i> Kembali ke Indeks Wiki
+                <i class="bi bi-arrow-left me-1"></i> <span data-i18n="wiki_back_index">Kembali ke Indeks Wiki</span>
             </a>
         </div>
 
@@ -40,7 +40,7 @@
                         </p>
 
                         <a href="{{ route('wiki.pages.show', [$page->category, $page]) }}" class="d-inline-flex align-items-center text-warning fw-bold small text-decoration-none">
-                            <span>Buka Panduan Lengkap</span>
+                            <span data-i18n="wiki_open_guide">Buka Panduan Lengkap</span>
                             <i class="bi bi-arrow-right ms-2"></i>
                         </a>
                     </div>
@@ -51,13 +51,13 @@
                 <div class="apx-card-icon-wrap apx-icon-gold mx-auto mb-3">
                     <i class="bi bi-search"></i>
                 </div>
-                <h4 class="text-white mb-2" style="font-family: 'Cinzel', Georgia, serif;">Tidak Ada Hasil Ditemukan</h4>
+                <h4 class="text-white mb-2" style="font-family: 'Cinzel', Georgia, serif;" data-i18n="wiki_no_results">Tidak Ada Hasil Ditemukan</h4>
                 <p class="text-muted small mb-4">
                     Tidak ditemukan artikel ensiklopedia yang cocok dengan kata kunci <strong>"{{ request('q') }}"</strong>. Coba gunakan kata kunci umum seperti <em>"kerajaan"</em>, <em>"enchant"</em>, <em>"perintah"</em>, atau <em>"level"</em>.
                 </p>
                 <div>
                     <a href="{{ route('wiki.index') }}" class="btn btn-apx-gold btn-sm">
-                        <i class="bi bi-journal-bookmark me-1"></i> Jelajahi Seluruh Kategori
+                        <i class="bi bi-journal-bookmark me-1"></i> <span data-i18n="wiki_all_categories">Jelajahi Seluruh Kategori</span>
                     </a>
                 </div>
             </div>

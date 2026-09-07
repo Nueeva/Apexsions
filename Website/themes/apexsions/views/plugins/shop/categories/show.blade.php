@@ -29,10 +29,10 @@
     <!-- Store Header / Hero -->
     <div class="apx-store-hero">
         <div class="apx-section-kicker mb-2">
-            <i class="bi bi-shield-check"></i> TRANSAKSI RESMI PERADABAN
+            <i class="bi bi-shield-check"></i> <span data-i18n="shop_kicker">TRANSAKSI RESMI PERADABAN</span>
         </div>
         <h1 class="mb-2">{{ $category->name }}</h1>
-        <p>Tingkatkan kasta, kedaulatan, dan supremasi peradabanmu di realm Apexsions dengan mandat resmi, kit berkala, serta perolehan sumber daya terpercaya.</p>
+        <p data-i18n="shop_hero_sub">Tingkatkan kasta, kedaulatan, dan supremasi peradabanmu di realm Apexsions dengan mandat resmi, kit berkala, serta perolehan sumber daya terpercaya.</p>
     </div>
 
     <!-- Category Switcher Pills -->
@@ -59,10 +59,10 @@
                 </div>
                 <div>
                     <div class="fw-bold text-white mb-1 d-flex align-items-center gap-2" style="font-size: 1.05rem;">
-                        <span>Pemesanan Langsung &amp; Terverifikasi via WhatsApp Founder</span>
-                        <span class="badge bg-success bg-opacity-25 text-success font-monospace" style="font-size: 0.65rem; letter-spacing: 0.05em;">AKTIVASI CEPAT</span>
+                        <span data-i18n="shop_wa_title">Pemesanan Langsung &amp; Terverifikasi via WhatsApp Founder</span>
+                        <span class="badge bg-success bg-opacity-25 text-success font-monospace" style="font-size: 0.65rem; letter-spacing: 0.05em;" data-i18n="shop_wa_badge">AKTIVASI CEPAT</span>
                     </div>
-                    <div class="text-muted small" style="line-height: 1.5;">
+                    <div class="text-muted small" style="line-height: 1.5;" data-i18n-html="shop_wa_desc">
                         Pilih paket yang diinginkan lalu hubungi salah satu dari 2 Founder resmi kami:
                         <strong class="text-white">Rifqi</strong> atau <strong class="text-white">Friell</strong>. Pesanan diproses aman, transparan, dan langsung aktif ke in-game.
                     </div>
@@ -264,31 +264,31 @@
 
                                 <!-- Founder Direct Order Quick Selector -->
                                 <div class="mb-3 pt-2 border-top border-secondary border-opacity-15">
-                                    <div class="small text-muted mb-2 d-flex align-items-center justify-content-between" style="font-size: 0.75rem;">
-                                        <span><i class="bi bi-whatsapp text-success me-1"></i> Pilih Founder:</span>
-                                        <span class="text-dim">Pesan Langsung</span>
-                                    </div>
-                                    <div class="d-flex flex-wrap gap-1">
-                                        @foreach($founderAdmins as $adm)
-                                            @php
-                                                $admNum = preg_replace('/[^0-9]/', '', $adm['number']);
-                                                $admUrl = 'https://wa.me/' . $admNum . '?text=' . rawurlencode($waBaseText);
-                                            @endphp
-                                            <a href="{{ $admUrl }}" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-success py-1 px-2 d-flex align-items-center gap-1" style="font-size: 0.75rem;" title="Pesan paket ini via Founder {{ $adm['name'] }}">
-                                                <i class="bi bi-whatsapp"></i> {{ $adm['name'] }}
-                                            </a>
-                                        @endforeach
-                                    </div>
-                                </div>
+                                     <div class="small text-muted mb-2 d-flex align-items-center justify-content-between" style="font-size: 0.75rem;">
+                                         <span><i class="bi bi-whatsapp text-success me-1"></i> <span data-i18n="shop_choose_founder">Pilih Founder:</span></span>
+                                         <span class="text-dim" data-i18n="shop_direct_order">Pesan Langsung</span>
+                                     </div>
+                                     <div class="d-flex flex-wrap gap-1">
+                                         @foreach($founderAdmins as $adm)
+                                             @php
+                                                 $admNum = preg_replace('/[^0-9]/', '', $adm['number']);
+                                                 $admUrl = 'https://wa.me/' . $admNum . '?text=' . rawurlencode($waBaseText);
+                                             @endphp
+                                             <a href="{{ $admUrl }}" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-success py-1 px-2 d-flex align-items-center gap-1" style="font-size: 0.75rem;" title="Pesan paket ini via Founder {{ $adm['name'] }}">
+                                                 <i class="bi bi-whatsapp"></i> {{ $adm['name'] }}
+                                             </a>
+                                         @endforeach
+                                     </div>
+                                 </div>
 
-                                <div class="apx-package-footer mt-auto d-flex flex-column gap-2">
-                                    <a href="{{ $primaryWaUrl }}" target="_blank" rel="noopener noreferrer" class="btn btn-apx-wa w-100 py-2">
-                                        <i class="bi bi-whatsapp me-1"></i> Pesan Cepat via WhatsApp
-                                    </a>
-                                    <a href="#" class="btn btn-apx-outline w-100 py-1 small" data-package-url="{{ route('shop.packages.show', $package) }}">
-                                        <i class="bi bi-info-circle me-1"></i> Rincian &amp; Benefit Lengkap
-                                    </a>
-                                </div>
+                                 <div class="apx-package-footer mt-auto d-flex flex-column gap-2">
+                                     <a href="{{ $primaryWaUrl }}" target="_blank" rel="noopener noreferrer" class="btn btn-apx-wa w-100 py-2">
+                                         <i class="bi bi-whatsapp me-1"></i> <span data-i18n="shop_btn_wa">Pesan Cepat via WhatsApp</span>
+                                     </a>
+                                     <a href="#" class="btn btn-apx-outline w-100 py-1 small" data-package-url="{{ route('shop.packages.show', $package) }}">
+                                         <i class="bi bi-info-circle me-1"></i> <span data-i18n="shop_btn_details">Rincian &amp; Benefit Lengkap</span>
+                                     </a>
+                                 </div>
                             </div>
                         </div>
                     </div>

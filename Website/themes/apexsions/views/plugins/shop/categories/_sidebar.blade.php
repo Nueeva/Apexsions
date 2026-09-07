@@ -43,8 +43,8 @@
         <div class="mb-2 text-warning fs-3">
             <i class="bi bi-person-badge"></i>
         </div>
-        <h5 class="mb-1" style="font-family: 'Cinzel', Georgia, serif; color: #ffffff;">Akun Pemain</h5>
-        <p class="small text-muted mb-3" style="line-height: 1.5;">Masuk untuk melihat keranjang dan klaim perk otomatis ke dalam in-game.</p>
+        <h5 class="mb-1" style="font-family: 'Cinzel', Georgia, serif; color: #ffffff;" data-i18n="shop_sidebar_account">Akun Pemain</h5>
+        <p class="small text-muted mb-3" style="line-height: 1.5;" data-i18n="shop_sidebar_account_desc">Masuk untuk melihat keranjang dan klaim perk otomatis ke dalam in-game.</p>
         <a href="{{ route('shop.login') }}" class="btn btn-apx-gold">
             <i class="bi bi-box-arrow-in-right me-1"></i> {{ trans('auth.login') }}
         </a>
@@ -77,11 +77,11 @@
 <!-- Direct WhatsApp Helpdesk Widget -->
 <div class="card mb-4" style="background: var(--apx-bg-surface); border: 1px solid var(--apx-gold-border-subtle); border-radius: var(--apx-radius-md);">
     <div class="card-header py-2 px-3 small text-white fw-bold d-flex align-items-center justify-content-between" style="background: rgba(34, 197, 94, 0.08); border-bottom: 1px solid rgba(34, 197, 94, 0.2);">
-        <span><i class="bi bi-whatsapp text-success me-1"></i> BANTUAN &amp; FOUNDER</span>
+        <span><i class="bi bi-whatsapp text-success me-1"></i> <span data-i18n="shop_sidebar_help">BANTUAN &amp; FOUNDER</span></span>
         <span class="badge bg-success bg-opacity-25 text-success font-monospace" style="font-size: 0.65rem;">ONLINE</span>
     </div>
     <div class="card-body p-3">
-        <p class="small text-muted mb-3" style="font-size: 0.8rem; line-height: 1.4;">Butuh panduan donasi atau konfirmasi manual? Hubungi salah satu Founder resmi kami:</p>
+        <p class="small text-muted mb-3" style="font-size: 0.8rem; line-height: 1.4;" data-i18n="shop_sidebar_help_desc">Butuh panduan donasi atau konfirmasi manual? Hubungi salah satu Founder resmi kami:</p>
         <div class="d-grid gap-2">
             @php
                 $sidebarAdmins = config('services.whatsapp.admins', [

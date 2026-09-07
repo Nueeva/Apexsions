@@ -17,10 +17,10 @@
 @section('content')
     <div class="apx-store-hero">
         <div class="apx-section-kicker mb-2">
-            <i class="bi bi-cart3"></i> KERANJANG BELANJA PERADABAN
+            <i class="bi bi-cart3"></i> <span data-i18n="cart_kicker">KERANJANG BELANJA PERADABAN</span>
         </div>
         <h1 class="mb-2">{{ trans('shop::messages.cart.title') }}</h1>
-        <p>Periksa rincian pesanan paket kedaulatan Anda sebelum melanjutkan ke proses pembayaran atau aktivasi via WhatsApp.</p>
+        <p data-i18n="cart_hero_sub">Periksa rincian pesanan paket kedaulatan Anda sebelum melanjutkan ke proses pembayaran atau aktivasi via WhatsApp.</p>
     </div>
 
     <!-- WhatsApp Direct Order Banner on Cart -->
@@ -32,9 +32,9 @@
                 </div>
                 <div>
                     <div class="fw-bold text-white mb-1" style="font-size: 1rem;">
-                        <i class="bi bi-patch-check-fill text-success me-1"></i> Mau Aktivasi Instan Tanpa Antre?
+                        <i class="bi bi-patch-check-fill text-success me-1"></i> <span data-i18n="cart_wa_title">Mau Aktivasi Instan Tanpa Antre?</span>
                     </div>
-                    <div class="text-muted small" style="line-height: 1.5;">
+                    <div class="text-muted small" style="line-height: 1.5;" data-i18n-html="cart_wa_desc">
                         Anda dapat langsung konfirmasi dan pesan melalui WhatsApp ke 2 Founder resmi:
                         <strong class="text-white">Rifqi</strong> atau <strong class="text-white">Friell</strong>.
                     </div>

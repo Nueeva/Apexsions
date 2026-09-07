@@ -12,18 +12,18 @@
                 <div class="col-lg-8">
                     <div class="d-flex align-items-center gap-2 mb-2">
                         <span class="badge" style="background: rgba(245, 158, 11, 0.2); color: var(--apx-gold-light); border: 1px solid var(--apx-gold-border); font-size: 0.75rem; letter-spacing: 0.08em;">
-                            <i class="bi bi-book-half me-1"></i> ARSIP RESMI REALM
+                            <i class="bi bi-book-half me-1"></i> <span data-i18n="wiki_portal_badge">ARSIP RESMI REALM</span>
                         </span>
-                        <span class="text-dim small">• Versi Runtime Minecraft 26.2</span>
+                        <span class="text-dim small" data-i18n="wiki_runtime_ver">• Versi Runtime Minecraft 26.2</span>
                     </div>
-                    <h2 class="h4 mb-2" style="font-family: 'Cinzel', Georgia, serif; color: #ffffff;">
+                    <h2 class="h4 mb-2" style="font-family: 'Cinzel', Georgia, serif; color: #ffffff;" data-i18n="wiki_portal_title">
                         Pusat Pengetahuan &amp; Sejarah Peradaban Puncak
                     </h2>
-                    <p class="text-muted small mb-3" style="line-height: 1.6;">
+                    <p class="text-muted small mb-3" style="line-height: 1.6;" data-i18n="wiki_portal_desc">
                         Selamat datang di ensiklopedia resmi Apexsions. Temukan dokumentasi lengkap tentang 3 Kerajaan berdaulat, 11 hierarki kasta resmi, 28 Custom Enchants beserta efek set bonus armor, panduan pasar dinamis, serta peta jalan dari pengelana menjadi penguasa wilayah.
                     </p>
                     <div class="d-flex flex-wrap gap-2">
-                        <span class="text-muted small me-1 align-self-center">Topik Populer:</span>
+                        <span class="text-muted small me-1 align-self-center" data-i18n="wiki_popular_label">Topik Populer:</span>
                         <a href="{{ route('wiki.search', ['q' => 'pemula']) }}" class="badge text-decoration-none py-2 px-3" style="background: rgba(255, 255, 255, 0.06); color: var(--apx-gold-light); border: 1px solid rgba(255, 255, 255, 0.1);">#PanduanPemula</a>
                         <a href="{{ route('wiki.search', ['q' => 'kerajaan']) }}" class="badge text-decoration-none py-2 px-3" style="background: rgba(255, 255, 255, 0.06); color: var(--apx-gold-light); border: 1px solid rgba(255, 255, 255, 0.1);">#TigaKerajaan</a>
                         <a href="{{ route('wiki.search', ['q' => 'kasta']) }}" class="badge text-decoration-none py-2 px-3" style="background: rgba(255, 255, 255, 0.06); color: var(--apx-gold-light); border: 1px solid rgba(255, 255, 255, 0.1);">#11KastaResmi</a>
@@ -36,25 +36,25 @@
                         <div class="col-6">
                             <div class="p-3 rounded-3" style="background: var(--apx-bg-deep); border: 1px solid var(--apx-border);">
                                 <div class="fs-4 fw-bold text-warning" style="font-family: 'Cinzel', Georgia, serif;">6</div>
-                                <div class="text-dim" style="font-size: 0.75rem; text-transform: uppercase;">Kategori Utama</div>
+                                <div class="text-dim" style="font-size: 0.75rem; text-transform: uppercase;" data-i18n="wiki_stat_categories">Kategori Utama</div>
                             </div>
                         </div>
                         <div class="col-6">
                             <div class="p-3 rounded-3" style="background: var(--apx-bg-deep); border: 1px solid var(--apx-border);">
                                 <div class="fs-4 fw-bold text-white" style="font-family: 'Cinzel', Georgia, serif;">21+</div>
-                                <div class="text-dim" style="font-size: 0.75rem; text-transform: uppercase;">Artikel Terinci</div>
+                                <div class="text-dim" style="font-size: 0.75rem; text-transform: uppercase;" data-i18n="wiki_stat_articles">Artikel Terinci</div>
                             </div>
                         </div>
                         <div class="col-6">
                             <div class="p-3 rounded-3" style="background: var(--apx-bg-deep); border: 1px solid var(--apx-border);">
                                 <div class="fs-4 fw-bold text-warning" style="font-family: 'Cinzel', Georgia, serif;">11</div>
-                                <div class="text-dim" style="font-size: 0.75rem; text-transform: uppercase;">Kasta Resmi</div>
+                                <div class="text-dim" style="font-size: 0.75rem; text-transform: uppercase;" data-i18n="wiki_stat_castes">Kasta Resmi</div>
                             </div>
                         </div>
                         <div class="col-6">
                             <div class="p-3 rounded-3" style="background: var(--apx-bg-deep); border: 1px solid var(--apx-border);">
                                 <div class="fs-4 fw-bold text-info" style="font-family: 'Cinzel', Georgia, serif;">28</div>
-                                <div class="text-dim" style="font-size: 0.75rem; text-transform: uppercase;">Custom Enchants</div>
+                                <div class="text-dim" style="font-size: 0.75rem; text-transform: uppercase;" data-i18n="wiki_stat_enchants">Custom Enchants</div>
                             </div>
                         </div>
                     </div>
