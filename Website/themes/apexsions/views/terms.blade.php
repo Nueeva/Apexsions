@@ -62,25 +62,18 @@
                         Transaksi resmi hanya dilayani melalui webstore portal <a href="{{ route('home') }}" class="text-gold text-decoration-none">web.apexsions.my.id</a> dan konfirmasi langsung ke WhatsApp Founder/Admin resmi Apexsions:
                     </p>
                     <div class="row g-3 mb-3">
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <div class="p-3 rounded text-center" style="background: rgba(255, 255, 255, 0.02); border: 1px solid var(--apx-border);">
                                 <i class="bi bi-whatsapp text-success fs-4 mb-1"></i>
                                 <div class="text-white small fw-bold">Admin 1 (Rifqi)</div>
                                 <div class="text-muted font-monospace small">+62 812-1299-4597</div>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <div class="p-3 rounded text-center" style="background: rgba(255, 255, 255, 0.02); border: 1px solid var(--apx-border);">
                                 <i class="bi bi-whatsapp text-success fs-4 mb-1"></i>
                                 <div class="text-white small fw-bold">Admin 2 (Friell)</div>
                                 <div class="text-muted font-monospace small">+62 858-8316-1047</div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="p-3 rounded text-center" style="background: rgba(255, 255, 255, 0.02); border: 1px solid var(--apx-border);">
-                                <i class="bi bi-whatsapp text-success fs-4 mb-1"></i>
-                                <div class="text-white small fw-bold">Admin 3 (Favian)</div>
-                                <div class="text-muted font-monospace small">+62 877-2911-2281</div>
                             </div>
                         </div>
                     </div>

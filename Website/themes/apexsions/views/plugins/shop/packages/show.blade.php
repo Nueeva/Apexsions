@@ -35,7 +35,6 @@
                 $modalAdmins = config('services.whatsapp.admins', [
                     ['name' => 'Rifqi', 'number' => '6281212994597', 'role' => 'Founder'],
                     ['name' => 'Friell', 'number' => '6285883161047', 'role' => 'Founder'],
-                    ['name' => 'Favian', 'number' => '6287729112281', 'role' => 'Founder'],
                 ]);
             @endphp
 

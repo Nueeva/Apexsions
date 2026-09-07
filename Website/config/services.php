@@ -65,11 +65,6 @@ return [
                 'number' => env('WHATSAPP_ADMIN_2_NUMBER', '6285883161047'),
                 'role' => 'Founder',
             ],
-            [
-                'name' => env('WHATSAPP_ADMIN_3_NAME', 'Favian'),
-                'number' => env('WHATSAPP_ADMIN_3_NUMBER', '6287729112281'),
-                'role' => 'Founder',
-            ],
         ],
     ],
 

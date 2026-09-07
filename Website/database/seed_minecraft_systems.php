@@ -676,6 +676,13 @@ Kondisi masa lalu para pendiri serta adaptasi geografis selama ratusan tahun mem
 
 ---
 
+### Misteri Reruntuhan Episentrum di Jantung Wilderness (Terra Interdicta)
+Tepat di titik tengah alam liar (*Wilderness*) yang memisahkan perbatasan ketiga kerajaan, tersembunyi puing-puing raksasa dari istana pusat Kekaisaran Sions yang telah runtuh. Wilayah ini sengaja tidak dicantumkan dalam kartografi resmi kerajaan mana pun karena distorsi dimensi purba serta kabut anomali kegelapan yang menolak pemetaan biasa.
+
+Para penjelajah dan pemburu harta karun membisikkan bahwa di dalam reruntuhan terkutuk ini tersimpan peninggalan pusaka kaisar, peti perbendaharaan emas kuno, dan gulungan mantra terlarang. Namun, tempat ini dijaga oleh **monster-monster berlevel tinggi dan sisa-sisa legiun prajurit Sions yang telah bermutasi** akibat paparan energi Dimensi Kegelapan abadi—menjadikannya zona ekspedisi paling berbahaya sekaligus paling berharga di seluruh jagat Apexsions.
+
+---
+
 ### Ikrar Sumpah Warga Baru
 Kini, setiap pengelana baru (*Wanderer*) yang menginjakkan kaki di tanah Apexsions harus memilih jalannya: Apakah Anda akan menjunjung martabat dinasti di **Zenithar**, menaklukkan cadas api di **Solterra**, atau merengkuh kedamaian rimba di **Sylvamoor**? Pilihan Anda adalah takdir peradaban Anda!
 MARKDOWN

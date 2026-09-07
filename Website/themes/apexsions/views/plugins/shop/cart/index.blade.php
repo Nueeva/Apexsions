@@ -34,8 +34,8 @@
                         <i class="bi bi-patch-check-fill text-success me-1"></i> Mau Aktivasi Instan Tanpa Antre?
                     </div>
                     <div class="text-muted small" style="line-height: 1.5;">
-                        Anda dapat langsung konfirmasi dan pesan melalui WhatsApp ke 3 Founder resmi:
-                        <strong class="text-white">Rifqi</strong>, <strong class="text-white">Friell</strong>, atau <strong class="text-white">Favian</strong>.
+                        Anda dapat langsung konfirmasi dan pesan melalui WhatsApp ke 2 Founder resmi:
+                        <strong class="text-white">Rifqi</strong> atau <strong class="text-white">Friell</strong>.
                     </div>
                 </div>
             </div>
@@ -44,7 +44,6 @@
                     $cartAdmins = config('services.whatsapp.admins', [
                         ['name' => 'Rifqi', 'number' => '6281212994597', 'role' => 'Founder'],
                         ['name' => 'Friell', 'number' => '6285883161047', 'role' => 'Founder'],
-                        ['name' => 'Favian', 'number' => '6287729112281', 'role' => 'Founder'],
                     ]);
                 @endphp
                 @foreach($cartAdmins as $adm)

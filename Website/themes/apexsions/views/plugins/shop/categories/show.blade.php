@@ -62,8 +62,8 @@
                         <span class="badge bg-success bg-opacity-25 text-success font-monospace" style="font-size: 0.65rem; letter-spacing: 0.05em;">AKTIVASI CEPAT</span>
                     </div>
                     <div class="text-muted small" style="line-height: 1.5;">
-                        Pilih paket yang diinginkan lalu hubungi salah satu dari 3 Founder resmi kami:
-                        <strong class="text-white">Rifqi</strong>, <strong class="text-white">Friell</strong>, atau <strong class="text-white">Favian</strong>. Pesanan diproses aman, transparan, dan langsung aktif ke in-game.
+                        Pilih paket yang diinginkan lalu hubungi salah satu dari 2 Founder resmi kami:
+                        <strong class="text-white">Rifqi</strong> atau <strong class="text-white">Friell</strong>. Pesanan diproses aman, transparan, dan langsung aktif ke in-game.
                     </div>
                 </div>
             </div>
@@ -72,7 +72,6 @@
                     $founderAdmins = config('services.whatsapp.admins', [
                         ['name' => 'Rifqi', 'number' => '6281212994597', 'role' => 'Founder'],
                         ['name' => 'Friell', 'number' => '6285883161047', 'role' => 'Founder'],
-                        ['name' => 'Favian', 'number' => '6287729112281', 'role' => 'Founder'],
                     ]);
                 @endphp
                 @foreach($founderAdmins as $adm)
