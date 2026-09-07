@@ -63,7 +63,7 @@ public class AdminRewardItemEditMenu extends Gui {
             overviewLore.add("&7Jumlah: &a" + item.getAmount() + "x");
             overviewLore.add("&7Stackable: " + (isStackable ? "&aYa (Maks " + itemStack.getMaxStackSize() + ")" : "&cTidak (Maks 1)"));
         }
-        overviewLore.add("&7Preview: " + (item.isPreviewable() ? "&aAktif" : "&cNonaktif"));
+        overviewLore.add("&7Tipe Preview: " + (item.isSpecialPreview() ? "&6👑 Istimewa" : "&b📦 Biasa"));
         if (!item.getCommands().isEmpty()) {
             overviewLore.add("&7Command: &f" + String.join(", ", item.getCommands()));
         }
@@ -100,7 +100,7 @@ public class AdminRewardItemEditMenu extends Gui {
                                 updatedData = ItemSerializer.toBase64(is);
                             }
                         }
-                        RewardItem updated = new RewardItem(item.getType(), item.getMaterial(), newAmount, item.getName(), item.getCommands(), item.getPermission(), updatedData, item.getCurrencyId(), item.isPreviewable());
+                        RewardItem updated = new RewardItem(item.getType(), item.getMaterial(), newAmount, item.getName(), item.getCommands(), item.getPermission(), updatedData, item.getCurrencyId(), item.isSpecialPreview());
                         plugin.getRewardManager().updateReward(level, passId, rewardIndex, updated);
                         player.sendMessage("§aJumlah item berhasil diubah menjadi §e" + newAmount + "x§a!");
                         open();
@@ -126,7 +126,7 @@ public class AdminRewardItemEditMenu extends Gui {
                     .build(), event -> {
                 plugin.getChatInputManager().startNumericInput(player, "Masukkan nominal saldo baru:", newAmount -> {
                     String name = "rupiah".equalsIgnoreCase(item.getCurrencyId()) ? ("Rp." + newAmount) : (newAmount + " " + item.getCurrencyId().toUpperCase());
-                    RewardItem updated = new RewardItem(item.getType(), item.getMaterial(), newAmount, name, item.getCommands(), item.getPermission(), item.getItemData(), item.getCurrencyId(), item.isPreviewable());
+                    RewardItem updated = new RewardItem(item.getType(), item.getMaterial(), newAmount, name, item.getCommands(), item.getPermission(), item.getItemData(), item.getCurrencyId(), item.isSpecialPreview());
                     plugin.getRewardManager().updateReward(level, passId, rewardIndex, updated);
                     player.sendMessage("§aNominal saldo berhasil diubah menjadi §e" + name + "§a!");
                     open();
@@ -155,7 +155,7 @@ public class AdminRewardItemEditMenu extends Gui {
                 }
                 String nextCurr = currs[next];
                 String name = "rupiah".equalsIgnoreCase(nextCurr) ? ("Rp." + item.getAmount()) : (item.getAmount() + " " + nextCurr.toUpperCase());
-                RewardItem updated = new RewardItem(item.getType(), item.getMaterial(), item.getAmount(), name, item.getCommands(), item.getPermission(), item.getItemData(), nextCurr, item.isPreviewable());
+                RewardItem updated = new RewardItem(item.getType(), item.getMaterial(), item.getAmount(), name, item.getCommands(), item.getPermission(), item.getItemData(), nextCurr, item.isSpecialPreview());
                 plugin.getRewardManager().updateReward(level, passId, rewardIndex, updated);
                 player.sendMessage("§aMata uang diubah menjadi §e" + nextCurr.toUpperCase() + "§a!");
                 open();
@@ -171,7 +171,7 @@ public class AdminRewardItemEditMenu extends Gui {
                     ))
                     .build(), event -> {
                 plugin.getChatInputManager().startInput(player, "Masukkan command baru (gunakan placeholder %player%):", newCmd -> {
-                    RewardItem updated = new RewardItem(item.getType(), item.getMaterial(), 1, newCmd, List.of(newCmd), item.getPermission(), item.getItemData(), item.getCurrencyId(), item.isPreviewable());
+                    RewardItem updated = new RewardItem(item.getType(), item.getMaterial(), 1, newCmd, List.of(newCmd), item.getPermission(), item.getItemData(), item.getCurrencyId(), item.isSpecialPreview());
                     plugin.getRewardManager().updateReward(level, passId, rewardIndex, updated);
                     player.sendMessage("§aCommand berhasil diperbarui!");
                     open();
@@ -179,22 +179,24 @@ public class AdminRewardItemEditMenu extends Gui {
             }));
         }
 
-        // Preview Toggle Button (Slot 22)
-        boolean isPreview = item.isPreviewable();
-        setButton(22, new GuiButton(new ItemBuilder(isPreview ? Material.ENDER_EYE : Material.ENDER_PEARL)
-                .name(isPreview ? "&a&l[👁] PREVIEW: AKTIF" : "&c&l[👁] PREVIEW: NONAKTIF")
+        // Preview Mode Toggle Button (Slot 22: Istimewa vs Biasa)
+        boolean isSpecial = item.isSpecialPreview();
+        setButton(22, new GuiButton(new ItemBuilder(isSpecial ? Material.NETHER_STAR : Material.CHEST)
+                .name(isSpecial ? "&6&l[👑] TIPE PREVIEW: ISTIMEWA" : "&b&l[📦] TIPE PREVIEW: BIASA")
                 .lore(List.of(
-                        "&7Status fitur preview hadiah:",
-                        isPreview ? "&aHadiah ini dapat di-preview pemain sebelum level terbuka." : "&cHadiah ini tersembunyi/tidak dapat di-preview jika terkunci.",
-                        "&8(Catatan: Level kelipatan 50 otomatis dapat di-preview)",
+                        "&7Tipe tampilan preview hadiah saat diklik pemain:",
+                        isSpecial ? "&6● ISTIMEWA &7(Tampilan GUI mewah, pedestal & visual spesial)" : "&8○ ISTIMEWA &7(Tampilan GUI mewah)",
+                        !isSpecial ? "&b● BIASA &7(Tampilan preview standar minimalis)" : "&8○ BIASA &7(Tampilan standar)",
+                        "&8(Catatan: Level kelipatan 50 otomatis istimewa)",
                         " ",
-                        "&eKlik untuk beralih status preview >"
+                        isSpecial ? "&eKlik untuk beralih ke Mode Biasa >" : "&eKlik untuk beralih ke Mode Istimewa >"
                 ))
+                .glow()
                 .build(), event -> {
-            boolean nextState = !isPreview;
+            boolean nextState = !isSpecial;
             RewardItem updated = new RewardItem(item.getType(), item.getMaterial(), item.getAmount(), item.getName(), item.getCommands(), item.getPermission(), item.getItemData(), item.getCurrencyId(), nextState);
             plugin.getRewardManager().updateReward(level, passId, rewardIndex, updated);
-            player.sendMessage(nextState ? "§aFitur preview hadiah berhasil §a§lDIAKTIFKAN§a!" : "§cFitur preview hadiah berhasil §c§lDINONAKTIFKAN§c!");
+            player.sendMessage(nextState ? "§aTipe preview hadiah berhasil diubah menjadi §6§lISTIMEWA§a!" : "§aTipe preview hadiah berhasil diubah menjadi §b§lBIASA§a!");
             open();
         }));
 

@@ -254,9 +254,11 @@ public class LevelRewardsGUI implements Listener {
                     "<green><bold>» KLIK UNTUK KLAIM «</bold></green>", true);
         } else {
             // Pas kekunci: chest kayu dengan EFEK GLOWING
+            List<String> lockedDetails = new ArrayList<>(details);
+            lockedDetails.add("<yellow>» Klik untuk preview isi hadiah «</yellow>");
             item = createRewardCard(Material.CHEST,
                     "<red>🔒 Level " + lvl + "</red>",
-                    details,
+                    lockedDetails,
                     "<red>Terkunci — Capai Level " + lvl + "</red>", true);
         }
 
@@ -507,9 +509,18 @@ public class LevelRewardsGUI implements Listener {
                 if (slot == NORMAL_SLOTS[i]) {
                     int targetLevel = startNormal + i;
                     if (targetLevel <= endNormal) {
-                        boolean claimed = plugin.getRewardManager().claimReward(player, targetLevel);
-                        if (claimed) {
-                            open(player, currentPage);
+                        Optional<PlayerData> dataOpt = plugin.getPlayerDataService().getCached(player.getUniqueId());
+                        if (dataOpt.isPresent()) {
+                            PlayerData data = dataOpt.get();
+                            if (data.getLevel() >= targetLevel && !data.isRewardClaimed(targetLevel)) {
+                                boolean claimed = plugin.getRewardManager().claimReward(player, targetLevel);
+                                if (claimed) {
+                                    open(player, currentPage);
+                                }
+                            } else {
+                                // Standard Level Reward Preview (Biasa)
+                                plugin.getStandardLevelRewardPreviewGUI().open(player, targetLevel, currentPage);
+                            }
                         }
                     }
                     return;

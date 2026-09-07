@@ -295,8 +295,8 @@ public class RewardsMenu extends Gui {
             state = RewardState.CLAIMABLE;
         }
 
-        // Check if preview is allowed for this reward
-        boolean canPreview = (level % 50 == 0) || rewards.stream().anyMatch(RewardItem::isPreviewable);
+        // Check preview type: Special for milestone every 50 levels or specialPreview flag
+        boolean isSpecial = (level % 50 == 0) || rewards.stream().anyMatch(RewardItem::isSpecialPreview);
 
         Material displayMat = getPassDisplayMaterial(passId, state);
 
@@ -323,45 +323,39 @@ public class RewardsMenu extends Gui {
             case LOCKED_PASS -> {
                 lore.add("&c🔒 TERKUNCI — BUTUH " + passName + " PASS");
                 lore.add("&7Beli atau miliki " + passName + " untuk membuka hadiah!");
-                if (canPreview) {
-                    lore.add(" ");
-                    lore.add("&b▶ Klik untuk melihat Preview Hadiah!");
-                }
+                lore.add(" ");
+                lore.add(isSpecial ? "&6👑 Klik untuk melihat Preview Istimewa!" : "&b▶ Klik untuk melihat Preview Hadiah!");
                 ItemStack item = new ItemBuilder(displayMat)
                         .name("&c[TERKUNCI] &f" + passName + " &8- Level " + level)
                         .lore(lore)
                         .hideAttributes()
                         .build();
                 return new GuiButton(item, event -> {
-                    if (canPreview) {
-                        new RewardPreviewMenu(plugin, player, level, passId, rewards, this).open();
-                        player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.8f, 1.2f);
+                    if (isSpecial) {
+                        new SpecialRewardPreviewMenu(plugin, player, level, passId, rewards, this).open();
                     } else {
-                        player.sendMessage(plugin.getMessage("reward-pass-locked").replace("%pass%", passName));
-                        player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
+                        new RewardPreviewMenu(plugin, player, level, passId, rewards, this).open();
                     }
+                    player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.8f, 1.2f);
                 });
             }
             case LOCKED_LEVEL -> {
                 lore.add("&c🔒 TERKUNCI — LEVEL BELUM TERCAPAI");
                 lore.add("&7Raih Level " + level + " untuk membuka hadiah ini.");
-                if (canPreview) {
-                    lore.add(" ");
-                    lore.add("&b▶ Klik untuk melihat Preview Hadiah!");
-                }
+                lore.add(" ");
+                lore.add(isSpecial ? "&6👑 Klik untuk melihat Preview Istimewa!" : "&b▶ Klik untuk melihat Preview Hadiah!");
                 ItemStack item = new ItemBuilder(displayMat)
                         .name("&c[TERKUNCI] &f" + passName + " &8- Level " + level)
                         .lore(lore)
                         .hideAttributes()
                         .build();
                 return new GuiButton(item, event -> {
-                    if (canPreview) {
-                        new RewardPreviewMenu(plugin, player, level, passId, rewards, this).open();
-                        player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.8f, 1.2f);
+                    if (isSpecial) {
+                        new SpecialRewardPreviewMenu(plugin, player, level, passId, rewards, this).open();
                     } else {
-                        player.sendMessage(plugin.getMessage("reward-level-not-reached").replace("%level%", String.valueOf(level)));
-                        player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
+                        new RewardPreviewMenu(plugin, player, level, passId, rewards, this).open();
                     }
+                    player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.8f, 1.2f);
                 });
             }
             case CLAIMABLE -> {

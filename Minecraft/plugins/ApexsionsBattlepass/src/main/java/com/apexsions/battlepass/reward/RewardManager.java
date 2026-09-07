@@ -106,9 +106,10 @@ public class RewardManager {
                                 String perm = map.containsKey("permission") ? String.valueOf(map.get("permission")) : null;
                                 String itemData = map.containsKey("item-data") ? String.valueOf(map.get("item-data")) : null;
                                 String currencyId = map.containsKey("currency-id") ? String.valueOf(map.get("currency-id")) : "battle_coins";
-                                boolean previewable = map.containsKey("previewable") && Boolean.parseBoolean(String.valueOf(map.get("previewable")));
+                                boolean specialPreview = (map.containsKey("special-preview") && Boolean.parseBoolean(String.valueOf(map.get("special-preview"))))
+                                        || (map.containsKey("previewable") && Boolean.parseBoolean(String.valueOf(map.get("previewable"))));
 
-                                items.add(new RewardItem(type, mat, amount, name, commands, perm, itemData, currencyId, previewable));
+                                items.add(new RewardItem(type, mat, amount, name, commands, perm, itemData, currencyId, specialPreview));
                             }
                             passMap.put(passKey.toLowerCase(), items);
                         }
@@ -142,7 +143,7 @@ public class RewardManager {
                         if (ri.getPermission() != null) map.put("permission", ri.getPermission());
                         if (ri.getItemData() != null) map.put("item-data", ri.getItemData());
                         if (ri.getCurrencyId() != null) map.put("currency-id", ri.getCurrencyId());
-                        map.put("previewable", ri.isPreviewable());
+                        map.put("special-preview", ri.isSpecialPreview());
                         list.add(map);
                     }
                     config.set(path + ".rewards." + passKey, list);

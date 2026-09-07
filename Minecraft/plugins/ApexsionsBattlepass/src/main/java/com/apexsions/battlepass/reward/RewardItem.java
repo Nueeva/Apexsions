@@ -17,9 +17,9 @@ public class RewardItem {
     private final String permission;
     private final String itemData; // Base64 serialized ItemStack
     private final String currencyId; // ApexsionsEconomy Currency ID
-    private final boolean previewable;
+    private final boolean specialPreview;
 
-    public RewardItem(RewardType type, Material material, int amount, String name, List<String> commands, String permission, String itemData, String currencyId, boolean previewable) {
+    public RewardItem(RewardType type, Material material, int amount, String name, List<String> commands, String permission, String itemData, String currencyId, boolean specialPreview) {
         this.type = type != null ? type : RewardType.ITEM;
         this.material = material != null ? material : Material.CHEST;
         this.amount = amount > 0 ? amount : 1;
@@ -28,7 +28,7 @@ public class RewardItem {
         this.permission = permission;
         this.itemData = itemData;
         this.currencyId = currencyId != null ? currencyId : "battle_coins";
-        this.previewable = previewable;
+        this.specialPreview = specialPreview;
     }
 
     public RewardItem(RewardType type, Material material, int amount, String name, List<String> commands, String permission, String itemData, String currencyId) {
@@ -71,5 +71,6 @@ public class RewardItem {
     public String getPermission() { return permission; }
     public String getItemData() { return itemData; }
     public String getCurrencyId() { return currencyId; }
-    public boolean isPreviewable() { return previewable; }
+    public boolean isSpecialPreview() { return specialPreview; }
+    public boolean isPreviewable() { return true; }
 }
