@@ -29,6 +29,13 @@ public class SionsCommand implements CommandExecutor, TabCompleter {
         this.service = service;
     }
 
+    private SionsTemporalService getTemporalService() {
+        if (this.service != null) {
+            return this.service;
+        }
+        return plugin.getSionsTemporalService();
+    }
+
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (!sender.hasPermission("apexsions.admin")) {
@@ -41,27 +48,37 @@ public class SionsCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
+        SionsTemporalService s = getTemporalService();
+
         String sub = args[0].toLowerCase();
         switch (sub) {
             case "status" -> {
-                int count = service.getModifiedBlockCount();
-                long remainingSec = service.getRemainingSeconds();
+                if (s == null) {
+                    sender.sendMessage(miniMessage.deserialize("<red>✖ Sistem Rekonstruksi Temporal Kerajaan Sions saat ini tidak aktif.</red>"));
+                    return true;
+                }
+                int count = s.getModifiedBlockCount();
+                long remainingSec = s.getRemainingSeconds();
                 long remMin = remainingSec / 60;
                 long remSec = remainingSec % 60;
 
                 sender.sendMessage(miniMessage.deserialize("<gradient:#8e44ad:#9b59b6><bold>✦ KERAJAAN SIONS — STATUS REKONSTRUKSI TEMPORAL</bold></gradient>"));
-                sender.sendMessage(miniMessage.deserialize("<gray>Sistem Temporal: <green>" + (service.isEnabled() ? "AKTIF" : "NONAKTIF") + "</green></gray>"));
-                sender.sendMessage(miniMessage.deserialize("<gray>Interval Reset: <gold>" + service.getIntervalMinutes() + " Menit</gold></gray>"));
+                sender.sendMessage(miniMessage.deserialize("<gray>Sistem Temporal: <green>" + (s.isEnabled() ? "AKTIF" : "NONAKTIF") + "</green></gray>"));
+                sender.sendMessage(miniMessage.deserialize("<gray>Interval Reset: <gold>" + s.getIntervalMinutes() + " Menit</gold></gray>"));
                 sender.sendMessage(miniMessage.deserialize("<gray>Block Terubah Saat Ini: <yellow><bold>" + count + "</bold></yellow> block</gray>"));
                 sender.sendMessage(miniMessage.deserialize("<gray>Sisa Waktu Menuju Reset: <aqua>" + remMin + "m " + remSec + "s</aqua></gray>"));
                 if (sender instanceof Player p) {
-                    boolean isBypass = service.isBypassing(p);
+                    boolean isBypass = s.isBypassing(p);
                     sender.sendMessage(miniMessage.deserialize("<gray>Status Bypass Anda: " + (isBypass ? "<green>AKTIF (Permanent Build)</green>" : "<yellow>NONAKTIF (Tracked)</yellow>") + "</gray>"));
                 }
             }
             case "restore" -> {
+                if (s == null) {
+                    sender.sendMessage(miniMessage.deserialize("<red>✖ Sistem Rekonstruksi Temporal Kerajaan Sions saat ini tidak aktif.</red>"));
+                    return true;
+                }
                 sender.sendMessage(miniMessage.deserialize("<yellow>Menjalankan rekonstruksi manual untuk Kerajaan Sions...</yellow>"));
-                int restored = service.restoreAll(true);
+                int restored = s.restoreAll(true);
                 sender.sendMessage(miniMessage.deserialize("<green>✔ Berhasil merekonstruksi <gold>" + restored + "</gold> block kembali ke wujud aslinya!</green>"));
             }
             case "bypass" -> {
@@ -69,7 +86,11 @@ public class SionsCommand implements CommandExecutor, TabCompleter {
                     sender.sendMessage(miniMessage.deserialize("<red>Perintah ini hanya dapat digunakan oleh pemain in-game.</red>"));
                     return true;
                 }
-                boolean nowBypassing = service.toggleBypass(player);
+                if (s == null) {
+                    player.sendMessage(miniMessage.deserialize("<red>✖ Sistem Rekonstruksi Temporal Kerajaan Sions saat ini tidak aktif.</red>"));
+                    return true;
+                }
+                boolean nowBypassing = s.toggleBypass(player);
                 if (nowBypassing) {
                     player.sendMessage(miniMessage.deserialize("<green>✔ Mode bypass <bold>AKTIF</bold>! Perubahan block Anda di Kerajaan Sions bersifat PERMANEN dan tidak akan di-rollback.</green>"));
                     player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1.0f, 2.0f);

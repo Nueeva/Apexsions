@@ -255,28 +255,28 @@ public class ApexsionsCorePlugin extends JavaPlugin {
             this.citizensHook = new CitizensHook(this);
             this.citizensHook.initialize();
 
-            // 9. Commands
+            // 9. Sions Temporal Reconstruction Engine
+            this.sionsTemporalService = new com.apexsions.core.sions.SionsTemporalService(this);
+            this.sionsTemporalService.start();
+            Bukkit.getPluginManager().registerEvents(new com.apexsions.core.sions.SionsTemporalListener(sionsTemporalService), this);
+
+            // 10. Commands
             registerCommands();
 
-            // 10. Kingdom Buffs & Traits Engine
+            // 11. Kingdom Buffs & Traits Engine
             this.kingdomBuffManager = new com.apexsions.core.kingdom.KingdomBuffManager(this);
             this.kingdomBuffManager.start();
             this.kingdomBuffListener = new com.apexsions.core.kingdom.KingdomBuffListener(this, kingdomBuffManager);
             Bukkit.getPluginManager().registerEvents(kingdomBuffListener, this);
             Bukkit.getPluginManager().registerEvents(new com.apexsions.core.kingdom.FarmingIrrigationListener(this), this);
 
-            // 11. Public API
+            // 12. Public API
             this.api = new ApexsionsCoreAPIImpl(this);
             ApexsionsCoreProvider.register(this.api);
 
-            // 12. Web Platform Status Bridge
+            // 13. Web Platform Status Bridge
             this.webBridgeService = new com.apexsions.core.integration.web.WebBridgeService(this);
             this.webBridgeService.start();
-
-            // 13. Sions Temporal Reconstruction Engine
-            this.sionsTemporalService = new com.apexsions.core.sions.SionsTemporalService(this);
-            this.sionsTemporalService.start();
-            Bukkit.getPluginManager().registerEvents(new com.apexsions.core.sions.SionsTemporalListener(sionsTemporalService), this);
 
             long elapsed = System.currentTimeMillis() - startTime;
             getLogger().info("ApexsionsCore loaded and enabled successfully in " + elapsed + "ms!");
