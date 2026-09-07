@@ -1,6 +1,5 @@
 # ==============================================================================
 # Apexsions — Level Progression & Milestone Rewards (rewards.yml)
-# Special Milestone Rewards on levels: 11, 21, 31, 41, 51, 61, 71, 81, 91, 100
 # Supported placeholders in commands/messages: %player%, %level%, %kingdom%
 # ==============================================================================
 
@@ -14,257 +13,1107 @@ default-reward:
   icon: "GOLD_NUGGET"
   display-name: "<yellow>Level %level% Bounty</yellow>"
   lore:
-    - "<gray>Standard level advancement reward."
-    - "<green>• 150 Currency & Kingdom Tokens</green>"
+    - "<green>• Rp 50.000</green>"
   commands:
-    - "eco give %player% 150"
+    - "eco give %player% 50000"
 
-# Specific rewards for each level (1-100)
 rewards:
   2:
-    display-name: "<yellow>Level 2 Starter Pack</yellow>"
+    display-name: "<yellow>Level 2 Reward</yellow>"
+    icon: "TORCH"
+    lore:
+      - "<green>• Rp 20.000</green>"
+      - "<white>• 32x Torch</white>"
+    commands:
+      - "eco give %player% 20000"
+      - "give %player% torch 32"
+
+  3:
+    display-name: "<yellow>Level 3 Reward</yellow>"
     icon: "BREAD"
     lore:
-      - "<gray>Rewards:"
-      - "<green>• 16x Bread</green>"
-      - "<green>• 100 Currency</green>"
+      - "<white>• 28x Bread</white>"
     commands:
-      - "give %player% bread 16"
-      - "eco give %player% 100"
+      - "give %player% bread 28"
+
+  4:
+    display-name: "<yellow>Level 4 Reward</yellow>"
+    icon: "APPLE"
+    lore:
+      - "<green>• Rp 25.000</green>"
+      - "<white>• 12x Apple</white>"
+    commands:
+      - "eco give %player% 25000"
+      - "give %player% apple 12"
 
   5:
-    display-name: "<yellow>Level 5 Explorer's Satchel</yellow>"
+    display-name: "<yellow>Level 5 Reward</yellow>"
+    icon: "ARROW"
+    lore:
+      - "<aqua>• 3 Diamond 💎</aqua>"
+      - "<white>• 22x Arrow</white>"
+      - "<white>• 14x Carrot</white>"
+    commands:
+      - "eco give %player% 3 diamond"
+      - "give %player% arrow 22"
+      - "give %player% carrot 14"
+
+  6:
+    display-name: "<yellow>Level 6 Reward</yellow>"
+    icon: "RAW_IRON"
+    lore:
+      - "<white>• 21x Raw Iron</white>"
+    commands:
+      - "give %player% raw_iron 21"
+
+  7:
+    display-name: "<yellow>Level 7 Reward</yellow>"
+    icon: "COOKED_BEEF"
+    lore:
+      - "<green>• Rp 30.000</green>"
+      - "<white>• 11x Cooked Beef</white>"
+      - "<white>• 8x Leather</white>"
+    commands:
+      - "eco give %player% 30000"
+      - "give %player% cooked_beef 11"
+      - "give %player% leather 8"
+
+  8:
+    display-name: "<yellow>Level 8 Reward</yellow>"
     icon: "IRON_INGOT"
     lore:
-      - "<gray>Rewards:"
-      - "<green>• 8x Iron Ingot</green>"
-      - "<green>• 250 Currency</green>"
+      - "<white>• 6x Iron Ingot</white>"
+      - "<white>• 15x Lapis Lazuli</white>"
+      - "<white>• 1x Bow</white>"
     commands:
-      - "give %player% iron_ingot 8"
-      - "eco give %player% 250"
+      - "give %player% iron_ingot 6"
+      - "give %player% lapis_lazuli 15"
+      - "give %player% bow 1"
+
+  9:
+    display-name: "<yellow>Level 9 Reward</yellow>"
+    icon: "RAW_COPPER"
+    lore:
+      - "<aqua>• 3 Diamond 💎</aqua>"
+      - "<white>• 11x Raw Copper</white>"
+      - "<white>• 7x Iron Ingot</white>"
+    commands:
+      - "eco give %player% 3 diamond"
+      - "give %player% raw_copper 11"
+      - "give %player% iron_ingot 7"
 
   10:
-    display-name: "<yellow>Level 10 Vanguard Bounty</yellow>"
-    icon: "GOLD_INGOT"
+    display-name: "<yellow>Level 10 Reward</yellow>"
+    icon: "LEATHER"
     lore:
-      - "<gray>Rewards:"
-      - "<green>• 4x Gold Ingot</green>"
-      - "<green>• 500 Currency</green>"
+      - "<green>• Rp 35.000</green>"
+      - "<white>• 12x Leather</white>"
     commands:
-      - "give %player% gold_ingot 4"
-      - "eco give %player% 500"
+      - "eco give %player% 35000"
+      - "give %player% leather 12"
 
-  # ============================================================================
-  # SPECIAL MILESTONE REWARD: LEVEL 11 (Novice Tier Unlocked)
-  # ============================================================================
   11:
     is-milestone: true
-    display-name: "<gradient:#ffe900:#f39c12><bold>👑 MILESTONE: Level 11 Ascension</bold></gradient>"
+    display-name: "<gradient:#ffe900:#f39c12><bold>👑 LEVEL SPESIAL 11: NOVICE ASCENSION</bold></gradient>"
     icon: "ENDER_CHEST"
     lore:
-      - "<gold><bold>★ SPECIAL MILESTONE REWARD ★</bold></gold>"
-      - "<gray>Milestone tier unlocked:"
       - "<yellow>• 1x Kingdom Novice Crate Key</yellow>"
-      - "<yellow>• 5x Diamonds</yellow>"
-      - "<yellow>• 1,000 Currency</yellow>"
-      - "<yellow>• Permanent Tier Title Unlocked!</yellow>"
+      - "<aqua>• 10 Diamond 💎</aqua>"
+      - "<green>• Rp 100.000</green>"
     commands:
       - "crate key give %player% novice 1"
-      - "give %player% diamond 5"
-      - "eco give %player% 1000"
+      - "eco give %player% 10 diamond"
+      - "eco give %player% 100000"
     broadcast: "<gold><bold>Apexsions</bold> » <yellow>%player% has achieved <bold>Level 11 Milestone</bold> in kingdom %kingdom%!</yellow></gold>"
     sound: "UI_TOAST_CHALLENGE_COMPLETE"
 
+  12:
+    display-name: "<yellow>Level 12 Reward</yellow>"
+    icon: "BOW"
+    lore:
+      - "<white>• 2x Bow</white>"
+    commands:
+      - "give %player% bow 2"
+
+  13:
+    display-name: "<yellow>Level 13 Reward</yellow>"
+    icon: "COOKED_BEEF"
+    lore:
+      - "<white>• 16x Cooked Beef</white>"
+      - "<white>• 12x Leather</white>"
+    commands:
+      - "give %player% cooked_beef 16"
+      - "give %player% leather 12"
+
+  14:
+    display-name: "<yellow>Level 14 Reward</yellow>"
+    icon: "WHEAT"
+    lore:
+      - "<green>• Rp 40.000</green>"
+      - "<white>• 24x Wheat</white>"
+    commands:
+      - "eco give %player% 40000"
+      - "give %player% wheat 24"
+
   15:
-    display-name: "<yellow>Level 15 Guardian Cache</yellow>"
+    display-name: "<yellow>Level 15 Reward</yellow>"
+    icon: "BREAD"
+    lore:
+      - "<aqua>• 4 Diamond 💎</aqua>"
+      - "<white>• 11x Bread</white>"
+      - "<white>• 22x Torch</white>"
+    commands:
+      - "eco give %player% 4 diamond"
+      - "give %player% bread 11"
+      - "give %player% torch 22"
+
+  16:
+    display-name: "<yellow>Level 16 Reward</yellow>"
+    icon: "CARROT"
+    lore:
+      - "<white>• 20x Carrot</white>"
+      - "<white>• 16x Bread</white>"
+    commands:
+      - "give %player% carrot 20"
+      - "give %player% bread 16"
+
+  17:
+    display-name: "<yellow>Level 17 Reward</yellow>"
+    icon: "BAKED_POTATO"
+    lore:
+      - "<green>• Rp 45.000</green>"
+      - "<white>• 11x Baked Potato</white>"
+      - "<white>• 8x Apple</white>"
+    commands:
+      - "eco give %player% 45000"
+      - "give %player% baked_potato 11"
+      - "give %player% apple 8"
+
+  18:
+    display-name: "<yellow>Level 18 Reward</yellow>"
+    icon: "IRON_INGOT"
+    lore:
+      - "<white>• 18x Iron Ingot</white>"
+    commands:
+      - "give %player% iron_ingot 18"
+
+  19:
+    display-name: "<yellow>Level 19 Reward</yellow>"
     icon: "LAPIS_LAZULI"
     lore:
-      - "<green>• 16x Lapis Lazuli</green>"
-      - "<green>• 750 Currency</green>"
+      - "<aqua>• 4 Diamond 💎</aqua>"
+      - "<white>• 16x Lapis Lazuli</white>"
+      - "<white>• 1x Bow</white>"
     commands:
+      - "eco give %player% 4 diamond"
       - "give %player% lapis_lazuli 16"
-      - "eco give %player% 750"
+      - "give %player% bow 1"
 
   20:
-    display-name: "<yellow>Level 20 Elite Cache</yellow>"
-    icon: "DIAMOND"
+    display-name: "<yellow>Level 20 Reward</yellow>"
+    icon: "APPLE"
     lore:
-      - "<green>• 3x Diamonds</green>"
-      - "<green>• 1,000 Currency</green>"
+      - "<green>• Rp 55.000</green>"
+      - "<white>• 12x Apple</white>"
     commands:
-      - "give %player% diamond 3"
-      - "eco give %player% 1000"
+      - "eco give %player% 55000"
+      - "give %player% apple 12"
 
-  # ============================================================================
-  # SPECIAL MILESTONE REWARD: LEVEL 21 (Guardian Tier Unlocked)
-  # ============================================================================
   21:
     is-milestone: true
-    display-name: "<gradient:#00c6ff:#0072ff><bold>👑 MILESTONE: Level 21 Guardian</bold></gradient>"
+    display-name: "<gradient:#00c6ff:#0072ff><bold>👑 LEVEL SPESIAL 21: GUARDIAN REALM</bold></gradient>"
     icon: "ENDER_CHEST"
     lore:
-      - "<gold><bold>★ SPECIAL MILESTONE REWARD ★</bold></gold>"
-      - "<gray>Milestone tier unlocked:"
       - "<aqua>• 1x Kingdom Guardian Crate Key</aqua>"
-      - "<aqua>• 10x Diamonds & 2x Netherite Scrap</aqua>"
-      - "<aqua>• 2,500 Currency</aqua>"
+      - "<white>• 2x Netherite Scrap</white>"
+      - "<aqua>• 15 Diamond 💎</aqua>"
+      - "<green>• Rp 150.000</green>"
     commands:
       - "crate key give %player% guardian 1"
-      - "give %player% diamond 10"
       - "give %player% netherite_scrap 2"
-      - "eco give %player% 2500"
+      - "eco give %player% 15 diamond"
+      - "eco give %player% 150000"
     broadcast: "<gold><bold>Apexsions</bold> » <yellow>%player% has attained <bold>Level 21 Guardian Rank</bold> in %kingdom%!</yellow></gold>"
     sound: "UI_TOAST_CHALLENGE_COMPLETE"
 
-  # ============================================================================
-  # SPECIAL MILESTONE REWARD: LEVEL 31 (Knight Tier Unlocked)
-  # ============================================================================
+  22:
+    display-name: "<yellow>Level 22 Reward</yellow>"
+    icon: "GOLD_INGOT"
+    lore:
+      - "<white>• 16x Gold Ingot</white>"
+      - "<white>• 32x Spectral Arrow</white>"
+    commands:
+      - "give %player% gold_ingot 16"
+      - "give %player% spectral_arrow 32"
+
+  23:
+    display-name: "<yellow>Level 23 Reward</yellow>"
+    icon: "EXPERIENCE_BOTTLE"
+    lore:
+      - "<green>• Rp 50.000</green>"
+      - "<white>• 16x Experience Bottle</white>"
+      - "<white>• 14x Golden Carrot</white>"
+    commands:
+      - "eco give %player% 50000"
+      - "give %player% experience_bottle 16"
+      - "give %player% golden_carrot 14"
+
+  24:
+    display-name: "<yellow>Level 24 Reward</yellow>"
+    icon: "AMETHYST_SHARD"
+    lore:
+      - "<white>• 21x Amethyst Shard</white>"
+    commands:
+      - "give %player% amethyst_shard 21"
+
+  25:
+    display-name: "<yellow>Level 25 Reward</yellow>"
+    icon: "GOLD_INGOT"
+    lore:
+      - "<aqua>• 5 Diamond 💎</aqua>"
+      - "<white>• 11x Gold Ingot</white>"
+      - "<white>• 22x Spectral Arrow</white>"
+    commands:
+      - "eco give %player% 5 diamond"
+      - "give %player% gold_ingot 11"
+      - "give %player% spectral_arrow 22"
+
+  26:
+    display-name: "<yellow>Level 26 Reward</yellow>"
+    icon: "GOLD_BLOCK"
+    lore:
+      - "<green>• Rp 55.000</green>"
+      - "<white>• 2x Gold Block</white>"
+    commands:
+      - "eco give %player% 55000"
+      - "give %player% gold_block 2"
+
+  27:
+    display-name: "<yellow>Level 27 Reward</yellow>"
+    icon: "SPECTRAL_ARROW"
+    lore:
+      - "<white>• 57x Spectral Arrow</white>"
+    commands:
+      - "give %player% spectral_arrow 57"
+
+  28:
+    display-name: "<yellow>Level 28 Reward</yellow>"
+    icon: "GOLDEN_CARROT"
+    lore:
+      - "<green>• Rp 60.000</green>"
+      - "<white>• 20x Golden Carrot</white>"
+    commands:
+      - "eco give %player% 60000"
+      - "give %player% golden_carrot 20"
+
+  29:
+    display-name: "<yellow>Level 29 Reward</yellow>"
+    icon: "COOKED_PORKCHOP"
+    lore:
+      - "<aqua>• 5 Diamond 💎</aqua>"
+      - "<white>• 14x Cooked Porkchop</white>"
+      - "<white>• 16x Experience Bottle</white>"
+    commands:
+      - "eco give %player% 5 diamond"
+      - "give %player% cooked_porkchop 14"
+      - "give %player% experience_bottle 16"
+
+  30:
+    display-name: "<yellow>Level 30 Reward</yellow>"
+    icon: "GLOWSTONE"
+    lore:
+      - "<white>• 28x Glowstone</white>"
+    commands:
+      - "give %player% glowstone 28"
+
   31:
     is-milestone: true
-    display-name: "<gradient:#e67e22:#d35400><bold>👑 MILESTONE: Level 31 Knight</bold></gradient>"
+    display-name: "<gradient:#e67e22:#d35400><bold>👑 LEVEL SPESIAL 31: KNIGHT CRUSADER</bold></gradient>"
     icon: "ENDER_CHEST"
     lore:
-      - "<gold><bold>★ SPECIAL MILESTONE REWARD ★</bold></gold>"
       - "<yellow>• 1x Knight Crate Key</yellow>"
-      - "<yellow>• 1x Enchanted Golden Apple</yellow>"
-      - "<yellow>• 5,000 Currency</yellow>"
+      - "<white>• 1x Enchanted Golden Apple</white>"
+      - "<aqua>• 20 Diamond 💎</aqua>"
+      - "<green>• Rp 200.000</green>"
     commands:
       - "crate key give %player% knight 1"
       - "give %player% enchanted_golden_apple 1"
-      - "eco give %player% 5000"
+      - "eco give %player% 20 diamond"
+      - "eco give %player% 200000"
     broadcast: "<gold><bold>Apexsions</bold> » <yellow>%player% has been dubbed <bold>Level 31 Knight</bold> in %kingdom%!</yellow></gold>"
     sound: "UI_TOAST_CHALLENGE_COMPLETE"
 
-  # ============================================================================
-  # SPECIAL MILESTONE REWARD: LEVEL 41 (Commander Tier Unlocked)
-  # ============================================================================
+  32:
+    display-name: "<yellow>Level 32 Reward</yellow>"
+    icon: "IRON_BLOCK"
+    lore:
+      - "<white>• 2x Iron Block</white>"
+      - "<white>• 3x Bookshelf</white>"
+      - "<white>• 1x Gold Block</white>"
+    commands:
+      - "give %player% iron_block 2"
+      - "give %player% bookshelf 3"
+      - "give %player% gold_block 1"
+
+  33:
+    display-name: "<yellow>Level 33 Reward</yellow>"
+    icon: "HAY_BLOCK"
+    lore:
+      - "<green>• Rp 70.000</green>"
+      - "<white>• 14x Hay Block</white>"
+      - "<white>• 2x Iron Block</white>"
+    commands:
+      - "eco give %player% 70000"
+      - "give %player% hay_block 14"
+      - "give %player% iron_block 2"
+
+  34:
+    display-name: "<yellow>Level 34 Reward</yellow>"
+    icon: "GLOWSTONE"
+    lore:
+      - "<white>• 16x Glowstone</white>"
+      - "<white>• 12x Amethyst Shard</white>"
+    commands:
+      - "give %player% glowstone 16"
+      - "give %player% amethyst_shard 12"
+
+  35:
+    display-name: "<yellow>Level 35 Reward</yellow>"
+    icon: "SWEET_BERRIES"
+    lore:
+      - "<aqua>• 6 Diamond 💎</aqua>"
+      - "<white>• 22x Sweet Berries</white>"
+      - "<white>• 14x Cooked Porkchop</white>"
+    commands:
+      - "eco give %player% 6 diamond"
+      - "give %player% sweet_berries 22"
+      - "give %player% cooked_porkchop 14"
+
+  36:
+    display-name: "<yellow>Level 36 Reward</yellow>"
+    icon: "GOLD_INGOT"
+    lore:
+      - "<green>• Rp 75.000</green>"
+      - "<white>• 16x Gold Ingot</white>"
+    commands:
+      - "eco give %player% 75000"
+      - "give %player% gold_ingot 16"
+
+  37:
+    display-name: "<yellow>Level 37 Reward</yellow>"
+    icon: "GOLD_INGOT"
+    lore:
+      - "<white>• 16x Gold Ingot</white>"
+      - "<white>• 32x Spectral Arrow</white>"
+    commands:
+      - "give %player% gold_ingot 16"
+      - "give %player% spectral_arrow 32"
+
+  38:
+    display-name: "<yellow>Level 38 Reward</yellow>"
+    icon: "IRON_BLOCK"
+    lore:
+      - "<green>• Rp 80.000</green>"
+      - "<white>• 4x Iron Block</white>"
+    commands:
+      - "eco give %player% 80000"
+      - "give %player% iron_block 4"
+
+  39:
+    display-name: "<yellow>Level 39 Reward</yellow>"
+    icon: "PUMPKIN_PIE"
+    lore:
+      - "<aqua>• 6 Diamond 💎</aqua>"
+      - "<white>• 14x Pumpkin Pie</white>"
+      - "<white>• 14x Hay Block</white>"
+    commands:
+      - "eco give %player% 6 diamond"
+      - "give %player% pumpkin_pie 14"
+      - "give %player% hay_block 14"
+
+  40:
+    display-name: "<yellow>Level 40 Reward</yellow>"
+    icon: "COOKED_PORKCHOP"
+    lore:
+      - "<green>• Rp 90.000</green>"
+      - "<white>• 20x Cooked Porkchop</white>"
+    commands:
+      - "eco give %player% 90000"
+      - "give %player% cooked_porkchop 20"
+
   41:
     is-milestone: true
-    display-name: "<gradient:#9b59b6:#8e44ad><bold>👑 MILESTONE: Level 41 Commander</bold></gradient>"
+    display-name: "<gradient:#9b59b6:#8e44ad><bold>👑 LEVEL SPESIAL 41: COMMANDER ASCENT</bold></gradient>"
     icon: "ENDER_CHEST"
     lore:
-      - "<gold><bold>★ SPECIAL MILESTONE REWARD ★</bold></gold>"
       - "<light_purple>• 1x Commander Crate Key</light_purple>"
-      - "<light_purple>• 1x Netherite Ingot</light_purple>"
-      - "<light_purple>• 10,000 Currency</light_purple>"
+      - "<white>• 1x Netherite Ingot</white>"
+      - "<aqua>• 25 Diamond 💎</aqua>"
+      - "<green>• Rp 300.000</green>"
     commands:
       - "crate key give %player% commander 1"
       - "give %player% netherite_ingot 1"
-      - "eco give %player% 10000"
+      - "eco give %player% 25 diamond"
+      - "eco give %player% 300000"
     broadcast: "<gold><bold>Apexsions</bold> » <yellow>%player% has achieved <bold>Level 41 Commander</bold> in %kingdom%!</yellow></gold>"
     sound: "UI_TOAST_CHALLENGE_COMPLETE"
 
-  # ============================================================================
-  # SPECIAL MILESTONE REWARD: LEVEL 51 (Master Tier Unlocked)
-  # ============================================================================
+  42:
+    display-name: "<yellow>Level 42 Reward</yellow>"
+    icon: "SPECTRAL_ARROW"
+    lore:
+      - "<white>• 57x Spectral Arrow</white>"
+    commands:
+      - "give %player% spectral_arrow 57"
+
+  43:
+    display-name: "<yellow>Level 43 Reward</yellow>"
+    icon: "CROSSBOW"
+    lore:
+      - "<green>• Rp 85.000</green>"
+      - "<white>• 1x Crossbow</white>"
+      - "<white>• 11x Glowstone</white>"
+    commands:
+      - "eco give %player% 85000"
+      - "give %player% crossbow 1"
+      - "give %player% glowstone 11"
+
+  44:
+    display-name: "<yellow>Level 44 Reward</yellow>"
+    icon: "PUMPKIN_PIE"
+    lore:
+      - "<white>• 13x Pumpkin Pie</white>"
+      - "<white>• 13x Hay Block</white>"
+      - "<white>• 2x Iron Block</white>"
+    commands:
+      - "give %player% pumpkin_pie 13"
+      - "give %player% hay_block 13"
+      - "give %player% iron_block 2"
+
+  45:
+    display-name: "<yellow>Level 45 Reward</yellow>"
+    icon: "GOLD_BLOCK"
+    lore:
+      - "<aqua>• 7 Diamond 💎</aqua>"
+      - "<white>• 1x Gold Block</white>"
+      - "<white>• 14x Pumpkin Pie</white>"
+    commands:
+      - "eco give %player% 7 diamond"
+      - "give %player% gold_block 1"
+      - "give %player% pumpkin_pie 14"
+
+  46:
+    display-name: "<yellow>Level 46 Reward</yellow>"
+    icon: "SWEET_BERRIES"
+    lore:
+      - "<green>• Rp 90.000</green>"
+      - "<white>• 32x Sweet Berries</white>"
+    commands:
+      - "eco give %player% 90000"
+      - "give %player% sweet_berries 32"
+
+  47:
+    display-name: "<yellow>Level 47 Reward</yellow>"
+    icon: "IRON_BLOCK"
+    lore:
+      - "<white>• 2x Iron Block</white>"
+      - "<white>• 3x Bookshelf</white>"
+      - "<white>• 1x Gold Block</white>"
+    commands:
+      - "give %player% iron_block 2"
+      - "give %player% bookshelf 3"
+      - "give %player% gold_block 1"
+
+  48:
+    display-name: "<yellow>Level 48 Reward</yellow>"
+    icon: "GLOWSTONE"
+    lore:
+      - "<green>• Rp 95.000</green>"
+      - "<white>• 16x Glowstone</white>"
+    commands:
+      - "eco give %player% 95000"
+      - "give %player% glowstone 16"
+
+  49:
+    display-name: "<yellow>Level 49 Reward</yellow>"
+    icon: "SPECTRAL_ARROW"
+    lore:
+      - "<aqua>• 7 Diamond 💎</aqua>"
+      - "<white>• 22x Spectral Arrow</white>"
+      - "<white>• 1x Crossbow</white>"
+    commands:
+      - "eco give %player% 7 diamond"
+      - "give %player% spectral_arrow 22"
+      - "give %player% crossbow 1"
+
+  50:
+    display-name: "<yellow>Level 50 Reward</yellow>"
+    icon: "GOLD_BLOCK"
+    lore:
+      - "<white>• 1x Gold Block</white>"
+      - "<white>• 13x Pumpkin Pie</white>"
+      - "<white>• 13x Hay Block</white>"
+    commands:
+      - "give %player% gold_block 1"
+      - "give %player% pumpkin_pie 13"
+      - "give %player% hay_block 13"
+
   51:
     is-milestone: true
-    display-name: "<gradient:#2ecc71:#27ae60><bold>👑 MILESTONE: Level 51 Master</bold></gradient>"
+    display-name: "<gradient:#2ecc71:#27ae60><bold>👑 LEVEL SPESIAL 51: MASTER SOVEREIGN</bold></gradient>"
     icon: "ENDER_CHEST"
     lore:
-      - "<gold><bold>★ SPECIAL MILESTONE REWARD ★</bold></gold>"
       - "<green>• 1x Master Crate Key</green>"
-      - "<green>• 1x Totem of Undying</green>"
-      - "<green>• 20,000 Currency</green>"
+      - "<white>• 1x Totem of Undying</white>"
+      - "<aqua>• 30 Diamond 💎</aqua>"
+      - "<green>• Rp 450.000</green>"
     commands:
       - "crate key give %player% master 1"
       - "give %player% totem_of_undying 1"
-      - "eco give %player% 20000"
+      - "eco give %player% 30 diamond"
+      - "eco give %player% 450000"
     broadcast: "<gold><bold>Apexsions</bold> » <green>%player% has attained <bold>Level 51 Master</bold> status in %kingdom%!</green></gold>"
     sound: "UI_TOAST_CHALLENGE_COMPLETE"
 
-  # ============================================================================
-  # SPECIAL MILESTONE REWARD: LEVEL 61 (Archon Tier Unlocked)
-  # ============================================================================
+  52:
+    display-name: "<yellow>Level 52 Reward</yellow>"
+    icon: "EMERALD"
+    lore:
+      - "<white>• 24x Emerald</white>"
+      - "<white>• 48x Firework Rocket</white>"
+    commands:
+      - "give %player% emerald 24"
+      - "give %player% firework_rocket 48"
+
+  53:
+    display-name: "<yellow>Level 53 Reward</yellow>"
+    icon: "IRON_BLOCK"
+    lore:
+      - "<green>• Rp 105.000</green>"
+      - "<white>• 4x Iron Block</white>"
+      - "<white>• 2x Gold Block</white>"
+    commands:
+      - "eco give %player% 105000"
+      - "give %player% iron_block 4"
+      - "give %player% gold_block 2"
+
+  54:
+    display-name: "<yellow>Level 54 Reward</yellow>"
+    icon: "GLISTERING_MELON_SLICE"
+    lore:
+      - "<white>• 43x Glistering Melon Slice</white>"
+    commands:
+      - "give %player% glistering_melon_slice 43"
+
+  55:
+    display-name: "<yellow>Level 55 Reward</yellow>"
+    icon: "EMERALD"
+    lore:
+      - "<aqua>• 7 Diamond 💎</aqua>"
+      - "<white>• 16x Emerald</white>"
+      - "<white>• 33x Firework Rocket</white>"
+    commands:
+      - "eco give %player% 7 diamond"
+      - "give %player% emerald 16"
+      - "give %player% firework_rocket 33"
+
+  56:
+    display-name: "<yellow>Level 56 Reward</yellow>"
+    icon: "GOLDEN_APPLE"
+    lore:
+      - "<green>• Rp 110.000</green>"
+      - "<white>• 4x Golden Apple</white>"
+    commands:
+      - "eco give %player% 110000"
+      - "give %player% golden_apple 4"
+
+  57:
+    display-name: "<yellow>Level 57 Reward</yellow>"
+    icon: "FIREWORK_ROCKET"
+    lore:
+      - "<white>• 86x Firework Rocket</white>"
+    commands:
+      - "give %player% firework_rocket 86"
+
+  58:
+    display-name: "<yellow>Level 58 Reward</yellow>"
+    icon: "GOLD_BLOCK"
+    lore:
+      - "<green>• Rp 110.000</green>"
+      - "<white>• 4x Gold Block</white>"
+    commands:
+      - "eco give %player% 110000"
+      - "give %player% gold_block 4"
+
+  59:
+    display-name: "<yellow>Level 59 Reward</yellow>"
+    icon: "MAGMA_CREAM"
+    lore:
+      - "<white>• 7x Magma Cream</white>"
+      - "<white>• 7x Sea Lantern</white>"
+      - "<white>• 20x Golden Carrot</white>"
+    commands:
+      - "give %player% magma_cream 7"
+      - "give %player% sea_lantern 7"
+      - "give %player% golden_carrot 20"
+
+  60:
+    display-name: "<yellow>Level 60 Reward</yellow>"
+    icon: "FIREWORK_ROCKET"
+    lore:
+      - "<green>• Rp 115.000</green>"
+      - "<white>• 48x Firework Rocket</white>"
+    commands:
+      - "eco give %player% 115000"
+      - "give %player% firework_rocket 48"
+
   61:
     is-milestone: true
-    display-name: "<gradient:#1abc9c:#16a085><bold>👑 MILESTONE: Level 61 Archon</bold></gradient>"
+    display-name: "<gradient:#1abc9c:#16a085><bold>👑 LEVEL SPESIAL 61: ARCHON REALM</bold></gradient>"
     icon: "ENDER_CHEST"
     lore:
-      - "<gold><bold>★ SPECIAL MILESTONE REWARD ★</bold></gold>"
       - "<aqua>• 1x Archon Crate Key</aqua>"
-      - "<aqua>• 1x Elytra Wings</aqua>"
-      - "<aqua>• 35,000 Currency</aqua>"
+      - "<white>• 1x Elytra</white>"
+      - "<aqua>• 35 Diamond 💎</aqua>"
+      - "<green>• Rp 600.000</green>"
     commands:
       - "crate key give %player% archon 1"
       - "give %player% elytra 1"
-      - "eco give %player% 35000"
+      - "eco give %player% 35 diamond"
+      - "eco give %player% 600000"
     broadcast: "<gold><bold>Apexsions</bold> » <aqua>%player% has ascended to <bold>Level 61 Archon</bold> in %kingdom%!</aqua></gold>"
     sound: "UI_TOAST_CHALLENGE_COMPLETE"
 
-  # ============================================================================
-  # SPECIAL MILESTONE REWARD: LEVEL 71 (High Celestial Tier Unlocked)
-  # ============================================================================
+  62:
+    display-name: "<yellow>Level 62 Reward</yellow>"
+    icon: "GOLDEN_CARROT"
+    lore:
+      - "<white>• 20x Golden Carrot</white>"
+      - "<white>• 26x Experience Bottle</white>"
+      - "<white>• 2x Golden Apple</white>"
+    commands:
+      - "give %player% golden_carrot 20"
+      - "give %player% experience_bottle 26"
+      - "give %player% golden_apple 2"
+
+  63:
+    display-name: "<yellow>Level 63 Reward</yellow>"
+    icon: "SEA_LANTERN"
+    lore:
+      - "<aqua>• 8 Diamond 💎</aqua>"
+      - "<white>• 8x Sea Lantern</white>"
+      - "<white>• 22x Golden Carrot</white>"
+    commands:
+      - "eco give %player% 8 diamond"
+      - "give %player% sea_lantern 8"
+      - "give %player% golden_carrot 22"
+
+  64:
+    display-name: "<yellow>Level 64 Reward</yellow>"
+    icon: "IRON_BLOCK"
+    lore:
+      - "<green>• Rp 110.000</green>"
+      - "<white>• 6x Iron Block</white>"
+    commands:
+      - "eco give %player% 110000"
+      - "give %player% iron_block 6"
+
+  65:
+    display-name: "<yellow>Level 65 Reward</yellow>"
+    icon: "GOLDEN_APPLE"
+    lore:
+      - "<white>• 2x Golden Apple</white>"
+      - "<white>• 7x Magma Cream</white>"
+      - "<white>• 7x Sea Lantern</white>"
+    commands:
+      - "give %player% golden_apple 2"
+      - "give %player% magma_cream 7"
+      - "give %player% sea_lantern 7"
+
+  66:
+    display-name: "<yellow>Level 66 Reward</yellow>"
+    icon: "ENDER_PEARL"
+    lore:
+      - "<white>• 21x Ender Pearl</white>"
+    commands:
+      - "give %player% ender_pearl 21"
+
+  67:
+    display-name: "<yellow>Level 67 Reward</yellow>"
+    icon: "BLAZE_POWDER"
+    lore:
+      - "<green>• Rp 115.000</green>"
+      - "<white>• 8x Blaze Powder</white>"
+      - "<white>• 16x Glistering Melon Slice</white>"
+    commands:
+      - "eco give %player% 115000"
+      - "give %player% blaze_powder 8"
+      - "give %player% glistering_melon_slice 16"
+
+  68:
+    display-name: "<yellow>Level 68 Reward</yellow>"
+    icon: "SEA_LANTERN"
+    lore:
+      - "<white>• 7x Sea Lantern</white>"
+      - "<white>• 20x Golden Carrot</white>"
+      - "<white>• 26x Experience Bottle</white>"
+    commands:
+      - "give %player% sea_lantern 7"
+      - "give %player% golden_carrot 20"
+      - "give %player% experience_bottle 26"
+
+  69:
+    display-name: "<yellow>Level 69 Reward</yellow>"
+    icon: "GLISTERING_MELON_SLICE"
+    lore:
+      - "<white>• 43x Glistering Melon Slice</white>"
+    commands:
+      - "give %player% glistering_melon_slice 43"
+
+  70:
+    display-name: "<yellow>Level 70 Reward</yellow>"
+    icon: "DIAMOND"
+    lore:
+      - "<green>• Rp 125.000</green>"
+      - "<white>• 4x Diamond</white>"
+    commands:
+      - "eco give %player% 125000"
+      - "give %player% diamond 4"
+
   71:
     is-milestone: true
-    display-name: "<gradient:#34495e:#2c3e50><bold>👑 MILESTONE: Level 71 High Celestial</bold></gradient>"
+    display-name: "<gradient:#34495e:#2c3e50><bold>👑 LEVEL SPESIAL 71: HIGH CELESTIAL</bold></gradient>"
     icon: "ENDER_CHEST"
     lore:
-      - "<gold><bold>★ SPECIAL MILESTONE REWARD ★</bold></gold>"
       - "<blue>• 1x Celestial Key</blue>"
-      - "<blue>• 2x Netherite Ingots</blue>"
-      - "<blue>• 50,000 Currency</blue>"
+      - "<white>• 2x Netherite Ingot</white>"
+      - "<white>• 1x Totem of Undying</white>"
+      - "<green>• Rp 800.000</green>"
     commands:
       - "crate key give %player% celestial 1"
       - "give %player% netherite_ingot 2"
-      - "eco give %player% 50000"
+      - "give %player% totem_of_undying 1"
+      - "eco give %player% 800000"
     broadcast: "<gold><bold>Apexsions</bold> » <blue>%player% has reached <bold>Level 71 High Celestial</bold> in %kingdom%!</blue></gold>"
     sound: "UI_TOAST_CHALLENGE_COMPLETE"
 
-  # ============================================================================
-  # SPECIAL MILESTONE REWARD: LEVEL 81 (Overlord Tier Unlocked)
-  # ============================================================================
+  72:
+    display-name: "<yellow>Level 72 Reward</yellow>"
+    icon: "FIREWORK_ROCKET"
+    lore:
+      - "<white>• 86x Firework Rocket</white>"
+    commands:
+      - "give %player% firework_rocket 86"
+
+  73:
+    display-name: "<yellow>Level 73 Reward</yellow>"
+    icon: "ENDER_PEARL"
+    lore:
+      - "<green>• Rp 130.000</green>"
+      - "<white>• 8x Ender Pearl</white>"
+      - "<white>• 8x Blaze Powder</white>"
+    commands:
+      - "eco give %player% 130000"
+      - "give %player% ender_pearl 8"
+      - "give %player% blaze_powder 8"
+
+  74:
+    display-name: "<yellow>Level 74 Reward</yellow>"
+    icon: "MAGMA_CREAM"
+    lore:
+      - "<white>• 7x Magma Cream</white>"
+      - "<white>• 7x Sea Lantern</white>"
+      - "<white>• 20x Golden Carrot</white>"
+    commands:
+      - "give %player% magma_cream 7"
+      - "give %player% sea_lantern 7"
+      - "give %player% golden_carrot 20"
+
+  75:
+    display-name: "<yellow>Level 75 Reward</yellow>"
+    icon: "BLAZE_POWDER"
+    lore:
+      - "<white>• 21x Blaze Powder</white>"
+    commands:
+      - "give %player% blaze_powder 21"
+
+  76:
+    display-name: "<yellow>Level 76 Reward</yellow>"
+    icon: "PRISMARINE_SHARD"
+    lore:
+      - "<green>• Rp 130.000</green>"
+      - "<white>• 24x Prismarine Shard</white>"
+    commands:
+      - "eco give %player% 130000"
+      - "give %player% prismarine_shard 24"
+
+  77:
+    display-name: "<yellow>Level 77 Reward</yellow>"
+    icon: "GOLDEN_CARROT"
+    lore:
+      - "<white>• 20x Golden Carrot</white>"
+      - "<white>• 26x Experience Bottle</white>"
+      - "<white>• 2x Golden Apple</white>"
+    commands:
+      - "give %player% golden_carrot 20"
+      - "give %player% experience_bottle 26"
+      - "give %player% golden_apple 2"
+
+  78:
+    display-name: "<yellow>Level 78 Reward</yellow>"
+    icon: "BLAZE_POWDER"
+    lore:
+      - "<green>• Rp 135.000</green>"
+      - "<white>• 12x Blaze Powder</white>"
+    commands:
+      - "eco give %player% 135000"
+      - "give %player% blaze_powder 12"
+
+  79:
+    display-name: "<yellow>Level 79 Reward</yellow>"
+    icon: "BLAZE_POWDER"
+    lore:
+      - "<white>• 12x Blaze Powder</white>"
+      - "<white>• 24x Glistering Melon Slice</white>"
+    commands:
+      - "give %player% blaze_powder 12"
+      - "give %player% glistering_melon_slice 24"
+
+  80:
+    display-name: "<yellow>Level 80 Reward</yellow>"
+    icon: "MAGMA_CREAM"
+    lore:
+      - "<green>• Rp 145.000</green>"
+      - "<white>• 12x Magma Cream</white>"
+    commands:
+      - "eco give %player% 145000"
+      - "give %player% magma_cream 12"
+
   81:
     is-milestone: true
-    display-name: "<gradient:#e74c3c:#c0392b><bold>👑 MILESTONE: Level 81 Overlord</bold></gradient>"
+    display-name: "<gradient:#e74c3c:#c0392b><bold>👑 LEVEL SPESIAL 81: OVERLORD SUPREME</bold></gradient>"
     icon: "ENDER_CHEST"
     lore:
-      - "<gold><bold>★ SPECIAL MILESTONE REWARD ★</bold></gold>"
       - "<red>• 1x Mythic Overlord Key</red>"
-      - "<red>• 1x Beacon</red>"
-      - "<red>• 75,000 Currency</red>"
+      - "<white>• 1x Beacon</white>"
+      - "<white>• 4x Netherite Ingot</white>"
+      - "<green>• Rp 1.000.000</green>"
     commands:
       - "crate key give %player% mythic 1"
       - "give %player% beacon 1"
-      - "eco give %player% 75000"
+      - "give %player% netherite_ingot 4"
+      - "eco give %player% 1000000"
     broadcast: "<gold><bold>Apexsions</bold> » <red>%player% has risen as a <bold>Level 81 Overlord</bold> in %kingdom%!</red></gold>"
     sound: "UI_TOAST_CHALLENGE_COMPLETE"
 
-  # ============================================================================
-  # SPECIAL MILESTONE REWARD: LEVEL 91 (Sovereign Tier Unlocked)
-  # ============================================================================
+  82:
+    display-name: "<yellow>Level 82 Reward</yellow>"
+    icon: "EMERALD_BLOCK"
+    lore:
+      - "<white>• 6x Emerald Block</white>"
+      - "<white>• 2x Netherite Scrap</white>"
+    commands:
+      - "give %player% emerald_block 6"
+      - "give %player% netherite_scrap 2"
+
+  83:
+    display-name: "<yellow>Level 83 Reward</yellow>"
+    icon: "GOLDEN_CARROT"
+    lore:
+      - "<green>• Rp 130.000</green>"
+      - "<white>• 44x Golden Carrot</white>"
+      - "<white>• 1x Enchanted Golden Apple</white>"
+    commands:
+      - "eco give %player% 130000"
+      - "give %player% golden_carrot 44"
+      - "give %player% enchanted_golden_apple 1"
+
+  84:
+    display-name: "<yellow>Level 84 Reward</yellow>"
+    icon: "DIAMOND"
+    lore:
+      - "<white>• 21x Diamond</white>"
+    commands:
+      - "give %player% diamond 21"
+
+  85:
+    display-name: "<yellow>Level 85 Reward</yellow>"
+    icon: "SHULKER_SHELL"
+    lore:
+      - "<white>• 4x Shulker Shell</white>"
+      - "<white>• 8x Dragon Breath</white>"
+    commands:
+      - "give %player% shulker_shell 4"
+      - "give %player% dragon_breath 8"
+
+  86:
+    display-name: "<yellow>Level 86 Reward</yellow>"
+    icon: "GOLD_BLOCK"
+    lore:
+      - "<green>• Rp 135.000</green>"
+      - "<white>• 8x Gold Block</white>"
+    commands:
+      - "eco give %player% 135000"
+      - "give %player% gold_block 8"
+
+  87:
+    display-name: "<yellow>Level 87 Reward</yellow>"
+    icon: "NETHERITE_SCRAP"
+    lore:
+      - "<white>• 3x Netherite Scrap</white>"
+    commands:
+      - "give %player% netherite_scrap 3"
+
+  88:
+    display-name: "<yellow>Level 88 Reward</yellow>"
+    icon: "ENCHANTED_GOLDEN_APPLE"
+    lore:
+      - "<green>• Rp 145.000</green>"
+      - "<white>• 2x Enchanted Golden Apple</white>"
+    commands:
+      - "eco give %player% 145000"
+      - "give %player% enchanted_golden_apple 2"
+
+  89:
+    display-name: "<yellow>Level 89 Reward</yellow>"
+    icon: "CRYING_OBSIDIAN"
+    lore:
+      - "<white>• 15x Crying Obsidian</white>"
+      - "<white>• 1x Nether Star</white>"
+      - "<white>• 41x Experience Bottle</white>"
+    commands:
+      - "give %player% crying_obsidian 15"
+      - "give %player% nether_star 1"
+      - "give %player% experience_bottle 41"
+
+  90:
+    display-name: "<yellow>Level 90 Reward</yellow>"
+    icon: "DRAGON_BREATH"
+    lore:
+      - "<white>• 14x Dragon Breath</white>"
+    commands:
+      - "give %player% dragon_breath 14"
+
   91:
     is-milestone: true
-    display-name: "<gradient:#f39c12:#f1c40f><bold>👑 MILESTONE: Level 91 Sovereign</bold></gradient>"
+    display-name: "<gradient:#f39c12:#f1c40f><bold>👑 LEVEL SPESIAL 91: SOVEREIGN DIVINE</bold></gradient>"
     icon: "ENDER_CHEST"
     lore:
-      - "<gold><bold>★ SPECIAL MILESTONE REWARD ★</bold></gold>"
       - "<gold>• 1x Sovereign Divine Key</gold>"
-      - "<gold>• 5x Enchanted Golden Apples</gold>"
-      - "<gold>• 100,000 Currency</gold>"
+      - "<white>• 5x Enchanted Golden Apple</white>"
+      - "<white>• 2x Netherite Block</white>"
+      - "<green>• Rp 1.250.000</green>"
     commands:
       - "crate key give %player% sovereign 1"
       - "give %player% enchanted_golden_apple 5"
-      - "eco give %player% 100000"
+      - "give %player% netherite_block 2"
+      - "eco give %player% 1250000"
     broadcast: "<gold><bold>Apexsions</bold> » <gold>%player% is now a <bold>Level 91 Sovereign of %kingdom%</bold>!</gold>"
     sound: "UI_TOAST_CHALLENGE_COMPLETE"
 
-  # ============================================================================
-  # ULTIMATE MILESTONE REWARD: LEVEL 100 (Apex Emperor / Transcendent)
-  # ============================================================================
-  100:
-    is-milestone: true
-    display-name: "<gradient:#ff007f:#7f00ff><bold>⚡ SUPREME APEX MILESTONE: LEVEL 100 ⚡</bold></gradient>"
+  92:
+    display-name: "<yellow>Level 92 Reward</yellow>"
+    icon: "EXPERIENCE_BOTTLE"
+    lore:
+      - "<white>• 41x Experience Bottle</white>"
+      - "<white>• 1x Totem Of Undying</white>"
+      - "<white>• 5x Gold Block</white>"
+    commands:
+      - "give %player% experience_bottle 41"
+      - "give %player% totem_of_undying 1"
+      - "give %player% gold_block 5"
+
+  93:
+    display-name: "<yellow>Level 93 Reward</yellow>"
     icon: "NETHER_STAR"
     lore:
-      - "<gold><bold>★ ULTIMATE SERVER PINNACLE REWARD ★</bold></gold>"
+      - "<green>• Rp 155.000</green>"
+      - "<white>• 1x Nether Star</white>"
+      - "<white>• 44x Experience Bottle</white>"
+    commands:
+      - "eco give %player% 155000"
+      - "give %player% nether_star 1"
+      - "give %player% experience_bottle 44"
+
+  94:
+    display-name: "<yellow>Level 94 Reward</yellow>"
+    icon: "DRAGON_BREATH"
+    lore:
+      - "<white>• 8x Dragon Breath</white>"
+      - "<white>• 12x Diamond</white>"
+    commands:
+      - "give %player% dragon_breath 8"
+      - "give %player% diamond 12"
+
+  95:
+    display-name: "<yellow>Level 95 Reward</yellow>"
+    icon: "GOLD_BLOCK"
+    lore:
+      - "<white>• 5x Gold Block</white>"
+      - "<white>• 15x Crying Obsidian</white>"
+      - "<white>• 1x Nether Star</white>"
+    commands:
+      - "give %player% gold_block 5"
+      - "give %player% crying_obsidian 15"
+      - "give %player% nether_star 1"
+
+  96:
+    display-name: "<yellow>Level 96 Reward</yellow>"
+    icon: "EMERALD_BLOCK"
+    lore:
+      - "<green>• Rp 160.000</green>"
+      - "<white>• 6x Emerald Block</white>"
+    commands:
+      - "eco give %player% 160000"
+      - "give %player% emerald_block 6"
+
+  97:
+    display-name: "<yellow>Level 97 Reward</yellow>"
+    icon: "EMERALD_BLOCK"
+    lore:
+      - "<white>• 6x Emerald Block</white>"
+      - "<white>• 2x Netherite Scrap</white>"
+    commands:
+      - "give %player% emerald_block 6"
+      - "give %player% netherite_scrap 2"
+
+  98:
+    display-name: "<yellow>Level 98 Reward</yellow>"
+    icon: "EXPERIENCE_BOTTLE"
+    lore:
+      - "<green>• Rp 170.000</green>"
+      - "<white>• 64x Experience Bottle</white>"
+    commands:
+      - "eco give %player% 170000"
+      - "give %player% experience_bottle 64"
+
+  99:
+    display-name: "<yellow>Level 99 Reward</yellow>"
+    icon: "CRYING_OBSIDIAN"
+    lore:
+      - "<green>• Rp 175.000</green>"
+      - "<white>• 16x Crying Obsidian</white>"
+      - "<white>• 1x Nether Star</white>"
+    commands:
+      - "eco give %player% 175000"
+      - "give %player% crying_obsidian 16"
+      - "give %player% nether_star 1"
+
+  100:
+    is-milestone: true
+    display-name: "<gradient:#ff007f:#7f00ff><bold>⚡ SUPREME APEX LEVEL 100 ASCENSION ⚡</bold></gradient>"
+    icon: "NETHER_STAR"
+    lore:
       - "<light_purple>• 3x Supreme God Keys</light_purple>"
-      - "<light_purple>• 1x Supreme Apexsions Star Artifact</light_purple>"
-      - "<light_purple>• 250,000 Currency</light_purple>"
+      - "<white>• 1x Nether Star</white>"
+      - "<white>• 4x Netherite Block</white>"
+      - "<green>• Rp 1.750.000</green>"
       - "<light_purple>• Permanent Server-wide Hall of Fame Status</light_purple>"
     commands:
       - "crate key give %player% god 3"
       - "give %player% nether_star 1"
-      - "eco give %player% 250000"
+      - "give %player% netherite_block 4"
+      - "eco give %player% 1750000"
     broadcast: "<gold><bold>══════════════════════════════════════════════════════════</bold>\n<yellow><bold>👑 ASCENSION TO THE THRONE!</bold></yellow>\n<white>%player%</white> <yellow>has reached the ultimate</yellow> <gold><bold>MAX LEVEL 100</bold></gold> <yellow>in</yellow> <aqua><bold>%kingdom%</bold></aqua>!\n<gold><bold>══════════════════════════════════════════════════════════</bold></gold>"
     sound: "UI_TOAST_CHALLENGE_COMPLETE"
+

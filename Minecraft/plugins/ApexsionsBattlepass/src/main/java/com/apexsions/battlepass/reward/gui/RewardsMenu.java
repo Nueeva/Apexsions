@@ -238,7 +238,7 @@ public class RewardsMenu extends Gui {
             // Level Selesai
             Material mat = isMilestone ? Material.BEACON : Material.LIME_STAINED_GLASS_PANE;
             String name = isMilestone
-                    ? "&b&l★ MILESTONE LEVEL " + level + " &a(Selesai ✓) ★"
+                    ? "&b&l★ LEVEL SPESIAL " + level + " &a(Selesai ✓) ★"
                     : "&a&lLevel " + level + " &7(Selesai ✓)";
             ItemBuilder builder = new ItemBuilder(mat)
                     .name(name)
@@ -254,7 +254,7 @@ public class RewardsMenu extends Gui {
             int remaining = Math.max(0, reqXp - data.getXp());
             Material mat = isMilestone ? Material.SEA_LANTERN : Material.YELLOW_STAINED_GLASS_PANE;
             String name = isMilestone
-                    ? "&e&l★ MILESTONE LEVEL " + level + " &e(Sedang Dituju ⏳) ★"
+                    ? "&e&l★ LEVEL SPESIAL " + level + " &e(Sedang Dituju ⏳) ★"
                     : "&e&lLevel " + level + " &7(Sedang Berjalan ⏳)";
             ItemBuilder builder = new ItemBuilder(mat)
                     .name(name)
@@ -270,7 +270,7 @@ public class RewardsMenu extends Gui {
             // Terkunci
             Material mat = isMilestone ? Material.AMETHYST_CLUSTER : Material.GRAY_STAINED_GLASS_PANE;
             String name = isMilestone
-                    ? "&d&l★ MILESTONE LEVEL " + level + " &c(Terkunci 🔒) ★"
+                    ? "&d&l★ LEVEL SPESIAL " + level + " &c(Terkunci 🔒) ★"
                     : "&7&lLevel " + level + " &c(Terkunci 🔒)";
             return new GuiButton(new ItemBuilder(mat)
                     .name(name)
@@ -319,14 +319,6 @@ public class RewardsMenu extends Gui {
         Material displayMat = getPassDisplayMaterial(passId, state, isMilestone);
 
         List<String> lore = new ArrayList<>();
-        if (isMilestone) {
-            lore.add("&d&l━━━━━━━━━━━━━━━━━━━━━━━━━━━");
-            lore.add("&e&l   ★ HADIAH SPESIAL MILESTONE ★");
-            lore.add("&7  Pencapaian Puncak Tiap 50 Level!");
-            lore.add("&d&l━━━━━━━━━━━━━━━━━━━━━━━━━━━");
-            lore.add(" ");
-        }
-
         lore.add("&7Tier Pass: &f" + passName);
         lore.add("&7Syarat Level: &eLevel " + level);
         lore.add(" ");

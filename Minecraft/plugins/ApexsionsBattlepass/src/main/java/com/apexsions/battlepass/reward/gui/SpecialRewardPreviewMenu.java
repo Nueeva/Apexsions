@@ -61,7 +61,7 @@ public class SpecialRewardPreviewMenu extends Gui {
                         "&7Syarat Buka: &eLevel " + level,
                         "&7Status: &c🔒 Masih Terkunci",
                         " ",
-                        "&6✦ PAKET MILESTONE ISTIMEWA BATTLEPASS ✦",
+                        "&6✦ PAKET HADIAH SPESIAL BATTLEPASS ✦",
                         "&7Total Hadiah Istimewa: &e" + rewards.size() + " reward",
                         "&aTingkatkan XP kerajaanmu dan raih tahta hadiah ini!"
                 ))
