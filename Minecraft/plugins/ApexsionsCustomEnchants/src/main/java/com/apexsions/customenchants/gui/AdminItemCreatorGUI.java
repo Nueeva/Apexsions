@@ -220,7 +220,7 @@ public class AdminItemCreatorGUI implements InventoryHolder {
         if (fullset) {
             statusLore.add(mm.deserialize("<green><bold>✓ FULLSET ARMOR LENGKAP TERPASANG (4/4)</bold></green>"));
             if (setBonusConfigured && (!globalSet2Stats.isEmpty() || !globalSet4Stats.isEmpty())) {
-                statusLore.add(mm.deserialize("<gray>Bonus 2-set dan 4-set aktif diterapkan bersamaan.</gray>"));
+                statusLore.add(mm.deserialize("<gray>Stat yang sama pada 4-set mengutamakan nilai 4-set.</gray>"));
             } else {
                 statusLore.add(mm.deserialize("<yellow>Atur set bonus di bawah untuk mengaktifkan efek.</yellow>"));
             }

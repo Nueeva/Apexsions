@@ -165,17 +165,18 @@ public class KitArmorSetListener implements Listener {
         for (SetPieceData data : detectedSets.values()) {
             Map<KitStatType, Double> combined = new HashMap<>();
 
-            // 2-piece activation: active if >= 2 pieces equipped
+            // 1. 2-piece activation: active if >= 2 pieces equipped
             if (data.pieces >= 2 && !data.set2Stats.isEmpty()) {
-                for (Map.Entry<KitStatType, Double> e : data.set2Stats.entrySet()) {
-                    combined.merge(e.getKey(), e.getValue(), Double::sum);
-                }
+                combined.putAll(data.set2Stats);
             }
 
-            // 4-piece activation: active if >= 4 pieces equipped (stacks with 2-piece if both set!)
+            // 2. 4-piece activation: active if >= 4 pieces equipped
+            // If the same stat is configured in both 2-piece and 4-piece (e.g. 2% vs 5% damage reduction),
+            // the 4-piece stat overrides the 2-piece value (takes the 4-piece value only).
+            // Unique stats configured only in 2-piece remain active!
             if (data.pieces >= 4 && !data.set4Stats.isEmpty()) {
                 for (Map.Entry<KitStatType, Double> e : data.set4Stats.entrySet()) {
-                    combined.merge(e.getKey(), e.getValue(), Double::sum);
+                    combined.put(e.getKey(), e.getValue());
                 }
             }
 
@@ -197,7 +198,7 @@ public class KitArmorSetListener implements Listener {
             activeBonuses.put(player.getUniqueId(), qualifiedBonus);
             applyAttributeBonuses(player, qualifiedBonus);
 
-            if (prevBonus == null || !prevBonus.setId().equalsIgnoreCase(qualifiedBonus.setId())) {
+            if (prevBonus == null || !prevBonus.setId().equalsIgnoreCase(qualifiedBonus.setId()) || prevBonus.piecesEquipped() != qualifiedBonus.piecesEquipped()) {
                 player.playSound(player.getLocation(), Sound.BLOCK_BEACON_ACTIVATE, 0.7f, 1.4f);
                 player.sendMessage(mm.deserialize("<gold><bold>✦ ARMOR SET BONUS AKTIF! ✦</bold></gold>"));
                 player.sendMessage(mm.deserialize("<gray>Set:</gray> <gold>" + qualifiedBonus.setName() + "</gold> <dark_gray>(" + qualifiedBonus.piecesEquipped() + " Pieces)</dark_gray>"));
@@ -216,6 +217,7 @@ public class KitArmorSetListener implements Listener {
     }
 
     private void applyAttributeBonuses(Player player, ActiveBonus bonus) {
+        removeAttributeBonuses(player);
         if (bonus.hasStat(KitStatType.EXTRA_MAX_HEALTH)) {
             AttributeInstance attr = player.getAttribute(Attribute.MAX_HEALTH);
             if (attr != null) {
