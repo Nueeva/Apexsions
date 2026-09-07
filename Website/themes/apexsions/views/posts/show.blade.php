@@ -54,7 +54,7 @@
                         <button type="button" class="btn btn-outline-danger @if($post->isLiked()) active @endif btn-sm px-3" @guest disabled @endguest data-like-url="{{ route('posts.like', $post) }}">
                             <i class="bi bi-heart @if($post->isLiked()) d-none @endif" data-liked="true"></i>
                             <i class="bi bi-heart-fill @if(! $post->isLiked()) d-none @endif" data-liked="false"></i>
-                            <span class="ms-1"><span class="likes-count">{{ $post->likes->count() }}</span> Menyukai</span>
+                            <span class="ms-1"><span class="likes-count">{{ $post->likes->count() }}</span> <span data-i18n="posts_likes">Menyukai</span></span>
                             <span class="d-none spinner-border spinner-border-sm load-spinner ms-1" role="status"></span>
                         </button>
 
@@ -104,7 +104,7 @@
 
                     @guest
                         <div class="alert text-center p-3 rounded" style="background: rgba(212, 163, 89, 0.1); border: 1px solid var(--apx-gold-border); color: #e2e8f0; font-size: 0.88rem;">
-                            <i class="bi bi-info-circle text-gold me-1"></i> <span data-i18n="posts_guest_comment">Silakan <a href="{{ route('login') }}" class="text-gold fw-bold text-decoration-none">Masuk ke Akun</a> untuk berpartisipasi dalam diskusi.</span>
+                            <i class="bi bi-info-circle text-gold me-1"></i> <span data-i18n-html="posts_guest_comment">Silakan <a href="{{ route('login') }}" class="text-gold fw-bold text-decoration-none">Masuk ke Akun</a> untuk berpartisipasi dalam diskusi.</span>
                         </div>
                     @endguest
                 </section>

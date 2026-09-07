@@ -70,11 +70,11 @@
                         <table class="table cart-items">
                             <thead>
                             <tr>
-                                <th scope="col">{{ trans('messages.fields.name') }}</th>
-                                <th scope="col">{{ trans('shop::messages.fields.price') }}</th>
-                                <th scope="col">{{ trans('shop::messages.fields.total') }}</th>
-                                <th scope="col">{{ trans('shop::messages.fields.quantity') }}</th>
-                                <th scope="col" class="text-end">{{ trans('messages.fields.action') }}</th>
+                                <th scope="col" data-i18n="cart_th_name">{{ trans('messages.fields.name') }}</th>
+                                <th scope="col" data-i18n="cart_th_price">{{ trans('shop::messages.fields.price') }}</th>
+                                <th scope="col" data-i18n="cart_th_total">{{ trans('shop::messages.fields.total') }}</th>
+                                <th scope="col" data-i18n="cart_th_quantity">{{ trans('shop::messages.fields.quantity') }}</th>
+                                <th scope="col" class="text-end" data-i18n="cart_th_action">{{ trans('messages.fields.action') }}</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -104,7 +104,7 @@
 
                     <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
                         <button type="submit" class="btn btn-apx-outline btn-sm">
-                            <i class="bi bi-arrow-repeat me-1"></i> {{ trans('messages.actions.update') }}
+                            <i class="bi bi-arrow-repeat me-1"></i> <span data-i18n="cart_btn_update">{{ trans('messages.actions.update') }}</span>
                         </button>
                     </div>
                 </form>
@@ -112,7 +112,7 @@
                 <form method="POST" action="{{ route('shop.cart.clear') }}" class="text-end mb-4">
                     @csrf
                     <button type="submit" class="btn btn-outline-danger btn-sm">
-                        <i class="bi bi-trash me-1"></i> {{ trans('shop::messages.cart.clear') }}
+                        <i class="bi bi-trash me-1"></i> <span data-i18n="cart_btn_clear">{{ trans('shop::messages.cart.clear') }}</span>
                     </button>
                 </form>
             @else
@@ -186,7 +186,7 @@
 
             <!-- Total Price Summary -->
             <div class="p-3 mb-4 rounded-3 d-flex justify-content-between align-items-center flex-wrap gap-2" style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(20, 28, 46, 0.95) 100%); border: 1px solid var(--apx-gold-border);">
-                <span class="text-muted small">TOTAL PEMBAYARAN:</span>
+                <span class="text-muted small" data-i18n="cart_total_pay">TOTAL PEMBAYARAN:</span>
                 <span class="fs-4 fw-bold text-warning font-monospace" style="font-family: 'Cinzel', Georgia, serif;">
                     {{ trans('shop::messages.cart.total', ['total' => shop_format_amount($cart->total())]) }}
                 </span>
@@ -201,7 +201,7 @@
 
                 <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
                     <a href="{{ route('shop.home') }}" class="btn btn-apx-outline">
-                        <i class="bi bi-arrow-left me-1"></i> {{ trans('shop::messages.cart.back') }}
+                        <i class="bi bi-arrow-left me-1"></i> <span data-i18n="cart_btn_back">{{ trans('shop::messages.cart.back') }}</span>
                     </a>
 
                     @if(use_site_money())
@@ -217,7 +217,7 @@
                         @endif
 
                         <button type="submit" class="btn btn-apx-gold">
-                            <i class="bi bi-cart-check me-1"></i> {{ trans('shop::messages.cart.checkout') }}
+                            <i class="bi bi-cart-check me-1"></i> <span data-i18n="cart_btn_checkout">{{ trans('shop::messages.cart.checkout') }}</span>
                         </button>
                     @endif
                 </div>

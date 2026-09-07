@@ -48,9 +48,9 @@
                     <div class="apx-vote-perks mb-4 p-3 rounded" style="background: rgba(255, 255, 255, 0.02); border: 1px solid var(--apx-gold-border-subtle);">
                         <div class="text-gold small fw-bold mb-2 text-uppercase" style="letter-spacing: 0.08em; font-size: 0.72rem;" data-i18n="vote_instant_rewards">Imbalan Langsung:</div>
                         <ul class="list-unstyled mb-0 small text-muted">
-                            <li class="mb-1"><i class="bi bi-check2 text-gold me-2"></i> 1x Kunci Peti Pusaka (Vote Key)</li>
-                            <li class="mb-1"><i class="bi bi-check2 text-gold me-2"></i> +250 Battlepass XP</li>
-                            <li><i class="bi bi-check2 text-gold me-2"></i> Rp 10.000 Saldo Peradaban</li>
+                            <li class="mb-1"><i class="bi bi-check2 text-gold me-2"></i> <span data-i18n="vote_r_crate_key">1x Kunci Peti Pusaka (Vote Key)</span></li>
+                            <li class="mb-1"><i class="bi bi-check2 text-gold me-2"></i> <span data-i18n="vote_r_bp_250">+250 Battlepass XP</span></li>
+                            <li><i class="bi bi-check2 text-gold me-2"></i> <span data-i18n="vote_r_balance_10k">Rp 10.000 Saldo Peradaban</span></li>
                         </ul>
                     </div>
                     <a href="https://minecraft-mp.com" target="_blank" rel="noopener noreferrer" class="btn btn-apx-gold w-100 py-2">
@@ -81,9 +81,9 @@
                     <div class="apx-vote-perks mb-4 p-3 rounded" style="background: rgba(255, 255, 255, 0.02); border: 1px solid var(--apx-gold-border-subtle);">
                         <div class="text-gold small fw-bold mb-2 text-uppercase" style="letter-spacing: 0.08em; font-size: 0.72rem;" data-i18n="vote_instant_rewards">Imbalan Langsung:</div>
                         <ul class="list-unstyled mb-0 small text-muted">
-                            <li class="mb-1"><i class="bi bi-check2 text-gold me-2"></i> 1x Kunci Peti Pusaka (Vote Key)</li>
-                            <li class="mb-1"><i class="bi bi-check2 text-gold me-2"></i> +200 Battlepass XP</li>
-                            <li><i class="bi bi-check2 text-gold me-2"></i> 3x Diamond Murni Kerajaan</li>
+                            <li class="mb-1"><i class="bi bi-check2 text-gold me-2"></i> <span data-i18n="vote_r_crate_key">1x Kunci Peti Pusaka (Vote Key)</span></li>
+                            <li class="mb-1"><i class="bi bi-check2 text-gold me-2"></i> <span data-i18n="vote_r_bp_200">+200 Battlepass XP</span></li>
+                            <li><i class="bi bi-check2 text-gold me-2"></i> <span data-i18n="vote_r_diamond_3">3x Diamond Murni Kerajaan</span></li>
                         </ul>
                     </div>
                     <a href="https://topg.org/minecraft-servers" target="_blank" rel="noopener noreferrer" class="btn btn-apx-outline w-100 py-2">
@@ -114,9 +114,9 @@
                     <div class="apx-vote-perks mb-4 p-3 rounded" style="background: rgba(255, 255, 255, 0.02); border: 1px solid var(--apx-gold-border-subtle);">
                         <div class="text-gold small fw-bold mb-2 text-uppercase" style="letter-spacing: 0.08em; font-size: 0.72rem;" data-i18n="vote_instant_rewards">Imbalan Langsung:</div>
                         <ul class="list-unstyled mb-0 small text-muted">
-                            <li class="mb-1"><i class="bi bi-check2 text-gold me-2"></i> 1x Kunci Peti Pusaka (Vote Key)</li>
-                            <li class="mb-1"><i class="bi bi-check2 text-gold me-2"></i> +300 Battlepass XP</li>
-                            <li><i class="bi bi-check2 text-gold me-2"></i> 1x Botol Penempaan Mistis</li>
+                            <li class="mb-1"><i class="bi bi-check2 text-gold me-2"></i> <span data-i18n="vote_r_crate_key">1x Kunci Peti Pusaka (Vote Key)</span></li>
+                            <li class="mb-1"><i class="bi bi-check2 text-gold me-2"></i> <span data-i18n="vote_r_bp_300">+300 Battlepass XP</span></li>
+                            <li><i class="bi bi-check2 text-gold me-2"></i> <span data-i18n="vote_r_bottle_mystic">1x Botol Penempaan Mistis</span></li>
                         </ul>
                     </div>
                     <a href="https://www.planetminecraft.com" target="_blank" rel="noopener noreferrer" class="btn btn-apx-outline w-100 py-2">

@@ -306,8 +306,8 @@
             <!-- TIER V: PUNCAK KEDAULATAN (THE APEX) -->
             <div class="apx-ladder-tier apx-tier-apex-wrapper" data-rank-category="apex">
                 <div class="apx-tier-label-bar">
-                    <span class="apx-tier-roman">TINGKAT V</span>
-                    <span class="apx-tier-name">PUNCAK KEDAULATAN &bull; THE APEX</span>
+                    <span class="apx-tier-roman" data-i18n="caste_t5_roman">TINGKAT V</span>
+                    <span class="apx-tier-name" data-i18n-html="caste_t5_name">PUNCAK KEDAULATAN &bull; THE APEX</span>
                     <span class="apx-weight-pill gold">WEIGHT 100</span>
                 </div>
                 <div class="apx-caste-card apx-card-apex" data-rank-category="apex">
@@ -315,29 +315,29 @@
                     <div class="row align-items-center gy-3">
                         <div class="col-lg-4 col-md-5">
                             <div class="d-flex align-items-center gap-2 mb-1">
-                                <span class="apx-caste-tier-badge text-gold">TAHTA TERTINGGI</span>
+                                <span class="apx-caste-tier-badge text-gold" data-i18n="caste_ancestor_badge">TAHTA TERTINGGI</span>
                             </div>
                             <h3 class="apx-caste-name mb-1">The Ancestor</h3>
                             <div class="apx-caste-prefix text-gold"><i class="bi bi-crown"></i> ✦ ANCESTOR ✦</div>
-                            <span class="text-dim small">Pendiri Peradaban &amp; Tahta Tertinggi</span>
+                            <span class="text-dim small" data-i18n="caste_ancestor_sub">Pendiri Peradaban &amp; Tahta Tertinggi</span>
                         </div>
                         <div class="col-lg-5 col-md-7">
-                            <p class="apx-caste-desc mb-2">
+                            <p class="apx-caste-desc mb-2" data-i18n="caste_ancestor_desc">
                                 Sang leluhur agung dan pendiri peradaban. Pemegang mandat tertinggi atas hukum, arsitektur, dan kedaulatan seluruh realm Apexsions.
                             </p>
                             <ul class="apx-caste-perks mb-0">
-                                <li><i class="bi bi-check2"></i> Mandat Tertinggi Dekrit Kerajaan</li>
-                                <li><i class="bi bi-check2"></i> Kedaulatan Mutlak Seluruh Realm</li>
-                                <li><i class="bi bi-check2"></i> Mahkota Segel Leluhur Abadi</li>
+                                <li><i class="bi bi-check2"></i> <span data-i18n="caste_ancestor_p1">Mandat Tertinggi Dekrit Kerajaan</span></li>
+                                <li><i class="bi bi-check2"></i> <span data-i18n="caste_ancestor_p2">Kedaulatan Mutlak Seluruh Realm</span></li>
+                                <li><i class="bi bi-check2"></i> <span data-i18n="caste_ancestor_p3">Mahkota Segel Leluhur Abadi</span></li>
                             </ul>
                         </div>
                         <div class="col-lg-3 text-lg-end">
                             @if(plugins()->isEnabled('wiki'))
                                 <a href="{{ route('wiki.show', 'hierarki-kasta') }}" class="btn btn-apx-outline btn-sm">
-                                    Pelajari Mandat <i class="bi bi-chevron-right ms-1"></i>
+                                    <span data-i18n="caste_btn_mandate">Pelajari Mandat</span> <i class="bi bi-chevron-right ms-1"></i>
                                 </a>
                             @else
-                                <span class="text-gold small font-monospace">TAHTA TERTINGGI</span>
+                                <span class="text-gold small font-monospace" data-i18n="caste_ancestor_badge">TAHTA TERTINGGI</span>
                             @endif
                         </div>
                     </div>
@@ -347,9 +347,9 @@
             <!-- TIER IV: DEWAN OTORITAS (COUNCIL OF HIGH AUTHORITY) -->
             <div class="apx-ladder-tier apx-tier-authority-wrapper" data-rank-category="authority">
                 <div class="apx-tier-label-bar">
-                    <span class="apx-tier-roman">TINGKAT IV</span>
-                    <span class="apx-tier-name">DEWAN OTORITAS &bull; HIGH AUTHORITY</span>
-                    <span class="apx-weight-pill">WEIGHT 95 (KEDUDUKAN SETARA)</span>
+                    <span class="apx-tier-roman" data-i18n="caste_t4_roman">TINGKAT IV</span>
+                    <span class="apx-tier-name" data-i18n-html="caste_t4_name">DEWAN OTORITAS &bull; HIGH AUTHORITY</span>
+                    <span class="apx-weight-pill" data-i18n="caste_t4_weight">WEIGHT 95 (KEDUDUKAN SETARA)</span>
                 </div>
                 <div class="apx-tier-authority-grid">
                     <!-- 2. Architect -->
@@ -357,27 +357,27 @@
                         <img src="{{ theme_asset('img/ranks/rank-architect.png') }}" alt="Banner Resmi Kasta Architect" class="apx-caste-banner" loading="lazy" decoding="async" width="952" height="84">
                         <div>
                             <div class="apx-caste-header">
-                                <span class="apx-caste-tier-badge text-purple">DEWAN OTORITAS</span>
+                                <span class="apx-caste-tier-badge text-purple" data-i18n="caste_authority_badge">DEWAN OTORITAS</span>
                                 <span class="apx-caste-weight">WEIGHT 95</span>
                             </div>
                             <h3 class="apx-caste-name">Architect</h3>
                             <div class="apx-caste-prefix text-purple"><i class="bi bi-compass-fill"></i> ARCHITECT</div>
-                            <p class="apx-caste-desc">
+                            <p class="apx-caste-desc" data-i18n="caste_architect_desc">
                                 Perancang tata ruang dan pembangun peradaban. Mengatur cetak biru arsitektur realm, struktur kota, dan batas kedaulatan wilayah secara setara di Dewan Otoritas.
                             </p>
                             <ul class="apx-caste-perks">
-                                <li><i class="bi bi-check2"></i> Otoritas Cetak Biru &amp; Pembangunan Realm</li>
-                                <li><i class="bi bi-check2"></i> Hak Pengawasan Tata Ruang &amp; Konstruksi</li>
-                                <li><i class="bi bi-check2"></i> Akses Konsol Kreatif &amp; Inspeksi Properti</li>
+                                <li><i class="bi bi-check2"></i> <span data-i18n="caste_architect_p1">Otoritas Cetak Biru &amp; Pembangunan Realm</span></li>
+                                <li><i class="bi bi-check2"></i> <span data-i18n="caste_architect_p2">Hak Pengawasan Tata Ruang &amp; Konstruksi</span></li>
+                                <li><i class="bi bi-check2"></i> <span data-i18n="caste_architect_p3">Akses Konsol Kreatif &amp; Inspeksi Properti</span></li>
                             </ul>
                         </div>
                         <div class="apx-caste-action">
                             @if(plugins()->isEnabled('wiki'))
                                 <a href="{{ route('wiki.show', 'hierarki-kasta') }}" class="apx-player-link">
-                                    Pelajari Peran <i class="bi bi-chevron-right ms-1"></i>
+                                    <span data-i18n="caste_btn_role">Pelajari Peran</span> <i class="bi bi-chevron-right ms-1"></i>
                                 </a>
                             @else
-                                <span class="text-dim small text-uppercase fw-bold" style="letter-spacing: 0.1em;">ARSITEK REALM</span>
+                                <span class="text-dim small text-uppercase fw-bold" style="letter-spacing: 0.1em;" data-i18n="caste_role_architect">ARSITEK REALM</span>
                             @endif
                         </div>
                     </div>
@@ -387,27 +387,27 @@
                         <img src="{{ theme_asset('img/ranks/rank-overseer.png') }}" alt="Banner Resmi Kasta Overseer" class="apx-caste-banner" loading="lazy" decoding="async" width="952" height="81">
                         <div>
                             <div class="apx-caste-header">
-                                <span class="apx-caste-tier-badge text-gold">DEWAN OTORITAS</span>
+                                <span class="apx-caste-tier-badge text-gold" data-i18n="caste_authority_badge">DEWAN OTORITAS</span>
                                 <span class="apx-caste-weight">WEIGHT 95</span>
                             </div>
                             <h3 class="apx-caste-name">Overseer</h3>
                             <div class="apx-caste-prefix text-gold"><i class="bi bi-eye-fill"></i> OVERSEER</div>
-                            <p class="apx-caste-desc">
+                            <p class="apx-caste-desc" data-i18n="caste_overseer_desc">
                                 Mata pengawas kedaulatan dan kestabilan dunia. Memantau integritas transaksi ekonomi, kepatuhan peradaban, dan audit peradilan secara setara di Dewan Otoritas.
                             </p>
                             <ul class="apx-caste-perks">
-                                <li><i class="bi bi-check2"></i> Audit Kedaulatan, Transaksi &amp; Keadilan</li>
-                                <li><i class="bi bi-check2"></i> Pemantauan Dinamika Pasar &amp; Kas Kerajaan</li>
-                                <li><i class="bi bi-check2"></i> Akses Meja Investigasi &amp; Log Peradaban</li>
+                                <li><i class="bi bi-check2"></i> <span data-i18n="caste_overseer_p1">Audit Kedaulatan, Transaksi &amp; Keadilan</span></li>
+                                <li><i class="bi bi-check2"></i> <span data-i18n="caste_overseer_p2">Pemantauan Dinamika Pasar &amp; Kas Kerajaan</span></li>
+                                <li><i class="bi bi-check2"></i> <span data-i18n="caste_overseer_p3">Akses Meja Investigasi &amp; Log Peradaban</span></li>
                             </ul>
                         </div>
                         <div class="apx-caste-action">
                             @if(plugins()->isEnabled('wiki'))
                                 <a href="{{ route('wiki.show', 'hierarki-kasta') }}" class="apx-player-link">
-                                    Pelajari Peran <i class="bi bi-chevron-right ms-1"></i>
+                                    <span data-i18n="caste_btn_role">Pelajari Peran</span> <i class="bi bi-chevron-right ms-1"></i>
                                 </a>
                             @else
-                                <span class="text-dim small text-uppercase fw-bold" style="letter-spacing: 0.1em;">PENGAWAS REALM</span>
+                                <span class="text-dim small text-uppercase fw-bold" style="letter-spacing: 0.1em;" data-i18n="caste_role_overseer">PENGAWAS REALM</span>
                             @endif
                         </div>
                     </div>
@@ -417,8 +417,8 @@
             <!-- TIER III: ADMINISTRASI & PENEGAK HUKUM (STAFF & LAW ENFORCEMENT) -->
             <div class="apx-ladder-tier apx-tier-staff-wrapper" data-rank-category="staff">
                 <div class="apx-tier-label-bar">
-                    <span class="apx-tier-roman">TINGKAT III</span>
-                    <span class="apx-tier-name">ADMINISTRASI &amp; PENEGAK HUKUM &bull; STAFF</span>
+                    <span class="apx-tier-roman" data-i18n="caste_t3_roman">TINGKAT III</span>
+                    <span class="apx-tier-name" data-i18n-html="caste_t3_name">ADMINISTRASI &amp; PENEGAK HUKUM &bull; STAFF</span>
                     <span class="apx-weight-pill">WEIGHT 90 &bull; 80</span>
                 </div>
                 <div class="apx-tier-staff-grid">
@@ -427,27 +427,27 @@
                         <img src="{{ theme_asset('img/ranks/rank-warden.png') }}" alt="Banner Resmi Kasta Warden" class="apx-caste-banner" loading="lazy" decoding="async" width="952" height="85">
                         <div>
                             <div class="apx-caste-header">
-                                <span class="apx-caste-tier-badge text-blue">ADMINISTRASI &amp; STAF</span>
+                                <span class="apx-caste-tier-badge text-blue" data-i18n="caste_staff_badge">ADMINISTRASI &amp; STAF</span>
                                 <span class="apx-caste-weight">WEIGHT 90</span>
                             </div>
                             <h3 class="apx-caste-name">Warden</h3>
                             <div class="apx-caste-prefix text-blue"><i class="bi bi-shield-shaded"></i> WARDEN</div>
-                            <p class="apx-caste-desc">
+                            <p class="apx-caste-desc" data-i18n="caste_warden_desc">
                                 Penjaga gerbang utama dan kepala staf administrasi peradaban di bawah naungan Dewan Otoritas. Mengawasi kestabilan wilayah, tribunal keadilan, dan ketertiban hukum dunia.
                             </p>
                             <ul class="apx-caste-perks">
-                                <li><i class="bi bi-check2"></i> Otoritas Tribunal &amp; Keamanan Realm</li>
-                                <li><i class="bi bi-check2"></i> Pengawasan Integritas Transaksi &amp; War</li>
-                                <li><i class="bi bi-check2"></i> Hak Inspeksi Wilayah Berdaulat</li>
+                                <li><i class="bi bi-check2"></i> <span data-i18n="caste_warden_p1">Otoritas Tribunal &amp; Keamanan Realm</span></li>
+                                <li><i class="bi bi-check2"></i> <span data-i18n="caste_warden_p2">Pengawasan Integritas Transaksi &amp; War</span></li>
+                                <li><i class="bi bi-check2"></i> <span data-i18n="caste_warden_p3">Hak Inspeksi Wilayah Berdaulat</span></li>
                             </ul>
                         </div>
                         <div class="apx-caste-action">
                             @if(plugins()->isEnabled('wiki'))
                                 <a href="{{ route('wiki.show', 'hierarki-kasta') }}" class="apx-player-link">
-                                    Pelajari Peran <i class="bi bi-chevron-right ms-1"></i>
+                                    <span data-i18n="caste_btn_role">Pelajari Peran</span> <i class="bi bi-chevron-right ms-1"></i>
                                 </a>
                             @else
-                                <span class="text-dim small text-uppercase fw-bold" style="letter-spacing: 0.1em;">KEPALA PENGAWAS</span>
+                                <span class="text-dim small text-uppercase fw-bold" style="letter-spacing: 0.1em;" data-i18n="caste_role_warden">KEPALA PENGAWAS</span>
                             @endif
                         </div>
                     </div>
@@ -457,27 +457,27 @@
                         <img src="{{ theme_asset('img/ranks/rank-herald.png') }}" alt="Banner Resmi Kasta Herald" class="apx-caste-banner" loading="lazy" decoding="async" width="952" height="84">
                         <div>
                             <div class="apx-caste-header">
-                                <span class="apx-caste-tier-badge text-pink">ADMINISTRASI &amp; STAF</span>
+                                <span class="apx-caste-tier-badge text-pink" data-i18n="caste_staff_badge">ADMINISTRASI &amp; STAF</span>
                                 <span class="apx-caste-weight">WEIGHT 80</span>
                             </div>
                             <h3 class="apx-caste-name">Herald</h3>
                             <div class="apx-caste-prefix text-pink"><i class="bi bi-chat-quote"></i> HERALD</div>
-                            <p class="apx-caste-desc">
+                            <p class="apx-caste-desc" data-i18n="caste_herald_desc">
                                 Utusan resmi, pembawa maklumat peradaban, dan moderator realm. Menjembatani suara warga dengan dewan penguasa dan menjaga etika publik.
                             </p>
                             <ul class="apx-caste-perks">
-                                <li><i class="bi bi-check2"></i> Moderasi &amp; Diplomasi Publik</li>
-                                <li><i class="bi bi-check2"></i> Penegakan Etika Peradaban</li>
-                                <li><i class="bi bi-check2"></i> Akses Meja Laporan Warga</li>
+                                <li><i class="bi bi-check2"></i> <span data-i18n="caste_herald_p1">Moderasi &amp; Diplomasi Publik</span></li>
+                                <li><i class="bi bi-check2"></i> <span data-i18n="caste_herald_p2">Penegakan Etika Peradaban</span></li>
+                                <li><i class="bi bi-check2"></i> <span data-i18n="caste_herald_p3">Akses Meja Laporan Warga</span></li>
                             </ul>
                         </div>
                         <div class="apx-caste-action">
                             @if(plugins()->isEnabled('wiki'))
                                 <a href="{{ route('wiki.show', 'hierarki-kasta') }}" class="apx-player-link">
-                                    Pelajari Peran <i class="bi bi-chevron-right ms-1"></i>
+                                    <span data-i18n="caste_btn_role">Pelajari Peran</span> <i class="bi bi-chevron-right ms-1"></i>
                                 </a>
                             @else
-                                <span class="text-dim small text-uppercase fw-bold" style="letter-spacing: 0.1em;">UTUSAN RESMI</span>
+                                <span class="text-dim small text-uppercase fw-bold" style="letter-spacing: 0.1em;" data-i18n="caste_role_herald">UTUSAN RESMI</span>
                             @endif
                         </div>
                     </div>
@@ -487,8 +487,8 @@
             <!-- TIER II: ORDO BANGSAWAN (THE NOBLE ASCENSION) -->
             <div class="apx-ladder-tier apx-tier-nobles-wrapper" data-rank-category="nobles">
                 <div class="apx-tier-label-bar">
-                    <span class="apx-tier-roman">TINGKAT II</span>
-                    <span class="apx-tier-name">ORDO BANGSAWAN &bull; THE ASCENSION</span>
+                    <span class="apx-tier-roman" data-i18n="caste_t2_roman">TINGKAT II</span>
+                    <span class="apx-tier-name" data-i18n-html="caste_t2_name">ORDO BANGSAWAN &bull; THE ASCENSION</span>
                     <span class="apx-weight-pill">WEIGHT 70 &bull; 60 &bull; 50 &bull; 40 &bull; 30</span>
                 </div>
                 <div class="apx-tier-ascension-grid">
@@ -497,24 +497,24 @@
                         <img src="{{ theme_asset('img/ranks/rank-sions.png') }}" alt="Banner Resmi Kasta Sions" class="apx-caste-banner" loading="lazy" decoding="async" width="952" height="132">
                         <div>
                             <div class="apx-caste-header">
-                                <span class="apx-caste-tier-badge text-gold">APEX NOBLE</span>
+                                <span class="apx-caste-tier-badge text-gold" data-i18n="caste_sions_badge">APEX NOBLE</span>
                                 <span class="apx-caste-weight">WEIGHT 70</span>
                             </div>
                             <h3 class="apx-caste-name">Sions</h3>
                             <div class="apx-caste-prefix text-gold"><i class="bi bi-star-fill"></i> ✦ SIONS ✦</div>
-                            <p class="apx-caste-desc">
+                            <p class="apx-caste-desc" data-i18n="caste_sions_desc">
                                 Kasta bangsawan puncak peradaban. Pilar kemakmuran tertinggi realm dengan keistimewaan absolut.
                             </p>
                             <ul class="apx-caste-perks">
-                                <li><i class="bi bi-check2"></i> +15 Batas Klaim Wilayah</li>
-                                <li><i class="bi bi-check2"></i> Kit Sions Eksklusif</li>
-                                <li><i class="bi bi-check2"></i> Siaran Kedatangan Megah</li>
+                                <li><i class="bi bi-check2"></i> <span data-i18n="caste_sions_p1">+15 Batas Klaim Wilayah</span></li>
+                                <li><i class="bi bi-check2"></i> <span data-i18n="caste_sions_p2">Kit Sions Eksklusif</span></li>
+                                <li><i class="bi bi-check2"></i> <span data-i18n="caste_sions_p3">Siaran Kedatangan Megah</span></li>
                             </ul>
                         </div>
                         <div class="apx-caste-action">
                             @if(plugins()->isEnabled('shop'))
                                 <a href="{{ route('shop.categories.show', 'rank-donatur') }}" class="apx-player-link">
-                                    Webstore <i class="bi bi-chevron-right ms-1"></i>
+                                    <span data-i18n="caste_btn_webstore_small">Webstore</span> <i class="bi bi-chevron-right ms-1"></i>
                                 </a>
                             @endif
                         </div>
@@ -525,24 +525,24 @@
                         <img src="{{ theme_asset('img/ranks/rank-emperor.png') }}" alt="Banner Resmi Kasta Emperor" class="apx-caste-banner" loading="lazy" decoding="async" width="952" height="86">
                         <div>
                             <div class="apx-caste-header">
-                                <span class="apx-caste-tier-badge">DONATUR TIER 4</span>
+                                <span class="apx-caste-tier-badge" data-i18n="caste_emperor_badge">DONATUR TIER 4</span>
                                 <span class="apx-caste-weight">WEIGHT 60</span>
                             </div>
                             <h3 class="apx-caste-name">Emperor</h3>
                             <div class="apx-caste-prefix"><i class="bi bi-gem"></i> EMPEROR</div>
-                            <p class="apx-caste-desc">
+                            <p class="apx-caste-desc" data-i18n="caste_emperor_desc">
                                 Bangsawan penakluk berwibawa tinggi. Penguasa langit dengan hak terbang di wilayah klaim.
                             </p>
                             <ul class="apx-caste-perks">
-                                <li><i class="bi bi-check2"></i> Hak Terbang /fly di Wilayah</li>
-                                <li><i class="bi bi-check2"></i> +10 Batas Klaim Wilayah</li>
-                                <li><i class="bi bi-check2"></i> Kit Bulanan Gear Lengkap</li>
+                                <li><i class="bi bi-check2"></i> <span data-i18n="caste_emperor_p1">Hak Terbang /fly di Wilayah</span></li>
+                                <li><i class="bi bi-check2"></i> <span data-i18n="caste_emperor_p2">+10 Batas Klaim Wilayah</span></li>
+                                <li><i class="bi bi-check2"></i> <span data-i18n="caste_emperor_p3">Kit Bulanan Gear Lengkap</span></li>
                             </ul>
                         </div>
                         <div class="apx-caste-action">
                             @if(plugins()->isEnabled('shop'))
                                 <a href="{{ route('shop.categories.show', 'rank-donatur') }}" class="apx-player-link">
-                                    Webstore <i class="bi bi-chevron-right ms-1"></i>
+                                    <span data-i18n="caste_btn_webstore_small">Webstore</span> <i class="bi bi-chevron-right ms-1"></i>
                                 </a>
                             @endif
                         </div>
@@ -553,24 +553,24 @@
                         <img src="{{ theme_asset('img/ranks/rank-sovereign.png') }}" alt="Banner Resmi Kasta Sovereign" class="apx-caste-banner" loading="lazy" decoding="async" width="952" height="86">
                         <div>
                             <div class="apx-caste-header">
-                                <span class="apx-caste-tier-badge">DONATUR TIER 3</span>
+                                <span class="apx-caste-tier-badge" data-i18n="caste_sovereign_badge">DONATUR TIER 3</span>
                                 <span class="apx-caste-weight">WEIGHT 50</span>
                             </div>
                             <h3 class="apx-caste-name">Sovereign</h3>
                             <div class="apx-caste-prefix"><i class="bi bi-feather"></i> SOVEREIGN</div>
-                            <p class="apx-caste-desc">
+                            <p class="apx-caste-desc" data-i18n="caste_sovereign_desc">
                                 Tuan tanah emas peradaban. Menguasai jalur niaga bebas tarif dagang lintas kerajaan.
                             </p>
                             <ul class="apx-caste-perks">
-                                <li><i class="bi bi-check2"></i> Bebas Tarif Dagang Wilayah</li>
-                                <li><i class="bi bi-check2"></i> +7 Batas Klaim Wilayah</li>
-                                <li><i class="bi bi-check2"></i> Kit Sovereign 14 Harian</li>
+                                <li><i class="bi bi-check2"></i> <span data-i18n="caste_sovereign_p1">Bebas Tarif Dagang Wilayah</span></li>
+                                <li><i class="bi bi-check2"></i> <span data-i18n="caste_sovereign_p2">+7 Batas Klaim Wilayah</span></li>
+                                <li><i class="bi bi-check2"></i> <span data-i18n="caste_sovereign_p3">Kit Sovereign 14 Harian</span></li>
                             </ul>
                         </div>
                         <div class="apx-caste-action">
                             @if(plugins()->isEnabled('shop'))
                                 <a href="{{ route('shop.categories.show', 'rank-donatur') }}" class="apx-player-link">
-                                    Webstore <i class="bi bi-chevron-right ms-1"></i>
+                                    <span data-i18n="caste_btn_webstore_small">Webstore</span> <i class="bi bi-chevron-right ms-1"></i>
                                 </a>
                             @endif
                         </div>
@@ -581,24 +581,24 @@
                         <img src="{{ theme_asset('img/ranks/rank-archon.png') }}" alt="Banner Resmi Kasta Archon" class="apx-caste-banner" loading="lazy" decoding="async" width="952" height="87">
                         <div>
                             <div class="apx-caste-header">
-                                <span class="apx-caste-tier-badge">DONATUR TIER 2</span>
+                                <span class="apx-caste-tier-badge" data-i18n="caste_archon_badge">DONATUR TIER 2</span>
                                 <span class="apx-caste-weight">WEIGHT 40</span>
                             </div>
                             <h3 class="apx-caste-name">Archon</h3>
                             <div class="apx-caste-prefix"><i class="bi bi-lightning-charge"></i> ARCHON</div>
-                            <p class="apx-caste-desc">
+                            <p class="apx-caste-desc" data-i18n="caste_archon_desc">
                                 Kaum perajin kristal dan cendekiawan realm. Menikmati utilitas workbench portabel di mana saja.
                             </p>
                             <ul class="apx-caste-perks">
-                                <li><i class="bi bi-check2"></i> Akses /ec, /anvil Portabel</li>
-                                <li><i class="bi bi-check2"></i> +4 Batas Klaim Wilayah</li>
-                                <li><i class="bi bi-check2"></i> Kit Mingguan &amp; Kosmetik</li>
+                                <li><i class="bi bi-check2"></i> <span data-i18n="caste_archon_p1">Akses /ec, /anvil Portabel</span></li>
+                                <li><i class="bi bi-check2"></i> <span data-i18n="caste_archon_p2">+4 Batas Klaim Wilayah</span></li>
+                                <li><i class="bi bi-check2"></i> <span data-i18n="caste_archon_p3">Kit Mingguan &amp; Kosmetik</span></li>
                             </ul>
                         </div>
                         <div class="apx-caste-action">
                             @if(plugins()->isEnabled('shop'))
                                 <a href="{{ route('shop.categories.show', 'rank-donatur') }}" class="apx-player-link">
-                                    Webstore <i class="bi bi-chevron-right ms-1"></i>
+                                    <span data-i18n="caste_btn_webstore_small">Webstore</span> <i class="bi bi-chevron-right ms-1"></i>
                                 </a>
                             @endif
                         </div>
@@ -609,24 +609,24 @@
                         <img src="{{ theme_asset('img/ranks/rank-ascendant.png') }}" alt="Banner Resmi Kasta Ascendant" class="apx-caste-banner" loading="lazy" decoding="async" width="952" height="85">
                         <div>
                             <div class="apx-caste-header">
-                                <span class="apx-caste-tier-badge">DONATUR TIER 1</span>
+                                <span class="apx-caste-tier-badge" data-i18n="caste_ascendant_badge">DONATUR TIER 1</span>
                                 <span class="apx-caste-weight">WEIGHT 30</span>
                             </div>
                             <h3 class="apx-caste-name">Ascendant</h3>
                             <div class="apx-caste-prefix"><i class="bi bi-flower1"></i> ASCENDANT</div>
-                            <p class="apx-caste-desc">
+                            <p class="apx-caste-desc" data-i18n="caste_ascendant_desc">
                                 Warga terhormat yang membuktikan dedikasinya. Prioritas antrean masuk dan perbekalan harian.
                             </p>
                             <ul class="apx-caste-perks">
-                                <li><i class="bi bi-check2"></i> Bypass Antrean Server</li>
-                                <li><i class="bi bi-check2"></i> +2 Batas Klaim Wilayah</li>
-                                <li><i class="bi bi-check2"></i> Kit Ascendant Harian</li>
+                                <li><i class="bi bi-check2"></i> <span data-i18n="caste_ascendant_p1">Bypass Antrean Server</span></li>
+                                <li><i class="bi bi-check2"></i> <span data-i18n="caste_ascendant_p2">+2 Batas Klaim Wilayah</span></li>
+                                <li><i class="bi bi-check2"></i> <span data-i18n="caste_ascendant_p3">Kit Ascendant Harian</span></li>
                             </ul>
                         </div>
                         <div class="apx-caste-action">
                             @if(plugins()->isEnabled('shop'))
                                 <a href="{{ route('shop.categories.show', 'rank-donatur') }}" class="apx-player-link">
-                                    Webstore <i class="bi bi-chevron-right ms-1"></i>
+                                    <span data-i18n="caste_btn_webstore_small">Webstore</span> <i class="bi bi-chevron-right ms-1"></i>
                                 </a>
                             @endif
                         </div>
@@ -637,8 +637,8 @@
             <!-- TIER I: FONDASI PERADABAN (THE FOUNDATION) -->
             <div class="apx-ladder-tier apx-tier-foundation-wrapper" data-rank-category="pioneers">
                 <div class="apx-tier-label-bar">
-                    <span class="apx-tier-roman">TINGKAT I</span>
-                    <span class="apx-tier-name">FONDASI PERADABAN &bull; THE FOUNDATION</span>
+                    <span class="apx-tier-roman" data-i18n="caste_t1_roman">TINGKAT I</span>
+                    <span class="apx-tier-name" data-i18n-html="caste_t1_name">FONDASI PERADABAN &bull; THE FOUNDATION</span>
                     <span class="apx-weight-pill">WEIGHT 10</span>
                 </div>
                 <div class="apx-caste-card apx-card-foundation" data-rank-category="pioneers">
@@ -646,25 +646,25 @@
                     <div class="row align-items-center gy-3">
                         <div class="col-lg-4 col-md-5">
                             <div class="d-flex align-items-center gap-2 mb-1">
-                                <span class="apx-caste-tier-badge">WARGA PERINTIS</span>
+                                <span class="apx-caste-tier-badge" data-i18n="caste_wanderer_badge">WARGA PERINTIS</span>
                             </div>
                             <h3 class="apx-caste-name mb-1">Wanderer</h3>
                             <div class="apx-caste-prefix"><i class="bi bi-compass"></i> WANDERER</div>
-                            <span class="text-dim small">Pijakan Awal Seluruh Warga Baru</span>
+                            <span class="text-dim small" data-i18n="caste_wanderer_sub">Pijakan Awal Seluruh Warga Baru</span>
                         </div>
                         <div class="col-lg-5 col-md-7">
-                            <p class="apx-caste-desc mb-2">
+                            <p class="apx-caste-desc mb-2" data-i18n="caste_wanderer_desc">
                                 Fondasi dan jiwa peradaban Apexsions. Setiap legenda dimulai dari warga baru yang berani menancapkan pijakan pertama di alam liar.
                             </p>
                             <ul class="apx-caste-perks mb-0">
-                                <li><i class="bi bi-check2"></i> Akses Penuh ke Tiga Kerajaan</li>
-                                <li><i class="bi bi-check2"></i> Partisipasi Pasar &amp; Lelang Escrow</li>
-                                <li><i class="bi bi-check2"></i> Batas Wilayah Awal &amp; Progresi Bebas</li>
+                                <li><i class="bi bi-check2"></i> <span data-i18n="caste_wanderer_p1">Akses Penuh ke Tiga Kerajaan</span></li>
+                                <li><i class="bi bi-check2"></i> <span data-i18n="caste_wanderer_p2">Partisipasi Pasar &amp; Lelang Escrow</span></li>
+                                <li><i class="bi bi-check2"></i> <span data-i18n="caste_wanderer_p3">Batas Wilayah Awal &amp; Progresi Bebas</span></li>
                             </ul>
                         </div>
                         <div class="col-lg-3 text-lg-end">
                             <a href="#getting-started" class="btn btn-apx-outline btn-sm">
-                                Cara Bergabung <i class="bi bi-chevron-right ms-1"></i>
+                                <span data-i18n="caste_btn_join">Cara Bergabung</span> <i class="bi bi-chevron-right ms-1"></i>
                             </a>
                         </div>
                     </div>
@@ -678,12 +678,12 @@
             <div class="d-flex justify-content-center align-items-center gap-3 flex-wrap">
                 @if(plugins()->isEnabled('wiki'))
                     <a href="{{ route('wiki.show', 'hierarki-kasta') }}" class="btn btn-apx-gold px-4 py-2">
-                        <i class="bi bi-journal-text me-2"></i> Panduan Lengkap Kasta
+                        <i class="bi bi-journal-text me-2"></i> <span data-i18n="caste_btn_full_guide">Panduan Lengkap Kasta</span>
                     </a>
                 @endif
                 @if(plugins()->isEnabled('shop'))
                     <a href="{{ route('shop.categories.show', 'rank-donatur') }}" class="btn btn-apx-outline px-4 py-2">
-                        <i class="bi bi-crown me-2"></i> Jelajahi Kasta di Webstore
+                        <i class="bi bi-crown me-2"></i> <span data-i18n="caste_btn_webstore">Jelajahi Kasta di Webstore</span>
                     </a>
                 @endif
             </div>

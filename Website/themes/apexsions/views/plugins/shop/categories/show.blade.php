@@ -179,11 +179,11 @@
                                 </span>
                             @elseif(str_contains($packageName, 'booster'))
                                 <span class="apx-package-badge" style="background: rgba(245, 158, 11, 0.25); color: #fde68a; border: 1px solid #f59e0b;">
-                                    <i class="bi bi-lightning-fill me-1"></i> 3 HARI AKTIF
+                                    <i class="bi bi-lightning-fill me-1"></i> <span data-i18n="shop_badge_3days">3 HARI AKTIF</span>
                                 </span>
                             @else
                                 <span class="apx-package-badge">
-                                    <i class="bi bi-patch-check-fill text-warning me-1"></i> PERMANEN
+                                    <i class="bi bi-patch-check-fill text-warning me-1"></i> <span data-i18n="shop_badge_perm">PERMANEN</span>
                                 </span>
                             @endif
 
@@ -222,43 +222,43 @@
                                 <!-- Key Highlights per Caste / Package -->
                                 <ul class="apx-package-perks">
                                     @if(str_contains($packageName, 'sions'))
-                                        <li><i class="bi bi-crown text-warning"></i><span class="text-light">Prefix Mahkota ✦ SIONS ✦</span></li>
-                                        <li><i class="bi bi-shield-check text-warning"></i><span class="text-light">Seluruh Kit + Kit Sions Eksklusif</span></li>
-                                        <li><i class="bi bi-broadcast text-warning"></i><span class="text-light">Pesan Broadcast Masuk Server Megah</span></li>
-                                        <li><i class="bi bi-geo-alt text-warning"></i><span class="text-light">+15 Batas Klaim Wilayah Kerajaan</span></li>
+                                        <li><i class="bi bi-crown text-warning"></i><span class="text-light" data-i18n="shop_sions_p1">Prefix Mahkota ✦ SIONS ✦</span></li>
+                                        <li><i class="bi bi-shield-check text-warning"></i><span class="text-light" data-i18n="shop_sions_p2">Seluruh Kit + Kit Sions Eksklusif</span></li>
+                                        <li><i class="bi bi-broadcast text-warning"></i><span class="text-light" data-i18n="shop_sions_p3">Pesan Broadcast Masuk Server Megah</span></li>
+                                        <li><i class="bi bi-geo-alt text-warning"></i><span class="text-light" data-i18n="shop_sions_p4">+15 Batas Klaim Wilayah Kerajaan</span></li>
                                     @elseif(str_contains($packageName, 'emperor'))
-                                        <li><i class="bi bi-check2-circle text-danger"></i><span class="text-light">Prefix Kaisar [⚔ EMPEROR]</span></li>
-                                        <li><i class="bi bi-check2-circle text-danger"></i><span class="text-light">Kit Bulanan Gear Set Bonus Lengkap</span></li>
-                                        <li><i class="bi bi-check2-circle text-danger"></i><span class="text-light">Hak Terbang /fly di Ibukota &amp; Claim</span></li>
-                                        <li><i class="bi bi-check2-circle text-danger"></i><span class="text-light">+10 Batas Klaim Wilayah Kerajaan</span></li>
+                                        <li><i class="bi bi-check2-circle text-danger"></i><span class="text-light" data-i18n="shop_emperor_p1">Prefix Kaisar [⚔ EMPEROR]</span></li>
+                                        <li><i class="bi bi-check2-circle text-danger"></i><span class="text-light" data-i18n="shop_emperor_p2">Kit Bulanan Gear Set Bonus Lengkap</span></li>
+                                        <li><i class="bi bi-check2-circle text-danger"></i><span class="text-light" data-i18n="shop_emperor_p3">Hak Terbang /fly di Ibukota &amp; Claim</span></li>
+                                        <li><i class="bi bi-check2-circle text-danger"></i><span class="text-light" data-i18n="shop_emperor_p4">+10 Batas Klaim Wilayah Kerajaan</span></li>
                                     @elseif(str_contains($packageName, 'sovereign'))
-                                        <li><i class="bi bi-check2-circle text-primary"></i><span class="text-light">Prefix Emas [⚜ SOVEREIGN]</span></li>
-                                        <li><i class="bi bi-check2-circle text-primary"></i><span class="text-light">Kit Sovereign 14 Harian &amp; Sayap Partikel</span></li>
-                                        <li><i class="bi bi-check2-circle text-primary"></i><span class="text-light">Bebas Tarif Dagang Lintas Kerajaan</span></li>
-                                        <li><i class="bi bi-check2-circle text-primary"></i><span class="text-light">+7 Batas Klaim Wilayah Kerajaan</span></li>
+                                        <li><i class="bi bi-check2-circle text-primary"></i><span class="text-light" data-i18n="shop_sovereign_p1">Prefix Emas [⚜ SOVEREIGN]</span></li>
+                                        <li><i class="bi bi-check2-circle text-primary"></i><span class="text-light" data-i18n="shop_sovereign_p2">Kit Sovereign 14 Harian &amp; Sayap Partikel</span></li>
+                                        <li><i class="bi bi-check2-circle text-primary"></i><span class="text-light" data-i18n="shop_sovereign_p3">Bebas Tarif Dagang Lintas Kerajaan</span></li>
+                                        <li><i class="bi bi-check2-circle text-primary"></i><span class="text-light" data-i18n="shop_sovereign_p4">+7 Batas Klaim Wilayah Kerajaan</span></li>
                                     @elseif(str_contains($packageName, 'archon'))
-                                        <li><i class="bi bi-check2-circle text-info"></i><span class="text-light">Prefix Cyan [💎 ARCHON]</span></li>
-                                        <li><i class="bi bi-check2-circle text-info"></i><span class="text-light">Kit Mingguan &amp; Kosmetik Glow Kristal</span></li>
-                                        <li><i class="bi bi-check2-circle text-info"></i><span class="text-light">Akses /ec, /anvil, /smithing Portable</span></li>
-                                        <li><i class="bi bi-check2-circle text-info"></i><span class="text-light">+4 Batas Klaim Wilayah Kerajaan</span></li>
+                                        <li><i class="bi bi-check2-circle text-info"></i><span class="text-light" data-i18n="shop_archon_p1">Prefix Cyan [💎 ARCHON]</span></li>
+                                        <li><i class="bi bi-check2-circle text-info"></i><span class="text-light" data-i18n="shop_archon_p2">Kit Mingguan &amp; Kosmetik Glow Kristal</span></li>
+                                        <li><i class="bi bi-check2-circle text-info"></i><span class="text-light" data-i18n="shop_archon_p3">Akses /ec, /anvil, /smithing Portable</span></li>
+                                        <li><i class="bi bi-check2-circle text-info"></i><span class="text-light" data-i18n="shop_archon_p4">+4 Batas Klaim Wilayah Kerajaan</span></li>
                                     @elseif(str_contains($packageName, 'ascendant'))
-                                        <li><i class="bi bi-check2-circle text-success"></i><span class="text-light">Prefix Zamrud [☘ ASCENDANT]</span></li>
-                                        <li><i class="bi bi-check2-circle text-success"></i><span class="text-light">Kit Ascendant Harian (/kit ascendant)</span></li>
-                                        <li><i class="bi bi-check2-circle text-success"></i><span class="text-light">Bypass Antrean Saat Server Penuh</span></li>
-                                        <li><i class="bi bi-check2-circle text-success"></i><span class="text-light">+2 Batas Klaim Wilayah Kerajaan</span></li>
+                                        <li><i class="bi bi-check2-circle text-success"></i><span class="text-light" data-i18n="shop_ascendant_p1">Prefix Zamrud [☘ ASCENDANT]</span></li>
+                                        <li><i class="bi bi-check2-circle text-success"></i><span class="text-light" data-i18n="shop_ascendant_p2">Kit Ascendant Harian (/kit ascendant)</span></li>
+                                        <li><i class="bi bi-check2-circle text-success"></i><span class="text-light" data-i18n="shop_ascendant_p3">Bypass Antrean Saat Server Penuh</span></li>
+                                        <li><i class="bi bi-check2-circle text-success"></i><span class="text-light" data-i18n="shop_ascendant_p4">+2 Batas Klaim Wilayah Kerajaan</span></li>
                                     @elseif(str_contains($packageName, 'vip pass'))
-                                        <li><i class="bi bi-check2-circle text-warning"></i><span class="text-light">Akses Penuh 100 Level Jalur Hadiah</span></li>
-                                        <li><i class="bi bi-check2-circle text-warning"></i><span class="text-light">Instan Skip Langsung 20 Level Awal</span></li>
-                                        <li><i class="bi bi-check2-circle text-warning"></i><span class="text-light">Kosmetik Jubah &amp; Gelar Chat Eksklusif</span></li>
-                                        <li><i class="bi bi-check2-circle text-warning"></i><span class="text-light">Bonus Koin &amp; Magic Dust Penempaan</span></li>
+                                        <li><i class="bi bi-check2-circle text-warning"></i><span class="text-light" data-i18n="shop_vippass_p1">Akses Penuh 100 Level Jalur Hadiah</span></li>
+                                        <li><i class="bi bi-check2-circle text-warning"></i><span class="text-light" data-i18n="shop_vippass_p2">Instan Skip Langsung 20 Level Awal</span></li>
+                                        <li><i class="bi bi-check2-circle text-warning"></i><span class="text-light" data-i18n="shop_vippass_p3">Kosmetik Jubah &amp; Gelar Chat Eksklusif</span></li>
+                                        <li><i class="bi bi-check2-circle text-warning"></i><span class="text-light" data-i18n="shop_vippass_p4">Bonus Koin &amp; Magic Dust Penempaan</span></li>
                                     @elseif(str_contains($packageName, 'premium pass'))
-                                        <li><i class="bi bi-check2-circle text-warning"></i><span class="text-light">Buka Jalur Emas 100 Level Hadiah</span></li>
-                                        <li><i class="bi bi-check2-circle text-warning"></i><span class="text-light">Akses Quests Harian &amp; Mingguan</span></li>
-                                        <li><i class="bi bi-check2-circle text-warning"></i><span class="text-light">+25% Pengganda Perolehan EXP Pass</span></li>
-                                        <li><i class="bi bi-check2-circle text-warning"></i><span class="text-light">Diskon Toko Berputar /abp shop</span></li>
+                                        <li><i class="bi bi-check2-circle text-warning"></i><span class="text-light" data-i18n="shop_prempass_p1">Buka Jalur Emas 100 Level Hadiah</span></li>
+                                        <li><i class="bi bi-check2-circle text-warning"></i><span class="text-light" data-i18n="shop_prempass_p2">Akses Quests Harian &amp; Mingguan</span></li>
+                                        <li><i class="bi bi-check2-circle text-warning"></i><span class="text-light" data-i18n="shop_prempass_p3">+25% Pengganda Perolehan EXP Pass</span></li>
+                                        <li><i class="bi bi-check2-circle text-warning"></i><span class="text-light" data-i18n="shop_prempass_p4">Diskon Toko Berputar /abp shop</span></li>
                                     @else
-                                        <li><i class="bi bi-check2-circle text-warning"></i><span class="text-light">Aktivasi Otomatis via Akun Minecraft</span></li>
-                                        <li><i class="bi bi-check2-circle text-warning"></i><span class="text-light">Dukungan Transaksi Aman &amp; Terverifikasi</span></li>
+                                        <li><i class="bi bi-check2-circle text-warning"></i><span class="text-light" data-i18n="shop_fallback_p1">Aktivasi Otomatis via Akun Minecraft</span></li>
+                                        <li><i class="bi bi-check2-circle text-warning"></i><span class="text-light" data-i18n="shop_fallback_p2">Dukungan Transaksi Aman &amp; Terverifikasi</span></li>
                                     @endif
                                 </ul>
 

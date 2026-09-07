@@ -61,16 +61,16 @@
 <div class="container py-4">
     <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
         <div>
-            <h1 class="h2 mb-1 text-gold"><i class="bi bi-person-badge"></i> Profil Pengguna</h1>
-            <p class="text-secondary mb-0">Kelola informasi akun website dan karakter in-game Apexsions Anda.</p>
+            <h1 class="h2 mb-1 text-gold"><i class="bi bi-person-badge"></i> <span data-i18n="profile_title">Profil Pengguna</span></h1>
+            <p class="text-secondary mb-0" data-i18n="profile_sub">Kelola informasi akun website dan karakter in-game Apexsions Anda.</p>
         </div>
         <div class="d-flex gap-2">
             <a href="{{ url('/leaderboard') }}" class="btn btn-outline-warning">
-                <i class="bi bi-trophy"></i> Papan Peringkat
+                <i class="bi bi-trophy"></i> <span data-i18n="profile_btn_leaderboard">Papan Peringkat</span>
             </a>
             @if($linkedAccount)
                 <a href="{{ url('/player/' . $linkedAccount->minecraft_username) }}" class="btn btn-outline-info">
-                    <i class="bi bi-eye"></i> Lihat Profil Publik
+                    <i class="bi bi-eye"></i> <span data-i18n="profile_btn_public">Lihat Profil Publik</span>
                 </a>
             @endif
         </div>
@@ -109,9 +109,14 @@
 
                         <!-- Kingdom Pledged -->
                         <div class="mb-3">
-                            <span class="text-secondary small">Kerajaan Faksi:</span>
+                            <span class="text-secondary small" data-i18n="profile_kingdom_label">Kerajaan Faksi:</span>
                             <span class="fw-bold ms-1" style="color: {{ $currentKingdom['color'] }};">
-                                <i class="bi {{ $currentKingdom['icon'] }}"></i> {{ $currentKingdom['name'] }}
+                                <i class="bi {{ $currentKingdom['icon'] }}"></i>
+                                @if($currentKingdomKey === 'NONE')
+                                    <span data-i18n="profile_kingdom_none">Belum Memilih</span>
+                                @else
+                                    {{ $currentKingdom['name'] }}
+                                @endif
                             </span>
                             @if($linkedAccount->level_title)
                                 <span class="text-muted ms-2">• {{ strip_tags($linkedAccount->level_title) }}</span>
@@ -133,13 +138,13 @@
                         <div class="row g-2 pt-2">
                             <div class="col-sm-6">
                                 <div class="p-2 px-3 rounded bg-black bg-opacity-40 border border-secondary border-opacity-25 d-flex align-items-center justify-content-between">
-                                    <span class="text-secondary small"><i class="bi bi-cash-coin text-success me-1"></i> Saldo Rupiah:</span>
+                                    <span class="text-secondary small"><i class="bi bi-cash-coin text-success me-1"></i> <span data-i18n="profile_balance_rp">Saldo Rupiah:</span></span>
                                     <span class="fw-bold text-white">Rp {{ number_format($linkedAccount->balance_rupiah, 0, ',', '.') }}</span>
                                 </div>
                             </div>
                             <div class="col-sm-6">
                                 <div class="p-2 px-3 rounded bg-black bg-opacity-40 border border-secondary border-opacity-25 d-flex align-items-center justify-content-between">
-                                    <span class="text-secondary small"><i class="bi bi-gem text-info me-1"></i> Diamond:</span>
+                                    <span class="text-secondary small"><i class="bi bi-gem text-info me-1"></i> <span data-i18n="profile_balance_dia">Diamond:</span></span>
                                     <span class="fw-bold text-white">💎 {{ number_format($linkedAccount->balance_diamond, 0, ',', '.') }}</span>
                                 </div>
                             </div>
@@ -153,19 +158,19 @@
                                 <div class="card bg-black bg-opacity-50 border border-warning border-opacity-40 p-3 rounded text-center mb-1 shadow-sm">
                                     <div class="d-flex align-items-center justify-content-between mb-2">
                                         <span class="badge bg-warning text-dark fw-bold">
-                                            <i class="bi bi-stars"></i> Bonus Harian
+                                            <i class="bi bi-stars"></i> <span data-i18n="profile_reward_daily">Bonus Harian</span>
                                         </span>
                                         <span class="badge bg-success bg-opacity-25 text-success border border-success border-opacity-25">
-                                            <i class="bi bi-check-circle"></i> Siap Diklaim
+                                            <i class="bi bi-check-circle"></i> <span data-i18n="profile_reward_ready">Siap Diklaim</span>
                                         </span>
                                     </div>
-                                    <div class="small text-secondary mb-2" style="font-size: 0.78rem;">
+                                    <div class="small text-secondary mb-2" style="font-size: 0.78rem;" data-i18n-html="profile_reward_ready_sub">
                                         Dapatkan <strong>+Rp 5.000</strong> & <strong>+25 EXP</strong> in-game setiap 24 jam!
                                     </div>
                                     <form action="{{ url('/profile/minecraft/claim-reward') }}" method="POST">
                                         @csrf
                                         <button type="submit" class="btn btn-warning w-100 fw-bold shadow-sm py-2">
-                                            <i class="bi bi-gift-fill me-1"></i> Klaim Hadiah Harian
+                                            <i class="bi bi-gift-fill me-1"></i> <span data-i18n="profile_reward_btn_claim">Klaim Hadiah Harian</span>
                                         </button>
                                     </form>
                                 </div>
@@ -173,35 +178,35 @@
                                 <div class="card bg-black bg-opacity-50 border border-secondary border-opacity-25 p-3 rounded text-center mb-1 shadow-sm">
                                     <div class="d-flex align-items-center justify-content-between mb-2">
                                         <span class="badge bg-secondary bg-opacity-50 text-light">
-                                            <i class="bi bi-gift"></i> Hadiah Harian
+                                            <i class="bi bi-gift"></i> <span data-i18n="profile_reward_daily">Hadiah Harian</span>
                                         </span>
                                         <span class="badge bg-success bg-opacity-25 text-success border border-success border-opacity-25">
-                                            <i class="bi bi-check2-circle"></i> Sudah Diklaim
+                                            <i class="bi bi-check2-circle"></i> <span data-i18n="profile_reward_claimed">Sudah Diklaim</span>
                                         </span>
                                     </div>
-                                    <div class="small text-muted mb-1" style="font-size: 0.78rem;">
+                                    <div class="small text-muted mb-1" style="font-size: 0.78rem;" data-i18n="profile_reward_next_available">
                                         Klaim berikutnya tersedia dalam:
                                     </div>
                                     <div class="font-monospace fw-bold text-warning fs-5 my-1" id="dailyRewardCountdown" data-seconds="{{ $secondsRemaining }}">
                                         {{ sprintf('%02d:%02d:%02d', $hoursRemaining, $minutesRemaining, $secsRemaining) }}
                                     </div>
                                     <div class="small text-secondary mb-2" style="font-size: 0.75rem;">
-                                        <i class="bi bi-clock-history me-1"></i> Tersedia besok pukul <strong>{{ $nextClaimFormatted }} WIB</strong>
+                                        <i class="bi bi-clock-history me-1"></i> <span data-i18n="profile_reward_tomorrow_prefix">Tersedia besok pukul</span> <strong>{{ $nextClaimFormatted }} WIB</strong>
                                     </div>
                                     <button type="button" class="btn btn-secondary w-100 btn-sm disabled" disabled style="opacity: 0.65; cursor: not-allowed;">
-                                        <i class="bi bi-hourglass-split me-1"></i> Sedang Cooldown
+                                        <i class="bi bi-hourglass-split me-1"></i> <span data-i18n="profile_reward_btn_cooldown">Sedang Cooldown</span>
                                     </button>
                                 </div>
                             @endif
 
                             <button type="button" class="btn btn-outline-light w-100 mt-1" data-bs-toggle="modal" data-bs-target="#resetPasswordModal">
-                                <i class="bi bi-key-fill me-1"></i> Reset Password In-Game
+                                <i class="bi bi-key-fill me-1"></i> <span data-i18n="profile_btn_reset_pass">Reset Password In-Game</span>
                             </button>
 
-                            <form action="{{ url('/profile/minecraft/unlink') }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin memutuskan tautan akun Minecraft ini?');">
+                            <form action="{{ url('/profile/minecraft/unlink') }}" method="POST" onsubmit="return confirm(document.documentElement.lang === 'en' ? 'Are you sure you want to unlink this Minecraft account?' : 'Apakah Anda yakin ingin memutuskan tautan akun Minecraft ini?');">
                                 @csrf
                                 <button type="submit" class="btn btn-outline-danger btn-sm w-100">
-                                    <i class="bi bi-link-45deg"></i> Putuskan Tautan (Unlink)
+                                    <i class="bi bi-link-45deg"></i> <span data-i18n="profile_btn_unlink">Putuskan Tautan (Unlink)</span>
                                 </button>
                             </form>
                         </div>
@@ -213,12 +218,12 @@
                     <div class="mb-3">
                         <i class="bi bi-controller text-warning" style="font-size: 3.5rem;"></i>
                     </div>
-                    <h3 class="h3 fw-bold text-white font-cinzel">Hubungkan Karakter Minecraft Anda</h3>
-                    <p class="text-secondary max-w-600 mx-auto mb-4">
+                    <h3 class="h3 fw-bold text-white font-cinzel" data-i18n="profile_unlink_title">Hubungkan Karakter Minecraft Anda</h3>
+                    <p class="text-secondary max-w-600 mx-auto mb-4" data-i18n="profile_unlink_desc">
                         Kaitkan akun website Anda dengan server Minecraft Apexsions untuk menampilkan skin 3D, sinkronisasi rank & level otomatis, mengklaim hadiah harian, dan mengelola profil in-game secara langsung.
                     </p>
                     <a href="{{ url('/link') }}" class="btn btn-warning btn-lg px-4 fw-bold shadow">
-                        <i class="bi bi-link-45deg me-2"></i> Tautkan Akun Minecraft Sekarang
+                        <i class="bi bi-link-45deg me-2"></i> <span data-i18n="profile_unlink_btn">Tautkan Akun Minecraft Sekarang</span>
                     </a>
                 </div>
             @endif
@@ -242,11 +247,11 @@
 
                     <ul class="list-unstyled text-start small border-top border-secondary border-opacity-25 pt-3 mb-4">
                         <li class="mb-2 d-flex justify-content-between">
-                            <span class="text-muted"><i class="bi bi-calendar3 me-1"></i> Terdaftar:</span>
+                            <span class="text-muted"><i class="bi bi-calendar3 me-1"></i> <span data-i18n="profile_lbl_registered">Terdaftar:</span></span>
                             <span class="text-white">{{ format_date($user->created_at, true) }}</span>
                         </li>
                         <li class="mb-2 d-flex justify-content-between">
-                            <span class="text-muted"><i class="bi bi-wallet2 me-1"></i> Web Points:</span>
+                            <span class="text-muted"><i class="bi bi-wallet2 me-1"></i> <span data-i18n="profile_lbl_points">Web Points:</span></span>
                             <span class="text-gold fw-bold">{{ format_money($user->money) }}</span>
                         </li>
                         <li class="mb-2 d-flex justify-content-between">
@@ -260,7 +265,7 @@
                     @if(! oauth_login())
                         <div class="d-grid gap-2">
                             <a class="btn btn-outline-warning btn-sm" href="{{ route('profile.2fa.index') }}">
-                                <i class="bi bi-shield-lock me-1"></i> {{ $user->hasTwoFactorAuth() ? 'Kelola 2FA' : 'Aktifkan 2FA' }}
+                                <i class="bi bi-shield-lock me-1"></i> <span data-i18n="{{ $user->hasTwoFactorAuth() ? 'profile_btn_manage_2fa' : 'profile_btn_enable_2fa' }}">{{ $user->hasTwoFactorAuth() ? 'Kelola 2FA' : 'Aktifkan 2FA' }}</span>
                             </a>
                         </div>
                     @endif
@@ -277,26 +282,26 @@
                         <div class="card bg-dark border-secondary border-opacity-25 h-100 shadow-sm">
                             <div class="card-body p-4">
                                 <h3 class="h5 fw-bold text-white mb-3">
-                                    <i class="bi bi-envelope-at me-2 text-warning"></i> Ganti Alamat Email
+                                    <i class="bi bi-envelope-at me-2 text-warning"></i> <span data-i18n="profile_title_change_email">Ganti Alamat Email</span>
                                 </h3>
                                 <form action="{{ route('profile.email') }}" method="POST">
                                     @csrf
                                     <div class="mb-3">
-                                        <label class="form-label text-muted small" for="emailInput">Email Baru</label>
+                                        <label class="form-label text-muted small" for="emailInput" data-i18n="profile_lbl_new_email">Email Baru</label>
                                         <input type="email" class="form-control bg-black bg-opacity-30 text-white border-secondary @error('email') is-invalid @enderror" id="emailInput" name="email" value="{{ old('email', $user->email) }}" required>
                                         @error('email')
                                             <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                                         @enderror
                                     </div>
                                     <div class="mb-3">
-                                        <label class="form-label text-muted small" for="emailConfirmPassInput">Password Saat Ini</label>
+                                        <label class="form-label text-muted small" for="emailConfirmPassInput" data-i18n="profile_lbl_curr_pass">Password Saat Ini</label>
                                         <input type="password" class="form-control bg-black bg-opacity-30 text-white border-secondary @error('email_confirm_pass') is-invalid @enderror" id="emailConfirmPassInput" name="email_confirm_pass" required>
                                         @error('email_confirm_pass')
                                             <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                                         @enderror
                                     </div>
                                     <button type="submit" class="btn btn-warning w-100 fw-bold">
-                                        <i class="bi bi-check-lg"></i> Perbarui Email
+                                        <i class="bi bi-check-lg"></i> <span data-i18n="profile_btn_update_email">Perbarui Email</span>
                                     </button>
                                 </form>
                             </div>
@@ -308,30 +313,30 @@
                         <div class="card bg-dark border-secondary border-opacity-25 h-100 shadow-sm">
                             <div class="card-body p-4">
                                 <h3 class="h5 fw-bold text-white mb-3">
-                                    <i class="bi bi-lock me-2 text-warning"></i> Ganti Password Web
+                                    <i class="bi bi-lock me-2 text-warning"></i> <span data-i18n="profile_title_change_pass">Ganti Password Web</span>
                                 </h3>
                                 <form action="{{ route('profile.password') }}" method="POST">
                                     @csrf
                                     <div class="mb-2">
-                                        <label class="form-label text-muted small" for="passwordConfirmPassInput">Password Saat Ini</label>
+                                        <label class="form-label text-muted small" for="passwordConfirmPassInput" data-i18n="profile_lbl_curr_pass">Password Saat Ini</label>
                                         <input type="password" class="form-control bg-black bg-opacity-30 text-white border-secondary @error('password_confirm_pass') is-invalid @enderror" id="passwordConfirmPassInput" name="password_confirm_pass" required>
                                         @error('password_confirm_pass')
                                             <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                                         @enderror
                                     </div>
                                     <div class="mb-2">
-                                        <label class="form-label text-muted small" for="passwordInput">Password Baru</label>
+                                        <label class="form-label text-muted small" for="passwordInput" data-i18n="profile_lbl_new_pass">Password Baru</label>
                                         <input type="password" class="form-control bg-black bg-opacity-30 text-white border-secondary @error('password') is-invalid @enderror" id="passwordInput" name="password" required>
                                         @error('password')
                                             <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                                         @enderror
                                     </div>
                                     <div class="mb-3">
-                                        <label class="form-label text-muted small" for="confirmPasswordInput">Konfirmasi Password Baru</label>
+                                        <label class="form-label text-muted small" for="confirmPasswordInput" data-i18n="profile_lbl_confirm_pass">Konfirmasi Password Baru</label>
                                         <input type="password" class="form-control bg-black bg-opacity-30 text-white border-secondary" id="confirmPasswordInput" name="password_confirmation" required>
                                     </div>
                                     <button type="submit" class="btn btn-warning w-100 fw-bold">
-                                        <i class="bi bi-check-lg"></i> Perbarui Password Web
+                                        <i class="bi bi-check-lg"></i> <span data-i18n="profile_btn_update_pass">Perbarui Password Web</span>
                                     </button>
                                 </form>
                             </div>
@@ -350,7 +355,7 @@
         <div class="modal-content bg-dark border-gold text-white">
             <div class="modal-header border-secondary">
                 <h5 class="modal-title font-cinzel text-gold" id="resetPasswordModalLabel">
-                    <i class="bi bi-shield-lock-fill me-2"></i> Reset Password In-Game (AuthMe)
+                    <i class="bi bi-shield-lock-fill me-2"></i> <span data-i18n="profile_modal_reset_title">Reset Password In-Game (AuthMe)</span>
                 </h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
@@ -358,21 +363,21 @@
                 @csrf
                 <div class="modal-body">
                     <div class="alert alert-info py-2 small" role="alert">
-                        <i class="bi bi-info-circle me-1"></i> Perintah reset akan dikirimkan ke server Minecraft untuk akun <strong>{{ $linkedAccount->minecraft_username }}</strong>.
+                        <i class="bi bi-info-circle me-1"></i> <span data-i18n="profile_modal_reset_alert">Perintah reset akan dikirimkan ke server Minecraft untuk akun</span> <strong>{{ $linkedAccount->minecraft_username }}</strong>.
                     </div>
                     <div class="mb-3">
-                        <label for="newIngamePassword" class="form-label small text-muted">Password In-Game Baru (Minimal 6 karakter)</label>
-                        <input type="password" class="form-control bg-black text-white border-secondary" id="newIngamePassword" name="new_password" minlength="6" required placeholder="Ketik password baru...">
+                        <label for="newIngamePassword" class="form-label small text-muted" data-i18n="profile_modal_lbl_new_pass">Password In-Game Baru (Minimal 6 karakter)</label>
+                        <input type="password" class="form-control bg-black text-white border-secondary" id="newIngamePassword" name="new_password" minlength="6" required placeholder="Ketik password baru..." data-i18n-placeholder="profile_modal_ph_new_pass">
                     </div>
                     <div class="mb-3">
-                        <label for="confirmIngamePassword" class="form-label small text-muted">Konfirmasi Password Baru</label>
-                        <input type="password" class="form-control bg-black text-white border-secondary" id="confirmIngamePassword" name="new_password_confirmation" minlength="6" required placeholder="Ulangi password baru...">
+                        <label for="confirmIngamePassword" class="form-label small text-muted" data-i18n="profile_modal_lbl_confirm_pass">Konfirmasi Password Baru</label>
+                        <input type="password" class="form-control bg-black text-white border-secondary" id="confirmIngamePassword" name="new_password_confirmation" minlength="6" required placeholder="Ulangi password baru..." data-i18n-placeholder="profile_modal_ph_confirm_pass">
                     </div>
                 </div>
                 <div class="modal-footer border-secondary">
-                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" data-i18n="profile_modal_btn_cancel">Batal</button>
                     <button type="submit" class="btn btn-warning fw-bold">
-                        <i class="bi bi-check2-circle me-1"></i> Konfirmasi & Ganti Password
+                        <i class="bi bi-check2-circle me-1"></i> <span data-i18n="profile_modal_btn_submit">Konfirmasi & Ganti Password</span>
                     </button>
                 </div>
             </form>

@@ -15,17 +15,17 @@
     <div class="d-grid gap-2 mb-4">
         @if(use_site_money())
             <a href="{{ route('shop.offers.select') }}" class="btn btn-apx-outline">
-                <i class="bi bi-credit-card"></i> {{ trans('shop::messages.cart.credit') }}
+                <i class="bi bi-credit-card"></i> <span data-i18n="shop_credit">{{ trans('shop::messages.cart.credit') }}</span>
             </a>
         @endif
 
         <a href="{{ route('shop.cart.index') }}" class="btn btn-apx-gold">
-            <i class="bi bi-cart3"></i> {{ trans('shop::messages.cart.title') }}
+            <i class="bi bi-cart3"></i> <span data-i18n="shop_cart_title">{{ trans('shop::messages.cart.title') }}</span>
         </a>
 
         @if($userHasPayments)
             <a href="{{ route('shop.profile') }}" class="btn btn-apx-outline">
-                <i class="bi bi-receipt"></i> {{ trans('shop::messages.profile.payments') }}
+                <i class="bi bi-receipt"></i> <span data-i18n="shop_profile_payments">{{ trans('shop::messages.profile.payments') }}</span>
             </a>
         @endif
 
@@ -33,7 +33,7 @@
             <form action="{{ route('shop.logout') }}" method="POST" class="text-center">
                 @csrf
                 <button type="submit" class="btn btn-secondary w-100 btn-sm">
-                    <i class="bi bi-box-arrow-right"></i> {{ trans('auth.logout') }}
+                    <i class="bi bi-box-arrow-right"></i> <span data-i18n="auth_logout">{{ trans('auth.logout') }}</span>
                 </button>
             </form>
         @endguest
@@ -46,7 +46,7 @@
         <h5 class="mb-1" style="font-family: 'Cinzel', Georgia, serif; color: #ffffff;" data-i18n="shop_sidebar_account">Akun Pemain</h5>
         <p class="small text-muted mb-3" style="line-height: 1.5;" data-i18n="shop_sidebar_account_desc">Masuk untuk melihat keranjang dan klaim perk otomatis ke dalam in-game.</p>
         <a href="{{ route('shop.login') }}" class="btn btn-apx-gold">
-            <i class="bi bi-box-arrow-in-right me-1"></i> {{ trans('auth.login') }}
+            <i class="bi bi-box-arrow-in-right me-1"></i> <span data-i18n="auth_login">{{ trans('auth.login') }}</span>
         </a>
     </div>
 @endif
@@ -106,7 +106,7 @@
 @if($goal >= 0)
     <div class="card mb-4" style="background: var(--apx-bg-surface); border: 1px solid var(--apx-gold-border-subtle); border-radius: var(--apx-radius-md);">
         <div class="card-header" style="background: var(--apx-bg-surface-raised); border-bottom: 1px solid var(--apx-border);">
-            <i class="bi bi-graph-up text-warning me-1"></i> {{ trans('shop::messages.goal.title') }}
+            <i class="bi bi-graph-up text-warning me-1"></i> <span data-i18n="shop_goal_title">{{ trans('shop::messages.goal.title') }}</span>
         </div>
         <div class="card-body">
             <div class="progress mb-2" style="height: 10px; background: var(--apx-bg-deep);">
@@ -124,7 +124,7 @@
 @if($topCustomer !== null)
     <div class="card mb-4" style="background: var(--apx-bg-surface); border: 1px solid var(--apx-gold-border-subtle); border-radius: var(--apx-radius-md);">
         <div class="card-header" style="background: var(--apx-bg-surface-raised); border-bottom: 1px solid var(--apx-border);">
-            <i class="bi bi-trophy-fill text-warning me-1"></i> {{ trans('shop::messages.top.title') }}
+            <i class="bi bi-trophy-fill text-warning me-1"></i> <span data-i18n="shop_top_title_header">{{ trans('shop::messages.top.title') }}</span>
         </div>
         <div class="card-body d-flex align-items-center gap-3">
             <img class="rounded border border-warning" src="{{ $topCustomer->user->getAvatar(52) }}" alt="{{ $topCustomer->user->name }}" width="52">
@@ -133,7 +133,7 @@
                 @if($displaySidebarAmount)
                     <div class="small text-warning fw-bold">{{ $topCustomer->formatPrice() }}</div>
                 @endif
-                <div class="small text-muted">Pelindung Kerajaan</div>
+                <div class="small text-muted" data-i18n="shop_top_title">Pelindung Kerajaan</div>
             </div>
         </div>
     </div>
@@ -143,7 +143,7 @@
 @if($recentPayments !== null)
     <div class="card mb-4" style="background: var(--apx-bg-surface); border: 1px solid var(--apx-gold-border-subtle); border-radius: var(--apx-radius-md);">
         <div class="card-header" style="background: var(--apx-bg-surface-raised); border-bottom: 1px solid var(--apx-border);">
-            <i class="bi bi-clock-history text-warning me-1"></i> {{ trans('shop::messages.recent.title') }}
+            <i class="bi bi-clock-history text-warning me-1"></i> <span data-i18n="shop_recent_title">{{ trans('shop::messages.recent.title') }}</span>
         </div>
         <div class="list-group list-group-flush">
             @forelse($recentPayments as $payment)

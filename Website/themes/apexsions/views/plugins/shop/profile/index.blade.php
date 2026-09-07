@@ -4,11 +4,11 @@
 
 @section('content')
     <div class="apx-store-hero">
-        <div class="apx-section-kicker mb-2">
+        <div class="apx-section-kicker mb-2" data-i18n-html="shop_hist_kicker">
             <i class="bi bi-receipt"></i> RIWAYAT TRANSAKSI RESMI
         </div>
         <h1 class="mb-2">{{ trans('shop::messages.profile.payments') }}</h1>
-        <p>Arsip catatan transaksi, perolehan kasta donatur, dan langganan resmi peradaban akun Anda.</p>
+        <p data-i18n="shop_hist_sub">Arsip catatan transaksi, perolehan kasta donatur, dan langganan resmi peradaban akun Anda.</p>
     </div>
 
     <!-- Payments Card -->
@@ -18,7 +18,7 @@
                 <i class="bi bi-clock-history text-warning me-2"></i> {{ trans('shop::messages.profile.payments') }}
             </h5>
             <a href="{{ route('shop.home') }}" class="btn btn-apx-outline btn-sm">
-                <i class="bi bi-shop me-1"></i> Kembali ke Toko
+                <i class="bi bi-shop me-1"></i> <span data-i18n="shop_btn_back">Kembali ke Toko</span>
             </a>
         </div>
         <div class="card-body p-4">
@@ -27,11 +27,11 @@
                     <thead>
                     <tr>
                         <th scope="col">#</th>
-                        <th scope="col">{{ trans('shop::messages.fields.price') }}</th>
-                        <th scope="col">{{ trans('messages.fields.type') }}</th>
-                        <th scope="col">{{ trans('messages.fields.status') }}</th>
-                        <th scope="col">{{ trans('shop::messages.fields.payment_id') }}</th>
-                        <th scope="col">{{ trans('messages.fields.date') }}</th>
+                        <th scope="col" data-i18n="shop_th_price">{{ trans('shop::messages.fields.price') }}</th>
+                        <th scope="col" data-i18n="shop_th_type">{{ trans('messages.fields.type') }}</th>
+                        <th scope="col" data-i18n="shop_th_status">{{ trans('messages.fields.status') }}</th>
+                        <th scope="col" data-i18n="shop_th_payment_id">{{ trans('shop::messages.fields.payment_id') }}</th>
+                        <th scope="col" data-i18n="shop_th_date">{{ trans('messages.fields.date') }}</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -53,7 +53,7 @@
                         <tr>
                             <td colspan="6" class="text-center py-4 text-muted">
                                 <i class="bi bi-inbox fs-4 d-block mb-1 text-dim"></i>
-                                Belum ada riwayat transaksi tercatat untuk akun Anda.
+                                <span data-i18n="shop_hist_empty">Belum ada riwayat transaksi tercatat untuk akun Anda.</span>
                             </td>
                         </tr>
                     @endforelse
@@ -68,7 +68,7 @@
         <div class="card mb-4" style="background: var(--apx-bg-surface); border: 1px solid var(--apx-gold-border-subtle); border-radius: var(--apx-radius-md);">
             <div class="card-header py-3 px-4" style="background: var(--apx-bg-surface-raised); border-bottom: 1px solid var(--apx-border);">
                 <h5 class="mb-0 text-white" style="font-family: 'Cinzel', Georgia, serif;">
-                    <i class="bi bi-bag-check text-warning me-2"></i> {{ trans('shop::messages.profile.purchases') }}
+                    <i class="bi bi-bag-check text-warning me-2"></i> <span data-i18n="shop_purchases_title">{{ trans('shop::messages.profile.purchases') }}</span>
                 </h5>
             </div>
             <div class="card-body p-4">
@@ -102,7 +102,7 @@
         <div class="card mb-4" style="background: var(--apx-bg-surface); border: 1px solid var(--apx-gold-border-subtle); border-radius: var(--apx-radius-md);">
             <div class="card-header py-3 px-4" style="background: var(--apx-bg-surface-raised); border-bottom: 1px solid var(--apx-border);">
                 <h5 class="mb-0 text-white" style="font-family: 'Cinzel', Georgia, serif;">
-                    <i class="bi bi-arrow-repeat text-warning me-2"></i> {{ trans('shop::messages.profile.subscriptions') }}
+                    <i class="bi bi-arrow-repeat text-warning me-2"></i> <span data-i18n="shop_subscriptions_title">{{ trans('shop::messages.profile.subscriptions') }}</span>
                 </h5>
             </div>
             <div class="card-body p-4">

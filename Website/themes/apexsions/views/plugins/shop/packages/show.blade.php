@@ -7,7 +7,7 @@
                 </div>
                 <div>
                     <h3 class="modal-title mb-0" id="itemModalLabel" style="font-family: 'Cinzel', Georgia, serif; color: #ffffff; font-size: 1.35rem;">{{ $package->name }}</h3>
-                    <div class="small text-muted" style="font-size: 0.78rem;">Webstore Resmi Apexsions &bull; Transaksi Langsung &amp; Aman</div>
+                    <div class="small text-muted" style="font-size: 0.78rem;" data-i18n-html="shop_pkg_subtitle">Webstore Resmi Apexsions &bull; Transaksi Langsung &amp; Aman</div>
                 </div>
             </div>
             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -43,11 +43,11 @@
                 <div class="d-flex align-items-center justify-content-between mb-2 flex-wrap gap-2">
                     <div class="d-flex align-items-center gap-2 text-white fw-bold">
                         <i class="bi bi-whatsapp text-success fs-5"></i>
-                        <span>Pesan Langsung via WhatsApp Founder:</span>
+                        <span data-i18n="shop_pkg_wa_title">Pesan Langsung via WhatsApp Founder:</span>
                     </div>
                     <span class="badge bg-success bg-opacity-25 text-success font-monospace" style="font-size: 0.65rem;">VERIFIED</span>
                 </div>
-                <p class="text-muted small mb-3" style="line-height: 1.5;">
+                <p class="text-muted small mb-3" style="line-height: 1.5;" data-i18n="shop_pkg_wa_note">
                     Pilih salah satu Founder untuk memulai chat WhatsApp dengan data pesanan Anda yang telah terisi secara otomatis:
                 </p>
                 <div class="row g-2">
@@ -62,7 +62,7 @@
                                     <i class="bi bi-whatsapp text-success fs-5"></i>
                                     <div>
                                         <div class="fw-bold text-white small">{{ $adm['name'] }}</div>
-                                        <div class="text-dim" style="font-size: 0.68rem;">Founder</div>
+                                        <div class="text-dim" style="font-size: 0.68rem;" data-i18n="shop_founder_role">Founder</div>
                                     </div>
                                 </div>
                                 <i class="bi bi-arrow-up-right-square text-success small"></i>
@@ -84,14 +84,14 @@
             </div>
 
             <div class="d-flex align-items-center gap-2">
-                <button type="button" class="btn btn-apx-outline" data-bs-dismiss="modal">Tutup</button>
+                <button type="button" class="btn btn-apx-outline" data-bs-dismiss="modal" data-i18n="shop_btn_close">Tutup</button>
                 @php
                     $primaryModalAdmin = $modalAdmins[0] ?? ['name' => 'Rifqi', 'number' => '6281212994597'];
                     $primaryModalNum = preg_replace('/[^0-9]/', '', $primaryModalAdmin['number']);
                     $primaryModalUrl = 'https://wa.me/' . $primaryModalNum . '?text=' . rawurlencode($waBaseText);
                 @endphp
                 <a href="{{ $primaryModalUrl }}" target="_blank" rel="noopener noreferrer" class="btn btn-apx-wa">
-                    <i class="bi bi-whatsapp me-1"></i> Pesan Cepat Sekarang
+                    <i class="bi bi-whatsapp me-1"></i> <span data-i18n="shop_btn_order_now">Pesan Cepat Sekarang</span>
                 </a>
             </div>
         </div>
