@@ -37,7 +37,11 @@ Setiap pemain di server diwajibkan memilih dan berikrar pada salah satu dari 3 K
 
 ### Fitur Teritorial Kerajaan:
 - **BlueMap Polygon Rendering**: Menampilkan batas wilayah poligon kerajaan secara transparan dan estetik di peta web BlueMap.
-- **Spawn & Warp Kerajaan**: Titik pusat kerajaan (`/kingdom spawn`) dengan sambutan selamat datang berbasis MiniMessage.
+- **Auto-Respawn Ibukota Kerajaan (`PlayerRespawnEvent`)**: Pemain yang telah bersumpah setia pada kerajaan (*Zenithar*, *Solterra*, *Sylvamoor*) akan otomatis di-respawn di titik pusat ibukota kerajaan masing-masing saat gugur di medan perang/alam liar (menggantikan fallback default ke lobby).
+  - Mengambil koordinat `"position"` marker dari konfigurasi BlueMap secara otomatis saat server berjalan.
+  - Prioritas tempat tidur (*Bed/Anchor priority*): Secara default pemain dengan kasur aktif tetap respawn di basenya (`spawn.override-bed-spawn: false`). Jika kasur hancur/terhalang atau disetel `override-bed-spawn: true`, pemain selalu dipulangkan ke ibukota.
+- **Spawn & Warp Kerajaan**: Titik pusat kerajaan (`/kingdom` atau `/k`) yang secara instan menteleportasi pemain ke koordinat ibukota kerajaan.
+- **In-Game Capital Spawn Manager**: Perintah admin `/ac setspawn <kingdom>` dan `/kingdom setspawn <kingdom>` untuk memindahkan titik spawn ibukota secara langsung in-game dengan persistensi SQL dan update `kingdoms.yml`.
 - **Citizens NPC Integration**: NPC interaktif untuk pemilihan kerajaan dan navigasi kerajaan.
 - **Hall of Fame & Leaderboard GUI (`/kingdom top`)**: Antarmuka visual 54-slot yang menampilkan statistik kerajaan terkuat dan top level pemain.
 
@@ -114,12 +118,16 @@ $$\text{XP Dibutuhkan}(L) = \lfloor 100 \times L^{1.5} + (L \times 50) \rfloor$$
 | `/kingdom` | `/k`, `/region`, `/kingdoms` | Membuka profil dan status kerajaan pemain | `apexsionscore.command.region` | `true` |
 | `/kingdom choose` | `/k select` | Membuka GUI visual pemilihan 3 kerajaan | `apexsionscore.command.region` | `true` |
 | `/kingdom top` | `/k leaderboard` | Membuka GUI Hall of Fame & Leaderboard | `apexsionscore.command.level` | `true` |
+| `/kingdom setspawn <k>`| `/k setspawn` | Menetapkan titik spawn ibukota kerajaan (Admin) | `apexsionscore.admin` | `op` |
+| `/kingdom setking <k> <p>`| - | Menobatkan Raja Tertinggi kerajaan (Admin) | `apexsionscore.admin` | `op` |
+| `/kingdom unsetking <k>`| `/kingdom removeking` | Mencabut gelar Raja dari kerajaan (Admin) | `apexsionscore.admin` | `op` |
 | `/level` | `/lvl`, `/profile`, `/rewards`, `/exp` | Membuka GUI progress bar level (1-100) dan reward | `apexsionscore.command.level` | `true` |
 | `/xpguide` | - | Panduan detail 13 sumber perolehan XP | `apexsionscore.command.level` | `true` |
 | `/titles` | `/tags`, `/title`, `/tag` | Membuka Title Vault GUI untuk memasang gelar & badge | `apexsionscore.command.titles` | `true` |
 | `/cosmetics` | `/aura`, `/auras`, `/trail`, `/trails` | Membuka Particle Cosmetics GUI (Auras, Trails, Kill FX) | `apexsionscore.command.cosmetics` | `true` |
 | `/rtp` | `/wild`, `/wilderness`, `/krtp` | Teleportasi acak di teritori kerajaan sendiri | `apexsionscore.command.rtp` | `true` |
 | `/ac reload` | `/apexsionscore reload`, `/kc reload` | Memuat ulang seluruh konfigurasi Core, Ranks & Rewards | `apexsionscore.admin` | `op` |
+| `/ac setspawn <kingdom>`| `/ac setcapital` | Menetapkan koordinat spawn ibukota kerajaan di posisi berdiri | `apexsionscore.admin` | `op` |
 | `/ac war start <K1> <K2> [m]`| - | Memulai perang kerajaan resmi | `apexsionscore.admin` | `op` |
 | `/ac war stop` | - | Menghentikan perang kerajaan aktif | `apexsionscore.admin` | `op` |
 | `/ac war status` | - | Memeriksa status aktif perang kerajaan | `apexsionscore.admin` | `op` |

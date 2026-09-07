@@ -21,7 +21,14 @@ Kumpulan plugin server Minecraft profesional berkinerja tinggi yang dirancang se
 ## 🌟 2. Fitur Unggulan Setiap Plugin
 
 ### 👑 ApexsionsCore
-- **3 Kerajaan Berdaulat**: *Zenithar* (Pegunungan/Tambang), *Solterra* (Gurun/Pertanian), *Sylvamoor* (Hutan/Alam).
+- **3 Kerajaan Berdaulat Pasca-Runtuhnya Kekaisaran Sions**:
+  - **Zenithar** (Arah Timur / Zenith): Dinasti bangsawan & kavaleri kehormatan di puncak cakrawala (*Buff: Speed, Luck, Damage & Defense; Debuff: Kerentanan Racun, Porsi Makan*).
+  - **Solterra** (Arah Selatan): Magician tempur & tentara tangguh di kawah vulkanik cadas (*Buff: High Damage, Critical, Mining Speed; Debuff: -2 HP Darah, Vulnerability, Cepat Lapar*).
+  - **Sylvamoor** (Arah Barat): Kaum pekerja, pemburu, dan pejuang rimba kanopi purba (*Buff: +2 HP Darah, High Defense, Luck, Drop Rate; Debuff: Mabuk Ketinggian, Kerentanan Api*).
+- **Auto-Respawn Ibukota Kerajaan Terintegrasi BlueMap**:
+  - Pemain berkerajaan otomatis di-respawn langsung di titik pusat ibukota kerajaannya saat gugur (bukan lagi terlempar ke lobby).
+  - Mendukung prioritas kasur (*bed/anchor*) atau paksa ibukota melalui `config.yml`.
+  - Admin dapat memperbarui titik spawn ibukota secara in-game via `/ac setspawn <kingdom>` atau `/k setspawn <kingdom>`.
 - **Ultimate Admin Control Panel & Deep Player Inspector (54-Slot GUI)**:
   - Akses penuh administrasi pemain dari GUI: Ubah saldo Rupiah/Diamond, ubah level (1-100) & XP, ganti kerajaan seketika, dan penobatan **👑 Raja Kerajaan (Monarch)** dengan siaran global.
   - Quick Tooling: Teleportasi, tarik pemain, inspeksi live inventory & EnderChest, Heal & Feed instan, GameMode switcher (Survival/Creative/Adventure/Spectator), dan Kick sanksi.
@@ -106,12 +113,16 @@ Kumpulan plugin server Minecraft profesional berkinerja tinggi yang dirancang se
 | `/kingdom` | `/k`, `/region` | Membuka profil dan status kerajaan pemain | `apexsionscore.command.region` | `true` |
 | `/kingdom choose` | `/k select` | Membuka menu pemilihan 3 kerajaan | `apexsionscore.command.region` | `true` |
 | `/kingdom top` | `/k leaderboard`| Membuka Hall of Fame & Leaderboard GUI klasemen kerajaan | `apexsionscore.command.level` | `true` |
+| `/kingdom setspawn <k>`| `/k setspawn` | Menetapkan titik spawn ibukota kerajaan (Admin) | `apexsionscore.admin` | `op` |
+| `/kingdom setking <k> <p>`| - | Menobatkan Raja Tertinggi kerajaan (Admin) | `apexsionscore.admin` | `op` |
+| `/kingdom unsetking <k>`| `/kingdom removeking` | Mencabut gelar Raja kerajaan (Admin) | `apexsionscore.admin` | `op` |
 | `/level` | `/lvl`, `/profile`, `/exp`, `/rewards` | Membuka GUI progress bar level & hadiah | `apexsionscore.command.level` | `true` |
 | `/xpguide` | - | Panduan detail 13 sumber perolehan XP | `apexsionscore.command.level` | `true` |
 | `/titles` | `/tags`, `/title`, `/tag` | Membuka Title Vault GUI untuk memasang gelar & badge | `apexsionscore.command.titles` | `true` |
 | `/cosmetics` | `/auras`, `/trails`, `/aura`, `/trail` | Membuka Particle Cosmetics GUI (Head Auras, Trails, Kill FX) | `apexsionscore.command.cosmetics` | `true` |
 | `/rtp` | `/wild`, `/wilderness`, `/krtp` | Teleportasi acak aman di wilayah kerajaan sendiri | `apexsionscore.command.rtp` | `true` |
 | `/ac reload` | `/apexsionscore reload`, `/kc reload` | Memuat ulang seluruh file konfigurasi Core, Ranks & Rewards | `apexsionscore.admin` | `op` |
+| `/ac setspawn <kingdom>`| `/ac setcapital` | Menetapkan koordinat spawn ibukota kerajaan di lokasi berdiri | `apexsionscore.admin` | `op` |
 | `/ac war start <K1> <K2> [m]`| - | Memulai perang resmi antar kerajaan (Admin) | `apexsionscore.admin` | `op` |
 | `/ac war stop` | - | Menghentikan perang kerajaan aktif (Admin) | `apexsionscore.admin` | `op` |
 | `/ac war status` | - | Memeriksa status aktif perang kerajaan (Admin) | `apexsionscore.admin` | `op` |

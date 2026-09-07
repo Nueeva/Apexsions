@@ -79,6 +79,7 @@ Dokumentasi resmi yang merangkum arsitektur menyeluruh, interaksi antar-plugin, 
 | `/kingdom` | `/k`, `/region` | Membuka profil dan status kerajaan pemain | `apexsionscore.command.region` | `true` |
 | `/kingdom choose` | `/k select` | Membuka menu pemilihan 3 kerajaan | `apexsionscore.command.region` | `true` |
 | `/kingdom top` | `/k leaderboard`| Membuka Hall of Fame & Leaderboard GUI | `apexsionscore.command.level` | `true` |
+| `/kingdom setspawn <k>`| `/k setspawn` | Menetapkan titik spawn ibukota kerajaan (Admin) | `apexsionscore.admin` | `op` |
 | `/kingdom setking <k> <p>` | - | Mengangkat pemain menjadi Raja kerajaan | `apexsionscore.admin` | `op` |
 | `/kingdom unsetking <k>` | `/kingdom removeking` | Mencabut gelar Raja dari kerajaan | `apexsionscore.admin` | `op` |
 | `/level` | `/lvl`, `/profile`, `/exp`, `/rewards` | Membuka GUI progress bar level (1-100) & hadiah | `apexsionscore.command.level` | `true` |
@@ -87,6 +88,7 @@ Dokumentasi resmi yang merangkum arsitektur menyeluruh, interaksi antar-plugin, 
 | `/cosmetics` | `/auras`, `/trails`, `/aura`, `/trail` | Membuka Particle Cosmetics GUI (Head Auras, Trails, Kill Effects)| `apexsionscore.command.cosmetics` | `true` |
 | `/rtp` | `/wild`, `/wilderness`, `/krtp` | Teleportasi acak aman di dalam wilayah kerajaan sendiri | `apexsionscore.command.rtp` | `true` |
 | `/ac reload` | `/apexsionscore reload`, `/kc reload` | Reload modular configs, LuckPerms ranks, BlueMap, & rewards | `apexsionscore.admin` | `op` |
+| `/ac setspawn <kingdom>`| `/ac setcapital` | Menetapkan koordinat spawn ibukota kerajaan di lokasi berdiri | `apexsionscore.admin` | `op` |
 | `/ac war start <K1> <K2> [m]`| - | Memulai perang resmi antar-kerajaan (Admin) | `apexsionscore.admin` | `op` |
 | `/ac war stop` | - | Menghentikan paksa perang kerajaan aktif (Admin) | `apexsionscore.admin` | `op` |
 | `/ac war status` | - | Memeriksa status dan sisa waktu perang kerajaan aktif | `apexsionscore.admin` | `op` |
@@ -227,3 +229,85 @@ powershell -ExecutionPolicy Bypass -File .\build.ps1 CustomEnchants
 # 2. Kompilasi Seluruh Suite (Gunakan HANYA jika semua 7 modul berubah):
 powershell -ExecutionPolicy Bypass -File .\build.ps1 -all
 ```
+
+---
+
+## 📜 5. Kesinambungan Lore & Mekanik Gameplay (The Narrative Mechanics Matrix)
+
+Ekosistem Apexsions tidak sekadar kumpulan plugin teknis terpisah, melainkan perwujudan langsung dari narasi kanonik dunia **Apexsions — The Peak Civilizations**:
+
+### A. Kisah Agung: Kejatuhan Sions & Lahirnya 3 Peradaban
+Dahulu kala, benua ini dipersatukan di bawah satu imperium agung yang membentang tanpa batas: **Kekaisaran Kuno Sions**. Namun, ambisi pemimpin terakhirnya untuk melipatgandakan kekuatan pasukan dengan menyerap energi terlarang dari dimensi kegelapan (*Dark Dimension*) memicu malapetaka dahsyat (*The Great Rupture*). Kekaisaran runtuh dalam kehancuran kosmis, memaksa rakyatnya tercerai-berai:
+1. **Zenithar (Arah Timur / Zenith Cakrawala)**:
+   - *Latar Belakang*: Keluarga dinasti kerajaan, bangsawan berdarah murni, dan kavaleri suci yang berhasil mempertahankan diri dan hijrah ke arah timur pegunungan kristal.
+   - *Karakteristik & Buff*: Menjunjung tinggi kehormatan dan pertahanan suci (*Buff: Speed, Luck, Damage Reduction; Debuff: Kerentanan Racun, Porsi Makan*).
+2. **Solterra (Arah Selatan / Kawah Emas Vulkanik)**:
+   - *Latar Belakang*: Para ahli sihir tempur (Magicians), alkemis, dan tentara tangguh berpengalaman yang memisahkan diri ke tanah tandus dan lembah cadas selatan.
+   - *Karakteristik & Buff*: Menguasai peleburan bijih logam, kekuatan fisik destruktif, dan api (*Buff: Serangan Tinggi, Critical Hit, Mining Haste; Debuff: -2 HP Darah, Rentan Kerusakan, Cepat Lapar*).
+3. **Sylvamoor (Arah Barat / Belantara Kanopi Purba)**:
+   - *Latar Belakang*: Kaum pekerja, pemburu, petani, serta tentara non-magis yang bersatu dan bermigrasi ke hutan rimba raksasa barat.
+   - *Karakteristik & Buff*: Mengembangkan keahlian hidup berdampingan dengan alam, foraging, dan kelincahan berburu (*Buff: +2 HP Darah, Pertahanan Tinggi, Drop Rate Melimpah; Debuff: Mabuk Ketinggian, Kerentanan Api*).
+
+### B. Matriks Kesinambungan Fitur Plugin dengan Lore:
+- **Auto-Respawn Ibukota Kerajaan (`ApexsionsCore`)**: Saat gugur, jiwa prajurit ditarik kembali ke altar suci ibukota peradaban masing-masing (sinkron dengan peta teritorial BlueMap).
+- **Perlindungan Teritorial & Kingdom War (`ApexsionsCore`)**: Larangan friendly-fire di dalam wilayah melindungi warga dari perang saudara, sedangkan mode perang resmi (*War Mode*) mencerminkan perebutan hegemoni klaim tahta Sions.
+- **Pajak Transportasi Antar-Kerajaan (`ApexsionsEconomy`)**: Perbedaan faksi dan jarak geografis mewajibkan adanya bea cukai saat bertransaksi dengan kerajaan lain via `/trade`.
+- **Fluktuasi Pasar Dinamis (`ApexsionsShop`)**: Harga beli dan jual bergantung pada komoditas unggulan masing-masing peradaban serta kondisi cuaca dunia.
+- **Quest Sejarah & Ekspedisi (`ApexsionsBattlepass`)**: Misi perburuan dan eksplorasi memandu petualang menyingkap rahasia masa lalu.
+
+---
+
+## ⚔️ 6. Ekosistem PVE: Reruntuhan Kuno Sions & Integrasi MythicMobs
+
+Di titik pusat alam liar (Wilderness) di antara ketiga kerajaan, berdiri **Reruntuhan Kerajaan Kuno Sions** (*The Forbidden Sanctum of Sions*). Area ini terkontaminasi radiasi energi Dark Dimension:
+
+### A. Hierarki Monster Berlevel (PVE Level Scaling):
+1. **Wilderness Umum (Lv. 10–25)**: Monster alam liar berkeliaran dengan statistik HP & Damage yang terkalibrasi, memberi XP leveling untuk `ApexsionsCore`.
+2. **Pinggiran Reruntuhan (Lv. 30–55)**:
+   - **`SionsVoidAssassin`**: Pembunuh bayangan yang dapat menghilang (*ShadowStep*) dan teleport ke belakang punggung pemain.
+   - **`SionsRuinSentinel`**: Golem pertahanan kuno dengan serangan hentakan tanah (*GroundShatter*) dan meriam peledak (*VoidMortar*).
+   - **`SionsCultistPriest`**: Rahib terkorupsi yang memulihkan darah pasukan Sions di sekitarnya.
+3. **Raid World Boss: Emperor Valerius, The Void-Touched (Lv. 100)**:
+   - Bos 3-Fase dengan indikator bahaya telegraphed di tanah sebelum ledakan void.
+   - Fase kebal perisai dimensi (*Invulnerability Shield*) yang memanggil minion penjaga tahta.
+   - Fase amarah (*Enrage*) saat HP < 25% yang memicu hujan meteor kegelapan (*Void Cataclysm*).
+
+### B. Siklus Relik & Hadiah Legendaris:
+- **`SionsAncientRelic` (Pecahan Relik Kuno)**: Komoditas ekonomi bernilai tinggi untuk diperdagangkan di pasar lelang (`/ah`) atau ditukar koin.
+- **`CorruptedDarkCore` (Inti Dimensi Gelap)**: Material langka untuk penempaan sihir tingkat tinggi di masa depan.
+- **`ValeriusVoidblade` & `CrownOfSions`**: Senjata dan mahkota peninggalan kaisar dengan efek visual custom serta bonus stat tempur.
+
+---
+
+## 🗺️ 7. Master Roadmap & Visi Jangka Panjang Ekosistem Apexsions
+
+```
+┌──────────────────────────────────────────────────────────────────────────────────┐
+│                           APEXSIONS MASTER ROADMAP                               │
+└──────────────────────────────────────────────────────────────────────────────────┘
+  [Fase 1: Kedaulatan Teritorial] (SELESAI / AKTIF)
+    ├── 7 Plugin Suite Utama Modular & Terintegrasi
+    ├── Sistem 3 Kerajaan (Zenithar, Solterra, Sylvamoor) & Poligon BlueMap
+    ├── Progresi Karakter 1-100 & 13 Sumber XP
+    ├── Ekonomi Multi-Mata Uang Atomic & Pasar Lelang Escrow
+    └── Auto-Respawn Ibukota Kerajaan & Integrasi In-Game Spawn Manager
+
+  [Fase 2: Bencana Dimensi Gelap & World Raids] (SAAT INI / EXPANSION)
+    ├── Integrasi Dungeon PVE Reruntuhan Kuno Sions via MythicMobs
+    ├── Mekanik Bos Multi-Fase dengan Telegraphed Floor Indicators
+    ├── Peredaran Relik Sions di Pasar Lelang & Toko Dinamis
+    └── Penyesuaian Webstore Checkout Instan WhatsApp Founder/Admin
+
+  [Fase 3: Pengepungan Benteng & Perang Teritorial] (RENCANA JANGKA MENENGAH)
+    ├── Fitur Kingdom Castle Siege: Perebutan benteng terluar di Wilderness
+    ├── Pajak Teritorial Wilayah Taklukan untuk Kas Kerajaan
+    ├── Kit Perang Khusus Siege & Perlengkapan Tempur Artileri
+    └── Sistem Aliansi Diplomasi Sementara Antar-Dua Kerajaan
+
+  [Fase 4: Sinkronisasi Jaringan Web Terpadu] (VISI JANGKA PANJANG)
+    ├── WebBridge v2: WebSocket Real-time Sinkronisasi Status Server
+    ├── Peta Wilayah Dinamis & Klasemen Perang Live di Portal Web
+    ├── Sistem Tiket Laporan & Player Inspector Terkoneksi Web Dashboard
+    └── Automasi Payment Gateway Webstore Terpadu Resmi
+```
+

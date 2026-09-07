@@ -45,6 +45,10 @@ Apexsions/
   - **Zenithar** (Arah Timur / Zenith): Penerus Dinasti & Keluarga Kerajaan Sions yang bertahan bersama kavaleri kehormatan di puncak cakrawala (*Buff: Speed, Luck, Damage & Defense; Debuff: Kerentanan Racun, Porsi Makan*).
   - **Solterra** (Arah Selatan): Persekutuan Pesulap Tempur (Magician) & Prajurit Garis Depan tangguh di kawah vulkanik cadas (*Buff: High Damage, Critical, Mining Speed; Debuff: -2 HP Darah, Vulnerability, Cepat Lapar*).
   - **Sylvamoor** (Arah Barat): Peradaban Mandiri Kaum Pekerja, Petani, dan Pejuang Rimba di kanopi purba (*Buff: +2 HP Darah, High Defense, Luck, Drop Rate; Debuff: Mabuk Ketinggian, Kerentanan Api, Reduced PvP*).
+- **Auto-Respawn Ibukota Kerajaan Terintegrasi BlueMap**:
+  - Pemain yang gugur langsung otomatis respawn di titik pusat ibukota kerajaannya (menggantikan fallback default ke lobby).
+  - Koordinat sinkron otomatis dengan marker BlueMap (`world.conf`).
+  - Dilengkapi in-game manager command `/ac setspawn <kingdom>` dan `/k setspawn <kingdom>` untuk memindahkan spawn seketika.
 - **Ultimate Admin Control Panel & Deep Player Inspector (54-Slot GUI)**:
   - Akses penuh administrasi pemain dari GUI: Ubah saldo Rupiah/Diamond, ubah level (1-100) & XP, ganti kerajaan seketika, dan penobatan **👑 Raja Kerajaan (Monarch)** dengan siaran global.
   - Quick Tooling: Teleportasi, tarik pemain, inspeksi live inventory & EnderChest, Heal & Feed instan, GameMode switcher (Survival/Creative/Adventure/Spectator), dan Kick sanksi.
@@ -162,12 +166,16 @@ Apexsions/
 | `/kingdom` | `/k`, `/region` | Membuka profil dan status kerajaan pemain | `apexsionscore.command.region` | `true` |
 | `/kingdom choose` | `/k select` | Membuka menu pemilihan 3 kerajaan | `apexsionscore.command.region` | `true` |
 | `/kingdom top` | `/k leaderboard`| Membuka Hall of Fame & Leaderboard GUI klasemen kerajaan | `apexsionscore.command.level` | `true` |
+| `/kingdom setspawn <k>`| `/k setspawn` | Menetapkan titik spawn ibukota kerajaan (Admin) | `apexsionscore.admin` | `op` |
+| `/kingdom setking <k> <p>`| - | Menobatkan Raja Tertinggi kerajaan (Admin) | `apexsionscore.admin` | `op` |
+| `/kingdom unsetking <k>`| `/kingdom removeking` | Mencabut gelar Raja kerajaan (Admin) | `apexsionscore.admin` | `op` |
 | `/level` | `/lvl`, `/profile`, `/exp`, `/rewards` | Membuka GUI progress bar level & hadiah | `apexsionscore.command.level` | `true` |
 | `/xpguide` | - | Panduan detail 13 sumber perolehan XP | `apexsionscore.command.level` | `true` |
 | `/titles` | `/tags`, `/title`, `/tag` | Membuka Title Vault GUI untuk memasang gelar & badge | `apexsionscore.command.titles` | `true` |
 | `/cosmetics` | `/auras`, `/trails`, `/aura`, `/trail` | Membuka Particle Cosmetics GUI (Head Auras, Trails, Kill FX) | `apexsionscore.command.cosmetics` | `true` |
 | `/rtp` | `/wild`, `/wilderness`, `/krtp` | Teleportasi acak aman di wilayah kerajaan sendiri | `apexsionscore.command.rtp` | `true` |
 | `/ac reload` | `/apexsionscore reload`, `/kc reload` | Memuat ulang seluruh file konfigurasi Core, Ranks & Rewards | `apexsionscore.admin` | `op` |
+| `/ac setspawn <kingdom>`| `/ac setcapital` | Menetapkan koordinat spawn ibukota kerajaan di lokasi berdiri | `apexsionscore.admin` | `op` |
 | `/ac war start <K1> <K2> [m]`| - | Memulai perang resmi antar kerajaan (Admin) | `apexsionscore.admin` | `op` |
 | `/ac war stop` | - | Menghentikan perang kerajaan aktif (Admin) | `apexsionscore.admin` | `op` |
 | `/ac war status` | - | Memeriksa status aktif perang kerajaan (Admin) | `apexsionscore.admin` | `op` |
@@ -318,3 +326,84 @@ Untuk panduan teknis mendalam per modul, silakan baca dokumentasi di folder `doc
 - 🖼️ [**ApexsionsMedia Manual**](docs/APEXSIONS_MEDIA.md)
 - 🏛️ [**Ecosystem Architecture Guide**](docs/ECOSYSTEM_ARCHITECTURE.md)
 - 🗄️ [**PostgreSQL Integration Guide**](docs/ECONOMY_INTEGRATION_POSTGRESQL.md)
+
+---
+
+## 🏛️ 6. Lore Agung & Kesinambungan Narasi Dunia Apexsions (The Canonical Lore)
+
+Seluruh sistem gameplay, arsitektur plugin, dan desain ekonomi di server didasarkan pada kesinambungan narasi dunia **Apexsions — The Peak Civilizations**:
+
+### A. Kisah Kehancuran Sions & Eksodus Tiga Peradaban
+Di masa purba, seluruh benua bernaung di bawah imperium raksasa yang makmur: **Kekaisaran Kuno Sions**. Kejayaan peradaban ini hancur seketika ketika sang penguasa tertinggi memaksakan pemanfaatan energi terlarang dari dimensi kegelapan (*Dark Dimension*) demi memperkuat bala tentara kekaisaran. Percobaan tersebut merobek batas dimensi (*The Cosmic Rift*), memicu malapetaka kosmis yang meratakan ibukota Sions menjadi puing-puing terkutuk.
+
+Dari reruntuhan tersebut, sisa-sisa penduduk terpecah menjadi tiga peradaban besar dengan karakteristik geografis, kelebihan (*Buff*), dan kelemahan (*Debuff*) unik:
+
+1. **👑 Zenithar (Cakrawala Timur / Zenith Peak)**:
+   - **Latar Belakang**: Dinasti bangsawan, keluarga kerajaan Sions yang selamat, dan ordo kavaleri suci yang hijrah ke pegunungan kristal timur.
+   - **Filosofi**: Kemuliaan, garis keturunan murni, tata krama, dan benteng pertahanan tak tertembus.
+   - **Spesialisasi**: Logam mulia, penempaan armor kokoh, dan kecepatan manuver (*Buff: Speed, Luck, Damage & Defense; Debuff: Rentan Racun, Nafsu Makan Cepat*).
+2. **⚔️ Solterra (Kawah Cadas Vulkanik Selatan)**:
+   - **Latar Belakang**: Aliansi magician tempur, alkemis penjinak elemen, dan ksatria perang garis depan yang mendirikan kota di tanah vulkanik dan gurun emas tandus.
+   - **Filosofi**: Kekuatan mutlak, disiplin tempur, dan penguasaan api serta sihir destruktif.
+   - **Spesialisasi**: Kerusakan kritis tinggi, peleburan bijih ekstrem, dan sihir serang (*Buff: Attack Damage, Critical Hit, Mining Haste; Debuff: -2 HP Darah, Rentan Kerusakan, Cepat Lapar*).
+3. **🌿 Sylvamoor (Rimba Belantara Kanopi Barat)**:
+   - **Latar Belakang**: Kaum pekerja, penjelajah, pemburu, dan petarung non-magis yang berbaur dengan alam belantara barat kanopi purba.
+   - **Filosofi**: Kemandirian, keharmonisan botani, dan kelincahan bertahan hidup.
+   - **Spesialisasi**: Vitalitas tinggi, hasil alam melimpah, dan pertahanan alami (*Buff: +2 HP Darah, High Defense, Luck, Foraging Drop Rate; Debuff: Mabuk Ketinggian, Rentan Api*).
+
+---
+
+## ⚔️ 7. Ekosistem PVE: Reruntuhan Kuno Sions & Integrasi MythicMobs Raid
+
+Di pusat alam liar (Wilderness) yang memisahkan ketiga kerajaan, terdapat wilayah tak bertuan yang menyimpan sisa-sisa peradaban masa lalu: **Reruntuhan Kuno Sions** (*The Forbidden Sanctum of Sions*).
+
+1. **PVE Level Scaling di Wilderness**:
+   - Seluruh monster di alam liar memiliki level (Lv. 10–30) dengan sistem drop yang memberi poin XP leveling di `ApexsionsCore`.
+2. **Penjaga Elit Reruntuhan (Dungeon Encounters)**:
+   - **`SionsVoidAssassin` (Lv. 40)**: Pembunuh bayangan dengan kemampuan *ShadowStep* (teleportasi senyap ke belakang punggung pemain).
+   - **`SionsRuinSentinel` (Lv. 55)**: Golem raksasa dengan jurus gempa bumi *GroundShatter* dan meriam peledak *VoidMortar*.
+   - **`SionsCultistPriest` (Lv. 45)**: Rahib pemuja kegelapan yang memulihkan darah pasukan Sions di sekitarnya.
+3. **World Raid Boss: Emperor Valerius, The Void-Touched (Lv. 100)**:
+   - Pertarungan 3-Fase dengan indikator bahaya telegraphed di tanah sebelum ledakan void.
+   - Fase kebal perisai dimensi (*Invulnerability Shield*) yang memanggil minion pelindung tahta.
+   - Fase amarah (*Enrage*) saat HP < 25% yang memicu hujan meteor kegelapan (*Void Cataclysm*).
+4. **Relik Kuno & Sirkulasi Ekonomi**:
+   - **Pecahan Relik Kuno Sions (`SionsAncientRelic`)** & **Inti Dimensi Gelap (`CorruptedDarkCore`)** menjadi mata uang barang berharga tinggi di pasar lelang (`/ah`) dan toko dinamis.
+   - **Senjata Legendaris `ValeriusVoidblade`** & **`CrownOfSions`** menjadi target trofi prestise tertinggi antar-kerajaan.
+
+---
+
+## 🗺️ 8. Master Roadmap & Visi Jangka Panjang Ekosistem Apexsions
+
+Perjalanan pengembangan Apexsions dirancang secara terstruktur melalui 4 fase evolusi peradaban:
+
+```
+┌──────────────────────────────────────────────────────────────────────────────────┐
+│                           APEXSIONS MASTER ROADMAP                               │
+└──────────────────────────────────────────────────────────────────────────────────┘
+  [Fase 1: Kedaulatan Teritorial] (STATUS: SELESAI / STABIL)
+    ├── 7 Plugin Suite Modular Paper 26.2 / Java 21 LTS
+    ├── Batas Wilayah Poligon BlueMap & Proteksi Teritorial PvP
+    ├── Progresi Karakter 1-100 & 13 Sumber XP
+    ├── Ekonomi Multi-Mata Uang Atomic (Rupiah & Diamond) & Pasar Lelang Escrow
+    └── Auto-Respawn Ibukota Kerajaan & Integrasi In-Game Spawn Manager
+
+  [Fase 2: Bencana Dimensi Gelap & World Raids] (STATUS: AKTIF / EKSPANSI)
+    ├── Integrasi Dungeon PVE Reruntuhan Kuno Sions via MythicMobs
+    ├── Mekanik Bos Multi-Fase dengan Telegraphed Floor Indicators
+    ├── Peredaran Relik Sions di Pasar Lelang & Toko Dinamis
+    └── Penyesuaian Webstore Checkout Instan WhatsApp Founder/Admin
+
+  [Fase 3: Pengepungan Benteng & Perang Teritorial] (RENCANA JANGKA MENENGAH)
+    ├── Fitur Kingdom Castle Siege: Perebutan benteng terluar di Wilderness
+    ├── Pajak Teritorial Wilayah Taklukan untuk Kas Perbendaharaan Kerajaan
+    ├── Kit Perang Khusus Siege & Perlengkapan Tempur Artileri
+    └── Sistem Aliansi Diplomasi Sementara Antar-Dua Kerajaan
+
+  [Fase 4: Sinkronisasi Jaringan Web Terpadu] (VISI JANGKA PANJANG)
+    ├── WebBridge v2: WebSocket Real-time Sinkronisasi Status Server
+    ├── Peta Wilayah Dinamis & Klasemen Perang Live di Portal Web
+    ├── Sistem Tiket Laporan & Player Inspector Terkoneksi Web Dashboard
+    └── Automasi Payment Gateway Webstore Terpadu Resmi
+```
+
