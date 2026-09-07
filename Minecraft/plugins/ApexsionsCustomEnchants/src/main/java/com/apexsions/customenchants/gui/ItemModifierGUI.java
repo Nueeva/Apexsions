@@ -233,26 +233,17 @@ public class ItemModifierGUI implements InventoryHolder {
             return;
         }
 
-        // Slot 23: Armor Set Bonus Picker or Tool Bonus Picker
+        // Slot 23: Armor Set Bonus Picker or Tool Bonus Picker (Dialog GUI Flow)
         if (slot == 23) {
             if (AdminItemCreatorGUI.isArmor(item)) {
                 player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1.0f, 1.2f);
-                String sName = (creatorGUI != null) ? creatorGUI.getEffectiveSetName() : "";
-                new ArmorSetBonusPickerGUI(plugin, player, item, sName, this, updated -> {
-                    this.item = updated;
-                    if (creatorGUI != null) creatorGUI.updateItem(sourceSlot, this.item);
-                    this.open();
-                }).open();
+                player.closeInventory();
+                ItemEditDialogFlow.openArmorSetBonus(plugin, player, item, sourceSlot, creatorGUI);
                 return;
             } else if (AdminItemCreatorGUI.isToolOrWeapon(item)) {
                 player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1.0f, 1.2f);
-                String cId = (creatorGUI != null) ? creatorGUI.getGlobalSetId() : "";
-                String cName = (creatorGUI != null) ? creatorGUI.getGlobalSetName() : "";
-                new ToolBonusPickerGUI(plugin, player, item, cId, cName, this, updated -> {
-                    this.item = updated;
-                    if (creatorGUI != null) creatorGUI.updateItem(sourceSlot, this.item);
-                    this.open();
-                }).open();
+                player.closeInventory();
+                ItemEditDialogFlow.openToolBonus(plugin, player, item, sourceSlot, creatorGUI);
                 return;
             }
         }

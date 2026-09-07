@@ -93,6 +93,11 @@ public class ItemEditDialogFlow {
                         () -> openRoot(plugin, player, item, sourceSlot, creatorGUI)
                 )));
 
+        if (isArmor) {
+            buttons.add(new DialogButtonData("<blue><bold>🛡 ATUR ARMOR SET BONUS</bold></blue>", "Konfigurasi efek sinergi 2-Piece dan 4-Piece Set",
+                    () -> openArmorSetBonus(plugin, player, item, sourceSlot, creatorGUI)));
+        }
+
         if (isTool) {
             boolean isSetBonusActive = (creatorGUI != null && creatorGUI.isSetBonusConfigured());
             if (isSetBonusActive) {
@@ -511,7 +516,261 @@ public class ItemEditDialogFlow {
     }
 
     // ==========================================================
-    // 7. ARMOR SET BONUS DIALOG
+    // 7. GLOBAL ARMOR SET BONUS DIALOG (CREATOR SLOT 15)
+    // ==========================================================
+
+    public static void openGlobalArmorSetBonus(ApexsionsCustomEnchantsPlugin plugin, Player player, AdminItemCreatorGUI creatorGUI) {
+        if (player == null || !player.isOnline() || creatorGUI == null) return;
+        creatorGUI.setNavigatingSubGUI(true);
+
+        ItemStack ref = creatorGUI.getPlacedItems().get(AdminItemCreatorGUI.SLOT_HELMET);
+        if (ref == null) {
+            ref = creatorGUI.getPlacedItems().values().stream().findFirst().orElse(null);
+        }
+        if (ref == null) {
+            ref = new ItemStack(Material.NETHER_STAR);
+            ItemMeta m = ref.getItemMeta();
+            if (m != null) {
+                m.displayName(ColorUtil.parse("<gradient:#f1c40f:#e67e22><bold>ARMOR SET BONUS</bold></gradient>"));
+                ref.setItemMeta(m);
+            }
+        }
+
+        String setName = creatorGUI.getGlobalSetName();
+        Map<KitStatType, Double> set2Stats = creatorGUI.getGlobalSet2Stats();
+        Map<KitStatType, Double> set4Stats = creatorGUI.getGlobalSet4Stats();
+
+        StringBuilder desc = new StringBuilder();
+        desc.append("<gray>Nama Set Armor: ").append(!setName.isBlank() ? ColorUtil.toPlainText(setName) : "<gold>(Belum Diatur)</gold>").append("</gray>\n");
+        desc.append("<gray>2-Piece (Half Set): ").append(set2Stats.isEmpty() ? "<dark_gray>Nonaktif</dark_gray>" : "<green>" + set2Stats.size() + " Efek Aktif</green>").append("</gray>\n");
+        desc.append("<gray>4-Piece (Full Set): ").append(set4Stats.isEmpty() ? "<dark_gray>Nonaktif</dark_gray>" : "<green>" + set4Stats.size() + " Efek Aktif</green>").append("</gray>\n");
+        desc.append("<dark_gray>Pilih opsi konfigurasi set bonus di bawah:</dark_gray>");
+
+        List<DialogButtonData> buttons = new ArrayList<>();
+
+        buttons.add(new DialogButtonData("<gold><bold>🏷 UBAH NAMA SET ARMOR</bold></gold>", "Ubah nama set dan otomatis terapkan ke seluruh item", () -> {
+            plugin.getItemRenameManager().startSession(
+                    player,
+                    "Masukkan nama dasar / prefix untuk seluruh set (contoh: &6&lPaladin atau <gradient:#e74c3c:#f39c12>Shadow</gradient>):",
+                    newName -> {
+                        creatorGUI.renameAllItems(newName);
+                        openGlobalArmorSetBonus(plugin, player, creatorGUI);
+                    },
+                    () -> openGlobalArmorSetBonus(plugin, player, creatorGUI)
+            );
+        }));
+
+        buttons.add(new DialogButtonData("<blue><bold>🛡 ATUR EFEK 2-PIECE (HALF SET)</bold></blue>", "Konfigurasi persentase stat untuk 2 potong armor",
+                () -> openGlobalArmorPieceConfig(plugin, player, creatorGUI, 2)));
+
+        buttons.add(new DialogButtonData("<purple><bold>👑 ATUR EFEK 4-PIECE (FULL SET)</bold></purple>", "Konfigurasi persentase stat untuk 4 potong armor",
+                () -> openGlobalArmorPieceConfig(plugin, player, creatorGUI, 4)));
+
+        if (!set2Stats.isEmpty() || !set4Stats.isEmpty()) {
+            buttons.add(new DialogButtonData("<red><bold>✖ HAPUS SELURUH SET BONUS</bold></red>", "Hapus seluruh efek 2-piece dan 4-piece", () -> {
+                creatorGUI.getGlobalSet2Stats().clear();
+                creatorGUI.getGlobalSet4Stats().clear();
+                creatorGUI.setSetBonusConfigured(false);
+                creatorGUI.removeFullsetBonusFromAll();
+                player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, 1.0f, 0.8f);
+                player.sendMessage(mm.deserialize("<yellow>Seluruh set bonus berhasil dihapus!</yellow>"));
+                openGlobalArmorSetBonus(plugin, player, creatorGUI);
+            }));
+        }
+
+        DialogButtonData exitBtn = new DialogButtonData("<gray><bold>⬅ SELESAI & KEMBALI KE ITEM CREATOR</bold></gray>", "Simpan dan kembali ke creator utama", () -> {
+            creatorGUI.setSetBonusConfigured(!creatorGUI.getGlobalSet2Stats().isEmpty() || !creatorGUI.getGlobalSet4Stats().isEmpty());
+            if (creatorGUI.isSetBonusConfigured()) {
+                creatorGUI.checkAndApplyFullsetBonus();
+            }
+            creatorGUI.open();
+        });
+
+        NativeDialogAdapter.showMultiActionDialog(
+                plugin,
+                player,
+                ref,
+                "<gradient:#e74c3c:#f39c12><bold>🛡 PENGATURAN ARMOR SET BONUS 🛡</bold></gradient>",
+                desc.toString(),
+                buttons,
+                exitBtn,
+                2
+        );
+    }
+
+    public static void openGlobalArmorPieceConfig(ApexsionsCustomEnchantsPlugin plugin, Player player, AdminItemCreatorGUI creatorGUI, int pieceCount) {
+        if (player == null || !player.isOnline() || creatorGUI == null) return;
+        creatorGUI.setNavigatingSubGUI(true);
+
+        ItemStack ref = creatorGUI.getPlacedItems().get(AdminItemCreatorGUI.SLOT_HELMET);
+        if (ref == null) {
+            ref = creatorGUI.getPlacedItems().values().stream().findFirst().orElse(null);
+        }
+        if (ref == null) {
+            ref = new ItemStack(Material.NETHER_STAR);
+            ItemMeta m = ref.getItemMeta();
+            if (m != null) {
+                m.displayName(ColorUtil.parse("<gradient:#f1c40f:#e67e22><bold>ARMOR SET BONUS</bold></gradient>"));
+                ref.setItemMeta(m);
+            }
+        }
+
+        String setName = creatorGUI.getGlobalSetName();
+        Map<KitStatType, Double> pieceStats = (pieceCount == 4) ? creatorGUI.getGlobalSet4Stats() : creatorGUI.getGlobalSet2Stats();
+
+        StringBuilder desc = new StringBuilder();
+        desc.append("<gray>Mengatur bonus untuk <yellow>").append(pieceCount).append("-Piece (").append(pieceCount == 4 ? "Full Set" : "Half Set").append(")</yellow></gray>\n");
+        desc.append("<gray>Set: <gold>").append(setName.isBlank() ? "Apexsions" : ColorUtil.toPlainText(setName)).append("</gold></gray>\n");
+        desc.append("<dark_gray>Klik stat di bawah untuk mengatur nilainya:</dark_gray>");
+
+        List<DialogButtonData> buttons = new ArrayList<>();
+        KitStatType[] types = {
+                KitStatType.DAMAGE_REDUCTION,
+                KitStatType.CRITICAL_DAMAGE_REDUCTION,
+                KitStatType.DODGE_CHANCE,
+                KitStatType.EXTRA_MAX_HEALTH,
+                KitStatType.MOVEMENT_SPEED_BOOST
+        };
+
+        for (KitStatType st : types) {
+            Double val = pieceStats.get(st);
+            String valStr = (val != null) ? "<green>" + st.formatValue(val) + "</green>" : "<dark_gray>Nonaktif</dark_gray>";
+            String label = "<aqua>● " + st.getDisplayName() + ": " + valStr + "</aqua>";
+            String tooltip = "Klik untuk mengatur nilai " + st.getDisplayName();
+
+            buttons.add(new DialogButtonData(label, tooltip,
+                    () -> openGlobalStatValuePicker(plugin, player, creatorGUI, pieceCount, st)));
+        }
+
+        if (!pieceStats.isEmpty()) {
+            buttons.add(new DialogButtonData("<red><bold>✖ KOSONGKAN EFEK " + pieceCount + "-PIECE</bold></red>", "Hapus seluruh efek pada tier ini", () -> {
+                pieceStats.clear();
+                creatorGUI.setSetBonusConfigured(!creatorGUI.getGlobalSet2Stats().isEmpty() || !creatorGUI.getGlobalSet4Stats().isEmpty());
+                creatorGUI.checkAndApplyFullsetBonus();
+                player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, 1.0f, 0.8f);
+                openGlobalArmorPieceConfig(plugin, player, creatorGUI, pieceCount);
+            }));
+        }
+
+        DialogButtonData exitBtn = new DialogButtonData("<gray><bold>⬅ KEMBALI KE PENGATURAN SET BONUS</bold></gray>", "Kembali ke menu set bonus",
+                () -> openGlobalArmorSetBonus(plugin, player, creatorGUI));
+
+        NativeDialogAdapter.showMultiActionDialog(
+                plugin,
+                player,
+                ref,
+                "<gradient:#3498db:#2ecc71><bold>🛡 ATUR " + pieceCount + "-PIECE STATS 🛡</bold></gradient>",
+                desc.toString(),
+                buttons,
+                exitBtn,
+                2
+        );
+    }
+
+    public static void openGlobalStatValuePicker(ApexsionsCustomEnchantsPlugin plugin, Player player, AdminItemCreatorGUI creatorGUI,
+                                                 int pieceCount, KitStatType statType) {
+        if (player == null || !player.isOnline() || creatorGUI == null) return;
+        creatorGUI.setNavigatingSubGUI(true);
+
+        ItemStack ref = creatorGUI.getPlacedItems().get(AdminItemCreatorGUI.SLOT_HELMET);
+        if (ref == null) {
+            ref = creatorGUI.getPlacedItems().values().stream().findFirst().orElse(null);
+        }
+        if (ref == null) {
+            ref = new ItemStack(Material.NETHER_STAR);
+            ItemMeta m = ref.getItemMeta();
+            if (m != null) {
+                m.displayName(ColorUtil.parse("<gradient:#f1c40f:#e67e22><bold>ARMOR SET BONUS</bold></gradient>"));
+                ref.setItemMeta(m);
+            }
+        }
+
+        Map<KitStatType, Double> pieceStats = (pieceCount == 4) ? creatorGUI.getGlobalSet4Stats() : creatorGUI.getGlobalSet2Stats();
+        Double currentVal = pieceStats.get(statType);
+
+        StringBuilder desc = new StringBuilder();
+        desc.append("<gray>Stat: <aqua>").append(statType.getDisplayName()).append("</aqua></gray>\n");
+        desc.append("<gray>Nilai Saat Ini: ").append(currentVal != null ? "<green>" + statType.formatValue(currentVal) + "</green>" : "<dark_gray>Nonaktif</dark_gray>").append("</gray>\n");
+        desc.append("<dark_gray>Pilih salah satu preset nilai atau ketik nilai sendiri di bawah:</dark_gray>");
+
+        List<DialogButtonData> buttons = new ArrayList<>();
+
+        if (statType == KitStatType.EXTRA_MAX_HEALTH) {
+            double[] presets = {2.0, 4.0, 6.0, 8.0, 10.0, 14.0, 20.0};
+            String[] names = {"+2 HP (1 Heart)", "+4 HP (2 Hearts)", "+6 HP (3 Hearts)", "+8 HP (4 Hearts)", "+10 HP (5 Hearts)", "+14 HP (7 Hearts)", "+20 HP (10 Hearts)"};
+            for (int i = 0; i < presets.length; i++) {
+                double val = presets[i];
+                String name = names[i];
+                buttons.add(new DialogButtonData("<gold><bold>" + name + "</bold></gold>", "Terapkan " + name, () -> {
+                    pieceStats.put(statType, val);
+                    creatorGUI.setSetBonusConfigured(true);
+                    creatorGUI.checkAndApplyFullsetBonus();
+                    player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1.0f, 1.2f);
+                    openGlobalArmorPieceConfig(plugin, player, creatorGUI, pieceCount);
+                }));
+            }
+        } else {
+            double[] percentages = {5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 40.0, 50.0};
+            for (double pct : percentages) {
+                buttons.add(new DialogButtonData("<gold><bold>+" + (int) pct + "%</bold></gold>", "Terapkan nilai +" + (int) pct + "%", () -> {
+                    pieceStats.put(statType, pct);
+                    creatorGUI.setSetBonusConfigured(true);
+                    creatorGUI.checkAndApplyFullsetBonus();
+                    player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1.0f, 1.2f);
+                    openGlobalArmorPieceConfig(plugin, player, creatorGUI, pieceCount);
+                }));
+            }
+        }
+
+        // Custom manual input via Dialog / Chat
+        buttons.add(new DialogButtonData("<yellow><bold>✏ SET NILAI SENDIRI (MANUAL)</bold></yellow>", "Ketik nilai persentase atau angka sendiri secara bebas", () -> {
+            plugin.getItemRenameManager().startSession(
+                    player,
+                    "Masukkan nilai angka/persentase untuk " + statType.getDisplayName() + " (contoh: 15 atau 22.5):",
+                    rawInput -> {
+                        try {
+                            double customVal = Double.parseDouble(rawInput.trim().replace("%", ""));
+                            if (customVal > 0) {
+                                pieceStats.put(statType, customVal);
+                                creatorGUI.setSetBonusConfigured(true);
+                                creatorGUI.checkAndApplyFullsetBonus();
+                                player.sendMessage(mm.deserialize("<green>✓ Nilai stat <gold>" + statType.getDisplayName() + "</gold> berhasil diatur ke <gold>" + statType.formatValue(customVal) + "</gold>!</green>"));
+                            }
+                        } catch (Exception e) {
+                            player.sendMessage(mm.deserialize("<red>Format angka tidak valid! Harap masukkan angka yang valid.</red>"));
+                        }
+                        openGlobalArmorPieceConfig(plugin, player, creatorGUI, pieceCount);
+                    },
+                    () -> openGlobalArmorPieceConfig(plugin, player, creatorGUI, pieceCount)
+            );
+        }));
+
+        if (currentVal != null) {
+            buttons.add(new DialogButtonData("<red><bold>❌ NONAKTIFKAN STAT INI</bold></red>", "Hapus efek stat ini", () -> {
+                pieceStats.remove(statType);
+                creatorGUI.checkAndApplyFullsetBonus();
+                player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, 1.0f, 0.8f);
+                openGlobalArmorPieceConfig(plugin, player, creatorGUI, pieceCount);
+            }));
+        }
+
+        DialogButtonData exitBtn = new DialogButtonData("<gray><bold>⬅ KEMBALI</bold></gray>", "Kembali ke daftar stat",
+                () -> openGlobalArmorPieceConfig(plugin, player, creatorGUI, pieceCount));
+
+        NativeDialogAdapter.showMultiActionDialog(
+                plugin,
+                player,
+                ref,
+                "<gradient:#f1c40f:#e67e22><bold>⚙ ATUR STAT: " + statType.getDisplayName().toUpperCase() + "</bold></gradient>",
+                desc.toString(),
+                buttons,
+                exitBtn,
+                2
+        );
+    }
+
+    // ==========================================================
+    // 8. ARMOR SET BONUS DIALOG (PER-PIECE)
     // ==========================================================
 
     public static void openArmorSetBonus(ApexsionsCustomEnchantsPlugin plugin, Player player, ItemStack item, int sourceSlot,
@@ -683,11 +942,11 @@ public class ItemEditDialogFlow {
             }
         }
 
-        // Custom manual input via Dialog
-        buttons.add(new DialogButtonData("<yellow><bold>✏ KETIK NILAI MANUAL</bold></yellow>", "Ketik nilai numerik secara spesifik via Dialog", () -> {
+        // Custom manual input via Dialog / Chat
+        buttons.add(new DialogButtonData("<yellow><bold>✏ SET NILAI SENDIRI (MANUAL)</bold></yellow>", "Ketik nilai persentase atau angka sendiri secara bebas", () -> {
             plugin.getItemRenameManager().startSession(
                     player,
-                    "Masukkan angka persentase/nilai (contoh: 12.5):",
+                    "Masukkan angka persentase/nilai (contoh: 15 atau 22.5):",
                     rawInput -> {
                         try {
                             double customVal = Double.parseDouble(rawInput.trim().replace("%", ""));
@@ -1066,6 +1325,17 @@ public class ItemEditDialogFlow {
         Map<KitStatType, Double> set2 = (pieceCount == 2) ? pieceStats : parseArmorStats(item, "set2_stats");
         Map<KitStatType, Double> set4 = (pieceCount == 4) ? pieceStats : parseArmorStats(item, "set4_stats");
         saveArmorSetBonusToItem(item, setName, set2, set4);
+        if (creatorGUI != null) {
+            if (pieceCount == 2) {
+                creatorGUI.getGlobalSet2Stats().clear();
+                creatorGUI.getGlobalSet2Stats().putAll(pieceStats);
+            } else if (pieceCount == 4) {
+                creatorGUI.getGlobalSet4Stats().clear();
+                creatorGUI.getGlobalSet4Stats().putAll(pieceStats);
+            }
+            creatorGUI.setSetBonusConfigured(!creatorGUI.getGlobalSet2Stats().isEmpty() || !creatorGUI.getGlobalSet4Stats().isEmpty());
+            creatorGUI.checkAndApplyFullsetBonus();
+        }
     }
 
     private static void saveArmorSetBonusToItem(ItemStack item, String setName, Map<KitStatType, Double> set2Stats, Map<KitStatType, Double> set4Stats) {

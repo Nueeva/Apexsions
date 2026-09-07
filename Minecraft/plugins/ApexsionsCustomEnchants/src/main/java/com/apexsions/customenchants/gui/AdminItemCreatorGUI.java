@@ -122,8 +122,28 @@ public class AdminItemCreatorGUI implements InventoryHolder {
         return globalSetId;
     }
 
+    public void setGlobalSetId(String globalSetId) {
+        this.globalSetId = globalSetId;
+    }
+
     public String getGlobalSetName() {
         return globalSetName;
+    }
+
+    public void setGlobalSetName(String globalSetName) {
+        this.globalSetName = globalSetName;
+    }
+
+    public Map<KitStatType, Double> getGlobalSet2Stats() {
+        return globalSet2Stats;
+    }
+
+    public Map<KitStatType, Double> getGlobalSet4Stats() {
+        return globalSet4Stats;
+    }
+
+    public void setSetBonusConfigured(boolean configured) {
+        this.setBonusConfigured = configured;
     }
 
     public void updateItem(int slot, ItemStack newItem) {
@@ -616,44 +636,18 @@ public class AdminItemCreatorGUI implements InventoryHolder {
                 return;
             }
 
-            // Slot 15: Set Bonus Settings
+            // Slot 15: Set Bonus Settings (Native Dialog GUI)
             if (rawSlot == SLOT_SET_STATUS) {
                 event.setCancelled(true);
                 this.isNavigatingSubGUI = true;
-                ItemStack ref = placedItems.get(SLOT_HELMET);
-                if (ref == null) {
-                    ref = placedItems.values().stream().findFirst().orElse(null);
-                }
-
                 if (this.globalSetName.isBlank()) {
                     this.globalSetName = getEffectiveSetName();
                     this.globalSetId = getPlainTextSafe(this.globalSetName).toLowerCase().replaceAll("[^a-z0-9_-]", "_");
                     if (this.globalSetId.isBlank()) this.globalSetId = "apexsions";
                 }
-
-                new ArmorSetBonusPickerGUI(plugin, player, globalSetName, globalSet2Stats, globalSet4Stats, ref, this,
-                        (savedName, s2, s4) -> {
-                            // ID bonus armor set otomatis mengikuti nama set yang dibuat di GUI Utama
-                            if (this.globalSetName.isBlank()) {
-                                this.globalSetName = (savedName != null && !savedName.isBlank()) ? savedName : "Apexsions";
-                            }
-                            this.globalSetId = getPlainTextSafe(this.globalSetName).toLowerCase().replaceAll("[^a-z0-9_-]", "_");
-                            if (this.globalSetId.isBlank()) {
-                                this.globalSetId = "apexsions";
-                            }
-                            this.globalSet2Stats.clear();
-                            this.globalSet2Stats.putAll(s2);
-                            this.globalSet4Stats.clear();
-                            this.globalSet4Stats.putAll(s4);
-                            this.setBonusConfigured = (!globalSet2Stats.isEmpty() || !globalSet4Stats.isEmpty());
-
-                            if (this.setBonusConfigured) {
-                                checkAndApplyFullsetBonus();
-                            } else {
-                                removeFullsetBonusFromAll();
-                            }
-                            this.open();
-                        }).open();
+                player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1.0f, 1.2f);
+                player.closeInventory();
+                ItemEditDialogFlow.openGlobalArmorSetBonus(plugin, player, this);
                 return;
             }
 

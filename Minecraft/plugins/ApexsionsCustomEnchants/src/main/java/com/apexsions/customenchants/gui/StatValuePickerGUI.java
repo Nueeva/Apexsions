@@ -107,6 +107,16 @@ public class StatValuePickerGUI implements InventoryHolder {
                     lore, isSelected));
         }
 
+        // Slot 32: Custom Value Input (Set Nilai Sendiri)
+        inventory.setItem(32, createItem(Material.NAME_TAG,
+                "<yellow><bold>✏ SET NILAI SENDIRI</bold></yellow>",
+                List.of(
+                        mm.deserialize("<gray>Ketik nilai kustom / persentase sendiri</gray>"),
+                        mm.deserialize("<gray>secara bebas via chat / dialog.</gray>"),
+                        Component.empty(),
+                        mm.deserialize("<yellow>▶ Klik untuk mengetik nilai sendiri!</yellow>")
+                ), false));
+
         // Slot 40: Disable / Remove Stat
         inventory.setItem(40, createItem(Material.LAVA_BUCKET,
                 "<red><bold>✖ NONAKTIFKAN STAT INI</bold></red>",
@@ -127,6 +137,33 @@ public class StatValuePickerGUI implements InventoryHolder {
     public void handleClick(InventoryClickEvent event) {
         event.setCancelled(true);
         int slot = event.getRawSlot();
+
+        // Slot 32: Custom Value Input
+        if (slot == 32) {
+            player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1.0f, 1.2f);
+            plugin.getItemRenameManager().startSession(
+                    player,
+                    "Masukkan nilai angka/persentase untuk " + statType.getDisplayName() + " (contoh: 15 atau 22.5):",
+                    rawInput -> {
+                        try {
+                            double customVal = Double.parseDouble(rawInput.trim().replace("%", ""));
+                            if (customVal > 0) {
+                                this.currentValue = customVal;
+                                player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.2f);
+                                player.sendMessage(mm.deserialize("<green>✓ Nilai <gold>" + statType.getDisplayName() + "</gold> diatur ke <gold>" + statType.formatValue(customVal) + "</gold>!</green>"));
+                                if (onValueSelected != null) {
+                                    onValueSelected.accept(customVal);
+                                }
+                            }
+                        } catch (Exception e) {
+                            player.sendMessage(mm.deserialize("<red>Format angka tidak valid! Harap masukkan angka yang valid.</red>"));
+                        }
+                        this.open();
+                    },
+                    this::open
+            );
+            return;
+        }
 
         // Back
         if (slot == 45) {
