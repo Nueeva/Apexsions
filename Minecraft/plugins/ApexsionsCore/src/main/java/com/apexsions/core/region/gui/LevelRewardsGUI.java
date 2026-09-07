@@ -116,7 +116,7 @@ public class LevelRewardsGUI implements Listener {
         // 3. Player Progression Crest at Slot 4
         int level = data.getLevel();
         long xp = data.getXp();
-        long nextXp = plugin.getLevelFormula().getXpForLevel(level + 1);
+        long nextXp = plugin.getLevelFormula().getRequiredXpForNextLevel(level);
         int percent = (int) Math.min(100, Math.max(0, (xp * 100) / Math.max(1, nextXp)));
         String progressBar = buildProgressBar(percent);
         String levelTitle = plugin.getLevelManager().getLevelTitle(player.getUniqueId());

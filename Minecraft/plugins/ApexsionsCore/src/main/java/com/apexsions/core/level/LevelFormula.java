@@ -11,6 +11,8 @@ public class LevelFormula {
     private final Double customBase;
     private final Double customExponent;
     private final Double customMultiplier;
+    private final Long customQuadraticA;
+    private final Long customQuadraticB;
     private final String customType;
     private final Integer customMaxLevel;
 
@@ -19,8 +21,25 @@ public class LevelFormula {
         this.customBase = null;
         this.customExponent = null;
         this.customMultiplier = null;
+        this.customQuadraticA = null;
+        this.customQuadraticB = null;
         this.customType = null;
         this.customMaxLevel = null;
+    }
+
+    /**
+     * Quadratic formula constructor: EXP = (a * L^2) + (b * L).
+     * Default server formula: a = 510, b = -10 -> EXP = (510 * L^2) - (10 * L).
+     */
+    public LevelFormula(String type, long a, long b, int maxLevel) {
+        this.configManager = null;
+        this.customBase = null;
+        this.customExponent = null;
+        this.customMultiplier = null;
+        this.customQuadraticA = a;
+        this.customQuadraticB = b;
+        this.customType = type != null ? type : "QUADRATIC";
+        this.customMaxLevel = maxLevel;
     }
 
     /**
@@ -31,6 +50,8 @@ public class LevelFormula {
         this.customBase = base;
         this.customExponent = exponent;
         this.customMultiplier = 1.1;
+        this.customQuadraticA = null;
+        this.customQuadraticB = null;
         this.customType = "EXPONENT";
         this.customMaxLevel = maxLevel;
     }
@@ -41,6 +62,8 @@ public class LevelFormula {
     public LevelFormula(String type, double base, double factor, int maxLevel) {
         this.configManager = null;
         this.customBase = base;
+        this.customQuadraticA = null;
+        this.customQuadraticB = null;
         this.customType = type != null ? type : "MULTIPLIER";
         if ("EXPONENT".equalsIgnoreCase(type)) {
             this.customExponent = factor;
@@ -52,13 +75,21 @@ public class LevelFormula {
         this.customMaxLevel = maxLevel;
     }
 
+    public static LevelFormula quadratic(long a, long b, int maxLevel) {
+        return new LevelFormula("QUADRATIC", a, b, maxLevel);
+    }
+
+    public static LevelFormula defaultFormula(int maxLevel) {
+        return new LevelFormula("QUADRATIC", 510L, -10L, maxLevel);
+    }
+
     public static LevelFormula multiplier(double base, double multiplier, int maxLevel) {
         return new LevelFormula("MULTIPLIER", base, multiplier, maxLevel);
     }
 
     private String getType() {
         if (customType != null) return customType;
-        return configManager != null ? configManager.getFormulaType() : "MULTIPLIER";
+        return configManager != null ? configManager.getFormulaType() : "QUADRATIC";
     }
 
     private double getBase() {
@@ -76,6 +107,16 @@ public class LevelFormula {
         return configManager != null ? configManager.getFormulaMultiplier() : 1.1;
     }
 
+    private long getQuadraticA() {
+        if (customQuadraticA != null) return customQuadraticA;
+        return configManager != null ? configManager.getFormulaQuadraticA() : 510L;
+    }
+
+    private long getQuadraticB() {
+        if (customQuadraticB != null) return customQuadraticB;
+        return configManager != null ? configManager.getFormulaQuadraticB() : -10L;
+    }
+
     private int getMaxLevel() {
         if (customMaxLevel != null) return customMaxLevel;
         return configManager != null ? configManager.getLevelMax() : 100;
@@ -83,6 +124,7 @@ public class LevelFormula {
 
     /**
      * Calculates XP required to progress from the given level to the next level.
+     * QUADRATIC (default): (a * L^2) + (b * L) -> Default: (510 * L^2) - (10 * L)
      * MULTIPLIER: base * (multiplier ^ (level - 1))
      * EXPONENT: base * (level ^ exponent)
      */
@@ -92,15 +134,24 @@ public class LevelFormula {
             return Long.MAX_VALUE; // Cap reached
         }
 
-        double base = getBase();
         String type = getType();
 
         if ("EXPONENT".equalsIgnoreCase(type)) {
+            double base = getBase();
             double exponent = getExponent();
             return Math.max(10L, Math.round(base * Math.pow(level, exponent)));
-        } else {
+        } else if ("MULTIPLIER".equalsIgnoreCase(type)) {
+            double base = getBase();
             double multiplier = getMultiplier();
             return Math.max(10L, Math.round(base * Math.pow(multiplier, level - 1)));
+        } else {
+            // QUADRATIC (default): (a * L^2) + (b * L)
+            // Rumus resmi Apexsions: EXP = (510 * L^2) - (10 * L)
+            long a = getQuadraticA();
+            long b = getQuadraticB();
+            long l = level;
+            long xp = (a * l * l) + (b * l);
+            return Math.max(10L, xp);
         }
     }
 

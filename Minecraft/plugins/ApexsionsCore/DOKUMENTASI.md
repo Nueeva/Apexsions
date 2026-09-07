@@ -78,11 +78,12 @@ plugins/ApexsionsCore/
 - Item tersimpan lengkap beserta lore, enchantment, dan NBT ke `progression/rewards.yml`.
 - Hadiah item diberikan langsung ke inventory pemain tanpa console command.
 
-### 3. Formula Kenaikan EXP (Multiplier 1,1x Per Level)
-- Menggunakan formula geometrik terkalibrasi di `config.yml`:
-  $$\text{RequiredXP}(level) = \text{round}\big(\text{base} \times \text{multiplier}^{(level - 1)}\big)$$
-  - Default: $\text{base} = 100$, $\text{multiplier} = 1.1$.
-  - Lv 1 $\rightarrow$ 100 XP, Lv 2 $\rightarrow$ 110 XP, Lv 3 $\rightarrow$ 121 XP, Lv 4 $\rightarrow$ 133 XP, dst.
+### 3. Formula Kenaikan EXP (Kuadratik Terkalibrasi)
+- Menggunakan formula kuadratik terkalibrasi di `config.yml`:
+  $$\text{EXP}(L) = (510 \times L^2) - (10 \times L)$$
+  - Di mana $L$ adalah Level pemain saat ini yang ingin ditingkatkan ke level berikutnya.
+  - Lv 1 $\rightarrow$ 500 XP, Lv 2 $\rightarrow$ 2.020 XP, Lv 3 $\rightarrow$ 4.560 XP, Lv 4 $\rightarrow$ 8.120 XP, Lv 10 $\rightarrow$ 50.900 XP, dst.
+  - Parameter $a = 510$ dan $b = -10$ dapat dikustomisasi melalui `config.yml` (`level.formula.a` dan `level.formula.b`).
 
 
 ## 🛡️ Mekanisme Keamanan & Integrasi Gameplay

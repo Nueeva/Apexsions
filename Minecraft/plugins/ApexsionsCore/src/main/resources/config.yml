@@ -41,9 +41,16 @@ spawn:
 level:
   min: 1
   max: 100
-  # XP Formula: type can be MULTIPLIER (base * multiplier^(level-1)) or EXPONENT (base * level^exponent)
+  # XP Formula: QUADRATIC: EXP = (a * L^2) + (b * L) -> Default: EXP = (510 * L^2) - (10 * L)
+  # Tipe formula:
+  #   - QUADRATIC (default): (a * L^2) + (b * L)
+  #   - MULTIPLIER (legacy): base * multiplier^(level-1)
+  #   - EXPONENT (legacy): base * level^exponent
   formula:
-    type: "MULTIPLIER"
+    type: "QUADRATIC"
+    a: 510
+    b: -10
+    # Parameter legacy (opsional jika type diubah ke MULTIPLIER / EXPONENT)
     base: 100
     multiplier: 1.1
     exponent: 1.5

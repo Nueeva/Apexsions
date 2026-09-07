@@ -59,6 +59,8 @@ public class ConfigManager {
     private int levelMin;
     private int levelMax;
     private String formulaType;
+    private long formulaQuadraticA = 510L;
+    private long formulaQuadraticB = -10L;
     private double formulaBase;
     private double formulaMultiplier;
     private double formulaExponent;
@@ -131,7 +133,9 @@ public class ConfigManager {
         // Level
         this.levelMin = mainConfig.getInt("level.min", 1);
         this.levelMax = mainConfig.getInt("level.max", 100);
-        this.formulaType = mainConfig.getString("level.formula.type", "MULTIPLIER");
+        this.formulaType = mainConfig.getString("level.formula.type", "QUADRATIC");
+        this.formulaQuadraticA = mainConfig.getLong("level.formula.a", 510L);
+        this.formulaQuadraticB = mainConfig.getLong("level.formula.b", -10L);
         this.formulaBase = mainConfig.getDouble("level.formula.base", 100.0);
         this.formulaMultiplier = mainConfig.getDouble("level.formula.multiplier", 1.1);
         this.formulaExponent = mainConfig.getDouble("level.formula.exponent", 1.5);
@@ -231,7 +235,9 @@ public class ConfigManager {
 
     public int getLevelMin() { return levelMin; }
     public int getLevelMax() { return levelMax; }
-    public String getFormulaType() { return formulaType != null ? formulaType : "MULTIPLIER"; }
+    public String getFormulaType() { return formulaType != null ? formulaType : "QUADRATIC"; }
+    public long getFormulaQuadraticA() { return formulaQuadraticA != 0 ? formulaQuadraticA : 510L; }
+    public long getFormulaQuadraticB() { return formulaQuadraticB; }
     public double getFormulaBase() { return formulaBase; }
     public double getFormulaMultiplier() { return formulaMultiplier > 0 ? formulaMultiplier : 1.1; }
     public double getFormulaExponent() { return formulaExponent; }
