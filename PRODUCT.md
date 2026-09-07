@@ -39,7 +39,7 @@ Accessed via desktop and mobile web browsers by players before launching Minecra
 
 - **Official Name:** Exclusively **Apexsions**. Suffixes such as "Kingdom", "Network", or "SMP" are strictly forbidden.
 - **Tagline:** **The Peak Civilizations**.
-- **Visual Tone:** Monolithic Obsidian & Noble Gold. Deep cosmic blacks (`#08080c`, `#0e0e15`), lustrous brushed golds (`#c89b3c`, `#dfb75c`), subtle gold halos, glassmorphic card borders, and ancient classical typography (Cinzel headers paired with Outfit body text).
+- **Visual Tone:** Monolithic Obsidian, Celestial Ivory & Royal Gold. Deep cosmic void blacks (`#090A0D`), obsidian surfaces (`#181A20`, `#111318`), royal and radiant golds (`#C9A45C`, `#E8C878`), celestial ivory typography (`#F4EFE6`, `#DDD7CC`), subtle gold halos, glassmorphic card borders, and ancient classical typography (Cinzel headers paired with Plus Jakarta Sans body text).
 
 ## Evidence on Hand
 

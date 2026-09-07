@@ -1,23 +1,32 @@
 ---
 name: Apexsions
-description: The Peak Civilizations — Monolithic Obsidian & Noble Gold Design System
+description: The Peak Civilizations — Monolithic Obsidian, Celestial Ivory & Royal Gold Design System
 colors:
-  primary: "#d4a359"
-  primary-light: "#f3c37a"
-  primary-dark: "#9e7534"
+  # ✨ Extended Gold Palette
+  gold-radiant: "#F1D58A"
+  gold-light: "#E8C878"
+  primary: "#C9A45C"           # Royal Gold (Primary Accent)
+  gold-antique: "#9E7B3E"
+  gold-dark: "#72552A"
+  
+  # 🤍 Extended Celestial Ivory Typography
+  ivory-light: "#FFFDF8"
+  text-main: "#F4EFE6"         # Celestial Ivory (Primary Text / WCAG AAA > 17:1)
+  text-sub: "#DDD7CC"          # Marble (Body Copy)
+  text-muted: "#B8B1A5"        # Stone (Secondary / Muted)
+  text-dim: "#8E877D"
+  
+  # 🖤 Extended Obsidian & Void Black Surfaces
+  void-black: "#090A0D"        # Foundational Background
+  neutral-abyss: "#090A0D"
+  neutral-deep: "#111318"      # Deep Obsidian
+  neutral-surface: "#181A20"   # Obsidian (Primary Cards / Panels)
+  neutral-raised: "#292C33"    # Soft Obsidian (Inputs / Hover)
+  
+  # Accents & Borders
   status-online: "#10b981"
-  neutral-abyss: "#06080d"
-  neutral-base: "#090c13"
-  neutral-surface: "#0f1523"
-  neutral-raised: "#141c2e"
-  neutral-hover: "#19243a"
-  neutral-input: "#0b101b"
-  text-main: "#ffffff"
-  text-sub: "#f1f5f9"
-  text-muted: "#cbd5e1"
-  text-dim: "#94a3b8"
-  border-subtle: "rgba(255, 255, 255, 0.12)"
-  border-gold: "rgba(212, 163, 89, 0.28)"
+  border-subtle: "rgba(244, 239, 230, 0.10)"
+  border-gold: "rgba(201, 164, 92, 0.30)"
 typography:
   display:
     fontFamily: "Cinzel, Georgia, serif"
@@ -100,44 +109,47 @@ components:
 
 **Creative North Star: "The Monolithic Obsidian Citadel"**
 
-Apexsions exists as the architectural zenith of civilization — unyielding, monumental, and ancient. Every surface is sculpted from abyssal volcanic obsidian layered over dark starry voids, bonded by precise veins of forged noble gold. The interface does not emulate flashy modern software or saturated casual gaming hubs; it commands solemn reverence through restraint, symmetry, and architectural permanence.
+Apexsions exists as the architectural zenith of civilization — unyielding, monumental, and ancient. Every surface is sculpted from abyssal volcanic obsidian layered over dark starry voids, bonded by precise veins of forged royal gold. The interface does not emulate flashy modern software or saturated casual gaming hubs; it commands solemn reverence through restraint, symmetry, and architectural permanence.
 
-The visual experience balances dark monolithic weight with high-contrast legibility. Content floats on stratified obsidian planes (`#06080d` to `#141c2e`), illuminated by disciplined hairline gold borders (`rgba(212, 163, 89, 0.28)`) and high-contrast typography designed for effortless scanning.
+The visual experience balances dark monolithic weight with high-contrast legibility. Content floats on stratified obsidian planes (`#090A0D` Void Black to `#181A20` Obsidian and `#292C33` Soft Obsidian), illuminated by disciplined hairline gold borders (`rgba(201, 164, 92, 0.30)`) and celestial ivory typography designed for effortless scanning.
 
 **Key Characteristics:**
-- **Solemn Monumentality:** Deep basal tones, generous breathing room, and architectural discipline replace chaotic neon clutter.
-- **Imperial Restraint:** Noble gold is treated as an imperial privilege, deployed strictly for sovereign actions, hierarchy progression, and active focus.
+- **Solemn Monumentality:** Void black and deep obsidian tones, generous breathing room, and architectural discipline replace chaotic neon clutter.
+- **Imperial Restraint:** Royal gold is treated as an imperial privilege, deployed strictly for sovereign actions, hierarchy progression, and active focus.
 - **Architectural Geometry:** Crisp 2px to 6px radii create chisel-cut stone planes rather than soft pillowy bubbles.
-- **Uncompromised Contrast:** Pure crisp whites (`#ffffff`, 16:1 ratio) and high-clarity slate tones preserve strict WCAG AA readability against midnight backdrops.
+- **Uncompromised Contrast:** Celestial Ivory (`#F4EFE6`, >17:1 ratio) and marble tones preserve strict WCAG AAA readability against midnight backdrops.
 
 ## Colors
 
-The palette is anchored in abyssal obsidian layers, accented by imperial gold and mythic telemetry emerald.
+The official extended palette is anchored in abyssal obsidian layers, accented by imperial gold and mythic telemetry emerald.
 
-### Primary
-- **Imperial Noble Gold** (`#d4a359`): Reserved for sovereign actions, active tab indicators, rank crest highlights, and primary CTAs. Signifies authority and civilizational achievement.
-- **Lustrous Gold** (`#f3c37a`): Hover and illuminated focus state for gold elements, creating a hot forge glow.
-- **Aged Bronzed Gold** (`#9e7534`): Deep shadow and border foundation for gold gradient buttons.
+### ✨ Extended Gold Hierarchy
+- **Radiant Gold** (`#F1D58A`): Luminous high-tier glow and apex achievement badges.
+- **Light Gold** (`#E8C878`): Hover highlights, active focus states, and warm forge glow.
+- **Royal Gold** (`#C9A45C` — *Primary Accent*): Reserved for sovereign actions, active tab indicators, rank crest highlights, and primary CTAs. Signifies authority and civilizational achievement.
+- **Antique Gold** (`#9E7B3E`): Deep shadow and gradient base foundation for metallic gold buttons.
+- **Deep Gold** (`#72552A`): Deep structural shadow and warm contrast border.
+
+### 🤍 Extended Celestial Ivory Typography (WCAG AAA > 17:1)
+- **Ivory Light** (`#FFFDF8`): Maximum brightness highlight for apex elements.
+- **Celestial Ivory** (`#F4EFE6` — *Primary Text*): Highest-tier headings, brand titles, and active navigation links. Replaces sterile pure white with warm ancient marble elegance.
+- **Marble** (`#DDD7CC`): Narrative body copy and primary descriptions (14:1 contrast ratio).
+- **Stone** (`#B8B1A5`): Secondary metadata, timestamps, and inactive nav items (8.5:1 contrast ratio).
+- **Dim Telemetry** (`#8E877D`): Kickers, sub-labels, axis markers, and table metadata (6:1 contrast ratio).
+
+### 🖤 Extended Obsidian & Void Black Architecture
+- **Void Black** (`#090A0D` — *Background Utama*): Deepest void backdrop and global body foundation.
+- **Deep Obsidian** (`#111318`): Deep container substrates, input chasms, and elevated base layers.
+- **Obsidian** (`#181A20` — *Primary Surface*): Primary container, card body, and panel backgrounds.
+- **Soft Obsidian** (`#292C33`): Raised interactive elements, hover states, and elevated modal headers.
 
 ### Status & Telemetry
 - **Mythic Emerald** (`#10b981`): Real-time online telemetry, operational cluster indicators, and live ping pulses. Represents the thriving life of the civilization.
 
-### Neutral
-- **Abyssal Obsidian** (`#06080d`): Foundational viewport background and deepest shadow tone.
-- **Basalt Base** (`#090c13`): Canvas substrate for page bodies and linear gradient backings.
-- **Monolithic Surface** (`#0f1523`): Primary container and card body background.
-- **Raised Obsidian** (`#141c2e`): Modal headers, table headers, elevated drawers, and floating panels.
-- **Interactive Surface Hover** (`#19243a`): Hover response for cards, table rows, and list items.
-- **Input Chasm** (`#0b101b`): Form field and dropdown input backgrounds.
-- **Crisp Main Text** (`#ffffff`): Highest-tier headings, card titles, and active navigation links (16:1 contrast ratio).
-- **Sub-Text Slate** (`#f1f5f9`): Narrative body copy and descriptions (14:1 contrast ratio).
-- **Muted Inscription** (`#cbd5e1`): Secondary metadata, timestamps, and inactive nav items (9:1 contrast ratio).
-- **Dim Telemetry** (`#94a3b8`): Kickers, sub-labels, axis markers, and table metadata (6:1 contrast ratio).
-
 ### Named Rules
-**The Imperial Rarity Rule.** Noble gold is an imperial currency; it must never coat more than 10% of any viewport. If everything glows gold, nothing feels sovereign.
+**The Imperial Rarity Rule.** Royal gold is an imperial privilege; it must never coat more than 10% of any viewport. If everything glows gold, nothing feels sovereign.
 
-**The Absolute White Ceiling Rule.** Only display titles, hero headlines, and active focus points may carry pure `#ffffff`. All continuous body copy uses `#f1f5f9` to prevent optical fatigue.
+**The Celestial Warmth Rule.** Continuous body copy and headings use the Celestial Ivory & Marble system (`#F4EFE6` / `#DDD7CC`), preserving comfortable optical warmth while maintaining full WCAG AAA compliance.
 
 ## Typography
 
@@ -232,3 +244,18 @@ Apexsions avoids diffuse drop shadows and faux-3D bevels in favor of architectur
 - **Don't** use pill-shaped (`border-radius: 9999px`) buttons or cards.
 - **Don't** use bouncy, cartoonish spring animations (keep transitions to smooth 200–250ms cubic-beziers).
 - **Don't** flood entire container backgrounds with gold; gold is strictly an accent and sovereign marker.
+
+---
+
+## Official Visual Asset Archive
+
+Arsip aset grafis resmi server dan web Apexsions tersimpan di `Website/themes/apexsions/assets/img/`:
+
+| Nama Berkas | Tipe | Deskripsi & Rekomendasi Penggunaan |
+| :--- | :---: | :--- |
+| `logo-ornate-gold.png` | PNG | Tipografi 3D emas berukir bintang transparan. Digunakan untuk master navbar logo, preloader transition, dan footer. |
+| `banner-celestial-night.png` | PNG | Citadel istana langit malam dengan cincin orbit kosmik dan logo utama. Digunakan untuk OpenGraph social preview (`og:image`, `twitter:image`). |
+| `banner-celestial-panoramic.png` | PNG | Banner ultrawide air terjun awan surga. Digunakan untuk hero panoramic background dan header sub-halaman. |
+| `crest-celestial-citadel.png` | PNG | Segel lambang katedral melayang dengan cincin orbital. Digunakan untuk favicon browser, segel login/register, dan watermark hierarki. |
+| `logo-monolith-horizontal.png` | PNG | Logo monolitik horizontal huruf "A" bersayap dengan watermark istana. Digunakan untuk header dokumen wiki, invoice, dan checkout. |
+

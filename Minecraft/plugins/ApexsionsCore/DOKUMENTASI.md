@@ -52,6 +52,10 @@ plugins/ApexsionsCore/
 | `/enchant <ench> <lvl>` | `/customenchant`, `/apexenchant` | Memberikan enchantment custom hingga 4x vanilla limit | `apexsionscore.command.enchant` | `op` |
 | `/enchant <p> <ench> <lvl>`| - | Memberikan enchantment custom pada item di tangan pemain target | `apexsionscore.command.enchant` | `op` |
 | `/enchant remove <ench>`| - | Menghapus enchantment dari item di tangan (atau level 0) | `apexsionscore.command.enchant` | `op` |
+| `/sions [status]` | - | Memeriksa status temporal engine Sions & blok termodifikasi | `apexsionscore.admin.sions` | `op` |
+| `/sions restore` | - | Memulihkan paksa seluruh blok Sions seketika | `apexsionscore.admin.sions` | `op` |
+| `/sions bypass` | - | Toggle mode bypass arsitek (modifikasi tanpa rollback) | `apexsionscore.admin.sions` | `op` |
+| `/sions tp` | - | Teleportasi langsung ke titik pusat ibukota Sions | `apexsionscore.admin.sions` | `op` |
 
 ---
 
@@ -160,5 +164,20 @@ Sistem otomatis pada Anvil untuk kenyamanan perbaikan dan penggabungan item:
 - **Remove "Too Expensive!"**: Mengabaikan batas level 40 bawaan Minecraft sehingga item tidak pernah terkunci dengan pesan "Too Expensive!".
 - **Unlimited Repair Cost (`cost-cap: 0`)**: Berapapun tingginya biaya level perbaikan (misal level 50, 75, 120), proses perbaikan tetap dapat diselesaikan selama pemain memiliki EXP yang mencukupi. Jika diinginkan, admin juga dapat mengeset batas atas (misal cap di level 39) melalui `config.yml`.
 - **Bypass Enchant Restriction**: Memastikan custom enchantment (Sharpness 20, Protection 12, Mending 4, dll) tidak ter-reset atau diturunkan levelnya saat digabungkan di anvil.
+
+---
+
+## 🌌 Kerajaan Sions (The Secret Civilization) & Hourly Temporal Engine
+- **Secret Territory Polygon**: 11 titik poligon presisi terdaftar via fallback `RegionManager.ensureSionsRegion()`, tetap aktif in-game meski disembunyikan dari BlueMap `world.conf`.
+- **Hourly Temporal Engine (`SionsTemporalService`)**:
+  - Reset otomatis setiap **60 menit (1 jam)** mengembalikan semua blok rusak, diletakkan, dan diledakkan ke kondisi awal (*pristine state*).
+  - Menggunakan struktur in-memory snapshot (`putIfAbsent`) tanpa query database berat.
+- **Pencegahan Eksploitasi**: Opsi `prevent-item-drops: true` menonaktifkan drop item dari blok yang ditambang di Sions untuk mencegah duplikasi sebelum reset berkala.
+- **Perintah Admin (`apexsionscore.admin.sions`)**:
+  - `/sions status`: Memeriksa jumlah blok termodifikasi dan sisa waktu hitung mundur.
+  - `/sions restore`: Reset instan darurat.
+  - `/sions bypass`: Toggle mode arsitek untuk modifikasi permanen.
+  - `/sions tp`: Teleportasi ke pusat ibukota Sions.
+
 
 

@@ -136,6 +136,10 @@ $$\text{XP Dibutuhkan}(L) = \lfloor 100 \times L^{1.5} + (L \times 50) \rfloor$$
 | `/ac setkingdom <p> <k>`| `/kc setk` | Memindahkan kerajaan pemain secara paksa | `apexsionscore.admin` | `op` |
 | `/ac setlobby` | `/kc setlobby` | Mengatur titik spawn lobi saat ini | `apexsionscore.admin` | `op` |
 | `/ac info <p>` | `/kc info` | Memeriksa rincian level, XP, dan kerajaan pemain | `apexsionscore.admin` | `op` |
+| `/sions [status]` | - | Memeriksa status temporal engine & blok termodifikasi | `apexsionscore.admin.sions` | `op` |
+| `/sions restore` | - | Memulihkan paksa seluruh blok termodifikasi seketika | `apexsionscore.admin.sions` | `op` |
+| `/sions bypass` | - | Toggle mode bypass admin (modifikasi tanpa direkam) | `apexsionscore.admin.sions` | `op` |
+| `/sions tp` | - | Teleportasi langsung ke titik pusat ibukota Sions | `apexsionscore.admin.sions` | `op` |
 
 ---
 
@@ -153,3 +157,25 @@ $$\text{XP Dibutuhkan}(L) = \lfloor 100 \times L^{1.5} + (L \times 50) \rfloor$$
 - **Granular Permission & Visual Lock Indicator**: Kartu modul yang tidak diizinkan untuk staf junior akan tetap tampil tetapi terkunci dengan gembok merah (`🔒 TERKUNCI`).
 - **Universal Breadcrumb Navigation**: Tombol `⬅ KEMBALI KE ADMIN HUB` (Slot 45) tertanam di seluruh sub-menu admin untuk navigasi bolak-balik tanpa harus mengetik perintah ulang.
 - **Tombol Reload Suite Serentak**: Memuat ulang konfigurasi seluruh plugin suite dengan 1 klik tombol Redstone Block.
+
+---
+
+## 🌌 9. Kerajaan Sions (The Secret Civilization) & Hourly Temporal Engine
+
+Wilayah misterius kerajaan keempat yang tersembunyi dari peradaban umum:
+
+1. **Perlindungan Teritorial & Fallback Polygon (`RegionManager`)**:
+   - Teritori Sions didefinisikan menggunakan 11 titik poligon presisi (`X: -6119, Y: 92, Z: -3457`, `minY: -64, maxY: 1000`).
+   - Melalui `ensureSionsRegion()`, poligon ini didaftarkan otomatis ke memory server, sehingga disembunyikannya marker Sions dari web BlueMap (`world.conf`) tidak membatalkan proteksi dan deteksi in-game.
+   - Deteksi perbatasan mengirimkan alert visual: `⚑ Territory: Kerajaan Sions (The Secret Civilization)`.
+2. **Hourly Snapshot Temporal Engine (`SionsTemporalService`)**:
+   - Berjalan otomatis secara berkala setiap **60 menit (per jam)** untuk mereset seluruh wilayah kembali ke kondisi semula.
+   - Pola **Snapshot In-Memory Asli (`putIfAbsent`)**: Menghafal keadaan blok awal (*pristine state*) sebelum dimodifikasi. Modifikasi berulang tidak menimpa blok awal.
+   - Memulihkan blok yang dihancurkan (*break*), diletakkan (*place*), diledakkan TNT/Creeper (*explosion*), terbakar (*fire*), dan mencair/memudar (*fade*).
+3. **Anti-Duplikasi Sumber Daya (`prevent-item-drops: true`)**:
+   - Blok yang dihancurkan oleh pemain biasa di dalam wilayah Sions tidak menjatuhkan item drop, mencegah eksploitasi grinding ore/mineral sebelum reset temporal berlangsung.
+4. **Alat Kelola Admin (`/sions`)**:
+   - `/sions status`: Memeriksa jumlah blok yang sedang termodifikasi dan countdown hitung mundur hingga pemulihan berkala berikutnya.
+   - `/sions restore`: Memicu pemulihan instan darurat tanpa menunggu countdown 60 menit.
+   - `/sions bypass`: Mode membangun khusus staf/arsitek agar modifikasi blok permanen dan tidak di-rollback.
+

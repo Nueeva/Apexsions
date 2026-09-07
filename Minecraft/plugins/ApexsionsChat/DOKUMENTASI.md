@@ -40,3 +40,18 @@ Sistem chat games berjalan otomatis setiap 5–10 menit sekali dengan dua jenis 
 * Mengalir ke sistem level kerajaan (`LevelManager`), memicu `KingdomXpGainEvent`, action bar EXP gain, dan animasi level-up otomatis jika XP mencukupi.
 * Pengaturan nilai EXP per game dapat diatur di `games.yml` (`reward-xp: 150`), dengan fallback ke `games.rewards.xp.amount`.
 * Kategori **Chat Games** juga otomatis terdaftar di direktori Panduan XP `/xpguide` pada `ApexsionsCore`.
+
+---
+
+## 🚪 Integrasi AuthMe Delayed Join & Anti-Double Broadcast
+- Opsi `delay-until-login: true` pada `config.yml` menunda siaran bergabung sampai pemain menyelesaikan otentikasi akun.
+- Menggunakan dynamic reflection hook (`AuthMeHook.java`) untuk menangkap `LoginEvent` dan `RestoreSessionEvent`.
+- Menyaring dan meniadakan pesan keluar pemain yang belum login untuk menjaga kebersihan obrolan.
+
+---
+
+## 💀 Luxury Death Messages System
+- Format MiniMessage kustom untuk 16 jenis penyebab kematian.
+- Menampilkan prefix rank korban dan pembunuh secara otomatis.
+- Deteksi custom name bos/mob (MythicMobs) dan panah jarak jauh.
+- Interaktif: nama senjata dapat di-hover untuk melihat metadata, lore, dan enchantments secara langsung.

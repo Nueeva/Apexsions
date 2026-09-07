@@ -91,3 +91,38 @@ Pemain dapat beralih channel atau membuka GUI pengaturan personal:
 | `apexsionschat.bypass.spam` | Melewati filter spam & rate limit | `false` |
 | `apexsionschat.bypass.profanity`| Melewati filter kata kotor | `false` |
 | `apexsionschat.bypass.advertising`| Melewati filter link & promosi server | `false` |
+
+---
+
+## 🚪 5. Sistem Notifikasi Masuk/Keluar & Integrasi AuthMe (`AuthMeHook`)
+
+Untuk mengatasi bug pengumuman ganda (*double join messages*) dan mencegah spam pesan masuk dari pemain yang belum mengautentikasi akunnya:
+
+1. **Delayed Join Until Authentication (`delay-until-login: true`)**:
+   - Event `PlayerJoinEvent` dinolkan (`event.joinMessage(null)`) pada priority `LOWEST` agar AuthMe atau vanilla tidak menangkap pesan mentah.
+   - Modul meregistrasikan listener dinamis berbasis refleksi terhadap `fr.xephi.authme.events.LoginEvent` dan `RestoreSessionEvent` menggunakan Bukkit `EventExecutor`.
+   - Pengumuman masuk mewah baru disiarkan ke publik hanya setelah pemain sukses melakukan `/login`, `/register`, atau sesi tersambung otomatis (*session restored*).
+2. **Registry `announcedJoins` & Anti-Duplicate Protection**:
+   - Mencatat UUID pemain yang telah diumumkan agar event login berulang tidak memicu broadcast ganda.
+3. **Peredaman Pesan Keluar Pemain Belum Login**:
+   - Jika pemain disconnect sebelum sempat login atau register, pesan keluar disupresi (`event.quitMessage(null)`) agar tidak mengotori obrolan publik.
+
+---
+
+## 💀 6. Luxury Death Messages Engine (`DeathListener` & `DeathMessageFormatter`)
+
+Menggantikan pesan kematian bawaan vanilla dan EssentialsX dengan format MiniMessage sinematik yang kaya konteks:
+
+1. **Hierarki Rank & Identitas Korban**:
+   - Menampilkan badge pangkat resmi LuckPerms korban (`[👑 ANCESTOR]`, `[⚔ ARCHITECT]`, dll) sesuai `ranks.yml`.
+2. **Deteksi Pembunuh Cerdas (PvP, Mob, Boss, & Panah)**:
+   - **PvP:** Menampilkan rank pembunuh dan nama item senjata yang digunakan.
+   - **MythicMobs / Raid Bosses:** Menampilkan custom display name mob (contoh: *Valerius, The Void Conqueror*).
+   - **Panah / Projectile:** Mengidentifikasi penembak di balik proyektil panah/trident.
+3. **Interactive Weapon Hover Tooltip (`item.asHoverEvent()`)**:
+   - Nama senjata dalam kurung siku `[Senjata]` dapat disorot kursor mouse in-game (*hover*) untuk melihat seluruh statistik, lore, dan custom enchantments item secara real-time.
+4. **16 Template Penyebab Kematian (`config.yml`)**:
+   - Mencakup: `pvp`, `pvp-projectile`, `mob`, `mob-projectile`, `void`, `fall`, `drowning`, `lava`, `fire`, `explosion`, `lightning`, `suffocation`, `starvation`, `magic`, `wither`, dan `generic`.
+5. **Audio Feedback**:
+   - Memainkan sound feedback `ENTITY_EXPERIENCE_ORB_PICKUP` (pitch 0.5) saat kematian terjadi.
+
