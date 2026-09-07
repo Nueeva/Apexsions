@@ -148,8 +148,14 @@ public class CratesPlugin extends NightPlugin {
         CratesAPI.clear();
     }
 
-    private void loadCommands() {
-        this.rootCommand = NightCommand.forPlugin(this, builder -> new BaseCommands(this).load(builder));
+    protected void loadCommands() {
+        this.rootCommand = NightCommand.create(
+                this,
+                this.getDetails().getCommandAliases(),
+                su.nightexpress.nightcore.commands.builder.HubNodeBuilder::new,
+                (node, aliases) -> new com.apexsions.crates.command.ApexsionsCratesCommand(this, node, aliases),
+                builder -> new BaseCommands(this).load(builder)
+        );
     }
 
     public void registerAddon(@NotNull CratesAddon addon) {
