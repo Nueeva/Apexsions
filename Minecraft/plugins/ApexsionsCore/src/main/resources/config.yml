@@ -131,3 +131,17 @@ web-bridge:
     # Siarkan pesan pengumuman ke seluruh server saat pemain menautkan akun
     broadcast: true
 
+# ==============================================================================
+# Sions Temporal Reconstruction Engine (Lore Ancient Civilization Self-Repair)
+# Automatically resets and restores all modified blocks in Kerajaan Sions hourly.
+# ==============================================================================
+sions-temporal:
+  enabled: true
+  # Interval rekonstruksi temporal dalam hitungan menit (default 60 menit = 1 jam)
+  interval-minutes: 60
+  # Mencegah pemain mengeksploitasi drop item/exp dari block Sions sebelum di-restore
+  prevent-item-drops: true
+  # Siarkan pengumuman rekonstruksi ke seluruh server (false = hanya pemain di Sions)
+  broadcast-server: false
+  # Kembalikan semua block saat server shutdown/restart agar wilayah selalu bersih
+  restore-on-shutdown: true

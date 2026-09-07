@@ -20,6 +20,10 @@ softdepend:
 
 
 commands:
+  sions:
+    description: Sions Temporal Reconstruction administration and control.
+    permission: apexsions.admin
+    usage: /sions <status|restore|bypass|tp>
   link:
     description: Link in-game Minecraft account to Apexsions web platform.
     permission: apexsionscore.command.link

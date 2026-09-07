@@ -118,6 +118,9 @@ public class ApexsionsCorePlugin extends JavaPlugin {
     private ApexsionsCoreAPI api;
     private com.apexsions.core.integration.web.WebBridgeService webBridgeService;
 
+    // Sions Temporal Reconstruction Engine
+    private com.apexsions.core.sions.SionsTemporalService sionsTemporalService;
+
     @Override
     public void onEnable() {
         instance = this;
@@ -270,6 +273,11 @@ public class ApexsionsCorePlugin extends JavaPlugin {
             this.webBridgeService = new com.apexsions.core.integration.web.WebBridgeService(this);
             this.webBridgeService.start();
 
+            // 13. Sions Temporal Reconstruction Engine
+            this.sionsTemporalService = new com.apexsions.core.sions.SionsTemporalService(this);
+            this.sionsTemporalService.start();
+            Bukkit.getPluginManager().registerEvents(new com.apexsions.core.sions.SionsTemporalListener(sionsTemporalService), this);
+
             long elapsed = System.currentTimeMillis() - startTime;
             getLogger().info("ApexsionsCore loaded and enabled successfully in " + elapsed + "ms!");
         } catch (Exception e) {
@@ -281,6 +289,11 @@ public class ApexsionsCorePlugin extends JavaPlugin {
     @Override
     public void onDisable() {
         getLogger().info("Disabling ApexsionsCore...");
+
+        // Stop Sions Temporal Service
+        if (sionsTemporalService != null) {
+            sionsTemporalService.onDisable();
+        }
 
         // Stop Web Bridge Service
         if (webBridgeService != null) {
@@ -479,6 +492,14 @@ public class ApexsionsCorePlugin extends JavaPlugin {
             kitCmd.setExecutor(kitsHandler);
             kitCmd.setTabCompleter(kitsHandler);
         }
+
+        // /sions
+        com.apexsions.core.command.SionsCommand sionsHandler = new com.apexsions.core.command.SionsCommand(this, sionsTemporalService);
+        PluginCommand sionsCmd = getCommand("sions");
+        if (sionsCmd != null) {
+            sionsCmd.setExecutor(sionsHandler);
+            sionsCmd.setTabCompleter(sionsHandler);
+        }
     }
 
     public static ApexsionsCorePlugin getInstance() { return instance; }
@@ -533,5 +554,6 @@ public class ApexsionsCorePlugin extends JavaPlugin {
     public com.apexsions.core.kingdom.KingdomBuffManager getKingdomBuffManager() { return kingdomBuffManager; }
     public com.apexsions.core.kit.KitArmorSetListener getKitArmorSetListener() { return kitArmorSetListener; }
     public com.apexsions.core.integration.web.WebBridgeService getWebBridgeService() { return webBridgeService; }
+    public com.apexsions.core.sions.SionsTemporalService getSionsTemporalService() { return sionsTemporalService; }
     public ApexsionsCoreAPI getApi() { return api; }
 }

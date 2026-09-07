@@ -145,6 +145,9 @@ public class BlueMapConfigParser {
         if (lower.contains("sylvamoor") || markerKey.equalsIgnoreCase("raja3")) {
             return "SYLVAMOOR";
         }
+        if (lower.contains("sions") || markerKey.equalsIgnoreCase("raja4")) {
+            return "SIONS";
+        }
         return null;
     }
 
