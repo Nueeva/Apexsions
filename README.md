@@ -41,7 +41,10 @@ Apexsions/
 ## 🌟 2. Fitur Unggulan Setiap Plugin
 
 ### 👑 ApexsionsCore
-- **3 Kerajaan Berdaulat**: *Zenithar* (Pegunungan/Tambang), *Solterra* (Gurun/Pertanian), *Sylvamoor* (Hutan/Alam).
+- **3 Kerajaan Berdaulat Pasca-Runtuhnya Kekaisaran Sions**:
+  - **Zenithar** (Arah Timur / Zenith): Penerus Dinasti & Keluarga Kerajaan Sions yang bertahan bersama kavaleri kehormatan di puncak cakrawala (*Buff: Speed, Luck, Damage & Defense; Debuff: Kerentanan Racun, Porsi Makan*).
+  - **Solterra** (Arah Selatan): Persekutuan Pesulap Tempur (Magician) & Prajurit Garis Depan tangguh di kawah vulkanik cadas (*Buff: High Damage, Critical, Mining Speed; Debuff: -2 HP Darah, Vulnerability, Cepat Lapar*).
+  - **Sylvamoor** (Arah Barat): Peradaban Mandiri Kaum Pekerja, Petani, dan Pejuang Rimba di kanopi purba (*Buff: +2 HP Darah, High Defense, Luck, Drop Rate; Debuff: Mabuk Ketinggian, Kerentanan Api, Reduced PvP*).
 - **Ultimate Admin Control Panel & Deep Player Inspector (54-Slot GUI)**:
   - Akses penuh administrasi pemain dari GUI: Ubah saldo Rupiah/Diamond, ubah level (1-100) & XP, ganti kerajaan seketika, dan penobatan **👑 Raja Kerajaan (Monarch)** dengan siaran global.
   - Quick Tooling: Teleportasi, tarik pemain, inspeksi live inventory & EnderChest, Heal & Feed instan, GameMode switcher (Survival/Creative/Adventure/Spectator), dan Kick sanksi.

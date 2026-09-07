@@ -630,46 +630,54 @@ MARKDOWN
     [
         'category_id' => 2,
         'position' => 1,
-        'title' => 'Babad Sejarah: Pecahnya Tiga Mahkota (The Great Fracture)',
+        'title' => 'Babad Sejarah: Runtuhnya Kekaisaran Sions & Eksodus Akbar (The Fall of Sions)',
         'slug' => 'babad-sejarah-tiga-mahkota',
         'content' => <<<MARKDOWN
-# Babad Sejarah: Pecahnya Tiga Mahkota (The Great Fracture)
+# Babad Sejarah: Runtuhnya Kekaisaran Sions & Eksodus Akbar
 
-> *"Pada awal mula segala ciptaan, semesta bersatu dalam satu denyut nadi di bawah naungan Sang Leluhur. Namun keagungan yang terlalu menyilaukan melahirkan pecahan takdir yang tak terhindarkan."*<br>
-> — **Kitab Primordial Apexsions, Bab I: Bait Kehancuran**
-
----
-
-### Era Keemasan Sang Leluhur (Age of the Ancestor)
-Berabad-abad silam, benua Apexsions tidak mengenal perbatasan maupun tembok pertahanan. Seluruh ras manusia, penempa batu, dan alkemis hidup di bawah bimbingan **The Ancestor**—entitas purba pencipta keseimbangan semesta. Di pusat dunia bertenggerlah **The Prime Crystal**, sebongkah permata raksasa pemancar harmoni yang menyuplai sihir, kesuburan tanah, dan kedamaian abadi.
+> *"Dahulu kala, satu panji menaungi seluruh cakrawala. Namun ketika kecongkakan membuka gerbang Dimensi Kegelapan demi menciptakan pasukan yang tak terkalahkan, tanah leluhur runtuh ke dalam jurang kehampaan."*<br>
+> — **Arsip Suci Kerajaan, Kitab Babad Sions, Bab I: Bait Kehancuran**
 
 ---
 
-### Malam Pecahnya Kristal Semesta (The Shattering of Apex)
-Namun kedamaian itu pecah pada malam gerhana kosmik. Lonjakan energi yang teramat dahsyat meretakkan The Prime Crystal menjadi tiga pecahan mahkota suci:
-1. **The Solar Crown (Mahkota Surya):** Melesat tinggi ke puncak cakrawala dan pegunungan salju abadi.
-2. **The Crimson Shard (Serpihan Bara):** Menancap ke perut bumi gurun membara, memuntahkan lahar dan obsidian hitam.
-3. **The Verdant Tear (Tetes Hayati):** Jatuh ke palung rimba perawan purba, meresap ke akar Pohon Dunia dan samudra kristal.
+### Era Keemasan Kekaisaran Sions (The Ancient Empire of Sions)
+Berabad-abad silam, seluruh bentang alam benua Apexsions disatukan di bawah satu imperium tunggal yang mahaluas: **Kekaisaran Sions**. Tidak ada tembok pembatas antar-provinsi; peradaban berada pada puncak kejayaan, kemakmuran ekonomi, kemegahan arsitektur istana, dan ketertiban hukum yang harmonis.
 
-Pecahnya kristal tersebut membagi pandangan hidup umat manusia menjadi tiga peradaban besar berdaulat yang saling bersumpah mempertahankan kedaulatannya masing-masing.
+Sepanjang sejarah berdirinya, Kekaisaran Sions memegang teguh satu hukum suci yang diwariskan turun-temurun: **dilarang keras menyentuh ilmu hitam maupun kekuatan gelap**. Bangsa Sions hidup murni mengandalkan ilmu keteknikan, sihir elemen alam, dan disiplin ksatria.
 
 ---
 
-### Tiga Falsafah Hidup & Panji Kehormatan
+### Ambisi Terlarang & Bencana Dimensi Kegelapan (The Dark Dimension Cataclysm)
+Namun, kedamaian abadi tersebut dirusak oleh ketamakan sang kaisar terakhir. Terobsesi memperluas kedaulatan hingga ke batas tak terhingga, sang pemimpin secara rahasia memerintahkan para ilmuwan istana untuk menembus batas realitas dan membuka portal ke **Dimensi Kegelapan (Dark Dimension)**. Tujuannya adalah menyuntikkan energi hitam purba ke dalam tubuh seluruh pasukan kekaisaran demi menciptakan legiun petarung abadi.
 
-#### 1. Zenithar — Keteraturan, Akal Budi & Puncak Cakrawala
-Para pengikut Solar Crown percaya bahwa keselamatan peradaban dicapai melalui keteraturan hukum, ilmu pengetahuan arcanum, dan arsitektur megah yang menantang langit. Mereka membangun menara-menara putih keemasan di atas puncak awan, memuliakan cahaya matahari sebagai sumber kekuatan tertinggi.
-
-#### 2. Solterra — Keberanian Tempur, Penempaan Besi & Api Abadi
-Para ksatria Crimson Shard percaya bahwa hukum alam yang sejati adalah ketangguhan dalam menghadapi penderitaan. Di tengah terik padang pasir membara dan jurang lahar, mereka menempa zirah obsidian dan pedang baja terkuat. Bagi warga Solterra, kedaulatan tidak diminta, melainkan direbut dengan darah dan disiplin baja.
-
-#### 3. Sylvamoor — Keselarasan Hayati, Samudra & Pohon Dunia
-Para penjaga Verdant Tear menolak kekerasan buta maupun ambisi pencakar langit. Mereka memilih bersatu dengan denyut nadi rimba purba dan kedalaman samudra. Warga Sylvamoor adalah ahli biologi, peramu ramuan mistis, dan pelaut ulung yang menjaga keseimbangan ekologi semesta Apexsions.
+Karena bangsa Sions sama sekali tidak pernah beradaptasi atau menggunakan kekuatan gelap, energi Dimensi Kegelapan tersebut bergolak liar tak terkendali. Celah dimensi meledak menjadi badai kosmik hitam (*The Dark Rift Cataclysm*). Langit terbelah, ibukota agung kekaisaran hancur berkeping-keping, dan tahta tunggal Sions runtuh seketika dalam satu malam kelam.
 
 ---
 
-### Ikrar Sumpah Pengelana
-Kini, setiap pengelana baru (*Wanderer*) yang menjejakkan kaki di dunia ini harus menjawab panggilan darahnya: Apakah Anda akan mendaki puncak cahaya **Zenithar**, menempa keberanian di kawah **Solterra**, atau merengkuh kedamaian rimba **Sylvamoor**? Pilihan Anda akan menentukan kawan, lawan, dan takdir peradaban Anda!
+### Eksodus Akbar ke Tiga Penjuru Mata Angin (The Great Exodus)
+Dari kepulan abu malapetaka itu, para penyintas yang tercerai-berai mengorganisasi diri dan melarikan diri ke tiga penjuru mata angin, melahirkan **Tiga Kerajaan Berdaulat** yang tegak hingga hari ini:
+
+#### 1. Zenithar (Arah Timur / Zenith) — Dinasti Kerajaan & Kavaleri Elit
+Pihak yang berhasil mempertahankan diri di pusat istana adalah **keluarga dinasti kerajaan (Royal Bloodline)** bersama korps pengawal kehormatan kekaisaran. Membawa serta pusaka mahkota, kitab hukum tata krama, dan emas perbendaharaan, mereka bergerak ke **Arah Timur** menuju dataran tinggi berbatu dan puncak pegunungan cakrawala (*Zenith*). Di sana, mereka mendirikan *Solarium Spire Citadel*, memulihkan martabat kekaisaran, dan bersumpah menjaga kemurnian tata krama istana.
+
+#### 2. Sylvamoor (Arah Barat) — Kaum Pekerja, Petani & Pembela Hayati
+Penyintas yang bergerak ke **Arah Barat** adalah golongan rakyat pekerja keras: para buruh konstruksi, pengrajin batu, arsitek lapangan, dan petani lumbung kekaisaran, didampingi oleh prajurit garda rakyat (gabungan prajurit yang menguasai sihir alam dasar dan prajurit non-sihir yang tangguh). Menolak ambisi takhta yang telah menghancurkan tanah air mereka, mereka memasuki rimba kanopi purba dan pesisir samudra kristal, mendirikan *Eldergrove Sanctuary* untuk hidup berdampingan selaras dengan alam dan Pohon Dunia.
+
+#### 3. Solterra (Arah Selatan) — Pesulap Tempur & Veteran Garis Depan
+Kelompok yang mengarah ke **Arah Selatan** adalah para **pesulap tempur agung (Magicians/Arcanists)** serta para prajurit veteran garis depan terkuat dan paling tangguh dari bekas angkatan bersenjata Sions. Mereka sengaja menantang wilayah ekstrem: kawah vulkanik membara, tanah cadas, dan gurun pasir terik. Di sana mereka membangun benteng obsidian *Ignis Bastion Fortress*, memadukan kedahsyatan sihir elemen api dengan kekuatan fisik brutal tanpa ampun untuk mendominasi lingkungan keras.
+
+---
+
+### Warisan Sejarah: Pembentukan Buff & Debuff
+Kondisi masa lalu para pendiri serta adaptasi geografis selama ratusan tahun membentuk fisiologi unik pada warga masing-masing kerajaan:
+- **Warga Zenithar** memiliki kelincahan kavaleri (+5% Speed) dan pertahanan perisai elit, namun fisik aristokrat mereka rentan terhadap racun liar (+7% Poison) dan membutuhkan nutrisi makanan berkualitas.
+- **Warga Solterra** dianugerahi daya hancur luar biasa (+15% Damage & +10% Crit), namun gaya bertarung agresif tanpa pelindung tebal membuat mereka lebih rapuh (-2 HP Max Health & +8% Damage Masuk).
+- **Warga Sylvamoor** memiliki fisik pekerja yang sangat bugar (+2 HP Max Health / 11 Hati & Ketahanan Hayati Tinggi), namun jiwa agraris mereka lemah terhadap api (+15% Fire Damage) dan mengalami mabuk ketinggian di tebing tinggi (Y > 110).
+
+---
+
+### Ikrar Sumpah Warga Baru
+Kini, setiap pengelana baru (*Wanderer*) yang menginjakkan kaki di tanah Apexsions harus memilih jalannya: Apakah Anda akan menjunjung martabat dinasti di **Zenithar**, menaklukkan cadas api di **Solterra**, atau merengkuh kedamaian rimba di **Sylvamoor**? Pilihan Anda adalah takdir peradaban Anda!
 MARKDOWN
         ,
         'created_at' => $now,
@@ -678,78 +686,99 @@ MARKDOWN
     [
         'category_id' => 2,
         'position' => 2,
-        'title' => 'Ensiklopedia 3 Kerajaan Berdaulat',
+        'title' => 'Ensiklopedia 3 Kerajaan Berdaulat & Kondisi Wilayah',
         'slug' => 'tiga-kerajaan-berdaulat',
         'content' => <<<MARKDOWN
-# Ensiklopedia Tiga Kerajaan Berdaulat
+# Ensiklopedia Tiga Kerajaan Berdaulat & Kondisi Wilayah
 
 <div class="fandom-infobox">
     <div class="fandom-infobox-header">
-        <h4 class="fandom-infobox-title">TIGA KERAJAAN</h4>
-        <div class="fandom-infobox-subtitle">Kedaulatan Realm Apexsions</div>
+        <h4 class="fandom-infobox-title">TIGA KERAJAAN BERDAULAT</h4>
+        <div class="fandom-infobox-subtitle">Penerus Eksodus Kekaisaran Sions</div>
     </div>
     <div class="fandom-infobox-image">
-        <img src="/assets/themes/apexsions/img/hero-warrior.jpg" alt="Tiga Kerajaan">
+        <img src="/assets/themes/apexsions/img/realm-showcase.jpg" alt="Bentang Alam Tiga Kerajaan Apexsions">
     </div>
     <table class="fandom-infobox-table">
-        <tr><td class="fandom-infobox-label">Kerajaan 1</td><td class="fandom-infobox-value"><strong style="color: #fde047;">Zenithar</strong> (Surya &amp; Cakrawala)</td></tr>
-        <tr><td class="fandom-infobox-label">Kerajaan 2</td><td class="fandom-infobox-value"><strong style="color: #f87171;">Solterra</strong> (Bara Api &amp; Besi)</td></tr>
-        <tr><td class="fandom-infobox-label">Kerajaan 3</td><td class="fandom-infobox-value"><strong style="color: #4ade80;">Sylvamoor</strong> (Rimba &amp; Samudra)</td></tr>
-        <tr><td class="fandom-infobox-label">Perintah Pilih</td><td class="fandom-infobox-value"><code>/k</code> atau <code>/k join &lt;nama&gt;</code></td></tr>
-        <tr><td class="fandom-infobox-label">Pajak Wilayah</td><td class="fandom-infobox-value">10% Kas Kerajaan</td></tr>
-        <tr><td class="fandom-infobox-label">Biaya Perdagangan</td><td class="fandom-infobox-value">Internal: Rp 0 • Lintas: Rp 5.000</td></tr>
+        <tr><td class="fandom-infobox-label">Kerajaan 1</td><td class="fandom-infobox-value"><strong style="color: #fde047;">Zenithar</strong> (Arah Timur • Dinasti Kerajaan Sions)</td></tr>
+        <tr><td class="fandom-infobox-label">Kerajaan 2</td><td class="fandom-infobox-value"><strong style="color: #f87171;">Solterra</strong> (Arah Selatan • Magician &amp; Veteran Perang)</td></tr>
+        <tr><td class="fandom-infobox-label">Kerajaan 3</td><td class="fandom-infobox-value"><strong style="color: #4ade80;">Sylvamoor</strong> (Arah Barat • Pekerja &amp; Pejuang Rimba)</td></tr>
+        <tr><td class="fandom-infobox-label">Perintah Pilih</td><td class="fandom-infobox-value"><code>/k</code> atau <code>/kingdom choose</code></td></tr>
+        <tr><td class="fandom-infobox-label">Pajak Wilayah</td><td class="fandom-infobox-value">Zenithar: 25% • Solterra: 20% • Sylvamoor: 15%</td></tr>
+        <tr><td class="fandom-infobox-label">Biaya Perdagangan</td><td class="fandom-infobox-value">Internal: Bebas Pajak • Lintas Kerajaan: Dikenakan Tarif Transportasi</td></tr>
     </table>
 </div>
 
-Di Apexsions, tanah air terbagi menjadi 3 kerajaan besar berdaulat yang memiliki sejarah, fisiologi wilayah, dan kekuatan mistis yang unik. Setiap pemain wajib memilih satu kerajaan sebagai tanah tumpah darahnya.
+Di Apexsions, tanah air terbagi menjadi tiga kerajaan otonom yang lahir dari Eksodus Akbar pasca runtuhnya Kekaisaran Sions. Setiap kerajaan memiliki fisiologi wilayah, filosofi peradaban, serta **Buff dan Debuff** resmi yang aktif secara otomatis di dalam game (`ApexsionsCore`).
 
 ---
 
-### 1. Zenithar (Celestial & Solar Realm)
-*Sebuah kerajaan megah bertahtakan cahaya keemasan, istana awan menjulang tinggi, dan kuil arcanum langit.*
+### 1. Zenithar (Celestial & Solar Realm — Teritori Timur)
+*Penerus garis keturunan dinasti kekaisaran yang mempertahankan relik suci dan menara peradaban di puncak langit cakrawala.*
 
+- **Asal-Usul Eksodus:** Dinasti & keluarga kerajaan Sions serta kavaleri pengawal kehormatan istana yang melarikan diri ke arah Timur.
 - **Ibukota:** Solarium Spire Citadel
 - **Koordinat Ibukota:** `world (-3028, 64, -5597)`
 - **Bioma Khas:** Sky Plains, High Peaks, Jagged Peaks
-- **Gelar Raja Tertinggi:** *Monarch of the Sun*
-- **Pajak Kerajaan:** 10%
-- **Karakteristik & Buff Khusus:**
-  - `+15%` Kecepatan Menambang & Perolehan Experience.
-  - `+10%` Kecepatan Gerak saat berada di ketinggian (`Y > 80`).
-  - Efek Aura Cahaya Abadi di seluruh wilayah ibukota.
-- **Kelemahan (Nerf):** `-10%` Kecepatan berenang di air dalam; rentan terhadap sambaran petir saat badai.
+- **Gelar Raja Tertinggi:** *Monarch of the Sun* (Gelar Tertinggi Pemain: *✦ EMPEROR OF ZENITHAR ✦*)
+- **Pajak Kas Wilayah:** 25% (Pemeliharaan istana megah & pertahanan perisai nexus)
+- **Karakteristik & Buff Resmi (In-Game):**
+  - `+5%` Kecepatan Gerak (*Speed Boost*) — Kelincahan formasi kavaleri elit.
+  - `+7%` Keberuntungan (*Luck Boost*) — Berkah kemakmuran dinasti matahari.
+  - `+6%` Total Serangan (*All Damage Boost*) — Disiplin taktik pedang kerajaan.
+  - `+6%` Pertahanan Diri (*Defense*) — Kokohnya zirah lapis emas istana.
+  - `-5%` Reduksi Serangan Critical Musuh — Tangguhnya perisai kehormatan.
+- **Kelemahan & Debuff Fisik (In-Game):**
+  - `+7%` Damage & Durasi Efek Racun (*Poison Vulnerability*) — Fisik bangsawan yang steril tidak kebal terhadap racun liar.
+  - Makanan Memulihkan Hunger Bar Lebih Sedikit (-1 Point) — Terbiasa dengan santapan jamuan istana steril.
+  - Harga pasar fluktuatif di pasar dinamis.
 
 ---
 
-### 2. Solterra (Crimson Earth & Fire Empire)
-*Kekaisaran perang perkasa bermahkotakan lautan magma, benteng obsidian merah, dan bukit pasir membara.*
+### 2. Solterra (Crimson Earth & Fire Empire — Teritori Selatan)
+*Kekaisaran perang perkasa bermahkotakan kawah lahar membara dan bukit pasir cadas.*
 
+- **Asal-Usul Eksodus:** Para pesulap tempur agung (arcanists) serta prajurit veteran garis depan terkuat bekas legiun Sions yang bermigrasi ke arah Selatan.
 - **Ibukota:** Ignis Bastion Fortress
 - **Koordinat Ibukota:** `world (-5843, 65, 889)`
 - **Bioma Khas:** Desert, Badlands / Mesa, Savanna Plateau
-- **Gelar Raja Tertinggi:** *Warlord of the Dunes*
-- **Pajak Kerajaan:** 10%
-- **Karakteristik & Buff Khusus:**
-  - `+15%` Serangan Melee & Bonus Kerusakan Api (Fire Damage).
-  - Kebal mutlak terhadap efek terbakar di seluruh wilayah kedaulatan Solterra.
-  - `+10%` Ketahanan terhadap knockback (Knockback Resistance).
-- **Kelemahan (Nerf):** `-10%` Ketahanan terhadap Fall Damage; efisiensi bercocok tanam tanaman dingin berkurang.
+- **Gelar Raja Tertinggi:** *Warlord of the Dunes* (Gelar Tertinggi Pemain: *✦ LORD OF SOLTERRA ✦*)
+- **Pajak Kas Wilayah:** 20%
+- **Karakteristik & Buff Resmi (In-Game):**
+  - `+15%` Total Serangan (*All Damage Boost*) — Kedahsyatan sihir penghancur dan kekuatan fisik brutal.
+  - `+10%` Serangan Kritis (*Critical Damage Boost*) — Tebasan mematikan tak kenal ampun.
+  - `+10%` Kecepatan Menambang (*Mining Speed Boost*) — Pengalaman memecah cadas vulkanik dan obsidian.
+  - `+2%` Pertahanan Diri (*Defense*).
+  - Nilai Jual Ore Tinggi (Rasio jual bijih tambang stabil di 65% harga beli) — Pusat penempaan senjata berat.
+- **Kelemahan & Debuff Fisik (In-Game):**
+  - `-2 HP` Maksimal Darah (Total 9 Hati) — Efek samping luka sihir panas dan kebiasaan bertarung tanpa armor pelindung penuh.
+  - `+8%` Total Damage Diterima (*Damage Vulnerability*) — Kecerobohan agresif dalam duel.
+  - `+7%` Laju Pengurangan Hunger Bar (*Exhaustion Rate*) — Suhu gurun yang membakar menguras kalori lebih cepat.
+  - Tanaman & lahan pertanian lebih cepat mengering di tanah cadas.
 
 ---
 
-### 3. Sylvamoor (Azure Crystal & Ocean Realm)
-*Kerajaan kuno penuh kedamaian di tengah hutan lebat, pohon dunia mistis, dan samudra kristal biru berkilau.*
+### 3. Sylvamoor (Azure Crystal & Ocean Realm — Teritori Barat)
+*Kerajaan suaka mandiri di tengah belantara kanopi purba, pohon dunia mistis, dan samudra kristal biru.*
 
+- **Asal-Usul Eksodus:** Kaum buruh pekerja, pembangun, petani lumbung, serta prajurit garda rakyat (sihir alam dan non-sihir) yang mengungsi ke arah Barat.
 - **Ibukota:** Eldergrove Sanctuary
 - **Koordinat Ibukota:** `world (-9666, 64, -4812)`
 - **Bioma Khas:** Old Growth Taiga, Jungle, Warm Ocean
-- **Gelar Raja Tertinggi:** *Protector of the World Tree*
-- **Pajak Kerajaan:** 10%
-- **Karakteristik & Buff Khusus:**
-  - `+20%` Efisiensi Hasil Panen dan Regenerasi Nyawa Alami.
-  - Kecepatan berenang ekstra dan pernapasan air tanpa batas di samudra Sylvamoor.
-  - Daya tahan perisai dan armor meningkat saat berada di dalam bioma hutan.
-- **Kelemahan (Nerf):** `-15%` Kerentanan terhadap serangan api di luar wilayah kerajaan.
+- **Gelar Raja Tertinggi:** *Guardian of the World Tree* (Gelar Tertinggi Pemain: *✦ AVATAR OF SYLVAMOOR ✦*)
+- **Pajak Kas Wilayah:** 15% (Sistem gotong-royong swadaya masyarakat)
+- **Karakteristik & Buff Resmi (In-Game):**
+  - `+2 HP` Maksimal Darah (Total 11 Hati) — Daya tahan fisik prima dari kaum pekerja keras.
+  - `+12%` Keberuntungan (*Luck Boost*) — Berkah hayati keselarasan dengan alam.
+  - `+7%` Peluang Ekstra Drop Monster (*Mob Drop Rate*) — Keahlian membedah anatomi hasil buruan rimba.
+  - `+8% Defense & 5% Reduksi Damage Masuk (~12.6% Total Defense)` — Perlindungan kulit pohon purba.
+  - `-5%` Damage & Durasi Racun (*Poison Resistance*) — Penguasaan alkemi herbal dan penawar alami.
+  - Kelembapan lahan pertanian dan tanaman selalu stabil (tidak pernah mengering).
+- **Kelemahan & Debuff Fisik (In-Game):**
+  - Mabuk Ketinggian di `Y > 110` (Efek Hunger & Weakness Ringan) — Terbiasa berdiam di bawah kanopi rindang lembah.
+  - `+15%` Kerusakan Terbakar (Api, Lava, Magma) — Kelemahan mutlak serat alam terhadap elemen panas.
+  - `-10%` Kecepatan Menambang — Kurang terlatih mengekstraksi batuan keras bawah tanah.
+  - `-10%` Serangan ke Pemain (PvP) & `-5%` Serangan ke Monster (PvE) — Jiwa komunal damai dan persenjataan bertani.
 MARKDOWN
         ,
         'created_at' => $now,

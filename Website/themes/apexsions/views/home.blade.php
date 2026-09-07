@@ -85,13 +85,13 @@
         <!-- Header / Intro -->
         <div class="apx-section-intro mb-5">
             <div class="d-flex align-items-center gap-3 mb-2">
-                <span class="apx-section-kicker">TATANAN WILAYAH</span>
+                <span class="apx-section-kicker">LORE &amp; TATANAN WILAYAH</span>
             </div>
             <h2 class="apx-world-title mb-3">
-                Tiga Kerajaan Berdaulat dalam Satu Realm
+                Runtuhnya Kekaisaran Sions &amp; Eksodus Tiga Kerajaan
             </h2>
-            <p class="apx-world-lead text-muted" style="max-width: 680px; font-size: 1.05rem; line-height: 1.7;">
-                Apexsions terbagi ke dalam tiga kedaulatan kerajaan otonom dengan spesialisasi wilayah masing-masing, dipersatukan oleh sistem ekonomi pasar terbuka dan perebutan supremasi pada Kingdom War.
+            <p class="apx-world-lead text-muted" style="max-width: 820px; font-size: 1.05rem; line-height: 1.75;">
+                Dahulu kala, satu peradaban tunggal yang mahaluas—<strong>Kekaisaran Sions</strong>—menaungi seluruh penjuru realm dalam kemakmuran tanpa pernah menyentuh ilmu hitam. Namun kehancuran tak terelakkan tiba ketika ambisi pemimpinnya memaksakan penggunaan energi terlarang dari <strong>Dimensi Kegelapan (Dark Dimension)</strong> demi melipatgandakan kekuatan pasukan. Kekuatan gelap yang tak terkendali meremukkan ibukota agung kekaisaran dan memicu <em>Eksodus Akbar</em> ke tiga penjuru mata angin: dinasti kerajaan melarikan diri ke timur (<strong>Zenithar</strong>), kaum pekerja dan prajurit bertahan hidup ke rimba barat (<strong>Sylvamoor</strong>), serta para pesulap agung dan prajurit tempur terkuat hijrah ke cadas selatan (<strong>Solterra</strong>).
             </p>
         </div>
 
@@ -100,16 +100,27 @@
             <!-- 1. Zenithar -->
             <div class="apx-kingdom-province">
                 <div class="apx-province-header">
-                    <span class="apx-province-type">TERITORI UTARA</span>
-                    <h3 class="apx-province-name">Zenithar</h3>
+                    <span class="apx-province-type" style="color: #f6e58d;"><i class="bi bi-compass me-1"></i> TERITORI TIMUR &bull; DINASTI KERAJAAN</span>
+                    <h3 class="apx-province-name" style="color: #ffeaa7;">Zenithar</h3>
                 </div>
                 <p class="apx-province-desc">
-                    Wilayah dataran tinggi dan jurang cadas. Sentra penambangan mineral langka, obsidian, dan benteng pertambangan peradaban.
+                    Dipimpin oleh keluarga dinasti dan pengawal elit Kekaisaran Sions yang berhasil mempertahankan diri dari malapetaka, mengungsi ke timur menuju puncak cakrawala (Zenith). Menjunjung tinggi kemurnian tata krama istana, kavaleri suci, dan kubah menara langit.
                 </p>
-                <ul class="apx-province-specs">
-                    <li><i class="bi bi-geo-alt text-dim"></i> Dataran Tinggi &amp; Puncak Tebing</li>
-                    <li><i class="bi bi-gem text-dim"></i> Sentra Mineral &amp; Metalurgi</li>
-                </ul>
+                <div class="mb-3">
+                    <div class="small fw-bold text-uppercase mb-1" style="font-size: 0.72rem; letter-spacing: 0.1em; color: var(--apx-gold-light);"><i class="bi bi-geo-alt me-1"></i> Karakteristik Wilayah</div>
+                    <ul class="apx-province-specs mb-2">
+                        <li><i class="bi bi-bank text-dim"></i> Puncak Cakrawala &amp; Solarium Spire Citadel</li>
+                        <li><i class="bi bi-gem text-dim"></i> Penambangan Emas Murni &amp; Arsitektur Megah</li>
+                    </ul>
+                    <div class="small fw-bold text-uppercase mb-1" style="font-size: 0.72rem; letter-spacing: 0.1em; color: #2ecc71;"><i class="bi bi-shield-plus me-1"></i> Buff Kondisi Sejarah</div>
+                    <div class="small text-muted mb-2" style="font-size: 0.8rem; line-height: 1.5;">
+                        <span class="text-success fw-semibold">+5% Speed</span>, <span class="text-success fw-semibold">+7% Luck</span>, <span class="text-success fw-semibold">+6% All Damage &amp; Defense</span>, <span class="text-success fw-semibold">-5% Reduksi Serangan Kritis Musuh</span>.
+                    </div>
+                    <div class="small fw-bold text-uppercase mb-1" style="font-size: 0.72rem; letter-spacing: 0.1em; color: #e74c3c;"><i class="bi bi-shield-minus me-1"></i> Debuff Kondisi Fisik</div>
+                    <div class="small text-muted" style="font-size: 0.8rem; line-height: 1.5;">
+                        <span class="text-danger fw-semibold">+7% Kerentanan Racun</span>, makanan memulihkan hunger lebih lambat (-1 point) karena terbiasa dengan santapan istana steril.
+                    </div>
+                </div>
                 @if(plugins()->isEnabled('wiki'))
                     <a href="{{ route('wiki.show', 'tiga-kerajaan') }}" class="apx-ledger-link mt-auto">
                         Arsip Zenithar <i class="bi bi-chevron-right ms-1"></i>
@@ -120,16 +131,27 @@
             <!-- 2. Solterra -->
             <div class="apx-kingdom-province">
                 <div class="apx-province-header">
-                    <span class="apx-province-type">TERITORI SELATAN</span>
-                    <h3 class="apx-province-name">Solterra</h3>
+                    <span class="apx-province-type" style="color: #ff7675;"><i class="bi bi-compass me-1"></i> TERITORI SELATAN &bull; MAGICIAN &amp; VETERAN</span>
+                    <h3 class="apx-province-name" style="color: #ff7675;">Solterra</h3>
                 </div>
                 <p class="apx-province-desc">
-                    Wilayah batuan vulkanik dan kawah lahar. Pusat komando militer, penempaan senjata berat, dan arena supremasi Kingdom War.
+                    Dibentuk oleh para pesulap tempur agung (arcanists) serta prajurit garis depan terkuat bekas legiun Sions yang bermigrasi ke wilayah selatan. Memadukan kedahsyatan sihir elemen api dengan kekuatan fisik brutal tanpa ampun untuk menaklukkan alam yang mematikan.
                 </p>
-                <ul class="apx-province-specs">
-                    <li><i class="bi bi-geo-alt text-dim"></i> Cadas Vulkanik &amp; Gurun Api</li>
-                    <li><i class="bi bi-shield-shaded text-dim"></i> Komando Militer &amp; Tempur</li>
-                </ul>
+                <div class="mb-3">
+                    <div class="small fw-bold text-uppercase mb-1" style="font-size: 0.72rem; letter-spacing: 0.1em; color: #e17055;"><i class="bi bi-geo-alt me-1"></i> Karakteristik Wilayah</div>
+                    <ul class="apx-province-specs mb-2">
+                        <li><i class="bi bi-fire text-dim"></i> Cadas Vulkanik, Kawah Lahar &amp; Ignis Bastion</li>
+                        <li><i class="bi bi-shield-shaded text-dim"></i> Penempaan Senjata Berat &amp; Nilai Jual Ore Tinggi</li>
+                    </ul>
+                    <div class="small fw-bold text-uppercase mb-1" style="font-size: 0.72rem; letter-spacing: 0.1em; color: #2ecc71;"><i class="bi bi-shield-plus me-1"></i> Buff Kondisi Sejarah</div>
+                    <div class="small text-muted mb-2" style="font-size: 0.8rem; line-height: 1.5;">
+                        <span class="text-success fw-semibold">+15% Total Damage</span>, <span class="text-success fw-semibold">+10% Critical Damage</span>, <span class="text-success fw-semibold">+10% Mining Speed</span>, <span class="text-success fw-semibold">Rasio Jual Ore Tinggi (65%)</span>.
+                    </div>
+                    <div class="small fw-bold text-uppercase mb-1" style="font-size: 0.72rem; letter-spacing: 0.1em; color: #e74c3c;"><i class="bi bi-shield-minus me-1"></i> Debuff Kondisi Fisik</div>
+                    <div class="small text-muted" style="font-size: 0.8rem; line-height: 1.5;">
+                        <span class="text-danger fw-semibold">-2 HP Maksimal (9 Hati)</span>, <span class="text-danger fw-semibold">+8% Damage Masuk</span>, <span class="text-danger fw-semibold">+7% Cepat Lapar</span>, lahan pertanian cepat kering di tanah cadas.
+                    </div>
+                </div>
                 @if(plugins()->isEnabled('wiki'))
                     <a href="{{ route('wiki.show', 'tiga-kerajaan') }}" class="apx-ledger-link mt-auto">
                         Arsip Solterra <i class="bi bi-chevron-right ms-1"></i>
@@ -140,16 +162,27 @@
             <!-- 3. Sylvamoor -->
             <div class="apx-kingdom-province">
                 <div class="apx-province-header">
-                    <span class="apx-province-type">TERITORI TIMUR</span>
-                    <h3 class="apx-province-name">Sylvamoor</h3>
+                    <span class="apx-province-type" style="color: #74b9ff;"><i class="bi bi-compass me-1"></i> TERITORI BARAT &bull; PEKERJA &amp; PEJUANG RIMBA</span>
+                    <h3 class="apx-province-name" style="color: #74b9ff;">Sylvamoor</h3>
                 </div>
                 <p class="apx-province-desc">
-                    Wilayah lembah subur, hutan kanopi purba, dan jalur sungai perdagangan. Lumbung agrikultur dan pasokan pangan seluruh realm.
+                    Dibangun oleh kaum pekerja, pembangun, petani lumbung, serta prajurit garda rakyat (pengguna sihir alam dasar dan prajurit non-sihir) yang mengungsi ke belantara rimba barat. Mengisolasi diri dari ambisi kekuasaan dan hidup selaras menjaga kelestarian Pohon Dunia.
                 </p>
-                <ul class="apx-province-specs">
-                    <li><i class="bi bi-geo-alt text-dim"></i> Lembah Hijau &amp; Kanopi Hutan</li>
-                    <li><i class="bi bi-flower1 text-dim"></i> Lumbung Agrikultur &amp; Niaga</li>
-                </ul>
+                <div class="mb-3">
+                    <div class="small fw-bold text-uppercase mb-1" style="font-size: 0.72rem; letter-spacing: 0.1em; color: #0984e3;"><i class="bi bi-geo-alt me-1"></i> Karakteristik Wilayah</div>
+                    <ul class="apx-province-specs mb-2">
+                        <li><i class="bi bi-tree text-dim"></i> Rimba Kanopi Purba, Samudra Kristal &amp; Eldergrove</li>
+                        <li><i class="bi bi-flower1 text-dim"></i> Lumbung Agrikultur, Alkemis Herbal &amp; Pangan</li>
+                    </ul>
+                    <div class="small fw-bold text-uppercase mb-1" style="font-size: 0.72rem; letter-spacing: 0.1em; color: #2ecc71;"><i class="bi bi-shield-plus me-1"></i> Buff Kondisi Sejarah</div>
+                    <div class="small text-muted mb-2" style="font-size: 0.8rem; line-height: 1.5;">
+                        <span class="text-success fw-semibold">+2 HP Maksimal (11 Hati)</span>, <span class="text-success fw-semibold">+12% Luck</span>, <span class="text-success fw-semibold">+7% Extra Mob Drop</span>, <span class="text-success fw-semibold">Defense Tinggi (~12.6%)</span>, <span class="text-success fw-semibold">Kelembapan Lahan Abadi</span>.
+                    </div>
+                    <div class="small fw-bold text-uppercase mb-1" style="font-size: 0.72rem; letter-spacing: 0.1em; color: #e74c3c;"><i class="bi bi-shield-minus me-1"></i> Debuff Kondisi Fisik</div>
+                    <div class="small text-muted" style="font-size: 0.8rem; line-height: 1.5;">
+                        <span class="text-danger fw-semibold">Mabuk Ketinggian di Y &gt; 110</span> (Hunger/Weakness), <span class="text-danger fw-semibold">+15% Damage Terbakar Api</span>, <span class="text-danger fw-semibold">-10% Serangan PvP &amp; Mining</span>.
+                    </div>
+                </div>
                 @if(plugins()->isEnabled('wiki'))
                     <a href="{{ route('wiki.show', 'tiga-kerajaan') }}" class="apx-ledger-link mt-auto">
                         Arsip Sylvamoor <i class="bi bi-chevron-right ms-1"></i>
