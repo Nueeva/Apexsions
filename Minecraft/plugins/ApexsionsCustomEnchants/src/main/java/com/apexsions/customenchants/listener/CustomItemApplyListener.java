@@ -222,6 +222,7 @@ public class CustomItemApplyListener implements Listener {
 
                 player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1.0f, 1.2f);
                 player.sendMessage(mm.deserialize("<green><bold>✓ BERHASIL!</bold> Sihir <gold>" + enchant.getDisplayName() + " " + CustomEnchant.toRoman(targetLevel) + "</gold> berhasil meresap ke dalam item!</green>"));
+                awardCoreXp(player, enchant, targetLevel);
             } else {
                 // FAILED!
                 if (cursorIsBook) {
@@ -320,5 +321,27 @@ public class CustomItemApplyListener implements Listener {
                 item.getType() == Material.BOW || item.getType() == Material.CROSSBOW || item.getType() == Material.TRIDENT ||
                 item.getType() == Material.MACE || item.getType() == Material.FISHING_ROD || item.getType() == Material.SHEARS ||
                 item.getType() == Material.SHIELD || item.getType() == Material.ELYTRA || item.getType() == Material.TURTLE_HELMET;
+    }
+
+    private void awardCoreXp(Player player, CustomEnchant enchant, int level) {
+        if (player == null || enchant == null) return;
+        try {
+            com.apexsions.core.api.ApexsionsCoreAPI api = com.apexsions.core.api.ApexsionsCoreProvider.get();
+            if (api != null) {
+                String group = enchant.getGroup().getId().toUpperCase();
+                long baseTierXp = switch (group) {
+                    case "SIMPLE" -> 35L;
+                    case "UNIQUE" -> 75L;
+                    case "ELITE" -> 150L;
+                    case "ULTIMATE" -> 300L;
+                    case "LEGENDARY" -> 600L;
+                    case "FABLED" -> 1200L;
+                    case "HEROIC" -> 2500L;
+                    default -> 35L;
+                };
+                long totalXp = baseTierXp * Math.max(1, level);
+                api.addXp(player.getUniqueId(), totalXp, com.apexsions.core.level.xp.XpSource.ENCHANTING);
+            }
+        } catch (Throwable ignored) {}
     }
 }

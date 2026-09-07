@@ -23,6 +23,16 @@ tinkerer:
   enabled: false
   status: "coming_soon"
 
+enchanting-table:
+  enabled: true
+  # Peluang trigger custom enchant per tombol meja sihir
+  button-0-chance: 25.0  # Tombol 1 (Lv 1-10)
+  button-1-chance: 50.0  # Tombol 2 (Lv 11-20)
+  button-2-chance: 80.0  # Tombol 3 (Lv 30)
+  # Fitur spesial tombol 3 (Level 30)
+  button-2-double-chance: 15.0 # Peluang mendapatkan 2 custom enchant sekaligus
+  button-2-level-2-bonus-chance: 20.0 # Peluang mulai langsung di Level II
+
 messages:
   prefix: "<gradient:#9b59b6:#e74c3c><bold>✦ SIHIR APEXSIONS ✦</bold></gradient> "
   no-permission: "<red>Kamu tidak memiliki izin untuk melakukan ini!</red>"

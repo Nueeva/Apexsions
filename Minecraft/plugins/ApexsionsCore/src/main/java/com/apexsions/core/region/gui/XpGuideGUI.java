@@ -452,21 +452,26 @@ public class XpGuideGUI implements Listener {
                 list.add(new GuideEntry(Material.POTION, "Awkward Potion", 3, "Ramuan Dasar"));
             }
             case "enchanting" -> {
-                list.add(new GuideEntry(Material.ENCHANTED_BOOK, "Enchant Tier III", 35, "Meja Sihir (+2x level)"));
-                list.add(new GuideEntry(Material.BOOK, "Enchant Tier II", 20, "Meja Sihir"));
-                list.add(new GuideEntry(Material.LAPIS_LAZULI, "Enchant Tier I", 10, "Meja Sihir"));
+                list.add(new GuideEntry(Material.ENCHANTED_BOOK, "Meja Sihir Tier III", 75, "Biaya 3 Level & 3 Lapis (Lv 30)"));
+                list.add(new GuideEntry(Material.BOOK, "Meja Sihir Tier II", 35, "Biaya 2 Level & 2 Lapis (Lv 11-20)"));
+                list.add(new GuideEntry(Material.LAPIS_LAZULI, "Meja Sihir Tier I", 15, "Biaya 1 Level & 1 Lapis (Lv 1-10)"));
+                list.add(new GuideEntry(Material.NETHERITE_SWORD, "Enchant Vanilla Lv V", 120, "Sharpness V, Efficiency V (+120 XP)"));
+                list.add(new GuideEntry(Material.DIAMOND_SWORD, "Enchant Vanilla Lv IV", 80, "Protection IV, Feather Falling IV (+80 XP)"));
+                list.add(new GuideEntry(Material.GOLDEN_SWORD, "Enchant Vanilla Lv III", 50, "Fortune III, Looting III, Unbreaking III (+50 XP)"));
+                list.add(new GuideEntry(Material.IRON_SWORD, "Enchant Vanilla Lv I-II", 30, "Silk Touch, Fire Aspect, Knockback (+15-30 XP)"));
+                list.add(new GuideEntry(Material.NETHER_STAR, "Custom Enchant Lv VI-XX", 1200, "Sharpness 20, Protection 12 (Anvil/Ace)"));
+                list.add(new GuideEntry(Material.DRAGON_BREATH, "Custom Enchant Books", 600, "Buku Simple s/d Legendary"));
+                list.add(new GuideEntry(Material.ANVIL, "Anvil Combine", 25, "Penggabungan Alat/Buku (+upgrade sihir)"));
+                list.add(new GuideEntry(Material.DAMAGED_ANVIL, "Anvil Repair", 25, "Perbaikan Alat"));
+                list.add(new GuideEntry(Material.NAME_TAG, "Anvil Rename", 5, "Ganti Nama"));
                 list.add(new GuideEntry(Material.NETHERITE_UPGRADE_SMITHING_TEMPLATE, "Netherite Upgrade", 50, "Smithing Table"));
-                list.add(new GuideEntry(Material.ANVIL, "Anvil Combine", 10, "Penggabungan Sihir"));
-                list.add(new GuideEntry(Material.DAMAGED_ANVIL, "Anvil Repair", 6, "Perbaikan Alat"));
-                list.add(new GuideEntry(Material.NAME_TAG, "Anvil Rename", 3, "Ganti Nama"));
-                list.add(new GuideEntry(Material.GRINDSTONE, "Grindstone", 2, "Hapus Sihir"));
             }
             case "exploration" -> {
-                list.add(new GuideEntry(Material.ELYTRA, "Elytra", 2, "Tiap 64 blok terbang"));
-                list.add(new GuideEntry(Material.HEART_OF_THE_SEA, "Renang", 2, "Tiap 32 blok berenang"));
-                list.add(new GuideEntry(Material.LEATHER_BOOTS, "Jalan / Lari", 1, "Tiap 16 blok jelajah"));
-                list.add(new GuideEntry(Material.SADDLE, "Tunggangan", 1, "Tiap 32 blok berkendara"));
-                list.add(new GuideEntry(Material.FEATHER, "Lompat Parkour", 1, "Cooldown 5 detik"));
+                list.add(new GuideEntry(Material.ELYTRA, "Elytra", 2, "Tiap 32 blok terbang"));
+                list.add(new GuideEntry(Material.HEART_OF_THE_SEA, "Renang", 2, "Tiap 16 blok berenang"));
+                list.add(new GuideEntry(Material.LEATHER_BOOTS, "Jalan / Lari", 1, "Tiap 8 blok jelajah"));
+                list.add(new GuideEntry(Material.SADDLE, "Tunggangan", 1, "Tiap 16 blok berkendara"));
+                list.add(new GuideEntry(Material.FEATHER, "Lompat Parkour", 1, "Cooldown 2 detik"));
             }
             case "chatgame" -> {
                 list.add(new GuideEntry(Material.NAME_TAG, "Susun Kata (Word Unscramble)", 150, "Menjawab benar kata acak di chat"));

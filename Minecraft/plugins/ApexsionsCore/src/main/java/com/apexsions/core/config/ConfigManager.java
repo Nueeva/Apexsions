@@ -246,7 +246,7 @@ public class ConfigManager {
     public int getBlockTrackerCacheSize() { return xpConfig != null ? xpConfig.getInt("anti-abuse.block-tracker-cache-size", 50000) : 50000; }
     public int getBlockTrackerExpireHours() { return xpConfig != null ? xpConfig.getInt("anti-abuse.block-tracker-expire-hours", 24) : 24; }
     public int getPvpKillCooldownSeconds() { return xpConfig != null ? xpConfig.getInt("anti-abuse.pvp-kill-cooldown-seconds", 120) : 120; }
-    public int getJumpCooldownSeconds() { return xpConfig != null ? xpConfig.getInt("anti-abuse.movement-jump-cooldown-seconds", 5) : 5; }
+    public int getJumpCooldownSeconds() { return xpConfig != null ? xpConfig.getInt("anti-abuse.movement-jump-cooldown-seconds", 2) : 2; }
 
     public String getGuiRegionChooseTitle() {
         return guiConfig != null ? guiConfig.getString("kingdom-select.title", "<dark_gray><bold>⚔ Choose Your Kingdom ⚔</bold></dark_gray>") : "<dark_gray><bold>⚔ Choose Your Kingdom ⚔</bold></dark_gray>";

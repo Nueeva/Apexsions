@@ -6,7 +6,7 @@ anti-abuse:
   block-tracker-cache-size: 50000
   block-tracker-expire-hours: 24
   pvp-kill-cooldown-seconds: 120
-  movement-jump-cooldown-seconds: 5
+  movement-jump-cooldown-seconds: 2
 
 sources:
   # ============================================================================
@@ -276,22 +276,53 @@ sources:
   # ============================================================================
   anvil:
     enabled: true
-    default: 5
-    repair: 6
-    combine: 10
-    apply-book: 8
-    rename: 3
+    default: 10
+    repair: 25
+    combine-base: 25
+    rename: 5
+    # Bonus XP saat menggabungkan / menaikkan level enchant
+    upgrade-per-level: 30
+    custom-upgrade-per-level: 60
 
   # ============================================================================
-  # 8. ARCANE ENCHANTING (Enchantment Tiers)
+  # 8. ARCANE ENCHANTING & CUSTOM ENCHANTS (Table & Enchants Scaling)
   # ============================================================================
   enchanting:
     enabled: true
-    default: 10
-    tier1-xp: 10   # Level 1-10
-    tier2-xp: 25   # Level 11-20
-    tier3-xp: 50   # Level 21-30
-    xp-per-level-cost: 2
+    default: 15
+    # Base XP berdasarkan Tier Meja Sihir (Tombol / Kebutuhan Level & Lapis)
+    table-tier-1: 15    # Tombol 1 (Biaya 1 level, Lv 1-10)
+    table-tier-2: 35    # Tombol 2 (Biaya 2 level, Lv 11-20)
+    table-tier-3: 75    # Tombol 3 (Biaya 3 level, Lv 21-30)
+
+    # Skala Perolehan EXP Per Level Enchantment Vanilla (I - V)
+    vanilla-levels:
+      level-1: 15       # Level I (Silk Touch, Aqua Affinity, Sharpness I, dll)
+      level-2: 30       # Level II (Fire Aspect II, Knockback II, Sharpness II)
+      level-3: 50       # Level III (Fortune III, Looting III, Unbreaking III)
+      level-4: 80       # Level IV (Protection IV, Feather Falling IV, Efficiency IV)
+      level-5: 120      # Level V (Sharpness V, Efficiency V, Power V)
+
+    # Skala Custom Enchant Levels (Melampaui Batas Vanilla: Lv 6 s/d 20+)
+    custom-levels:
+      # Bonus per-level untuk level 6 s/d 10 (Lv 6 = 160 ... Lv 10 = 320)
+      level-6-10-per-level: 40
+      # Bonus per-level untuk level 11 s/d 15 (Lv 11 = 380 ... Lv 12 Protection = 440 ... Lv 15 = 620)
+      level-11-15-per-level: 60
+      # Bonus per-level untuk level 16 s/d 20 (Lv 16 = 720 ... Lv 20 Sharpness/Efficiency = 1200)
+      level-16-20-per-level: 100
+      # Batas maksimal XP untuk satu enchantment
+      max-enchant-xp: 1500
+
+    # Custom Enchant Tiers (Bonus roll meja sihir atau aplikasi buku ApexsionsCustomEnchants)
+    custom-enchant-tiers:
+      SIMPLE: 35
+      UNIQUE: 75
+      ELITE: 150
+      ULTIMATE: 300
+      LEGENDARY: 600
+      FABLED: 1200
+      HEROIC: 2500
 
   # ============================================================================
   # 9. COOKING & SMELTING (Furnace, Smoker, Blast Furnace)
@@ -376,7 +407,7 @@ sources:
   exploration:
     enabled: true
     movement:
-      distance-threshold: 16
+      distance-threshold: 8
       xp: 1
     swimming:
       distance-threshold: 16
@@ -385,10 +416,10 @@ sources:
       distance-threshold: 32
       xp: 2
     riding:
-      distance-threshold: 32
+      distance-threshold: 16
       xp: 1
     jumping:
-      cooldown-seconds: 5
+      cooldown-seconds: 2
       xp: 1
 
   # ============================================================================

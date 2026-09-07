@@ -1108,17 +1108,17 @@ public class EnchantEventListener implements Listener {
         int button = event.whichButton(); // 0 (Low), 1 (Medium), 2 (High / Level 30)
 
         // Custom enchant roll chance based on button clicked:
-        // Button 0 (Exp Level 1-10): 25%
-        // Button 1 (Exp Level 10-20): 50%
-        // Button 2 (Exp Level 30): 80%
-        int baseChance = switch (button) {
-            case 0 -> 25;
-            case 1 -> 50;
-            case 2 -> 80;
-            default -> 30;
+        // Button 0 (Exp Level 1-10): 25% default
+        // Button 1 (Exp Level 10-20): 50% default
+        // Button 2 (Exp Level 30): 80% default
+        double baseChance = switch (button) {
+            case 0 -> plugin.getConfig().getDouble("enchanting-table.button-0-chance", 25.0);
+            case 1 -> plugin.getConfig().getDouble("enchanting-table.button-1-chance", 50.0);
+            case 2 -> plugin.getConfig().getDouble("enchanting-table.button-2-chance", 80.0);
+            default -> 30.0;
         };
 
-        boolean wonCustomEnchant = ThreadLocalRandom.current().nextInt(100) < baseChance;
+        boolean wonCustomEnchant = ThreadLocalRandom.current().nextDouble(100.0) < baseChance;
 
         // Schedule lore & glint update on next tick (to format high level vanilla enchants in Roman numerals)
         plugin.getServer().getScheduler().runTask(plugin, () -> {
@@ -1154,6 +1154,7 @@ public class EnchantEventListener implements Listener {
                     player.sendMessage(mm.deserialize("<gradient:#f1c40f:#e67e22><bold>✨ ENCHANTING TABLE BONUS BOOK!</bold></gradient> " +
                             "Kamu juga mendapatkan Buku Sihir <color:" + finalBookEnchant.getGroup().getColor() + "><bold>" + finalBookEnchant.getDisplayName() + " I</bold></color>!"));
                 });
+                awardCoreXp(player, finalBookEnchant);
             }
             return;
         }
@@ -1185,8 +1186,9 @@ public class EnchantEventListener implements Listener {
 
         int currentLvl = getEnchantLevel(item, chosen.getId());
         int newLvl = currentLvl + 1;
-        // On Level 30 enchant (button 2), 20% bonus chance to start at Level II directly if maxLevel >= 2 and fresh
-        if (button == 2 && chosen.getMaxLevel() >= 2 && currentLvl == 0 && ThreadLocalRandom.current().nextInt(100) < 20) {
+        // On Level 30 enchant (button 2), bonus chance to start at Level II directly if maxLevel >= 2 and fresh
+        double lvl2BonusChance = plugin.getConfig().getDouble("enchanting-table.button-2-level-2-bonus-chance", 20.0);
+        if (button == 2 && chosen.getMaxLevel() >= 2 && currentLvl == 0 && ThreadLocalRandom.current().nextDouble(100.0) < lvl2BonusChance) {
             newLvl = 2;
         }
 
@@ -1214,8 +1216,11 @@ public class EnchantEventListener implements Listener {
                 "Itemmu mendapatkan sihir khusus <color:" + grpColor + "><bold>" + firstEnchant.getDisplayName() + " " + roman + "</bold></color> " +
                 "<gray>(" + firstEnchant.getGroup().getDisplayName() + ")</gray>!"));
 
-        // Button 2 (Level 30) exclusive: 15% chance to roll a 2nd custom enchant!
-        if (button == 2 && ThreadLocalRandom.current().nextInt(100) < 15) {
+        awardCoreXp(player, firstEnchant);
+
+        // Button 2 (Level 30) exclusive: bonus chance to roll a 2nd custom enchant!
+        double doubleBonusChance = plugin.getConfig().getDouble("enchanting-table.button-2-double-chance", 15.0);
+        if (button == 2 && ThreadLocalRandom.current().nextDouble(100.0) < doubleBonusChance) {
             List<CustomEnchant> secondEligible = eligible.stream()
                     .filter(e -> !e.getId().equalsIgnoreCase(firstEnchant.getId()))
                     .toList();
@@ -1236,6 +1241,8 @@ public class EnchantEventListener implements Listener {
 
                     player.sendMessage(mm.deserialize("<gradient:#f1c40f:#e67e22><bold>✨ DOUBLE BONUS!</bold></gradient> " +
                             "Itemmu juga mendapatkan <color:" + finalSecond.getGroup().getColor() + "><bold>" + finalSecond.getDisplayName() + " " + CustomEnchant.toRoman(finalSecLvl) + "</bold></color>!"));
+
+                    awardCoreXp(player, finalSecond);
                 }
             }
         }
@@ -1256,13 +1263,12 @@ public class EnchantEventListener implements Listener {
                 if (roll < 99) yield "ULTIMATE";
                 yield "LEGENDARY";
             }
-            case 2 -> { // Button 2 (Level 30 / Max cost)
+            case 2 -> { // Button 2 (Level 30 / Max cost - Fabled removed, max Legendary)
                 if (roll < 15) yield "SIMPLE";
                 if (roll < 40) yield "UNIQUE";
                 if (roll < 75) yield "ELITE";
                 if (roll < 93) yield "ULTIMATE";
-                if (roll < 99) yield "LEGENDARY";
-                yield "FABLED";
+                yield "LEGENDARY";
             }
             default -> "SIMPLE";
         };
@@ -1276,8 +1282,8 @@ public class EnchantEventListener implements Listener {
             return inTier.get(ThreadLocalRandom.current().nextInt(inTier.size()));
         }
 
-        // Ordered fallbacks
-        String[] tiers = {"FABLED", "LEGENDARY", "ULTIMATE", "ELITE", "UNIQUE", "SIMPLE"};
+        // Ordered fallbacks (Fabled and Heroic strictly excluded from table)
+        String[] tiers = {"LEGENDARY", "ULTIMATE", "ELITE", "UNIQUE", "SIMPLE"};
         for (String t : tiers) {
             List<CustomEnchant> list = pool.stream()
                     .filter(e -> e.getGroup().getId().equalsIgnoreCase(t))
@@ -1287,5 +1293,26 @@ public class EnchantEventListener implements Listener {
             }
         }
         return pool.isEmpty() ? null : pool.get(ThreadLocalRandom.current().nextInt(pool.size()));
+    }
+
+    private void awardCoreXp(Player player, CustomEnchant enchant) {
+        if (player == null || enchant == null) return;
+        try {
+            com.apexsions.core.api.ApexsionsCoreAPI api = com.apexsions.core.api.ApexsionsCoreProvider.get();
+            if (api != null) {
+                String group = enchant.getGroup().getId().toUpperCase();
+                long xp = switch (group) {
+                    case "SIMPLE" -> 35L;
+                    case "UNIQUE" -> 75L;
+                    case "ELITE" -> 150L;
+                    case "ULTIMATE" -> 300L;
+                    case "LEGENDARY" -> 600L;
+                    case "FABLED" -> 1200L;
+                    case "HEROIC" -> 2500L;
+                    default -> 35L;
+                };
+                api.addXp(player.getUniqueId(), xp, com.apexsions.core.level.xp.XpSource.ENCHANTING);
+            }
+        } catch (Throwable ignored) {}
     }
 }

@@ -85,6 +85,22 @@ plugins/ApexsionsCore/
   - Lv 1 $\rightarrow$ 500 XP, Lv 2 $\rightarrow$ 2.020 XP, Lv 3 $\rightarrow$ 4.560 XP, Lv 4 $\rightarrow$ 8.120 XP, Lv 10 $\rightarrow$ 50.900 XP, dst.
   - Parameter $a = 510$ dan $b = -10$ dapat dikustomisasi melalui `config.yml` (`level.formula.a` dan `level.formula.b`).
 
+### 4. Kalibrasi Perolehan EXP: Arcane Enchanting, Anvil, & Exploration
+- **Meja Sihir (Enchanting Table)**:
+  - Base tier: Tier I (15 XP), Tier II (35 XP), Tier III (75 XP).
+  - Skala enchant vanilla: Lv I (+15 XP), Lv II (+30 XP), Lv III (+50 XP), Lv IV (+80 XP), Lv V (+120 XP).
+  - Skala custom enchant: Lv 6–10 (+40 XP/lvl), Lv 11–15 (+60 XP/lvl), Lv 16–20 (+100 XP/lvl, max 1.500 XP).
+- **Anvil Smithing**:
+  - Ganti nama: 5 XP.
+  - Perbaikan material: 25 XP.
+  - Penggabungan alat/buku: Base 25 XP + upgrade vanilla (+30 XP/lvl) + upgrade custom enchant (+60 XP/lvl).
+- **Exploration & Movement**:
+  - Jalan / Lari: Tiap 8 blok (1 XP).
+  - Lompat Parkour: Cooldown 2 detik (1 XP).
+  - Terbang Elytra: Tiap 32 blok (2 XP).
+  - Berenang: Tiap 16 blok (2 XP).
+  - Tunggangan (Kuda/Unta/Babi/Perahu/Strider): Tiap 16 blok (1 XP).
+
 
 ## 🛡️ Mekanisme Keamanan & Integrasi Gameplay
 
