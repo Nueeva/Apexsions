@@ -297,14 +297,10 @@ public class WebBridgeService {
             }
         }
 
-        // 3. Resolve Balances
-        double balRupiah = 0.0;
-        if (plugin.getVaultHook() != null && plugin.getVaultHook().hasEconomy()) {
-            try {
-                balRupiah = plugin.getVaultHook().getBalance(player);
-            } catch (Throwable ignored) {}
-        }
-        double balDiamond = getDiamondBalance(uuid);
+        // 3. Resolve Balances & BattlePass
+        double balRupiah = getEconomyBalance(uuid, "rupiah", player);
+        double balDiamond = getEconomyBalance(uuid, "diamond", null);
+        BattlePassStats bpStats = getBattlePassStats(uuid);
 
         // 4. Resolve Unlocked Titles Array
         StringBuilder titlesJson = new StringBuilder("[");
@@ -323,7 +319,9 @@ public class WebBridgeService {
                 Locale.ROOT,
                 "{\"player_uuid\":\"%s\",\"player_username\":\"%s\",\"rank\":\"%s\",\"rank_display\":\"%s\"," +
                 "\"kingdom\":\"%s\",\"kingdom_display\":\"%s\",\"level\":%d,\"xp\":%d,\"required_xp\":%d," +
-                "\"level_title\":\"%s\",\"active_title\":\"%s\",\"balance_rupiah\":%.2f,\"balance_diamond\":%.2f,\"unlocked_titles\":%s}",
+                "\"level_title\":\"%s\",\"active_title\":\"%s\",\"balance_rupiah\":%.2f,\"balance_diamond\":%.2f," +
+                "\"battlepass_tier\":%d,\"battlepass_xp\":%d,\"battlepass_required_xp\":%d,\"battlepass_has_premium\":%b,\"apex_coins\":%d," +
+                "\"unlocked_titles\":%s}",
                 escapeJson(uuid.toString()),
                 escapeJson(username),
                 escapeJson(rankKey),
@@ -337,6 +335,11 @@ public class WebBridgeService {
                 escapeJson(activeTitle),
                 balRupiah,
                 balDiamond,
+                bpStats.tier(),
+                bpStats.xp(),
+                bpStats.requiredXp(),
+                bpStats.hasPremium(),
+                bpStats.apexCoins(),
                 titlesJson.toString()
         );
 
@@ -363,17 +366,73 @@ public class WebBridgeService {
                 });
     }
 
-    private double getDiamondBalance(UUID uuid) {
+    private double getEconomyBalance(UUID uuid, String currencyId, Player fallbackPlayer) {
+        double balance = 0.0;
         try {
             if (Bukkit.getPluginManager().isPluginEnabled("ApexsionsEconomy")) {
                 Class<?> providerClass = Class.forName("com.apexsions.economy.api.ApexsionsEconomyProvider");
                 Object api = providerClass.getMethod("get").invoke(null);
                 if (api != null) {
-                    return (double) api.getClass().getMethod("getBalance", UUID.class, String.class).invoke(api, uuid, "diamond");
+                    balance = (double) api.getClass().getMethod("getBalance", UUID.class, String.class).invoke(api, uuid, currencyId.toLowerCase());
                 }
             }
         } catch (Throwable ignored) {}
-        return 0.0;
+
+        // Fallback to Vault for rupiah if economy balance is 0 and Vault has positive balance
+        if (balance <= 0.0 && currencyId.equalsIgnoreCase("rupiah") && fallbackPlayer != null && plugin.getVaultHook() != null && plugin.getVaultHook().hasEconomy()) {
+            try {
+                double vaultBal = plugin.getVaultHook().getBalance(fallbackPlayer);
+                if (vaultBal > 0.0) {
+                    balance = vaultBal;
+                }
+            } catch (Throwable ignored) {}
+        }
+        return balance;
+    }
+
+    private record BattlePassStats(int tier, int xp, int requiredXp, boolean hasPremium, int apexCoins) {}
+
+    private BattlePassStats getBattlePassStats(UUID uuid) {
+        int tier = 1;
+        int xp = 0;
+        int requiredXp = 100;
+        boolean hasPremium = false;
+        int apexCoins = 0;
+
+        try {
+            if (Bukkit.getPluginManager().isPluginEnabled("ApexsionsBattlepass")) {
+                Class<?> bpProviderClass = Class.forName("com.apexsions.battlepass.api.ApexsionsBattlepassProvider");
+                Object bpApi = bpProviderClass.getMethod("get").invoke(null);
+                if (bpApi != null) {
+                    tier = (int) bpApi.getClass().getMethod("getPlayerTier", UUID.class).invoke(bpApi, uuid);
+                    xp = (int) bpApi.getClass().getMethod("getPlayerXp", UUID.class).invoke(bpApi, uuid);
+                    hasPremium = (boolean) bpApi.getClass().getMethod("hasPremiumPass", UUID.class).invoke(bpApi, uuid);
+                    apexCoins = (int) bpApi.getClass().getMethod("getPlayerPoints", UUID.class).invoke(bpApi, uuid);
+                }
+
+                org.bukkit.plugin.Plugin bpPlugin = Bukkit.getPluginManager().getPlugin("ApexsionsBattlepass");
+                if (bpPlugin != null) {
+                    try {
+                        Object rewardMgr = bpPlugin.getClass().getMethod("getRewardManager").invoke(bpPlugin);
+                        if (rewardMgr != null) {
+                            requiredXp = (int) rewardMgr.getClass().getMethod("getRequiredXp", int.class).invoke(rewardMgr, tier);
+                        }
+                    } catch (Throwable ignored) {}
+                }
+            }
+        } catch (Throwable ignored) {}
+
+        if (apexCoins <= 0) {
+            double ecoCoins = getEconomyBalance(uuid, "apex_coins", null);
+            if (ecoCoins <= 0) {
+                ecoCoins = getEconomyBalance(uuid, "coins", null);
+            }
+            if (ecoCoins > 0) {
+                apexCoins = (int) ecoCoins;
+            }
+        }
+
+        return new BattlePassStats(tier, xp, requiredXp, hasPremium, apexCoins);
     }
 
     public CompletableFuture<LinkResult> verifyLink(Player player, String pin) {

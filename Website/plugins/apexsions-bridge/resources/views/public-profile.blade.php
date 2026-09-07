@@ -33,6 +33,11 @@
     if ($account->required_xp > 0) {
         $xpPercent = min(100, max(0, round(($account->xp / $account->required_xp) * 100)));
     }
+
+    $bpXpPercent = 0;
+    if (($account->battlepass_required_xp ?? 100) > 0) {
+        $bpXpPercent = min(100, max(0, round((($account->battlepass_xp ?? 0) / $account->battlepass_required_xp) * 100)));
+    }
 @endphp
 
 @section('content')
@@ -80,13 +85,63 @@
                     </div>
 
                     <!-- Level Progress Bar -->
-                    <div class="mb-4">
+                    <div class="mb-3">
                         <div class="d-flex justify-content-between text-sm mb-1">
                             <span class="fw-bold text-gold"><i class="bi bi-lightning-charge-fill"></i> <span data-i18n="profile_pub_level_badge">Level</span> {{ $account->level }}</span>
                             <span class="text-muted">{{ number_format($account->xp) }} / {{ number_format($account->required_xp) }} XP ({{ $xpPercent }}%)</span>
                         </div>
-                        <div class="progress" style="height: 12px; background-color: rgba(255,255,255,0.1); border-radius: 6px;">
+                        <div class="progress" style="height: 10px; background-color: rgba(255,255,255,0.1); border-radius: 5px;">
                             <div class="progress-bar bg-warning progress-bar-striped progress-bar-animated" role="progressbar" style="width: {{ $xpPercent }}%;" aria-valuenow="{{ $xpPercent }}" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+
+                    <!-- Economy Stats Grid (3 Currencies) -->
+                    <div class="row g-2 mb-3">
+                        <div class="col-sm-4">
+                            <div class="p-2 px-3 rounded bg-black bg-opacity-40 border border-secondary border-opacity-25 d-flex align-items-center justify-content-between h-100">
+                                <span class="text-secondary small"><i class="bi bi-cash-coin text-success me-1"></i> <span data-i18n="profile_balance_rp">Saldo Rupiah:</span></span>
+                                <span class="fw-bold text-white small">Rp {{ number_format($account->balance_rupiah, 0, ',', '.') }}</span>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="p-2 px-3 rounded bg-black bg-opacity-40 border border-secondary border-opacity-25 d-flex align-items-center justify-content-between h-100">
+                                <span class="text-secondary small"><i class="bi bi-gem text-info me-1"></i> <span data-i18n="profile_balance_dia">Diamond:</span></span>
+                                <span class="fw-bold text-white small">💎 {{ number_format($account->balance_diamond, 0, ',', '.') }}</span>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="p-2 px-3 rounded bg-black bg-opacity-40 border border-secondary border-opacity-25 d-flex align-items-center justify-content-between h-100">
+                                <span class="text-secondary small"><i class="bi bi-coin text-warning me-1"></i> <span data-i18n="profile_balance_coins">Apex Coins:</span></span>
+                                <span class="fw-bold text-warning small">🪙 {{ number_format($account->apex_coins ?? 0, 0, ',', '.') }}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- BattlePass Season Progress Card -->
+                    <div class="p-3 rounded bg-black bg-opacity-40 border border-gold border-opacity-30 mb-3">
+                        <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-2">
+                            <div class="d-flex align-items-center gap-2">
+                                <span class="text-gold fw-bold small"><i class="bi bi-shield-shaded me-1"></i> <span data-i18n="profile_bp_title">Musim Peradaban (BattlePass)</span></span>
+                                <span class="badge bg-gold text-dark fw-bold px-2 py-1"><span data-i18n="profile_bp_tier">Tier</span> {{ $account->battlepass_tier ?? 1 }}</span>
+                            </div>
+                            <div>
+                                @if($account->battlepass_has_premium)
+                                    <span class="badge px-2 py-1" style="background: linear-gradient(135deg, #FFD700, #f39c12); color: #000; font-weight: bold; box-shadow: 0 0 8px rgba(243,156,18,0.4);">
+                                        <i class="bi bi-star-fill me-1"></i> <span data-i18n="profile_bp_premium">PREMIUM PASS</span>
+                                    </span>
+                                @else
+                                    <span class="badge px-2 py-1 bg-secondary bg-opacity-50 text-light border border-secondary border-opacity-50">
+                                        <i class="bi bi-shield me-1"></i> <span data-i18n="profile_bp_free">FREE PASS</span>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-between text-sm mb-1">
+                            <span class="text-secondary small" data-i18n="profile_bp_xp">Progress Musim:</span>
+                            <span class="text-white small fw-bold">{{ number_format($account->battlepass_xp ?? 0) }} / {{ number_format($account->battlepass_required_xp ?? 100) }} XP ({{ $bpXpPercent }}%)</span>
+                        </div>
+                        <div class="progress" style="height: 8px; background-color: rgba(255,255,255,0.08); border-radius: 4px;">
+                            <div class="progress-bar bg-info progress-bar-striped progress-bar-animated" role="progressbar" style="width: {{ $bpXpPercent }}%;" aria-valuenow="{{ $bpXpPercent }}" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
                     </div>
 

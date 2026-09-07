@@ -61,10 +61,16 @@ public class VaultHook {
     }
 
     public boolean hasEconomy() {
+        if (economy == null && Bukkit.getPluginManager().isPluginEnabled("Vault")) {
+            setupEconomy();
+        }
         return economy != null;
     }
 
     public double getBalance(Player player) {
+        if (economy == null && Bukkit.getPluginManager().isPluginEnabled("Vault")) {
+            setupEconomy();
+        }
         if (economy != null && player != null) {
             return economy.getBalance(player);
         }

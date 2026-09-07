@@ -46,6 +46,11 @@ class PlayerSyncController extends Controller
             'active_title' => ['nullable', 'string', 'max:128'],
             'balance_rupiah' => ['nullable', 'numeric', 'min:0'],
             'balance_diamond' => ['nullable', 'numeric', 'min:0'],
+            'battlepass_tier' => ['nullable', 'integer', 'min:1'],
+            'battlepass_xp' => ['nullable', 'integer', 'min:0'],
+            'battlepass_required_xp' => ['nullable', 'integer', 'min:0'],
+            'battlepass_has_premium' => ['nullable', 'boolean'],
+            'apex_coins' => ['nullable', 'numeric', 'min:0'],
             'unlocked_titles' => ['nullable', 'array'],
         ]);
 
@@ -78,6 +83,11 @@ class PlayerSyncController extends Controller
             'active_title' => isset($validated['active_title']) ? trim(preg_replace('/<[^>]*>/', '', $validated['active_title'])) : null,
             'balance_rupiah' => (float) ($validated['balance_rupiah'] ?? 0),
             'balance_diamond' => (float) ($validated['balance_diamond'] ?? 0),
+            'battlepass_tier' => (int) ($validated['battlepass_tier'] ?? 1),
+            'battlepass_xp' => (int) ($validated['battlepass_xp'] ?? 0),
+            'battlepass_required_xp' => (int) ($validated['battlepass_required_xp'] ?? 100),
+            'battlepass_has_premium' => (bool) ($validated['battlepass_has_premium'] ?? false),
+            'apex_coins' => (int) ($validated['apex_coins'] ?? 0),
             'last_seen_at' => Carbon::now(),
         ];
 
