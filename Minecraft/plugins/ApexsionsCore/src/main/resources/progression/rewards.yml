@@ -13,19 +13,19 @@ default-reward:
   icon: "GOLD_NUGGET"
   display-name: "<yellow>Level %level% Bounty</yellow>"
   lore:
-    - "<green>• Rp 50.000</green>"
+    - "<green>• Rp 5.000</green>"
   commands:
-    - "eco give %player% 50000"
+    - "eco give %player% 5000"
 
 rewards:
   2:
     display-name: "<yellow>Level 2 Reward</yellow>"
     icon: "TORCH"
     lore:
-      - "<green>• Rp 20.000</green>"
+      - "<green>• Rp 1.000</green>"
       - "<white>• 32x Torch</white>"
     commands:
-      - "eco give %player% 20000"
+      - "eco give %player% 1000"
       - "give %player% torch 32"
 
   3:
@@ -40,10 +40,10 @@ rewards:
     display-name: "<yellow>Level 4 Reward</yellow>"
     icon: "APPLE"
     lore:
-      - "<green>• Rp 25.000</green>"
+      - "<green>• Rp 2.000</green>"
       - "<white>• 12x Apple</white>"
     commands:
-      - "eco give %player% 25000"
+      - "eco give %player% 2000"
       - "give %player% apple 12"
 
   5:
@@ -70,11 +70,11 @@ rewards:
     display-name: "<yellow>Level 7 Reward</yellow>"
     icon: "COOKED_BEEF"
     lore:
-      - "<green>• Rp 30.000</green>"
+      - "<green>• Rp 3.000</green>"
       - "<white>• 11x Cooked Beef</white>"
       - "<white>• 8x Leather</white>"
     commands:
-      - "eco give %player% 30000"
+      - "eco give %player% 3000"
       - "give %player% cooked_beef 11"
       - "give %player% leather 8"
 
@@ -102,10 +102,10 @@ rewards:
     display-name: "<yellow>Level 10 Reward</yellow>"
     icon: "LEATHER"
     lore:
-      - "<green>• Rp 35.000</green>"
+      - "<green>• Rp 5.000</green>"
       - "<white>• 12x Leather</white>"
     commands:
-      - "eco give %player% 35000"
+      - "eco give %player% 5000"
       - "give %player% leather 12"
 
   11:
@@ -115,11 +115,11 @@ rewards:
     lore:
       - "<yellow>• 1x Kingdom Novice Crate Key</yellow>"
       - "<white>• 2x Golden Apple</white>"
-      - "<green>• Rp 100.000</green>"
+      - "<green>• Rp 15.000</green>"
     commands:
       - "crate key give %player% novice 1"
       - "give %player% golden_apple 2"
-      - "eco give %player% 100000"
+      - "eco give %player% 15000"
     broadcast: "<gold><bold>Apexsions</bold> » <yellow>%player% has achieved <bold>Level 11 Milestone</bold> in kingdom %kingdom%!</yellow></gold>"
     sound: "UI_TOAST_CHALLENGE_COMPLETE"
 
@@ -145,10 +145,10 @@ rewards:
     display-name: "<yellow>Level 14 Reward</yellow>"
     icon: "WHEAT"
     lore:
-      - "<green>• Rp 40.000</green>"
+      - "<green>• Rp 8.000</green>"
       - "<white>• 24x Wheat</white>"
     commands:
-      - "eco give %player% 40000"
+      - "eco give %player% 8000"
       - "give %player% wheat 24"
 
   15:
@@ -177,11 +177,11 @@ rewards:
     display-name: "<yellow>Level 17 Reward</yellow>"
     icon: "BAKED_POTATO"
     lore:
-      - "<green>• Rp 45.000</green>"
+      - "<green>• Rp 10.000</green>"
       - "<white>• 11x Baked Potato</white>"
       - "<white>• 8x Apple</white>"
     commands:
-      - "eco give %player% 45000"
+      - "eco give %player% 10000"
       - "give %player% baked_potato 11"
       - "give %player% apple 8"
 
@@ -207,11 +207,11 @@ rewards:
     display-name: "<yellow>Level 20 Reward</yellow>"
     icon: "BOW"
     lore:
-      - "<green>• Rp 55.000</green>"
+      - "<green>• Rp 15.000</green>"
       - "<aqua>• 5 Diamond 💎</aqua>"
       - "<white>• 1x Bow</white>"
     commands:
-      - "eco give %player% 55000"
+      - "eco give %player% 15000"
       - "eco give %player% 5 diamond"
       - "give %player% bow 1"
 
@@ -223,12 +223,12 @@ rewards:
       - "<aqua>• 1x Kingdom Guardian Crate Key</aqua>"
       - "<white>• 2x Netherite Scrap</white>"
       - "<aqua>• 15 Diamond 💎</aqua>"
-      - "<green>• Rp 150.000</green>"
+      - "<green>• Rp 35.000</green>"
     commands:
       - "crate key give %player% guardian 1"
       - "give %player% netherite_scrap 2"
       - "eco give %player% 15 diamond"
-      - "eco give %player% 150000"
+      - "eco give %player% 35000"
     broadcast: "<gold><bold>Apexsions</bold> » <yellow>%player% has attained <bold>Level 21 Guardian Rank</bold> in %kingdom%!</yellow></gold>"
     sound: "UI_TOAST_CHALLENGE_COMPLETE"
 
@@ -246,11 +246,11 @@ rewards:
     display-name: "<yellow>Level 23 Reward</yellow>"
     icon: "EXPERIENCE_BOTTLE"
     lore:
-      - "<green>• Rp 50.000</green>"
+      - "<green>• Rp 20.000</green>"
       - "<white>• 16x Experience Bottle</white>"
       - "<white>• 14x Golden Carrot</white>"
     commands:
-      - "eco give %player% 50000"
+      - "eco give %player% 20000"
       - "give %player% experience_bottle 16"
       - "give %player% golden_carrot 14"
 
@@ -278,10 +278,10 @@ rewards:
     display-name: "<yellow>Level 26 Reward</yellow>"
     icon: "GOLD_BLOCK"
     lore:
-      - "<green>• Rp 55.000</green>"
+      - "<green>• Rp 25.000</green>"
       - "<white>• 2x Gold Block</white>"
     commands:
-      - "eco give %player% 55000"
+      - "eco give %player% 25000"
       - "give %player% gold_block 2"
 
   27:
@@ -296,10 +296,10 @@ rewards:
     display-name: "<yellow>Level 28 Reward</yellow>"
     icon: "GOLDEN_CARROT"
     lore:
-      - "<green>• Rp 60.000</green>"
+      - "<green>• Rp 25.000</green>"
       - "<white>• 20x Golden Carrot</white>"
     commands:
-      - "eco give %player% 60000"
+      - "eco give %player% 25000"
       - "give %player% golden_carrot 20"
 
   29:
@@ -330,12 +330,12 @@ rewards:
       - "<yellow>• 1x Knight Crate Key</yellow>"
       - "<white>• 1x Enchanted Golden Apple</white>"
       - "<aqua>• 20 Diamond 💎</aqua>"
-      - "<green>• Rp 200.000</green>"
+      - "<green>• Rp 75.000</green>"
     commands:
       - "crate key give %player% knight 1"
       - "give %player% enchanted_golden_apple 1"
       - "eco give %player% 20 diamond"
-      - "eco give %player% 200000"
+      - "eco give %player% 75000"
     broadcast: "<gold><bold>Apexsions</bold> » <yellow>%player% has been dubbed <bold>Level 31 Knight</bold> in %kingdom%!</yellow></gold>"
     sound: "UI_TOAST_CHALLENGE_COMPLETE"
 
@@ -355,11 +355,11 @@ rewards:
     display-name: "<yellow>Level 33 Reward</yellow>"
     icon: "HAY_BLOCK"
     lore:
-      - "<green>• Rp 70.000</green>"
+      - "<green>• Rp 30.000</green>"
       - "<white>• 14x Hay Block</white>"
       - "<white>• 2x Iron Block</white>"
     commands:
-      - "eco give %player% 70000"
+      - "eco give %player% 30000"
       - "give %player% hay_block 14"
       - "give %player% iron_block 2"
 
@@ -389,10 +389,10 @@ rewards:
     display-name: "<yellow>Level 36 Reward</yellow>"
     icon: "GOLD_INGOT"
     lore:
-      - "<green>• Rp 75.000</green>"
+      - "<green>• Rp 35.000</green>"
       - "<white>• 16x Gold Ingot</white>"
     commands:
-      - "eco give %player% 75000"
+      - "eco give %player% 35000"
       - "give %player% gold_ingot 16"
 
   37:
@@ -409,10 +409,10 @@ rewards:
     display-name: "<yellow>Level 38 Reward</yellow>"
     icon: "IRON_BLOCK"
     lore:
-      - "<green>• Rp 80.000</green>"
+      - "<green>• Rp 40.000</green>"
       - "<white>• 4x Iron Block</white>"
     commands:
-      - "eco give %player% 80000"
+      - "eco give %player% 40000"
       - "give %player% iron_block 4"
 
   39:
@@ -431,10 +431,10 @@ rewards:
     display-name: "<yellow>Level 40 Reward</yellow>"
     icon: "COOKED_PORKCHOP"
     lore:
-      - "<green>• Rp 90.000</green>"
+      - "<green>• Rp 45.000</green>"
       - "<white>• 20x Cooked Porkchop</white>"
     commands:
-      - "eco give %player% 90000"
+      - "eco give %player% 45000"
       - "give %player% cooked_porkchop 20"
 
   41:
@@ -445,12 +445,12 @@ rewards:
       - "<light_purple>• 1x Commander Crate Key</light_purple>"
       - "<white>• 1x Netherite Ingot</white>"
       - "<aqua>• 25 Diamond 💎</aqua>"
-      - "<green>• Rp 300.000</green>"
+      - "<green>• Rp 150.000</green>"
     commands:
       - "crate key give %player% commander 1"
       - "give %player% netherite_ingot 1"
       - "eco give %player% 25 diamond"
-      - "eco give %player% 300000"
+      - "eco give %player% 150000"
     broadcast: "<gold><bold>Apexsions</bold> » <yellow>%player% has achieved <bold>Level 41 Commander</bold> in %kingdom%!</yellow></gold>"
     sound: "UI_TOAST_CHALLENGE_COMPLETE"
 
@@ -466,11 +466,11 @@ rewards:
     display-name: "<yellow>Level 43 Reward</yellow>"
     icon: "CROSSBOW"
     lore:
-      - "<green>• Rp 85.000</green>"
+      - "<green>• Rp 50.000</green>"
       - "<white>• 1x Crossbow</white>"
       - "<white>• 11x Glowstone</white>"
     commands:
-      - "eco give %player% 85000"
+      - "eco give %player% 50000"
       - "give %player% crossbow 1"
       - "give %player% glowstone 11"
 
@@ -502,10 +502,10 @@ rewards:
     display-name: "<yellow>Level 46 Reward</yellow>"
     icon: "SWEET_BERRIES"
     lore:
-      - "<green>• Rp 90.000</green>"
+      - "<green>• Rp 55.000</green>"
       - "<white>• 32x Sweet Berries</white>"
     commands:
-      - "eco give %player% 90000"
+      - "eco give %player% 55000"
       - "give %player% sweet_berries 32"
 
   47:
@@ -524,10 +524,10 @@ rewards:
     display-name: "<yellow>Level 48 Reward</yellow>"
     icon: "GLOWSTONE"
     lore:
-      - "<green>• Rp 95.000</green>"
+      - "<green>• Rp 60.000</green>"
       - "<white>• 16x Glowstone</white>"
     commands:
-      - "eco give %player% 95000"
+      - "eco give %player% 60000"
       - "give %player% glowstone 16"
 
   49:
@@ -562,12 +562,12 @@ rewards:
       - "<green>• 1x Master Crate Key</green>"
       - "<white>• 1x Totem of Undying</white>"
       - "<aqua>• 30 Diamond 💎</aqua>"
-      - "<green>• Rp 450.000</green>"
+      - "<green>• Rp 250.000</green>"
     commands:
       - "crate key give %player% master 1"
       - "give %player% totem_of_undying 1"
       - "eco give %player% 30 diamond"
-      - "eco give %player% 450000"
+      - "eco give %player% 250000"
     broadcast: "<gold><bold>Apexsions</bold> » <green>%player% has attained <bold>Level 51 Master</bold> status in %kingdom%!</green></gold>"
     sound: "UI_TOAST_CHALLENGE_COMPLETE"
 
@@ -585,11 +585,11 @@ rewards:
     display-name: "<yellow>Level 53 Reward</yellow>"
     icon: "IRON_BLOCK"
     lore:
-      - "<green>• Rp 105.000</green>"
+      - "<green>• Rp 70.000</green>"
       - "<white>• 4x Iron Block</white>"
       - "<white>• 2x Gold Block</white>"
     commands:
-      - "eco give %player% 105000"
+      - "eco give %player% 70000"
       - "give %player% iron_block 4"
       - "give %player% gold_block 2"
 
@@ -617,10 +617,10 @@ rewards:
     display-name: "<yellow>Level 56 Reward</yellow>"
     icon: "GOLDEN_APPLE"
     lore:
-      - "<green>• Rp 110.000</green>"
+      - "<green>• Rp 75.000</green>"
       - "<white>• 4x Golden Apple</white>"
     commands:
-      - "eco give %player% 110000"
+      - "eco give %player% 75000"
       - "give %player% golden_apple 4"
 
   57:
@@ -635,10 +635,10 @@ rewards:
     display-name: "<yellow>Level 58 Reward</yellow>"
     icon: "GOLD_BLOCK"
     lore:
-      - "<green>• Rp 110.000</green>"
+      - "<green>• Rp 80.000</green>"
       - "<white>• 4x Gold Block</white>"
     commands:
-      - "eco give %player% 110000"
+      - "eco give %player% 80000"
       - "give %player% gold_block 4"
 
   59:
@@ -657,10 +657,10 @@ rewards:
     display-name: "<yellow>Level 60 Reward</yellow>"
     icon: "FIREWORK_ROCKET"
     lore:
-      - "<green>• Rp 115.000</green>"
+      - "<green>• Rp 85.000</green>"
       - "<white>• 48x Firework Rocket</white>"
     commands:
-      - "eco give %player% 115000"
+      - "eco give %player% 85000"
       - "give %player% firework_rocket 48"
 
   61:
@@ -671,12 +671,12 @@ rewards:
       - "<aqua>• 1x Archon Crate Key</aqua>"
       - "<white>• 1x Elytra</white>"
       - "<aqua>• 35 Diamond 💎</aqua>"
-      - "<green>• Rp 600.000</green>"
+      - "<green>• Rp 400.000</green>"
     commands:
       - "crate key give %player% archon 1"
       - "give %player% elytra 1"
       - "eco give %player% 35 diamond"
-      - "eco give %player% 600000"
+      - "eco give %player% 400000"
     broadcast: "<gold><bold>Apexsions</bold> » <aqua>%player% has ascended to <bold>Level 61 Archon</bold> in %kingdom%!</aqua></gold>"
     sound: "UI_TOAST_CHALLENGE_COMPLETE"
 
@@ -704,10 +704,10 @@ rewards:
     display-name: "<yellow>Level 64 Reward</yellow>"
     icon: "IRON_BLOCK"
     lore:
-      - "<green>• Rp 110.000</green>"
+      - "<green>• Rp 90.000</green>"
       - "<white>• 6x Iron Block</white>"
     commands:
-      - "eco give %player% 110000"
+      - "eco give %player% 90000"
       - "give %player% iron_block 6"
 
   65:
@@ -734,11 +734,11 @@ rewards:
     display-name: "<yellow>Level 67 Reward</yellow>"
     icon: "BLAZE_POWDER"
     lore:
-      - "<green>• Rp 115.000</green>"
+      - "<green>• Rp 100.000</green>"
       - "<white>• 8x Blaze Powder</white>"
       - "<white>• 16x Glistering Melon Slice</white>"
     commands:
-      - "eco give %player% 115000"
+      - "eco give %player% 100000"
       - "give %player% blaze_powder 8"
       - "give %player% glistering_melon_slice 16"
 
@@ -766,10 +766,10 @@ rewards:
     display-name: "<yellow>Level 70 Reward</yellow>"
     icon: "DIAMOND"
     lore:
-      - "<green>• Rp 125.000</green>"
+      - "<green>• Rp 110.000</green>"
       - "<white>• 4x Diamond</white>"
     commands:
-      - "eco give %player% 125000"
+      - "eco give %player% 110000"
       - "give %player% diamond 4"
 
   71:
@@ -780,12 +780,12 @@ rewards:
       - "<blue>• 1x Celestial Key</blue>"
       - "<white>• 2x Netherite Ingot</white>"
       - "<white>• 1x Totem of Undying</white>"
-      - "<green>• Rp 800.000</green>"
+      - "<green>• Rp 650.000</green>"
     commands:
       - "crate key give %player% celestial 1"
       - "give %player% netherite_ingot 2"
       - "give %player% totem_of_undying 1"
-      - "eco give %player% 800000"
+      - "eco give %player% 650000"
     broadcast: "<gold><bold>Apexsions</bold> » <blue>%player% has reached <bold>Level 71 High Celestial</bold> in %kingdom%!</blue></gold>"
     sound: "UI_TOAST_CHALLENGE_COMPLETE"
 
@@ -801,11 +801,11 @@ rewards:
     display-name: "<yellow>Level 73 Reward</yellow>"
     icon: "ENDER_PEARL"
     lore:
-      - "<green>• Rp 130.000</green>"
+      - "<green>• Rp 125.000</green>"
       - "<white>• 8x Ender Pearl</white>"
       - "<white>• 8x Blaze Powder</white>"
     commands:
-      - "eco give %player% 130000"
+      - "eco give %player% 125000"
       - "give %player% ender_pearl 8"
       - "give %player% blaze_powder 8"
 
@@ -833,10 +833,10 @@ rewards:
     display-name: "<yellow>Level 76 Reward</yellow>"
     icon: "PRISMARINE_SHARD"
     lore:
-      - "<green>• Rp 130.000</green>"
+      - "<green>• Rp 135.000</green>"
       - "<white>• 24x Prismarine Shard</white>"
     commands:
-      - "eco give %player% 130000"
+      - "eco give %player% 135000"
       - "give %player% prismarine_shard 24"
 
   77:
@@ -855,10 +855,10 @@ rewards:
     display-name: "<yellow>Level 78 Reward</yellow>"
     icon: "BLAZE_POWDER"
     lore:
-      - "<green>• Rp 135.000</green>"
+      - "<green>• Rp 145.000</green>"
       - "<white>• 12x Blaze Powder</white>"
     commands:
-      - "eco give %player% 135000"
+      - "eco give %player% 145000"
       - "give %player% blaze_powder 12"
 
   79:
@@ -875,10 +875,10 @@ rewards:
     display-name: "<yellow>Level 80 Reward</yellow>"
     icon: "MAGMA_CREAM"
     lore:
-      - "<green>• Rp 145.000</green>"
+      - "<green>• Rp 155.000</green>"
       - "<white>• 12x Magma Cream</white>"
     commands:
-      - "eco give %player% 145000"
+      - "eco give %player% 155000"
       - "give %player% magma_cream 12"
 
   81:
@@ -912,11 +912,11 @@ rewards:
     display-name: "<yellow>Level 83 Reward</yellow>"
     icon: "GOLDEN_CARROT"
     lore:
-      - "<green>• Rp 130.000</green>"
+      - "<green>• Rp 175.000</green>"
       - "<white>• 44x Golden Carrot</white>"
       - "<white>• 1x Enchanted Golden Apple</white>"
     commands:
-      - "eco give %player% 130000"
+      - "eco give %player% 175000"
       - "give %player% golden_carrot 44"
       - "give %player% enchanted_golden_apple 1"
 
@@ -942,10 +942,10 @@ rewards:
     display-name: "<yellow>Level 86 Reward</yellow>"
     icon: "GOLD_BLOCK"
     lore:
-      - "<green>• Rp 135.000</green>"
+      - "<green>• Rp 195.000</green>"
       - "<white>• 8x Gold Block</white>"
     commands:
-      - "eco give %player% 135000"
+      - "eco give %player% 195000"
       - "give %player% gold_block 8"
 
   87:
@@ -960,10 +960,10 @@ rewards:
     display-name: "<yellow>Level 88 Reward</yellow>"
     icon: "ENCHANTED_GOLDEN_APPLE"
     lore:
-      - "<green>• Rp 145.000</green>"
+      - "<green>• Rp 215.000</green>"
       - "<white>• 2x Enchanted Golden Apple</white>"
     commands:
-      - "eco give %player% 145000"
+      - "eco give %player% 215000"
       - "give %player% enchanted_golden_apple 2"
 
   89:
@@ -994,12 +994,12 @@ rewards:
       - "<gold>• 1x Sovereign Divine Key</gold>"
       - "<white>• 5x Enchanted Golden Apple</white>"
       - "<white>• 2x Netherite Block</white>"
-      - "<green>• Rp 1.250.000</green>"
+      - "<green>• Rp 1.500.000</green>"
     commands:
       - "crate key give %player% sovereign 1"
       - "give %player% enchanted_golden_apple 5"
       - "give %player% netherite_block 2"
-      - "eco give %player% 1250000"
+      - "eco give %player% 1500000"
     broadcast: "<gold><bold>Apexsions</bold> » <gold>%player% is now a <bold>Level 91 Sovereign of %kingdom%</bold>!</gold>"
     sound: "UI_TOAST_CHALLENGE_COMPLETE"
 
@@ -1019,11 +1019,11 @@ rewards:
     display-name: "<yellow>Level 93 Reward</yellow>"
     icon: "NETHER_STAR"
     lore:
-      - "<green>• Rp 155.000</green>"
+      - "<green>• Rp 250.000</green>"
       - "<white>• 1x Nether Star</white>"
       - "<white>• 44x Experience Bottle</white>"
     commands:
-      - "eco give %player% 155000"
+      - "eco give %player% 250000"
       - "give %player% nether_star 1"
       - "give %player% experience_bottle 44"
 
@@ -1053,10 +1053,10 @@ rewards:
     display-name: "<yellow>Level 96 Reward</yellow>"
     icon: "EMERALD_BLOCK"
     lore:
-      - "<green>• Rp 160.000</green>"
+      - "<green>• Rp 290.000</green>"
       - "<white>• 6x Emerald Block</white>"
     commands:
-      - "eco give %player% 160000"
+      - "eco give %player% 290000"
       - "give %player% emerald_block 6"
 
   97:
@@ -1073,21 +1073,21 @@ rewards:
     display-name: "<yellow>Level 98 Reward</yellow>"
     icon: "EXPERIENCE_BOTTLE"
     lore:
-      - "<green>• Rp 170.000</green>"
+      - "<green>• Rp 330.000</green>"
       - "<white>• 64x Experience Bottle</white>"
     commands:
-      - "eco give %player% 170000"
+      - "eco give %player% 330000"
       - "give %player% experience_bottle 64"
 
   99:
     display-name: "<yellow>Level 99 Reward</yellow>"
     icon: "CRYING_OBSIDIAN"
     lore:
-      - "<green>• Rp 175.000</green>"
+      - "<green>• Rp 371.000</green>"
       - "<white>• 16x Crying Obsidian</white>"
       - "<white>• 1x Nether Star</white>"
     commands:
-      - "eco give %player% 175000"
+      - "eco give %player% 371000"
       - "give %player% crying_obsidian 16"
       - "give %player% nether_star 1"
 
@@ -1099,13 +1099,13 @@ rewards:
       - "<light_purple>• 3x Supreme God Keys</light_purple>"
       - "<white>• 1x Nether Star</white>"
       - "<white>• 4x Netherite Block</white>"
-      - "<green>• Rp 1.750.000</green>"
+      - "<green>• Rp 2.500.000</green>"
       - "<light_purple>• Permanent Server-wide Hall of Fame Status</light_purple>"
     commands:
       - "crate key give %player% god 3"
       - "give %player% nether_star 1"
       - "give %player% netherite_block 4"
-      - "eco give %player% 1750000"
+      - "eco give %player% 2500000"
     broadcast: "<gold><bold>══════════════════════════════════════════════════════════</bold>\n<yellow><bold>👑 ASCENSION TO THE THRONE!</bold></yellow>\n<white>%player%</white> <yellow>has reached the ultimate</yellow> <gold><bold>MAX LEVEL 100</bold></gold> <yellow>in</yellow> <aqua><bold>%kingdom%</bold></aqua>!\n<gold><bold>══════════════════════════════════════════════════════════</bold></gold>"
     sound: "UI_TOAST_CHALLENGE_COMPLETE"
 
