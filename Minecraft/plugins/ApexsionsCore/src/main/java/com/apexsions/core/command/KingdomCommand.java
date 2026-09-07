@@ -180,12 +180,25 @@ public class KingdomCommand implements CommandExecutor, TabCompleter {
         plugin.getConfigManager().setKingdomKing(kingdomInput, "Belum Ditunjuk");
 
         sender.sendMessage(miniMessage.deserialize("<green>✓ Berhasil mencabut status Raja dari kerajaan <gold>" + regionOpt.get().getDisplayName() + "</gold>!</green>"));
-        if (!previousKing.isEmpty() && !previousKing.equalsIgnoreCase("Belum Ditunjuk")) {
+        if (!previousKing.isEmpty() && !previousKing.equalsIgnoreCase("Belum Ditunjuk") && !previousKing.equalsIgnoreCase("Belum Ada Raja")) {
             Player prevPlayer = org.bukkit.Bukkit.getPlayer(previousKing);
             if (prevPlayer != null && prevPlayer.isOnline()) {
                 plugin.getTitleManager().unequipTitle(prevPlayer);
+                prevPlayer.displayName(net.kyori.adventure.text.Component.text(prevPlayer.getName()));
+                prevPlayer.customName(net.kyori.adventure.text.Component.text(prevPlayer.getName()));
                 prevPlayer.sendMessage(miniMessage.deserialize("<yellow>⚠️ Gelar Raja kerajaanmu telah dicabut oleh administrator.</yellow>"));
             }
+        }
+
+        // Also sweep any online player currently holding this kingdom title or matching king name
+        for (Player online : org.bukkit.Bukkit.getOnlinePlayers()) {
+            plugin.getPlayerDataService().getCached(online.getUniqueId()).ifPresent(d -> {
+                if (d.getActiveTitle() != null && d.getActiveTitle().toLowerCase().contains(kingdomInput.toLowerCase())) {
+                    plugin.getTitleManager().unequipTitle(online);
+                    online.displayName(net.kyori.adventure.text.Component.text(online.getName()));
+                    online.customName(net.kyori.adventure.text.Component.text(online.getName()));
+                }
+            });
         }
     }
 

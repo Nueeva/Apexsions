@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -90,9 +91,27 @@ public class PlayerListener implements Listener {
         }
     }
 
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void onPlayerDeath(PlayerDeathEvent event) {
+        Player player = event.getPlayer();
+        plugin.getPlayerDataService().getCached(player.getUniqueId()).ifPresentOrElse(data -> {
+            if (data.getActiveTitle() == null || !data.hasRegion()) {
+                player.displayName(net.kyori.adventure.text.Component.text(player.getName()));
+                player.customName(net.kyori.adventure.text.Component.text(player.getName()));
+            }
+        }, () -> {
+            player.displayName(net.kyori.adventure.text.Component.text(player.getName()));
+            player.customName(net.kyori.adventure.text.Component.text(player.getName()));
+        });
+    }
+
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerRespawn(PlayerRespawnEvent event) {
         Player player = event.getPlayer();
+
+        // 1. Sanitize display name & custom name upon respawn
+        player.displayName(net.kyori.adventure.text.Component.text(player.getName()));
+        player.customName(net.kyori.adventure.text.Component.text(player.getName()));
 
         if (!plugin.getConfigManager().isRespawnAtKingdom()) {
             return;

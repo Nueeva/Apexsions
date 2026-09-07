@@ -124,5 +124,9 @@ public class TitleManager {
         if (data != null) {
             data.setActiveTitle(null);
         }
+        if (player != null && player.isOnline()) {
+            player.displayName(net.kyori.adventure.text.Component.text(player.getName()));
+            player.customName(net.kyori.adventure.text.Component.text(player.getName()));
+        }
     }
 }
