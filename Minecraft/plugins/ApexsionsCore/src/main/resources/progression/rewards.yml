@@ -48,15 +48,15 @@ rewards:
 
   5:
     display-name: "<yellow>Level 5 Reward</yellow>"
-    icon: "ARROW"
+    icon: "COAL"
     lore:
-      - "<aqua>• 3 Diamond 💎</aqua>"
-      - "<white>• 22x Arrow</white>"
-      - "<white>• 14x Carrot</white>"
+      - "<white>• 10x Coal</white>"
+      - "<white>• 15x Wheat</white>"
+      - "<white>• 20x Arrow</white>"
     commands:
-      - "eco give %player% 3 diamond"
-      - "give %player% arrow 22"
-      - "give %player% carrot 14"
+      - "give %player% coal 10"
+      - "give %player% wheat 15"
+      - "give %player% arrow 20"
 
   6:
     display-name: "<yellow>Level 6 Reward</yellow>"
@@ -92,15 +92,11 @@ rewards:
 
   9:
     display-name: "<yellow>Level 9 Reward</yellow>"
-    icon: "RAW_COPPER"
+    icon: "ARROW"
     lore:
-      - "<aqua>• 3 Diamond 💎</aqua>"
-      - "<white>• 11x Raw Copper</white>"
-      - "<white>• 7x Iron Ingot</white>"
+      - "<white>• 57x Arrow</white>"
     commands:
-      - "eco give %player% 3 diamond"
-      - "give %player% raw_copper 11"
-      - "give %player% iron_ingot 7"
+      - "give %player% arrow 57"
 
   10:
     display-name: "<yellow>Level 10 Reward</yellow>"
@@ -118,11 +114,11 @@ rewards:
     icon: "ENDER_CHEST"
     lore:
       - "<yellow>• 1x Kingdom Novice Crate Key</yellow>"
-      - "<aqua>• 10 Diamond 💎</aqua>"
+      - "<white>• 2x Golden Apple</white>"
       - "<green>• Rp 100.000</green>"
     commands:
       - "crate key give %player% novice 1"
-      - "eco give %player% 10 diamond"
+      - "give %player% golden_apple 2"
       - "eco give %player% 100000"
     broadcast: "<gold><bold>Apexsions</bold> » <yellow>%player% has achieved <bold>Level 11 Milestone</bold> in kingdom %kingdom%!</yellow></gold>"
     sound: "UI_TOAST_CHALLENGE_COMPLETE"
@@ -159,11 +155,11 @@ rewards:
     display-name: "<yellow>Level 15 Reward</yellow>"
     icon: "BREAD"
     lore:
-      - "<aqua>• 4 Diamond 💎</aqua>"
+      - "<aqua>• 5 Diamond 💎</aqua>"
       - "<white>• 11x Bread</white>"
       - "<white>• 22x Torch</white>"
     commands:
-      - "eco give %player% 4 diamond"
+      - "eco give %player% 5 diamond"
       - "give %player% bread 11"
       - "give %player% torch 22"
 
@@ -199,25 +195,25 @@ rewards:
 
   19:
     display-name: "<yellow>Level 19 Reward</yellow>"
-    icon: "LAPIS_LAZULI"
+    icon: "OAK_LOG"
     lore:
-      - "<aqua>• 4 Diamond 💎</aqua>"
-      - "<white>• 16x Lapis Lazuli</white>"
-      - "<white>• 1x Bow</white>"
+      - "<white>• 32x Oak Log</white>"
+      - "<white>• 12x Raw Iron</white>"
     commands:
-      - "eco give %player% 4 diamond"
-      - "give %player% lapis_lazuli 16"
-      - "give %player% bow 1"
+      - "give %player% oak_log 32"
+      - "give %player% raw_iron 12"
 
   20:
     display-name: "<yellow>Level 20 Reward</yellow>"
-    icon: "APPLE"
+    icon: "BOW"
     lore:
       - "<green>• Rp 55.000</green>"
-      - "<white>• 12x Apple</white>"
+      - "<aqua>• 5 Diamond 💎</aqua>"
+      - "<white>• 1x Bow</white>"
     commands:
       - "eco give %player% 55000"
-      - "give %player% apple 12"
+      - "eco give %player% 5 diamond"
+      - "give %player% bow 1"
 
   21:
     is-milestone: true
@@ -647,15 +643,15 @@ rewards:
 
   59:
     display-name: "<yellow>Level 59 Reward</yellow>"
-    icon: "MAGMA_CREAM"
+    icon: "DIAMOND"
     lore:
-      - "<white>• 7x Magma Cream</white>"
-      - "<white>• 7x Sea Lantern</white>"
-      - "<white>• 20x Golden Carrot</white>"
+      - "<aqua>• 7 Diamond 💎</aqua>"
+      - "<white>• 2x Diamond</white>"
+      - "<white>• 4x Iron Block</white>"
     commands:
-      - "give %player% magma_cream 7"
-      - "give %player% sea_lantern 7"
-      - "give %player% golden_carrot 20"
+      - "eco give %player% 7 diamond"
+      - "give %player% diamond 2"
+      - "give %player% iron_block 4"
 
   60:
     display-name: "<yellow>Level 60 Reward</yellow>"
@@ -698,15 +694,11 @@ rewards:
 
   63:
     display-name: "<yellow>Level 63 Reward</yellow>"
-    icon: "SEA_LANTERN"
+    icon: "EMERALD"
     lore:
-      - "<aqua>• 8 Diamond 💎</aqua>"
-      - "<white>• 8x Sea Lantern</white>"
-      - "<white>• 22x Golden Carrot</white>"
+      - "<white>• 43x Emerald</white>"
     commands:
-      - "eco give %player% 8 diamond"
-      - "give %player% sea_lantern 8"
-      - "give %player% golden_carrot 22"
+      - "give %player% emerald 43"
 
   64:
     display-name: "<yellow>Level 64 Reward</yellow>"
@@ -720,15 +712,15 @@ rewards:
 
   65:
     display-name: "<yellow>Level 65 Reward</yellow>"
-    icon: "GOLDEN_APPLE"
+    icon: "PRISMARINE_SHARD"
     lore:
-      - "<white>• 2x Golden Apple</white>"
-      - "<white>• 7x Magma Cream</white>"
-      - "<white>• 7x Sea Lantern</white>"
+      - "<aqua>• 15 Diamond 💎</aqua>"
+      - "<white>• 16x Prismarine Shard</white>"
+      - "<white>• 2x Diamond</white>"
     commands:
-      - "give %player% golden_apple 2"
-      - "give %player% magma_cream 7"
-      - "give %player% sea_lantern 7"
+      - "eco give %player% 15 diamond"
+      - "give %player% prismarine_shard 16"
+      - "give %player% diamond 2"
 
   66:
     display-name: "<yellow>Level 66 Reward</yellow>"
