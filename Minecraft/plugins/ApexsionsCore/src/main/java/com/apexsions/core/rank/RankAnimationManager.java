@@ -186,6 +186,13 @@ public class RankAnimationManager {
         animationTask = Bukkit.getScheduler().runTaskTimer(plugin, () -> {
             currentFrame++;
         }, 10L, 4L);
+
+        // Synchronize nametags and scoreboard teams for all currently online players
+        Bukkit.getScheduler().runTaskLater(plugin, () -> {
+            for (Player online : Bukkit.getOnlinePlayers()) {
+                updatePlayerNameplate(online);
+            }
+        }, 20L);
     }
 
     public void stop() {
@@ -193,6 +200,7 @@ public class RankAnimationManager {
             animationTask.cancel();
             animationTask = null;
         }
+        lastPrefixCache.clear();
     }
 
     /**
@@ -252,5 +260,137 @@ public class RankAnimationManager {
                 yield "<gradient:" + c[0] + ":" + c[1] + ":" + c[2] + "><bold>[Wanderer]</bold></gradient> ";
             }
         };
+    }
+
+    /**
+     * Resolves the static rank prefix from ranks.yml or official fallbacks.
+     */
+    public String getStaticRankPrefix(Player player) {
+        if (player == null) return "<gray>[Wanderer]</gray> ";
+
+        String rankKey = (plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isAvailable())
+                ? plugin.getLuckPermsHook().getPlayerRankKey(player)
+                : (player.isOp() ? "ancestor" : "wanderer");
+
+        var ranksConfig = plugin.getConfigManager().getRanksConfig();
+        if (ranksConfig != null && ranksConfig.contains("ranks." + rankKey + ".prefix")) {
+            return ranksConfig.getString("ranks." + rankKey + ".prefix", "<gray>[Wanderer]</gray> ");
+        }
+
+        return switch (rankKey.toLowerCase().trim()) {
+            case "ancestor", "owner" -> "<gradient:#8B0000:#FF0000><bold>[👑 ANCESTOR]</bold></gradient> ";
+            case "architect" -> "<gradient:#8E2DE2:#4A00E0><bold>[📐 ARCHITECT]</bold></gradient> ";
+            case "overseer" -> "<gradient:#FFD700:#FFA500><bold>[👁 OVERSEER]</bold></gradient> ";
+            case "warden", "admin", "headadmin" -> "<gradient:#1e3c72:#2a5298><bold>[🛡 WARDEN]</bold></gradient> ";
+            case "herald", "mod", "moderator" -> "<gradient:#f857a6:#ff5858><bold>[📜 HERALD]</bold></gradient> ";
+            case "sions" -> "<gradient:#00FFFF:#FFD700><bold>[✦ SIONS]</bold></gradient> ";
+            case "emperor" -> "<gradient:#ffd700:#e67e22><bold>[⚔ EMPEROR]</bold></gradient> ";
+            case "sovereign" -> "<gradient:#9b59b6:#8e44ad><bold>[⚜ SOVEREIGN]</bold></gradient> ";
+            case "archon" -> "<gradient:#3498db:#2980b9><bold>[💎 ARCHON]</bold></gradient> ";
+            case "ascendant" -> "<gradient:#2ecc71:#27ae60><bold>[☘ ASCENDANT]</bold></gradient> ";
+            default -> "<gradient:#dfe6e9:#74b9ff><bold>[Wanderer]</bold></gradient> ";
+        };
+    }
+
+    /**
+     * Updates the player's nametag scoreboard team, Tablist, and display name.
+     * Synchronizes on the server's Main Scoreboard and all online viewer scoreboards.
+     */
+    public void updatePlayerNameplate(Player player) {
+        if (player == null || !player.isOnline()) {
+            if (player != null) lastPrefixCache.remove(player.getUniqueId());
+            return;
+        }
+
+        // 1. Resolve Rank Prefix
+        String prefixMm = getStaticRankPrefix(player);
+
+        // 2. Resolve Active Title (if any)
+        PlayerData data = plugin.getPlayerDataService().getCached(player.getUniqueId()).orElse(null);
+        if (data != null && data.getActiveTitle() != null && !data.getActiveTitle().trim().isEmpty()
+                && !data.getActiveTitle().equalsIgnoreCase("none")
+                && !data.getActiveTitle().equalsIgnoreCase("wanderer")) {
+            prefixMm = prefixMm + "<yellow>[" + data.getActiveTitle().trim() + "]</yellow> ";
+        }
+
+        // Cache check
+        String cached = lastPrefixCache.get(player.getUniqueId());
+        if (prefixMm.equals(cached)) {
+            return;
+        }
+        lastPrefixCache.put(player.getUniqueId(), prefixMm);
+
+        Component prefixComp = mm.deserialize(prefixMm.trim() + " ");
+        Component fullDisplayName = prefixComp.append(Component.text(player.getName()));
+
+        // Update player's tablist and display name
+        player.displayName(fullDisplayName);
+        player.playerListName(fullDisplayName);
+
+        // 3. Scoreboard Team Management for Overhead Nametags and Vanilla Broadcasts
+        String teamName = "apx_" + player.getName();
+        if (teamName.length() > 16) {
+            teamName = teamName.substring(0, 16);
+        }
+
+        Scoreboard mainBoard = Bukkit.getScoreboardManager().getMainScoreboard();
+        applyScoreboardTeam(mainBoard, teamName, player.getName(), prefixComp);
+
+        // Also synchronize on viewer scoreboards
+        for (Player viewer : Bukkit.getOnlinePlayers()) {
+            Scoreboard viewerBoard = viewer.getScoreboard();
+            if (viewerBoard != mainBoard) {
+                applyScoreboardTeam(viewerBoard, teamName, player.getName(), prefixComp);
+            }
+        }
+    }
+
+    /**
+     * Synchronizes all existing player scoreboard teams for a new viewer.
+     */
+    public void setupScoreboardForNewPlayer(Player newPlayer) {
+        if (newPlayer == null || !newPlayer.isOnline()) return;
+        Scoreboard board = newPlayer.getScoreboard();
+        if (board == null || board == Bukkit.getScoreboardManager().getMainScoreboard()) return;
+
+        for (Player online : Bukkit.getOnlinePlayers()) {
+            String prefixMm = lastPrefixCache.getOrDefault(online.getUniqueId(), getStaticRankPrefix(online));
+            Component prefixComp = mm.deserialize(prefixMm.trim() + " ");
+            String teamName = "apx_" + online.getName();
+            if (teamName.length() > 16) {
+                teamName = teamName.substring(0, 16);
+            }
+            applyScoreboardTeam(board, teamName, online.getName(), prefixComp);
+        }
+    }
+
+    private void applyScoreboardTeam(Scoreboard board, String teamName, String entryName, Component prefix) {
+        if (board == null) return;
+        try {
+            // Remove player from any other team on this scoreboard to avoid stale prefixes
+            for (Team t : board.getTeams()) {
+                if (!t.getName().equalsIgnoreCase(teamName) && t.hasEntry(entryName)) {
+                    t.removeEntry(entryName);
+                }
+            }
+
+            // Find or register team (case-insensitive fallback)
+            Team team = board.getTeam(teamName);
+            if (team == null) {
+                for (Team t : board.getTeams()) {
+                    if (t.getName().equalsIgnoreCase(teamName)) {
+                        team = t;
+                        break;
+                    }
+                }
+            }
+            if (team == null) {
+                team = board.registerNewTeam(teamName);
+            }
+            if (!team.hasEntry(entryName)) {
+                team.addEntry(entryName);
+            }
+            team.prefix(prefix);
+        } catch (Exception ignored) {}
     }
 }

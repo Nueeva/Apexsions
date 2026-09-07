@@ -31,6 +31,18 @@ public class LuckPermsHook {
                 
                 // Automatically and idempotently provision managed rank hierarchy
                 rankProvisioner.provisionRanksAsync();
+
+                // Listen for LuckPerms rank / group / node changes to automatically update nametags
+                this.luckPerms.getEventBus().subscribe(plugin, net.luckperms.api.event.user.UserDataRecalculateEvent.class, event -> {
+                    Player p = Bukkit.getPlayer(event.getUser().getUniqueId());
+                    if (p != null && p.isOnline() && plugin.getRankAnimationManager() != null) {
+                        Bukkit.getScheduler().runTask(plugin, () -> {
+                            if (p.isOnline()) {
+                                plugin.getRankAnimationManager().updatePlayerNameplate(p);
+                            }
+                        });
+                    }
+                });
             } catch (Exception e) {
                 plugin.getLogger().warning("Could not hook into LuckPerms: " + e.getMessage());
                 this.available = false;

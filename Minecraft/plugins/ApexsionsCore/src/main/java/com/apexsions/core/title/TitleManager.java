@@ -117,6 +117,9 @@ public class TitleManager {
         if (data != null) {
             data.setActiveTitle(title != null ? title.getDisplayName() : null);
         }
+        if (player != null && player.isOnline() && plugin.getRankAnimationManager() != null) {
+            plugin.getRankAnimationManager().updatePlayerNameplate(player);
+        }
     }
 
     public void unequipTitle(Player player) {
@@ -127,6 +130,9 @@ public class TitleManager {
         if (player != null && player.isOnline()) {
             player.displayName(net.kyori.adventure.text.Component.text(player.getName()));
             player.customName(net.kyori.adventure.text.Component.text(player.getName()));
+            if (plugin.getRankAnimationManager() != null) {
+                plugin.getRankAnimationManager().updatePlayerNameplate(player);
+            }
         }
     }
 }

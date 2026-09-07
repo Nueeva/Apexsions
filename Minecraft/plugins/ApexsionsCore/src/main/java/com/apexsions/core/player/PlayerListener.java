@@ -60,8 +60,20 @@ public class PlayerListener implements Listener {
         plugin.getPlayerDataService().getCached(player.getUniqueId()).ifPresent(data -> {
             plugin.getLevelManager().reconcileLevel(data, player);
         });
+
+        // 4. Synchronize rank nametag and scoreboard team immediately and after async rank provisioning
+        if (plugin.getRankAnimationManager() != null) {
+            plugin.getRankAnimationManager().updatePlayerNameplate(player);
+            plugin.getRankAnimationManager().setupScoreboardForNewPlayer(player);
+        }
+        Bukkit.getScheduler().runTaskLater(plugin, () -> {
+            if (player.isOnline() && plugin.getRankAnimationManager() != null) {
+                plugin.getRankAnimationManager().updatePlayerNameplate(player);
+                plugin.getRankAnimationManager().setupScoreboardForNewPlayer(player);
+            }
+        }, 10L);
         
-        // 4. Synchronize player stats with Web Platform after authentication / rank init
+        // 5. Synchronize player stats with Web Platform after authentication / rank init
         Bukkit.getScheduler().runTaskLater(plugin, () -> {
             if (player.isOnline() && plugin.getWebBridgeService() != null) {
                 plugin.getWebBridgeService().syncPlayerAsync(player);
@@ -112,6 +124,12 @@ public class PlayerListener implements Listener {
         // 1. Sanitize display name & custom name upon respawn
         player.displayName(net.kyori.adventure.text.Component.text(player.getName()));
         player.customName(net.kyori.adventure.text.Component.text(player.getName()));
+
+        Bukkit.getScheduler().runTaskLater(plugin, () -> {
+            if (player.isOnline() && plugin.getRankAnimationManager() != null) {
+                plugin.getRankAnimationManager().updatePlayerNameplate(player);
+            }
+        }, 2L);
 
         if (!plugin.getConfigManager().isRespawnAtKingdom()) {
             return;
