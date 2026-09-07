@@ -340,7 +340,9 @@ public class KitManager {
             // Format Lore for Set Bonus
             List<Component> lore = meta.hasLore() && meta.lore() != null ? new ArrayList<>(meta.lore()) : new ArrayList<>();
             lore.add(Component.empty());
-            lore.add(mm.deserialize("<gradient:#f1c40f:#e67e22><bold>✦ SET BONUS: [" + bonus.getSetName() + "] ✦</bold></gradient>"));
+            lore.add(mm.deserialize("<gradient:#f1c40f:#e67e22><bold>✦ SET BONUS: [</bold></gradient>")
+                    .append(ColorUtil.parse(bonus.getSetName()))
+                    .append(mm.deserialize("<gradient:#f1c40f:#e67e22><bold>] ✦</bold></gradient>")));
             lore.add(mm.deserialize("<gray>Efek (" + bonus.getRequiredPieces() + " Set): <yellow>" + bonus.getStatType().formatValue(bonus.getValue()) + " " + bonus.getStatType().getDisplayName() + "</yellow></gray>"));
             meta.lore(lore);
         }
@@ -364,7 +366,9 @@ public class KitManager {
 
         List<Component> lore = meta.hasLore() && meta.lore() != null ? new ArrayList<>(meta.lore()) : new ArrayList<>();
         lore.add(Component.empty());
-        lore.add(mm.deserialize("<gradient:#f1c40f:#e67e22><bold>✦ SET BONUS: [" + setName + "] ✦</bold></gradient>"));
+        lore.add(mm.deserialize("<gradient:#f1c40f:#e67e22><bold>✦ SET BONUS: [</bold></gradient>")
+                .append(ColorUtil.parse(setName))
+                .append(mm.deserialize("<gradient:#f1c40f:#e67e22><bold>] ✦</bold></gradient>")));
         lore.add(mm.deserialize("<gray>Efek (" + requiredPieces + " Set): <yellow>" + statType.formatValue(value) + " " + statType.getDisplayName() + "</yellow></gray>"));
         meta.lore(lore);
 

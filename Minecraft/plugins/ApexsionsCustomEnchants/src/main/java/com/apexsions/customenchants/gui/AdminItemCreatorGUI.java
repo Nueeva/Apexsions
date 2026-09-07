@@ -467,8 +467,8 @@ public class AdminItemCreatorGUI implements InventoryHolder {
         if (!globalSet2Stats.isEmpty() || !globalSet4Stats.isEmpty()) {
             List<Component> lore = meta.hasLore() && meta.lore() != null ? new ArrayList<>(meta.lore()) : new ArrayList<>();
             lore.add(Component.empty());
-            String cleanName = getPlainTextSafe(globalSetName).toUpperCase();
-            lore.add(mm.deserialize("<gold><bold>★ SET BONUS: <yellow>" + cleanName + "</yellow> ★</bold></gold>"));
+            Component setComp = (!globalSetName.isBlank()) ? ColorUtil.parse(globalSetName) : mm.deserialize("<yellow>APEXSIONS</yellow>");
+            lore.add(mm.deserialize("<gold><bold>★ SET BONUS: </bold></gold>").append(setComp).append(mm.deserialize("<gold><bold> ★</bold></gold>")));
             if (!globalSet2Stats.isEmpty()) {
                 lore.add(mm.deserialize("<gray>Syarat: <yellow>2 Pieces (Half Set)</yellow></gray>"));
                 for (Map.Entry<KitStatType, Double> e : globalSet2Stats.entrySet()) {

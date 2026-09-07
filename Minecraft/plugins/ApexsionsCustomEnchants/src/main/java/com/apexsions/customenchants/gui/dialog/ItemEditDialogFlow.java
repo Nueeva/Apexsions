@@ -102,7 +102,7 @@ public class ItemEditDialogFlow {
             boolean isSetBonusActive = (creatorGUI != null && creatorGUI.isSetBonusConfigured());
             if (isSetBonusActive) {
                 String setName = (creatorGUI.getGlobalSetName() != null && !creatorGUI.getGlobalSetName().isBlank()) 
-                        ? creatorGUI.getGlobalSetName() 
+                        ? ColorUtil.toPlainText(creatorGUI.getGlobalSetName()) 
                         : "Set Armor";
                 buttons.add(new DialogButtonData("<aqua><bold>⚔ ATUR TOOL SET BONUS</bold></aqua>", "Atur sinergi atribut tool dengan " + setName,
                         () -> openToolBonus(plugin, player, item, sourceSlot, creatorGUI)));
@@ -541,7 +541,8 @@ public class ItemEditDialogFlow {
         Map<KitStatType, Double> set4Stats = creatorGUI.getGlobalSet4Stats();
 
         StringBuilder desc = new StringBuilder();
-        desc.append("<gray>Nama Set Armor: ").append(!setName.isBlank() ? ColorUtil.toPlainText(setName) : "<gold>(Belum Diatur)</gold>").append("</gray>\n");
+        String formattedSetName = !setName.isBlank() ? ColorUtil.toMiniMessageTags(setName) : "<gold>(Belum Diatur)</gold>";
+        desc.append("<gray>Nama Set Armor: ").append(formattedSetName).append("</gray>\n");
         desc.append("<gray>2-Piece (Half Set): ").append(set2Stats.isEmpty() ? "<dark_gray>Nonaktif</dark_gray>" : "<green>" + set2Stats.size() + " Efek Aktif</green>").append("</gray>\n");
         desc.append("<gray>4-Piece (Full Set): ").append(set4Stats.isEmpty() ? "<dark_gray>Nonaktif</dark_gray>" : "<green>" + set4Stats.size() + " Efek Aktif</green>").append("</gray>\n");
         desc.append("<dark_gray>Pilih opsi konfigurasi set bonus di bawah:</dark_gray>");
@@ -620,7 +621,8 @@ public class ItemEditDialogFlow {
 
         StringBuilder desc = new StringBuilder();
         desc.append("<gray>Mengatur bonus untuk <yellow>").append(pieceCount).append("-Piece (").append(pieceCount == 4 ? "Full Set" : "Half Set").append(")</yellow></gray>\n");
-        desc.append("<gray>Set: <gold>").append(setName.isBlank() ? "Apexsions" : ColorUtil.toPlainText(setName)).append("</gold></gray>\n");
+        String formattedSetName = !setName.isBlank() ? ColorUtil.toMiniMessageTags(setName) : "<gold>Apexsions</gold>";
+        desc.append("<gray>Set: ").append(formattedSetName).append("</gray>\n");
         desc.append("<dark_gray>Klik stat di bawah untuk mengatur nilainya:</dark_gray>");
 
         List<DialogButtonData> buttons = new ArrayList<>();
@@ -782,7 +784,8 @@ public class ItemEditDialogFlow {
         Map<KitStatType, Double> set4Stats = parseArmorStats(item, "set4_stats");
 
         StringBuilder desc = new StringBuilder();
-        desc.append("<gray>Nama Set Armor: <gold>").append(setName.isBlank() ? "(Belum Diatur)" : setName).append("</gold></gray>\n");
+        String formattedSetName = !setName.isBlank() ? ColorUtil.toMiniMessageTags(setName) : "<gold>(Belum Diatur)</gold>";
+        desc.append("<gray>Nama Set Armor: ").append(formattedSetName).append("</gray>\n");
         desc.append("<gray>2-Piece (Half Set): ").append(set2Stats.isEmpty() ? "<dark_gray>Nonaktif</dark_gray>" : "<green>" + set2Stats.size() + " Efek Aktif</green>").append("</gray>\n");
         desc.append("<gray>4-Piece (Full Set): ").append(set4Stats.isEmpty() ? "<dark_gray>Nonaktif</dark_gray>" : "<green>" + set4Stats.size() + " Efek Aktif</green>").append("</gray>\n");
         desc.append("<dark_gray>Pilih opsi pengaturan di bawah:</dark_gray>");
@@ -851,7 +854,8 @@ public class ItemEditDialogFlow {
 
         StringBuilder desc = new StringBuilder();
         desc.append("<gray>Mengatur bonus untuk <yellow>").append(pieceCount).append("-Piece (").append(pieceCount == 4 ? "Full Set" : "Half Set").append(")</yellow></gray>\n");
-        desc.append("<gray>Set: <gold>").append(setName.isBlank() ? "Apexsions" : setName).append("</gold></gray>\n");
+        String formattedSetName = !setName.isBlank() ? ColorUtil.toMiniMessageTags(setName) : "<gold>Apexsions</gold>";
+        desc.append("<gray>Set: ").append(formattedSetName).append("</gray>\n");
         desc.append("<dark_gray>Klik stat di bawah untuk mengatur persentase nilainya:</dark_gray>");
 
         List<DialogButtonData> buttons = new ArrayList<>();
@@ -1002,7 +1006,8 @@ public class ItemEditDialogFlow {
         Map<ToolStatType, Double> activeStats = parseToolStats(item);
 
         StringBuilder desc = new StringBuilder();
-        desc.append("<gray>Set Armor Penyesuai: <gold>").append(setName).append("</gold></gray>\n");
+        String formattedSetName = !setName.isBlank() ? ColorUtil.toMiniMessageTags(setName) : "<gold>Apexsions</gold>";
+        desc.append("<gray>Set Armor Penyesuai: ").append(formattedSetName).append("</gray>\n");
         desc.append("<gray>ID Sinergi: <yellow>").append(setId).append("</yellow></gray>\n");
         desc.append("<gray>Bonus Aktif: ").append(activeStats.isEmpty() ? "<dark_gray>Kosong</dark_gray>" : "<green>" + activeStats.size() + " Atribut Aktif</green>").append("</gray>\n");
         desc.append("<dark_gray>Klik atribut di bawah untuk mengatur nilainya:</dark_gray>");
@@ -1379,9 +1384,8 @@ public class ItemEditDialogFlow {
 
         List<Component> lore = meta.hasLore() && meta.lore() != null ? new ArrayList<>(meta.lore()) : new ArrayList<>();
         lore.add(Component.empty());
-        String displayHeader = plain.toUpperCase();
-        if (displayHeader.isBlank()) displayHeader = "APEXSIONS";
-        lore.add(mm.deserialize("<gold><bold>★ SET BONUS: <yellow>" + displayHeader + "</yellow> ★</bold></gold>"));
+        Component setComp = (!cleanName.isBlank()) ? ColorUtil.parse(cleanName) : mm.deserialize("<yellow>APEXSIONS</yellow>");
+        lore.add(mm.deserialize("<gold><bold>★ SET BONUS: </bold></gold>").append(setComp).append(mm.deserialize("<gold><bold> ★</bold></gold>")));
         if (!set2Stats.isEmpty()) {
             lore.add(mm.deserialize("<gray>Syarat: <yellow>2 Pieces (Half Set)</yellow></gray>"));
             for (Map.Entry<KitStatType, Double> e : set2Stats.entrySet()) {
@@ -1462,8 +1466,9 @@ public class ItemEditDialogFlow {
 
         lore.add(Component.empty());
         String headerTitle = AdminItemCreatorGUI.isWeapon(item) ? "WEAPON SET BONUS" : "TOOL SET BONUS";
-        lore.add(mm.deserialize("<gradient:#e74c3c:#f39c12><bold>★ " + headerTitle + (setName.isBlank() ? "" : ": " + setName.toUpperCase()) + " ★</bold></gradient>"));
-        lore.add(mm.deserialize("<gray>Syarat: <gold>Memakai Set Armor " + (setName.isBlank() ? "Terkait" : setName) + "</gold></gray>"));
+        Component setComp = (!setName.isBlank()) ? ColorUtil.parse(setName) : mm.deserialize("<gradient:#e74c3c:#f39c12><bold>CUSTOM</bold></gradient>");
+        lore.add(mm.deserialize("<gradient:#e74c3c:#f39c12><bold>★ " + headerTitle + ": </bold></gradient>").append(setComp).append(mm.deserialize("<gradient:#e74c3c:#f39c12><bold> ★</bold></gradient>")));
+        lore.add(mm.deserialize("<gray>Syarat: Memakai Set Armor </gray>").append(!setName.isBlank() ? ColorUtil.parse(setName) : mm.deserialize("<gold>Terkait</gold>")));
         for (Map.Entry<ToolStatType, Double> e : activeStats.entrySet()) {
             lore.add(mm.deserialize("<gray>  ● Efek: <aqua>" + e.getKey().getDisplayName() + " " + e.getKey().formatValue(e.getValue()) + "</aqua></gray>"));
         }

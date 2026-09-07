@@ -1,6 +1,7 @@
 package com.apexsions.customenchants.gui;
 
 import com.apexsions.customenchants.ApexsionsCustomEnchantsPlugin;
+import com.apexsions.customenchants.items.ColorUtil;
 import com.apexsions.customenchants.tools.ToolStatType;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -106,7 +107,7 @@ public class ToolBonusPickerGUI implements InventoryHolder {
         }
 
         // Slot 4: Info Header
-        String sName = (setName == null || setName.isBlank()) ? "<dark_gray>(Belum Diatur)</dark_gray>" : "<gold>" + setName + "</gold>";
+        String sName = (setName == null || setName.isBlank()) ? "<dark_gray>(Belum Diatur)</dark_gray>" : ColorUtil.toMiniMessageTags(setName);
         String sId = (setId == null || setId.isBlank()) ? "kosong" : setId;
 
         inventory.setItem(4, createItem(Material.NETHERITE_SWORD,
@@ -150,7 +151,7 @@ public class ToolBonusPickerGUI implements InventoryHolder {
 
         // Slot 49: Apply
         List<Component> applyLore = new ArrayList<>();
-        applyLore.add(mm.deserialize("<gray>Set Armor Terkait: <gold>" + (setName.isBlank() ? "Custom Set" : setName) + "</gold></gray>"));
+        applyLore.add(mm.deserialize("<gray>Set Armor Terkait: </gray>").append(!setName.isBlank() ? ColorUtil.parse(setName) : mm.deserialize("<gold>Custom Set</gold>")));
         applyLore.add(Component.empty());
         if (activeStats.isEmpty()) {
             applyLore.add(mm.deserialize("<red>● Tidak ada bonus tool yang aktif (Dikosongkan).</red>"));
@@ -331,8 +332,9 @@ public class ToolBonusPickerGUI implements InventoryHolder {
 
         lore.add(Component.empty());
         String headerTitle = AdminItemCreatorGUI.isWeapon(item) ? "WEAPON SET BONUS" : "TOOL SET BONUS";
-        lore.add(mm.deserialize("<gradient:#e74c3c:#f39c12><bold>★ " + headerTitle + (setName.isBlank() ? "" : ": " + setName.toUpperCase()) + " ★</bold></gradient>"));
-        lore.add(mm.deserialize("<gray>Syarat: <gold>Memakai Set Armor " + (setName.isBlank() ? "Terkait" : setName) + "</gold></gray>"));
+        Component setComp = (!setName.isBlank()) ? ColorUtil.parse(setName) : mm.deserialize("<gradient:#e74c3c:#f39c12><bold>CUSTOM</bold></gradient>");
+        lore.add(mm.deserialize("<gradient:#e74c3c:#f39c12><bold>★ " + headerTitle + ": </bold></gradient>").append(setComp).append(mm.deserialize("<gradient:#e74c3c:#f39c12><bold> ★</bold></gradient>")));
+        lore.add(mm.deserialize("<gray>Syarat: Memakai Set Armor </gray>").append(!setName.isBlank() ? ColorUtil.parse(setName) : mm.deserialize("<gold>Terkait</gold>")));
         for (Map.Entry<ToolStatType, Double> e : activeStats.entrySet()) {
             lore.add(mm.deserialize("<gray>  ● Efek: <aqua>" + e.getKey().getDisplayName() + " " + e.getKey().formatValue(e.getValue()) + "</aqua></gray>"));
         }

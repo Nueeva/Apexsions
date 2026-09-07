@@ -2,6 +2,7 @@ package com.apexsions.customenchants.gui;
 
 import com.apexsions.core.kit.KitStatType;
 import com.apexsions.customenchants.ApexsionsCustomEnchantsPlugin;
+import com.apexsions.customenchants.items.ColorUtil;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
@@ -367,9 +368,8 @@ public class ArmorSetBonusPickerGUI implements InventoryHolder {
         // Update Lore
         List<Component> lore = meta.hasLore() && meta.lore() != null ? new ArrayList<>(meta.lore()) : new ArrayList<>();
         lore.add(Component.empty());
-        String displayHeader = AdminItemCreatorGUI.getPlainTextSafe(cleanName).toUpperCase();
-        if (displayHeader.isBlank()) displayHeader = "APEXSIONS";
-        lore.add(mm.deserialize("<gold><bold>★ SET BONUS: <yellow>" + displayHeader + "</yellow> ★</bold></gold>"));
+        Component setComp = (!cleanName.isBlank()) ? ColorUtil.parse(cleanName) : mm.deserialize("<yellow>APEXSIONS</yellow>");
+        lore.add(mm.deserialize("<gold><bold>★ SET BONUS: </bold></gold>").append(setComp).append(mm.deserialize("<gold><bold> ★</bold></gold>")));
         if (!set2Stats.isEmpty()) {
             lore.add(mm.deserialize("<gray>Syarat: <yellow>2 Pieces (Half Set)</yellow></gray>"));
             for (Map.Entry<KitStatType, Double> e : set2Stats.entrySet()) {

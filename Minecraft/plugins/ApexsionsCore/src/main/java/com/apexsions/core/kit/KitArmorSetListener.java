@@ -1,6 +1,7 @@
 package com.apexsions.core.kit;
 
 import com.apexsions.core.ApexsionsCorePlugin;
+import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Particle;
@@ -200,18 +201,22 @@ public class KitArmorSetListener implements Listener {
 
             if (prevBonus == null || !prevBonus.setId().equalsIgnoreCase(qualifiedBonus.setId()) || prevBonus.piecesEquipped() != qualifiedBonus.piecesEquipped()) {
                 player.playSound(player.getLocation(), Sound.BLOCK_BEACON_ACTIVATE, 0.7f, 1.4f);
-                player.sendMessage(mm.deserialize("<gold><bold>✦ ARMOR SET BONUS AKTIF! ✦</bold></gold>"));
-                player.sendMessage(mm.deserialize("<gray>Set:</gray> <gold>" + qualifiedBonus.setName() + "</gold> <dark_gray>(" + qualifiedBonus.piecesEquipped() + " Pieces)</dark_gray>"));
-                for (Map.Entry<KitStatType, Double> e : qualifiedBonus.stats().entrySet()) {
-                    player.sendMessage(mm.deserialize("<gray>Efek:</gray> <yellow>" + e.getKey().formatValue(e.getValue()) + " " + e.getKey().getDisplayName() + "</yellow>"));
-                }
+                Component setComp = ColorUtil.parse(qualifiedBonus.setName());
+                Component barMsg = mm.deserialize("<gold><bold>✦ SET BONUS: </bold></gold>")
+                        .append(setComp)
+                        .append(mm.deserialize(" <dark_gray>(</dark_gray><yellow>" + qualifiedBonus.piecesEquipped() + "/4 Pieces</yellow><dark_gray>)</dark_gray> <green><bold>AKTIF!</bold></green> <gold><bold>✦</bold></gold>"));
+                player.sendActionBar(barMsg);
             }
         } else {
             if (prevBonus != null) {
                 activeBonuses.remove(player.getUniqueId());
                 removeAttributeBonuses(player);
                 player.playSound(player.getLocation(), Sound.BLOCK_BEACON_DEACTIVATE, 0.7f, 1.0f);
-                player.sendMessage(mm.deserialize("<red>✦ Armor Set Bonus (" + prevBonus.setName() + ") non-aktif karena keping armor dilepas. ✦</red>"));
+                Component setComp = ColorUtil.parse(prevBonus.setName());
+                Component barMsg = mm.deserialize("<red><bold>✦ SET BONUS NONAKTIF </bold></red><dark_gray>(</dark_gray>")
+                        .append(setComp)
+                        .append(mm.deserialize("<dark_gray>)</dark_gray> <red><bold>✦</bold></red>"));
+                player.sendActionBar(barMsg);
             }
         }
     }
