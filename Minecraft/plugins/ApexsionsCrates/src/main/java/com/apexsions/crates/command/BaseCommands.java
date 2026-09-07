@@ -172,10 +172,10 @@ public class BaseCommands {
             .executes((context, arguments) -> {
                 Player player = context.getPlayer();
                 if (player != null) {
-                    if (com.apexsions.shop.api.ApexsionsShopProvider.isAvailable()) {
-                        com.apexsions.shop.api.ApexsionsShopProvider.get().openShop(player);
+                    if (this.plugin instanceof com.apexsions.crates.ApexsionsCratesPlugin apexCrates) {
+                        new com.apexsions.crates.shop.gui.CrateKeyShopGUI(apexCrates, player).open();
                     } else {
-                        player.sendMessage(net.kyori.adventure.text.minimessage.MiniMessage.miniMessage().deserialize("<red>Shop saat ini tidak tersedia.</red>"));
+                        player.performCommand("crateshop");
                     }
                 }
                 return true;

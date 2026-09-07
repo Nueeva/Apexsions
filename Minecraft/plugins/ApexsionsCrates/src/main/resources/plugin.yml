@@ -13,3 +13,11 @@ softdepend:
   - ProtocolLib
   - packetevents
 api-version: '1.21'
+
+commands:
+  crateshop:
+    aliases:
+      - keyshop
+      - cratekeyshop
+    description: Buka Toko Pembelian Crate Keys Resmi Apexsions.
+    usage: /crateshop [admin|reload]

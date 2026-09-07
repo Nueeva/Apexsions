@@ -162,8 +162,8 @@ public class MasterAdminGUI implements InventoryHolder {
                         "<yellow>▶ Klik untuk buka Panel Media!</yellow>"
                 )));
 
-        // 8. Slot 31: ApexsionsCustomEnchants (/ace)
-        inventory.setItem(31, createModuleItem(Material.ENCHANTED_BOOK,
+        // 8. Slot 30: ApexsionsCustomEnchants (/ace)
+        inventory.setItem(30, createModuleItem(Material.ENCHANTED_BOOK,
                 "<gradient:#9b59b6:#e74c3c><bold>⚡ APEXSIONS CUSTOM ENCHANTS</bold></gradient>",
                 List.of(
                         "<gray>Kontrol sihir, tier pricing & custom items:</gray>",
@@ -172,6 +172,19 @@ public class MasterAdminGUI implements InventoryHolder {
                         "<dark_gray>•</dark_gray> <yellow>Atur Harga Tier (Rupiah/Diamond 💎)</yellow>",
                         "",
                         "<yellow>▶ Klik untuk buka Panel Custom Enchants!</yellow>"
+                )));
+
+        // 9. Slot 32: ApexsionsCrates (/crate & /crateshop)
+        inventory.setItem(32, createModuleItem(Material.CHEST,
+                "<gradient:#f39c12:#e74c3c><bold>🎁 APEXSIONS CRATES</bold></gradient>",
+                List.of(
+                        "<gray>Kelola Crate Mystery Box & Toko Kunci:</gray>",
+                        "<dark_gray>•</dark_gray> <gold>In-Game Crate Editor & Hadiah</gold>",
+                        "<dark_gray>•</dark_gray> <gold>Atur Toko Crate Key (/crateshop admin)</gold>",
+                        "<dark_gray>•</dark_gray> <gold>Kunci Fisik & Virtual, Milestones</gold>",
+                        "",
+                        "<yellow>▶ Klik Kiri: Buka Crate In-Game Editor</yellow>",
+                        "<gold>▶ Klik Kanan: Buka Crate Key Shop Admin</gold>"
                 )));
 
         // Bottom Row Slot 49: Close
@@ -217,7 +230,7 @@ public class MasterAdminGUI implements InventoryHolder {
             lore.add(mm.deserialize("<gray>Memory RAM:</gray> <yellow>" + usedMB + " MB</yellow> <dark_gray>/</dark_gray> <gold>" + maxMB + " MB</gold>"));
             lore.add(mm.deserialize("<gray>Pemain Online:</gray> <green><bold>" + Bukkit.getOnlinePlayers().size() + "</bold></green>"));
             lore.add(mm.deserialize("<gray>Status War:</gray> " + (plugin.getWarManager().isWarActive() ? "<red><bold>⚔ PERANG AKTIF</bold></red>" : "<green>Damai</green>")));
-            lore.add(mm.deserialize("<gray>Server Suite:</gray> <green>● 6/6 Plugin Terintegrasi</green>"));
+            lore.add(mm.deserialize("<gray>Server Suite:</gray> <green>● 8/8 Plugin Terintegrasi</green>"));
             meta.lore(lore);
             item.setItemMeta(meta);
         }
@@ -231,8 +244,8 @@ public class MasterAdminGUI implements InventoryHolder {
             meta.displayName(mm.deserialize("<gradient:#e74c3c:#f39c12><bold>⚡ RELOAD ALL PLUGINS ⚡</bold></gradient>"));
             List<Component> lore = new ArrayList<>();
             lore.add(mm.deserialize("<gray>Muat ulang seluruh plugin ekosistem:</gray>"));
-            lore.add(mm.deserialize("<dark_gray>•</dark_gray> <white>ApexsionsCore, Chat, Economy</white>"));
-            lore.add(mm.deserialize("<dark_gray>•</dark_gray> <white>ApexsionsBattlepass, Shop, Media</white>"));
+            lore.add(mm.deserialize("<dark_gray>•</dark_gray> <white>ApexsionsCore, Chat, Economy, Crates</white>"));
+            lore.add(mm.deserialize("<dark_gray>•</dark_gray> <white>ApexsionsBattlepass, Shop, Media, CustomEnchants</white>"));
             lore.add(mm.deserialize(""));
             lore.add(mm.deserialize("<yellow>▶ Klik untuk reload semua konfigurasi!</yellow>"));
             meta.lore(lore);
@@ -284,9 +297,11 @@ public class MasterAdminGUI implements InventoryHolder {
             player.performCommand("abp reload");
             player.performCommand("shop reload");
             player.performCommand("media reload");
+            player.performCommand("crate reload");
+            player.performCommand("ace reload");
             player.sendMessage(mm.deserialize("<gradient:#2ecc71:#f1c40f><bold>═════════════════════════════════════════════════</bold></gradient>"));
             player.sendMessage(mm.deserialize("<green><bold>✓ SELURUH PLUGIN APEXSIONS SUITE BERHASIL DIMUAT ULANG!</bold></green>"));
-            player.sendMessage(mm.deserialize("<gray>ApexsionsCore, Chat, Economy, Battlepass, Shop, Media</gray>"));
+            player.sendMessage(mm.deserialize("<gray>ApexsionsCore, Chat, Economy, Crates, Battlepass, Shop, Media, CustomEnchants</gray>"));
             player.sendMessage(mm.deserialize("<gradient:#2ecc71:#f1c40f><bold>═════════════════════════════════════════════════</bold></gradient>"));
             player.playSound(player.getLocation(), Sound.UI_TOAST_CHALLENGE_COMPLETE, 1.0f, 1.2f);
             return;
@@ -334,10 +349,34 @@ public class MasterAdminGUI implements InventoryHolder {
             return;
         }
 
-        if (slot == 31) { // ApexsionsCustomEnchants (/ace)
+        if (slot == 30) { // ApexsionsCustomEnchants (/ace)
             player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.8f, 1.2f);
             player.closeInventory();
             player.performCommand("ace");
+            return;
+        }
+
+        if (slot == 32) { // ApexsionsCrates (/crate & /crateshop admin)
+            player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.8f, 1.2f);
+            player.closeInventory();
+            if (event.isRightClick()) {
+                player.performCommand("crateshop admin");
+            } else {
+                var mod = plugin.getAdminHubManager().getModule("crate");
+                if (mod.isPresent()) {
+                    mod.get().open(player);
+                } else {
+                    player.performCommand("crate editor");
+                }
+            }
+            return;
+        }
+
+        if (slot == 31) { // Fallback if 31 clicked
+            player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.8f, 1.2f);
+            player.closeInventory();
+            player.performCommand("ace");
+            return;
         }
     }
 
