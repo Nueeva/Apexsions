@@ -492,10 +492,20 @@ a:hover {
     transition: color 0.2s ease;
     position: relative;
     text-decoration: none;
-    display: inline-flex;
-    flex-direction: column;
-    align-items: center;
+    display: inline-flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 0.35rem;
     letter-spacing: 0.01em;
+    white-space: nowrap !important;
+}
+
+/* Eliminate duplicate dropdown carets across navbar items */
+.apx-nav-link.dropdown-toggle::after,
+.apx-user-box.dropdown-toggle::after,
+.apx-user-pill.dropdown-toggle::after {
+    display: none !important;
+    content: none !important;
 }
 
 .apx-nav-link:hover {
@@ -620,6 +630,14 @@ a:hover {
     justify-content: center;
     font-size: 0.95rem;
     flex-shrink: 0;
+}
+
+.apx-more-chevron {
+    font-size: 0.72rem;
+    color: #94a3b8;
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    display: inline-block;
+    vertical-align: middle;
 }
 
 .dropdown-toggle[aria-expanded="true"] .apx-more-chevron {
