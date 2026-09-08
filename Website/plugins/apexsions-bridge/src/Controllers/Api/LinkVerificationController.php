@@ -228,6 +228,7 @@ class LinkVerificationController extends Controller
             'max_players' => ['nullable', 'integer', 'min:1'],
             'players' => ['nullable', 'array'],
             'tps' => ['nullable', 'numeric'],
+            'mspt' => ['nullable', 'numeric'],
             'version' => ['nullable', 'string', 'max:32'],
             'ram_used_mb' => ['nullable', 'integer'],
             'ram_max_mb' => ['nullable', 'integer'],
@@ -235,6 +236,8 @@ class LinkVerificationController extends Controller
             'uptime_seconds' => ['nullable', 'integer'],
             'loaded_chunks' => ['nullable', 'integer'],
             'entities' => ['nullable', 'integer'],
+            'maintenance' => ['nullable', 'boolean'],
+            'plugins' => ['nullable', 'array'],
         ]);
 
         $data = [
@@ -243,6 +246,7 @@ class LinkVerificationController extends Controller
             'max_players' => (int) ($validated['max_players'] ?? 500),
             'player_list' => $validated['players'] ?? [],
             'tps' => (float) ($validated['tps'] ?? 20.0),
+            'mspt' => (float) ($validated['mspt'] ?? 15.0),
             'version' => $validated['version'] ?? '26.2',
             'ram_used_mb' => (int) ($validated['ram_used_mb'] ?? 0),
             'ram_max_mb' => (int) ($validated['ram_max_mb'] ?? 0),
@@ -250,10 +254,37 @@ class LinkVerificationController extends Controller
             'uptime_seconds' => (int) ($validated['uptime_seconds'] ?? 0),
             'loaded_chunks' => (int) ($validated['loaded_chunks'] ?? 0),
             'entities' => (int) ($validated['entities'] ?? 0),
+            'maintenance' => (bool) ($validated['maintenance'] ?? false),
+            'plugins' => $validated['plugins'] ?? [],
             'last_heartbeat' => now()->timestamp,
         ];
 
         Cache::put('apexsions.server_status', $data, now()->addMinutes(3));
+
+        // Periodic historical metric persistence (rate limited to 1 snapshot / 60 seconds)
+        try {
+            $lastSnapshot = \Azuriom\Plugin\ApexsionsBridge\Models\ServerMetric::latestSnapshot()->first();
+            if (!$lastSnapshot || Carbon::now()->diffInSeconds($lastSnapshot->created_at) >= 60) {
+                $serverStatus = \Azuriom\Plugin\ApexsionsBridge\Services\ServerOpsService::getServerStatus();
+                \Azuriom\Plugin\ApexsionsBridge\Models\ServerMetric::create([
+                    'tps' => (float) ($validated['tps'] ?? 20.0),
+                    'mspt' => (float) ($validated['mspt'] ?? 15.0),
+                    'ram_used_mb' => (int) ($validated['ram_used_mb'] ?? 0),
+                    'ram_max_mb' => (int) ($validated['ram_max_mb'] ?? 0),
+                    'online_players' => (int) $validated['online_players'],
+                    'max_players' => (int) ($validated['max_players'] ?? 500),
+                    'loaded_chunks' => (int) ($validated['loaded_chunks'] ?? 0),
+                    'entities' => (int) ($validated['entities'] ?? 0),
+                    'server_status' => $serverStatus['status'] ?? 'ONLINE',
+                    'created_at' => Carbon::now(),
+                ]);
+            }
+
+            // Evaluate thresholds for persistent alerts
+            \Azuriom\Plugin\ApexsionsBridge\Services\ServerOpsService::evaluateAlerts($data);
+        } catch (\Throwable $e) {
+            Log::warning('[Apexsions Bridge] Error recording server metrics: ' . $e->getMessage());
+        }
 
         return response()->json([
             'status' => 'success',

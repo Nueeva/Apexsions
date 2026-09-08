@@ -96,6 +96,12 @@ class ApexsionsBridgeServiceProvider extends BasePluginServiceProvider
                 'route' => 'apexsions-bridge.admin.economy.auctions.index',
                 'permission' => 'admin.users',
             ],
+            'apexsions-server' => [
+                'name' => 'Server Operations',
+                'icon' => 'bi bi-hdd-network-fill',
+                'route' => 'apexsions-bridge.admin.server.index',
+                'permission' => 'admin.users',
+            ],
             'apexsions-audit' => [
                 'name' => 'Unified Audit Logs',
                 'icon' => 'bi bi-journal-text',

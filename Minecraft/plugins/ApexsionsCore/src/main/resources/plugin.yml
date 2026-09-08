@@ -24,6 +24,10 @@ commands:
     description: Sions Temporal Reconstruction administration and control.
     permission: apexsions.admin
     usage: /sions <status|restore|bypass|tp>
+  maintenance:
+    description: Server Maintenance Mode management.
+    permission: apexsions.maintenance.admin
+    usage: /maintenance <enable|disable|status|setmessage> [reason]
   link:
     description: Link in-game Minecraft account to Apexsions web platform.
     permission: apexsionscore.command.link

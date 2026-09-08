@@ -7,6 +7,7 @@ use Azuriom\Plugin\ApexsionsBridge\Controllers\Admin\EconomyAdminController;
 use Azuriom\Plugin\ApexsionsBridge\Controllers\Admin\ModerationAdminController;
 use Azuriom\Plugin\ApexsionsBridge\Controllers\Admin\PlayerAdminController;
 use Azuriom\Plugin\ApexsionsBridge\Controllers\Admin\ReportAdminController;
+use Azuriom\Plugin\ApexsionsBridge\Controllers\Admin\ServerAdminController;
 use Azuriom\Plugin\ApexsionsBridge\Controllers\Admin\TransactionAdminController;
 use Azuriom\Plugin\ApexsionsBridge\Controllers\Api\LinkVerificationController;
 use Azuriom\Plugin\ApexsionsBridge\Controllers\LeaderboardController;
@@ -79,6 +80,18 @@ Route::middleware(['web', 'admin-access'])->prefix('admin')->name('admin.')->gro
             Route::post('/{id}/quarantine', [AuctionAdminController::class, 'quarantine'])->name('quarantine');
             Route::post('/{id}/cancel', [AuctionAdminController::class, 'cancel'])->name('cancel');
         });
+    });
+
+    // Server Operations & Safe Control
+    Route::prefix('server')->name('server.')->middleware('can:admin.users')->group(function () {
+        Route::get('/', [ServerAdminController::class, 'index'])->name('index');
+        Route::get('/actions', [ServerAdminController::class, 'actions'])->name('actions');
+        Route::get('/plugins', [ServerAdminController::class, 'plugins'])->name('plugins');
+        Route::get('/metrics', [ServerAdminController::class, 'metrics'])->name('metrics');
+        Route::post('/actions/execute', [ServerAdminController::class, 'executeAction'])->name('actions.execute');
+        Route::post('/maintenance', [ServerAdminController::class, 'toggleMaintenance'])->name('maintenance.toggle');
+        Route::post('/alerts/{id}/acknowledge', [ServerAdminController::class, 'acknowledgeAlert'])->name('alerts.acknowledge');
+        Route::post('/alerts/{id}/resolve', [ServerAdminController::class, 'resolveAlert'])->name('alerts.resolve');
     });
 
     // Unified Audit Logs

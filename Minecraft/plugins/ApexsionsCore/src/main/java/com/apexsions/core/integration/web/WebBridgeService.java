@@ -126,6 +126,14 @@ public class WebBridgeService {
                 }
             }
 
+            double mspt = 15.0;
+            try {
+                mspt = Math.round(Bukkit.getAverageTickTime() * 10.0) / 10.0;
+            } catch (Throwable ignored) {
+            }
+
+            boolean maintenance = plugin.getMaintenanceManager() != null && plugin.getMaintenanceManager().isMaintenanceActive();
+
             StringBuilder playersJson = new StringBuilder("[");
             for (int i = 0; i < onlineList.size(); i++) {
                 Player p = onlineList.get(i);
@@ -141,13 +149,28 @@ public class WebBridgeService {
             }
             playersJson.append("]");
 
+            StringBuilder pluginsJson = new StringBuilder("[");
+            org.bukkit.plugin.Plugin[] plugins = Bukkit.getPluginManager().getPlugins();
+            for (int i = 0; i < plugins.length; i++) {
+                org.bukkit.plugin.Plugin p = plugins[i];
+                if (p.getName().startsWith("Apexsions")) {
+                    pluginsJson.append(String.format("{\"name\":\"%s\",\"version\":\"%s\",\"enabled\":%b}",
+                            escapeJson(p.getName()), escapeJson(p.getPluginMeta().getVersion()), p.isEnabled()));
+                    if (i < plugins.length - 1) pluginsJson.append(",");
+                }
+            }
+            if (pluginsJson.length() > 1 && pluginsJson.charAt(pluginsJson.length() - 1) == ',') {
+                pluginsJson.deleteCharAt(pluginsJson.length() - 1);
+            }
+            pluginsJson.append("]");
+
             String jsonPayload = String.format(
-                    "{\"online_players\":%d,\"max_players\":%d,\"players\":%s,\"tps\":%.1f,\"version\":\"%s\"," +
+                    "{\"online_players\":%d,\"max_players\":%d,\"players\":%s,\"tps\":%.1f,\"mspt\":%.1f,\"version\":\"%s\"," +
                     "\"ram_used_mb\":%d,\"ram_max_mb\":%d,\"free_ram_mb\":%d,\"uptime_seconds\":%d," +
-                    "\"loaded_chunks\":%d,\"entities\":%d}",
-                    onlinePlayers, maxPlayers, playersJson.toString(), tps, version,
+                    "\"loaded_chunks\":%d,\"entities\":%d,\"maintenance\":%b,\"plugins\":%s}",
+                    onlinePlayers, maxPlayers, playersJson.toString(), tps, mspt, version,
                     ramUsedMb, ramMaxMb, freeRamMb, uptimeSeconds,
-                    loadedChunks, totalEntities
+                    loadedChunks, totalEntities, maintenance, pluginsJson.toString()
             );
 
             HttpRequest request = HttpRequest.newBuilder()

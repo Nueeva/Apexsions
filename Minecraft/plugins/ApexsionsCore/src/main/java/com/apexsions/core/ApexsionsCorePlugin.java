@@ -105,6 +105,7 @@ public class ApexsionsCorePlugin extends JavaPlugin {
     private com.apexsions.core.title.TitleManager titleManager;
     private com.apexsions.core.cosmetics.CosmeticsManager cosmeticsManager;
     private com.apexsions.core.motd.MotdManager motdManager;
+    private com.apexsions.core.maintenance.MaintenanceManager maintenanceManager;
 
     // Kits & Armor Set Bonus Engine
     private com.apexsions.core.kit.KitManager kitManager;
@@ -224,6 +225,10 @@ public class ApexsionsCorePlugin extends JavaPlugin {
             // Server MOTD & Ping Manager
             this.motdManager = new com.apexsions.core.motd.MotdManager(this);
             Bukkit.getPluginManager().registerEvents(this.motdManager, this);
+
+            // Server Maintenance Mode Subsystem
+            this.maintenanceManager = new com.apexsions.core.maintenance.MaintenanceManager(this);
+            Bukkit.getPluginManager().registerEvents(this.maintenanceManager, this);
 
             // 9. Chat System (Only register fallback if ApexsionsChat is not installed)
             if (this.configManager.isChatEnabled() && !Bukkit.getPluginManager().isPluginEnabled("ApexsionsChat")) {
@@ -510,6 +515,14 @@ public class ApexsionsCorePlugin extends JavaPlugin {
             sionsCmd.setExecutor(sionsHandler);
             sionsCmd.setTabCompleter(sionsHandler);
         }
+
+        // /maintenance
+        com.apexsions.core.command.MaintenanceCommand maintenanceHandler = new com.apexsions.core.command.MaintenanceCommand(this);
+        PluginCommand maintenanceCmd = getCommand("maintenance");
+        if (maintenanceCmd != null) {
+            maintenanceCmd.setExecutor(maintenanceHandler);
+            maintenanceCmd.setTabCompleter(maintenanceHandler);
+        }
     }
 
     public static ApexsionsCorePlugin getInstance() { return instance; }
@@ -560,6 +573,7 @@ public class ApexsionsCorePlugin extends JavaPlugin {
     public FileConfiguration getChatConfig() { return configManager.getChatConfig(); }
     public TerritoryListener getTerritoryListener() { return territoryListener; }
     public com.apexsions.core.motd.MotdManager getMotdManager() { return motdManager; }
+    public com.apexsions.core.maintenance.MaintenanceManager getMaintenanceManager() { return maintenanceManager; }
     public com.apexsions.core.kit.KitManager getKitManager() { return kitManager; }
     public com.apexsions.core.kingdom.KingdomBuffManager getKingdomBuffManager() { return kingdomBuffManager; }
     public com.apexsions.core.kit.KitArmorSetListener getKitArmorSetListener() { return kitArmorSetListener; }

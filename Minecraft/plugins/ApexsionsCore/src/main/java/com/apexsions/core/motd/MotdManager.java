@@ -24,6 +24,13 @@ public class MotdManager implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onServerListPing(PaperServerListPingEvent event) {
+        if (plugin.getMaintenanceManager() != null && plugin.getMaintenanceManager().isMaintenanceActive()) {
+            String mLine1 = "      <gradient:#e74c3c:#c0392b><bold>✦ APEXSIONS MAINTENANCE ✦</bold></gradient> <gray>•</gray> <red><bold>[PEMELIHARAAN]</bold></red>";
+            String mLine2 = "   <yellow>" + plugin.getMaintenanceManager().getMessage() + "</yellow>";
+            event.motd(miniMessage.deserialize(mLine1).append(Component.newline()).append(miniMessage.deserialize(mLine2)));
+            return;
+        }
+
         FileConfiguration config = plugin.getConfigManager().getMotdConfig();
         if (!config.getBoolean("enabled", config.getBoolean("motd.enabled", true))) {
             return;
