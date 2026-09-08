@@ -39,7 +39,10 @@ class AuditService
             $metadata['user_agent'] = substr((string) Request::userAgent(), 0, 150);
         }
 
+        $actionId = $data['action_id'] ?? ($metadata['action_id'] ?? null);
+
         return AuditLog::create([
+            'action_id' => $actionId,
             'actor_type' => $actorType,
             'actor_id' => $actorId,
             'actor_name' => $actorName,

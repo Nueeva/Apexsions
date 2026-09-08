@@ -133,45 +133,159 @@
 
                     <!-- 2. ECONOMY TAB -->
                     <div class="tab-pane fade" id="economy" role="tabpanel">
-                        <div class="row g-3">
-                            <div class="col-sm-6">
+                        <div class="row g-3 mb-4">
+                            <div class="col-sm-4">
                                 <div class="p-3 rounded bg-dark border border-secondary">
                                     <div class="d-flex justify-content-between align-items-center mb-1">
                                         <small class="text-muted text-uppercase fw-bold" style="font-size: 0.72rem;">Saldo Rupiah (Rp)</small>
                                         <i class="bi bi-cash-stack text-success fs-5"></i>
                                     </div>
                                     <h4 class="fw-bold text-success mb-0">Rp {{ number_format($account->balance_rupiah, 0, ',', '.') }}</h4>
-                                    <small class="text-muted">Mata uang utama ekonomi kerajaan</small>
+                                    <small class="text-muted">Mata uang utama ekonomi</small>
                                 </div>
                             </div>
-                            <div class="col-sm-6">
+                            <div class="col-sm-4">
                                 <div class="p-3 rounded bg-dark border border-secondary">
                                     <div class="d-flex justify-content-between align-items-center mb-1">
                                         <small class="text-muted text-uppercase fw-bold" style="font-size: 0.72rem;">Saldo Diamond (💎)</small>
                                         <i class="bi bi-gem text-info fs-5"></i>
                                     </div>
                                     <h4 class="fw-bold text-info mb-0">{{ number_format($account->balance_diamond, 0, ',', '.') }} 💎</h4>
-                                    <small class="text-muted">Mata uang komoditas tambang langka</small>
+                                    <small class="text-muted">Komoditas tambang langka</small>
                                 </div>
                             </div>
-                            <div class="col-sm-6">
+                            <div class="col-sm-4">
                                 <div class="p-3 rounded bg-dark border border-secondary">
                                     <div class="d-flex justify-content-between align-items-center mb-1">
-                                        <small class="text-muted text-uppercase fw-bold" style="font-size: 0.72rem;">Apex Coins / BP Points</small>
+                                        <small class="text-muted text-uppercase fw-bold" style="font-size: 0.72rem;">Apex Coins (AC)</small>
                                         <i class="bi bi-stars text-warning fs-5"></i>
                                     </div>
                                     <h4 class="fw-bold text-warning mb-0">{{ number_format($account->apex_coins) }}</h4>
-                                    <small class="text-muted">Poin penukaran toko musim</small>
+                                    <small class="text-muted">Poin BattlePass / Musim</small>
                                 </div>
                             </div>
-                            <div class="col-sm-6">
-                                <div class="p-3 rounded bg-dark border border-secondary">
-                                    <small class="text-muted text-uppercase fw-bold d-block mb-1" style="font-size: 0.72rem;">Hadiah Harian Web</small>
-                                    <div class="text-light">
-                                        {{ $account->last_daily_reward_at ? $account->last_daily_reward_at->diffForHumans() : 'Belum pernah klaim' }}
-                                    </div>
-                                    <small class="text-muted">Klaim reward gratis web profile</small>
-                                </div>
+                        </div>
+
+                        <!-- Recent Player Transactions -->
+                        <div class="card border-0 mb-4" style="background: #14171d; border-radius: 8px;">
+                            <div class="card-header bg-transparent border-bottom border-secondary border-opacity-25 py-2 px-3 d-flex justify-content-between align-items-center">
+                                <span class="small fw-bold text-white text-uppercase">
+                                    <i class="bi bi-receipt me-1 text-warning"></i> Mutasi Transaksi Terakhir ({{ $playerTransactions->count() }})
+                                </span>
+                                <a href="{{ route('apexsions-bridge.admin.economy.transactions.index') }}?q={{ urlencode($account->minecraft_username) }}" class="btn btn-link text-warning text-decoration-none p-0 small" style="font-size: 0.75rem;">
+                                    Buka Transaction Explorer <i class="bi bi-arrow-right"></i>
+                                </a>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-sm table-hover text-light mb-0" style="font-size: 0.82rem;">
+                                    <thead class="border-bottom border-secondary text-muted text-uppercase" style="font-size: 0.7rem;">
+                                        <tr>
+                                            <th class="ps-3">Waktu</th>
+                                            <th>Tipe</th>
+                                            <th>Pihak Lawan</th>
+                                            <th>Jumlah</th>
+                                            <th>Status</th>
+                                            <th class="pe-3 text-end">Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @forelse($playerTransactions as $tx)
+                                            @php
+                                                $isSender = ($tx->sender_name === $account->minecraft_username || $tx->sender_uuid === $account->minecraft_uuid);
+                                                $counterParty = $isSender ? ($tx->receiver_name ?? 'SYSTEM') : ($tx->sender_name ?? 'SYSTEM');
+                                            @endphp
+                                            <tr>
+                                                <td class="ps-3 font-monospace text-white-50 small">{{ $tx->created_at->format('d/m H:i') }}</td>
+                                                <td>
+                                                    <span class="badge bg-secondary bg-opacity-50 text-white font-monospace" style="font-size: 0.7rem;">{{ $tx->type }}</span>
+                                                </td>
+                                                <td>
+                                                    <span class="{{ $isSender ? 'text-danger' : 'text-success' }} small">
+                                                        <i class="bi {{ $isSender ? 'bi-arrow-up-right' : 'bi-arrow-down-left' }} me-1"></i>
+                                                        {{ $counterParty }}
+                                                    </span>
+                                                </td>
+                                                <td class="fw-bold {{ $isSender ? 'text-danger' : 'text-success' }}">
+                                                    {{ $isSender ? '-' : '+' }}{{ $tx->currency === 'diamond' ? number_format($tx->amount, 0) . ' 💎' : 'Rp ' . number_format($tx->amount, 0, ',', '.') }}
+                                                </td>
+                                                <td>
+                                                    <span class="badge bg-{{ $tx->status === 'COMPLETED' ? 'success' : 'warning' }} bg-opacity-25 text-{{ $tx->status === 'COMPLETED' ? 'success' : 'warning' }} font-monospace" style="font-size: 0.68rem;">
+                                                        {{ $tx->status }}
+                                                    </span>
+                                                </td>
+                                                <td class="pe-3 text-end">
+                                                    <a href="{{ route('apexsions-bridge.admin.economy.transactions.show', $tx->id) }}" class="btn btn-outline-secondary btn-sm py-0 px-2" style="font-size: 0.72rem;">
+                                                        Trace
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        @empty
+                                            <tr>
+                                                <td colspan="6" class="text-center py-4 text-muted small">
+                                                    Belum ada catatan mutasi transaksi untuk pemain ini.
+                                                </td>
+                                            </tr>
+                                        @endforelse
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Player Auction Listings -->
+                        <div class="card border-0" style="background: #14171d; border-radius: 8px;">
+                            <div class="card-header bg-transparent border-bottom border-secondary border-opacity-25 py-2 px-3 d-flex justify-content-between align-items-center">
+                                <span class="small fw-bold text-white text-uppercase">
+                                    <i class="bi bi-shop me-1 text-warning"></i> Aktivitas Lelang Pemain ({{ $playerAuctions->count() }})
+                                </span>
+                                <a href="{{ route('apexsions-bridge.admin.economy.auctions.index') }}?q={{ urlencode($account->minecraft_username) }}" class="btn btn-link text-warning text-decoration-none p-0 small" style="font-size: 0.75rem;">
+                                    Buka Auction Inspector <i class="bi bi-arrow-right"></i>
+                                </a>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-sm table-hover text-light mb-0" style="font-size: 0.82rem;">
+                                    <thead class="border-bottom border-secondary text-muted text-uppercase" style="font-size: 0.7rem;">
+                                        <tr>
+                                            <th class="ps-3">Lot ID</th>
+                                            <th>Item</th>
+                                            <th>Harga</th>
+                                            <th>Status</th>
+                                            <th class="pe-3 text-end">Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @forelse($playerAuctions as $auc)
+                                            <tr>
+                                                <td class="ps-3 font-monospace text-white-50 small">#{{ $auc->auction_id }}</td>
+                                                <td class="fw-bold text-white">{{ $auc->item_name }}</td>
+                                                <td class="fw-bold text-warning">
+                                                    {{ $auc->currency === 'diamond' ? number_format($auc->price, 0) . ' 💎' : 'Rp ' . number_format($auc->price, 0, ',', '.') }}
+                                                </td>
+                                                <td>
+                                                    @if($auc->status === 'ACTIVE')
+                                                        <span class="badge bg-success bg-opacity-25 text-success">ACTIVE</span>
+                                                    @elseif($auc->status === 'QUARANTINED')
+                                                        <span class="badge bg-danger bg-opacity-25 text-danger">QUARANTINED</span>
+                                                    @elseif($auc->status === 'SOLD')
+                                                        <span class="badge bg-info bg-opacity-25 text-info">SOLD</span>
+                                                    @else
+                                                        <span class="badge bg-secondary bg-opacity-25 text-white-50">{{ $auc->status }}</span>
+                                                    @endif
+                                                </td>
+                                                <td class="pe-3 text-end">
+                                                    <a href="{{ route('apexsions-bridge.admin.economy.auctions.show', $auc->id) }}" class="btn btn-outline-warning btn-sm py-0 px-2" style="font-size: 0.72rem;">
+                                                        Detail
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        @empty
+                                            <tr>
+                                                <td colspan="5" class="text-center py-4 text-muted small">
+                                                    Pemain ini belum pernah mendaftarkan barang di Auction House.
+                                                </td>
+                                            </tr>
+                                        @endforelse
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>

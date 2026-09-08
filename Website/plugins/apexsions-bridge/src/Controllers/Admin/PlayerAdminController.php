@@ -3,11 +3,13 @@
 namespace Azuriom\Plugin\ApexsionsBridge\Controllers\Admin;
 
 use Azuriom\Http\Controllers\Controller;
+use Azuriom\Plugin\ApexsionsBridge\Models\Auction;
 use Azuriom\Plugin\ApexsionsBridge\Models\AuditLog;
 use Azuriom\Plugin\ApexsionsBridge\Models\Delivery;
 use Azuriom\Plugin\ApexsionsBridge\Models\MinecraftAccount;
 use Azuriom\Plugin\ApexsionsBridge\Models\Punishment;
 use Azuriom\Plugin\ApexsionsBridge\Models\Report;
+use Azuriom\Plugin\ApexsionsBridge\Models\Transaction;
 use Azuriom\Plugin\ApexsionsBridge\Services\AuditService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -151,6 +153,22 @@ class PlayerAdminController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
 
+        // Fetch economy transactions for this player
+        $playerTransactions = Transaction::where('sender_uuid', $account->minecraft_uuid)
+            ->orWhere('sender_name', $account->minecraft_username)
+            ->orWhere('receiver_uuid', $account->minecraft_uuid)
+            ->orWhere('receiver_name', $account->minecraft_username)
+            ->orderBy('created_at', 'desc')
+            ->limit(10)
+            ->get();
+
+        // Fetch auction listings for this player
+        $playerAuctions = Auction::where('seller_uuid', $account->minecraft_uuid)
+            ->orWhere('seller_name', $account->minecraft_username)
+            ->orderBy('created_at', 'desc')
+            ->limit(10)
+            ->get();
+
         // Record a read audit log for sensitive viewing if needed
         AuditService::log([
             'action' => 'PLAYER_VIEW',
@@ -174,6 +192,8 @@ class PlayerAdminController extends Controller
             'punishments' => $punishments,
             'reportsAgainst' => $reportsAgainst,
             'reportsCreated' => $reportsCreated,
+            'playerTransactions' => $playerTransactions,
+            'playerAuctions' => $playerAuctions,
         ]);
     }
 

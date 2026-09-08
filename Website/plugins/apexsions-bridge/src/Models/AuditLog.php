@@ -19,6 +19,7 @@ class AuditLog extends Model
      * The attributes that are mass assignable.
      */
     protected $fillable = [
+        'action_id',
         'actor_type',
         'actor_id',
         'actor_name',

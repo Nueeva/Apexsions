@@ -128,6 +128,7 @@ public class MyAuctionsMenu extends Gui {
             case EXPIRED -> "&c&lKEDALUWARSA";
             case SOLD -> "&e&lTERJUAL";
             case CANCELLED -> "&7&lDIBATALKAN";
+            case QUARANTINED -> "&4&lDIKARANTINA";
         };
     }
 }

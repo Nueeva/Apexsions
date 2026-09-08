@@ -2,9 +2,12 @@
 
 use Azuriom\Plugin\ApexsionsBridge\Controllers\AccountLinkController;
 use Azuriom\Plugin\ApexsionsBridge\Controllers\Admin\AuditLogController;
+use Azuriom\Plugin\ApexsionsBridge\Controllers\Admin\AuctionAdminController;
+use Azuriom\Plugin\ApexsionsBridge\Controllers\Admin\EconomyAdminController;
 use Azuriom\Plugin\ApexsionsBridge\Controllers\Admin\ModerationAdminController;
 use Azuriom\Plugin\ApexsionsBridge\Controllers\Admin\PlayerAdminController;
 use Azuriom\Plugin\ApexsionsBridge\Controllers\Admin\ReportAdminController;
+use Azuriom\Plugin\ApexsionsBridge\Controllers\Admin\TransactionAdminController;
 use Azuriom\Plugin\ApexsionsBridge\Controllers\Api\LinkVerificationController;
 use Azuriom\Plugin\ApexsionsBridge\Controllers\LeaderboardController;
 use Azuriom\Plugin\ApexsionsBridge\Controllers\ProfileManagementController;
@@ -56,6 +59,26 @@ Route::middleware(['web', 'admin-access'])->prefix('admin')->name('admin.')->gro
         Route::get('/', [ModerationAdminController::class, 'index'])->name('index');
         Route::post('/store', [ModerationAdminController::class, 'storeAction'])->name('store');
         Route::post('/{id}/pardon', [ModerationAdminController::class, 'pardon'])->name('pardon');
+    });
+
+    // Economy Operations & Market Control
+    Route::prefix('economy')->name('economy.')->middleware('can:admin.users')->group(function () {
+        Route::get('/', [EconomyAdminController::class, 'index'])->name('index');
+        Route::post('/adjust', [EconomyAdminController::class, 'adjustBalance'])->name('adjust');
+
+        // Transactions Explorer
+        Route::prefix('transactions')->name('transactions.')->group(function () {
+            Route::get('/', [TransactionAdminController::class, 'index'])->name('index');
+            Route::get('/{id}', [TransactionAdminController::class, 'show'])->name('show');
+        });
+
+        // Auction Inspector
+        Route::prefix('auctions')->name('auctions.')->group(function () {
+            Route::get('/', [AuctionAdminController::class, 'index'])->name('index');
+            Route::get('/{id}', [AuctionAdminController::class, 'show'])->name('show');
+            Route::post('/{id}/quarantine', [AuctionAdminController::class, 'quarantine'])->name('quarantine');
+            Route::post('/{id}/cancel', [AuctionAdminController::class, 'cancel'])->name('cancel');
+        });
     });
 
     // Unified Audit Logs

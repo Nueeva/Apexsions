@@ -522,4 +522,140 @@ class LinkVerificationController extends Controller
             'punishment_id' => $punishment->id,
         ]);
     }
+
+    /**
+     * Ingest an in-game transaction record into the central Transaction Explorer.
+     */
+    public function syncTransaction(Request $request): JsonResponse
+    {
+        if (!$this->authenticateServer($request)) {
+            return response()->json(['error' => 'Unauthorized server request.'], 401);
+        }
+
+        $validated = $request->validate([
+            'transaction_id' => ['nullable', 'string', 'max:64'],
+            'type' => ['required', 'string', 'max:32'],
+            'sender_uuid' => ['nullable', 'string', 'max:64'],
+            'sender_name' => ['nullable', 'string', 'max:64'],
+            'receiver_uuid' => ['nullable', 'string', 'max:64'],
+            'receiver_name' => ['nullable', 'string', 'max:64'],
+            'currency' => ['required', 'string', 'max:16'],
+            'amount' => ['required', 'numeric', 'min:0'],
+            'tax_amount' => ['nullable', 'numeric', 'min:0'],
+            'net_amount' => ['nullable', 'numeric', 'min:0'],
+            'reason' => ['nullable', 'string', 'max:255'],
+            'status' => ['nullable', 'string', 'max:16'],
+            'metadata' => ['nullable', 'array'],
+        ]);
+
+        $txId = $validated['transaction_id'] ?? (string) \Illuminate\Support\Str::uuid();
+        $amount = (float) $validated['amount'];
+        $tax = (float) ($validated['tax_amount'] ?? 0);
+        $net = (float) ($validated['net_amount'] ?? ($amount - $tax));
+
+        $tx = \Azuriom\Plugin\ApexsionsBridge\Models\Transaction::updateOrCreate(
+            ['transaction_id' => $txId],
+            [
+                'type' => strtoupper($validated['type']),
+                'sender_uuid' => $validated['sender_uuid'] ?? null,
+                'sender_name' => $validated['sender_name'] ?? null,
+                'receiver_uuid' => $validated['receiver_uuid'] ?? null,
+                'receiver_name' => $validated['receiver_name'] ?? null,
+                'currency' => strtolower($validated['currency']),
+                'amount' => $amount,
+                'tax_amount' => $tax,
+                'net_amount' => $net,
+                'reason' => $validated['reason'] ?? null,
+                'status' => strtoupper($validated['status'] ?? 'COMPLETED'),
+                'source' => 'IN_GAME',
+                'metadata' => $validated['metadata'] ?? null,
+            ]
+        );
+
+        return response()->json([
+            'status' => 'success',
+            'transaction_id' => $tx->transaction_id,
+        ]);
+    }
+
+    /**
+     * Ingest or update an in-game auction listing for the Auction Inspector.
+     */
+    public function syncAuction(Request $request): JsonResponse
+    {
+        if (!$this->authenticateServer($request)) {
+            return response()->json(['error' => 'Unauthorized server request.'], 401);
+        }
+
+        $validated = $request->validate([
+            'auction_id' => ['required', 'string', 'max:64'],
+            'seller_uuid' => ['required', 'string', 'max:64'],
+            'seller_name' => ['required', 'string', 'max:64'],
+            'currency' => ['required', 'string', 'max:16'],
+            'price' => ['required', 'numeric', 'min:0'],
+            'item_name' => ['required', 'string', 'max:128'],
+            'item_data' => ['nullable', 'string'],
+            'status' => ['required', 'string', 'max:16'],
+            'buyer_uuid' => ['nullable', 'string', 'max:64'],
+            'buyer_name' => ['nullable', 'string', 'max:64'],
+            'expires_at' => ['nullable', 'date'],
+        ]);
+
+        $auction = \Azuriom\Plugin\ApexsionsBridge\Models\Auction::updateOrCreate(
+            ['auction_id' => $validated['auction_id']],
+            [
+                'seller_uuid' => $validated['seller_uuid'],
+                'seller_name' => $validated['seller_name'],
+                'currency' => strtolower($validated['currency']),
+                'price' => (float) $validated['price'],
+                'item_name' => $validated['item_name'],
+                'item_data' => $validated['item_data'] ?? null,
+                'status' => strtoupper($validated['status']),
+                'buyer_uuid' => $validated['buyer_uuid'] ?? null,
+                'buyer_name' => $validated['buyer_name'] ?? null,
+                'expires_at' => !empty($validated['expires_at']) ? Carbon::parse($validated['expires_at']) : null,
+            ]
+        );
+
+        return response()->json([
+            'status' => 'success',
+            'auction_id' => $auction->auction_id,
+        ]);
+    }
+
+    /**
+     * Sync kingdom treasury balance.
+     */
+    public function syncKingdomTreasury(Request $request): JsonResponse
+    {
+        if (!$this->authenticateServer($request)) {
+            return response()->json(['error' => 'Unauthorized server request.'], 401);
+        }
+
+        $validated = $request->validate([
+            'kingdom_key' => ['required', 'string', 'max:32'],
+            'kingdom_name' => ['required', 'string', 'max:64'],
+            'currency' => ['required', 'string', 'max:16'],
+            'balance' => ['required', 'numeric', 'min:0'],
+            'tax_collected' => ['nullable', 'numeric', 'min:0'],
+        ]);
+
+        $treasury = \Azuriom\Plugin\ApexsionsBridge\Models\KingdomTreasury::updateOrCreate(
+            [
+                'kingdom_key' => strtoupper($validated['kingdom_key']),
+                'currency' => strtolower($validated['currency']),
+            ],
+            [
+                'kingdom_name' => $validated['kingdom_name'],
+                'balance' => (float) $validated['balance'],
+                'total_tax_collected' => (float) ($validated['tax_collected'] ?? 0),
+                'last_tax_collected_at' => now(),
+            ]
+        );
+
+        return response()->json([
+            'status' => 'success',
+            'kingdom_key' => $treasury->kingdom_key,
+        ]);
+    }
 }

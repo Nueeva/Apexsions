@@ -78,6 +78,24 @@ class ApexsionsBridgeServiceProvider extends BasePluginServiceProvider
                 'route' => 'apexsions-bridge.admin.moderation.index',
                 'permission' => 'admin.users',
             ],
+            'apexsions-economy' => [
+                'name' => 'Economy Inspector',
+                'icon' => 'bi bi-cash-stack',
+                'route' => 'apexsions-bridge.admin.economy.index',
+                'permission' => 'admin.users',
+            ],
+            'apexsions-transactions' => [
+                'name' => 'Transaction Explorer',
+                'icon' => 'bi bi-receipt-cutoff',
+                'route' => 'apexsions-bridge.admin.economy.transactions.index',
+                'permission' => 'admin.users',
+            ],
+            'apexsions-auctions' => [
+                'name' => 'Auction Inspector',
+                'icon' => 'bi bi-shop',
+                'route' => 'apexsions-bridge.admin.economy.auctions.index',
+                'permission' => 'admin.users',
+            ],
             'apexsions-audit' => [
                 'name' => 'Unified Audit Logs',
                 'icon' => 'bi bi-journal-text',
