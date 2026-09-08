@@ -73,4 +73,8 @@ public class RewardItem {
     public String getCurrencyId() { return currencyId; }
     public boolean isSpecialPreview() { return specialPreview; }
     public boolean isPreviewable() { return true; }
+
+    public RewardItem withSpecialPreview(boolean specialPreview) {
+        return new RewardItem(type, material, amount, name, commands, permission, itemData, currencyId, specialPreview);
+    }
 }

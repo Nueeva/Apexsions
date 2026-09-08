@@ -63,7 +63,6 @@ public class AdminRewardItemEditMenu extends Gui {
             overviewLore.add("&7Jumlah: &a" + item.getAmount() + "x");
             overviewLore.add("&7Stackable: " + (isStackable ? "&aYa (Maks " + itemStack.getMaxStackSize() + ")" : "&cTidak (Maks 1)"));
         }
-        overviewLore.add("&7Tipe Preview: " + (item.isSpecialPreview() ? "&6👑 Istimewa" : "&b📦 Biasa"));
         if (!item.getCommands().isEmpty()) {
             overviewLore.add("&7Command: &f" + String.join(", ", item.getCommands()));
         }
@@ -178,27 +177,6 @@ public class AdminRewardItemEditMenu extends Gui {
                 }, this::open);
             }));
         }
-
-        // Preview Mode Toggle Button (Slot 22: Istimewa vs Biasa)
-        boolean isSpecial = item.isSpecialPreview();
-        setButton(22, new GuiButton(new ItemBuilder(isSpecial ? Material.NETHER_STAR : Material.CHEST)
-                .name(isSpecial ? "&6&l[👑] TIPE PREVIEW: ISTIMEWA" : "&b&l[📦] TIPE PREVIEW: BIASA")
-                .lore(List.of(
-                        "&7Tipe tampilan preview hadiah saat diklik pemain:",
-                        isSpecial ? "&6● ISTIMEWA &7(Tampilan GUI mewah, pedestal & visual spesial)" : "&8○ ISTIMEWA &7(Tampilan GUI mewah)",
-                        !isSpecial ? "&b● BIASA &7(Tampilan preview standar minimalis)" : "&8○ BIASA &7(Tampilan standar)",
-                        "&8(Catatan: Level kelipatan 50 otomatis istimewa)",
-                        " ",
-                        isSpecial ? "&eKlik untuk beralih ke Mode Biasa >" : "&eKlik untuk beralih ke Mode Istimewa >"
-                ))
-                .glow()
-                .build(), event -> {
-            boolean nextState = !isSpecial;
-            RewardItem updated = new RewardItem(item.getType(), item.getMaterial(), item.getAmount(), item.getName(), item.getCommands(), item.getPermission(), item.getItemData(), item.getCurrencyId(), nextState);
-            plugin.getRewardManager().updateReward(level, passId, rewardIndex, updated);
-            player.sendMessage(nextState ? "§aTipe preview hadiah berhasil diubah menjadi §6§lISTIMEWA§a!" : "§aTipe preview hadiah berhasil diubah menjadi §b§lBIASA§a!");
-            open();
-        }));
 
         // Delete Reward Button (Slot 24)
         setButton(24, new GuiButton(new ItemBuilder(Material.RED_CONCRETE)

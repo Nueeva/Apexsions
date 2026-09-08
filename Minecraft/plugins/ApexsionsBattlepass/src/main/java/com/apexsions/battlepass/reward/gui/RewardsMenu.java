@@ -333,7 +333,7 @@ public class RewardsMenu extends Gui {
 
         // Check preview type: Special for milestone every 50 levels or specialPreview flag
         boolean isMilestone = (level % 50 == 0);
-        boolean isSpecial = isMilestone || rewards.stream().anyMatch(RewardItem::isSpecialPreview);
+        boolean isSpecial = isMilestone || plugin.getRewardManager().isSpecialPreview(level, passId);
 
         Material displayMat = getPassDisplayMaterial(passId, state, isMilestone);
 

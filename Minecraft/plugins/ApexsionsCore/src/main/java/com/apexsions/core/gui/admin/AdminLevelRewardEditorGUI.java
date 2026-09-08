@@ -131,6 +131,20 @@ public class AdminLevelRewardEditorGUI implements InventoryHolder {
         }
         inventory.setItem(49, createItem(Material.COMMAND_BLOCK, "<light_purple><bold>Daftar Perintah Hadiah</bold></light_purple>", cmdLore));
 
+        // Slot 51: Preview Level Reward Test
+        boolean isMilestone = (level % 10 == 1 && level > 1) || level == 100;
+        inventory.setItem(51, createItem(
+                isMilestone ? Material.NETHER_STAR : Material.ENDER_CHEST,
+                "<gradient:#f1c40f:#e67e22><bold>👁 PREVIEW TAMPILAN HADIAH</bold></gradient>",
+                List.of(
+                        mm.deserialize("<gray>Tipe: " + (isMilestone ? "<gold>★ Milestone Showcase</gold>" : "<aqua>Standard Minimalis</aqua>") + "</gray>"),
+                        mm.deserialize("<gray>Klik untuk menguji tampilan preview level ini</gray>"),
+                        mm.deserialize("<gray>sebagaimana yang dilihat pemain saat klik di menu level.</gray>"),
+                        mm.deserialize(""),
+                        mm.deserialize("<yellow>▶ Klik untuk buka preview</yellow>")
+                )
+        ));
+
         // Slot 53: Close
         inventory.setItem(53, createItem(Material.BARRIER, "<red><bold>✖ TUTUP</bold></red>", List.of(
                 mm.deserialize("<gray>Tutup menu editor.</gray>")
@@ -152,6 +166,18 @@ public class AdminLevelRewardEditorGUI implements InventoryHolder {
             e.setCancelled(true);
             player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1.0f, 1.0f);
             player.openInventory(new AdminLevelRewardListGUI(plugin, player, returnPage).getInventory());
+            return;
+        }
+
+        if (rawSlot == 51) {
+            e.setCancelled(true);
+            player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1.0f, 1.2f);
+            boolean isMilestone = (level % 10 == 1 && level > 1) || level == 100;
+            if (isMilestone) {
+                plugin.getMilestoneRewardPreviewGUI().open(player, level, returnPage);
+            } else {
+                plugin.getStandardLevelRewardPreviewGUI().open(player, level, returnPage);
+            }
             return;
         }
 

@@ -8,7 +8,10 @@ import com.apexsions.battlepass.gui.navigation.CloseButton;
 import com.apexsions.battlepass.gui.util.ItemBuilder;
 import com.apexsions.battlepass.reward.RewardItem;
 import com.apexsions.battlepass.reward.RewardType;
+import com.apexsions.battlepass.reward.gui.RewardPreviewMenu;
+import com.apexsions.battlepass.reward.gui.SpecialRewardPreviewMenu;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
@@ -52,14 +55,53 @@ public class AdminRewardLevelEditorMenu extends Gui {
                 .build()));
 
         setButton(4, new GuiButton(new ItemBuilder(Material.HOPPER)
-                .name("&a&l[💡] DRAG & DROP ITEM KE SINI")
+                .name("&a&l[💡] KELOLA HADIAH LEVEL INI")
                 .lore(List.of(
-                        "&7Area tengah kosong untuk memasukkan item hadiah.",
-                        "&7● &fDrag & Drop &7item dari inventory Anda ke slot kosong.",
-                        "&7● Atau &fShift-Klik &7item di inventory Anda.",
-                        "&7● Klik item yang sudah ada untuk edit jumlah atau hapus."
+                        "&7Area tengah untuk mengatur item hadiah level:",
+                        "&7● &fDrag & Drop / Shift-Klik &7item untuk menambahkan.",
+                        "&7● &eKlik Kiri &7pada item untuk ubah jumlah / detail.",
+                        "&7● &cKlik Kanan &7pada item untuk langsung menghapusnya."
                 ))
                 .build()));
+
+        // Slot 6: Preview Mode Selector & Direct Test Button
+        boolean isSpecial = plugin.getRewardManager().isSpecialPreview(level, passId);
+        Material prevMat = isSpecial ? Material.NETHER_STAR : Material.CHEST;
+        String prevTitle = isSpecial ? "&6&l[👑] TIPE PREVIEW: ISTIMEWA" : "&b&l[📦] TIPE PREVIEW: BIASA";
+        List<String> prevLore = new ArrayList<>();
+        prevLore.add("&7Status tampilan preview untuk Level " + level + " (" + passId.toUpperCase() + "):");
+        prevLore.add(isSpecial ? "&6● ISTIMEWA &7(Showcase mewah, pedestal & visual 3D)" : "&8○ ISTIMEWA &7(Showcase mewah, pedestal & visual 3D)");
+        prevLore.add(!isSpecial ? "&b● BIASA &7(Tampilan preview standar minimalis)" : "&8○ BIASA &7(Tampilan preview standar minimalis)");
+        if (level % 50 == 0) {
+            prevLore.add("&8(Catatan: Level kelipatan 50 otomatis istimewa)");
+        }
+        prevLore.add(" ");
+        prevLore.add("&e▶ [Klik Kiri] Ganti ke Mode " + (isSpecial ? "BIASA" : "ISTIMEWA"));
+        prevLore.add("&a▶ [Klik Kanan] Coba / Buka Tampilan Preview");
+
+        ItemBuilder prevBuilder = new ItemBuilder(prevMat)
+                .name(prevTitle)
+                .lore(prevLore);
+        if (isSpecial) prevBuilder.glow();
+
+        setButton(6, new GuiButton(prevBuilder.build(), event -> {
+            if (event.isRightClick()) {
+                if (isSpecial) {
+                    new SpecialRewardPreviewMenu(plugin, player, level, passId, rewards, this).open();
+                } else {
+                    new RewardPreviewMenu(plugin, player, level, passId, rewards, this).open();
+                }
+                player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.8f, 1.2f);
+            } else {
+                boolean nextState = !isSpecial;
+                plugin.getRewardManager().setSpecialPreview(level, passId, nextState);
+                player.sendMessage(nextState
+                        ? "§aTipe preview level berhasil diubah menjadi §6§lISTIMEWA§a!"
+                        : "§aTipe preview level berhasil diubah menjadi §b§lBIASA§a!");
+                player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.8f, 1.2f);
+                open();
+            }
+        }));
 
         setButton(8, new GuiButton(new ItemBuilder(Material.BEACON)
                 .name("&6&lTOTAL HADIAH: &e" + rewards.size() + " Hadiah")
@@ -96,7 +138,8 @@ public class AdminRewardLevelEditorMenu extends Gui {
                 lore.add("&7Commands: &f" + String.join(", ", ri.getCommands()));
             }
             lore.add(" ");
-            lore.add("&e&l[KLIK UNTUK EDIT / UBAH JUMLAH / HAPUS]");
+            lore.add("&e▶ [Klik Kiri] Ubah jumlah / detail hadiah");
+            lore.add("&c▶ [Klik Kanan] Hapus hadiah dari level ini");
 
             String displayName = ri.getDisplayName();
             if (ri.getType() == RewardType.CURRENCY && "rupiah".equalsIgnoreCase(ri.getCurrencyId())) {
@@ -110,7 +153,14 @@ public class AdminRewardLevelEditorMenu extends Gui {
 
             int slot = CENTER_SLOTS[idx++];
             setButton(slot, new GuiButton(display, event -> {
-                new AdminRewardItemEditMenu(plugin, player, passId, level, rewardIndex, this).open();
+                if (event.isRightClick()) {
+                    plugin.getRewardManager().removeReward(level, passId, rewardIndex);
+                    player.sendMessage("§cHadiah " + ri.getDisplayName() + " berhasil dihapus dari Level " + level + "!");
+                    player.playSound(player.getLocation(), Sound.ENTITY_ITEM_BREAK, 0.8f, 1.0f);
+                    open();
+                } else {
+                    new AdminRewardItemEditMenu(plugin, player, passId, level, rewardIndex, this).open();
+                }
             }));
         }
 

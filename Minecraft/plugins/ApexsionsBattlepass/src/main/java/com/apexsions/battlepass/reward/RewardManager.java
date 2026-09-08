@@ -20,6 +20,7 @@ public class RewardManager {
     private final ApexsionsBattlepass plugin;
     private final Map<Integer, Integer> levelRequiredXp = new HashMap<>();
     private final Map<Integer, Map<String, List<RewardItem>>> levelRewards = new HashMap<>();
+    private final Set<String> specialPreviewLevels = new HashSet<>();
     private int maxLevel;
     private int defaultRequiredXp;
 
@@ -31,6 +32,7 @@ public class RewardManager {
     public void loadRewards() {
         levelRequiredXp.clear();
         levelRewards.clear();
+        specialPreviewLevels.clear();
 
         this.maxLevel = plugin.getConfig().getInt("battlepass.max-level", 100);
         this.defaultRequiredXp = plugin.getConfig().getInt("battlepass.default-required-xp", 1000);
@@ -108,12 +110,26 @@ public class RewardManager {
                                 String currencyId = map.containsKey("currency-id") ? String.valueOf(map.get("currency-id")) : "battle_coins";
                                 boolean specialPreview = (map.containsKey("special-preview") && Boolean.parseBoolean(String.valueOf(map.get("special-preview"))))
                                         || (map.containsKey("previewable") && Boolean.parseBoolean(String.valueOf(map.get("previewable"))));
+                                if (specialPreview) {
+                                    specialPreviewLevels.add(lvl + ":" + com.apexsions.battlepass.pass.PassManager.normalizePassId(passKey));
+                                }
 
                                 items.add(new RewardItem(type, mat, amount, name, commands, perm, itemData, currencyId, specialPreview));
                             }
                             passMap.put(passKey.toLowerCase(), items);
                         }
                         levelRewards.put(lvl, passMap);
+                    }
+
+                    if (levelsSec.contains(lvlKey + ".special-preview")) {
+                        ConfigurationSection spSec = levelsSec.getConfigurationSection(lvlKey + ".special-preview");
+                        if (spSec != null) {
+                            for (String pKey : spSec.getKeys(false)) {
+                                if (spSec.getBoolean(pKey)) {
+                                    specialPreviewLevels.add(lvl + ":" + com.apexsions.battlepass.pass.PassManager.normalizePassId(pKey));
+                                }
+                            }
+                        }
                     }
                 } catch (NumberFormatException ignored) {}
             }
@@ -148,6 +164,13 @@ public class RewardManager {
                     }
                     config.set(path + ".rewards." + passKey, list);
                 }
+            }
+        }
+
+        for (String spKey : specialPreviewLevels) {
+            String[] parts = spKey.split(":");
+            if (parts.length == 2) {
+                config.set("levels." + parts[0] + ".special-preview." + parts[1], true);
             }
         }
 
@@ -210,12 +233,47 @@ public class RewardManager {
         return List.of();
     }
 
+    public boolean isSpecialPreview(int level, String passId) {
+        if (level % 50 == 0) return true;
+        if (passId == null) return false;
+        String norm = com.apexsions.battlepass.pass.PassManager.normalizePassId(passId);
+        if (specialPreviewLevels.contains(level + ":" + norm)) {
+            return true;
+        }
+        return getRewards(level, passId).stream().anyMatch(RewardItem::isSpecialPreview);
+    }
+
+    public void setSpecialPreview(int level, String passId, boolean special) {
+        if (passId == null) return;
+        String norm = com.apexsions.battlepass.pass.PassManager.normalizePassId(passId);
+        String key = level + ":" + norm;
+        if (special) {
+            specialPreviewLevels.add(key);
+        } else {
+            specialPreviewLevels.remove(key);
+        }
+        List<RewardItem> current = getRewards(level, passId);
+        if (!current.isEmpty()) {
+            List<RewardItem> updated = new ArrayList<>();
+            for (RewardItem ri : current) {
+                updated.add(ri.withSpecialPreview(special));
+            }
+            setRewards(level, passId, updated);
+        } else {
+            saveRewards();
+        }
+    }
+
     public void setRewards(int level, String passId, List<RewardItem> rewards) {
         levelRewards.computeIfAbsent(level, k -> new HashMap<>()).put(passId.toLowerCase(), new ArrayList<>(rewards));
         saveRewards();
     }
 
     public void addReward(int level, String passId, RewardItem reward) {
+        boolean special = isSpecialPreview(level, passId);
+        if (special && !reward.isSpecialPreview()) {
+            reward = reward.withSpecialPreview(true);
+        }
         List<RewardItem> current = new ArrayList<>(getRewards(level, passId));
         current.add(reward);
         setRewards(level, passId, current);
