@@ -40,9 +40,11 @@ Setiap pemain di server diwajibkan memilih dan berikrar pada salah satu dari 3 K
 - **Auto-Respawn Ibukota Kerajaan (`PlayerRespawnEvent`)**: Pemain yang telah bersumpah setia pada kerajaan (*Zenithar*, *Solterra*, *Sylvamoor*) akan otomatis di-respawn di titik pusat ibukota kerajaan masing-masing saat gugur di medan perang/alam liar (menggantikan fallback default ke lobby).
   - Mengambil koordinat `"position"` marker dari konfigurasi BlueMap secara otomatis saat server berjalan.
   - Prioritas tempat tidur (*Bed/Anchor priority*): Secara default pemain dengan kasur aktif tetap respawn di basenya (`spawn.override-bed-spawn: false`). Jika kasur hancur/terhalang atau disetel `override-bed-spawn: true`, pemain selalu dipulangkan ke ibukota.
-- **Spawn & Warp Kerajaan**: Titik pusat kerajaan (`/kingdom` atau `/k`) yang secara instan menteleportasi pemain ke koordinat ibukota kerajaan.
+- **Spawn & Navigasi Kerajaan (`/kingdom`, `/k`)**: Perintah cerdas dua arah tanpa argumen:
+  - Pemain yang belum memilih kerajaan otomatis dibukakan antarmuka pemilihan 3 kerajaan (`RegionSelectionGUI`).
+  - Pemain yang sudah berikrar kerajaan langsung diteleportasikan ke koordinat ibukota kerajaannya via `RegionTeleportService` disertai audio feedback dan partikel.
 - **In-Game Capital Spawn Manager**: Perintah admin `/ac setspawn <kingdom>` dan `/kingdom setspawn <kingdom>` untuk memindahkan titik spawn ibukota secara langsung in-game dengan persistensi SQL dan update `kingdoms.yml`.
-- **Citizens NPC Integration**: NPC interaktif untuk pemilihan kerajaan dan navigasi kerajaan.
+- **Integrasi Citizens NPC (Native Command Binding)**: Menggunakan perintah bawaan Citizens (`/npc sel <id>` lalu `/npc cmd add -p k`). Seluruh listener dan custom trait hardcoded ditiadakan untuk menjaga stabilitas klik kanan pemain tanpa konflik plugin.
 - **Hall of Fame & Leaderboard GUI (`/kingdom top`)**: Antarmuka visual 54-slot yang menampilkan statistik kerajaan terkuat dan top level pemain.
 
 ---
@@ -199,3 +201,15 @@ Wilayah misterius kerajaan keempat yang tersembunyi dari peradaban umum:
    - `/sions givekey <player> [common|elite|boss] [qty]`: Memberikan kunci Sions sesuai tier kepada pemain target.
    - `/sions bypass`: Mode membangun khusus staf/arsitek agar modifikasi blok permanen dan tidak di-rollback.
 
+---
+
+## 📡 10. Integrasi WebBridge & Pengumuman Global In-Game
+
+Modul `ApexsionsCore` bertindak sebagai agen penerima antrean WebBridge untuk komunikasi asinkron antara portal web dan server game:
+
+1. **Pengumuman Global Admin (`broadcast` / `bc`)**:
+   - Perintah siaran dari Web Dashboard (`POST /admin/apexsions/broadcast`) dikirimkan melalui tabel antrean `deliveries` dengan identitas `player_uuid = 'GLOBAL'` dan `player_username = 'ALL_PLAYERS'`.
+   - `WebBridgeService` mendeteksi perintah tersebut, mem-parse pesan menggunakan Kyori Adventure `MiniMessage`, memancarkannya ke seluruh pemain di server (`Bukkit.broadcast`), dan memicu efek suara lonceng (`BLOCK_NOTE_BLOCK_BELL`).
+2. **Sinkronisasi Karakter Pemain Otomatis (`sync-player`)**:
+   - Statistik in-game (Level, XP, Saldo Rupiah/Diamond, Kerajaan, Rank, dan Gelar) dikirimkan secara berkala saat event login, logout, level up, dan mutasi saldo.
+   - Portal web Azuriom menyimpan profil karakter pemain in-game bahkan sebelum pemain mendaftarkan atau menautkan akun web (`user_id = null`), memastikan seluruh pemain aktif memiliki laman profil publik yang valid di `/player/{uuid}`.

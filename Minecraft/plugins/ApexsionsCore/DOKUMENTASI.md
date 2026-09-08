@@ -26,7 +26,8 @@ plugins/ApexsionsCore/
 | Perintah | Alias | Deskripsi | Permission | Default |
 | :--- | :--- | :--- | :--- | :---: |
 | `/lobby` | `/hub` | Teleportasi ke lobi pusat server | `apexsionscore.command.lobby` | `true` |
-| `/kingdom` | `/region`, `/k`, `/kingdoms` | Membuka profil dan status kerajaan pemain | `apexsionscore.command.region` | `true` |
+| `/kingdom` | `/region`, `/k`, `/kingdoms` | Teleportasi ke ibukota kerajaan (jika sudah berikrar) atau membuka menu pemilihan (jika belum berikrar) | `apexsionscore.command.region` | `true` |
+| `/kingdom info` | `/k profile`, `/k stats` | Membuka profil dan status kerajaan pemain | `apexsionscore.command.level` | `true` |
 | `/kingdom choose` | `/k select` | Membuka antarmuka pemilihan 3 kerajaan | `apexsionscore.command.region` | `true` |
 | `/kingdom top` | `/k leaderboard` | Membuka Hall of Fame & Leaderboard GUI | `apexsionscore.command.level` | `true` |
 | `/level` | `/lvl`, `/profile`, `/rewards`, `/exp` | Membuka GUI progress bar level (1-100) & klaim hadiah | `apexsionscore.command.level` | `true` |
@@ -179,5 +180,31 @@ Sistem otomatis pada Anvil untuk kenyamanan perbaikan dan penggabungan item:
   - `/sions bypass`: Toggle mode arsitek untuk modifikasi permanen.
   - `/sions tp`: Teleportasi ke pusat ibukota Sions.
 
+---
 
+## 🧙‍♂️ Integrasi Citizens NPC & Native Command Binding (`/k`)
 
+Sistem integrasi NPC untuk pemilihan kerajaan dan navigasi ibukota menggunakan **Native Command Binding** bawaan Citizens 2 untuk menjamin stabilitas klik tanpa konflik event listener hardcoded:
+
+1. **Logika Otomatis Perintah `/k`**:
+   - **Pemain Baru (Belum Memilih Kerajaan)**: Menjalankan `/k` otomatis membuka GUI pemilihan 3 kerajaan (`RegionSelectionGUI`).
+   - **Pemain Sudah Berikrar**: Menjalankan `/k` otomatis menteleportasi pemain ke ibukota kerajaan asalnya (*Zenithar*, *Solterra*, atau *Sylvamoor*) via `RegionTeleportService` disertai feedback audio dan pesan visual.
+2. **Cara Mengaitkan Perintah ke NPC Citizens**:
+   Admin/Staff cukup menargetkan NPC di server dan menjalankan:
+   ```bash
+   /npc sel <id>
+   /npc cmd add -p k
+   ```
+   *Bendera `-p` memastikan perintah dieksekusi atas nama pemain yang mengklik NPC.*
+
+---
+
+## 📡 WebBridge Delivery & Siaran Global In-Game
+
+Modul `ApexsionsCore` terhubung langsung dengan sistem pengiriman asinkron WebBridge Azuriom:
+1. **Siaran Global Admin (`broadcast` / `bc`)**:
+   - Dispatched langsung dari Web Dashboard (`POST /admin/apexsions/broadcast`) dengan target entitas `GLOBAL` / `ALL_PLAYERS`.
+   - Diparsing secara native menggunakan Kyori Adventure `MiniMessage` dan disiarkan ke seluruh pemain aktif disertai efek audio notifikasi (`Sound.BLOCK_NOTE_BLOCK_BELL`).
+2. **Sinkronisasi Karakter Otomatis (`sync-player`)**:
+   - Menghubungkan statistik in-game (Level, XP, Saldo, Kerajaan, Rank, dan Gelar) ke basis data web.
+   - Karakter pemain in-game tetap tercatat di web meskipun belum menautkan akun web (`user_id = null`), sehingga profil publik pemain tetap dapat diakses di portal web.

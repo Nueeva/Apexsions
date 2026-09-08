@@ -56,6 +56,15 @@ Dokumentasi resmi yang merangkum arsitektur menyeluruh, interaksi antar-plugin, 
 - Toko EXP Battlepass dapat menggunakan mata uang `Rupiah` dan `Diamond` melalui `ApexsionsEconomyAPI`.
 - Menyinkronkan progres quest dengan 13 aksi gameplay `ApexsionsCore`.
 
+### E. Integrasi Citizens NPC & Native Command Binding (`/k`)
+- **Penanganan Bebas Konflik**: Seluruh listener dan custom traits hardcoded telah ditiadakan dari `CitizensHook` agar tidak mencegat interaksi klik pemain.
+- **Native Command Execution**: Admin mengaitkan aksi NPC menggunakan mekanisme resmi bawaan Citizens:
+  ```bash
+  /npc sel <id>
+  /npc cmd add -p k
+  ```
+- **Alur Cerdas `/k`**: Pemain yang belum berikrar otomatis diarahkan ke menu pemilihan kerajaan (`RegionSelectionGUI`), sedangkan pemain yang telah bersumpah setia langsung dipindahkan ke ibukota kerajaannya via `RegionTeleportService`.
+
 ---
 
 ## 📜 3. Matriks Perintah & Hak Akses (Commands & Permissions)
@@ -76,7 +85,8 @@ Dokumentasi resmi yang merangkum arsitektur menyeluruh, interaksi antar-plugin, 
 | `/warpmgr` | `/warpadmin`, `/warp admin` | Membuka Interactive Admin Warp Management GUI | `apexsionscore.warp.admin` | `op` |
 | `/warp set <nama> [kat]` | - | Membuat warp baru di lokasi berdiri | `apexsionscore.warp.admin` | `op` |
 | `/warp delete <nama>` | `/warp del` | Menghapus warp dari database server | `apexsionscore.warp.admin` | `op` |
-| `/kingdom` | `/k`, `/region` | Membuka profil dan status kerajaan pemain | `apexsionscore.command.region` | `true` |
+| `/kingdom` | `/k`, `/region` | Teleportasi ke ibukota kerajaan (jika sudah berikrar) atau membuka menu pemilihan (jika belum berikrar) | `apexsionscore.command.region` | `true` |
+| `/kingdom info` | `/k info`, `/k profile` | Membuka profil dan status statistik kerajaan pemain | `apexsionscore.command.level` | `true` |
 | `/kingdom choose` | `/k select` | Membuka menu pemilihan 3 kerajaan | `apexsionscore.command.region` | `true` |
 | `/kingdom top` | `/k leaderboard`| Membuka Hall of Fame & Leaderboard GUI | `apexsionscore.command.level` | `true` |
 | `/kingdom setspawn <k>`| `/k setspawn` | Menetapkan titik spawn ibukota kerajaan (Admin) | `apexsionscore.admin` | `op` |
@@ -325,9 +335,14 @@ Ekosistem Apexsions mengintegrasikan server Minecraft (Paper 26.2) dengan portal
    - Mengirimkan payload JSON asinkron dari `WebBridgeService` di `ApexsionsCore` saat pemain bergabung (*Join*), keluar (*Quit*), naik level (*LevelUp*), ubah kerajaan, ubah saldo Rupiah/Diamond, atau ubah gelar aktif.
 2. **Entitas Model `MinecraftAccount` di Database Web**:
    - Menyimpan `minecraft_uuid`, `minecraft_username`, `edition` (JAVA / BEDROCK), `level`, `xp`, `rank`, `kingdom`, `balance_rupiah`, `balance_diamond`, `unlocked_titles`, `active_title`, `verified_at`, dan `last_daily_reward_at`.
+   - Kolom `user_id` bersifat nullable sehingga setiap pemain in-game langsung tercatat profil statistiknya di database web meskipun belum membuat/menautkan akun website.
 3. **Penautan Akun Mandiri (`/link`)**:
    - Pemain menjalankan `/link` di Minecraft untuk mendapatkan 6-digit PIN acak berbatas waktu (15 menit).
-   - Memasukkan PIN pada form web `/link` memverifikasi kepemilikan akun Minecraft secara aman.
+   - Memasukkan PIN pada form web `/link` memverifikasi kepemilikan akun Minecraft secara aman dan menautkannya dengan akun web pengguna.
+4. **Siaran Pengumuman Global In-Game (`broadcast` / `bc`)**:
+   - Admin dapat mengirimkan siaran langsung ke server Minecraft melalui Web Dashboard (`POST /admin/apexsions/broadcast`).
+   - Dispatched melalui antrean `deliveries` dengan target `GLOBAL` / `ALL_PLAYERS` (kolom UUID nullable).
+   - Server memproses pengumuman menggunakan parser native Kyori Adventure `MiniMessage` dan membunyikan efek audio lonceng (`BLOCK_NOTE_BLOCK_BELL`) ke seluruh pemain online.
 
 ### B. Dewan Kehormatan & Papan Peringkat (`/leaderboard`):
 1. **Dominasi Tiga Kerajaan**:
