@@ -2,7 +2,9 @@
 
 use Azuriom\Plugin\ApexsionsBridge\Controllers\AccountLinkController;
 use Azuriom\Plugin\ApexsionsBridge\Controllers\Admin\AuditLogController;
+use Azuriom\Plugin\ApexsionsBridge\Controllers\Admin\ModerationAdminController;
 use Azuriom\Plugin\ApexsionsBridge\Controllers\Admin\PlayerAdminController;
+use Azuriom\Plugin\ApexsionsBridge\Controllers\Admin\ReportAdminController;
 use Azuriom\Plugin\ApexsionsBridge\Controllers\Api\LinkVerificationController;
 use Azuriom\Plugin\ApexsionsBridge\Controllers\LeaderboardController;
 use Azuriom\Plugin\ApexsionsBridge\Controllers\ProfileManagementController;
@@ -37,6 +39,23 @@ Route::middleware(['web', 'admin-access'])->prefix('admin')->name('admin.')->gro
         Route::get('/', [PlayerAdminController::class, 'index'])->name('index');
         Route::get('/{identifier}', [PlayerAdminController::class, 'show'])->name('show');
         Route::post('/{identifier}/action', [PlayerAdminController::class, 'executeAction'])->name('action');
+    });
+
+    // Reports Center
+    Route::prefix('reports')->name('reports.')->middleware('can:admin.users')->group(function () {
+        Route::get('/', [ReportAdminController::class, 'index'])->name('index');
+        Route::get('/{id}', [ReportAdminController::class, 'show'])->name('show');
+        Route::post('/{id}/claim', [ReportAdminController::class, 'claim'])->name('claim');
+        Route::post('/{id}/assign', [ReportAdminController::class, 'assign'])->name('assign');
+        Route::post('/{id}/status', [ReportAdminController::class, 'updateStatus'])->name('status');
+        Route::post('/{id}/notes', [ReportAdminController::class, 'addNote'])->name('notes.store');
+    });
+
+    // Moderation Center
+    Route::prefix('moderation')->name('moderation.')->middleware('can:admin.users')->group(function () {
+        Route::get('/', [ModerationAdminController::class, 'index'])->name('index');
+        Route::post('/store', [ModerationAdminController::class, 'storeAction'])->name('store');
+        Route::post('/{id}/pardon', [ModerationAdminController::class, 'pardon'])->name('pardon');
     });
 
     // Unified Audit Logs

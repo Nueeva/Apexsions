@@ -438,4 +438,88 @@ class LinkVerificationController extends Controller
             'log_id' => $log->id,
         ]);
     }
+
+    /**
+     * Ingest an in-game player report into the centralized Reports Center.
+     */
+    public function syncReport(Request $request): JsonResponse
+    {
+        if (!$this->authenticateServer($request)) {
+            return response()->json(['error' => 'Unauthorized server request.'], 401);
+        }
+
+        $validated = $request->validate([
+            'in_game_report_id' => ['nullable', 'integer'],
+            'reporter_uuid' => ['required', 'string', 'max:64'],
+            'reporter_name' => ['required', 'string', 'max:64'],
+            'reported_uuid' => ['required', 'string', 'max:64'],
+            'reported_name' => ['required', 'string', 'max:64'],
+            'reason' => ['required', 'string', 'max:255'],
+            'description' => ['nullable', 'string'],
+            'server' => ['nullable', 'string', 'max:64'],
+            'world' => ['nullable', 'string', 'max:64'],
+            'status' => ['nullable', 'string', 'in:OPEN,CLAIMED,INVESTIGATING,RESOLVED,DISMISSED'],
+            'priority' => ['nullable', 'string', 'in:LOW,MEDIUM,HIGH,CRITICAL'],
+        ]);
+
+        $report = \Azuriom\Plugin\ApexsionsBridge\Models\Report::create([
+            'in_game_report_id' => $validated['in_game_report_id'] ?? null,
+            'reporter_uuid' => $validated['reporter_uuid'],
+            'reporter_name' => $validated['reporter_name'],
+            'reported_uuid' => $validated['reported_uuid'],
+            'reported_name' => $validated['reported_name'],
+            'reason' => $validated['reason'],
+            'description' => $validated['description'] ?? null,
+            'server' => $validated['server'] ?? 'apexsions-survival',
+            'world' => $validated['world'] ?? 'world',
+            'status' => strtoupper($validated['status'] ?? 'OPEN'),
+            'priority' => strtoupper($validated['priority'] ?? 'MEDIUM'),
+        ]);
+
+        return response()->json([
+            'status' => 'success',
+            'report_id' => $report->id,
+        ]);
+    }
+
+    /**
+     * Ingest an in-game punishment action into the centralized Moderation Center.
+     */
+    public function syncPunishment(Request $request): JsonResponse
+    {
+        if (!$this->authenticateServer($request)) {
+            return response()->json(['error' => 'Unauthorized server request.'], 401);
+        }
+
+        $validated = $request->validate([
+            'action_id' => ['nullable', 'string', 'max:64'],
+            'player_uuid' => ['required', 'string', 'max:64'],
+            'player_name' => ['required', 'string', 'max:64'],
+            'type' => ['required', 'string', 'in:WARN,MUTE,KICK,BAN'],
+            'reason' => ['required', 'string'],
+            'staff_name' => ['nullable', 'string', 'max:64'],
+            'duration_seconds' => ['nullable', 'integer'],
+        ]);
+
+        $durationSec = $validated['duration_seconds'] ?? null;
+        $expiresAt = ($durationSec && $durationSec > 0) ? Carbon::now()->addSeconds($durationSec) : null;
+
+        $punishment = \Azuriom\Plugin\ApexsionsBridge\Models\Punishment::create([
+            'action_id' => $validated['action_id'] ?? (string) \Illuminate\Support\Str::uuid(),
+            'player_uuid' => $validated['player_uuid'],
+            'player_name' => $validated['player_name'],
+            'type' => strtoupper($validated['type']),
+            'reason' => $validated['reason'],
+            'staff_name' => $validated['staff_name'] ?? 'In-Game Staff',
+            'duration_seconds' => $durationSec,
+            'expires_at' => $expiresAt,
+            'status' => 'ACTIVE',
+            'source' => 'INGAME',
+        ]);
+
+        return response()->json([
+            'status' => 'success',
+            'punishment_id' => $punishment->id,
+        ]);
+    }
 }

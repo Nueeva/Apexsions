@@ -6,6 +6,8 @@ use Azuriom\Http\Controllers\Controller;
 use Azuriom\Plugin\ApexsionsBridge\Models\AuditLog;
 use Azuriom\Plugin\ApexsionsBridge\Models\Delivery;
 use Azuriom\Plugin\ApexsionsBridge\Models\MinecraftAccount;
+use Azuriom\Plugin\ApexsionsBridge\Models\Punishment;
+use Azuriom\Plugin\ApexsionsBridge\Models\Report;
 use Azuriom\Plugin\ApexsionsBridge\Services\AuditService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -131,6 +133,24 @@ class PlayerAdminController extends Controller
             ->limit(15)
             ->get();
 
+        // Fetch moderation punishments for this player
+        $punishments = Punishment::where('player_uuid', $account->minecraft_uuid)
+            ->orWhere('player_name', $account->minecraft_username)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        // Fetch reports filed against this player
+        $reportsAgainst = Report::where('reported_uuid', $account->minecraft_uuid)
+            ->orWhere('reported_name', $account->minecraft_username)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        // Fetch reports created by this player
+        $reportsCreated = Report::where('reporter_uuid', $account->minecraft_uuid)
+            ->orWhere('reporter_name', $account->minecraft_username)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
         // Record a read audit log for sensitive viewing if needed
         AuditService::log([
             'action' => 'PLAYER_VIEW',
@@ -151,6 +171,9 @@ class PlayerAdminController extends Controller
             'isOnline' => $isOnline,
             'playerPing' => $playerPing,
             'auditLogs' => $auditLogs,
+            'punishments' => $punishments,
+            'reportsAgainst' => $reportsAgainst,
+            'reportsCreated' => $reportsCreated,
         ]);
     }
 

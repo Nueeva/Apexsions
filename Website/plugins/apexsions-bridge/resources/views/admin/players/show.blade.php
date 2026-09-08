@@ -218,14 +218,171 @@
                         </div>
                     </div>
 
-                    <!-- 4. MODERATION TAB (INFORMATIVE EMPTY STATE) -->
+                    <!-- 4. MODERATION TAB (ACTIVE & HISTORICAL SANCTIONS) -->
                     <div class="tab-pane fade" id="moderation" role="tabpanel">
-                        <div class="text-center py-4 p-3 rounded bg-dark border border-secondary">
-                            <i class="bi bi-shield-slash fs-1 d-block mb-2 text-warning opacity-50"></i>
-                            <h5 class="fw-bold text-white mb-2">Riwayat Moderasi In-Game Terisolasi</h5>
-                            <p class="text-muted small mb-0" style="max-width: 500px; margin: 0 auto;">
-                                Data hukuman (Ban, Mute, Warn) dan tiket laporan pemain saat ini dikelola langsung di runtime game server oleh plugin <code>ApexsionsChat</code>. Integrasi sinkronisasi sanksi langsung ke web akan diaktifkan pada Phase selanjutnya.
-                            </p>
+                        {{-- Quick Action Header --}}
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h6 class="text-white fw-bold mb-0">
+                                <i class="bi bi-shield-shaded me-2 text-warning"></i> Sanksi & Penegakan Kedisiplinan
+                            </h6>
+                            <a href="{{ route('apexsions-bridge.admin.moderation.index') }}?target={{ urlencode($account->minecraft_username) }}" class="btn btn-warning btn-sm fw-bold">
+                                <i class="bi bi-hammer me-1"></i> Terbitkan Sanksi untuk Pemain Ini
+                            </a>
+                        </div>
+
+                        {{-- Punishments Table --}}
+                        <div class="card border-0 mb-4" style="background: #14171d; border-radius: 8px;">
+                            <div class="card-header bg-transparent border-bottom border-secondary border-opacity-25 py-2 px-3">
+                                <span class="small fw-bold text-muted text-uppercase">Riwayat Sanksi ({{ $punishments->count() }})</span>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-sm table-hover text-light mb-0" style="font-size: 0.82rem;">
+                                    <thead class="border-bottom border-secondary text-muted text-uppercase" style="font-size: 0.7rem;">
+                                        <tr>
+                                            <th>Tipe</th>
+                                            <th>Alasan</th>
+                                            <th>Staf</th>
+                                            <th>Status</th>
+                                            <th>Kedaluwarsa</th>
+                                            <th>Waktu</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @forelse($punishments as $punish)
+                                            <tr>
+                                                <td>
+                                                    @php
+                                                        $pColor = match($punish->type) {
+                                                            'BAN' => 'danger',
+                                                            'MUTE' => 'warning',
+                                                            'KICK' => 'orange',
+                                                            default => 'info'
+                                                        };
+                                                    @endphp
+                                                    <span class="badge bg-{{ $pColor }} bg-opacity-25 text-{{ $pColor }} border border-{{ $pColor }} border-opacity-25">
+                                                        {{ $punish->type }}
+                                                    </span>
+                                                </td>
+                                                <td class="text-white">{{ $punish->reason }}</td>
+                                                <td><span class="text-info">{{ $punish->staff_name }}</span></td>
+                                                <td>
+                                                    @if($punish->status === 'ACTIVE')
+                                                        <span class="badge bg-danger bg-opacity-20 text-danger">AKTIF</span>
+                                                    @elseif($punish->status === 'PARDONED')
+                                                        <span class="badge bg-success bg-opacity-20 text-success">DICABUT</span>
+                                                    @else
+                                                        <span class="badge bg-secondary bg-opacity-20 text-muted">KEDALUWARSA</span>
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    @if($punish->expires_at)
+                                                        {{ $punish->expires_at->diffForHumans() }}
+                                                    @else
+                                                        <span class="text-muted">Permanen</span>
+                                                    @endif
+                                                </td>
+                                                <td class="text-muted">{{ $punish->created_at->diffForHumans() }}</td>
+                                            </tr>
+                                        @empty
+                                            <tr>
+                                                <td colspan="6" class="text-center py-3 text-muted">
+                                                    Pemain ini memiliki rekam jejak bersih (tidak ada sanksi tercatat).
+                                                </td>
+                                            </tr>
+                                        @endforelse
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        {{-- Reports Against This Player --}}
+                        <div class="card border-0 mb-4" style="background: #14171d; border-radius: 8px;">
+                            <div class="card-header bg-transparent border-bottom border-secondary border-opacity-25 py-2 px-3">
+                                <span class="small fw-bold text-muted text-uppercase">Laporan Pelanggaran Terhadap Pemain Ini ({{ $reportsAgainst->count() }})</span>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-sm table-hover text-light mb-0" style="font-size: 0.82rem;">
+                                    <thead class="border-bottom border-secondary text-muted text-uppercase" style="font-size: 0.7rem;">
+                                        <tr>
+                                            <th>Tiket</th>
+                                            <th>Pelapor</th>
+                                            <th>Alasan</th>
+                                            <th>Status</th>
+                                            <th>Waktu</th>
+                                            <th class="text-end">Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @forelse($reportsAgainst as $rep)
+                                            <tr>
+                                                <td class="fw-bold font-monospace text-warning">#{{ $rep->id }}</td>
+                                                <td>{{ $rep->reporter_name }}</td>
+                                                <td class="text-white">{{ $rep->reason }}</td>
+                                                <td>
+                                                    <span class="badge bg-secondary bg-opacity-25 text-light">{{ $rep->status }}</span>
+                                                </td>
+                                                <td class="text-muted">{{ $rep->created_at->diffForHumans() }}</td>
+                                                <td class="text-end">
+                                                    <a href="{{ route('apexsions-bridge.admin.reports.show', $rep->id) }}" class="btn btn-xs btn-outline-warning py-0 px-2">
+                                                        Lihat Tiket
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        @empty
+                                            <tr>
+                                                <td colspan="6" class="text-center py-3 text-muted">
+                                                    Tidak ada laporan pelanggaran terhadap pemain ini.
+                                                </td>
+                                            </tr>
+                                        @endforelse
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        {{-- Reports Created By This Player --}}
+                        <div class="card border-0" style="background: #14171d; border-radius: 8px;">
+                            <div class="card-header bg-transparent border-bottom border-secondary border-opacity-25 py-2 px-3">
+                                <span class="small fw-bold text-muted text-uppercase">Laporan yang Diajukan oleh Pemain Ini ({{ $reportsCreated->count() }})</span>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-sm table-hover text-light mb-0" style="font-size: 0.82rem;">
+                                    <thead class="border-bottom border-secondary text-muted text-uppercase" style="font-size: 0.7rem;">
+                                        <tr>
+                                            <th>Tiket</th>
+                                            <th>Terlapor</th>
+                                            <th>Alasan</th>
+                                            <th>Status</th>
+                                            <th>Waktu</th>
+                                            <th class="text-end">Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @forelse($reportsCreated as $repCreated)
+                                            <tr>
+                                                <td class="fw-bold font-monospace text-warning">#{{ $repCreated->id }}</td>
+                                                <td>{{ $repCreated->reported_name }}</td>
+                                                <td class="text-white">{{ $repCreated->reason }}</td>
+                                                <td>
+                                                    <span class="badge bg-secondary bg-opacity-25 text-light">{{ $repCreated->status }}</span>
+                                                </td>
+                                                <td class="text-muted">{{ $repCreated->created_at->diffForHumans() }}</td>
+                                                <td class="text-end">
+                                                    <a href="{{ route('apexsions-bridge.admin.reports.show', $repCreated->id) }}" class="btn btn-xs btn-outline-warning py-0 px-2">
+                                                        Lihat Tiket
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        @empty
+                                            <tr>
+                                                <td colspan="6" class="text-center py-3 text-muted">
+                                                    Pemain belum pernah mengajukan laporan.
+                                                </td>
+                                            </tr>
+                                        @endforelse
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
 

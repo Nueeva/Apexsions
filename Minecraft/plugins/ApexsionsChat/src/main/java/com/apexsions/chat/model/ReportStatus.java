@@ -3,6 +3,8 @@ package com.apexsions.chat.model;
 public enum ReportStatus {
     OPEN,
     REVIEWING,
+    CLAIMED,
+    INVESTIGATING,
     RESOLVED,
     DISMISSED;
 

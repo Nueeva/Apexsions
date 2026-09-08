@@ -74,6 +74,9 @@ class AuditService
         }
 
         return self::log([
+            'actor_type' => !empty($metadata['staff_id']) ? 'STAFF' : null,
+            'actor_id' => !empty($metadata['staff_id']) ? (string) $metadata['staff_id'] : null,
+            'actor_name' => $metadata['staff'] ?? null,
             'action' => $action,
             'target_type' => $targetType,
             'target_id' => $targetId,

@@ -13,3 +13,7 @@ Route::get('/status', [LinkVerificationController::class, 'status'])->name('stat
 
 // In-game Audit Log Ingestion Endpoint
 Route::post('/audit/log', [LinkVerificationController::class, 'ingestAuditLog'])->name('audit.log');
+
+// In-game Reports and Punishments Ingestion Endpoints
+Route::post('/reports/sync', [LinkVerificationController::class, 'syncReport'])->name('reports.sync');
+Route::post('/punishments/sync', [LinkVerificationController::class, 'syncPunishment'])->name('punishments.sync');

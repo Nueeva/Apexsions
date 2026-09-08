@@ -76,7 +76,14 @@ public class ReportListGUI extends BaseChatGUI {
     }
 
     private ItemStack createReportCard(Report report) {
-        Material mat = report.getStatus() == ReportStatus.REVIEWING ? Material.WRITABLE_BOOK : Material.PAPER;
+        Material mat;
+        if (report.getStatus() == ReportStatus.REVIEWING || report.getStatus() == ReportStatus.INVESTIGATING) {
+            mat = Material.WRITABLE_BOOK;
+        } else if (report.getStatus() == ReportStatus.CLAIMED) {
+            mat = Material.ENCHANTED_BOOK;
+        } else {
+            mat = Material.PAPER;
+        }
         ItemStack item = new ItemStack(mat);
         ItemMeta meta = item.getItemMeta();
         if (meta != null) {

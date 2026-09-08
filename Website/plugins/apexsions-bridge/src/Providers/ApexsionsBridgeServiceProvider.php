@@ -66,6 +66,18 @@ class ApexsionsBridgeServiceProvider extends BasePluginServiceProvider
                 'route' => 'apexsions-bridge.admin.players.index',
                 'permission' => 'admin.users',
             ],
+            'apexsions-reports' => [
+                'name' => 'Reports Center',
+                'icon' => 'bi bi-flag-fill',
+                'route' => 'apexsions-bridge.admin.reports.index',
+                'permission' => 'admin.users',
+            ],
+            'apexsions-moderation' => [
+                'name' => 'Moderation Center',
+                'icon' => 'bi bi-shield-shaded',
+                'route' => 'apexsions-bridge.admin.moderation.index',
+                'permission' => 'admin.users',
+            ],
             'apexsions-audit' => [
                 'name' => 'Unified Audit Logs',
                 'icon' => 'bi bi-journal-text',
