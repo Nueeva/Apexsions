@@ -49,7 +49,7 @@ public class MainMenu extends Gui {
         List<String> bpInfoLore = new ArrayList<>();
         bpInfoLore.add("&7Nama: &f" + player.getName());
         bpInfoLore.add("&7Uang: &eRp." + String.format("%,.0f", rupiahBal));
-        bpInfoLore.add("&7Battle Coins: &b" + String.format("%,.0f", coinsBal) + " ⛦");
+        bpInfoLore.add("§7Battle Coins: §b" + String.format("%,.0f", coinsBal) + " Coins");
         bpInfoLore.add("&7Jenis Pass: &b" + String.join(", ", effectivePasses).toUpperCase());
         bpInfoLore.add(" ");
         int maxLevel = plugin.getRewardManager().getMaxLevel();
