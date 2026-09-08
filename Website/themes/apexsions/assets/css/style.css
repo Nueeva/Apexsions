@@ -476,20 +476,22 @@ a:hover {
     margin-top: 2px;
 }
 
-/* Nav Links: Pure, Uncluttered Typography with Restrained Active Indicator */
+/* Nav Links: Pure, Uncluttered Capsule Pill Navigation */
 .apx-nav-list {
     display: flex;
     align-items: center;
-    gap: 1.65rem;
-    margin: 0;
+    justify-content: center;
+    gap: 0.45rem;
+    margin: 0 auto;
 }
 
 .apx-nav-link {
-    color: #cbd5e1 !important;
+    color: #94a3b8 !important;
     font-weight: 500;
-    font-size: 0.95rem;
-    padding: 0.4rem 0.25rem !important;
-    transition: color 0.2s ease;
+    font-size: 0.92rem;
+    padding: 0.42rem 0.85rem !important;
+    border-radius: var(--apx-radius-sm);
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     position: relative;
     text-decoration: none;
     display: inline-flex !important;
@@ -498,6 +500,7 @@ a:hover {
     gap: 0.35rem;
     letter-spacing: 0.01em;
     white-space: nowrap !important;
+    border: 1px solid transparent;
 }
 
 /* Eliminate duplicate dropdown carets across navbar items */
@@ -510,27 +513,25 @@ a:hover {
 
 .apx-nav-link:hover {
     color: #ffffff !important;
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.12);
 }
 
-/* Active Link Indicator: Crisp White Text with Restrained White Hairline */
+/* Active Link Indicator: Sophisticated Gold Tinted Pill with Soft Glow */
 .apx-nav-link.active {
     color: #ffffff !important;
     font-weight: 600;
+    background: rgba(201, 164, 92, 0.12) !important;
+    border: 1px solid rgba(201, 164, 92, 0.35) !important;
+    box-shadow: 0 0 14px rgba(201, 164, 92, 0.15);
 }
 
 .apx-nav-link.active::after {
-    content: '';
-    position: absolute;
-    bottom: -4px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 16px;
-    height: 2px;
-    background: #ffffff;
-    border-radius: 1px;
+    display: none !important;
+    content: none !important;
 }
 
-/* Right Nav Cart Button */
+/* Right Nav Cart Button (Uniform 38px Toolbar) */
 .apx-nav-cart-btn {
     width: 38px;
     height: 38px;
@@ -540,10 +541,10 @@ a:hover {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    color: #cbd5e1;
-    font-size: 1.05rem;
+    color: #ffffff;
     transition: var(--apx-transition);
     text-decoration: none;
+    flex-shrink: 0;
 }
 
 .apx-nav-cart-btn:hover {
@@ -552,19 +553,23 @@ a:hover {
     color: #ffffff;
 }
 
-/* Right Nav User Box (Architectural 4px Geometry) */
+/* Right Nav User Box (Uniform 38px Toolbar) */
 .apx-user-box, .apx-user-pill {
+    height: 38px;
     background: rgba(18, 24, 38, 0.85);
     border: 1px solid rgba(255, 255, 255, 0.12);
     border-radius: var(--apx-radius-sm);
-    padding: 0.35rem 0.85rem 0.35rem 0.45rem;
+    padding: 0 0.75rem 0 0.45rem;
     display: inline-flex;
     align-items: center;
-    gap: 0.65rem;
+    justify-content: center;
+    gap: 0.55rem;
     color: #ffffff;
     cursor: pointer;
     transition: var(--apx-transition);
     text-decoration: none;
+    box-sizing: border-box;
+    flex-shrink: 0;
 }
 
 .apx-user-box:hover, .apx-user-pill:hover {
@@ -573,15 +578,15 @@ a:hover {
 }
 
 .apx-user-avatar-mini {
-    width: 26px;
-    height: 26px;
+    width: 24px;
+    height: 24px;
     border-radius: 4px;
     border: 1px solid rgba(255, 255, 255, 0.2);
     object-fit: cover;
 }
 
 .apx-user-box-name, .apx-user-pill-name {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     font-weight: 600;
     color: #ffffff;
     letter-spacing: 0.02em;
@@ -605,7 +610,7 @@ a:hover {
     -webkit-backdrop-filter: blur(16px);
     border: 1px solid var(--apx-gold-border) !important;
     border-radius: var(--apx-radius-md) !important;
-    min-width: 260px;
+    min-width: 235px;
     margin-top: 0.65rem !important;
     box-shadow: 0 16px 36px -8px rgba(0, 0, 0, 0.85), 0 0 15px rgba(201, 164, 92, 0.12) !important;
 }
@@ -622,13 +627,13 @@ a:hover {
 }
 
 .apx-dropdown-icon-box {
-    width: 32px;
-    height: 32px;
+    width: 30px;
+    height: 30px;
     border-radius: 6px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     flex-shrink: 0;
 }
 
@@ -644,19 +649,25 @@ a:hover {
     transform: rotate(180deg);
 }
 
-/* Dedicated Discord Community CTA Button */
+/* Dedicated Discord Community CTA Button (Uniform 38px Toolbar) */
 .btn-apx-discord {
+    height: 38px;
     background: rgba(88, 101, 242, 0.16) !important;
     border: 1px solid rgba(88, 101, 242, 0.45) !important;
     color: #ffffff !important;
     border-radius: var(--apx-radius-sm) !important;
-    padding: 0.45rem 0.85rem !important;
-    font-size: 0.88rem !important;
-    font-weight: 700 !important;
+    padding: 0 0.85rem !important;
+    font-size: 0.85rem !important;
+    font-weight: 600 !important;
     letter-spacing: 0.02em;
     box-shadow: 0 0 10px rgba(88, 101, 242, 0.2);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     transition: var(--apx-transition);
     text-decoration: none;
+    box-sizing: border-box;
+    flex-shrink: 0;
 }
 
 .btn-apx-discord:hover {
@@ -665,6 +676,19 @@ a:hover {
     color: #ffffff !important;
     box-shadow: 0 0 18px rgba(88, 101, 242, 0.55), 0 4px 12px rgba(0, 0, 0, 0.4);
     transform: translateY(-1px);
+}
+
+.apx-navbar .btn-apx-outline,
+.apx-navbar .btn-apx-gold {
+    height: 38px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 0.95rem;
+    border-radius: var(--apx-radius-sm);
+    font-size: 0.85rem;
+    font-weight: 600;
+    box-sizing: border-box;
 }
 
 /* ==============================================================================
@@ -3440,16 +3464,22 @@ code:not(pre code) {
 }
 
 .apx-lang-btn {
+    height: 38px;
     background: rgba(255, 255, 255, 0.04);
     border: 1px solid rgba(255, 255, 255, 0.1);
     color: #e2e8f0;
-    font-size: 0.8rem;
+    font-size: 0.82rem;
     font-weight: 600;
-    letter-spacing: 0.04em;
-    padding: 0.38rem 0.75rem;
+    letter-spacing: 0.03em;
+    padding: 0 0.75rem;
     border-radius: var(--apx-radius-sm);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     transition: all 0.2s ease;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    box-sizing: border-box;
+    flex-shrink: 0;
 }
 
 .apx-lang-btn:hover,

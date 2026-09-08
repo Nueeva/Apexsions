@@ -18,7 +18,7 @@
 
         <!-- Nav Links & Right Actions -->
         <div class="collapse navbar-collapse" id="navbarMain">
-            <ul class="navbar-nav ms-lg-4 ms-xl-5 me-lg-auto mb-2 mb-lg-0 apx-nav-list">
+            <ul class="navbar-nav mx-auto mb-2 mb-lg-0 apx-nav-list">
                 <!-- 1. Beranda -->
                 <li class="nav-item">
                     <a class="nav-link apx-nav-link @if(request()->routeIs('home') && !request()->has('page')) active @endif" href="{{ route('home') }}" data-i18n="nav_home">
@@ -35,7 +35,16 @@
                     </li>
                 @endif
 
-                <!-- 3. Leaderboard -->
+                <!-- 3. Wiki -->
+                @if(plugins()->isEnabled('wiki'))
+                    <li class="nav-item">
+                        <a class="nav-link apx-nav-link @if(request()->is('wiki*')) active @endif" href="{{ route('wiki.index') }}" data-i18n="nav_wiki">
+                            Wiki
+                        </a>
+                    </li>
+                @endif
+
+                <!-- 4. Leaderboard -->
                 @if(Route::has('leaderboard') || Route::has('apexsions-bridge.leaderboard'))
                     <li class="nav-item">
                         <a class="nav-link apx-nav-link @if(request()->is('leaderboard*')) active @endif" href="{{ url('/leaderboard') }}" data-i18n="nav_leaderboard">
@@ -44,34 +53,21 @@
                     </li>
                 @endif
 
-                <!-- 6. Lainnya ▼ (Dropdown) -->
+                <!-- 5. Lainnya ▼ (Dropdown: Aturan & Vote) -->
                 <li class="nav-item dropdown">
-                    <a class="nav-link apx-nav-link dropdown-toggle d-flex align-items-center gap-1 @if(request()->routeIs('rules') || request()->routeIs('vote') || request()->is('wiki*')) active @endif" href="#" id="apxMoreDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <a class="nav-link apx-nav-link dropdown-toggle d-flex align-items-center gap-1 @if(request()->routeIs('rules') || request()->routeIs('vote')) active @endif" href="#" id="apxMoreDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <span data-i18n="nav_more">Lainnya</span>
                         <i class="bi bi-chevron-down apx-more-chevron" style="font-size: 0.7rem; margin-left: 2px;"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-dark shadow-lg apx-nav-dropdown py-2" aria-labelledby="apxMoreDropdown">
-                        @if(plugins()->isEnabled('wiki'))
-                            <li>
-                                <a class="dropdown-item py-2 px-3 d-flex align-items-center gap-3 @if(request()->is('wiki*')) active @endif" href="{{ route('wiki.index') }}">
-                                    <div class="apx-dropdown-icon-box bg-warning bg-opacity-10 text-warning">
-                                        <i class="bi bi-book"></i>
-                                    </div>
-                                    <div>
-                                        <div class="fw-semibold text-white" style="font-size: 0.9rem;" data-i18n="nav_wiki">Wiki &amp; Panduan</div>
-                                        <small class="text-muted d-block" style="font-size: 0.75rem;" data-i18n="nav_wiki_sub">Mekanisme sistem, kasta &amp; penempaan</small>
-                                    </div>
-                                </a>
-                            </li>
-                        @endif
                         <li>
                             <a class="dropdown-item py-2 px-3 d-flex align-items-center gap-3 @if(request()->routeIs('rules')) active @endif" href="{{ route('rules') }}">
                                 <div class="apx-dropdown-icon-box bg-info bg-opacity-10 text-info">
                                     <i class="bi bi-shield-check"></i>
                                 </div>
                                 <div>
-                                    <div class="fw-semibold text-white" style="font-size: 0.9rem;" data-i18n="nav_rules">Aturan Peradaban</div>
-                                    <small class="text-muted d-block" style="font-size: 0.75rem;" data-i18n="nav_rules_sub">Tata tertib dan etika kedaulatan realm</small>
+                                    <div class="fw-semibold text-white" style="font-size: 0.88rem;" data-i18n="nav_rules">Aturan Peradaban</div>
+                                    <small class="text-muted d-block" style="font-size: 0.72rem;" data-i18n="nav_rules_sub">Tata tertib dan etika kedaulatan realm</small>
                                 </div>
                             </a>
                         </li>
@@ -82,8 +78,8 @@
                                         <i class="bi bi-hand-thumbs-up"></i>
                                     </div>
                                     <div>
-                                        <div class="fw-semibold text-white" style="font-size: 0.9rem;" data-i18n="nav_vote">Dukung Server (Vote)</div>
-                                        <small class="text-muted d-block" style="font-size: 0.75rem;" data-i18n="nav_vote_sub">Vote harian &amp; raih hadiah in-game</small>
+                                        <div class="fw-semibold text-white" style="font-size: 0.88rem;" data-i18n="nav_vote">Dukung Server (Vote)</div>
+                                        <small class="text-muted d-block" style="font-size: 0.72rem;" data-i18n="nav_vote_sub">Vote harian &amp; raih hadiah in-game</small>
                                     </div>
                                 </a>
                             </li>
