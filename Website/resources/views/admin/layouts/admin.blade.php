@@ -19,12 +19,13 @@
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=Inter:300,400,600,800&display=swap" rel="stylesheet">
+    <link href="https://fonts.bunny.net/css?family=Cinzel:600,700,800,900|Inter:300,400,600,800&display=swap" rel="stylesheet">
     <link href="{{ asset('vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
 
     <!-- Styles -->
     @vite('resources/sass/admin/admin.scss')
     @stack('styles')
+    <link rel="stylesheet" href="{{ asset('assets/themes/apexsions/css/admin-apexsions.css') }}?v={{ @filemtime(public_path('assets/themes/apexsions/css/admin-apexsions.css')) ?: time() }}">
 
 </head>
 <body @if(dark_theme()) data-bs-theme="dark" @endif>
@@ -35,12 +36,14 @@
         <nav id="sidebar" class="sidebar js-sidebar">
             <div class="sidebar-content js-simplebar">
 
-                <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ route('home') }}">
-                    <div class="sidebar-brand-text mx-3">
-                        <img src="{{ asset('svg/azuriom-text-white.svg') }}" alt="Azuriom">
-
-                        <small class="d-block text-center font-weight-bold">
-                            {{ game()->name() }} - v{{ Azuriom::version() }}
+                <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ route('home') }}" title="{{ site_name() }} — Kembali ke Beranda">
+                    <div class="sidebar-brand-text mx-3 text-center">
+                        <div class="d-flex align-items-center justify-content-center gap-2 mb-1">
+                            <img src="{{ asset('assets/themes/apexsions/img/logo-ornate-gold.png') }}" alt="Apexsions" style="height: 32px; width: auto; filter: drop-shadow(0 0 8px rgba(201, 164, 92, 0.45));">
+                            <span style="font-family: 'Cinzel', serif; font-size: 1.15rem; font-weight: 800; letter-spacing: 2px; color: #F1D58A; text-shadow: 0 0 12px rgba(201,164,92,0.4);">APEXSIONS</span>
+                        </div>
+                        <small class="d-block text-center font-weight-bold" style="color: #9E7B3E; font-size: 0.68rem; letter-spacing: 1.5px;">
+                            THE PEAK CIVILIZATIONS &bull; CORE
                         </small>
                     </div>
                 </a>

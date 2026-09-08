@@ -1,0 +1,730 @@
+/* ==========================================================================
+   Apexsions — The Peak Civilizations
+   Azuriom Admin Control Core Design System
+   Palet: Monolithic Obsidian, Celestial Ivory & Imperial Royal Gold
+   ========================================================================== */
+
+:root,
+[data-bs-theme="dark"],
+body {
+    /* Base Obsidian Tones */
+    --apx-void-black: #090A0D;
+    --apx-deep-obsidian: #111318;
+    --apx-obsidian: #181A20;
+    --apx-soft-obsidian: #292C33;
+
+    /* Imperial Gold Hierarchy */
+    --apx-gold-radiant: #F1D58A;
+    --apx-gold-light: #E8C878;
+    --apx-gold: #C9A45C;
+    --apx-gold-antique: #9E7B3E;
+    --apx-gold-dark: #72552A;
+    --apx-gold-glow: rgba(201, 164, 92, 0.20);
+    --apx-gold-border: rgba(201, 164, 92, 0.25);
+    --apx-gold-border-subtle: rgba(201, 164, 92, 0.14);
+
+    /* Celestial Ivory Typography */
+    --apx-ivory-light: #FFFDF8;
+    --apx-ivory-celestial: #F4EFE6;
+    --apx-ivory-marble: #DDD7CC;
+    --apx-ivory-stone: #B8B1A5;
+    --apx-text-dim: #8E877D;
+
+    /* Bootstrap Overrides */
+    --bs-body-bg: var(--apx-void-black) !important;
+    --bs-body-color: var(--apx-ivory-marble) !important;
+    --bs-secondary-bg: var(--apx-deep-obsidian) !important;
+    --bs-tertiary-bg: var(--apx-obsidian) !important;
+    --bs-border-color: var(--apx-gold-border-subtle) !important;
+    --bs-border-color-translucent: var(--apx-gold-border-subtle) !important;
+    
+    --bs-primary: var(--apx-gold) !important;
+    --bs-primary-rgb: 201, 164, 92 !important;
+    --bs-primary-text-emphasis: var(--apx-gold-radiant) !important;
+    --bs-primary-bg-subtle: rgba(201, 164, 92, 0.12) !important;
+    --bs-primary-border-subtle: rgba(201, 164, 92, 0.28) !important;
+
+    --bs-link-color: var(--apx-gold-radiant) !important;
+    --bs-link-hover-color: var(--apx-ivory-light) !important;
+}
+
+/* Base Body & Layout */
+body {
+    background-color: var(--apx-void-black) !important;
+    color: var(--apx-ivory-marble) !important;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    letter-spacing: 0.15px;
+}
+
+.wrapper {
+    background-color: var(--apx-void-black) !important;
+}
+
+.main {
+    background-color: var(--apx-void-black) !important;
+    background-image: 
+        radial-gradient(circle at 15% 15%, rgba(201, 164, 92, 0.035) 0%, transparent 45%),
+        radial-gradient(circle at 85% 75%, rgba(201, 164, 92, 0.025) 0%, transparent 45%) !important;
+    min-height: 100vh;
+}
+
+.content {
+    padding: 2rem 2rem 1.5rem !important;
+}
+
+/* ==========================================================================
+   Sidebar Styling (Apexsions Command Core)
+   ========================================================================== */
+#sidebar.sidebar {
+    background: #0C0E13 !important;
+    border-right: 1px solid var(--apx-gold-border) !important;
+    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.6) !important;
+}
+
+#sidebar .sidebar-content {
+    background: #0C0E13 !important;
+}
+
+/* Sidebar Brand */
+#sidebar .sidebar-brand {
+    background: linear-gradient(180deg, #14171E 0%, #0C0E13 100%) !important;
+    border-bottom: 1px solid var(--apx-gold-border) !important;
+    padding: 1.35rem 1.25rem !important;
+    text-decoration: none !important;
+    position: relative;
+}
+
+#sidebar .sidebar-brand::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 20%;
+    right: 20%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--apx-gold), transparent);
+}
+
+#sidebar .sidebar-brand-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+#sidebar .sidebar-brand-text img {
+    filter: drop-shadow(0 0 8px rgba(201, 164, 92, 0.45));
+    max-height: 30px;
+}
+
+#sidebar .sidebar-brand-text small {
+    color: var(--apx-gold-antique) !important;
+    font-size: 0.72rem !important;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-weight: 700 !important;
+}
+
+/* Sidebar Headings */
+#sidebar .sidebar-header {
+    color: var(--apx-gold) !important;
+    font-size: 0.72rem !important;
+    font-weight: 800 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1.8px !important;
+    padding: 1.5rem 1.5rem 0.5rem !important;
+    opacity: 0.9;
+}
+
+/* Sidebar Navigation Items */
+#sidebar .sidebar-item {
+    margin: 2px 10px !important;
+}
+
+#sidebar .sidebar-link {
+    color: var(--apx-ivory-stone) !important;
+    background: transparent !important;
+    border-radius: 6px !important;
+    padding: 9px 14px !important;
+    font-weight: 500 !important;
+    font-size: 0.88rem !important;
+    transition: all 0.2s ease-in-out !important;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#sidebar .sidebar-link i {
+    color: var(--apx-text-dim) !important;
+    font-size: 1.05rem !important;
+    transition: all 0.2s ease-in-out !important;
+}
+
+#sidebar .sidebar-link:hover {
+    color: var(--apx-ivory-light) !important;
+    background: rgba(201, 164, 92, 0.10) !important;
+    box-shadow: inset 0 0 10px rgba(201, 164, 92, 0.08) !important;
+}
+
+#sidebar .sidebar-link:hover i {
+    color: var(--apx-gold-radiant) !important;
+    transform: translateX(2px);
+}
+
+/* Active Sidebar Item */
+#sidebar .sidebar-item.active > .sidebar-link {
+    background: linear-gradient(90deg, rgba(201, 164, 92, 0.20) 0%, rgba(201, 164, 92, 0.06) 100%) !important;
+    color: var(--apx-gold-radiant) !important;
+    font-weight: 700 !important;
+    border-left: 3px solid var(--apx-gold) !important;
+    box-shadow: inset 0 0 14px rgba(201, 164, 92, 0.12) !important;
+}
+
+#sidebar .sidebar-item.active > .sidebar-link i {
+    color: var(--apx-gold-radiant) !important;
+    filter: drop-shadow(0 0 6px rgba(201, 164, 92, 0.5));
+}
+
+/* Sidebar Dropdown Submenus */
+#sidebar .sidebar-dropdown {
+    background: rgba(0, 0, 0, 0.35) !important;
+    border-radius: 6px !important;
+    margin: 4px 0 4px 12px !important;
+    padding: 4px 0 !important;
+    border-left: 1px dashed var(--apx-gold-border-subtle) !important;
+}
+
+#sidebar .sidebar-dropdown .sidebar-link {
+    padding: 7px 14px 7px 22px !important;
+    font-size: 0.82rem !important;
+}
+
+/* ==========================================================================
+   Top Navbar
+   ========================================================================== */
+.navbar-bg {
+    background: rgba(17, 19, 24, 0.88) !important;
+    backdrop-filter: blur(14px) !important;
+    -webkit-backdrop-filter: blur(14px) !important;
+    border-bottom: 1px solid var(--apx-gold-border) !important;
+    padding: 0.75rem 1.5rem !important;
+}
+
+/* Hamburger Toggle */
+.sidebar-toggle {
+    cursor: pointer;
+    padding: 6px 10px;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.sidebar-toggle:hover {
+    background: rgba(201, 164, 92, 0.12);
+}
+
+.hamburger,
+.hamburger::before,
+.hamburger::after {
+    background: var(--apx-gold-radiant) !important;
+}
+
+/* Topbar Buttons */
+.navbar .btn-outline-primary {
+    border-color: var(--apx-gold-border) !important;
+    color: var(--apx-gold-radiant) !important;
+    background: rgba(201, 164, 92, 0.05) !important;
+    font-weight: 600;
+    font-size: 0.82rem;
+    padding: 0.4rem 0.9rem;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.navbar .btn-outline-primary:hover {
+    background: var(--apx-gold) !important;
+    color: var(--apx-void-black) !important;
+    border-color: var(--apx-gold) !important;
+    box-shadow: 0 0 14px rgba(201, 164, 92, 0.35) !important;
+}
+
+.navbar .btn-outline-secondary {
+    border-color: rgba(255, 255, 255, 0.12) !important;
+    color: var(--apx-ivory-stone) !important;
+    background: rgba(255, 255, 255, 0.03) !important;
+    font-weight: 500;
+    font-size: 0.82rem;
+    padding: 0.4rem 0.9rem;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.navbar .btn-outline-secondary:hover {
+    background: rgba(255, 255, 255, 0.10) !important;
+    color: var(--apx-ivory-light) !important;
+    border-color: rgba(255, 255, 255, 0.25) !important;
+}
+
+/* Notification Bell */
+.navbar .nav-icon {
+    color: var(--apx-ivory-stone) !important;
+    padding: 8px 12px;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.navbar .nav-icon:hover {
+    color: var(--apx-gold-radiant) !important;
+    background: rgba(201, 164, 92, 0.10);
+}
+
+.navbar .indicator {
+    background: #DC2626 !important;
+    border: 2px solid #111318 !important;
+    box-shadow: 0 0 8px rgba(220, 38, 38, 0.6);
+}
+
+/* User Profile in Topbar */
+.navbar .dropdown-toggle {
+    color: var(--apx-ivory-celestial) !important;
+    font-weight: 600;
+}
+
+.navbar .dropdown-toggle:hover {
+    color: var(--apx-gold-radiant) !important;
+}
+
+/* ==========================================================================
+   Cards, Widgets & Stats
+   ========================================================================== */
+.card {
+    background-color: var(--apx-obsidian) !important;
+    border: 1px solid var(--apx-gold-border) !important;
+    border-radius: 10px !important;
+    box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.7) !important;
+    margin-bottom: 1.5rem !important;
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease !important;
+    overflow: hidden;
+}
+
+.card:hover {
+    border-color: rgba(201, 164, 92, 0.45) !important;
+    box-shadow: 0 10px 28px -4px rgba(0, 0, 0, 0.85), 0 0 16px rgba(201, 164, 92, 0.12) !important;
+}
+
+.card-header {
+    background: linear-gradient(180deg, rgba(201, 164, 92, 0.06) 0%, transparent 100%) !important;
+    border-bottom: 1px solid var(--apx-gold-border-subtle) !important;
+    padding: 1.1rem 1.35rem !important;
+}
+
+.card-header .card-title,
+.card-title {
+    color: var(--apx-ivory-celestial) !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.3px;
+}
+
+.card-body {
+    padding: 1.35rem !important;
+    color: var(--apx-ivory-marble) !important;
+}
+
+.card-footer {
+    background: rgba(0, 0, 0, 0.2) !important;
+    border-top: 1px solid var(--apx-gold-border-subtle) !important;
+    padding: 0.9rem 1.35rem !important;
+}
+
+/* Stat Box in Dashboard Cards */
+.stat {
+    background: rgba(201, 164, 92, 0.12) !important;
+    color: var(--apx-gold-radiant) !important;
+    border: 1px solid var(--apx-gold-border) !important;
+    border-radius: 8px !important;
+    padding: 0.65rem 0.85rem !important;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.stat i {
+    font-size: 1.4rem;
+}
+
+.card h1 {
+    color: var(--apx-ivory-light) !important;
+    font-weight: 800 !important;
+    letter-spacing: -0.5px;
+}
+
+/* ==========================================================================
+   Tables
+   ========================================================================== */
+.table {
+    color: var(--apx-ivory-marble) !important;
+    border-color: var(--apx-gold-border-subtle) !important;
+    margin-bottom: 0 !important;
+}
+
+.table > :not(caption) > * > * {
+    background-color: transparent !important;
+    border-bottom-color: rgba(255, 255, 255, 0.07) !important;
+    padding: 0.95rem 1rem !important;
+    vertical-align: middle;
+}
+
+.table thead th {
+    background: rgba(17, 19, 24, 0.85) !important;
+    color: var(--apx-gold) !important;
+    font-size: 0.76rem !important;
+    font-weight: 800 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1.2px !important;
+    border-bottom: 2px solid var(--apx-gold-border) !important;
+}
+
+.table-striped > tbody > tr:nth-of-type(odd) > * {
+    background-color: rgba(255, 255, 255, 0.02) !important;
+}
+
+.table-hover > tbody > tr:hover > * {
+    background-color: rgba(201, 164, 92, 0.07) !important;
+    color: var(--apx-ivory-light) !important;
+}
+
+/* ==========================================================================
+   Form Controls & Inputs
+   ========================================================================== */
+.form-control,
+.form-select,
+.input-group-text {
+    background-color: #0E1015 !important;
+    color: var(--apx-ivory-light) !important;
+    border: 1px solid var(--apx-gold-border) !important;
+    border-radius: 6px !important;
+    padding: 0.55rem 0.85rem !important;
+    font-size: 0.9rem !important;
+    transition: all 0.2s ease-in-out !important;
+}
+
+.form-control:focus,
+.form-select:focus {
+    background-color: #12151C !important;
+    color: var(--apx-ivory-light) !important;
+    border-color: var(--apx-gold) !important;
+    box-shadow: 0 0 0 3px rgba(201, 164, 92, 0.25) !important;
+    outline: none !important;
+}
+
+.form-control::placeholder {
+    color: #6E6960 !important;
+}
+
+.form-label {
+    color: var(--apx-ivory-celestial) !important;
+    font-weight: 600 !important;
+    font-size: 0.85rem !important;
+    margin-bottom: 0.4rem !important;
+}
+
+.form-text {
+    color: var(--apx-text-dim) !important;
+    font-size: 0.78rem !important;
+}
+
+.form-check-input {
+    background-color: #0E1015 !important;
+    border-color: var(--apx-gold-border) !important;
+    cursor: pointer;
+}
+
+.form-check-input:checked {
+    background-color: var(--apx-gold) !important;
+    border-color: var(--apx-gold) !important;
+    box-shadow: 0 0 8px rgba(201, 164, 92, 0.45) !important;
+}
+
+.form-check-label {
+    color: var(--apx-ivory-marble) !important;
+    cursor: pointer;
+}
+
+/* ==========================================================================
+   Buttons
+   ========================================================================== */
+.btn {
+    border-radius: 6px !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.2px;
+    padding: 0.5rem 1rem;
+    transition: all 0.2s ease-in-out !important;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--apx-gold) 0%, var(--apx-gold-antique) 100%) !important;
+    border: 1px solid var(--apx-gold-light) !important;
+    color: #090A0D !important;
+    font-weight: 700 !important;
+    box-shadow: 0 4px 14px rgba(201, 164, 92, 0.25) !important;
+}
+
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active {
+    background: linear-gradient(135deg, var(--apx-gold-radiant) 0%, var(--apx-gold) 100%) !important;
+    color: #000000 !important;
+    box-shadow: 0 6px 20px rgba(201, 164, 92, 0.45) !important;
+    transform: translateY(-1px);
+}
+
+.btn-outline-primary {
+    border-color: var(--apx-gold) !important;
+    color: var(--apx-gold-radiant) !important;
+    background: transparent !important;
+}
+
+.btn-outline-primary:hover,
+.btn-outline-primary:focus {
+    background: var(--apx-gold) !important;
+    color: #090A0D !important;
+    box-shadow: 0 0 16px rgba(201, 164, 92, 0.35) !important;
+}
+
+.btn-secondary {
+    background: #1D2028 !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    color: var(--apx-ivory-marble) !important;
+}
+
+.btn-secondary:hover {
+    background: #272B36 !important;
+    border-color: var(--apx-gold-border) !important;
+    color: var(--apx-ivory-light) !important;
+}
+
+.btn-success {
+    background: linear-gradient(135deg, #10B981, #059669) !important;
+    border: 1px solid #34D399 !important;
+    color: #FFF !important;
+    box-shadow: 0 4px 14px rgba(16, 185, 129, 0.25) !important;
+}
+
+.btn-danger {
+    background: linear-gradient(135deg, #EF4444, #DC2626) !important;
+    border: 1px solid #F87171 !important;
+    color: #FFF !important;
+    box-shadow: 0 4px 14px rgba(239, 68, 68, 0.25) !important;
+}
+
+.btn-warning {
+    background: linear-gradient(135deg, #F59E0B, #D97706) !important;
+    border: 1px solid #FCD34D !important;
+    color: #090A0D !important;
+    font-weight: 700 !important;
+}
+
+/* ==========================================================================
+   Modals & Popups
+   ========================================================================== */
+.modal-content {
+    background-color: var(--apx-obsidian) !important;
+    border: 1px solid var(--apx-gold-border) !important;
+    border-radius: 12px !important;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9) !important;
+}
+
+.modal-header {
+    background: linear-gradient(180deg, rgba(201, 164, 92, 0.08) 0%, transparent 100%) !important;
+    border-bottom: 1px solid var(--apx-gold-border-subtle) !important;
+    color: var(--apx-ivory-celestial) !important;
+}
+
+.modal-footer {
+    border-top: 1px solid var(--apx-gold-border-subtle) !important;
+}
+
+.modal-backdrop.show {
+    opacity: 0.75 !important;
+    backdrop-filter: blur(4px);
+}
+
+/* ==========================================================================
+   Dropdowns
+   ========================================================================== */
+.dropdown-menu {
+    background-color: var(--apx-obsidian) !important;
+    border: 1px solid var(--apx-gold-border) !important;
+    border-radius: 8px !important;
+    box-shadow: 0 14px 35px rgba(0, 0, 0, 0.85) !important;
+    padding: 0.5rem !important;
+}
+
+.dropdown-item {
+    color: var(--apx-ivory-marble) !important;
+    border-radius: 4px !important;
+    padding: 0.5rem 0.85rem !important;
+    font-size: 0.85rem !important;
+    transition: all 0.15s ease !important;
+}
+
+.dropdown-item:hover,
+.dropdown-item:focus {
+    background-color: rgba(201, 164, 92, 0.14) !important;
+    color: var(--apx-gold-radiant) !important;
+}
+
+.dropdown-divider {
+    border-top-color: var(--apx-gold-border-subtle) !important;
+    margin: 0.4rem 0 !important;
+}
+
+.dropdown-menu-header {
+    background: rgba(201, 164, 92, 0.10) !important;
+    color: var(--apx-gold) !important;
+    font-weight: 700 !important;
+    font-size: 0.78rem !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1px !important;
+    padding: 0.6rem 1rem !important;
+    border-bottom: 1px solid var(--apx-gold-border-subtle) !important;
+}
+
+/* List group inside dropdowns */
+.dropdown .list-group-item {
+    background-color: transparent !important;
+    color: var(--apx-ivory-marble) !important;
+    border-color: rgba(255, 255, 255, 0.06) !important;
+    transition: background-color 0.15s ease;
+}
+
+.dropdown .list-group-item:hover {
+    background-color: rgba(201, 164, 92, 0.08) !important;
+    color: var(--apx-ivory-light) !important;
+}
+
+/* ==========================================================================
+   Alerts & Badges
+   ========================================================================== */
+.alert {
+    border-radius: 8px !important;
+    border-width: 1px !important;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3) !important;
+}
+
+.alert-info {
+    background-color: rgba(6, 182, 212, 0.12) !important;
+    border-color: rgba(6, 182, 212, 0.35) !important;
+    color: #67E8F9 !important;
+}
+
+.alert-warning {
+    background-color: rgba(245, 158, 11, 0.12) !important;
+    border-color: rgba(245, 158, 11, 0.35) !important;
+    color: #FDE047 !important;
+}
+
+.alert-success {
+    background-color: rgba(16, 185, 129, 0.12) !important;
+    border-color: rgba(16, 185, 129, 0.35) !important;
+    color: #6EE7B7 !important;
+}
+
+.alert-danger {
+    background-color: rgba(239, 68, 68, 0.12) !important;
+    border-color: rgba(239, 68, 68, 0.35) !important;
+    color: #FCA5A5 !important;
+}
+
+.badge {
+    border-radius: 4px !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.4px !important;
+    padding: 0.35em 0.65em !important;
+}
+
+.badge.bg-primary {
+    background-color: var(--apx-gold) !important;
+    color: #090A0D !important;
+}
+
+/* ==========================================================================
+   Pagination & Breadcrumbs
+   ========================================================================== */
+.page-link {
+    background-color: var(--apx-obsidian) !important;
+    border-color: var(--apx-gold-border-subtle) !important;
+    color: var(--apx-ivory-stone) !important;
+    transition: all 0.15s ease !important;
+}
+
+.page-link:hover {
+    background-color: rgba(201, 164, 92, 0.15) !important;
+    border-color: var(--apx-gold) !important;
+    color: var(--apx-gold-radiant) !important;
+}
+
+.page-item.active .page-link {
+    background-color: var(--apx-gold) !important;
+    border-color: var(--apx-gold) !important;
+    color: #090A0D !important;
+    font-weight: 700 !important;
+    box-shadow: 0 0 10px rgba(201, 164, 92, 0.4) !important;
+}
+
+.breadcrumb-item,
+.breadcrumb-item a {
+    color: var(--apx-text-dim) !important;
+    text-decoration: none;
+}
+
+.breadcrumb-item.active {
+    color: var(--apx-gold-radiant) !important;
+    font-weight: 600;
+}
+
+/* ==========================================================================
+   Footer
+   ========================================================================== */
+.footer {
+    background-color: #0C0E13 !important;
+    border-top: 1px solid var(--apx-gold-border-subtle) !important;
+    padding: 1.25rem 0 !important;
+}
+
+.footer p,
+.footer span,
+.footer small {
+    color: var(--apx-text-dim) !important;
+}
+
+.footer a {
+    color: var(--apx-gold) !important;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.footer a:hover {
+    color: var(--apx-gold-radiant) !important;
+    text-decoration: underline;
+}
+
+/* ==========================================================================
+   Custom Scrollbar
+   ========================================================================== */
+::-webkit-scrollbar {
+    width: 7px;
+    height: 7px;
+}
+
+::-webkit-scrollbar-track {
+    background: #090A0D;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #292C33;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--apx-gold);
+}
