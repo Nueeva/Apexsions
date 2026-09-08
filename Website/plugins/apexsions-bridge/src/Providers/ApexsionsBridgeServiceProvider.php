@@ -5,10 +5,26 @@ namespace Azuriom\Plugin\ApexsionsBridge\Providers;
 use Azuriom\Extensions\Plugin\BasePluginServiceProvider;
 use Azuriom\Models\Permission;
 use Azuriom\Plugin\ApexsionsBridge\Console\CleanEventsCommand;
+use Azuriom\Plugin\ApexsionsBridge\Console\ProcessNotificationsCommand;
 use Illuminate\Console\Scheduling\Schedule;
 
 class ApexsionsBridgeServiceProvider extends BasePluginServiceProvider
 {
+    /**
+     * The plugin's middleware.
+     */
+    protected array $middleware = [];
+
+    /**
+     * The plugin's route middleware.
+     */
+    protected array $routeMiddleware = [];
+
+    /**
+     * The policy mappings for the plugin.
+     */
+    protected array $policies = [];
+
     /**
      * Register any plugin services.
      */
@@ -35,6 +51,7 @@ class ApexsionsBridgeServiceProvider extends BasePluginServiceProvider
         if ($this->app->runningInConsole()) {
             $this->commands([
                 CleanEventsCommand::class,
+                ProcessNotificationsCommand::class,
             ]);
         }
 
@@ -48,6 +65,7 @@ class ApexsionsBridgeServiceProvider extends BasePluginServiceProvider
     protected function schedule(Schedule $schedule): void
     {
         $schedule->command('apexsions:clean-events --days=30')->daily();
+        $schedule->command('apexsions:process-notifications')->everyFiveMinutes();
     }
 
     /**
@@ -72,6 +90,10 @@ class ApexsionsBridgeServiceProvider extends BasePluginServiceProvider
             'apexsions.intelligence.view' => 'Pantau Intelligence & Anomaly Desk',
             'apexsions.incidents.view' => 'Lihat Berkas Insiden',
             'apexsions.incidents.manage' => 'Kelola Investigasi, Penugasan & Resolusi Insiden',
+            'apexsions.notifications.view' => 'Lihat Notifikasi Admin & Alert',
+            'apexsions.notifications.manage' => 'Acknowledge & Kelola Notifikasi',
+            'apexsions.automation.view' => 'Lihat Kebijakan & Riwayat Otomasi',
+            'apexsions.automation.manage' => 'Kelola & Beri Persetujuan Aksi Otomasi',
         ]);
     }
 
@@ -171,6 +193,18 @@ class ApexsionsBridgeServiceProvider extends BasePluginServiceProvider
                 'name' => 'Incident Registry',
                 'icon' => 'bi bi-exclamation-octagon-fill',
                 'route' => 'apexsions-bridge.admin.incidents.index',
+                'permission' => 'admin.users',
+            ],
+            'apexsions-notifications' => [
+                'name' => 'Notifications Desk',
+                'icon' => 'bi bi-bell-fill',
+                'route' => 'apexsions-bridge.admin.notifications.index',
+                'permission' => 'admin.users',
+            ],
+            'apexsions-automation' => [
+                'name' => 'Safe Automation',
+                'icon' => 'bi bi-gear-wide-connected',
+                'route' => 'apexsions-bridge.admin.automation.index',
                 'permission' => 'admin.users',
             ],
         ];

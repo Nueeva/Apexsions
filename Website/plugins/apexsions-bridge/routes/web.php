@@ -4,9 +4,11 @@ use Azuriom\Plugin\ApexsionsBridge\Controllers\AccountLinkController;
 use Azuriom\Plugin\ApexsionsBridge\Controllers\Admin\AuditLogController;
 use Azuriom\Plugin\ApexsionsBridge\Controllers\Admin\AuctionAdminController;
 use Azuriom\Plugin\ApexsionsBridge\Controllers\Admin\EconomyAdminController;
+use Azuriom\Plugin\ApexsionsBridge\Controllers\Admin\AutomationAdminController;
 use Azuriom\Plugin\ApexsionsBridge\Controllers\Admin\IncidentAdminController;
 use Azuriom\Plugin\ApexsionsBridge\Controllers\Admin\IntelligenceAdminController;
 use Azuriom\Plugin\ApexsionsBridge\Controllers\Admin\ModerationAdminController;
+use Azuriom\Plugin\ApexsionsBridge\Controllers\Admin\NotificationAdminController;
 use Azuriom\Plugin\ApexsionsBridge\Controllers\Admin\PlayerAdminController;
 use Azuriom\Plugin\ApexsionsBridge\Controllers\Admin\PluginAdminController;
 use Azuriom\Plugin\ApexsionsBridge\Controllers\Admin\ReportAdminController;
@@ -121,5 +123,20 @@ Route::middleware(['web', 'admin-access'])->prefix('admin')->name('admin.')->gro
         Route::post('/{id}/assign', [IncidentAdminController::class, 'assign'])->name('assign');
         Route::post('/{id}/status', [IncidentAdminController::class, 'status'])->name('status');
         Route::post('/{id}/notes', [IncidentAdminController::class, 'note'])->name('notes.store');
+    });
+
+    // Notifications & Alert Orchestration (Phase 8)
+    Route::prefix('notifications')->name('notifications.')->middleware('can:admin.users')->group(function () {
+        Route::get('/', [NotificationAdminController::class, 'index'])->name('index');
+        Route::get('/{id}', [NotificationAdminController::class, 'show'])->name('show');
+        Route::post('/{id}/acknowledge', [NotificationAdminController::class, 'acknowledge'])->name('acknowledge');
+    });
+
+    // Safe Automation Framework (Phase 8)
+    Route::prefix('automation')->name('automation.')->middleware('can:admin.users')->group(function () {
+        Route::get('/', [AutomationAdminController::class, 'index'])->name('index');
+        Route::post('/{id}/toggle', [AutomationAdminController::class, 'toggle'])->name('toggle');
+        Route::post('/executions/{id}/approve', [AutomationAdminController::class, 'approve'])->name('executions.approve');
+        Route::post('/executions/{id}/reject', [AutomationAdminController::class, 'reject'])->name('executions.reject');
     });
 });

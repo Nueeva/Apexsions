@@ -39,7 +39,13 @@ class EventIntelligenceService
         ]);
 
         // Evaluate against explicit rule engine for anomaly detection
-        AnomalyDetectionEngine::evaluate($event);
+        $incident = AnomalyDetectionEngine::evaluate($event);
+
+        // Feed into Safe Automation Orchestration
+        SafeAutomationEngine::handleEvent($event);
+        if ($incident) {
+            SafeAutomationEngine::handleIncident($incident);
+        }
 
         return $event;
     }
