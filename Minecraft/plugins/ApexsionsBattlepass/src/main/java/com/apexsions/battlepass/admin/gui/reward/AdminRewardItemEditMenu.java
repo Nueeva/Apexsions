@@ -41,23 +41,27 @@ public class AdminRewardItemEditMenu extends Gui {
 
         RewardItem item = rewards.get(rewardIndex);
         ItemStack itemStack = item.toItemStack();
-        boolean isStackable = itemStack != null && itemStack.getMaxStackSize() > 1;
+        boolean isCurrency = item.isCurrency();
+        boolean isStackable = !isCurrency && itemStack != null && itemStack.getMaxStackSize() > 1;
 
         // 1. Overview Card (Slot 4)
         List<String> overviewLore = new ArrayList<>();
         overviewLore.add("&7Tipe: &e" + item.getType());
-        if (item.getType() == RewardType.CURRENCY) {
-            if ("rupiah".equalsIgnoreCase(item.getCurrencyId())) {
-                overviewLore.add("&7Nama: &fRp." + item.getAmount());
-                overviewLore.add("&7Jumlah: &aRp." + item.getAmount());
-            } else if ("diamond".equalsIgnoreCase(item.getCurrencyId())) {
-                overviewLore.add("&7Nama: &f" + item.getAmount() + " Diamond");
+        if (isCurrency) {
+            String cId = item.getCurrencyId();
+            if ("rupiah".equalsIgnoreCase(cId) || item.getType() == RewardType.MONEY) {
+                overviewLore.add("&7Nama: &fRp." + String.format("%,d", (long) item.getAmount()).replace(',', '.'));
+                overviewLore.add("&7Jumlah: &aRp." + String.format("%,d", (long) item.getAmount()).replace(',', '.'));
+                overviewLore.add("&7Mata Uang: &eRUPIAH");
+            } else if ("diamond".equalsIgnoreCase(cId)) {
+                overviewLore.add("&7Nama: &f" + item.getAmount() + " Diamond 💎");
                 overviewLore.add("&7Jumlah: &a" + item.getAmount() + " Diamond");
+                overviewLore.add("&7Mata Uang: &eDIAMOND");
             } else {
-                overviewLore.add("&7Nama: &f" + item.getAmount() + " Coins");
+                overviewLore.add("&7Nama: &f" + item.getAmount() + " Battle Coins");
                 overviewLore.add("&7Jumlah: &a" + item.getAmount() + " Coins");
+                overviewLore.add("&7Mata Uang: &e" + (cId != null ? cId.toUpperCase() : "BATTLE_COINS"));
             }
-            overviewLore.add("&7Currency ID: &e" + item.getCurrencyId().toUpperCase());
         } else {
             overviewLore.add("&7Nama: &f" + item.getDisplayName());
             overviewLore.add("&7Jumlah: &a" + item.getAmount() + "x");
@@ -68,11 +72,14 @@ public class AdminRewardItemEditMenu extends Gui {
         }
 
         String overviewTitle = "&6&lDETAIL HADIAH #" + (rewardIndex + 1);
-        if (item.getType() == RewardType.CURRENCY && "rupiah".equalsIgnoreCase(item.getCurrencyId())) {
-            overviewTitle = "&6&lDETAIL HADIAH: &a&lRp." + item.getAmount();
+        if (isCurrency) {
+            overviewTitle = "&6&lDETAIL HADIAH: " + item.getDisplayName();
         }
 
-        setButton(4, new GuiButton(new ItemBuilder(itemStack != null ? itemStack : new ItemStack(Material.CHEST))
+        ItemStack cardIcon = itemStack != null ? itemStack.clone() : new ItemStack(Material.CHEST);
+        cardIcon.setAmount(1);
+
+        setButton(4, new GuiButton(new ItemBuilder(cardIcon)
                 .name(overviewTitle)
                 .lore(overviewLore)
                 .build()));
@@ -116,16 +123,24 @@ public class AdminRewardItemEditMenu extends Gui {
                         ))
                         .build()));
             }
-        } else if (item.getType() == RewardType.CURRENCY) {
+        } else if (isCurrency) {
             // Currency Amount Editing
-            String amountDisplay = "rupiah".equalsIgnoreCase(item.getCurrencyId()) ? ("Rp." + item.getAmount()) : (item.getAmount() + " " + item.getCurrencyId().toUpperCase());
+            String cId = item.getCurrencyId();
+            if (cId == null || cId.isBlank() || item.getType() == RewardType.MONEY) {
+                cId = "rupiah";
+            }
+            String amountDisplay = "rupiah".equalsIgnoreCase(cId) ? ("Rp." + String.format("%,d", (long) item.getAmount()).replace(',', '.')) : (item.getAmount() + " " + cId.toUpperCase());
+            final String activeCId = cId;
+
             setButton(19, new GuiButton(new ItemBuilder(Material.GOLD_INGOT)
                     .name("&e&l[💰] UBAH JUMLAH SALDO (Saat ini: " + amountDisplay + ")")
                     .lore(List.of("&7Atur nominal saldo yang diberikan.", " ", "&eKlik untuk mengubah via GUI >"))
                     .build(), event -> {
                 plugin.getChatInputManager().startNumericInput(player, "Masukkan nominal saldo baru:", newAmount -> {
-                    String name = "rupiah".equalsIgnoreCase(item.getCurrencyId()) ? ("Rp." + newAmount) : (newAmount + " " + item.getCurrencyId().toUpperCase());
-                    RewardItem updated = new RewardItem(item.getType(), item.getMaterial(), newAmount, name, item.getCommands(), item.getPermission(), item.getItemData(), item.getCurrencyId(), item.isSpecialPreview());
+                    String name = "rupiah".equalsIgnoreCase(activeCId)
+                            ? ("Rp." + String.format("%,d", (long) newAmount).replace(',', '.'))
+                            : ("diamond".equalsIgnoreCase(activeCId) ? (newAmount + " Diamond 💎") : (newAmount + " Battle Coins"));
+                    RewardItem updated = new RewardItem(RewardType.CURRENCY, item.getMaterial(), newAmount, name, item.getCommands(), item.getPermission(), item.getItemData(), activeCId, item.isSpecialPreview());
                     plugin.getRewardManager().updateReward(level, passId, rewardIndex, updated);
                     player.sendMessage("§aNominal saldo berhasil diubah menjadi §e" + name + "§a!");
                     open();
@@ -134,27 +149,30 @@ public class AdminRewardItemEditMenu extends Gui {
 
             // Currency Switcher (100% GUI Buttons)
             setButton(21, new GuiButton(new ItemBuilder(Material.SUNFLOWER)
-                    .name("&6&l[🔄] GANTI MATA UANG (Saat ini: " + item.getCurrencyId().toUpperCase() + ")")
+                    .name("&6&l[🔄] GANTI MATA UANG (Saat ini: " + activeCId.toUpperCase() + ")")
                     .lore(List.of(
                             "&7Klik untuk beralih tipe mata uang:",
                             "&f- Rupiah",
-                            "&f- Coins",
+                            "&f- Battle Coins",
                             "&f- Diamond",
                             " ",
                             "&eKlik untuk beralih >"
                     ))
                     .build(), event -> {
-                String[] currs = new String[]{"rupiah", "coins", "diamond"};
+                String[] currs = new String[]{"rupiah", "battle_coins", "diamond"};
                 int next = 0;
                 for (int i = 0; i < currs.length; i++) {
-                    if (currs[i].equalsIgnoreCase(item.getCurrencyId())) {
+                    if (currs[i].equalsIgnoreCase(activeCId)) {
                         next = (i + 1) % currs.length;
                         break;
                     }
                 }
                 String nextCurr = currs[next];
-                String name = "rupiah".equalsIgnoreCase(nextCurr) ? ("Rp." + item.getAmount()) : (item.getAmount() + " " + nextCurr.toUpperCase());
-                RewardItem updated = new RewardItem(item.getType(), item.getMaterial(), item.getAmount(), name, item.getCommands(), item.getPermission(), item.getItemData(), nextCurr, item.isSpecialPreview());
+                Material icon = nextCurr.equalsIgnoreCase("rupiah") ? Material.GOLD_INGOT : (nextCurr.equalsIgnoreCase("diamond") ? Material.DIAMOND : Material.SUNFLOWER);
+                String name = "rupiah".equalsIgnoreCase(nextCurr)
+                        ? ("Rp." + String.format("%,d", (long) item.getAmount()).replace(',', '.'))
+                        : (nextCurr.equalsIgnoreCase("diamond") ? (item.getAmount() + " Diamond 💎") : (item.getAmount() + " Battle Coins"));
+                RewardItem updated = new RewardItem(RewardType.CURRENCY, icon, item.getAmount(), name, item.getCommands(), item.getPermission(), item.getItemData(), nextCurr, item.isSpecialPreview());
                 plugin.getRewardManager().updateReward(level, passId, rewardIndex, updated);
                 player.sendMessage("§aMata uang diubah menjadi §e" + nextCurr.toUpperCase() + "§a!");
                 open();

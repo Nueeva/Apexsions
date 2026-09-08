@@ -117,19 +117,23 @@ public class AdminRewardLevelEditorMenu extends Gui {
             final int rewardIndex = i;
             RewardItem ri = rewards.get(i);
             ItemStack is = ri.toItemStack();
+            boolean isCurrency = ri.isCurrency();
             boolean isStackable = is != null && is.getMaxStackSize() > 1;
 
             List<String> lore = new ArrayList<>();
             lore.add("&7Tipe: &e" + ri.getType());
-            if (ri.getType() == RewardType.CURRENCY) {
-                if ("rupiah".equalsIgnoreCase(ri.getCurrencyId())) {
-                    lore.add("&7Jumlah: &aRp." + ri.getAmount());
-                } else if ("diamond".equalsIgnoreCase(ri.getCurrencyId())) {
-                    lore.add("&7Jumlah: &a" + ri.getAmount() + " Diamond");
+            if (isCurrency) {
+                String cId = ri.getCurrencyId();
+                if ("rupiah".equalsIgnoreCase(cId) || ri.getType() == RewardType.MONEY) {
+                    lore.add("&7Jumlah: &aRp." + String.format("%,d", (long) ri.getAmount()).replace(',', '.'));
+                    lore.add("&7Mata Uang: &eRUPIAH");
+                } else if ("diamond".equalsIgnoreCase(cId)) {
+                    lore.add("&7Jumlah: &a" + ri.getAmount() + " Diamond 💎");
+                    lore.add("&7Mata Uang: &eDIAMOND");
                 } else {
                     lore.add("&7Jumlah: &a" + ri.getAmount() + " Coins");
+                    lore.add("&7Mata Uang: &e" + (cId != null ? cId.toUpperCase() : "BATTLE_COINS"));
                 }
-                lore.add("&7Currency ID: &e" + ri.getCurrencyId().toUpperCase());
             } else {
                 lore.add("&7Jumlah: &a" + ri.getAmount() + "x");
                 lore.add("&7Stackable: " + (isStackable ? "&aYa (Maks " + (is != null ? is.getMaxStackSize() : 64) + ")" : "&cTidak (Maks 1)"));
@@ -142,11 +146,10 @@ public class AdminRewardLevelEditorMenu extends Gui {
             lore.add("&c▶ [Klik Kanan] Hapus hadiah dari level ini");
 
             String displayName = ri.getDisplayName();
-            if (ri.getType() == RewardType.CURRENCY && "rupiah".equalsIgnoreCase(ri.getCurrencyId())) {
-                displayName = "&a&lRp." + ri.getAmount();
-            }
+            ItemStack icon = is != null ? is.clone() : new ItemStack(Material.CHEST);
+            icon.setAmount(isCurrency ? 1 : Math.max(1, Math.min(64, ri.getAmount())));
 
-            ItemStack display = new ItemBuilder(is != null ? is : new ItemStack(Material.CHEST))
+            ItemStack display = new ItemBuilder(icon)
                     .name(displayName)
                     .lore(lore)
                     .build();

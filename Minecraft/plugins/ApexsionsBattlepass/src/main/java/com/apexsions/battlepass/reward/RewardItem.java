@@ -47,20 +47,46 @@ public class RewardItem {
     }
 
     public ItemStack toItemStack() {
+        if (isCurrency()) {
+            Material icon;
+            if ("rupiah".equalsIgnoreCase(currencyId) || type == RewardType.MONEY) {
+                icon = (material != null && material != Material.CHEST && material != Material.AIR) ? material : Material.GOLD_INGOT;
+            } else if ("diamond".equalsIgnoreCase(currencyId)) {
+                icon = Material.DIAMOND;
+            } else {
+                icon = (material != null && material != Material.CHEST && material != Material.AIR) ? material : Material.SUNFLOWER;
+            }
+            return new ItemBuilder(icon, 1).name(getDisplayName()).build();
+        }
+
         if (itemData != null && !itemData.isBlank()) {
             ItemStack is = ItemSerializer.fromBase64(itemData);
             if (is != null) {
-                is.setAmount(amount);
+                is.setAmount(Math.max(1, Math.min(64, amount)));
                 return is;
             }
         }
-        return new ItemBuilder(material, amount).name(name).build();
+        int clampedAmount = Math.max(1, Math.min(64, amount));
+        return new ItemBuilder(material != null ? material : Material.CHEST, clampedAmount).name(getDisplayName()).build();
     }
 
     public String getDisplayName() {
         if (name != null && !name.isBlank()) return name;
+        if (isCurrency()) {
+            if ("rupiah".equalsIgnoreCase(currencyId) || type == RewardType.MONEY) {
+                return "&a&lRp." + String.format("%,d", (long) amount).replace(',', '.');
+            } else if ("diamond".equalsIgnoreCase(currencyId)) {
+                return "&b&l" + amount + " Diamond 💎";
+            } else {
+                return "&e&l" + amount + " Battle Coins";
+            }
+        }
         if (material != null) return ItemSerializer.formatMaterialName(material);
         return type.name();
+    }
+
+    public boolean isCurrency() {
+        return type == RewardType.CURRENCY || type == RewardType.MONEY;
     }
 
     public RewardType getType() { return type; }

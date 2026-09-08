@@ -85,12 +85,14 @@ public class RewardManager {
                                 }
 
                                 Object matObj = map.get("material");
-                                String matStr = matObj != null ? matObj.toString() : "DIAMOND";
-                                Material mat = Material.matchMaterial(matStr);
+                                String matStr = matObj != null ? matObj.toString() : null;
+                                Material mat = matStr != null ? Material.matchMaterial(matStr) : null;
 
                                 int amount = 1;
                                 if (map.containsKey("amount")) {
-                                    amount = Integer.parseInt(String.valueOf(map.get("amount")));
+                                    try {
+                                        amount = Integer.parseInt(String.valueOf(map.get("amount")));
+                                    } catch (NumberFormatException ignored) {}
                                 }
 
                                 String name = map.containsKey("name") ? String.valueOf(map.get("name")) : null;
@@ -107,16 +109,36 @@ public class RewardManager {
 
                                 String perm = map.containsKey("permission") ? String.valueOf(map.get("permission")) : null;
                                 String itemData = map.containsKey("item-data") ? String.valueOf(map.get("item-data")) : null;
-                                String currencyId = map.containsKey("currency-id") ? String.valueOf(map.get("currency-id")) : "battle_coins";
+                                String currencyId = map.containsKey("currency-id") ? String.valueOf(map.get("currency-id")) : null;
+
+                                // Normalize MONEY / CURRENCY defaults
+                                if (type == RewardType.MONEY || (name != null && name.toLowerCase().contains("rp"))) {
+                                    if (currencyId == null || currencyId.isBlank() || currencyId.equalsIgnoreCase("battle_coins")) {
+                                        currencyId = "rupiah";
+                                    }
+                                    if (mat == null) mat = Material.GOLD_INGOT;
+                                } else if (type == RewardType.CURRENCY) {
+                                    if (currencyId == null || currencyId.isBlank()) {
+                                        currencyId = "battle_coins";
+                                    }
+                                    if (mat == null) {
+                                        mat = "diamond".equalsIgnoreCase(currencyId) ? Material.DIAMOND : Material.SUNFLOWER;
+                                    }
+                                } else {
+                                    if (mat == null) mat = Material.CHEST;
+                                }
+
                                 boolean specialPreview = (map.containsKey("special-preview") && Boolean.parseBoolean(String.valueOf(map.get("special-preview"))))
                                         || (map.containsKey("previewable") && Boolean.parseBoolean(String.valueOf(map.get("previewable"))));
+                                String normKey = com.apexsions.battlepass.pass.PassManager.normalizePassId(passKey);
                                 if (specialPreview) {
-                                    specialPreviewLevels.add(lvl + ":" + com.apexsions.battlepass.pass.PassManager.normalizePassId(passKey));
+                                    specialPreviewLevels.add(lvl + ":" + normKey);
                                 }
 
                                 items.add(new RewardItem(type, mat, amount, name, commands, perm, itemData, currencyId, specialPreview));
                             }
-                            passMap.put(passKey.toLowerCase(), items);
+                            String normPass = com.apexsions.battlepass.pass.PassManager.normalizePassId(passKey);
+                            passMap.put(normPass, items);
                         }
                         levelRewards.put(lvl, passMap);
                     }
@@ -137,7 +159,8 @@ public class RewardManager {
     }
 
     public void saveRewards() {
-        File file = new File(plugin.getDataFolder(), "rewards.yml");
+        File file1 = new File(plugin.getDataFolder(), "rewards/rewards.yml");
+        File file2 = new File(plugin.getDataFolder(), "rewards.yml");
         FileConfiguration config = new YamlConfiguration();
 
         for (int lvl = 1; lvl <= maxLevel; lvl++) {
@@ -175,7 +198,18 @@ public class RewardManager {
         }
 
         try {
-            config.save(file);
+            if (file1.getParentFile() != null && !file1.getParentFile().exists()) {
+                file1.getParentFile().mkdirs();
+            }
+            config.save(file1);
+        } catch (Exception e) {
+            plugin.getLogger().log(Level.SEVERE, "Failed to save rewards/rewards.yml", e);
+        }
+
+        try {
+            if (file2.exists() || !file1.exists()) {
+                config.save(file2);
+            }
         } catch (Exception e) {
             plugin.getLogger().log(Level.SEVERE, "Failed to save rewards.yml", e);
         }
@@ -200,34 +234,27 @@ public class RewardManager {
 
         String norm = com.apexsions.battlepass.pass.PassManager.normalizePassId(passId);
 
-        // 1. Direct match with normalized passId
-        List<RewardItem> direct = map.get(norm);
-        if (direct != null && !direct.isEmpty()) {
-            return direct;
+        // 1. Direct match with normalized passId (respects empty list if admin cleared rewards)
+        if (map.containsKey(norm)) {
+            return map.get(norm);
         }
 
         // 2. Direct match with original passId
-        List<RewardItem> orig = map.get(passId.toLowerCase());
-        if (orig != null && !orig.isEmpty()) {
-            return orig;
+        String lower = passId.toLowerCase();
+        if (map.containsKey(lower)) {
+            return map.get(lower);
         }
 
-        // 3. Fallbacks for legacy mappings
+        // 3. Fallbacks for legacy mappings ONLY if canonical key is not present
         if (norm.equals("citizen")) {
-            List<RewardItem> freeList = map.get("free");
-            if (freeList != null && !freeList.isEmpty()) return freeList;
+            if (map.containsKey("free")) return map.get("free");
         } else if (norm.equals("sio")) {
-            List<RewardItem> premList = map.get("premium");
-            if (premList != null && !premList.isEmpty()) return premList;
-            List<RewardItem> plusList = map.get("premium-plus");
-            if (plusList != null && !plusList.isEmpty()) return plusList;
+            if (map.containsKey("premium")) return map.get("premium");
+            if (map.containsKey("premium-plus")) return map.get("premium-plus");
         } else if (norm.equals("exsio")) {
-            List<RewardItem> ultList = map.get("ultimate");
-            if (ultList != null && !ultList.isEmpty()) return ultList;
-            List<RewardItem> vipList = map.get("vip");
-            if (vipList != null && !vipList.isEmpty()) return vipList;
-            List<RewardItem> plusList = map.get("premium-plus");
-            if (plusList != null && !plusList.isEmpty()) return plusList;
+            if (map.containsKey("ultimate")) return map.get("ultimate");
+            if (map.containsKey("vip")) return map.get("vip");
+            if (map.containsKey("premium-plus")) return map.get("premium-plus");
         }
 
         return List.of();
@@ -265,7 +292,21 @@ public class RewardManager {
     }
 
     public void setRewards(int level, String passId, List<RewardItem> rewards) {
-        levelRewards.computeIfAbsent(level, k -> new HashMap<>()).put(passId.toLowerCase(), new ArrayList<>(rewards));
+        String norm = com.apexsions.battlepass.pass.PassManager.normalizePassId(passId);
+        Map<String, List<RewardItem>> map = levelRewards.computeIfAbsent(level, k -> new HashMap<>());
+        map.put(norm, new ArrayList<>(rewards));
+
+        // Purge legacy alias keys from memory so they never resurrect
+        if (norm.equals("citizen")) {
+            map.remove("free");
+        } else if (norm.equals("sio")) {
+            map.remove("premium");
+            map.remove("premium-plus");
+        } else if (norm.equals("exsio")) {
+            map.remove("ultimate");
+            map.remove("vip");
+            map.remove("premium-plus");
+        }
         saveRewards();
     }
 
@@ -361,14 +402,26 @@ public class RewardManager {
                 }
             }
             case MONEY -> {
-                if (plugin.getVaultHook() != null && plugin.getVaultHook().hasEconomy()) {
-                    plugin.getVaultHook().deposit(player, reward.getAmount());
+                try {
+                    com.apexsions.economy.api.ApexsionsEconomyProvider.get().deposit(player.getUniqueId(), "rupiah", reward.getAmount());
+                } catch (Throwable t) {
+                    if (plugin.getVaultHook() != null && plugin.getVaultHook().hasEconomy()) {
+                        plugin.getVaultHook().deposit(player, reward.getAmount());
+                    }
                 }
             }
             case CURRENCY -> {
                 String cId = reward.getCurrencyId();
-                if (cId == null || cId.equalsIgnoreCase("battle_coins") || cId.equalsIgnoreCase("battlecoins")) {
+                if (cId == null || cId.equalsIgnoreCase("battle_coins") || cId.equalsIgnoreCase("battlecoins") || cId.equalsIgnoreCase("coins")) {
                     plugin.getCurrencyService().addCurrency(player.getUniqueId(), reward.getAmount());
+                } else if (cId.equalsIgnoreCase("rupiah")) {
+                    try {
+                        com.apexsions.economy.api.ApexsionsEconomyProvider.get().deposit(player.getUniqueId(), "rupiah", reward.getAmount());
+                    } catch (Throwable t) {
+                        if (plugin.getVaultHook() != null && plugin.getVaultHook().hasEconomy()) {
+                            plugin.getVaultHook().deposit(player, reward.getAmount());
+                        }
+                    }
                 } else {
                     // Integration with ApexsionsEconomy if present
                     try {

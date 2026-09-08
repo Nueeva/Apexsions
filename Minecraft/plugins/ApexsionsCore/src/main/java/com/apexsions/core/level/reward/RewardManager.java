@@ -57,23 +57,28 @@ public class RewardManager {
                 String broadcast = sec.getString("broadcast");
                 String sound = sec.getString("sound", ms ? "UI_TOAST_CHALLENGE_COMPLETE" : "ENTITY_PLAYER_LEVELUP");
 
+                boolean hasExplicitItems = sec.contains("items");
                 List<ItemStack> items = new ArrayList<>();
-                List<?> rawItems = sec.getList("items");
-                if (rawItems != null) {
-                    for (Object obj : rawItems) {
-                        if (obj instanceof ItemStack is) {
-                            items.add(is);
+                if (hasExplicitItems) {
+                    List<?> rawItems = sec.getList("items");
+                    if (rawItems != null) {
+                        for (Object obj : rawItems) {
+                            if (obj instanceof ItemStack is) {
+                                items.add(is);
+                            }
                         }
                     }
                 }
 
-                // If commands contain item gives, convert to physical item & don't execute via console command
+                // If commands contain item gives, only convert to physical item if items section was never explicitly defined
                 List<String> filteredCommands = new ArrayList<>();
                 for (String cmd : rawCommands) {
                     if (isGiveCommand(cmd)) {
-                        ItemStack parsed = parseGiveCommand(cmd);
-                        if (parsed != null) {
-                            items.add(parsed);
+                        if (!hasExplicitItems) {
+                            ItemStack parsed = parseGiveCommand(cmd);
+                            if (parsed != null) {
+                                items.add(parsed);
+                            }
                         }
                     } else {
                         filteredCommands.add(cmd);
@@ -212,18 +217,36 @@ public class RewardManager {
     }
 
     public synchronized void saveRewardItems(int level, List<ItemStack> items) {
-        File file = new File(plugin.getDataFolder(), "progression/rewards.yml");
-        if (!file.exists()) {
-            file = new File(plugin.getDataFolder(), "rewards.yml");
-        }
+        File file1 = new File(plugin.getDataFolder(), "progression/rewards.yml");
+        File file2 = new File(plugin.getDataFolder(), "rewards.yml");
         FileConfiguration config = plugin.getConfigManager().getRewardsConfig();
 
         config.set("rewards." + level + ".items", items);
-        try {
-            config.save(file);
-        } catch (Exception e) {
-            plugin.getLogger().severe("Failed to save reward items for level " + level + ": " + e.getMessage());
+
+        // Strip legacy give commands from commands list so deleted items never resurrect on reload
+        List<String> currentCmds = config.getStringList("rewards." + level + ".commands");
+        if (currentCmds != null && !currentCmds.isEmpty()) {
+            List<String> nonGiveCmds = currentCmds.stream().filter(c -> !isGiveCommand(c)).toList();
+            config.set("rewards." + level + ".commands", nonGiveCmds);
         }
+
+        try {
+            if (file1.getParentFile() != null && !file1.getParentFile().exists()) {
+                file1.getParentFile().mkdirs();
+            }
+            config.save(file1);
+        } catch (Exception e) {
+            plugin.getLogger().severe("Failed to save reward items for level " + level + " to " + file1.getName() + ": " + e.getMessage());
+        }
+
+        try {
+            if (file2.exists() || !file1.exists()) {
+                config.save(file2);
+            }
+        } catch (Exception e) {
+            plugin.getLogger().severe("Failed to save reward items for level " + level + " to " + file2.getName() + ": " + e.getMessage());
+        }
+
         loadRewards();
     }
 
