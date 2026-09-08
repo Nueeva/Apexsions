@@ -261,7 +261,7 @@ public class KingdomCommand implements CommandExecutor, TabCompleter {
 
         Optional<PlayerData> dataOpt = plugin.getPlayerDataService().getCached(player.getUniqueId());
         if (dataOpt.isEmpty() || !dataOpt.get().hasRegion()) {
-            player.sendMessage(miniMessage.deserialize("<yellow>You have not pledged allegiance to a kingdom yet! Opening selection menu...</yellow>"));
+            player.sendMessage(miniMessage.deserialize("<gradient:#f39c12:#f1c40f><bold>APEXSIONS REALM</bold></gradient> <dark_gray>»</dark_gray> <yellow>Anda belum memilih kerajaan! Membuka menu pemilihan kerajaan...</yellow>"));
             plugin.getRegionSelectionGUI().open(player);
             return;
         }
@@ -269,7 +269,7 @@ public class KingdomCommand implements CommandExecutor, TabCompleter {
         UUID regionId = dataOpt.get().getRegionId();
         Optional<Region> regionOpt = plugin.getRegionManager().getRegion(regionId);
         if (regionOpt.isEmpty()) {
-            player.sendMessage(miniMessage.deserialize("<red>Your assigned kingdom could not be found.</red>"));
+            player.sendMessage(miniMessage.deserialize("<gradient:#e74c3c:#c0392b><bold>APEXSIONS</bold></gradient> <dark_gray>»</dark_gray> <red>Kerajaan yang ditugaskan kepada Anda tidak ditemukan.</red>"));
             return;
         }
 
