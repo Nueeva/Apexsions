@@ -37,22 +37,32 @@ public class AdminChatInputManager implements Listener {
         // Cancel existing session if any
         cancelSession(admin.getUniqueId(), false);
 
-        // Open input directly via dual-platform GUI (Bedrock Native Form / Java 26.2 Dialog / CustomInputTextGUI)
-        com.apexsions.core.gui.input.ApexsionsInputManager.openTextInput(
-                plugin,
-                admin,
-                "APEXSIONS ADMIN INPUT",
-                promptMessage,
-                "",
-                input -> {
-                    activeSessions.remove(admin.getUniqueId());
-                    onInput.accept(input);
-                },
-                () -> {
-                    activeSessions.remove(admin.getUniqueId());
-                    if (onCancel != null) onCancel.run();
-                }
-        );
+        // Close inventory on main thread so player can view chat and type
+        if (Bukkit.isPrimaryThread()) {
+            admin.closeInventory();
+        } else {
+            Bukkit.getScheduler().runTask(plugin, (Runnable) admin::closeInventory);
+        }
+
+        // Timeout task (60 seconds)
+        BukkitTask timeoutTask = Bukkit.getScheduler().runTaskLater(plugin, (Runnable) () -> {
+            cancelSession(admin.getUniqueId(), true);
+        }, 1200L);
+
+        // Register session into active map
+        activeSessions.put(admin.getUniqueId(), new InputSession(onInput, onCancel, timeoutTask));
+
+        // Visual and auditory feedback
+        admin.sendMessage(Component.empty());
+        admin.sendMessage(mm.deserialize("<gold>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</gold>"));
+        admin.sendMessage(mm.deserialize("<yellow><bold>📝 APEXSIONS ADMIN CHAT INPUT</bold></yellow>"));
+        admin.sendMessage(mm.deserialize("<gray>Petunjuk: </gray><aqua>" + promptMessage + "</aqua>"));
+        admin.sendMessage(mm.deserialize("<gray>Ketik jawabanmu di chat, atau ketik <red><bold>batal</bold></red> untuk membatalkan.</gray>"));
+        admin.sendMessage(mm.deserialize("<click:run_command:'/ac cancelinput'><red><bold>[✖ KLIK UNTUK MEMBATALKAN]</bold></red></click>"));
+        admin.sendMessage(mm.deserialize("<gold>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</gold>"));
+
+        admin.sendActionBar(mm.deserialize("<yellow>Ketik input di chat (ketik 'batal' untuk cancel)</yellow>"));
+        admin.playSound(admin.getLocation(), Sound.BLOCK_NOTE_BLOCK_CHIME, 1.0f, 1.2f);
     }
 
     public void cancelSession(UUID uuid, boolean notify) {
@@ -67,7 +77,7 @@ public class AdminChatInputManager implements Listener {
                 }
             }
             if (session.onCancel != null) {
-                Bukkit.getScheduler().runTask(plugin, session.onCancel);
+                Bukkit.getScheduler().runTask(plugin, (Runnable) session.onCancel);
             }
         }
     }
@@ -85,7 +95,7 @@ public class AdminChatInputManager implements Listener {
         String rawText = PlainTextComponentSerializer.plainText().serialize(event.message()).trim();
 
         if (rawText.equalsIgnoreCase("cancel") || rawText.equalsIgnoreCase("batal")) {
-            Bukkit.getScheduler().runTask(plugin, () -> {
+            Bukkit.getScheduler().runTask(plugin, (Runnable) () -> {
                 player.sendMessage(mm.deserialize("<yellow>✖ Input dibatalkan oleh admin.</yellow>"));
                 player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 0.8f, 0.8f);
                 if (session.onCancel != null) session.onCancel.run();
@@ -93,7 +103,7 @@ public class AdminChatInputManager implements Listener {
             return;
         }
 
-        Bukkit.getScheduler().runTask(plugin, () -> {
+        Bukkit.getScheduler().runTask(plugin, (Runnable) () -> {
             try {
                 session.onInput.accept(rawText);
             } catch (Exception e) {

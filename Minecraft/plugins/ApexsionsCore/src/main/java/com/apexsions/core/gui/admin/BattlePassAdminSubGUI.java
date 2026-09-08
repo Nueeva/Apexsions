@@ -74,19 +74,19 @@ public class BattlePassAdminSubGUI implements InventoryHolder {
 
         // Actions (Slots 20, 21, 22, 23, 24, 31)
         inventory.setItem(20, createActionItem(Material.GOLD_BLOCK, "<gold><bold>🏆 BERIKAN SIO / EXSIO PASS</bold></gold>",
-                List.of("<gray>Beri Sio / Exsio BattlePass ke pemain.</gray>", "<yellow>▶ Klik untuk input via GUI</yellow>")));
+                List.of("<gray>Beri Sio / Exsio BattlePass ke pemain aktif.</gray>", "<yellow>▶ Klik untuk buka GUI Pemilih Pemain</yellow>")));
 
-        inventory.setItem(21, createActionItem(Material.WRITABLE_BOOK, "<aqua><bold>🔄 RESET QUEST HARIAN (DAILY)</bold></aqua>",
-                List.of("<gray>Paksa reset seluruh quest harian pemain aktif.</gray>", "<yellow>▶ Klik untuk eksekusi reset</yellow>")));
+        inventory.setItem(21, createActionItem(Material.EXPERIENCE_BOTTLE, "<yellow><bold>⭐ SET TIER BATTLEPASS PEMAIN</bold></yellow>",
+                List.of("<gray>Atur pencapaian Tier BattlePass pemain.</gray>", "<yellow>▶ Klik untuk buka GUI Pengatur Tier</yellow>")));
 
-        inventory.setItem(22, createActionItem(Material.BOOKSHELF, "<light_purple><bold>🔄 RESET QUEST MINGGUAN (WEEKLY)</bold></light_purple>",
-                List.of("<gray>Paksa reset seluruh quest mingguan pemain aktif.</gray>", "<yellow>▶ Klik untuk eksekusi reset</yellow>")));
+        inventory.setItem(22, createActionItem(Material.CLOCK, "<aqua><bold>🔄 RESET REFRESH TOKO (ALL)</bold></aqua>",
+                List.of("<gray>Reset counter refresh toko seluruh pemain hari ini.</gray>", "<yellow>▶ Klik untuk reset counter refresh</yellow>")));
 
-        inventory.setItem(23, createActionItem(Material.EMERALD, "<green><bold>🛒 FORCE ROTASI TOKO BP</bold></green>",
-                List.of("<gray>Putar rotasi komoditas toko BattlePass sekarang.</gray>", "<yellow>▶ Klik untuk putar rotasi toko</yellow>")));
+        inventory.setItem(23, createActionItem(Material.CHEST, "<green><bold>🎁 PREVIEW DAFTAR REWARDS BP</bold></green>",
+                List.of("<gray>Buka katalog reward level BattlePass.</gray>", "<yellow>▶ Klik untuk buka menu reward</yellow>")));
 
-        inventory.setItem(24, createActionItem(Material.EXPERIENCE_BOTTLE, "<yellow><bold>⭐ SET TIER BATTLEPASS PEMAIN</bold></yellow>",
-                List.of("<gray>Atur pencapaian Tier BattlePass pemain.</gray>", "<yellow>▶ Klik untuk input via GUI</yellow>")));
+        inventory.setItem(24, createActionItem(Material.ENCHANTED_BOOK, "<light_purple><bold>📜 BUKA FULL PANEL BATTLEPASS (/ABP)</bold></light_purple>",
+                List.of("<gray>Buka panel kontrol penuh BattlePass bawaan.</gray>", "<yellow>▶ Klik untuk membuka /abp</yellow>")));
 
         inventory.setItem(31, createActionItem(Material.REDSTONE_BLOCK, "<red><bold>⚡ RELOAD APEXSIONS BATTLEPASS</bold></red>",
                 List.of("<gray>Muat ulang seluruh file konfigurasi & quest BP.</gray>", "<yellow>▶ Klik untuk reload</yellow>")));
@@ -101,58 +101,36 @@ public class BattlePassAdminSubGUI implements InventoryHolder {
         event.setCancelled(true);
         int slot = event.getRawSlot();
 
-        if (slot == 20) { // Give Pass
-            plugin.getAdminChatInputManager().startSession(admin,
-                    "Ketik nama pemain dan tier pass (contoh: PlayerName sio atau PlayerName exsio):",
-                    input -> {
-                        String[] parts = input.trim().split("\\s+");
-                        String targetName = parts[0];
-                        String passTier = parts.length > 1 ? parts[1].toLowerCase() : "sio";
-                        admin.performCommand("abp givepass " + targetName + " " + passTier);
-                        admin.sendMessage(mm.deserialize("<green>✓ Perintah Give Pass dieksekusi untuk <yellow>" + targetName + "</yellow> (Tier: <gold>" + passTier.toUpperCase() + "</gold>)!</green>"));
-                        open();
-                    },
-                    this::open
-            );
+        if (slot == 20) { // Give Pass GUI
+            admin.playSound(admin.getLocation(), Sound.UI_BUTTON_CLICK, 0.8f, 1.2f);
+            new BattlePassGivePassGUI(plugin, admin).open();
             return;
         }
 
-        if (slot == 21) { // Reset Daily
-            admin.performCommand("abp reset daily");
-            admin.sendMessage(mm.deserialize("<green>✓ Seluruh quest harian berhasil di-reset!</green>"));
+        if (slot == 21) { // Set Tier GUI
+            admin.playSound(admin.getLocation(), Sound.UI_BUTTON_CLICK, 0.8f, 1.2f);
+            new BattlePassSetTierGUI(plugin, admin).open();
+            return;
+        }
+
+        if (slot == 22) { // Reset Refresh All
+            admin.performCommand("abp resetrefresh all");
+            admin.sendMessage(mm.deserialize("<green>✓ Seluruh counter refresh harian toko BP berhasil di-reset!</green>"));
             admin.playSound(admin.getLocation(), Sound.BLOCK_BEACON_ACTIVATE, 0.8f, 1.5f);
             return;
         }
 
-        if (slot == 22) { // Reset Weekly
-            admin.performCommand("abp reset weekly");
-            admin.sendMessage(mm.deserialize("<green>✓ Seluruh quest mingguan berhasil di-reset!</green>"));
-            admin.playSound(admin.getLocation(), Sound.BLOCK_BEACON_ACTIVATE, 0.8f, 1.5f);
+        if (slot == 23) { // Preview BP Rewards
+            admin.playSound(admin.getLocation(), Sound.UI_BUTTON_CLICK, 0.8f, 1.2f);
+            admin.closeInventory();
+            admin.performCommand("bp");
             return;
         }
 
-        if (slot == 23) { // Force Rotate Shop
-            admin.performCommand("abp shop rotate");
-            admin.sendMessage(mm.deserialize("<green>✓ Toko BattlePass berhasil diputar secara paksa!</green>"));
-            admin.playSound(admin.getLocation(), Sound.UI_TOAST_CHALLENGE_COMPLETE, 0.8f, 1.3f);
-            return;
-        }
-
-        if (slot == 24) { // Set Tier
-            plugin.getAdminChatInputManager().startSession(admin,
-                    "Ketik nama pemain dan tier (format: <nama> <tier>):",
-                    input -> {
-                        String[] parts = input.split(" ");
-                        if (parts.length >= 2) {
-                            admin.performCommand("abp setlevel " + parts[0] + " " + parts[1]);
-                            admin.sendMessage(mm.deserialize("<green>✓ Tier BP " + parts[0] + " disetel ke <yellow>" + parts[1] + "</yellow>!</green>"));
-                        } else {
-                            admin.sendMessage(mm.deserialize("<red>Format salah! Gunakan: <nama> <tier></red>"));
-                        }
-                        open();
-                    },
-                    this::open
-            );
+        if (slot == 24) { // Open Full ABP Admin Panel
+            admin.playSound(admin.getLocation(), Sound.UI_BUTTON_CLICK, 0.8f, 1.2f);
+            admin.closeInventory();
+            admin.performCommand("abp");
             return;
         }
 

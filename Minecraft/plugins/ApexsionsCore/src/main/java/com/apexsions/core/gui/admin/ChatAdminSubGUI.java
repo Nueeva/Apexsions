@@ -118,13 +118,13 @@ public class ChatAdminSubGUI implements InventoryHolder {
         }
 
         if (slot == 21) { // Mute Chat
-            player.performCommand("mutechat");
+            player.performCommand("apexsionschat mute");
             player.playSound(player.getLocation(), Sound.BLOCK_BEACON_ACTIVATE, 0.8f, 1.5f);
             return;
         }
 
         if (slot == 22) { // Clear Chat
-            player.performCommand("clearchat");
+            player.performCommand("apexsionschat clear");
             player.sendMessage(mm.deserialize("<green>✓ Obrolan global berhasil dibersihkan!</green>"));
             player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 0.8f, 1.5f);
             return;
@@ -146,14 +146,14 @@ public class ChatAdminSubGUI implements InventoryHolder {
         }
 
         if (slot == 24) { // Start Chat Game
-            player.performCommand("chatgame start");
+            player.performCommand("apexsionschat game start");
             player.sendMessage(mm.deserialize("<green>✓ Event chat mini-game dimulai!</green>"));
             player.playSound(player.getLocation(), Sound.ENTITY_FIREWORK_ROCKET_LAUNCH, 0.8f, 1.2f);
             return;
         }
 
         if (slot == 31) { // Reload
-            player.performCommand("chat reload");
+            player.performCommand("apexsionschat reload");
             player.sendMessage(mm.deserialize("<green>✓ ApexsionsChat berhasil dimuat ulang!</green>"));
             player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 0.8f, 1.5f);
         }

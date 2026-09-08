@@ -138,6 +138,12 @@ public class AdminCommand implements CommandExecutor, TabCompleter {
                 p.openInventory(new com.apexsions.core.gui.admin.AdminLevelRewardListGUI(plugin, p, 1).getInventory());
                 break;
 
+            case "cancelinput":
+                if (sender instanceof Player pCancel) {
+                    plugin.getAdminChatInputManager().cancelSession(pCancel.getUniqueId(), true);
+                }
+                break;
+
             default:
                 sendHelp(sender);
                 break;

@@ -139,6 +139,19 @@ public class PlayerInspectorGUI implements InventoryHolder {
         inventory.setItem(34, createActionItem(Material.IRON_BOOTS, "<red><bold>👢 KICK PEMAIN</bold></red>",
                 List.of("<gray>Keluarkan pemain dari server secara paksa.</gray>", "<yellow>▶ Klik untuk kick</yellow>")));
 
+        // Slot 38: BattlePass Quick Control
+        String bpBadge = BattlePassGivePassGUI.resolvePlayerPassBadge(target.getUniqueId());
+        int bpTier = BattlePassGivePassGUI.resolvePlayerTier(target.getUniqueId());
+        inventory.setItem(38, createActionItem(Material.ENCHANTED_BOOK, "<gradient:#9b59b6:#8e44ad><bold>🎫 KONTROL BATTLEPASS</bold></gradient>",
+                List.of(
+                        "<gray>Pass Aktif: " + bpBadge + "</gray>",
+                        "<gray>BattlePass Tier: <yellow>Tier " + bpTier + "</yellow></gray>",
+                        "<dark_gray>--------------------------------</dark_gray>",
+                        "<green>▶ Klik Kiri:</green> <gray>Berikan SIO PASS</gray>",
+                        "<light_purple>▶ Klik Kanan:</light_purple> <gray>Berikan EXSIO PASS</gray>",
+                        "<aqua>▶ Shift + Klik:</aqua> <gray>Naikkan +1 Tier BP</gray>"
+                )));
+
         // Bottom Navigation (Slots 40, 49)
         ItemStack backList = createActionItem(Material.ARROW, "<yellow><bold>◀ KEMBALI KE DAFTAR PEMAIN</bold></yellow>",
                 List.of("<gray>Kembali ke daftar seluruh pemain online.</gray>"));
@@ -373,6 +386,21 @@ public class PlayerInspectorGUI implements InventoryHolder {
             admin.sendMessage(mm.deserialize("<red>✓ " + target.getName() + " berhasil di-kick dari server!</red>"));
             admin.playSound(admin.getLocation(), Sound.ENTITY_WITHER_SPAWN, 0.6f, 1.2f);
             new PlayerManagerGUI(plugin, admin).open();
+            return;
+        }
+        if (slot == 38) { // BattlePass Quick Control
+            if (event.isShiftClick()) {
+                int currentTier = BattlePassGivePassGUI.resolvePlayerTier(target.getUniqueId());
+                admin.performCommand("abp setlevel " + target.getName() + " " + (currentTier + 1));
+                admin.playSound(admin.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 0.8f, 1.4f);
+            } else if (event.isRightClick()) {
+                admin.performCommand("abp givepass " + target.getName() + " exsio");
+                admin.playSound(admin.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 0.8f, 1.5f);
+            } else {
+                admin.performCommand("abp givepass " + target.getName() + " sio");
+                admin.playSound(admin.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 0.8f, 1.3f);
+            }
+            buildGUI();
             return;
         }
 

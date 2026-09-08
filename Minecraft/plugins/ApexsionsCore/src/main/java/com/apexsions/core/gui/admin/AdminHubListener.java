@@ -29,6 +29,10 @@ public class AdminHubListener implements Listener {
             ecoGUI.handleClick(event);
         } else if (holder instanceof BattlePassAdminSubGUI bpGUI) {
             bpGUI.handleClick(event);
+        } else if (holder instanceof BattlePassGivePassGUI givePassGUI) {
+            givePassGUI.handleClick(event);
+        } else if (holder instanceof BattlePassSetTierGUI setTierGUI) {
+            setTierGUI.handleClick(event);
         } else if (holder instanceof ShopAdminSubGUI shopGUI) {
             shopGUI.handleClick(event);
         } else if (holder instanceof MediaAdminSubGUI mediaGUI) {

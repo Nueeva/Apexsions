@@ -292,7 +292,7 @@ public class MasterAdminGUI implements InventoryHolder {
         if (slot == 8) { // Reload All
             player.closeInventory();
             player.performCommand("ac reload");
-            player.performCommand("chat reload");
+            player.performCommand("apexsionschat reload");
             player.performCommand("eco reload");
             player.performCommand("abp reload");
             player.performCommand("shop reload");

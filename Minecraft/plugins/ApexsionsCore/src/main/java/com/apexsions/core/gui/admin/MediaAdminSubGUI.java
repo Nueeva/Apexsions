@@ -77,7 +77,7 @@ public class MediaAdminSubGUI implements InventoryHolder {
                 List.of("<gray>Buat display banner baru pada lokasimu saat ini.</gray>", "<yellow>▶ Klik untuk input nama banner via GUI</yellow>")));
 
         inventory.setItem(21, createActionItem(Material.GLOW_ITEM_FRAME, "<aqua><bold>📜 DAFTAR BANNER AKTIF</bold></aqua>",
-                List.of("<gray>Tampilkan daftar banner aktif yang terpasang di server.</gray>", "<yellow>▶ Klik untuk lihat daftar di chat</yellow>")));
+                List.of("<gray>Buka panel inspeksi daftar banner aktif yang terpasang.</gray>", "<yellow>▶ Klik untuk buka Media Admin GUI</yellow>")));
 
         inventory.setItem(22, createActionItem(Material.COMPASS, "<light_purple><bold>🔗 ATUR AKSI KLIK URL BANNER</bold></light_purple>",
                 List.of("<gray>Setel tautan web / Discord / Store saat banner diklik.</gray>", "<yellow>▶ Klik untuk atur URL via GUI</yellow>")));
@@ -111,20 +111,20 @@ public class MediaAdminSubGUI implements InventoryHolder {
             return;
         }
 
-        if (slot == 21) { // List Banners
+        if (slot == 21) { // List Banners GUI
             admin.closeInventory();
-            admin.performCommand("media list");
+            admin.performCommand("media gui");
             return;
         }
 
-        if (slot == 22) { // Set URL
+        if (slot == 22) { // Set Link
             plugin.getAdminChatInputManager().startSession(admin,
                     "Ketik ID Banner dan URL Link (format: <id> <url>):",
                     input -> {
                         String[] parts = input.split(" ");
                         if (parts.length >= 2) {
-                            admin.performCommand("media seturl " + parts[0] + " " + parts[1]);
-                            admin.sendMessage(mm.deserialize("<green>✓ URL untuk Banner " + parts[0] + " disetel ke <yellow>" + parts[1] + "</yellow>!</green>"));
+                            admin.performCommand("media setlink " + parts[0] + " " + parts[1]);
+                            admin.sendMessage(mm.deserialize("<green>✓ Link URL untuk Banner " + parts[0] + " disetel ke <yellow>" + parts[1] + "</yellow>!</green>"));
                         } else {
                             admin.sendMessage(mm.deserialize("<red>Format salah! Gunakan: <id> <url></red>"));
                         }
