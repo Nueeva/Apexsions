@@ -133,7 +133,12 @@
                         </div>
                         <div class="col-sm-6">
                             <span class="d-block text-muted" data-i18n="profile_pub_status">Status Akun:</span>
-                            <span class="text-success fw-bold"><i class="bi bi-patch-check-fill me-1"></i> <span data-i18n="profile_pub_verified">Terverifikasi Resmi</span></span>
+                            @if($account->verified_at)
+                                <span class="text-success fw-bold"><i class="bi bi-patch-check-fill me-1"></i> <span data-i18n="profile_pub_verified">Terverifikasi Resmi</span></span>
+                            @else
+                                <span class="text-warning fw-bold"><i class="bi bi-shield me-1"></i> <span data-i18n="profile_pub_unlinked">Karakter In-Game</span></span>
+                                <small class="d-block text-muted" style="font-size: 0.72rem;" data-i18n="profile_pub_claim_hint">Ketik /link di Minecraft untuk klaim web</small>
+                            @endif
                         </div>
                     </div>
                 </div>

@@ -64,10 +64,11 @@ class PlayerSyncController extends Controller
             ->first();
 
         if (!$account) {
-            return response()->json([
-                'status' => 'ignored',
-                'message' => 'Player is not yet linked to an Apexsions web account.',
-            ], 200);
+            $account = new MinecraftAccount();
+            $account->edition = 'JAVA';
+            $account->auth_mode = 'JAVA_ONLINE';
+            $account->user_id = null;
+            $account->verified_at = null;
         }
 
         $updateData = [
@@ -100,7 +101,7 @@ class PlayerSyncController extends Controller
             $updateData['unlocked_titles'] = $validated['unlocked_titles'];
         }
 
-        $account->update($updateData);
+        $account->fill($updateData)->save();
 
         // Auto-sync Azuriom Role if user exists
         if ($account->user) {

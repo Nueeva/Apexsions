@@ -316,6 +316,8 @@ class LinkVerificationController extends Controller
         $delivery = Delivery::create([
             'command' => $cmd,
             'status' => 'PENDING',
+            'player_uuid' => 'GLOBAL',
+            'player_username' => 'ALL_PLAYERS',
         ]);
 
         return response()->json([

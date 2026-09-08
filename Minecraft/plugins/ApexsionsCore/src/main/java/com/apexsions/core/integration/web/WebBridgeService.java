@@ -223,7 +223,17 @@ public class WebBridgeService {
 
                                     try {
                                         plugin.getLogger().info("[WebBridge] Executing delivery #" + id + ": " + cmd);
-                                        success = Bukkit.dispatchCommand(Bukkit.getConsoleSender(), cmd);
+                                        if (cmd.startsWith("broadcast ") || cmd.startsWith("bc ")) {
+                                            String msg = cmd.substring(cmd.indexOf(' ') + 1);
+                                            net.kyori.adventure.text.Component comp = net.kyori.adventure.text.minimessage.MiniMessage.miniMessage().deserialize(msg);
+                                            Bukkit.broadcast(comp);
+                                            for (Player online : Bukkit.getOnlinePlayers()) {
+                                                online.playSound(online.getLocation(), org.bukkit.Sound.BLOCK_NOTE_BLOCK_BELL, 1.0f, 1.0f);
+                                            }
+                                            success = true;
+                                        } else {
+                                            success = Bukkit.dispatchCommand(Bukkit.getConsoleSender(), cmd);
+                                        }
                                     } catch (Throwable t) {
                                         error = t.getMessage();
                                         plugin.getLogger().warning("[WebBridge] Error executing delivery #" + id + ": " + error);
@@ -233,7 +243,7 @@ public class WebBridgeService {
                                     reportDeliveryStatus(id, success ? "DELIVERED" : "FAILED", error);
 
                                     // If command relates to an online player, re-sync their stats immediately
-                                    if (username != null) {
+                                    if (username != null && !username.equalsIgnoreCase("ALL_PLAYERS") && !username.equalsIgnoreCase("GLOBAL")) {
                                         Player target = Bukkit.getPlayerExact(username);
                                         if (target != null && target.isOnline()) {
                                             syncPlayerAsync(target);
