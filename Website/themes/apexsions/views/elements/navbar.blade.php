@@ -26,34 +26,20 @@
                     </a>
                 </li>
 
-                <!-- 2. Peradaban -->
-                <li class="nav-item">
-                    <a class="nav-link apx-nav-link" href="{{ route('home') }}#civilizations" data-i18n="nav_civilizations">
-                        Peradaban
-                    </a>
-                </li>
-
-                <!-- 3. Gameplay -->
-                <li class="nav-item">
-                    <a class="nav-link apx-nav-link" href="{{ route('home') }}#gameplay" data-i18n="nav_gameplay">
-                        Gameplay
-                    </a>
-                </li>
-
-                <!-- 4. Leaderboard -->
-                @if(Route::has('leaderboard') || Route::has('apexsions-bridge.leaderboard'))
-                    <li class="nav-item">
-                        <a class="nav-link apx-nav-link @if(request()->is('leaderboard*')) active @endif" href="{{ url('/leaderboard') }}" data-i18n="nav_leaderboard">
-                            Leaderboard
-                        </a>
-                    </li>
-                @endif
-
-                <!-- 5. Webstore -->
+                <!-- 2. Webstore -->
                 @if(plugins()->isEnabled('shop'))
                     <li class="nav-item">
                         <a class="nav-link apx-nav-link @if(request()->is('shop*')) active @endif" href="{{ route('shop.home') }}" data-i18n="nav_shop">
                             Webstore
+                        </a>
+                    </li>
+                @endif
+
+                <!-- 3. Leaderboard -->
+                @if(Route::has('leaderboard') || Route::has('apexsions-bridge.leaderboard'))
+                    <li class="nav-item">
+                        <a class="nav-link apx-nav-link @if(request()->is('leaderboard*')) active @endif" href="{{ url('/leaderboard') }}" data-i18n="nav_leaderboard">
+                            Leaderboard
                         </a>
                     </li>
                 @endif
