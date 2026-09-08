@@ -59,6 +59,7 @@ class NotificationAdminController extends Controller
         ];
 
         return view('apexsions-bridge::admin.notifications.index', [
+            'alertNotifications' => $notifications,
             'notifications' => $notifications,
             'stats' => $stats,
             'currentStatus' => $status,

@@ -100,7 +100,7 @@ Route::middleware(['web', 'admin-access'])->prefix('admin')->name('admin.')->gro
     });
 
     // Custom Plugin Control & Capability System
-    Route::prefix('plugins')->name('plugins.')->middleware('can:admin.users')->group(function () {
+    Route::prefix('custom-plugins')->name('plugins.')->middleware('can:admin.users')->group(function () {
         Route::get('/', [PluginAdminController::class, 'index'])->name('index');
         Route::get('/{plugin_id}', [PluginAdminController::class, 'show'])->name('show');
         Route::post('/{plugin_id}/action', [PluginAdminController::class, 'executeAction'])->name('action');

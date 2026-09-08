@@ -130,7 +130,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse($notifications as $notif)
+                    @forelse($alertNotifications as $notif)
                         <tr>
                             <td>
                                 @if($notif->severity === 'CRITICAL')
@@ -208,9 +208,9 @@
                 </tbody>
             </table>
         </div>
-        @if($notifications->hasPages())
+        @if(isset($alertNotifications) && method_exists($alertNotifications, 'hasPages') && $alertNotifications->hasPages())
             <div class="card-footer bg-dark border-secondary border-opacity-25 p-3">
-                {{ $notifications->links() }}
+                {{ $alertNotifications->links() }}
             </div>
         @endif
     </div>
