@@ -36,8 +36,11 @@ public class MainMenu extends Gui {
         long completedQuests = data.getQuestCompleted().values().stream().filter(b -> b).count();
 
         double rupiahBal = 0.0;
+        double coinsBal = 0.0;
         try {
-            rupiahBal = com.apexsions.economy.api.ApexsionsEconomyProvider.get().getBalance(player.getUniqueId(), "rupiah");
+            var eco = com.apexsions.economy.api.ApexsionsEconomyProvider.get();
+            rupiahBal = eco.getBalance(player.getUniqueId(), "rupiah");
+            coinsBal  = eco.getBalance(player.getUniqueId(), "battle_coins");
         } catch (Throwable t) {
             rupiahBal = data.getCurrency();
         }
@@ -45,7 +48,8 @@ public class MainMenu extends Gui {
         // 1. Focused Player Statistics Card (Slot 13)
         List<String> bpInfoLore = new ArrayList<>();
         bpInfoLore.add("&7Nama: &f" + player.getName());
-        bpInfoLore.add("&7Saldo: &eRp." + String.format("%,.0f", rupiahBal));
+        bpInfoLore.add("&7Uang: &eRp." + String.format("%,.0f", rupiahBal));
+        bpInfoLore.add("&7Battle Coins: &b" + String.format("%,.0f", coinsBal) + " ⛦");
         bpInfoLore.add("&7Jenis Pass: &b" + String.join(", ", effectivePasses).toUpperCase());
         bpInfoLore.add(" ");
         int maxLevel = plugin.getRewardManager().getMaxLevel();
