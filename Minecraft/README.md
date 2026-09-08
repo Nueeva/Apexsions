@@ -248,4 +248,6 @@ Untuk panduan teknis mendalam per modul, silakan baca dokumentasi di folder `doc
 - 🛒 [**ApexsionsShop Manual**](docs/APEXSIONS_SHOP.md)
 - 🖼️ [**ApexsionsMedia Manual**](docs/APEXSIONS_MEDIA.md)
 - 🏛️ [**Ecosystem Architecture Guide**](docs/ECOSYSTEM_ARCHITECTURE.md)
+- 🛡️ [**Apexsions Admin & Operations Guide**](../Website/ADMIN_GUIDE.md)
+
 - 🗄️ [**PostgreSQL Integration Guide**](docs/ECONOMY_INTEGRATION_POSTGRESQL.md)

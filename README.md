@@ -24,7 +24,7 @@ Apexsions/
 
 ---
 
-## 📦 1. Daftar 7 Plugin Suite Utama (di `Minecraft/plugins/`)
+## 📦 1. Daftar 8 Plugin Suite Utama (di `Minecraft/plugins/`)
 
 | Plugin | Versi | Status | Package Root Java | Deskripsi & Fokus Utama |
 | :--- | :---: | :---: | :--- | :--- |
@@ -35,6 +35,7 @@ Apexsions/
 | **`ApexsionsShop`** | `1.0.0` | ![Active](https://img.shields.io/badge/Status-Active-brightgreen) | `com.apexsions.shop.*` | Pasar Dinamis 6 Kategori, Rasio Jual **20%**, Formula Dinamis Multiplier Cuaca & Bioma Kerajaan, Price Clamping (50%-200%), Siaran Tren Pasar Berkelanjutan, Pajak Wilayah 10%, UI Ramah Sentuh/Bedrock, dan GUI Jual Cepat 45-Slot (`/sell`). |
 | **`ApexsionsMedia`** | `1.0.0` | ![Active](https://img.shields.io/badge/Status-Active-brightgreen) | `com.apexsions.media.*` | Render Banner/Logo Gambar Multi-Tile Asinkron (PNG/JPG/URL) dengan deteksi ukuran otomatis, Raytrace Line-of-Sight Hover Glowing, Actionbar Tooltips, Replikasi/Pindah Banner (`/media place`, `/media copy`), dan Interaksi Tautan Konfirmasi Web (`[Buka URL]` & `[Salin Clipboard]`). |
 | **`ApexsionsCustomEnchants`** | `1.0.0` | ![Active](https://img.shields.io/badge/Status-Active-brightgreen) | `com.apexsions.customenchants.*` | Sistem Custom Enchantment Mewah: Enchanter Gacha Dual-Currency (`/ce`), Toko Buku Spesifik 3x Harga, Mystery & Magic Dust Booster, White & Black Scrolls, Admin Hub (`/ace`), Replika Katalog `/ae admin` (`/ace enchants`), Interactive Item & Armor Set Builder (`/ace create`), dan Tinkerer Coming Soon. |
+| **`ApexsionsCrates`** | `1.0.0` | ![Active](https://img.shields.io/badge/Status-Active-brightgreen) | `com.apexsions.crates.*` | Sistem Peti Hadiah Mewah & Kunci Crate: Toko Pembelian Kunci (`/crateshop`), Milestone Progression, Animasi Pembukaan Mewah, dan Integrasi Hadiah Ekonomi / Kit. |
 
 ---
 
@@ -142,6 +143,16 @@ Apexsions/
   - `/ace create`: Interactive Builder untuk membuat item kustom (base material, custom enchants, vanilla enchants) sekaligus **Custom Armor Set Bonus** non-kit.
   - `/ace pricing`: Pengaturan harga gacha per tier, toggle Rupiah/Diamond, multiplier toko spesifik, dan peluang sukses buku.
   - `/ce tinkerer`: Antarmuka Tinkerer Kerajaan (Coming Soon).
+
+### 🎁 ApexsionsCrates
+- **Crate Keys Official Web & In-Game Shop (`/crateshop`)**:
+  - GUI visual 27-slot pembelian kunci peti (Tier Wanderer hingga Sions/Apex).
+  - Mendukung pembelian via saldo Rupiah dan Diamond terintegrasi `ApexsionsEconomyAPI`.
+- **Luxury Opening Animations & Pity Milestones**:
+  - Sistem animasi pembukaan berbasis paket (PacketEvents / ProtocolLib) halus tanpa lag server.
+  - Progresi akumulasi pembukaan peti (*Milestone progression*) untuk menjamin reward langka setelah jumlah pembukaan tertentu.
+- **Integrasi Penuh Ekosistem Apexsions**:
+  - Pemberian hadiah kustom otomatis: Custom Enchants, Battlepass XP, Diamond voucher, dan Kit voucher.
 
 ---
 
@@ -285,6 +296,12 @@ Apexsions/
 | `/ace givescroll <p> <type>` | - | Memberikan White Scroll atau Black Scroll ke pemain | `apexsions.admin` | `op` |
 | `/ace reload` | - | Memuat ulang seluruh konfigurasi custom enchants | `apexsions.admin` | `op` |
 
+### 🎁 Modul ApexsionsCrates
+| Perintah | Alias | Deskripsi | Hak Akses (Permission) | Default |
+| :--- | :--- | :--- | :--- | :--- |
+| `/crateshop` | `/keyshop`, `/cratekeyshop` | Membuka Toko Pembelian Crate Keys Resmi Apexsions | `apexsionscrates.user` | `true` |
+| `/crateshop reload` | - | Memuat ulang konfigurasi peti hadiah dan harga kunci | `apexsionscrates.admin` | `op` |
+
 ---
 
 ## 🛠️ 4. Kompilasi & Build Otomatis
@@ -300,18 +317,21 @@ powershell -ExecutionPolicy Bypass -File .\build.ps1 Economy
 powershell -ExecutionPolicy Bypass -File .\build.ps1 Battlepass
 powershell -ExecutionPolicy Bypass -File .\build.ps1 Shop
 powershell -ExecutionPolicy Bypass -File .\build.ps1 CustomEnchants
+powershell -ExecutionPolicy Bypass -File .\build.ps1 Crates
 
-# 2. Kompilasi SELURUH 7 plugin suite serentak:
-powershell -ExecutionPolicy Bypass -File .\build.ps1
+# 2. Kompilasi SELURUH 8 plugin suite serentak:
+powershell -ExecutionPolicy Bypass -File .\build.ps1 -All
 ```
 
 File `.jar` hasil kompilasi siap pasang akan tersedia di:
-- `build/libs/ApexsionsCore-1.0.0.jar`
-- `build/libs/ApexsionsChat-1.0.0.jar`
-- `build/libs/ApexsionsEconomy-1.0.0.jar`
-- `build/libs/ApexsionsBattlepass-1.0.0.jar`
-- `build/libs/ApexsionsShop-1.0.0.jar`
-- `build/libs/ApexsionsMedia-1.0.0.jar`
+- `Minecraft/build/libs/ApexsionsCore-1.0.0.jar`
+- `Minecraft/build/libs/ApexsionsChat-1.0.0.jar`
+- `Minecraft/build/libs/ApexsionsEconomy-1.0.0.jar`
+- `Minecraft/build/libs/ApexsionsBattlepass-1.0.0.jar`
+- `Minecraft/build/libs/ApexsionsShop-1.0.0.jar`
+- `Minecraft/build/libs/ApexsionsMedia-1.0.0.jar`
+- `Minecraft/build/libs/ApexsionsCustomEnchants-1.0.0.jar`
+- `Minecraft/build/libs/ApexsionsCrates-1.0.0.jar`
 
 ---
 
@@ -325,6 +345,7 @@ Untuk panduan teknis mendalam per modul, silakan baca dokumentasi di folder `doc
 - 🛒 [**ApexsionsShop Manual**](docs/APEXSIONS_SHOP.md)
 - 🖼️ [**ApexsionsMedia Manual**](docs/APEXSIONS_MEDIA.md)
 - 🏛️ [**Ecosystem Architecture Guide**](docs/ECOSYSTEM_ARCHITECTURE.md)
+- 🛡️ [**Apexsions Admin & Operations Guide**](Website/ADMIN_GUIDE.md)
 - 🗄️ [**PostgreSQL Integration Guide**](docs/ECONOMY_INTEGRATION_POSTGRESQL.md)
 
 ---

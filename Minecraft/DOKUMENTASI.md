@@ -376,4 +376,21 @@ Ekosistem Apexsions mengintegrasikan server Minecraft (Paper 26.2) dengan portal
    - Vote Server & Warta Berita Komunitas
    - Ensiklopedia Wiki & Hasil Pencarian
 
-
+### E. Apexsions Unified Admin Dashboard & Safe Plugin Control:
+1. **10 Modul Pusat Operasi Server (`/admin/*`)**:
+   - **Dashboard Eksekutif (`/admin`)**: Status kesehatan Paper 26.2, TPS, RAM, player count, dan insiden aktif.
+   - **Player Management 360 (`/admin/players`)**: Investigasi profil menyeluruh (UUID, level, rank, kingdom, dual balance, punishment history, transaction history) dan aksi administratif terotorisasi.
+   - **Moderation Desk (`/admin/moderation`)**: Penindakan sanksi (Ban, Mute, Warn, Kick) dan pelacakan status penyelesaian laporan pemain.
+   - **Economy Operations (`/admin/economy`)**: Ledger transaksi atomic (Rupiah & Diamonds), audit pasar lelang (`/ah`), dan saldo perbendaharaan Kingdom.
+   - **Server Operations (`/admin/server`)**: Telemetri runtime real-time, Safe Server Actions, dan pengelolaan Maintenance Mode.
+   - **Custom Plugin Suite (`/admin/custom-plugins`)**: Registry 6 plugin custom Apexsions, monitoring health status, dan eksekusi aksi aman (*Safe Actions*).
+   - **Intelligence & Incident Center (`/admin/incidents`)**: Deteksi anomali berbasis aturan (Rule-based), korelasi event otomatis, dan berkas investigasi staf.
+   - **Notifications Hub (`/admin/notifications`)**: Pengiriman alert insiden kritis dengan proteksi deduplikasi anti-spam dan cooldown.
+   - **Safe Automation Hub (`/admin/automation`)**: Orkestrasi kebijakan otomatis dengan *Approval Gate* wajib untuk tindakan sensitif (reload, dsb.).
+   - **Unified Audit Log (`/admin/audit-logs`)**: Rekam jejak immutable dari seluruh aksi administratif web maupun in-game.
+2. **Arsitektur Antrean Terpercaya (Bridge Action Reliability)**:
+   - Setiap aksi dari dashboard diterbitkan dengan `action_id` unik server-generated.
+   - Whitelisted command templates (bukan raw terminal arbitrary) mencegah injeksi perintah berbahaya.
+   - Daemon `WebBridgeService` in-game mem-poll antrean `/api/apexsions-bridge/deliveries/pending` dan melaporkan status keberhasilan eksekusi (`COMPLETED` / `FAILED`) secara asinkron.
+3. **Ingestion Audit Log In-Game**:
+   - Aksi staf via in-game `PlayerInspectorGUI` secara otomatis di-push ke endpoint `/api/apexsions-bridge/audit/log` untuk tercatat di database sentral.
