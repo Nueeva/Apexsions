@@ -44,6 +44,18 @@ public class NoOpApexsionsBattlepassAPI implements ApexsionsBattlepassAPI {
     }
 
     @Override
+    @NotNull
+    public String getPlayerHighestPassId(@NotNull UUID uuid) {
+        return "citizen";
+    }
+
+    @Override
+    @NotNull
+    public String getPlayerHighestPassDisplayName(@NotNull UUID uuid) {
+        return "Citizen Pass";
+    }
+
+    @Override
     public int getPlayerPoints(@NotNull UUID uuid) {
         return 0;
     }

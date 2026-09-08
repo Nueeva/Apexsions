@@ -50,6 +50,7 @@ class PlayerSyncController extends Controller
             'battlepass_xp' => ['nullable', 'integer', 'min:0'],
             'battlepass_required_xp' => ['nullable', 'integer', 'min:0'],
             'battlepass_has_premium' => ['nullable', 'boolean'],
+            'battlepass_pass_name' => ['nullable', 'string', 'max:64'],
             'apex_coins' => ['nullable', 'numeric', 'min:0'],
             'unlocked_titles' => ['nullable', 'array'],
         ]);
@@ -90,6 +91,10 @@ class PlayerSyncController extends Controller
             'apex_coins' => (int) ($validated['apex_coins'] ?? 0),
             'last_seen_at' => Carbon::now(),
         ];
+
+        if (!empty($validated['battlepass_pass_name'])) {
+            $updateData['battlepass_pass_name'] = trim($validated['battlepass_pass_name']);
+        }
 
         if (isset($validated['unlocked_titles'])) {
             $updateData['unlocked_titles'] = $validated['unlocked_titles'];

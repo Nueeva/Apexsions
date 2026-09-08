@@ -80,7 +80,31 @@ public class SyncCommand implements CommandExecutor, TabCompleter {
                     int bpTier = (int) bpApi.getClass().getMethod("getPlayerTier", UUID.class).invoke(bpApi, uuid);
                     int bpXp = (int) bpApi.getClass().getMethod("getPlayerXp", UUID.class).invoke(bpApi, uuid);
                     boolean isPrem = (boolean) bpApi.getClass().getMethod("hasPremiumPass", UUID.class).invoke(bpApi, uuid);
-                    String badge = isPrem ? "<gold>[PREMIUM PASS]</gold>" : "<gray>[FREE PASS]</gray>";
+                    String passName = "Citizen Pass";
+                    try {
+                        passName = (String) bpApi.getClass().getMethod("getPlayerHighestPassDisplayName", UUID.class).invoke(bpApi, uuid);
+                    } catch (Throwable t) {
+                        try {
+                            if ((boolean) bpApi.getClass().getMethod("hasPass", UUID.class, String.class).invoke(bpApi, uuid, "exsio")) {
+                                passName = "Exsio Pass";
+                            } else if ((boolean) bpApi.getClass().getMethod("hasPass", UUID.class, String.class).invoke(bpApi, uuid, "sio")) {
+                                passName = "Sio Pass";
+                            } else if (isPrem) {
+                                passName = "Premium Pass";
+                            }
+                        } catch (Throwable ignored) {}
+                    }
+                    String passUpper = passName.toUpperCase();
+                    String badge;
+                    if (passUpper.contains("EXSIO")) {
+                        badge = "<gradient:#d946ef:#8b5cf6><bold>[" + passUpper + "]</bold></gradient>";
+                    } else if (passUpper.contains("SIO")) {
+                        badge = "<gradient:#f1c40f:#f39c12><bold>[" + passUpper + "]</bold></gradient>";
+                    } else if (isPrem) {
+                        badge = "<gold><bold>[" + passUpper + "]</bold></gold>";
+                    } else {
+                        badge = "<gray>[" + passUpper + "]</gray>";
+                    }
                     player.sendMessage(miniMessage.deserialize(" <dark_gray>•</dark_gray> <gray>BattlePass:</gray> <yellow>Tier " + bpTier + "</yellow> <dark_gray>(" + bpXp + " XP)</dark_gray> " + badge));
                 }
             }

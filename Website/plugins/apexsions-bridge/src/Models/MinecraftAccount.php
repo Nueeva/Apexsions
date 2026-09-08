@@ -39,6 +39,7 @@ class MinecraftAccount extends Model
         'battlepass_xp',
         'battlepass_required_xp',
         'battlepass_has_premium',
+        'battlepass_pass_name',
         'apex_coins',
         'unlocked_titles',
         'floodgate_uuid',

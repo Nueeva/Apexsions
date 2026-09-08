@@ -177,13 +177,24 @@
                                     <span class="badge px-2 py-1 font-monospace fw-bold" style="background: rgba(245, 158, 11, 0.25); color: #fde047; border: 1px solid #f59e0b; font-size: 0.85rem;"><span data-i18n="profile_bp_tier">Tier</span> {{ $linkedAccount->battlepass_tier ?? 1 }}</span>
                                 </div>
                                 <div>
-                                    @if($linkedAccount->battlepass_has_premium)
-                                        <span class="badge px-2 py-1" style="background: linear-gradient(135deg, #FFD700, #f39c12); color: #000; font-weight: bold; box-shadow: 0 0 8px rgba(243,156,18,0.4);">
-                                            <i class="bi bi-star-fill me-1"></i> <span data-i18n="profile_bp_premium">PREMIUM PASS</span>
+                                    @php
+                                        $rawPassName = $linkedAccount->battlepass_pass_name;
+                                        if (!$rawPassName) {
+                                            $rawPassName = $linkedAccount->battlepass_has_premium ? 'PREMIUM PASS' : 'CITIZEN PASS';
+                                        }
+                                        $upperPass = strtoupper(trim($rawPassName));
+                                    @endphp
+                                    @if(str_contains($upperPass, 'EXSIO'))
+                                        <span class="badge px-2 py-1 font-monospace fw-bold" style="background: linear-gradient(135deg, #d946ef, #8b5cf6, #06b6d4); color: #fff; text-shadow: 0 0 6px rgba(0,0,0,0.6); box-shadow: 0 0 12px rgba(217, 70, 239, 0.5); border: 1px solid rgba(255, 255, 255, 0.4);">
+                                            <i class="bi bi-stars me-1 text-warning"></i> <span data-i18n="profile_bp_exsio">{{ $upperPass }}</span>
+                                        </span>
+                                    @elseif(str_contains($upperPass, 'SIO') || str_contains($upperPass, 'PREMIUM'))
+                                        <span class="badge px-2 py-1 font-monospace fw-bold" style="background: linear-gradient(135deg, #FFD700, #f39c12); color: #000; box-shadow: 0 0 10px rgba(243,156,18,0.5); border: 1px solid #ffeaa7;">
+                                            <i class="bi bi-star-fill me-1 text-dark"></i> <span data-i18n="profile_bp_sio">{{ $upperPass }}</span>
                                         </span>
                                     @else
-                                        <span class="badge px-2 py-1 bg-secondary bg-opacity-50 text-light border border-secondary border-opacity-50">
-                                            <i class="bi bi-shield me-1"></i> <span data-i18n="profile_bp_free">FREE PASS</span>
+                                        <span class="badge px-2 py-1 font-monospace" style="background: rgba(255,255,255,0.08); color: #cbd5e1; border: 1px solid rgba(255,255,255,0.2);">
+                                            <i class="bi bi-shield me-1 text-secondary"></i> <span data-i18n="profile_bp_citizen">{{ $upperPass }}</span>
                                         </span>
                                     @endif
                                 </div>

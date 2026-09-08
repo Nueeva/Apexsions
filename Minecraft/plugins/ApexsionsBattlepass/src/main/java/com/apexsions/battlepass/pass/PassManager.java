@@ -168,4 +168,20 @@ public class PassManager {
         }
         return effective;
     }
+
+    public PassTier getHighestPassTier(Set<String> playerPasses) {
+        if (playerPasses == null || playerPasses.isEmpty()) {
+            return getPass("citizen");
+        }
+        PassTier highest = getPass("citizen");
+        int highestPriority = highest != null ? highest.getPriority() : 0;
+        for (String p : playerPasses) {
+            PassTier tier = getPass(p);
+            if (tier != null && tier.getPriority() > highestPriority) {
+                highest = tier;
+                highestPriority = tier.getPriority();
+            }
+        }
+        return highest != null ? highest : getPass("citizen");
+    }
 }

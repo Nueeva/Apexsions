@@ -59,6 +59,27 @@ public class ApexsionsBattlepassAPIImpl implements ApexsionsBattlepassAPI {
     }
 
     @Override
+    @NotNull
+    public String getPlayerHighestPassId(@NotNull UUID uuid) {
+        PlayerData p = plugin.getPlayerManager().getPlayerData(uuid);
+        if (p == null) return "citizen";
+        com.apexsions.battlepass.pass.PassTier highest = plugin.getPassManager().getHighestPassTier(p.getPasses());
+        return highest != null ? highest.getId() : "citizen";
+    }
+
+    @Override
+    @NotNull
+    public String getPlayerHighestPassDisplayName(@NotNull UUID uuid) {
+        PlayerData p = plugin.getPlayerManager().getPlayerData(uuid);
+        if (p == null) return "Citizen Pass";
+        com.apexsions.battlepass.pass.PassTier highest = plugin.getPassManager().getHighestPassTier(p.getPasses());
+        if (highest == null) return "Citizen Pass";
+        String raw = highest.getDisplayName();
+        if (raw == null) return "Citizen Pass";
+        return raw.replaceAll("(?i)&[0-9a-fk-or]", "").trim();
+    }
+
+    @Override
     public int getPlayerPoints(@NotNull UUID uuid) {
         return (int) plugin.getCurrencyService().getBalance(uuid);
     }

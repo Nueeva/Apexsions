@@ -21,6 +21,12 @@ public interface ApexsionsBattlepassAPI {
 
     boolean hasPass(@NotNull UUID uuid, @NotNull String passId);
 
+    @NotNull
+    String getPlayerHighestPassId(@NotNull UUID uuid);
+
+    @NotNull
+    String getPlayerHighestPassDisplayName(@NotNull UUID uuid);
+
     int getPlayerPoints(@NotNull UUID uuid);
 
     void addPlayerPoints(@NotNull UUID uuid, int points);

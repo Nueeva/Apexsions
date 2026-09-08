@@ -320,7 +320,7 @@ public class WebBridgeService {
                 "{\"player_uuid\":\"%s\",\"player_username\":\"%s\",\"rank\":\"%s\",\"rank_display\":\"%s\"," +
                 "\"kingdom\":\"%s\",\"kingdom_display\":\"%s\",\"level\":%d,\"xp\":%d,\"required_xp\":%d," +
                 "\"level_title\":\"%s\",\"active_title\":\"%s\",\"balance_rupiah\":%.2f,\"balance_diamond\":%.2f," +
-                "\"battlepass_tier\":%d,\"battlepass_xp\":%d,\"battlepass_required_xp\":%d,\"battlepass_has_premium\":%b,\"apex_coins\":%d," +
+                "\"battlepass_tier\":%d,\"battlepass_xp\":%d,\"battlepass_required_xp\":%d,\"battlepass_has_premium\":%b,\"battlepass_pass_name\":\"%s\",\"apex_coins\":%d," +
                 "\"unlocked_titles\":%s}",
                 escapeJson(uuid.toString()),
                 escapeJson(username),
@@ -339,6 +339,7 @@ public class WebBridgeService {
                 bpStats.xp(),
                 bpStats.requiredXp(),
                 bpStats.hasPremium(),
+                escapeJson(bpStats.passName()),
                 bpStats.apexCoins(),
                 titlesJson.toString()
         );
@@ -390,13 +391,14 @@ public class WebBridgeService {
         return balance;
     }
 
-    private record BattlePassStats(int tier, int xp, int requiredXp, boolean hasPremium, int apexCoins) {}
+    private record BattlePassStats(int tier, int xp, int requiredXp, boolean hasPremium, String passName, int apexCoins) {}
 
     private BattlePassStats getBattlePassStats(UUID uuid) {
         int tier = 1;
         int xp = 0;
         int requiredXp = 100;
         boolean hasPremium = false;
+        String passName = "Citizen Pass";
         int apexCoins = 0;
 
         try {
@@ -408,6 +410,20 @@ public class WebBridgeService {
                     xp = (int) bpApi.getClass().getMethod("getPlayerXp", UUID.class).invoke(bpApi, uuid);
                     hasPremium = (boolean) bpApi.getClass().getMethod("hasPremiumPass", UUID.class).invoke(bpApi, uuid);
                     apexCoins = (int) bpApi.getClass().getMethod("getPlayerPoints", UUID.class).invoke(bpApi, uuid);
+
+                    try {
+                        passName = (String) bpApi.getClass().getMethod("getPlayerHighestPassDisplayName", UUID.class).invoke(bpApi, uuid);
+                    } catch (Throwable t) {
+                        try {
+                            if ((boolean) bpApi.getClass().getMethod("hasPass", UUID.class, String.class).invoke(bpApi, uuid, "exsio")) {
+                                passName = "Exsio Pass";
+                            } else if ((boolean) bpApi.getClass().getMethod("hasPass", UUID.class, String.class).invoke(bpApi, uuid, "sio")) {
+                                passName = "Sio Pass";
+                            } else if (hasPremium) {
+                                passName = "Premium Pass";
+                            }
+                        } catch (Throwable ignored) {}
+                    }
                 }
 
                 org.bukkit.plugin.Plugin bpPlugin = Bukkit.getPluginManager().getPlugin("ApexsionsBattlepass");
@@ -432,7 +448,7 @@ public class WebBridgeService {
             }
         }
 
-        return new BattlePassStats(tier, xp, requiredXp, hasPremium, apexCoins);
+        return new BattlePassStats(tier, xp, requiredXp, hasPremium, passName, apexCoins);
     }
 
     public CompletableFuture<LinkResult> verifyLink(Player player, String pin) {
