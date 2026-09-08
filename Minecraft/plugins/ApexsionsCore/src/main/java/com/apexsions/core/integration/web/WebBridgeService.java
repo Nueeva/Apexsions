@@ -217,12 +217,14 @@ public class WebBridgeService {
                                     String cmd = del.get("command").getAsString();
                                     String username = del.has("player_username") && !del.get("player_username").isJsonNull()
                                             ? del.get("player_username").getAsString() : null;
+                                    String actionId = del.has("action_id") && !del.get("action_id").isJsonNull()
+                                            ? del.get("action_id").getAsString() : null;
 
                                     boolean success = false;
                                     String error = null;
 
                                     try {
-                                        plugin.getLogger().info("[WebBridge] Executing delivery #" + id + ": " + cmd);
+                                        plugin.getLogger().info("[WebBridge] Executing delivery #" + id + " (action: " + actionId + "): " + cmd);
                                         if (cmd.startsWith("broadcast ") || cmd.startsWith("bc ")) {
                                             String msg = cmd.substring(cmd.indexOf(' ') + 1);
                                             net.kyori.adventure.text.Component comp = net.kyori.adventure.text.minimessage.MiniMessage.miniMessage().deserialize(msg);
@@ -239,8 +241,8 @@ public class WebBridgeService {
                                         plugin.getLogger().warning("[WebBridge] Error executing delivery #" + id + ": " + error);
                                     }
 
-                                    // Report execution status back to web
-                                    reportDeliveryStatus(id, success ? "DELIVERED" : "FAILED", error);
+                                    // Report execution status back to web with action_id
+                                    reportDeliveryStatus(id, success ? "DELIVERED" : "FAILED", error, actionId);
 
                                     // If command relates to an online player, re-sync their stats immediately
                                     if (username != null && !username.equalsIgnoreCase("ALL_PLAYERS") && !username.equalsIgnoreCase("GLOBAL")) {
@@ -267,9 +269,10 @@ public class WebBridgeService {
     /**
      * Send execution confirmation of a delivery item back to web platform.
      */
-    private void reportDeliveryStatus(int deliveryId, String status, String errorMessage) {
+    private void reportDeliveryStatus(int deliveryId, String status, String errorMessage, String actionId) {
         String errorJson = errorMessage != null ? "\"" + escapeJson(errorMessage) + "\"" : "null";
-        String payload = String.format("{\"status\":\"%s\",\"error_message\":%s}", status, errorJson);
+        String actionIdJson = actionId != null ? "\"" + escapeJson(actionId) + "\"" : "null";
+        String payload = String.format("{\"status\":\"%s\",\"error_message\":%s,\"action_id\":%s}", status, errorJson, actionIdJson);
 
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(apiUrl + "/deliveries/" + deliveryId + "/status"))
@@ -285,6 +288,58 @@ public class WebBridgeService {
                     plugin.getLogger().log(Level.FINE, "[WebBridge] Failed to report delivery status #" + deliveryId + ": " + ex.getMessage());
                     return null;
                 });
+    }
+
+    /**
+     * Ingest an administrative action performed in-game into the Unified Audit Log.
+     */
+    public CompletableFuture<Boolean> sendAuditLogAsync(
+            String actorName,
+            String action,
+            String targetUuid,
+            String targetName,
+            String oldValue,
+            String newValue,
+            String reason,
+            String status
+    ) {
+        if (!enabled) {
+            return CompletableFuture.completedFuture(false);
+        }
+        try {
+            String jsonPayload = String.format(
+                    "{\"actor_type\":\"INGAME_ADMIN\",\"actor_name\":\"%s\",\"action\":\"%s\"," +
+                    "\"target_type\":\"PLAYER\",\"target_id\":\"%s\",\"target_name\":\"%s\"," +
+                    "\"old_value\":\"%s\",\"new_value\":\"%s\",\"reason\":\"%s\",\"status\":\"%s\",\"source\":\"INGAME\"}",
+                    escapeJson(actorName),
+                    escapeJson(action),
+                    escapeJson(targetUuid != null ? targetUuid : ""),
+                    escapeJson(targetName != null ? targetName : ""),
+                    escapeJson(oldValue != null ? oldValue : ""),
+                    escapeJson(newValue != null ? newValue : ""),
+                    escapeJson(reason != null ? reason : ""),
+                    escapeJson(status != null ? status : "SUCCESS")
+            );
+
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(apiUrl + "/audit/log"))
+                    .timeout(Duration.ofSeconds(5))
+                    .header("Content-Type", "application/json")
+                    .header("Accept", "application/json")
+                    .header("X-Apexsions-Key", apiKey)
+                    .POST(HttpRequest.BodyPublishers.ofString(jsonPayload))
+                    .build();
+
+            return httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString())
+                    .thenApply(response -> response.statusCode() == 200 || response.statusCode() == 201)
+                    .exceptionally(ex -> {
+                        plugin.getLogger().log(Level.FINE, "[WebBridge] Failed to send in-game audit log: " + ex.getMessage());
+                        return false;
+                    });
+        } catch (Exception ex) {
+            plugin.getLogger().log(Level.FINE, "[WebBridge] sendAuditLogAsync error: " + ex.getMessage());
+            return CompletableFuture.completedFuture(false);
+        }
     }
 
     /**

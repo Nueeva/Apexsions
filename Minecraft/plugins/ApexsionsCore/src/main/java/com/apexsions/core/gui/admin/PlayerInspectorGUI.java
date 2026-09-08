@@ -327,10 +327,17 @@ public class PlayerInspectorGUI implements InventoryHolder {
         }
         if (slot == 23 || slot == 24 || slot == 25) {
             if (event.isRightClick()) {
+                String oldK = plugin.getApi().getPlayerRegionKey(target.getUniqueId());
                 plugin.getPlayerDataService().updateRegion(target.getUniqueId(), null);
                 admin.sendMessage(mm.deserialize("<yellow>✓ Afiliasi kerajaan " + target.getName() + " berhasil di-reset (Belum Memilih)!</yellow>"));
                 target.sendMessage(mm.deserialize("<yellow>⚠️ Afiliasi kerajaanmu telah di-reset oleh administrator. Kamu dapat memilih kembali via <gold>/kingdom choose</gold>.</yellow>"));
                 admin.playSound(admin.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 0.8f, 1.0f);
+                if (plugin.getWebBridgeService() != null) {
+                    plugin.getWebBridgeService().sendAuditLogAsync(
+                            admin.getName(), "KINGDOM_ACTION", target.getUniqueId().toString(), target.getName(),
+                            oldK != null ? oldK : "NONE", "NONE", "Afiliasi kerajaan di-reset via In-Game PlayerInspectorGUI", "SUCCESS"
+                    );
+                }
                 buildGUI();
                 return;
             }
@@ -385,6 +392,12 @@ public class PlayerInspectorGUI implements InventoryHolder {
             target.kick(mm.deserialize("<red><bold>KAMU DI-KICK DARI SERVER</bold></red>\n<gray>Alasan: Keputusan Administrator / Staf.</gray>"));
             admin.sendMessage(mm.deserialize("<red>✓ " + target.getName() + " berhasil di-kick dari server!</red>"));
             admin.playSound(admin.getLocation(), Sound.ENTITY_WITHER_SPAWN, 0.6f, 1.2f);
+            if (plugin.getWebBridgeService() != null) {
+                plugin.getWebBridgeService().sendAuditLogAsync(
+                        admin.getName(), "PUNISHMENT_ACTION", target.getUniqueId().toString(), target.getName(),
+                        "ONLINE", "KICKED", "Pemain di-kick via In-Game PlayerInspectorGUI", "SUCCESS"
+                );
+            }
             new PlayerManagerGUI(plugin, admin).open();
             return;
         }
@@ -489,6 +502,7 @@ public class PlayerInspectorGUI implements InventoryHolder {
     }
 
     private void modifyBalance(double delta) {
+        double current = getPlayerRupiah(target);
         boolean handled = false;
         try {
             Class<?> providerClass = Class.forName("com.apexsions.economy.api.ApexsionsEconomyProvider");
@@ -519,6 +533,16 @@ public class PlayerInspectorGUI implements InventoryHolder {
                 admin.sendMessage(mm.deserialize("<yellow>✓ Mengurangi <red>Rp " + String.format("%,.0f", Math.abs(delta)) + "</red> dari " + target.getName() + ".</yellow>"));
             }
             admin.playSound(admin.getLocation(), Sound.BLOCK_NOTE_BLOCK_BELL, 0.8f, 1.2f);
+
+            if (plugin.getWebBridgeService() != null) {
+                plugin.getWebBridgeService().sendAuditLogAsync(
+                        admin.getName(), "ECONOMY_ACTION", target.getUniqueId().toString(), target.getName(),
+                        "Rp " + String.format(java.util.Locale.ROOT, "%,.0f", current),
+                        "Rp " + String.format(java.util.Locale.ROOT, "%,.0f", (current + delta)),
+                        "Perubahan saldo via In-Game PlayerInspectorGUI: " + (delta > 0 ? "+" : "") + String.format(java.util.Locale.ROOT, "%,.0f", delta),
+                        "SUCCESS"
+                );
+            }
         } else {
             admin.sendMessage(mm.deserialize("<red>Layanan ekonomi tidak tersedia.</red>"));
         }
@@ -531,10 +555,18 @@ public class PlayerInspectorGUI implements InventoryHolder {
             admin.sendMessage(mm.deserialize("<red>Kerajaan " + kingdomKey + " tidak ditemukan!</red>"));
             return;
         }
+        String oldK = plugin.getApi().getPlayerRegionKey(target.getUniqueId());
         plugin.getPlayerDataService().updateRegion(target.getUniqueId(), region.getId());
         admin.sendMessage(mm.deserialize("<green>✓ Kerajaan " + target.getName() + " berhasil diubah menjadi <gold>" + region.getDisplayName() + "</gold>!</green>"));
         target.sendMessage(mm.deserialize("<gold><bold>👑 STATUS KERAJAAN:</bold> Afiliasi kerajaanmu telah disetel menjadi <yellow>" + region.getDisplayName() + "</yellow> oleh administrator!</gold>"));
         admin.playSound(admin.getLocation(), Sound.UI_TOAST_CHALLENGE_COMPLETE, 0.8f, 1.2f);
+
+        if (plugin.getWebBridgeService() != null) {
+            plugin.getWebBridgeService().sendAuditLogAsync(
+                    admin.getName(), "KINGDOM_ACTION", target.getUniqueId().toString(), target.getName(),
+                    oldK != null ? oldK : "NONE", region.getKey(), "Perubahan kerajaan via In-Game PlayerInspectorGUI", "SUCCESS"
+            );
+        }
         buildGUI();
     }
 

@@ -25,6 +25,7 @@ class ApexsionsBridgeServiceProvider extends BasePluginServiceProvider
 
         $this->registerRouteDescriptions();
         $this->registerUserNavigation();
+        $this->registerAdminNavigation();
     }
 
     /**
@@ -47,6 +48,29 @@ class ApexsionsBridgeServiceProvider extends BasePluginServiceProvider
                 'name' => 'Link Minecraft',
                 'icon' => 'bi bi-controller',
                 'route' => 'apexsions-bridge.link.index',
+            ],
+        ];
+    }
+
+    /**
+     * Return the admin navigation routes to register in the dashboard sidebar.
+     *
+     * @return array<string, array<string, string>>
+     */
+    protected function adminNavigation(): array
+    {
+        return [
+            'apexsions-players' => [
+                'name' => 'Player Management',
+                'icon' => 'bi bi-person-lines-fill',
+                'route' => 'apexsions-bridge.admin.players.index',
+                'permission' => 'admin.users',
+            ],
+            'apexsions-audit' => [
+                'name' => 'Unified Audit Logs',
+                'icon' => 'bi bi-journal-text',
+                'route' => 'apexsions-bridge.admin.audit-logs.index',
+                'permission' => 'admin.users',
             ],
         ];
     }

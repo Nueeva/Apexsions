@@ -1,6 +1,9 @@
 <?php
 
 use Azuriom\Plugin\ApexsionsBridge\Controllers\AccountLinkController;
+use Azuriom\Plugin\ApexsionsBridge\Controllers\Admin\AuditLogController;
+use Azuriom\Plugin\ApexsionsBridge\Controllers\Admin\PlayerAdminController;
+use Azuriom\Plugin\ApexsionsBridge\Controllers\Api\LinkVerificationController;
 use Azuriom\Plugin\ApexsionsBridge\Controllers\LeaderboardController;
 use Azuriom\Plugin\ApexsionsBridge\Controllers\ProfileManagementController;
 use Azuriom\Plugin\ApexsionsBridge\Controllers\PublicProfileController;
@@ -25,7 +28,20 @@ Route::middleware('auth')->group(function () {
     });
 });
 
-// Admin Realm Telemetry & Broadcast Routes
-Route::middleware(['web', 'admin-access'])->prefix('admin/apexsions')->name('admin.apexsions.')->group(function () {
-    Route::post('/broadcast', [\Azuriom\Plugin\ApexsionsBridge\Controllers\Api\LinkVerificationController::class, 'broadcast'])->name('broadcast');
+// Admin Realm Routes (Guarded by admin-access and web middleware)
+Route::middleware(['web', 'admin-access'])->prefix('admin')->name('admin.')->group(function () {
+    Route::post('/apexsions/broadcast', [LinkVerificationController::class, 'broadcast'])->name('broadcast');
+
+    // Player Management Foundation
+    Route::prefix('players')->name('players.')->middleware('can:admin.users')->group(function () {
+        Route::get('/', [PlayerAdminController::class, 'index'])->name('index');
+        Route::get('/{identifier}', [PlayerAdminController::class, 'show'])->name('show');
+        Route::post('/{identifier}/action', [PlayerAdminController::class, 'executeAction'])->name('action');
+    });
+
+    // Unified Audit Logs
+    Route::prefix('audit-logs')->name('audit-logs.')->middleware('can:admin.users')->group(function () {
+        Route::get('/', [AuditLogController::class, 'index'])->name('index');
+        Route::get('/{id}', [AuditLogController::class, 'show'])->name('show');
+    });
 });

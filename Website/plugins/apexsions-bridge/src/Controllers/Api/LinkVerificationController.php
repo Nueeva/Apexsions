@@ -121,7 +121,7 @@ class LinkVerificationController extends Controller
     }
 
     /**
-     * Poll pending in-game command deliveries.
+     * Poll pending in-game command deliveries with atomic lease locking.
      */
     public function getPendingDeliveries(Request $request): JsonResponse
     {
@@ -129,10 +129,28 @@ class LinkVerificationController extends Controller
             return response()->json(['error' => 'Unauthorized server request.'], 401);
         }
 
-        $deliveries = Delivery::where('status', 'PENDING')
+        // Fetch PENDING deliveries or expired PROCESSING deliveries (lease timeout: 60s)
+        $expiredThreshold = Carbon::now()->subSeconds(60);
+
+        $deliveries = Delivery::where(function ($query) use ($expiredThreshold) {
+                $query->where('status', 'PENDING')
+                      ->orWhere(function ($q) use ($expiredThreshold) {
+                          $q->where('status', 'PROCESSING')
+                            ->where('locked_at', '<', $expiredThreshold);
+                      });
+            })
             ->orderBy('id', 'asc')
             ->limit(50)
             ->get();
+
+        if ($deliveries->isNotEmpty()) {
+            // Atomically lock delivery batch
+            Delivery::whereIn('id', $deliveries->pluck('id'))
+                ->update([
+                    'status' => 'PROCESSING',
+                    'locked_at' => Carbon::now(),
+                ]);
+        }
 
         return response()->json([
             'status' => 'success',
@@ -141,7 +159,7 @@ class LinkVerificationController extends Controller
     }
 
     /**
-     * Mark delivery as executed or failed.
+     * Mark delivery as executed or failed and resolve linked audit logs.
      */
     public function updateDeliveryStatus(Request $request, int $id): JsonResponse
     {
@@ -150,8 +168,9 @@ class LinkVerificationController extends Controller
         }
 
         $validated = $request->validate([
-            'status' => ['required', 'in:DELIVERED,FAILED,QUEUED'],
+            'status' => ['required', 'in:DELIVERED,FAILED,QUEUED,SUCCESS,PROCESSING'],
             'error_message' => ['nullable', 'string', 'max:500'],
+            'action_id' => ['nullable', 'string', 'max:64'],
         ]);
 
         $delivery = Delivery::find($id);
@@ -159,11 +178,38 @@ class LinkVerificationController extends Controller
             return response()->json(['error' => 'Delivery not found.'], 404);
         }
 
+        $finalStatus = in_array($validated['status'], ['DELIVERED', 'SUCCESS'], true) ? 'DELIVERED' : 'FAILED';
+
         $delivery->update([
-            'status' => $validated['status'],
-            'executed_at' => ($validated['status'] === 'DELIVERED') ? Carbon::now() : null,
+            'status' => $finalStatus,
+            'locked_at' => null,
+            'executed_at' => ($finalStatus === 'DELIVERED') ? Carbon::now() : null,
             'error_message' => $validated['error_message'] ?? null,
         ]);
+
+        // If delivery or status payload has action_id, resolve associated AuditLog
+        $actionId = !empty($validated['action_id']) ? $validated['action_id'] : $delivery->action_id;
+        if (!empty($actionId)) {
+            try {
+                $audit = \Azuriom\Plugin\ApexsionsBridge\Models\AuditLog::where('metadata->action_id', $actionId)
+                    ->orWhere('metadata', 'LIKE', '%' . $actionId . '%')
+                    ->first();
+                if ($audit) {
+                    if ($finalStatus === 'DELIVERED') {
+                        \Azuriom\Plugin\ApexsionsBridge\Services\AuditService::success($audit, 'Executed in-game via Bridge', [
+                            'delivery_id' => $delivery->id,
+                            'executed_at' => Carbon::now()->toIso8601String(),
+                        ]);
+                    } else {
+                        \Azuriom\Plugin\ApexsionsBridge\Services\AuditService::failed($audit, $validated['error_message'] ?? 'Execution failed in-game', [
+                            'delivery_id' => $delivery->id,
+                        ]);
+                    }
+                }
+            } catch (\Throwable $e) {
+                Log::warning('[Apexsions Bridge] Could not update linked audit log: ' . $e->getMessage());
+            }
+        }
 
         return response()->json(['status' => 'success']);
     }
@@ -309,11 +355,30 @@ class LinkVerificationController extends Controller
 
         $senderName = auth()->user()?->name ?? 'Admin';
         $cleanMsg = trim(strip_tags($validated['message']));
+        $actionId = (string) \Illuminate\Support\Str::uuid();
 
         // Dispatch broadcast with elegant MiniMessage golden styling
         $cmd = 'broadcast <gold><bold>[APEXSIONS PENGUMUMAN]</bold></gold> <yellow>' . addslashes($cleanMsg) . '</yellow> <gray>(oleh ' . addslashes($senderName) . ')</gray>';
 
+        // Record audit start
+        $audit = \Azuriom\Plugin\ApexsionsBridge\Services\AuditService::start(
+            'SERVER_BROADCAST',
+            'GLOBAL',
+            'ALL_PLAYERS',
+            'ALL_PLAYERS',
+            'Global announcement dispatched from Web Admin',
+            null,
+            [
+                'action_id' => $actionId,
+                'message' => $cleanMsg,
+                'sender' => $senderName,
+            ],
+            'WEB'
+        );
+
         $delivery = Delivery::create([
+            'action_id' => $actionId,
+            'idempotency_key' => 'BC_' . time() . '_' . \Illuminate\Support\Str::random(6),
             'command' => $cmd,
             'status' => 'PENDING',
             'player_uuid' => 'GLOBAL',
@@ -323,7 +388,54 @@ class LinkVerificationController extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'Pengumuman berhasil dikirim ke antrean server Minecraft!',
+            'action_id' => $actionId,
             'delivery_id' => $delivery->id,
+        ]);
+    }
+
+    /**
+     * Ingest in-game administrative actions into central audit log.
+     */
+    public function ingestAuditLog(Request $request): JsonResponse
+    {
+        if (!$this->authenticateServer($request)) {
+            return response()->json(['error' => 'Unauthorized server request.'], 401);
+        }
+
+        $validated = $request->validate([
+            'actor_name' => ['required', 'string', 'max:64'],
+            'actor_id' => ['nullable', 'string', 'max:64'],
+            'actor_type' => ['nullable', 'string', 'max:32'],
+            'action' => ['required', 'string', 'max:64'],
+            'target_type' => ['nullable', 'string', 'max:32'],
+            'target_id' => ['nullable', 'string', 'max:64'],
+            'target_name' => ['nullable', 'string', 'max:64'],
+            'old_value' => ['nullable'],
+            'new_value' => ['nullable'],
+            'reason' => ['nullable', 'string', 'max:255'],
+            'status' => ['nullable', 'string', 'in:SUCCESS,FAILED,PENDING'],
+            'metadata' => ['nullable', 'array'],
+        ]);
+
+        $log = \Azuriom\Plugin\ApexsionsBridge\Services\AuditService::log([
+            'actor_name' => $validated['actor_name'],
+            'actor_id' => $validated['actor_id'] ?? null,
+            'actor_type' => $validated['actor_type'] ?? 'STAFF',
+            'action' => $validated['action'],
+            'target_type' => $validated['target_type'] ?? 'PLAYER',
+            'target_id' => $validated['target_id'] ?? null,
+            'target_name' => $validated['target_name'] ?? null,
+            'old_value' => $validated['old_value'] ?? null,
+            'new_value' => $validated['new_value'] ?? null,
+            'reason' => $validated['reason'] ?? 'In-game administrative action',
+            'source' => 'INGAME',
+            'status' => $validated['status'] ?? 'SUCCESS',
+            'metadata' => $validated['metadata'] ?? [],
+        ]);
+
+        return response()->json([
+            'status' => 'success',
+            'log_id' => $log->id,
         ]);
     }
 }

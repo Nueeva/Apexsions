@@ -10,3 +10,6 @@ Route::get('/deliveries/pending', [LinkVerificationController::class, 'getPendin
 Route::post('/deliveries/{id}/status', [LinkVerificationController::class, 'updateDeliveryStatus'])->name('deliveries.status');
 Route::post('/heartbeat', [LinkVerificationController::class, 'heartbeat'])->name('heartbeat');
 Route::get('/status', [LinkVerificationController::class, 'status'])->name('status');
+
+// In-game Audit Log Ingestion Endpoint
+Route::post('/audit/log', [LinkVerificationController::class, 'ingestAuditLog'])->name('audit.log');
