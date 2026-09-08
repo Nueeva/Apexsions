@@ -314,6 +314,9 @@ try {
 // -------------------------------------------------------------
 echo "\n--- Section 3: Auction Inspector ---\n";
 
+Auction::whereIn('auction_id', ['AUC-1011', 'AUC-2022', 'SYNC-AUC-777'])->delete();
+Transaction::where('transaction_id', 'SYNC-TX-999')->delete();
+
 $auc1 = Auction::create([
     'auction_id' => 'AUC-1011',
     'seller_uuid' => $playerUuid1,
