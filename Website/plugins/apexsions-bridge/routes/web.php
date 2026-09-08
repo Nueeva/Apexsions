@@ -4,6 +4,8 @@ use Azuriom\Plugin\ApexsionsBridge\Controllers\AccountLinkController;
 use Azuriom\Plugin\ApexsionsBridge\Controllers\Admin\AuditLogController;
 use Azuriom\Plugin\ApexsionsBridge\Controllers\Admin\AuctionAdminController;
 use Azuriom\Plugin\ApexsionsBridge\Controllers\Admin\EconomyAdminController;
+use Azuriom\Plugin\ApexsionsBridge\Controllers\Admin\IncidentAdminController;
+use Azuriom\Plugin\ApexsionsBridge\Controllers\Admin\IntelligenceAdminController;
 use Azuriom\Plugin\ApexsionsBridge\Controllers\Admin\ModerationAdminController;
 use Azuriom\Plugin\ApexsionsBridge\Controllers\Admin\PlayerAdminController;
 use Azuriom\Plugin\ApexsionsBridge\Controllers\Admin\PluginAdminController;
@@ -106,5 +108,18 @@ Route::middleware(['web', 'admin-access'])->prefix('admin')->name('admin.')->gro
     Route::prefix('audit-logs')->name('audit-logs.')->middleware('can:admin.users')->group(function () {
         Route::get('/', [AuditLogController::class, 'index'])->name('index');
         Route::get('/{id}', [AuditLogController::class, 'show'])->name('show');
+    });
+
+    // Intelligence & Incident Management System (Phase 6)
+    Route::prefix('intelligence')->name('intelligence.')->middleware('can:admin.users')->group(function () {
+        Route::get('/', [IntelligenceAdminController::class, 'index'])->name('index');
+    });
+
+    Route::prefix('incidents')->name('incidents.')->middleware('can:admin.users')->group(function () {
+        Route::get('/', [IncidentAdminController::class, 'index'])->name('index');
+        Route::get('/{id}', [IncidentAdminController::class, 'show'])->name('show');
+        Route::post('/{id}/assign', [IncidentAdminController::class, 'assign'])->name('assign');
+        Route::post('/{id}/status', [IncidentAdminController::class, 'status'])->name('status');
+        Route::post('/{id}/notes', [IncidentAdminController::class, 'note'])->name('notes.store');
     });
 });

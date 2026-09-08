@@ -27,4 +27,7 @@ Route::post('/economy/treasury/sync', [LinkVerificationController::class, 'syncK
 Route::get('/plugins', [LinkVerificationController::class, 'getPlugins'])->name('plugins');
 Route::post('/plugins/handshake', [LinkVerificationController::class, 'pluginHandshake'])->name('plugins.handshake');
 
+// Unified Event Ingestion Endpoint (Phase 6)
+Route::post('/events/sync', [LinkVerificationController::class, 'syncEvent'])->name('events.sync');
+
 

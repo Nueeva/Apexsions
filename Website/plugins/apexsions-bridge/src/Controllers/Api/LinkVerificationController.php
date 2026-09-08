@@ -732,4 +732,63 @@ class LinkVerificationController extends Controller
             'message' => 'Handshake plugin suite berhasil diproses.',
         ]);
     }
+
+    /**
+     * Ingest a unified event from Minecraft server or custom plugins into Event Intelligence.
+     */
+    public function syncEvent(Request $request): JsonResponse
+    {
+        if (!$this->authenticateServer($request)) {
+            return response()->json(['error' => 'Unauthorized server request.'], 401);
+        }
+
+        $validated = $request->validate([
+            'event_id' => ['nullable', 'string', 'max:64'],
+            'event_type' => ['required', 'string', 'max:64'],
+            'source' => ['nullable', 'string', 'max:32'],
+            'entity_type' => ['nullable', 'string', 'max:32'],
+            'entity_id' => ['required', 'string', 'max:64'],
+            'actor_type' => ['nullable', 'string', 'max:32'],
+            'actor_id' => ['nullable', 'string', 'max:64'],
+            'actor_name' => ['nullable', 'string', 'max:64'],
+            'target_type' => ['nullable', 'string', 'max:32'],
+            'target_id' => ['nullable', 'string', 'max:64'],
+            'target_name' => ['nullable', 'string', 'max:64'],
+            'severity' => ['nullable', 'string', 'max:16'],
+            'correlation_id' => ['nullable', 'string', 'max:64'],
+            'action_id' => ['nullable', 'string', 'max:64'],
+            'metadata' => ['nullable', 'array'],
+            'occurred_at' => ['nullable', 'date'],
+        ]);
+
+        // Security & Plugin Identity Check (Step 22 & Step 23)
+        $source = strtoupper($validated['source'] ?? 'MINECRAFT');
+        $pluginId = $validated['metadata']['plugin_id'] ?? null;
+        if ($source === 'PLUGIN' && !empty($pluginId)) {
+            $plugin = \Azuriom\Plugin\ApexsionsBridge\Models\ApexsionsPlugin::where('plugin_id', $pluginId)->first();
+            if (!$plugin) {
+                return response()->json(['error' => "Plugin [{$pluginId}] tidak terdaftar di Apexsions Plugin Registry."], 403);
+            }
+        }
+
+        // Duplicate & Replay check (Step 23)
+        if (!empty($validated['event_id'])) {
+            $existing = \Azuriom\Plugin\ApexsionsBridge\Models\ApexsionsEvent::where('event_id', $validated['event_id'])->first();
+            if ($existing) {
+                return response()->json([
+                    'status' => 'duplicate',
+                    'event_id' => $existing->event_id,
+                    'incident_id' => $existing->incident_id,
+                ]);
+            }
+        }
+
+        $event = \Azuriom\Plugin\ApexsionsBridge\Services\EventIntelligenceService::ingest($validated);
+
+        return response()->json([
+            'status' => 'success',
+            'event_id' => $event->event_id,
+            'incident_id' => $event->incident_id,
+        ]);
+    }
 }
