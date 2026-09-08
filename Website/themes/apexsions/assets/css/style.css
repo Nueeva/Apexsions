@@ -480,8 +480,8 @@ a:hover {
 .apx-nav-list {
     display: flex;
     align-items: center;
-    gap: 2rem;
-    margin: 0 auto;
+    gap: 1.65rem;
+    margin: 0;
 }
 
 .apx-nav-link {

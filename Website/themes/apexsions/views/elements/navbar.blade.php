@@ -18,7 +18,7 @@
 
         <!-- Nav Links & Right Actions -->
         <div class="collapse navbar-collapse" id="navbarMain">
-            <ul class="navbar-nav mx-auto mb-2 mb-lg-0 apx-nav-list">
+            <ul class="navbar-nav ms-lg-4 ms-xl-5 me-lg-auto mb-2 mb-lg-0 apx-nav-list">
                 <!-- 1. Beranda -->
                 <li class="nav-item">
                     <a class="nav-link apx-nav-link @if(request()->routeIs('home') && !request()->has('page')) active @endif" href="{{ route('home') }}" data-i18n="nav_home">
@@ -106,14 +106,8 @@
                 </li>
             </ul>
 
-            <!-- Right Actions: Dedicated Discord CTA Button, Language Switcher, Cart & User Profile Box -->
+            <!-- Right Actions: Language Switcher, Discord CTA Button, Cart & User Profile Box -->
             <div class="d-flex align-items-center gap-2 mt-3 mt-lg-0">
-                <!-- Dedicated Discord Community CTA Button -->
-                <a href="https://discord.gg/apexsions" target="_blank" rel="noopener noreferrer" class="btn btn-apx-discord d-inline-flex align-items-center gap-2" title="Gabung Komunitas Discord">
-                    <i class="bi bi-discord text-white" style="font-size: 1rem;"></i>
-                    <span class="d-none d-sm-inline fw-bold" data-i18n="nav_btn_discord">Discord</span>
-                </a>
-
                 <!-- Language Accessibility Switcher (ID / EN) -->
                 <div class="dropdown apx-lang-dropdown-wrapper">
                     <button class="btn apx-lang-btn dropdown-toggle d-flex align-items-center gap-1" type="button" id="apxLangDropdown" data-bs-toggle="dropdown" aria-expanded="false" title="Pilih Bahasa / Select Language" aria-label="Pilih Bahasa / Select Language">
@@ -141,6 +135,12 @@
                         </li>
                     </ul>
                 </div>
+
+                <!-- Dedicated Discord Community CTA Button -->
+                <a href="https://discord.gg/apexsions" target="_blank" rel="noopener noreferrer" class="btn btn-apx-discord d-inline-flex align-items-center gap-2" title="Gabung Komunitas Discord">
+                    <i class="bi bi-discord text-white" style="font-size: 1rem;"></i>
+                    <span class="d-none d-sm-inline fw-bold" data-i18n="nav_btn_discord">Discord</span>
+                </a>
 
                 @if(plugins()->isEnabled('shop') && Route::has('shop.cart.index') && request()->is('shop*'))
                     <a href="{{ route('shop.cart.index') }}" class="apx-nav-cart-btn" title="Keranjang Belanja">
