@@ -83,16 +83,19 @@ class EventIntelligenceService
             }
         }
 
-        // 2. MEDIUM Correlation: Shared entity ID (e.g. player_uuid) within a 24-hour window
+        // 2. MEDIUM Correlation: Domain-Aware Contextual Window for Shared Entity ID
         if (!empty($event->entity_id) && $event->entity_id !== 'SYSTEM' && $event->entity_id !== 'SERVER') {
+            $windowHours = self::getDomainCorrelationWindowHours($event->event_type);
+            $domainLabel = self::getDomainLabel($event->event_type);
+
             $mediumEvents = ApexsionsEvent::where(function ($q) use ($event) {
                     $q->where('entity_id', $event->entity_id)
                       ->orWhere('target_id', $event->entity_id)
                       ->orWhere('actor_id', $event->entity_id);
                 })
                 ->whereNotIn('id', $seenIds)
-                ->where('occurred_at', '>=', $event->occurred_at->copy()->subHours(24))
-                ->where('occurred_at', '<=', $event->occurred_at->copy()->addHours(24))
+                ->where('occurred_at', '>=', $event->occurred_at->copy()->subHours($windowHours))
+                ->where('occurred_at', '<=', $event->occurred_at->copy()->addHours($windowHours))
                 ->take(15)
                 ->get();
 
@@ -100,7 +103,7 @@ class EventIntelligenceService
                 $results->push([
                     'event' => $e,
                     'confidence' => 'MEDIUM',
-                    'reason' => "Entitas terlibat sama ({$event->entity_id}) dalam jendela 24 jam.",
+                    'reason' => "[Domain: {$domainLabel}] Entitas terlibat sama ({$event->entity_id}) dalam jendela kontekstual {$windowHours} jam.",
                 ]);
                 $seenIds[] = $e->id;
             }
@@ -123,5 +126,49 @@ class EventIntelligenceService
         }
 
         return $results;
+    }
+
+    /**
+     * Resolve contextual correlation window duration in hours based on domain event type.
+     */
+    public static function getDomainCorrelationWindowHours(string $eventType): int
+    {
+        $eventType = strtoupper($eventType);
+
+        if (str_starts_with($eventType, 'ECONOMY_') || str_starts_with($eventType, 'AUCTION_') || str_starts_with($eventType, 'TREASURY_')) {
+            return 2; // Economy burst window
+        }
+
+        if (str_starts_with($eventType, 'PLAYER_REPORTED') || str_starts_with($eventType, 'PUNISHMENT_') || str_starts_with($eventType, 'REPORT_')) {
+            return 24; // Moderation pattern window
+        }
+
+        if (str_starts_with($eventType, 'SERVER_') || str_starts_with($eventType, 'PLUGIN_') || str_starts_with($eventType, 'BRIDGE_')) {
+            return 1; // Infrastructure crash / degradation window
+        }
+
+        return 6; // General player / system event default window
+    }
+
+    /**
+     * Resolve human-readable domain label for correlation explanations.
+     */
+    public static function getDomainLabel(string $eventType): string
+    {
+        $eventType = strtoupper($eventType);
+
+        if (str_starts_with($eventType, 'ECONOMY_') || str_starts_with($eventType, 'AUCTION_') || str_starts_with($eventType, 'TREASURY_')) {
+            return 'ECONOMY';
+        }
+
+        if (str_starts_with($eventType, 'PLAYER_REPORTED') || str_starts_with($eventType, 'PUNISHMENT_') || str_starts_with($eventType, 'REPORT_')) {
+            return 'MODERATION';
+        }
+
+        if (str_starts_with($eventType, 'SERVER_') || str_starts_with($eventType, 'PLUGIN_') || str_starts_with($eventType, 'BRIDGE_')) {
+            return 'SERVER';
+        }
+
+        return 'GENERAL';
     }
 }
