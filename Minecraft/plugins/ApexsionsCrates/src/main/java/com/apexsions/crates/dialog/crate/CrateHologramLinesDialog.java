@@ -49,7 +49,8 @@ public class CrateHologramLinesDialog extends Dialog<Crate> {
     @NotNull
     public WrappedDialog create(@NotNull Player player, @NotNull Crate crate) {
         List<WrappedDialogInput> inputs = new ArrayList<>();
-        List<String> existing = crate.getCustomHologramLines();
+        // Use getHologramText() so the template lines are pre-filled when no custom override exists yet.
+        List<String> existing = crate.getHologramText();
         int size = Math.max(LINES_AMOUNT, existing.size());
 
         for (int index = 0; index < size; index++) {
