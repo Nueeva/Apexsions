@@ -44,48 +44,21 @@
                     </li>
                 @endif
 
-                <!-- 4. Leaderboard -->
-                @if(Route::has('leaderboard') || Route::has('apexsions-bridge.leaderboard'))
+                <!-- 4. Peraturan -->
+                <li class="nav-item">
+                    <a class="nav-link apx-nav-link @if(request()->routeIs('rules')) active @endif" href="{{ route('rules') }}" data-i18n="nav_rules">
+                        Peraturan
+                    </a>
+                </li>
+
+                <!-- 5. Vote -->
+                @if(Route::has('vote'))
                     <li class="nav-item">
-                        <a class="nav-link apx-nav-link @if(request()->is('leaderboard*')) active @endif" href="{{ url('/leaderboard') }}" data-i18n="nav_leaderboard">
-                            Leaderboard
+                        <a class="nav-link apx-nav-link @if(request()->routeIs('vote')) active @endif" href="{{ route('vote') }}" data-i18n="nav_vote">
+                            Vote
                         </a>
                     </li>
                 @endif
-
-                <!-- 5. Lainnya ▼ (Dropdown: Aturan & Vote) -->
-                <li class="nav-item dropdown">
-                    <a class="nav-link apx-nav-link dropdown-toggle d-flex align-items-center gap-1 @if(request()->routeIs('rules') || request()->routeIs('vote')) active @endif" href="#" id="apxMoreDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <span data-i18n="nav_more">Lainnya</span>
-                        <i class="bi bi-chevron-down apx-more-chevron" style="font-size: 0.7rem; margin-left: 2px;"></i>
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-dark shadow-lg apx-nav-dropdown py-2" aria-labelledby="apxMoreDropdown">
-                        <li>
-                            <a class="dropdown-item py-2 px-3 d-flex align-items-center gap-3 @if(request()->routeIs('rules')) active @endif" href="{{ route('rules') }}">
-                                <div class="apx-dropdown-icon-box bg-info bg-opacity-10 text-info">
-                                    <i class="bi bi-shield-check"></i>
-                                </div>
-                                <div>
-                                    <div class="fw-semibold text-white" style="font-size: 0.88rem;" data-i18n="nav_rules">Aturan Peradaban</div>
-                                    <small class="text-muted d-block" style="font-size: 0.72rem;" data-i18n="nav_rules_sub">Tata tertib dan etika kedaulatan realm</small>
-                                </div>
-                            </a>
-                        </li>
-                        @if(Route::has('vote'))
-                            <li>
-                                <a class="dropdown-item py-2 px-3 d-flex align-items-center gap-3 @if(request()->routeIs('vote')) active @endif" href="{{ route('vote') }}">
-                                    <div class="apx-dropdown-icon-box bg-success bg-opacity-10 text-success">
-                                        <i class="bi bi-hand-thumbs-up"></i>
-                                    </div>
-                                    <div>
-                                        <div class="fw-semibold text-white" style="font-size: 0.88rem;" data-i18n="nav_vote">Dukung Server (Vote)</div>
-                                        <small class="text-muted d-block" style="font-size: 0.72rem;" data-i18n="nav_vote_sub">Vote harian &amp; raih hadiah in-game</small>
-                                    </div>
-                                </a>
-                            </li>
-                        @endif
-                    </ul>
-                </li>
             </ul>
 
             <!-- Right Actions: Language Switcher, Discord CTA Button, Cart & User Profile Box -->
@@ -143,6 +116,9 @@
                                 <span class="fw-bold text-white">{{ auth()->user()->name }}</span>
                             </li>
                             <li><a class="dropdown-item py-2" href="{{ route('profile.index') }}"><i class="bi bi-person me-2 text-dim"></i> <span data-i18n="nav_profile">Profil Pemain</span></a></li>
+                            @if(Route::has('leaderboard') || Route::has('apexsions-bridge.leaderboard'))
+                                <li><a class="dropdown-item py-2" href="{{ url('/leaderboard') }}"><i class="bi bi-trophy me-2 text-warning"></i> <span data-i18n="nav_leaderboard">Papan Peringkat</span></a></li>
+                            @endif
                             @if(plugins()->isEnabled('apexsions-bridge'))
                                 <li><a class="dropdown-item py-2" href="{{ route('apexsions-bridge.link.index') }}"><i class="bi bi-controller me-2 text-dim"></i> <span data-i18n="nav_link_mc">Tautkan Minecraft</span></a></li>
                             @endif
