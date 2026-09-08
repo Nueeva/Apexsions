@@ -23,16 +23,30 @@ public class KingdomGuideTrait extends Trait {
     @EventHandler
     public void onRightClick(NPCRightClickEvent event) {
         if (event.getNPC() != this.getNPC()) return;
+        handleInteract(event.getClicker());
+    }
 
-        Player player = event.getClicker();
+    @EventHandler
+    public void onLeftClick(net.citizensnpcs.api.event.NPCLeftClickEvent event) {
+        if (event.getNPC() != this.getNPC()) return;
+        handleInteract(event.getClicker());
+    }
+
+    private void handleInteract(Player player) {
+        if (player == null) return;
         ApexsionsCorePlugin plugin = ApexsionsCorePlugin.getInstance();
         if (plugin == null) return;
 
         Optional<PlayerData> dataOpt = plugin.getPlayerDataService().getCached(player.getUniqueId());
-        if (dataOpt.isPresent() && !dataOpt.get().hasRegion()) {
-            plugin.getRegionSelectionGUI().open(player);
+        if (dataOpt.isPresent() && dataOpt.get().hasRegion()) {
+            // Already pledged to a kingdom -> directly teleport to kingdom
+            boolean teleported = plugin.getRegionTeleportService().teleportToRegion(player);
+            if (!teleported) {
+                plugin.getKingdomProfileGUI().open(player);
+            }
         } else {
-            plugin.getKingdomProfileGUI().open(player);
+            // New player or hasn't selected a kingdom -> open kingdom selection GUI
+            plugin.getRegionSelectionGUI().open(player);
         }
     }
 }

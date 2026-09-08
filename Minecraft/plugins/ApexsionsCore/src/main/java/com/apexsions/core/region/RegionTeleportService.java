@@ -31,12 +31,13 @@ public class RegionTeleportService {
             return false;
         }
 
-        player.sendMessage(miniMessage.deserialize("<gold>Teleporting to <yellow>" + region.getDisplayName() + "<gold>...</gold>"));
+        player.sendMessage(miniMessage.deserialize("<gradient:#f39c12:#f1c40f><bold>APEXSIONS REALM</bold></gradient> <dark_gray>»</dark_gray> <gray>Menteleportasi Anda ke ibukota <yellow>" + region.getDisplayName() + "</yellow>...</gray>"));
         player.teleportAsync(spawnLoc.get()).thenAccept(success -> {
             if (success) {
-                player.sendMessage(miniMessage.deserialize("<green>Welcome to <yellow>" + region.getDisplayName() + "<green>!</green>"));
+                player.sendMessage(miniMessage.deserialize("<gradient:#f39c12:#f1c40f><bold>APEXSIONS REALM</bold></gradient> <dark_gray>»</dark_gray> <green>Selamat datang di wilayah kedaulatan <yellow>" + region.getDisplayName() + "</yellow>!</green>"));
+                player.playSound(player.getLocation(), org.bukkit.Sound.ITEM_CHORUS_FRUIT_TELEPORT, 0.8f, 1.0f);
             } else {
-                player.sendMessage(miniMessage.deserialize("<red>Teleportation failed. Please try again.</red>"));
+                player.sendMessage(miniMessage.deserialize("<red>Teleportasi gagal. Silakan coba sesaat lagi.</red>"));
             }
         });
 

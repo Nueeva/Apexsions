@@ -45,9 +45,16 @@ public class CitizensHook implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onNPCRightClick(NPCRightClickEvent event) {
-        NPC npc = event.getNPC();
-        if (npc == null) return;
-        Player player = event.getClicker();
+        handleNpcInteract(event.getNPC(), event.getClicker());
+    }
+
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+    public void onNPCLeftClick(net.citizensnpcs.api.event.NPCLeftClickEvent event) {
+        handleNpcInteract(event.getNPC(), event.getClicker());
+    }
+
+    private void handleNpcInteract(NPC npc, Player player) {
+        if (npc == null || player == null) return;
         String nameLower = npc.getName() != null ? npc.getName().toLowerCase() : "";
 
         // 1. Kingdom Guide (Mulai Bermain / Pilih Kerajaan)
@@ -60,10 +67,15 @@ public class CitizensHook implements Listener {
 
         if (isKingdomGuide) {
             Optional<PlayerData> dataOpt = plugin.getPlayerDataService().getCached(player.getUniqueId());
-            if (dataOpt.isPresent() && !dataOpt.get().hasRegion()) {
-                plugin.getRegionSelectionGUI().open(player);
+            if (dataOpt.isPresent() && dataOpt.get().hasRegion()) {
+                // Already pledged to a kingdom -> directly teleport to kingdom
+                boolean teleported = plugin.getRegionTeleportService().teleportToRegion(player);
+                if (!teleported) {
+                    plugin.getKingdomProfileGUI().open(player);
+                }
             } else {
-                plugin.getKingdomProfileGUI().open(player);
+                // New player or hasn't selected a kingdom -> open kingdom selection GUI
+                plugin.getRegionSelectionGUI().open(player);
             }
             return;
         }
