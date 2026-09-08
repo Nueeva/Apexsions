@@ -46,43 +46,48 @@ public class AdminRewardItemEditMenu extends Gui {
 
         // 1. Overview Card (Slot 4)
         List<String> overviewLore = new ArrayList<>();
-        overviewLore.add("&7Tipe: &e" + item.getType());
+        overviewLore.add("§7Tipe: §e" + item.getType());
         if (isCurrency) {
             String cId = item.getCurrencyId();
             if ("rupiah".equalsIgnoreCase(cId) || item.getType() == RewardType.MONEY) {
-                overviewLore.add("&7Nama: &fRp." + String.format("%,d", (long) item.getAmount()).replace(',', '.'));
-                overviewLore.add("&7Jumlah: &aRp." + String.format("%,d", (long) item.getAmount()).replace(',', '.'));
-                overviewLore.add("&7Mata Uang: &eRUPIAH");
+                overviewLore.add("§7Nama: §fRp." + String.format("%,d", (long) item.getAmount()).replace(',', '.'));
+                overviewLore.add("§7Jumlah: §aRp." + String.format("%,d", (long) item.getAmount()).replace(',', '.'));
+                overviewLore.add("§7Mata Uang: §eRUPIAH");
             } else if ("diamond".equalsIgnoreCase(cId)) {
-                overviewLore.add("&7Nama: &f" + item.getAmount() + " Diamond 💎");
-                overviewLore.add("&7Jumlah: &a" + item.getAmount() + " Diamond");
-                overviewLore.add("&7Mata Uang: &eDIAMOND");
+                overviewLore.add("§7Nama: §f" + item.getAmount() + " Diamond 💎");
+                overviewLore.add("§7Jumlah: §a" + item.getAmount() + " Diamond");
+                overviewLore.add("§7Mata Uang: §eDIAMOND");
             } else {
-                overviewLore.add("&7Nama: &f" + item.getAmount() + " Battle Coins");
-                overviewLore.add("&7Jumlah: &a" + item.getAmount() + " Coins");
-                overviewLore.add("&7Mata Uang: &e" + (cId != null ? cId.toUpperCase() : "BATTLE_COINS"));
+                overviewLore.add("§7Nama: §f" + item.getAmount() + " Battle Coins");
+                overviewLore.add("§7Jumlah: §a" + item.getAmount() + " Coins");
+                overviewLore.add("§7Mata Uang: §e" + (cId != null ? cId.toUpperCase() : "BATTLE_COINS"));
             }
+        } else if (item.getType() == RewardType.ITEM) {
+            overviewLore.add("§7Jumlah: §a" + item.getAmount() + "x");
         } else {
-            overviewLore.add("&7Nama: &f" + item.getDisplayName());
-            overviewLore.add("&7Jumlah: &a" + item.getAmount() + "x");
-            overviewLore.add("&7Stackable: " + (isStackable ? "&aYa (Maks " + itemStack.getMaxStackSize() + ")" : "&cTidak (Maks 1)"));
+            overviewLore.add("§7Nama: §f" + item.getDisplayName());
+            overviewLore.add("§7Jumlah: §a" + item.getAmount() + "x");
         }
         if (!item.getCommands().isEmpty()) {
-            overviewLore.add("&7Command: &f" + String.join(", ", item.getCommands()));
+            overviewLore.add("§7Command: §f" + String.join(", ", item.getCommands()));
         }
 
-        String overviewTitle = "&6&lDETAIL HADIAH #" + (rewardIndex + 1);
+        String overviewTitle = "§6§lDETAIL HADIAH #" + (rewardIndex + 1);
         if (isCurrency) {
-            overviewTitle = "&6&lDETAIL HADIAH: " + item.getDisplayName();
+            overviewTitle = "§6§lDETAIL HADIAH: " + item.getDisplayName();
         }
 
         ItemStack cardIcon = itemStack != null ? itemStack.clone() : new ItemStack(Material.CHEST);
         cardIcon.setAmount(1);
 
-        setButton(4, new GuiButton(new ItemBuilder(cardIcon)
-                .name(overviewTitle)
-                .lore(overviewLore)
-                .build()));
+        ItemBuilder cardBuilder = new ItemBuilder(cardIcon).name(overviewTitle);
+        // ITEM type: preserve real item lore (armor set etc.), append admin overview as footer
+        if (item.getType() == RewardType.ITEM) {
+            cardBuilder.appendLore(overviewLore);
+        } else {
+            cardBuilder.lore(overviewLore);
+        }
+        setButton(4, new GuiButton(cardBuilder.build()));
 
         // 2. Action Controls
         if (item.getType() == RewardType.ITEM) {

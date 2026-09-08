@@ -63,31 +63,41 @@ public class RewardPreviewMenu extends Gui {
                 baseStack = baseStack.clone();
             }
 
-            List<String> lore = new ArrayList<>();
-            lore.add("&7Tipe: &e" + ri.getType().name());
-            if (ri.getType() == RewardType.ITEM) {
-                lore.add("&7Jumlah: &a" + ri.getAmount() + "x");
-            } else if (ri.getType() == RewardType.CURRENCY) {
+            boolean isItem = ri.getType() == RewardType.ITEM;
+
+            // Minimal footer — only info needed for player preview
+            List<String> footer = new ArrayList<>();
+            if (!isItem) {
+                // For currency/command: show generated info since there is no original lore
+                footer.add("§7Tipe: §e" + ri.getType().name());
+            }
+            if (ri.getType() == RewardType.CURRENCY) {
                 if ("rupiah".equalsIgnoreCase(ri.getCurrencyId())) {
-                    lore.add("&7Nominal: &aRp " + String.format("%,d", (long) ri.getAmount()).replace(",", "."));
+                    footer.add("§7Nominal: §aRp " + String.format("%,d", (long) ri.getAmount()).replace(",", "."));
                 } else if ("diamond".equalsIgnoreCase(ri.getCurrencyId())) {
-                    lore.add("&7Nominal: &b" + ri.getAmount() + " Diamond 💎");
+                    footer.add("§7Nominal: §b" + ri.getAmount() + " Diamond 💎");
                 } else {
-                    lore.add("&7Nominal: &e" + ri.getAmount() + " Coins");
+                    footer.add("§7Nominal: §e" + ri.getAmount() + " Coins");
                 }
             } else if (ri.getType() == RewardType.MONEY) {
-                lore.add("&7Nominal: &aRp " + String.format("%,d", (long) ri.getAmount()).replace(",", "."));
+                footer.add("§7Nominal: §aRp " + String.format("%,d", (long) ri.getAmount()).replace(",", "."));
+            } else if (isItem) {
+                footer.add("§7Jumlah: §a" + ri.getAmount() + "x");
             }
             if (!ri.getCommands().isEmpty()) {
-                lore.add("&7Perintah: &b" + String.join(", ", ri.getCommands()));
+                footer.add("§7Perintah: §b" + String.join(", ", ri.getCommands()));
             }
-            lore.add(" ");
-            lore.add("&b✦ Hadiah ini akan kamu dapatkan di Level " + level + "!");
+            footer.add(" ");
+            footer.add("§b✦ Hadiah ini akan kamu dapatkan di Level " + level + "!");
 
-            ItemStack previewCard = new ItemBuilder(baseStack)
-                    .name("&e&l" + ri.getDisplayName())
-                    .lore(lore)
-                    .build();
+            ItemBuilder builder = new ItemBuilder(baseStack);
+            if (isItem) {
+                // Preserve real item name & lore, just append our footer
+                builder.appendLore(footer);
+            } else {
+                builder.name("§e§l" + ri.getDisplayName()).lore(footer);
+            }
+            ItemStack previewCard = builder.build();
 
             setButton(displaySlots[i], new GuiButton(previewCard));
         }

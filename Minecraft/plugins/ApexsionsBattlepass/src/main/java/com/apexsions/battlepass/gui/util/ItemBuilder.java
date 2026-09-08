@@ -53,6 +53,19 @@ public class ItemBuilder {
         return this;
     }
 
+    /** Appends multiple lines AFTER the item's existing lore (preserves original item lore). */
+    public ItemBuilder appendLore(List<String> lines) {
+        if (meta != null && lines != null && !lines.isEmpty()) {
+            List<String> currentLore = meta.getLore();
+            if (currentLore == null) currentLore = new ArrayList<>();
+            for (String line : lines) {
+                currentLore.add(ColorUtil.colorize(line));
+            }
+            meta.setLore(currentLore);
+        }
+        return this;
+    }
+
     public ItemBuilder flags(ItemFlag... flags) {
         if (meta != null) {
             meta.addItemFlags(flags);

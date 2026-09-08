@@ -118,41 +118,46 @@ public class AdminRewardLevelEditorMenu extends Gui {
             RewardItem ri = rewards.get(i);
             ItemStack is = ri.toItemStack();
             boolean isCurrency = ri.isCurrency();
-            boolean isStackable = is != null && is.getMaxStackSize() > 1;
+            boolean isItem = ri.getType() == RewardType.ITEM;
 
-            List<String> lore = new ArrayList<>();
-            lore.add("&7Tipe: &e" + ri.getType());
+            // Footer info appended after original item lore
+            List<String> footer = new ArrayList<>();
+            footer.add(" ");
+            footer.add("§7Tipe: §e" + ri.getType());
             if (isCurrency) {
                 String cId = ri.getCurrencyId();
                 if ("rupiah".equalsIgnoreCase(cId) || ri.getType() == RewardType.MONEY) {
-                    lore.add("&7Jumlah: &aRp." + String.format("%,d", (long) ri.getAmount()).replace(',', '.'));
-                    lore.add("&7Mata Uang: &eRUPIAH");
+                    footer.add("§7Jumlah: §aRp." + String.format("%,d", (long) ri.getAmount()).replace(',', '.'));
+                    footer.add("§7Mata Uang: §eRUPIAH");
                 } else if ("diamond".equalsIgnoreCase(cId)) {
-                    lore.add("&7Jumlah: &a" + ri.getAmount() + " Diamond 💎");
-                    lore.add("&7Mata Uang: &eDIAMOND");
+                    footer.add("§7Jumlah: §a" + ri.getAmount() + " Diamond 💎");
+                    footer.add("§7Mata Uang: §eDIAMOND");
                 } else {
-                    lore.add("&7Jumlah: &a" + ri.getAmount() + " Coins");
-                    lore.add("&7Mata Uang: &e" + (cId != null ? cId.toUpperCase() : "BATTLE_COINS"));
+                    footer.add("§7Jumlah: §a" + ri.getAmount() + " Coins");
+                    footer.add("§7Mata Uang: §e" + (cId != null ? cId.toUpperCase() : "BATTLE_COINS"));
                 }
-            } else {
-                lore.add("&7Jumlah: &a" + ri.getAmount() + "x");
-                lore.add("&7Stackable: " + (isStackable ? "&aYa (Maks " + (is != null ? is.getMaxStackSize() : 64) + ")" : "&cTidak (Maks 1)"));
+            } else if (isItem) {
+                footer.add("§7Jumlah: §a" + ri.getAmount() + "x");
             }
             if (!ri.getCommands().isEmpty()) {
-                lore.add("&7Commands: &f" + String.join(", ", ri.getCommands()));
+                footer.add("§7Commands: §f" + String.join(", ", ri.getCommands()));
             }
-            lore.add(" ");
-            lore.add("&e▶ [Klik Kiri] Ubah jumlah / detail hadiah");
-            lore.add("&c▶ [Klik Kanan] Hapus hadiah dari level ini");
+            footer.add(" ");
+            footer.add("§e▶ [Klik Kiri] Ubah jumlah / detail hadiah");
+            footer.add("§c▶ [Klik Kanan] Hapus hadiah dari level ini");
 
-            String displayName = ri.getDisplayName();
             ItemStack icon = is != null ? is.clone() : new ItemStack(Material.CHEST);
             icon.setAmount(isCurrency ? 1 : Math.max(1, Math.min(64, ri.getAmount())));
 
-            ItemStack display = new ItemBuilder(icon)
-                    .name(displayName)
-                    .lore(lore)
-                    .build();
+            ItemBuilder builder = new ItemBuilder(icon);
+            // For ITEM type: preserve original display name & lore, then append admin footer.
+            // For currency/command: use generated name and set lore fresh (no original lore).
+            if (isItem) {
+                builder.appendLore(footer);
+            } else {
+                builder.name(ri.getDisplayName()).lore(footer.subList(1, footer.size()));
+            }
+            ItemStack display = builder.build();
 
             int slot = CENTER_SLOTS[idx++];
             setButton(slot, new GuiButton(display, event -> {
