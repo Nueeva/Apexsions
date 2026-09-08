@@ -23,3 +23,8 @@ Route::post('/economy/transactions/sync', [LinkVerificationController::class, 's
 Route::post('/economy/auctions/sync', [LinkVerificationController::class, 'syncAuction'])->name('economy.auctions.sync');
 Route::post('/economy/treasury/sync', [LinkVerificationController::class, 'syncKingdomTreasury'])->name('economy.treasury.sync');
 
+// Custom Plugin Control & Capability Endpoints
+Route::get('/plugins', [LinkVerificationController::class, 'getPlugins'])->name('plugins');
+Route::post('/plugins/handshake', [LinkVerificationController::class, 'pluginHandshake'])->name('plugins.handshake');
+
+

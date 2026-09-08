@@ -6,6 +6,7 @@ use Azuriom\Plugin\ApexsionsBridge\Controllers\Admin\AuctionAdminController;
 use Azuriom\Plugin\ApexsionsBridge\Controllers\Admin\EconomyAdminController;
 use Azuriom\Plugin\ApexsionsBridge\Controllers\Admin\ModerationAdminController;
 use Azuriom\Plugin\ApexsionsBridge\Controllers\Admin\PlayerAdminController;
+use Azuriom\Plugin\ApexsionsBridge\Controllers\Admin\PluginAdminController;
 use Azuriom\Plugin\ApexsionsBridge\Controllers\Admin\ReportAdminController;
 use Azuriom\Plugin\ApexsionsBridge\Controllers\Admin\ServerAdminController;
 use Azuriom\Plugin\ApexsionsBridge\Controllers\Admin\TransactionAdminController;
@@ -92,6 +93,13 @@ Route::middleware(['web', 'admin-access'])->prefix('admin')->name('admin.')->gro
         Route::post('/maintenance', [ServerAdminController::class, 'toggleMaintenance'])->name('maintenance.toggle');
         Route::post('/alerts/{id}/acknowledge', [ServerAdminController::class, 'acknowledgeAlert'])->name('alerts.acknowledge');
         Route::post('/alerts/{id}/resolve', [ServerAdminController::class, 'resolveAlert'])->name('alerts.resolve');
+    });
+
+    // Custom Plugin Control & Capability System
+    Route::prefix('plugins')->name('plugins.')->middleware('can:admin.users')->group(function () {
+        Route::get('/', [PluginAdminController::class, 'index'])->name('index');
+        Route::get('/{plugin_id}', [PluginAdminController::class, 'show'])->name('show');
+        Route::post('/{plugin_id}/action', [PluginAdminController::class, 'executeAction'])->name('action');
     });
 
     // Unified Audit Logs

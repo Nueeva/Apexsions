@@ -149,20 +149,7 @@ public class WebBridgeService {
             }
             playersJson.append("]");
 
-            StringBuilder pluginsJson = new StringBuilder("[");
-            org.bukkit.plugin.Plugin[] plugins = Bukkit.getPluginManager().getPlugins();
-            for (int i = 0; i < plugins.length; i++) {
-                org.bukkit.plugin.Plugin p = plugins[i];
-                if (p.getName().startsWith("Apexsions")) {
-                    pluginsJson.append(String.format("{\"name\":\"%s\",\"version\":\"%s\",\"enabled\":%b}",
-                            escapeJson(p.getName()), escapeJson(p.getPluginMeta().getVersion()), p.isEnabled()));
-                    if (i < plugins.length - 1) pluginsJson.append(",");
-                }
-            }
-            if (pluginsJson.length() > 1 && pluginsJson.charAt(pluginsJson.length() - 1) == ',') {
-                pluginsJson.deleteCharAt(pluginsJson.length() - 1);
-            }
-            pluginsJson.append("]");
+            String pluginsJson = com.apexsions.core.integration.plugin.PluginIntegrationRegistry.getInstance().buildPluginsTelemetryJson();
 
             String jsonPayload = String.format(
                     "{\"online_players\":%d,\"max_players\":%d,\"players\":%s,\"tps\":%.1f,\"mspt\":%.1f,\"version\":\"%s\"," +

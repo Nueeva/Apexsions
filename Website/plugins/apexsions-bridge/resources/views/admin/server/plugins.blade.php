@@ -18,6 +18,9 @@
             <p class="text-white-50 small mb-0">Status operasional, versi runtime, dan matriks kapabilitas 6 modul plugin custom ekosistem Apexsions.</p>
         </div>
         <div class="d-flex align-items-center gap-2">
+            <a href="{{ route('apexsions-bridge.admin.plugins.index') }}" class="btn btn-warning btn-sm">
+                <i class="bi bi-cpu-fill me-1"></i>Plugin Control & Capabilities
+            </a>
             <span class="badge {{ $serverStatus['badge_class'] }} px-3 py-2 font-monospace">
                 {{ $serverStatus['label'] }}
             </span>

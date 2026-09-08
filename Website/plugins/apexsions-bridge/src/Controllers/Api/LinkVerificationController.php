@@ -282,6 +282,11 @@ class LinkVerificationController extends Controller
 
             // Evaluate thresholds for persistent alerts
             \Azuriom\Plugin\ApexsionsBridge\Services\ServerOpsService::evaluateAlerts($data);
+
+            // Synchronize custom plugins status and capabilities from telemetry
+            if (!empty($validated['plugins'])) {
+                \Azuriom\Plugin\ApexsionsBridge\Services\PluginRegistryService::syncFromHeartbeat($validated['plugins']);
+            }
         } catch (\Throwable $e) {
             Log::warning('[Apexsions Bridge] Error recording server metrics: ' . $e->getMessage());
         }
@@ -687,6 +692,44 @@ class LinkVerificationController extends Controller
         return response()->json([
             'status' => 'success',
             'kingdom_key' => $treasury->kingdom_key,
+        ]);
+    }
+
+    /**
+     * Get registered custom plugins and capabilities.
+     */
+    public function getPlugins(Request $request): JsonResponse
+    {
+        if (!$this->authenticateServer($request)) {
+            return response()->json(['error' => 'Unauthorized server request.'], 401);
+        }
+
+        $plugins = \Azuriom\Plugin\ApexsionsBridge\Services\PluginRegistryService::getAllPlugins();
+        return response()->json([
+            'status' => 'success',
+            'count' => $plugins->count(),
+            'plugins' => $plugins,
+        ]);
+    }
+
+    /**
+     * Receive dynamic plugin handshake registration from Minecraft server.
+     */
+    public function pluginHandshake(Request $request): JsonResponse
+    {
+        if (!$this->authenticateServer($request)) {
+            return response()->json(['error' => 'Unauthorized server request.'], 401);
+        }
+
+        $validated = $request->validate([
+            'plugins' => ['required', 'array'],
+        ]);
+
+        \Azuriom\Plugin\ApexsionsBridge\Services\PluginRegistryService::syncFromHeartbeat($validated['plugins']);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Handshake plugin suite berhasil diproses.',
         ]);
     }
 }
