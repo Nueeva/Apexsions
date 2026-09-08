@@ -133,7 +133,7 @@ class IncidentAdminController extends Controller
             $request->input('reason')
         );
 
-        return redirect()->route('admin.incidents.show', $incident->incident_id)
+        return redirect()->route('apexsions-bridge.admin.incidents.show', $incident->incident_id)
             ->with('success', "Penugasan staf untuk insiden [{$incident->incident_id}] berhasil diperbarui.");
     }
 
@@ -159,7 +159,7 @@ class IncidentAdminController extends Controller
             $request->input('reason')
         );
 
-        return redirect()->route('admin.incidents.show', $incident->incident_id)
+        return redirect()->route('apexsions-bridge.admin.incidents.show', $incident->incident_id)
             ->with('success', "Status insiden [{$incident->incident_id}] berhasil diperbarui ke {$newStatus}.");
     }
 
@@ -185,7 +185,7 @@ class IncidentAdminController extends Controller
             $request->input('related_event_id')
         );
 
-        return redirect()->route('admin.incidents.show', $incident->incident_id)
+        return redirect()->route('apexsions-bridge.admin.incidents.show', $incident->incident_id)
             ->with('success', "Catatan investigasi berhasil dicatat ke dalam berkas insiden.");
     }
 }

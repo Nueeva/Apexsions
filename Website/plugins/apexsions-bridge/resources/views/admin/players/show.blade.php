@@ -42,7 +42,7 @@
             </div>
 
             <div class="d-flex align-items-center gap-2">
-                <a href="{{ route('player.show', $account->minecraft_uuid) }}" target="_blank" class="btn btn-sm btn-outline-warning">
+                <a href="{{ route('apexsions-bridge.player.show', $account->minecraft_uuid) }}" target="_blank" class="btn btn-sm btn-outline-warning">
                     <i class="bi bi-box-arrow-up-right me-1"></i> Lihat Profil Publik
                 </a>
             </div>
