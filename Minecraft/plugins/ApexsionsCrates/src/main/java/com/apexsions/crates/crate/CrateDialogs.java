@@ -16,6 +16,7 @@ public class CrateDialogs {
     public static final DialogKey<Crate>                         CRATE_EFFECT             = new DialogKey<>("crate_effect");
     public static final DialogKey<Crate>                         CRATE_PARTICLE           = new DialogKey<>("crate_particle");
     public static final DialogKey<Crate>                         CRATE_HOLOGRAM           = new DialogKey<>("crate_hologram");
+    public static final DialogKey<Crate>                         CRATE_HOLOGRAM_LINES     = new DialogKey<>("crate_hologram_lines");
     public static final DialogKey<Crate>                         CRATE_POST_OPEN_COMMANDS = new DialogKey<>("crate_post_open_commands");
 
 }

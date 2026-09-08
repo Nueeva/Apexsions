@@ -90,6 +90,7 @@ public class Crate implements ConfigBacked {
     private boolean hologramEnabled;
     private String  hologramTemplateId;
     private double  hologramYOffset;
+    private List<String> customHologramLines;
 
     private boolean effectEnabled;
     private String      effectType;
@@ -109,6 +110,7 @@ public class Crate implements ConfigBacked {
         this.blockPositions = new HashSet<>();
         this.milestones = new HashSet<>();
         this.description = new ArrayList<>();
+        this.customHologramLines = new ArrayList<>();
     }
 
     public void load() throws IllegalStateException {
@@ -231,6 +233,7 @@ public class Crate implements ConfigBacked {
         this.setHologramEnabled(config.getBoolean("Block.Hologram.Enabled"));
         this.setHologramTemplateId(config.getString("Block.Hologram.Template", Placeholders.DEFAULT));
         this.setHologramYOffset(config.getDouble("Block.Hologram.Y_Offset", 0D));
+        this.setCustomHologramLines(config.getStringList("Block.Hologram.CustomLines"));
 
         this.setEffectType(config.getString("Block.Effect.Model", EffectId.NONE));
         this.setEffectParticle(UniParticle.read(config, "Block.Effect.Particle"));
@@ -294,6 +297,7 @@ public class Crate implements ConfigBacked {
         config.set("Block.Hologram.Enabled", this.hologramEnabled);
         config.set("Block.Hologram.Template", this.hologramTemplateId);
         config.set("Block.Hologram.Y_Offset", this.hologramYOffset);
+        config.set("Block.Hologram.CustomLines", this.customHologramLines.isEmpty() ? null : this.customHologramLines);
         config.set("Block.Effect.Enabled", this.effectEnabled);
         config.set("Block.Effect.Model", this.effectType);
         config.remove("Block.Effect.Particle");
@@ -457,6 +461,9 @@ public class Crate implements ConfigBacked {
 
     @NotNull
     public List<String> getHologramText() {
+        if (!this.customHologramLines.isEmpty()) {
+            return new ArrayList<>(this.customHologramLines);
+        }
         HologramTemplate template = Config.getHologramTemplate(this.hologramTemplateId);
         return template == null ? Collections.emptyList() : template.getText();
     }
@@ -771,6 +778,15 @@ public class Crate implements ConfigBacked {
 
     public void setHologramYOffset(double hologramYOffset) {
         this.hologramYOffset = hologramYOffset;
+    }
+
+    @NotNull
+    public List<String> getCustomHologramLines() {
+        return new ArrayList<>(this.customHologramLines);
+    }
+
+    public void setCustomHologramLines(@NotNull List<String> lines) {
+        this.customHologramLines = new ArrayList<>(lines);
     }
 
     public boolean isEffectEnabled() {

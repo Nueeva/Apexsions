@@ -220,6 +220,7 @@ public class CrateManager extends AbstractManager<CratesPlugin> {
         this.dialogs.register(CrateDialogs.CRATE_EFFECT, () -> new CrateEffectDialog(this.dialogs));
         this.dialogs.register(CrateDialogs.CRATE_PARTICLE, CrateParticleDialog::new);
         this.dialogs.register(CrateDialogs.CRATE_HOLOGRAM, CrateHologramDialog::new);
+        this.dialogs.register(CrateDialogs.CRATE_HOLOGRAM_LINES, CrateHologramLinesDialog::new);
         this.dialogs.register(CrateDialogs.CRATE_POST_OPEN_COMMANDS, CratePostOpenCommandsDialog::new);
 
         this.dialogs.register(RewardDialogs.CREATION, () -> new RewardCreationDialog(this.plugin));

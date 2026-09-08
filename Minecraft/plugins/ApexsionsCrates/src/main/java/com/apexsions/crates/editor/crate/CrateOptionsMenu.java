@@ -141,6 +141,13 @@ public class CrateOptionsMenu extends LinkedMenu<CratesPlugin, Crate> implements
         .appendClick("Click to edit")
         .build();
 
+    private static final IconLocale LOCALE_HOLOGRAM_LINES = LangEntry.iconBuilder("Editor.Button.Crate.HologramLines").name("Hologram Lines")
+        .appendCurrent("Custom Lines", GENERIC_AMOUNT).br()
+        .appendInfo("Edit per-crate hologram text.", "Overrides the template when set.").br()
+        .appendInfo(SOFT_YELLOW.wrap("→") + " Leave blank to use the template.").br()
+        .appendClick("Click to edit")
+        .build();
+
     private static final IconLocale LOCALE_REWARDS = LangEntry.iconBuilder("Editor.Button.Crate.Rewards").name("Rewards")
         .appendCurrent("Status", GENERIC_INSPECTION)
         .appendCurrent("Rewards", GENERIC_AMOUNT).br()
@@ -376,6 +383,21 @@ public class CrateOptionsMenu extends LinkedMenu<CratesPlugin, Crate> implements
                 this.dialogs.show(player, CrateDialogs.CRATE_POST_OPEN_COMMANDS, crate, flush);
             }).build()
         );
+
+        if (this.plugin.hasHolograms()) {
+            viewer.addItem(NightItem.fromType(Material.WRITABLE_BOOK)
+                .localized(LOCALE_HOLOGRAM_LINES)
+                .replacement(replacer -> replacer
+                    .replace(GENERIC_AMOUNT, () -> {
+                        int count = crate.getCustomHologramLines().size();
+                        return count == 0 ? RED.wrap("Using template") : SOFT_GREEN.wrap(count + " lines");
+                    })
+                )
+                .toMenuItem().setSlots(38).setHandler((viewer1, event) -> {
+                    this.dialogs.show(player, CrateDialogs.CRATE_HOLOGRAM_LINES, crate, flush);
+                }).build()
+            );
+        }
     }
 
     @Override
