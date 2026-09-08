@@ -79,7 +79,8 @@
 </section>
 
 <!-- Section: A WORLD BUILT BY PLAYERS (2-Column Asymmetric Showcase) -->
-<section class="apx-section apx-world-section position-relative overflow-hidden" id="features">
+<section class="apx-section apx-world-section position-relative overflow-hidden" id="civilizations">
+    <span id="features" style="position: absolute; top: -80px;"></span>
 
     <div class="container position-relative" style="z-index: 2;">
         <!-- Header / Intro -->
@@ -192,7 +193,7 @@
         </div>
 
         <!-- 2-Column Showcase Row: Civil Systems & Territorial Archive -->
-        <div class="row g-4 align-items-stretch mb-5">
+        <div class="row g-4 align-items-stretch mb-5" id="gameplay">
             <!-- Left Column: Civil Systems Ledger -->
             <div class="col-lg-6">
                 <div class="apx-monolith-ledger h-100 d-flex flex-column justify-content-between">

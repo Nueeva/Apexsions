@@ -590,11 +590,63 @@ a:hover {
 }
 
 .apx-nav-dropdown {
-    background: var(--apx-bg-surface-raised) !important;
+    background: rgba(14, 17, 23, 0.98) !important;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
     border: 1px solid var(--apx-gold-border) !important;
     border-radius: var(--apx-radius-md) !important;
-    min-width: 220px;
-    margin-top: 0.5rem !important;
+    min-width: 260px;
+    margin-top: 0.65rem !important;
+    box-shadow: 0 16px 36px -8px rgba(0, 0, 0, 0.85), 0 0 15px rgba(201, 164, 92, 0.12) !important;
+}
+
+.apx-nav-dropdown .dropdown-item {
+    border-radius: var(--apx-radius-sm);
+    margin: 2px 6px;
+    width: auto;
+    transition: var(--apx-transition);
+}
+
+.apx-nav-dropdown .dropdown-item:hover {
+    background: rgba(201, 164, 92, 0.1) !important;
+}
+
+.apx-dropdown-icon-box {
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.95rem;
+    flex-shrink: 0;
+}
+
+.dropdown-toggle[aria-expanded="true"] .apx-more-chevron {
+    transform: rotate(180deg);
+}
+
+/* Dedicated Discord Community CTA Button */
+.btn-apx-discord {
+    background: rgba(88, 101, 242, 0.16) !important;
+    border: 1px solid rgba(88, 101, 242, 0.45) !important;
+    color: #ffffff !important;
+    border-radius: var(--apx-radius-sm) !important;
+    padding: 0.45rem 0.85rem !important;
+    font-size: 0.88rem !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.02em;
+    box-shadow: 0 0 10px rgba(88, 101, 242, 0.2);
+    transition: var(--apx-transition);
+    text-decoration: none;
+}
+
+.btn-apx-discord:hover {
+    background: #5865F2 !important;
+    border-color: #5865F2 !important;
+    color: #ffffff !important;
+    box-shadow: 0 0 18px rgba(88, 101, 242, 0.55), 0 4px 12px rgba(0, 0, 0, 0.4);
+    transform: translateY(-1px);
 }
 
 /* ==============================================================================
