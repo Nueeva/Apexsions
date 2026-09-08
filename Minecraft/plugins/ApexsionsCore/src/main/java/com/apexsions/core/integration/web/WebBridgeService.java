@@ -9,8 +9,10 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.World;
 import org.bukkit.scheduler.BukkitTask;
 
+import java.lang.management.ManagementFactory;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -86,7 +88,7 @@ public class WebBridgeService {
         try {
             int onlinePlayers = Bukkit.getOnlinePlayers().size();
             int maxPlayers = Bukkit.getMaxPlayers();
-            List<String> playerNames = Bukkit.getOnlinePlayers().stream().map(Player::getName).toList();
+            List<Player> onlineList = new ArrayList<>(Bukkit.getOnlinePlayers());
             double tps = 20.0;
             try {
                 double[] tpsArr = Bukkit.getTPS();
@@ -97,18 +99,55 @@ public class WebBridgeService {
             }
             String version = Bukkit.getMinecraftVersion();
 
+            // RAM metrics in MB
+            long totalMem = Runtime.getRuntime().totalMemory();
+            long freeMem = Runtime.getRuntime().freeMemory();
+            long maxMem = Runtime.getRuntime().maxMemory();
+            long ramUsedMb = Math.max(0, (totalMem - freeMem) / (1024L * 1024L));
+            long ramMaxMb = Math.max(1, maxMem / (1024L * 1024L));
+            long freeRamMb = Math.max(0, freeMem / (1024L * 1024L));
+
+            // Server Uptime in seconds
+            long uptimeSeconds = 0;
+            try {
+                uptimeSeconds = Math.max(0, (System.currentTimeMillis() - ManagementFactory.getRuntimeMXBean().getStartTime()) / 1000L);
+            } catch (Throwable ignored) {
+            }
+
+            // World stats (loaded chunks and entities)
+            int loadedChunks = 0;
+            int totalEntities = 0;
+            for (World w : Bukkit.getWorlds()) {
+                loadedChunks += w.getLoadedChunks().length;
+                try {
+                    totalEntities += w.getEntityCount();
+                } catch (Throwable t) {
+                    totalEntities += w.getEntities().size();
+                }
+            }
+
             StringBuilder playersJson = new StringBuilder("[");
-            for (int i = 0; i < playerNames.size(); i++) {
-                playersJson.append("\"").append(escapeJson(playerNames.get(i))).append("\"");
-                if (i < playerNames.size() - 1) {
+            for (int i = 0; i < onlineList.size(); i++) {
+                Player p = onlineList.get(i);
+                playersJson.append(String.format(
+                        "{\"name\":\"%s\",\"uuid\":\"%s\",\"ping\":%d}",
+                        escapeJson(p.getName()),
+                        p.getUniqueId().toString(),
+                        p.getPing()
+                ));
+                if (i < onlineList.size() - 1) {
                     playersJson.append(",");
                 }
             }
             playersJson.append("]");
 
             String jsonPayload = String.format(
-                    "{\"online_players\":%d,\"max_players\":%d,\"players\":%s,\"tps\":%.1f,\"version\":\"%s\"}",
-                    onlinePlayers, maxPlayers, playersJson.toString(), tps, version
+                    "{\"online_players\":%d,\"max_players\":%d,\"players\":%s,\"tps\":%.1f,\"version\":\"%s\"," +
+                    "\"ram_used_mb\":%d,\"ram_max_mb\":%d,\"free_ram_mb\":%d,\"uptime_seconds\":%d," +
+                    "\"loaded_chunks\":%d,\"entities\":%d}",
+                    onlinePlayers, maxPlayers, playersJson.toString(), tps, version,
+                    ramUsedMb, ramMaxMb, freeRamMb, uptimeSeconds,
+                    loadedChunks, totalEntities
             );
 
             HttpRequest request = HttpRequest.newBuilder()

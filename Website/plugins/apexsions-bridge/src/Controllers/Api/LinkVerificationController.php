@@ -183,6 +183,12 @@ class LinkVerificationController extends Controller
             'players' => ['nullable', 'array'],
             'tps' => ['nullable', 'numeric'],
             'version' => ['nullable', 'string', 'max:32'],
+            'ram_used_mb' => ['nullable', 'integer'],
+            'ram_max_mb' => ['nullable', 'integer'],
+            'free_ram_mb' => ['nullable', 'integer'],
+            'uptime_seconds' => ['nullable', 'integer'],
+            'loaded_chunks' => ['nullable', 'integer'],
+            'entities' => ['nullable', 'integer'],
         ]);
 
         $data = [
@@ -192,6 +198,12 @@ class LinkVerificationController extends Controller
             'player_list' => $validated['players'] ?? [],
             'tps' => (float) ($validated['tps'] ?? 20.0),
             'version' => $validated['version'] ?? '26.2',
+            'ram_used_mb' => (int) ($validated['ram_used_mb'] ?? 0),
+            'ram_max_mb' => (int) ($validated['ram_max_mb'] ?? 0),
+            'free_ram_mb' => (int) ($validated['free_ram_mb'] ?? 0),
+            'uptime_seconds' => (int) ($validated['uptime_seconds'] ?? 0),
+            'loaded_chunks' => (int) ($validated['loaded_chunks'] ?? 0),
+            'entities' => (int) ($validated['entities'] ?? 0),
             'last_heartbeat' => now()->timestamp,
         ];
 
@@ -223,10 +235,15 @@ class LinkVerificationController extends Controller
                     $payload = [
                         'online' => true,
                         'players' => (int) $data['players'],
-                        'max_players' => (int) ($data['max_players'] ?? 200),
+                        'max_players' => (int) ($data['max_players'] ?? 500),
                         'player_list' => [],
                         'tps' => 20.0,
                         'version' => '26.2',
+                        'ram_used_mb' => 0,
+                        'ram_max_mb' => 0,
+                        'uptime_seconds' => 0,
+                        'loaded_chunks' => 0,
+                        'entities' => 0,
                         'last_heartbeat' => now()->timestamp,
                     ];
                     return response()->json($payload);
@@ -245,10 +262,15 @@ class LinkVerificationController extends Controller
                 return [
                     'online' => true,
                     'players' => (int) ($res['players']['online'] ?? 0),
-                    'max_players' => (int) ($res['players']['max'] ?? 200),
+                    'max_players' => (int) ($res['players']['max'] ?? 500),
                     'player_list' => array_column($res['players']['sample'] ?? [], 'name'),
                     'tps' => 20.0,
                     'version' => $res['version']['name'] ?? '26.2',
+                    'ram_used_mb' => 0,
+                    'ram_max_mb' => 0,
+                    'uptime_seconds' => 0,
+                    'loaded_chunks' => 0,
+                    'entities' => 0,
                     'last_heartbeat' => now()->timestamp,
                 ];
             } catch (\Throwable $e) {
@@ -263,11 +285,43 @@ class LinkVerificationController extends Controller
         return response()->json([
             'online' => false,
             'players' => 0,
-            'max_players' => 200,
+            'max_players' => 500,
             'player_list' => [],
             'tps' => 20.0,
             'version' => '26.2',
+            'ram_used_mb' => 0,
+            'ram_max_mb' => 0,
+            'uptime_seconds' => 0,
+            'loaded_chunks' => 0,
+            'entities' => 0,
             'last_heartbeat' => null,
+        ]);
+    }
+
+    /**
+     * Dispatch an in-game announcement broadcast to all players via WebBridge.
+     */
+    public function broadcast(Request $request): JsonResponse
+    {
+        $validated = $request->validate([
+            'message' => ['required', 'string', 'max:256'],
+        ]);
+
+        $senderName = auth()->user()?->name ?? 'Admin';
+        $cleanMsg = trim(strip_tags($validated['message']));
+
+        // Dispatch broadcast with elegant MiniMessage golden styling
+        $cmd = 'broadcast <gold><bold>[APEXSIONS PENGUMUMAN]</bold></gold> <yellow>' . addslashes($cleanMsg) . '</yellow> <gray>(oleh ' . addslashes($senderName) . ')</gray>';
+
+        $delivery = Delivery::create([
+            'command' => $cmd,
+            'status' => 'PENDING',
+        ]);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Pengumuman berhasil dikirim ke antrean server Minecraft!',
+            'delivery_id' => $delivery->id,
         ]);
     }
 }

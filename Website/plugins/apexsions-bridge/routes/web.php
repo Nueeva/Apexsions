@@ -24,3 +24,8 @@ Route::middleware('auth')->group(function () {
         Route::post('/claim-reward', [ProfileManagementController::class, 'claimReward'])->name('claim-reward');
     });
 });
+
+// Admin Realm Telemetry & Broadcast Routes
+Route::middleware(['web', 'admin-access'])->prefix('admin/apexsions')->name('admin.apexsions.')->group(function () {
+    Route::post('/broadcast', [\Azuriom\Plugin\ApexsionsBridge\Controllers\Api\LinkVerificationController::class, 'broadcast'])->name('broadcast');
+});
