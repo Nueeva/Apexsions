@@ -428,7 +428,7 @@
                 if (refreshIcon) refreshIcon.classList.add('spin-animation');
 
                 try {
-                    const res = await fetch('{{ route('apexsions-bridge.status') }}', {
+                    const res = await fetch('{{ url('/api/apexsions-bridge/status') }}', {
                         headers: { 'Accept': 'application/json' }
                     });
                     if (!res.ok) throw new Error('Status HTTP ' + res.status);
@@ -559,7 +559,7 @@
 
                     try {
                         const token = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
-                        const res = await fetch('{{ route('admin.apexsions.broadcast') }}', {
+                        const res = await fetch('{{ url('/admin/apexsions/broadcast') }}', {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',
