@@ -7,6 +7,7 @@ import com.apexsions.crates.CratesPlugin;
 import com.apexsions.crates.Placeholders;
 import com.apexsions.crates.config.Keys;
 import com.apexsions.crates.config.Lang;
+import com.apexsions.crates.util.CrateUtils;
 import com.apexsions.crates.util.ItemHelper;
 import su.nightexpress.nightcore.bridge.item.AdaptedItem;
 import su.nightexpress.nightcore.config.FileConfig;
@@ -149,6 +150,9 @@ public class CrateKey implements ConfigBacked {
     public ItemStack getItemStack(boolean fullData) {
         ItemStack item = ItemHelper.toItemStack(this.item);
         ItemUtil.editMeta(item, meta -> {
+            if (this.name != null && !this.name.isEmpty()) {
+                CrateUtils.applyDisplayName(meta, this.name);
+            }
             if (fullData) {
                 meta.setMaxStackSize(this.itemStackable ? null : 1);
                 PDCUtil.set(meta, Keys.keyId, this.getId());

@@ -71,9 +71,9 @@ public abstract class GenericNameDialog<T> extends Dialog<T> {
                 String name = nbtHolder.getText(JSON_NAME, this.getName(source));
                 boolean replace = nbtHolder.getBoolean(JSON_REPLACE_NAME, false);
 
-                if (replace) {
+                if (replace || itemAdapter.isVanilla()) {
                     ItemStack itemStack = ItemHelper.toItemStack(crateItem);
-                    ItemUtil.editMeta(itemStack, meta -> ItemUtil.setCustomName(meta, name));
+                    ItemUtil.editMeta(itemStack, meta -> com.apexsions.crates.util.CrateUtils.applyDisplayName(meta, name));
                     this.setItem(source, ItemHelper.vanilla(itemStack));
                 }
 

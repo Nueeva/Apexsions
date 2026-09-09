@@ -18,6 +18,7 @@ import com.apexsions.crates.dialog.key.KeyNameDialog;
 import com.apexsions.crates.key.dialog.KeyDialogs;
 import com.apexsions.crates.registry.CratesRegistries;
 import com.apexsions.crates.user.CrateUser;
+import com.apexsions.crates.util.CrateUtils;
 import com.apexsions.crates.util.ItemHelper;
 import su.nightexpress.nightcore.config.FileConfig;
 import su.nightexpress.nightcore.manager.AbstractManager;
@@ -106,7 +107,7 @@ public class KeyManager extends AbstractManager<CratesPlugin> {
 
         ItemStack item = new ItemStack(Material.TRIPWIRE_HOOK);
         ItemUtil.editMeta(item, meta -> {
-            meta.setDisplayName(key.getName());
+            CrateUtils.applyDisplayName(meta, key.getName());
         });
 
         key.setItem(ItemHelper.vanilla(item));

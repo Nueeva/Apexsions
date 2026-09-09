@@ -609,8 +609,12 @@ public class Crate implements ConfigBacked {
         ItemStack itemStack = this.item.itemStack().orElse(CrateUtils.getDefaultItem(this));
 
         ItemUtil.editMeta(itemStack, meta -> {
-            //ItemUtil.setCustomName(meta, this.name);
-            //ItemUtil.setLore(meta, this.description);
+            if (this.name != null && !this.name.isEmpty()) {
+                CrateUtils.applyDisplayName(meta, this.name);
+            }
+            if (this.description != null && !this.description.isEmpty()) {
+                CrateUtils.applyLore(meta, this.description);
+            }
 
             if (fullData) {
                 meta.setMaxStackSize(this.itemStackable ? null : 1);
