@@ -208,7 +208,7 @@ class PlayerAdminController extends Controller
             'action_type' => [
                 'required',
                 'string',
-                'in:ASSIGN_RANK,RESET_RANK,ADJUST_BALANCE,SET_LEVEL,ADD_XP,SET_KINGDOM,RESET_KINGDOM,KICK_PLAYER,HEAL_FEED,BATTLEPASS_PASS,BATTLEPASS_TIER,DISPATCH_ALERT,TRIGGER_SYNC',
+                'in:ASSIGN_RANK,RESET_RANK,ADJUST_BALANCE,SET_LEVEL,ADD_XP,SET_KINGDOM,RESET_KINGDOM,KICK_PLAYER,HEAL_FEED,BATTLEPASS_PASS,BATTLEPASS_TIER,DISPATCH_ALERT,TRIGGER_SYNC,SET_GAMEMODE,APPOINT_KING,REVOKE_KING',
             ],
             'reason' => ['required', 'string', 'min:3', 'max:250'],
             'message' => ['nullable', 'string', 'max:250'],
@@ -221,6 +221,7 @@ class PlayerAdminController extends Controller
             'kingdom' => ['nullable', 'string', 'in:ZENITHAR,SOLTERRA,SYLVAMOOR'],
             'pass_type' => ['nullable', 'string', 'in:sio,exsio'],
             'tier' => ['nullable', 'integer', 'min:1', 'max:100'],
+            'gamemode' => ['nullable', 'string', 'in:SURVIVAL,CREATIVE,ADVENTURE,SPECTATOR'],
         ]);
 
         $actionType = $validated['action_type'];
@@ -228,7 +229,7 @@ class PlayerAdminController extends Controller
         $isOnline = $this->isPlayerOnline($account);
 
         // Guard against actions that require player to be online
-        $onlineRequiredActions = ['KICK_PLAYER', 'HEAL_FEED', 'DISPATCH_ALERT'];
+        $onlineRequiredActions = ['KICK_PLAYER', 'HEAL_FEED', 'DISPATCH_ALERT', 'SET_GAMEMODE'];
         if (in_array($actionType, $onlineRequiredActions, true) && !$isOnline) {
             return back()->with('error', "Pemain {$account->minecraft_username} sedang OFFLINE. Aksi ini hanya dapat dijalankan saat pemain berada di dalam server.");
         }
@@ -677,6 +678,114 @@ class PlayerAdminController extends Controller
             ]);
 
             return back()->with('success', 'Permintaan sinkronisasi paksa berhasil dijadwalkan!');
+        }
+
+        // 14. SET GAMEMODE (Online only: Survival, Creative, Adventure, Spectator)
+        if ($actionType === 'SET_GAMEMODE') {
+            $mode = strtoupper($validated['gamemode'] ?? 'SURVIVAL');
+            $command = 'gamemode ' . strtolower($mode) . ' ' . $account->minecraft_username;
+
+            $delivery = Delivery::create([
+                'action_id' => $actionId,
+                'idempotency_key' => 'GM_' . $account->minecraft_uuid . '_' . time(),
+                'player_uuid' => $account->minecraft_uuid,
+                'player_username' => $account->minecraft_username,
+                'command' => $command,
+                'status' => 'PENDING',
+            ]);
+
+            AuditLog::create([
+                'action_id' => $actionId,
+                'actor_type' => 'ADMIN',
+                'actor_id' => $actorId,
+                'actor_name' => $actorName,
+                'action' => 'PLAYER_GAMEMODE_CHANGE',
+                'target_type' => 'PLAYER',
+                'target_id' => $account->minecraft_uuid,
+                'target_name' => $account->minecraft_username,
+                'old_value' => null,
+                'new_value' => $mode,
+                'reason' => $reason,
+                'source' => 'WEB',
+                'status' => 'PENDING',
+                'metadata' => ['delivery_id' => $delivery->id, 'mode' => $mode, 'command' => $command],
+            ]);
+
+            return back()->with('success', "Perubahan GameMode ({$mode}) untuk {$account->minecraft_username} berhasil dijadwalkan!");
+        }
+
+        // 15. APPOINT MONARCH / KING
+        if ($actionType === 'APPOINT_KING') {
+            $kingdom = strtoupper($validated['kingdom'] ?? ($account->kingdom ?: 'ZENITHAR'));
+            if ($kingdom === 'NONE' || empty($kingdom)) {
+                $kingdom = 'ZENITHAR';
+            }
+            $command = "kingdom setking {$kingdom} {$account->minecraft_username}";
+
+            $delivery = Delivery::create([
+                'action_id' => $actionId,
+                'idempotency_key' => 'KING_' . $account->minecraft_uuid . '_' . time(),
+                'player_uuid' => $account->minecraft_uuid,
+                'player_username' => $account->minecraft_username,
+                'command' => $command,
+                'status' => 'PENDING',
+            ]);
+
+            AuditLog::create([
+                'action_id' => $actionId,
+                'actor_type' => 'ADMIN',
+                'actor_id' => $actorId,
+                'actor_name' => $actorName,
+                'action' => 'MONARCH_APPOINT',
+                'target_type' => 'PLAYER',
+                'target_id' => $account->minecraft_uuid,
+                'target_name' => $account->minecraft_username,
+                'old_value' => 'Rakyat Biasa',
+                'new_value' => 'Raja ' . $kingdom,
+                'reason' => $reason,
+                'source' => 'WEB',
+                'status' => 'PENDING',
+                'metadata' => ['delivery_id' => $delivery->id, 'kingdom' => $kingdom, 'command' => $command],
+            ]);
+
+            return back()->with('success', "Penobatan {$account->minecraft_username} sebagai Raja Kerajaan {$kingdom} berhasil dijadwalkan!");
+        }
+
+        // 16. REVOKE MONARCH / KING
+        if ($actionType === 'REVOKE_KING') {
+            $kingdom = strtoupper($validated['kingdom'] ?? ($account->kingdom ?: 'ZENITHAR'));
+            if ($kingdom === 'NONE' || empty($kingdom)) {
+                $kingdom = 'ZENITHAR';
+            }
+            $command = "kingdom setking {$kingdom} Belum Ditunjuk";
+
+            $delivery = Delivery::create([
+                'action_id' => $actionId,
+                'idempotency_key' => 'REVOKE_KING_' . $account->minecraft_uuid . '_' . time(),
+                'player_uuid' => $account->minecraft_uuid,
+                'player_username' => $account->minecraft_username,
+                'command' => $command,
+                'status' => 'PENDING',
+            ]);
+
+            AuditLog::create([
+                'action_id' => $actionId,
+                'actor_type' => 'ADMIN',
+                'actor_id' => $actorId,
+                'actor_name' => $actorName,
+                'action' => 'MONARCH_REVOKE',
+                'target_type' => 'PLAYER',
+                'target_id' => $account->minecraft_uuid,
+                'target_name' => $account->minecraft_username,
+                'old_value' => 'Raja ' . $kingdom,
+                'new_value' => 'Rakyat Biasa',
+                'reason' => $reason,
+                'source' => 'WEB',
+                'status' => 'PENDING',
+                'metadata' => ['delivery_id' => $delivery->id, 'kingdom' => $kingdom, 'command' => $command],
+            ]);
+
+            return back()->with('success', "Pencabutan status Raja Kerajaan {$kingdom} berhasil dijadwalkan!");
         }
 
         return back()->with('error', 'Aksi tidak didukung.');

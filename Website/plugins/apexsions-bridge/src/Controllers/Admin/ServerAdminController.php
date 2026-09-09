@@ -94,7 +94,7 @@ class ServerAdminController extends Controller
     public function executeAction(Request $request): RedirectResponse
     {
         $validated = $request->validate([
-            'action_type' => ['required', 'string', 'in:BROADCAST,SAVE_WORLD,CLEAR_ITEMS,RELOAD_CONFIG,RELOAD_PLUGIN'],
+            'action_type' => ['required', 'string', 'in:BROADCAST,SAVE_WORLD,CLEAR_ITEMS,RELOAD_CONFIG,RELOAD_PLUGIN,CHAT_MUTE,CHAT_CLEAR,AH_CLEAR,TOGGLE_WAR'],
             'reason' => ['nullable', 'string', 'max:255'],
             'message' => ['nullable', 'string', 'max:256'],
             'plugin_name' => ['nullable', 'string', 'max:64'],

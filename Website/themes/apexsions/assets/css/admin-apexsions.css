@@ -1,67 +1,213 @@
 /* ==========================================================================
    Apexsions — The Peak Civilizations
    Azuriom Admin Control Core Design System
-   Palet: Monolithic Obsidian, Celestial Ivory & Imperial Royal Gold
+   Dual-Theme Architecture: Imperial Obsidian (Dark) & Sovereign Ivory (Light)
    ========================================================================== */
 
+/* --------------------------------------------------------------------------
+   1. THEME TOKENS: DARK MODE (DEFAULT)
+   -------------------------------------------------------------------------- */
 :root,
 [data-bs-theme="dark"],
-body {
-    /* Base Obsidian Tones */
-    --apx-void-black: #090A0D;
-    --apx-deep-obsidian: #111318;
-    --apx-obsidian: #181A20;
-    --apx-soft-obsidian: #292C33;
+body[data-bs-theme="dark"] {
+    /* Base Obsidian Canvas */
+    --apx-bg-body: #090A0D;
+    --apx-bg-wrapper: #090A0D;
+    --apx-bg-main: #090A0D;
+    --apx-bg-surface: #111318;
+    --apx-bg-card: #181A20;
+    --apx-bg-card-header: linear-gradient(180deg, rgba(201, 164, 92, 0.08) 0%, transparent 100%);
+    --apx-bg-card-footer: rgba(0, 0, 0, 0.25);
+    --apx-bg-sidebar: #0C0E13;
+    --apx-bg-sidebar-brand: linear-gradient(180deg, #14171E 0%, #0C0E13 100%);
+    --apx-bg-sidebar-dropdown: rgba(0, 0, 0, 0.35);
+    --apx-bg-navbar: rgba(17, 19, 24, 0.92);
+    --apx-bg-modal: #14171E;
+    --apx-bg-dropdown: #14171E;
+    --apx-bg-input: #0E1015;
+    --apx-bg-input-focus: #12151C;
+    --apx-bg-stat: rgba(201, 164, 92, 0.12);
+    --apx-bg-footer: #0C0E13;
+    --apx-bg-scrollbar-track: #090A0D;
+    --apx-bg-scrollbar-thumb: #292C33;
 
-    /* Imperial Gold Hierarchy */
+    /* Borders & Accents */
+    --apx-border-primary: rgba(201, 164, 92, 0.28);
+    --apx-border-subtle: rgba(201, 164, 92, 0.14);
+    --apx-border-input: rgba(201, 164, 92, 0.30);
+    --apx-border-focus: #C9A45C;
+    --apx-table-border: rgba(255, 255, 255, 0.07);
+    --apx-table-th-bg: rgba(17, 19, 24, 0.95);
+    --apx-table-th-color: #F1D58A;
+    --apx-table-hover: rgba(201, 164, 92, 0.08);
+    --apx-table-striped: rgba(255, 255, 255, 0.02);
+
+    /* Text & Typography */
+    --apx-text-primary: #FFFDF8;
+    --apx-text-secondary: #DDD7CC;
+    --apx-text-muted: #8E877D;
+    --apx-text-dim: #6E6960;
+    --apx-text-heading: #F4EFE6;
     --apx-gold-radiant: #F1D58A;
     --apx-gold-light: #E8C878;
     --apx-gold: #C9A45C;
     --apx-gold-antique: #9E7B3E;
-    --apx-gold-dark: #72552A;
-    --apx-gold-glow: rgba(201, 164, 92, 0.20);
-    --apx-gold-border: rgba(201, 164, 92, 0.25);
-    --apx-gold-border-subtle: rgba(201, 164, 92, 0.14);
 
-    /* Celestial Ivory Typography */
-    --apx-ivory-light: #FFFDF8;
-    --apx-ivory-celestial: #F4EFE6;
-    --apx-ivory-marble: #DDD7CC;
-    --apx-ivory-stone: #B8B1A5;
-    --apx-text-dim: #8E877D;
+    /* Interactive & States */
+    --apx-nav-link-color: #B8B1A5;
+    --apx-nav-link-hover-bg: rgba(201, 164, 92, 0.10);
+    --apx-nav-link-active-bg: linear-gradient(90deg, rgba(201, 164, 92, 0.22) 0%, rgba(201, 164, 92, 0.06) 100%);
+    --apx-shadow-card: 0 8px 24px -4px rgba(0, 0, 0, 0.7);
+    --apx-shadow-card-hover: 0 10px 28px -4px rgba(0, 0, 0, 0.85), 0 0 16px rgba(201, 164, 92, 0.12);
+    --apx-shadow-modal: 0 20px 50px rgba(0, 0, 0, 0.9);
+    --apx-shadow-dropdown: 0 14px 35px rgba(0, 0, 0, 0.85);
 
-    /* Bootstrap Overrides */
-    --bs-body-bg: var(--apx-void-black) !important;
-    --bs-body-color: var(--apx-ivory-marble) !important;
-    --bs-secondary-bg: var(--apx-deep-obsidian) !important;
-    --bs-tertiary-bg: var(--apx-obsidian) !important;
-    --bs-border-color: var(--apx-gold-border-subtle) !important;
-    --bs-border-color-translucent: var(--apx-gold-border-subtle) !important;
-    
-    --bs-primary: var(--apx-gold) !important;
+    /* Alert Variables */
+    --apx-alert-info-bg: rgba(6, 182, 212, 0.12);
+    --apx-alert-info-border: rgba(6, 182, 212, 0.35);
+    --apx-alert-info-color: #67E8F9;
+    --apx-alert-warning-bg: rgba(245, 158, 11, 0.12);
+    --apx-alert-warning-border: rgba(245, 158, 11, 0.35);
+    --apx-alert-warning-color: #FDE047;
+    --apx-alert-success-bg: rgba(16, 185, 129, 0.12);
+    --apx-alert-success-border: rgba(16, 185, 129, 0.35);
+    --apx-alert-success-color: #6EE7B7;
+    --apx-alert-danger-bg: rgba(239, 68, 68, 0.12);
+    --apx-alert-danger-border: rgba(239, 68, 68, 0.35);
+    --apx-alert-danger-color: #FCA5A5;
+
+    /* Secondary button */
+    --apx-btn-sec-bg: #1D2028;
+    --apx-btn-sec-border: rgba(255, 255, 255, 0.12);
+    --apx-btn-sec-color: #DDD7CC;
+    --apx-btn-sec-hover-bg: #272B36;
+
+    /* Bootstrap Dark Overrides */
+    --bs-body-bg: #090A0D !important;
+    --bs-body-color: #DDD7CC !important;
+    --bs-secondary-bg: #111318 !important;
+    --bs-tertiary-bg: #181A20 !important;
+    --bs-border-color: rgba(201, 164, 92, 0.20) !important;
+    --bs-border-color-translucent: rgba(201, 164, 92, 0.14) !important;
+    --bs-primary: #C9A45C !important;
     --bs-primary-rgb: 201, 164, 92 !important;
-    --bs-primary-text-emphasis: var(--apx-gold-radiant) !important;
+    --bs-primary-text-emphasis: #F1D58A !important;
     --bs-primary-bg-subtle: rgba(201, 164, 92, 0.12) !important;
     --bs-primary-border-subtle: rgba(201, 164, 92, 0.28) !important;
-
-    --bs-link-color: var(--apx-gold-radiant) !important;
-    --bs-link-hover-color: var(--apx-ivory-light) !important;
+    --bs-link-color: #F1D58A !important;
+    --bs-link-hover-color: #FFFDF8 !important;
 }
 
-/* Base Body & Layout */
+/* --------------------------------------------------------------------------
+   2. THEME TOKENS: LIGHT MODE (SOVEREIGN IVORY)
+   -------------------------------------------------------------------------- */
+[data-bs-theme="light"],
+body[data-bs-theme="light"] {
+    /* Base Executive Canvas */
+    --apx-bg-body: #F4F6F9;
+    --apx-bg-wrapper: #F4F6F9;
+    --apx-bg-main: #F4F6F9;
+    --apx-bg-surface: #FFFFFF;
+    --apx-bg-card: #FFFFFF;
+    --apx-bg-card-header: linear-gradient(180deg, #FBF8F1 0%, #FFFFFF 100%);
+    --apx-bg-card-footer: #F8F9FA;
+    --apx-bg-sidebar: #FFFFFF;
+    --apx-bg-sidebar-brand: linear-gradient(180deg, #F9F6EE 0%, #FFFFFF 100%);
+    --apx-bg-sidebar-dropdown: #F8F9FB;
+    --apx-bg-navbar: rgba(255, 255, 255, 0.95);
+    --apx-bg-modal: #FFFFFF;
+    --apx-bg-dropdown: #FFFFFF;
+    --apx-bg-input: #FFFFFF;
+    --apx-bg-input-focus: #FFFFFF;
+    --apx-bg-stat: rgba(201, 164, 92, 0.14);
+    --apx-bg-footer: #FFFFFF;
+    --apx-bg-scrollbar-track: #F1F3F5;
+    --apx-bg-scrollbar-thumb: #D1D5DB;
+
+    /* Borders & Accents */
+    --apx-border-primary: rgba(158, 123, 62, 0.25);
+    --apx-border-subtle: rgba(158, 123, 62, 0.15);
+    --apx-border-input: rgba(158, 123, 62, 0.32);
+    --apx-border-focus: #9E7B3E;
+    --apx-table-border: rgba(0, 0, 0, 0.08);
+    --apx-table-th-bg: #F8F9FA;
+    --apx-table-th-color: #72552A;
+    --apx-table-hover: rgba(201, 164, 92, 0.08);
+    --apx-table-striped: rgba(0, 0, 0, 0.02);
+
+    /* Text & Typography (Rich Charcoal & Aristocratic Gold) */
+    --apx-text-primary: #1A1D23;
+    --apx-text-secondary: #333842;
+    --apx-text-muted: #5A6270;
+    --apx-text-dim: #7C8494;
+    --apx-text-heading: #111318;
+    --apx-gold-radiant: #8C6A2E;
+    --apx-gold-light: #9E7B3E;
+    --apx-gold: #9E7B3E;
+    --apx-gold-antique: #72552A;
+
+    /* Interactive & States */
+    --apx-nav-link-color: #4B5563;
+    --apx-nav-link-hover-bg: rgba(201, 164, 92, 0.12);
+    --apx-nav-link-active-bg: linear-gradient(90deg, rgba(201, 164, 92, 0.20) 0%, rgba(201, 164, 92, 0.06) 100%);
+    --apx-shadow-card: 0 2px 12px rgba(18, 22, 33, 0.06), 0 1px 3px rgba(18, 22, 33, 0.04);
+    --apx-shadow-card-hover: 0 6px 20px rgba(18, 22, 33, 0.10), 0 0 12px rgba(201, 164, 92, 0.15);
+    --apx-shadow-modal: 0 20px 40px rgba(18, 22, 33, 0.20);
+    --apx-shadow-dropdown: 0 10px 30px rgba(18, 22, 33, 0.15);
+
+    /* Alert Variables (High-contrast light surfaces) */
+    --apx-alert-info-bg: #E0F2FE;
+    --apx-alert-info-border: #7DD3FC;
+    --apx-alert-info-color: #0369A1;
+    --apx-alert-warning-bg: #FEF3C7;
+    --apx-alert-warning-border: #FCD34D;
+    --apx-alert-warning-color: #92400E;
+    --apx-alert-success-bg: #DCFCE7;
+    --apx-alert-success-border: #86EFAC;
+    --apx-alert-success-color: #166534;
+    --apx-alert-danger-bg: #FEE2E2;
+    --apx-alert-danger-border: #FCA5A5;
+    --apx-alert-danger-color: #991B1B;
+
+    /* Secondary button */
+    --apx-btn-sec-bg: #E5E7EB;
+    --apx-btn-sec-border: #D1D5DB;
+    --apx-btn-sec-color: #1F2937;
+    --apx-btn-sec-hover-bg: #D1D5DB;
+
+    /* Bootstrap Light Overrides */
+    --bs-body-bg: #F4F6F9 !important;
+    --bs-body-color: #1A1D23 !important;
+    --bs-secondary-bg: #FFFFFF !important;
+    --bs-tertiary-bg: #F8F9FA !important;
+    --bs-border-color: rgba(158, 123, 62, 0.22) !important;
+    --bs-border-color-translucent: rgba(158, 123, 62, 0.15) !important;
+    --bs-primary: #9E7B3E !important;
+    --bs-primary-rgb: 158, 123, 62 !important;
+    --bs-primary-text-emphasis: #72552A !important;
+    --bs-primary-bg-subtle: rgba(201, 164, 92, 0.14) !important;
+    --bs-primary-border-subtle: rgba(158, 123, 62, 0.30) !important;
+    --bs-link-color: #8C6A2E !important;
+    --bs-link-hover-color: #61461A !important;
+}
+
+/* --------------------------------------------------------------------------
+   3. BASE BODY & LAYOUT WRAPPERS
+   -------------------------------------------------------------------------- */
 body {
-    background-color: var(--apx-void-black) !important;
-    color: var(--apx-ivory-marble) !important;
+    background-color: var(--apx-bg-body) !important;
+    color: var(--apx-text-secondary) !important;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     letter-spacing: 0.15px;
+    transition: background-color 0.25s ease, color 0.25s ease;
 }
 
 .wrapper {
-    background-color: var(--apx-void-black) !important;
+    background-color: var(--apx-bg-wrapper) !important;
 }
 
 .main {
-    background-color: var(--apx-void-black) !important;
+    background-color: var(--apx-bg-main) !important;
     background-image: 
         radial-gradient(circle at 15% 15%, rgba(201, 164, 92, 0.035) 0%, transparent 45%),
         radial-gradient(circle at 85% 75%, rgba(201, 164, 92, 0.025) 0%, transparent 45%) !important;
@@ -72,23 +218,23 @@ body {
     padding: 2rem 2rem 1.5rem !important;
 }
 
-/* ==========================================================================
-   Sidebar Styling (Apexsions Command Core)
-   ========================================================================== */
+/* --------------------------------------------------------------------------
+   4. SIDEBAR STYLING
+   -------------------------------------------------------------------------- */
 #sidebar.sidebar {
-    background: #0C0E13 !important;
-    border-right: 1px solid var(--apx-gold-border) !important;
-    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.6) !important;
+    background: var(--apx-bg-sidebar) !important;
+    border-right: 1px solid var(--apx-border-primary) !important;
+    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.15) !important;
+    transition: background-color 0.25s ease, border-color 0.25s ease;
 }
 
 #sidebar .sidebar-content {
-    background: #0C0E13 !important;
+    background: var(--apx-bg-sidebar) !important;
 }
 
-/* Sidebar Brand */
 #sidebar .sidebar-brand {
-    background: linear-gradient(180deg, #14171E 0%, #0C0E13 100%) !important;
-    border-bottom: 1px solid var(--apx-gold-border) !important;
+    background: var(--apx-bg-sidebar-brand) !important;
+    border-bottom: 1px solid var(--apx-border-primary) !important;
     padding: 1.35rem 1.25rem !important;
     text-decoration: none !important;
     position: relative;
@@ -124,24 +270,22 @@ body {
     font-weight: 700 !important;
 }
 
-/* Sidebar Headings */
 #sidebar .sidebar-header {
-    color: var(--apx-gold) !important;
+    color: var(--apx-gold-antique) !important;
     font-size: 0.72rem !important;
     font-weight: 800 !important;
     text-transform: uppercase !important;
     letter-spacing: 1.8px !important;
     padding: 1.5rem 1.5rem 0.5rem !important;
-    opacity: 0.9;
+    opacity: 0.95;
 }
 
-/* Sidebar Navigation Items */
 #sidebar .sidebar-item {
     margin: 2px 10px !important;
 }
 
 #sidebar .sidebar-link {
-    color: var(--apx-ivory-stone) !important;
+    color: var(--apx-nav-link-color) !important;
     background: transparent !important;
     border-radius: 6px !important;
     padding: 9px 14px !important;
@@ -160,8 +304,8 @@ body {
 }
 
 #sidebar .sidebar-link:hover {
-    color: var(--apx-ivory-light) !important;
-    background: rgba(201, 164, 92, 0.10) !important;
+    color: var(--apx-text-heading) !important;
+    background: var(--apx-nav-link-hover-bg) !important;
     box-shadow: inset 0 0 10px rgba(201, 164, 92, 0.08) !important;
 }
 
@@ -170,9 +314,8 @@ body {
     transform: translateX(2px);
 }
 
-/* Active Sidebar Item */
 #sidebar .sidebar-item.active > .sidebar-link {
-    background: linear-gradient(90deg, rgba(201, 164, 92, 0.20) 0%, rgba(201, 164, 92, 0.06) 100%) !important;
+    background: var(--apx-nav-link-active-bg) !important;
     color: var(--apx-gold-radiant) !important;
     font-weight: 700 !important;
     border-left: 3px solid var(--apx-gold) !important;
@@ -184,13 +327,12 @@ body {
     filter: drop-shadow(0 0 6px rgba(201, 164, 92, 0.5));
 }
 
-/* Sidebar Dropdown Submenus */
 #sidebar .sidebar-dropdown {
-    background: rgba(0, 0, 0, 0.35) !important;
+    background: var(--apx-bg-sidebar-dropdown) !important;
     border-radius: 6px !important;
     margin: 4px 0 4px 12px !important;
     padding: 4px 0 !important;
-    border-left: 1px dashed var(--apx-gold-border-subtle) !important;
+    border-left: 1px dashed var(--apx-border-subtle) !important;
 }
 
 #sidebar .sidebar-dropdown .sidebar-link {
@@ -198,18 +340,18 @@ body {
     font-size: 0.82rem !important;
 }
 
-/* ==========================================================================
-   Top Navbar
-   ========================================================================== */
+/* --------------------------------------------------------------------------
+   5. TOP NAVBAR
+   -------------------------------------------------------------------------- */
 .navbar-bg {
-    background: rgba(17, 19, 24, 0.88) !important;
+    background: var(--apx-bg-navbar) !important;
     backdrop-filter: blur(14px) !important;
     -webkit-backdrop-filter: blur(14px) !important;
-    border-bottom: 1px solid var(--apx-gold-border) !important;
+    border-bottom: 1px solid var(--apx-border-primary) !important;
     padding: 0.75rem 1.5rem !important;
+    transition: background-color 0.25s ease, border-color 0.25s ease;
 }
 
-/* Hamburger Toggle */
 .sidebar-toggle {
     cursor: pointer;
     padding: 6px 10px;
@@ -218,7 +360,7 @@ body {
 }
 
 .sidebar-toggle:hover {
-    background: rgba(201, 164, 92, 0.12);
+    background: rgba(201, 164, 92, 0.14);
 }
 
 .hamburger,
@@ -227,45 +369,8 @@ body {
     background: var(--apx-gold-radiant) !important;
 }
 
-/* Topbar Buttons */
-.navbar .btn-outline-primary {
-    border-color: var(--apx-gold-border) !important;
-    color: var(--apx-gold-radiant) !important;
-    background: rgba(201, 164, 92, 0.05) !important;
-    font-weight: 600;
-    font-size: 0.82rem;
-    padding: 0.4rem 0.9rem;
-    border-radius: 6px;
-    transition: all 0.2s ease;
-}
-
-.navbar .btn-outline-primary:hover {
-    background: var(--apx-gold) !important;
-    color: var(--apx-void-black) !important;
-    border-color: var(--apx-gold) !important;
-    box-shadow: 0 0 14px rgba(201, 164, 92, 0.35) !important;
-}
-
-.navbar .btn-outline-secondary {
-    border-color: rgba(255, 255, 255, 0.12) !important;
-    color: var(--apx-ivory-stone) !important;
-    background: rgba(255, 255, 255, 0.03) !important;
-    font-weight: 500;
-    font-size: 0.82rem;
-    padding: 0.4rem 0.9rem;
-    border-radius: 6px;
-    transition: all 0.2s ease;
-}
-
-.navbar .btn-outline-secondary:hover {
-    background: rgba(255, 255, 255, 0.10) !important;
-    color: var(--apx-ivory-light) !important;
-    border-color: rgba(255, 255, 255, 0.25) !important;
-}
-
-/* Notification Bell */
 .navbar .nav-icon {
-    color: var(--apx-ivory-stone) !important;
+    color: var(--apx-text-secondary) !important;
     padding: 8px 12px;
     border-radius: 6px;
     transition: all 0.2s ease;
@@ -273,18 +378,17 @@ body {
 
 .navbar .nav-icon:hover {
     color: var(--apx-gold-radiant) !important;
-    background: rgba(201, 164, 92, 0.10);
+    background: rgba(201, 164, 92, 0.12);
 }
 
 .navbar .indicator {
     background: #DC2626 !important;
-    border: 2px solid #111318 !important;
+    border: 2px solid var(--apx-bg-card) !important;
     box-shadow: 0 0 8px rgba(220, 38, 38, 0.6);
 }
 
-/* User Profile in Topbar */
 .navbar .dropdown-toggle {
-    color: var(--apx-ivory-celestial) !important;
+    color: var(--apx-text-heading) !important;
     font-weight: 600;
 }
 
@@ -292,59 +396,58 @@ body {
     color: var(--apx-gold-radiant) !important;
 }
 
-/* ==========================================================================
-   Cards, Widgets & Stats
-   ========================================================================== */
+/* --------------------------------------------------------------------------
+   6. CARDS, WIDGETS & STATS
+   -------------------------------------------------------------------------- */
 .card {
-    background-color: var(--apx-obsidian) !important;
-    border: 1px solid var(--apx-gold-border) !important;
+    background-color: var(--apx-bg-card) !important;
+    border: 1px solid var(--apx-border-primary) !important;
     border-radius: 10px !important;
-    box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.7) !important;
+    box-shadow: var(--apx-shadow-card) !important;
     margin-bottom: 1.5rem !important;
     transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease !important;
     overflow: hidden;
 }
 
 .card:hover {
-    border-color: rgba(201, 164, 92, 0.45) !important;
-    box-shadow: 0 10px 28px -4px rgba(0, 0, 0, 0.85), 0 0 16px rgba(201, 164, 92, 0.12) !important;
+    border-color: var(--apx-border-focus) !important;
+    box-shadow: var(--apx-shadow-card-hover) !important;
 }
 
 .card-header {
-    background: linear-gradient(180deg, rgba(201, 164, 92, 0.06) 0%, transparent 100%) !important;
-    border-bottom: 1px solid var(--apx-gold-border-subtle) !important;
+    background: var(--apx-bg-card-header) !important;
+    border-bottom: 1px solid var(--apx-border-subtle) !important;
     padding: 1.1rem 1.35rem !important;
 }
 
 .card-header .card-title,
 .card-title {
-    color: var(--apx-ivory-celestial) !important;
+    color: var(--apx-text-heading) !important;
     font-weight: 700 !important;
     letter-spacing: 0.3px;
 }
 
 .card-body {
     padding: 1.35rem !important;
-    color: var(--apx-ivory-marble) !important;
+    color: var(--apx-text-secondary) !important;
 }
 
 .card-footer {
-    background: rgba(0, 0, 0, 0.2) !important;
-    border-top: 1px solid var(--apx-gold-border-subtle) !important;
+    background: var(--apx-bg-card-footer) !important;
+    border-top: 1px solid var(--apx-border-subtle) !important;
     padding: 0.9rem 1.35rem !important;
 }
 
-/* Stat Box in Dashboard Cards */
 .stat {
-    background: rgba(201, 164, 92, 0.12) !important;
+    background: var(--apx-bg-stat) !important;
     color: var(--apx-gold-radiant) !important;
-    border: 1px solid var(--apx-gold-border) !important;
+    border: 1px solid var(--apx-border-primary) !important;
     border-radius: 8px !important;
     padding: 0.65rem 0.85rem !important;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
 }
 
 .stat i {
@@ -352,55 +455,55 @@ body {
 }
 
 .card h1 {
-    color: var(--apx-ivory-light) !important;
+    color: var(--apx-text-heading) !important;
     font-weight: 800 !important;
     letter-spacing: -0.5px;
 }
 
-/* ==========================================================================
-   Tables
-   ========================================================================== */
+/* --------------------------------------------------------------------------
+   7. TABLES
+   -------------------------------------------------------------------------- */
 .table {
-    color: var(--apx-ivory-marble) !important;
-    border-color: var(--apx-gold-border-subtle) !important;
+    color: var(--apx-text-secondary) !important;
+    border-color: var(--apx-border-subtle) !important;
     margin-bottom: 0 !important;
 }
 
 .table > :not(caption) > * > * {
     background-color: transparent !important;
-    border-bottom-color: rgba(255, 255, 255, 0.07) !important;
+    border-bottom-color: var(--apx-table-border) !important;
     padding: 0.95rem 1rem !important;
     vertical-align: middle;
 }
 
 .table thead th {
-    background: rgba(17, 19, 24, 0.85) !important;
-    color: var(--apx-gold) !important;
+    background: var(--apx-table-th-bg) !important;
+    color: var(--apx-table-th-color) !important;
     font-size: 0.76rem !important;
     font-weight: 800 !important;
     text-transform: uppercase !important;
     letter-spacing: 1.2px !important;
-    border-bottom: 2px solid var(--apx-gold-border) !important;
+    border-bottom: 2px solid var(--apx-border-primary) !important;
 }
 
 .table-striped > tbody > tr:nth-of-type(odd) > * {
-    background-color: rgba(255, 255, 255, 0.02) !important;
+    background-color: var(--apx-table-striped) !important;
 }
 
 .table-hover > tbody > tr:hover > * {
-    background-color: rgba(201, 164, 92, 0.07) !important;
-    color: var(--apx-ivory-light) !important;
+    background-color: var(--apx-table-hover) !important;
+    color: var(--apx-text-heading) !important;
 }
 
-/* ==========================================================================
-   Form Controls & Inputs
-   ========================================================================== */
+/* --------------------------------------------------------------------------
+   8. FORM CONTROLS & INPUTS
+   -------------------------------------------------------------------------- */
 .form-control,
 .form-select,
 .input-group-text {
-    background-color: #0E1015 !important;
-    color: var(--apx-ivory-light) !important;
-    border: 1px solid var(--apx-gold-border) !important;
+    background-color: var(--apx-bg-input) !important;
+    color: var(--apx-text-primary) !important;
+    border: 1px solid var(--apx-border-input) !important;
     border-radius: 6px !important;
     padding: 0.55rem 0.85rem !important;
     font-size: 0.9rem !important;
@@ -409,32 +512,32 @@ body {
 
 .form-control:focus,
 .form-select:focus {
-    background-color: #12151C !important;
-    color: var(--apx-ivory-light) !important;
-    border-color: var(--apx-gold) !important;
+    background-color: var(--apx-bg-input-focus) !important;
+    color: var(--apx-text-primary) !important;
+    border-color: var(--apx-border-focus) !important;
     box-shadow: 0 0 0 3px rgba(201, 164, 92, 0.25) !important;
     outline: none !important;
 }
 
 .form-control::placeholder {
-    color: #6E6960 !important;
+    color: var(--apx-text-dim) !important;
 }
 
 .form-label {
-    color: var(--apx-ivory-celestial) !important;
+    color: var(--apx-text-heading) !important;
     font-weight: 600 !important;
     font-size: 0.85rem !important;
     margin-bottom: 0.4rem !important;
 }
 
 .form-text {
-    color: var(--apx-text-dim) !important;
+    color: var(--apx-text-muted) !important;
     font-size: 0.78rem !important;
 }
 
 .form-check-input {
-    background-color: #0E1015 !important;
-    border-color: var(--apx-gold-border) !important;
+    background-color: var(--apx-bg-input) !important;
+    border-color: var(--apx-border-input) !important;
     cursor: pointer;
 }
 
@@ -445,13 +548,13 @@ body {
 }
 
 .form-check-label {
-    color: var(--apx-ivory-marble) !important;
+    color: var(--apx-text-secondary) !important;
     cursor: pointer;
 }
 
-/* ==========================================================================
-   Buttons
-   ========================================================================== */
+/* --------------------------------------------------------------------------
+   9. BUTTONS
+   -------------------------------------------------------------------------- */
 .btn {
     border-radius: 6px !important;
     font-weight: 600 !important;
@@ -463,7 +566,7 @@ body {
 .btn-primary {
     background: linear-gradient(135deg, var(--apx-gold) 0%, var(--apx-gold-antique) 100%) !important;
     border: 1px solid var(--apx-gold-light) !important;
-    color: #090A0D !important;
+    color: #FFFFFF !important;
     font-weight: 700 !important;
     box-shadow: 0 4px 14px rgba(201, 164, 92, 0.25) !important;
 }
@@ -472,13 +575,13 @@ body {
 .btn-primary:focus,
 .btn-primary:active {
     background: linear-gradient(135deg, var(--apx-gold-radiant) 0%, var(--apx-gold) 100%) !important;
-    color: #000000 !important;
-    box-shadow: 0 6px 20px rgba(201, 164, 92, 0.45) !important;
+    color: #FFFFFF !important;
+    box-shadow: 0 6px 20px rgba(201, 164, 92, 0.40) !important;
     transform: translateY(-1px);
 }
 
 .btn-outline-primary {
-    border-color: var(--apx-gold) !important;
+    border-color: var(--apx-border-focus) !important;
     color: var(--apx-gold-radiant) !important;
     background: transparent !important;
 }
@@ -486,20 +589,20 @@ body {
 .btn-outline-primary:hover,
 .btn-outline-primary:focus {
     background: var(--apx-gold) !important;
-    color: #090A0D !important;
+    color: #FFFFFF !important;
     box-shadow: 0 0 16px rgba(201, 164, 92, 0.35) !important;
 }
 
 .btn-secondary {
-    background: #1D2028 !important;
-    border: 1px solid rgba(255, 255, 255, 0.12) !important;
-    color: var(--apx-ivory-marble) !important;
+    background: var(--apx-btn-sec-bg) !important;
+    border: 1px solid var(--apx-btn-sec-border) !important;
+    color: var(--apx-btn-sec-color) !important;
 }
 
 .btn-secondary:hover {
-    background: #272B36 !important;
-    border-color: var(--apx-gold-border) !important;
-    color: var(--apx-ivory-light) !important;
+    background: var(--apx-btn-sec-hover-bg) !important;
+    border-color: var(--apx-border-primary) !important;
+    color: var(--apx-text-heading) !important;
 }
 
 .btn-success {
@@ -519,48 +622,50 @@ body {
 .btn-warning {
     background: linear-gradient(135deg, #F59E0B, #D97706) !important;
     border: 1px solid #FCD34D !important;
-    color: #090A0D !important;
+    color: #111318 !important;
     font-weight: 700 !important;
 }
 
-/* ==========================================================================
-   Modals & Popups
-   ========================================================================== */
+/* --------------------------------------------------------------------------
+   10. MODALS & POPUPS
+   -------------------------------------------------------------------------- */
 .modal-content {
-    background-color: var(--apx-obsidian) !important;
-    border: 1px solid var(--apx-gold-border) !important;
+    background-color: var(--apx-bg-modal) !important;
+    border: 1px solid var(--apx-border-primary) !important;
     border-radius: 12px !important;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9) !important;
+    box-shadow: var(--apx-shadow-modal) !important;
+    color: var(--apx-text-secondary) !important;
 }
 
 .modal-header {
-    background: linear-gradient(180deg, rgba(201, 164, 92, 0.08) 0%, transparent 100%) !important;
-    border-bottom: 1px solid var(--apx-gold-border-subtle) !important;
-    color: var(--apx-ivory-celestial) !important;
+    background: var(--apx-bg-card-header) !important;
+    border-bottom: 1px solid var(--apx-border-subtle) !important;
+    color: var(--apx-text-heading) !important;
 }
 
 .modal-footer {
-    border-top: 1px solid var(--apx-gold-border-subtle) !important;
+    background: var(--apx-bg-card-footer) !important;
+    border-top: 1px solid var(--apx-border-subtle) !important;
 }
 
 .modal-backdrop.show {
-    opacity: 0.75 !important;
+    opacity: 0.65 !important;
     backdrop-filter: blur(4px);
 }
 
-/* ==========================================================================
-   Dropdowns
-   ========================================================================== */
+/* --------------------------------------------------------------------------
+   11. DROPDOWNS
+   -------------------------------------------------------------------------- */
 .dropdown-menu {
-    background-color: var(--apx-obsidian) !important;
-    border: 1px solid var(--apx-gold-border) !important;
+    background-color: var(--apx-bg-dropdown) !important;
+    border: 1px solid var(--apx-border-primary) !important;
     border-radius: 8px !important;
-    box-shadow: 0 14px 35px rgba(0, 0, 0, 0.85) !important;
+    box-shadow: var(--apx-shadow-dropdown) !important;
     padding: 0.5rem !important;
 }
 
 .dropdown-item {
-    color: var(--apx-ivory-marble) !important;
+    color: var(--apx-text-secondary) !important;
     border-radius: 4px !important;
     padding: 0.5rem 0.85rem !important;
     font-size: 0.85rem !important;
@@ -569,70 +674,70 @@ body {
 
 .dropdown-item:hover,
 .dropdown-item:focus {
-    background-color: rgba(201, 164, 92, 0.14) !important;
+    background-color: var(--apx-nav-link-hover-bg) !important;
     color: var(--apx-gold-radiant) !important;
 }
 
 .dropdown-divider {
-    border-top-color: var(--apx-gold-border-subtle) !important;
+    border-top-color: var(--apx-border-subtle) !important;
     margin: 0.4rem 0 !important;
 }
 
 .dropdown-menu-header {
-    background: rgba(201, 164, 92, 0.10) !important;
+    background: var(--apx-bg-card-header) !important;
     color: var(--apx-gold) !important;
     font-weight: 700 !important;
     font-size: 0.78rem !important;
     text-transform: uppercase !important;
     letter-spacing: 1px !important;
     padding: 0.6rem 1rem !important;
-    border-bottom: 1px solid var(--apx-gold-border-subtle) !important;
+    border-bottom: 1px solid var(--apx-border-subtle) !important;
 }
 
-/* List group inside dropdowns */
 .dropdown .list-group-item {
     background-color: transparent !important;
-    color: var(--apx-ivory-marble) !important;
-    border-color: rgba(255, 255, 255, 0.06) !important;
+    color: var(--apx-text-secondary) !important;
+    border-color: var(--apx-border-subtle) !important;
     transition: background-color 0.15s ease;
 }
 
 .dropdown .list-group-item:hover {
-    background-color: rgba(201, 164, 92, 0.08) !important;
-    color: var(--apx-ivory-light) !important;
+    background-color: var(--apx-nav-link-hover-bg) !important;
+    color: var(--apx-text-heading) !important;
 }
 
-/* ==========================================================================
-   Alerts & Badges
-   ========================================================================== */
+/* --------------------------------------------------------------------------
+   12. ALERTS & BADGES
+   -------------------------------------------------------------------------- */
 .alert {
     border-radius: 8px !important;
     border-width: 1px !important;
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3) !important;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08) !important;
+    font-weight: 500;
 }
 
 .alert-info {
-    background-color: rgba(6, 182, 212, 0.12) !important;
-    border-color: rgba(6, 182, 212, 0.35) !important;
-    color: #67E8F9 !important;
+    background-color: var(--apx-alert-info-bg) !important;
+    border-color: var(--apx-alert-info-border) !important;
+    color: var(--apx-alert-info-color) !important;
 }
 
 .alert-warning {
-    background-color: rgba(245, 158, 11, 0.12) !important;
-    border-color: rgba(245, 158, 11, 0.35) !important;
-    color: #FDE047 !important;
+    background-color: var(--apx-alert-warning-bg) !important;
+    border-color: var(--apx-alert-warning-border) !important;
+    color: var(--apx-alert-warning-color) !important;
 }
 
 .alert-success {
-    background-color: rgba(16, 185, 129, 0.12) !important;
-    border-color: rgba(16, 185, 129, 0.35) !important;
-    color: #6EE7B7 !important;
+    background-color: var(--apx-alert-success-bg) !important;
+    border-color: var(--apx-alert-success-border) !important;
+    color: var(--apx-alert-success-color) !important;
 }
 
 .alert-danger {
-    background-color: rgba(239, 68, 68, 0.12) !important;
-    border-color: rgba(239, 68, 68, 0.35) !important;
-    color: #FCA5A5 !important;
+    background-color: var(--apx-alert-danger-bg) !important;
+    border-color: var(--apx-alert-danger-border) !important;
+    color: var(--apx-alert-danger-color) !important;
 }
 
 .badge {
@@ -644,29 +749,29 @@ body {
 
 .badge.bg-primary {
     background-color: var(--apx-gold) !important;
-    color: #090A0D !important;
+    color: #FFFFFF !important;
 }
 
-/* ==========================================================================
-   Pagination & Breadcrumbs
-   ========================================================================== */
+/* --------------------------------------------------------------------------
+   13. PAGINATION & BREADCRUMBS
+   -------------------------------------------------------------------------- */
 .page-link {
-    background-color: var(--apx-obsidian) !important;
-    border-color: var(--apx-gold-border-subtle) !important;
-    color: var(--apx-ivory-stone) !important;
+    background-color: var(--apx-bg-card) !important;
+    border-color: var(--apx-border-subtle) !important;
+    color: var(--apx-text-secondary) !important;
     transition: all 0.15s ease !important;
 }
 
 .page-link:hover {
-    background-color: rgba(201, 164, 92, 0.15) !important;
-    border-color: var(--apx-gold) !important;
+    background-color: var(--apx-nav-link-hover-bg) !important;
+    border-color: var(--apx-border-focus) !important;
     color: var(--apx-gold-radiant) !important;
 }
 
 .page-item.active .page-link {
     background-color: var(--apx-gold) !important;
     border-color: var(--apx-gold) !important;
-    color: #090A0D !important;
+    color: #FFFFFF !important;
     font-weight: 700 !important;
     box-shadow: 0 0 10px rgba(201, 164, 92, 0.4) !important;
 }
@@ -682,12 +787,12 @@ body {
     font-weight: 600;
 }
 
-/* ==========================================================================
-   Footer
-   ========================================================================== */
+/* --------------------------------------------------------------------------
+   14. FOOTER
+   -------------------------------------------------------------------------- */
 .footer {
-    background-color: #0C0E13 !important;
-    border-top: 1px solid var(--apx-gold-border-subtle) !important;
+    background-color: var(--apx-bg-footer) !important;
+    border-top: 1px solid var(--apx-border-subtle) !important;
     padding: 1.25rem 0 !important;
 }
 
@@ -708,20 +813,20 @@ body {
     text-decoration: underline;
 }
 
-/* ==========================================================================
-   Custom Scrollbar
-   ========================================================================== */
+/* --------------------------------------------------------------------------
+   15. CUSTOM SCROLLBAR
+   -------------------------------------------------------------------------- */
 ::-webkit-scrollbar {
     width: 7px;
     height: 7px;
 }
 
 ::-webkit-scrollbar-track {
-    background: #090A0D;
+    background: var(--apx-bg-scrollbar-track);
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #292C33;
+    background: var(--apx-bg-scrollbar-thumb);
     border-radius: 4px;
 }
 

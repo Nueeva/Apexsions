@@ -55,6 +55,26 @@ class ServerOpsService
             'label' => 'Reload Plugin Tertarget',
             'command_template' => 'ac reload',
         ],
+        'CHAT_MUTE' => [
+            'classification' => 'SENSITIVE',
+            'label' => 'Toggle Global Chat Mute',
+            'command_template' => 'apexsionschat mute',
+        ],
+        'CHAT_CLEAR' => [
+            'classification' => 'SENSITIVE',
+            'label' => 'Bersihkan Riwayat Chat Buffer',
+            'command_template' => 'apexsionschat clear',
+        ],
+        'AH_CLEAR' => [
+            'classification' => 'SENSITIVE',
+            'label' => 'Bersihkan Lelang Expired (Auction House)',
+            'command_template' => 'ah admin clear',
+        ],
+        'TOGGLE_WAR' => [
+            'classification' => 'SENSITIVE',
+            'label' => 'Toggle Status Perang Kerajaan',
+            'command_template' => 'ac togglewar',
+        ],
         'ENABLE_MAINTENANCE' => [
             'classification' => 'SENSITIVE',
             'label' => 'Aktifkan Maintenance Mode',
@@ -372,12 +392,24 @@ class ServerOpsService
             case 'SAVE_WORLD':
             case 'CLEAR_ITEMS':
             case 'RELOAD_CONFIG':
+            case 'CHAT_MUTE':
+            case 'CHAT_CLEAR':
+            case 'AH_CLEAR':
+            case 'TOGGLE_WAR':
                 $command = $actionDef['command_template'];
                 break;
 
             case 'RELOAD_PLUGIN':
                 $targetPlugin = preg_replace('/[^a-zA-Z0-9_-]/', '', $params['plugin_name'] ?? 'ApexsionsCore');
-                $command = 'ac reload';
+                $pluginCmdMap = [
+                    'ApexsionsCore' => 'ac reload',
+                    'ApexsionsChat' => 'apexsionschat reload',
+                    'ApexsionsEconomy' => 'eco reload',
+                    'ApexsionsBattlepass' => 'abp reload',
+                    'ApexsionsShop' => 'shop reload',
+                    'ApexsionsMedia' => 'media reload',
+                ];
+                $command = $pluginCmdMap[$targetPlugin] ?? 'ac reload';
                 break;
 
             case 'ENABLE_MAINTENANCE':

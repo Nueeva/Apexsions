@@ -398,7 +398,7 @@
                         <div class="p-4 rounded bg-dark border border-secondary mb-4">
                             <h5 class="fw-bold text-white mb-2">Afiliasi Kerajaan</h5>
                             @if($account->kingdom && strtoupper($account->kingdom) !== 'NONE')
-                                <div class="d-flex align-items-center gap-3">
+                                <div class="d-flex align-items-center gap-3 mb-3">
                                     <span class="badge bg-warning text-dark fs-6 px-3 py-2 fw-bold">
                                         ⚜ {{ $account->kingdom_display ?: $account->kingdom }}
                                     </span>
@@ -411,10 +411,20 @@
                                 </div>
                             @else
                                 <p class="text-muted small mb-3">Warga ini belum menentukan kesetiaan kerajaan (Belum Memilih).</p>
-                                <button type="button" class="btn btn-sm btn-warning fw-bold" data-bs-toggle="modal" data-bs-target="#setKingdomModal">
+                                <button type="button" class="btn btn-sm btn-warning fw-bold mb-3" data-bs-toggle="modal" data-bs-target="#setKingdomModal">
                                     Tetapkan Kerajaan
                                 </button>
                             @endif
+
+                            <div class="pt-3 border-top border-secondary d-flex justify-content-between align-items-center">
+                                <div>
+                                    <span class="fw-bold text-warning d-block"><i class="bi bi-crown me-1"></i> Takhta Raja (Monarch)</span>
+                                    <small class="text-muted">Gelar kehormatan tertinggi & hak veto kerajaan.</small>
+                                </div>
+                                <button type="button" class="btn btn-sm btn-outline-warning" data-bs-toggle="modal" data-bs-target="#monarchModal">
+                                    Kelola Takhta Raja
+                                </button>
+                            </div>
                         </div>
                     </div>
 
@@ -602,6 +612,12 @@
                         </button>
                         <button type="button" class="btn btn-sm btn-outline-light text-start" data-bs-toggle="modal" data-bs-target="#setKingdomModal">
                             <i class="bi bi-shield-shaded me-2 text-warning"></i> Ganti Afiliasi Kerajaan
+                        </button>
+                        <button type="button" class="btn btn-sm btn-outline-info text-start @if(!$isOnline) disabled @endif" data-bs-toggle="modal" data-bs-target="#setGameModeModal" @if(!$isOnline) title="Pemain sedang offline" @endif>
+                            <i class="bi bi-controller me-2 text-info"></i> Ubah GameMode @if(!$isOnline) <small class="badge bg-secondary ms-1">Offline</small> @endif
+                        </button>
+                        <button type="button" class="btn btn-sm btn-outline-warning text-start" data-bs-toggle="modal" data-bs-target="#monarchModal">
+                            <i class="bi bi-crown me-2 text-warning"></i> Kelola Takhta Raja (Monarch)
                         </button>
                     </div>
                 </div>
@@ -1084,6 +1100,112 @@
                     <button type="submit" class="btn btn-primary fw-bold">Kirim Pesan</button>
                 </div>
             </form>
+        </div>
+    </div>
+</div>
+
+<!-- 14. Modal Set GameMode -->
+<div class="modal fade" id="setGameModeModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-secondary">
+                <h5 class="modal-title fw-bold text-info">
+                    <i class="bi bi-controller me-2"></i> Ubah GameMode: {{ $account->minecraft_username }}
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <form action="{{ route('apexsions-bridge.admin.players.action', $account->minecraft_uuid) }}" method="POST">
+                @csrf
+                <input type="hidden" name="action_type" value="SET_GAMEMODE">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold">Pilih GameMode Baru <span class="text-danger">*</span></label>
+                        <select name="gamemode" class="form-select" required>
+                            <option value="SURVIVAL">SURVIVAL (Mode Normal Warga)</option>
+                            <option value="CREATIVE">CREATIVE (Mode Kreatif / Pembangunan)</option>
+                            <option value="ADVENTURE">ADVENTURE (Mode Petualangan / Terbatas)</option>
+                            <option value="SPECTATOR">SPECTATOR (Mode Penonton / Transparan)</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold">Alasan Perubahan <span class="text-danger">*</span></label>
+                        <input type="text" name="reason" class="form-control" placeholder="Tulis alasan audit perubahan gamemode..." required maxlength="250">
+                    </div>
+                    <div class="alert alert-info py-2 small mb-0">
+                        <i class="bi bi-info-circle me-1"></i> Perintah <code>gamemode &lt;mode&gt; {{ $account->minecraft_username }}</code> akan langsung dijalankan ke pemain online.
+                    </div>
+                </div>
+                <div class="modal-footer border-secondary">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-info fw-bold text-dark">Simpan GameMode</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- 15. Modal Monarch / King Management -->
+<div class="modal fade" id="monarchModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-secondary">
+                <h5 class="modal-title fw-bold text-warning" style="font-family: 'Cinzel', serif;">
+                    <i class="bi bi-crown me-2"></i> Penobatan / Pencabutan Takhta Raja
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-warning py-2 small mb-3">
+                    <i class="bi bi-exclamation-triangle-fill me-1"></i> Penobatan Raja memberikan gelar kehormatan realm, hak veto wilayah, dan pengumuman siaran resmi ke seluruh pemain di server.
+                </div>
+
+                <!-- Form Penobatan -->
+                <form action="{{ route('apexsions-bridge.admin.players.action', $account->minecraft_uuid) }}" method="POST" class="mb-4 pb-3 border-bottom border-secondary">
+                    @csrf
+                    <input type="hidden" name="action_type" value="APPOINT_KING">
+                    <h6 class="fw-bold text-warning mb-2"><i class="bi bi-award me-1"></i> Nobatkan Menjadi Raja</h6>
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold">Kerajaan Takhta <span class="text-danger">*</span></label>
+                        <select name="kingdom" class="form-select" required>
+                            <option value="ZENITHAR" @if(strtoupper($account->kingdom) === 'ZENITHAR') selected @endif>Zenithar (Gelar: Raja Zenithar)</option>
+                            <option value="SOLTERRA" @if(strtoupper($account->kingdom) === 'SOLTERRA') selected @endif>Solterra (Gelar: Raja Solterra)</option>
+                            <option value="SYLVAMOOR" @if(strtoupper($account->kingdom) === 'SYLVAMOOR') selected @endif>Sylvamoor (Gelar: Raja Sylvamoor)</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold">Alasan Penobatan <span class="text-danger">*</span></label>
+                        <input type="text" name="reason" class="form-control" placeholder="Alasan administratif penobatan raja..." required maxlength="250">
+                    </div>
+                    <button type="submit" class="btn btn-warning w-100 fw-bold">
+                        <i class="bi bi-crown me-1"></i> Nobatkan Sebagai Raja
+                    </button>
+                </form>
+
+                <!-- Form Pencabutan -->
+                <form action="{{ route('apexsions-bridge.admin.players.action', $account->minecraft_uuid) }}" method="POST">
+                    @csrf
+                    <input type="hidden" name="action_type" value="REVOKE_KING">
+                    <h6 class="fw-bold text-danger mb-2"><i class="bi bi-x-circle me-1"></i> Cabut Status Raja</h6>
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold">Kerajaan Takhta Yang Dicabut <span class="text-danger">*</span></label>
+                        <select name="kingdom" class="form-select" required>
+                            <option value="ZENITHAR" @if(strtoupper($account->kingdom) === 'ZENITHAR') selected @endif>Zenithar</option>
+                            <option value="SOLTERRA" @if(strtoupper($account->kingdom) === 'SOLTERRA') selected @endif>Solterra</option>
+                            <option value="SYLVAMOOR" @if(strtoupper($account->kingdom) === 'SYLVAMOOR') selected @endif>Sylvamoor</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold">Alasan Pencabutan <span class="text-danger">*</span></label>
+                        <input type="text" name="reason" class="form-control" placeholder="Alasan pencabutan gelar raja..." required maxlength="250">
+                    </div>
+                    <button type="submit" class="btn btn-outline-danger w-100 fw-bold">
+                        <i class="bi bi-slash-circle me-1"></i> Cabut Gelar Raja (Kembali ke Rakyat)
+                    </button>
+                </form>
+            </div>
+            <div class="modal-footer border-secondary">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+            </div>
         </div>
     </div>
 </div>

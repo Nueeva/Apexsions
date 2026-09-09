@@ -28,7 +28,7 @@
     <link rel="stylesheet" href="{{ asset('assets/themes/apexsions/css/admin-apexsions.css') }}?v={{ @filemtime(public_path('assets/themes/apexsions/css/admin-apexsions.css')) ?: time() }}">
 
 </head>
-<body @if(dark_theme()) data-bs-theme="dark" @endif>
+<body data-bs-theme="{{ dark_theme() ? 'dark' : 'light' }}">
     <!-- Page Wrapper -->
     <div class="wrapper">
 

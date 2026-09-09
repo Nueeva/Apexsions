@@ -382,6 +382,10 @@
                             <option value="SAVE_WORLD">Save World Chunks (SENSITIVE)</option>
                             <option value="CLEAR_ITEMS">Pembersihan Sampah Entitas / Item (SENSITIVE)</option>
                             <option value="RELOAD_CONFIG">Reload Konfigurasi ApexsionsCore (SENSITIVE)</option>
+                            <option value="CHAT_MUTE">Toggle Global Chat Mute (SENSITIVE)</option>
+                            <option value="CHAT_CLEAR">Bersihkan Riwayat Chat Buffer (SENSITIVE)</option>
+                            <option value="AH_CLEAR">Bersihkan Lelang Expired / AH Clear (SENSITIVE)</option>
+                            <option value="TOGGLE_WAR">Toggle Status Perang Kerajaan (SENSITIVE)</option>
                         </select>
                     </div>
 
