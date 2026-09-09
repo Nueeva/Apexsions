@@ -63,6 +63,15 @@ Website/
 - **Fandom Gamepedia Wiki Portal**: Ensiklopedia peradaban interaktif dengan Fandom Infoboxes (3 Kerajaan, 11 Kasta, 28 Custom Enchants & Set Bonuses), tabel perbandingan responsif, dan tombol one-click copy command.
 - Direct integration with official Azuriom Wiki and Shop plugins.
 
+### 4. User Management Center & Authentication Hardening (`resources/views/admin/users/` & `auth/`)
+- **Executive KPI Metrics**: Live dashboard cards displaying total registered users, verified accounts, unverified/pending accounts, 2FA enabled users, banned accounts, and system administrators.
+- **Search & Filtering Engine**: Instant query builder for usernames, emails, account verification states, web roles, and multi-field sorting.
+- **Minecraft Player Dossier Linkage**: Integrates with `minecraft_accounts` to show linked IGN, in-game rank, copyable UUID, and direct jump to the player's 360 profile.
+- **5-Section User Dossier**: Structured administrative layout covering Identity, Roles, Security/Credentials, Minecraft Link, and Audit History.
+- **Administrator Self-Protection**: Enforced backend logic in `UserController` preventing administrators from deleting themselves or demoting/deleting the last active administrator.
+- **Client-side Password Visibility UX**: Accessible eye toggle (`bi-eye` / `bi-eye-slash`) on Login, Register, Reset, and Confirm Password forms without storing or transmitting plaintext passwords.
+- **Strict Role Decoupling**: Complete authoritative separation between Azuriom Web Roles (`Admin`, `Moderator`, `User`) and in-game Minecraft LuckPerms Ranks (`Ancestor` through `Wanderer`).
+
 ---
 
 ## VPS Deployment (Ubuntu 24.04 LTS / 2 GB RAM)

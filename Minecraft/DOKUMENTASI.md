@@ -1,10 +1,10 @@
 # Dokumentasi Master Apexsions Plugin Suite — Minecraft 26.2 (The Peak Civilizations)
 
-Dokumentasi resmi yang merangkum arsitektur menyeluruh, interaksi antar-plugin, matriks izin & perintah, konfigurasi modular, serta integrasi gameplay untuk 7 plugin utama di ekosistem **Apexsions**.
+Dokumentasi resmi yang merangkum arsitektur menyeluruh, interaksi antar-plugin, matriks izin & perintah, konfigurasi modular, serta integrasi gameplay untuk 8 plugin utama di ekosistem **Apexsions**.
 
 ---
 
-## 🏛️ 1. Ikhtisar Arsitektur 7 Plugin (Plugin Ecosystem Matrix)
+## 🏛️ 1. Ikhtisar Arsitektur 8 Plugin (Plugin Ecosystem Matrix)
 
 ```
                             ┌────────────────────────┐
@@ -24,7 +24,12 @@ Dokumentasi resmi yang merangkum arsitektur menyeluruh, interaksi antar-plugin, 
           ┌───────────────────┐┌───────────────────┐┌───────────────────────┐
           │  ApexsionsShop    ││  ApexsionsMedia   ││ApexsionsCustomEnchants│
           │ (Dynamic Markets) ││(Interactive Visual││ (Enchanter & Sets)    │
-          └───────────────────┘└───────────────────┘└───────────────────────┘
+          └───────────────────┘└───────────────────┘└───────────┬───────────┘
+                                                                │
+                                                    ┌───────────▼───────────┐
+                                                    │   ApexsionsCrates     │
+                                                    │ (Keys, Pity & Opening)│
+                                                    └───────────────────────┘
 ```
 
 1. **`ApexsionsCore`** (`com.apexsions.core.*`): Otoritas wilayah 3 Kerajaan (`Zenithar`, `Solterra`, `Sylvamoor`), progresi level (1-100) & 13 sumber XP, BlueMap polygon rendering, sistem `/rtp` terikat kerajaan, Kingdom War Manager, PvP Combat Tag (15s), proteksi PvP teritorial kerajaan, Title Vault GUI, Particle Cosmetics GUI, sistem Warp GUI & Admin Warp Manager, Player Inspector GUI, kit kerajaan terintegrasi (`/kits`), WebBridge asynchronous delivery queue (Online & Offline), dan NightCore Native Dialog Input GUI (`CustomInputTextGUI`) untuk Paper 26.2.
@@ -34,6 +39,7 @@ Dokumentasi resmi yang merangkum arsitektur menyeluruh, interaksi antar-plugin, 
 5. **`ApexsionsShop`** (`com.apexsions.shop.*`): Pasar & toko dinamis 6 kategori (`blocks`, `farming`, `food`, `ores`, `mob_drops`, `dyes`), rasio jual dasar **20%**, formula multiplier cuaca & bioma kerajaan, price clamping (50%-200%), siaran tren pasar berkala, dashboard tren `/shop trends`, pajak wilayah 10%, UI ramah sentuh/Bedrock, dan GUI jual cepat 45-slot (`/sell`).
 6. **`ApexsionsMedia`** (`com.apexsions.media.*`): Sistem render banner/logo gambar multi-tile asinkron (PNG/JPG/URL), raytrace line-of-sight hover glowing & actionbar tooltip, serta aksi interaksi tautan URL web/salin clipboard terkonfirmasi (100% vanilla & Bedrock compatible).
 7. **`ApexsionsCustomEnchants`** (`com.apexsions.customenchants.*`): Dual-Currency Enchanter Gacha GUI (`/ce`), Toko Buku Sihir Spesifik 54-Slot (`/ce shop`), 28 Custom Enchantments berkekuatan tinggi, Mystery & Magic Dust, White & Black Scrolls, Central Admin Hub (`/ace`), Katalog `/ace enchants`, dan Interactive Armor Set Builder (`/ace create`) dengan sinkronisasi ID otomatis.
+8. **`ApexsionsCrates`** (`com.apexsions.crates.*`): Toko Kunci Crate (`/crateshop`), sistem animasi pembukaan berbasis paket (PacketEvents/ProtocolLib), milestone progression, unified tiered effective weight chance formula, dan integrasi hadiah ekonomi / kit.
 
 ---
 
@@ -222,6 +228,18 @@ Dokumentasi resmi yang merangkum arsitektur menyeluruh, interaksi antar-plugin, 
 
 ---
 
+### 🎁 ApexsionsCrates
+| Perintah | Alias | Deskripsi | Hak Akses | Default |
+| :--- | :--- | :--- | :--- | :--- | :---: |
+| `/crateshop` | `/crate shop`, `/keyshop` | Membuka Toko Pembelian Kunci Peti Dual-Currency GUI | `apexsionscrates.shop` | `true` |
+| `/crate` | `/crates` | Menampilkan antarmuka daftar peti hadiah dan milestone | `apexsionscrates.use` | `true` |
+| `/crate key <give\|take\|set> <p> <crate> <amt>` | - | Mengelola jumlah kunci peti pemain (Admin) | `apexsionscrates.admin` | `op` |
+| `/crate create <id>` | - | Membuat peti hadiah baru dengan pengaturan visual (Admin) | `apexsionscrates.admin` | `op` |
+| `/crate edit <id>` | - | Editor interaktif hadiah peti dan milestone progresi (Admin) | `apexsionscrates.admin` | `op` |
+| `/crate reload` | `/crates reload` | Memuat ulang seluruh konfigurasi peti dan probabilitas | `apexsionscrates.admin` | `op` |
+
+---
+
 ## ⚡ 4. Panduan Kompilasi Multi-Compiler (`build.ps1`)
 
 Untuk efisiensi dan kecepatan pengembangan, **HANYA** kompilasi plugin yang mengalami perubahan kode:
@@ -235,8 +253,9 @@ powershell -ExecutionPolicy Bypass -File .\build.ps1 Battlepass
 powershell -ExecutionPolicy Bypass -File .\build.ps1 Shop
 powershell -ExecutionPolicy Bypass -File .\build.ps1 Media
 powershell -ExecutionPolicy Bypass -File .\build.ps1 CustomEnchants
+powershell -ExecutionPolicy Bypass -File .\build.ps1 Crates
 
-# 2. Kompilasi Seluruh Suite (Gunakan HANYA jika semua 7 modul berubah):
+# 2. Kompilasi Seluruh Suite (Gunakan HANYA jika semua modul berubah):
 powershell -ExecutionPolicy Bypass -File .\build.ps1 -all
 ```
 

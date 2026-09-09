@@ -61,6 +61,18 @@ Dashboard ini ditujukan khusus untuk operasional staf dan administrator:
 9. **Unified Audit Log (`/admin/apexsions-bridge/audit`):**
    - Rekam jejak seluruh mutasi dan aksi staf, tidak dapat diubah (immutable trail).
 
+10. **User Management Center (`/admin/users`):**
+   - **Executive KPI Summary Cards**: Agregasi metrik real-time mencakup total akun terdaftar, akun terverifikasi, akun tertunda (unverified), pengguna dengan 2FA aktif, akun dalam penangguhan/ban, dan jumlah akun administrator.
+   - **Live Search & Granular Filter**: Pencarian cepat berbasis username dan email, penyaringan berdasarkan status akun (`all`, `verified`, `unverified`, `2fa`, `banned`, `admin`), web role, dan pengurutan multi-kolom (`newest`, `oldest`, `name`, `last_login`).
+   - **Integrasi Identitas Minecraft**: Eager loading relasi `minecraftAccount` (`minecraft_accounts` table) langsung pada daftar pengguna, menampilkan IGN in-game, rank in-game, dan copyable UUID.
+   - **5-Section User Dossier (`/admin/users/{id}/edit`)**:
+     1. *Identity*: Avatar, User ID, Username, Email, Tanggal Registrasi, dan UUID in-game.
+     2. *Account Status & Roles*: Pengaturan Web Role, status verifikasi email, dan status sanksi (Ban/Suspension).
+     3. *Security & Credentials*: Trigger reset kata sandi, status autentikasi dua faktor (2FA), dan riwayat aktivitas terakhir.
+     4. *Minecraft Server Integration*: Panel data pemain terkait (IGN, in-game rank, Level & XP, serta tautan cepat ke `/admin/players/{uuid}`).
+     5. *Administrative Audit History*: Catatan riwayat aksi staf dan riwayat sanksi akun.
+   - **Administrator Self-Protection**: Kebijakan proteksi mutlak yang mencegah administrator menghapus akunnya sendiri atau mendemosi/menghapus akun administrator terakhir yang tersisa (mengembalikan respon 403 Forbidden aman).
+
 ---
 
 ## 3. Custom Plugin Integration
@@ -102,10 +114,38 @@ Sistem hak akses membatasi operasional berdasarkan peran administratif:
 | `apexsions.automation.view` | Melihat riwayat eksekusi otomasi |
 | `apexsions.automation.manage` | Memberikan persetujuan (*approval*) atau penolakan |
 | `apexsions.audit.view` | Memeriksa rekam jejak Unified Audit Log |
+| `admin.users.read` | Melihat daftar pengguna dan inspeksi User Dossier 5-section |
+| `admin.users.update` | Memperbarui peran (role), status verifikasi, dan kata sandi |
+| `admin.users.ban` | Menangguhkan (suspend/ban) atau mencabut sanksi pengguna |
+| `admin.users.delete` | Menghapus akun pengguna (dilindungi proteksi self-deletion) |
 
 ---
 
-## 5. Deployment Requirements
+## 5. Authentication & Security Architecture
+
+Sistem autentikasi dan keamanan pengguna dibangun di atas prinsip ketat:
+
+### A. Password Visibility UX (Eye Toggle)
+- Form **Login**, **Register**, **Password Reset**, dan **Confirm Password** dilengkapi tombol toggle visibilitas kata sandi interaktif (`bi-eye` / `bi-eye-slash`).
+- Beroperasi murni pada *client-side DOM* (`type="password"` $\leftrightarrow$ `type="text"`) tanpa merekam, menyimpan plaintext, atau mengirimkan string sandi ke endpoint tambahan.
+- Ramah aksesibilitas (lengkap dengan atribut dinamis `aria-label` untuk screen reader) serta sepenuhnya kompatibel dengan pengelola kata sandi peramban (Bitwarden, 1Password, Chrome Autofill).
+- Dilengkapi proteksi *Double-Submit Locking* yang menonaktifkan tombol submit dan menampilkan spinner indikator pemrosesan saat formulir dikirim.
+
+### B. Registration & Email Verification Lifecycle
+1. **Pendaftaran**: Validasi username unik, email unik, dan panjang sandi minimal 8 karakter.
+2. **Status Akun Awal**: Akun dibuat dengan status `email_verified_at = null` (Pending/Unverified).
+3. **Penerbitan Tautan Terverifikasi**: Tautan verifikasi bertanda tangan kriptografis (*Signed URL*) dibuat dengan masa kedaluwarsa 60 menit.
+4. **Enforcement Middleware**: Middleware `EnsureEmailIsVerified` membatasi akun belum terverifikasi dari rute penting webstore dan portal profil.
+5. **Aktivasi Akun**: Akses tautan menandai `email_verified_at = now()`, mengaktifkan akun secara penuh.
+
+### C. Pemisahan Tegas Web Role vs In-Game Minecraft Rank
+- **Azuriom Web Role** (`Admin`, `Moderator`, `User`) mengatur hak akses dashboard web dan manajemen portal.
+- **Minecraft In-Game Rank** (`Ancestor` [100], `Architect` [95], `Overseer` [95], `Warden` [90], `Herald` [80], `Sions` [70], `Emperor` [60], `Sovereign` [50], `Archon` [40], `Ascendant` [30], `Wanderer` [10]) mengatur hak akses in-game LuckPerms dan peradaban.
+- Keduanya dipisahkan secara authoritatif untuk mencegah eskalasi hak istimewa (*Privilege Escalation*).
+
+---
+
+## 6. Deployment Requirements
 
 - **PHP Version:** PHP 8.2 atau 8.3 LTS (dengan ekstensi `pdo_sqlite`, `pdo_mysql`, `curl`, `mbstring`, `xml`, `bcmath`).
 - **Web Server:** Nginx dengan PHP-FPM (`php8.2-fpm`).
@@ -122,7 +162,7 @@ chmod -R 775 /var/www/azuriom/storage /var/www/azuriom/bootstrap/cache
 
 ---
 
-## 6. Queue Requirements
+## 7. Queue Requirements
 
 Notifikasi Discord Webhook dan tugas background diproses secara asinkron untuk menjaga latensi dashboard tetap di bawah 100ms.
 
@@ -144,7 +184,7 @@ WantedBy=multi-user.target
 
 ---
 
-## 7. Scheduler Requirements
+## 8. Scheduler Requirements
 
 Pastikan cronjob Laravel aktif pada server VPS produksi:
 ```bash
@@ -159,10 +199,11 @@ Jadwal pembersihan otomatis yang dikelola:
 
 ---
 
-## 8. Troubleshooting
+## 9. Troubleshooting
 
 | Gejala | Kemungkinan Penyebab | Tindakan Penyelesaian |
 | :--- | :--- | :--- |
+| **HTTP 500 / Permission Denied di `/admin/users` atau rute lain** | Perintah CLI (seeder/artisan) dijalankan sebagai `root`, menciptakan folder cache `storage/framework/cache/data/` milik `root:root` (0755) sehingga tidak bisa ditulis oleh PHP-FPM (`www-data`). | Jalankan `chown -R www-data:www-data /var/www/azuriom/storage /var/www/azuriom/bootstrap/cache` dan `chmod -R 775 /var/www/azuriom/storage /var/www/azuriom/bootstrap/cache`. |
 | **Aksi Bridge Berstatus PENDING lama** | Minecraft Server offline atau task WebBridge in-game belum fetch antrean | Periksa koneksi Minecraft Server dan pastikan `ApexsionsCore` aktif dan token sinkronisasi cocok di `config.yml`. |
 | **Notifikasi Discord Tidak Terkirim** | URL webhook belum dikonfigurasi atau diblokir SSRF filter | Periksa URL webhook di pengaturan; pastikan hanya menggunakan domain resmi `discord.com` atau `discordapp.com`. |
 | **Error 403 Saat Eksekusi Aksi** | Staf tidak memiliki permission granular yang dibutuhkan | Berikan role atau permission spesifik pada akun pengguna via panel Admin Roles. |
@@ -170,7 +211,7 @@ Jadwal pembersihan otomatis yang dikelola:
 
 ---
 
-## 9. Backup Recommendations
+## 10. Backup Recommendations
 
 Lakukan pencadangan rutin harian:
 1. **Database:**

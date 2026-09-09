@@ -456,6 +456,17 @@ Portal web resmi Apexsions dibangun di atas platform **Azuriom** dengan tema khu
    - Katalog paket donasi rank & item dengan badge durasi (*Permanen / 30 Hari*), keranjang belanja (*Cart*), target donasi bulanan (*Goal Widget*), dan integrasi pemesanan langsung WhatsApp Founder/Admin.
 7. **Arsip Hukum & Ensiklopedia Wiki (`/rules`, `/terms`, `/privacy`, `/wiki`)**:
    - 4 Pilar aturan server beserta matriks sistem pencegahan aktif (*Levenshtein SpamChecker*, *ProfanityChecker*), syarat transaksi, kebijakan privasi data akun, dan portal fandom ensiklopedia lengkap.
+8. **User Management Center & User Dossier 5-Section (`/admin/users`)**:
+   - **Executive KPI Cards**: Ringkasan metrik akun total, terverifikasi, tertunda/unverified, pengguna 2FA aktif, akun tersanksi ban, dan total administrator.
+   - **Search & Filter Real-Time**: Pencarian instan username/email, filter status akun (`verified`, `unverified`, `2fa`, `banned`, `admin`), web role, dan multi-kolom sorting.
+   - **Integrasi Identitas In-Game**: Eager-loading relasi `minecraftAccount` langsung pada tabel daftar akun (IGN, rank in-game, UUID).
+   - **User Dossier 5-Section (`/admin/users/{id}/edit`)**: Tata letak terstruktur Identity, Web Roles, Security/Credentials (2FA), Minecraft Server Integration, dan Administrative Audit History.
+   - **Proteksi Mandiri Administrator**: Perlindungan backend dari self-deletion dan pencegahan demosi/penghapusan administrator terakhir yang tersisa.
+9. **Autentikasi Aman & Password Visibility UX**:
+   - **Client-side Eye Toggle**: Tombol visibilitas kata sandi interaktif (`bi-eye` / `bi-eye-slash`) pada form Login, Register, Reset Password, dan Confirm Password tanpa transmisi/penyimpanan plaintext.
+   - **Email Verification Gating**: Tautan verifikasi bertanda tangan (*Signed URL*) dengan pembatasan rute via middleware `EnsureEmailIsVerified`.
+   - **Login Security & Rate Limiting**: Proteksi percobaan login bertubi-tubi (`throttle:5,1`) dan proteksi *Double-Submit Locking* pada tombol form.
+   - **Pemisahan Otoritatif Role vs Rank**: Web Role Azuriom (`Admin`, `Moderator`, `User`) terpisah mutlak dari Minecraft In-Game Rank (`Ancestor` s/d `Wanderer`).
 
 ### B. Sistem Terjemahan Bilingual Menyeluruh (ID 🇮🇩 & EN 🇬🇧):
 - **Engine JavaScript Klien `APX_I18N`**: Diterapkan di `Website/themes/apexsions/assets/js/app.js` dengan kamus lengkap untuk Bahasa Indonesia (`id`) dan English (`en`).
