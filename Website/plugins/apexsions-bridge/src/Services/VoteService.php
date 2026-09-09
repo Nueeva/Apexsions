@@ -22,10 +22,12 @@ class VoteService
     public function checkCooldown(VotingSite $site, string $username, ?string $uuid = null): ?Carbon
     {
         $cooldownHours = $site->cooldown_hours ?: 24;
+        $cleanUsername = ltrim($username, '.');
+        $variants = array_values(array_unique([$username, $cleanUsername, '.' . $cleanUsername]));
 
         $lastVote = VoteTransaction::where('site_slug', $site->slug)
-            ->where(function ($q) use ($username, $uuid) {
-                $q->where('player_username', $username);
+            ->where(function ($q) use ($variants, $uuid) {
+                $q->whereIn('player_username', $variants);
                 if ($uuid) {
                     $q->orWhere('player_uuid', $uuid);
                 }
@@ -104,16 +106,28 @@ class VoteService
     public function processVoteReward(VotingSite $site, string $username, ?string $ip = null, string $source = 'WEB_CLAIM'): array
     {
         $username = trim($username);
-        if (empty($username) || !preg_match('/^[a-zA-Z0-9_]{2,16}$/', $username)) {
+        // Validate Minecraft usernames: Java (2-16 chars) and Bedrock (2-32 chars, optional leading dot/underscore)
+        if (empty($username) || !preg_match('/^\.?[a-zA-Z0-9_]{2,32}$/', $username)) {
             return [
                 'success' => false,
                 'message' => 'Username Minecraft tidak valid.',
             ];
         }
 
-        // Resolve official player UUID if registered
-        $account = MinecraftAccount::where('minecraft_username', $username)->first();
-        $uuid = $account?->minecraft_uuid;
+        // Crossplay identity resolution: check exact name, with dot prefix, or without dot prefix
+        $cleanUsername = ltrim($username, '.');
+        $account = MinecraftAccount::where('minecraft_username', $username)
+            ->orWhere('minecraft_username', '.' . $cleanUsername)
+            ->orWhere('minecraft_username', $cleanUsername)
+            ->first();
+
+        if ($account) {
+            // Adopt canonical registered in-game name and UUID
+            $username = $account->minecraft_username;
+            $uuid = $account->minecraft_uuid;
+        } else {
+            $uuid = null;
+        }
 
         // Anti-duplicate cooldown verification
         $cooldownUntil = $this->checkCooldown($site, $username, $uuid);

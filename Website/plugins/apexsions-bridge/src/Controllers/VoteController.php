@@ -74,7 +74,7 @@ class VoteController extends Controller
     public function verifyAndClaim(Request $request, string $siteSlug): JsonResponse
     {
         $validated = $request->validate([
-            'username' => ['required', 'string', 'min:2', 'max:16', 'regex:/^[a-zA-Z0-9_]+$/'],
+            'username' => ['required', 'string', 'min:2', 'max:32', 'regex:/^[a-zA-Z0-9_.* ]+$/'],
         ]);
 
         $site = VotingSite::where('slug', $siteSlug)->where('is_active', true)->first();

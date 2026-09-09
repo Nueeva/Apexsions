@@ -5,6 +5,13 @@
 @section('description', 'Dukung kedaulatan server Minecraft Apexsions dengan memberikan suara di platform voting resmi. Dapatkan 3x Vote Keys dan Rp 1.000 saldo peradaban setiap suara sah.')
 
 @section('content')
+@php
+    $activeUsername = $activeUsername ?? (auth()->check() ? (auth()->user()->name ?? '') : '');
+    $linkedAccount = $linkedAccount ?? (auth()->check() ? \Azuriom\Plugin\ApexsionsBridge\Models\MinecraftAccount::where('user_id', auth()->id())->first() : null);
+    $cooldowns = $cooldowns ?? [];
+    $personalHistory = $personalHistory ?? collect();
+    $recentVotes = $recentVotes ?? collect();
+@endphp
 <div class="apx-vote-page py-5">
     <div class="container py-4">
         <!-- Breadcrumb Navigation -->
@@ -39,7 +46,7 @@
                     </div>
                     <div class="input-group input-group-sm" style="max-width: 380px;">
                         <span class="input-group-text bg-dark border-secondary text-gold"><i class="bi bi-person-fill"></i></span>
-                        <input type="text" id="voterUsername" class="form-control bg-dark border-secondary text-white fw-bold" placeholder="Masukkan Username Minecraft Anda..." value="{{ $activeUsername ?: '' }}" maxlength="16">
+                        <input type="text" id="voterUsername" class="form-control bg-dark border-secondary text-white fw-bold" placeholder="Masukkan Username Minecraft Anda..." value="{{ $activeUsername ?: '' }}" maxlength="32">
                         <button type="button" class="btn btn-apx-gold btn-sm px-3" onclick="updateVoterIdentity()">
                             <i class="bi bi-save me-1"></i> Simpan
                         </button>

@@ -94,7 +94,7 @@ Route::resource('posts.comments', PostCommentController::class)
     ->middleware(['auth', 'verified'])->only(['store', 'destroy']);
 
 Route::view('/rules', 'rules')->name('rules');
-Route::view('/vote', 'vote')->name('vote');
+Route::get('/vote', [\Azuriom\Plugin\ApexsionsBridge\Controllers\VoteController::class, 'index'])->name('vote');
 Route::view('/terms', 'terms')->name('terms');
 Route::view('/privacy', 'privacy')->name('privacy');
 
