@@ -37,6 +37,12 @@ commands:
       - websync
     description: Synchronize player profile, balances, and BattlePass with web platform.
     usage: /sync
+  vote:
+    aliases:
+      - voting
+      - votes
+    description: Dukung kedaulatan server Apexsions dan klaim imbalan Vote Keys serta saldo.
+    usage: /vote
   lobby:
     description: Teleport to the main server lobby.
     permission: apexsionscore.command.lobby

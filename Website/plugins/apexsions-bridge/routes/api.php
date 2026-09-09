@@ -30,4 +30,7 @@ Route::post('/plugins/handshake', [LinkVerificationController::class, 'pluginHan
 // Unified Event Ingestion Endpoint (Phase 6)
 Route::post('/events/sync', [LinkVerificationController::class, 'syncEvent'])->name('events.sync');
 
+// Inbound Vote Platform Webhook / Callback Endpoint
+Route::post('/vote/callback/{siteSlug}', [\Azuriom\Plugin\ApexsionsBridge\Controllers\VoteController::class, 'handleCallback'])->name('vote.callback');
+
 

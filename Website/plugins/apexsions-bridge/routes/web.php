@@ -17,14 +17,18 @@ use Azuriom\Plugin\ApexsionsBridge\Controllers\Admin\ReportAdminController;
 use Azuriom\Plugin\ApexsionsBridge\Controllers\Admin\ServerAdminController;
 use Azuriom\Plugin\ApexsionsBridge\Controllers\Admin\TransactionAdminController;
 use Azuriom\Plugin\ApexsionsBridge\Controllers\Api\LinkVerificationController;
+use Azuriom\Plugin\ApexsionsBridge\Controllers\Admin\VoteAdminController;
 use Azuriom\Plugin\ApexsionsBridge\Controllers\LeaderboardController;
 use Azuriom\Plugin\ApexsionsBridge\Controllers\ProfileManagementController;
 use Azuriom\Plugin\ApexsionsBridge\Controllers\PublicProfileController;
+use Azuriom\Plugin\ApexsionsBridge\Controllers\VoteController;
 use Illuminate\Support\Facades\Route;
 
 // Public Routes
 Route::get('/leaderboard', [LeaderboardController::class, 'index'])->name('leaderboard');
 Route::get('/player/{identifier}', [PublicProfileController::class, 'show'])->name('player.show');
+Route::get('/vote', [VoteController::class, 'index'])->name('vote');
+Route::post('/vote/verify/{siteSlug}', [VoteController::class, 'verifyAndClaim'])->name('vote.verify');
 
 // Authenticated User Routes
 Route::middleware('auth')->group(function () {
@@ -148,5 +152,12 @@ Route::middleware(['web', 'admin-access'])->prefix('admin')->name('admin.')->gro
         Route::post('/{id}/toggle', [AutomationAdminController::class, 'toggle'])->name('toggle');
         Route::post('/executions/{id}/approve', [AutomationAdminController::class, 'approve'])->name('executions.approve');
         Route::post('/executions/{id}/reject', [AutomationAdminController::class, 'reject'])->name('executions.reject');
+    });
+
+    // Vote Management & Civic Verification
+    Route::prefix('votes')->name('votes.')->middleware('can:admin.users')->group(function () {
+        Route::get('/', [VoteAdminController::class, 'index'])->name('index');
+        Route::get('/{id}', [VoteAdminController::class, 'show'])->name('show');
+        Route::post('/{id}/retry', [VoteAdminController::class, 'retryReward'])->name('retry');
     });
 });

@@ -143,6 +143,12 @@ class ApexsionsBridgeServiceProvider extends BasePluginServiceProvider
                 'route' => 'apexsions-bridge.admin.ranks.index',
                 'permission' => 'admin.users',
             ],
+            'apexsions-votes' => [
+                'name' => 'Vote Management',
+                'icon' => 'bi bi-check2-circle',
+                'route' => 'apexsions-bridge.admin.votes.index',
+                'permission' => 'admin.users',
+            ],
             'apexsions-reports' => [
                 'name' => 'Reports Center',
                 'icon' => 'bi bi-flag-fill',

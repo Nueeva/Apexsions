@@ -477,6 +477,19 @@ public class ApexsionsCorePlugin extends JavaPlugin {
             ranksCmd.setTabCompleter(rankHandler);
         }
 
+        // /vote (aliases: /voting, /votes)
+        com.apexsions.core.command.VoteCommand voteHandler = new com.apexsions.core.command.VoteCommand(this);
+        PluginCommand voteCmd = getCommand("vote");
+        if (voteCmd != null) {
+            voteCmd.setExecutor(voteHandler);
+            voteCmd.setTabCompleter(voteHandler);
+        }
+        PluginCommand votingCmd = getCommand("voting");
+        if (votingCmd != null) {
+            votingCmd.setExecutor(voteHandler);
+            votingCmd.setTabCompleter(voteHandler);
+        }
+
         // /enchant (aliases: /customenchant, /apexenchant)
         com.apexsions.core.command.EnchantCommand enchantHandler = new com.apexsions.core.command.EnchantCommand(this);
         PluginCommand enchantCmd = getCommand("enchant");
