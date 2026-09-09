@@ -65,8 +65,8 @@ public class ApexsionsIntegrationListener implements Listener {
 
         // Bonus XP on high-tier rewards
         if (event.getReward() != null) {
-            double weight = event.getReward().getWeight();
-            if (weight > 0 && weight <= 5.0) { // Rare reward (weight <= 5%)
+            double chance = event.getReward().getRollChance();
+            if (chance > 0 && chance <= 5.0) { // Rare / Jackpot reward (chance <= 5%)
                 if (ApexsionsCoreProvider.isAvailable()) {
                     try {
                         ApexsionsCoreProvider.get().addXp(player.getUniqueId(), 100L, XpSource.CUSTOM);

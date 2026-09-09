@@ -51,23 +51,26 @@ public class RewardSpinner extends AbstractSpinner {
         Crate crate = this.opening.getCrate();
         Player player = this.opening.getPlayer();
 
+        List<Reward> rewards = crate.getRewards(player);
+        rewards.removeIf(reward -> !this.rarities.contains(reward.getRarity()));
+        if (rewards.isEmpty()) {
+            rewards = crate.getRewards().stream().filter(reward -> this.rarities.contains(reward.getRarity())).toList();
+        }
+        if (rewards.isEmpty()) throw new IllegalStateException("No rewards available!");
+
         if (!visual || Config.OPENINGS_GUI_SIMULATE_REAL_CHANCES.get()) {
-            Map<Rarity, Double> rarityMap = new HashMap<>();
-            this.rarities.forEach(rarity -> {
-                if (crate.hasRewards(player, rarity)) {
-                    rarityMap.put(rarity, rarity.getWeight());
+            Map<Reward, Double> weightMap = new HashMap<>();
+            rewards.forEach(reward -> {
+                if (reward.isRollable()) {
+                    weightMap.put(reward, reward.getEffectiveWeight());
                 }
             });
-            if (rarityMap.isEmpty()) throw new IllegalStateException("No rewards available!");
-
-            Rarity rarity = Rnd.getByWeight(rarityMap);
-            return crate.rollReward(this.opening.getPlayer(), rarity);
+            if (!weightMap.isEmpty()) {
+                return Rnd.getByWeight(weightMap);
+            }
+            return Rnd.get(rewards);
         }
         else {
-            List<Reward> rewards = crate.getRewards(player);
-            rewards.removeIf(reward -> !this.rarities.contains(reward.getRarity()));
-            if (rewards.isEmpty()) throw new IllegalStateException("No rewards available!");
-
             return Rnd.get(rewards);
         }
     }

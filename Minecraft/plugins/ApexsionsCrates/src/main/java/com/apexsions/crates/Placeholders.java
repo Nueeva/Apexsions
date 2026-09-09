@@ -12,6 +12,7 @@ import su.nightexpress.nightcore.util.NumberUtil;
 import su.nightexpress.nightcore.util.placeholder.PlaceholderList;
 import su.nightexpress.nightcore.util.profile.CachedProfile;
 
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 public class Placeholders extends su.nightexpress.nightcore.util.Placeholders {
@@ -77,15 +78,23 @@ public class Placeholders extends su.nightexpress.nightcore.util.Placeholders {
         .add(CRATE_OPEN_COST, crate -> crate.getCosts().stream().map(Cost::getName).collect(Collectors.joining(", ")))
     );
 
+    public static String formatChance(double chance) {
+        if (chance <= 0) return "0";
+        if (chance < 0.01) {
+            return String.format(Locale.US, "%.3f", chance);
+        }
+        return NumberUtil.format(chance);
+    }
+
     public static final PlaceholderList<Reward> REWARD = PlaceholderList.create(list -> list
         .add(REWARD_ID, Reward::getId)
         .add(REWARD_NAME, Reward::getName)
         .add(REWARD_DESCRIPTION, reward -> String.join("\n", reward.getDescription()))
         .add(REWARD_WEIGHT, reward -> NumberUtil.format(reward.getWeight()))
-        .add(REWARD_ROLL_CHANCE, reward -> NumberUtil.format(reward.getRollChance()))
+        .add(REWARD_ROLL_CHANCE, reward -> formatChance(reward.getRollChance()))
         .add(REWARD_RARITY_NAME, reward -> reward.getRarity().getName())
         .add(REWARD_RARITY_WEIGHT, reward -> NumberUtil.format(reward.getRarity().getWeight()))
-        .add(REWARD_RARITY_ROLL_CHANCE, reward -> NumberUtil.format(reward.getRarity().getRollChance(reward.getCrate())))
+        .add(REWARD_RARITY_ROLL_CHANCE, reward -> formatChance(reward.getRarity().getRollChance(reward.getCrate())))
     );
 
     public static final PlaceholderList<Milestone> MILESTONE = PlaceholderList.create(list -> list
@@ -97,7 +106,7 @@ public class Placeholders extends su.nightexpress.nightcore.util.Placeholders {
         .add(RARITY_ID, Rarity::getId)
         .add(RARITY_NAME, Rarity::getName)
         .add(RARITY_WEIGHT, rarity -> NumberUtil.format(rarity.getWeight()))
-        .add(RARITY_ROLL_CHANCE, rarity -> NumberUtil.format(rarity.getRollChance()))
+        .add(RARITY_ROLL_CHANCE, rarity -> formatChance(rarity.getRollChance()))
     );
 
     public static final PlaceholderList<CrateKey> KEY = PlaceholderList.create(list -> list
