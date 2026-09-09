@@ -2564,6 +2564,88 @@ code:not(pre code) {
     color: var(--apx-text-muted);
 }
 
+.apx-auth-card .input-group .form-control {
+    border-right: 0;
+}
+
+.apx-auth-card .input-group .apx-password-toggle {
+    border-left: 0;
+    background: rgba(15, 23, 42, 0.6);
+    border-color: var(--apx-border, rgba(255, 255, 255, 0.12));
+    color: var(--apx-text-muted, #94a3b8);
+    transition: all 0.2s ease;
+    padding: 0.5rem 0.85rem;
+    cursor: pointer;
+}
+
+.apx-auth-card .input-group .apx-password-toggle:hover,
+.apx-auth-card .input-group .apx-password-toggle:focus {
+    background: rgba(245, 158, 11, 0.15);
+    color: var(--apx-gold, #f59e0b);
+    border-color: var(--apx-gold-border, rgba(245, 158, 11, 0.3));
+    outline: none;
+    box-shadow: none;
+}
+
+/* Light mode auth support */
+[data-bs-theme="light"] .apx-auth-card .input-group .apx-password-toggle {
+    background: #f8fafc;
+    border-color: #cbd5e1;
+    color: #64748b;
+}
+
+[data-bs-theme="light"] .apx-auth-card .input-group .apx-password-toggle:hover,
+[data-bs-theme="light"] .apx-auth-card .input-group .apx-password-toggle:focus {
+    background: #fef3c7;
+    color: #b45309;
+    border-color: #f59e0b;
+}
+
+[data-bs-theme="light"] .apx-auth-card .apx-auth-title {
+    color: #0f172a;
+}
+
+.apx-auth-card .input-group .form-control {
+    border-right: 0;
+}
+
+.apx-auth-card .input-group .apx-password-toggle {
+    border-left: 0;
+    background: rgba(15, 23, 42, 0.6);
+    border-color: var(--apx-border, rgba(255, 255, 255, 0.12));
+    color: var(--apx-text-muted, #94a3b8);
+    transition: all 0.2s ease;
+    padding: 0.5rem 0.85rem;
+    cursor: pointer;
+}
+
+.apx-auth-card .input-group .apx-password-toggle:hover,
+.apx-auth-card .input-group .apx-password-toggle:focus {
+    background: rgba(245, 158, 11, 0.15);
+    color: var(--apx-gold, #f59e0b);
+    border-color: var(--apx-gold-border, rgba(245, 158, 11, 0.3));
+    outline: none;
+    box-shadow: none;
+}
+
+/* Light mode auth support */
+[data-bs-theme="light"] .apx-auth-card .input-group .apx-password-toggle {
+    background: #f8fafc;
+    border-color: #cbd5e1;
+    color: #64748b;
+}
+
+[data-bs-theme="light"] .apx-auth-card .input-group .apx-password-toggle:hover,
+[data-bs-theme="light"] .apx-auth-card .input-group .apx-password-toggle:focus {
+    background: #fef3c7;
+    color: #b45309;
+    border-color: #f59e0b;
+}
+
+[data-bs-theme="light"] .apx-auth-card .apx-auth-title {
+    color: #0f172a;
+}
+
 /* ==============================================================================
    Footer (ChatGPT Concept Match with Server Box & Slogan Line)
    ============================================================================== */

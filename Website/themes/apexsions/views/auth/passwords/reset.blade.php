@@ -1,24 +1,26 @@
 @extends('layouts.app')
 
-@section('title', trans('auth.login'))
+@section('title', trans('auth.passwords.reset'))
 
 @section('content')
 <div class="apx-auth-wrapper">
     <div class="apx-auth-card">
         <div class="apx-auth-header">
             <img src="{{ theme_asset('img/logo.png') }}&v={{ @filemtime(public_path('assets/themes/apexsions/img/logo.png')) ?: '3' }}" alt="Apexsions Crest" class="rounded-3 shadow-lg mb-3 border border-warning" width="80" height="80" style="object-fit: contain; padding: 4px; background: rgba(12, 16, 26, 0.95);">
-            <h1 class="apx-auth-title" data-i18n="auth_login_title">{{ trans('auth.login') }}</h1>
+            <h1 class="apx-auth-title">{{ trans('auth.passwords.reset') }}</h1>
             <p class="apx-auth-subtitle">Apexsions | The Peak Civilizations</p>
         </div>
 
-        <form method="POST" action="{{ route('login') }}" id="login-form">
+        <form method="POST" action="{{ route('password.update') }}" id="reset-form">
             @csrf
+
+            <input type="hidden" name="token" value="{{ $token }}">
 
             <div class="mb-3">
                 <label class="form-label" for="email">
-                    <i class="bi bi-envelope me-1 text-warning"></i> <span data-i18n="auth_login_email_label">{{ trans('auth.email') }}</span>
+                    <i class="bi bi-envelope me-1 text-warning"></i> {{ trans('auth.email') }}
                 </label>
-                <input id="email" type="text" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" placeholder="nama@email.com atau username" data-i18n-placeholder="auth_login_email_ph" required autocomplete="email" autofocus>
+                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ $email ?? old('email') }}" required autocomplete="email" autofocus>
 
                 @error('email')
                     <span class="invalid-feedback d-block mt-1" role="alert">
@@ -29,10 +31,10 @@
 
             <div class="mb-3">
                 <label class="form-label" for="password">
-                    <i class="bi bi-key me-1 text-warning"></i> <span data-i18n="auth_login_pass_label">{{ trans('auth.password') }}</span>
+                    <i class="bi bi-key me-1 text-warning"></i> {{ trans('auth.password') }}
                 </label>
                 <div class="input-group">
-                    <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" placeholder="Masukkan kata sandi akun" data-i18n-placeholder="auth_login_pass_ph" required autocomplete="current-password">
+                    <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" placeholder="Kata sandi baru (min. 8 karakter)" required autocomplete="new-password">
                     <button type="button" class="btn btn-outline-secondary apx-password-toggle" onclick="togglePasswordVisibility('password', this)" aria-label="Show password" title="Show password">
                         <i class="bi bi-eye"></i>
                     </button>
@@ -45,36 +47,27 @@
                 @enderror
             </div>
 
-            <div class="row gy-2 mb-4 align-items-center">
-                <div class="col-6">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="remember" id="remember" @checked(old('remember'))>
-                        <label class="form-check-label small" for="remember" data-i18n="auth_remember">
-                            {{ trans('auth.remember') }}
-                        </label>
-                    </div>
-                </div>
-
-                <div class="col-6 text-end">
-                    @if(Route::has('password.request'))
-                        <a class="small text-warning" href="{{ route('password.request') }}" data-i18n="auth_forgot_pass">
-                            {{ trans('auth.forgot_password') }}
-                        </a>
-                    @endif
+            <div class="mb-4">
+                <label class="form-label" for="password-confirm">
+                    <i class="bi bi-shield-check me-1 text-warning"></i> {{ trans('auth.confirm_password') }}
+                </label>
+                <div class="input-group">
+                    <input id="password-confirm" type="password" class="form-control" name="password_confirmation" placeholder="Ulangi kata sandi baru" required autocomplete="new-password">
+                    <button type="button" class="btn btn-outline-secondary apx-password-toggle" onclick="togglePasswordVisibility('password-confirm', this)" aria-label="Show password" title="Show password">
+                        <i class="bi bi-eye"></i>
+                    </button>
                 </div>
             </div>
 
-            @includeWhen($captcha, 'elements.captcha', ['center' => true])
-
             <div class="d-grid mt-4">
-                <button type="submit" class="btn btn-apx-gold py-2" id="login-submit-btn">
-                    <i class="bi bi-box-arrow-in-right me-1"></i> <span data-i18n="auth_login_btn">{{ trans('auth.login') }}</span>
+                <button type="submit" class="btn btn-apx-gold py-2" id="reset-submit-btn">
+                    <i class="bi bi-check-lg me-1"></i> {{ trans('auth.passwords.reset') }}
                 </button>
             </div>
         </form>
 
         <div class="apx-auth-footer">
-            <span data-i18n="auth_login_no_account">Belum memiliki akun?</span> <a href="{{ route('register') }}" class="text-warning fw-bold" data-i18n="auth_login_register_link">Daftar sekarang</a>
+            <a href="{{ route('login') }}" class="text-warning fw-bold">Kembali ke halaman masuk</a>
         </div>
     </div>
 </div>
@@ -103,15 +96,14 @@ function togglePasswordVisibility(inputId, toggleBtn) {
     }
 }
 
-// Double submit protection
 document.addEventListener('DOMContentLoaded', function () {
-    const form = document.getElementById('login-form');
-    const submitBtn = document.getElementById('login-submit-btn');
+    const form = document.getElementById('reset-form');
+    const submitBtn = document.getElementById('reset-submit-btn');
     if (form && submitBtn) {
         form.addEventListener('submit', function () {
             if (form.checkValidity()) {
                 submitBtn.disabled = true;
-                submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Memproses...';
+                submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Menyimpan Sandi...';
             }
         });
     }

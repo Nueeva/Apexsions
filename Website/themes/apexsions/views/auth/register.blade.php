@@ -11,7 +11,7 @@
             <p class="apx-auth-subtitle">Apexsions | The Peak Civilizations</p>
         </div>
 
-        <form method="POST" action="{{ route('register') }}" id="captcha-form">
+        <form method="POST" action="{{ route('register') }}" id="register-form">
             @csrf
 
             <div class="mb-3">
@@ -44,7 +44,13 @@
                 <label class="form-label" for="password">
                     <i class="bi bi-key me-1 text-warning"></i> <span data-i18n="auth_reg_pass_label">{{ trans('auth.password') }}</span>
                 </label>
-                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" placeholder="Minimal 8 karakter" data-i18n-placeholder="auth_reg_pass_ph" required autocomplete="new-password">
+                <div class="input-group">
+                    <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" placeholder="Minimal 8 karakter" data-i18n-placeholder="auth_reg_pass_ph" required autocomplete="new-password">
+                    <button type="button" class="btn btn-outline-secondary apx-password-toggle" onclick="togglePasswordVisibility('password', this)" aria-label="Show password" title="Show password">
+                        <i class="bi bi-eye"></i>
+                    </button>
+                </div>
+                <div class="form-text small text-muted"><i class="bi bi-info-circle me-1"></i>Minimal 8 karakter.</div>
 
                 @error('password')
                     <span class="invalid-feedback d-block mt-1" role="alert">
@@ -57,7 +63,12 @@
                 <label class="form-label" for="password-confirm">
                     <i class="bi bi-shield-check me-1 text-warning"></i> <span data-i18n="auth_reg_confirm_label">{{ trans('auth.confirm_password') }}</span>
                 </label>
-                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" placeholder="Ulangi kata sandi" data-i18n-placeholder="auth_reg_confirm_ph" required autocomplete="new-password">
+                <div class="input-group">
+                    <input id="password-confirm" type="password" class="form-control" name="password_confirmation" placeholder="Ulangi kata sandi" data-i18n-placeholder="auth_reg_confirm_ph" required autocomplete="new-password">
+                    <button type="button" class="btn btn-outline-secondary apx-password-toggle" onclick="togglePasswordVisibility('password-confirm', this)" aria-label="Show password" title="Show password">
+                        <i class="bi bi-eye"></i>
+                    </button>
+                </div>
             </div>
 
             @if($registerConditions !== null)
@@ -81,7 +92,7 @@
             @include('elements.captcha', ['center' => true])
 
             <div class="d-grid mt-4">
-                <button type="submit" class="btn btn-apx-gold py-2">
+                <button type="submit" class="btn btn-apx-gold py-2" id="register-submit-btn">
                     <i class="bi bi-check2-circle me-1"></i> <span data-i18n="auth_reg_btn">{{ trans('auth.register') }}</span>
                 </button>
             </div>
@@ -92,4 +103,43 @@
         </div>
     </div>
 </div>
+
+<script>
+function togglePasswordVisibility(inputId, toggleBtn) {
+    const input = document.getElementById(inputId);
+    if (!input) return;
+    const icon = toggleBtn.querySelector('i');
+    if (input.type === 'password') {
+        input.type = 'text';
+        if (icon) {
+            icon.classList.remove('bi-eye');
+            icon.classList.add('bi-eye-slash');
+        }
+        toggleBtn.setAttribute('aria-label', 'Hide password');
+        toggleBtn.setAttribute('title', 'Hide password');
+    } else {
+        input.type = 'password';
+        if (icon) {
+            icon.classList.remove('bi-eye-slash');
+            icon.classList.add('bi-eye');
+        }
+        toggleBtn.setAttribute('aria-label', 'Show password');
+        toggleBtn.setAttribute('title', 'Show password');
+    }
+}
+
+// Double submit protection
+document.addEventListener('DOMContentLoaded', function () {
+    const form = document.getElementById('register-form');
+    const submitBtn = document.getElementById('register-submit-btn');
+    if (form && submitBtn) {
+        form.addEventListener('submit', function () {
+            if (form.checkValidity()) {
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Memproses Registrasi...';
+            }
+        });
+    }
+});
+</script>
 @endsection

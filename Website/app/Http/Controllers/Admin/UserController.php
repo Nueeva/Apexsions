@@ -25,15 +25,46 @@ class UserController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search');
+        $status = $request->input('status');
+        $roleId = $request->input('role');
+        $sort = $request->input('sort', 'newest');
 
-        $users = User::with('ban')
+        $query = User::with(['ban', 'role', 'minecraftAccount'])
             ->scopes('registered')
             ->when($search, fn (Builder $q) => $q->scopes(['search' => $search]))
-            ->paginate();
+            ->when($status === 'verified', fn (Builder $q) => $q->whereNotNull('email_verified_at'))
+            ->when($status === 'unverified', fn (Builder $q) => $q->whereNull('email_verified_at'))
+            ->when($status === '2fa', fn (Builder $q) => $q->whereNotNull('two_factor_secret'))
+            ->when($status === 'banned', fn (Builder $q) => $q->whereHas('ban'))
+            ->when($status === 'admin', fn (Builder $q) => $q->whereHas('role', fn ($r) => $r->where('is_admin', true)))
+            ->when($roleId, fn (Builder $q) => $q->where('role_id', $roleId));
+
+        match ($sort) {
+            'oldest' => $query->oldest(),
+            'name' => $query->orderBy('name'),
+            'last_login' => $query->orderByDesc('last_login_at'),
+            default => $query->latest(),
+        };
+
+        $users = $query->paginate(15)->withQueryString();
+
+        $metrics = [
+            'total' => User::registered()->count(),
+            'verified' => User::registered()->whereNotNull('email_verified_at')->count(),
+            'unverified' => User::registered()->whereNull('email_verified_at')->count(),
+            'two_factor' => User::registered()->whereNotNull('two_factor_secret')->count(),
+            'banned' => User::registered()->whereHas('ban')->count(),
+            'admins' => User::registered()->whereHas('role', fn ($r) => $r->where('is_admin', true))->count(),
+        ];
 
         return view('admin.users.index', [
             'users' => $users,
             'search' => $search,
+            'status' => $status,
+            'currentRoleId' => $roleId,
+            'sort' => $sort,
+            'roles' => Role::orderByDesc('power')->get(),
+            'metrics' => $metrics,
             'canViewEmail' => $request->user()->can('admin.users.email'),
             'notificationLevels' => Notification::LEVELS,
         ]);
@@ -97,18 +128,27 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(User $user)
+    public function edit(Request $request, User $user)
     {
         $logs = ActionLog::with('target')
             ->whereBelongsTo($user)
             ->latest()
             ->paginate();
 
+        $adminUsersCount = User::whereRelation('role', 'is_admin', true)->count();
+        $isLastAdmin = $user->isAdmin() && $adminUsersCount < 2;
+        $isSelf = $request->user()->is($user);
+        $canDelete = ! $user->isAdmin() && ! $isSelf;
+
         return view('admin.users.edit', [
-            'user' => $user->load('ban'),
+            'user' => $user->load(['ban', 'role', 'minecraftAccount']),
+            'minecraftAccount' => $user->getMinecraftAccount(),
             'roles' => Role::orderByDesc('power')->get(),
             'logs' => $logs,
             'notificationLevels' => Notification::LEVELS,
+            'isSelf' => $isSelf,
+            'isLastAdmin' => $isLastAdmin,
+            'canDelete' => $canDelete,
         ]);
     }
 
@@ -207,7 +247,8 @@ class UserController extends Controller
      */
     public function destroy(Request $request, User $user)
     {
-        abort_if($user->isAdmin(), 401);
+        abort_if($user->isAdmin(), 403, 'Administrator accounts cannot be deleted.');
+        abort_if($request->user()->is($user), 403, 'You cannot delete your own administrative account.');
 
         $this->validateTarget($request->user(), $user);
 

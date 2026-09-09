@@ -210,6 +210,35 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
+     * Get the linked Minecraft account from Apexsions Bridge.
+     */
+    public function minecraftAccount()
+    {
+        return $this->hasOne(\Azuriom\Plugin\ApexsionsBridge\Models\MinecraftAccount::class, 'user_id');
+    }
+
+    /**
+     * Resolve the user's Minecraft account, including fallback match by username.
+     */
+    public function getMinecraftAccount()
+    {
+        if ($this->relationLoaded('minecraftAccount') && $this->minecraftAccount !== null) {
+            return $this->minecraftAccount;
+        }
+
+        if (class_exists(\Azuriom\Plugin\ApexsionsBridge\Models\MinecraftAccount::class)) {
+            $account = $this->minecraftAccount;
+            if ($account !== null) {
+                return $account;
+            }
+
+            return \Azuriom\Plugin\ApexsionsBridge\Models\MinecraftAccount::where('minecraft_username', $this->name)->first();
+        }
+
+        return null;
+    }
+
+    /**
      * Get the user's avatar url.
      * The size may not correspond depending on the provider.
      */
