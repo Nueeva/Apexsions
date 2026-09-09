@@ -29,6 +29,8 @@ public class EditorManager extends AbstractManager<CratesPlugin> {
     private RewardOptionsMenu   rewardOptionsMenu;
     private RewardContentMenu rewardContentMenu;
 
+    private RarityListMenu rarityListMenu;
+
     private KeyListMenu    keyListMenu;
     private KeyOptionsMenu keyOptionsMenu;
 
@@ -50,6 +52,8 @@ public class EditorManager extends AbstractManager<CratesPlugin> {
         this.rewardOptionsMenu = new RewardOptionsMenu(this.plugin, this.dialogs);
         this.rewardContentMenu = new RewardContentMenu(this.plugin, this.dialogs);
 
+        this.rarityListMenu = new RarityListMenu(this.plugin, this.dialogs);
+
         this.keyListMenu = new KeyListMenu(this.plugin, this.dialogs);
         this.keyOptionsMenu = new KeyOptionsMenu(this.plugin, this.dialogs);
     }
@@ -64,6 +68,7 @@ public class EditorManager extends AbstractManager<CratesPlugin> {
         if (this.rewardListMenu != null) this.rewardListMenu.clear();
         if (this.rewardOptionsMenu != null) this.rewardOptionsMenu.clear();
         if (this.rewardContentMenu != null) this.rewardContentMenu.clear();
+        if (this.rarityListMenu != null) this.rarityListMenu.clear();
 
         if (this.keyListMenu != null) this.keyListMenu.clear();
         if (this.keyOptionsMenu != null) this.keyOptionsMenu.clear();
@@ -113,6 +118,10 @@ public class EditorManager extends AbstractManager<CratesPlugin> {
 
     public void openKeyList(@NotNull Player player) {
         this.keyListMenu.open(player, this.plugin.getKeyManager());
+    }
+
+    public void openRarityList(@NotNull Player player) {
+        this.rarityListMenu.open(player, this.plugin.getCrateManager());
     }
 
     public void openKeyOptions(@NotNull Player player, @NotNull CrateKey key) {

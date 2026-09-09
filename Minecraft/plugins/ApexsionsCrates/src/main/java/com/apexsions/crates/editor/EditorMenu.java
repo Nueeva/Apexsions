@@ -32,6 +32,13 @@ public class EditorMenu extends NormalMenu<CratesPlugin> implements LangContaine
         .appendInfo("There are " + GOLD.wrap(GENERIC_AMOUNT) + " keys created.").br()
         .appendClick("Click to open").build();
 
+    private static final IconLocale RARITIES_LOCALE = LangEntry.iconBuilder("Editor.Button.Main.Rarities")
+        .accentColor(GOLD)
+        .name("Rarities")
+        .appendInfo("Manage reward rarities.").br()
+        .appendInfo("Each rarity has its own " + GOLD.wrap("chance weight") + ".").br()
+        .appendClick("Click to open").build();
+
     public EditorMenu(@NotNull CratesPlugin plugin) {
         super(plugin, MenuType.GENERIC_9X3, Lang.EDITOR_TITLE_MAIN.text());
         this.plugin.injectLang(this);
@@ -50,6 +57,17 @@ public class EditorMenu extends NormalMenu<CratesPlugin> implements LangContaine
             .setSlots(11)
             .setHandler((viewer1, event) -> {
                 this.runNextTick(() -> plugin.getEditorManager().openCrateList(viewer.getPlayer()));
+            })
+            .build()
+        );
+
+        viewer.addItem(NightItem.fromType(Material.NETHER_STAR)
+            .localized(RARITIES_LOCALE)
+            .replacement(replacer -> replacer.replace(GENERIC_AMOUNT, () -> String.valueOf(this.plugin.getCrateManager().getRarities().size())))
+            .toMenuItem()
+            .setSlots(13)
+            .setHandler((viewer1, event) -> {
+                this.runNextTick(() -> plugin.getEditorManager().openRarityList(viewer.getPlayer()));
             })
             .build()
         );

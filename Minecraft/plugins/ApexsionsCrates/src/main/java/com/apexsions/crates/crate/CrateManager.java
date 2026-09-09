@@ -147,9 +147,13 @@ public class CrateManager extends AbstractManager<CratesPlugin> {
                 oldFile.delete();
             }
             if (rarities.isEmpty()) {
-                rarities.add(new Rarity(this.plugin, "common", TagWrappers.WHITE.wrap("Common"), 70));
-                rarities.add(new Rarity(this.plugin, "rare", TagWrappers.GREEN.wrap("Rare"), 25));
-                rarities.add(new Rarity(this.plugin, "mythic", TagWrappers.SOFT_PURPLE.wrap("Mythic"), 5));
+                rarities.add(new Rarity(this.plugin, "common",    TagWrappers.WHITE.wrap("Common"),         500));
+                rarities.add(new Rarity(this.plugin, "uncommon",  TagWrappers.GREEN.wrap("Uncommon"),       250));
+                rarities.add(new Rarity(this.plugin, "rare",      TagWrappers.AQUA.wrap("Rare"),            150));
+                rarities.add(new Rarity(this.plugin, "epic",      TagWrappers.SOFT_PURPLE.wrap("Epic"),      75));
+                rarities.add(new Rarity(this.plugin, "legendary", TagWrappers.GOLD.wrap("Legendary"),        30));
+                rarities.add(new Rarity(this.plugin, "mythic",    TagWrappers.SOFT_RED.wrap("Mythic"),       10));
+                rarities.add(new Rarity(this.plugin, "secret",    TagWrappers.YELLOW.wrap("Secret"),          3));
             }
 
             rarities.forEach(rarity -> {
@@ -238,6 +242,9 @@ public class CrateManager extends AbstractManager<CratesPlugin> {
         this.dialogs.register(CostDialogs.CREATION, CostCreationDialog::new);
         this.dialogs.register(CostDialogs.NAME, CostNameDialog::new);
         this.dialogs.register(CostDialogs.ENTRY_CREATION, CostEntryCreationDialog::new);
+
+        this.dialogs.register(RarityDialogs.RARITY_CREATION, () -> new RarityCreationDialog(this.plugin));
+        this.dialogs.register(RarityDialogs.RARITY_EDIT, RarityEditDialog::new);
     }
 
     private void reportProblems() {
@@ -279,6 +286,37 @@ public class CrateManager extends AbstractManager<CratesPlugin> {
     @NotNull
     public Rarity getMostCommonRarity() {
         return this.getRarities().stream().max(Comparator.comparing(Rarity::getWeight)).orElseThrow();
+    }
+
+    public void addRarity(@NotNull Rarity rarity) {
+        this.rarityByIdMap.put(rarity.getId(), rarity);
+        this.saveRarities();
+    }
+
+    public boolean removeRarity(@NotNull String id) {
+        Rarity removed = this.rarityByIdMap.remove(id.toLowerCase());
+        if (removed != null) {
+            this.saveRarities();
+            Rarity fallback = this.getMostCommonRarity();
+            for (Crate crate : this.getCrates()) {
+                for (Reward reward : crate.getRewards()) {
+                    if (reward.getRarity() == removed) {
+                        reward.setRarity(fallback);
+                        crate.markDirty();
+                    }
+                }
+            }
+            return true;
+        }
+        return false;
+    }
+
+    public void saveRarities() {
+        FileConfig config = this.plugin.getConfig();
+        // Overwrite section cleanly
+        config.remove("Rewards.Rarities");
+        this.rarityByIdMap.values().forEach(r -> r.write(config, "Rewards.Rarities." + r.getId()));
+        config.save();
     }
 
     @NotNull

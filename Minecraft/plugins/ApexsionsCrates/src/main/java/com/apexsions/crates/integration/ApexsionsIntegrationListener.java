@@ -44,7 +44,7 @@ public class ApexsionsIntegrationListener implements Listener {
             try {
                 ApexsionsCoreAPI coreAPI = ApexsionsCoreProvider.get();
                 coreAPI.addXp(player.getUniqueId(), 25L, XpSource.CUSTOM);
-                player.sendMessage(mm.deserialize("<gradient:#f1c40f:#e67e22>✦ +25 Core XP</gradient> <gray>(Membuka Crate " + event.getCrate().getName() + ")</gray>"));
+                player.sendActionBar(mm.deserialize("<gradient:#f1c40f:#e67e22>✦ +25 Core XP</gradient> <gray>(Membuka Crate " + event.getCrate().getName() + ")</gray>"));
             } catch (Exception ignored) {}
         }
 
@@ -54,7 +54,7 @@ public class ApexsionsIntegrationListener implements Listener {
                 ApexsionsBattlepassAPI bpAPI = ApexsionsBattlepassProvider.get();
                 bpAPI.addPlayerXp(player.getUniqueId(), 15);
                 bpAPI.addPlayerPoints(player.getUniqueId(), 1);
-                player.sendMessage(mm.deserialize("<gradient:#3498db:#9b59b6>✦ +15 Battlepass XP & +1 BP Point</gradient>"));
+                player.sendActionBar(mm.deserialize("<gradient:#3498db:#9b59b6>✦ +15 Battlepass XP & +1 BP Point</gradient>"));
             } catch (Exception ignored) {}
         }
     }
@@ -70,7 +70,7 @@ public class ApexsionsIntegrationListener implements Listener {
                 if (ApexsionsCoreProvider.isAvailable()) {
                     try {
                         ApexsionsCoreProvider.get().addXp(player.getUniqueId(), 100L, XpSource.CUSTOM);
-                        player.sendMessage(mm.deserialize("<gold><bold>★ JACKPOT REWARD! +100 Bonus Core XP!</bold></gold>"));
+                        player.sendActionBar(mm.deserialize("<gold><bold>★ JACKPOT REWARD! +100 Bonus Core XP!</bold></gold>"));
                     } catch (Exception ignored) {}
                 }
                 if (ApexsionsBattlepassProvider.isAvailable()) {
