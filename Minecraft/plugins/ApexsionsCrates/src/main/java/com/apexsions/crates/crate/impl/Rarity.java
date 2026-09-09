@@ -3,7 +3,6 @@ package com.apexsions.crates.crate.impl;
 import org.jetbrains.annotations.NotNull;
 import com.apexsions.crates.CratesPlugin;
 import com.apexsions.crates.Placeholders;
-import com.apexsions.crates.api.crate.Reward;
 import su.nightexpress.nightcore.config.FileConfig;
 import su.nightexpress.nightcore.util.StringUtil;
 
@@ -48,23 +47,13 @@ public class Rarity {
     }
 
     public double getRollChance(@NotNull Crate crate) {
-        double totalWeight = crate.getRewards().stream()
-                .filter(Reward::isRollable)
-                .mapToDouble(Reward::getEffectiveWeight)
-                .sum();
-        if (totalWeight <= 0) return 0D;
-
-        double rarityWeight = crate.getRewards(this).stream()
-                .filter(Reward::isRollable)
-                .mapToDouble(Reward::getEffectiveWeight)
-                .sum();
-
-        return (rarityWeight / totalWeight) * 100D;
+        return this.getRollChance(crate.getRarities());
     }
 
     public double getRollChance(@NotNull Collection<Rarity> rarities) {
         double sum = rarities.stream().mapToDouble(Rarity::getWeight).sum();
-        return sum <= 0 ? 0D : (this.getWeight() / sum) * 100D;
+        if (sum <= 0) return 0D;
+        return (this.getWeight() / sum) * 100D;
     }
 
     @NotNull

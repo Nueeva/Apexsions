@@ -49,10 +49,6 @@ public interface Reward extends Writeable {
 
     double getRollChance();
 
-    default double getEffectiveWeight() {
-        return this.isRollable() ? this.getRarity().getWeight() * this.getWeight() : 0D;
-    }
-
     @NotNull String getId();
 
     @NotNull Crate getCrate();

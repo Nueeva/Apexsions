@@ -136,7 +136,7 @@ public class PreviewMenu extends LinkedMenu<CratesPlugin, CrateSource> implement
         this.rewardLore = ConfigValue.create("Reward.Lore.Default", Lists.newList(
             NO_PERMISSION,
             EMPTY_IF_ABOVE,
-            DARK_GRAY.wrap("»") + GRAY.wrap(" Rarity: ") + WHITE.wrap(REWARD_RARITY_NAME),
+            DARK_GRAY.wrap("»") + GRAY.wrap(" Rarity: ") + WHITE.wrap(REWARD_RARITY_NAME) + GRAY.wrap(" (") + GREEN.wrap(REWARD_RARITY_ROLL_CHANCE + "%") + GRAY.wrap(")"),
             DARK_GRAY.wrap("»") + GRAY.wrap(" Chance: ") + GREEN.wrap(REWARD_ROLL_CHANCE + "%"),
             GENERIC_LIMITS,
             EMPTY_IF_BELOW,
@@ -147,8 +147,11 @@ public class PreviewMenu extends LinkedMenu<CratesPlugin, CrateSource> implement
         boolean upgraded = false;
         for (String line : this.rewardLore) {
             if (line.contains(REWARD_RARITY_NAME) && line.contains(REWARD_ROLL_CHANCE)) {
-                upgradedLore.add(DARK_GRAY.wrap("»") + GRAY.wrap(" Rarity: ") + WHITE.wrap(REWARD_RARITY_NAME));
+                upgradedLore.add(DARK_GRAY.wrap("»") + GRAY.wrap(" Rarity: ") + WHITE.wrap(REWARD_RARITY_NAME) + GRAY.wrap(" (") + GREEN.wrap(REWARD_RARITY_ROLL_CHANCE + "%") + GRAY.wrap(")"));
                 upgradedLore.add(DARK_GRAY.wrap("»") + GRAY.wrap(" Chance: ") + GREEN.wrap(REWARD_ROLL_CHANCE + "%"));
+                upgraded = true;
+            } else if (line.contains(REWARD_RARITY_NAME) && !line.contains(REWARD_RARITY_ROLL_CHANCE)) {
+                upgradedLore.add(DARK_GRAY.wrap("»") + GRAY.wrap(" Rarity: ") + WHITE.wrap(REWARD_RARITY_NAME) + GRAY.wrap(" (") + GREEN.wrap(REWARD_RARITY_ROLL_CHANCE + "%") + GRAY.wrap(")"));
                 upgraded = true;
             } else {
                 upgradedLore.add(line);

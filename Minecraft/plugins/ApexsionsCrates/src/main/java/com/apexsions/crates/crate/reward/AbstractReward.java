@@ -201,13 +201,13 @@ public abstract class AbstractReward implements Reward {
     public double getRollChance() {
         if (!this.isRollable()) return 0D;
 
-        double totalWeight = this.crate.getRewards().stream()
+        double sum = this.crate.getRewards(this.rarity).stream()
                 .filter(Reward::isRollable)
-                .mapToDouble(Reward::getEffectiveWeight)
+                .mapToDouble(Reward::getWeight)
                 .sum();
-        if (totalWeight <= 0) return 0D;
+        if (sum <= 0) return 0D;
 
-        return (this.getEffectiveWeight() / totalWeight) * 100D;
+        return (this.weight / sum) * 100D;
     }
 
     @Override

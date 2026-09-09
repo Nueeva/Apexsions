@@ -17,6 +17,14 @@ import java.util.stream.Collectors;
 
 public class Placeholders extends su.nightexpress.nightcore.util.Placeholders {
 
+    public static String formatChance(double chance) {
+        if (chance <= 0) return "0";
+        if (chance < 0.01) {
+            return String.format(Locale.US, "%.3f", chance);
+        }
+        return NumberUtil.format(chance);
+    }
+
     public static final String WIKI_URL          = "https://apexsions.com/wiki/crates/";
     public static final String WIKI_WEIGHTS      = WIKI_URL + "rewards/rarity-weights/";
     public static final String WIKI_PLACEHOLDERS = WIKI_URL + "placeholders/internal";
@@ -77,14 +85,6 @@ public class Placeholders extends su.nightexpress.nightcore.util.Placeholders {
         .add(CRATE_LAST_REWARD, Crate::getLastRewardName)
         .add(CRATE_OPEN_COST, crate -> crate.getCosts().stream().map(Cost::getName).collect(Collectors.joining(", ")))
     );
-
-    public static String formatChance(double chance) {
-        if (chance <= 0) return "0";
-        if (chance < 0.01) {
-            return String.format(Locale.US, "%.3f", chance);
-        }
-        return NumberUtil.format(chance);
-    }
 
     public static final PlaceholderList<Reward> REWARD = PlaceholderList.create(list -> list
         .add(REWARD_ID, Reward::getId)

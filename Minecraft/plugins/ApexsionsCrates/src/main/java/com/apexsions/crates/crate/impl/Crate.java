@@ -505,6 +505,20 @@ public class Crate implements ConfigBacked {
             throw new IllegalStateException("Crate '" + this.getId() + "' has no rewards to roll!");
         }
 
+        // If no rarity is specified, we have to select a random one and filter rewards by selected rarity.
+        // Otherwise reward list is already obtained with specified rarity.
+        if (rarity == null) {
+            Map<Rarity, Double> rarities = new HashMap<>();
+            rewards.stream().map(Reward::getRarity).forEach(rewardRarity -> {
+                rarities.putIfAbsent(rewardRarity, rewardRarity.getWeight());
+            });
+
+            if (!rarities.isEmpty()) {
+                Rarity rarityRoll = Rnd.getByWeight(rarities);
+                rewards.removeIf(reward -> reward.getRarity() != rarityRoll);
+            }
+        }
+
         return this.rollReward(rewards);
     }
 
@@ -513,7 +527,7 @@ public class Crate implements ConfigBacked {
         Map<Reward, Double> rewards = new HashMap<>();
         allRewards.forEach(reward -> {
             if (reward.isRollable()) {
-                rewards.put(reward, reward.getEffectiveWeight());
+                rewards.put(reward, reward.getWeight());
             }
         });
         if (rewards.isEmpty()) {
