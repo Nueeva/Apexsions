@@ -134,13 +134,12 @@ public class PreviewMenu extends LinkedMenu<CratesPlugin, CrateSource> implement
         ).read(config);
 
         this.rewardLore = ConfigValue.create("Reward.Lore.Default", Lists.newList(
-            NO_PERMISSION,
+            REWARD_DESCRIPTION,
             EMPTY_IF_ABOVE,
             DARK_GRAY.wrap("»") + GRAY.wrap(" Rarity: ") + WHITE.wrap(REWARD_RARITY_NAME) + GRAY.wrap(" (") + GREEN.wrap(REWARD_RARITY_ROLL_CHANCE + "%") + GRAY.wrap(")"),
             DARK_GRAY.wrap("»") + GRAY.wrap(" Chance: ") + GREEN.wrap(REWARD_ROLL_CHANCE + "%"),
             GENERIC_LIMITS,
-            EMPTY_IF_BELOW,
-            REWARD_DESCRIPTION
+            NO_PERMISSION
         )).read(config);
 
         List<String> upgradedLore = new ArrayList<>();
@@ -159,7 +158,40 @@ public class PreviewMenu extends LinkedMenu<CratesPlugin, CrateSource> implement
         }
         if (upgraded) {
             this.rewardLore = upgradedLore;
-            config.set("Reward.Lore.Default", upgradedLore);
+        }
+
+        int descIndex = -1;
+        int rarityIndex = -1;
+        for (int i = 0; i < this.rewardLore.size(); i++) {
+            String line = this.rewardLore.get(i);
+            if (line.contains(REWARD_DESCRIPTION)) descIndex = i;
+            if (line.contains(REWARD_RARITY_NAME)) rarityIndex = i;
+        }
+
+        if (descIndex > rarityIndex && rarityIndex != -1) {
+            List<String> reorderedLore = new ArrayList<>();
+            reorderedLore.add(REWARD_DESCRIPTION);
+            reorderedLore.add(EMPTY_IF_ABOVE);
+            String noPermLine = null;
+            for (String line : this.rewardLore) {
+                if (line.contains(REWARD_DESCRIPTION) || line.contains(EMPTY_IF_BELOW) || line.contains(EMPTY_IF_ABOVE)) {
+                    continue;
+                }
+                if (line.contains(NO_PERMISSION)) {
+                    noPermLine = line;
+                    continue;
+                }
+                reorderedLore.add(line);
+            }
+            if (noPermLine != null) {
+                reorderedLore.add(noPermLine);
+            }
+            this.rewardLore = reorderedLore;
+            upgraded = true;
+        }
+
+        if (upgraded) {
+            config.set("Reward.Lore.Default", this.rewardLore);
             config.save();
         }
 
