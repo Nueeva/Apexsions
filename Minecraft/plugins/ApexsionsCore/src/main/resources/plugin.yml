@@ -2,7 +2,7 @@ name: ApexsionsCore
 version: '1.0.0'
 main: com.apexsions.core.ApexsionsCorePlugin
 api-version: '1.21'
-author: Antigravity
+author: Nueeva
 description: Core server management plugin for Apexsions Realms, Progression, XP, Level Titles, Ranks, and Chat.
 softdepend:
   - LuckPerms

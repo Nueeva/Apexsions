@@ -2,7 +2,7 @@ name: ApexsionsMedia
 version: '1.0.0'
 main: com.apexsions.media.ApexsionsMediaPlugin
 api-version: '1.21'
-author: Antigravity
+author: Nueeva
 description: High-performance interactive banner, logo, and in-game media display suite with line-of-sight hover glow, URL actions, and unified Creator verification suite.
 
 commands:

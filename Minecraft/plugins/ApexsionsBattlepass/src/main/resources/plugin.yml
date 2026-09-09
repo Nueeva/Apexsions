@@ -2,7 +2,7 @@ name: ApexsionsBattlepass
 version: '1.0.0'
 main: com.apexsions.battlepass.ApexsionsBattlepass
 api-version: '1.20'
-authors: [ApexTeam]
+author: Nueeva
 description: Apexsions Battlepass - Modular, Modern, Scalable Battle Pass Plugin for Minecraft
 softdepend: [Vault, PlaceholderAPI, ApexsionsEconomy, nightcore, NightCore, ExcellentCrates]
 commands:

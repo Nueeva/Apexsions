@@ -2,7 +2,7 @@ name: ApexsionsEconomy
 version: '1.0.0'
 main: com.apexsions.economy.ApexsionsEconomy
 api-version: '1.20'
-authors: [ApexTeam]
+author: Nueeva
 description: Apexsions Economy - Multi-Currency, Indonesian Formatter, Escrow Auction House
 commands:
   economy:
