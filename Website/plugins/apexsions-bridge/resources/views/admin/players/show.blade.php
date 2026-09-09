@@ -30,6 +30,12 @@
                                 OFFLINE
                             </span>
                         @endif
+
+                        @if($currentRankMeta)
+                            <span class="badge px-2 py-1 font-monospace fw-bold" style="background: rgba(0,0,0,0.6); border: 1px solid {{ $currentRankMeta['color'] }}; color: {{ $currentRankMeta['color'] }};">
+                                {{ $currentRankMeta['badge'] }}
+                            </span>
+                        @endif
                     </div>
                     <div class="d-flex flex-wrap align-items-center gap-2 text-muted small">
                         <span>UUID: <code class="text-warning">{{ $account->minecraft_uuid }}</code></span>
@@ -62,6 +68,11 @@
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
+                        <button class="nav-link py-3 text-uppercase fw-bold" id="rank-tab" data-bs-toggle="tab" data-bs-target="#rank" type="button" role="tab" style="letter-spacing: 1px; font-size: 0.8rem;">
+                            <i class="bi bi-trophy-fill me-1 text-warning"></i> Rank & Privilese
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
                         <button class="nav-link py-3 text-uppercase fw-bold" id="economy-tab" data-bs-toggle="tab" data-bs-target="#economy" type="button" role="tab" style="letter-spacing: 1px; font-size: 0.8rem;">
                             <i class="bi bi-coin me-1"></i> Ekonomi
                         </button>
@@ -88,19 +99,19 @@
                 <div class="tab-content" id="playerTabContent">
                     <!-- 1. OVERVIEW TAB -->
                     <div class="tab-pane fade show active" id="overview" role="tabpanel">
-                        <div class="row g-3">
+                        <div class="row g-3 mb-4">
                             <div class="col-sm-6">
                                 <div class="p-3 rounded bg-dark border border-secondary">
                                     <small class="text-muted text-uppercase fw-bold d-block mb-1" style="font-size: 0.72rem;">Rank In-Game</small>
-                                    <h5 class="fw-bold text-warning mb-0">{{ ucfirst($account->rank) }}</h5>
-                                    <small class="text-muted">Display: {{ $account->rank_display ?: ucfirst($account->rank) }}</small>
+                                    <h5 class="fw-bold text-warning mb-0">{{ $currentRankMeta['display_name'] ?? ucfirst($account->rank) }}</h5>
+                                    <small class="text-muted">Tier: {{ $currentRankMeta['tier'] ?? 'Tier I' }} &bull; Weight: {{ $currentRankMeta['weight'] ?? 10 }}</small>
                                 </div>
                             </div>
                             <div class="col-sm-6">
                                 <div class="p-3 rounded bg-dark border border-secondary">
                                     <small class="text-muted text-uppercase fw-bold d-block mb-1" style="font-size: 0.72rem;">Progresi Karakter</small>
                                     <h5 class="fw-bold text-white mb-0">Level {{ $account->level }}</h5>
-                                    <small class="text-muted">{{ number_format($account->xp) }} / {{ number_format($account->required_xp) }} XP</small>
+                                    <small class="text-muted">{{ number_format($account->xp) }} / {{ number_format($account->required_xp) }} XP ({{ $account->level_title ?: 'Citizen' }})</small>
                                 </div>
                             </div>
                             <div class="col-sm-6">
@@ -129,9 +140,107 @@
                                 </div>
                             </div>
                         </div>
+
+                        <!-- Balances Overview Cards -->
+                        <div class="row g-3">
+                            <div class="col-sm-6">
+                                <div class="p-3 rounded bg-dark border border-secondary">
+                                    <small class="text-muted text-uppercase fw-bold d-block mb-1" style="font-size: 0.72rem;">Saldo Rupiah (IDR)</small>
+                                    <h4 class="fw-bold text-success mb-0">Rp {{ number_format($account->balance_rupiah, 0, ',', '.') }}</h4>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="p-3 rounded bg-dark border border-secondary">
+                                    <small class="text-muted text-uppercase fw-bold d-block mb-1" style="font-size: 0.72rem;">Saldo Diamond (💎)</small>
+                                    <h4 class="fw-bold text-info mb-0">{{ number_format($account->balance_diamond, 0, ',', '.') }} 💎</h4>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
-                    <!-- 2. ECONOMY TAB -->
+                    <!-- 2. RANK & PRIVILEGE TAB (NEW) -->
+                    <div class="tab-pane fade" id="rank" role="tabpanel">
+                        <div class="card p-3 mb-4" style="background: rgba(0,0,0,0.4); border: 1px solid {{ $currentRankMeta['color'] ?? '#95a5a6' }};">
+                            <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+                                <div>
+                                    <div class="d-flex align-items-center gap-2 mb-1">
+                                        <span class="badge bg-dark border border-secondary text-white">{{ $currentRankMeta['tier'] ?? 'Tier I' }}</span>
+                                        <h4 class="mb-0 fw-bold text-white" style="font-family: 'Cinzel', serif;">
+                                            {{ $currentRankMeta['display_name'] ?? ucfirst($account->rank) }}
+                                        </h4>
+                                        <span class="badge px-2 py-1 font-monospace fw-bold" style="background: rgba(0,0,0,0.6); border: 1px solid {{ $currentRankMeta['color'] ?? '#95a5a6' }}; color: {{ $currentRankMeta['color'] ?? '#95a5a6' }};">
+                                            {{ $currentRankMeta['badge'] ?? $account->rank }}
+                                        </span>
+                                    </div>
+                                    <p class="text-muted small mb-0">{{ $currentRankMeta['description'] ?? 'Rank default warga baru.' }}</p>
+                                    <div class="mt-2 text-muted small">
+                                        <span>Bobot (Weight): <strong class="text-warning">{{ $currentRankMeta['weight'] ?? 10 }}</strong></span>
+                                        <span class="mx-2">&bull;</span>
+                                        <span>Prefix In-Game: <code class="text-light">{{ $currentRankMeta['prefix'] ?? '[Wanderer] ' }}</code></span>
+                                    </div>
+                                </div>
+                                <div class="d-flex gap-2">
+                                    <button type="button" class="btn btn-warning fw-bold btn-sm" data-bs-toggle="modal" data-bs-target="#changeRankModal">
+                                        <i class="bi bi-pencil-square me-1"></i> Ubah Rank
+                                    </button>
+                                    @if($account->rank !== 'wanderer')
+                                        <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#resetRankModal">
+                                            <i class="bi bi-arrow-counterclockwise me-1"></i> Reset ke Wanderer
+                                        </button>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Rank Audit History -->
+                        <div class="card border-0" style="background: #14171d; border-radius: 8px;">
+                            <div class="card-header bg-transparent border-bottom border-secondary border-opacity-25 py-2 px-3 d-flex justify-content-between align-items-center">
+                                <span class="small fw-bold text-white text-uppercase">
+                                    <i class="bi bi-clock-history me-1 text-warning"></i> Riwayat Perubahan Rank Pemain ({{ $rankHistory->count() }})
+                                </span>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-sm table-hover text-light mb-0" style="font-size: 0.82rem;">
+                                    <thead class="border-bottom border-secondary text-muted text-uppercase" style="font-size: 0.7rem;">
+                                        <tr>
+                                            <th class="ps-3">Waktu</th>
+                                            <th>Aksi</th>
+                                            <th>Rank Lama</th>
+                                            <th>Rank Baru</th>
+                                            <th>Administrator</th>
+                                            <th>Alasan Audit</th>
+                                            <th class="pe-3 text-end">Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @forelse($rankHistory as $rh)
+                                            <tr>
+                                                <td class="ps-3 text-muted">{{ $rh->created_at->diffForHumans() }}</td>
+                                                <td><span class="badge bg-dark border border-secondary">{{ $rh->action }}</span></td>
+                                                <td><span class="badge bg-secondary">{{ ucfirst($rh->old_value) }}</span></td>
+                                                <td><span class="badge bg-warning text-dark fw-bold">{{ ucfirst($rh->new_value) }}</span></td>
+                                                <td class="text-light fw-semibold">{{ $rh->actor_name }}</td>
+                                                <td class="text-muted">{{ Str::limit($rh->reason, 30) }}</td>
+                                                <td class="pe-3 text-end">
+                                                    <span class="badge bg-{{ $rh->status === 'SUCCESS' ? 'success' : 'warning' }} bg-opacity-25 text-{{ $rh->status === 'SUCCESS' ? 'success' : 'warning' }}">
+                                                        {{ $rh->status }}
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        @empty
+                                            <tr>
+                                                <td colspan="7" class="text-center py-4 text-muted small">
+                                                    Belum ada riwayat perubahan rank tercatat untuk pemain ini.
+                                                </td>
+                                            </tr>
+                                        @endforelse
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 3. ECONOMY TAB -->
                     <div class="tab-pane fade" id="economy" role="tabpanel">
                         <div class="row g-3 mb-4">
                             <div class="col-sm-4">
@@ -249,38 +358,32 @@
                                             <th>Item</th>
                                             <th>Harga</th>
                                             <th>Status</th>
+                                            <th>Waktu Berakhir</th>
                                             <th class="pe-3 text-end">Aksi</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @forelse($playerAuctions as $auc)
                                             <tr>
-                                                <td class="ps-3 font-monospace text-white-50 small">#{{ $auc->auction_id }}</td>
-                                                <td class="fw-bold text-white">{{ $auc->item_name }}</td>
-                                                <td class="fw-bold text-warning">
-                                                    {{ $auc->currency === 'diamond' ? number_format($auc->price, 0) . ' 💎' : 'Rp ' . number_format($auc->price, 0, ',', '.') }}
-                                                </td>
+                                                <td class="ps-3 font-monospace text-warning">#{{ $auc->id }}</td>
+                                                <td><strong class="text-white">{{ $auc->item_name }}</strong> <small class="text-muted">x{{ $auc->item_amount }}</small></td>
+                                                <td><span class="text-success fw-bold">Rp {{ number_format($auc->price, 0, ',', '.') }}</span></td>
                                                 <td>
-                                                    @if($auc->status === 'ACTIVE')
-                                                        <span class="badge bg-success bg-opacity-25 text-success">ACTIVE</span>
-                                                    @elseif($auc->status === 'QUARANTINED')
-                                                        <span class="badge bg-danger bg-opacity-25 text-danger">QUARANTINED</span>
-                                                    @elseif($auc->status === 'SOLD')
-                                                        <span class="badge bg-info bg-opacity-25 text-info">SOLD</span>
-                                                    @else
-                                                        <span class="badge bg-secondary bg-opacity-25 text-white-50">{{ $auc->status }}</span>
-                                                    @endif
+                                                    <span class="badge bg-{{ $auc->status === 'ACTIVE' ? 'success' : 'secondary' }} bg-opacity-25 text-{{ $auc->status === 'ACTIVE' ? 'success' : 'light' }}">
+                                                        {{ $auc->status }}
+                                                    </span>
                                                 </td>
+                                                <td class="text-muted">{{ $auc->expires_at ? $auc->expires_at->diffForHumans() : '-' }}</td>
                                                 <td class="pe-3 text-end">
-                                                    <a href="{{ route('apexsions-bridge.admin.economy.auctions.show', $auc->id) }}" class="btn btn-outline-warning btn-sm py-0 px-2" style="font-size: 0.72rem;">
-                                                        Detail
+                                                    <a href="{{ route('apexsions-bridge.admin.economy.auctions.show', $auc->id) }}" class="btn btn-outline-secondary btn-sm py-0 px-2" style="font-size: 0.72rem;">
+                                                        Inspeksi
                                                     </a>
                                                 </td>
                                             </tr>
                                         @empty
                                             <tr>
-                                                <td colspan="5" class="text-center py-4 text-muted small">
-                                                    Pemain ini belum pernah mendaftarkan barang di Auction House.
+                                                <td colspan="6" class="text-center py-4 text-muted small">
+                                                    Tidak ada listing lelang aktif untuk pemain ini.
                                                 </td>
                                             </tr>
                                         @endforelse
@@ -290,64 +393,37 @@
                         </div>
                     </div>
 
-                    <!-- 3. KINGDOM TAB -->
+                    <!-- 4. KINGDOM TAB -->
                     <div class="tab-pane fade" id="kingdom" role="tabpanel">
-                        <div class="row g-3">
-                            <div class="col-12">
-                                <div class="p-3 rounded bg-dark border border-secondary">
-                                    <small class="text-muted text-uppercase fw-bold d-block mb-1" style="font-size: 0.72rem;">Afiliasi Peradaban Kerajaan</small>
-                                    <h4 class="fw-bold mb-1 text-warning">
-                                        <i class="bi bi-flag-fill me-2"></i>
-                                        {{ $account->kingdom_display ?: ($account->kingdom === 'NONE' ? 'Belum Memilih Kerajaan' : $account->kingdom) }}
-                                    </h4>
-                                    <small class="text-muted">Kode Regional: <code>{{ $account->kingdom }}</code></small>
+                        <div class="p-4 rounded bg-dark border border-secondary mb-4">
+                            <h5 class="fw-bold text-white mb-2">Afiliasi Kerajaan</h5>
+                            @if($account->kingdom && strtoupper($account->kingdom) !== 'NONE')
+                                <div class="d-flex align-items-center gap-3">
+                                    <span class="badge bg-warning text-dark fs-6 px-3 py-2 fw-bold">
+                                        ⚜ {{ $account->kingdom_display ?: $account->kingdom }}
+                                    </span>
+                                    <button type="button" class="btn btn-sm btn-outline-warning" data-bs-toggle="modal" data-bs-target="#setKingdomModal">
+                                        Pindah Kerajaan
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#resetKingdomModal">
+                                        Reset Kerajaan
+                                    </button>
                                 </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="p-3 rounded bg-dark border border-secondary">
-                                    <small class="text-muted text-uppercase fw-bold d-block mb-1" style="font-size: 0.72rem;">Gelar Level Karakter</small>
-                                    <div class="fw-bold text-white">{{ $account->level_title ?: 'Citizen' }}</div>
-                                    <small class="text-muted">Berdasarkan pencapaian level</small>
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="p-3 rounded bg-dark border border-secondary">
-                                    <small class="text-muted text-uppercase fw-bold d-block mb-1" style="font-size: 0.72rem;">Gelar Aktif (Title Equip)</small>
-                                    <div class="fw-bold text-warning">{{ $account->active_title ?: 'Tidak Ada' }}</div>
-                                    <small class="text-muted">Ditampilkan di atas kepala & chat</small>
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="p-3 rounded bg-dark border border-secondary">
-                                    <small class="text-muted text-uppercase fw-bold d-block mb-2" style="font-size: 0.72rem;">Daftar Gelar yang Dimiliki (Unlocked Titles)</small>
-                                    <div class="d-flex flex-wrap gap-1">
-                                        @forelse($account->unlocked_titles ?? [] as $title)
-                                            <span class="badge bg-secondary border border-secondary">{{ $title }}</span>
-                                        @empty
-                                            <span class="text-muted small">Belum ada gelar khusus yang terbuka.</span>
-                                        @endforelse
-                                    </div>
-                                </div>
-                            </div>
+                            @else
+                                <p class="text-muted small mb-3">Warga ini belum menentukan kesetiaan kerajaan (Belum Memilih).</p>
+                                <button type="button" class="btn btn-sm btn-warning fw-bold" data-bs-toggle="modal" data-bs-target="#setKingdomModal">
+                                    Tetapkan Kerajaan
+                                </button>
+                            @endif
                         </div>
                     </div>
 
-                    <!-- 4. MODERATION TAB (ACTIVE & HISTORICAL SANCTIONS) -->
+                    <!-- 5. MODERATION TAB -->
                     <div class="tab-pane fade" id="moderation" role="tabpanel">
-                        {{-- Quick Action Header --}}
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                            <h6 class="text-white fw-bold mb-0">
-                                <i class="bi bi-shield-shaded me-2 text-warning"></i> Sanksi & Penegakan Kedisiplinan
-                            </h6>
-                            <a href="{{ route('apexsions-bridge.admin.moderation.index') }}?target={{ urlencode($account->minecraft_username) }}" class="btn btn-warning btn-sm fw-bold">
-                                <i class="bi bi-hammer me-1"></i> Terbitkan Sanksi untuk Pemain Ini
-                            </a>
-                        </div>
-
                         {{-- Punishments Table --}}
                         <div class="card border-0 mb-4" style="background: #14171d; border-radius: 8px;">
                             <div class="card-header bg-transparent border-bottom border-secondary border-opacity-25 py-2 px-3">
-                                <span class="small fw-bold text-muted text-uppercase">Riwayat Sanksi ({{ $punishments->count() }})</span>
+                                <span class="small fw-bold text-muted text-uppercase">Catatan Hukuman & Sanksi ({{ $punishments->count() }})</span>
                             </div>
                             <div class="table-responsive">
                                 <table class="table table-sm table-hover text-light mb-0" style="font-size: 0.82rem;">
@@ -355,51 +431,23 @@
                                         <tr>
                                             <th>Tipe</th>
                                             <th>Alasan</th>
-                                            <th>Staf</th>
-                                            <th>Status</th>
+                                            <th>Staf Penindak</th>
                                             <th>Kedaluwarsa</th>
-                                            <th>Waktu</th>
+                                            <th>Status</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @forelse($punishments as $punish)
+                                        @forelse($punishments as $pun)
                                             <tr>
-                                                <td>
-                                                    @php
-                                                        $pColor = match($punish->type) {
-                                                            'BAN' => 'danger',
-                                                            'MUTE' => 'warning',
-                                                            'KICK' => 'orange',
-                                                            default => 'info'
-                                                        };
-                                                    @endphp
-                                                    <span class="badge bg-{{ $pColor }} bg-opacity-25 text-{{ $pColor }} border border-{{ $pColor }} border-opacity-25">
-                                                        {{ $punish->type }}
-                                                    </span>
-                                                </td>
-                                                <td class="text-white">{{ $punish->reason }}</td>
-                                                <td><span class="text-info">{{ $punish->staff_name }}</span></td>
-                                                <td>
-                                                    @if($punish->status === 'ACTIVE')
-                                                        <span class="badge bg-danger bg-opacity-20 text-danger">AKTIF</span>
-                                                    @elseif($punish->status === 'PARDONED')
-                                                        <span class="badge bg-success bg-opacity-20 text-success">DICABUT</span>
-                                                    @else
-                                                        <span class="badge bg-secondary bg-opacity-20 text-muted">KEDALUWARSA</span>
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    @if($punish->expires_at)
-                                                        {{ $punish->expires_at->diffForHumans() }}
-                                                    @else
-                                                        <span class="text-muted">Permanen</span>
-                                                    @endif
-                                                </td>
-                                                <td class="text-muted">{{ $punish->created_at->diffForHumans() }}</td>
+                                                <td><span class="badge bg-danger">{{ $pun->type }}</span></td>
+                                                <td>{{ $pun->reason }}</td>
+                                                <td>{{ $pun->staff_name }}</td>
+                                                <td>{{ $pun->expires_at ? $pun->expires_at->diffForHumans() : 'Permanen' }}</td>
+                                                <td><span class="badge bg-{{ $pun->is_active ? 'warning text-dark' : 'secondary' }}">{{ $pun->is_active ? 'AKTIF' : 'SELESAI' }}</span></td>
                                             </tr>
                                         @empty
                                             <tr>
-                                                <td colspan="6" class="text-center py-3 text-muted">
+                                                <td colspan="5" class="text-center py-3 text-muted">
                                                     Pemain ini memiliki rekam jejak bersih (tidak ada sanksi tercatat).
                                                 </td>
                                             </tr>
@@ -453,54 +501,9 @@
                                 </table>
                             </div>
                         </div>
-
-                        {{-- Reports Created By This Player --}}
-                        <div class="card border-0" style="background: #14171d; border-radius: 8px;">
-                            <div class="card-header bg-transparent border-bottom border-secondary border-opacity-25 py-2 px-3">
-                                <span class="small fw-bold text-muted text-uppercase">Laporan yang Diajukan oleh Pemain Ini ({{ $reportsCreated->count() }})</span>
-                            </div>
-                            <div class="table-responsive">
-                                <table class="table table-sm table-hover text-light mb-0" style="font-size: 0.82rem;">
-                                    <thead class="border-bottom border-secondary text-muted text-uppercase" style="font-size: 0.7rem;">
-                                        <tr>
-                                            <th>Tiket</th>
-                                            <th>Terlapor</th>
-                                            <th>Alasan</th>
-                                            <th>Status</th>
-                                            <th>Waktu</th>
-                                            <th class="text-end">Aksi</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @forelse($reportsCreated as $repCreated)
-                                            <tr>
-                                                <td class="fw-bold font-monospace text-warning">#{{ $repCreated->id }}</td>
-                                                <td>{{ $repCreated->reported_name }}</td>
-                                                <td class="text-white">{{ $repCreated->reason }}</td>
-                                                <td>
-                                                    <span class="badge bg-secondary bg-opacity-25 text-light">{{ $repCreated->status }}</span>
-                                                </td>
-                                                <td class="text-muted">{{ $repCreated->created_at->diffForHumans() }}</td>
-                                                <td class="text-end">
-                                                    <a href="{{ route('apexsions-bridge.admin.reports.show', $repCreated->id) }}" class="btn btn-xs btn-outline-warning py-0 px-2">
-                                                        Lihat Tiket
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                        @empty
-                                            <tr>
-                                                <td colspan="6" class="text-center py-3 text-muted">
-                                                    Pemain belum pernah mengajukan laporan.
-                                                </td>
-                                            </tr>
-                                        @endforelse
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
                     </div>
 
-                    <!-- 5. AUDIT TAB -->
+                    <!-- 6. AUDIT TAB -->
                     <div class="tab-pane fade" id="audit" role="tabpanel">
                         <div class="table-responsive">
                             <table class="table table-sm table-hover text-light mb-0" style="font-size: 0.82rem;">
@@ -509,8 +512,9 @@
                                         <th>ID</th>
                                         <th>Actor</th>
                                         <th>Action</th>
+                                        <th>Old Value</th>
+                                        <th>New Value</th>
                                         <th>Reason</th>
-                                        <th>Source</th>
                                         <th>Timestamp</th>
                                     </tr>
                                 </thead>
@@ -520,13 +524,14 @@
                                             <td class="text-muted">#{{ $alog->id }}</td>
                                             <td class="fw-bold text-warning">{{ $alog->actor_name }}</td>
                                             <td><span class="badge bg-dark border border-secondary">{{ $alog->action }}</span></td>
-                                            <td class="text-muted">{{ Str::limit($alog->reason, 35) }}</td>
-                                            <td><span class="badge bg-info text-dark">{{ $alog->source }}</span></td>
+                                            <td><small class="text-muted">{{ Str::limit($alog->old_value, 20) ?: '-' }}</small></td>
+                                            <td><small class="text-light fw-bold">{{ Str::limit($alog->new_value, 20) ?: '-' }}</small></td>
+                                            <td class="text-muted">{{ Str::limit($alog->reason, 30) }}</td>
                                             <td class="text-muted">{{ $alog->created_at->diffForHumans() }}</td>
                                         </tr>
                                     @empty
                                         <tr>
-                                            <td colspan="6" class="text-center py-4 text-muted">
+                                            <td colspan="7" class="text-center py-4 text-muted">
                                                 Belum ada catatan audit log administratif untuk pemain ini.
                                             </td>
                                         </tr>
@@ -540,43 +545,545 @@
         </div>
     </div>
 
-    <!-- Sidebar Actions -->
+    <!-- Sidebar Actions (Expanded & Grouped) -->
     <div class="col-lg-4">
         <div class="card shadow-sm mb-4" style="background: rgba(18, 20, 26, 0.95); border: 1px solid rgba(201, 164, 92, 0.22);">
             <div class="card-header bg-transparent border-bottom border-secondary py-3">
                 <h6 class="mb-0 fw-bold text-uppercase text-warning" style="letter-spacing: 1px; font-size: 0.82rem;">
-                    <i class="bi bi-shield-lock me-2"></i> Safe Admin Actions
+                    <i class="bi bi-shield-lock me-2"></i> Administrative Control Desk
                 </h6>
             </div>
             <div class="card-body p-3">
                 <p class="text-muted small mb-3" style="font-size: 0.78rem;">
-                    Aksi administratif ini dilindungi pengecekan izin, token idempotency, dan dicatat otomatis ke Unified Audit Log.
+                    Seluruh tindakan administrasi dieksekusi melalui WebBridge Daemon (<code class="text-warning">Delivery Queue</code>), divalidasi status online/offline, dan diaudit otomatis.
                 </p>
 
-                <!-- Action 1: Send In-Game Tellraw Alert -->
-                <form action="{{ route('apexsions-bridge.admin.players.action', $account->minecraft_uuid) }}" method="POST" class="mb-3">
-                    @csrf
-                    <input type="hidden" name="action_type" value="DISPATCH_ALERT">
-                    <label class="form-label small fw-bold text-light mb-1">Kirim Pesan Resmi Langsung</label>
-                    <input type="text" name="message" class="form-control form-control-sm bg-dark text-light border-secondary mb-2" placeholder="Tulis pesan tellraw..." required maxlength="250">
-                    <input type="text" name="reason" class="form-control form-control-sm bg-dark text-light border-secondary mb-2" placeholder="Alasan audit (wajib)..." required maxlength="250">
-                    <button type="submit" class="btn btn-sm btn-primary w-100" @if(!$isOnline) title="Pemain sedang offline" @endif>
-                        <i class="bi bi-chat-dots me-1"></i> Kirim Pesan Resmi
-                    </button>
-                </form>
+                <!-- SECTION 1: RANK MANAGEMENT -->
+                <div class="mb-3">
+                    <span class="small fw-bold text-muted text-uppercase d-block mb-2" style="font-size: 0.72rem;">👑 Manajemen Rank & Privilese</span>
+                    <div class="d-grid gap-2">
+                        <button type="button" class="btn btn-sm btn-outline-warning text-start" data-bs-toggle="modal" data-bs-target="#changeRankModal">
+                            <i class="bi bi-award-fill me-2 text-warning"></i> Ubah / Berikan Rank
+                        </button>
+                        @if($account->rank !== 'wanderer')
+                            <button type="button" class="btn btn-sm btn-outline-danger text-start" data-bs-toggle="modal" data-bs-target="#resetRankModal">
+                                <i class="bi bi-arrow-counterclockwise me-2 text-danger"></i> Reset Rank ke Wanderer
+                            </button>
+                        @endif
+                    </div>
+                </div>
 
                 <hr class="border-secondary my-3">
 
-                <!-- Action 2: Trigger Force Sync -->
+                <!-- SECTION 2: ECONOMY ADJUSTMENTS -->
+                <div class="mb-3">
+                    <span class="small fw-bold text-muted text-uppercase d-block mb-2" style="font-size: 0.72rem;">💰 Penyesuaian Saldo Multi-Currency</span>
+                    <div class="d-grid gap-2">
+                        <button type="button" class="btn btn-sm btn-outline-success text-start" data-bs-toggle="modal" data-bs-target="#adjustRupiahModal">
+                            <i class="bi bi-cash-stack me-2 text-success"></i> Atur Saldo Rupiah (IDR)
+                        </button>
+                        <button type="button" class="btn btn-sm btn-outline-info text-start" data-bs-toggle="modal" data-bs-target="#adjustDiamondModal">
+                            <i class="bi bi-gem me-2 text-info"></i> Atur Saldo Diamond (💎)
+                        </button>
+                    </div>
+                </div>
+
+                <hr class="border-secondary my-3">
+
+                <!-- SECTION 3: PROGRESSION & REALM -->
+                <div class="mb-3">
+                    <span class="small fw-bold text-muted text-uppercase d-block mb-2" style="font-size: 0.72rem;">⭐ Progresi & Kerajaan</span>
+                    <div class="d-grid gap-2">
+                        <button type="button" class="btn btn-sm btn-outline-light text-start" data-bs-toggle="modal" data-bs-target="#setLevelModal">
+                            <i class="bi bi-bar-chart-steps me-2 text-warning"></i> Set Level Karakter (1 - 100)
+                        </button>
+                        <button type="button" class="btn btn-sm btn-outline-light text-start" data-bs-toggle="modal" data-bs-target="#addXpModal">
+                            <i class="bi bi-lightning-charge me-2 text-warning"></i> Tambah Progression XP
+                        </button>
+                        <button type="button" class="btn btn-sm btn-outline-light text-start" data-bs-toggle="modal" data-bs-target="#setKingdomModal">
+                            <i class="bi bi-shield-shaded me-2 text-warning"></i> Ganti Afiliasi Kerajaan
+                        </button>
+                    </div>
+                </div>
+
+                <hr class="border-secondary my-3">
+
+                <!-- SECTION 4: BATTLEPASS -->
+                <div class="mb-3">
+                    <span class="small fw-bold text-muted text-uppercase d-block mb-2" style="font-size: 0.72rem;">🎫 Kontrol BattlePass Musim</span>
+                    <div class="d-grid gap-2">
+                        <button type="button" class="btn btn-sm btn-outline-light text-start" data-bs-toggle="modal" data-bs-target="#battlepassPassModal">
+                            <i class="bi bi-ticket-perforated me-2 text-info"></i> Berikan Sio / Exsio Pass
+                        </button>
+                        <button type="button" class="btn btn-sm btn-outline-light text-start" data-bs-toggle="modal" data-bs-target="#battlepassTierModal">
+                            <i class="bi bi-star me-2 text-info"></i> Atur Tier BattlePass
+                        </button>
+                    </div>
+                </div>
+
+                <hr class="border-secondary my-3">
+
+                <!-- SECTION 5: MODERATION & UTILITIES -->
+                <div class="mb-3">
+                    <span class="small fw-bold text-muted text-uppercase d-block mb-2" style="font-size: 0.72rem;">🛡 Moderasi & Aksi In-Game</span>
+                    <div class="d-grid gap-2">
+                        <button type="button" class="btn btn-sm btn-outline-danger text-start @if(!$isOnline) disabled @endif" data-bs-toggle="modal" data-bs-target="#kickPlayerModal" @if(!$isOnline) title="Pemain sedang offline" @endif>
+                            <i class="bi bi-box-arrow-right me-2 text-danger"></i> Kick Pemain @if(!$isOnline) <small class="badge bg-secondary ms-1">Offline</small> @endif
+                        </button>
+                        <button type="button" class="btn btn-sm btn-outline-success text-start @if(!$isOnline) disabled @endif" data-bs-toggle="modal" data-bs-target="#healFeedModal" @if(!$isOnline) title="Pemain sedang offline" @endif>
+                            <i class="bi bi-heart-pulse me-2 text-success"></i> Heal & Feed @if(!$isOnline) <small class="badge bg-secondary ms-1">Offline</small> @endif
+                        </button>
+                        <button type="button" class="btn btn-sm btn-outline-primary text-start @if(!$isOnline) disabled @endif" data-bs-toggle="modal" data-bs-target="#dispatchAlertModal" @if(!$isOnline) title="Pemain sedang offline" @endif>
+                            <i class="bi bi-chat-dots me-2 text-primary"></i> Kirim Pesan Tellraw @if(!$isOnline) <small class="badge bg-secondary ms-1">Offline</small> @endif
+                        </button>
+                    </div>
+                </div>
+
+                <hr class="border-secondary my-3">
+
+                <!-- Force Sync Button -->
                 <form action="{{ route('apexsions-bridge.admin.players.action', $account->minecraft_uuid) }}" method="POST">
                     @csrf
                     <input type="hidden" name="action_type" value="TRIGGER_SYNC">
                     <input type="hidden" name="reason" value="Manual admin triggered player stat refresh">
-                    <button type="submit" class="btn btn-sm btn-outline-warning w-100">
-                        <i class="bi bi-arrow-repeat me-1"></i> Jadwalkan Sinkronisasi Ulang
+                    <button type="submit" class="btn btn-sm btn-outline-secondary w-100">
+                        <i class="bi bi-arrow-repeat me-1"></i> Jadwalkan Sinkronisasi Ulang (Sync)
                     </button>
                 </form>
             </div>
+        </div>
+    </div>
+</div>
+
+<!-- ========================================================================= -->
+<!-- MODAL DIALOGS FOR SAFE ACTIONS -->
+<!-- ========================================================================= -->
+
+<!-- 1. Modal Change Rank -->
+<div class="modal fade" id="changeRankModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="background: #151820; border: 1px solid rgba(201, 164, 92, 0.4); color: #fff;">
+            <div class="modal-header border-secondary">
+                <h5 class="modal-title fw-bold text-warning" style="font-family: 'Cinzel', serif;">
+                    <i class="bi bi-award-fill me-2"></i> Ubah Rank: {{ $account->minecraft_username }}
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <form action="{{ route('apexsions-bridge.admin.players.action', $account->minecraft_uuid) }}" method="POST">
+                @csrf
+                <input type="hidden" name="action_type" value="ASSIGN_RANK">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-light">Pilih Rank Baru <span class="text-danger">*</span></label>
+                        <select name="rank" class="form-select bg-dark text-light border-secondary" required>
+                            @foreach($allRanks as $rkKey => $rkData)
+                                <option value="{{ $rkKey }}" @if($account->rank === $rkKey) selected disabled @endif>
+                                    [{{ $rkData['tier'] }}] {{ $rkData['display_name'] }} (Weight: {{ $rkData['weight'] }})
+                                    @if($account->rank === $rkKey) (Aktif Saat Ini) @endif
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-light">Alasan Audit Penugasan <span class="text-danger">*</span></label>
+                        <textarea name="reason" class="form-control bg-dark text-light border-secondary" rows="3" placeholder="Tulis alasan perubahan rank pemain..." required maxlength="250"></textarea>
+                    </div>
+                    <div class="alert alert-warning py-2 small mb-0">
+                        <i class="bi bi-info-circle me-1"></i> Perintah <code class="text-dark">lp user {{ $account->minecraft_username }} parent set &lt;rank&gt;</code> akan dijadwalkan ke server.
+                    </div>
+                </div>
+                <div class="modal-footer border-secondary">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-warning fw-bold">Konfirmasi Ubah Rank</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- 2. Modal Reset Rank -->
+<div class="modal fade" id="resetRankModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="background: #151820; border: 1px solid rgba(220, 53, 69, 0.4); color: #fff;">
+            <div class="modal-header border-secondary">
+                <h5 class="modal-title fw-bold text-danger">Reset Rank ke Wanderer</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <form action="{{ route('apexsions-bridge.admin.players.action', $account->minecraft_uuid) }}" method="POST">
+                @csrf
+                <input type="hidden" name="action_type" value="RESET_RANK">
+                <div class="modal-body">
+                    <p class="text-light small">
+                        Apakah Anda yakin ingin mereset rank <strong>{{ $account->minecraft_username }}</strong> kembali ke <strong class="text-warning">Wanderer</strong>?
+                    </p>
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-light">Alasan Reset <span class="text-danger">*</span></label>
+                        <input type="text" name="reason" class="form-control bg-dark text-light border-secondary" placeholder="Contoh: Masa donasi berakhir / sanksi demosi..." required maxlength="250">
+                    </div>
+                </div>
+                <div class="modal-footer border-secondary">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-danger fw-bold">Reset Rank</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- 3. Modal Adjust Rupiah -->
+<div class="modal fade" id="adjustRupiahModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="background: #151820; border: 1px solid rgba(40, 167, 69, 0.4); color: #fff;">
+            <div class="modal-header border-secondary">
+                <h5 class="modal-title fw-bold text-success">
+                    <i class="bi bi-cash-stack me-2"></i> Atur Saldo Rupiah: {{ $account->minecraft_username }}
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <form action="{{ route('apexsions-bridge.admin.players.action', $account->minecraft_uuid) }}" method="POST">
+                @csrf
+                <input type="hidden" name="action_type" value="ADJUST_BALANCE">
+                <input type="hidden" name="currency" value="rupiah">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-light">Jenis Penyesuaian <span class="text-danger">*</span></label>
+                        <select name="sub_type" class="form-select bg-dark text-light border-secondary" required>
+                            <option value="give">Tambah Saldo (+ Give)</option>
+                            <option value="take">Kurangi Saldo (- Take)</option>
+                            <option value="set">Tetapkan Saldo (= Set)</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-light">Nominal Angka (IDR) <span class="text-danger">*</span></label>
+                        <input type="number" name="amount" class="form-control bg-dark text-light border-secondary" placeholder="Contoh: 100000" min="0" step="1000" required>
+                        <small class="text-muted">Saldo Rupiah saat ini: Rp {{ number_format($account->balance_rupiah, 0, ',', '.') }}</small>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-light">Alasan Audit <span class="text-danger">*</span></label>
+                        <input type="text" name="reason" class="form-control bg-dark text-light border-secondary" placeholder="Alasan penyesuaian saldo..." required maxlength="250">
+                    </div>
+                </div>
+                <div class="modal-footer border-secondary">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-success fw-bold">Eksekusi Saldo</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- 4. Modal Adjust Diamond -->
+<div class="modal fade" id="adjustDiamondModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="background: #151820; border: 1px solid rgba(0, 198, 255, 0.4); color: #fff;">
+            <div class="modal-header border-secondary">
+                <h5 class="modal-title fw-bold text-info">
+                    <i class="bi bi-gem me-2"></i> Atur Saldo Diamond: {{ $account->minecraft_username }}
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <form action="{{ route('apexsions-bridge.admin.players.action', $account->minecraft_uuid) }}" method="POST">
+                @csrf
+                <input type="hidden" name="action_type" value="ADJUST_BALANCE">
+                <input type="hidden" name="currency" value="diamond">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-light">Jenis Penyesuaian <span class="text-danger">*</span></label>
+                        <select name="sub_type" class="form-select bg-dark text-light border-secondary" required>
+                            <option value="give">Tambah Saldo Diamond (+ Give)</option>
+                            <option value="take">Kurangi Saldo Diamond (- Take)</option>
+                            <option value="set">Tetapkan Saldo Diamond (= Set)</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-light">Jumlah Diamond (💎) <span class="text-danger">*</span></label>
+                        <input type="number" name="amount" class="form-control bg-dark text-light border-secondary" placeholder="Contoh: 50" min="0" step="1" required>
+                        <small class="text-muted">Saldo Diamond saat ini: {{ number_format($account->balance_diamond, 0, ',', '.') }} 💎</small>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-light">Alasan Audit <span class="text-danger">*</span></label>
+                        <input type="text" name="reason" class="form-control bg-dark text-light border-secondary" placeholder="Alasan penyesuaian diamond..." required maxlength="250">
+                    </div>
+                </div>
+                <div class="modal-footer border-secondary">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-info fw-bold">Eksekusi Diamond</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- 5. Modal Set Level -->
+<div class="modal fade" id="setLevelModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="background: #151820; border: 1px solid rgba(201, 164, 92, 0.4); color: #fff;">
+            <div class="modal-header border-secondary">
+                <h5 class="modal-title fw-bold text-warning">Set Level Karakter: {{ $account->minecraft_username }}</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <form action="{{ route('apexsions-bridge.admin.players.action', $account->minecraft_uuid) }}" method="POST">
+                @csrf
+                <input type="hidden" name="action_type" value="SET_LEVEL">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-light">Level Baru (1 - 100) <span class="text-danger">*</span></label>
+                        <input type="number" name="level" class="form-control bg-dark text-light border-secondary" min="1" max="100" value="{{ $account->level }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-light">Alasan Audit <span class="text-danger">*</span></label>
+                        <input type="text" name="reason" class="form-control bg-dark text-light border-secondary" placeholder="Alasan penyesuaian level..." required maxlength="250">
+                    </div>
+                </div>
+                <div class="modal-footer border-secondary">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-warning fw-bold">Terapkan Level</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- 6. Modal Add XP -->
+<div class="modal fade" id="addXpModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="background: #151820; border: 1px solid rgba(201, 164, 92, 0.4); color: #fff;">
+            <div class="modal-header border-secondary">
+                <h5 class="modal-title fw-bold text-warning">Tambah Progression XP: {{ $account->minecraft_username }}</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <form action="{{ route('apexsions-bridge.admin.players.action', $account->minecraft_uuid) }}" method="POST">
+                @csrf
+                <input type="hidden" name="action_type" value="ADD_XP">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-light">Jumlah XP <span class="text-danger">*</span></label>
+                        <input type="number" name="xp_amount" class="form-control bg-dark text-light border-secondary" min="1" step="100" value="1000" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-light">Alasan Audit <span class="text-danger">*</span></label>
+                        <input type="text" name="reason" class="form-control bg-dark text-light border-secondary" placeholder="Alasan pemberian XP..." required maxlength="250">
+                    </div>
+                </div>
+                <div class="modal-footer border-secondary">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-warning fw-bold">Tambah XP</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- 7. Modal Set Kingdom -->
+<div class="modal fade" id="setKingdomModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="background: #151820; border: 1px solid rgba(201, 164, 92, 0.4); color: #fff;">
+            <div class="modal-header border-secondary">
+                <h5 class="modal-title fw-bold text-warning">Tetapkan Afiliasi Kerajaan</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <form action="{{ route('apexsions-bridge.admin.players.action', $account->minecraft_uuid) }}" method="POST">
+                @csrf
+                <input type="hidden" name="action_type" value="SET_KINGDOM">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-light">Pilih Kerajaan <span class="text-danger">*</span></label>
+                        <select name="kingdom" class="form-select bg-dark text-light border-secondary" required>
+                            <option value="ZENITHAR" @if(strtoupper($account->kingdom) === 'ZENITHAR') selected @endif>Zenithar (Kekayaan & Keemasan)</option>
+                            <option value="SOLTERRA" @if(strtoupper($account->kingdom) === 'SOLTERRA') selected @endif>Solterra (Api & Pertambangan)</option>
+                            <option value="SYLVAMOOR" @if(strtoupper($account->kingdom) === 'SYLVAMOOR') selected @endif>Sylvamoor (Alam & Hutan)</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-light">Alasan Audit <span class="text-danger">*</span></label>
+                        <input type="text" name="reason" class="form-control bg-dark text-light border-secondary" placeholder="Alasan perpindahan kerajaan..." required maxlength="250">
+                    </div>
+                </div>
+                <div class="modal-footer border-secondary">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-warning fw-bold">Pindah Kerajaan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- 8. Modal Reset Kingdom -->
+<div class="modal fade" id="resetKingdomModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="background: #151820; border: 1px solid rgba(220, 53, 69, 0.4); color: #fff;">
+            <div class="modal-header border-secondary">
+                <h5 class="modal-title fw-bold text-danger">Reset Kerajaan</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <form action="{{ route('apexsions-bridge.admin.players.action', $account->minecraft_uuid) }}" method="POST">
+                @csrf
+                <input type="hidden" name="action_type" value="RESET_KINGDOM">
+                <div class="modal-body">
+                    <p class="text-light small">
+                        Afiliasi kerajaan <strong>{{ $account->minecraft_username }}</strong> akan di-reset menjadi <strong>Belum Memilih</strong>. Pemain dapat memilih kembali via command in-game.
+                    </p>
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-light">Alasan Reset <span class="text-danger">*</span></label>
+                        <input type="text" name="reason" class="form-control bg-dark text-light border-secondary" placeholder="Alasan reset kerajaan..." required maxlength="250">
+                    </div>
+                </div>
+                <div class="modal-footer border-secondary">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-danger fw-bold">Reset Kerajaan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- 9. Modal BattlePass Pass -->
+<div class="modal fade" id="battlepassPassModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="background: #151820; border: 1px solid rgba(201, 164, 92, 0.4); color: #fff;">
+            <div class="modal-header border-secondary">
+                <h5 class="modal-title fw-bold text-warning">Berikan BattlePass Premium</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <form action="{{ route('apexsions-bridge.admin.players.action', $account->minecraft_uuid) }}" method="POST">
+                @csrf
+                <input type="hidden" name="action_type" value="BATTLEPASS_PASS">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-light">Tipe BattlePass <span class="text-danger">*</span></label>
+                        <select name="pass_type" class="form-select bg-dark text-light border-secondary" required>
+                            <option value="sio">SIO PASS (Standar Premium)</option>
+                            <option value="exsio">EXSIO PASS (VIP Pass Tier)</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-light">Alasan Audit <span class="text-danger">*</span></label>
+                        <input type="text" name="reason" class="form-control bg-dark text-light border-secondary" placeholder="Contoh: Pembelian Webstore BattlePass..." required maxlength="250">
+                    </div>
+                </div>
+                <div class="modal-footer border-secondary">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-warning fw-bold">Berikan Pass</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- 10. Modal BattlePass Tier -->
+<div class="modal fade" id="battlepassTierModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="background: #151820; border: 1px solid rgba(201, 164, 92, 0.4); color: #fff;">
+            <div class="modal-header border-secondary">
+                <h5 class="modal-title fw-bold text-warning">Atur Tier BattlePass</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <form action="{{ route('apexsions-bridge.admin.players.action', $account->minecraft_uuid) }}" method="POST">
+                @csrf
+                <input type="hidden" name="action_type" value="BATTLEPASS_TIER">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-light">Tier Target (1 - 100) <span class="text-danger">*</span></label>
+                        <input type="number" name="tier" class="form-control bg-dark text-light border-secondary" min="1" max="100" value="{{ $account->battlepass_tier }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-light">Alasan Audit <span class="text-danger">*</span></label>
+                        <input type="text" name="reason" class="form-control bg-dark text-light border-secondary" placeholder="Alasan pengaturan tier..." required maxlength="250">
+                    </div>
+                </div>
+                <div class="modal-footer border-secondary">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-warning fw-bold">Terapkan Tier</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- 11. Modal Kick Player -->
+<div class="modal fade" id="kickPlayerModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="background: #151820; border: 1px solid rgba(220, 53, 69, 0.4); color: #fff;">
+            <div class="modal-header border-secondary">
+                <h5 class="modal-title fw-bold text-danger">Kick Pemain: {{ $account->minecraft_username }}</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <form action="{{ route('apexsions-bridge.admin.players.action', $account->minecraft_uuid) }}" method="POST">
+                @csrf
+                <input type="hidden" name="action_type" value="KICK_PLAYER">
+                <div class="modal-body">
+                    <p class="text-light small">
+                        Pemain akan dikeluarkan dari server secara paksa. Aksi ini hanya dapat berjalan apabila pemain sedang online.
+                    </p>
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-light">Alasan Kick <span class="text-danger">*</span></label>
+                        <input type="text" name="reason" class="form-control bg-dark text-light border-secondary" placeholder="Tulis alasan kick..." required maxlength="250">
+                    </div>
+                </div>
+                <div class="modal-footer border-secondary">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-danger fw-bold">Kick Pemain</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- 12. Modal Heal & Feed -->
+<div class="modal fade" id="healFeedModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="background: #151820; border: 1px solid rgba(40, 167, 69, 0.4); color: #fff;">
+            <div class="modal-header border-secondary">
+                <h5 class="modal-title fw-bold text-success">Heal & Feed: {{ $account->minecraft_username }}</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <form action="{{ route('apexsions-bridge.admin.players.action', $account->minecraft_uuid) }}" method="POST">
+                @csrf
+                <input type="hidden" name="action_type" value="HEAL_FEED">
+                <div class="modal-body">
+                    <p class="text-light small">
+                        Memulihkan seluruh HP, mengisi indikator lapar (Food level 20), dan menghapus status efek negatif pemain in-game.
+                    </p>
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-light">Alasan Audit <span class="text-danger">*</span></label>
+                        <input type="text" name="reason" class="form-control bg-dark text-light border-secondary" value="Bantuan admin / pemulihan HP pemain" required maxlength="250">
+                    </div>
+                </div>
+                <div class="modal-footer border-secondary">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-success fw-bold">Eksekusi Heal</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- 13. Modal Dispatch Alert -->
+<div class="modal fade" id="dispatchAlertModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="background: #151820; border: 1px solid rgba(0, 123, 255, 0.4); color: #fff;">
+            <div class="modal-header border-secondary">
+                <h5 class="modal-title fw-bold text-primary">Kirim Pesan Resmi Langsung</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <form action="{{ route('apexsions-bridge.admin.players.action', $account->minecraft_uuid) }}" method="POST">
+                @csrf
+                <input type="hidden" name="action_type" value="DISPATCH_ALERT">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-light">Pesan Tellraw <span class="text-danger">*</span></label>
+                        <input type="text" name="message" class="form-control bg-dark text-light border-secondary" placeholder="Tulis pesan resmi..." required maxlength="250">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-light">Alasan Audit <span class="text-danger">*</span></label>
+                        <input type="text" name="reason" class="form-control bg-dark text-light border-secondary" placeholder="Alasan pengiriman pesan..." required maxlength="250">
+                    </div>
+                </div>
+                <div class="modal-footer border-secondary">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary fw-bold">Kirim Pesan</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>

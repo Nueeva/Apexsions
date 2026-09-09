@@ -11,6 +11,7 @@ use Azuriom\Plugin\ApexsionsBridge\Controllers\Admin\ModerationAdminController;
 use Azuriom\Plugin\ApexsionsBridge\Controllers\Admin\NotificationAdminController;
 use Azuriom\Plugin\ApexsionsBridge\Controllers\Admin\PlayerAdminController;
 use Azuriom\Plugin\ApexsionsBridge\Controllers\Admin\PluginAdminController;
+use Azuriom\Plugin\ApexsionsBridge\Controllers\Admin\RankAdminController;
 use Azuriom\Plugin\ApexsionsBridge\Controllers\Admin\ReportAdminController;
 use Azuriom\Plugin\ApexsionsBridge\Controllers\Admin\ServerAdminController;
 use Azuriom\Plugin\ApexsionsBridge\Controllers\Admin\TransactionAdminController;
@@ -48,6 +49,13 @@ Route::middleware(['web', 'admin-access'])->prefix('admin')->name('admin.')->gro
         Route::get('/', [PlayerAdminController::class, 'index'])->name('index');
         Route::get('/{identifier}', [PlayerAdminController::class, 'show'])->name('show');
         Route::post('/{identifier}/action', [PlayerAdminController::class, 'executeAction'])->name('action');
+    });
+
+    // Rank Management & Hierarchy
+    Route::prefix('ranks')->name('ranks.')->middleware('can:admin.users')->group(function () {
+        Route::get('/', [RankAdminController::class, 'index'])->name('index');
+        Route::post('/assign', [RankAdminController::class, 'assign'])->name('assign');
+        Route::get('/{rank_key}', [RankAdminController::class, 'show'])->name('show');
     });
 
     // Reports Center

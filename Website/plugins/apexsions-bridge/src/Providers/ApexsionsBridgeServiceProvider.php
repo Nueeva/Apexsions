@@ -76,6 +76,8 @@ class ApexsionsBridgeServiceProvider extends BasePluginServiceProvider
         Permission::registerPermissions([
             'apexsions.players.view' => 'Lihat Data Pemain Realm',
             'apexsions.players.manage' => 'Kelola & Eksekusi Aksi Pemain',
+            'apexsions.ranks.view' => 'Lihat Hirarki & Data Rank',
+            'apexsions.ranks.manage' => 'Kelola & Tetapkan Rank Pemain',
             'apexsions.reports.view' => 'Lihat Laporan Pemain',
             'apexsions.reports.manage' => 'Kelola & Tindak Lanjuti Laporan',
             'apexsions.moderation.view' => 'Lihat Hukuman & Catatan Moderasi',
@@ -133,6 +135,12 @@ class ApexsionsBridgeServiceProvider extends BasePluginServiceProvider
                 'name' => 'Player Management',
                 'icon' => 'bi bi-person-lines-fill',
                 'route' => 'apexsions-bridge.admin.players.index',
+                'permission' => 'admin.users',
+            ],
+            'apexsions-ranks' => [
+                'name' => 'Rank Management',
+                'icon' => 'bi bi-trophy-fill',
+                'route' => 'apexsions-bridge.admin.ranks.index',
                 'permission' => 'admin.users',
             ],
             'apexsions-reports' => [
