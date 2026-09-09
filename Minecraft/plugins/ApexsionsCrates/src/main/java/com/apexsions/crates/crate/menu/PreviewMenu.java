@@ -136,11 +136,29 @@ public class PreviewMenu extends LinkedMenu<CratesPlugin, CrateSource> implement
         this.rewardLore = ConfigValue.create("Reward.Lore.Default", Lists.newList(
             NO_PERMISSION,
             EMPTY_IF_ABOVE,
-            DARK_GRAY.wrap("»") + GRAY.wrap( " Rarity: " + WHITE.wrap(REWARD_RARITY_NAME) + " → " + GREEN.wrap(REWARD_ROLL_CHANCE + "%")),
+            DARK_GRAY.wrap("»") + GRAY.wrap(" Rarity: ") + WHITE.wrap(REWARD_RARITY_NAME),
+            DARK_GRAY.wrap("»") + GRAY.wrap(" Chance: ") + GREEN.wrap(REWARD_ROLL_CHANCE + "%"),
             GENERIC_LIMITS,
             EMPTY_IF_BELOW,
             REWARD_DESCRIPTION
         )).read(config);
+
+        List<String> upgradedLore = new ArrayList<>();
+        boolean upgraded = false;
+        for (String line : this.rewardLore) {
+            if (line.contains(REWARD_RARITY_NAME) && line.contains(REWARD_ROLL_CHANCE)) {
+                upgradedLore.add(DARK_GRAY.wrap("»") + GRAY.wrap(" Rarity: ") + WHITE.wrap(REWARD_RARITY_NAME));
+                upgradedLore.add(DARK_GRAY.wrap("»") + GRAY.wrap(" Chance: ") + GREEN.wrap(REWARD_ROLL_CHANCE + "%"));
+                upgraded = true;
+            } else {
+                upgradedLore.add(line);
+            }
+        }
+        if (upgraded) {
+            this.rewardLore = upgradedLore;
+            config.set("Reward.Lore.Default", upgradedLore);
+            config.save();
+        }
 
         this.noPermissionLore = ConfigValue.create("Reward.Lore.No_Permission", Lists.newList(
             GRAY.wrap(RED.wrap("✘") + " You don't have access to this reward.")
