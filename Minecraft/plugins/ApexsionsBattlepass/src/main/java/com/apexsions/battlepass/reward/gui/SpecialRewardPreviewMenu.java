@@ -90,14 +90,14 @@ public class SpecialRewardPreviewMenu extends Gui {
             }
             if (ri.getType() == RewardType.CURRENCY) {
                 if ("rupiah".equalsIgnoreCase(ri.getCurrencyId())) {
-                    footer.add("§7Nominal: §aRp " + String.format("%,d", (long) ri.getAmount()).replace(",", "."));
+                    footer.add("§7Nominal: §aRp. " + String.format("%,d", (long) ri.getAmount()).replace(",", "."));
                 } else if ("diamond".equalsIgnoreCase(ri.getCurrencyId())) {
-                    footer.add("§7Nominal: §b" + ri.getAmount() + " Diamond 💎");
+                    footer.add("§7Nominal: §b" + ri.getAmount() + " 💎");
                 } else {
-                    footer.add("§7Nominal: §e" + ri.getAmount() + " Coins");
+                    footer.add("§7Nominal: §e" + ri.getAmount() + " 🪙");
                 }
             } else if (ri.getType() == RewardType.MONEY) {
-                footer.add("§7Nominal: §aRp " + String.format("%,d", (long) ri.getAmount()).replace(",", "."));
+                footer.add("§7Nominal: §aRp. " + String.format("%,d", (long) ri.getAmount()).replace(",", "."));
             } else if (isItem) {
                 footer.add("§7Jumlah: §a" + ri.getAmount() + "x");
             }

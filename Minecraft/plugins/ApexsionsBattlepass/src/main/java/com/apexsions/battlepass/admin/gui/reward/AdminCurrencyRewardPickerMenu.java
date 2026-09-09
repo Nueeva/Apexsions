@@ -43,12 +43,12 @@ public class AdminCurrencyRewardPickerMenu extends Gui {
                 .name("&e&l[🪙] BATTLE COINS")
                 .lore(List.of(
                         "&7Mata uang eksklusif BattlePass.",
-                        "&7Nominal Awal: &e100 Coins",
+                        "&7Nominal Awal: &e100 🪙",
                         " ",
                         "&aKlik untuk langsung menambahkan >"
                 ))
                 .build(), event -> {
-            addCurrencyReward("battle_coins", Material.GOLD_INGOT, "Battle Coins");
+            addCurrencyReward("battle_coins", Material.GOLD_INGOT, "100 🪙");
         }));
 
         // 2. Rupiah (Slot 22)
@@ -56,12 +56,12 @@ public class AdminCurrencyRewardPickerMenu extends Gui {
                 .name("&a&l[💵] RUPIAH (Rp.)")
                 .lore(List.of(
                         "&7Mata uang Rupiah ekonomi server.",
-                        "&7Nominal Awal: &eRp.100",
+                        "&7Nominal Awal: &eRp. 100",
                         " ",
                         "&aKlik untuk langsung menambahkan >"
                 ))
                 .build(), event -> {
-            addCurrencyReward("rupiah", Material.EMERALD, "Rp.100");
+            addCurrencyReward("rupiah", Material.EMERALD, "Rp. 100");
         }));
 
         // 3. Diamond (Slot 24)
@@ -74,7 +74,7 @@ public class AdminCurrencyRewardPickerMenu extends Gui {
                         "&aKlik untuk langsung menambahkan >"
                 ))
                 .build(), event -> {
-            addCurrencyReward("diamond", Material.DIAMOND, "Diamond");
+            addCurrencyReward("diamond", Material.DIAMOND, "100 💎");
         }));
 
         // Navigation
@@ -83,7 +83,14 @@ public class AdminCurrencyRewardPickerMenu extends Gui {
     }
 
     private void addCurrencyReward(String currencyId, Material icon, String displayName) {
-        String name = currencyId.equalsIgnoreCase("rupiah") ? "Rp.100" : (displayName.contains("100") ? displayName : ("100 " + displayName));
+        String name;
+        if (currencyId.equalsIgnoreCase("rupiah")) {
+            name = "Rp. 100";
+        } else if (currencyId.equalsIgnoreCase("diamond")) {
+            name = "100 💎";
+        } else {
+            name = "100 🪙";
+        }
         RewardItem ri = new RewardItem(RewardType.CURRENCY, icon, 100, name, List.of(), null, null, currencyId.toLowerCase());
         plugin.getRewardManager().addReward(level, passId, ri);
         player.sendMessage("§aBerhasil menambahkan reward §e" + name + "§a! Klik item pada daftar untuk mengubah jumlahnya.");

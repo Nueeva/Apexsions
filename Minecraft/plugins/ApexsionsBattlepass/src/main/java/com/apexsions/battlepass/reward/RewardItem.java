@@ -71,16 +71,27 @@ public class RewardItem {
     }
 
     public String getDisplayName() {
-        if (name != null && !name.isBlank()) return name;
         if (isCurrency()) {
+            if (name != null && !name.isBlank()) {
+                String clean = name;
+                // Normalize "Rp " -> "Rp. "
+                clean = clean.replaceAll("(?i)Rp\\s+", "Rp. ");
+                // Normalize "Battle Coins" / "Coins" -> "🪙"
+                clean = clean.replaceAll("(?i)\\s*Battle\\s+Coins", " 🪙");
+                clean = clean.replaceAll("(?i)\\s+Coins", " 🪙");
+                // Normalize "Diamond" -> "💎"
+                clean = clean.replaceAll("(?i)\\s*Diamond\\s*💎?", " 💎");
+                return clean;
+            }
             if ("rupiah".equalsIgnoreCase(currencyId) || type == RewardType.MONEY) {
-                return "&a&lRp." + String.format("%,d", (long) amount).replace(',', '.');
+                return "&a&lRp. " + String.format("%,d", (long) amount).replace(',', '.');
             } else if ("diamond".equalsIgnoreCase(currencyId)) {
-                return "&b&l" + amount + " Diamond 💎";
+                return "&b&l" + amount + " 💎";
             } else {
-                return "&e&l" + amount + " Battle Coins";
+                return "&e&l" + amount + " 🪙";
             }
         }
+        if (name != null && !name.isBlank()) return name;
         if (material != null) return ItemSerializer.formatMaterialName(material);
         return type.name();
     }

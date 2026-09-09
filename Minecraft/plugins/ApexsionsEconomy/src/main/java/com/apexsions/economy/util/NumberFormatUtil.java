@@ -57,20 +57,20 @@ public final class NumberFormatUtil {
         String num = df.format(amount);
         if (currency == null) return num;
         if (currency.isPrefix()) {
-            return currency.getSymbol() + num;
+            return currency.getSymbol() + (currency.getSymbol().endsWith(".") ? " " : "") + num;
         } else {
             return num + " " + currency.getSymbol();
         }
     }
 
     /**
-     * Compact format with currency symbol (e.g. Rp1,5Jt or 10K Diamond).
+     * Compact format with currency symbol (e.g. Rp. 1,5Jt or 10K 💎).
      */
     public static String format(double amount, Currency currency) {
         String compact = formatCompact(amount);
         if (currency == null) return compact;
         if (currency.isPrefix()) {
-            return currency.getSymbol() + compact;
+            return currency.getSymbol() + (currency.getSymbol().endsWith(".") ? " " : "") + compact;
         } else {
             return compact + " " + currency.getSymbol();
         }
@@ -81,7 +81,7 @@ public final class NumberFormatUtil {
      */
     public static double parse(String input) throws NumberFormatException {
         if (input == null || input.isBlank()) throw new NumberFormatException("Input kosong");
-        String clean = input.trim().toLowerCase().replace(" ", "").replace("rp", "").replace("diamond", "").replace("💎", "");
+        String clean = input.trim().toLowerCase().replace(" ", "").replace("rp.", "").replace("rp", "").replace("diamond", "").replace("💎", "").replace("🪙", "");
 
         double multiplier = 1.0;
         if (clean.endsWith("t")) {

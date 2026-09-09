@@ -58,9 +58,10 @@ public class RewardListMenu extends LinkedMenu<CratesPlugin, RewardListMenu.Data
     private static final IconLocale LOCALE_CURRENCY_REWARD = LangEntry.iconBuilder("Editor.Button.Rewards.Currency")
         .accentColor(GREEN)
         .name(SOFT_YELLOW.and(BOLD).wrap("💰 Tambah Reward Currency"))
-        .appendInfo("Tambahkan hadiah saldo ekonomi:")
-        .appendInfo(GREEN.wrap("• Rupiah (IDR):") + " Item Glowing Emerald")
-        .appendInfo(AQUA.wrap("• Diamond:") + " Item Glowing Diamond")
+        .appendInfo("Tambahkan hadiah saldo ekonomi/pass:")
+        .appendInfo(GREEN.wrap("• Rupiah (Rp.):") + " Item Glowing Emerald")
+        .appendInfo(AQUA.wrap("• Diamond (💎):") + " Item Glowing Diamond")
+        .appendInfo(YELLOW.wrap("• Battle Coins (🪙):") + " Item Glowing Gold Ingot")
         .br()
         .appendClick("Klik untuk buka Dialog GUI")
         .build();

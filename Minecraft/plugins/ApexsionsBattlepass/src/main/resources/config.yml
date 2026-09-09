@@ -29,7 +29,7 @@ resets:
 # Battle Pass Currency Configuration
 currency:
   name: "Battle Coins"
-  symbol: "Coins"
+  symbol: "🪙"
   format: "%amount% %symbol%"
 
 # BattlePass Shop Refresh Configuration

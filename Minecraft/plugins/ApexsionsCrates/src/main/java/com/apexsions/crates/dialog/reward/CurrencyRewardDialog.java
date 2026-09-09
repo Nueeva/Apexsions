@@ -39,8 +39,9 @@ public class CurrencyRewardDialog extends Dialog<Crate> {
     private static final DialogElementLocale BODY = LangEntry.builder("Dialog.Reward.Currency.Body").dialogElement(400,
         "Pilih jenis saldo currency yang ingin dijadikan reward untuk crate ini.",
         "",
-        GREEN.wrap("• Rupiah (IDR):") + " Ditampilkan sebagai " + GREEN.and(BOLD).wrap("Glowing Emerald") + ".",
-        AQUA.wrap("• Diamond:") + " Ditampilkan sebagai " + AQUA.and(BOLD).wrap("Glowing Diamond") + ".",
+        GREEN.wrap("• Rupiah (Rp.):") + " Ditampilkan sebagai " + GREEN.and(BOLD).wrap("Glowing Emerald") + ".",
+        AQUA.wrap("• Diamond (💎):") + " Ditampilkan sebagai " + AQUA.and(BOLD).wrap("Glowing Diamond") + ".",
+        YELLOW.wrap("• Battle Coins (🪙):") + " Ditampilkan sebagai " + YELLOW.and(BOLD).wrap("Glowing Gold Ingot") + ".",
         "",
         GRAY.wrap("Pemenang crate akan mendapatkan saldo langsung ke akun Apexsions.")
     );
@@ -83,32 +84,48 @@ public class CurrencyRewardDialog extends Dialog<Crate> {
                 }
 
                 boolean isRupiah = currencyId.equalsIgnoreCase("rupiah");
-                Material mat = isRupiah ? Material.EMERALD : Material.DIAMOND;
+                boolean isDiamond = currencyId.equalsIgnoreCase("diamond");
+                boolean isBattleCoins = currencyId.equalsIgnoreCase("battle_coins");
+
+                Material mat = isRupiah ? Material.EMERALD : (isDiamond ? Material.DIAMOND : Material.GOLD_INGOT);
                 ItemStack item = new ItemStack(mat);
                 ItemMeta meta = item.getItemMeta();
                 MiniMessage mm = MiniMessage.miniMessage();
-                String formattedAmt = String.format("%,d", (long) amount);
+                String formattedAmt = String.format("%,d", (long) amount).replace(',', '.');
+
+                String titleDisplay;
+                String currencyDisplay;
+                String commandStr;
+                String idPrefix;
+
+                if (isRupiah) {
+                    titleDisplay = "<green><bold>Rp. " + formattedAmt + "</bold></green>";
+                    currencyDisplay = "<yellow>Rupiah (Rp.)</yellow>";
+                    commandStr = "ecoadmin give %player% " + (long) amount + " rupiah";
+                    idPrefix = "eco_rupiah_";
+                } else if (isDiamond) {
+                    titleDisplay = "<aqua><bold>💎 " + formattedAmt + "</bold></aqua>";
+                    currencyDisplay = "<aqua>Diamond (💎)</aqua>";
+                    commandStr = "ecoadmin give %player% " + (long) amount + " diamond";
+                    idPrefix = "eco_diamond_";
+                } else {
+                    titleDisplay = "<yellow><bold>🪙 " + formattedAmt + "</bold></yellow>";
+                    currencyDisplay = "<yellow>Battle Coins (🪙)</yellow>";
+                    commandStr = "abp currency add %player% " + (long) amount;
+                    idPrefix = "bp_coins_";
+                }
+
                 if (meta != null) {
                     meta.setEnchantmentGlintOverride(true); // GLOWING!
-                    if (isRupiah) {
-                        meta.displayName(mm.deserialize("<green><bold>💵 Rp " + formattedAmt + "</bold></green>"));
-                        meta.lore(List.of(
-                            mm.deserialize("<gray>Hadiah Saldo Apexsions Economy</gray>"),
-                            mm.deserialize("<gold>Mata Uang: <yellow>Rupiah (IDR)</yellow></gold>"),
-                            mm.deserialize("<gold>Nominal: <green><bold>Rp " + formattedAmt + "</bold></green></gold>")
-                        ));
-                    } else {
-                        meta.displayName(mm.deserialize("<aqua><bold>💎 " + formattedAmt + " Diamond</bold></aqua>"));
-                        meta.lore(List.of(
-                            mm.deserialize("<gray>Hadiah Saldo Apexsions Economy</gray>"),
-                            mm.deserialize("<gold>Mata Uang: <aqua>Diamond</aqua></gold>"),
-                            mm.deserialize("<gold>Nominal: <aqua><bold>" + formattedAmt + " 💎</bold></aqua></gold>")
-                        ));
-                    }
+                    meta.displayName(mm.deserialize(titleDisplay));
+                    meta.lore(List.of(
+                        mm.deserialize("<gray>Hadiah Saldo Apexsions</gray>"),
+                        mm.deserialize("<gold>Mata Uang: " + currencyDisplay + "</gold>"),
+                        mm.deserialize("<gold>Nominal: " + titleDisplay + "</gold>")
+                    ));
                     item.setItemMeta(meta);
                 }
 
-                String idPrefix = isRupiah ? "eco_rupiah_" : "eco_diamond_";
                 String rewardId = idPrefix + ((long) amount);
                 int counter = 1;
                 while (crate.getReward(rewardId) != null) {
@@ -117,17 +134,17 @@ public class CurrencyRewardDialog extends Dialog<Crate> {
 
                 Rarity rarity = plugin.getCrateManager().getMostCommonRarity();
                 CommandReward reward = (CommandReward) RewardFactory.create(plugin, crate, rewardId, rarity, RewardType.COMMAND);
-                reward.setName(isRupiah ? "<green><bold>Rp " + formattedAmt + "</bold></green>" : "<aqua><bold>" + formattedAmt + " Diamond</bold></aqua>");
+                reward.setName(titleDisplay);
                 reward.setDescription(List.of(
-                    "<gray>Hadiah Saldo Apexsions Economy</gray>",
-                    isRupiah ? "<gold>Nominal: <green><bold>Rp " + formattedAmt + "</bold></green></gold>" : "<gold>Nominal: <aqua><bold>" + formattedAmt + " 💎</bold></aqua></gold>"
+                    "<gray>Hadiah Saldo Apexsions</gray>",
+                    "<gold>Nominal: " + titleDisplay + "</gold>"
                 ));
                 reward.setPreview(ItemHelper.vanilla(item));
-                reward.setCommands(List.of("ecoadmin give %player% " + (long) amount + " " + (isRupiah ? "rupiah" : "diamond")));
+                reward.setCommands(List.of(commandStr));
 
                 crate.addReward(reward);
                 crate.markDirty();
-                player.sendMessage(mm.deserialize("<green>✓ Berhasil menambahkan Reward Currency " + (isRupiah ? "Rp " + formattedAmt : formattedAmt + " Diamond") + " (Glowing) ke dalam crate!</green>"));
+                player.sendMessage(mm.deserialize("<green>✓ Berhasil menambahkan Reward Currency " + titleDisplay + " (Glowing) ke dalam crate!</green>"));
                 user.callback();
             });
         });
@@ -135,8 +152,9 @@ public class CurrencyRewardDialog extends Dialog<Crate> {
 
     private List<WrappedSingleOptionEntry> getCurrencyOptions() {
         List<WrappedSingleOptionEntry> list = new ArrayList<>();
-        list.add(new WrappedSingleOptionEntry("rupiah", "💵 Rupiah (IDR) — Glowing Emerald", true));
-        list.add(new WrappedSingleOptionEntry("diamond", "💎 Diamond — Glowing Diamond", false));
+        list.add(new WrappedSingleOptionEntry("rupiah", "💵 Rupiah (Rp.) — Glowing Emerald", true));
+        list.add(new WrappedSingleOptionEntry("diamond", "💎 Diamond (💎) — Glowing Diamond", false));
+        list.add(new WrappedSingleOptionEntry("battle_coins", "🪙 Battle Coins (🪙) — Glowing Gold Ingot", false));
         return list;
     }
 }

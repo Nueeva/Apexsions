@@ -50,17 +50,17 @@ public class AdminRewardItemEditMenu extends Gui {
         if (isCurrency) {
             String cId = item.getCurrencyId();
             if ("rupiah".equalsIgnoreCase(cId) || item.getType() == RewardType.MONEY) {
-                overviewLore.add("§7Nama: §fRp." + String.format("%,d", (long) item.getAmount()).replace(',', '.'));
-                overviewLore.add("§7Jumlah: §aRp." + String.format("%,d", (long) item.getAmount()).replace(',', '.'));
-                overviewLore.add("§7Mata Uang: §eRUPIAH");
+                overviewLore.add("§7Nama: §fRp. " + String.format("%,d", (long) item.getAmount()).replace(',', '.'));
+                overviewLore.add("§7Jumlah: §aRp. " + String.format("%,d", (long) item.getAmount()).replace(',', '.'));
+                overviewLore.add("§7Mata Uang: §eRUPIAH (Rp.)");
             } else if ("diamond".equalsIgnoreCase(cId)) {
-                overviewLore.add("§7Nama: §f" + item.getAmount() + " Diamond 💎");
-                overviewLore.add("§7Jumlah: §a" + item.getAmount() + " Diamond");
-                overviewLore.add("§7Mata Uang: §eDIAMOND");
+                overviewLore.add("§7Nama: §f" + item.getAmount() + " 💎");
+                overviewLore.add("§7Jumlah: §a" + item.getAmount() + " 💎");
+                overviewLore.add("§7Mata Uang: §eDIAMOND (💎)");
             } else {
-                overviewLore.add("§7Nama: §f" + item.getAmount() + " Battle Coins");
-                overviewLore.add("§7Jumlah: §a" + item.getAmount() + " Coins");
-                overviewLore.add("§7Mata Uang: §e" + (cId != null ? cId.toUpperCase() : "BATTLE_COINS"));
+                overviewLore.add("§7Nama: §f" + item.getAmount() + " 🪙");
+                overviewLore.add("§7Jumlah: §a" + item.getAmount() + " 🪙");
+                overviewLore.add("§7Mata Uang: §eBATTLE COINS (🪙)");
             }
         } else if (item.getType() == RewardType.ITEM) {
             overviewLore.add("§7Jumlah: §a" + item.getAmount() + "x");
@@ -134,7 +134,9 @@ public class AdminRewardItemEditMenu extends Gui {
             if (cId == null || cId.isBlank() || item.getType() == RewardType.MONEY) {
                 cId = "rupiah";
             }
-            String amountDisplay = "rupiah".equalsIgnoreCase(cId) ? ("Rp." + String.format("%,d", (long) item.getAmount()).replace(',', '.')) : (item.getAmount() + " " + cId.toUpperCase());
+            String amountDisplay = "rupiah".equalsIgnoreCase(cId)
+                    ? ("Rp. " + String.format("%,d", (long) item.getAmount()).replace(',', '.'))
+                    : ("diamond".equalsIgnoreCase(cId) ? (item.getAmount() + " 💎") : (item.getAmount() + " 🪙"));
             final String activeCId = cId;
 
             setButton(19, new GuiButton(new ItemBuilder(Material.GOLD_INGOT)
@@ -143,8 +145,8 @@ public class AdminRewardItemEditMenu extends Gui {
                     .build(), event -> {
                 plugin.getChatInputManager().startNumericInput(player, "Masukkan nominal saldo baru:", newAmount -> {
                     String name = "rupiah".equalsIgnoreCase(activeCId)
-                            ? ("Rp." + String.format("%,d", (long) newAmount).replace(',', '.'))
-                            : ("diamond".equalsIgnoreCase(activeCId) ? (newAmount + " Diamond 💎") : (newAmount + " Battle Coins"));
+                            ? ("Rp. " + String.format("%,d", (long) newAmount).replace(',', '.'))
+                            : ("diamond".equalsIgnoreCase(activeCId) ? (newAmount + " 💎") : (newAmount + " 🪙"));
                     RewardItem updated = new RewardItem(RewardType.CURRENCY, item.getMaterial(), newAmount, name, item.getCommands(), item.getPermission(), item.getItemData(), activeCId, item.isSpecialPreview());
                     plugin.getRewardManager().updateReward(level, passId, rewardIndex, updated);
                     player.sendMessage("§aNominal saldo berhasil diubah menjadi §e" + name + "§a!");
@@ -157,9 +159,9 @@ public class AdminRewardItemEditMenu extends Gui {
                     .name("&6&l[🔄] GANTI MATA UANG (Saat ini: " + activeCId.toUpperCase() + ")")
                     .lore(List.of(
                             "&7Klik untuk beralih tipe mata uang:",
-                            "&f- Rupiah",
-                            "&f- Battle Coins",
-                            "&f- Diamond",
+                            "&f- Rupiah (Rp.)",
+                            "&f- Battle Coins (🪙)",
+                            "&f- Diamond (💎)",
                             " ",
                             "&eKlik untuk beralih >"
                     ))
@@ -175,8 +177,8 @@ public class AdminRewardItemEditMenu extends Gui {
                 String nextCurr = currs[next];
                 Material icon = nextCurr.equalsIgnoreCase("rupiah") ? Material.GOLD_INGOT : (nextCurr.equalsIgnoreCase("diamond") ? Material.DIAMOND : Material.SUNFLOWER);
                 String name = "rupiah".equalsIgnoreCase(nextCurr)
-                        ? ("Rp." + String.format("%,d", (long) item.getAmount()).replace(',', '.'))
-                        : (nextCurr.equalsIgnoreCase("diamond") ? (item.getAmount() + " Diamond 💎") : (item.getAmount() + " Battle Coins"));
+                        ? ("Rp. " + String.format("%,d", (long) item.getAmount()).replace(',', '.'))
+                        : (nextCurr.equalsIgnoreCase("diamond") ? (item.getAmount() + " 💎") : (item.getAmount() + " 🪙"));
                 RewardItem updated = new RewardItem(RewardType.CURRENCY, icon, item.getAmount(), name, item.getCommands(), item.getPermission(), item.getItemData(), nextCurr, item.isSpecialPreview());
                 plugin.getRewardManager().updateReward(level, passId, rewardIndex, updated);
                 player.sendMessage("§aMata uang diubah menjadi §e" + nextCurr.toUpperCase() + "§a!");
