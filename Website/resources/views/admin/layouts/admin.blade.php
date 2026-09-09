@@ -88,6 +88,12 @@
                             <span>Reports Center</span>
                         </a>
                     </li>
+                    <li class="sidebar-item {{ add_active('apexsions-bridge.admin.votes.*') }}">
+                        <a class="sidebar-link" href="{{ route('apexsions-bridge.admin.votes.index') }}">
+                            <i class="bi bi-patch-check-fill"></i>
+                            <span>Vote Management</span>
+                        </a>
+                    </li>
                     <li class="sidebar-item {{ add_active('apexsions-bridge.admin.economy.*') }}">
                         <a class="sidebar-link {{ Route::is('apexsions-bridge.admin.economy.*') ? '' : 'collapsed'}}" href="#" data-bs-toggle="collapse" data-bs-target="#collapseEconomy" aria-expanded="{{ Route::is('apexsions-bridge.admin.economy.*') ? 'true' : 'false' }}" aria-controls="collapseEconomy">
                             <i class="bi bi-cash-stack"></i>

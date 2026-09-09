@@ -161,6 +161,12 @@ class ApexsionsBridgeServiceProvider extends BasePluginServiceProvider
                 'route' => 'apexsions-bridge.admin.moderation.index',
                 'permission' => 'admin.users',
             ],
+            'apexsions-votes' => [
+                'name' => 'Vote Management',
+                'icon' => 'bi bi-patch-check-fill',
+                'route' => 'apexsions-bridge.admin.votes.index',
+                'permission' => 'admin.users',
+            ],
             'apexsions-economy' => [
                 'name' => 'Economy Inspector',
                 'icon' => 'bi bi-cash-stack',

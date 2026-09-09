@@ -159,5 +159,7 @@ Route::middleware(['web', 'admin-access'])->prefix('admin')->name('admin.')->gro
         Route::get('/', [VoteAdminController::class, 'index'])->name('index');
         Route::get('/{id}', [VoteAdminController::class, 'show'])->name('show');
         Route::post('/{id}/retry', [VoteAdminController::class, 'retryReward'])->name('retry');
+        Route::post('/sites/{id}/toggle', [VoteAdminController::class, 'toggleSite'])->name('sites.toggle');
+        Route::post('/sites/{id}/update', [VoteAdminController::class, 'updateSite'])->name('sites.update');
     });
 });

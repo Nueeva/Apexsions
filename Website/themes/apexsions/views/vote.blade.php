@@ -65,55 +65,47 @@
             </div>
         </div>
 
-        <!-- 3 Voting Platforms Grid -->
-        <div class="row g-4 mb-5">
+        <!-- Voting Platforms Grid -->
+        <div class="row g-4 mb-5 justify-content-center">
             @php
-                $siteCards = [
-                    [
-                        'num' => '01',
-                        'slug' => 'minecraft-mp',
-                        'name' => 'Minecraft-MP',
+                $siteMeta = [
+                    'minecraft-mp' => [
                         'sub' => 'Daftar Server Teratas Dunia',
                         'icon' => 'bi-trophy-fill',
                         'icon_color' => 'text-gold',
                         'desc' => 'Dukung peradaban Apexsions di daftar server Minecraft paling bergengsi. Suara Anda menaikkan kedaulatan realm di panggung internasional.',
-                        'url' => 'https://minecraft-mp.com/server/338274/vote/',
-                        'cooldown_default' => 'Cooldown 24 Jam',
                     ],
-                    [
-                        'num' => '02',
-                        'slug' => 'topg',
-                        'name' => 'TopG Global',
+                    'topg' => [
                         'sub' => 'Peringkat Server Komunitas',
                         'icon' => 'bi-globe-americas',
                         'icon_color' => 'text-blue',
                         'desc' => 'Pilihan voting dengan siklus reset lebih cepat (12 jam). Berikan suara dua kali sehari untuk memaksimalkan perolehan kunci peti dan saldo.',
-                        'url' => 'https://topg.org/minecraft-servers/server-678910',
-                        'cooldown_default' => 'Cooldown 12 Jam',
                     ],
-                    [
-                        'num' => '03',
-                        'slug' => 'planetminecraft',
-                        'name' => 'PlanetMinecraft',
+                    'planetminecraft' => [
                         'sub' => 'Komunitas Kreatif Global',
                         'icon' => 'bi-stars',
                         'icon_color' => 'text-purple',
                         'desc' => 'Sentra kreasi arsitektur dan skin Minecraft terbesar. Perkuat pengaruh peradaban Apexsions di antara para builder dunia.',
-                        'url' => 'https://www.planetminecraft.com/server/apexsions/vote/',
-                        'cooldown_default' => 'Cooldown 24 Jam',
                     ],
                 ];
             @endphp
 
-            @foreach($siteCards as $card)
+            @forelse($sites as $index => $site)
             @php
-                $cdData = $cooldowns[$card['slug']] ?? ['ready' => true, 'human_time' => null];
+                $meta = $siteMeta[$site->slug] ?? [
+                    'sub' => 'Platform Voting Sah',
+                    'icon' => 'bi-patch-check-fill',
+                    'icon_color' => 'text-gold',
+                    'desc' => 'Berikan suara kedaulatan untuk server Apexsions dan klaim imbalan sah Anda.',
+                ];
+                $cdData = $cooldowns[$site->slug] ?? ['ready' => true, 'human_time' => null];
                 $isReady = $cdData['ready'];
+                $num = str_pad($index + 1, 2, '0', STR_PAD_LEFT);
             @endphp
-            <div class="col-lg-4 col-md-6">
-                <div class="apx-vote-card h-100 d-flex flex-column" id="card-{{ $card['slug'] }}">
+            <div class="{{ count($sites) === 1 ? 'col-lg-6 col-md-8' : (count($sites) === 2 ? 'col-lg-6' : 'col-lg-4 col-md-6') }}">
+                <div class="apx-vote-card h-100 d-flex flex-column" id="card-{{ $site->slug }}">
                     <div class="apx-vote-card-header d-flex align-items-center justify-content-between mb-3">
-                        <span class="apx-vote-number font-monospace">{{ $card['num'] }}</span>
+                        <span class="apx-vote-number font-monospace">{{ $num }}</span>
                         @if($isReady)
                             <span class="badge bg-success"><i class="bi bi-check-circle me-1"></i> Suara Tersedia</span>
                         @else
@@ -121,16 +113,16 @@
                         @endif
                     </div>
                     <div class="d-flex align-items-center gap-3 mb-3">
-                        <div class="apx-vote-icon-box {{ $card['icon_color'] }}">
-                            <i class="bi {{ $card['icon'] }} fs-3"></i>
+                        <div class="apx-vote-icon-box {{ $meta['icon_color'] }}">
+                            <i class="bi {{ $meta['icon'] }} fs-3"></i>
                         </div>
                         <div>
-                            <h2 class="h5 text-white mb-0 font-cinzel">{{ $card['name'] }}</h2>
-                            <span class="text-dim small">{{ $card['sub'] }}</span>
+                            <h2 class="h5 text-white mb-0 font-cinzel">{{ $site->name }}</h2>
+                            <span class="text-dim small">{{ $meta['sub'] }}</span>
                         </div>
                     </div>
                     <p class="text-muted small mb-4 flex-grow-1">
-                        {{ $card['desc'] }}
+                        {{ $meta['desc'] }}
                     </p>
                     <div class="apx-vote-perks mb-4 p-3 rounded" style="background: rgba(255, 255, 255, 0.02); border: 1px solid var(--apx-gold-border-subtle);">
                         <div class="text-gold small fw-bold mb-2 text-uppercase" style="letter-spacing: 0.08em; font-size: 0.72rem;">Imbalan Sah per Suara:</div>
@@ -140,16 +132,22 @@
                         </ul>
                     </div>
                     <div class="vstack gap-2">
-                        <a href="{{ $card['url'] }}" target="_blank" rel="noopener noreferrer" class="btn btn-apx-outline w-100 py-2" onclick="trackVoteClick('{{ $card['slug'] }}')">
+                        <a href="{{ $site->vote_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-apx-outline w-100 py-2" onclick="trackVoteClick('{{ $site->slug }}')">
                             <span>1. Buka Situs &amp; Beri Suara</span> <i class="bi bi-box-arrow-up-right ms-1 small"></i>
                         </a>
-                        <button type="button" class="btn btn-apx-gold w-100 py-2 fw-bold" id="btn-claim-{{ $card['slug'] }}" onclick="claimVote('{{ $card['slug'] }}', '{{ $card['name'] }}')">
+                        <button type="button" class="btn btn-apx-gold w-100 py-2 fw-bold" id="btn-claim-{{ $site->slug }}" onclick="claimVote('{{ $site->slug }}', '{{ $site->name }}')">
                             <i class="bi bi-patch-check-fill me-1"></i> 2. Verifikasi &amp; Klaim Hadiah
                         </button>
                     </div>
                 </div>
             </div>
-            @endforeach
+            @empty
+            <div class="col-12 text-center py-5">
+                <div class="alert alert-warning d-inline-block">
+                    <i class="bi bi-exclamation-triangle me-2"></i> Bilik suara saat ini sedang dalam pemeliharaan berkala. Silakan coba beberapa saat lagi.
+                </div>
+            </div>
+            @endforelse
         </div>
 
         <!-- User Vote History & Community Feats -->

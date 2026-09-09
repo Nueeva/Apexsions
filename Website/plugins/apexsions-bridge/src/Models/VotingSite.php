@@ -16,6 +16,7 @@ class VotingSite extends Model
         'name',
         'slug',
         'vote_url',
+        'server_id',
         'api_key',
         'cooldown_hours',
         'is_active',

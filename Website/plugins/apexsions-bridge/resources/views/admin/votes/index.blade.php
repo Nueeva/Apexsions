@@ -81,6 +81,138 @@
     </div>
 </div>
 
+<!-- VOTING PLATFORMS INTEGRATION & CONTROL -->
+<div class="card mb-4 shadow-sm" style="border: 1px solid rgba(201, 164, 92, 0.25); background: linear-gradient(135deg, rgba(24, 27, 36, 0.95) 0%, rgba(17, 19, 25, 0.95) 100%);">
+    <div class="card-header d-flex flex-wrap justify-content-between align-items-center gap-2 py-3" style="background: rgba(255, 255, 255, 0.02); border-bottom: 1px solid rgba(201, 164, 92, 0.2);">
+        <div>
+            <h5 class="card-title mb-0 fw-bold font-cinzel text-white">
+                <i class="bi bi-sliders me-2 text-warning"></i> INTEGRASI &amp; KONTROL PLATFORM VOTING
+            </h5>
+            <small class="text-muted">Kelola status aktif/nonaktif, URL voting, Server ID, dan Server API Key setiap platform.</small>
+        </div>
+        <span class="badge bg-dark border border-secondary text-warning px-3 py-2">
+            <i class="bi bi-broadcast me-1"></i> {{ $sites->where('is_active', true)->count() }} dari {{ $sites->count() }} Platform Aktif
+        </span>
+    </div>
+    <div class="card-body p-3">
+        <div class="row g-3">
+            @foreach($sites as $site)
+            <div class="col-lg-4 col-md-6">
+                <div class="p-3 rounded h-100 d-flex flex-column justify-content-between" style="background: rgba(0, 0, 0, 0.35); border: 1px solid {{ $site->is_active ? 'rgba(40, 167, 69, 0.45)' : 'rgba(220, 53, 69, 0.35)' }};">
+                    <div>
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <div>
+                                <h6 class="fw-bold mb-0 text-white font-cinzel">{{ $site->name }}</h6>
+                                <span class="font-monospace text-muted" style="font-size: 0.72rem;">slug: {{ $site->slug }}</span>
+                            </div>
+                            @if($site->is_active)
+                                <span class="badge bg-success"><i class="bi bi-check-circle-fill me-1"></i> AKTIF</span>
+                            @else
+                                <span class="badge bg-danger"><i class="bi bi-slash-circle me-1"></i> NONAKTIF</span>
+                            @endif
+                        </div>
+
+                        <div class="small mb-3">
+                            <div class="text-truncate text-muted mb-2" style="font-size: 0.78rem;" title="{{ $site->vote_url }}">
+                                <i class="bi bi-link-45deg text-warning me-1"></i>
+                                <a href="{{ $site->vote_url }}" target="_blank" class="text-dim text-decoration-none">{{ $site->vote_url }}</a>
+                            </div>
+                            <div class="d-flex flex-wrap gap-2" style="font-size: 0.72rem;">
+                                @if(!empty($site->server_id))
+                                    <span class="badge bg-dark border text-info"><i class="bi bi-hash me-1"></i>Server ID: {{ $site->server_id }}</span>
+                                @endif
+                                @if(!empty($site->api_key))
+                                    <span class="badge bg-dark border text-success"><i class="bi bi-key-fill me-1"></i>API Key Aktif</span>
+                                @else
+                                    <span class="badge bg-dark border text-muted"><i class="bi bi-key me-1"></i>Tanpa API Key</span>
+                                @endif
+                                <span class="badge bg-dark border text-warning"><i class="bi bi-clock me-1"></i>{{ $site->cooldown_hours }}j Cooldown</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex gap-2 pt-2 border-top border-secondary border-opacity-25 mt-2">
+                        <!-- Toggle Button (Active <-> Disabled) -->
+                        <form method="POST" action="{{ route('apexsions-bridge.admin.votes.sites.toggle', $site->id) }}" class="flex-grow-1">
+                            @csrf
+                            @if($site->is_active)
+                                <button type="submit" class="btn btn-sm btn-outline-danger w-100 fw-bold" onclick="return confirm('Nonaktifkan platform {{ $site->name }}? Pemain tidak akan melihat platform ini di halaman /vote.')">
+                                    <i class="bi bi-pause-circle me-1"></i> Nonaktifkan
+                                </button>
+                            @else
+                                <button type="submit" class="btn btn-sm btn-outline-success w-100 fw-bold">
+                                    <i class="bi bi-play-circle me-1"></i> Aktifkan
+                                </button>
+                            @endif
+                        </form>
+
+                        <!-- Edit / Configure Settings Button -->
+                        <button type="button" class="btn btn-sm btn-outline-warning px-3" data-bs-toggle="modal" data-bs-target="#editSiteModal{{ $site->id }}" title="Konfigurasi Platform">
+                            <i class="bi bi-gear-fill"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Edit Platform -->
+            <div class="modal fade" id="editSiteModal{{ $site->id }}" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content bg-dark border-secondary text-white">
+                        <form method="POST" action="{{ route('apexsions-bridge.admin.votes.sites.update', $site->id) }}">
+                            @csrf
+                            <input type="hidden" name="has_active_toggle" value="1">
+                            <div class="modal-header border-secondary">
+                                <h5 class="modal-title font-cinzel text-warning">
+                                    <i class="bi bi-gear-wide-connected me-2"></i> Konfigurasi {{ $site->name }}
+                                </h5>
+                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="mb-3">
+                                    <label class="form-label small text-muted">Nama Platform</label>
+                                    <input type="text" name="name" class="form-control bg-black border-secondary text-white form-control-sm" value="{{ $site->name }}" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label small text-muted">Vote URL (Halaman Pemilihan Publik)</label>
+                                    <input type="url" name="vote_url" class="form-control bg-black border-secondary text-white form-control-sm" value="{{ $site->vote_url }}" required>
+                                </div>
+                                <div class="row g-2 mb-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label small text-muted">Server ID (Platform)</label>
+                                        <input type="text" name="server_id" class="form-control bg-black border-secondary text-white form-control-sm font-monospace" placeholder="Contoh: 363636" value="{{ $site->server_id }}">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label small text-muted">Cooldown (Jam)</label>
+                                        <input type="number" name="cooldown_hours" class="form-control bg-black border-secondary text-white form-control-sm" min="1" max="168" value="{{ $site->cooldown_hours }}" required>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label small text-muted">Server API Key (Untuk Validasi Otomatis)</label>
+                                    <input type="text" name="api_key" class="form-control bg-black border-secondary text-white form-control-sm font-monospace" placeholder="Masukkan Server API Key..." value="{{ $site->api_key }}">
+                                    <small class="text-muted" style="font-size: 0.72rem;">*Kosongkan jika platform tidak menggunakan API Key verifikasi klaim.</small>
+                                </div>
+                                <div class="form-check form-switch mt-2">
+                                    <input class="form-check-input" type="checkbox" name="is_active" id="isActiveSwitch{{ $site->id }}" value="1" {{ $site->is_active ? 'checked' : '' }}>
+                                    <label class="form-check-label small" for="isActiveSwitch{{ $site->id }}">
+                                        Aktifkan Platform ini di Bilik Suara Publik
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="modal-footer border-secondary">
+                                <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Batal</button>
+                                <button type="submit" class="btn btn-sm btn-warning fw-bold">
+                                    <i class="bi bi-save me-1"></i> Simpan Perubahan
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            @endforeach
+        </div>
+    </div>
+</div>
+
 <!-- Filters -->
 <div class="card p-3 mb-4">
     <form method="GET" action="{{ route('apexsions-bridge.admin.votes.index') }}" class="row g-2 align-items-center">
