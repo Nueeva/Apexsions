@@ -261,6 +261,7 @@ public class KitAdminCreatorGUI implements InventoryHolder {
                 returnAllItems();
                 this.isNavigatingSubGUI = true;
                 player.closeInventory();
+                new KitAdminListGUI(plugin, player).open();
                 return;
             }
 
@@ -523,6 +524,7 @@ public class KitAdminCreatorGUI implements InventoryHolder {
         player.closeInventory();
         player.playSound(player.getLocation(), Sound.UI_TOAST_CHALLENGE_COMPLETE, 1.0f, 1.2f);
         player.sendMessage(mm.deserialize("<green><bold>✓ SUKSES!</bold> Kit <gold>" + kitId + "</gold> berhasil disimpan & didaftarkan ke server!</green>"));
+        new KitAdminListGUI(plugin, player).open();
     }
 
     public void handleDrag(InventoryDragEvent event) {

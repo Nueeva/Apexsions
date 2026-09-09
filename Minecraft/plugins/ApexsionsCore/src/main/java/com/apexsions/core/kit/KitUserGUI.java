@@ -112,14 +112,10 @@ public class KitUserGUI implements InventoryHolder {
         ItemStack close = createItem(Material.BARRIER, "<red><bold>✖ TUTUP</bold></red>", List.of("<gray>Tutup menu kits.</gray>"));
         inventory.setItem(49, close);
 
-        // Slot 53: Admin Kit Builder Shortcut (if OP / admin)
-        if (player.hasPermission("apexsions.admin") || player.isOp()) {
-            ItemStack adminBtn = createItem(Material.ANVIL, "<gradient:#e74c3c:#f39c12><bold>⚙ ADMIN KIT CREATOR</bold></gradient>", List.of(
-                    "<gray>Buat atau kelola kit baru secara interaktif.</gray>",
-                    "<yellow>▶ Klik untuk buka Kit Builder!</yellow>"
-            ));
-            inventory.setItem(53, adminBtn);
-        }
+        // Aesthetic Corner Accents
+        ItemStack goldAccent = createItem(Material.YELLOW_STAINED_GLASS_PANE, "<gold>✦</gold>", null);
+        inventory.setItem(46, goldAccent);
+        inventory.setItem(52, goldAccent);
     }
 
     private ItemStack createItem(Material mat, String name, List<String> loreLines) {
@@ -146,13 +142,6 @@ public class KitUserGUI implements InventoryHolder {
         if (slot == 49) {
             player.closeInventory();
             player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.7f, 1.0f);
-            return;
-        }
-
-        if (slot == 53 && (player.hasPermission("apexsions.admin") || player.isOp())) {
-            player.closeInventory();
-            player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.8f, 1.2f);
-            new KitAdminCreatorGUI(plugin, player, null).open();
             return;
         }
 

@@ -31,6 +31,20 @@ public class KitsCommand implements CommandExecutor, TabCompleter {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+        // Direct admin dashboard command (/kitadmin or /kitsadmin)
+        if (label.equalsIgnoreCase("kitadmin") || label.equalsIgnoreCase("kitsadmin")) {
+            if (!sender.hasPermission("apexsions.admin") && !sender.isOp()) {
+                sender.sendMessage(mm.deserialize("<red>Kamu tidak memiliki izin untuk membuka Admin Kits GUI!</red>"));
+                return true;
+            }
+            if (!(sender instanceof Player player)) {
+                sender.sendMessage(mm.deserialize("<red>Command ini hanya dapat dijalankan oleh pemain!</red>"));
+                return true;
+            }
+            new KitAdminListGUI(plugin, player).open();
+            return true;
+        }
+
         if (args.length == 0) {
             if (!(sender instanceof Player player)) {
                 sender.sendMessage(mm.deserialize("<red>Command ini hanya dapat dijalankan oleh pemain!</red>"));
@@ -42,7 +56,21 @@ public class KitsCommand implements CommandExecutor, TabCompleter {
 
         String sub = args[0].toLowerCase();
 
-        // 1. Preview
+        // 1. Admin Dashboard Subcommand (/kits admin)
+        if (sub.equals("admin")) {
+            if (!sender.hasPermission("apexsions.admin") && !sender.isOp()) {
+                sender.sendMessage(mm.deserialize("<red>Kamu tidak memiliki izin untuk membuka Admin Kits GUI!</red>"));
+                return true;
+            }
+            if (!(sender instanceof Player player)) {
+                sender.sendMessage(mm.deserialize("<red>Command ini hanya dapat dijalankan oleh pemain!</red>"));
+                return true;
+            }
+            new KitAdminListGUI(plugin, player).open();
+            return true;
+        }
+
+        // 2. Preview
         if (sub.equals("preview")) {
             if (!(sender instanceof Player player)) {
                 sender.sendMessage(mm.deserialize("<red>Command ini hanya dapat dijalankan oleh pemain!</red>"));
@@ -61,7 +89,7 @@ public class KitsCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
-        // 2. Claim
+        // 3. Claim
         if (sub.equals("claim")) {
             if (!(sender instanceof Player player)) {
                 sender.sendMessage(mm.deserialize("<red>Command ini hanya dapat dijalankan oleh pemain!</red>"));
@@ -88,7 +116,7 @@ public class KitsCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
-        // 3. Admin subcommands
+        // 4. Admin subcommands
         if (!sender.hasPermission("apexsions.admin") && !sender.isOp()) {
             sender.sendMessage(mm.deserialize("<red>Kamu tidak memiliki izin untuk menggunakan perintah admin ini!</red>"));
             return true;
@@ -146,19 +174,7 @@ public class KitsCommand implements CommandExecutor, TabCompleter {
                     return true;
                 }
                 // Force claim ignoring cooldown and rank
-                ItemStack helm = plugin.getKitManager().prepareArmorPiece(kit, kit.getHelmet(), "Helmet");
-                ItemStack chest = plugin.getKitManager().prepareArmorPiece(kit, kit.getChestplate(), "Chestplate");
-                ItemStack legs = plugin.getKitManager().prepareArmorPiece(kit, kit.getLeggings(), "Leggings");
-                ItemStack boots = plugin.getKitManager().prepareArmorPiece(kit, kit.getBoots(), "Boots");
-
-                if (helm != null) target.getInventory().addItem(helm);
-                if (chest != null) target.getInventory().addItem(chest);
-                if (legs != null) target.getInventory().addItem(legs);
-                if (boots != null) target.getInventory().addItem(boots);
-
-                for (ItemStack it : kit.getExtraItems()) {
-                    if (it != null) target.getInventory().addItem(it.clone());
-                }
+                plugin.getKitManager().giveKitDirect(target, kit);
 
                 target.sendMessage(mm.deserialize("<green><bold>✓</bold> Kamu menerima kit <gold>" + kit.getDisplayName() + "</gold> dari admin!</green>"));
                 sender.sendMessage(mm.deserialize("<green>✓ Berhasil memberikan kit '" + kit.getId() + "' ke " + target.getName() + "!</green>"));
@@ -183,8 +199,12 @@ public class KitsCommand implements CommandExecutor, TabCompleter {
                 }
                 sender.sendMessage(mm.deserialize("<gold><bold>═════════════════════════════════════</bold></gold>"));
             }
+            case "reload" -> {
+                plugin.getKitManager().loadKits();
+                sender.sendMessage(mm.deserialize("<green>✓ Seluruh konfigurasi kits berhasil dimuat ulang dari kits.yml!</green>"));
+            }
             default -> {
-                sender.sendMessage(mm.deserialize("<yellow>Command Kits: /kits [preview/claim/create/edit/delete/give/resetcooldown/list]</yellow>"));
+                sender.sendMessage(mm.deserialize("<yellow>Command Kits: /kits [admin/preview/claim/create/edit/delete/give/resetcooldown/list/reload]</yellow>"));
             }
         }
 
@@ -198,12 +218,14 @@ public class KitsCommand implements CommandExecutor, TabCompleter {
             list.add("preview");
             list.add("claim");
             if (sender.hasPermission("apexsions.admin") || sender.isOp()) {
+                list.add("admin");
                 list.add("create");
                 list.add("edit");
                 list.add("delete");
                 list.add("give");
                 list.add("resetcooldown");
                 list.add("list");
+                list.add("reload");
             }
             return filter(list, args[0]);
         }

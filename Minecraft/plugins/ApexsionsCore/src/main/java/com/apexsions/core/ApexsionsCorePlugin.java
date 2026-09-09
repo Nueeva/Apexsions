@@ -507,6 +507,11 @@ public class ApexsionsCorePlugin extends JavaPlugin {
             kitCmd.setExecutor(kitsHandler);
             kitCmd.setTabCompleter(kitsHandler);
         }
+        PluginCommand kitAdminCmd = getCommand("kitadmin");
+        if (kitAdminCmd != null) {
+            kitAdminCmd.setExecutor(kitsHandler);
+            kitAdminCmd.setTabCompleter(kitsHandler);
+        }
 
         // /sions
         com.apexsions.core.command.SionsCommand sionsHandler = new com.apexsions.core.command.SionsCommand(this, sionsTemporalService);

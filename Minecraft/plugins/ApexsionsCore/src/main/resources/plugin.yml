@@ -188,6 +188,12 @@ commands:
     description: Alias for /kits.
     permission: apexsionscore.command.kits
     usage: /kit [preview|claim|create|edit|delete|give|resetcooldown|list]
+  kitadmin:
+    aliases:
+      - kitsadmin
+    description: Open the interactive Admin Kit Management GUI.
+    permission: apexsions.admin
+    usage: /kitadmin
 
 permissions:
   apexsionscore.command.enchant:

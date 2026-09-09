@@ -76,11 +76,11 @@ public class CoreAdminSubGUI implements InventoryHolder {
         // Slot 19: Kits Management GUI
         inventory.setItem(19, createActionItem(Material.CHEST_MINECART, "<gradient:#f1c40f:#e67e22><bold>📦 KELOLA KITS KERJAAN 📦</bold></gradient>",
                 List.of("<gray>Kelola kit kerajaan, preview, & validasi armor set:</gray>",
-                        "<dark_gray>•</dark_gray> <yellow>Buka Menu Kits (/kits)</yellow>",
+                        "<dark_gray>•</dark_gray> <yellow>Buka Admin Kits Dashboard (/kitadmin)</yellow>",
                         "<dark_gray>•</dark_gray> <yellow>Builder Kit Baru (Maks 1 Full Set Armor)</yellow>",
                         "<dark_gray>•</dark_gray> <yellow>Atur Armor Set Bonus Persentase Stat</yellow>",
                         "",
-                        "<yellow>▶ Klik untuk buka Panel Kits!</yellow>")));
+                        "<yellow>▶ Klik untuk buka Admin Kits GUI!</yellow>")));
 
         // Slot 20: Warp Management GUI
         inventory.setItem(20, createActionItem(Material.ENDER_PEARL, "<gradient:#3498db:#2ecc71><bold>✦ WARP MANAGER ✦</bold></gradient>",
@@ -158,7 +158,7 @@ public class CoreAdminSubGUI implements InventoryHolder {
         if (slot == 19) { // Kits Management
             player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.8f, 1.2f);
             player.closeInventory();
-            new com.apexsions.core.kit.KitUserGUI(plugin, player).open();
+            new com.apexsions.core.kit.KitAdminListGUI(plugin, player).open();
             return;
         }
 

@@ -29,6 +29,8 @@ public class KitGUIListener implements Listener {
             gui.handleClick(event);
         } else if (holder instanceof KitPreviewGUI gui) {
             gui.handleClick(event);
+        } else if (holder instanceof KitAdminListGUI gui) {
+            gui.handleClick(event);
         } else if (holder instanceof KitAdminCreatorGUI gui) {
             gui.handleClick(event);
         }
@@ -47,7 +49,7 @@ public class KitGUIListener implements Listener {
         InventoryHolder holder = event.getInventory().getHolder();
         if (holder instanceof KitAdminCreatorGUI gui) {
             gui.handleDrag(event);
-        } else if (holder instanceof KitUserGUI || holder instanceof KitPreviewGUI) {
+        } else if (holder instanceof KitUserGUI || holder instanceof KitPreviewGUI || holder instanceof KitAdminListGUI) {
             for (int rawSlot : event.getRawSlots()) {
                 if (rawSlot < event.getInventory().getSize()) {
                     event.setCancelled(true);

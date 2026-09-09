@@ -318,6 +318,29 @@ public class KitManager {
         return true;
     }
 
+    /**
+     * Directly delivers kit items and fullset armor to the target player, bypassing rank and cooldown checks.
+     */
+    public void giveKitDirect(Player target, Kit kit) {
+        if (target == null || kit == null) return;
+
+        ItemStack helm = prepareArmorPiece(kit, kit.getHelmet(), "Helmet");
+        ItemStack chest = prepareArmorPiece(kit, kit.getChestplate(), "Chestplate");
+        ItemStack legs = prepareArmorPiece(kit, kit.getLeggings(), "Leggings");
+        ItemStack boots = prepareArmorPiece(kit, kit.getBoots(), "Boots");
+
+        if (helm != null) deliverItem(target, helm);
+        if (chest != null) deliverItem(target, chest);
+        if (legs != null) deliverItem(target, legs);
+        if (boots != null) deliverItem(target, boots);
+
+        for (ItemStack extra : kit.getExtraItems()) {
+            if (extra != null && extra.getType() != Material.AIR) {
+                deliverItem(target, extra.clone());
+            }
+        }
+    }
+
     public ItemStack prepareArmorPiece(Kit kit, ItemStack item, String slotName) {
         if (item == null || item.getType() == Material.AIR) return null;
         ItemStack piece = item.clone();
