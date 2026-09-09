@@ -127,14 +127,14 @@ public class AdminRewardLevelEditorMenu extends Gui {
             if (isCurrency) {
                 String cId = ri.getCurrencyId();
                 if ("rupiah".equalsIgnoreCase(cId) || ri.getType() == RewardType.MONEY) {
-                    footer.add("§7Jumlah: §aRp." + String.format("%,d", (long) ri.getAmount()).replace(',', '.'));
-                    footer.add("§7Mata Uang: §eRUPIAH");
+                    footer.add("§7Jumlah: §aRp. " + String.format("%,d", (long) ri.getAmount()).replace(',', '.'));
+                    footer.add("§7Mata Uang: §eRUPIAH (Rp.)");
                 } else if ("diamond".equalsIgnoreCase(cId)) {
-                    footer.add("§7Jumlah: §a" + ri.getAmount() + " Diamond 💎");
-                    footer.add("§7Mata Uang: §eDIAMOND");
+                    footer.add("§7Jumlah: §a" + ri.getAmount() + " 💎");
+                    footer.add("§7Mata Uang: §eDIAMOND (💎)");
                 } else {
-                    footer.add("§7Jumlah: §a" + ri.getAmount() + " Coins");
-                    footer.add("§7Mata Uang: §e" + (cId != null ? cId.toUpperCase() : "BATTLE_COINS"));
+                    footer.add("§7Jumlah: §a" + ri.getAmount() + " 🪙");
+                    footer.add("§7Mata Uang: §eBATTLE COINS (🪙)");
                 }
             } else if (isItem) {
                 footer.add("§7Jumlah: §a" + ri.getAmount() + "x");

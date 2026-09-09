@@ -177,11 +177,19 @@ public class CrateKeyShopAdminGUI implements InventoryHolder {
             }
 
             lore.add(mm.deserialize("<gray>Harga Satuan:</gray> <gold><bold>" + shopManager.formatPrice(entry.getPrice(), entry.getCurrency()) + "</bold></gold>"));
-            lore.add(mm.deserialize("<gray>Mata Uang:</gray> " + (entry.isDiamond() ? "<aqua><bold>DIAMOND 💎</bold></aqua>" : "<green><bold>RUPIAH</bold></green>")));
+            String currBadge;
+            if (entry.isDiamond()) {
+                currBadge = "<aqua><bold>DIAMOND 💎</bold></aqua>";
+            } else if (entry.isBattleCoins()) {
+                currBadge = "<yellow><bold>BATTLE COINS 🪙</bold></yellow>";
+            } else {
+                currBadge = "<green><bold>RUPIAH (Rp.)</bold></green>";
+            }
+            lore.add(mm.deserialize("<gray>Mata Uang:</gray> " + currBadge));
             lore.add(Component.empty());
             lore.add(mm.deserialize("<yellow>▶ Klik Kiri:</yellow> <white>Toggle Status (Jual / Sembunyikan)</white>"));
             lore.add(mm.deserialize("<yellow>▶ Klik Kanan:</yellow> <gold>Ubah Harga Kunci</gold>"));
-            lore.add(mm.deserialize("<yellow>▶ Shift + Klik:</yellow> <aqua>Ganti Mata Uang (Rupiah ⇄ Diamond)</aqua>"));
+            lore.add(mm.deserialize("<yellow>▶ Shift + Klik:</yellow> <aqua>Ganti Mata Uang (Rp. ⇄ 💎 ⇄ 🪙)</aqua>"));
 
             meta.lore(lore);
             meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ENCHANTS);

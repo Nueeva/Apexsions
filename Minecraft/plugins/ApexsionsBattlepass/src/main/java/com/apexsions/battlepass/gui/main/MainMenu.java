@@ -40,10 +40,10 @@ public class MainMenu extends Gui {
         try {
             var eco = com.apexsions.economy.api.ApexsionsEconomyProvider.get();
             rupiahBal = eco.getBalance(player.getUniqueId(), "rupiah");
-            coinsBal  = eco.getBalance(player.getUniqueId(), "battle_coins");
         } catch (Throwable t) {
-            rupiahBal = data.getCurrency();
+            rupiahBal = 0.0;
         }
+        coinsBal = data.getCurrency();
 
         // 1. Focused Player Statistics Card (Slot 13)
         List<String> bpInfoLore = new ArrayList<>();
@@ -57,8 +57,8 @@ public class MainMenu extends Gui {
         bpInfoLore.add("&7Level: &e" + data.getLevel() + " &8/ &f" + maxLevel + (isMax ? " &6[MAX]" : ""));
         if (isMax) {
             int xpPerCoin = plugin.getConfig().getInt("battlepass.max-level-overflow.xp-per-coin", 10);
-            bpInfoLore.add("&7Exp Berlebih: &a" + data.getXp() + " &8/ &e" + xpPerCoin + " XP &7(➔ +1 Coin)");
-            bpInfoLore.add("&7Progress: &6MAX LEVEL &8(&e" + data.getXp() + "/" + xpPerCoin + " XP ➔ +1 Coin&8)");
+            bpInfoLore.add("&7Exp Berlebih: &a" + data.getXp() + " &8/ &e" + xpPerCoin + " XP &7(➔ +1 🪙)");
+            bpInfoLore.add("&7Progress: &6MAX LEVEL &8(&e" + data.getXp() + "/" + xpPerCoin + " XP ➔ +1 🪙&8)");
         } else {
             bpInfoLore.add("&7Exp: &a" + data.getXp() + " &8/ &f" + reqXp + " XP");
             bpInfoLore.add("&7Progress: " + xpBar);

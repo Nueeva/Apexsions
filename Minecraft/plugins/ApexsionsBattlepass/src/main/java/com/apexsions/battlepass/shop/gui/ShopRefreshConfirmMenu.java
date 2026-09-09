@@ -43,10 +43,10 @@ public class ShopRefreshConfirmMenu extends Gui {
                 .name("&e&lRINCIAN REFRESH SHOP")
                 .lore(List.of(
                         "&7Kategori: &f" + categoryName,
-                        "&7Biaya Refresh: &e" + cost + " Battle Coins",
+                        "&7Biaya Refresh: &e" + cost + " 🪙",
                         " ",
-                        "&7Saldo Saat Ini: &e" + currentCoins + " Battle Coins",
-                        "&7Sisa Setelah Refresh: " + (canAfford ? "&a" + remainingCoins + " Battle Coins" : "&cSaldo Kurang!"),
+                        "&7Saldo Saat Ini: &e" + currentCoins + " 🪙",
+                        "&7Sisa Setelah Refresh: " + (canAfford ? "&a" + remainingCoins + " 🪙" : "&cSaldo Kurang!"),
                         "&7Refresh Hari Ini: &b" + data.getDailyRefreshCount() + " kali",
                         " ",
                         "&7Merotasi daftar item shop secara acak",
@@ -59,7 +59,7 @@ public class ShopRefreshConfirmMenu extends Gui {
             setButton(29, new GuiButton(new ItemBuilder(Material.LIME_CONCRETE)
                     .name("&a&l[✔] YA, REFRESH SEKARANG")
                     .lore(List.of(
-                            "&7Potong &e" + cost + " Battle Coins",
+                            "&7Potong &e" + cost + " 🪙",
                             "&7dan dapatkan rotasi item baru!",
                             " ",
                             "&eKlik untuk konfirmasi refresh >"
@@ -68,11 +68,11 @@ public class ShopRefreshConfirmMenu extends Gui {
                 ShopRefreshService.RefreshResult result = plugin.getShopRefreshService().executeRefresh(player, category);
                 switch (result) {
                     case SUCCESS -> {
-                        player.sendMessage("§aBerhasil merefresh katalog §e" + categoryName + " §aseharga §e" + cost + " Battle Coins§a!");
+                        player.sendMessage("§aBerhasil merefresh katalog §e" + categoryName + " §aseharga §e" + cost + " 🪙§a!");
                         shopMenu.open();
                     }
                     case INSUFFICIENT_FUNDS -> {
-                        player.sendMessage("§cSaldo Battle Coins Anda tidak cukup untuk refresh! Butuh §e" + cost + " Battle Coins");
+                        player.sendMessage("§cSaldo Battle Coins Anda tidak cukup untuk refresh! Butuh §e" + cost + " 🪙");
                         shopMenu.open();
                     }
                     case ON_COOLDOWN -> {

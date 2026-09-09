@@ -104,12 +104,12 @@ public class CurrencyRewardDialog extends Dialog<Crate> {
                     commandStr = "ecoadmin give %player% " + (long) amount + " rupiah";
                     idPrefix = "eco_rupiah_";
                 } else if (isDiamond) {
-                    titleDisplay = "<aqua><bold>💎 " + formattedAmt + "</bold></aqua>";
+                    titleDisplay = "<aqua><bold>" + formattedAmt + " 💎</bold></aqua>";
                     currencyDisplay = "<aqua>Diamond (💎)</aqua>";
                     commandStr = "ecoadmin give %player% " + (long) amount + " diamond";
                     idPrefix = "eco_diamond_";
                 } else {
-                    titleDisplay = "<yellow><bold>🪙 " + formattedAmt + "</bold></yellow>";
+                    titleDisplay = "<yellow><bold>" + formattedAmt + " 🪙</bold></yellow>";
                     currencyDisplay = "<yellow>Battle Coins (🪙)</yellow>";
                     commandStr = "abp currency add %player% " + (long) amount;
                     idPrefix = "bp_coins_";

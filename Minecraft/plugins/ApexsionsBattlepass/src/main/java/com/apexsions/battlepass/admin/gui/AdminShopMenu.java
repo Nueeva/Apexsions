@@ -47,12 +47,12 @@ public class AdminShopMenu extends Gui {
 
         // 2. Base Refresh Cost Adjuster (Slot 20)
         setButton(20, new GuiButton(new ItemBuilder(Material.GOLD_INGOT)
-                .name("&e&lBASE REFRESH COST: &f" + refreshService.getBaseCost() + " Coins")
+                .name("&e&lBASE REFRESH COST: &f" + refreshService.getBaseCost() + " 🪙")
                 .lore(List.of(
                         "&7Biaya dasar untuk setiap kali refresh shop.",
                         " ",
-                        "&a[Klik Kiri] &7+10 Coins",
-                        "&c[Klik Kanan] &7-10 Coins"
+                        "&a[Klik Kiri] &7+10 🪙",
+                        "&c[Klik Kanan] &7-10 🪙"
                 ))
                 .build(), event -> {
             if (event.getClick() == ClickType.RIGHT) {
@@ -65,12 +65,12 @@ public class AdminShopMenu extends Gui {
 
         // 3. Minimum Refresh Cost Adjuster (Slot 21)
         setButton(21, new GuiButton(new ItemBuilder(Material.COPPER_INGOT)
-                .name("&6&lMINIMUM REFRESH COST: &f" + refreshService.getMinCost() + " Coins")
+                .name("&6&lMINIMUM REFRESH COST: &f" + refreshService.getMinCost() + " 🪙")
                 .lore(List.of(
                         "&7Batas bawah harga refresh shop.",
                         " ",
-                        "&a[Klik Kiri] &7+5 Coins",
-                        "&c[Klik Kanan] &7-5 Coins"
+                        "&a[Klik Kiri] &7+5 🪙",
+                        "&c[Klik Kanan] &7-5 🪙"
                 ))
                 .build(), event -> {
             if (event.getClick() == ClickType.RIGHT) {
@@ -83,12 +83,12 @@ public class AdminShopMenu extends Gui {
 
         // 4. Maximum Refresh Cost Adjuster (Slot 22)
         setButton(22, new GuiButton(new ItemBuilder(Material.NETHERITE_INGOT)
-                .name("&c&lMAXIMUM REFRESH COST: &f" + refreshService.getMaxCost() + " Coins")
+                .name("&c&lMAXIMUM REFRESH COST: &f" + refreshService.getMaxCost() + " 🪙")
                 .lore(List.of(
                         "&7Batas atas harga refresh shop.",
                         " ",
-                        "&a[Klik Kiri] &7+50 Coins",
-                        "&c[Klik Kanan] &7-50 Coins"
+                        "&a[Klik Kiri] &7+50 🪙",
+                        "&c[Klik Kanan] &7-50 🪙"
                 ))
                 .build(), event -> {
             if (event.getClick() == ClickType.RIGHT) {

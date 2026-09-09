@@ -64,7 +64,7 @@ public class DailyQuestMenu extends Gui {
         lore.add("&7Progress: &e" + Math.min(progress, target) + " &8/ &f" + target);
         lore.add("&7Reward XP: &a+" + quest.getRewardXp() + " XP");
         if (quest.getRewardCoins() > 0) {
-            lore.add("&7Reward Coins: &e+" + quest.getRewardCoins() + " Coins");
+            lore.add("&7Reward Coins: &e+" + quest.getRewardCoins() + " 🪙");
         }
         lore.add(" ");
 

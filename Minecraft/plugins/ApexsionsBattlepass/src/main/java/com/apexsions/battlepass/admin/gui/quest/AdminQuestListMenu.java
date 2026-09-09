@@ -79,7 +79,7 @@ public class AdminQuestListMenu extends Gui {
             if (q.getTargetItem() != null) lore.add("&7Target Item: &f" + q.getTargetItem().name());
             lore.add("&7Jumlah Target: &a" + q.getTargetAmount());
             lore.add("&7Reward XP: &b+" + q.getRewardXp() + " XP");
-            lore.add("&7Reward Coins: &6+" + q.getRewardCoins() + " Coins");
+            lore.add("&7Reward Coins: &6+" + q.getRewardCoins() + " 🪙");
             lore.add(" ");
             lore.add("&eKlik untuk mengedit quest ini >");
 

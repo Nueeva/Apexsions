@@ -42,7 +42,7 @@ shop-refresh-reset-all: "%prefix%&aBerhasil mereset counter refresh harian selur
 shop-refresh-reset-player: "%prefix%&aBerhasil mereset counter refresh harian untuk &e%player%&a."
 
 # Quest Messages
-quest-completed: "%prefix%&a&lQUEST SELESAI! &f%quest% &a- Reward: &e+%xp% XP&a, &e+%coins% Coins&a!"
+quest-completed: "%prefix%&a&lQUEST SELESAI! &f%quest% &a- Reward: &e+%xp% XP&a, &e+%coins% 🪙&a!"
 quest-locked-transition: "%prefix%&cQuest tidak dapat dikerjakan saat masa transisi season!"
 quest-expired: "%prefix%&cQuest untuk periode ini sudah expired!"
 quest-upcoming: "%prefix%&cQuest untuk periode ini belum aktif!"

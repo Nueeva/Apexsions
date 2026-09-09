@@ -81,11 +81,11 @@ public class AdminShopItemListMenu extends Gui {
             lore.add("&7Rarity: " + item.getRarity().getColor() + item.getRarity().getDisplayName());
             String priceDisplay;
             if ("rupiah".equalsIgnoreCase(item.getCurrencyType())) {
-                priceDisplay = "Rp." + String.format("%,.0f", item.getPrice());
+                priceDisplay = "Rp. " + String.format("%,.0f", item.getPrice()).replace(',', '.');
             } else {
-                priceDisplay = String.format("%,.0f", item.getPrice()) + " Battle Coins";
+                priceDisplay = String.format("%,.0f", item.getPrice()).replace(',', '.') + " 🪙";
             }
-            lore.add("&7Mata Uang: &a" + ("rupiah".equalsIgnoreCase(item.getCurrencyType()) ? "Rupiah (Rp.)" : "Battle Coins"));
+            lore.add("&7Mata Uang: &a" + ("rupiah".equalsIgnoreCase(item.getCurrencyType()) ? "Rupiah (Rp.)" : "Battle Coins (🪙)"));
             lore.add("&7Harga: &e" + priceDisplay);
             lore.add("&7Batas Beli: &f" + (item.getPurchaseLimit() > 0 ? item.getPurchaseLimit() + "x" : "Tidak Terbatas"));
             lore.add(" ");

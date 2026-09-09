@@ -156,10 +156,23 @@ public class CrateKeyShopManager {
         if ("diamond".equalsIgnoreCase(currency)) {
             return (long) price + " 💎";
         }
-        return "Rp " + String.format("%,d", (long) price).replace(',', '.');
+        if ("battle_coins".equalsIgnoreCase(currency) || "battlecoins".equalsIgnoreCase(currency) || "coins".equalsIgnoreCase(currency)) {
+            return (long) price + " 🪙";
+        }
+        return "Rp. " + String.format("%,d", (long) price).replace(',', '.');
     }
 
     public double getPlayerBalance(@NotNull Player player, @NotNull String currency) {
+        if ("battle_coins".equalsIgnoreCase(currency) || "battlecoins".equalsIgnoreCase(currency) || "coins".equalsIgnoreCase(currency)) {
+            try {
+                org.bukkit.plugin.Plugin bp = org.bukkit.Bukkit.getPluginManager().getPlugin("ApexsionsBattlepass");
+                if (bp instanceof com.apexsions.battlepass.ApexsionsBattlepass abp) {
+                    var data = abp.getPlayerManager().getPlayerData(player);
+                    if (data != null) return data.getCurrency();
+                }
+            } catch (Throwable ignored) {}
+            return 0.0;
+        }
         if (ApexsionsEconomyProvider.isAvailable()) {
             try {
                 return ApexsionsEconomyProvider.get().getBalance(player.getUniqueId(), currency);
@@ -193,8 +206,24 @@ public class CrateKeyShopManager {
         String currency = entry.getCurrency();
         String formattedPrice = formatPrice(totalPrice, currency);
 
-        // Economy check
-        if (ApexsionsEconomyProvider.isAvailable()) {
+        // Deduct payment
+        if ("battle_coins".equalsIgnoreCase(currency) || "battlecoins".equalsIgnoreCase(currency) || "coins".equalsIgnoreCase(currency)) {
+            try {
+                org.bukkit.plugin.Plugin bp = org.bukkit.Bukkit.getPluginManager().getPlugin("ApexsionsBattlepass");
+                if (bp instanceof com.apexsions.battlepass.ApexsionsBattlepass abp) {
+                    var data = abp.getPlayerManager().getPlayerData(player);
+                    if (data == null || data.getCurrency() < (int) totalPrice) {
+                        player.sendMessage(mm.deserialize("<red>Saldo <gold>BATTLE COINS 🪙</gold> kamu tidak mencukupi! Butuh <gold>" + formattedPrice + "</gold>.</red>"));
+                        player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
+                        return false;
+                    }
+                    abp.getCurrencyService().removeCurrency(player.getUniqueId(), (int) totalPrice);
+                }
+            } catch (Throwable t) {
+                player.sendMessage(mm.deserialize("<red>Gagal memproses transaksi Battle Coins!</red>"));
+                return false;
+            }
+        } else if (ApexsionsEconomyProvider.isAvailable()) {
             ApexsionsEconomyAPI eco = ApexsionsEconomyProvider.get();
             if (!eco.has(player.getUniqueId(), currency, totalPrice)) {
                 player.sendMessage(mm.deserialize("<red>Saldo <gold>" + currency.toUpperCase() + "</gold> kamu tidak mencukupi! Butuh <gold>" + formattedPrice + "</gold>.</red>"));

@@ -4,7 +4,7 @@
 
 economy:
   currency-name: "Rupiah"
-  currency-symbol: "Rp "
+  currency-symbol: "Rp. "
   # Rasio harga jual terhadap harga beli (20% = 0.20)
   sell-ratio: 0.20
 

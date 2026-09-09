@@ -171,7 +171,7 @@ public class AdminQuestEditorMenu extends Gui {
 
         // 7. Change Reward Coins (Slot 31)
         setButton(31, new GuiButton(new ItemBuilder(Material.EMERALD)
-                .name("&6&l[🪙] REWARD COINS: &f+" + rewardCoins + " Coins")
+                .name("&6&l[🪙] REWARD COINS: &f+" + rewardCoins + " 🪙")
                 .lore(List.of(
                         "&7Hadiah Battle Coins saat quest selesai.",
                         " ",

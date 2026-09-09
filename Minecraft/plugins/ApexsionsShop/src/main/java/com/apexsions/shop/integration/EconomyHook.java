@@ -79,7 +79,7 @@ public class EconomyHook {
         if (ApexsionsEconomyProvider.isAvailable()) {
             return ApexsionsEconomyProvider.get().format(amount, "rupiah");
         }
-        String symbol = plugin.getConfig().getString("economy.currency-symbol", "Rp ");
+        String symbol = plugin.getConfig().getString("economy.currency-symbol", "Rp. ");
         return symbol + String.format("%,.0f", amount).replace(',', '.');
     }
 }

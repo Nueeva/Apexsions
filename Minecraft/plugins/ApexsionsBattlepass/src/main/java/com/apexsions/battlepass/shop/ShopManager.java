@@ -197,7 +197,7 @@ public class ShopManager {
         // Check Balance & Deduct
         if (currType.equals("BATTLE_COINS") || currType.equals("BATTLECOINS")) {
             if (data.getCurrency() < (int) item.getPrice()) {
-                player.sendMessage(plugin.getMessage("shop-insufficient-coins").replace("%currency%", "Battle Coins"));
+                player.sendMessage(plugin.getMessage("shop-insufficient-coins").replace("%currency%", "🪙"));
                 return false;
             }
             plugin.getCurrencyService().removeCurrency(player.getUniqueId(), (int) item.getPrice());
@@ -206,14 +206,14 @@ public class ShopManager {
             try {
                 double bal = com.apexsions.economy.api.ApexsionsEconomyProvider.get().getBalance(player.getUniqueId(), item.getCurrencyType());
                 if (bal < item.getPrice()) {
-                    player.sendMessage("§cSaldo Rupiah Anda tidak mencukupi! Butuh §eRp." + String.format("%,.0f", item.getPrice()));
+                    player.sendMessage("§cSaldo Rupiah Anda tidak mencukupi! Butuh §eRp. " + String.format("%,.0f", item.getPrice()).replace(',', '.'));
                     return false;
                 }
                 com.apexsions.economy.api.ApexsionsEconomyProvider.get().withdraw(player.getUniqueId(), item.getCurrencyType(), item.getPrice());
             } catch (Throwable t) {
                 // Fallback to battle coins if economy plugin is absent
                 if (data.getCurrency() < (int) item.getPrice()) {
-                    player.sendMessage(plugin.getMessage("shop-insufficient-coins").replace("%currency%", "Battle Coins"));
+                    player.sendMessage(plugin.getMessage("shop-insufficient-coins").replace("%currency%", "🪙"));
                     return false;
                 }
                 plugin.getCurrencyService().removeCurrency(player.getUniqueId(), (int) item.getPrice());
@@ -237,9 +237,9 @@ public class ShopManager {
 
         String currDisplay;
         if ("rupiah".equalsIgnoreCase(item.getCurrencyType())) {
-            currDisplay = "Rp." + String.format("%,.0f", item.getPrice());
+            currDisplay = "Rp. " + String.format("%,.0f", item.getPrice()).replace(',', '.');
         } else {
-            currDisplay = (int) item.getPrice() + " Battle Coins";
+            currDisplay = (int) item.getPrice() + " 🪙";
         }
         player.sendMessage(plugin.getMessage("shop-item-bought")
                 .replace("%item%", item.getDisplayName())

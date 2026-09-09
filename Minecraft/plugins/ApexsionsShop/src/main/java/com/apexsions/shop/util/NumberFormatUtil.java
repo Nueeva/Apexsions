@@ -16,11 +16,11 @@ public final class NumberFormatUtil {
     private NumberFormatUtil() {}
 
     public static String formatRupiah(double amount, String symbol) {
-        if (symbol == null) symbol = "Rp ";
+        if (symbol == null) symbol = "Rp. ";
         return symbol + DF.format(amount);
     }
 
     public static String formatRupiah(double amount) {
-        return formatRupiah(amount, "Rp ");
+        return formatRupiah(amount, "Rp. ");
     }
 }

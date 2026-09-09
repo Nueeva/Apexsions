@@ -103,11 +103,11 @@ public class RewardsMenu extends Gui {
 
         // Player Stats Card (Slot 8)
         boolean isMax = data.getLevel() >= maxLevel;
-        int xpPerCoin = plugin.getConfig().getInt("battlepass.max-level-overflow.xp-per-coin", 10);
         List<String> statsLore = new ArrayList<>();
         statsLore.add("&7Level: &e" + data.getLevel() + " &8/ &f" + maxLevel + (isMax ? " &6[MAX]" : ""));
         if (isMax) {
-            statsLore.add("&7XP Berlebih: &a" + data.getXp() + " &8/ &e" + xpPerCoin + " XP &8(➔ +1 Coin)");
+            int xpPerCoin = plugin.getConfig().getInt("battlepass.max-level-overflow.xp-per-coin", 10);
+            statsLore.add("&7XP Berlebih: &a" + data.getXp() + " &8/ &e" + xpPerCoin + " XP &8(➔ +1 🪙)");
         } else {
             statsLore.add("&7XP: &a" + data.getXp() + " &8/ &f" + reqXp);
         }

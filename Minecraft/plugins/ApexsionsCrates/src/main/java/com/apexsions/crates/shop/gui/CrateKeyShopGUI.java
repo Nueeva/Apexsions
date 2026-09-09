@@ -122,9 +122,11 @@ public class CrateKeyShopGUI implements InventoryHolder {
 
             double rupiahBal = shopManager.getPlayerBalance(player, "rupiah");
             double diamondBal = shopManager.getPlayerBalance(player, "diamond");
+            double coinsBal = shopManager.getPlayerBalance(player, "battle_coins");
 
             lore.add(mm.deserialize("<gray>Saldo Rupiah Kamu:</gray> <green><bold>" + shopManager.formatPrice(rupiahBal, "rupiah") + "</bold></green>"));
             lore.add(mm.deserialize("<gray>Saldo Diamond Kamu:</gray> <aqua><bold>" + (long) diamondBal + " 💎</bold></aqua>"));
+            lore.add(mm.deserialize("<gray>Saldo Battle Coins Kamu:</gray> <yellow><bold>" + (long) coinsBal + " 🪙</bold></yellow>"));
             lore.add(Component.empty());
             lore.add(mm.deserialize("<yellow>Klik pada kunci di bawah untuk melakukan pembelian!</yellow>"));
             meta.lore(lore);
@@ -154,7 +156,8 @@ public class CrateKeyShopGUI implements InventoryHolder {
 
             List<Component> lore = new ArrayList<>();
             lore.add(mm.deserialize("<gray>Tipe Kunci: <yellow>" + (crateKey.isVirtual() ? "Virtual Key ✦" : "Physical Item 🗝") + "</yellow></gray>"));
-            lore.add(mm.deserialize("<gray>Mata Uang: <gold>" + currency.toUpperCase(Locale.ROOT) + "</gold></gray>"));
+            String currTag = "diamond".equalsIgnoreCase(currency) ? "DIAMOND 💎" : (("battle_coins".equalsIgnoreCase(currency) || "battlecoins".equalsIgnoreCase(currency)) ? "BATTLE COINS 🪙" : "RUPIAH (Rp.)");
+            lore.add(mm.deserialize("<gray>Mata Uang: <gold>" + currTag + "</gold></gray>"));
             lore.add(mm.deserialize("<gray>Harga Satuan:</gray> <gold><bold>" + unitFormatted + "</bold></gold>"));
             lore.add(Component.empty());
             lore.add(mm.deserialize("<white>Pilihan Pembelian:</white>"));

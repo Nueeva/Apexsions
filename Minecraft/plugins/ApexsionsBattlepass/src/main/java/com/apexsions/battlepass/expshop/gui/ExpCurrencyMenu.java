@@ -39,7 +39,7 @@ public class ExpCurrencyMenu extends Gui {
         if (expPackage.getPrices().containsKey("rupiah")) {
             double rupiahPrice = expPackage.getPrices().get("rupiah");
             ExpShopCurrencyProvider rupiahProvider = providers.get("rupiah");
-            String formattedRupiah = rupiahProvider != null ? rupiahProvider.format(rupiahPrice) : ("Rp." + String.format("%,.0f", rupiahPrice));
+            String formattedRupiah = rupiahProvider != null ? rupiahProvider.format(rupiahPrice) : ("Rp. " + String.format("%,.0f", rupiahPrice).replace(',', '.'));
 
             setButton(12, new GuiButton(new ItemBuilder(Material.EMERALD)
                     .name("&a&lBAYAR DENGAN RUPIAH")

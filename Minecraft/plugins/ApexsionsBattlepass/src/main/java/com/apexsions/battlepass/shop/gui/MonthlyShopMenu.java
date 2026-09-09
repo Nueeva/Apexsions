@@ -83,8 +83,8 @@ public class MonthlyShopMenu extends Gui {
         setButton(6, new GuiButton(new ItemBuilder(Material.SUNFLOWER)
                 .name("&e&lSALDO ANDA")
                 .lore(List.of(
-                        "&7Saldo Rupiah: &aRp." + String.format("%,.0f", rupiahBal),
-                        "&7Battle Coins: &e" + data.getCurrency() + " Coins"
+                        "&7Saldo Rupiah: &aRp. " + String.format("%,.0f", rupiahBal).replace(',', '.'),
+                        "&7Battle Coins: &e" + data.getCurrency() + " 🪙"
                 ))
                 .build()));
 
@@ -95,7 +95,7 @@ public class MonthlyShopMenu extends Gui {
                 .lore(List.of(
                         "&7Acak ulang item Monthly Shop bulan ini!",
                         " ",
-                        "&7Biaya Refresh: &e" + refreshCost + " Battle Coins",
+                        "&7Biaya Refresh: &e" + refreshCost + " 🪙",
                         "&7Refresh Hari Ini: &b" + data.getDailyRefreshCount() + " kali",
                         " ",
                         "&eKlik untuk membuka konfirmasi refresh >"
@@ -117,7 +117,7 @@ public class MonthlyShopMenu extends Gui {
             boolean isRupiah = "rupiah".equalsIgnoreCase(item.getCurrencyType());
             boolean canAfford = isRupiah ? (rupiahBal >= item.getPrice()) : (data.getCurrency() >= (int) item.getPrice());
 
-            String priceStr = isRupiah ? ("Rp." + String.format("%,.0f", item.getPrice())) : ((int) item.getPrice() + " Coins");
+            String priceStr = isRupiah ? ("Rp. " + String.format("%,.0f", item.getPrice()).replace(',', '.')) : ((int) item.getPrice() + " 🪙");
 
             ItemStack base = item.toItemStack();
             ItemStack displayItem = base != null ? base.clone() : new ItemStack(item.getMaterial(), item.getAmount());
@@ -134,7 +134,7 @@ public class MonthlyShopMenu extends Gui {
             lore.add("&7Rarity: " + item.getRarity().getColor() + item.getRarity().getDisplayName());
             lore.add("&7Tipe: &f" + item.getCategoryTag());
             lore.add("&7Harga: &e" + priceStr);
-            lore.add("&7Metode Bayar: &f" + (isRupiah ? "&aRupiah (Rp.)" : "&eBattle Coins"));
+            lore.add("&7Metode Bayar: &f" + (isRupiah ? "&aRupiah (Rp.)" : "&eBattle Coins (🪙)"));
             lore.add("&7Status Saldo: " + (canAfford ? "&a✔ Saldo Cukup" : "&c✖ Saldo Kurang"));
 
             if (item.getPurchaseLimit() > 0) {

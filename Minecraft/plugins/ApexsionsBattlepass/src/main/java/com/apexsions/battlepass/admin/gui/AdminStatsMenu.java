@@ -90,8 +90,8 @@ public class AdminStatsMenu extends Gui {
                         "&7Refresh Hari Ini (Semua Player): &e" + totalDailyRefreshes + " kali",
                         "&7Total Refresh Seumur Hidup: &b" + totalLifetimeRefreshes + " kali",
                         " ",
-                        "&7Base Refresh Cost: &f" + plugin.getShopRefreshService().getBaseCost() + " Coins",
-                        "&7Min - Max Cost: &f" + plugin.getShopRefreshService().getMinCost() + " - " + plugin.getShopRefreshService().getMaxCost() + " Coins",
+                        "&7Base Refresh Cost: &f" + plugin.getShopRefreshService().getBaseCost() + " 🪙",
+                        "&7Min - Max Cost: &f" + plugin.getShopRefreshService().getMinCost() + " - " + plugin.getShopRefreshService().getMaxCost() + " 🪙",
                         "&7Cooldown: &f" + plugin.getShopRefreshService().getCooldownSeconds() + " detik"
                 ))
                 .build()));

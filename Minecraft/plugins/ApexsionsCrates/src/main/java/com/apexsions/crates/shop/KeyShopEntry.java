@@ -57,11 +57,17 @@ public class KeyShopEntry {
         return "diamond".equalsIgnoreCase(this.currency);
     }
 
+    public boolean isBattleCoins() {
+        return "battle_coins".equalsIgnoreCase(this.currency) || "battlecoins".equalsIgnoreCase(this.currency);
+    }
+
     public void cycleCurrency() {
-        if ("diamond".equalsIgnoreCase(this.currency)) {
-            this.currency = "rupiah";
-        } else {
+        if ("rupiah".equalsIgnoreCase(this.currency)) {
             this.currency = "diamond";
+        } else if ("diamond".equalsIgnoreCase(this.currency)) {
+            this.currency = "battle_coins";
+        } else {
+            this.currency = "rupiah";
         }
     }
 

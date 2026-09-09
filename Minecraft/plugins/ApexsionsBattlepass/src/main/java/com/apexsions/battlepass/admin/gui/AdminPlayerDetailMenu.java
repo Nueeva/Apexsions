@@ -120,13 +120,13 @@ public class AdminPlayerDetailMenu extends Gui {
                 .lore(List.of(
                         "&7Tambahkan saldo Battle Coins pemain.",
                         " ",
-                        "&a[Klik Kiri] &7+50 Coins",
-                        "&e[Klik Kanan] &7+250 Coins"
+                        "&a[Klik Kiri] &7+50 🪙",
+                        "&e[Klik Kanan] &7+250 🪙"
                 ))
                 .build(), event -> {
             int amount = (event.getClick() == ClickType.RIGHT) ? 250 : 50;
             plugin.getCurrencyService().addCurrency(targetUuid, amount);
-            player.sendMessage("§aBerhasil menambahkan §e" + amount + " Coins §ake §e" + targetName);
+            player.sendMessage("§aBerhasil menambahkan §e" + amount + " 🪙 §ake §e" + targetName);
             open();
         }));
 
@@ -136,13 +136,13 @@ public class AdminPlayerDetailMenu extends Gui {
                 .lore(List.of(
                         "&7Kurangkan saldo Battle Coins pemain.",
                         " ",
-                        "&c[Klik Kiri] &7-50 Coins",
-                        "&4[Klik Kanan] &7-250 Coins"
+                        "&c[Klik Kiri] &7-50 🪙",
+                        "&4[Klik Kanan] &7-250 🪙"
                 ))
                 .build(), event -> {
             int amount = (event.getClick() == ClickType.RIGHT) ? 250 : 50;
             plugin.getCurrencyService().removeCurrency(targetUuid, amount);
-            player.sendMessage("§cBerhasil mengurangi §e" + amount + " Coins §cdari §e" + targetName);
+            player.sendMessage("§cBerhasil mengurangi §e" + amount + " 🪙 §cdari §e" + targetName);
             open();
         }));
 

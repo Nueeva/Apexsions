@@ -71,9 +71,9 @@ public class AdminShopItemEditorMenu extends Gui {
 
         String priceDisplay;
         if ("RUPIAH".equalsIgnoreCase(currencyType)) {
-            priceDisplay = "Rp." + String.format("%,.0f", price);
+            priceDisplay = "Rp. " + String.format("%,.0f", price).replace(',', '.');
         } else {
-            priceDisplay = String.format("%,.0f", price) + " Battle Coins";
+            priceDisplay = String.format("%,.0f", price).replace(',', '.') + " 🪙";
         }
 
         // 1. Overview Banner (Slot 4)
@@ -84,7 +84,7 @@ public class AdminShopItemEditorMenu extends Gui {
                         "&7Kategori: &f" + category.name(),
                         "&7Rarity: " + rarity.getColor() + rarity.getDisplayName(),
                         "&7Jumlah: &a" + amount + "x &7(" + (isStackable ? "&aStackable" : "&cNon-stackable") + "&7)",
-                        "&7Mata Uang: &e" + ("RUPIAH".equalsIgnoreCase(currencyType) ? "Rupiah (Rp.)" : "Battle Coins"),
+                        "&7Mata Uang: &e" + ("RUPIAH".equalsIgnoreCase(currencyType) ? "Rupiah (Rp.)" : "Battle Coins (🪙)"),
                         "&7Harga: &e" + priceDisplay,
                         "&7Batas Beli: &f" + (purchaseLimit > 0 ? purchaseLimit + "x" : "Tidak Terbatas"),
                         " ",
@@ -150,11 +150,11 @@ public class AdminShopItemEditorMenu extends Gui {
         // 4. Currency Selector (100% GUI Button - Slot 23)
         Material currIcon = "RUPIAH".equalsIgnoreCase(currencyType) ? Material.EMERALD : Material.SUNFLOWER;
         setButton(23, new GuiButton(new ItemBuilder(currIcon)
-                .name("&a&l[🪙] PILIH MATA UANG: &e" + ("RUPIAH".equalsIgnoreCase(currencyType) ? "RUPIAH (Rp.)" : "BATTLE_COINS"))
+                .name("&a&l[🪙] PILIH MATA UANG: &e" + ("RUPIAH".equalsIgnoreCase(currencyType) ? "RUPIAH (Rp.)" : "BATTLE COINS (🪙)"))
                 .lore(List.of(
                         "&7Pilihan mata uang pembelian:",
                         "&8- &aRUPIAH (Rp.)",
-                        "&8- &eBATTLE_COINS",
+                        "&8- &eBATTLE COINS (🪙)",
                         " ",
                         "&aKlik untuk beralih antara Rupiah dan Battle Coins >"
                 ))
