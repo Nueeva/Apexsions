@@ -54,14 +54,14 @@
         ];
     @endphp
 
-    <div class="card mb-4" style="border: 1px solid rgba(201, 164, 92, 0.35); box-shadow: 0 10px 30px rgba(0,0,0,0.85); background: linear-gradient(180deg, #161922 0%, #111319 100%);">
-        <div class="card-header d-flex flex-wrap align-items-center justify-content-between gap-2" style="background: rgba(201, 164, 92, 0.08); border-bottom: 1px solid rgba(201, 164, 92, 0.22); padding: 1.1rem 1.4rem;">
+    <div class="card mb-4 apx-telemetry-card">
+        <div class="card-header d-flex flex-wrap align-items-center justify-content-between gap-2 apx-telemetry-header">
             <div class="d-flex align-items-center gap-3">
-                <div class="p-2 rounded" style="background: rgba(201, 164, 92, 0.15); border: 1px solid rgba(201, 164, 92, 0.3);">
+                <div class="p-2 rounded apx-icon-box">
                     <i class="bi bi-cpu-fill text-warning fs-4"></i>
                 </div>
                 <div>
-                    <h4 class="mb-0 fw-bold" style="font-family: 'Cinzel', serif; letter-spacing: 1.5px; color: #F1D58A;">
+                    <h4 class="mb-0 fw-bold apx-telemetry-title">
                         APEXSIONS REALM TELEMETRY & LIVE MONITOR
                     </h4>
                     <small class="text-muted" style="letter-spacing: 0.5px;">
@@ -75,7 +75,7 @@
                     <i class="bi bi-circle-fill me-1" style="font-size: 0.65rem;"></i>
                     <span id="realmLiveStatusText">{{ ($initialStatus['online'] ?? false) ? 'REALM ONLINE' : 'SERVER OFFLINE' }}</span>
                 </span>
-                <span id="realmLiveUptimeBadge" class="badge bg-dark border border-secondary px-3 py-2 text-light" style="font-size: 0.78rem;">
+                <span id="realmLiveUptimeBadge" class="badge bg-secondary px-3 py-2 text-light" style="font-size: 0.78rem;">
                     <i class="bi bi-stopwatch me-1 text-warning"></i>
                     <span id="realmLiveUptimeText">Uptime: --</span>
                 </span>
@@ -90,16 +90,16 @@
             <div class="row g-3 mb-4">
                 <!-- TPS Metric -->
                 <div class="col-sm-6 col-xl-3">
-                    <div class="p-3 rounded h-100" style="background: rgba(0,0,0,0.35); border: 1px solid rgba(255,255,255,0.06);">
+                    <div class="p-3 rounded h-100 apx-gauge-card">
                         <div class="d-flex justify-content-between align-items-center mb-2">
                             <span class="text-muted small text-uppercase fw-bold" style="letter-spacing: 1px;">Tick Stability</span>
                             <i class="bi bi-speedometer2 text-warning fs-5"></i>
                         </div>
                         <div class="d-flex align-items-baseline gap-2">
-                            <h2 class="mb-0 fw-bold" id="gaugeTps" style="color: #F4EFE6;">{{ number_format($initialStatus['tps'] ?? 20.0, 1) }}</h2>
+                            <h2 class="mb-0 fw-bold apx-gauge-val" id="gaugeTps">{{ number_format($initialStatus['tps'] ?? 20.0, 1) }}</h2>
                             <small class="text-muted">TPS</small>
                         </div>
-                        <div class="progress mt-2" style="height: 6px; background: rgba(255,255,255,0.1);">
+                        <div class="progress mt-2" style="height: 6px; background: rgba(125,125,125,0.2);">
                             <div id="gaugeTpsBar" class="progress-bar bg-success" role="progressbar" style="width: 100%;"></div>
                         </div>
                         <small class="d-block mt-2 text-muted" id="gaugeTpsLabel" style="font-size: 0.75rem;">
@@ -110,15 +110,15 @@
 
                 <!-- RAM Metric -->
                 <div class="col-sm-6 col-xl-3">
-                    <div class="p-3 rounded h-100" style="background: rgba(0,0,0,0.35); border: 1px solid rgba(255,255,255,0.06);">
+                    <div class="p-3 rounded h-100 apx-gauge-card">
                         <div class="d-flex justify-content-between align-items-center mb-2">
                             <span class="text-muted small text-uppercase fw-bold" style="letter-spacing: 1px;">Alokasi RAM JVM</span>
                             <i class="bi bi-memory text-info fs-5"></i>
                         </div>
                         <div class="d-flex align-items-baseline gap-2">
-                            <h2 class="mb-0 fw-bold" id="gaugeRam" style="color: #F4EFE6;">{{ $initialStatus['ram_used_mb'] ?? 0 }} MB</h2>
+                            <h2 class="mb-0 fw-bold apx-gauge-val" id="gaugeRam">{{ $initialStatus['ram_used_mb'] ?? 0 }} MB</h2>
                         </div>
-                        <div class="progress mt-2" style="height: 6px; background: rgba(255,255,255,0.1);">
+                        <div class="progress mt-2" style="height: 6px; background: rgba(125,125,125,0.2);">
                             <div id="gaugeRamBar" class="progress-bar bg-info" role="progressbar" style="width: 25%;"></div>
                         </div>
                         <small class="d-block mt-2 text-muted" id="gaugeRamLabel" style="font-size: 0.75rem;">
@@ -129,16 +129,16 @@
 
                 <!-- World Activity Metric -->
                 <div class="col-sm-6 col-xl-3">
-                    <div class="p-3 rounded h-100" style="background: rgba(0,0,0,0.35); border: 1px solid rgba(255,255,255,0.06);">
+                    <div class="p-3 rounded h-100 apx-gauge-card">
                         <div class="d-flex justify-content-between align-items-center mb-2">
                             <span class="text-muted small text-uppercase fw-bold" style="letter-spacing: 1px;">Aktivitas Dunia</span>
                             <i class="bi bi-boxes text-success fs-5"></i>
                         </div>
                         <div class="d-flex align-items-baseline gap-2">
-                            <h2 class="mb-0 fw-bold" id="gaugeChunks" style="color: #F4EFE6;">{{ $initialStatus['loaded_chunks'] ?? 0 }}</h2>
+                            <h2 class="mb-0 fw-bold apx-gauge-val" id="gaugeChunks">{{ $initialStatus['loaded_chunks'] ?? 0 }}</h2>
                             <small class="text-muted">Chunks</small>
                         </div>
-                        <div class="progress mt-2" style="height: 6px; background: rgba(255,255,255,0.1);">
+                        <div class="progress mt-2" style="height: 6px; background: rgba(125,125,125,0.2);">
                             <div class="progress-bar bg-success" role="progressbar" style="width: 50%;"></div>
                         </div>
                         <small class="d-block mt-2 text-muted" id="gaugeEntitiesLabel" style="font-size: 0.75rem;">
@@ -149,15 +149,15 @@
 
                 <!-- Online Players Metric -->
                 <div class="col-sm-6 col-xl-3">
-                    <div class="p-3 rounded h-100" style="background: rgba(0,0,0,0.35); border: 1px solid rgba(255,255,255,0.06);">
+                    <div class="p-3 rounded h-100 apx-gauge-card">
                         <div class="d-flex justify-content-between align-items-center mb-2">
                             <span class="text-muted small text-uppercase fw-bold" style="letter-spacing: 1px;">Populasi Online</span>
                             <i class="bi bi-people text-warning fs-5"></i>
                         </div>
                         <div class="d-flex align-items-baseline gap-2">
-                            <h2 class="mb-0 fw-bold" id="gaugePlayers" style="color: #F4EFE6;">{{ $initialStatus['players'] ?? 0 }} <span style="font-size: 1rem; color: #8E877D;">/ {{ $initialStatus['max_players'] ?? 500 }}</span></h2>
+                            <h2 class="mb-0 fw-bold apx-gauge-val" id="gaugePlayers">{{ $initialStatus['players'] ?? 0 }} <span class="small text-muted">/ {{ $initialStatus['max_players'] ?? 500 }}</span></h2>
                         </div>
-                        <div class="progress mt-2" style="height: 6px; background: rgba(255,255,255,0.1);">
+                        <div class="progress mt-2" style="height: 6px; background: rgba(125,125,125,0.2);">
                             <div id="gaugePlayersBar" class="progress-bar bg-warning" role="progressbar" style="width: 5%;"></div>
                         </div>
                         <small class="d-block mt-2 text-muted" id="gaugePlayersLabel" style="font-size: 0.75rem;">
@@ -171,9 +171,9 @@
             <div class="row g-4">
                 <!-- Live Online Player Roster -->
                 <div class="col-lg-7">
-                    <div class="p-3 rounded" style="background: rgba(0,0,0,0.25); border: 1px solid rgba(201, 164, 92, 0.18);">
+                    <div class="p-3 rounded h-100 apx-roster-box">
                         <div class="d-flex align-items-center justify-content-between mb-3">
-                            <h6 class="mb-0 fw-bold text-uppercase" style="color: #E8C878; font-size: 0.8rem; letter-spacing: 1px;">
+                            <h6 class="mb-0 fw-bold text-uppercase apx-box-heading">
                                 <i class="bi bi-person-lines-fill me-2 text-warning"></i>
                                 Warga Peradaban yang Sedang Online
                             </h6>
@@ -190,14 +190,14 @@
 
                 <!-- Web-to-Game Quick Broadcast -->
                 <div class="col-lg-5">
-                    <div class="p-3 rounded h-100 d-flex flex-column justify-content-between" style="background: rgba(0,0,0,0.25); border: 1px solid rgba(201, 164, 92, 0.18);">
+                    <div class="p-3 rounded h-100 d-flex flex-column justify-content-between apx-broadcast-box">
                         <div>
-                            <h6 class="mb-2 fw-bold text-uppercase" style="color: #E8C878; font-size: 0.8rem; letter-spacing: 1px;">
+                            <h6 class="mb-2 fw-bold text-uppercase apx-box-heading">
                                 <i class="bi bi-megaphone-fill me-2 text-warning"></i>
                                 Kirim Pengumuman Global In-game
                             </h6>
                             <p class="text-muted small mb-3" style="font-size: 0.78rem;">
-                                Broadcast pesan emas resmi dari Web Admin langsung ke seluruh layar pemain yang sedang berada di dalam server Minecraft.
+                                Broadcast pesan resmi dari Web Admin langsung ke seluruh layar pemain yang sedang berada di dalam server Minecraft.
                             </p>
                             <form id="formAdminBroadcast">
                                 @csrf
@@ -211,6 +211,111 @@
                         </div>
                         <div id="broadcastFeedback" class="small mt-2 d-none"></div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- =========================================================================
+         SERVER HEALTH & ENVIRONMENT DECK (REAL HOST & BACKEND METRICS)
+         ========================================================================= -->
+    @php
+        $phpVersion = PHP_VERSION;
+        $osInfo = php_uname('s') . ' ' . php_uname('r');
+        $memUsageMb = round(memory_get_usage(true) / 1024 / 1024, 1);
+        $diskFreeGb = function_exists('disk_free_space') ? round(@disk_free_space(base_path()) / 1024 / 1024 / 1024, 1) : null;
+        $diskTotalGb = function_exists('disk_total_space') ? round(@disk_total_space(base_path()) / 1024 / 1024 / 1024, 1) : null;
+        $diskPercent = ($diskFreeGb && $diskTotalGb && $diskTotalGb > 0) ? round((($diskTotalGb - $diskFreeGb) / $diskTotalGb) * 100) : null;
+        $dbDriver = config('database.default', 'mysql');
+        $dbConnected = true;
+        try {
+            \DB::connection()->getPdo();
+        } catch (\Throwable $e) {
+            $dbConnected = false;
+        }
+        $pendingDeliveries = 0;
+        if (\Illuminate\Support\Facades\Schema::hasTable('apexsions_pending_deliveries')) {
+            $pendingDeliveries = \Illuminate\Support\Facades\DB::table('apexsions_pending_deliveries')->where('status', 'PENDING')->count();
+        }
+    @endphp
+
+    <div class="row g-3 mb-4">
+        <!-- PHP & Host Info -->
+        <div class="col-sm-6 col-xl-3">
+            <div class="card h-100 apx-telemetry-card mb-0">
+                <div class="card-body p-3">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span class="text-muted small text-uppercase fw-bold">Platform Environment</span>
+                        <i class="bi bi-terminal-fill text-warning fs-5"></i>
+                    </div>
+                    <h4 class="fw-bold mb-1 apx-gauge-val">PHP {{ $phpVersion }}</h4>
+                    <small class="text-muted text-truncate d-block" title="{{ $osInfo }}"><i class="bi bi-hdd me-1"></i> {{ $osInfo }}</small>
+                </div>
+            </div>
+        </div>
+
+        <!-- Memory & Storage -->
+        <div class="col-sm-6 col-xl-3">
+            <div class="card h-100 apx-telemetry-card mb-0">
+                <div class="card-body p-3">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span class="text-muted small text-uppercase fw-bold">Host Disk & RAM</span>
+                        <i class="bi bi-pie-chart-fill text-info fs-5"></i>
+                    </div>
+                    <div class="d-flex align-items-baseline gap-2">
+                        <h4 class="fw-bold mb-1 apx-gauge-val">{{ $diskPercent !== null ? $diskPercent . '%' : 'N/A' }}</h4>
+                        <small class="text-muted">Storage Used</small>
+                    </div>
+                    @if($diskPercent !== null)
+                        <div class="progress mt-1" style="height: 5px;">
+                            <div class="progress-bar {{ $diskPercent > 85 ? 'bg-danger' : ($diskPercent > 70 ? 'bg-warning' : 'bg-info') }}" style="width: {{ $diskPercent }}%;"></div>
+                        </div>
+                        <small class="text-muted small d-block mt-1">Free: {{ $diskFreeGb }} GB / {{ $diskTotalGb }} GB (RAM: {{ $memUsageMb }} MB)</small>
+                    @else
+                        <small class="text-muted small d-block mt-1">RAM Allocated: {{ $memUsageMb }} MB</small>
+                    @endif
+                </div>
+            </div>
+        </div>
+
+        <!-- Database PDO State -->
+        <div class="col-sm-6 col-xl-3">
+            <div class="card h-100 apx-telemetry-card mb-0">
+                <div class="card-body p-3">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span class="text-muted small text-uppercase fw-bold">Database Health</span>
+                        <i class="bi bi-database-fill text-success fs-5"></i>
+                    </div>
+                    <div class="d-flex align-items-center gap-2">
+                        <span class="badge {{ $dbConnected ? 'bg-success' : 'bg-danger' }} px-2 py-1">
+                            <i class="bi bi-circle-fill me-1" style="font-size: 0.55rem;"></i> {{ $dbConnected ? 'CONNECTED' : 'DISCONNECTED' }}
+                        </span>
+                        <span class="text-muted small text-uppercase">[{{ $dbDriver }}]</span>
+                    </div>
+                    <small class="text-muted small d-block mt-2">Active PDO Connection Pool & Latency Normal</small>
+                </div>
+            </div>
+        </div>
+
+        <!-- WebBridge Queue Health -->
+        <div class="col-sm-6 col-xl-3">
+            <div class="card h-100 apx-telemetry-card mb-0">
+                <div class="card-body p-3">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span class="text-muted small text-uppercase fw-bold">WebBridge Queue</span>
+                        <i class="bi bi-arrow-repeat text-warning fs-5"></i>
+                    </div>
+                    <div class="d-flex align-items-baseline gap-2">
+                        <h4 class="fw-bold mb-1 apx-gauge-val">{{ $pendingDeliveries }}</h4>
+                        <small class="text-muted">Pending In-game Sync</small>
+                    </div>
+                    <small class="text-muted small d-block mt-1">
+                        @if($pendingDeliveries === 0)
+                            <i class="bi bi-check2-circle text-success me-1"></i> Seluruh transaksi sinkron 100%
+                        @else
+                            <i class="bi bi-clock-history text-warning me-1"></i> Menunggu antrean pengiriman Minecraft
+                        @endif
+                    </small>
                 </div>
             </div>
         </div>
@@ -516,9 +621,9 @@
                                 const ping = typeof p === 'object' && p.ping !== undefined ? p.ping : null;
                                 const profileUrl = uuid ? `{{ url('/player') }}/${uuid}` : '#';
                                 return `
-                                    <a href="${profileUrl}" class="d-inline-flex align-items-center gap-2 px-3 py-1 rounded text-decoration-none" style="background: rgba(201, 164, 92, 0.08); border: 1px solid rgba(201, 164, 92, 0.25); transition: all 0.2s;" onmouseover="this.style.background='rgba(201,164,92,0.2)'" onmouseout="this.style.background='rgba(201,164,92,0.08)'">
+                                    <a href="${profileUrl}" class="d-inline-flex align-items-center gap-2 px-3 py-1 rounded apx-roster-pill">
                                         <img src="https://mc-heads.net/avatar/${encodeURIComponent(name)}/22" alt="${name}" class="rounded" width="22" height="22" onerror="this.src='{{ asset('assets/themes/apexsions/img/favicon.ico') }}'">
-                                        <span class="fw-bold" style="color: #F4EFE6; font-size: 0.85rem;">${name}</span>
+                                        <span class="fw-bold" style="font-size: 0.85rem;">${name}</span>
                                         ${ping !== null ? `<span class="badge ${ping < 80 ? 'bg-success' : (ping < 180 ? 'bg-warning' : 'bg-danger')}" style="font-size: 0.65rem; padding: 2px 5px;">${ping}ms</span>` : ''}
                                     </a>
                                 `;

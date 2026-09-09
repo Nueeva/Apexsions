@@ -1,6 +1,7 @@
 <?php
 
 use Azuriom\Plugin\ApexsionsBridge\Controllers\AccountLinkController;
+use Azuriom\Plugin\ApexsionsBridge\Controllers\Admin\GlobalSearchController;
 use Azuriom\Plugin\ApexsionsBridge\Controllers\Admin\AuditLogController;
 use Azuriom\Plugin\ApexsionsBridge\Controllers\Admin\AuctionAdminController;
 use Azuriom\Plugin\ApexsionsBridge\Controllers\Admin\EconomyAdminController;
@@ -42,6 +43,7 @@ Route::middleware('auth')->group(function () {
 
 // Admin Realm Routes (Guarded by admin-access and web middleware)
 Route::middleware(['web', 'admin-access'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/global-search', [GlobalSearchController::class, 'search'])->name('global-search');
     Route::post('/apexsions/broadcast', [LinkVerificationController::class, 'broadcast'])->name('broadcast');
 
     // Player Management Foundation

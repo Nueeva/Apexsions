@@ -305,20 +305,20 @@
                             <li class="sidebar-item {{ add_active('admin.users.*', 'admin.roles.*') }}">
                                 <a class="sidebar-link {{ Route::is('admin.users.*', 'admin.roles.*') ? '' : 'collapsed'}}" href="#" data-bs-toggle="collapse" data-bs-target="#collapseWebUsers" aria-expanded="{{ Route::is('admin.users.*', 'admin.roles.*') ? 'true' : 'false' }}" aria-controls="collapseWebUsers">
                                     <i class="bi bi-person-gear"></i>
-                                    <span>Web Accounts</span>
+                                    <span>Web Staff Accounts</span>
                                 </a>
                                 <ul id="collapseWebUsers" class="sidebar-dropdown list-unstyled collapse {{ Route::is('admin.users.*', 'admin.roles.*') ? 'show' : ''}}" data-parent="#accordionSidebar">
                                     @can('admin.users')
                                         <li class="sidebar-item {{ add_active('admin.users.*') }}">
                                             <a class="sidebar-link" href="{{ route('admin.users.index') }}">
-                                                {{ trans('admin.nav.users.users') }}
+                                                <i class="bi bi-person-badge me-1"></i> Staff Web CMS
                                             </a>
                                         </li>
                                     @endcan
                                     @can('admin.roles')
                                         <li class="sidebar-item {{ add_active('admin.roles.*') }}">
                                             <a class="sidebar-link" href="{{ route('admin.roles.index') }}">
-                                                {{ trans('admin.nav.users.roles') }}
+                                                <i class="bi bi-shield-lock me-1"></i> Staff Web Roles
                                             </a>
                                         </li>
                                     @endcan
@@ -381,15 +381,28 @@
                 </a>
 
                 <div class="navbar-collapse collapse">
-                    <div class="d-none d-sm-inline-block">
-                        <a href="{{ route('apexsions-bridge.admin.server.index') }}" class="btn btn-outline-warning btn-sm mx-1" style="border-color: rgba(201,164,92,0.4); color: #F1D58A;">
-                            <i class="bi bi-hdd-network-fill me-1"></i>
-                            <span>Server Operations</span>
-                        </a>
+                    <div class="d-none d-sm-flex align-items-center gap-2">
+                        <!-- Global Search Widget -->
+                        <div class="position-relative" style="width: 270px;">
+                            <div class="input-group input-group-sm">
+                                <span class="input-group-text bg-transparent border-end-0" style="border-color: var(--apx-border-subtle); color: var(--apx-gold);">
+                                    <i class="bi bi-search"></i>
+                                </span>
+                                <input type="text" id="apxGlobalSearchInput" class="form-control form-control-sm border-start-0 border-end-0" placeholder="Search player, UUID, menu... (Ctrl+K)" autocomplete="off" style="border-color: var(--apx-border-subtle);">
+                                <span class="input-group-text bg-transparent border-start-0" style="border-color: var(--apx-border-subtle);">
+                                    <kbd class="small text-muted py-0 px-1" style="font-size: 0.65rem; background: var(--apx-bg-surface); border: 1px solid var(--apx-border-subtle);">Ctrl K</kbd>
+                                </span>
+                            </div>
+                            <div id="apxGlobalSearchResults" class="apx-search-dropdown shadow-lg d-none"></div>
+                        </div>
 
-                        <a href="{{ route('home') }}" class="btn btn-outline-secondary btn-sm mx-1" target="_blank">
-                            <i class="bi bi-box-arrow-up-right me-1"></i>
-                            <span>View Live Website</span>
+                        <!-- Quick Actions Button -->
+                        <button type="button" class="btn btn-outline-warning btn-sm" data-bs-toggle="modal" data-bs-target="#quickActionsModal" title="Quick Actions Command Palette">
+                            <i class="bi bi-lightning-charge-fill me-1"></i> Quick Actions
+                        </button>
+
+                        <a href="{{ route('home') }}" class="btn btn-outline-secondary btn-sm" target="_blank" title="View live public website">
+                            <i class="bi bi-box-arrow-up-right me-1"></i> Live Web
                         </a>
                     </div>
 
@@ -542,6 +555,266 @@
 <form id="logoutForm" action="{{ route('logout') }}" method="POST" class="d-none">
     @csrf
 </form>
+
+<!-- Quick Actions Command Palette Modal -->
+<div class="modal fade" id="quickActionsModal" tabindex="-1" aria-labelledby="quickActionsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="d-flex align-items-center gap-2">
+                    <div class="p-2 rounded apx-icon-box">
+                        <i class="bi bi-lightning-charge-fill text-warning fs-5"></i>
+                    </div>
+                    <div>
+                        <h5 class="modal-title fw-bold mb-0" id="quickActionsModalLabel">Quick Actions Command Palette</h5>
+                        <small class="text-muted">Aksi administratif cepat untuk pengelolaan realm Apexsions</small>
+                    </div>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4">
+                <!-- Fast Player Lookup Form -->
+                <div class="mb-4 p-3 rounded apx-gauge-card">
+                    <label class="form-label small fw-bold text-uppercase text-muted mb-1">
+                        <i class="bi bi-person-bounding-box text-warning me-1"></i> Lompat Langsung ke Dossier Pemain
+                    </label>
+                    <form id="quickPlayerJumpForm" onsubmit="event.preventDefault(); const u = document.getElementById('quickPlayerUsername').value.trim(); if(u) window.location.href='{{ url('/admin/apexsions/players') }}/' + encodeURIComponent(u);">
+                        <div class="input-group">
+                            <input type="text" id="quickPlayerUsername" class="form-control" placeholder="Ketik Minecraft Username atau UUID...">
+                            <button class="btn btn-primary" type="submit">
+                                <i class="bi bi-arrow-right-circle me-1"></i> Buka Dossier
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Action Tiles Grid -->
+                <div class="row g-3">
+                    <!-- Tile 1: Server Maintenance Toggle -->
+                    <div class="col-md-6">
+                        <div class="p-3 rounded h-100 d-flex align-items-center justify-content-between apx-gauge-card">
+                            <div>
+                                <div class="fw-bold"><i class="bi bi-cone-striped text-warning me-2"></i> Mode Maintenance</div>
+                                <small class="text-muted">Kunci akses masuk server Minecraft</small>
+                            </div>
+                            <form action="{{ route('apexsions-bridge.admin.server.maintenance.toggle') }}" method="POST">
+                                @csrf
+                                <button type="submit" class="btn btn-sm btn-outline-warning">
+                                    <i class="bi bi-power me-1"></i> Toggle
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Tile 2: Clear Global Chat -->
+                    <div class="col-md-6">
+                        <div class="p-3 rounded h-100 d-flex align-items-center justify-content-between apx-gauge-card">
+                            <div>
+                                <div class="fw-bold"><i class="bi bi-chat-square-dots text-info me-2"></i> Bersihkan Chat In-game</div>
+                                <small class="text-muted">Kirim 100 baris kosong ke publik</small>
+                            </div>
+                            <form action="{{ route('apexsions-bridge.admin.server.actions.execute') }}" method="POST">
+                                @csrf
+                                <input type="hidden" name="action" value="CHAT_CLEAR">
+                                <button type="submit" class="btn btn-sm btn-outline-info" onclick="return confirm('Bersihkan riwayat in-game chat untuk seluruh pemain online?')">
+                                    <i class="bi bi-eraser-fill me-1"></i> Clear Chat
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Tile 3: Mute All Chat -->
+                    <div class="col-md-6">
+                        <div class="p-3 rounded h-100 d-flex align-items-center justify-content-between apx-gauge-card">
+                            <div>
+                                <div class="fw-bold"><i class="bi bi-mic-mute text-danger me-2"></i> Heningkan Chat Global</div>
+                                <small class="text-muted">Kunci chat publik saat darurat</small>
+                            </div>
+                            <form action="{{ route('apexsions-bridge.admin.server.actions.execute') }}" method="POST">
+                                @csrf
+                                <input type="hidden" name="action" value="CHAT_MUTE">
+                                <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Aktifkan mode senyap chat global?')">
+                                    <i class="bi bi-volume-mute-fill me-1"></i> Mute Chat
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Tile 4: Auction Expiry Sweep -->
+                    <div class="col-md-6">
+                        <div class="p-3 rounded h-100 d-flex align-items-center justify-content-between apx-gauge-card">
+                            <div>
+                                <div class="fw-bold"><i class="bi bi-shop-window text-success me-2"></i> Sweep Lelang Kadaluarsa</div>
+                                <small class="text-muted">Kembalikan item lelang kadaluarsa</small>
+                            </div>
+                            <form action="{{ route('apexsions-bridge.admin.server.actions.execute') }}" method="POST">
+                                @csrf
+                                <input type="hidden" name="action" value="AH_PURGE">
+                                <button type="submit" class="btn btn-sm btn-outline-success">
+                                    <i class="bi bi-arrow-repeat me-1"></i> Sweep AH
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Tile 5: Kingdom War Status -->
+                    <div class="col-md-6">
+                        <div class="p-3 rounded h-100 d-flex align-items-center justify-content-between apx-gauge-card">
+                            <div>
+                                <div class="fw-bold"><i class="bi bi-shield-slash text-danger me-2"></i> Perang Kerajaan</div>
+                                <small class="text-muted">Toggle status Kingdom War</small>
+                            </div>
+                            <form action="{{ route('apexsions-bridge.admin.server.actions.execute') }}" method="POST">
+                                @csrf
+                                <input type="hidden" name="action" value="KINGDOM_WAR_TOGGLE">
+                                <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Ubah status Kingdom War?')">
+                                    <i class="bi bi-swords me-1"></i> War Toggle
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Tile 6: Unified Audit Logs Shortcut -->
+                    <div class="col-md-6">
+                        <div class="p-3 rounded h-100 d-flex align-items-center justify-content-between apx-gauge-card">
+                            <div>
+                                <div class="fw-bold"><i class="bi bi-journal-text text-warning me-2"></i> Unified Audit Logs</div>
+                                <small class="text-muted">Periksa rekam jejak aksi staff</small>
+                            </div>
+                            <a href="{{ route('apexsions-bridge.admin.audit-logs.index') }}" class="btn btn-sm btn-outline-warning">
+                                <i class="bi bi-box-arrow-up-right me-1"></i> Buka Logs
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('apxGlobalSearchInput');
+    const resultsContainer = document.getElementById('apxGlobalSearchResults');
+    let debounceTimeout = null;
+
+    if (!searchInput || !resultsContainer) return;
+
+    // Keyboard shortcut: Ctrl+K or '/'
+    document.addEventListener('keydown', function(e) {
+        if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+            e.preventDefault();
+            searchInput.focus();
+            searchInput.select();
+        } else if (e.key === '/' && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
+            e.preventDefault();
+            searchInput.focus();
+            searchInput.select();
+        } else if (e.key === 'Escape') {
+            resultsContainer.classList.add('d-none');
+            searchInput.blur();
+        }
+    });
+
+    searchInput.addEventListener('input', function() {
+        clearTimeout(debounceTimeout);
+        const query = this.value.trim();
+
+        if (query.length < 2) {
+            resultsContainer.classList.add('d-none');
+            resultsContainer.innerHTML = '';
+            return;
+        }
+
+        debounceTimeout = setTimeout(async () => {
+            try {
+                resultsContainer.innerHTML = '<div class="p-3 text-center text-muted small"><span class="spinner-border spinner-border-sm me-2"></span>Mencari...</div>';
+                resultsContainer.classList.remove('d-none');
+
+                const res = await fetch('{{ route('apexsions-bridge.admin.global-search') }}?q=' + encodeURIComponent(query), {
+                    headers: { 'Accept': 'application/json' }
+                });
+                if (!res.ok) throw new Error('HTTP ' + res.status);
+                const data = await res.json();
+
+                let html = '';
+                let hasResults = false;
+
+                // Players
+                if (data.players && data.players.length > 0) {
+                    hasResults = true;
+                    html += '<div class="apx-search-category"><i class="bi bi-people-fill me-1 text-warning"></i> Pemain In-Game</div>';
+                    data.players.forEach(p => {
+                        html += `
+                            <a href="${p.url}" class="apx-search-item">
+                                <img src="${p.avatar}" width="20" height="20" class="rounded" onerror="this.src='{{ asset('assets/themes/apexsions/img/favicon.ico') }}'">
+                                <div class="text-truncate">
+                                    <div class="fw-bold text-truncate">${p.title}</div>
+                                    <span class="apx-search-meta text-truncate">${p.subtitle}</span>
+                                </div>
+                            </a>
+                        `;
+                    });
+                }
+
+                // Navigation
+                if (data.navigation && data.navigation.length > 0) {
+                    hasResults = true;
+                    html += '<div class="apx-search-category"><i class="bi bi-compass-fill me-1 text-warning"></i> Menu & Navigasi</div>';
+                    data.navigation.forEach(n => {
+                        html += `
+                            <a href="${n.url}" class="apx-search-item">
+                                <i class="${n.icon}"></i>
+                                <div class="text-truncate">
+                                    <div class="fw-bold text-truncate">${n.title}</div>
+                                    <span class="apx-search-meta text-truncate">${n.subtitle}</span>
+                                </div>
+                            </a>
+                        `;
+                    });
+                }
+
+                // Reports
+                if (data.reports && data.reports.length > 0) {
+                    hasResults = true;
+                    html += '<div class="apx-search-category"><i class="bi bi-flag-fill me-1 text-danger"></i> Laporan Pelanggaran</div>';
+                    data.reports.forEach(r => {
+                        html += `
+                            <a href="${r.url}" class="apx-search-item">
+                                <i class="${r.icon} text-danger"></i>
+                                <div class="text-truncate">
+                                    <div class="fw-bold text-truncate">${r.title}</div>
+                                    <span class="apx-search-meta text-truncate">${r.subtitle}</span>
+                                </div>
+                            </a>
+                        `;
+                    });
+                }
+
+                if (!hasResults) {
+                    html = '<div class="p-3 text-center text-muted small"><i class="bi bi-search me-1"></i> Tidak ditemukan hasil untuk "<strong>' + query.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</strong>"</div>';
+                }
+
+                resultsContainer.innerHTML = html;
+                resultsContainer.classList.remove('d-none');
+            } catch (err) {
+                console.error('[GlobalSearch] Error:', err);
+                resultsContainer.innerHTML = '<div class="p-3 text-center text-danger small"><i class="bi bi-exclamation-triangle me-1"></i> Gagal memuat pencarian</div>';
+            }
+        }, 250);
+    });
+
+    // Close dropdown on click outside
+    document.addEventListener('click', function(e) {
+        if (!searchInput.contains(e.target) && !resultsContainer.contains(e.target)) {
+            resultsContainer.classList.add('d-none');
+        }
+    });
+});
+</script>
 
 @stack('footer-scripts')
 

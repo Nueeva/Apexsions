@@ -16,18 +16,18 @@
 </div>
 
 <!-- Filter Bar -->
-<div class="card mb-4" style="background: rgba(18, 20, 26, 0.7); border: 1px solid rgba(201, 164, 92, 0.25);">
+<div class="card mb-4">
     <div class="card-body p-3">
         <form method="GET" action="{{ route('apexsions-bridge.admin.audit-logs.index') }}" class="row g-2 align-items-center">
             <div class="col-md-3">
                 <div class="input-group input-group-sm">
-                    <span class="input-group-text bg-dark border-secondary text-muted"><i class="bi bi-search"></i></span>
-                    <input type="text" name="search" class="form-control form-control-sm bg-dark text-light border-secondary" placeholder="Cari actor, target, aksi, alasan..." value="{{ $search }}">
+                    <span class="input-group-text text-muted"><i class="bi bi-search"></i></span>
+                    <input type="text" name="search" class="form-control form-control-sm" placeholder="Cari actor, target, aksi, alasan..." value="{{ $search }}">
                 </div>
             </div>
 
             <div class="col-md-2">
-                <select name="action" class="form-select form-select-sm bg-dark text-light border-secondary">
+                <select name="action" class="form-select form-select-sm">
                     <option value="all">-- Semua Aksi --</option>
                     @foreach($availableActions as $act)
                         <option value="{{ $act }}" @selected($selectedAction === $act)>{{ $act }}</option>
@@ -36,7 +36,7 @@
             </div>
 
             <div class="col-md-2">
-                <select name="source" class="form-select form-select-sm bg-dark text-light border-secondary">
+                <select name="source" class="form-select form-select-sm">
                     <option value="all">-- Semua Sumber --</option>
                     @foreach($availableSources as $src)
                         <option value="{{ $src }}" @selected($selectedSource === $src)>{{ $src }}</option>
@@ -45,7 +45,7 @@
             </div>
 
             <div class="col-md-2">
-                <select name="status" class="form-select form-select-sm bg-dark text-light border-secondary">
+                <select name="status" class="form-select form-select-sm">
                     <option value="all">-- Semua Status --</option>
                     @foreach($availableStatuses as $st)
                         <option value="{{ $st }}" @selected($selectedStatus === $st)>{{ $st }}</option>
@@ -54,7 +54,7 @@
             </div>
 
             <div class="col-md-2">
-                <input type="date" name="from" class="form-control form-control-sm bg-dark text-light border-secondary" title="Dari Tanggal" value="{{ $selectedFrom }}">
+                <input type="date" name="from" class="form-control form-control-sm" title="Dari Tanggal" value="{{ $selectedFrom }}">
             </div>
 
             <div class="col-md-1 d-flex gap-1">
@@ -72,10 +72,10 @@
 </div>
 
 <!-- Logs Table -->
-<div class="card shadow-sm mb-4" style="background: rgba(18, 20, 26, 0.95); border: 1px solid rgba(201, 164, 92, 0.22);">
+<div class="card shadow-sm mb-4">
     <div class="card-body p-0">
         <div class="table-responsive">
-            <table class="table table-hover align-middle mb-0 text-light" style="font-size: 0.88rem;">
+            <table class="table table-hover align-middle mb-0" style="font-size: 0.88rem;">
                 <thead style="background: rgba(201, 164, 92, 0.08); border-bottom: 1px solid rgba(201, 164, 92, 0.2);">
                     <tr class="text-uppercase text-muted" style="font-size: 0.75rem; letter-spacing: 1px;">
                         <th class="ps-3 py-3" style="width: 70px;">ID</th>
@@ -158,9 +158,19 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="8" class="text-center py-5 text-muted">
-                                <i class="bi bi-journal-x fs-1 d-block mb-2 text-warning opacity-50"></i>
-                                Belum ada catatan audit log yang cocok dengan kriteria pencarian.
+                            <td colspan="8" class="p-0">
+                                <div class="apx-empty-state">
+                                    <div class="apx-empty-icon">
+                                        <i class="bi bi-journal-x"></i>
+                                    </div>
+                                    <h5 class="apx-empty-title">Belum Ada Catatan Audit Log</h5>
+                                    <p class="apx-empty-desc">
+                                        Tidak ditemukan catatan aktivitas atau audit log yang sesuai dengan filter pencarian Anda.
+                                    </p>
+                                    <a href="{{ route('apexsions-bridge.admin.audit-logs.index') }}" class="btn btn-sm btn-outline-primary">
+                                        <i class="bi bi-arrow-counterclockwise me-1"></i> Reset Filter
+                                    </a>
+                                </div>
                             </td>
                         </tr>
                     @endforelse
@@ -169,7 +179,7 @@
         </div>
     </div>
     @if($logs->hasPages())
-        <div class="card-footer bg-transparent border-top border-secondary py-3">
+        <div class="card-footer py-3">
             {{ $logs->links() }}
         </div>
     @endif

@@ -833,3 +833,278 @@ body {
 ::-webkit-scrollbar-thumb:hover {
     background: var(--apx-gold);
 }
+
+/* --------------------------------------------------------------------------
+   16. GLOBAL SEARCH & QUICK ACTIONS
+   -------------------------------------------------------------------------- */
+.apx-search-box {
+    position: relative;
+    max-width: 380px;
+    width: 100%;
+}
+
+.apx-search-input {
+    background: var(--apx-bg-input) !important;
+    border: 1px solid var(--apx-border-input) !important;
+    color: var(--apx-text-primary) !important;
+    border-radius: 20px !important;
+    padding-left: 2.3rem !important;
+    padding-right: 4.8rem !important;
+    font-size: 0.82rem !important;
+    height: 34px !important;
+    transition: all 0.2s ease !important;
+}
+
+.apx-search-input:focus {
+    background: var(--apx-bg-input-focus) !important;
+    border-color: var(--apx-border-focus) !important;
+    box-shadow: 0 0 10px rgba(201, 164, 92, 0.25) !important;
+    outline: none !important;
+}
+
+.apx-search-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--apx-gold-antique);
+    font-size: 0.85rem;
+    pointer-events: none;
+    z-index: 5;
+}
+
+.apx-search-badge {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--apx-bg-card);
+    border: 1px solid var(--apx-border-subtle);
+    color: var(--apx-text-muted);
+    font-size: 0.65rem;
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-family: monospace;
+    z-index: 5;
+}
+
+.apx-search-results {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    right: 0;
+    background: var(--apx-bg-modal) !important;
+    border: 1px solid var(--apx-border-primary) !important;
+    border-radius: 10px !important;
+    box-shadow: var(--apx-shadow-dropdown) !important;
+    max-height: 420px;
+    overflow-y: auto;
+    z-index: 1060;
+    padding: 6px 0;
+}
+
+.apx-search-category {
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    color: var(--apx-gold-antique);
+    padding: 8px 14px 4px;
+}
+
+.apx-search-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 14px;
+    color: var(--apx-text-primary);
+    text-decoration: none;
+    font-size: 0.84rem;
+    transition: background 0.15s ease;
+}
+
+.apx-search-item:hover,
+.apx-search-item.selected {
+    background: var(--apx-nav-link-hover-bg);
+    color: var(--apx-gold-radiant);
+}
+
+.apx-search-item i {
+    font-size: 1.05rem;
+    color: var(--apx-gold);
+    width: 20px;
+    text-align: center;
+}
+
+.apx-search-meta {
+    font-size: 0.72rem;
+    color: var(--apx-text-muted);
+    display: block;
+}
+
+/* --------------------------------------------------------------------------
+   17. EMPTY & LOADING STATES
+   -------------------------------------------------------------------------- */
+.apx-empty-state {
+    padding: 3.5rem 1.5rem;
+    text-align: center;
+}
+
+.apx-empty-icon {
+    font-size: 3.2rem;
+    color: var(--apx-gold-antique);
+    opacity: 0.75;
+    margin-bottom: 1rem;
+    display: inline-block;
+}
+
+.apx-empty-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--apx-text-heading);
+    margin-bottom: 0.4rem;
+    letter-spacing: 0.5px;
+}
+
+.apx-empty-desc {
+    font-size: 0.86rem;
+    color: var(--apx-text-muted);
+    max-width: 440px;
+    margin: 0 auto 1.25rem;
+    line-height: 1.5;
+}
+
+/* --------------------------------------------------------------------------
+   18. TELEMETRY & HEALTH CARDS (THEME AWARE)
+   -------------------------------------------------------------------------- */
+.apx-telemetry-card {
+    background-color: var(--apx-bg-card) !important;
+    border: 1px solid var(--apx-border-primary) !important;
+    border-radius: 10px;
+    box-shadow: var(--apx-shadow-card);
+}
+
+.apx-gauge-card {
+    background-color: var(--apx-bg-surface) !important;
+    border: 1px solid var(--apx-border-subtle) !important;
+    border-radius: 8px;
+    padding: 1.1rem;
+    transition: all 0.2s ease;
+}
+
+.apx-gauge-card:hover {
+    border-color: var(--apx-border-focus) !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+}
+
+.apx-roster-box,
+.apx-broadcast-box {
+    background-color: var(--apx-bg-surface) !important;
+    border: 1px solid var(--apx-border-subtle) !important;
+    border-radius: 8px;
+    padding: 1.2rem;
+}
+
+.apx-telemetry-header {
+    background-color: var(--apx-table-th-bg) !important;
+    border-bottom: 1px solid var(--apx-border-primary) !important;
+    padding: 1.1rem 1.4rem;
+}
+
+.apx-telemetry-title {
+    font-family: 'Cinzel', serif;
+    letter-spacing: 1.5px;
+    color: var(--apx-gold-radiant) !important;
+}
+
+.apx-gauge-val {
+    color: var(--apx-text-heading) !important;
+}
+
+.apx-box-heading {
+    color: var(--apx-gold-radiant) !important;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+}
+
+.apx-roster-pill {
+    background: var(--apx-bg-card) !important;
+    border: 1px solid var(--apx-border-subtle) !important;
+    color: var(--apx-text-primary) !important;
+    text-decoration: none !important;
+    transition: all 0.2s ease;
+}
+
+.apx-roster-pill:hover {
+    border-color: var(--apx-gold) !important;
+    color: var(--apx-gold-radiant) !important;
+    transform: translateY(-1px);
+}
+
+.apx-telemetry-header {
+    background-color: var(--apx-table-th-bg) !important;
+    border-bottom: 1px solid var(--apx-border-primary) !important;
+    padding: 1.1rem 1.4rem;
+}
+
+.apx-telemetry-title {
+    font-family: 'Cinzel', serif;
+    letter-spacing: 1.5px;
+    color: var(--apx-gold-radiant) !important;
+}
+
+.apx-gauge-val {
+    color: var(--apx-text-heading) !important;
+}
+
+.apx-box-heading {
+    color: var(--apx-gold-radiant) !important;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+}
+
+.apx-roster-pill {
+    background: var(--apx-bg-card) !important;
+    border: 1px solid var(--apx-border-subtle) !important;
+    color: var(--apx-text-primary) !important;
+    text-decoration: none !important;
+    transition: all 0.2s ease;
+}
+
+.apx-roster-pill:hover {
+    border-color: var(--apx-gold) !important;
+    color: var(--apx-gold-radiant) !important;
+    transform: translateY(-1px);
+}
+
+/* --------------------------------------------------------------------------
+   19. LIGHT MODE ROBUSTNESS OVERRIDES
+   -------------------------------------------------------------------------- */
+[data-bs-theme="light"] .text-white,
+[data-bs-theme="light"] .text-light {
+    color: var(--apx-text-primary) !important;
+}
+
+[data-bs-theme="light"] .bg-dark {
+    background-color: var(--apx-bg-card) !important;
+    color: var(--apx-text-primary) !important;
+    border-color: var(--apx-border-subtle) !important;
+}
+
+[data-bs-theme="light"] .border-secondary {
+    border-color: var(--apx-border-subtle) !important;
+}
+
+[data-bs-theme="light"] input.bg-dark,
+[data-bs-theme="light"] select.bg-dark,
+[data-bs-theme="light"] textarea.bg-dark {
+    background-color: #FFFFFF !important;
+    color: #1A1D23 !important;
+    border-color: #CED4DA !important;
+}
+
+[data-bs-theme="light"] .modal-content {
+    background-color: #FFFFFF !important;
+    color: #1A1D23 !important;
+}
+

@@ -59,7 +59,7 @@
 <div class="row g-4">
     <!-- Main Content Tabs -->
     <div class="col-lg-8">
-        <div class="card shadow-sm" style="background: rgba(18, 20, 26, 0.95); border: 1px solid rgba(201, 164, 92, 0.22);">
+        <div class="card shadow-sm" >
             <div class="card-header bg-transparent border-bottom border-secondary p-0">
                 <ul class="nav nav-tabs nav-fill border-0" id="playerTab" role="tablist">
                     <li class="nav-item" role="presentation">
@@ -557,7 +557,7 @@
 
     <!-- Sidebar Actions (Expanded & Grouped) -->
     <div class="col-lg-4">
-        <div class="card shadow-sm mb-4" style="background: rgba(18, 20, 26, 0.95); border: 1px solid rgba(201, 164, 92, 0.22);">
+        <div class="card shadow-sm mb-4" >
             <div class="card-header bg-transparent border-bottom border-secondary py-3">
                 <h6 class="mb-0 fw-bold text-uppercase text-warning" style="letter-spacing: 1px; font-size: 0.82rem;">
                     <i class="bi bi-shield-lock me-2"></i> Administrative Control Desk
@@ -690,8 +690,8 @@
                 <input type="hidden" name="action_type" value="ASSIGN_RANK">
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label class="form-label small fw-bold text-light">Pilih Rank Baru <span class="text-danger">*</span></label>
-                        <select name="rank" class="form-select bg-dark text-light border-secondary" required>
+                        <label class="form-label small fw-bold">Pilih Rank Baru <span class="text-danger">*</span></label>
+                        <select name="rank" class="form-select " required>
                             @foreach($allRanks as $rkKey => $rkData)
                                 <option value="{{ $rkKey }}" @if($account->rank === $rkKey) selected disabled @endif>
                                     [{{ $rkData['tier'] }}] {{ $rkData['display_name'] }} (Weight: {{ $rkData['weight'] }})
@@ -701,14 +701,14 @@
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label small fw-bold text-light">Alasan Audit Penugasan <span class="text-danger">*</span></label>
-                        <textarea name="reason" class="form-control bg-dark text-light border-secondary" rows="3" placeholder="Tulis alasan perubahan rank pemain..." required maxlength="250"></textarea>
+                        <label class="form-label small fw-bold">Alasan Audit Penugasan <span class="text-danger">*</span></label>
+                        <textarea name="reason" class="form-control " rows="3" placeholder="Tulis alasan perubahan rank pemain..." required maxlength="250"></textarea>
                     </div>
                     <div class="alert alert-warning py-2 small mb-0">
                         <i class="bi bi-info-circle me-1"></i> Perintah <code class="text-dark">lp user {{ $account->minecraft_username }} parent set &lt;rank&gt;</code> akan dijadwalkan ke server.
                     </div>
                 </div>
-                <div class="modal-footer border-secondary">
+                <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
                     <button type="submit" class="btn btn-warning fw-bold">Konfirmasi Ubah Rank</button>
                 </div>
@@ -733,11 +733,11 @@
                         Apakah Anda yakin ingin mereset rank <strong>{{ $account->minecraft_username }}</strong> kembali ke <strong class="text-warning">Wanderer</strong>?
                     </p>
                     <div class="mb-3">
-                        <label class="form-label small fw-bold text-light">Alasan Reset <span class="text-danger">*</span></label>
-                        <input type="text" name="reason" class="form-control bg-dark text-light border-secondary" placeholder="Contoh: Masa donasi berakhir / sanksi demosi..." required maxlength="250">
+                        <label class="form-label small fw-bold">Alasan Reset <span class="text-danger">*</span></label>
+                        <input type="text" name="reason" class="form-control " placeholder="Contoh: Masa donasi berakhir / sanksi demosi..." required maxlength="250">
                     </div>
                 </div>
-                <div class="modal-footer border-secondary">
+                <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
                     <button type="submit" class="btn btn-danger fw-bold">Reset Rank</button>
                 </div>
@@ -762,24 +762,24 @@
                 <input type="hidden" name="currency" value="rupiah">
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label class="form-label small fw-bold text-light">Jenis Penyesuaian <span class="text-danger">*</span></label>
-                        <select name="sub_type" class="form-select bg-dark text-light border-secondary" required>
+                        <label class="form-label small fw-bold">Jenis Penyesuaian <span class="text-danger">*</span></label>
+                        <select name="sub_type" class="form-select " required>
                             <option value="give">Tambah Saldo (+ Give)</option>
                             <option value="take">Kurangi Saldo (- Take)</option>
                             <option value="set">Tetapkan Saldo (= Set)</option>
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label small fw-bold text-light">Nominal Angka (IDR) <span class="text-danger">*</span></label>
-                        <input type="number" name="amount" class="form-control bg-dark text-light border-secondary" placeholder="Contoh: 100000" min="0" step="1000" required>
+                        <label class="form-label small fw-bold">Nominal Angka (IDR) <span class="text-danger">*</span></label>
+                        <input type="number" name="amount" class="form-control " placeholder="Contoh: 100000" min="0" step="1000" required>
                         <small class="text-muted">Saldo Rupiah saat ini: Rp {{ number_format($account->balance_rupiah, 0, ',', '.') }}</small>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label small fw-bold text-light">Alasan Audit <span class="text-danger">*</span></label>
-                        <input type="text" name="reason" class="form-control bg-dark text-light border-secondary" placeholder="Alasan penyesuaian saldo..." required maxlength="250">
+                        <label class="form-label small fw-bold">Alasan Audit <span class="text-danger">*</span></label>
+                        <input type="text" name="reason" class="form-control " placeholder="Alasan penyesuaian saldo..." required maxlength="250">
                     </div>
                 </div>
-                <div class="modal-footer border-secondary">
+                <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
                     <button type="submit" class="btn btn-success fw-bold">Eksekusi Saldo</button>
                 </div>
@@ -804,24 +804,24 @@
                 <input type="hidden" name="currency" value="diamond">
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label class="form-label small fw-bold text-light">Jenis Penyesuaian <span class="text-danger">*</span></label>
-                        <select name="sub_type" class="form-select bg-dark text-light border-secondary" required>
+                        <label class="form-label small fw-bold">Jenis Penyesuaian <span class="text-danger">*</span></label>
+                        <select name="sub_type" class="form-select " required>
                             <option value="give">Tambah Saldo Diamond (+ Give)</option>
                             <option value="take">Kurangi Saldo Diamond (- Take)</option>
                             <option value="set">Tetapkan Saldo Diamond (= Set)</option>
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label small fw-bold text-light">Jumlah Diamond (💎) <span class="text-danger">*</span></label>
-                        <input type="number" name="amount" class="form-control bg-dark text-light border-secondary" placeholder="Contoh: 50" min="0" step="1" required>
+                        <label class="form-label small fw-bold">Jumlah Diamond (💎) <span class="text-danger">*</span></label>
+                        <input type="number" name="amount" class="form-control " placeholder="Contoh: 50" min="0" step="1" required>
                         <small class="text-muted">Saldo Diamond saat ini: {{ number_format($account->balance_diamond, 0, ',', '.') }} 💎</small>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label small fw-bold text-light">Alasan Audit <span class="text-danger">*</span></label>
-                        <input type="text" name="reason" class="form-control bg-dark text-light border-secondary" placeholder="Alasan penyesuaian diamond..." required maxlength="250">
+                        <label class="form-label small fw-bold">Alasan Audit <span class="text-danger">*</span></label>
+                        <input type="text" name="reason" class="form-control " placeholder="Alasan penyesuaian diamond..." required maxlength="250">
                     </div>
                 </div>
-                <div class="modal-footer border-secondary">
+                <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
                     <button type="submit" class="btn btn-info fw-bold">Eksekusi Diamond</button>
                 </div>
@@ -843,15 +843,15 @@
                 <input type="hidden" name="action_type" value="SET_LEVEL">
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label class="form-label small fw-bold text-light">Level Baru (1 - 100) <span class="text-danger">*</span></label>
-                        <input type="number" name="level" class="form-control bg-dark text-light border-secondary" min="1" max="100" value="{{ $account->level }}" required>
+                        <label class="form-label small fw-bold">Level Baru (1 - 100) <span class="text-danger">*</span></label>
+                        <input type="number" name="level" class="form-control " min="1" max="100" value="{{ $account->level }}" required>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label small fw-bold text-light">Alasan Audit <span class="text-danger">*</span></label>
-                        <input type="text" name="reason" class="form-control bg-dark text-light border-secondary" placeholder="Alasan penyesuaian level..." required maxlength="250">
+                        <label class="form-label small fw-bold">Alasan Audit <span class="text-danger">*</span></label>
+                        <input type="text" name="reason" class="form-control " placeholder="Alasan penyesuaian level..." required maxlength="250">
                     </div>
                 </div>
-                <div class="modal-footer border-secondary">
+                <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
                     <button type="submit" class="btn btn-warning fw-bold">Terapkan Level</button>
                 </div>
@@ -873,15 +873,15 @@
                 <input type="hidden" name="action_type" value="ADD_XP">
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label class="form-label small fw-bold text-light">Jumlah XP <span class="text-danger">*</span></label>
-                        <input type="number" name="xp_amount" class="form-control bg-dark text-light border-secondary" min="1" step="100" value="1000" required>
+                        <label class="form-label small fw-bold">Jumlah XP <span class="text-danger">*</span></label>
+                        <input type="number" name="xp_amount" class="form-control " min="1" step="100" value="1000" required>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label small fw-bold text-light">Alasan Audit <span class="text-danger">*</span></label>
-                        <input type="text" name="reason" class="form-control bg-dark text-light border-secondary" placeholder="Alasan pemberian XP..." required maxlength="250">
+                        <label class="form-label small fw-bold">Alasan Audit <span class="text-danger">*</span></label>
+                        <input type="text" name="reason" class="form-control " placeholder="Alasan pemberian XP..." required maxlength="250">
                     </div>
                 </div>
-                <div class="modal-footer border-secondary">
+                <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
                     <button type="submit" class="btn btn-warning fw-bold">Tambah XP</button>
                 </div>
@@ -903,19 +903,19 @@
                 <input type="hidden" name="action_type" value="SET_KINGDOM">
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label class="form-label small fw-bold text-light">Pilih Kerajaan <span class="text-danger">*</span></label>
-                        <select name="kingdom" class="form-select bg-dark text-light border-secondary" required>
+                        <label class="form-label small fw-bold">Pilih Kerajaan <span class="text-danger">*</span></label>
+                        <select name="kingdom" class="form-select " required>
                             <option value="ZENITHAR" @if(strtoupper($account->kingdom) === 'ZENITHAR') selected @endif>Zenithar (Kekayaan & Keemasan)</option>
                             <option value="SOLTERRA" @if(strtoupper($account->kingdom) === 'SOLTERRA') selected @endif>Solterra (Api & Pertambangan)</option>
                             <option value="SYLVAMOOR" @if(strtoupper($account->kingdom) === 'SYLVAMOOR') selected @endif>Sylvamoor (Alam & Hutan)</option>
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label small fw-bold text-light">Alasan Audit <span class="text-danger">*</span></label>
-                        <input type="text" name="reason" class="form-control bg-dark text-light border-secondary" placeholder="Alasan perpindahan kerajaan..." required maxlength="250">
+                        <label class="form-label small fw-bold">Alasan Audit <span class="text-danger">*</span></label>
+                        <input type="text" name="reason" class="form-control " placeholder="Alasan perpindahan kerajaan..." required maxlength="250">
                     </div>
                 </div>
-                <div class="modal-footer border-secondary">
+                <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
                     <button type="submit" class="btn btn-warning fw-bold">Pindah Kerajaan</button>
                 </div>
@@ -940,11 +940,11 @@
                         Afiliasi kerajaan <strong>{{ $account->minecraft_username }}</strong> akan di-reset menjadi <strong>Belum Memilih</strong>. Pemain dapat memilih kembali via command in-game.
                     </p>
                     <div class="mb-3">
-                        <label class="form-label small fw-bold text-light">Alasan Reset <span class="text-danger">*</span></label>
-                        <input type="text" name="reason" class="form-control bg-dark text-light border-secondary" placeholder="Alasan reset kerajaan..." required maxlength="250">
+                        <label class="form-label small fw-bold">Alasan Reset <span class="text-danger">*</span></label>
+                        <input type="text" name="reason" class="form-control " placeholder="Alasan reset kerajaan..." required maxlength="250">
                     </div>
                 </div>
-                <div class="modal-footer border-secondary">
+                <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
                     <button type="submit" class="btn btn-danger fw-bold">Reset Kerajaan</button>
                 </div>
@@ -966,18 +966,18 @@
                 <input type="hidden" name="action_type" value="BATTLEPASS_PASS">
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label class="form-label small fw-bold text-light">Tipe BattlePass <span class="text-danger">*</span></label>
-                        <select name="pass_type" class="form-select bg-dark text-light border-secondary" required>
+                        <label class="form-label small fw-bold">Tipe BattlePass <span class="text-danger">*</span></label>
+                        <select name="pass_type" class="form-select " required>
                             <option value="sio">SIO PASS (Standar Premium)</option>
                             <option value="exsio">EXSIO PASS (VIP Pass Tier)</option>
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label small fw-bold text-light">Alasan Audit <span class="text-danger">*</span></label>
-                        <input type="text" name="reason" class="form-control bg-dark text-light border-secondary" placeholder="Contoh: Pembelian Webstore BattlePass..." required maxlength="250">
+                        <label class="form-label small fw-bold">Alasan Audit <span class="text-danger">*</span></label>
+                        <input type="text" name="reason" class="form-control " placeholder="Contoh: Pembelian Webstore BattlePass..." required maxlength="250">
                     </div>
                 </div>
-                <div class="modal-footer border-secondary">
+                <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
                     <button type="submit" class="btn btn-warning fw-bold">Berikan Pass</button>
                 </div>
@@ -999,15 +999,15 @@
                 <input type="hidden" name="action_type" value="BATTLEPASS_TIER">
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label class="form-label small fw-bold text-light">Tier Target (1 - 100) <span class="text-danger">*</span></label>
-                        <input type="number" name="tier" class="form-control bg-dark text-light border-secondary" min="1" max="100" value="{{ $account->battlepass_tier }}" required>
+                        <label class="form-label small fw-bold">Tier Target (1 - 100) <span class="text-danger">*</span></label>
+                        <input type="number" name="tier" class="form-control " min="1" max="100" value="{{ $account->battlepass_tier }}" required>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label small fw-bold text-light">Alasan Audit <span class="text-danger">*</span></label>
-                        <input type="text" name="reason" class="form-control bg-dark text-light border-secondary" placeholder="Alasan pengaturan tier..." required maxlength="250">
+                        <label class="form-label small fw-bold">Alasan Audit <span class="text-danger">*</span></label>
+                        <input type="text" name="reason" class="form-control " placeholder="Alasan pengaturan tier..." required maxlength="250">
                     </div>
                 </div>
-                <div class="modal-footer border-secondary">
+                <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
                     <button type="submit" class="btn btn-warning fw-bold">Terapkan Tier</button>
                 </div>
@@ -1032,11 +1032,11 @@
                         Pemain akan dikeluarkan dari server secara paksa. Aksi ini hanya dapat berjalan apabila pemain sedang online.
                     </p>
                     <div class="mb-3">
-                        <label class="form-label small fw-bold text-light">Alasan Kick <span class="text-danger">*</span></label>
-                        <input type="text" name="reason" class="form-control bg-dark text-light border-secondary" placeholder="Tulis alasan kick..." required maxlength="250">
+                        <label class="form-label small fw-bold">Alasan Kick <span class="text-danger">*</span></label>
+                        <input type="text" name="reason" class="form-control " placeholder="Tulis alasan kick..." required maxlength="250">
                     </div>
                 </div>
-                <div class="modal-footer border-secondary">
+                <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
                     <button type="submit" class="btn btn-danger fw-bold">Kick Pemain</button>
                 </div>
@@ -1061,11 +1061,11 @@
                         Memulihkan seluruh HP, mengisi indikator lapar (Food level 20), dan menghapus status efek negatif pemain in-game.
                     </p>
                     <div class="mb-3">
-                        <label class="form-label small fw-bold text-light">Alasan Audit <span class="text-danger">*</span></label>
-                        <input type="text" name="reason" class="form-control bg-dark text-light border-secondary" value="Bantuan admin / pemulihan HP pemain" required maxlength="250">
+                        <label class="form-label small fw-bold">Alasan Audit <span class="text-danger">*</span></label>
+                        <input type="text" name="reason" class="form-control " value="Bantuan admin / pemulihan HP pemain" required maxlength="250">
                     </div>
                 </div>
-                <div class="modal-footer border-secondary">
+                <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
                     <button type="submit" class="btn btn-success fw-bold">Eksekusi Heal</button>
                 </div>
@@ -1087,15 +1087,15 @@
                 <input type="hidden" name="action_type" value="DISPATCH_ALERT">
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label class="form-label small fw-bold text-light">Pesan Tellraw <span class="text-danger">*</span></label>
-                        <input type="text" name="message" class="form-control bg-dark text-light border-secondary" placeholder="Tulis pesan resmi..." required maxlength="250">
+                        <label class="form-label small fw-bold">Pesan Tellraw <span class="text-danger">*</span></label>
+                        <input type="text" name="message" class="form-control " placeholder="Tulis pesan resmi..." required maxlength="250">
                     </div>
                     <div class="mb-3">
-                        <label class="form-label small fw-bold text-light">Alasan Audit <span class="text-danger">*</span></label>
-                        <input type="text" name="reason" class="form-control bg-dark text-light border-secondary" placeholder="Alasan pengiriman pesan..." required maxlength="250">
+                        <label class="form-label small fw-bold">Alasan Audit <span class="text-danger">*</span></label>
+                        <input type="text" name="reason" class="form-control " placeholder="Alasan pengiriman pesan..." required maxlength="250">
                     </div>
                 </div>
-                <div class="modal-footer border-secondary">
+                <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
                     <button type="submit" class="btn btn-primary fw-bold">Kirim Pesan</button>
                 </div>
@@ -1135,7 +1135,7 @@
                         <i class="bi bi-info-circle me-1"></i> Perintah <code>gamemode &lt;mode&gt; {{ $account->minecraft_username }}</code> akan langsung dijalankan ke pemain online.
                     </div>
                 </div>
-                <div class="modal-footer border-secondary">
+                <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
                     <button type="submit" class="btn btn-info fw-bold text-dark">Simpan GameMode</button>
                 </div>
@@ -1203,7 +1203,7 @@
                     </button>
                 </form>
             </div>
-            <div class="modal-footer border-secondary">
+            <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
             </div>
         </div>

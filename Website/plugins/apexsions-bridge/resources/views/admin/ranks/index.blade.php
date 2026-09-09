@@ -30,17 +30,17 @@
 <!-- KPI Cards -->
 <div class="row g-3 mb-4">
     <div class="col-sm-6 col-xl-3">
-        <div class="card p-3 h-100" style="background: rgba(18, 20, 26, 0.95); border: 1px solid rgba(201, 164, 92, 0.22);">
+        <div class="card p-3 h-100">
             <div class="d-flex justify-content-between align-items-center mb-2">
                 <span class="small fw-bold text-muted text-uppercase" style="font-size: 0.72rem;">Total Warga Realm</span>
                 <i class="bi bi-people-fill text-warning fs-5"></i>
             </div>
-            <h3 class="fw-bold text-white mb-0">{{ number_format($totalPlayers) }}</h3>
+            <h3 class="fw-bold mb-0">{{ number_format($totalPlayers) }}</h3>
             <small class="text-muted">Akun Minecraft terdaftar</small>
         </div>
     </div>
     <div class="col-sm-6 col-xl-3">
-        <div class="card p-3 h-100" style="background: rgba(18, 20, 26, 0.95); border: 1px solid rgba(201, 164, 92, 0.22);">
+        <div class="card p-3 h-100">
             <div class="d-flex justify-content-between align-items-center mb-2">
                 <span class="small fw-bold text-muted text-uppercase" style="font-size: 0.72rem;">Total Rank Resmi</span>
                 <i class="bi bi-diagram-3-fill text-info fs-5"></i>
@@ -50,7 +50,7 @@
         </div>
     </div>
     <div class="col-sm-6 col-xl-3">
-        <div class="card p-3 h-100" style="background: rgba(18, 20, 26, 0.95); border: 1px solid rgba(201, 164, 92, 0.22);">
+        <div class="card p-3 h-100">
             <div class="d-flex justify-content-between align-items-center mb-2">
                 <span class="small fw-bold text-muted text-uppercase" style="font-size: 0.72rem;">Otoritas Tertinggi</span>
                 <i class="bi bi-shield-check text-danger fs-5"></i>
@@ -60,29 +60,29 @@
         </div>
     </div>
     <div class="col-sm-6 col-xl-3">
-        <div class="card p-3 h-100" style="background: rgba(18, 20, 26, 0.95); border: 1px solid rgba(201, 164, 92, 0.22);">
+        <div class="card p-3 h-100">
             <div class="d-flex justify-content-between align-items-center mb-2">
                 <span class="small fw-bold text-muted text-uppercase" style="font-size: 0.72rem;">Rank Standar Warga</span>
                 <i class="bi bi-compass text-secondary fs-5"></i>
             </div>
-            <h3 class="fw-bold text-light mb-0">Wanderer</h3>
+            <h3 class="fw-bold mb-0">Wanderer</h3>
             <small class="text-muted">{{ number_format($playerCounts['wanderer'] ?? 0) }} Warga Baru Aktif</small>
         </div>
     </div>
 </div>
 
 <!-- Main Ranks Table Card -->
-<div class="card shadow-sm mb-4" style="background: rgba(18, 20, 26, 0.95); border: 1px solid rgba(201, 164, 92, 0.25);">
-    <div class="card-header bg-transparent border-bottom border-secondary py-3 px-4 d-flex justify-content-between align-items-center">
-        <h5 class="mb-0 fw-bold text-white" style="font-family: 'Cinzel', serif; letter-spacing: 1px;">
+<div class="card shadow-sm mb-4">
+    <div class="card-header py-3 px-4 d-flex justify-content-between align-items-center">
+        <h5 class="mb-0 fw-bold" style="font-family: 'Cinzel', serif; letter-spacing: 1px;">
             <i class="bi bi-trophy-fill text-warning me-2"></i> Hirarki & Daftar Rank Resmi
         </h5>
-        <span class="badge bg-dark border border-secondary text-muted">Synchronized with LuckPerms</span>
+        <span class="badge bg-secondary">Synchronized with LuckPerms</span>
     </div>
 
     <div class="table-responsive">
-        <table class="table table-hover align-middle mb-0 text-light" style="font-size: 0.88rem;">
-            <thead class="border-bottom border-secondary text-muted text-uppercase" style="font-size: 0.74rem; background: rgba(0,0,0,0.3);">
+        <table class="table table-hover align-middle mb-0" style="font-size: 0.88rem;">
+            <thead class="text-muted text-uppercase" style="font-size: 0.74rem;">
                 <tr>
                     <th class="ps-4">Tingkat</th>
                     <th>Nama Rank</th>
@@ -169,13 +169,13 @@
                     </p>
 
                     <div class="mb-3">
-                        <label class="form-label small fw-bold text-light">Username atau UUID Pemain <span class="text-danger">*</span></label>
-                        <input type="text" name="player_identifier" class="form-control bg-dark text-light border-secondary" placeholder="Contoh: Steve atau 069a79f4-44e9..." required>
+                        <label class="form-label small fw-bold">Username atau UUID Pemain <span class="text-danger">*</span></label>
+                        <input type="text" name="player_identifier" class="form-control" placeholder="Contoh: Steve atau 069a79f4-44e9..." required>
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label small fw-bold text-light">Pilih Rank Baru <span class="text-danger">*</span></label>
-                        <select name="rank" class="form-select bg-dark text-light border-secondary" required>
+                        <label class="form-label small fw-bold">Pilih Rank Baru <span class="text-danger">*</span></label>
+                        <select name="rank" class="form-select" required>
                             <option value="" disabled selected>-- Pilih Rank Resmi --</option>
                             @foreach($ranks as $rKey => $rVal)
                                 <option value="{{ $rKey }}">
@@ -187,8 +187,8 @@
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label small fw-bold text-light">Alasan Perubahan / Penugasan <span class="text-danger">*</span></label>
-                        <textarea name="reason" class="form-control bg-dark text-light border-secondary" rows="3" placeholder="Contoh: Donasi Webstore Tier 2, Promosi Staff, atau Keputusan Admin..." required maxlength="250"></textarea>
+                        <label class="form-label small fw-bold">Alasan Perubahan / Penugasan <span class="text-danger">*</span></label>
+                        <textarea name="reason" class="form-control" rows="3" placeholder="Contoh: Donasi Webstore Tier 2, Promosi Staff, atau Keputusan Admin..." required maxlength="250"></textarea>
                         <small class="text-muted">Alasan ini wajib diisi untuk integritas audit trail realm.</small>
                     </div>
 
@@ -196,7 +196,7 @@
                         <i class="bi bi-shield-exclamation me-1"></i> Pastikan identitas pemain dan rank sudah benar sebelum mengeksekusi.
                     </div>
                 </div>
-                <div class="modal-footer border-secondary">
+                <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
                     <button type="submit" class="btn btn-warning fw-bold">
                         <i class="bi bi-check-circle me-1"></i> Terapkan Rank

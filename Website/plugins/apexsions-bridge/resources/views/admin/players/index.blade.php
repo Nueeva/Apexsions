@@ -16,18 +16,18 @@
 </div>
 
 <!-- Filter Bar -->
-<div class="card mb-4" style="background: rgba(18, 20, 26, 0.7); border: 1px solid rgba(201, 164, 92, 0.25);">
+<div class="card mb-4">
     <div class="card-body p-3">
         <form method="GET" action="{{ route('apexsions-bridge.admin.players.index') }}" class="row g-2 align-items-center">
             <div class="col-md-4">
                 <div class="input-group input-group-sm">
-                    <span class="input-group-text bg-dark border-secondary text-muted"><i class="bi bi-search"></i></span>
-                    <input type="text" name="q" class="form-control form-control-sm bg-dark text-light border-secondary" placeholder="Cari username atau UUID pemain..." value="{{ $search }}">
+                    <span class="input-group-text text-muted"><i class="bi bi-search"></i></span>
+                    <input type="text" name="q" class="form-control form-control-sm" placeholder="Cari username atau UUID pemain..." value="{{ $search }}">
                 </div>
             </div>
 
             <div class="col-md-2">
-                <select name="rank" class="form-select form-select-sm bg-dark text-light border-secondary">
+                <select name="rank" class="form-select form-select-sm">
                     <option value="all">-- Semua Rank --</option>
                     @foreach($availableRanks as $rk)
                         <option value="{{ $rk }}" @selected(strtolower($selectedRank) === strtolower($rk))>{{ ucfirst($rk) }}</option>
@@ -36,7 +36,7 @@
             </div>
 
             <div class="col-md-2">
-                <select name="kingdom" class="form-select form-select-sm bg-dark text-light border-secondary">
+                <select name="kingdom" class="form-select form-select-sm">
                     <option value="all">-- Semua Kerajaan --</option>
                     @foreach($availableKingdoms as $kd)
                         <option value="{{ $kd }}" @selected(strtoupper($selectedKingdom) === strtoupper($kd))>{{ $kd }}</option>
@@ -45,7 +45,7 @@
             </div>
 
             <div class="col-md-2">
-                <select name="status" class="form-select form-select-sm bg-dark text-light border-secondary">
+                <select name="status" class="form-select form-select-sm">
                     <option value="all">-- Semua Status --</option>
                     <option value="online" @selected($selectedStatus === 'online')>Online Sekarang</option>
                     <option value="offline" @selected($selectedStatus === 'offline')>Offline</option>
@@ -67,10 +67,10 @@
 </div>
 
 <!-- Player Directory Table -->
-<div class="card shadow-sm mb-4" style="background: rgba(18, 20, 26, 0.95); border: 1px solid rgba(201, 164, 92, 0.22);">
+<div class="card shadow-sm mb-4">
     <div class="card-body p-0">
         <div class="table-responsive">
-            <table class="table table-hover align-middle mb-0 text-light" style="font-size: 0.88rem;">
+            <table class="table table-hover align-middle mb-0" style="font-size: 0.88rem;">
                 <thead style="background: rgba(201, 164, 92, 0.08); border-bottom: 1px solid rgba(201, 164, 92, 0.2);">
                     <tr class="text-uppercase text-muted" style="font-size: 0.75rem; letter-spacing: 1px;">
                         <th class="ps-3 py-3">Warga</th>
@@ -130,13 +130,12 @@
                             <td>
                                 @php
                                     $kBadge = match(strtoupper($player->kingdom)) {
-                                        'ZENITHAR' => 'border-warning text-warning',
-                                        'SOLTERRA' => 'border-danger text-danger',
-                                        'SYLVAMOOR' => 'border-success text-success',
-                                        default => 'border-secondary text-muted'
-                                    };
-                                @endphp
-                                <span class="badge bg-dark border {{ $kBadge }}">
+                                <span class="badge bg-warning text-dark fw-bold px-2 py-1">
+                                    {{ strtoupper($player->rank ?: 'WANDERER') }}
+                                </span>
+                            </td>
+                            <td>
+                                <span class="badge bg-secondary px-2 py-1">
                                     {{ $player->kingdom_display ?: ($player->kingdom === 'NONE' ? 'Belum Memilih' : $player->kingdom) }}
                                 </span>
                             </td>
@@ -158,7 +157,7 @@
                                         <i class="bi bi-circle-fill me-1" style="font-size: 0.5rem;"></i> ONLINE
                                     </span>
                                 @else
-                                    <span class="badge bg-dark border border-secondary text-muted px-2 py-1">
+                                    <span class="badge bg-secondary text-muted px-2 py-1">
                                         OFFLINE
                                     </span>
                                 @endif
@@ -176,9 +175,19 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="8" class="text-center py-5 text-muted">
-                                <i class="bi bi-people fs-1 d-block mb-2 text-warning opacity-50"></i>
-                                Tidak ditemukan data pemain yang sesuai dengan pencarian.
+                            <td colspan="8" class="p-0">
+                                <div class="apx-empty-state">
+                                    <div class="apx-empty-icon">
+                                        <i class="bi bi-person-x"></i>
+                                    </div>
+                                    <h5 class="apx-empty-title">Tidak Ditemukan Warga yang Cocok</h5>
+                                    <p class="apx-empty-desc">
+                                        Tidak ada data pemain yang cocok dengan filter atau kata kunci pencarian Anda. Silakan ubah filter atau reset untuk melihat semua warga.
+                                    </p>
+                                    <a href="{{ route('apexsions-bridge.admin.players.index') }}" class="btn btn-sm btn-outline-primary">
+                                        <i class="bi bi-arrow-counterclockwise me-1"></i> Reset Semua Filter
+                                    </a>
+                                </div>
                             </td>
                         </tr>
                     @endforelse
@@ -187,7 +196,7 @@
         </div>
     </div>
     @if($players->hasPages())
-        <div class="card-footer bg-transparent border-top border-secondary py-3">
+        <div class="card-footer py-3">
             {{ $players->links() }}
         </div>
     @endif
