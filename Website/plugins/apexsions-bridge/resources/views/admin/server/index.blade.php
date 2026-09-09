@@ -53,7 +53,16 @@
                         Sumber Data: <span class="text-warning text-opacity-75">{{ $serverStatus['source'] }}</span>
                     </div>
                 </div>
-                <div class="col-lg-4 text-lg-end">
+                <div class="col-lg-4 text-lg-end d-flex gap-2 justify-content-lg-end align-items-center flex-wrap">
+                    @if($maintenance->isEnabled())
+                        <form action="{{ route('apexsions-bridge.admin.server.maintenance.toggle') }}" method="POST" class="d-inline" onsubmit="return confirm('Apakah Anda yakin ingin menonaktifkan Maintenance Mode dan membuka kembali akses server untuk pemain?');">
+                            @csrf
+                            <input type="hidden" name="is_enabled" value="0">
+                            <button type="submit" class="btn btn-success btn-sm px-3 py-2 fw-bold shadow-sm">
+                                <i class="bi bi-unlock-fill me-1"></i>Buka Server (Matikan Maintenance)
+                            </button>
+                        </form>
+                    @endif
                     <button type="button" class="btn {{ $maintenance->isEnabled() ? 'btn-outline-danger' : 'btn-outline-warning' }} btn-sm px-3 py-2 fw-medium shadow-sm" data-bs-toggle="modal" data-bs-target="#maintenanceModal">
                         <i class="bi bi-tools me-1"></i>{{ $maintenance->isEnabled() ? 'Konfigurasi Pemeliharaan' : 'Aktifkan Mode Pemeliharaan' }}
                     </button>
@@ -403,6 +412,8 @@
         <div class="modal-content bg-dark border-secondary border-opacity-50 text-white">
             <form action="{{ route('apexsions-bridge.admin.server.maintenance.toggle') }}" method="POST">
                 @csrf
+                <input type="hidden" name="is_enabled" value="0">
+                <input type="hidden" name="allow_staff" value="0">
                 <div class="modal-header border-secondary border-opacity-25 bg-black bg-opacity-25">
                     <h5 class="modal-title h6 fw-bold text-warning" id="maintenanceModalLabel">
                         <i class="bi bi-tools me-2"></i>Konfigurasi Mode Pemeliharaan (Maintenance)
@@ -410,17 +421,17 @@
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="form-check form-switch mb-3">
-                        <input class="form-check-input" type="checkbox" role="switch" id="maintenanceSwitch" name="is_enabled" value="1" {{ $maintenance->isEnabled() ? 'checked' : '' }}>
-                        <label class="form-check-label fw-bold text-white" for="maintenanceSwitch">
+                    <div class="form-check form-switch mb-3 p-3 rounded border border-secondary border-opacity-25 bg-black bg-opacity-25">
+                        <input class="form-check-input ms-0 me-3" type="checkbox" role="switch" id="maintenanceSwitch" name="is_enabled" value="1" {{ $maintenance->isEnabled() ? 'checked' : '' }}>
+                        <label class="form-check-label fw-bold text-white fs-6" for="maintenanceSwitch">
                             Aktifkan Maintenance Mode
                         </label>
-                        <div class="text-white-50 small">Ketika aktif, hanya staf dengan izin khusus yang dapat bergabung.</div>
+                        <div class="text-white-50 small mt-1">Hilangkan centang tombol switch ini untuk menonaktifkan pemeliharaan dan membuka server untuk umum.</div>
                     </div>
 
                     <div class="mb-3">
                         <label for="maintenanceMessage" class="form-label text-white-50 small fw-bold">PESAN KICK TAMPILAN PEMAIN</label>
-                        <input type="text" class="form-control bg-black text-white border-secondary border-opacity-50" id="maintenanceMessage" name="message" value="{{ $maintenance->message }}" required>
+                        <input type="text" class="form-control bg-black text-white border-secondary border-opacity-50" id="maintenanceMessage" name="message" value="{{ $maintenance->message }}" placeholder="Server sedang dalam pemeliharaan berkala. Silakan kembali beberapa saat lagi.">
                     </div>
 
                     <div class="mb-3">
@@ -435,11 +446,20 @@
                         </label>
                     </div>
                 </div>
-                <div class="modal-footer border-secondary border-opacity-25 bg-black bg-opacity-25">
-                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-warning btn-sm fw-bold text-dark">
-                        Simpan Perubahan
-                    </button>
+                <div class="modal-footer border-secondary border-opacity-25 bg-black bg-opacity-25 justify-content-between">
+                    <div>
+                        @if($maintenance->isEnabled())
+                            <button type="submit" name="is_enabled" value="0" class="btn btn-outline-success btn-sm fw-bold">
+                                <i class="bi bi-unlock-fill me-1"></i>Matikan Sekarang
+                            </button>
+                        @endif
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-warning btn-sm fw-bold text-dark">
+                            Simpan Perubahan
+                        </button>
+                    </div>
                 </div>
             </form>
         </div>

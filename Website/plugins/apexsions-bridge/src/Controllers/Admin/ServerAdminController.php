@@ -128,17 +128,19 @@ class ServerAdminController extends Controller
     public function toggleMaintenance(Request $request): RedirectResponse
     {
         $validated = $request->validate([
-            'is_enabled' => ['required', 'boolean'],
+            'is_enabled' => ['nullable'],
             'message' => ['nullable', 'string', 'max:255'],
             'reason' => ['nullable', 'string', 'max:255'],
-            'allow_staff' => ['nullable', 'boolean'],
+            'allow_staff' => ['nullable'],
         ]);
 
+        $isEnabled = $request->boolean('is_enabled');
+
         $result = ServerOpsService::toggleMaintenance(
-            (bool) $validated['is_enabled'],
+            $isEnabled,
             $validated['message'] ?? 'Server sedang dalam pemeliharaan berkala.',
             $validated['reason'] ?? null,
-            (bool) ($validated['allow_staff'] ?? true),
+            $request->boolean('allow_staff', true),
             auth()->user()
         );
 
