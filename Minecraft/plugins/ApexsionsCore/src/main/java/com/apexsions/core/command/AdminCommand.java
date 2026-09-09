@@ -95,6 +95,24 @@ public class AdminCommand implements CommandExecutor, TabCompleter {
                 handleResetRegion(sender, args[1]);
                 break;
 
+            case "sync":
+                if (args.length < 2) {
+                    sender.sendMessage(miniMessage.deserialize("<red>Usage: /ac sync <player></red>"));
+                    return true;
+                }
+                Player targetToSync = Bukkit.getPlayerExact(args[1]);
+                if (targetToSync == null) {
+                    sender.sendMessage(miniMessage.deserialize("<red>Player <yellow>" + args[1] + "</yellow> is not online.</red>"));
+                    return true;
+                }
+                if (plugin.getWebBridgeService() != null) {
+                    plugin.getWebBridgeService().syncPlayerAsync(targetToSync);
+                    sender.sendMessage(miniMessage.deserialize("<green>Sync request dispatched for <yellow>" + targetToSync.getName() + "</yellow> to web portal.</green>"));
+                } else {
+                    sender.sendMessage(miniMessage.deserialize("<red>WebBridge service is unavailable.</red>"));
+                }
+                break;
+
             case "setlobby":
                 if (!(sender instanceof Player player)) {
                     sender.sendMessage(miniMessage.deserialize("<red>Only players can set the lobby location.</red>"));
@@ -390,7 +408,7 @@ public class AdminCommand implements CommandExecutor, TabCompleter {
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (args.length == 1) {
-            List<String> list = Arrays.asList("reload", "war", "setlevel", "addxp", "setkingdom", "resetkingdom", "setlobby", "setspawn", "info");
+            List<String> list = Arrays.asList("reload", "war", "setlevel", "addxp", "setkingdom", "resetkingdom", "setlobby", "setspawn", "info", "sync");
             return filter(list, args[0]);
         }
         if (args.length == 2 && args[0].equalsIgnoreCase("war")) {
@@ -399,7 +417,7 @@ public class AdminCommand implements CommandExecutor, TabCompleter {
         if (args.length == 2 && (args[0].equalsIgnoreCase("setspawn") || args[0].equalsIgnoreCase("setcapital") || args[0].equalsIgnoreCase("setkingdomspawn"))) {
             return filter(new ArrayList<>(plugin.getRegionManager().getRegions().stream().map(Region::getKey).toList()), args[1]);
         }
-        if (args.length == 2 && (args[0].equalsIgnoreCase("setlevel") || args[0].equalsIgnoreCase("addxp") || args[0].equalsIgnoreCase("setkingdom") || args[0].equalsIgnoreCase("resetkingdom") || args[0].equalsIgnoreCase("info"))) {
+        if (args.length == 2 && (args[0].equalsIgnoreCase("setlevel") || args[0].equalsIgnoreCase("addxp") || args[0].equalsIgnoreCase("setkingdom") || args[0].equalsIgnoreCase("resetkingdom") || args[0].equalsIgnoreCase("info") || args[0].equalsIgnoreCase("sync"))) {
             return null; // Player names
         }
         if (args.length == 3 && args[0].equalsIgnoreCase("war") && args[1].equalsIgnoreCase("start")) {

@@ -144,12 +144,16 @@ class LinkVerificationController extends Controller
             ->get();
 
         if ($deliveries->isNotEmpty()) {
-            // Atomically lock delivery batch
-            Delivery::whereIn('id', $deliveries->pluck('id'))
-                ->update([
-                    'status' => 'PROCESSING',
-                    'locked_at' => Carbon::now(),
-                ]);
+            try {
+                // Atomically lock delivery batch
+                Delivery::whereIn('id', $deliveries->pluck('id'))
+                    ->update([
+                        'status' => 'PROCESSING',
+                        'locked_at' => Carbon::now(),
+                    ]);
+            } catch (\Throwable $e) {
+                Log::error('[Apexsions Bridge] Error lease-locking deliveries: ' . $e->getMessage());
+            }
         }
 
         return response()->json([
@@ -191,18 +195,21 @@ class LinkVerificationController extends Controller
         $actionId = !empty($validated['action_id']) ? $validated['action_id'] : $delivery->action_id;
         if (!empty($actionId)) {
             try {
-                $audit = \Azuriom\Plugin\ApexsionsBridge\Models\AuditLog::where('metadata->action_id', $actionId)
+                $audit = \Azuriom\Plugin\ApexsionsBridge\Models\AuditLog::where('action_id', $actionId)
+                    ->orWhere('metadata->action_id', $actionId)
                     ->orWhere('metadata', 'LIKE', '%' . $actionId . '%')
                     ->first();
                 if ($audit) {
                     if ($finalStatus === 'DELIVERED') {
-                        \Azuriom\Plugin\ApexsionsBridge\Services\AuditService::success($audit, 'Executed in-game via Bridge', [
+                        \Azuriom\Plugin\ApexsionsBridge\Services\AuditService::success($audit, $audit->new_value, [
                             'delivery_id' => $delivery->id,
                             'executed_at' => Carbon::now()->toIso8601String(),
+                            'bridge_status' => 'DELIVERED',
                         ]);
                     } else {
                         \Azuriom\Plugin\ApexsionsBridge\Services\AuditService::failed($audit, $validated['error_message'] ?? 'Execution failed in-game', [
                             'delivery_id' => $delivery->id,
+                            'bridge_status' => 'FAILED',
                         ]);
                     }
                 }

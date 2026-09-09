@@ -616,7 +616,12 @@ class PlayerAdminController extends Controller
         // 12. DISPATCH ALERT (tellraw)
         if ($actionType === 'DISPATCH_ALERT') {
             $msg = trim($validated['message'] ?? 'Pesan resmi dari Administrator Apexsions.');
-            $command = 'tellraw ' . $account->minecraft_username . ' ["",{"text":"[APEXSIONS ADMIN] ","color":"gold","bold":true},{"text":"' . addslashes($msg) . '","color":"yellow"}]';
+            $jsonPayload = json_encode([
+                "",
+                ["text" => "[APEXSIONS ADMIN] ", "color" => "gold", "bold" => true],
+                ["text" => $msg, "color" => "yellow"]
+            ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+            $command = "minecraft:tellraw {$account->minecraft_username} {$jsonPayload}";
 
             $delivery = Delivery::create([
                 'action_id' => $actionId,
@@ -644,12 +649,12 @@ class PlayerAdminController extends Controller
                 'metadata' => ['delivery_id' => $delivery->id, 'type' => 'DISPATCH_ALERT', 'message' => $msg],
             ]);
 
-            return back()->with('success', 'Pesan resmi berhasil dikirim ke pemain!');
+            return back()->with('success', 'Pesan Tellraw resmi berhasil dijadwalkan ke server Minecraft.');
         }
 
         // 13. TRIGGER RE-SYNC
         if ($actionType === 'TRIGGER_SYNC') {
-            $command = 'ac sync ' . $account->minecraft_username;
+            $command = 'sync ' . $account->minecraft_username;
 
             $delivery = Delivery::create([
                 'action_id' => $actionId,
@@ -677,7 +682,7 @@ class PlayerAdminController extends Controller
                 'metadata' => ['delivery_id' => $delivery->id, 'command' => $command],
             ]);
 
-            return back()->with('success', 'Permintaan sinkronisasi paksa berhasil dijadwalkan!');
+            return back()->with('success', 'Permintaan sinkronisasi paksa berhasil dijadwalkan ke server Minecraft.');
         }
 
         // 14. SET GAMEMODE (Online only: Survival, Creative, Adventure, Spectator)

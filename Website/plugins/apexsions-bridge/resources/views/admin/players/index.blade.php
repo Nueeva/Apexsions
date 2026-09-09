@@ -129,14 +129,17 @@
                             </td>
                             <td>
                                 @php
-                                    $kBadge = match(strtoupper($player->kingdom)) {
-                                <span class="badge bg-warning text-dark fw-bold px-2 py-1">
-                                    {{ strtoupper($player->rank ?: 'WANDERER') }}
-                                </span>
-                            </td>
-                            <td>
-                                <span class="badge bg-secondary px-2 py-1">
-                                    {{ $player->kingdom_display ?: ($player->kingdom === 'NONE' ? 'Belum Memilih' : $player->kingdom) }}
+                                    $kCode = strtoupper($player->kingdom ?? 'NONE');
+                                    $kColors = [
+                                        'ZENITHAR' => 'bg-warning text-dark fw-bold',
+                                        'SOLTERRA' => 'bg-danger text-white fw-bold',
+                                        'SYLVAMOOR' => 'bg-success text-white fw-bold',
+                                    ];
+                                    $kBadge = $kColors[$kCode] ?? 'bg-secondary text-light';
+                                    $kName = $player->kingdom_display ?: ($kCode === 'NONE' ? 'Belum Memilih' : ucfirst(strtolower($player->kingdom)));
+                                @endphp
+                                <span class="badge {{ $kBadge }} px-2 py-1" style="letter-spacing: 0.5px;">
+                                    @if($kCode !== 'NONE') ⚜ @endif {{ $kName }}
                                 </span>
                             </td>
                             <td>
