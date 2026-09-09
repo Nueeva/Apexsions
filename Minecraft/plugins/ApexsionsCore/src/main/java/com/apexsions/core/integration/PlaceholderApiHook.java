@@ -383,7 +383,7 @@ public class PlaceholderApiHook extends PlaceholderExpansion {
                 double bal = (double) getBal.invoke(api, uuid, currencyId.toLowerCase());
                 if (formatted) {
                     if (currencyId.equalsIgnoreCase("rupiah")) {
-                        return "Rp " + String.format("%,.0f", bal);
+                        return "Rp. " + String.format("%,.0f", bal);
                     } else {
                         return String.format("%,.0f", bal) + " 💎";
                     }
@@ -396,9 +396,9 @@ public class PlaceholderApiHook extends PlaceholderExpansion {
         // 2. Fallback to Vault for rupiah if player is online
         if (currencyId.equalsIgnoreCase("rupiah") && plugin.getVaultHook().hasEconomy() && player.isOnline() && player.getPlayer() != null) {
             double bal = plugin.getVaultHook().getBalance(player.getPlayer());
-            return formatted ? ("Rp " + String.format("%,.0f", bal)) : String.format("%.0f", bal);
+            return formatted ? ("Rp. " + String.format("%,.0f", bal)) : String.format("%.0f", bal);
         }
 
-        return formatted ? (currencyId.equalsIgnoreCase("rupiah") ? "Rp 0" : "0 💎") : "0";
+        return formatted ? (currencyId.equalsIgnoreCase("rupiah") ? "Rp. 0" : "0 💎") : "0";
     }
 }

@@ -94,6 +94,12 @@ public class ApexsionsShop extends JavaPlugin implements ApexsionsShopAPI {
             shopAdmin.setTabCompleter(shopAdminCmd);
         }
 
+        // 4. Register PlaceholderAPI Expansion if present
+        if (getServer().getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+            new com.apexsions.shop.integration.ShopPlaceholderExpansion(this).register();
+            getLogger().info(" Hooked into PlaceholderAPI successfully!");
+        }
+
         getLogger().info("==========================================");
         getLogger().info(" ApexsionsShop v" + getDescription().getVersion() + " has been enabled!");
         getLogger().info(" Dynamic Kingdom Economy & Market Ready");

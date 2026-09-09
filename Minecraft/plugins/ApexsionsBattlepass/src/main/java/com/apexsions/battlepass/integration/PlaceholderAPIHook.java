@@ -51,8 +51,33 @@ public class PlaceholderAPIHook extends PlaceholderExpansion {
                 int lvl = data != null ? data.getLevel() : 1;
                 return String.valueOf(plugin.getRewardManager().getRequiredXp(lvl));
             }
-            case "currency" -> {
+            case "currency", "coins" -> {
                 return data != null ? String.valueOf(data.getCurrency()) : "0";
+            }
+            case "currency_formatted", "coins_formatted" -> {
+                long coins = data != null ? data.getCurrency() : 0;
+                return String.format("%,d 🪙", coins);
+            }
+            case "progress_percent" -> {
+                if (data == null) return "0%";
+                int lvl = data.getLevel();
+                int req = plugin.getRewardManager().getRequiredXp(lvl);
+                if (req <= 0) return "100%";
+                int pct = (int) Math.min(100, Math.max(0, (data.getXp() * 100L) / req));
+                return pct + "%";
+            }
+            case "progressbar" -> {
+                if (data == null) return "&8░░░░░░░░░░";
+                int lvl = data.getLevel();
+                int req = plugin.getRewardManager().getRequiredXp(lvl);
+                int pct = req <= 0 ? 100 : (int) Math.min(100, Math.max(0, (data.getXp() * 100L) / req));
+                int totalBars = 10;
+                int filled = (pct * totalBars) / 100;
+                StringBuilder sb = new StringBuilder("&e");
+                for (int i = 0; i < filled; i++) sb.append("█");
+                sb.append("&8");
+                for (int i = filled; i < totalBars; i++) sb.append("░");
+                return sb.toString();
             }
             case "pass" -> {
                 return data != null ? String.join(", ", data.getPasses()).toUpperCase() : "FREE";
