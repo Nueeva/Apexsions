@@ -74,25 +74,58 @@
     </div>
 
     <!-- Toggleable Live Iframe Section -->
-    <div id="mapLiveContainer" class="card mb-4 border border-warning border-opacity-30 overflow-hidden shadow-lg d-none" style="border-radius: var(--apx-radius-lg); background: #000;">
-        <div class="card-header bg-dark bg-opacity-50 border-bottom border-secondary border-opacity-20 p-3 d-flex align-items-center justify-content-between">
+    <div id="mapLiveContainer" class="card mb-4 border border-warning border-opacity-30 overflow-hidden shadow-lg" style="border-radius: var(--apx-radius-lg); background: #000;">
+        <div class="card-header bg-dark bg-opacity-70 border-bottom border-secondary border-opacity-20 p-3 d-flex flex-wrap align-items-center justify-content-between gap-2">
             <div class="d-flex align-items-center gap-2">
-                <i class="bi bi-broadcast text-warning"></i>
-                <span class="text-white small fw-bold font-cinzel">Pratinjau Langsung Server Map 3D</span>
+                <i class="bi bi-broadcast text-warning fs-5"></i>
+                <div>
+                    <span class="text-white small fw-bold font-cinzel d-block">Pratinjau Langsung Server Map 3D</span>
+                    <span class="text-muted" style="font-size: 0.72rem;">Perspektif Kedaulatan Tiga Kerajaan Apexsions</span>
+                </div>
             </div>
-            <div class="d-flex align-items-center gap-2">
-                <a href="{{ $mapUrl }}" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-apx-outline py-1 px-2" title="Buka Fullscreen">
-                    <i class="bi bi-fullscreen"></i>
-                </a>
-                <button type="button" class="btn btn-sm btn-outline-secondary py-1 px-2" onclick="document.getElementById('mapLiveContainer').classList.add('d-none');" title="Tutup">
-                    <i class="bi bi-x-lg"></i>
+            <div class="d-flex align-items-center gap-2 flex-wrap">
+                <button type="button" class="btn btn-sm btn-outline-warning py-1 px-2" onclick="toggleMapSource()" id="btnToggleMapSource" title="Ganti jalur koneksi">
+                    <i class="bi bi-arrow-left-right me-1"></i> <span id="mapSourceLabel">Jalur: Web Proxy (Port 80)</span>
                 </button>
+                <button type="button" class="btn btn-sm btn-outline-secondary py-1 px-2" onclick="reloadMapFrame()" title="Muat Ulang Peta">
+                    <i class="bi bi-arrow-clockwise"></i>
+                </button>
+                <a href="{{ $mapUrl }}" id="btnOpenExternalMap" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-apx-outline py-1 px-2" title="Buka Fullscreen di Tab Baru">
+                    <i class="bi bi-box-arrow-up-right me-1"></i> <span>Fullscreen</span>
+                </a>
             </div>
         </div>
-        <div class="ratio ratio-16x9" style="min-height: 540px;">
-            <iframe src="{{ $mapUrl }}" title="Apexsions Live World Map" loading="lazy" allowfullscreen style="border: 0; width: 100%; height: 100%;"></iframe>
+        <div class="ratio ratio-16x9 position-relative" style="min-height: 560px; background: #090c13;">
+            <iframe id="apexLiveMapFrame" src="{{ url('/bluemap/#world:-6500:0:-3500:1500:0:0:0:0:perspective.') }}" title="Apexsions Live World Map" loading="lazy" allow="fullscreen; xr-spatial-tracking; clipboard-read; clipboard-write" allowfullscreen style="border: 0; width: 100%; height: 100%; background: #000;"></iframe>
         </div>
     </div>
+
+    <script>
+        const proxyMapUrl = "{{ url('/bluemap/#world:-6500:0:-3500:1500:0:0:0:0:perspective.') }}";
+        const directMapUrl = "{{ $mapUrl }}";
+        let isUsingProxy = true;
+
+        function toggleMapSource() {
+            const frame = document.getElementById('apexLiveMapFrame');
+            const label = document.getElementById('mapSourceLabel');
+            if (isUsingProxy) {
+                frame.src = directMapUrl;
+                label.textContent = "Jalur: Direct (:32076)";
+                isUsingProxy = false;
+            } else {
+                frame.src = proxyMapUrl;
+                label.textContent = "Jalur: Web Proxy (Port 80)";
+                isUsingProxy = true;
+            }
+        }
+
+        function reloadMapFrame() {
+            const frame = document.getElementById('apexLiveMapFrame');
+            const current = frame.src;
+            frame.src = '';
+            setTimeout(() => { frame.src = current; }, 100);
+        }
+    </script>
 
     <!-- Realm Landmarks & Kingdom Guide Grid -->
     <div class="row g-4 mb-4">

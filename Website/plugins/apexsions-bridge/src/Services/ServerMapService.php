@@ -12,7 +12,7 @@ class ServerMapService
      */
     public static function getMapUrl(): string
     {
-        return setting('apexsions.map_url', 'http://apexsions.my.id:32076/');
+        return setting('apexsions.map_url', 'http://apexsions.my.id:32076/#world:-6500:0:-3500:1500:0:0:0:0:perspective.');
     }
 
     /**
@@ -78,7 +78,7 @@ class ServerMapService
     {
         Setting::updateSettings([
             'apexsions.map_enabled' => !empty($data['map_enabled']),
-            'apexsions.map_url' => $data['map_url'] ?? 'http://apexsions.my.id:32076/',
+            'apexsions.map_url' => $data['map_url'] ?? 'http://apexsions.my.id:32076/#world:-6500:0:-3500:1500:0:0:0:0:perspective.',
             'apexsions.map_health_check' => !empty($data['map_health_check']),
             'apexsions.map_nav_visible' => !empty($data['map_nav_visible']),
         ]);

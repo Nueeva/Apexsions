@@ -30,18 +30,24 @@ general:
 # Anti-Spam & Anti-Flood Protection
 spam:
   enabled: true
-  min-message-delay-ms: 1200 # Minimum delay between consecutive messages
+  min-message-delay-ms: 600 # Minimum delay between consecutive messages (relaxed from 1200ms)
   rate-limit:
-    messages: 3 # Maximum messages allowed in the time window
+    messages: 4 # Maximum messages allowed in the time window (relaxed from 3)
     window-seconds: 4 # Sliding time window
     action: "BLOCK"
   mute:
     enabled: true
     duration-seconds: 15 # Temporary mute duration after repeated spam violations
-    violation-threshold: 3 # Violations before temporary mute triggers
-  duplicate-similarity-threshold: 0.80 # Levenshtein similarity ratio (0.0 to 1.0)
-  max-caps-percentage: 65 # Upper limit percentage of capitalized letters (min length 5)
-  max-consecutive-symbols: 4 # Maximum repeating punctuation/symbols
+    violation-threshold: 5 # Violations before temporary mute triggers (relaxed from 3)
+  duplicate-check:
+    enabled: true
+    window-seconds: 10 # Only consider duplicates within the last 10 seconds (messages older than 10s are ignored)
+    min-message-length: 6 # Messages shorter than 6 chars (e.g. 'gg', 'wkwk', 'halo', 'siap', 'ok') are completely exempt
+    max-consecutive-allowed: 2 # Player can send the exact same message up to 2 times without being blocked!
+    check-similarity: false # Disable aggressive Levenshtein near-duplicate checks for relaxed conversation
+    similarity-threshold: 0.95 # Levenshtein similarity ratio if check-similarity is true
+  max-caps-percentage: 75 # Upper limit percentage of capitalized letters (relaxed from 65)
+  max-consecutive-symbols: 5 # Maximum repeating punctuation/symbols (relaxed from 4)
   action: "BLOCK"
 
 # Anti-Advertising Protection (IP, Web Domains, Discord)

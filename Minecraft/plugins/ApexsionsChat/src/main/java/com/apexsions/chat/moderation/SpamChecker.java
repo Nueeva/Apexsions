@@ -13,8 +13,17 @@ public class SpamChecker {
 
     // Per-player rate limit tracking: timestamps of recent messages
     private final Map<UUID, Deque<Long>> messageTimestamps = new ConcurrentHashMap<>();
-    // Per-player recent message history for duplicate & near-duplicate checks (max 3 messages)
-    private final Map<UUID, List<String>> recentMessages = new ConcurrentHashMap<>();
+    // Per-player recent message history with timestamps for time-windowed duplicate checks
+    private static class MessageEntry {
+        final String normalized;
+        final long timestamp;
+
+        MessageEntry(String normalized, long timestamp) {
+            this.normalized = normalized;
+            this.timestamp = timestamp;
+        }
+    }
+    private final Map<UUID, Deque<MessageEntry>> recentMessages = new ConcurrentHashMap<>();
     // Per-player spam violation counter
     private final Map<UUID, Integer> violationCounts = new ConcurrentHashMap<>();
     // Temporary mute expiration timestamps (millis)
@@ -67,8 +76,8 @@ public class SpamChecker {
             timestamps.addLast(now);
         }
 
-        // 3. Minimum message delay check (e.g. 1200ms)
-        long minDelay = config.getLong("spam.min-message-delay-ms", 1200);
+        // 3. Minimum message delay check (relaxed default: 600ms)
+        long minDelay = config.getLong("spam.min-message-delay-ms", 600);
         if (timestamps.size() > 1) {
             Iterator<Long> descIt = timestamps.descendingIterator();
             descIt.next(); // current
@@ -79,37 +88,57 @@ public class SpamChecker {
             }
         }
 
-        // 4. Normalized Duplicate & Near-Duplicate Spam Detection
-        String normalizedInspection = TextNormalizer.normalizeForSpam(rawMessage);
-        List<String> history = recentMessages.computeIfAbsent(uuid, k -> new ArrayList<>());
-        synchronized (history) {
-            if (!normalizedInspection.isEmpty() && normalizedInspection.length() >= 3) {
-                for (String prevNormalized : history) {
-                    // Exact match after normalization (e.g. "hello", "HELLO", "h e l l o", "h.e.l.l.o")
-                    if (normalizedInspection.equalsIgnoreCase(prevNormalized)) {
-                        return handleSpamViolation(uuid, ModerationRule.DUPLICATE_SPAM,
-                                "Please do not repeat the same message.");
-                    }
+        // 4. Normalized Duplicate & Near-Duplicate Spam Detection (Relaxed & Player-Friendly)
+        boolean duplicateCheckEnabled = config.getBoolean("spam.duplicate-check.enabled", true);
+        if (duplicateCheckEnabled) {
+            int duplicateWindowSec = config.getInt("spam.duplicate-check.window-seconds", 10);
+            int minMessageLength = config.getInt("spam.duplicate-check.min-message-length", 6);
+            int maxConsecutiveAllowed = config.getInt("spam.duplicate-check.max-consecutive-allowed", 2);
+            boolean checkSimilarity = config.getBoolean("spam.duplicate-check.check-similarity", false);
+            double similarityThreshold = config.getDouble("spam.duplicate-check.similarity-threshold", 0.95);
+            long dupWindowMillis = duplicateWindowSec * 1000L;
 
-                    // Near-duplicate similarity check (Levenshtein distance)
-                    double threshold = config.getDouble("spam.duplicate-similarity-threshold", 0.80);
-                    double similarity = calculateSimilarity(normalizedInspection, prevNormalized);
-                    if (similarity >= threshold) {
-                        return handleSpamViolation(uuid, ModerationRule.SIMILARITY_SPAM,
-                                "Please do not send repetitive or near-duplicate messages.");
-                    }
+            String normalizedInspection = TextNormalizer.normalizeForSpam(rawMessage);
+            Deque<MessageEntry> history = recentMessages.computeIfAbsent(uuid, k -> new ArrayDeque<>());
+            synchronized (history) {
+                // Expire messages older than duplicateWindowSec (e.g. 10s)
+                while (!history.isEmpty() && (now - history.peekFirst().timestamp) > dupWindowMillis) {
+                    history.pollFirst();
                 }
 
-                // Add to history (keep max 3)
-                history.add(normalizedInspection);
-                if (history.size() > 3) {
-                    history.remove(0);
+                // Only check duplicates if normalized message meets minimum length (e.g. >= 6 chars)
+                // Short messages like "gg", "wkwk", "halo", "siap", "ok", "iya", "y", "ga" are ALWAYS exempt!
+                if (!normalizedInspection.isEmpty() && normalizedInspection.length() >= minMessageLength) {
+                    int duplicateCount = 0;
+                    for (MessageEntry entry : history) {
+                        if (normalizedInspection.equalsIgnoreCase(entry.normalized)) {
+                            duplicateCount++;
+                        } else if (checkSimilarity) {
+                            double sim = calculateSimilarity(normalizedInspection, entry.normalized);
+                            if (sim >= similarityThreshold) {
+                                duplicateCount++;
+                            }
+                        }
+                    }
+
+                    // Only block if player has already sent this message maxConsecutiveAllowed (e.g. 2) times in the window!
+                    // This allows sending the exact same message 2 times in a row without annoyance.
+                    if (duplicateCount >= maxConsecutiveAllowed) {
+                        return handleSpamViolation(uuid, ModerationRule.DUPLICATE_SPAM,
+                                "Please avoid sending the exact same message repeatedly.");
+                    }
+
+                    // Record this message in history (keep max 10 recent entries)
+                    history.addLast(new MessageEntry(normalizedInspection, now));
+                    if (history.size() > 10) {
+                        history.pollFirst();
+                    }
                 }
             }
         }
 
-        // 5. Caps percentage check
-        int maxCaps = config.getInt("spam.max-caps-percentage", 65);
+        // 5. Caps percentage check (relaxed default: 75%)
+        int maxCaps = config.getInt("spam.max-caps-percentage", 75);
         String finalMessage = rawMessage;
         if (rawMessage.length() >= 5) {
             int upperCount = 0;
