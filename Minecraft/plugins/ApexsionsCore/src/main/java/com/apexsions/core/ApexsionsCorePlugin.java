@@ -285,6 +285,9 @@ public class ApexsionsCorePlugin extends JavaPlugin {
             this.webBridgeService.start();
             registerBattlePassEventListener();
 
+            // 14. Inbound Vote Integration (NuVotifier / Votifier)
+            new com.apexsions.core.listener.VoteListener(this).registerIfAvailable();
+
             long elapsed = System.currentTimeMillis() - startTime;
             getLogger().info("ApexsionsCore loaded and enabled successfully in " + elapsed + "ms!");
         } catch (Exception e) {

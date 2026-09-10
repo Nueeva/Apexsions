@@ -27,9 +27,11 @@ class VoteAdminController extends Controller
         // 1. Core Metrics
         $totalVotes = VoteTransaction::where('vote_status', 'VALID')->count();
         $votesToday = VoteTransaction::where('vote_status', 'VALID')->whereDate('voted_at', today())->count();
+        $votesThisWeek = VoteTransaction::where('vote_status', 'VALID')->where('voted_at', '>=', now()->startOfWeek())->count();
+        $votesThisMonth = VoteTransaction::where('vote_status', 'VALID')->where('voted_at', '>=', now()->startOfMonth())->count();
         $uniqueVoters = VoteTransaction::where('vote_status', 'VALID')->distinct('player_username')->count('player_username');
         $rewardsDelivered = VoteTransaction::where('reward_status', 'REWARDED')->count();
-        $failedRewards = VoteTransaction::where('reward_status', 'FAILED')->count();
+        $failedRewards = VoteTransaction::whereIn('reward_status', ['FAILED', 'PARTIAL'])->count();
 
         // 2. Query Builder with Filters
         $query = VoteTransaction::with(['site', 'keysDelivery', 'moneyDelivery'])->orderBy('voted_at', 'desc');
@@ -56,6 +58,8 @@ class VoteAdminController extends Controller
         return view('apexsions-bridge::admin.votes.index', compact(
             'totalVotes',
             'votesToday',
+            'votesThisWeek',
+            'votesThisMonth',
             'uniqueVoters',
             'rewardsDelivered',
             'failedRewards',
@@ -74,20 +78,72 @@ class VoteAdminController extends Controller
     }
 
     /**
-     * Safely retry reward distribution for a failed vote transaction.
+     * Safely retry full reward distribution for a failed or partial vote transaction.
      */
     public function retryReward(Request $request, int $id): RedirectResponse
     {
         $transaction = VoteTransaction::findOrFail($id);
         $actorName = Auth::user()?->name ?: 'Administrator';
 
-        $result = $this->voteService->retryFailedReward($transaction, $actorName);
+        $result = $this->voteService->retryFullReward($transaction, $actorName);
 
         if (!$result['success']) {
             return back()->with('error', $result['message']);
         }
 
         return back()->with('success', $result['message']);
+    }
+
+    /**
+     * Granular retry: Retry key delivery only.
+     */
+    public function retryKey(Request $request, int $id): RedirectResponse
+    {
+        $transaction = VoteTransaction::findOrFail($id);
+        $actorName = Auth::user()?->name ?: 'Administrator';
+
+        $result = $this->voteService->retryKeyDelivery($transaction, $actorName);
+
+        if (!$result['success']) {
+            return back()->with('error', $result['message']);
+        }
+
+        return back()->with('success', $result['message']);
+    }
+
+    /**
+     * Granular retry: Retry money delivery only.
+     */
+    public function retryMoney(Request $request, int $id): RedirectResponse
+    {
+        $transaction = VoteTransaction::findOrFail($id);
+        $actorName = Auth::user()?->name ?: 'Administrator';
+
+        $result = $this->voteService->retryMoneyDelivery($transaction, $actorName);
+
+        if (!$result['success']) {
+            return back()->with('error', $result['message']);
+        }
+
+        return back()->with('success', $result['message']);
+    }
+
+    /**
+     * Trigger manual polling on voting sites.
+     */
+    public function triggerPoll(Request $request): RedirectResponse
+    {
+        $sites = VotingSite::where('is_active', true)->whereNotNull('api_key')->get();
+        $totalProcessed = 0;
+
+        foreach ($sites as $site) {
+            $res = $this->voteService->pollExternalVotes($site);
+            if (($res['status'] ?? '') === 'success') {
+                $totalProcessed += ($res['processed'] ?? 0);
+            }
+        }
+
+        return back()->with('success', "Sinkronisasi platform selesai! {$totalProcessed} transaksi suara baru berhasil diproses.");
     }
 
     /**

@@ -5,6 +5,7 @@ namespace Azuriom\Plugin\ApexsionsBridge\Providers;
 use Azuriom\Extensions\Plugin\BasePluginServiceProvider;
 use Azuriom\Models\Permission;
 use Azuriom\Plugin\ApexsionsBridge\Console\CleanEventsCommand;
+use Azuriom\Plugin\ApexsionsBridge\Console\PollVotePlatformsCommand;
 use Azuriom\Plugin\ApexsionsBridge\Console\ProcessNotificationsCommand;
 use Illuminate\Console\Scheduling\Schedule;
 
@@ -51,6 +52,7 @@ class ApexsionsBridgeServiceProvider extends BasePluginServiceProvider
         if ($this->app->runningInConsole()) {
             $this->commands([
                 CleanEventsCommand::class,
+                PollVotePlatformsCommand::class,
                 ProcessNotificationsCommand::class,
             ]);
         }
@@ -66,6 +68,7 @@ class ApexsionsBridgeServiceProvider extends BasePluginServiceProvider
     {
         $schedule->command('apexsions:clean-events --days=30')->daily();
         $schedule->command('apexsions:process-notifications')->everyFiveMinutes();
+        $schedule->command('apexsions:poll-votes')->everyMinute();
     }
 
     /**

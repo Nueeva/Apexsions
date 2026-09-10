@@ -205,27 +205,42 @@ class LinkVerificationController extends Controller
                 ->orWhere('money_delivery_id', $delivery->id)
                 ->first();
             if ($voteTx) {
-                if ($finalStatus === 'DELIVERED') {
+                $keyDelivered = false;
+                $moneyDelivered = false;
+                $keyFailed = false;
+                $moneyFailed = false;
+
+                if ($voteTx->keys_delivery_id) {
+                    $kd = ($voteTx->keys_delivery_id == $delivery->id) ? $delivery : Delivery::find($voteTx->keys_delivery_id);
+                    $keyDelivered = $kd && $kd->status === 'DELIVERED';
+                    $keyFailed = $kd && $kd->status === 'FAILED';
+                } else {
                     $keyDelivered = true;
+                }
+
+                if ($voteTx->money_delivery_id) {
+                    $md = ($voteTx->money_delivery_id == $delivery->id) ? $delivery : Delivery::find($voteTx->money_delivery_id);
+                    $moneyDelivered = $md && $md->status === 'DELIVERED';
+                    $moneyFailed = $md && $md->status === 'FAILED';
+                } else {
                     $moneyDelivered = true;
-                    if ($voteTx->keys_delivery_id) {
-                        $kd = Delivery::find($voteTx->keys_delivery_id);
-                        $keyDelivered = $kd && $kd->status === 'DELIVERED';
-                    }
-                    if ($voteTx->money_delivery_id) {
-                        $md = Delivery::find($voteTx->money_delivery_id);
-                        $moneyDelivered = $md && $md->status === 'DELIVERED';
-                    }
-                    if ($keyDelivered && $moneyDelivered) {
-                        $voteTx->update([
-                            'reward_status' => 'REWARDED',
-                            'rewarded_at' => Carbon::now(),
-                        ]);
-                    }
+                }
+
+                if ($keyDelivered && $moneyDelivered) {
+                    $voteTx->update([
+                        'reward_status' => 'REWARDED',
+                        'rewarded_at' => Carbon::now(),
+                        'failure_reason' => null,
+                    ]);
+                } elseif ($keyFailed || $moneyFailed) {
+                    $status = ($keyDelivered || $moneyDelivered) ? 'PARTIAL' : 'FAILED';
+                    $voteTx->update([
+                        'reward_status' => $status,
+                        'failure_reason' => $validated['error_message'] ?? 'Delivery failed in-game',
+                    ]);
                 } else {
                     $voteTx->update([
-                        'reward_status' => 'FAILED',
-                        'failure_reason' => $validated['error_message'] ?? 'Delivery failed in-game',
+                        'reward_status' => 'PROCESSING',
                     ]);
                 }
             }

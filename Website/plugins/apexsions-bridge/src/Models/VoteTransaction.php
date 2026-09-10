@@ -14,6 +14,7 @@ class VoteTransaction extends Model
 
     protected $fillable = [
         'vote_uuid',
+        'external_vote_id',
         'site_id',
         'site_slug',
         'player_uuid',
@@ -21,7 +22,9 @@ class VoteTransaction extends Model
         'ip_address',
         'idempotency_hash',
         'voted_at',
+        'verified_at',
         'vote_status',
+        'external_status',
         'reward_status',
         'keys_amount',
         'money_amount',
@@ -34,6 +37,7 @@ class VoteTransaction extends Model
 
     protected $casts = [
         'voted_at' => 'datetime',
+        'verified_at' => 'datetime',
         'rewarded_at' => 'datetime',
         'keys_amount' => 'integer',
         'money_amount' => 'double',

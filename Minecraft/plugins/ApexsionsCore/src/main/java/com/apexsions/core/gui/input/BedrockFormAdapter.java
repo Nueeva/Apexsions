@@ -177,8 +177,8 @@ public class BedrockFormAdapter {
                     + "§6§lPanduan Suara:\n"
                     + "§71. Buka browser HP/PC ke: §f" + shortUrl + "\n"
                     + "§72. Masukkan username: §e" + player.getName() + "\n"
-                    + "§73. Berikan suara & klik §6'Verifikasi & Klaim Hadiah'§7 di web.\n"
-                    + "§74. Hadiah langsung masuk ke akun Anda!";
+                    + "§73. Berikan suara di platform voting tersebut.\n"
+                    + "§a4. Hadiah 3x Keys & Rp 1.000 otomatis masuk tanpa perlu verifikasi manual!";
 
             builder.getClass().getMethod("content", String.class).invoke(builder, content);
 

@@ -72,7 +72,7 @@ public class VoteCommand implements CommandExecutor, TabCompleter {
                 + "</hover></click>");
 
         Component shortUrlLine = mm.deserialize("<gray>Tautan Singkat / Short URL: </gray><aqua><underlined>" + SHORT_VOTE_URL + "</underlined></aqua> <dark_gray>(atau <aqua>" + FULL_VOTE_URL + "</aqua>)</dark_gray>");
-        Component footer = mm.deserialize("<dark_gray>Cooldown: 24 Jam per platform. Imbalan disinkronkan otomatis.</dark_gray>");
+        Component footer = mm.deserialize("<green>⚡ <bold>Auto-Reward:</bold> Cukup beri suara di platform, 3x Keys & Rp 1.000 otomatis masuk!</green>");
 
         player.sendMessage(Component.empty());
         player.sendMessage(divider);
@@ -102,7 +102,7 @@ public class VoteCommand implements CommandExecutor, TabCompleter {
         Component linkHeader = mm.deserialize("<yellow>Buka Alamat Berikut di Browser HP / Komputer Anda:</yellow>");
         Component shortUrlLine = mm.deserialize("  <gradient:#38bdf8:#818cf8><bold>" + SHORT_VOTE_URL + "</bold></gradient> <gray>(atau " + FULL_VOTE_URL + ")</gray>");
         Component userHint = mm.deserialize("<gray>Masukkan Username Minecraft Anda: </gray><gold>" + player.getName() + "</gold>");
-        Component footer = mm.deserialize("<dark_gray>Setelah vote di situs, klik 'Verifikasi & Klaim Hadiah' pada web!</dark_gray>");
+        Component footer = mm.deserialize("<green>⚡ <bold>Auto-Reward:</bold> Hadiah otomatis diproses begitu Anda vote di platform tanpa perlu verifikasi manual!</green>");
 
         player.sendMessage(Component.empty());
         player.sendMessage(divider);

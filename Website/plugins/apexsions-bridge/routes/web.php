@@ -31,7 +31,8 @@ Route::get('/leaderboard', [LeaderboardController::class, 'index'])->name('leade
 Route::get('/player/{identifier}', [PublicProfileController::class, 'show'])->name('player.show');
 Route::get('/server-map', [ServerMapController::class, 'index'])->name('server-map');
 Route::get('/vote', [VoteController::class, 'index'])->name('vote');
-Route::post('/vote/verify/{siteSlug}', [VoteController::class, 'verifyAndClaim'])->name('vote.verify');
+Route::post('/vote/check-status', [VoteController::class, 'checkStatus'])->name('vote.check-status');
+Route::post('/vote/verify/{siteSlug}', [VoteController::class, 'checkStatus'])->name('vote.verify');
 
 // Authenticated User Routes
 Route::middleware('auth')->group(function () {
@@ -178,6 +179,9 @@ Route::middleware(['web', 'admin-access'])->prefix('admin')->name('admin.')->gro
         Route::get('/', [VoteAdminController::class, 'index'])->name('index');
         Route::get('/{id}', [VoteAdminController::class, 'show'])->name('show');
         Route::post('/{id}/retry', [VoteAdminController::class, 'retryReward'])->name('retry');
+        Route::post('/{id}/retry-key', [VoteAdminController::class, 'retryKey'])->name('retry.key');
+        Route::post('/{id}/retry-money', [VoteAdminController::class, 'retryMoney'])->name('retry.money');
+        Route::post('/poll', [VoteAdminController::class, 'triggerPoll'])->name('poll');
         Route::post('/sites/{id}/toggle', [VoteAdminController::class, 'toggleSite'])->name('sites.toggle');
         Route::post('/sites/{id}/update', [VoteAdminController::class, 'updateSite'])->name('sites.update');
     });

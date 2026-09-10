@@ -14,9 +14,11 @@ import org.bukkit.scheduler.BukkitTask;
 
 import java.lang.management.ManagementFactory;
 import java.net.URI;
+import java.net.URLEncoder;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
@@ -350,6 +352,48 @@ public class WebBridgeService {
                     plugin.getLogger().log(Level.FINE, "[WebBridge] Failed to report delivery status #" + deliveryId + ": " + ex.getMessage());
                     return null;
                 });
+    }
+
+    /**
+     * Report an inbound Votifier / in-game vote packet to the web platform asynchronously.
+     */
+    public void reportInboundVoteAsync(String username, String service, String address, String timestamp) {
+        if (!enabled) return;
+
+        try {
+            String serviceSlug = service != null ? service.toLowerCase().replaceAll("[^a-z0-9_-]", "-") : "votifier";
+            String url = apiUrl + "/vote/callback/" + URLEncoder.encode(serviceSlug, StandardCharsets.UTF_8);
+
+            JsonObject payload = new JsonObject();
+            payload.addProperty("username", username);
+            payload.addProperty("service", service != null ? service : "Votifier");
+            payload.addProperty("address", address != null ? address : "127.0.0.1");
+            payload.addProperty("timestamp", timestamp != null ? timestamp : String.valueOf(System.currentTimeMillis()));
+
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(url))
+                    .timeout(Duration.ofSeconds(6))
+                    .header("Content-Type", "application/json")
+                    .header("Accept", "application/json")
+                    .header("X-Apexsions-Key", apiKey)
+                    .POST(HttpRequest.BodyPublishers.ofString(payload.toString()))
+                    .build();
+
+            httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString())
+                    .thenAccept(response -> {
+                        if (response.statusCode() >= 200 && response.statusCode() < 300) {
+                            plugin.getLogger().info("[WebBridge] Inbound vote for '" + username + "' synced successfully to web database.");
+                        } else {
+                            plugin.getLogger().log(Level.FINE, "[WebBridge] Inbound vote sync response: " + response.statusCode());
+                        }
+                    })
+                    .exceptionally(ex -> {
+                        plugin.getLogger().log(Level.FINE, "[WebBridge] Failed to sync inbound vote: " + ex.getMessage());
+                        return null;
+                    });
+        } catch (Exception ex) {
+            plugin.getLogger().log(Level.FINE, "[WebBridge] Inbound vote initiation error: " + ex.getMessage());
+        }
     }
 
     /**
