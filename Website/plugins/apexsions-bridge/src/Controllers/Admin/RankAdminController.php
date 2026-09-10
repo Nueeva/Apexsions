@@ -47,14 +47,15 @@ class RankAdminController extends Controller
         RankConfig::seedDefaultsIfEmpty();
         $normalized = strtolower(trim($rank_key));
         $config = RankConfig::where('rank_key', $normalized)->first();
+        $defaults = RankConfig::getDefaultsForRank($normalized) ?? [];
 
         if (!$config) {
             $meta = RankService::getRank($normalized);
-            if (!$meta) {
+            if (!$meta && empty($defaults)) {
                 abort(404, "Rank '{$rank_key}' tidak ditemukan.");
             }
 
-            $config = RankConfig::create([
+            $createData = array_merge([
                 'rank_key' => $normalized,
                 'display_name' => $meta['display_name'] ?? ucfirst($normalized),
                 'badge' => $meta['badge'] ?? null,
@@ -64,13 +65,23 @@ class RankAdminController extends Controller
                 'weight' => $meta['weight'] ?? 10,
                 'order_index' => 10,
                 'is_active' => true,
-                'is_buyable' => true,
+                'is_buyable' => false,
                 'description' => $meta['description'] ?? null,
-            ]);
+            ], $defaults);
+
+            $config = RankConfig::create($createData);
+        } else {
+            // Fill any null/empty in-memory properties from official defaults
+            foreach ($defaults as $k => $v) {
+                if ((is_null($config->{$k}) || $config->{$k} === '') && !is_null($v)) {
+                    $config->{$k} = $v;
+                }
+            }
         }
 
         return view('apexsions-bridge::admin.ranks.edit', [
             'config' => $config,
+            'defaults' => $defaults,
             'rank_key' => $normalized,
         ]);
     }
