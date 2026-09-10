@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg apx-navbar" aria-label="Navigasi Utama">
+<nav class="navbar navbar-expand-xl apx-navbar" aria-label="Navigasi Utama">
     <div class="container">
         <!-- Brand Logo & Title -->
         <a class="apx-navbar-brand" href="{{ route('home') }}">
@@ -12,7 +12,7 @@
         </a>
 
         <!-- Desktop Navigation Links (Center) -->
-        <div class="collapse navbar-collapse d-none d-lg-flex" id="navbarMain">
+        <div class="collapse navbar-collapse d-none d-xl-flex" id="navbarMain">
             <ul class="navbar-nav mx-auto mb-2 mb-lg-0 apx-nav-list">
                 <!-- 1. Beranda -->
                 <li class="nav-item">
@@ -147,7 +147,7 @@
         </div>
 
         <!-- Mobile Header Quick Controls (Right Side on Mobile Screen) -->
-        <div class="d-flex d-lg-none align-items-center gap-2">
+        <div class="d-flex d-xl-none align-items-center gap-2">
             <!-- Theme Toggle Mobile Quick Button -->
             <button class="btn apx-theme-btn apx-theme-toggle" type="button" aria-label="Ganti Tema" title="Ganti Tema">
                 <i class="bi bi-moon-stars-fill apx-theme-icon-dark text-warning"></i>
@@ -161,7 +161,7 @@
             @endif
 
             <!-- Mobile Offcanvas Drawer Trigger Button (Touch Target >= 44x44px) -->
-            <button class="btn apx-mobile-drawer-toggle" type="button" data-bs-toggle="offcanvas" data-bs-target="#apxMobileDrawer" aria-controls="apxMobileDrawer" aria-label="Buka Menu Navigasi Apexsions">
+            <button class="btn apx-mobile-drawer-toggle apx-hamburger-btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#apxMobileDrawer" aria-controls="apxMobileDrawer" aria-label="Buka Menu Navigasi Apexsions">
                 <i class="bi bi-list fs-3"></i>
             </button>
         </div>

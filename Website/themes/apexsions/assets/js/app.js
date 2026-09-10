@@ -1886,33 +1886,43 @@ document.addEventListener('DOMContentLoaded', () => {
     // ==========================================================================
     // 1.2 Password Visibility Toggle with WCAG Accessibility
     // ==========================================================================
+    window.togglePasswordVisibility = function(inputId, btn) {
+        const input = (inputId && document.getElementById(inputId)) || 
+                      (btn && btn.closest('.input-group') ? btn.closest('.input-group').querySelector('input') : null);
+        if (!input) return;
+        const icon = btn ? btn.querySelector('i') : null;
+
+        if (input.type === 'password') {
+            input.type = 'text';
+            if (icon) {
+                icon.classList.remove('bi-eye');
+                icon.classList.add('bi-eye-slash');
+            }
+            if (btn) {
+                btn.setAttribute('aria-label', 'Sembunyikan kata sandi');
+                btn.setAttribute('title', 'Sembunyikan kata sandi');
+            }
+        } else {
+            input.type = 'password';
+            if (icon) {
+                icon.classList.remove('bi-eye-slash');
+                icon.classList.add('bi-eye');
+            }
+            if (btn) {
+                btn.setAttribute('aria-label', 'Tampilkan kata sandi');
+                btn.setAttribute('title', 'Tampilkan kata sandi');
+            }
+        }
+    };
+
     const initPasswordToggles = () => {
-        document.querySelectorAll('.apx-password-toggle').forEach(btn => {
+        document.querySelectorAll('.apx-password-toggle:not([onclick])').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 e.preventDefault();
                 const group = btn.closest('.input-group');
-                if (!group) return;
-                const input = group.querySelector('input');
-                if (!input) return;
-                const icon = btn.querySelector('i');
-
-                if (input.type === 'password') {
-                    input.type = 'text';
-                    if (icon) {
-                        icon.classList.remove('bi-eye');
-                        icon.classList.add('bi-eye-slash');
-                    }
-                    btn.setAttribute('aria-label', 'Sembunyikan kata sandi');
-                    btn.setAttribute('title', 'Sembunyikan kata sandi');
-                } else {
-                    input.type = 'password';
-                    if (icon) {
-                        icon.classList.remove('bi-eye-slash');
-                        icon.classList.add('bi-eye');
-                    }
-                    btn.setAttribute('aria-label', 'Tampilkan kata sandi');
-                    btn.setAttribute('title', 'Tampilkan kata sandi');
-                }
+                const input = group ? group.querySelector('input') : null;
+                const inputId = input ? input.id : null;
+                window.togglePasswordVisibility(inputId, btn);
             });
         });
     };
