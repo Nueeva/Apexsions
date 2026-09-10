@@ -68,10 +68,10 @@ $shopCategories = [
     ],
     [
         'id' => 3,
-        'name' => 'Pundi Koin & Booster',
-        'slug' => 'coins-booster',
+        'name' => '💎 Diamond',
+        'slug' => 'diamond',
         'icon' => 'bi bi-gem',
-        'description' => 'Mata uang server tambahan dan pengganda pengalaman (XP Booster & Economy Booster) untuk mempercepat dominasi peradabanmu.',
+        'description' => 'Mata uang premium resmi peradaban Apexsions untuk transaksi eksklusif, kosmetik langka, dan item bergengsi (Rp 375/Diamond).',
         'position' => 3,
         'parent_id' => null,
         'cumulate_purchases' => false,
@@ -529,17 +529,22 @@ $shopPackages = [
     ],
 
     // =========================================================================
-    // 7. PUNDI KOIN & BOOSTER
+    // 7. PAKET DIAMOND PREMIUM RESMI (1 Diamond = Rp 375)
     // =========================================================================
     [
         'category_id' => 3,
-        'name' => 'Pundi 500 Apex Coins',
-        'short_description' => '500 Koin peradaban untuk berbelanja kosmetik dan crate keys.',
-        'description' => "Mendapatkan 500 Koin Apex Coins yang dapat digunakan di toko kosmetik `/cosmetics` dan pembelian item crate.",
+        'name' => '40 Diamond 💎',
+        'short_description' => 'Paket Starter 40 Diamond premium untuk peradaban Apexsions.',
+        'description' => "### 💎 40 Diamond Premium Apexsions\n" .
+            "- **Mata Uang:** Diamond resmi server Apexsions (ApexsionsEconomy).\n" .
+            "- **Jumlah:** 40 💎 Diamond.\n" .
+            "- **Rasio Resmi:** Rp 375 per Diamond.\n" .
+            "- **Penggunaan:** Transaksi premium, kosmetik eksklusif, auction premium, dan lelang pasar bebas.\n" .
+            "- **Aktivasi:** Otomatis ditambahkan ke saldo in-game via delivery daemon.",
         'position' => 1,
-        'image' => null,
-        'price' => 25000,
-        'commands' => json_encode(['abp exp give {player} 500']),
+        'image' => 'package-diamond-40.jpg',
+        'price' => 15000,
+        'commands' => json_encode(['ecoadmin give {player} 40 diamond']),
         'has_quantity' => false,
         'is_enabled' => true,
         'created_at' => $now,
@@ -547,13 +552,18 @@ $shopPackages = [
     ],
     [
         'category_id' => 3,
-        'name' => 'Pundi 1.200 Apex Coins',
-        'short_description' => '1.200 Koin peradaban dengan bonus ekstra 200 koin.',
-        'description' => "Mendapatkan 1.200 Koin Apex Coins (Termasuk bonus 200 koin) untuk berbelanja kebutuhan kosmetik dan title eksklusif.",
+        'name' => '80 Diamond 💎',
+        'short_description' => 'Paket Hemat 80 Diamond untuk transaksi peradaban dan perlengkapan.',
+        'description' => "### 💎 80 Diamond Premium Apexsions\n" .
+            "- **Mata Uang:** Diamond resmi server Apexsions (ApexsionsEconomy).\n" .
+            "- **Jumlah:** 80 💎 Diamond.\n" .
+            "- **Rasio Resmi:** Rp 375 per Diamond.\n" .
+            "- **Penggunaan:** Transaksi premium, kosmetik eksklusif, auction premium, dan lelang pasar bebas.\n" .
+            "- **Aktivasi:** Otomatis ditambahkan ke saldo in-game via delivery daemon.",
         'position' => 2,
-        'image' => null,
-        'price' => 50000,
-        'commands' => json_encode(['abp exp give {player} 1200']),
+        'image' => 'package-diamond-80.jpg',
+        'price' => 30000,
+        'commands' => json_encode(['ecoadmin give {player} 80 diamond']),
         'has_quantity' => false,
         'is_enabled' => true,
         'created_at' => $now,
@@ -561,13 +571,75 @@ $shopPackages = [
     ],
     [
         'category_id' => 3,
-        'name' => 'Pundi 2.500 Apex Coins',
-        'short_description' => 'Paket sultan 2.500 Koin peradaban dengan bonus ekstra 500 koin.',
-        'description' => "Mendapatkan 2.500 Koin Apex Coins (Termasuk bonus 500 koin) untuk membuka berbagai kosmetik legendaris dan seasonal pass.",
+        'name' => '160 Diamond 💎',
+        'short_description' => 'Paket Ksatria 160 Diamond untuk dominasi ekonomi peradaban.',
+        'description' => "### 💎 160 Diamond Premium Apexsions\n" .
+            "- **Mata Uang:** Diamond resmi server Apexsions (ApexsionsEconomy).\n" .
+            "- **Jumlah:** 160 💎 Diamond.\n" .
+            "- **Rasio Resmi:** Rp 375 per Diamond.\n" .
+            "- **Penggunaan:** Transaksi premium, kosmetik eksklusif, auction premium, dan lelang pasar bebas.\n" .
+            "- **Aktivasi:** Otomatis ditambahkan ke saldo in-game via delivery daemon.",
         'position' => 3,
-        'image' => null,
-        'price' => 100000,
-        'commands' => json_encode(['abp exp give {player} 2500']),
+        'image' => 'package-diamond-160.jpg',
+        'price' => 60000,
+        'commands' => json_encode(['ecoadmin give {player} 160 diamond']),
+        'has_quantity' => false,
+        'is_enabled' => true,
+        'created_at' => $now,
+        'updated_at' => $now,
+    ],
+    [
+        'category_id' => 3,
+        'name' => '320 Diamond 💎',
+        'short_description' => 'Paket Bangsawan 320 Diamond untuk ekspansi kerajaan dan lelang.',
+        'description' => "### 💎 320 Diamond Premium Apexsions\n" .
+            "- **Mata Uang:** Diamond resmi server Apexsions (ApexsionsEconomy).\n" .
+            "- **Jumlah:** 320 💎 Diamond.\n" .
+            "- **Rasio Resmi:** Rp 375 per Diamond.\n" .
+            "- **Penggunaan:** Transaksi premium, kosmetik eksklusif, auction premium, dan lelang pasar bebas.\n" .
+            "- **Aktivasi:** Otomatis ditambahkan ke saldo in-game via delivery daemon.",
+        'position' => 4,
+        'image' => 'package-diamond-320.jpg',
+        'price' => 120000,
+        'commands' => json_encode(['ecoadmin give {player} 320 diamond']),
+        'has_quantity' => false,
+        'is_enabled' => true,
+        'created_at' => $now,
+        'updated_at' => $now,
+    ],
+    [
+        'category_id' => 3,
+        'name' => '640 Diamond 💎',
+        'short_description' => 'Paket Kaisar 640 Diamond untuk dominasi ekonomi dan prestise tinggi.',
+        'description' => "### 💎 640 Diamond Premium Apexsions\n" .
+            "- **Mata Uang:** Diamond resmi server Apexsions (ApexsionsEconomy).\n" .
+            "- **Jumlah:** 640 💎 Diamond.\n" .
+            "- **Rasio Resmi:** Rp 375 per Diamond.\n" .
+            "- **Penggunaan:** Transaksi premium, kosmetik eksklusif, auction premium, dan lelang pasar bebas.\n" .
+            "- **Aktivasi:** Otomatis ditambahkan ke saldo in-game via delivery daemon.",
+        'position' => 5,
+        'image' => 'package-diamond-640.jpg',
+        'price' => 240000,
+        'commands' => json_encode(['ecoadmin give {player} 640 diamond']),
+        'has_quantity' => false,
+        'is_enabled' => true,
+        'created_at' => $now,
+        'updated_at' => $now,
+    ],
+    [
+        'category_id' => 3,
+        'name' => '1.200 Diamond 💎',
+        'short_description' => 'Paket Sultan 1.200 Diamond terlengkap untuk menguasai pasar ekonomi Apexsions.',
+        'description' => "### 💎 1.200 Diamond Premium Apexsions\n" .
+            "- **Mata Uang:** Diamond resmi server Apexsions (ApexsionsEconomy).\n" .
+            "- **Jumlah:** 1.200 💎 Diamond.\n" .
+            "- **Rasio Resmi:** Rp 375 per Diamond.\n" .
+            "- **Penggunaan:** Transaksi premium, kosmetik eksklusif, auction premium, dan lelang pasar bebas.\n" .
+            "- **Aktivasi:** Otomatis ditambahkan ke saldo in-game via delivery daemon.",
+        'position' => 6,
+        'image' => 'package-diamond-1200.jpg',
+        'price' => 450000,
+        'commands' => json_encode(['ecoadmin give {player} 1200 diamond']),
         'has_quantity' => false,
         'is_enabled' => true,
         'created_at' => $now,
@@ -578,7 +650,7 @@ $shopPackages = [
         'name' => 'XP Booster 2x (3 Hari)',
         'short_description' => 'Pengganda perolehan XP 2x lipat selama 72 jam penuh.',
         'description' => "Menggandakan seluruh perolehan XP (Leveling dan Battlepass) sebesar 200% selama 72 jam berturut-turut di seluruh server.",
-        'position' => 4,
+        'position' => 7,
         'image' => null,
         'price' => 15000,
         'commands' => json_encode(['apexbooster give {player} xp 2 72h']),

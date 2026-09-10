@@ -147,24 +147,18 @@
                             </div>
                         </div>
 
-                        <!-- Economy Stats Grid (3 Currencies) -->
+                        <!-- Economy Stats Grid (Official Dual Currencies: Rupiah & Diamond) -->
                         <div class="row g-2 pt-2 mb-3">
-                            <div class="col-sm-4">
+                            <div class="col-sm-6">
                                 <div class="p-2 px-3 rounded bg-black bg-opacity-40 border border-secondary border-opacity-25 d-flex align-items-center justify-content-between h-100">
                                     <span class="text-secondary small"><i class="bi bi-cash-coin text-success me-1"></i> <span data-i18n="profile_balance_rp">Saldo Rupiah:</span></span>
                                     <span class="fw-bold text-white small">Rp {{ number_format($linkedAccount->balance_rupiah, 0, ',', '.') }}</span>
                                 </div>
                             </div>
-                            <div class="col-sm-4">
+                            <div class="col-sm-6">
                                 <div class="p-2 px-3 rounded bg-black bg-opacity-40 border border-secondary border-opacity-25 d-flex align-items-center justify-content-between h-100">
-                                    <span class="text-secondary small"><i class="bi bi-gem text-info me-1"></i> <span data-i18n="profile_balance_dia">Diamond:</span></span>
-                                    <span class="fw-bold text-white small">💎 {{ number_format($linkedAccount->balance_diamond, 0, ',', '.') }}</span>
-                                </div>
-                            </div>
-                            <div class="col-sm-4">
-                                <div class="p-2 px-3 rounded bg-black bg-opacity-40 border border-secondary border-opacity-25 d-flex align-items-center justify-content-between h-100">
-                                    <span class="text-secondary small"><i class="bi bi-coin text-warning me-1"></i> <span data-i18n="profile_balance_coins">Apex Coins:</span></span>
-                                    <span class="fw-bold text-warning small">🪙 {{ number_format($linkedAccount->apex_coins ?? 0, 0, ',', '.') }}</span>
+                                    <span class="text-secondary small"><i class="bi bi-gem text-info me-1"></i> <span data-i18n="profile_balance_dia">Saldo Diamond:</span></span>
+                                    <span class="fw-bold text-info small">💎 {{ number_format($linkedAccount->balance_diamond, 0, ',', '.') }}</span>
                                 </div>
                             </div>
                         </div>

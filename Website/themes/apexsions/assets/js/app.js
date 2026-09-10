@@ -16,8 +16,11 @@ const APX_I18N = {
         nav_rules_sub: 'Tata tertib dan etika kedaulatan realm',
         nav_vote: 'Vote',
         nav_vote_sub: 'Vote harian & raih hadiah in-game',
+        nav_server_map: 'Server Map',
         nav_discord: 'Discord',
         nav_btn_discord: 'Discord',
+        shop_perks_show_all: 'Lihat Semua Benefit',
+        shop_perks_hide: 'Sembunyikan Benefit',
         nav_features: 'Fitur',
         nav_login: 'Masuk',
         nav_register: 'Daftar',
@@ -46,7 +49,14 @@ const APX_I18N = {
         hero_status_maintenance: 'Sedang Pemeliharaan',
         hero_status_crossplay_ready: 'Java & Bedrock Siap',
         hero_citizens: 'Warga',
-        hero_copied: 'Disalin!',
+        // Server Map Section
+        map_kicker: 'PETA REAL-TIME SERVER',
+        map_title: 'Explore Apexsions World',
+        map_lead: 'Jelajahi dunia Apexsions secara langsung melalui peta interaktif dan temukan kerajaan, wilayah, serta berbagai lokasi penting di server.',
+        map_btn_open: '🗺 Buka Server Map',
+        map_btn_guide: 'Panduan & Sektor Kerajaan',
+        map_card_title: 'Visualisasi 3D Interaktif',
+        map_card_desc: 'Pantau pergerakan warga, bangunan megah kerajaan, dan benteng pertahanan dari sudut pandang 3D real-time beresolusi tinggi.',
 
         // World & Lore
         world_kicker: 'LORE & TATANAN WILAYAH',
@@ -821,8 +831,11 @@ const APX_I18N = {
         nav_rules_sub: 'Code of conduct & realm sovereignty',
         nav_vote: 'Vote',
         nav_vote_sub: 'Daily voting & in-game rewards',
+        nav_server_map: 'Server Map',
         nav_discord: 'Discord',
         nav_btn_discord: 'Discord',
+        shop_perks_show_all: 'View All Benefits',
+        shop_perks_hide: 'Hide Benefits',
         nav_features: 'Features',
         nav_login: 'Login',
         nav_register: 'Register',
@@ -852,6 +865,15 @@ const APX_I18N = {
         hero_status_crossplay_ready: 'Java & Bedrock Ready',
         hero_citizens: 'Citizens',
         hero_copied: 'Copied!',
+
+        // Server Map Section
+        map_kicker: 'LIVE REAL-TIME SERVER MAP',
+        map_title: 'Explore Apexsions World',
+        map_lead: 'Explore the realm of Apexsions directly via interactive map and discover kingdoms, territories, and strategic points on the server.',
+        map_btn_open: '🗺 Open Server Map',
+        map_btn_guide: 'Guide & Kingdom Sectors',
+        map_card_title: 'Interactive 3D Visualization',
+        map_card_desc: 'Track citizen movements, majestic kingdom structures, and fortress outposts in real-time high-definition 3D.',
 
         // World & Lore
         world_kicker: 'LORE & TERRITORIAL ORDER',
@@ -1930,10 +1952,12 @@ document.addEventListener('DOMContentLoaded', () => {
     initPasswordToggles();
 
     // ==========================================================================
-    // 1.3 Webstore Expandable Perks on Mobile
+    // 1.3 Webstore Expandable Perks
     // ==========================================================================
     const initPerkExpanders = () => {
         document.querySelectorAll('[data-apx-toggle-perks]').forEach(btn => {
+            if (btn.dataset.boundPerks) return;
+            btn.dataset.boundPerks = 'true';
             btn.addEventListener('click', (e) => {
                 e.preventDefault();
                 const targetId = btn.getAttribute('data-apx-toggle-perks');
@@ -1941,15 +1965,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (!targetList) return;
 
                 const isExpanded = targetList.classList.toggle('is-expanded');
+                btn.setAttribute('aria-expanded', isExpanded ? 'true' : 'false');
                 const icon = btn.querySelector('i');
                 const textSpan = btn.querySelector('.apx-toggle-perks-text');
+                const currentLang = document.documentElement.getAttribute('lang') || 'id';
 
                 if (isExpanded) {
                     if (icon) icon.className = 'bi bi-chevron-up ms-1';
-                    if (textSpan) textSpan.textContent = 'Sembunyikan Sebagian Benefit';
+                    if (textSpan) textSpan.textContent = (currentLang === 'en') ? 'Hide Benefits' : 'Sembunyikan Benefit';
                 } else {
                     if (icon) icon.className = 'bi bi-chevron-down ms-1';
-                    if (textSpan) textSpan.textContent = 'Lihat Semua Benefit';
+                    if (textSpan) textSpan.textContent = (currentLang === 'en') ? 'View All Benefits' : 'Lihat Semua Benefit';
                 }
             });
         });

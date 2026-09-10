@@ -7,6 +7,7 @@ use Azuriom\Plugin\ApexsionsBridge\Models\AuditLog;
 use Azuriom\Plugin\ApexsionsBridge\Models\MaintenanceState;
 use Azuriom\Plugin\ApexsionsBridge\Models\ServerAlert;
 use Azuriom\Plugin\ApexsionsBridge\Models\ServerMetric;
+use Azuriom\Plugin\ApexsionsBridge\Services\ServerMapService;
 use Azuriom\Plugin\ApexsionsBridge\Services\ServerOpsService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -37,6 +38,11 @@ class ServerAdminController extends Controller
             'activeAlerts' => $activeAlerts,
             'recentActions' => $recentActions,
             'allowedActions' => ServerOpsService::ALLOWED_ACTIONS,
+            'mapUrl' => ServerMapService::getMapUrl(),
+            'mapEnabled' => ServerMapService::isMapEnabled(),
+            'mapHealthCheck' => ServerMapService::isHealthCheckEnabled(),
+            'mapNavVisible' => ServerMapService::isNavigationVisible(),
+            'mapOnline' => ServerMapService::isMapOnline(),
         ]);
     }
 
@@ -175,5 +181,27 @@ class ServerAdminController extends Controller
         $alert->resolve($staffName);
 
         return redirect()->back()->with('success', "Peringatan server #{$alert->id} telah ditandai terselesaikan.");
+    }
+
+    /**
+     * Update Server Map (BlueMap) configuration.
+     */
+    public function updateMapSettings(Request $request): RedirectResponse
+    {
+        $validated = $request->validate([
+            'map_url' => ['required', 'url', 'max:255'],
+            'map_enabled' => ['nullable'],
+            'map_health_check' => ['nullable'],
+            'map_nav_visible' => ['nullable'],
+        ]);
+
+        \Azuriom\Plugin\ApexsionsBridge\Services\ServerMapService::updateSettings([
+            'map_url' => $validated['map_url'],
+            'map_enabled' => $request->boolean('map_enabled'),
+            'map_health_check' => $request->boolean('map_health_check'),
+            'map_nav_visible' => $request->boolean('map_nav_visible'),
+        ]);
+
+        return redirect()->back()->with('success', 'Konfigurasi Server Map (BlueMap) berhasil diperbarui.');
     }
 }

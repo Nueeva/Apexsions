@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', $category->name . ' — Webstore Resmi')
-@section('description', 'Jelajahi paket ' . $category->name . ' di Webstore Resmi Apexsions. Pembelian aman, aktivasi otomatis instan di dalam server Minecraft (Java & Bedrock).')
+@section('title', $category->name . ' | Webstore Apexsions')
+@section('description', 'Beli paket ' . $category->name . ' di Webstore Apexsions. Pembelian aman via WhatsApp, aktivasi otomatis instan di server Minecraft.')
 
 @push('scripts')
     <script>
@@ -36,26 +36,7 @@
                     });
                 });
 
-                // 2. Expandable perks toggle handler
-                document.querySelectorAll('[data-apx-toggle-perks]').forEach(function (btn) {
-                    if (btn.dataset.boundClick) return;
-                    btn.dataset.boundClick = 'true';
-                    btn.addEventListener('click', function () {
-                        const targetId = this.getAttribute('data-apx-toggle-perks');
-                        const targetList = document.getElementById(targetId);
-                        if (targetList) {
-                            const isExpanded = targetList.classList.toggle('is-expanded');
-                            const textSpan = this.querySelector('.apx-toggle-perks-text');
-                            const icon = this.querySelector('i');
-                            if (textSpan) {
-                                textSpan.textContent = isExpanded ? 'Sembunyikan Benefit' : 'Lihat Semua Benefit';
-                            }
-                            if (icon) {
-                                icon.className = isExpanded ? 'bi bi-chevron-up ms-1' : 'bi bi-chevron-down ms-1';
-                            }
-                        }
-                    });
-                });
+                // 2. Expandable perks toggle handled centrally in app.js
 
                 // 3. Multi-Axis Interactive Filtering Engine
                 const rankFilterBtns = document.querySelectorAll('.apx-filter-rank');
@@ -262,7 +243,7 @@
 
             @php
                 $isRankCategory = str_contains(strtolower($category->name), 'rank') || str_contains(strtolower($category->slug ?? ''), 'rank');
-                $isCoinsCategory = str_contains(strtolower($category->name), 'koin') || str_contains(strtolower($category->name), 'coin') || str_contains(strtolower($category->slug ?? ''), 'coin') || str_contains(strtolower($category->slug ?? ''), 'booster');
+                $isDiamondCategory = str_contains(strtolower($category->name), 'diamond') || str_contains(strtolower($category->slug ?? ''), 'diamond') || str_contains(strtolower($category->name), 'koin') || str_contains(strtolower($category->name), 'coin') || str_contains(strtolower($category->slug ?? ''), 'coin') || str_contains(strtolower($category->slug ?? ''), 'booster');
                 $isBattlepassCategory = str_contains(strtolower($category->name), 'battlepass') || str_contains(strtolower($category->slug ?? ''), 'battlepass') || str_contains(strtolower($category->slug ?? ''), 'pass');
             @endphp
 
@@ -328,8 +309,8 @@
                         </div>
                     </div>
                 </div>
-            @elseif($isCoinsCategory)
-                <!-- Interactive Subcategory Filter for Coins & Boosters -->
+            @elseif($isDiamondCategory)
+                <!-- Interactive Subcategory Filter for Diamond & Boosters -->
                 <div class="apx-rank-filter-bar mb-4 p-3 d-flex align-items-center justify-content-between flex-wrap gap-2">
                     <div class="d-flex align-items-center gap-2 flex-wrap">
                         <span class="text-warning small fw-bold me-1 d-flex align-items-center gap-1">
@@ -338,8 +319,8 @@
                         <button type="button" class="apx-filter-btn apx-filter-subcat active" data-subcat-filter="all">
                             <i class="bi bi-grid-fill"></i> Semua Paket
                         </button>
-                        <button type="button" class="apx-filter-btn apx-filter-subcat" data-subcat-filter="coins">
-                            <i class="bi bi-coin text-info"></i> Apex Coins
+                        <button type="button" class="apx-filter-btn apx-filter-subcat" data-subcat-filter="diamond">
+                            <i class="bi bi-gem text-info"></i> 💎 Diamond
                         </button>
                         <button type="button" class="apx-filter-btn apx-filter-subcat" data-subcat-filter="booster">
                             <i class="bi bi-lightning-charge-fill text-warning"></i> Booster Server
@@ -453,14 +434,24 @@
                             $fallbackIcon = 'bi bi-trophy-fill';
                             $badgeText = 'SEASON PASS';
                             $badgeClass = 'bg-warning text-dark border border-warning';
+                        } elseif (str_contains($packageName, 'diamond')) {
+                            $cardModifierClass = 'apx-pkg-diamond';
+                            $defaultImage = theme_asset('img/package-diamond.jpg');
+                            $fallbackIcon = 'bi bi-gem';
+                            $badgeText = 'CURRENCY RESMI';
+                            $badgeClass = 'bg-info text-dark fw-bold border border-info';
+                            $subcatTag = 'diamond';
                         } elseif (str_contains($packageName, 'booster')) {
                             $fallbackIcon = 'bi bi-lightning-charge-fill';
                             $badgeText = 'BOOSTER 72J';
                             $badgeClass = 'bg-warning text-dark';
+                            $subcatTag = 'booster';
                         } elseif (str_contains($packageName, 'koin') || str_contains($packageName, 'coin')) {
-                            $fallbackIcon = 'bi bi-coin';
-                            $badgeText = 'APEX COINS';
+                            $cardModifierClass = 'apx-pkg-diamond';
+                            $fallbackIcon = 'bi bi-gem';
+                            $badgeText = 'DIAMOND';
                             $badgeClass = 'bg-info text-dark';
+                            $subcatTag = 'diamond';
                         } else {
                             $badgeText = 'PAKET RESMI';
                         }
@@ -534,9 +525,13 @@
                             $waEffectivePrice = $discountInfo['has_discount'] ? $discountInfo['discounted_price'] : (float)$package->getPrice();
                             $waMessage = str_replace(
                                 ['{package}', '{price}', '{player}'],
-                                [$package->name, 'Rp ' . number_format($waEffectivePrice, 0, ',', '.'), $linkedAccount->player_name ?? 'Player'],
+                                [$package->name, 'Rp ' . number_format($waEffectivePrice, 0, ',', '.'), $linkedAccount->minecraft_username ?? 'Player'],
                                 $customWaTemplate
                             );
+                        } elseif (str_contains($packageName, 'diamond')) {
+                            $effPrice = $discountInfo['has_discount'] ? $discountInfo['discounted_price'] : (float)$package->getPrice();
+                            $username = $linkedAccount->minecraft_username ?? (auth()->user()?->name ?? 'Player');
+                            $waMessage = "Min, aku mau beli {$package->name} seharga Rp " . number_format($effPrice, 0, ',', '.') . " untuk akun {$username}.";
                         } else {
                             $waMessage = $discountInfo['whatsapp_message'];
                         }
@@ -605,7 +600,13 @@
                                 @endphp
 
                                 @if($effectiveImage)
-                                    <img class="apx-package-image" src="{{ $effectiveImage }}" alt="{{ $package->name }}" loading="lazy" onerror="this.onerror=null; @if($defaultImage) this.src='{{ $defaultImage }}'; @else this.style.display='none'; @endif">
+                                    <img class="apx-package-image" src="{{ $effectiveImage }}" alt="{{ $package->name }} Apexsions Minecraft" loading="lazy" onerror="this.onerror=null; @if($defaultImage) this.src='{{ $defaultImage }}'; @else this.style.display='none'; @endif">
+                                @elseif(str_contains($packageName, 'diamond'))
+                                    <div class="d-flex flex-column align-items-center justify-content-center w-100 h-100 position-relative overflow-hidden" style="background: radial-gradient(circle at center, rgba(6, 182, 212, 0.28) 0%, rgba(15, 23, 42, 0.95) 80%);">
+                                        <div class="position-absolute" style="top: 50%; left: 50%; transform: translate(-50%, -50%); width: 90px; height: 90px; background: rgba(56, 189, 248, 0.25); filter: blur(24px); border-radius: 50%;"></div>
+                                        <i class="bi bi-gem text-info position-relative" style="font-size: 3rem; filter: drop-shadow(0 0 16px rgba(56, 189, 248, 0.8));"></i>
+                                        <span class="position-relative small fw-bold font-monospace mt-1" style="color: #67e8f9; font-size: 0.72rem; letter-spacing: 0.1em;">PREMIUM CURRENCY</span>
+                                    </div>
                                 @else
                                     <div class="d-flex align-items-center justify-content-center w-100 h-100" style="background: rgba(245, 158, 11, 0.08); color: var(--apx-gold); font-size: 2.2rem;">
                                         <i class="{{ $fallbackIcon }}"></i>
@@ -623,8 +624,13 @@
                                             <i class="bi bi-patch-check-fill me-1"></i> Aktif di Akun
                                         </span>
                                     @elseif($isUpgradeAvailable)
-                                        <span class="apx-package-price-del">Rp {{ number_format($upgradeCalculation['target_rank_price'], 0, ',', '.') }}</span>
-                                        <span class="apx-package-price text-warning" style="color: #f1c40f !important;">Rp {{ number_format($upgradeCalculation['upgrade_price'], 0, ',', '.') }}</span>
+                                        <div class="d-flex flex-column">
+                                            <span class="text-muted small text-decoration-line-through" style="font-size: 0.8rem;">Harga Normal Rp {{ number_format($upgradeCalculation['target_rank_price'], 0, ',', '.') }}</span>
+                                            <div class="d-flex align-items-baseline gap-1">
+                                                <span class="text-warning small fw-bold">Harga Upgrade</span>
+                                                <span class="apx-package-price text-warning" style="color: #f1c40f !important;">Rp {{ number_format($upgradeCalculation['upgrade_price'], 0, ',', '.') }}</span>
+                                            </div>
+                                        </div>
                                     @elseif($discountInfo['has_discount'])
                                         <span class="apx-package-price-del">Rp {{ number_format($discountInfo['original_price'], 0, ',', '.') }}</span>
                                         <span class="apx-package-price text-success">Rp {{ number_format($discountInfo['discounted_price'], 0, ',', '.') }}</span>
@@ -738,15 +744,23 @@
                                         <li><i class="bi bi-check2-circle text-warning"></i><span class="text-light">Buka 100 Tier Jalur Hadiah Emas Musiman</span></li>
                                         <li><i class="bi bi-trophy-fill text-warning"></i><span class="text-light">Akses Quests Harian, Mingguan &amp; EXP Shop</span></li>
                                         <li><i class="bi bi-gift-fill text-warning"></i><span class="text-light">Kosmetik Eksklusif Musiman &amp; Title</span></li>
+                                    @elseif(str_contains($packageName, 'diamond'))
+                                        <li><i class="bi bi-gem text-info"></i><span class="text-light fw-bold">Mata Uang Premium Resmi Server (💎)</span></li>
+                                        <li><i class="bi bi-calculator text-info"></i><span class="text-light">Kurs Resmi: <strong>Rp 375 / 1 Diamond</strong></span></li>
+                                        <li><i class="bi bi-lightning-charge-fill text-warning"></i><span class="text-light">Aktivasi Instan ke Saldo In-game via Daemon</span></li>
+                                        <li><i class="bi bi-shield-check text-success"></i><span class="text-light">Transaksi Resmi, Terverifikasi &amp; Aman</span></li>
+                                        <li><i class="bi bi-shop text-info"></i><span class="text-light">Dapat Dibelanjakan di /ah &amp; Toko Kerajaan</span></li>
                                     @else
                                         <li><i class="bi bi-check2-circle text-warning"></i><span class="text-light">Aktivasi Otomatis Langsung ke In-game</span></li>
                                         <li><i class="bi bi-shield-check text-warning"></i><span class="text-light">Transaksi Terverifikasi &amp; Aman</span></li>
                                     @endif
                                 </ul>
 
-                                <button type="button" class="apx-btn-perks-toggle" data-apx-toggle-perks="package-perks-{{ $package->id }}">
-                                    <span class="apx-toggle-perks-text">Lihat Semua Benefit</span> <i class="bi bi-chevron-down ms-1"></i>
-                                </button>
+                                @if($rankKey)
+                                    <button type="button" class="apx-btn-perks-toggle" data-apx-toggle-perks="package-perks-{{ $package->id }}" aria-expanded="false" aria-controls="package-perks-{{ $package->id }}">
+                                        <span class="apx-toggle-perks-text">Lihat Semua Benefit</span> <i class="bi bi-chevron-down ms-1"></i>
+                                    </button>
+                                @endif
 
                                 <div class="apx-package-footer mt-auto d-flex flex-column gap-2 pt-2">
                                     @if($isAlreadyOwned)
@@ -755,16 +769,17 @@
                                         </button>
                                     @elseif($isUpgradeAvailable)
                                         <a href="{{ $primaryWaUrl }}" target="_blank" rel="noopener noreferrer" class="btn btn-warning fw-bold text-dark w-100 py-2 shadow-sm apx-btn-glow">
-                                            <i class="bi bi-arrow-up-circle-fill me-1"></i> Upgrade via WA (Rp {{ number_format($upgradeCalculation['upgrade_price'], 0, ',', '.') }})
+                                            <i class="bi bi-arrow-up-circle-fill me-1"></i> Upgrade Rank (Rp {{ number_format($upgradeCalculation['upgrade_price'], 0, ',', '.') }})
+                                        </a>
+                                    @elseif(str_contains($packageName, 'diamond'))
+                                        <a href="{{ $primaryWaUrl }}" target="_blank" rel="noopener noreferrer" class="btn btn-apx-wa w-100 py-2 apx-btn-glow" style="background: linear-gradient(135deg, #0284c7, #06b6d4); border-color: #38bdf8; font-weight: 700;">
+                                            <i class="bi bi-gem me-1"></i> <span>Beli Sekarang</span>
                                         </a>
                                     @else
                                         <a href="{{ $primaryWaUrl }}" target="_blank" rel="noopener noreferrer" class="btn btn-apx-wa w-100 py-2 apx-btn-glow">
-                                            <i class="bi bi-whatsapp me-1"></i> <span data-i18n="shop_btn_wa">Pesan via WhatsApp</span>
+                                            <i class="bi bi-whatsapp me-1"></i> <span data-i18n="shop_btn_wa">Beli via WhatsApp</span>
                                         </a>
                                     @endif
-                                    <a href="#" class="btn btn-apx-outline w-100 py-1 small" data-package-url="{{ route('shop.packages.show', $package) }}">
-                                        <i class="bi bi-info-circle me-1"></i> <span data-i18n="shop_btn_details">Rincian &amp; Benefit Lengkap</span>
-                                    </a>
                                 </div>
                             </div>
                         </div>

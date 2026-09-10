@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', 'Apexsions — Server Minecraft Survival Kerajaan & RPG Indonesia (Java & Bedrock)')
-@section('description', 'Server Minecraft Survival Kerajaan & RPG Indonesia terbaik (Minecraft 1.21+ / 26.2). Jelajahi 3 Kerajaan berdaulat (Zenithar, Solterra, Sylvamoor), 11 kasta sosial, ekonomi Rupiah & Diamond, custom enchants, dan crossplay Java & Bedrock. IP Server: apexsions.my.id:32348.')
+@section('title', 'Apexsions - Minecraft Survival & Kingdom Server Indonesia')
+@section('description', 'Bergabunglah di Apexsions, server Minecraft Indonesia dengan sistem Survival, Kingdom, BattlePass, Economy, Auction, Custom Enchants, Crates, dan dunia yang terus berkembang.')
 
 @section('content')
 <!-- Panoramic Hero Section: Viewport Adaptive (Fits 100% Player Screen at Normal Zoom) -->
@@ -276,6 +276,76 @@
         </div>
     </div>
 </section>
+
+@if(\Azuriom\Plugin\ApexsionsBridge\Services\ServerMapService::isMapEnabled())
+@php
+    $serverMapUrl = \Azuriom\Plugin\ApexsionsBridge\Services\ServerMapService::getMapUrl();
+    $serverMapOnline = \Azuriom\Plugin\ApexsionsBridge\Services\ServerMapService::isMapOnline();
+@endphp
+
+<!-- Section: Explore Apexsions World (Live Interactive Server Map) -->
+<section class="apx-section apx-map-section position-relative overflow-hidden py-5" id="server-map" style="background: linear-gradient(180deg, var(--apx-bg-surface) 0%, var(--apx-bg-deep) 100%); border-top: 1px solid var(--apx-gold-border-subtle);">
+    <div class="container position-relative" style="z-index: 2;">
+        <div class="p-4 p-md-5 rounded-4 border border-warning border-opacity-25" style="background: radial-gradient(circle at 10% 20%, rgba(15, 23, 42, 0.95), rgba(9, 12, 19, 0.98)); box-shadow: 0 16px 40px rgba(0,0,0,0.6); border-radius: var(--apx-radius-lg);">
+            <div class="row align-items-center g-4">
+                <div class="col-lg-7">
+                    <div class="d-flex align-items-center gap-2 mb-3 flex-wrap">
+                        <span class="apx-section-kicker" data-i18n="map_kicker">PETA REAL-TIME SERVER</span>
+                        @if($serverMapOnline)
+                            <span class="badge bg-success bg-opacity-20 text-success border border-success border-opacity-30 px-2 py-1 small d-inline-flex align-items-center gap-1">
+                                <span class="spinner-grow spinner-grow-sm text-success" style="width: 0.45rem; height: 0.45rem;" role="status"></span>
+                                <span>🟢 Map Online</span>
+                            </span>
+                        @else
+                            <span class="badge bg-secondary bg-opacity-20 text-muted border border-secondary border-opacity-30 px-2 py-1 small">
+                                ⚪ Map Standby
+                            </span>
+                        @endif
+                        <span class="badge bg-black bg-opacity-40 text-white-50 border border-secondary border-opacity-20 px-2 py-1 small font-monospace">
+                            Port :32076
+                        </span>
+                    </div>
+
+                    <h2 class="apx-world-title mb-3" data-i18n="map_title">
+                        Explore Apexsions World
+                    </h2>
+
+                    <p class="apx-world-lead text-muted mb-4" style="max-width: 680px; font-size: 1.05rem; line-height: 1.75;" data-i18n="map_lead">
+                        Jelajahi dunia Apexsions secara langsung melalui peta interaktif dan temukan kerajaan, wilayah, serta berbagai lokasi penting di server.
+                    </p>
+
+                    <div class="d-flex flex-wrap gap-3">
+                        <a href="{{ $serverMapUrl }}" target="_blank" rel="noopener noreferrer" class="btn btn-apx-gold px-4 py-3 fw-bold d-inline-flex align-items-center gap-2 apx-btn-glow">
+                            <i class="bi bi-map-fill"></i>
+                            <span data-i18n="map_btn_open">🗺 Buka Server Map</span>
+                            <i class="bi bi-box-arrow-up-right small ms-1"></i>
+                        </a>
+                        <a href="{{ url('/server-map') }}" class="btn btn-apx-outline px-4 py-3 d-inline-flex align-items-center gap-2">
+                            <i class="bi bi-info-circle"></i>
+                            <span data-i18n="map_btn_guide">Panduan &amp; Sektor Kerajaan</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col-lg-5">
+                    <div class="p-4 rounded-3 border border-secondary border-opacity-20 bg-black bg-opacity-40 text-center position-relative overflow-hidden">
+                        <div class="mb-3 text-warning" style="font-size: 3rem; filter: drop-shadow(0 0 16px rgba(245, 158, 11, 0.4));">
+                            <i class="bi bi-compass"></i>
+                        </div>
+                        <h4 class="font-cinzel text-white mb-2" data-i18n="map_card_title">Visualisasi 3D Interaktif</h4>
+                        <p class="text-muted small mb-3" style="line-height: 1.6;" data-i18n="map_card_desc">
+                            Pantau pergerakan warga, bangunan megah kerajaan, dan benteng pertahanan dari sudut pandang 3D real-time beresolusi tinggi.
+                        </p>
+                        <div class="d-flex justify-content-center gap-2 small font-monospace text-warning">
+                            <span>Zenithar</span> &bull; <span>Solterra</span> &bull; <span>Sylvamoor</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+@endif
 
 <!-- Official Rank Hierarchy Showcase (Pure Visual Artwork & Clean Showcase) -->
 <section class="apx-section py-5" id="ranks" style="background: var(--apx-bg-deep); border-top: 1px solid var(--apx-gold-border-subtle);">

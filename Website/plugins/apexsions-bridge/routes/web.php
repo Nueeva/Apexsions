@@ -22,12 +22,14 @@ use Azuriom\Plugin\ApexsionsBridge\Controllers\Admin\WebstoreAdminController;
 use Azuriom\Plugin\ApexsionsBridge\Controllers\LeaderboardController;
 use Azuriom\Plugin\ApexsionsBridge\Controllers\ProfileManagementController;
 use Azuriom\Plugin\ApexsionsBridge\Controllers\PublicProfileController;
+use Azuriom\Plugin\ApexsionsBridge\Controllers\ServerMapController;
 use Azuriom\Plugin\ApexsionsBridge\Controllers\VoteController;
 use Illuminate\Support\Facades\Route;
 
 // Public Routes
 Route::get('/leaderboard', [LeaderboardController::class, 'index'])->name('leaderboard');
 Route::get('/player/{identifier}', [PublicProfileController::class, 'show'])->name('player.show');
+Route::get('/server-map', [ServerMapController::class, 'index'])->name('server-map');
 Route::get('/vote', [VoteController::class, 'index'])->name('vote');
 Route::post('/vote/verify/{siteSlug}', [VoteController::class, 'verifyAndClaim'])->name('vote.verify');
 
@@ -127,6 +129,7 @@ Route::middleware(['web', 'admin-access'])->prefix('admin')->name('admin.')->gro
         Route::post('/maintenance', [ServerAdminController::class, 'toggleMaintenance'])->name('maintenance.toggle');
         Route::post('/alerts/{id}/acknowledge', [ServerAdminController::class, 'acknowledgeAlert'])->name('alerts.acknowledge');
         Route::post('/alerts/{id}/resolve', [ServerAdminController::class, 'resolveAlert'])->name('alerts.resolve');
+        Route::post('/map-settings', [ServerAdminController::class, 'updateMapSettings'])->name('map.settings');
     });
 
     // Custom Plugin Control & Capability System

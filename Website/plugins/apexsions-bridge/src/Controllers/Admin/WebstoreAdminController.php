@@ -89,6 +89,11 @@ class WebstoreAdminController extends Controller
 
         // Preset official server images list
         $officialPresets = [
+            'package-diamond.jpg' => [
+                'label' => 'DIAMOND — Premium Currency Resmi Apexsions',
+                'preview' => '/storage/packages/package-diamond.jpg',
+                'category' => 'Diamond Premium Currency',
+            ],
             'package-sions.jpg' => [
                 'label' => 'SIONS — The Peak Apex Donator (Emas Gelap)',
                 'preview' => '/storage/packages/package-sions.jpg',

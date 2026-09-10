@@ -302,6 +302,73 @@
         </div>
     </div>
 
+    <!-- Server Map (BlueMap) Live Integration Settings -->
+    <div class="card bg-dark border-secondary border-opacity-25 shadow-sm mb-4">
+        <div class="card-header bg-black bg-opacity-25 border-bottom border-secondary border-opacity-25 py-3 d-flex justify-content-between align-items-center flex-wrap gap-2">
+            <h5 class="card-title text-white h6 mb-0 fw-bold">
+                <i class="bi bi-map-fill text-warning me-2"></i>Konfigurasi Server Map (BlueMap Live Map)
+            </h5>
+            <div class="d-flex align-items-center gap-2">
+                @if($mapOnline)
+                    <span class="badge bg-success bg-opacity-25 text-success border border-success border-opacity-50 px-2 py-1 font-monospace">
+                        🟢 Map Online (:32076)
+                    </span>
+                @else
+                    <span class="badge bg-secondary bg-opacity-25 text-white-50 border border-secondary border-opacity-50 px-2 py-1 font-monospace">
+                        ⚪ Map Standby / Offline
+                    </span>
+                @endif
+                <a href="{{ $mapUrl }}" target="_blank" rel="noopener noreferrer" class="btn btn-outline-warning btn-sm py-0 px-2" style="font-size: 0.75rem;">
+                    Buka Map ↗
+                </a>
+            </div>
+        </div>
+        <div class="card-body p-4">
+            <form action="{{ route('apexsions-bridge.admin.server.map.settings') }}" method="POST">
+                @csrf
+                <div class="row g-3">
+                    <div class="col-lg-6">
+                        <label for="map_url" class="form-label text-white small fw-bold">Target URL Server Map (BlueMap Endpoint)</label>
+                        <div class="input-group input-group-sm">
+                            <span class="input-group-text bg-black border-secondary text-warning"><i class="bi bi-link-45deg"></i></span>
+                            <input type="url" name="map_url" id="map_url" class="form-control bg-black border-secondary text-white font-monospace" value="{{ $mapUrl }}" required>
+                        </div>
+                        <div class="form-text text-white-50" style="font-size: 0.75rem;">
+                            Default: <code>http://apexsions.my.id:32076/</code>. Dapat diarahkan ke subdomain reverse proxy (misal <code>https://map.apexsions.my.id</code>) jika telah dikonfigurasi.
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="d-flex flex-column gap-2 pt-lg-2">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" name="map_enabled" id="map_enabled" value="1" {{ $mapEnabled ? 'checked' : '' }}>
+                                <label class="form-check-label text-white small" for="map_enabled">
+                                    <strong>Aktifkan Fitur Server Map</strong> (Halaman <code>/server-map</code> & Section Homepage)
+                                </label>
+                            </div>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" name="map_nav_visible" id="map_nav_visible" value="1" {{ $mapNavVisible ? 'checked' : '' }}>
+                                <label class="form-check-label text-white small" for="map_nav_visible">
+                                    <strong>Tampilkan Menu di Navbar & Mobile Drawer</strong> (Item menu 🗺 Server Map)
+                                </label>
+                            </div>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" name="map_health_check" id="map_health_check" value="1" {{ $mapHealthCheck ? 'checked' : '' }}>
+                                <label class="form-check-label text-white small" for="map_health_check">
+                                    <strong>Background Health Check</strong> (Probe status socket port 60s cached)
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-3 pt-3 border-top border-secondary border-opacity-10 d-flex justify-content-end">
+                    <button type="submit" class="btn btn-warning btn-sm fw-bold shadow-sm text-dark px-3">
+                        <i class="bi bi-check-lg me-1"></i>Simpan Konfigurasi Map
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- Recent Server Actions Log -->
     <div class="card bg-dark border-secondary border-opacity-25 shadow-sm mb-4">
         <div class="card-header bg-black bg-opacity-25 border-bottom border-secondary border-opacity-25 py-3 d-flex justify-content-between align-items-center">

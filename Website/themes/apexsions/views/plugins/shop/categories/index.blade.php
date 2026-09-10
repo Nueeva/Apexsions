@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', 'Webstore Resmi Peradaban — Apexsions')
-@section('description', 'Pusat perbekalan resmi realm Apexsions. Tingkatkan supremasi kedaulatan dengan kasta donatur, seasonal battlepass, booster peradaban, dan pundi koin resmi.')
+@section('title', 'Webstore Apexsions | Rank, Diamond & BattlePass Minecraft')
+@section('description', 'Beli Rank, Diamond, BattlePass, dan berbagai item premium untuk mendukung perjalananmu di server Minecraft Apexsions.')
 
 @push('scripts')
     <script>
@@ -419,9 +419,6 @@
                                     <div class="apx-package-footer mt-auto d-flex flex-column gap-2">
                                         <a href="{{ $primaryWaUrl }}" target="_blank" rel="noopener noreferrer" class="btn btn-apx-wa w-100 py-2">
                                             <i class="bi bi-whatsapp me-1"></i> <span data-i18n="shop_btn_wa">Pesan Cepat via WhatsApp</span>
-                                        </a>
-                                        <a href="#" class="btn btn-apx-outline w-100 py-1 small" data-package-url="{{ route('shop.packages.show', $package) }}">
-                                            <i class="bi bi-info-circle me-1"></i> <span data-i18n="shop_btn_details">Rincian &amp; Benefit Lengkap</span>
                                         </a>
                                     </div>
                                 </div>

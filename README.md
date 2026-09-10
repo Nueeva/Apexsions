@@ -509,5 +509,30 @@ Portal web resmi Apexsions dibangun di atas platform **Azuriom** dengan tema khu
 - **Master Automated Test Suite**:
   - 14 skenario pengujian end-to-end terverifikasi lulus 100% (`master_functional_test.js`) mencakup seluruh layer publik, admin panel, database, WebBridge sync, dan responsivitas UI/UX mobile.
 
-
-
+### E. Webstore Refinement, Diamond Currency & Server Map Architecture:
+1. **Sistem Ekspansi Benefit Tunggal (Single Benefit Expansion)**:
+   - Menghilangkan duplikasi tombol (`Lihat Benefit Lengkap` dihapus total, menyisakan satu tombol fungsional `Lihat Semua Benefit` ↔ `Sembunyikan Benefit`).
+   - Ekspansi inline mulus (*pure inline CSS transition*, tidak memunculkan modal dialog yang mengganggu flow checkout).
+   - Tampilan adaptif responsif: Menampilkan 6 benefit inti di Desktop (`min-width: 768px`) dan maksimal 4 benefit inti di Mobile (`max-width: 767.98px`).
+   - Coretan harga normal dan sorotan emas untuk harga upgrade (`Harga Normal Rp ...` dicoret, `Harga Upgrade Rp ...` ditampilkan jelas).
+2. **Sistem Mata Uang Premium Resmi: 💎 DIAMOND**:
+   - Mata uang resmi peradaban: **💎 Diamond** (menghilangkan seluruh placeholder legacy "Apex Coins" dari web).
+   - Nilai konversi resmi: **1 Diamond = Rp 375** (40 Diamond = Rp 15.000).
+   - 6 Paket Scalable terdaftar di database & Webstore: 40 💎 (Rp 15k), 80 💎 (Rp 30k), 160 💎 (Rp 60k), 320 💎 (Rp 120k), 640 💎 (Rp 240k), 1.200 💎 (Rp 450k).
+   - Eksekusi in-game via `ApexsionsEconomy`: `ecoadmin give {player} {amount} diamond`.
+   - Artwork visual kristal Diamond 3D berkualitas tinggi dengan efek radial cyan glow.
+3. **Integrasi Peta Real-Time Server (BlueMap — Server Map)**:
+   - Endpoint backend: `http://apexsions.my.id:32076/` (berjalan independen pada port server Minecraft).
+   - Tautan menu navigasi Desktop & Mobile Drawer: `🗺 Server Map` (`bi-map`).
+   - Section beranda: **Explore Apexsions World** dengan indikator status real-time (`🟢 Map Online` ber-cache 60 detik).
+   - Halaman landing terdedikasi: `/server-map` dengan panduan sektor 3 kerajaan, preview interaktif, dan tombol aksi pembuka tab baru dengan atribut keamanan `target="_blank" rel="noopener noreferrer"`.
+   - Manajemen Admin Panel di Server Operations (`/admin/server`): Pengaturan Map URL, Toggle Aktifasi, Toggle Navigasi, dan Background Health Check.
+4. **Implementasi SEO & Pratinjau Sosial Komprehensif**:
+   - **Judul & Deskripsi Khusus**:
+     - *Beranda*: `Apexsions - Minecraft Survival & Kingdom Server Indonesia`
+     - *Webstore*: `Webstore Apexsions | Rank, Diamond & BattlePass Minecraft`
+     - *Server Map*: `Server Map Apexsions | Live Minecraft World Map`
+   - **Target Kata Kunci Indonesia**: `Minecraft Indonesia, Minecraft Survival Indonesia, Minecraft SMP Indonesia, Minecraft Server Indonesia, Minecraft Java Bedrock Indonesia, Server Minecraft Survival, Apexsions Minecraft`.
+   - **Open Graph & Twitter Card**: Pratinjau gambar sinematik 1200x630 (`og-preview.jpg`) dengan tipografi peradaban emas & obsidian dan kartu `summary_large_image`.
+   - **Structured Data JSON-LD**: Skema `Organization` (Apexsions), `WebSite`, dan `VideoGame` / `GameServer` valid.
+   - **Technical SEO**: Berkas publik `robots.txt` dengan izin perayapan halaman utama dan proteksi endpoint administratif, serta indeks kanonikal `sitemap.xml`.

@@ -30,7 +30,24 @@
                     </li>
                 @endif
 
-                <!-- 3. Wiki -->
+                <!-- 3. Leaderboard -->
+                <li class="nav-item">
+                    <a class="nav-link apx-nav-link @if(request()->is('leaderboard*')) active @endif" href="{{ url('/leaderboard') }}" data-i18n="nav_leaderboard">
+                        Leaderboard
+                    </a>
+                </li>
+
+                <!-- 4. Server Map (BlueMap) -->
+                @if(\Azuriom\Plugin\ApexsionsBridge\Services\ServerMapService::isMapEnabled() && \Azuriom\Plugin\ApexsionsBridge\Services\ServerMapService::isNavigationVisible())
+                    <li class="nav-item">
+                        <a class="nav-link apx-nav-link @if(request()->is('server-map*')) active @endif d-inline-flex align-items-center gap-1" href="{{ url('/server-map') }}">
+                            <i class="bi bi-map text-warning"></i>
+                            <span data-i18n="nav_server_map">Server Map</span>
+                        </a>
+                    </li>
+                @endif
+
+                <!-- 5. Wiki -->
                 @if(plugins()->isEnabled('wiki'))
                     <li class="nav-item">
                         <a class="nav-link apx-nav-link @if(request()->is('wiki*')) active @endif" href="{{ route('wiki.index') }}" data-i18n="nav_wiki">
@@ -39,14 +56,14 @@
                     </li>
                 @endif
 
-                <!-- 4. Peraturan -->
+                <!-- 6. Peraturan -->
                 <li class="nav-item">
                     <a class="nav-link apx-nav-link @if(request()->routeIs('rules')) active @endif" href="{{ route('rules') }}" data-i18n="nav_rules">
                         Peraturan
                     </a>
                 </li>
 
-                <!-- 5. Vote -->
+                <!-- 7. Vote -->
                 @if(Route::has('vote'))
                     <li class="nav-item">
                         <a class="nav-link apx-nav-link @if(request()->routeIs('vote')) active @endif" href="{{ route('vote') }}" data-i18n="nav_vote">
@@ -229,6 +246,22 @@
                     </li>
                 @endif
 
+                <li class="nav-item">
+                    <a class="apx-drawer-link @if(request()->is('leaderboard*')) active @endif" href="{{ url('/leaderboard') }}">
+                        <i class="bi bi-bar-chart-line text-warning"></i>
+                        <span data-i18n="nav_leaderboard">Papan Peringkat</span>
+                    </a>
+                </li>
+
+                @if(\Azuriom\Plugin\ApexsionsBridge\Services\ServerMapService::isMapEnabled() && \Azuriom\Plugin\ApexsionsBridge\Services\ServerMapService::isNavigationVisible())
+                    <li class="nav-item">
+                        <a class="apx-drawer-link @if(request()->is('server-map*')) active @endif" href="{{ url('/server-map') }}">
+                            <i class="bi bi-map text-warning"></i>
+                            <span data-i18n="nav_server_map">Server Map</span>
+                        </a>
+                    </li>
+                @endif
+
                 @if(plugins()->isEnabled('wiki'))
                     <li class="nav-item">
                         <a class="apx-drawer-link @if(request()->is('wiki*')) active @endif" href="{{ route('wiki.index') }}">
@@ -250,15 +283,6 @@
                         <a class="apx-drawer-link @if(request()->routeIs('vote')) active @endif" href="{{ route('vote') }}">
                             <i class="bi bi-trophy text-warning"></i>
                             <span data-i18n="nav_vote">Dukung Vote</span>
-                        </a>
-                    </li>
-                @endif
-
-                @if(Route::has('leaderboard') || Route::has('apexsions-bridge.leaderboard'))
-                    <li class="nav-item">
-                        <a class="apx-drawer-link" href="{{ url('/leaderboard') }}">
-                            <i class="bi bi-bar-chart-line text-warning"></i>
-                            <span data-i18n="nav_leaderboard">Papan Peringkat</span>
                         </a>
                     </li>
                 @endif

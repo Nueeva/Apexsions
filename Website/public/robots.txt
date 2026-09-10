@@ -1,2 +1,20 @@
 User-agent: *
-Disallow:
+Allow: /
+Allow: /shop
+Allow: /vote
+Allow: /leaderboard
+Allow: /rules
+Allow: /wiki
+Allow: /server-map
+
+# Restricted Admin, Auth & Private Endpoints
+Disallow: /admin
+Disallow: /admin/*
+Disallow: /login
+Disallow: /register
+Disallow: /password/reset
+Disallow: /password/*
+Disallow: /email/*
+Disallow: /api/*
+
+Sitemap: http://web.apexsions.my.id/sitemap.xml
