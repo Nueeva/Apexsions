@@ -199,12 +199,24 @@ Sistem integrasi NPC untuk pemilihan kerajaan dan navigasi ibukota menggunakan *
 
 ---
 
-## 📡 WebBridge Delivery & Siaran Global In-Game
+## 📡 WebBridge Delivery & Integrasi Web Platform
 
-Modul `ApexsionsCore` terhubung langsung dengan sistem pengiriman asinkron WebBridge Azuriom:
-1. **Siaran Global Admin (`broadcast` / `bc`)**:
+Modul `ApexsionsCore` terhubung langsung dengan sistem antrean pengiriman asinkron WebBridge Azuriom (`WebBridgeService`):
+1. **Multi-Command Execution Engine (`[;\n]+`)**:
+   - Mendukung eksekusi perintah majemuk yang dikirim dari web (seperti penetapan parent LuckPerms dan izin permanen/trial).
+   - Memecah compound command menggunakan regex `[;\n]+` dan mengeksekusi setiap sub-command secara sekuensial pada Bukkit main-thread.
+   - Menghilangkan kegagalan konsol Minecraft akibat karakter titik koma (`;`) yang sebelumnya dianggap sebagai argumen literal tidak dikenal oleh plugin permissions (LuckPerms).
+2. **Native Tellraw & Player Alert Interceptor**:
+   - Mengintersepsi perintah `tellraw <player> <json>` dan `minecraft:tellraw <player> <json>` secara native tanpa mengandalkan command dispatcher konsol vanilla.
+   - Komponen teks diurai langsung via Kyori Adventure `GsonComponentSerializer.gson().deserialize(jsonPayload)`.
+   - **Pemain Online**: Pesan Adventure dikirimkan langsung ke `player.sendMessage()` disertai efek audio bel notifikasi (`Sound.BLOCK_NOTE_BLOCK_CHIME`).
+   - **Pemain Offline**: Sistem mencatat status log diagnostik secara anggun (*graceful acknowledgment*) dan menandai pengiriman sukses, mencegah antrean delivery web mengalami deadlock `PENDING`/`FAILED`.
+3. **Siaran Global Admin (`broadcast` / `bc`)**:
    - Dispatched langsung dari Web Dashboard (`POST /admin/apexsions/broadcast`) dengan target entitas `GLOBAL` / `ALL_PLAYERS`.
    - Diparsing secara native menggunakan Kyori Adventure `MiniMessage` dan disiarkan ke seluruh pemain aktif disertai efek audio notifikasi (`Sound.BLOCK_NOTE_BLOCK_BELL`).
-2. **Sinkronisasi Karakter Otomatis (`sync-player`)**:
-   - Menghubungkan statistik in-game (Level, XP, Saldo, Kerajaan, Rank, dan Gelar) ke basis data web.
+4. **Sinkronisasi Karakter Otomatis (`sync-player`)**:
+   - Menghubungkan statistik in-game (Level, XP, Saldo Rupiah & Diamond, Kerajaan, Rank, dan Gelar) ke basis data web.
    - Karakter pemain in-game tetap tercatat di web meskipun belum menautkan akun web (`user_id = null`), sehingga profil publik pemain tetap dapat diakses di portal web.
+5. **Ingestion Unified Audit Log (`/api/apexsions-bridge/audit/log`)**:
+   - Aksi staf via in-game `PlayerInspectorGUI` secara otomatis di-push ke endpoint REST API web untuk tercatat di buku besar audit terpusat.
+

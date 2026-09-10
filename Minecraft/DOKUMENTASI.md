@@ -410,7 +410,9 @@ Ekosistem Apexsions mengintegrasikan server Minecraft (Paper 26.2) dengan portal
 2. **Arsitektur Antrean Terpercaya (Bridge Action Reliability)**:
    - Setiap aksi dari dashboard diterbitkan dengan `action_id` unik server-generated.
    - Whitelisted command templates (bukan raw terminal arbitrary) mencegah injeksi perintah berbahaya.
-   - Daemon `WebBridgeService` in-game mem-poll antrean `/api/apexsions-bridge/deliveries/pending` dan melaporkan status keberhasilan eksekusi (`COMPLETED` / `FAILED`) secara asinkron.
+   - **Multi-Command Execution Engine**: Antrean mendukung compound commands (seperti penetapan rank LuckPerms dan permission flags) dengan splitting regex `[;\n]+`. Setiap baris perintah dieksekusi secara sekuensial di Bukkit main-thread, menghilangkan kegagalan konsol Minecraft akibat karakter titik koma (`;`).
+   - **Native Tellraw & Alert Interceptor**: Mengintersepsi perintah `tellraw <player> <json>` dan `minecraft:tellraw <player> <json>` via Kyori Adventure `GsonComponentSerializer`. Untuk pemain online, pesan dikirimkan ke chat dengan efek suara `BLOCK_NOTE_BLOCK_CHIME`. Untuk pemain offline, delivery ditandai `DELIVERED` secara anggun tanpa menimbulkan deadlock antrean.
+   - Daemon `WebBridgeService` in-game mem-poll antrean `/api/apexsions-bridge/deliveries/pending` dan melaporkan status keberhasilan eksekusi (`DELIVERED` / `FAILED`) secara asinkron.
 3. **Ingestion Audit Log In-Game**:
    - Aksi staf via in-game `PlayerInspectorGUI` secara otomatis di-push ke endpoint `/api/apexsions-bridge/audit/log` untuk tercatat di database sentral.
 
@@ -424,12 +426,18 @@ Ekosistem Apexsions mengintegrasikan server Minecraft (Paper 26.2) dengan portal
 2. **Pemisahan Ketat Trial vs. Permanent**:
    - **Trial (30 Hari / 90 Hari)**: Mendapatkan seluruh benefit batas limit & command, tetapi tanpa bonus uang server permanent. Expire otomatis dan mengembalikan pemain ke rank permanent sebelumnya (*Rank Retention*).
    - **Permanent**: Berlaku selamanya, mendapat hadiah satu kali server money ledger, dan memiliki hak upgrade rank.
+   - **Isolasi Reward Uang Tunai Permanen**: Bersifat ketat non-kumulatif (Sions menerima Rp 300.000, Emperor Rp 180.000, tanpa penambahan kumulatif rank di bawahnya). Anti-duplikasi dijamin melalui constraint tabel `apexsions_rank_rewards_claimed`.
 3. **Rank Upgrade Engine**:
    - Upgrade eksklusif untuk rank Permanent ke tingkat lebih tinggi.
    - Perhitungan harga upgrade dinamis ($Target - Current$) dengan kemampuan admin override di `RankConfig`.
    - Otomatis memperbarui grup LuckPerms in-game dan menyerahkan selisih bonus uang permanent tanpa duplikasi.
-4. **Diskon BattlePass Berbasis Akun Minecraft**:
+4. **Diskon BattlePass & Pass Hierarchy**:
    - Terintegrasi otomatis server-side: Emperor Permanent mendapat diskon 10% (Sio Pass masa depan), Sions Permanent mendapat diskon 15% (Sio & Exsio Pass masa depan).
-   - WhatsApp order click-to-chat menggunakan template dinamis terkonfigurasi.
-5. **Pusat Manajemen Rank Admin (`/admin/ranks`)**:
+   - **Pass Hierarchy**: Pemain dengan `Exsio Pass` otomatis memiliki akses penuh ke seluruh reward dan fungsionalitas `Sio Pass` dan `Citizen Pass` (`PlayerData.java`).
+   - WhatsApp order click-to-chat menggunakan template dinamis terkonfigurasi dengan format harga Rupiah presisi.
+5. **Sistem Vote & Civic Rewards End-to-End**:
+   - Setiap vote valid memberikan 3x Vote Crate Keys (`crates key give <p> vote 3`), uang tunai Rp 1.000 (`ecoadmin give <p> 1000 rupiah`), dan alert apresiasi tellraw.
+   - Transaksi diproteksi oleh SHA-256 idempotency hash berbasis tanggal/jam untuk mencegah eksploitasi reward ganda.
+6. **Pusat Manajemen Rank Admin (`/admin/ranks`)**:
    - Konfigurasi lengkap harga, batas benefit, template pesan WhatsApp, dan pelacakan riwayat transaksi/upgrade di `/admin/ranks/purchases`.
+

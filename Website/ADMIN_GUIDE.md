@@ -258,3 +258,32 @@ Pusat kendali kasta (Rank), penetapan harga dinamis, hierarki benefit server, se
    - **Zero-Collision Flexbox Header (`.apx-package-top-bar`):** Lambang crest kasta dan teks tier ditempatkan pada sisi kiri dan label badge durasi ringkas (`PERMANEN`, `TRIAL 90H`, `TRIAL 30H`, `UPGRADE`, `DIMILIKI`) di sisi kanan dalam baris terpisah dengan `justify-content-between`, menjamin tidak ada tumpang tindih elemen visual pada seluruh resolusi desktop maupun layar seluler.
    - **2x2 Core Spec Micro-Grid (`.apx-spec-grid`):** Menyajikan batas operasional utama (/sethome, slot /ah lelang, custom enchants, dan cooldown /rtp) dalam micro-pills 2x2 yang padat dan terstruktur rapi.
    - **Clean Action Footer:** Mereduksi redundansi tombol kontak founder di dalam setiap card menjadi 1 CTA utama (`Pesan via WhatsApp` / `Upgrade via WA` / `Sudah Dimiliki`) dengan efek glow emas dan 1 tombol rincian modal (`Rincian & Benefit Lengkap`), menghilangkan tumpukan tombol bertumpuk yang sebelumnya memicu tabrakan visual vertikal.
+
+---
+
+## 12. WebBridge Delivery Engine & Integrasi Audit Fungsional
+
+Arsitektur sinkronisasi dan antrean eksekusi perintah WebBridge (`apexsions-bridge` $\leftrightarrow$ `ApexsionsCore`):
+
+### A. Multi-Command Execution Engine
+- **Pemisah Perintah Bersih (`\n`)**: Perintah compound (seperti penetapan parent LuckPerms dan permission flags) dikirimkan dari `RankService.php` dengan pemisah baris baru (`\n`).
+- **Regex Splitter In-Game (`[;\n]+`)**: `WebBridgeService.java` di server Minecraft memecah perintah majemuk menggunakan regex `[;\n]+` dan mengeksekusi setiap instruksi secara sekuensial pada Bukkit main-thread.
+- **Pencegahan Error Titik Koma**: Menghilangkan kegagalan konsol Minecraft akibat karakter titik koma (`;`) yang sebelumnya memicu penolakan argumen dari LuckPerms dan menyebabkan status antrean tertahan `FAILED`/`PENDING`.
+
+### B. Native Tellraw & Alert Pemain (`DISPATCH_ALERT`)
+- **Deserializer Kyori Adventure**: Mengintersepsi perintah `tellraw <player> <json>` dan `minecraft:tellraw <player> <json>` via Kyori Adventure `GsonComponentSerializer`.
+- **Feedback Pemain Online**: Komponen pesan dikirim langsung ke chat pemain aktif disertai sound chime (`Sound.BLOCK_NOTE_BLOCK_CHIME`).
+- **Graceful Offline Acknowledgment**: Jika pemain target offline saat pengiriman, sistem mencatat log diagnostik tanpa menggagalkan pengiriman (`status: DELIVERED`), mencegah kebuntuan antrean eksekusi.
+
+### C. Sistem Vote & Civic Rewards
+- **Alur Pengiriman 3 Komponen**:
+  1. `crates key give <player> vote 3` (3x Vote Crate Keys)
+  2. `ecoadmin give <player> 1000 rupiah` (Saldo Tunai Rp 1.000)
+  3. `minecraft:tellraw <player> <json>` (Pesan apresiasi resmi)
+- **Proteksi Idempotensi**: Menggunakan hash SHA-256 (`VOTE_{site}_{player}_{Y-m-d_H}`) dalam transaksi database atomik untuk mencegah eksploitasi reward ganda.
+- **Konsol Administrasi (`/admin/votes`)**: Audit riwayat vote, status klaim reward, tombol uji coba ulang (`retry`), dan sakelar aktif/nonaktif situs vote.
+
+### D. Diskon BattlePass & Hirarki Kasta
+- **Diskon Terverifikasi**: Diskon 10% untuk pemegang Emperor Permanent dan 15% untuk Sions Permanent dihitung server-side sebelum membentuk link WhatsApp.
+- **Hirarki Exsio Pass**: Akun dengan Exsio Pass secara otomatis memiliki akses dan hak klaim reward untuk seluruh tingkatan Sio Pass dan Citizen Pass (`PlayerData.java`).
+- **Isolasi Reward Uang Permanen**: Reward uang tunai permanen (misal Sions Rp 300.000, Emperor Rp 180.000) bersifat terisolasi dan non-kumulatif, dilindungi oleh unique constraint tabel `apexsions_rank_rewards_claimed`.

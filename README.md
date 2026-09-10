@@ -490,4 +490,23 @@ Portal web resmi Apexsions dibangun di atas platform **Azuriom** dengan tema khu
 - **Jalur Tema Kustom**: `/var/www/azuriom/themes/apexsions`
 - **Jalur Plugin Jembatan**: `/var/www/azuriom/plugins/apexsions-bridge`
 
+### D. WebBridge Delivery Engine & Status Audit Integrasi (14/14 Tests Passed):
+- **Multi-Command Execution Engine**:
+  - `WebBridgeService` di `ApexsionsCore` mengeksekusi multiple commands secara berurutan pada main Bukkit thread menggunakan splitter regex `[;\n]+`.
+  - Mengeliminasi kegagalan parsing pengiriman bundle perintah (misalnya `lp user ... parent add ...` digabung dengan `eco give ...`).
+- **Native Tellraw & Alert Interceptor**:
+  - Deteksi cerdas sintaks pesan `tellraw <player> <json>` dan `/alert <msg>`.
+  - Pesan diparse langsung via Kyori Adventure `GsonComponentSerializer` dan dikirim via Adventure API (`audience.sendMessage()`) disertai efek audio chime notifikasi instan (`ENTITY_EXPERIENCE_ORB_PICKUP`).
+  - Penanganan aman pemain offline tanpa menimbulkan runtime exception di console server.
+- **Vote Rewards & Idempotensi**:
+  - Paket reward vote resmi: **3x Vote Crate Keys** + **Rp 1.000**.
+  - Pengecekan status voter terverifikasi dan perlindungan klaim ganda (*idempotency / daily reward cooldown*).
+- **Hierarki Pass & Logika Webstore**:
+  - Hierarki BattlePass: `Exsio Pass` berkedudukan lebih tinggi dari `Sio Pass` (pemilik Exsio Pass tidak dapat diturunkan ke Sio Pass dan otomatis mendapatkan diskon bila memiliki pass sebelumnya).
+  - Isolasi reward uang rank permanen: Uang bonus rank hanya diberikan satu kali saat pertama kali upgrade dan tidak berlipat ganda saat renewal.
+  - Pengalihan pemesanan via WhatsApp resmi Founder/Admin dengan format pesan pre-filled otomatis.
+- **Master Automated Test Suite**:
+  - 14 skenario pengujian end-to-end terverifikasi lulus 100% (`master_functional_test.js`) mencakup seluruh layer publik, admin panel, database, WebBridge sync, dan responsivitas UI/UX mobile.
+
+
 
