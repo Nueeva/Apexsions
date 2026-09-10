@@ -225,3 +225,23 @@ Lakukan pencadangan rutin harian:
    ```bash
    tar -czf /var/backups/azuriom/storage_$(date +%F).tar.gz /var/www/azuriom/storage /var/www/azuriom/.env
    ```
+
+---
+
+## 11. Rank & Webstore Management Center (`/admin/ranks`)
+
+Pusat kendali kasta (Rank), penetapan harga dinamis, hierarki benefit server, serta audit transaksi terpadu:
+1. **Rank Configurations & Pricing (`/admin/ranks` & `/admin/ranks/{rank_key}/edit`):**
+   - Mengatur nama display, badge, gambar crest, status keaktifan, dan bobot (`weight`) hierarki.
+   - Mengatur harga Trial 30 Hari, Trial 90 Hari, Permanent, dan Override Harga Upgrade.
+   - Mengatur batas benefit in-game: Max Homes (2–10), Max Auction Listings (3–20), Max Custom Enchants (4–15), RTP Cooldown (50s–150s), Shop Sell Bonus (+3% s.d. +17%), EXP Gain Bonus (+5% s.d. +20%), dan Pengali Bunga Deposito Bank (1.0x s.d. 3.0x).
+2. **Permanent Rank Upgrade Engine:**
+   - Memungkinkan pemain pemegang rank Permanent untuk meningkatkan status kastanya ke tingkat yang lebih tinggi dengan membayar selisih harga secara otomatis ($Target - Current$) atau tarif khusus admin.
+   - Perlindungan anti-abuse: Rank Trial dilarang melakukan upgrade, mencegah downgrade, dan menolak klaim uang ganda.
+3. **Trial Retention on Expiry:**
+   - Pemain dengan rank permanent yang mencoba trial tier di atasnya akan secara otomatis dikembalikan ke rank permanent sebelumnya saat durasi trial berakhir, bukan di-reset ke Wanderer.
+4. **Webstore Settings & Dynamic WhatsApp Ordering (`/admin/ranks/settings`):**
+   - Konfigurasi nomor WhatsApp Admin (otomatis fallback ke nomor Founder).
+   - Kustomisasi pesan template WhatsApp untuk pembelian normal, upgrade rank, dan pembelian BattlePass dengan diskon akun (Emperor 10%, Sions 15%).
+5. **Purchase & Upgrade Audit History (`/admin/ranks/purchases`):**
+   - Rekam jejak seluruh transaksi pembelian rank dan upgrade, mencakup UUID pemain, status upgrade, rank asal, harga normal, diskon, jumlah yang dibayar, metode pembayaran, serta status pengiriman in-game.

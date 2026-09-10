@@ -413,3 +413,23 @@ Ekosistem Apexsions mengintegrasikan server Minecraft (Paper 26.2) dengan portal
    - Daemon `WebBridgeService` in-game mem-poll antrean `/api/apexsions-bridge/deliveries/pending` dan melaporkan status keberhasilan eksekusi (`COMPLETED` / `FAILED`) secara asinkron.
 3. **Ingestion Audit Log In-Game**:
    - Aksi staf via in-game `PlayerInspectorGUI` secara otomatis di-push ke endpoint `/api/apexsions-bridge/audit/log` untuk tercatat di database sentral.
+
+### F. Sistem Kasta (Rank), Upgrade Engine & Webstore Integration:
+1. **Hierarki 5 Tingkat Donatur Resmi**:
+   - `Ascendant` (Tier 1, Weight 30)
+   - `Archon` (Tier 2, Weight 40)
+   - `Sovereign` (Tier 3, Weight 50)
+   - `Emperor` (Tier 4, Weight 60)
+   - `Sions` (Tier 5, Weight 70)
+2. **Pemisahan Ketat Trial vs. Permanent**:
+   - **Trial (30 Hari / 90 Hari)**: Mendapatkan seluruh benefit batas limit & command, tetapi tanpa bonus uang server permanent. Expire otomatis dan mengembalikan pemain ke rank permanent sebelumnya (*Rank Retention*).
+   - **Permanent**: Berlaku selamanya, mendapat hadiah satu kali server money ledger, dan memiliki hak upgrade rank.
+3. **Rank Upgrade Engine**:
+   - Upgrade eksklusif untuk rank Permanent ke tingkat lebih tinggi.
+   - Perhitungan harga upgrade dinamis ($Target - Current$) dengan kemampuan admin override di `RankConfig`.
+   - Otomatis memperbarui grup LuckPerms in-game dan menyerahkan selisih bonus uang permanent tanpa duplikasi.
+4. **Diskon BattlePass Berbasis Akun Minecraft**:
+   - Terintegrasi otomatis server-side: Emperor Permanent mendapat diskon 10% (Sio Pass masa depan), Sions Permanent mendapat diskon 15% (Sio & Exsio Pass masa depan).
+   - WhatsApp order click-to-chat menggunakan template dinamis terkonfigurasi.
+5. **Pusat Manajemen Rank Admin (`/admin/ranks`)**:
+   - Konfigurasi lengkap harga, batas benefit, template pesan WhatsApp, dan pelacakan riwayat transaksi/upgrade di `/admin/ranks/purchases`.

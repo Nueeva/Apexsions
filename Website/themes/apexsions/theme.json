@@ -4,5 +4,8 @@
     "version": "1.0.0",
     "description": "Official premium dark theme for the Apexsions Minecraft Server Network with glowing neon accents and live server telemetry.",
     "url": "https://apexsions.net",
-    "author": "Apexsions Creative & Dev Team"
+    "author": "Apexsions Creative & Dev Team",
+    "authors": [
+        "Apexsions Creative & Dev Team"
+    ]
 }
