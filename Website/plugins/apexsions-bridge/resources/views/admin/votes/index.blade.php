@@ -25,7 +25,7 @@
                         <i class="bi bi-arrow-repeat me-1"></i> Sinkronisasi Suara Sekarang
                     </button>
                 </form>
-                <a href="{{ route('vote') }}" target="_blank" class="btn btn-outline-warning fw-bold px-3 shadow-sm">
+                <a href="{{ url('/vote') }}" target="_blank" class="btn btn-outline-warning fw-bold px-3 shadow-sm">
                     <i class="bi bi-box-arrow-up-right me-1"></i> Buka Bilik Suara Web
                 </a>
             </div>

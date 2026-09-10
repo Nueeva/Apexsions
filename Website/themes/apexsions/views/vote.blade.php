@@ -389,7 +389,7 @@ function updateVoterIdentity() {
     const badge = document.getElementById('historyUsernameBadge');
     if (badge) badge.textContent = username;
     // Reload page with parameter to refresh cooldowns & statistics
-    window.location.href = `{{ route('vote') }}?username=${encodeURIComponent(username)}`;
+    window.location.href = `{{ url('/vote') }}?username=${encodeURIComponent(username)}`;
 }
 
 function updateVoterAvatar(username) {
@@ -420,7 +420,7 @@ async function checkVoteStatus() {
     feedback.innerHTML = `<span class="text-info">Menghubungi platform...</span>`;
 
     try {
-        const response = await fetch('{{ route("vote.check-status") }}', {
+        const response = await fetch('{{ url("/vote/check-status") }}', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
