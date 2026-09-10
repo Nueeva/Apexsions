@@ -57,6 +57,18 @@ ranks:
     badge: "<gradient:#00FFFF:#FFD700><bold>✦ SIONS ✦</bold></gradient>"
     color: "#00FFFF"
     weight: 70
+    inherits: "emperor"
+    permissions:
+      - "essentials.sethome.multiple.sions"
+      - "apexsions.rtp.cooldown.sions"
+      - "apexsions.customenchants.limit.sions"
+      - "apexsions.auction.limit.sions"
+      - "apexsions.shop.sellbonus.sions"
+      - "apexsions.exp.bonus.sions"
+      - "apexsions.bank.multiplier.sions"
+      - "essentials.nick.format"
+      - "essentials.nick.gradient"
+      - "apexsions.kit.sions"
 
   emperor:
     display-name: "Emperor"
@@ -65,6 +77,20 @@ ranks:
     badge: "<gradient:#e52d27:#b31217><bold>⚔ EMPEROR</bold></gradient>"
     color: "#e52d27"
     weight: 60
+    inherits: "sovereign"
+    permissions:
+      - "essentials.sethome.multiple.emperor"
+      - "apexsions.rtp.cooldown.emperor"
+      - "apexsions.customenchants.limit.emperor"
+      - "apexsions.auction.limit.emperor"
+      - "apexsions.shop.sellbonus.emperor"
+      - "apexsions.exp.bonus.emperor"
+      - "apexsions.bank.multiplier.emperor"
+      - "essentials.repair"
+      - "essentials.feed"
+      - "essentials.hat"
+      - "essentials.nick.color"
+      - "apexsions.kit.emperor"
 
   sovereign:
     display-name: "Sovereign"
@@ -73,6 +99,19 @@ ranks:
     badge: "<gradient:#f39c12:#f1c40f><bold>⚜ SOVEREIGN</bold></gradient>"
     color: "#f1c40f"
     weight: 50
+    inherits: "archon"
+    permissions:
+      - "essentials.sethome.multiple.sovereign"
+      - "apexsions.rtp.cooldown.sovereign"
+      - "apexsions.customenchants.limit.sovereign"
+      - "apexsions.auction.limit.sovereign"
+      - "apexsions.shop.sellbonus.sovereign"
+      - "apexsions.exp.bonus.sovereign"
+      - "apexsions.bank.multiplier.sovereign"
+      - "essentials.anvil"
+      - "essentials.smithing"
+      - "essentials.nick"
+      - "apexsions.kit.sovereign"
 
   archon:
     display-name: "Archon"
@@ -81,6 +120,18 @@ ranks:
     badge: "<gradient:#00c6ff:#0072ff><bold>💎 ARCHON</bold></gradient>"
     color: "#00c6ff"
     weight: 40
+    inherits: "ascendant"
+    permissions:
+      - "essentials.sethome.multiple.archon"
+      - "apexsions.rtp.cooldown.archon"
+      - "apexsions.customenchants.limit.archon"
+      - "apexsions.auction.limit.archon"
+      - "apexsions.shop.sellbonus.archon"
+      - "apexsions.exp.bonus.archon"
+      - "apexsions.bank.multiplier.archon"
+      - "essentials.workbench"
+      - "essentials.enderchest"
+      - "apexsions.kit.archon"
 
   ascendant:
     display-name: "Ascendant"
@@ -89,6 +140,15 @@ ranks:
     badge: "<gradient:#11998e:#38ef7d><bold>☘ ASCENDANT</bold></gradient>"
     color: "#38ef7d"
     weight: 30
+    inherits: "wanderer"
+    permissions:
+      - "essentials.sethome.multiple.ascendant"
+      - "apexsions.rtp.cooldown.ascendant"
+      - "apexsions.customenchants.limit.ascendant"
+      - "apexsions.auction.limit.ascendant"
+      - "apexsions.shop.sellbonus.ascendant"
+      - "apexsions.exp.bonus.ascendant"
+      - "apexsions.kit.ascendant"
 
   wanderer:
     display-name: "Wanderer"
@@ -98,3 +158,9 @@ ranks:
     color: "#95a5a6"
     default: true
     weight: 10
+    permissions:
+      - "essentials.sethome.multiple.default"
+      - "apexsions.rtp.cooldown.default"
+      - "apexsions.customenchants.limit.default"
+      - "apexsions.auction.limit.default"
+      - "apexsions.kit.wanderer"

@@ -104,6 +104,29 @@
                 </div>
             @endif
 
+            @php
+                $linkedAccount = auth()->check() ? \Azuriom\Plugin\ApexsionsBridge\Models\MinecraftAccount::where('user_id', auth()->id())->first() : null;
+                $accountRank = $linkedAccount ? strtolower(trim($linkedAccount->rank ?? 'wanderer')) : 'wanderer';
+                $isAccountPerm = $linkedAccount ? $linkedAccount->isPermanentRank() : false;
+            @endphp
+
+            @if($linkedAccount && ($accountRank === 'emperor' || $accountRank === 'sions') && $isAccountPerm)
+                <div class="alert alert-dark mb-4 d-flex align-items-center justify-content-between flex-wrap gap-2" style="background: linear-gradient(135deg, rgba(234, 179, 8, 0.12) 0%, rgba(15, 23, 42, 0.95) 100%); border: 1px solid rgba(234, 179, 8, 0.4); border-radius: var(--apx-radius-md);">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="fs-2 text-warning"><i class="bi bi-award-fill"></i></div>
+                        <div>
+                            <div class="fw-bold text-white mb-0" style="font-size: 1rem;">
+                                Status Kasta Terdeteksi: <span class="text-warning text-uppercase font-cinzel">{{ $accountRank }} (PERMANEN)</span>
+                            </div>
+                            <div class="text-muted small">
+                                Akun Minecraft <strong class="text-white">{{ $linkedAccount->minecraft_username }}</strong> berhak atas diskon BattlePass musiman ({{ $accountRank === 'sions' ? '15%' : '10%' }}) dan klaim pass musim berjalan secara gratis.
+                            </div>
+                        </div>
+                    </div>
+                    <span class="badge bg-warning bg-opacity-25 text-warning px-3 py-2 font-monospace">VERIFIED VIP</span>
+                </div>
+            @endif
+
             <div class="row g-4">
                 @forelse($category->packages as $package)
                     @php
@@ -111,107 +134,140 @@
                         $defaultImage = null;
                         $fallbackIcon = 'bi bi-gem';
                         $cardModifierClass = '';
+                        $rankCrest = null;
+                        $badgeText = null;
+                        $badgeClass = '';
+
+                        $isTrial30 = str_contains($packageName, '30 hari') || str_contains($packageName, 'trial 30');
+                        $isTrial90 = str_contains($packageName, '90 hari') || str_contains($packageName, 'trial 90');
+                        $isTrial = $isTrial30 || $isTrial90 || str_contains($packageName, 'trial');
+                        $isPermanent = str_contains($packageName, 'permanen');
 
                         if (str_contains($packageName, 'sions')) {
                             $cardModifierClass = 'apx-pkg-sions';
-                            $defaultImage = theme_asset('img/logo.jpg') . '?v=' . (@filemtime(public_path('assets/themes/apexsions/img/logo.jpg')) ?: '2');
+                            $defaultImage = theme_asset('img/package-sions.jpg');
+                            $rankCrest = theme_asset('img/ranks/rank-sions.png');
+                            $badgeText = $isPermanent ? 'PERMANEN • APEX SIONS' : ($isTrial90 ? 'TRIAL 90 HARI • SIONS' : 'TRIAL 30 HARI • SIONS');
+                            $badgeClass = $isPermanent ? 'apx-badge-perm' : 'apx-badge-trial';
                         } elseif (str_contains($packageName, 'emperor')) {
                             $cardModifierClass = 'apx-pkg-emperor';
-                            $defaultImage = theme_asset('img/hero-warrior.jpg');
+                            $defaultImage = theme_asset('img/package-emperor.jpg');
+                            $rankCrest = theme_asset('img/ranks/rank-emperor.png');
+                            $badgeText = $isPermanent ? 'PERMANEN • EMPEROR' : ($isTrial90 ? 'TRIAL 90 HARI • EMPEROR' : 'TRIAL 30 HARI • EMPEROR');
+                            $badgeClass = $isPermanent ? 'apx-badge-perm' : 'apx-badge-trial';
                         } elseif (str_contains($packageName, 'sovereign')) {
                             $cardModifierClass = 'apx-pkg-sovereign';
                             $defaultImage = theme_asset('img/package-sovereign.jpg');
+                            $rankCrest = theme_asset('img/ranks/rank-sovereign.png');
+                            $badgeText = $isPermanent ? 'PERMANEN • SOVEREIGN' : ($isTrial90 ? 'TRIAL 90 HARI • SOVEREIGN' : 'TRIAL 30 HARI • SOVEREIGN');
+                            $badgeClass = $isPermanent ? 'apx-badge-perm' : 'apx-badge-trial';
                         } elseif (str_contains($packageName, 'archon')) {
                             $cardModifierClass = 'apx-pkg-archon';
                             $defaultImage = theme_asset('img/package-archon.jpg');
+                            $rankCrest = theme_asset('img/ranks/rank-archon.png');
+                            $badgeText = $isPermanent ? 'PERMANEN • ARCHON' : ($isTrial90 ? 'TRIAL 90 HARI • ARCHON' : 'TRIAL 30 HARI • ARCHON');
+                            $badgeClass = $isPermanent ? 'apx-badge-perm' : 'apx-badge-trial';
                         } elseif (str_contains($packageName, 'ascendant')) {
                             $cardModifierClass = 'apx-pkg-ascendant';
                             $defaultImage = theme_asset('img/package-ascendant.jpg');
-                        } elseif (str_contains($packageName, 'pass')) {
-                            $cardModifierClass = 'apx-pkg-pass';
+                            $rankCrest = theme_asset('img/ranks/rank-ascendant.png');
+                            $badgeText = $isPermanent ? 'PERMANEN • ASCENDANT' : ($isTrial90 ? 'TRIAL 90 HARI • ASCENDANT' : 'TRIAL 30 HARI • ASCENDANT');
+                            $badgeClass = $isPermanent ? 'apx-badge-perm' : 'apx-badge-trial';
+                        } elseif (str_contains($packageName, 'exsio pass')) {
+                            $cardModifierClass = 'apx-pkg-exsio-pass';
+                            $defaultImage = theme_asset('img/package-exsio-pass.jpg');
+                            $fallbackIcon = 'bi bi-award-fill';
+                            $badgeText = 'ULTIMATE PASS • INCLUDES SIO';
+                            $badgeClass = 'bg-primary text-white border border-info';
+                        } elseif (str_contains($packageName, 'sio pass') || str_contains($packageName, 'pass')) {
+                            $cardModifierClass = 'apx-pkg-sio-pass';
+                            $defaultImage = theme_asset('img/package-sio-pass.jpg');
                             $fallbackIcon = 'bi bi-trophy-fill';
+                            $badgeText = 'SEASON PASS • JALUR EMAS';
+                            $badgeClass = 'bg-warning text-dark border border-warning';
                         } elseif (str_contains($packageName, 'booster')) {
                             $fallbackIcon = 'bi bi-lightning-charge-fill';
+                            $badgeText = 'BOOSTER 72 JAM';
+                            $badgeClass = 'bg-warning text-dark';
+                        } elseif (str_contains($packageName, 'koin') || str_contains($packageName, 'coin')) {
+                            $fallbackIcon = 'bi bi-coin';
+                            $badgeText = 'APEX COINS';
+                            $badgeClass = 'bg-info text-dark';
+                        } else {
+                            $badgeText = 'PAKET RESMI';
                         }
 
-                        $userIgn = (auth()->check() ? auth()->user()->name : null) ?? 'Username_Minecraft_Kamu';
-                        $userEmail = auth()->check() ? auth()->user()->email : '-';
-                        $priceFormatted = shop_format_amount($package->getPrice());
-
-                        $waBaseText = "Halo Admin Apexsions! Saya ingin memesan paket dari Webstore resmi:\n\n"
-                            . "👑 Paket: " . $package->name . "\n"
-                            . "💰 Harga: " . $priceFormatted . "\n"
-                            . "📂 Kategori: " . $category->name . "\n"
-                            . "🎮 Akun Minecraft (IGN): " . $userIgn . "\n"
-                            . "📧 Email Akun: " . $userEmail . "\n\n"
-                            . "Mohon nomor rekening/QRIS dan instruksi aktivasi peradaban. Terima kasih!";
+                        $discountInfo = \Azuriom\Plugin\ApexsionsBridge\Services\BattlepassDiscountService::calculateDiscount(
+                            $linkedAccount,
+                            $package,
+                            (float) $package->getPrice()
+                        );
 
                         $primaryAdmin = $founderAdmins[0] ?? ['name' => 'Rifqi', 'number' => '6281212994597'];
                         $primaryCleanNum = preg_replace('/[^0-9]/', '', $primaryAdmin['number']);
-                        $primaryWaUrl = 'https://wa.me/' . $primaryCleanNum . '?text=' . rawurlencode($waBaseText);
+                        $primaryWaUrl = 'https://wa.me/' . $primaryCleanNum . '?text=' . rawurlencode($discountInfo['whatsapp_message']);
                     @endphp
 
                     <div class="col-md-6 col-xl-4">
                         <div class="apx-package-card h-100 d-flex flex-column {{ $cardModifierClass }}">
-                            @if(str_contains($packageName, 'sions'))
-                                <span class="apx-package-badge" style="background: rgba(234, 179, 8, 0.25); color: #fde047; border: 1px solid #fde047;">
-                                    <i class="bi bi-star-fill me-1"></i> APEX TIER
-                                </span>
-                            @elseif(str_contains($packageName, 'emperor'))
-                                <span class="apx-package-badge" style="background: rgba(239, 68, 68, 0.25); color: #fca5a5; border: 1px solid #ef4444;">
-                                    <i class="bi bi-shield-shaded me-1"></i> TIER 4
-                                </span>
-                            @elseif(str_contains($packageName, 'sovereign'))
-                                <span class="apx-package-badge" style="background: rgba(59, 130, 246, 0.25); color: #93c5fd; border: 1px solid #3b82f6;">
-                                    <i class="bi bi-gem me-1"></i> TIER 3
-                                </span>
-                            @elseif(str_contains($packageName, 'archon'))
-                                <span class="apx-package-badge" style="background: rgba(6, 182, 212, 0.25); color: #67e8f9; border: 1px solid #06b6d4;">
-                                    <i class="bi bi-diamond-fill me-1"></i> TIER 2
-                                </span>
-                            @elseif(str_contains($packageName, 'ascendant'))
-                                <span class="apx-package-badge" style="background: rgba(16, 185, 129, 0.25); color: #6ee7b7; border: 1px solid #10b981;">
-                                    <i class="bi bi-flower1 me-1"></i> TIER 1
-                                </span>
-                            @elseif(str_contains($packageName, 'pass'))
-                                <span class="apx-package-badge" style="background: rgba(168, 85, 247, 0.25); color: #d8b4fe; border: 1px solid #a855f7;">
-                                    <i class="bi bi-trophy-fill me-1"></i> SEASON PASS
-                                </span>
-                            @elseif(str_contains($packageName, 'booster'))
-                                <span class="apx-package-badge" style="background: rgba(245, 158, 11, 0.25); color: #fde68a; border: 1px solid #f59e0b;">
-                                    <i class="bi bi-lightning-fill me-1"></i> <span data-i18n="shop_badge_3days">3 HARI AKTIF</span>
-                                </span>
-                            @else
-                                <span class="apx-package-badge">
-                                    <i class="bi bi-patch-check-fill text-warning me-1"></i> <span data-i18n="shop_badge_perm">PERMANEN</span>
+                            @if($badgeText)
+                                <span class="apx-package-badge {{ $badgeClass }}">
+                                    @if($isPermanent)
+                                        <i class="bi bi-patch-check-fill me-1"></i>
+                                    @elseif($isTrial)
+                                        <i class="bi bi-clock-history me-1"></i>
+                                    @else
+                                        <i class="bi bi-star-fill me-1"></i>
+                                    @endif
+                                    {{ $badgeText }}
                                 </span>
                             @endif
 
-                            @if($package->hasImage())
-                                <div class="apx-package-image-wrap">
+                            <div class="apx-package-image-wrap position-relative">
+                                @if($rankCrest)
+                                    <img class="apx-rank-badge-overlay" src="{{ $rankCrest }}" alt="Rank Crest" loading="lazy">
+                                @endif
+
+                                @if($package->hasImage())
                                     <img class="apx-package-image" src="{{ $package->imageUrl() }}" alt="{{ $package->name }}" loading="lazy">
-                                </div>
-                            @elseif($defaultImage)
-                                <div class="apx-package-image-wrap p-2">
-                                    <img class="apx-package-image rounded" src="{{ $defaultImage }}" alt="{{ $package->name }}" style="max-height: 140px; width: 100%; object-fit: cover;" loading="lazy">
-                                </div>
-                            @else
-                                <div class="apx-package-image-wrap">
-                                    <div class="d-inline-flex align-items-center justify-content-center" style="width: 72px; height: 72px; border-radius: 12px; background: rgba(245, 158, 11, 0.12); border: 1px solid var(--apx-gold-border); color: var(--apx-gold); font-size: 2rem;">
+                                @elseif($defaultImage)
+                                    <img class="apx-package-image" src="{{ $defaultImage }}" alt="{{ $package->name }}" style="max-height: 140px; width: 100%; object-fit: cover;" loading="lazy">
+                                @else
+                                    <div class="d-inline-flex align-items-center justify-content-center w-100" style="height: 140px; background: rgba(245, 158, 11, 0.08); color: var(--apx-gold); font-size: 2.5rem;">
                                         <i class="{{ $fallbackIcon }}"></i>
                                     </div>
-                                </div>
-                            @endif
+                                @endif
+                            </div>
 
                             <div class="apx-package-body d-flex flex-column flex-grow-1">
                                 <h3 class="apx-package-title">{{ $package->name }}</h3>
 
-                                <div class="apx-package-price-wrap">
-                                    @if($package->isDiscounted())
+                                <div class="apx-package-price-wrap mb-2">
+                                    @if($discountInfo['has_discount'])
+                                        <span class="apx-package-price-del">Rp {{ number_format($discountInfo['original_price'], 0, ',', '.') }}</span>
+                                        <span class="apx-package-price text-success">Rp {{ number_format($discountInfo['discounted_price'], 0, ',', '.') }}</span>
+                                    @elseif($package->isDiscounted())
                                         <span class="apx-package-price-del">{{ shop_format_amount($package->getOriginalPrice()) }}</span>
+                                        <span class="apx-package-price">{{ shop_format_amount($package->getPrice()) }}</span>
+                                    @else
+                                        <span class="apx-package-price">Rp {{ number_format($package->getPrice(), 0, ',', '.') }}</span>
                                     @endif
-                                    <span class="apx-package-price">{{ shop_format_amount($package->getPrice()) }}</span>
                                 </div>
+
+                                @if($discountInfo['has_discount'])
+                                    <div class="mb-2">
+                                        <span class="apx-discount-chip">
+                                            <i class="bi bi-tag-fill"></i> Hemat Rp {{ number_format($discountInfo['savings'], 0, ',', '.') }} (Diskon {{ $discountInfo['discount_percent'] }}% Rank {{ $discountInfo['eligible_rank'] }})
+                                        </span>
+                                    </div>
+                                @endif
+
+                                @if($discountInfo['is_free_current_season'])
+                                    <div class="alert alert-info py-1 px-2 small mb-2 d-flex align-items-center gap-2" style="font-size: 0.76rem; background: rgba(6, 182, 212, 0.15); border-color: rgba(6, 182, 212, 0.35); color: #67e8f9;">
+                                        <i class="bi bi-gift-fill text-warning fs-6"></i>
+                                        <span><strong>Rank {{ $discountInfo['eligible_rank'] }}:</strong> Gratis aktif untuk Season berjalan!</span>
+                                    </div>
+                                @endif
 
                                 @if($package->short_description)
                                     <p class="text-muted small mb-3 flex-grow-1" style="line-height: 1.6;">
@@ -219,76 +275,111 @@
                                     </p>
                                 @endif
 
-                                <!-- Key Highlights per Caste / Package -->
-                                <ul class="apx-package-perks">
+                                <!-- Key Highlights Verified per Rank / Product -->
+                                <ul class="apx-package-perks mb-3">
                                     @if(str_contains($packageName, 'sions'))
-                                        <li><i class="bi bi-crown text-warning"></i><span class="text-light" data-i18n="shop_sions_p1">Prefix Mahkota ✦ SIONS ✦</span></li>
-                                        <li><i class="bi bi-shield-check text-warning"></i><span class="text-light" data-i18n="shop_sions_p2">Seluruh Kit + Kit Sions Eksklusif</span></li>
-                                        <li><i class="bi bi-broadcast text-warning"></i><span class="text-light" data-i18n="shop_sions_p3">Pesan Broadcast Masuk Server Megah</span></li>
-                                        <li><i class="bi bi-geo-alt text-warning"></i><span class="text-light" data-i18n="shop_sions_p4">+15 Batas Klaim Wilayah Kerajaan</span></li>
+                                        <li><i class="bi bi-house-door-fill text-warning"></i><span class="text-light">10 Homes • 20 Slot Lelang • 15 Custom Enchants</span></li>
+                                        <li><i class="bi bi-clock-history text-warning"></i><span class="text-light">RTP Cooldown: <strong>50 Detik</strong> (Paling Cepat)</span></li>
+                                        <li><i class="bi bi-graph-up-arrow text-warning"></i><span class="text-light">Bonus Jual: <strong>+17%</strong> • Bonus EXP: <strong>+20%</strong> • Bank: <strong>3.0x</strong></span></li>
+                                        <li><i class="bi bi-terminal-fill text-warning"></i><span class="text-light">/craft, /anvil, /smithing, /repair, /feed (3m), /hat, /ec</span></li>
+                                        @if($isPermanent)
+                                            <li class="pt-1 border-top border-warning border-opacity-25"><i class="bi bi-currency-dollar text-warning"></i><span class="text-warning fw-bold">Bonus Tunai: Rp 300.000 Server Money (1x Klaim)</span></li>
+                                            <li><i class="bi bi-palette-fill text-warning"></i><span class="text-light">/nick GUI: <strong>Bebas Semua Warna &amp; Gradien</strong></span></li>
+                                            <li><i class="bi bi-shield-check text-warning"></i><span class="text-light">Kit Sions + Seluruh Kit Kasta Bawah</span></li>
+                                            <li><i class="bi bi-trophy-fill text-warning"></i><span class="text-light">Season Ini Free Sio+Exsio • 15% Diskon Season Depan</span></li>
+                                        @else
+                                            <li class="text-info small"><i class="bi bi-info-circle me-1"></i>Masa aktif benefit berlaku selama {{ $isTrial90 ? '90' : '30' }} hari.</li>
+                                        @endif
                                     @elseif(str_contains($packageName, 'emperor'))
-                                        <li><i class="bi bi-check2-circle text-danger"></i><span class="text-light" data-i18n="shop_emperor_p1">Prefix Kaisar [⚔ EMPEROR]</span></li>
-                                        <li><i class="bi bi-check2-circle text-danger"></i><span class="text-light" data-i18n="shop_emperor_p2">Kit Bulanan Gear Set Bonus Lengkap</span></li>
-                                        <li><i class="bi bi-check2-circle text-danger"></i><span class="text-light" data-i18n="shop_emperor_p3">Hak Terbang /fly di Ibukota &amp; Claim</span></li>
-                                        <li><i class="bi bi-check2-circle text-danger"></i><span class="text-light" data-i18n="shop_emperor_p4">+10 Batas Klaim Wilayah Kerajaan</span></li>
+                                        <li><i class="bi bi-house-door-fill text-danger"></i><span class="text-light">7 Homes • 14 Slot Lelang • 11 Custom Enchants</span></li>
+                                        <li><i class="bi bi-clock-history text-danger"></i><span class="text-light">RTP Cooldown: <strong>1 Menit 10 Detik</strong></span></li>
+                                        <li><i class="bi bi-graph-up-arrow text-danger"></i><span class="text-light">Bonus Jual: <strong>+12%</strong> • Bonus EXP: <strong>+14%</strong> • Bank: <strong>2.0x</strong></span></li>
+                                        <li><i class="bi bi-terminal-fill text-danger"></i><span class="text-light">/craft, /anvil, /smithing, /repair, /feed (5m), /hat, /ec</span></li>
+                                        @if($isPermanent)
+                                            <li class="pt-1 border-top border-danger border-opacity-25"><i class="bi bi-currency-dollar text-warning"></i><span class="text-warning fw-bold">Bonus Tunai: Rp 180.000 Server Money (1x Klaim)</span></li>
+                                            <li><i class="bi bi-palette-fill text-danger"></i><span class="text-light">/nick GUI: Pilihan Warna Solid (Tanpa Gradien)</span></li>
+                                            <li><i class="bi bi-shield-check text-danger"></i><span class="text-light">Kit Emperor + Seluruh Kit Kasta Bawah</span></li>
+                                            <li><i class="bi bi-trophy-fill text-danger"></i><span class="text-light">Season Ini Free Sio Pass • 10% Diskon Season Depan</span></li>
+                                        @else
+                                            <li class="text-info small"><i class="bi bi-info-circle me-1"></i>Masa aktif benefit berlaku selama {{ $isTrial90 ? '90' : '30' }} hari.</li>
+                                        @endif
                                     @elseif(str_contains($packageName, 'sovereign'))
-                                        <li><i class="bi bi-check2-circle text-primary"></i><span class="text-light" data-i18n="shop_sovereign_p1">Prefix Emas [⚜ SOVEREIGN]</span></li>
-                                        <li><i class="bi bi-check2-circle text-primary"></i><span class="text-light" data-i18n="shop_sovereign_p2">Kit Sovereign 14 Harian &amp; Sayap Partikel</span></li>
-                                        <li><i class="bi bi-check2-circle text-primary"></i><span class="text-light" data-i18n="shop_sovereign_p3">Bebas Tarif Dagang Lintas Kerajaan</span></li>
-                                        <li><i class="bi bi-check2-circle text-primary"></i><span class="text-light" data-i18n="shop_sovereign_p4">+7 Batas Klaim Wilayah Kerajaan</span></li>
+                                        <li><i class="bi bi-house-door-fill text-primary"></i><span class="text-light">5 Homes • 10 Slot Lelang • 8 Custom Enchants</span></li>
+                                        <li><i class="bi bi-clock-history text-primary"></i><span class="text-light">RTP Cooldown: <strong>1 Menit 35 Detik</strong></span></li>
+                                        <li><i class="bi bi-graph-up-arrow text-primary"></i><span class="text-light">Bonus Jual: <strong>+8%</strong> • Bonus EXP: <strong>+10%</strong> • Bank: <strong>1.5x</strong></span></li>
+                                        <li><i class="bi bi-terminal-fill text-primary"></i><span class="text-light">/craft, /anvil, /smithing, /enderchest Portabel</span></li>
+                                        @if($isPermanent)
+                                            <li class="pt-1 border-top border-primary border-opacity-25"><i class="bi bi-currency-dollar text-warning"></i><span class="text-warning fw-bold">Bonus Tunai: Rp 120.000 Server Money (1x Klaim)</span></li>
+                                            <li><i class="bi bi-person-badge-fill text-primary"></i><span class="text-light">/nick GUI: Ganti Nickname (Tanpa Warna)</span></li>
+                                            <li><i class="bi bi-shield-check text-primary"></i><span class="text-light">Kit Sovereign + Seluruh Kit Kasta Bawah</span></li>
+                                        @else
+                                            <li class="text-info small"><i class="bi bi-info-circle me-1"></i>Masa aktif benefit berlaku selama {{ $isTrial90 ? '90' : '30' }} hari.</li>
+                                        @endif
                                     @elseif(str_contains($packageName, 'archon'))
-                                        <li><i class="bi bi-check2-circle text-info"></i><span class="text-light" data-i18n="shop_archon_p1">Prefix Cyan [💎 ARCHON]</span></li>
-                                        <li><i class="bi bi-check2-circle text-info"></i><span class="text-light" data-i18n="shop_archon_p2">Kit Mingguan &amp; Kosmetik Glow Kristal</span></li>
-                                        <li><i class="bi bi-check2-circle text-info"></i><span class="text-light" data-i18n="shop_archon_p3">Akses /ec, /anvil, /smithing Portable</span></li>
-                                        <li><i class="bi bi-check2-circle text-info"></i><span class="text-light" data-i18n="shop_archon_p4">+4 Batas Klaim Wilayah Kerajaan</span></li>
+                                        <li><i class="bi bi-house-door-fill text-info"></i><span class="text-light">4 Homes • 7 Slot Lelang • 6 Custom Enchants</span></li>
+                                        <li><i class="bi bi-clock-history text-info"></i><span class="text-light">RTP Cooldown: <strong>2 Menit 00 Detik</strong></span></li>
+                                        <li><i class="bi bi-graph-up-arrow text-info"></i><span class="text-light">Bonus Jual: <strong>+5%</strong> • Bonus EXP: <strong>+8%</strong> • Bank: <strong>1.2x</strong></span></li>
+                                        <li><i class="bi bi-terminal-fill text-info"></i><span class="text-light">/craft &amp; /enderchest Portabel</span></li>
+                                        @if($isPermanent)
+                                            <li class="pt-1 border-top border-info border-opacity-25"><i class="bi bi-currency-dollar text-warning"></i><span class="text-warning fw-bold">Bonus Tunai: Rp 80.000 Server Money (1x Klaim)</span></li>
+                                            <li><i class="bi bi-shield-check text-info"></i><span class="text-light">Kit Archon + Akses Kit Ascendant</span></li>
+                                        @else
+                                            <li class="text-info small"><i class="bi bi-info-circle me-1"></i>Masa aktif benefit berlaku selama {{ $isTrial90 ? '90' : '30' }} hari.</li>
+                                        @endif
                                     @elseif(str_contains($packageName, 'ascendant'))
-                                        <li><i class="bi bi-check2-circle text-success"></i><span class="text-light" data-i18n="shop_ascendant_p1">Prefix Zamrud [☘ ASCENDANT]</span></li>
-                                        <li><i class="bi bi-check2-circle text-success"></i><span class="text-light" data-i18n="shop_ascendant_p2">Kit Ascendant Harian (/kit ascendant)</span></li>
-                                        <li><i class="bi bi-check2-circle text-success"></i><span class="text-light" data-i18n="shop_ascendant_p3">Bypass Antrean Saat Server Penuh</span></li>
-                                        <li><i class="bi bi-check2-circle text-success"></i><span class="text-light" data-i18n="shop_ascendant_p4">+2 Batas Klaim Wilayah Kerajaan</span></li>
-                                    @elseif(str_contains($packageName, 'vip pass'))
-                                        <li><i class="bi bi-check2-circle text-warning"></i><span class="text-light" data-i18n="shop_vippass_p1">Akses Penuh 100 Level Jalur Hadiah</span></li>
-                                        <li><i class="bi bi-check2-circle text-warning"></i><span class="text-light" data-i18n="shop_vippass_p2">Instan Skip Langsung 20 Level Awal</span></li>
-                                        <li><i class="bi bi-check2-circle text-warning"></i><span class="text-light" data-i18n="shop_vippass_p3">Kosmetik Jubah &amp; Gelar Chat Eksklusif</span></li>
-                                        <li><i class="bi bi-check2-circle text-warning"></i><span class="text-light" data-i18n="shop_vippass_p4">Bonus Koin &amp; Magic Dust Penempaan</span></li>
-                                    @elseif(str_contains($packageName, 'premium pass'))
-                                        <li><i class="bi bi-check2-circle text-warning"></i><span class="text-light" data-i18n="shop_prempass_p1">Buka Jalur Emas 100 Level Hadiah</span></li>
-                                        <li><i class="bi bi-check2-circle text-warning"></i><span class="text-light" data-i18n="shop_prempass_p2">Akses Quests Harian &amp; Mingguan</span></li>
-                                        <li><i class="bi bi-check2-circle text-warning"></i><span class="text-light" data-i18n="shop_prempass_p3">+25% Pengganda Perolehan EXP Pass</span></li>
-                                        <li><i class="bi bi-check2-circle text-warning"></i><span class="text-light" data-i18n="shop_prempass_p4">Diskon Toko Berputar /abp shop</span></li>
+                                        <li><i class="bi bi-house-door-fill text-success"></i><span class="text-light">3 Homes • 4 Slot Lelang • 5 Custom Enchants</span></li>
+                                        <li><i class="bi bi-clock-history text-success"></i><span class="text-light">RTP Cooldown: <strong>2 Menit 15 Detik</strong></span></li>
+                                        <li><i class="bi bi-graph-up-arrow text-success"></i><span class="text-light">Bonus Jual: <strong>+3%</strong> • Bonus EXP: <strong>+5%</strong></span></li>
+                                        @if($isPermanent)
+                                            <li class="pt-1 border-top border-success border-opacity-25"><i class="bi bi-currency-dollar text-warning"></i><span class="text-warning fw-bold">Bonus Tunai: Rp 50.000 Server Money (1x Klaim)</span></li>
+                                            <li><i class="bi bi-shield-check text-success"></i><span class="text-light">Kit Ascendant (/kits &amp; /kit ascendant)</span></li>
+                                        @else
+                                            <li class="text-info small"><i class="bi bi-info-circle me-1"></i>Masa aktif benefit berlaku selama {{ $isTrial90 ? '90' : '30' }} hari.</li>
+                                        @endif
+                                    @elseif(str_contains($packageName, 'exsio pass'))
+                                        <li><i class="bi bi-check2-circle text-info"></i><span class="text-light fw-bold">Otomatis Membuka Sio Pass Penuh (100 Level)</span></li>
+                                        <li><i class="bi bi-lightning-charge-fill text-warning"></i><span class="text-light">Langsung Melompat +20 Level Battlepass Awal</span></li>
+                                        <li><i class="bi bi-stars text-warning"></i><span class="text-light">Kosmetik Mitos: Sayap, Aura Partikel, Gelar Chat</span></li>
+                                        <li><i class="bi bi-cash text-success"></i><span class="text-light">Bonus Tunai Rp 50.000 Saldo In-game &amp; Crate Keys</span></li>
+                                        <li><i class="bi bi-percent text-info"></i><span class="text-light">Diskon 15% untuk Pemegang Rank Sions Permanen</span></li>
+                                    @elseif(str_contains($packageName, 'sio pass'))
+                                        <li><i class="bi bi-check2-circle text-warning"></i><span class="text-light">Buka Seluruh 100 Tier Jalur Hadiah Emas Musiman</span></li>
+                                        <li><i class="bi bi-trophy-fill text-warning"></i><span class="text-light">Akses Quests Harian, Mingguan &amp; EXP Shop</span></li>
+                                        <li><i class="bi bi-gift-fill text-warning"></i><span class="text-light">Kosmetik Eksklusif Musiman, Title, dan Partikel</span></li>
+                                        <li><i class="bi bi-percent text-info"></i><span class="text-light">Diskon 10% (Emperor) &amp; 15% (Sions) Pemegang Rank Permanen</span></li>
                                     @else
-                                        <li><i class="bi bi-check2-circle text-warning"></i><span class="text-light" data-i18n="shop_fallback_p1">Aktivasi Otomatis via Akun Minecraft</span></li>
-                                        <li><i class="bi bi-check2-circle text-warning"></i><span class="text-light" data-i18n="shop_fallback_p2">Dukungan Transaksi Aman &amp; Terverifikasi</span></li>
+                                        <li><i class="bi bi-check2-circle text-warning"></i><span class="text-light">Aktivasi Otomatis Langsung ke Akun Minecraft</span></li>
+                                        <li><i class="bi bi-shield-check text-warning"></i><span class="text-light">Dukungan Transaksi Terverifikasi &amp; Aman</span></li>
                                     @endif
                                 </ul>
 
                                 <!-- Founder Direct Order Quick Selector -->
                                 <div class="mb-3 pt-2 border-top border-secondary border-opacity-15">
-                                     <div class="small text-muted mb-2 d-flex align-items-center justify-content-between" style="font-size: 0.75rem;">
-                                         <span><i class="bi bi-whatsapp text-success me-1"></i> <span data-i18n="shop_choose_founder">Pilih Founder:</span></span>
-                                         <span class="text-dim" data-i18n="shop_direct_order">Pesan Langsung</span>
-                                     </div>
-                                     <div class="d-flex flex-wrap gap-1">
-                                         @foreach($founderAdmins as $adm)
-                                             @php
-                                                 $admNum = preg_replace('/[^0-9]/', '', $adm['number']);
-                                                 $admUrl = 'https://wa.me/' . $admNum . '?text=' . rawurlencode($waBaseText);
-                                             @endphp
-                                             <a href="{{ $admUrl }}" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-success py-1 px-2 d-flex align-items-center gap-1" style="font-size: 0.75rem;" title="Pesan paket ini via Founder {{ $adm['name'] }}">
+                                    <div class="small text-muted mb-2 d-flex align-items-center justify-content-between" style="font-size: 0.75rem;">
+                                        <span><i class="bi bi-whatsapp text-success me-1"></i> <span data-i18n="shop_choose_founder">Pilih Founder:</span></span>
+                                        <span class="text-dim" data-i18n="shop_direct_order">Pesan Langsung</span>
+                                    </div>
+                                    <div class="d-flex flex-wrap gap-1">
+                                        @foreach($founderAdmins as $adm)
+                                            @php
+                                                $admNum = preg_replace('/[^0-9]/', '', $adm['number']);
+                                                $admUrl = 'https://wa.me/' . $admNum . '?text=' . rawurlencode($discountInfo['whatsapp_message']);
+                                            @endphp
+                                            <a href="{{ $admUrl }}" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-success py-1 px-2 d-flex align-items-center gap-1" style="font-size: 0.75rem;" title="Pesan paket ini via Founder {{ $adm['name'] }}">
                                                  <i class="bi bi-whatsapp"></i> {{ $adm['name'] }}
-                                             </a>
-                                         @endforeach
-                                     </div>
-                                 </div>
+                                            </a>
+                                        @endforeach
+                                    </div>
+                                </div>
 
-                                 <div class="apx-package-footer mt-auto d-flex flex-column gap-2">
-                                     <a href="{{ $primaryWaUrl }}" target="_blank" rel="noopener noreferrer" class="btn btn-apx-wa w-100 py-2">
-                                         <i class="bi bi-whatsapp me-1"></i> <span data-i18n="shop_btn_wa">Pesan Cepat via WhatsApp</span>
-                                     </a>
-                                     <a href="#" class="btn btn-apx-outline w-100 py-1 small" data-package-url="{{ route('shop.packages.show', $package) }}">
-                                         <i class="bi bi-info-circle me-1"></i> <span data-i18n="shop_btn_details">Rincian &amp; Benefit Lengkap</span>
-                                     </a>
-                                 </div>
+                                <div class="apx-package-footer mt-auto d-flex flex-column gap-2">
+                                    <a href="{{ $primaryWaUrl }}" target="_blank" rel="noopener noreferrer" class="btn btn-apx-wa w-100 py-2">
+                                        <i class="bi bi-whatsapp me-1"></i> <span data-i18n="shop_btn_wa">Pesan Cepat via WhatsApp</span>
+                                    </a>
+                                    <a href="#" class="btn btn-apx-outline w-100 py-1 small" data-package-url="{{ route('shop.packages.show', $package) }}">
+                                        <i class="bi bi-info-circle me-1"></i> <span data-i18n="shop_btn_details">Rincian &amp; Benefit Lengkap</span>
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -301,6 +392,154 @@
                     </div>
                 @endforelse
             </div>
+
+            <!-- Rank Benefit Comparison Matrix Section -->
+            @if(str_contains(strtolower($category->name), 'rank') || str_contains(strtolower($category->slug ?? ''), 'rank'))
+                <div class="apx-rank-matrix-wrap mt-5" id="matrix">
+                    <div class="apx-rank-matrix-header d-flex align-items-center justify-content-between flex-wrap gap-3">
+                        <div>
+                            <div class="badge bg-warning bg-opacity-10 text-warning border border-warning border-opacity-25 px-2 py-1 mb-2 font-monospace" style="font-size: 0.72rem;">
+                                <i class="bi bi-table me-1"></i> MATRIKS KEHORMATAN PERADABAN
+                            </div>
+                            <h3 class="font-cinzel text-white fw-bold mb-1" style="font-size: 1.35rem;">
+                                Perbandingan Benefit &amp; Hak Istimewa Kasta Resmi
+                            </h3>
+                            <p class="text-muted small mb-0">
+                                Pahami seluruh perbedaan hak istimewa, limitasi sumber daya, dan perintah portabel dari Warga Biasa hingga kasta puncak SIONS.
+                            </p>
+                        </div>
+                        <a href="#shop" class="btn btn-sm btn-apx-outline">
+                            <i class="bi bi-arrow-up-circle me-1"></i> Kembali ke Paket
+                        </a>
+                    </div>
+
+                    <div class="apx-rank-matrix-table-scroll">
+                        <table class="apx-rank-matrix-table">
+                            <thead>
+                                <tr>
+                                    <th style="min-width: 220px;">FITUR / HAK ISTIMEWA</th>
+                                    <th style="min-width: 110px;">WARGA BIASA</th>
+                                    <th style="min-width: 125px; color: #6ee7b7;">ASCENDANT</th>
+                                    <th style="min-width: 125px; color: #67e8f9;">ARCHON</th>
+                                    <th style="min-width: 125px; color: #93c5fd;">SOVEREIGN</th>
+                                    <th style="min-width: 125px; color: #fca5a5;">EMPEROR</th>
+                                    <th style="min-width: 140px;" class="col-sions">✦ SIONS ✦</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><i class="bi bi-house-door-fill text-warning me-2"></i>Batas Home (/sethome)</td>
+                                    <td>2 Home</td>
+                                    <td>3 Home</td>
+                                    <td>4 Home</td>
+                                    <td>5 Home</td>
+                                    <td>7 Home</td>
+                                    <td class="col-sions apx-matrix-val-gold">10 Home</td>
+                                </tr>
+                                <tr>
+                                    <td><i class="bi bi-shop text-warning me-2"></i>Slot Lelang Aktif (/ah /lelang)</td>
+                                    <td>3 Listing</td>
+                                    <td>4 Listing</td>
+                                    <td>7 Listing</td>
+                                    <td>10 Listing</td>
+                                    <td>14 Listing</td>
+                                    <td class="col-sions apx-matrix-val-gold">20 Listing</td>
+                                </tr>
+                                <tr>
+                                    <td><i class="bi bi-magic text-warning me-2"></i>Maksimal Custom Enchant</td>
+                                    <td>4 Enchant</td>
+                                    <td>5 Enchant</td>
+                                    <td>6 Enchant</td>
+                                    <td>8 Enchant</td>
+                                    <td>11 Enchant</td>
+                                    <td class="col-sions apx-matrix-val-gold">15 Enchant</td>
+                                </tr>
+                                <tr>
+                                    <td><i class="bi bi-compass-fill text-warning me-2"></i>Cooldown Teleport (/rtp &amp; /tpr)</td>
+                                    <td>2m 30s</td>
+                                    <td>2m 15s</td>
+                                    <td>2m 00s</td>
+                                    <td>1m 35s</td>
+                                    <td>1m 10s</td>
+                                    <td class="col-sions apx-matrix-val-gold">50 Detik</td>
+                                </tr>
+                                <tr>
+                                    <td><i class="bi bi-graph-up-arrow text-warning me-2"></i>Bonus Harga Jual (/sell)</td>
+                                    <td class="apx-matrix-val-cross">-</td>
+                                    <td class="text-success fw-bold">+3%</td>
+                                    <td class="text-info fw-bold">+5%</td>
+                                    <td class="text-primary fw-bold">+8%</td>
+                                    <td class="text-danger fw-bold">+12%</td>
+                                    <td class="col-sions apx-matrix-val-gold">+17%</td>
+                                </tr>
+                                <tr>
+                                    <td><i class="bi bi-stars text-warning me-2"></i>Bonus Perolehan EXP Leveling</td>
+                                    <td class="apx-matrix-val-cross">-</td>
+                                    <td class="text-success fw-bold">+5%</td>
+                                    <td class="text-info fw-bold">+8%</td>
+                                    <td class="text-primary fw-bold">+10%</td>
+                                    <td class="text-danger fw-bold">+14%</td>
+                                    <td class="col-sions apx-matrix-val-gold">+20%</td>
+                                </tr>
+                                <tr>
+                                    <td><i class="bi bi-piggy-bank-fill text-warning me-2"></i>Multiplier Bunga Bank (/bank)</td>
+                                    <td>1.0x Normal</td>
+                                    <td>1.0x Normal</td>
+                                    <td class="text-info fw-bold">1.2x Return</td>
+                                    <td class="text-primary fw-bold">1.5x Return</td>
+                                    <td class="text-danger fw-bold">2.0x Return</td>
+                                    <td class="col-sions apx-matrix-val-gold">3.0x Return</td>
+                                </tr>
+                                <tr>
+                                    <td><i class="bi bi-terminal-fill text-warning me-2"></i>Perintah Portabel</td>
+                                    <td>Standar</td>
+                                    <td>Standar</td>
+                                    <td>/craft, /ec</td>
+                                    <td>/craft, /anvil, /smithing, /ec</td>
+                                    <td>+ /repair, /feed (5m), /hat</td>
+                                    <td class="col-sions apx-matrix-val-gold">Lengkap + /feed (3m)</td>
+                                </tr>
+                                <tr>
+                                    <td><i class="bi bi-shield-shaded text-warning me-2"></i>Akses Kit Kasta (/kit)</td>
+                                    <td class="apx-matrix-val-cross">-</td>
+                                    <td>Kit Ascendant</td>
+                                    <td>Kit Archon (+Asc)</td>
+                                    <td>Kit Sovereign (+Bawah)</td>
+                                    <td>Kit Emperor (+Bawah)</td>
+                                    <td class="col-sions apx-matrix-val-gold">Kit Sions (Semua Kit)</td>
+                                </tr>
+                                <tr>
+                                    <td><i class="bi bi-palette-fill text-warning me-2"></i>Kustomisasi Nickname (/nick)</td>
+                                    <td class="apx-matrix-val-cross">-</td>
+                                    <td class="apx-matrix-val-cross">-</td>
+                                    <td class="apx-matrix-val-cross">-</td>
+                                    <td>/nick (Tanpa Warna)</td>
+                                    <td>/nick (Warna Solid)</td>
+                                    <td class="col-sions apx-matrix-val-gold">Bebas Semua Warna &amp; Gradien</td>
+                                </tr>
+                                <tr>
+                                    <td><i class="bi bi-trophy-fill text-warning me-2"></i>Privilese BattlePass Musiman</td>
+                                    <td class="apx-matrix-val-cross">-</td>
+                                    <td class="apx-matrix-val-cross">-</td>
+                                    <td class="apx-matrix-val-cross">-</td>
+                                    <td class="apx-matrix-val-cross">-</td>
+                                    <td>Season Ini Free Sio Pass<br><small class="text-muted">+ 10% Diskon Mendatang</small></td>
+                                    <td class="col-sions apx-matrix-val-gold">Season Ini Free Sio &amp; Exsio<br><small class="text-warning">+ 15% Diskon Mendatang</small></td>
+                                </tr>
+                                <tr>
+                                    <td><i class="bi bi-currency-dollar text-warning me-2"></i>Hadiah Uang Tunai Permanen</td>
+                                    <td class="apx-matrix-val-cross">-</td>
+                                    <td class="text-success fw-bold">Rp 50.000</td>
+                                    <td class="text-info fw-bold">Rp 80.000</td>
+                                    <td class="text-primary fw-bold">Rp 120.000</td>
+                                    <td class="text-danger fw-bold">Rp 180.000</td>
+                                    <td class="col-sions apx-matrix-val-gold">Rp 300.000 (Non-Duplikasi)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            @endif
         </div>
     </div>
 

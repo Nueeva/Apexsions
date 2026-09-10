@@ -89,9 +89,9 @@ public class EnchantLimitManager {
     private int getDefaultRankLimit(String rank) {
         return switch (rank.toLowerCase()) {
             case "ancestor", "architect", "overseer", "warden", "herald" -> -1;
-            case "sions" -> 9;
-            case "emperor" -> 8;
-            case "sovereign" -> 7;
+            case "sions" -> 15;
+            case "emperor" -> 11;
+            case "sovereign" -> 8;
             case "archon" -> 6;
             case "ascendant" -> 5;
             default -> 4;

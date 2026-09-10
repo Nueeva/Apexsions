@@ -72,7 +72,11 @@ public class KitManager {
 
         kitsFile = new File(kitsFolder, "kits.yml");
         if (!kitsFile.exists()) {
-            createDefaultKitsFile();
+            try {
+                plugin.saveResource("kits/kits.yml", false);
+            } catch (Exception e) {
+                createDefaultKitsFile();
+            }
         }
         kitsConfig = YamlConfiguration.loadConfiguration(kitsFile);
 
@@ -248,6 +252,12 @@ public class KitManager {
     public boolean canClaim(Player player, Kit kit) {
         if (player.hasPermission("apexsions.admin") || player.isOp()) {
             return true;
+        }
+
+        // Trial Rank Rule: Trial ranks cannot claim permanent rank kits unless it is the default wanderer kit
+        boolean isTrial = player.hasPermission("apexsions.rank.trial") && !player.hasPermission("apexsions.rank.permanent");
+        if (isTrial && !kit.getId().equalsIgnoreCase("wanderer") && !player.hasPermission("apexsions.kit.trial.allow")) {
+            return false;
         }
 
         // Rank weight check

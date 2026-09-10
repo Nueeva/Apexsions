@@ -116,7 +116,11 @@ public class DynamicPriceCalculator {
         }
 
         double effectiveUnit = Math.max(baseUnit * minClamp, Math.min(baseUnit * maxClamp, rawUnit));
-        double rawTotal = effectiveUnit * quantity;
+        double baseRawTotal = effectiveUnit * quantity;
+
+        // Rank Sell Price Bonus: Ascendant +3%, Archon +5%, Sovereign +8%, Emperor +12%, Sions +17%
+        double rankBonusMultiplier = getRankSellBonusMultiplier(player);
+        double rawTotal = baseRawTotal * rankBonusMultiplier;
 
         double taxPercent = plugin.getTaxService().getTaxPercent(player, kingdomOverride);
         double taxAmount = (rawTotal * (taxPercent / 100.0));
@@ -135,5 +139,15 @@ public class DynamicPriceCalculator {
                 taxAmount,
                 finalTotal
         );
+    }
+
+    public double getRankSellBonusMultiplier(Player player) {
+        if (player == null) return 1.0;
+        if (player.hasPermission("apexsions.shop.sellbonus.sions") || player.hasPermission("apexsions.rank.sions")) return 1.17; // +17%
+        if (player.hasPermission("apexsions.shop.sellbonus.emperor") || player.hasPermission("apexsions.rank.emperor")) return 1.12; // +12%
+        if (player.hasPermission("apexsions.shop.sellbonus.sovereign") || player.hasPermission("apexsions.rank.sovereign")) return 1.08; // +8%
+        if (player.hasPermission("apexsions.shop.sellbonus.archon") || player.hasPermission("apexsions.rank.archon")) return 1.05; // +5%
+        if (player.hasPermission("apexsions.shop.sellbonus.ascendant") || player.hasPermission("apexsions.rank.ascendant")) return 1.03; // +3%
+        return 1.0;
     }
 }

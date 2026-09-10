@@ -61,6 +61,7 @@ Route::middleware(['web', 'admin-access'])->prefix('admin')->name('admin.')->gro
     Route::prefix('ranks')->name('ranks.')->middleware('can:admin.users')->group(function () {
         Route::get('/', [RankAdminController::class, 'index'])->name('index');
         Route::post('/assign', [RankAdminController::class, 'assign'])->name('assign');
+        Route::post('/expire-trials', [RankAdminController::class, 'expireTrials'])->name('expire-trials');
         Route::get('/{rank_key}', [RankAdminController::class, 'show'])->name('show');
     });
 

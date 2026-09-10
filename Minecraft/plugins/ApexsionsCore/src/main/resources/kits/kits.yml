@@ -1,0 +1,273 @@
+# ==============================================================================
+# ApexsionsCore — Official Rank Kits Configuration (kits.yml)
+# ==============================================================================
+
+kits:
+  wanderer:
+    display-name: "<gradient:#bdc3c7:#7f8c8d><bold>📦 KIT WANDERER</bold></gradient>"
+    required-rank: "wanderer"
+    cooldown: 86400
+    icon: "LEATHER_CHESTPLATE"
+    armor:
+      helmet:
+        ==: org.bukkit.inventory.ItemStack
+        v: 3955
+        type: CHAINMAIL_HELMET
+      chestplate:
+        ==: org.bukkit.inventory.ItemStack
+        v: 3955
+        type: CHAINMAIL_CHESTPLATE
+      leggings:
+        ==: org.bukkit.inventory.ItemStack
+        v: 3955
+        type: CHAINMAIL_LEGGINGS
+      boots:
+        ==: org.bukkit.inventory.ItemStack
+        v: 3955
+        type: CHAINMAIL_BOOTS
+    extra-items:
+      - ==: org.bukkit.inventory.ItemStack
+        v: 3955
+        type: IRON_SWORD
+      - ==: org.bukkit.inventory.ItemStack
+        v: 3955
+        type: COOKED_BEEF
+        amount: 32
+      - ==: org.bukkit.inventory.ItemStack
+        v: 3955
+        type: IRON_PICKAXE
+    set-bonus:
+      enabled: true
+      id: "wanderer"
+      name: "Wanderer Explorer"
+      type: "DAMAGE_REDUCTION"
+      value: 15.0
+      required-pieces: 4
+
+  ascendant:
+    display-name: "<gradient:#11998e:#38ef7d><bold>☘ KIT ASCENDANT</bold></gradient>"
+    required-rank: "ascendant"
+    cooldown: 86400
+    icon: "IRON_CHESTPLATE"
+    armor:
+      helmet:
+        ==: org.bukkit.inventory.ItemStack
+        v: 3955
+        type: IRON_HELMET
+      chestplate:
+        ==: org.bukkit.inventory.ItemStack
+        v: 3955
+        type: IRON_CHESTPLATE
+      leggings:
+        ==: org.bukkit.inventory.ItemStack
+        v: 3955
+        type: IRON_LEGGINGS
+      boots:
+        ==: org.bukkit.inventory.ItemStack
+        v: 3955
+        type: IRON_BOOTS
+    extra-items:
+      - ==: org.bukkit.inventory.ItemStack
+        v: 3955
+        type: IRON_SWORD
+      - ==: org.bukkit.inventory.ItemStack
+        v: 3955
+        type: COOKED_BEEF
+        amount: 48
+      - ==: org.bukkit.inventory.ItemStack
+        v: 3955
+        type: DIAMOND_PICKAXE
+      - ==: org.bukkit.inventory.ItemStack
+        v: 3955
+        type: GOLDEN_APPLE
+        amount: 4
+    set-bonus:
+      enabled: true
+      id: "ascendant"
+      name: "Ascendant Vitality"
+      type: "DAMAGE_REDUCTION"
+      value: 18.0
+      required-pieces: 4
+
+  archon:
+    display-name: "<gradient:#00c6ff:#0072ff><bold>💎 KIT ARCHON</bold></gradient>"
+    required-rank: "archon"
+    cooldown: 86400
+    icon: "DIAMOND_CHESTPLATE"
+    armor:
+      helmet:
+        ==: org.bukkit.inventory.ItemStack
+        v: 3955
+        type: DIAMOND_HELMET
+      chestplate:
+        ==: org.bukkit.inventory.ItemStack
+        v: 3955
+        type: DIAMOND_CHESTPLATE
+      leggings:
+        ==: org.bukkit.inventory.ItemStack
+        v: 3955
+        type: DIAMOND_LEGGINGS
+      boots:
+        ==: org.bukkit.inventory.ItemStack
+        v: 3955
+        type: DIAMOND_BOOTS
+    extra-items:
+      - ==: org.bukkit.inventory.ItemStack
+        v: 3955
+        type: DIAMOND_SWORD
+      - ==: org.bukkit.inventory.ItemStack
+        v: 3955
+        type: COOKED_BEEF
+        amount: 64
+      - ==: org.bukkit.inventory.ItemStack
+        v: 3955
+        type: DIAMOND_PICKAXE
+      - ==: org.bukkit.inventory.ItemStack
+        v: 3955
+        type: GOLDEN_APPLE
+        amount: 8
+    set-bonus:
+      enabled: true
+      id: "archon"
+      name: "Archon Aegis"
+      type: "DAMAGE_REDUCTION"
+      value: 22.0
+      required-pieces: 4
+
+  sovereign:
+    display-name: "<gradient:#f39c12:#f1c40f><bold>⚜ KIT SOVEREIGN</bold></gradient>"
+    required-rank: "sovereign"
+    cooldown: 86400
+    icon: "GOLDEN_CHESTPLATE"
+    armor:
+      helmet:
+        ==: org.bukkit.inventory.ItemStack
+        v: 3955
+        type: DIAMOND_HELMET
+      chestplate:
+        ==: org.bukkit.inventory.ItemStack
+        v: 3955
+        type: DIAMOND_CHESTPLATE
+      leggings:
+        ==: org.bukkit.inventory.ItemStack
+        v: 3955
+        type: DIAMOND_LEGGINGS
+      boots:
+        ==: org.bukkit.inventory.ItemStack
+        v: 3955
+        type: DIAMOND_BOOTS
+    extra-items:
+      - ==: org.bukkit.inventory.ItemStack
+        v: 3955
+        type: DIAMOND_SWORD
+      - ==: org.bukkit.inventory.ItemStack
+        v: 3955
+        type: DIAMOND_PICKAXE
+      - ==: org.bukkit.inventory.ItemStack
+        v: 3955
+        type: GOLDEN_CARROT
+        amount: 64
+      - ==: org.bukkit.inventory.ItemStack
+        v: 3955
+        type: GOLDEN_APPLE
+        amount: 16
+    set-bonus:
+      enabled: true
+      id: "sovereign"
+      name: "Sovereign Dominion"
+      type: "DAMAGE_REDUCTION"
+      value: 26.0
+      required-pieces: 4
+
+  emperor:
+    display-name: "<gradient:#e52d27:#b31217><bold>⚔ KIT EMPEROR</bold></gradient>"
+    required-rank: "emperor"
+    cooldown: 86400
+    icon: "NETHERITE_CHESTPLATE"
+    armor:
+      helmet:
+        ==: org.bukkit.inventory.ItemStack
+        v: 3955
+        type: NETHERITE_HELMET
+      chestplate:
+        ==: org.bukkit.inventory.ItemStack
+        v: 3955
+        type: NETHERITE_CHESTPLATE
+      leggings:
+        ==: org.bukkit.inventory.ItemStack
+        v: 3955
+        type: NETHERITE_LEGGINGS
+      boots:
+        ==: org.bukkit.inventory.ItemStack
+        v: 3955
+        type: NETHERITE_BOOTS
+    extra-items:
+      - ==: org.bukkit.inventory.ItemStack
+        v: 3955
+        type: NETHERITE_SWORD
+      - ==: org.bukkit.inventory.ItemStack
+        v: 3955
+        type: NETHERITE_PICKAXE
+      - ==: org.bukkit.inventory.ItemStack
+        v: 3955
+        type: GOLDEN_APPLE
+        amount: 24
+      - ==: org.bukkit.inventory.ItemStack
+        v: 3955
+        type: TOTEM_OF_UNDYING
+    set-bonus:
+      enabled: true
+      id: "emperor"
+      name: "Imperial Sovereignty"
+      type: "DAMAGE_REDUCTION"
+      value: 30.0
+      required-pieces: 4
+
+  sions:
+    display-name: "<gradient:#00FFFF:#FFD700><bold>✦ KIT SIONS ✦</bold></gradient>"
+    required-rank: "sions"
+    cooldown: 86400
+    icon: "NETHERITE_CHESTPLATE"
+    armor:
+      helmet:
+        ==: org.bukkit.inventory.ItemStack
+        v: 3955
+        type: NETHERITE_HELMET
+      chestplate:
+        ==: org.bukkit.inventory.ItemStack
+        v: 3955
+        type: NETHERITE_CHESTPLATE
+      leggings:
+        ==: org.bukkit.inventory.ItemStack
+        v: 3955
+        type: NETHERITE_LEGGINGS
+      boots:
+        ==: org.bukkit.inventory.ItemStack
+        v: 3955
+        type: NETHERITE_BOOTS
+    extra-items:
+      - ==: org.bukkit.inventory.ItemStack
+        v: 3955
+        type: NETHERITE_SWORD
+      - ==: org.bukkit.inventory.ItemStack
+        v: 3955
+        type: NETHERITE_PICKAXE
+      - ==: org.bukkit.inventory.ItemStack
+        v: 3955
+        type: ENCHANTED_GOLDEN_APPLE
+        amount: 2
+      - ==: org.bukkit.inventory.ItemStack
+        v: 3955
+        type: GOLDEN_APPLE
+        amount: 32
+      - ==: org.bukkit.inventory.ItemStack
+        v: 3955
+        type: TOTEM_OF_UNDYING
+        amount: 2
+    set-bonus:
+      enabled: true
+      id: "sions"
+      name: "Sions Apex Divinity"
+      type: "DAMAGE_REDUCTION"
+      value: 35.0
+      required-pieces: 4

@@ -77,12 +77,14 @@ public class LevelManager {
         }
 
         Player player = Bukkit.getPlayer(uuid);
+        double multiplier = getRankXpMultiplier(player);
+        long effectiveAmount = Math.max(1L, Math.round(amount * multiplier));
 
         long oldXp = data.getXp();
-        long newXp = oldXp + amount;
+        long newXp = oldXp + effectiveAmount;
 
         // Fire XP gain event
-        KingdomXpGainEvent xpEvent = new KingdomXpGainEvent(uuid, player, source, amount, oldXp, newXp);
+        KingdomXpGainEvent xpEvent = new KingdomXpGainEvent(uuid, player, source, effectiveAmount, oldXp, newXp);
         Bukkit.getPluginManager().callEvent(xpEvent);
         if (xpEvent.isCancelled()) {
             return;
@@ -219,5 +221,15 @@ public class LevelManager {
             Player player = Bukkit.getPlayer(uuid);
             reconcileLevel(data, player);
         });
+    }
+
+    public double getRankXpMultiplier(Player player) {
+        if (player == null) return 1.0;
+        if (player.hasPermission("apexsions.exp.bonus.sions") || player.hasPermission("apexsions.rank.sions")) return 1.20; // +20%
+        if (player.hasPermission("apexsions.exp.bonus.emperor") || player.hasPermission("apexsions.rank.emperor")) return 1.14; // +14%
+        if (player.hasPermission("apexsions.exp.bonus.sovereign") || player.hasPermission("apexsions.rank.sovereign")) return 1.10; // +10%
+        if (player.hasPermission("apexsions.exp.bonus.archon") || player.hasPermission("apexsions.rank.archon")) return 1.08; // +8%
+        if (player.hasPermission("apexsions.exp.bonus.ascendant") || player.hasPermission("apexsions.rank.ascendant")) return 1.05; // +5%
+        return 1.0;
     }
 }

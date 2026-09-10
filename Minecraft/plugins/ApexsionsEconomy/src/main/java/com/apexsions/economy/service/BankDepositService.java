@@ -49,17 +49,30 @@ public class BankDepositService {
             return false;
         }
 
+        double mult = getRankReturnMultiplier(player);
+        double effectiveRate = interestRate * mult;
+
         long now = System.currentTimeMillis();
         long maturesAt = now + ((long) durationDays * 24 * 60 * 60 * 1000);
-        double expectedReturn = Math.floor(principal * (1.0 + interestRate));
+        double expectedReturn = Math.floor(principal * (1.0 + effectiveRate));
         String id = UUID.randomUUID().toString().substring(0, 8);
 
-        BankDeposit deposit = new BankDeposit(id, player.getUniqueId(), currencyId, principal, interestRate, expectedReturn, now, maturesAt, false);
+        BankDeposit deposit = new BankDeposit(id, player.getUniqueId(), currencyId, principal, effectiveRate, expectedReturn, now, maturesAt, false);
         plugin.getRepository().saveBankDeposit(deposit);
 
-        player.sendMessage("§a[✔] Berhasil menempatkan deposito §e" + NumberFormatUtil.format(principal, currency) + " §aselama §e" + durationDays + " hari§a!");
-        player.sendMessage("§a[ℹ] Estimasi pencairan saat jatuh tempo: §6§l" + NumberFormatUtil.format(expectedReturn, currency) + " §7(Bunga: +" + String.format("%.1f", interestRate * 100) + "%)");
+        String multMsg = mult > 1.0 ? " §6[Bonus Rank " + mult + "x]§a" : "";
+        player.sendMessage("§a[✔] Berhasil menempatkan deposito §e" + NumberFormatUtil.format(principal, currency) + " §aselama §e" + durationDays + " hari§a!" + multMsg);
+        player.sendMessage("§a[ℹ] Estimasi pencairan saat jatuh tempo: §6§l" + NumberFormatUtil.format(expectedReturn, currency) + " §7(Imbal Hasil: +" + String.format("%.1f", effectiveRate * 100) + "%)");
         return true;
+    }
+
+    public double getRankReturnMultiplier(Player player) {
+        if (player == null) return 1.0;
+        if (player.hasPermission("apexsions.bank.multiplier.sions") || player.hasPermission("apexsions.rank.sions")) return 3.0; // 3x
+        if (player.hasPermission("apexsions.bank.multiplier.emperor") || player.hasPermission("apexsions.rank.emperor")) return 2.0; // 2x
+        if (player.hasPermission("apexsions.bank.multiplier.sovereign") || player.hasPermission("apexsions.rank.sovereign")) return 1.5; // 1.5x
+        if (player.hasPermission("apexsions.bank.multiplier.archon") || player.hasPermission("apexsions.rank.archon")) return 1.2; // 1.2x
+        return 1.0;
     }
 
     public CompletableFuture<Boolean> claimDeposit(Player player, BankDeposit deposit) {

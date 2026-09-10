@@ -74,6 +74,18 @@ public class LuckPermsRankProvisioner {
                     finalGroup.data().add(WeightNode.builder(weight).build());
                     finalGroup.data().add(DisplayNameNode.builder(displayName).build());
 
+                    // Add managed permissions from ranks.yml
+                    java.util.List<String> perms = ranksSec.getStringList(rankKey + ".permissions");
+                    for (String p : perms) {
+                        finalGroup.data().add(Node.builder(p.trim()).build());
+                    }
+
+                    // Add managed inheritance parent if defined
+                    String parentRank = ranksSec.getString(rankKey + ".inherits");
+                    if (parentRank != null && !parentRank.isBlank()) {
+                        finalGroup.data().add(InheritanceNode.builder(parentRank.trim().toLowerCase()).build());
+                    }
+
                     // Save group changes
                     groupManager.saveGroup(finalGroup).join();
                 } catch (Exception e) {

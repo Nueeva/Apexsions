@@ -19,8 +19,14 @@
                 </p>
             </div>
             <div class="d-flex align-items-center gap-2">
+                <form action="{{ route('apexsions-bridge.admin.ranks.expire-trials') }}" method="POST" class="d-inline" onsubmit="return confirm('Jalankan pemindaian dan penonaktifan rank trial yang sudah kedaluwarsa?');">
+                    @csrf
+                    <button type="submit" class="btn btn-outline-info fw-bold px-3 shadow-sm">
+                        <i class="bi bi-clock-history me-1"></i> Scan Expired Trial
+                    </button>
+                </form>
                 <button type="button" class="btn btn-warning fw-bold px-3 shadow-sm" data-bs-toggle="modal" data-bs-target="#assignRankModal">
-                    <i class="bi bi-person-plus-fill me-1"></i> Ubah Rank Pemain
+                    <i class="bi bi-person-plus-fill me-1"></i> Ubah / Beri Rank Pemain
                 </button>
             </div>
         </div>
@@ -185,6 +191,33 @@
                             @endforeach
                         </select>
                     </div>
+
+                    <div class="row g-2 mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold">Tipe Kepemilikan <span class="text-danger">*</span></label>
+                            <select name="rank_type" id="rankTypeSelect" class="form-select" required onchange="toggleDurationField(this.value)">
+                                <option value="PERMANENT" selected>PERMANENT (Seumur Hidup)</option>
+                                <option value="TRIAL">TRIAL (Berbatas Waktu)</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6" id="durationDaysContainer" style="display: none;">
+                            <label class="form-label small fw-bold">Durasi Hari <span class="text-danger">*</span></label>
+                            <select name="duration_days" class="form-select">
+                                <option value="30">30 Hari</option>
+                                <option value="90">90 Hari</option>
+                                <option value="7">7 Hari (Spesial)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <script>
+                        function toggleDurationField(val) {
+                            var el = document.getElementById('durationDaysContainer');
+                            if (el) {
+                                el.style.display = (val === 'TRIAL') ? 'block' : 'none';
+                            }
+                        }
+                    </script>
 
                     <div class="mb-3">
                         <label class="form-label small fw-bold">Alasan Perubahan / Penugasan <span class="text-danger">*</span></label>

@@ -48,40 +48,54 @@ public class BankDepositMenu extends Gui {
                 ))
                 .build()));
 
-        // 2. Package 1: 1 Hari (Slot 10) - 1.5% Yield
+        double mult = plugin.getBankDepositService().getRankReturnMultiplier(player);
+        String multBonus1 = mult > 1.0 ? ("&6Bonus Rank (" + mult + "x): &a+" + String.format("%.2f", 1.5 * mult) + "%") : "";
+        String multBonus2 = mult > 1.0 ? ("&6Bonus Rank (" + mult + "x): &a+" + String.format("%.2f", 5.0 * mult) + "%") : "";
+        String multBonus3 = mult > 1.0 ? ("&6Bonus Rank (" + mult + "x): &a+" + String.format("%.2f", 12.5 * mult) + "%") : "";
+
+        // 2. Package 1: 1 Hari (Slot 10) - 1.5% Base Yield
+        List<String> lore1 = new ArrayList<>(List.of(
+                "&7Jangka Waktu: &f24 Jam",
+                "&7Imbal Hasil Dasar: &a+1.5%",
+                "&7Cocok untuk investasi jangka pendek harian."
+        ));
+        if (!multBonus1.isEmpty()) lore1.add(multBonus1);
+        lore1.add(" ");
+        lore1.add("&eKlik untuk memilih paket deposito 1 Hari >");
+
         setButton(10, new GuiButton(new ItemBuilder(Material.COPPER_INGOT)
                 .name("&e&l[📦] PAKET HARIAN &8(1 HARI)")
-                .lore(List.of(
-                        "&7Jangka Waktu: &f24 Jam",
-                        "&7Imbal Hasil (Bunga): &a+1.5%",
-                        "&7Cocok untuk investasi jangka pendek harian.",
-                        " ",
-                        "&eKlik untuk memilih paket deposito 1 Hari >"
-                ))
+                .lore(lore1)
                 .build(), event -> promptDepositAmount(1, 0.015)));
 
-        // 3. Package 2: 3 Hari (Slot 12) - 5.0% Yield
+        // 3. Package 2: 3 Hari (Slot 12) - 5.0% Base Yield
+        List<String> lore2 = new ArrayList<>(List.of(
+                "&7Jangka Waktu: &f3 Hari (72 Jam)",
+                "&7Imbal Hasil Dasar: &a+5.0%",
+                "&7Pilihan terpopuler dengan hasil optimal."
+        ));
+        if (!multBonus2.isEmpty()) lore2.add(multBonus2);
+        lore2.add(" ");
+        lore2.add("&eKlik untuk memilih paket deposito 3 Hari >");
+
         setButton(12, new GuiButton(new ItemBuilder(Material.GOLD_INGOT)
                 .name("&6&l[📦] PAKET FLEKSIBEL &8(3 HARI)")
-                .lore(List.of(
-                        "&7Jangka Waktu: &f3 Hari (72 Jam)",
-                        "&7Imbal Hasil (Bunga): &a+5.0%",
-                        "&7Pilihan terpopuler dengan hasil optimal.",
-                        " ",
-                        "&eKlik untuk memilih paket deposito 3 Hari >"
-                ))
+                .lore(lore2)
                 .build(), event -> promptDepositAmount(3, 0.05)));
 
-        // 4. Package 3: 7 Hari (Slot 14) - 12.5% Yield
+        // 4. Package 3: 7 Hari (Slot 14) - 12.5% Base Yield
+        List<String> lore3 = new ArrayList<>(List.of(
+                "&7Jangka Waktu: &f7 Hari (168 Jam)",
+                "&7Imbal Hasil Dasar: &a+12.5%",
+                "&7Imbal hasil tertinggi bagi saudagar berpengalaman."
+        ));
+        if (!multBonus3.isEmpty()) lore3.add(multBonus3);
+        lore3.add(" ");
+        lore3.add("&eKlik untuk memilih paket deposito 7 Hari >");
+
         setButton(14, new GuiButton(new ItemBuilder(Material.NETHERITE_INGOT)
                 .name("&b&l[📦] PAKET MAKSIMAL &8(7 HARI)")
-                .lore(List.of(
-                        "&7Jangka Waktu: &f7 Hari (168 Jam)",
-                        "&7Imbal Hasil (Bunga): &a+12.5%",
-                        "&7Imbal hasil tertinggi bagi saudagar berpengalaman.",
-                        " ",
-                        "&eKlik untuk memilih paket deposito 7 Hari >"
-                ))
+                .lore(lore3)
                 .build(), event -> promptDepositAmount(7, 0.125)));
 
         // 5. Active Deposits List in Bottom Center (Slots 28..34)

@@ -73,6 +73,8 @@ class RankAdminController extends Controller
         $validated = $request->validate([
             'player_identifier' => ['required', 'string', 'max:100'],
             'rank' => ['required', 'string'],
+            'rank_type' => ['nullable', 'string', 'in:PERMANENT,TRIAL,permanent,trial'],
+            'duration_days' => ['nullable', 'integer', 'min:1', 'max:365'],
             'reason' => ['required', 'string', 'min:3', 'max:250'],
         ]);
 
@@ -84,11 +86,18 @@ class RankAdminController extends Controller
             return back()->with('error', "Pemain dengan identifier '{$validated['player_identifier']}' tidak ditemukan di basis data.");
         }
 
+        $rankType = strtoupper($validated['rank_type'] ?? 'PERMANENT');
+        $durationDays = ($rankType === 'TRIAL') ? (int) ($validated['duration_days'] ?? 30) : null;
+
         $result = RankService::assignRank(
             $request->user(),
             $account,
             $validated['rank'],
-            $validated['reason']
+            $validated['reason'],
+            $rankType,
+            $durationDays,
+            0.0,
+            'ADMIN'
         );
 
         if ($result['success']) {
@@ -96,5 +105,15 @@ class RankAdminController extends Controller
         }
 
         return back()->with('error', $result['message']);
+    }
+
+    /**
+     * Trigger manual trial rank expiration check.
+     */
+    public function expireTrials(): RedirectResponse
+    {
+        $expiredCount = RankService::checkAndExpireTrials();
+
+        return back()->with('success', "Pemeriksaan selesai. Sebanyak {$expiredCount} rank trial yang kedaluwarsa telah dinonaktifkan dan disinkronkan ke server.");
     }
 }

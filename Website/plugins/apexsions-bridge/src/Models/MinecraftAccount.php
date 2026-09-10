@@ -26,6 +26,8 @@ class MinecraftAccount extends Model
         'minecraft_username',
         'rank',
         'rank_display',
+        'rank_type',
+        'rank_expires_at',
         'kingdom',
         'kingdom_display',
         'level',
@@ -65,6 +67,7 @@ class MinecraftAccount extends Model
         'battlepass_has_premium' => 'boolean',
         'apex_coins' => 'integer',
         'unlocked_titles' => 'array',
+        'rank_expires_at' => 'datetime',
         'verification_expires_at' => 'datetime',
         'verified_at' => 'datetime',
         'last_seen_at' => 'datetime',
@@ -77,6 +80,58 @@ class MinecraftAccount extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Rank purchases history.
+     */
+    public function rankPurchases()
+    {
+        return $this->hasMany(RankPurchase::class, 'minecraft_account_id');
+    }
+
+    /**
+     * Claimed rank rewards.
+     */
+    public function rankRewardClaims()
+    {
+        return $this->hasMany(RankRewardClaim::class, 'minecraft_uuid', 'minecraft_uuid');
+    }
+
+    /**
+     * Check if account has an active trial rank.
+     */
+    public function isTrialRank(): bool
+    {
+        return strtoupper($this->rank_type ?? '') === 'TRIAL';
+    }
+
+    /**
+     * Check if account has a permanent rank.
+     */
+    public function isPermanentRank(): bool
+    {
+        return strtoupper($this->rank_type ?? 'PERMANENT') === 'PERMANENT';
+    }
+
+    /**
+     * Check if account has expired trial rank.
+     */
+    public function isRankExpired(): bool
+    {
+        if ($this->isPermanentRank()) {
+            return false;
+        }
+
+        return $this->rank_expires_at && $this->rank_expires_at->isPast();
+    }
+
+    /**
+     * Alias for isRankExpired.
+     */
+    public function isTrialExpired(): bool
+    {
+        return $this->isRankExpired();
     }
 
     /**

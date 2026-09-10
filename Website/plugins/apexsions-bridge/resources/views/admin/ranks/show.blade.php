@@ -84,6 +84,7 @@
                 <tr>
                     <th class="ps-4">Pemain</th>
                     <th>UUID</th>
+                    <th>Tipe / Masa Aktif</th>
                     <th>Level</th>
                     <th>Saldo</th>
                     <th>Afiliasi Kerajaan</th>
@@ -101,6 +102,18 @@
                             </div>
                         </td>
                         <td><code class="small text-muted">{{ Str::limit($p->minecraft_uuid, 16) }}</code></td>
+                        <td>
+                            @if($p->isTrialRank())
+                                <span class="badge bg-info text-dark fw-bold">TRIAL</span>
+                                @if($p->rank_expires_at)
+                                    <div class="small text-muted" style="font-size: 0.75rem;">
+                                        Habis: {{ $p->rank_expires_at->diffForHumans() }}
+                                    </div>
+                                @endif
+                            @else
+                                <span class="badge bg-success fw-bold">PERMANEN</span>
+                            @endif
+                        </td>
                         <td><span class="fw-bold text-warning">Lv. {{ $p->level }}</span></td>
                         <td>
                             <div class="small">
@@ -127,7 +140,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="7" class="p-0">
+                        <td colspan="8" class="p-0">
                             <div class="apx-empty-state py-4">
                                 <div class="apx-empty-icon" style="font-size: 2.4rem;">
                                     <i class="bi bi-person-x"></i>

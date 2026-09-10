@@ -96,6 +96,7 @@ commands:
     usage: /level
   rtp:
     aliases:
+      - tpr
       - wild
       - wilderness
       - krtp
@@ -104,6 +105,10 @@ commands:
     description: Random teleport strictly inside your pledged kingdom territory.
     permission: apexsionscore.command.rtp
     usage: /rtp
+  tpr:
+    description: Safe random teleport strictly inside your pledged kingdom territory.
+    permission: apexsionscore.command.rtp
+    usage: /tpr
   wild:
     aliases:
       - wilderness

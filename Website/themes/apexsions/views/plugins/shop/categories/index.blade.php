@@ -199,20 +199,21 @@
                 </div>
 
                 @php
-                    // Collect featured packages: Sions, Season Pass, and a booster or coin pack
+                    $linkedAccount = auth()->check() ? \Azuriom\Plugin\ApexsionsBridge\Models\MinecraftAccount::where('user_id', auth()->id())->first() : null;
+
+                    // Collect featured packages: Sions Permanent, Exsio Pass, and Booster/Coin
                     $featuredPackages = collect();
                     if (isset($categories)) {
                         foreach ($categories as $cat) {
                             foreach ($cat->packages as $pkg) {
                                 $pName = strtolower($pkg->name);
-                                if (str_contains($pName, 'sions') || str_contains($pName, 'peradaban kuno') || str_contains($pName, 'xp booster') || str_contains($pName, '1.200')) {
+                                if ((str_contains($pName, 'sions') && str_contains($pName, 'permanen')) || str_contains($pName, 'exsio pass') || str_contains($pName, 'xp booster')) {
                                     $pkg->setRelation('category', $cat);
                                     $featuredPackages->push($pkg);
                                 }
                             }
                         }
                     }
-                    // Take top 3
                     $featuredPackages = $featuredPackages->take(3);
                 @endphp
 
@@ -224,79 +225,101 @@
                             $defaultImage = null;
                             $fallbackIcon = 'bi bi-gem';
                             $cardModifierClass = '';
+                            $rankCrest = null;
+                            $badgeText = null;
+                            $badgeClass = '';
+
+                            $isTrial30 = str_contains($packageName, '30 hari') || str_contains($packageName, 'trial 30');
+                            $isTrial90 = str_contains($packageName, '90 hari') || str_contains($packageName, 'trial 90');
+                            $isTrial = $isTrial30 || $isTrial90 || str_contains($packageName, 'trial');
+                            $isPermanent = str_contains($packageName, 'permanen');
 
                             if (str_contains($packageName, 'sions')) {
                                 $cardModifierClass = 'apx-pkg-sions';
-                                $defaultImage = theme_asset('img/logo.jpg') . '?v=' . (@filemtime(public_path('assets/themes/apexsions/img/logo.jpg')) ?: '2');
+                                $defaultImage = theme_asset('img/package-sions.jpg');
+                                $rankCrest = theme_asset('img/ranks/rank-sions.png');
+                                $badgeText = 'PERMANEN • APEX SIONS';
+                                $badgeClass = 'apx-badge-perm';
+                            } elseif (str_contains($packageName, 'exsio pass')) {
+                                $cardModifierClass = 'apx-pkg-exsio-pass';
+                                $defaultImage = theme_asset('img/package-exsio-pass.jpg');
+                                $fallbackIcon = 'bi bi-award-fill';
+                                $badgeText = 'ULTIMATE PASS • INCLUDES SIO';
+                                $badgeClass = 'bg-primary text-white border border-info';
                             } elseif (str_contains($packageName, 'pass')) {
-                                $cardModifierClass = 'apx-pkg-pass';
+                                $cardModifierClass = 'apx-pkg-sio-pass';
+                                $defaultImage = theme_asset('img/package-sio-pass.jpg');
                                 $fallbackIcon = 'bi bi-trophy-fill';
+                                $badgeText = 'SEASON PASS • JALUR EMAS';
+                                $badgeClass = 'bg-warning text-dark border border-warning';
                             } elseif (str_contains($packageName, 'booster')) {
                                 $fallbackIcon = 'bi bi-lightning-charge-fill';
+                                $badgeText = 'BOOSTER 72 JAM';
+                                $badgeClass = 'bg-warning text-dark';
                             }
 
-                            $userIgn = (auth()->check() ? auth()->user()->name : null) ?? 'Username_Minecraft_Kamu';
-                            $userEmail = auth()->check() ? auth()->user()->email : '-';
-                            $priceFormatted = shop_format_amount($package->getPrice());
-
-                            $waBaseText = "Halo Admin Apexsions! Saya ingin memesan paket dari Webstore resmi:\n\n"
-                                . "👑 Paket: " . $package->name . "\n"
-                                . "💰 Harga: " . $priceFormatted . "\n"
-                                . "📂 Kategori: " . ($pkgCategory ? $pkgCategory->name : 'Webstore') . "\n"
-                                . "🎮 Akun Minecraft (IGN): " . $userIgn . "\n"
-                                . "📧 Email Akun: " . $userEmail . "\n\n"
-                                . "Mohon nomor rekening/QRIS dan instruksi aktivasi peradaban. Terima kasih!";
+                            $discountInfo = \Azuriom\Plugin\ApexsionsBridge\Services\BattlepassDiscountService::calculateDiscount(
+                                $linkedAccount,
+                                $package,
+                                (float) $package->getPrice()
+                            );
 
                             $primaryAdmin = $founderAdmins[0] ?? ['name' => 'Rifqi', 'number' => '6281212994597'];
                             $primaryCleanNum = preg_replace('/[^0-9]/', '', $primaryAdmin['number']);
-                            $primaryWaUrl = 'https://wa.me/' . $primaryCleanNum . '?text=' . rawurlencode($waBaseText);
+                            $primaryWaUrl = 'https://wa.me/' . $primaryCleanNum . '?text=' . rawurlencode($discountInfo['whatsapp_message']);
                         @endphp
 
                         <div class="col-md-6 col-xl-4">
                             <div class="apx-package-card h-100 d-flex flex-column {{ $cardModifierClass }}">
-                                @if(str_contains($packageName, 'sions'))
-                                    <span class="apx-package-badge" style="background: rgba(234, 179, 8, 0.25); color: #fde047; border: 1px solid #fde047;">
-                                        <i class="bi bi-star-fill me-1"></i> APEX TIER
-                                    </span>
-                                @elseif(str_contains($packageName, 'pass'))
-                                    <span class="apx-package-badge" style="background: rgba(168, 85, 247, 0.25); color: #d8b4fe; border: 1px solid #a855f7;">
-                                        <i class="bi bi-trophy-fill me-1"></i> SEASON PASS
-                                    </span>
-                                @elseif(str_contains($packageName, 'booster'))
-                                    <span class="apx-package-badge" style="background: rgba(245, 158, 11, 0.25); color: #fde68a; border: 1px solid #f59e0b;">
-                                        <i class="bi bi-lightning-fill me-1"></i> <span data-i18n="shop_badge_3days">3 HARI AKTIF</span>
-                                    </span>
-                                @else
-                                    <span class="apx-package-badge">
-                                        <i class="bi bi-patch-check-fill text-warning me-1"></i> <span data-i18n="shop_badge_perm">PERMANEN</span>
+                                @if($badgeText)
+                                    <span class="apx-package-badge {{ $badgeClass }}">
+                                        @if($isPermanent)
+                                            <i class="bi bi-patch-check-fill me-1"></i>
+                                        @else
+                                            <i class="bi bi-star-fill me-1"></i>
+                                        @endif
+                                        {{ $badgeText }}
                                     </span>
                                 @endif
 
-                                @if($package->hasImage())
-                                    <div class="apx-package-image-wrap">
+                                <div class="apx-package-image-wrap position-relative">
+                                    @if($rankCrest)
+                                        <img class="apx-rank-badge-overlay" src="{{ $rankCrest }}" alt="Rank Crest" loading="lazy">
+                                    @endif
+
+                                    @if($package->hasImage())
                                         <img class="apx-package-image" src="{{ $package->imageUrl() }}" alt="{{ $package->name }}" loading="lazy">
-                                    </div>
-                                @elseif($defaultImage)
-                                    <div class="apx-package-image-wrap p-2">
-                                        <img class="apx-package-image rounded" src="{{ $defaultImage }}" alt="{{ $package->name }}" style="max-height: 140px; width: 100%; object-fit: cover;" loading="lazy">
-                                    </div>
-                                @else
-                                    <div class="apx-package-image-wrap">
-                                        <div class="d-inline-flex align-items-center justify-content-center" style="width: 72px; height: 72px; border-radius: 12px; background: rgba(245, 158, 11, 0.12); border: 1px solid var(--apx-gold-border); color: var(--apx-gold); font-size: 2rem;">
+                                    @elseif($defaultImage)
+                                        <img class="apx-package-image" src="{{ $defaultImage }}" alt="{{ $package->name }}" style="max-height: 140px; width: 100%; object-fit: cover;" loading="lazy">
+                                    @else
+                                        <div class="d-inline-flex align-items-center justify-content-center w-100" style="height: 140px; background: rgba(245, 158, 11, 0.08); color: var(--apx-gold); font-size: 2.5rem;">
                                             <i class="{{ $fallbackIcon }}"></i>
                                         </div>
-                                    </div>
-                                @endif
+                                    @endif
+                                </div>
 
                                 <div class="apx-package-body d-flex flex-column flex-grow-1">
                                     <h3 class="apx-package-title">{{ $package->name }}</h3>
 
-                                    <div class="apx-package-price-wrap">
-                                        @if($package->isDiscounted())
+                                    <div class="apx-package-price-wrap mb-2">
+                                        @if($discountInfo['has_discount'])
+                                            <span class="apx-package-price-del">Rp {{ number_format($discountInfo['original_price'], 0, ',', '.') }}</span>
+                                            <span class="apx-package-price text-success">Rp {{ number_format($discountInfo['discounted_price'], 0, ',', '.') }}</span>
+                                        @elseif($package->isDiscounted())
                                             <span class="apx-package-price-del">{{ shop_format_amount($package->getOriginalPrice()) }}</span>
+                                            <span class="apx-package-price">{{ shop_format_amount($package->getPrice()) }}</span>
+                                        @else
+                                            <span class="apx-package-price">Rp {{ number_format($package->getPrice(), 0, ',', '.') }}</span>
                                         @endif
-                                        <span class="apx-package-price">{{ shop_format_amount($package->getPrice()) }}</span>
                                     </div>
+
+                                    @if($discountInfo['has_discount'])
+                                        <div class="mb-2">
+                                            <span class="apx-discount-chip">
+                                                <i class="bi bi-tag-fill"></i> Hemat Rp {{ number_format($discountInfo['savings'], 0, ',', '.') }} (Diskon {{ $discountInfo['discount_percent'] }}% Rank {{ $discountInfo['eligible_rank'] }})
+                                            </span>
+                                        </div>
+                                    @endif
 
                                     @if($package->short_description)
                                         <p class="text-muted small mb-3 flex-grow-1" style="line-height: 1.6;">
@@ -304,24 +327,24 @@
                                         </p>
                                     @endif
 
-                                    <ul class="apx-package-perks">
+                                    <ul class="apx-package-perks mb-3">
                                         @if(str_contains($packageName, 'sions'))
-                                            <li><i class="bi bi-crown text-warning"></i><span class="text-light" data-i18n="shop_sions_p1">Prefix Mahkota ✦ SIONS ✦</span></li>
-                                            <li><i class="bi bi-shield-check text-warning"></i><span class="text-light" data-i18n="shop_sions_p2">Seluruh Kit + Kit Sions Eksklusif</span></li>
-                                            <li><i class="bi bi-broadcast text-warning"></i><span class="text-light" data-i18n="shop_sions_p3">Pesan Broadcast Masuk Server Megah</span></li>
-                                            <li><i class="bi bi-geo-alt text-warning"></i><span class="text-light" data-i18n="shop_sions_p4">+15 Batas Klaim Wilayah Kerajaan</span></li>
-                                        @elseif(str_contains($packageName, 'peradaban kuno'))
-                                            <li><i class="bi bi-check2-circle text-warning"></i><span class="text-light" data-i18n="shop_prempass_p1">Buka Jalur Emas 100 Level Hadiah</span></li>
-                                            <li><i class="bi bi-check2-circle text-warning"></i><span class="text-light" data-i18n="shop_prempass_p2">Akses Quests Harian &amp; Mingguan</span></li>
-                                            <li><i class="bi bi-check2-circle text-warning"></i><span class="text-light" data-i18n="shop_prempass_p3">+25% Pengganda Perolehan EXP Pass</span></li>
-                                            <li><i class="bi bi-check2-circle text-warning"></i><span class="text-light" data-i18n="shop_prempass_p4">Diskon Toko Berputar /abp shop</span></li>
+                                            <li><i class="bi bi-house-door-fill text-warning"></i><span class="text-light">10 Homes • 20 Lelang • 15 Custom Enchants</span></li>
+                                            <li><i class="bi bi-clock-history text-warning"></i><span class="text-light">RTP 50s • Jual +17% • EXP +20% • Bank 3.0x</span></li>
+                                            <li><i class="bi bi-currency-dollar text-warning"></i><span class="text-warning fw-bold">Bonus Tunai: Rp 300.000 Server Money</span></li>
+                                            <li><i class="bi bi-palette-fill text-warning"></i><span class="text-light">/nick: Bebas Semua Warna &amp; Gradien</span></li>
+                                        @elseif(str_contains($packageName, 'exsio pass'))
+                                            <li><i class="bi bi-check2-circle text-info"></i><span class="text-light fw-bold">Otomatis Membuka Sio Pass Penuh (100 Level)</span></li>
+                                            <li><i class="bi bi-lightning-charge-fill text-warning"></i><span class="text-light">Instan Skip +20 Level Awal Battlepass</span></li>
+                                            <li><i class="bi bi-cash text-success"></i><span class="text-light">Bonus Tunai Rp 50.000 Saldo In-game</span></li>
+                                            <li><i class="bi bi-percent text-info"></i><span class="text-light">Diskon 15% untuk Pemegang Rank Sions</span></li>
                                         @elseif(str_contains($packageName, 'booster'))
                                             <li><i class="bi bi-check2-circle text-warning"></i><span class="text-light">Pengganda Pengalaman 2x Lipat</span></li>
                                             <li><i class="bi bi-check2-circle text-warning"></i><span class="text-light">Durasi Penuh 72 Jam Real-Time</span></li>
                                             <li><i class="bi bi-check2-circle text-warning"></i><span class="text-light">Berlaku untuk Leveling &amp; Pass</span></li>
                                         @else
-                                            <li><i class="bi bi-check2-circle text-warning"></i><span class="text-light" data-i18n="shop_fallback_p1">Aktivasi Otomatis via Akun Minecraft</span></li>
-                                            <li><i class="bi bi-check2-circle text-warning"></i><span class="text-light" data-i18n="shop_fallback_p2">Dukungan Transaksi Aman &amp; Terverifikasi</span></li>
+                                            <li><i class="bi bi-check2-circle text-warning"></i><span class="text-light">Aktivasi Otomatis via Akun Minecraft</span></li>
+                                            <li><i class="bi bi-shield-check text-warning"></i><span class="text-light">Dukungan Transaksi Aman &amp; Terverifikasi</span></li>
                                         @endif
                                     </ul>
 

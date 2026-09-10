@@ -225,17 +225,60 @@ class RankService
     }
 
     /**
+     * One-time money rewards for permanent ranks (strictly non-inheritable and non-duplicable).
+     */
+    protected static array $rankRewards = [
+        'ascendant' => 50000.0,
+        'archon' => 80000.0,
+        'sovereign' => 120000.0,
+        'emperor' => 180000.0,
+        'sions' => 300000.0,
+    ];
+
+    /**
+     * Get one-time money reward amount for a rank.
+     */
+    public static function getRankRewardAmount(string $rankKey): float
+    {
+        return self::$rankRewards[strtolower(trim($rankKey))] ?? 0.0;
+    }
+
+    /**
+     * Check if a player has already claimed the one-time money reward for a rank.
+     */
+    public static function hasClaimedReward(string $uuid, string $rankKey): bool
+    {
+        return \Azuriom\Plugin\ApexsionsBridge\Models\RankRewardClaim::where('minecraft_uuid', $uuid)
+            ->where('rank', strtolower(trim($rankKey)))
+            ->where('reward_type', 'MONEY_ONETIME')
+            ->exists();
+    }
+
+    /**
      * Execute safe rank assignment or change via LuckPerms delivery queue.
      *
      * @param mixed $actor The admin user performing the action
      * @param MinecraftAccount $account The target Minecraft player account
      * @param string $newRankKey The target rank identifier
      * @param string $reason The mandatory reason for the audit trail
+     * @param string $rankType 'PERMANENT' or 'TRIAL'
+     * @param int|null $durationDays 30, 90, or null
+     * @param float $pricePaid Price paid if from purchase
+     * @param string $source 'WEB', 'ADMIN', 'WEBSTORE'
      * @return array Result summary with status, message, and action_id
      */
-    public static function assignRank($actor, MinecraftAccount $account, string $newRankKey, string $reason): array
-    {
+    public static function assignRank(
+        $actor,
+        MinecraftAccount $account,
+        string $newRankKey,
+        string $reason,
+        string $rankType = 'PERMANENT',
+        ?int $durationDays = null,
+        float $pricePaid = 0.0,
+        string $source = 'WEB'
+    ): array {
         $normalizedRank = strtolower(trim($newRankKey));
+        $normalizedType = strtoupper(trim($rankType)) === 'TRIAL' ? 'TRIAL' : 'PERMANENT';
 
         if (!self::isValidRank($normalizedRank)) {
             return [
@@ -258,35 +301,95 @@ class RankService
         }
 
         $oldRankKey = strtolower(trim($account->rank ?: 'wanderer'));
-        if ($oldRankKey === $normalizedRank) {
+        $oldRankType = strtoupper(trim($account->rank_type ?: 'PERMANENT'));
+
+        if ($oldRankKey === $normalizedRank && $oldRankType === $normalizedType && $normalizedType === 'PERMANENT') {
             return [
                 'success' => false,
-                'message' => "Pemain {$account->minecraft_username} sudah memiliki rank '{$rankMeta['display_name']}'.",
+                'message' => "Pemain {$account->minecraft_username} sudah memiliki rank '{$rankMeta['display_name']}' (Permanen).",
             ];
         }
 
         $actionId = (string) Str::uuid();
         $actorName = $actor ? ($actor->name ?? 'Administrator') : 'Console';
         $actorId = $actor ? ($actor->id ?? null) : null;
-        $command = "lp user {$account->minecraft_username} parent set {$normalizedRank}";
 
-        // 1. Create delivery entry for in-game execution
+        $expiresAt = null;
+        if ($normalizedType === 'TRIAL' && $durationDays && $durationDays > 0) {
+            $expiresAt = now()->addDays($durationDays);
+        }
+
+        // 1. Create delivery command for LuckPerms
+        $commands = [];
+        $commands[] = "lp user {$account->minecraft_username} parent set {$normalizedRank}";
+
+        if ($normalizedType === 'PERMANENT') {
+            $commands[] = "lp user {$account->minecraft_username} permission set apexsions.rank.permanent true";
+            $commands[] = "lp user {$account->minecraft_username} permission unset apexsions.rank.trial";
+        } else {
+            $commands[] = "lp user {$account->minecraft_username} permission set apexsions.rank.trial true";
+            $commands[] = "lp user {$account->minecraft_username} permission unset apexsions.rank.permanent";
+        }
+
+        $compoundCommand = implode('; ', $commands);
+
         $delivery = Delivery::create([
             'action_id' => $actionId,
             'idempotency_key' => 'RANK_' . $account->minecraft_uuid . '_' . $normalizedRank . '_' . time(),
             'player_uuid' => $account->minecraft_uuid,
             'player_username' => $account->minecraft_username,
-            'command' => $command,
+            'command' => $compoundCommand,
             'status' => 'PENDING',
         ]);
 
-        // 2. Optimistically update local database
-        $account->update([
+        // 2. Update local MinecraftAccount model
+        $accountUpdates = [
             'rank' => $normalizedRank,
             'rank_display' => $rankMeta['display_name'],
+            'rank_type' => $normalizedType,
+            'rank_expires_at' => $expiresAt,
+        ];
+
+        // BattlePass perks for Emperor and Sions Permanent
+        if ($normalizedType === 'PERMANENT') {
+            if ($normalizedRank === 'emperor') {
+                $accountUpdates['battlepass_has_premium'] = true;
+                $accountUpdates['battlepass_pass_name'] = 'Sio Pass';
+            } elseif ($normalizedRank === 'sions') {
+                $accountUpdates['battlepass_has_premium'] = true;
+                $accountUpdates['battlepass_pass_name'] = 'Exsio Pass';
+            }
+        }
+
+        $account->update($accountUpdates);
+
+        // 3. Record purchase history
+        $purchase = \Azuriom\Plugin\ApexsionsBridge\Models\RankPurchase::create([
+            'user_id' => $account->user_id,
+            'minecraft_account_id' => $account->id,
+            'minecraft_uuid' => $account->minecraft_uuid,
+            'minecraft_username' => $account->minecraft_username,
+            'rank' => $normalizedRank,
+            'rank_type' => $normalizedType,
+            'duration_days' => $durationDays,
+            'price_paid' => $pricePaid,
+            'status' => 'ACTIVE',
+            'started_at' => now(),
+            'expires_at' => $expiresAt,
+            'source' => $source,
+            'notes' => $reason,
         ]);
 
-        // 3. Record in Unified Audit Log
+        // 4. One-time rank money reward (ONLY for Permanent ranks, strictly for the purchased rank, no duplicates!)
+        $rewardGranted = 0.0;
+        if ($normalizedType === 'PERMANENT' && isset(self::$rankRewards[$normalizedRank])) {
+            $rewardAmount = (float) self::$rankRewards[$normalizedRank];
+            if (self::claimPermanentMoneyReward($account, $normalizedRank, $rewardAmount, $purchase->id ?? null)) {
+                $rewardGranted = $rewardAmount;
+            }
+        }
+
+        // 5. Record in Unified Audit Log
         $actionType = ($normalizedRank === 'wanderer') ? 'RANK_RESET' : 'RANK_CHANGE';
         $audit = AuditLog::create([
             'action_id' => $actionId,
@@ -297,29 +400,150 @@ class RankService
             'target_type' => 'PLAYER',
             'target_id' => $account->minecraft_uuid,
             'target_name' => $account->minecraft_username,
-            'old_value' => $oldRankKey,
-            'new_value' => $normalizedRank,
+            'old_value' => $oldRankKey . ' (' . $oldRankType . ')',
+            'new_value' => $normalizedRank . ' (' . $normalizedType . ')',
             'reason' => $reason,
-            'source' => 'WEB',
+            'source' => $source,
             'status' => 'PENDING',
             'metadata' => [
                 'action_id' => $actionId,
                 'delivery_id' => $delivery->id,
+                'purchase_id' => $purchase->id,
+                'rank_type' => $normalizedType,
+                'duration_days' => $durationDays,
+                'expires_at' => $expiresAt ? $expiresAt->toIso8601String() : null,
+                'reward_granted' => $rewardGranted,
                 'rank_display' => $rankMeta['display_name'],
                 'tier' => $rankMeta['tier'],
                 'weight' => $rankMeta['weight'],
-                'command' => $command,
+                'command' => $compoundCommand,
             ],
         ]);
 
+        $statusMsg = "Rank {$account->minecraft_username} berhasil disetel ke '{$rankMeta['display_name']}' [{$normalizedType}]!";
+        if ($rewardGranted > 0) {
+            $statusMsg .= " Bonus uang reward satu kali Rp." . number_format($rewardGranted, 0, ',', '.') . " telah dikreditkan.";
+        }
+
         return [
             'success' => true,
-            'message' => "Rank pemain {$account->minecraft_username} berhasil diubah menjadi '{$rankMeta['display_name']}'! Perintah LuckPerms telah dijadwalkan ke server Minecraft.",
+            'message' => $statusMsg,
             'action_id' => $actionId,
             'delivery_id' => $delivery->id,
             'audit_id' => $audit->id,
             'new_rank' => $normalizedRank,
             'new_rank_display' => $rankMeta['display_name'],
+            'rank_type' => $normalizedType,
+            'reward_granted' => $rewardGranted,
         ];
+    }
+
+    /**
+     * Safely claim permanent one-time money reward ensuring strict non-duplication.
+     */
+    public static function claimPermanentMoneyReward(MinecraftAccount $account, string $rank, float $amount, $purchaseId = null): bool
+    {
+        $normalizedRank = strtolower(trim($rank));
+        if (self::hasClaimedReward($account->minecraft_uuid, $normalizedRank)) {
+            return false;
+        }
+
+        $actionId = (string) Str::uuid();
+
+        try {
+            \Azuriom\Plugin\ApexsionsBridge\Models\RankRewardClaim::create([
+                'minecraft_uuid' => $account->minecraft_uuid,
+                'minecraft_username' => $account->minecraft_username,
+                'rank' => $normalizedRank,
+                'reward_type' => 'MONEY_ONETIME',
+                'amount' => $amount,
+                'transaction_reference' => $actionId,
+                'claimed_at' => now(),
+            ]);
+
+            Delivery::create([
+                'action_id' => $actionId,
+                'idempotency_key' => 'REWARD_' . $account->minecraft_uuid . '_' . $normalizedRank . '_' . time(),
+                'player_uuid' => $account->minecraft_uuid,
+                'player_username' => $account->minecraft_username,
+                'command' => "eco give {$account->minecraft_username} {$amount}",
+                'status' => 'PENDING',
+            ]);
+
+            $account->increment('balance_rupiah', $amount);
+
+            return true;
+        } catch (\Exception $e) {
+            // Duplicate unique constraint prevented exploit
+            return false;
+        }
+    }
+
+    /**
+     * Check and expire trial ranks across all accounts.
+     */
+    public static function checkAndExpireTrials(): int
+    {
+        $expiredAccounts = MinecraftAccount::where(function ($q) {
+                $q->where('rank_type', 'TRIAL')->orWhere('rank_type', 'trial');
+            })
+            ->whereNotNull('rank_expires_at')
+            ->where('rank_expires_at', '<=', now())
+            ->where('rank', '!=', 'wanderer')
+            ->get();
+
+        $count = 0;
+        foreach ($expiredAccounts as $account) {
+            $oldRank = $account->rank;
+            $actionId = (string) Str::uuid();
+
+            // Set back to wanderer in LuckPerms
+            $command = "lp user {$account->minecraft_username} parent set wanderer; lp user {$account->minecraft_username} permission unset apexsions.rank.trial; lp user {$account->minecraft_username} permission unset apexsions.rank.permanent";
+
+            Delivery::create([
+                'action_id' => $actionId,
+                'idempotency_key' => 'RANK_EXPIRE_' . $account->minecraft_uuid . '_' . time(),
+                'player_uuid' => $account->minecraft_uuid,
+                'player_username' => $account->minecraft_username,
+                'command' => $command,
+                'status' => 'PENDING',
+            ]);
+
+            // Update account
+            $account->update([
+                'rank' => 'wanderer',
+                'rank_display' => 'Wanderer',
+                'rank_type' => 'PERMANENT',
+                'rank_expires_at' => null,
+            ]);
+
+            // Mark purchase as expired
+            \Azuriom\Plugin\ApexsionsBridge\Models\RankPurchase::where('minecraft_account_id', $account->id)
+                ->where(function ($q) {
+                    $q->where('rank_type', 'TRIAL')->orWhere('rank_type', 'trial');
+                })
+                ->where('status', 'ACTIVE')
+                ->update(['status' => 'EXPIRED']);
+
+            // Audit
+            AuditLog::create([
+                'action_id' => $actionId,
+                'actor_type' => 'SYSTEM',
+                'actor_name' => 'Trial Expiration Daemon',
+                'action' => 'RANK_EXPIRED',
+                'target_type' => 'PLAYER',
+                'target_id' => $account->minecraft_uuid,
+                'target_name' => $account->minecraft_username,
+                'old_value' => $oldRank . ' (TRIAL)',
+                'new_value' => 'wanderer (PERMANENT)',
+                'reason' => 'Masa aktif trial rank telah habis.',
+                'source' => 'SYSTEM',
+                'status' => 'SUCCESS',
+            ]);
+
+            $count++;
+        }
+
+        return $count;
     }
 }

@@ -60,8 +60,36 @@ public class AuctionService {
         }, 600L, 600L); // every 30s
     }
 
+    public int getPlayerActiveListingCount(UUID sellerUuid) {
+        int count = 0;
+        for (AuctionListing al : activeAuctions.values()) {
+            if (al.getStatus() == AuctionStatus.ACTIVE && !al.isExpired() && sellerUuid.equals(al.getSellerUuid())) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    public int getPlayerListingLimit(Player player) {
+        if (player == null) return 3;
+        if (player.isOp() || player.hasPermission("apexsions.admin")) return Integer.MAX_VALUE;
+        if (player.hasPermission("apexsions.auction.limit.sions") || player.hasPermission("apexsions.rank.sions")) return 20;
+        if (player.hasPermission("apexsions.auction.limit.emperor") || player.hasPermission("apexsions.rank.emperor")) return 14;
+        if (player.hasPermission("apexsions.auction.limit.sovereign") || player.hasPermission("apexsions.rank.sovereign")) return 10;
+        if (player.hasPermission("apexsions.auction.limit.archon") || player.hasPermission("apexsions.rank.archon")) return 7;
+        if (player.hasPermission("apexsions.auction.limit.ascendant") || player.hasPermission("apexsions.rank.ascendant")) return 4;
+        return 3;
+    }
+
     public boolean createAuction(Player seller, ItemStack item, Currency currency, double price, int durationHours) {
         if (seller == null || item == null || currency == null || price <= 0) return false;
+
+        int limit = getPlayerListingLimit(seller);
+        int current = getPlayerActiveListingCount(seller.getUniqueId());
+        if (current >= limit) {
+            seller.sendMessage("§c[✖] Anda telah mencapai batas maksimal listing lelang aktif (" + limit + " barang)!");
+            return false;
+        }
 
         return plugin.getCurrencyService().getLockManager().executeWithAccountLock(seller.getUniqueId(), () -> {
             // Take item safely from seller

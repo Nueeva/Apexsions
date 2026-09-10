@@ -92,12 +92,13 @@ public class KingdomRtpService {
 
         // 5. Check Cooldown
         long now = System.currentTimeMillis();
-        long cooldownSeconds = plugin.getConfigManager().getMainConfig().getLong("rtp.cooldown-seconds", 60L);
-        if (!player.hasPermission("apexsionscore.rtp.bypass")) {
+        long cooldownSeconds = getCooldownSeconds(player);
+        if (!player.hasPermission("apexsionscore.rtp.bypass") && cooldownSeconds > 0) {
             Long expireTime = cooldowns.get(player.getUniqueId());
             if (expireTime != null && expireTime > now) {
                 long remaining = (expireTime - now + 999) / 1000;
-                player.sendMessage(miniMessage.deserialize("<red>Tunggu <yellow>" + remaining + " detik</yellow> lagi sebelum dapat menggunakan /rtp kembali.</red>"));
+                String remainingFormatted = formatCooldown(remaining);
+                player.sendMessage(miniMessage.deserialize("<red>Tunggu <yellow>" + remainingFormatted + "</yellow> lagi sebelum dapat menggunakan /rtp kembali.</red>"));
                 return;
             }
         }
@@ -105,6 +106,28 @@ public class KingdomRtpService {
         // 6. Start Search
         player.sendMessage(miniMessage.deserialize("<gold>🔍 Mencari lokasi acak yang aman di wilayah kerajaan <yellow>" + region.getDisplayName() + "</yellow>...</gold>"));
         findAndTeleport(player, region, 0, 30, cooldownSeconds);
+    }
+
+    public long getCooldownSeconds(Player player) {
+        if (player == null || player.hasPermission("apexsionscore.rtp.bypass")) return 0L;
+        if (player.hasPermission("apexsions.rtp.cooldown.sions") || player.hasPermission("apexsions.rank.sions")) return 50L;
+        if (player.hasPermission("apexsions.rtp.cooldown.emperor") || player.hasPermission("apexsions.rank.emperor")) return 70L;
+        if (player.hasPermission("apexsions.rtp.cooldown.sovereign") || player.hasPermission("apexsions.rank.sovereign")) return 95L;
+        if (player.hasPermission("apexsions.rtp.cooldown.archon") || player.hasPermission("apexsions.rank.archon")) return 120L;
+        if (player.hasPermission("apexsions.rtp.cooldown.ascendant") || player.hasPermission("apexsions.rank.ascendant")) return 135L;
+        return plugin.getConfigManager().getMainConfig().getLong("rtp.cooldown-seconds", 150L);
+    }
+
+    private String formatCooldown(long seconds) {
+        if (seconds < 60) {
+            return seconds + " detik";
+        }
+        long minutes = seconds / 60;
+        long remainingSec = seconds % 60;
+        if (remainingSec == 0) {
+            return minutes + " menit";
+        }
+        return minutes + " menit " + remainingSec + " detik";
     }
 
     private void findAndTeleport(Player player, Region region, int attempt, int maxAttempts, long cooldownSeconds) {

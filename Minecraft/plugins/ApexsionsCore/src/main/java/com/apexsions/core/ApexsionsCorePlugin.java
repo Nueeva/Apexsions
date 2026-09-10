@@ -411,6 +411,11 @@ public class ApexsionsCorePlugin extends JavaPlugin {
             wildCmd.setExecutor(rtpHandler);
             wildCmd.setTabCompleter(rtpHandler);
         }
+        PluginCommand tprCmd = getCommand("tpr");
+        if (tprCmd != null) {
+            tprCmd.setExecutor(rtpHandler);
+            tprCmd.setTabCompleter(rtpHandler);
+        }
 
         // /warp (aliases: /warps, /warpmgr, /warpadmin)
         com.apexsions.core.command.WarpCommand warpHandler = new com.apexsions.core.command.WarpCommand(this);

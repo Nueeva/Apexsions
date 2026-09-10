@@ -91,22 +91,27 @@ foreach ($shopCategories as $cat) {
 echo "\n[2/4] Synchronizing Shop Packages...\n";
 
 $shopPackages = [
-    // --- RANK KASTA DONATUR ---
+    // =========================================================================
+    // 1. ASCENDANT
+    // =========================================================================
     [
         'category_id' => 1,
-        'name' => 'Ascendant Rank',
-        'short_description' => 'Kasta donatur perintis dengan hak akses kit dasar dan prioritas antrean.',
-        'description' => "### Hak Istimewa Kasta Ascendant\n" .
+        'name' => 'Ascendant (Trial 30 Hari)',
+        'short_description' => 'Awal pendakian peradaban. Paket Trial 30 Hari dengan bonus ekonomi dan limit esensial.',
+        'description' => "### Hak Istimewa Kasta Ascendant (Trial 30 Hari)\n" .
             "- **Prefix Chat & Tab:** `[☘ ASCENDANT]` dengan warna hijau zamrud berkilau.\n" .
-            "- **Akses Kit Khusus:** Akses ke Kit Ascendant harian (`/kit ascendant`).\n" .
-            "- **Ekspansi Wilayah:** +2 Batas klaim wilayah kerajaan (`/k claim`).\n" .
-            "- **Prioritas Masuk:** Bypass antrean saat server penuh.\n" .
-            "- **Perintah Utilitas:** `/hat`, `/near`, `/craft`, `/workbench`.\n" .
-            "- **Durasi:** Permanen seumur hidup.",
+            "- **Maksimal Homes:** 3 Homes (`/sethome`).\n" .
+            "- **Batas Listing Lelang:** 4 Barang aktif di Auction House (`/ah` / `/lelang`).\n" .
+            "- **Batas Custom Enchants:** Maksimal 5 Sihir Kustom per item.\n" .
+            "- **Cooldown RTP:** 2 Menit 15 Detik (`/rtp` / `/tpr`).\n" .
+            "- **Bonus Jual Shop:** +3% Harga jual komoditas di Toko Kerajaan (`/shop`).\n" .
+            "- **Bonus EXP Level:** +5% Pengganda kenaikan EXP Level Karakter.\n" .
+            "- **Masa Aktif:** 30 Hari (Berbatas Waktu).\n" .
+            "- *Catatan:* Paket Trial tidak memperoleh Kit Permanen atau Uang Reward Satu Kali.",
         'position' => 1,
-        'image' => null,
-        'price' => 35000,
-        'commands' => json_encode(['lp user {player} parent add ascendant']),
+        'image' => 'package-ascendant.jpg',
+        'price' => 20000,
+        'commands' => json_encode(['lp user {player} parent addtemp ascendant 30d', 'lp user {player} permission settemp apexsions.rank.trial true 30d']),
         'has_quantity' => false,
         'is_enabled' => true,
         'created_at' => $now,
@@ -114,104 +119,389 @@ $shopPackages = [
     ],
     [
         'category_id' => 1,
-        'name' => 'Archon Rank',
-        'short_description' => 'Kasta ksatria agung dengan hak kit tempur dan kosmetik bercahaya.',
-        'description' => "### Hak Istimewa Kasta Archon\n" .
-            "- **Prefix Chat & Tab:** `[💎 ARCHON]` dengan gradien cyan kristal.\n" .
-            "- **Mencakup:** Seluruh keuntungan kasta Ascendant.\n" .
-            "- **Akses Kit Khusus:** Akses ke Kit Archon mingguan (`/kit archon`).\n" .
-            "- **Ekspansi Wilayah:** +4 Batas klaim wilayah kerajaan.\n" .
-            "- **Perintah Utilitas:** `/anvil`, `/smithing`, `/enderchest` (`/ec`).\n" .
-            "- **Kosmetik Bercahaya:** Akses glow warna biru kristal (`/glow`).\n" .
-            "- **Diskon Barter:** Diskon 5% biaya administrasi pasar lelang.",
+        'name' => 'Ascendant (Trial 90 Hari)',
+        'short_description' => 'Paket Trial 90 Hari Ascendant dengan diskon hemat untuk warga aktif peradaban.',
+        'description' => "### Hak Istimewa Kasta Ascendant (Trial 90 Hari)\n" .
+            "- **Mencakup:** Seluruh keuntungan kasta Ascendant Trial.\n" .
+            "- **Maksimal Homes:** 3 Homes (`/sethome`).\n" .
+            "- **Batas Listing Lelang:** 4 Barang aktif di Auction House (`/ah`).\n" .
+            "- **Batas Custom Enchants:** Maksimal 5 Sihir Kustom per item.\n" .
+            "- **Cooldown RTP:** 2 Menit 15 Detik (`/rtp` / `/tpr`).\n" .
+            "- **Bonus Jual Shop:** +3% Harga jual komoditas di Toko Kerajaan (`/shop`).\n" .
+            "- **Bonus EXP Level:** +5% Pengganda kenaikan EXP Level Karakter.\n" .
+            "- **Masa Aktif:** 90 Hari (3 Bulan Penuh).",
         'position' => 2,
-        'image' => null,
-        'price' => 75000,
-        'commands' => json_encode(['lp user {player} parent add archon']),
-        'has_quantity' => false,
-        'is_enabled' => true,
-        'created_at' => $now,
-        'updated_at' => $now,
-    ],
-    [
-        'category_id' => 1,
-        'name' => 'Sovereign Rank',
-        'short_description' => 'Kasta penguasa tanah dengan sayap partikel dan hak wilayah luas.',
-        'description' => "### Hak Istimewa Kasta Sovereign\n" .
-            "- **Prefix Chat & Tab:** `[⚜ SOVEREIGN]` dengan gradien emas kemilau.\n" .
-            "- **Mencakup:** Seluruh keuntungan kasta Archon & Ascendant.\n" .
-            "- **Akses Kit Khusus:** Akses ke Kit Sovereign 14 harian (Gear ber-set bonus).\n" .
-            "- **Ekspansi Wilayah:** +7 Batas klaim wilayah kerajaan.\n" .
-            "- **Kosmetik Sayap:** Efek partikel sayap emas eksklusif (`/cosmetics`).\n" .
-            "- **Perintah Utilitas:** `/feed`, `/condense`, `/disposal`.\n" .
-            "- **Bebas Tarif Dagang:** Bebas biaya transportasi perdagangan lintas kerajaan (Hemat Rp 5.000 per trade).",
-        'position' => 3,
-        'image' => null,
-        'price' => 150000,
-        'commands' => json_encode(['lp user {player} parent add sovereign']),
-        'has_quantity' => false,
-        'is_enabled' => true,
-        'created_at' => $now,
-        'updated_at' => $now,
-    ],
-    [
-        'category_id' => 1,
-        'name' => 'Emperor Rank',
-        'short_description' => 'Kasta kaisar perang agung dengan hak terbang di ibukota dan kit legendaris.',
-        'description' => "### Hak Istimewa Kasta Emperor\n" .
-            "- **Prefix Chat & Tab:** `[⚔ EMPEROR]` dengan gradien merah rubi membara.\n" .
-            "- **Mencakup:** Seluruh keuntungan kasta Sovereign, Archon & Ascendant.\n" .
-            "- **Akses Kit Khusus:** Akses ke Kit Emperor bulanan (Armor Set Bonus Attack & Critical Damage).\n" .
-            "- **Ekspansi Wilayah:** +10 Batas klaim wilayah kerajaan.\n" .
-            "- **Hak Terbang:** Hak terbang (`/fly`) di seluruh wilayah klaim pribadi dan ibukota kerajaan.\n" .
-            "- **Perintah Utilitas:** `/repair all`, `/extinguish`, `/ptime` (Personal Time).\n" .
-            "- **Antrean:** Prioritas puncak di seluruh server.",
-        'position' => 4,
-        'image' => null,
-        'price' => 275000,
-        'commands' => json_encode(['lp user {player} parent add emperor']),
-        'has_quantity' => false,
-        'is_enabled' => true,
-        'created_at' => $now,
-        'updated_at' => $now,
-    ],
-    [
-        'category_id' => 1,
-        'name' => 'Sions Rank',
-        'short_description' => 'Kasta tertinggi dan paling prestisius di seluruh jagat peradaban Apexsions.',
-        'description' => "### Hak Istimewa Kasta Sions (Puncak Donatur)\n" .
-            "- **Prefix Chat & Tab:** `[✦ SIONS ✦]` dengan gradien Cyan-Emas Ultra Elegan.\n" .
-            "- **Mencakup:** SELURUH hak istimewa semua kasta di bawahnya.\n" .
-            "- **Akses Kit Tertinggi:** Akses ke seluruh Kit Donatur + Kit Sions Eksklusif (Ultimate Armor Set).\n" .
-            "- **Ekspansi Wilayah:** +15 Batas klaim wilayah kerajaan.\n" .
-            "- **Join Broadcast:** Pesan megah broadcast ke seluruh server setiap kali Anda masuk.\n" .
-            "- **Aura Mahkota:** Efek mahkota bercahaya dan jejak partikel legenda.\n" .
-            "- **Lounge Donatur:** Akses ke ruang VIP eksklusif di Discord & in-game.\n" .
-            "- **Bonus Awal:** Bonus 1.000 Apex Coins & 1x Golden Crate Key instan.",
-        'position' => 5,
-        'image' => null,
-        'price' => 500000,
-        'commands' => json_encode(['lp user {player} parent add sions', 'abp exp give {player} 1000']),
-        'has_quantity' => false,
-        'is_enabled' => true,
-        'created_at' => $now,
-        'updated_at' => $now,
-    ],
-
-    // --- BATTLEPASS MUSIMAN ---
-    [
-        'category_id' => 2,
-        'name' => 'Premium Pass Musiman',
-        'short_description' => 'Buka 100 level jalur hadiah Premium dan quests mingguan eksklusif.',
-        'description' => "### Benefit Premium Pass\n" .
-            "- **Akses 100 Level Premium:** Membuka seluruh tier hadiah jalur emas (Gold Track) level 1 s/d 100.\n" .
-            "- **Quests Eksklusif:** Akses ke Quests Harian & Mingguan berhadiah koin serta material langka.\n" .
-            "- **EXP Boost:** Pengganda perolehan EXP Pass sebesar +25% dari setiap aktivitas.\n" .
-            "- **Akses EXP Shop:** Hak berbelanja di Rotating EXP Shop dengan penawaran diskon khusus (`/abp`).",
-        'position' => 1,
-        'image' => null,
+        'image' => 'package-ascendant.jpg',
         'price' => 45000,
-        'commands' => json_encode(['abp pass grant {player} premium']),
+        'commands' => json_encode(['lp user {player} parent addtemp ascendant 90d', 'lp user {player} permission settemp apexsions.rank.trial true 90d']),
+        'has_quantity' => false,
+        'is_enabled' => true,
+        'created_at' => $now,
+        'updated_at' => $now,
+    ],
+    [
+        'category_id' => 1,
+        'name' => 'Ascendant (Permanen)',
+        'short_description' => 'Kasta Ascendant seumur hidup dengan Kit Ascendant eksklusif dan saldo awal Rp 50.000.',
+        'description' => "### Hak Istimewa Kasta Ascendant (PERMANEN)\n" .
+            "- **Durasi:** Permanen Seumur Hidup (Tanpa Batas Waktu).\n" .
+            "- **Mencakup:** SELURUH benefit Ascendant Trial.\n" .
+            "- **Bonus Uang Satu Kali:** Rp 50.000 Saldo Server (Diberikan sekali, anti-duplikasi).\n" .
+            "- **Akses Kit Eksklusif:** Ascendant Kit berkala (`/kits`).\n" .
+            "- **Maksimal Homes:** 3 Homes (`/sethome`).\n" .
+            "- **Batas Listing Lelang:** 4 Barang aktif di Auction House (`/ah`).\n" .
+            "- **Batas Custom Enchants:** Maksimal 5 Sihir Kustom per item.\n" .
+            "- **Cooldown RTP:** 2 Menit 15 Detik (`/rtp` / `/tpr`).\n" .
+            "- **Bonus Jual Shop:** +3% Harga jual komoditas di Toko Kerajaan (`/shop`).\n" .
+            "- **Bonus EXP Level:** +5% Pengganda kenaikan EXP Level Karakter.",
+        'position' => 3,
+        'image' => 'package-ascendant.jpg',
+        'price' => 65000,
+        'commands' => json_encode(['lp user {player} parent set ascendant', 'lp user {player} permission set apexsions.rank.permanent true', 'eco give {player} 50000']),
+        'has_quantity' => false,
+        'is_enabled' => true,
+        'created_at' => $now,
+        'updated_at' => $now,
+    ],
+
+    // =========================================================================
+    // 2. ARCHON
+    // =========================================================================
+    [
+        'category_id' => 1,
+        'name' => 'Archon (Trial 30 Hari)',
+        'short_description' => 'Kasta bangsawan agung Trial 30 Hari dengan perintah utilitas /craft, /enderchest, dan multiplier bank.',
+        'description' => "### Hak Istimewa Kasta Archon (Trial 30 Hari)\n" .
+            "- **Prefix Chat & Tab:** `[💎 ARCHON]` dengan gradien cyan kristal berkilau.\n" .
+            "- **Maksimal Homes:** 4 Homes (`/sethome`).\n" .
+            "- **Batas Listing Lelang:** 7 Barang aktif di Auction House (`/ah`).\n" .
+            "- **Batas Custom Enchants:** Maksimal 6 Sihir Kustom per item.\n" .
+            "- **Cooldown RTP:** 2 Menit (`/rtp` / `/tpr`).\n" .
+            "- **Bonus Jual Shop:** +5% Harga jual komoditas di Toko Kerajaan (`/shop`).\n" .
+            "- **Bonus EXP Level:** +8% Pengganda kenaikan EXP Level Karakter.\n" .
+            "- **Imbal Hasil Deposito Bank:** 1.2x Multiplier Bunga Bank (`/bank`).\n" .
+            "- **Perintah Utilitas:** `/craft` (Portable Workbench), `/enderchest` (`/ec`).\n" .
+            "- **Masa Aktif:** 30 Hari.",
+        'position' => 4,
+        'image' => 'package-archon.jpg',
+        'price' => 40000,
+        'commands' => json_encode(['lp user {player} parent addtemp archon 30d', 'lp user {player} permission settemp apexsions.rank.trial true 30d']),
+        'has_quantity' => false,
+        'is_enabled' => true,
+        'created_at' => $now,
+        'updated_at' => $now,
+    ],
+    [
+        'category_id' => 1,
+        'name' => 'Archon (Trial 90 Hari)',
+        'short_description' => 'Paket 90 Hari Archon dengan seluruh utilitas craft, enderchest, dan bunga bank 1.2x.',
+        'description' => "### Hak Istimewa Kasta Archon (Trial 90 Hari)\n" .
+            "- **Mencakup:** Seluruh keuntungan kasta Archon Trial.\n" .
+            "- **Maksimal Homes:** 4 Homes (`/sethome`).\n" .
+            "- **Batas Listing Lelang:** 7 Barang aktif di Auction House (`/ah`).\n" .
+            "- **Batas Custom Enchants:** Maksimal 6 Sihir Kustom per item.\n" .
+            "- **Cooldown RTP:** 2 Menit (`/rtp` / `/tpr`).\n" .
+            "- **Bonus Jual Shop:** +5% Harga jual komoditas di Toko Kerajaan (`/shop`).\n" .
+            "- **Bonus EXP Level:** +8% Pengganda kenaikan EXP Level Karakter.\n" .
+            "- **Imbal Hasil Deposito Bank:** 1.2x Multiplier Bunga Bank (`/bank`).\n" .
+            "- **Perintah Utilitas:** `/craft`, `/enderchest`.\n" .
+            "- **Masa Aktif:** 90 Hari.",
+        'position' => 5,
+        'image' => 'package-archon.jpg',
+        'price' => 95000,
+        'commands' => json_encode(['lp user {player} parent addtemp archon 90d', 'lp user {player} permission settemp apexsions.rank.trial true 90d']),
+        'has_quantity' => false,
+        'is_enabled' => true,
+        'created_at' => $now,
+        'updated_at' => $now,
+    ],
+    [
+        'category_id' => 1,
+        'name' => 'Archon (Permanen)',
+        'short_description' => 'Archon Seumur Hidup! Termasuk Kit Archon, Kit Ascendant, dan bonus uang Rp 80.000.',
+        'description' => "### Hak Istimewa Kasta Archon (PERMANEN)\n" .
+            "- **Durasi:** Permanen Seumur Hidup.\n" .
+            "- **Mencakup:** SELURUH keuntungan Archon Trial.\n" .
+            "- **Bonus Uang Satu Kali:** Rp 80.000 Saldo Server (Diberikan sekali, anti-duplikasi).\n" .
+            "- **Hierarki Kit:** Akses ke Archon Kit + Ascendant Kit (`/kits`).\n" .
+            "- **Maksimal Homes:** 4 Homes (`/sethome`).\n" .
+            "- **Batas Listing Lelang:** 7 Barang aktif di Auction House (`/ah`).\n" .
+            "- **Batas Custom Enchants:** Maksimal 6 Sihir Kustom per item.\n" .
+            "- **Cooldown RTP:** 2 Menit (`/rtp` / `/tpr`).\n" .
+            "- **Bonus Jual Shop:** +5% Harga jual komoditas di Toko Kerajaan (`/shop`).\n" .
+            "- **Bonus EXP Level:** +8% Pengganda kenaikan EXP Level Karakter.\n" .
+            "- **Imbal Hasil Deposito Bank:** 1.2x Multiplier Bunga Bank (`/bank`).\n" .
+            "- **Perintah Utilitas:** `/craft`, `/enderchest`.",
+        'position' => 6,
+        'image' => 'package-archon.jpg',
+        'price' => 135000,
+        'commands' => json_encode(['lp user {player} parent set archon', 'lp user {player} permission set apexsions.rank.permanent true', 'eco give {player} 80000']),
+        'has_quantity' => false,
+        'is_enabled' => true,
+        'created_at' => $now,
+        'updated_at' => $now,
+    ],
+
+    // =========================================================================
+    // 3. SOVEREIGN
+    // =========================================================================
+    [
+        'category_id' => 1,
+        'name' => 'Sovereign (Trial 30 Hari)',
+        'short_description' => 'Penguasa kerajaan Trial 30 Hari dengan /anvil, /smithing, dan bunga bank 1.5x.',
+        'description' => "### Hak Istimewa Kasta Sovereign (Trial 30 Hari)\n" .
+            "- **Prefix Chat & Tab:** `[⚜ SOVEREIGN]` dengan gradien emas kemilau kerajaan.\n" .
+            "- **Maksimal Homes:** 5 Homes (`/sethome`).\n" .
+            "- **Batas Listing Lelang:** 10 Barang aktif di Auction House (`/ah`).\n" .
+            "- **Batas Custom Enchants:** Maksimal 8 Sihir Kustom per item.\n" .
+            "- **Cooldown RTP:** 1 Menit 35 Detik (`/rtp` / `/tpr`).\n" .
+            "- **Bonus Jual Shop:** +8% Harga jual komoditas di Toko Kerajaan (`/shop`).\n" .
+            "- **Bonus EXP Level:** +10% Pengganda kenaikan EXP Level Karakter.\n" .
+            "- **Imbal Hasil Deposito Bank:** 1.5x Multiplier Bunga Bank (`/bank`).\n" .
+            "- **Perintah Utilitas:** `/craft`, `/anvil`, `/smithing`, `/enderchest`.\n" .
+            "- **Masa Aktif:** 30 Hari.",
+        'position' => 7,
+        'image' => 'package-sovereign.jpg',
+        'price' => 75000,
+        'commands' => json_encode(['lp user {player} parent addtemp sovereign 30d', 'lp user {player} permission settemp apexsions.rank.trial true 30d']),
+        'has_quantity' => false,
+        'is_enabled' => true,
+        'created_at' => $now,
+        'updated_at' => $now,
+    ],
+    [
+        'category_id' => 1,
+        'name' => 'Sovereign (Trial 90 Hari)',
+        'short_description' => 'Paket 90 Hari Sovereign dengan batas 5 homes, 10 lelang, dan 8 custom enchants.',
+        'description' => "### Hak Istimewa Kasta Sovereign (Trial 90 Hari)\n" .
+            "- **Mencakup:** Seluruh keuntungan kasta Sovereign Trial.\n" .
+            "- **Maksimal Homes:** 5 Homes (`/sethome`).\n" .
+            "- **Batas Listing Lelang:** 10 Barang aktif di Auction House (`/ah`).\n" .
+            "- **Batas Custom Enchants:** Maksimal 8 Sihir Kustom per item.\n" .
+            "- **Cooldown RTP:** 1 Menit 35 Detik (`/rtp` / `/tpr`).\n" .
+            "- **Bonus Jual Shop:** +8% Harga jual komoditas di Toko Kerajaan (`/shop`).\n" .
+            "- **Bonus EXP Level:** +10% Pengganda kenaikan EXP Level Karakter.\n" .
+            "- **Imbal Hasil Deposito Bank:** 1.5x Multiplier Bunga Bank (`/bank`).\n" .
+            "- **Perintah Utilitas:** `/craft`, `/anvil`, `/smithing`, `/enderchest`.\n" .
+            "- **Masa Aktif:** 90 Hari.",
+        'position' => 8,
+        'image' => 'package-sovereign.jpg',
+        'price' => 180000,
+        'commands' => json_encode(['lp user {player} parent addtemp sovereign 90d', 'lp user {player} permission settemp apexsions.rank.trial true 90d']),
+        'has_quantity' => false,
+        'is_enabled' => true,
+        'created_at' => $now,
+        'updated_at' => $now,
+    ],
+    [
+        'category_id' => 1,
+        'name' => 'Sovereign (Permanen)',
+        'short_description' => 'Sovereign Seumur Hidup! Termasuk Nickname GUI, Kit Sovereign/Archon/Ascendant, dan uang Rp 120.000.',
+        'description' => "### Hak Istimewa Kasta Sovereign (PERMANEN)\n" .
+            "- **Durasi:** Permanen Seumur Hidup.\n" .
+            "- **Mencakup:** SELURUH keuntungan Sovereign Trial.\n" .
+            "- **Bonus Uang Satu Kali:** Rp 120.000 Saldo Server (Diberikan sekali, anti-duplikasi).\n" .
+            "- **Fitur Nickname:** Akses Nickname GUI (`/nick`). Dapat menggunakan nama samaran (Tanpa edit warna).\n" .
+            "- **Hierarki Kit:** Akses ke Sovereign Kit + Archon Kit + Ascendant Kit (`/kits`).\n" .
+            "- **Maksimal Homes:** 5 Homes (`/sethome`).\n" .
+            "- **Batas Listing Lelang:** 10 Barang aktif di Auction House (`/ah`).\n" .
+            "- **Batas Custom Enchants:** Maksimal 8 Sihir Kustom per item.\n" .
+            "- **Cooldown RTP:** 1 Menit 35 Detik (`/rtp` / `/tpr`).\n" .
+            "- **Bonus Jual Shop:** +8% Harga jual komoditas di Toko Kerajaan (`/shop`).\n" .
+            "- **Bonus EXP Level:** +10% Pengganda kenaikan EXP Level Karakter.\n" .
+            "- **Imbal Hasil Deposito Bank:** 1.5x Multiplier Bunga Bank (`/bank`).\n" .
+            "- **Perintah Utilitas:** `/craft`, `/anvil`, `/smithing`, `/enderchest`.",
+        'position' => 9,
+        'image' => 'package-sovereign.jpg',
+        'price' => 250000,
+        'commands' => json_encode(['lp user {player} parent set sovereign', 'lp user {player} permission set apexsions.rank.permanent true', 'eco give {player} 120000']),
+        'has_quantity' => false,
+        'is_enabled' => true,
+        'created_at' => $now,
+        'updated_at' => $now,
+    ],
+
+    // =========================================================================
+    // 4. EMPEROR
+    // =========================================================================
+    [
+        'category_id' => 1,
+        'name' => 'Emperor (Trial 30 Hari)',
+        'short_description' => 'Kaisar perang agung Trial 30 Hari dengan /repair, /feed (5m cd), /hat, dan bunga bank 2.0x.',
+        'description' => "### Hak Istimewa Kasta Emperor (Trial 30 Hari)\n" .
+            "- **Prefix Chat & Tab:** `[⚔ EMPEROR]` dengan gradien merah rubi membara.\n" .
+            "- **Maksimal Homes:** 7 Homes (`/sethome`).\n" .
+            "- **Batas Listing Lelang:** 14 Barang aktif di Auction House (`/ah`).\n" .
+            "- **Batas Custom Enchants:** Maksimal 11 Sihir Kustom per item.\n" .
+            "- **Cooldown RTP:** 1 Menit 10 Detik (`/rtp` / `/tpr`).\n" .
+            "- **Bonus Jual Shop:** +12% Harga jual komoditas di Toko Kerajaan (`/shop`).\n" .
+            "- **Bonus EXP Level:** +14% Pengganda kenaikan EXP Level Karakter.\n" .
+            "- **Imbal Hasil Deposito Bank:** 2.0x Multiplier Bunga Bank (`/bank`).\n" .
+            "- **Perintah Utilitas:** `/craft`, `/anvil`, `/smithing`, `/repair`, `/feed` (Cooldown 5 Menit), `/hat`, `/enderchest`.\n" .
+            "- **Masa Aktif:** 30 Hari.",
+        'position' => 10,
+        'image' => 'package-emperor.jpg',
+        'price' => 135000,
+        'commands' => json_encode(['lp user {player} parent addtemp emperor 30d', 'lp user {player} permission settemp apexsions.rank.trial true 30d']),
+        'has_quantity' => false,
+        'is_enabled' => true,
+        'created_at' => $now,
+        'updated_at' => $now,
+    ],
+    [
+        'category_id' => 1,
+        'name' => 'Emperor (Trial 90 Hari)',
+        'short_description' => 'Paket 90 Hari Emperor dengan 7 homes, 14 lelang, 11 enchants, dan bunga bank 2.0x.',
+        'description' => "### Hak Istimewa Kasta Emperor (Trial 90 Hari)\n" .
+            "- **Mencakup:** Seluruh keuntungan kasta Emperor Trial.\n" .
+            "- **Maksimal Homes:** 7 Homes (`/sethome`).\n" .
+            "- **Batas Listing Lelang:** 14 Barang aktif di Auction House (`/ah`).\n" .
+            "- **Batas Custom Enchants:** Maksimal 11 Sihir Kustom per item.\n" .
+            "- **Cooldown RTP:** 1 Menit 10 Detik (`/rtp` / `/tpr`).\n" .
+            "- **Bonus Jual Shop:** +12% Harga jual komoditas di Toko Kerajaan (`/shop`).\n" .
+            "- **Bonus EXP Level:** +14% Pengganda kenaikan EXP Level Karakter.\n" .
+            "- **Imbal Hasil Deposito Bank:** 2.0x Multiplier Bunga Bank (`/bank`).\n" .
+            "- **Perintah Utilitas:** `/craft`, `/anvil`, `/smithing`, `/repair`, `/feed`, `/hat`, `/enderchest`.\n" .
+            "- **Masa Aktif:** 90 Hari.",
+        'position' => 11,
+        'image' => 'package-emperor.jpg',
+        'price' => 320000,
+        'commands' => json_encode(['lp user {player} parent addtemp emperor 90d', 'lp user {player} permission settemp apexsions.rank.trial true 90d']),
+        'has_quantity' => false,
+        'is_enabled' => true,
+        'created_at' => $now,
+        'updated_at' => $now,
+    ],
+    [
+        'category_id' => 1,
+        'name' => 'Emperor (Permanen)',
+        'short_description' => 'Emperor Seumur Hidup! Gratis Sio Pass musim ini, diskon 10% musim depan, Kit Emperor s/d Ascendant, dan uang Rp 180.000.',
+        'description' => "### Hak Istimewa Kasta Emperor (PERMANEN)\n" .
+            "- **Durasi:** Permanen Seumur Hidup.\n" .
+            "- **Mencakup:** SELURUH keuntungan Emperor Trial.\n" .
+            "- **Bonus Uang Satu Kali:** Rp 180.000 Saldo Server (Diberikan sekali, anti-duplikasi).\n" .
+            "- **Keistimewaan BattlePass:**\n" .
+            "  - **Musim Berjalan:** Gratis Membuka Akses **Sio Pass** di musim aktif saat ini!\n" .
+            "  - **Musim Mendatang:** Diskon Khusus **10%** untuk setiap pembelian Sio Pass musim baru.\n" .
+            "- **Fitur Nickname:** Akses Nickname GUI (`/nick`) dengan kustomisasi warna solid (Gradien tidak diizinkan).\n" .
+            "- **Hierarki Kit:** Akses ke Emperor Kit + Sovereign Kit + Archon Kit + Ascendant Kit (`/kits`).\n" .
+            "- **Maksimal Homes:** 7 Homes (`/sethome`).\n" .
+            "- **Batas Listing Lelang:** 14 Barang aktif di Auction House (`/ah`).\n" .
+            "- **Batas Custom Enchants:** Maksimal 11 Sihir Kustom per item.\n" .
+            "- **Cooldown RTP:** 1 Menit 10 Detik (`/rtp` / `/tpr`).\n" .
+            "- **Bonus Jual Shop:** +12% Harga jual komoditas di Toko Kerajaan (`/shop`).\n" .
+            "- **Bonus EXP Level:** +14% Pengganda kenaikan EXP Level Karakter.\n" .
+            "- **Imbal Hasil Deposito Bank:** 2.0x Multiplier Bunga Bank (`/bank`).\n" .
+            "- **Perintah Utilitas:** `/craft`, `/anvil`, `/smithing`, `/repair`, `/feed` (Cooldown 5 Menit), `/hat`, `/enderchest`.",
+        'position' => 12,
+        'image' => 'package-emperor.jpg',
+        'price' => 450000,
+        'commands' => json_encode(['lp user {player} parent set emperor', 'lp user {player} permission set apexsions.rank.permanent true', 'abp pass grant {player} sio', 'eco give {player} 180000']),
+        'has_quantity' => false,
+        'is_enabled' => true,
+        'created_at' => $now,
+        'updated_at' => $now,
+    ],
+
+    // =========================================================================
+    // 5. SIONS
+    // =========================================================================
+    [
+        'category_id' => 1,
+        'name' => 'Sions (Trial 30 Hari)',
+        'short_description' => 'Puncak peradaban Trial 30 Hari dengan 10 homes, 20 lelang, 15 enchants, RTP 50s, dan bunga bank 3.0x.',
+        'description' => "### Hak Istimewa Kasta Sions (Trial 30 Hari)\n" .
+            "- **Prefix Chat & Tab:** `[✦ SIONS ✦]` dengan gradien Cyan-Emas Ultra Elegan.\n" .
+            "- **Maksimal Homes:** 10 Homes (`/sethome`).\n" .
+            "- **Batas Listing Lelang:** 20 Barang aktif di Auction House (`/ah`).\n" .
+            "- **Batas Custom Enchants:** Maksimal 15 Sihir Kustom per item.\n" .
+            "- **Cooldown RTP:** Hanya 50 Detik (`/rtp` / `/tpr`).\n" .
+            "- **Bonus Jual Shop:** +17% Harga jual komoditas di Toko Kerajaan (`/shop`).\n" .
+            "- **Bonus EXP Level:** +20% Pengganda kenaikan EXP Level Karakter.\n" .
+            "- **Imbal Hasil Deposito Bank:** 3.0x Multiplier Bunga Bank (`/bank`).\n" .
+            "- **Perintah Utilitas:** `/craft`, `/anvil`, `/smithing`, `/repair`, `/feed` (Cooldown 3 Menit), `/hat`, `/enderchest`.\n" .
+            "- **Masa Aktif:** 30 Hari.",
+        'position' => 13,
+        'image' => 'package-sions.jpg',
+        'price' => 225000,
+        'commands' => json_encode(['lp user {player} parent addtemp sions 30d', 'lp user {player} permission settemp apexsions.rank.trial true 30d']),
+        'has_quantity' => false,
+        'is_enabled' => true,
+        'created_at' => $now,
+        'updated_at' => $now,
+    ],
+    [
+        'category_id' => 1,
+        'name' => 'Sions (Trial 90 Hari)',
+        'short_description' => 'Paket 90 Hari Sions: Pengalaman puncak kasta peradaban Apexsions.',
+        'description' => "### Hak Istimewa Kasta Sions (Trial 90 Hari)\n" .
+            "- **Mencakup:** Seluruh keuntungan kasta Sions Trial.\n" .
+            "- **Maksimal Homes:** 10 Homes (`/sethome`).\n" .
+            "- **Batas Listing Lelang:** 20 Barang aktif di Auction House (`/ah`).\n" .
+            "- **Batas Custom Enchants:** Maksimal 15 Sihir Kustom per item.\n" .
+            "- **Cooldown RTP:** Hanya 50 Detik (`/rtp` / `/tpr`).\n" .
+            "- **Bonus Jual Shop:** +17% Harga jual komoditas di Toko Kerajaan (`/shop`).\n" .
+            "- **Bonus EXP Level:** +20% Pengganda kenaikan EXP Level Karakter.\n" .
+            "- **Imbal Hasil Deposito Bank:** 3.0x Multiplier Bunga Bank (`/bank`).\n" .
+            "- **Perintah Utilitas:** `/craft`, `/anvil`, `/smithing`, `/repair`, `/feed` (Cooldown 3 Menit), `/hat`, `/enderchest`.\n" .
+            "- **Masa Aktif:** 90 Hari.",
+        'position' => 14,
+        'image' => 'package-sions.jpg',
+        'price' => 550000,
+        'commands' => json_encode(['lp user {player} parent addtemp sions 90d', 'lp user {player} permission settemp apexsions.rank.trial true 90d']),
+        'has_quantity' => false,
+        'is_enabled' => true,
+        'created_at' => $now,
+        'updated_at' => $now,
+    ],
+    [
+        'category_id' => 1,
+        'name' => 'Sions (Permanen)',
+        'short_description' => 'Status Puncak Apexsions! Buka Sio & Exsio Pass musim ini, diskon 15% musim depan, seluruh Kit, dan uang Rp 300.000.',
+        'description' => "### Hak Istimewa Kasta Sions (PERMANEN - PUNCAK DONATUR)\n" .
+            "- **Durasi:** Permanen Seumur Hidup.\n" .
+            "- **Mencakup:** SELURUH keuntungan Sions Trial dan semua tingkatan kasta di bawahnya.\n" .
+            "- **Bonus Uang Satu Kali:** Rp 300.000 Saldo Server (Diberikan sekali, anti-duplikasi).\n" .
+            "- **Keistimewaan BattlePass:**\n" .
+            "  - **Musim Berjalan:** Gratis Membuka Akses **Sio Pass + Exsio Pass** musim ini!\n" .
+            "  - **Musim Mendatang:** Diskon Eksklusif **15%** untuk pembelian Sio Pass dan Exsio Pass setiap musim baru.\n" .
+            "- **Fitur Nickname:** Akses Penuh Nickname GUI (`/nick`) dengan seluruh pilihan warna dan gradien animasi.\n" .
+            "- **Hierarki Kit Penuh:** Akses ke Sions Kit + Emperor Kit + Sovereign Kit + Archon Kit + Ascendant Kit (`/kits`).\n" .
+            "- **Maksimal Homes:** 10 Homes (`/sethome`).\n" .
+            "- **Batas Listing Lelang:** 20 Barang aktif di Auction House (`/ah`).\n" .
+            "- **Batas Custom Enchants:** Maksimal 15 Sihir Kustom per item.\n" .
+            "- **Cooldown RTP:** Hanya 50 Detik (`/rtp` / `/tpr`).\n" .
+            "- **Bonus Jual Shop:** +17% Harga jual komoditas di Toko Kerajaan (`/shop`).\n" .
+            "- **Bonus EXP Level:** +20% Pengganda kenaikan EXP Level Karakter.\n" .
+            "- **Imbal Hasil Deposito Bank:** 3.0x Multiplier Bunga Bank (`/bank`).\n" .
+            "- **Perintah Utilitas:** `/craft`, `/anvil`, `/smithing`, `/repair`, `/feed` (Cooldown 3 Menit), `/hat`, `/enderchest`.",
+        'position' => 15,
+        'image' => 'package-sions.jpg',
+        'price' => 800000,
+        'commands' => json_encode(['lp user {player} parent set sions', 'lp user {player} permission set apexsions.rank.permanent true', 'abp pass grant {player} exsio', 'abp pass grant {player} sio', 'eco give {player} 300000']),
+        'has_quantity' => false,
+        'is_enabled' => true,
+        'created_at' => $now,
+        'updated_at' => $now,
+    ],
+
+    // =========================================================================
+    // 6. BATTLEPASS MUSIMAN
+    // =========================================================================
+    [
+        'category_id' => 2,
+        'name' => 'Sio Pass',
+        'short_description' => 'Akses 100 level jalur hadiah musiman Sio Pass dan quests mingguan eksklusif.',
+        'description' => "### Hak Istimewa Sio Pass (Civilization Battlepass Season)\n" .
+            "- **Akses 100 Level Premium:** Membuka seluruh tier hadiah jalur emas (Gold Track) level 1 s/d 100.\n" .
+            "- **Quests Eksklusif:** Akses ke Quests Harian & Mingguan berhadiah Apex Coins serta material langka.\n" .
+            "- **EXP Boost:** Pengganda perolehan EXP Pass sebesar +25% dari setiap aktivitas peradaban.\n" .
+            "- **Akses EXP Shop:** Hak berbelanja di Rotating EXP Shop dengan penawaran diskon musiman (`/abp`).\n" .
+            "- **Perlindungan Akun:** Diskon otomatis server-side untuk pemegang rank Emperor (10%) & Sions (15%).",
+        'position' => 1,
+        'image' => 'package-sio-pass.jpg',
+        'price' => 45000,
+        'commands' => json_encode(['abp pass grant {player} sio']),
         'has_quantity' => false,
         'is_enabled' => true,
         'created_at' => $now,
@@ -219,24 +509,28 @@ $shopPackages = [
     ],
     [
         'category_id' => 2,
-        'name' => 'VIP Pass Musiman',
-        'short_description' => 'Jalur tertinggi dengan instan +20 level pass skip dan kosmetik eksklusif.',
-        'description' => "### Benefit VIP Pass (Tingkat Tertinggi)\n" .
-            "- **Mencakup:** Seluruh keuntungan Premium Pass.\n" .
-            "- **Instan Level Skip:** Langsung melompat 20 Level awal Battlepass secara instan.\n" .
-            "- **Kosmetik Musiman:** Jubah Sayap Musiman Eksklusif & Gelar Khusus Chat.\n" .
-            "- **Bonus Tunai:** Tambahan 50.000 Rupiah server & 5x Magic Dust langsung ke inventory.",
+        'name' => 'Exsio Pass',
+        'short_description' => 'Tier tertinggi! Membeli Exsio Pass otomatis membuka Sio Pass + 20 Level Skip dan Kosmetik Mitos.',
+        'description' => "### Hak Istimewa Exsio Pass (Ultimate Battlepass Season)\n" .
+            "> **PENTING:** Membeli Exsio Pass otomatis membuka **Sio Pass** dan seluruh keuntungannya!\n\n" .
+            "- **Termasuk Sio Pass Penuh:** Membuka seluruh 100 tier hadiah jalur emas Sio Pass.\n" .
+            "- **Instan Level Skip:** Langsung melompat +20 Level BattlePass awal secara instan.\n" .
+            "- **Kosmetik Mitos Musiman:** Sayap Kosmetik Eksklusif, Partikel Aura Mitos, dan Gelar Chat Unik.\n" .
+            "- **Bonus Tunai Langsung:** Tambahan Rp 50.000 saldo in-game dan Crate Keys langsung ke inventory.\n" .
+            "- **Perlindungan Akun:** Diskon otomatis server-side 15% untuk pemegang rank Sions Permanen.",
         'position' => 2,
-        'image' => null,
+        'image' => 'package-exsio-pass.jpg',
         'price' => 85000,
-        'commands' => json_encode(['abp pass grant {player} vip', 'abp level add {player} 20', 'eco give {player} rupiah 50000']),
+        'commands' => json_encode(['abp pass grant {player} exsio', 'abp pass grant {player} sio', 'abp level add {player} 20', 'eco give {player} 50000']),
         'has_quantity' => false,
         'is_enabled' => true,
         'created_at' => $now,
         'updated_at' => $now,
     ],
 
-    // --- PUNDI KOIN & BOOSTER ---
+    // =========================================================================
+    // 7. PUNDI KOIN & BOOSTER
+    // =========================================================================
     [
         'category_id' => 3,
         'name' => 'Pundi 500 Apex Coins',

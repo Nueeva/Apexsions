@@ -51,9 +51,9 @@ enchant-limits:
     wanderer: 4
     ascendant: 5
     archon: 6
-    sovereign: 7
-    emperor: 8
-    sions: 9
+    sovereign: 8
+    emperor: 11
+    sions: 15
     herald: -1
     warden: -1
     architect: -1

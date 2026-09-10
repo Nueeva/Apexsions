@@ -3612,3 +3612,319 @@ code:not(pre code) {
     letter-spacing: 0.06em;
     font-family: 'Plus Jakarta Sans', sans-serif;
 }
+
+/* ==========================================================================
+   RANK MATRIX, PASS TIERS, AND BENEFIT HIGHLIGHTS
+   ========================================================================== */
+.apx-package-card.apx-pkg-sio-pass {
+    border-color: rgba(245, 158, 11, 0.55);
+    background: linear-gradient(180deg, rgba(38, 26, 12, 0.9) 0%, var(--apx-bg-surface) 100%);
+    box-shadow: 0 8px 24px -4px rgba(245, 158, 11, 0.2);
+}
+
+.apx-package-card.apx-pkg-sio-pass:hover {
+    border-color: #fbbf24;
+    box-shadow: 0 20px 42px -6px rgba(245, 158, 11, 0.4);
+    transform: translateY(-5px);
+}
+
+.apx-package-card.apx-pkg-exsio-pass {
+    border-color: rgba(168, 85, 247, 0.65);
+    background: linear-gradient(180deg, rgba(34, 14, 52, 0.9) 0%, var(--apx-bg-surface) 100%);
+    box-shadow: 0 8px 28px -4px rgba(168, 85, 247, 0.3);
+}
+
+.apx-package-card.apx-pkg-exsio-pass:hover {
+    border-color: #d8b4fe;
+    box-shadow: 0 22px 46px -6px rgba(168, 85, 247, 0.55);
+    transform: translateY(-5px);
+}
+
+.apx-rank-badge-overlay {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 38px;
+    height: 38px;
+    filter: drop-shadow(0 2px 8px rgba(0,0,0,0.7));
+    z-index: 2;
+    transition: transform 0.25s ease;
+}
+
+.apx-package-card:hover .apx-rank-badge-overlay {
+    transform: scale(1.12) rotate(4deg);
+}
+
+.apx-badge-trial {
+    background: rgba(14, 165, 233, 0.2) !important;
+    color: #7dd3fc !important;
+    border: 1px solid rgba(56, 189, 248, 0.45) !important;
+}
+
+.apx-badge-perm {
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.25) 0%, rgba(217, 119, 6, 0.15) 100%) !important;
+    color: #fde047 !important;
+    border: 1px solid rgba(250, 204, 21, 0.6) !important;
+    box-shadow: 0 0 10px rgba(234, 179, 8, 0.2);
+}
+
+.apx-discount-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.25rem 0.65rem;
+    border-radius: 9999px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    background: rgba(34, 197, 94, 0.16);
+    color: #4ade80;
+    border: 1px solid rgba(34, 197, 94, 0.4);
+}
+
+/* Rank Comparison Matrix Table */
+.apx-rank-matrix-wrap {
+    background: var(--apx-bg-surface);
+    border: 1px solid var(--apx-gold-border-subtle);
+    border-radius: var(--apx-radius-lg);
+    box-shadow: var(--apx-shadow-elevated);
+    overflow: hidden;
+}
+
+.apx-rank-matrix-header {
+    background: linear-gradient(90deg, rgba(24, 28, 42, 0.95) 0%, rgba(15, 18, 28, 0.98) 100%);
+    border-bottom: 1px solid var(--apx-gold-border);
+    padding: 1.5rem 1.75rem;
+}
+
+.apx-rank-matrix-table-scroll {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.apx-rank-matrix-table {
+    width: 100%;
+    min-width: 820px;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin: 0;
+    font-size: 0.86rem;
+}
+
+.apx-rank-matrix-table th,
+.apx-rank-matrix-table td {
+    padding: 0.85rem 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    vertical-align: middle;
+    text-align: center;
+}
+
+.apx-rank-matrix-table th:first-child,
+.apx-rank-matrix-table td:first-child {
+    text-align: left;
+    position: sticky;
+    left: 0;
+    background: #0f1422;
+    z-index: 2;
+    font-weight: 600;
+    color: #f1f5f9;
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.apx-rank-matrix-table thead th {
+    background: #141a2e;
+    color: #cbd5e1;
+    font-family: 'Cinzel', Georgia, serif;
+    font-size: 0.88rem;
+    letter-spacing: 0.04em;
+    font-weight: 700;
+    border-bottom: 2px solid var(--apx-gold-border);
+}
+
+.apx-rank-matrix-table thead th.col-sions {
+    background: linear-gradient(180deg, rgba(234, 179, 8, 0.2) 0%, #171d33 100%);
+    color: #fde047;
+    border-bottom-color: #fde047;
+}
+
+.apx-rank-matrix-table tbody tr:hover td {
+    background-color: rgba(255, 255, 255, 0.03);
+}
+
+.apx-rank-matrix-table td.col-sions {
+    background-color: rgba(234, 179, 8, 0.04);
+}
+
+.apx-matrix-val-gold {
+    color: #fbbf24;
+    font-weight: 700;
+}
+
+.apx-matrix-val-check {
+    color: #4ade80;
+    font-size: 1.1rem;
+}
+
+.apx-matrix-val-cross {
+    color: #64748b;
+    font-size: 0.9rem;
+}
+
+
+/* ==========================================================================
+   RANK MATRIX, PASS TIERS, AND BENEFIT HIGHLIGHTS
+   ========================================================================== */
+.apx-package-card.apx-pkg-sio-pass {
+    border-color: rgba(245, 158, 11, 0.55);
+    background: linear-gradient(180deg, rgba(38, 26, 12, 0.9) 0%, var(--apx-bg-surface) 100%);
+    box-shadow: 0 8px 24px -4px rgba(245, 158, 11, 0.2);
+}
+
+.apx-package-card.apx-pkg-sio-pass:hover {
+    border-color: #fbbf24;
+    box-shadow: 0 20px 42px -6px rgba(245, 158, 11, 0.4);
+    transform: translateY(-5px);
+}
+
+.apx-package-card.apx-pkg-exsio-pass {
+    border-color: rgba(168, 85, 247, 0.65);
+    background: linear-gradient(180deg, rgba(34, 14, 52, 0.9) 0%, var(--apx-bg-surface) 100%);
+    box-shadow: 0 8px 28px -4px rgba(168, 85, 247, 0.3);
+}
+
+.apx-package-card.apx-pkg-exsio-pass:hover {
+    border-color: #d8b4fe;
+    box-shadow: 0 22px 46px -6px rgba(168, 85, 247, 0.55);
+    transform: translateY(-5px);
+}
+
+.apx-rank-badge-overlay {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 38px;
+    height: 38px;
+    filter: drop-shadow(0 2px 8px rgba(0,0,0,0.7));
+    z-index: 2;
+    transition: transform 0.25s ease;
+}
+
+.apx-package-card:hover .apx-rank-badge-overlay {
+    transform: scale(1.12) rotate(4deg);
+}
+
+.apx-badge-trial {
+    background: rgba(14, 165, 233, 0.2) !important;
+    color: #7dd3fc !important;
+    border: 1px solid rgba(56, 189, 248, 0.45) !important;
+}
+
+.apx-badge-perm {
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.25) 0%, rgba(217, 119, 6, 0.15) 100%) !important;
+    color: #fde047 !important;
+    border: 1px solid rgba(250, 204, 21, 0.6) !important;
+    box-shadow: 0 0 10px rgba(234, 179, 8, 0.2);
+}
+
+.apx-discount-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.25rem 0.65rem;
+    border-radius: 9999px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    background: rgba(34, 197, 94, 0.16);
+    color: #4ade80;
+    border: 1px solid rgba(34, 197, 94, 0.4);
+}
+
+/* Rank Comparison Matrix Table */
+.apx-rank-matrix-wrap {
+    background: var(--apx-bg-surface);
+    border: 1px solid var(--apx-gold-border-subtle);
+    border-radius: var(--apx-radius-lg);
+    box-shadow: var(--apx-shadow-elevated);
+    overflow: hidden;
+}
+
+.apx-rank-matrix-header {
+    background: linear-gradient(90deg, rgba(24, 28, 42, 0.95) 0%, rgba(15, 18, 28, 0.98) 100%);
+    border-bottom: 1px solid var(--apx-gold-border);
+    padding: 1.5rem 1.75rem;
+}
+
+.apx-rank-matrix-table-scroll {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.apx-rank-matrix-table {
+    width: 100%;
+    min-width: 820px;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin: 0;
+    font-size: 0.86rem;
+}
+
+.apx-rank-matrix-table th,
+.apx-rank-matrix-table td {
+    padding: 0.85rem 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    vertical-align: middle;
+    text-align: center;
+}
+
+.apx-rank-matrix-table th:first-child,
+.apx-rank-matrix-table td:first-child {
+    text-align: left;
+    position: sticky;
+    left: 0;
+    background: #0f1422;
+    z-index: 2;
+    font-weight: 600;
+    color: #f1f5f9;
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.apx-rank-matrix-table thead th {
+    background: #141a2e;
+    color: #cbd5e1;
+    font-family: 'Cinzel', Georgia, serif;
+    font-size: 0.88rem;
+    letter-spacing: 0.04em;
+    font-weight: 700;
+    border-bottom: 2px solid var(--apx-gold-border);
+}
+
+.apx-rank-matrix-table thead th.col-sions {
+    background: linear-gradient(180deg, rgba(234, 179, 8, 0.2) 0%, #171d33 100%);
+    color: #fde047;
+    border-bottom-color: #fde047;
+}
+
+.apx-rank-matrix-table tbody tr:hover td {
+    background-color: rgba(255, 255, 255, 0.03);
+}
+
+.apx-rank-matrix-table td.col-sions {
+    background-color: rgba(234, 179, 8, 0.04);
+}
+
+.apx-matrix-val-gold {
+    color: #fbbf24;
+    font-weight: 700;
+}
+
+.apx-matrix-val-check {
+    color: #4ade80;
+    font-size: 1.1rem;
+}
+
+.apx-matrix-val-cross {
+    color: #64748b;
+    font-size: 0.9rem;
+}
+
