@@ -7,11 +7,7 @@ description: "Dynamic Kingdom Shop & Economy Market Plugin"
 softdepend:
   - ApexsionsCore
   - ApexsionsEconomy
-  - Vault
   - PlaceholderAPI
-  - nightcore
-  - NightCore
-  - ExcellentCrates
 
 commands:
   shop:
