@@ -224,35 +224,42 @@ public class WebBridgeService {
                                     JsonObject del = elem.getAsJsonObject();
 
                                     int id = del.get("id").getAsInt();
-                                    String cmd = del.get("command").getAsString();
+                                    String rawCmd = del.get("command").getAsString();
                                     String username = del.has("player_username") && !del.get("player_username").isJsonNull()
                                             ? del.get("player_username").getAsString() : null;
                                     String actionId = del.has("action_id") && !del.get("action_id").isJsonNull()
                                             ? del.get("action_id").getAsString() : null;
 
-                                    boolean success = false;
-                                    String error = null;
+                                    plugin.getLogger().info("[WebBridge] Executing delivery #" + id + " (action: " + actionId + "): " + rawCmd);
 
-                                    try {
-                                        plugin.getLogger().info("[WebBridge] Executing delivery #" + id + " (action: " + actionId + "): " + cmd);
-                                        if (cmd.startsWith("broadcast ") || cmd.startsWith("bc ")) {
-                                            String msg = cmd.substring(cmd.indexOf(' ') + 1);
-                                            net.kyori.adventure.text.Component comp = net.kyori.adventure.text.minimessage.MiniMessage.miniMessage().deserialize(msg);
-                                            Bukkit.broadcast(comp);
-                                            for (Player online : Bukkit.getOnlinePlayers()) {
-                                                online.playSound(online.getLocation(), org.bukkit.Sound.BLOCK_NOTE_BLOCK_BELL, 1.0f, 1.0f);
+                                    // Split compound commands by semicolon or newline
+                                    String[] subCommands = rawCmd.split("[;\\n]+");
+                                    boolean allSuccess = true;
+                                    StringBuilder errCollector = new StringBuilder();
+
+                                    for (String sub : subCommands) {
+                                        String trimmed = sub.trim();
+                                        if (trimmed.isEmpty()) continue;
+
+                                        try {
+                                            boolean ok = executeSingleCommand(trimmed);
+                                            if (!ok) {
+                                                allSuccess = false;
+                                                if (errCollector.length() > 0) errCollector.append("; ");
+                                                errCollector.append("Sub-command returned false: ").append(trimmed);
+                                                plugin.getLogger().warning("[WebBridge] Sub-command returned false: " + trimmed);
                                             }
-                                            success = true;
-                                        } else {
-                                            success = Bukkit.dispatchCommand(Bukkit.getConsoleSender(), cmd);
+                                        } catch (Throwable t) {
+                                            allSuccess = false;
+                                            if (errCollector.length() > 0) errCollector.append("; ");
+                                            errCollector.append("Sub-command error (").append(trimmed).append("): ").append(t.getMessage());
+                                            plugin.getLogger().warning("[WebBridge] Sub-command exception: " + t.getMessage());
                                         }
-                                    } catch (Throwable t) {
-                                        error = t.getMessage();
-                                        plugin.getLogger().warning("[WebBridge] Error executing delivery #" + id + ": " + error);
                                     }
 
                                     // Report execution status back to web with action_id
-                                    reportDeliveryStatus(id, success ? "DELIVERED" : "FAILED", error, actionId);
+                                    String errorReport = allSuccess ? null : errCollector.toString();
+                                    reportDeliveryStatus(id, allSuccess ? "DELIVERED" : "FAILED", errorReport, actionId);
 
                                     // If command relates to an online player, re-sync their stats immediately
                                     if (username != null && !username.equalsIgnoreCase("ALL_PLAYERS") && !username.equalsIgnoreCase("GLOBAL")) {
@@ -274,6 +281,51 @@ public class WebBridgeService {
         } catch (Exception ex) {
             plugin.getLogger().log(Level.FINE, "[WebBridge] Poll deliveries initiation error: " + ex.getMessage());
         }
+    }
+
+    /**
+     * Execute a single command or handled action safely on Bukkit main thread.
+     */
+    private boolean executeSingleCommand(String cmd) {
+        String trimmed = cmd.trim();
+        if (trimmed.isEmpty()) return true;
+
+        if (trimmed.startsWith("broadcast ") || trimmed.startsWith("bc ")) {
+            String msg = trimmed.substring(trimmed.indexOf(' ') + 1);
+            net.kyori.adventure.text.Component comp = net.kyori.adventure.text.minimessage.MiniMessage.miniMessage().deserialize(msg);
+            Bukkit.broadcast(comp);
+            for (Player online : Bukkit.getOnlinePlayers()) {
+                online.playSound(online.getLocation(), org.bukkit.Sound.BLOCK_NOTE_BLOCK_BELL, 1.0f, 1.0f);
+            }
+            return true;
+        }
+
+        if (trimmed.startsWith("minecraft:tellraw ") || trimmed.startsWith("tellraw ")) {
+            String rest = trimmed.startsWith("minecraft:tellraw ")
+                    ? trimmed.substring("minecraft:tellraw ".length()).trim()
+                    : trimmed.substring("tellraw ".length()).trim();
+            int firstSpace = rest.indexOf(' ');
+            if (firstSpace > 0) {
+                String targetName = rest.substring(0, firstSpace).trim();
+                String jsonPayload = rest.substring(firstSpace + 1).trim();
+                Player targetPlayer = Bukkit.getPlayerExact(targetName);
+                if (targetPlayer != null && targetPlayer.isOnline()) {
+                    try {
+                        net.kyori.adventure.text.Component comp = net.kyori.adventure.text.serializer.gson.GsonComponentSerializer.gson().deserialize(jsonPayload);
+                        targetPlayer.sendMessage(comp);
+                        targetPlayer.playSound(targetPlayer.getLocation(), org.bukkit.Sound.BLOCK_NOTE_BLOCK_CHIME, 1.0f, 1.0f);
+                        return true;
+                    } catch (Throwable t) {
+                        return Bukkit.dispatchCommand(Bukkit.getConsoleSender(), trimmed);
+                    }
+                } else {
+                    plugin.getLogger().info("[WebBridge] Tellraw target '" + targetName + "' is currently offline. Message acknowledged.");
+                    return true;
+                }
+            }
+        }
+
+        return Bukkit.dispatchCommand(Bukkit.getConsoleSender(), trimmed);
     }
 
     /**

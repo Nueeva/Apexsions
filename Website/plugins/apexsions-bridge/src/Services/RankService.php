@@ -507,7 +507,7 @@ class RankService
             $commands[] = "lp user {$account->minecraft_username} permission unset apexsions.rank.permanent";
         }
 
-        $compoundCommand = implode('; ', $commands);
+        $compoundCommand = implode("\n", $commands);
 
         $delivery = Delivery::create([
             'action_id' => $actionId,
@@ -694,12 +694,15 @@ class RankService
             $restoreDisplayName = $restoreRankMeta['display_name'] ?? ucfirst($restoreRank);
 
             // Set back in LuckPerms
-            $command = "lp user {$account->minecraft_username} parent set {$restoreRank}; lp user {$account->minecraft_username} permission unset apexsions.rank.trial";
+            $expireCommands = [];
+            $expireCommands[] = "lp user {$account->minecraft_username} parent set {$restoreRank}";
+            $expireCommands[] = "lp user {$account->minecraft_username} permission unset apexsions.rank.trial";
             if ($restoreRank !== 'wanderer') {
-                $command .= "; lp user {$account->minecraft_username} permission set apexsions.rank.permanent true";
+                $expireCommands[] = "lp user {$account->minecraft_username} permission set apexsions.rank.permanent true";
             } else {
-                $command .= "; lp user {$account->minecraft_username} permission unset apexsions.rank.permanent";
+                $expireCommands[] = "lp user {$account->minecraft_username} permission unset apexsions.rank.permanent";
             }
+            $command = implode("\n", $expireCommands);
 
             Delivery::create([
                 'action_id' => $actionId,
