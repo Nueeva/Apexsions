@@ -1278,6 +1278,13 @@ DILARANG melakukan trial-and-error atau eksperimen perbaikan langsung di server 
 2. **Minecraft Plugins:** Jalankan targeted build (`build.ps1`) dan validasi runtime lokal.
 3. **Clean Deployment:** Sinkronisasi atau upload ke VPS remote hanya diizinkan apabila seluruh checks di environment lokal telah lulus 100%. VPS adalah target *clean deployment*, bukan tempat debugging awal.
 
+### Token Conservation & Strict Playwright / Browser Automation Policy (ATURAN WAJIB)
+
+DILARANG KERAS menggunakan headless browser, Playwright, atau `browser_subagent` secara berlebihan, berulang-ulang, atau mengambil screenshot terus-menerus karena menghabiskan kuota token context user secara masif:
+1. **Gunakan Validasi Ringan & Cepat:** Selalu utamakan inspeksi kode lokal, verifikasi CSS/DOM, script HTTP fetch/cURL, validasi sintaks, atau unit test terisolasi yang hemat token.
+2. **Larangan Polling Browser:** Dilarang meluncurkan browser subagent berulang kali hanya untuk memeriksa hal-hal yang sudah jelas di source code/stylesheet.
+3. **Kapan Browser Boleh Digunakan:** HANYA jika diminta secara eksplisit oleh user atau jika benar-benar esensial untuk 1x final visual check singkat, bukan di setiap langkah debugging.
+
 ---
 
 # 31. Regression Prevention

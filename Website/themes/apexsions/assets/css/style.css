@@ -848,6 +848,7 @@ a:hover {
     z-index: 1;
     pointer-events: none;
     transition: background-position 0.3s ease;
+    background-image: linear-gradient(90deg, rgba(5, 7, 10, 0.96) 0%, rgba(5, 7, 10, 0.85) 35%, rgba(5, 7, 10, 0.3) 70%, rgba(5, 7, 10, 0.5) 100%), linear-gradient(180deg, rgba(5, 7, 10, 0.45) 0%, transparent 40%, rgba(5, 7, 10, 0.95) 100%), url('../img/hero-panoramic.png');
 }
 
 .apx-hero-brand-mark {
@@ -1435,9 +1436,9 @@ a:hover {
    ============================================================================== */
 .apx-world-section {
     padding: 6rem 0;
-    background: #06080d;
+    background: var(--apx-bg-base);
     position: relative;
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    border-top: 1px solid var(--apx-border);
 }
 
 .apx-world-title {
@@ -1527,6 +1528,22 @@ a:hover {
     align-items: center;
     gap: 0.5rem;
 }
+
+/* 3 Kingdoms Color Archetypes (Dark Mode Defaults) */
+.apx-kingdom-zenithar .apx-province-type { color: #f6e58d; }
+.apx-kingdom-zenithar .apx-province-name { color: #ffeaa7; }
+.apx-kingdom-zenithar .apx-province-spec-title { color: var(--apx-gold-light); }
+
+.apx-kingdom-solterra .apx-province-type { color: #ff7675; }
+.apx-kingdom-solterra .apx-province-name { color: #ff7675; }
+.apx-kingdom-solterra .apx-province-spec-title { color: #e17055; }
+
+.apx-kingdom-sylvamoor .apx-province-type { color: #74b9ff; }
+.apx-kingdom-sylvamoor .apx-province-name { color: #74b9ff; }
+.apx-kingdom-sylvamoor .apx-province-spec-title { color: #0984e3; }
+
+.apx-buff-label { color: #2ecc71; }
+.apx-debuff-label { color: #e74c3c; }
 
 /* Monolithic Structural Ledger (Replacing Fragmented Cards) */
 .apx-monolith-ledger {
@@ -1793,6 +1810,90 @@ a:hover {
     font-weight: 700;
     font-size: 0.88rem;
     font-family: 'JetBrains Mono', Consolas, monospace;
+}
+
+/* Sections & New Dynamic Homepage Components */
+.apx-ranks-section {
+    background: var(--apx-bg-deep);
+    border-top: 1px solid var(--apx-gold-border-subtle);
+}
+
+.apx-onboarding-section {
+    background: var(--apx-bg-base);
+    border-top: 1px solid var(--apx-border);
+}
+
+.apx-map-section {
+    background: linear-gradient(180deg, var(--apx-bg-surface) 0%, var(--apx-bg-deep) 100%);
+    border-top: 1px solid var(--apx-gold-border-subtle);
+}
+
+.apx-map-card {
+    background: radial-gradient(circle at 10% 20%, rgba(15, 23, 42, 0.95), rgba(9, 12, 19, 0.98));
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
+    border-radius: var(--apx-radius-lg);
+    border: 1px solid rgba(245, 158, 11, 0.25);
+}
+
+.apx-map-preview-box {
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: var(--apx-radius-md);
+}
+
+.apx-map-preview-icon {
+    color: var(--apx-gold-light);
+    filter: drop-shadow(0 0 16px rgba(245, 158, 11, 0.4));
+}
+
+.apx-map-preview-title {
+    color: #ffffff;
+}
+
+.apx-map-preview-desc {
+    color: var(--apx-text-muted);
+}
+
+.apx-map-preview-kingdoms {
+    color: var(--apx-gold-light);
+}
+
+.apx-badge-port {
+    background: rgba(0, 0, 0, 0.4);
+    color: rgba(255, 255, 255, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.apx-quick-guide-banner {
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(13, 18, 30, 0.85) 100%);
+    border: 1px solid var(--apx-gold-border);
+    border-radius: var(--apx-radius-md);
+}
+
+.apx-guide-callout-badge {
+    background: rgba(245, 158, 11, 0.2);
+    color: var(--apx-gold-light);
+    border: 1px solid var(--apx-gold-border);
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+}
+
+.apx-guide-callout-title {
+    font-family: 'Cinzel', Georgia, serif;
+    font-size: 1.35rem;
+    color: #ffffff;
+}
+
+.apx-guide-callout-desc {
+    color: var(--apx-text-muted);
+}
+
+.apx-footer-ip-text {
+    color: #ffffff;
+}
+
+.apx-footer-copyright-text {
+    color: #ffffff;
 }
 
 /* ==============================================================================
@@ -3155,19 +3256,660 @@ code:not(pre code) {
 }
 
 /* ==============================================================================
-   LIGHT THEME REFINEMENTS FOR COMPONENTS
+   LIGHT THEME REFINEMENTS FOR COMPONENTS (SOVEREIGN IVORY ARISTOCRACY)
    ============================================================================== */
+
+/* --- 1. Sticky Navbar & Navigation --- */
 [data-bs-theme="light"] .apx-navbar {
-    background: rgba(255, 255, 255, 0.96) !important;
-    border-bottom: 1px solid rgba(158, 123, 62, 0.20) !important;
-    box-shadow: 0 4px 18px rgba(15, 23, 42, 0.06) !important;
+    background: rgba(255, 255, 255, 0.97) !important;
+    border-bottom: 1px solid rgba(158, 123, 62, 0.22) !important;
+    box-shadow: 0 4px 20px rgba(15, 23, 42, 0.06) !important;
 }
 
 [data-bs-theme="light"] .apx-brand-logo-box {
-    background: #FFFFFF;
-    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.1);
+    background: #FFFFFF !important;
+    border-color: rgba(158, 123, 62, 0.35) !important;
+    box-shadow: 0 2px 10px rgba(15, 23, 42, 0.08) !important;
 }
 
+[data-bs-theme="light"] .apx-brand-title {
+    color: #0F172A !important;
+}
+
+[data-bs-theme="light"] .apx-brand-tagline {
+    color: #72552A !important;
+}
+
+[data-bs-theme="light"] .apx-nav-link {
+    color: #334155 !important;
+}
+
+[data-bs-theme="light"] .apx-nav-link:hover {
+    color: #0F172A !important;
+    background: #F1F5F9 !important;
+    border-color: rgba(158, 123, 62, 0.2) !important;
+}
+
+[data-bs-theme="light"] .apx-nav-link.active {
+    background: rgba(158, 123, 62, 0.12) !important;
+    color: #72552A !important;
+    border: 1px solid rgba(158, 123, 62, 0.35) !important;
+    box-shadow: 0 0 12px rgba(158, 123, 62, 0.15) !important;
+}
+
+[data-bs-theme="light"] .apx-lang-btn {
+    background: #FFFFFF !important;
+    border-color: rgba(158, 123, 62, 0.3) !important;
+    color: #0F172A !important;
+}
+
+[data-bs-theme="light"] .apx-lang-btn:hover {
+    background: #F8FAFC !important;
+    border-color: #9E7B3E !important;
+}
+
+[data-bs-theme="light"] .apx-theme-btn {
+    background: #FFFFFF !important;
+    border-color: rgba(158, 123, 62, 0.3) !important;
+    color: #8C6A2E !important;
+}
+
+[data-bs-theme="light"] .apx-theme-btn:hover {
+    background: #F8FAFC !important;
+    border-color: #9E7B3E !important;
+}
+
+/* --- 2. Buttons in Light Mode --- */
+[data-bs-theme="light"] .apx-navbar .btn-apx-outline,
+[data-bs-theme="light"] .btn-apx-outline,
+[data-bs-theme="light"] .btn-outline-primary {
+    background: #FFFFFF !important;
+    color: #0F172A !important;
+    border: 1px solid rgba(158, 123, 62, 0.4) !important;
+    box-shadow: 0 2px 6px rgba(15, 23, 42, 0.05) !important;
+}
+
+[data-bs-theme="light"] .apx-navbar .btn-apx-outline:hover,
+[data-bs-theme="light"] .btn-apx-outline:hover,
+[data-bs-theme="light"] .btn-outline-primary:hover {
+    background: #F8FAFC !important;
+    color: #72552A !important;
+    border-color: #9E7B3E !important;
+    box-shadow: 0 4px 12px rgba(158, 123, 62, 0.15) !important;
+}
+
+[data-bs-theme="light"] .btn-apx-sovereign {
+    background: linear-gradient(135deg, #A88444 0%, #8C6A2E 100%) !important;
+    color: #FFFFFF !important;
+    border: 1px solid #8C6A2E !important;
+    box-shadow: 0 4px 14px rgba(140, 106, 46, 0.25) !important;
+}
+
+[data-bs-theme="light"] .btn-apx-sovereign:hover {
+    background: linear-gradient(135deg, #8C6A2E 0%, #72552A 100%) !important;
+    color: #FFFFFF !important;
+}
+
+[data-bs-theme="light"] .btn-apx-gold {
+    background: linear-gradient(135deg, #A88444 0%, #8C6A2E 100%) !important;
+    color: #FFFFFF !important;
+    border: 1px solid #8C6A2E !important;
+    box-shadow: 0 4px 14px rgba(140, 106, 46, 0.25) !important;
+}
+
+[data-bs-theme="light"] .btn-apx-gold:hover {
+    background: linear-gradient(135deg, #8C6A2E 0%, #72552A 100%) !important;
+    color: #FFFFFF !important;
+}
+
+[data-bs-theme="light"] .btn-secondary {
+    background: #F1F5F9 !important;
+    border-color: #CBD5E1 !important;
+    color: #0F172A !important;
+}
+
+[data-bs-theme="light"] .btn-secondary:hover {
+    background: #E2E8F0 !important;
+    color: #72552A !important;
+}
+
+/* --- 3. Hero Section (Panoramic Daylight & Aristocratic Warm Canvas) --- */
+[data-bs-theme="light"] .apx-hero-panoramic-bg {
+    background-image: linear-gradient(90deg, rgba(246, 248, 250, 0.96) 0%, rgba(246, 248, 250, 0.88) 35%, rgba(246, 248, 250, 0.40) 70%, rgba(246, 248, 250, 0.70) 100%), linear-gradient(180deg, rgba(246, 248, 250, 0.45) 0%, transparent 40%, rgba(246, 248, 250, 0.98) 100%), url('../img/hero-panoramic.png') !important;
+}
+
+[data-bs-theme="light"] .apx-hero-brand-mark {
+    color: #72552A !important;
+}
+
+[data-bs-theme="light"] .apx-hero-hierarchy-axis {
+    background: #FFFFFF !important;
+    border: 1px solid rgba(158, 123, 62, 0.25) !important;
+    box-shadow: 0 2px 10px rgba(15, 23, 42, 0.05) !important;
+}
+
+[data-bs-theme="light"] .apx-axis-step {
+    color: #526075 !important;
+}
+
+[data-bs-theme="light"] .apx-axis-arrow {
+    color: #94a3b8 !important;
+}
+
+[data-bs-theme="light"] .apx-axis-apex {
+    color: #8C6A2E !important;
+    font-weight: 800;
+}
+
+[data-bs-theme="light"] .apx-hero-headline {
+    color: #0F172A !important;
+}
+
+[data-bs-theme="light"] .apx-hero-subtext {
+    color: #334155 !important;
+}
+
+[data-bs-theme="light"] .apx-hero-ip-block {
+    background: #FFFFFF !important;
+    border: 1px solid rgba(158, 123, 62, 0.35) !important;
+    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06) !important;
+}
+
+[data-bs-theme="light"] .apx-hero-ip-block:hover {
+    background: #F8FAFC !important;
+    border-color: #9E7B3E !important;
+    box-shadow: 0 6px 18px rgba(158, 123, 62, 0.15) !important;
+}
+
+[data-bs-theme="light"] .apx-ip-label {
+    color: #64748b !important;
+}
+
+[data-bs-theme="light"] .apx-ip-address {
+    color: #0F172A !important;
+}
+
+[data-bs-theme="light"] .apx-ip-icon {
+    color: #9E7B3E !important;
+}
+
+[data-bs-theme="light"] .apx-hero-infrastructure {
+    border-top: 1px solid rgba(158, 123, 62, 0.2) !important;
+}
+
+[data-bs-theme="light"] .apx-infra-item {
+    color: #526075 !important;
+}
+
+[data-bs-theme="light"] .apx-infra-val {
+    color: #0F172A !important;
+}
+
+[data-bs-theme="light"] .apx-infra-label {
+    color: #72552A !important;
+    font-weight: 700;
+}
+
+[data-bs-theme="light"] .apx-infra-status {
+    color: #059669 !important;
+}
+
+[data-bs-theme="light"] .apx-infra-meta {
+    color: #64748b !important;
+}
+
+[data-bs-theme="light"] .apx-infra-divider {
+    color: #CBD5E1 !important;
+}
+
+[data-bs-theme="light"] .apx-infra-item.apx-copyable:hover {
+    background: rgba(158, 123, 62, 0.1) !important;
+    color: #0F172A !important;
+}
+
+/* --- 4. Section Headings & Kickers --- */
+[data-bs-theme="light"] .apx-world-title,
+[data-bs-theme="light"] .apx-section-title {
+    color: #0F172A !important;
+}
+
+[data-bs-theme="light"] .apx-world-lead {
+    color: #334155 !important;
+}
+
+[data-bs-theme="light"] .apx-section-kicker {
+    color: #8C6A2E !important;
+}
+
+/* --- 5. Lore & 3 Kingdoms Section --- */
+[data-bs-theme="light"] .apx-world-section {
+    background: #F6F8FA !important;
+    border-top: 1px solid rgba(158, 123, 62, 0.2) !important;
+}
+
+[data-bs-theme="light"] .apx-kingdom-province {
+    background: #FFFFFF !important;
+    border: 1px solid rgba(158, 123, 62, 0.22) !important;
+    box-shadow: 0 4px 18px rgba(15, 23, 42, 0.06) !important;
+}
+
+[data-bs-theme="light"] .apx-kingdom-province:hover {
+    background: #FFFFFF !important;
+    border-color: #9E7B3E !important;
+    box-shadow: 0 8px 28px rgba(158, 123, 62, 0.18) !important;
+}
+
+[data-bs-theme="light"] .apx-province-header {
+    border-bottom: 1px solid rgba(158, 123, 62, 0.15) !important;
+}
+
+[data-bs-theme="light"] .apx-province-name {
+    color: #0F172A !important;
+}
+
+[data-bs-theme="light"] .apx-province-desc {
+    color: #334155 !important;
+}
+
+/* Light Mode 3 Kingdoms Color Archetypes */
+[data-bs-theme="light"] .apx-kingdom-zenithar .apx-province-type { color: #8C6A2E !important; }
+[data-bs-theme="light"] .apx-kingdom-zenithar .apx-province-name { color: #72552A !important; }
+[data-bs-theme="light"] .apx-kingdom-zenithar .apx-province-spec-title { color: #8C6A2E !important; }
+
+[data-bs-theme="light"] .apx-kingdom-solterra .apx-province-type { color: #B91C1C !important; }
+[data-bs-theme="light"] .apx-kingdom-solterra .apx-province-name { color: #991B1B !important; }
+[data-bs-theme="light"] .apx-kingdom-solterra .apx-province-spec-title { color: #B91C1C !important; }
+
+[data-bs-theme="light"] .apx-kingdom-sylvamoor .apx-province-type { color: #0369A1 !important; }
+[data-bs-theme="light"] .apx-kingdom-sylvamoor .apx-province-name { color: #0284C7 !important; }
+[data-bs-theme="light"] .apx-kingdom-sylvamoor .apx-province-spec-title { color: #0284C7 !important; }
+
+[data-bs-theme="light"] .apx-buff-label { color: #047857 !important; }
+[data-bs-theme="light"] .apx-debuff-label { color: #B91C1C !important; }
+
+[data-bs-theme="light"] .apx-province-specs li {
+    color: #1E293B !important;
+}
+
+[data-bs-theme="light"] .apx-province-specs li i {
+    color: #72552A !important;
+}
+
+[data-bs-theme="light"] .apx-province-specs li span {
+    color: #334155 !important;
+}
+
+[data-bs-theme="light"] .apx-ledger-link {
+    color: #72552A !important;
+}
+
+[data-bs-theme="light"] .apx-ledger-link:hover {
+    color: #0F172A !important;
+}
+
+[data-bs-theme="light"] .apx-player-link {
+    color: #72552A !important;
+}
+
+[data-bs-theme="light"] .apx-player-link:hover {
+    color: #0F172A !important;
+}
+
+/* --- 6. Monolith Ledger & Realm Showcase --- */
+[data-bs-theme="light"] .apx-monolith-ledger {
+    background: #FFFFFF !important;
+    border: 1px solid rgba(158, 123, 62, 0.22) !important;
+    box-shadow: 0 4px 18px rgba(15, 23, 42, 0.06) !important;
+}
+
+[data-bs-theme="light"] .apx-ledger-row {
+    border-bottom: 1px solid rgba(158, 123, 62, 0.15) !important;
+}
+
+[data-bs-theme="light"] .apx-ledger-title {
+    color: #0F172A !important;
+}
+
+[data-bs-theme="light"] .apx-ledger-desc {
+    color: #334155 !important;
+}
+
+[data-bs-theme="light"] .apx-showcase-box {
+    background: #FFFFFF !important;
+    border: 1px solid rgba(158, 123, 62, 0.22) !important;
+    box-shadow: 0 4px 18px rgba(15, 23, 42, 0.06) !important;
+}
+
+[data-bs-theme="light"] .apx-showcase-footer {
+    background: #FFFFFF !important;
+    border-top: 1px solid rgba(158, 123, 62, 0.15) !important;
+}
+
+[data-bs-theme="light"] .apx-showcase-title {
+    color: #0F172A !important;
+}
+
+[data-bs-theme="light"] .apx-showcase-sub {
+    color: #334155 !important;
+}
+
+[data-bs-theme="light"] .apx-showcase-tag {
+    background: #FFFFFF !important;
+    border: 1px solid rgba(158, 123, 62, 0.3) !important;
+    color: #72552A !important;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08) !important;
+}
+
+[data-bs-theme="light"] .apx-showcase-overlay {
+    background: linear-gradient(to top, rgba(255, 255, 255, 0.85) 0%, transparent 60%) !important;
+}
+
+/* --- 7. Interactive Server Map --- */
+[data-bs-theme="light"] .apx-map-section {
+    background: #F6F8FA !important;
+    border-top: 1px solid rgba(158, 123, 62, 0.2) !important;
+}
+
+[data-bs-theme="light"] .apx-map-card {
+    background: #FFFFFF !important;
+    border: 1px solid rgba(158, 123, 62, 0.25) !important;
+    box-shadow: 0 8px 30px rgba(15, 23, 42, 0.08) !important;
+}
+
+[data-bs-theme="light"] .apx-map-preview-box {
+    background: #F8FAFC !important;
+    border: 1px solid rgba(158, 123, 62, 0.2) !important;
+}
+
+[data-bs-theme="light"] .apx-map-preview-icon {
+    color: #9E7B3E !important;
+    filter: drop-shadow(0 0 10px rgba(158, 123, 62, 0.25)) !important;
+}
+
+[data-bs-theme="light"] .apx-map-preview-title {
+    color: #0F172A !important;
+}
+
+[data-bs-theme="light"] .apx-map-preview-desc {
+    color: #334155 !important;
+}
+
+[data-bs-theme="light"] .apx-map-preview-kingdoms {
+    color: #8C6A2E !important;
+}
+
+[data-bs-theme="light"] .apx-badge-port {
+    background: #F1F5F9 !important;
+    color: #334155 !important;
+    border: 1px solid #CBD5E1 !important;
+}
+
+/* --- 8. Social Castes Section (11 Castes) --- */
+[data-bs-theme="light"] .apx-ranks-section {
+    background: #F6F8FA !important;
+    border-top: 1px solid rgba(158, 123, 62, 0.2) !important;
+}
+
+[data-bs-theme="light"] .apx-caste-nav {
+    border-bottom: 1px solid rgba(158, 123, 62, 0.2) !important;
+}
+
+[data-bs-theme="light"] .apx-caste-filter-btn {
+    color: #526075 !important;
+}
+
+[data-bs-theme="light"] .apx-caste-filter-btn:hover {
+    color: #0F172A !important;
+}
+
+[data-bs-theme="light"] .apx-caste-filter-btn.active {
+    color: #72552A !important;
+    border-bottom-color: #9E7B3E !important;
+}
+
+[data-bs-theme="light"] .apx-tier-label-bar {
+    border-bottom: 1px solid rgba(158, 123, 62, 0.2) !important;
+}
+
+[data-bs-theme="light"] .apx-tier-roman {
+    color: #72552A !important;
+}
+
+[data-bs-theme="light"] .apx-tier-name {
+    color: #0F172A !important;
+}
+
+[data-bs-theme="light"] .apx-weight-pill {
+    background: #FFFFFF !important;
+    border: 1px solid rgba(158, 123, 62, 0.25) !important;
+    color: #526075 !important;
+}
+
+[data-bs-theme="light"] .apx-weight-pill.gold {
+    background: rgba(158, 123, 62, 0.1) !important;
+    border-color: #9E7B3E !important;
+    color: #72552A !important;
+}
+
+[data-bs-theme="light"] .apx-caste-card {
+    background: #FFFFFF !important;
+    border: 1px solid rgba(158, 123, 62, 0.22) !important;
+    box-shadow: 0 4px 18px rgba(15, 23, 42, 0.06) !important;
+}
+
+[data-bs-theme="light"] .apx-caste-card:hover {
+    background: #FFFFFF !important;
+    border-color: #9E7B3E !important;
+    box-shadow: 0 8px 28px rgba(158, 123, 62, 0.18) !important;
+}
+
+[data-bs-theme="light"] .apx-card-apex {
+    background: linear-gradient(180deg, #FFFDF8 0%, #FFFFFF 100%) !important;
+    border: 1px solid rgba(158, 123, 62, 0.4) !important;
+    border-top: 3px solid #9E7B3E !important;
+    box-shadow: 0 10px 30px rgba(158, 123, 62, 0.12) !important;
+}
+
+[data-bs-theme="light"] .apx-card-foundation {
+    background: #FFFFFF !important;
+    border: 1px solid rgba(158, 123, 62, 0.22) !important;
+    border-bottom: 3px solid rgba(158, 123, 62, 0.4) !important;
+    box-shadow: 0 4px 18px rgba(15, 23, 42, 0.06) !important;
+}
+
+[data-bs-theme="light"] .apx-tier-authority-grid .apx-caste-card {
+    border-top: 2px solid rgba(158, 123, 62, 0.4) !important;
+}
+
+[data-bs-theme="light"] .apx-tier-staff-grid .apx-caste-card {
+    border-top: 2px solid rgba(158, 123, 62, 0.3) !important;
+}
+
+[data-bs-theme="light"] .apx-tier-ascension-grid .apx-caste-card {
+    border-top: 1px solid rgba(158, 123, 62, 0.25) !important;
+}
+
+[data-bs-theme="light"] .apx-tier-ascension-grid .apx-caste-card:first-child {
+    border-top: 2px solid #9E7B3E !important;
+}
+
+[data-bs-theme="light"] .apx-caste-name {
+    color: #0F172A !important;
+}
+
+[data-bs-theme="light"] .apx-caste-prefix {
+    color: #526075 !important;
+}
+
+[data-bs-theme="light"] .apx-caste-desc {
+    color: #334155 !important;
+}
+
+[data-bs-theme="light"] .apx-caste-perks li {
+    color: #1E293B !important;
+}
+
+[data-bs-theme="light"] .apx-caste-perks li i {
+    color: #9E7B3E !important;
+}
+
+[data-bs-theme="light"] .apx-caste-banner {
+    background: #FFFFFF !important;
+    border: 1px solid rgba(158, 123, 62, 0.2) !important;
+    box-shadow: 0 2px 10px rgba(15, 23, 42, 0.08) !important;
+}
+
+[data-bs-theme="light"] .apx-caste-card:hover .apx-caste-banner {
+    border-color: rgba(158, 123, 62, 0.4) !important;
+    box-shadow: 0 4px 14px rgba(158, 123, 62, 0.2) !important;
+}
+
+[data-bs-theme="light"] .apx-caste-tier-badge {
+    background: rgba(158, 123, 62, 0.1) !important;
+    color: #72552A !important;
+    border: 1px solid rgba(158, 123, 62, 0.25) !important;
+}
+
+[data-bs-theme="light"] .apx-caste-weight {
+    color: #64748b !important;
+}
+
+[data-bs-theme="light"] .apx-caste-action {
+    border-top: 1px solid rgba(158, 123, 62, 0.15) !important;
+}
+
+/* --- 9. Onboarding Stepper Section --- */
+[data-bs-theme="light"] .apx-onboarding-section {
+    background: #FFFFFF !important;
+    border-top: 1px solid rgba(158, 123, 62, 0.2) !important;
+}
+
+[data-bs-theme="light"] .apx-step-monolith {
+    background: #FFFFFF !important;
+    border: 1px solid rgba(158, 123, 62, 0.22) !important;
+    box-shadow: 0 4px 18px rgba(15, 23, 42, 0.06) !important;
+}
+
+[data-bs-theme="light"] .apx-step-monolith:hover {
+    background: #FFFFFF !important;
+    border-color: #9E7B3E !important;
+    box-shadow: 0 8px 28px rgba(158, 123, 62, 0.18) !important;
+}
+
+[data-bs-theme="light"] .apx-step-phase-label {
+    color: #72552A !important;
+}
+
+[data-bs-theme="light"] .apx-step-num-etched {
+    color: rgba(158, 123, 62, 0.35) !important;
+}
+
+[data-bs-theme="light"] .apx-step-icon {
+    color: #72552A !important;
+}
+
+[data-bs-theme="light"] .apx-step-title {
+    color: #0F172A !important;
+}
+
+[data-bs-theme="light"] .apx-step-desc {
+    color: #334155 !important;
+}
+
+[data-bs-theme="light"] .apx-step-monolith code {
+    background: #F1F5F9 !important;
+    color: #0F172A !important;
+    border: 1px solid #CBD5E1 !important;
+}
+
+[data-bs-theme="light"] .apx-quick-guide-banner {
+    background: linear-gradient(135deg, #FFFDF8 0%, #F8FAFC 100%) !important;
+    border: 1px solid rgba(158, 123, 62, 0.35) !important;
+    box-shadow: 0 6px 24px rgba(15, 23, 42, 0.06) !important;
+}
+
+[data-bs-theme="light"] .apx-guide-callout-badge {
+    background: rgba(158, 123, 62, 0.12) !important;
+    color: #72552A !important;
+    border-color: rgba(158, 123, 62, 0.3) !important;
+}
+
+[data-bs-theme="light"] .apx-guide-callout-title {
+    color: #0F172A !important;
+}
+
+[data-bs-theme="light"] .apx-guide-callout-desc {
+    color: #334155 !important;
+}
+
+/* --- 10. Footer in Light Mode --- */
+[data-bs-theme="light"] .apx-footer {
+    background: #F8FAFC !important;
+    border-top: 1px solid rgba(158, 123, 62, 0.22) !important;
+    color: #334155 !important;
+}
+
+[data-bs-theme="light"] .apx-footer-heading {
+    color: #0F172A !important;
+    font-weight: 800;
+}
+
+[data-bs-theme="light"] .apx-footer-desc {
+    color: #334155 !important;
+}
+
+[data-bs-theme="light"] .apx-footer-list a {
+    color: #475569 !important;
+}
+
+[data-bs-theme="light"] .apx-footer-list a:hover {
+    color: #9E7B3E !important;
+}
+
+[data-bs-theme="light"] .apx-footer-quick-copy {
+    background: #FFFFFF !important;
+    border: 1px solid rgba(158, 123, 62, 0.3) !important;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05) !important;
+}
+
+[data-bs-theme="light"] .apx-footer-quick-copy:hover {
+    background: #F8FAFC !important;
+    border-color: #9E7B3E !important;
+}
+
+[data-bs-theme="light"] .apx-footer-quick-copy i {
+    color: #72552A !important;
+}
+
+[data-bs-theme="light"] .apx-footer-ip-text {
+    color: #0F172A !important;
+}
+
+[data-bs-theme="light"] .apx-footer-copyright-text {
+    color: #0F172A !important;
+}
+
+[data-bs-theme="light"] .apx-footer-bottom {
+    border-top: 1px solid rgba(158, 123, 62, 0.15) !important;
+}
+
+[data-bs-theme="light"] .apx-slogan-text {
+    color: #72552A !important;
+}
+
+[data-bs-theme="light"] .apx-slogan-line {
+    background: rgba(158, 123, 62, 0.25) !important;
+}
+
+[data-bs-theme="light"] .apx-footer-verbs {
+    color: #72552A !important;
+}
+
+[data-bs-theme="light"] .apx-emblem-title {
+    color: #72552A !important;
+}
+
+/* --- 11. Cards, Tables, Modals, Forms & Utility Overrides --- */
 [data-bs-theme="light"] .card {
     background: #FFFFFF !important;
     border-color: rgba(158, 123, 62, 0.22) !important;
@@ -3206,31 +3948,23 @@ code:not(pre code) {
     color: #475569 !important;
 }
 
-[data-bs-theme="light"] .apx-footer {
-    background: #F1F5F9 !important;
-    border-top: 1px solid rgba(158, 123, 62, 0.22) !important;
-    color: #526075 !important;
-}
-
-[data-bs-theme="light"] .apx-footer-heading {
-    color: #111318 !important;
-}
-
-[data-bs-theme="light"] .apx-footer-list a {
-    color: #475569 !important;
-}
-
-[data-bs-theme="light"] .apx-footer-list a:hover {
-    color: #9E7B3E !important;
-}
-
 [data-bs-theme="light"] .apx-package-card {
     background: #FFFFFF !important;
     border-color: rgba(158, 123, 62, 0.22) !important;
+    box-shadow: 0 4px 18px rgba(15, 23, 42, 0.06) !important;
 }
 
 [data-bs-theme="light"] .apx-package-body {
     background: #FFFFFF !important;
+}
+
+[data-bs-theme="light"] .apx-package-image-wrap {
+    background: linear-gradient(180deg, #F8FAFC 0%, #FFFFFF 100%) !important;
+    border-bottom: 1px solid rgba(158, 123, 62, 0.15) !important;
+}
+
+[data-bs-theme="light"] .apx-package-title {
+    color: #0F172A !important;
 }
 
 [data-bs-theme="light"] .apx-spec-pill {
@@ -3270,6 +4004,7 @@ code:not(pre code) {
 [data-bs-theme="light"] .modal-content {
     background-color: #FFFFFF !important;
     color: #0F172A !important;
+    box-shadow: 0 16px 40px rgba(15, 23, 42, 0.15) !important;
 }
 
 [data-bs-theme="light"] .modal-header,
@@ -3302,6 +4037,16 @@ code:not(pre code) {
 [data-bs-theme="light"] .apx-wiki-header {
     background: linear-gradient(135deg, #FFFFFF 0%, #F8FAFC 100%) !important;
     border-color: rgba(158, 123, 62, 0.22) !important;
+}
+
+/* Fallback protection: Prevent hardcoded dark utility classes from breaking light mode */
+[data-bs-theme="light"] .bg-black {
+    background-color: #F8FAFC !important;
+}
+
+[data-bs-theme="light"] .form-control.bg-black {
+    background-color: #FFFFFF !important;
+    color: #0F172A !important;
 }
 
 /* ==============================================================================

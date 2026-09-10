@@ -141,7 +141,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
     <!-- Apexsions Custom Theme CSS -->
-    <link rel="stylesheet" href="{{ theme_asset('css/style.css') }}&t={{ @filemtime(public_path('assets/themes/apexsions/css/style.css')) ?: time() }}">
+    <link rel="stylesheet" href="{{ theme_asset('css/style.css') }}&v=20260911_lightfix_{{ @filemtime(public_path('assets/themes/apexsions/css/style.css')) ?: time() }}">
     @stack('styles')
 </head>
 <body class="apx-body">

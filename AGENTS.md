@@ -474,6 +474,11 @@ Prefer targeted validation over unnecessarily expensive full-project builds.
 
 Follow project-specific build instructions from `GEMINI.md`.
 
+### Token Conservation & Minimal Browser Automation Policy (MANDATORY)
+- **DILARANG** menggunakan headless browser, Playwright, atau `browser_subagent` secara berlebihan / berulang-ulang karena menghabiskan kuota token context secara masif.
+- Gunakan metode verifikasi yang ringan dan efisien: code inspection, syntax check, HTTP fetch/cURL, targeted unit test, atau isolated terminal check.
+- Otomasi browser hanya boleh digunakan jika diminta secara eksplisit oleh user atau jika benar-benar esensial untuk validasi akhir, dan dilakukan dalam 1 sesi ringkas tanpa spam screenshot.
+
 ---
 
 # 18. Performance

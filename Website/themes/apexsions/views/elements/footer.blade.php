@@ -76,12 +76,12 @@
                 <div class="d-flex flex-wrap gap-2">
                     <div class="apx-footer-quick-copy apx-copyable d-inline-flex align-items-center gap-2 px-3 py-2" data-apx-copy="apexsions.my.id:32348" role="button" tabindex="0" title="Klik atau tekan Enter untuk menyalin IP Java" aria-label="Salin Alamat IP Server Java">
                         <span class="apx-pulse-dot" style="width: 6px; height: 6px;" aria-hidden="true"></span>
-                        <span class="small font-monospace text-white">JAVA: apexsions.my.id:32348</span>
+                        <span class="small font-monospace apx-footer-ip-text">JAVA: apexsions.my.id:32348</span>
                         <i class="bi bi-clipboard text-dim small ms-1"></i>
                     </div>
                     <div class="apx-footer-quick-copy apx-copyable d-inline-flex align-items-center gap-2 px-3 py-2" data-apx-copy="IP: apexsions.my.id | Port: 32348" role="button" tabindex="0" title="Klik atau tekan Enter untuk menyalin IP dan Port Bedrock" aria-label="Salin IP dan Port Server Bedrock">
                         <span class="badge bg-secondary" style="font-size: 0.65rem; padding: 2px 5px;">BEDROCK</span>
-                        <span class="small font-monospace text-white">IP: apexsions.my.id | Port: 32348</span>
+                        <span class="small font-monospace apx-footer-ip-text">IP: apexsions.my.id | Port: 32348</span>
                         <i class="bi bi-clipboard text-dim small ms-1"></i>
                     </div>
                 </div>
@@ -93,7 +93,7 @@
             <div class="row align-items-center gy-3">
                 <!-- Left Copyright -->
                 <div class="col-lg-4 text-center text-lg-start">
-                    <div class="text-white small mb-1">&copy; {{ date('Y') }} <span data-i18n="footer_copyright">Apexsions. Seluruh hak cipta dilindungi.</span></div>
+                    <div class="apx-footer-copyright-text small mb-1">&copy; {{ date('Y') }} <span data-i18n="footer_copyright">Apexsions. Seluruh hak cipta dilindungi.</span></div>
                     <div class="text-muted" style="font-size: 0.78rem;" data-i18n="footer_sub_copyright">Dibangun bersama komunitas, untuk peradaban yang berdaulat.</div>
                 </div>
 

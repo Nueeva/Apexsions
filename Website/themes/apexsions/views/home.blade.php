@@ -6,7 +6,7 @@
 @section('content')
 <!-- Panoramic Hero Section: Viewport Adaptive (Fits 100% Player Screen at Normal Zoom) -->
 <section class="apx-hero-panoramic">
-    <div class="apx-hero-panoramic-bg" style="background-image: linear-gradient(90deg, rgba(5, 7, 10, 0.96) 0%, rgba(5, 7, 10, 0.85) 35%, rgba(5, 7, 10, 0.3) 70%, rgba(5, 7, 10, 0.5) 100%), linear-gradient(180deg, rgba(5, 7, 10, 0.45) 0%, transparent 40%, rgba(5, 7, 10, 0.95) 100%), url('{{ theme_asset('img/hero-panoramic.png') }}');"></div>
+    <div class="apx-hero-panoramic-bg"></div>
 
     <div class="container position-relative d-flex flex-column justify-content-between h-100 py-3" style="z-index: 2; flex: 1;">
         <!-- Top Sovereign Identity Mark & Hierarchy Axis -->
@@ -99,25 +99,25 @@
         <!-- The Three Sovereign Territories Triptych -->
         <div class="apx-kingdoms-triptych mb-4">
             <!-- 1. Zenithar -->
-            <div class="apx-kingdom-province">
+            <div class="apx-kingdom-province apx-kingdom-zenithar">
                 <div class="apx-province-header">
-                    <span class="apx-province-type" style="color: #f6e58d;"><i class="bi bi-compass me-1"></i> <span data-i18n="zenithar_type">TERITORI TIMUR &bull; DINASTI KERAJAAN</span></span>
-                    <h3 class="apx-province-name" style="color: #ffeaa7;">Zenithar</h3>
+                    <span class="apx-province-type"><i class="bi bi-compass me-1"></i> <span data-i18n="zenithar_type">TERITORI TIMUR &bull; DINASTI KERAJAAN</span></span>
+                    <h3 class="apx-province-name">Zenithar</h3>
                 </div>
                 <p class="apx-province-desc" data-i18n="zenithar_desc">
                     Dipimpin oleh keluarga dinasti dan pengawal elit Kekaisaran Sions yang berhasil mempertahankan diri dari malapetaka, mengungsi ke timur menuju puncak cakrawala (Zenith). Menjunjung tinggi kemurnian tata krama istana, kavaleri suci, dan kubah menara langit.
                 </p>
                 <div class="mb-3">
-                    <div class="small fw-bold text-uppercase mb-1" style="font-size: 0.72rem; letter-spacing: 0.1em; color: var(--apx-gold-light);"><i class="bi bi-geo-alt me-1"></i> <span data-i18n="label_characteristics">Karakteristik Wilayah</span></div>
+                    <div class="small fw-bold text-uppercase mb-1 apx-province-spec-title"><i class="bi bi-geo-alt me-1"></i> <span data-i18n="label_characteristics">Karakteristik Wilayah</span></div>
                     <ul class="apx-province-specs mb-2">
                         <li><i class="bi bi-bank text-dim"></i> <span data-i18n="zenithar_spec1">Puncak Cakrawala &amp; Solarium Spire Citadel</span></li>
                         <li><i class="bi bi-gem text-dim"></i> <span data-i18n="zenithar_spec2">Penambangan Emas Murni &amp; Arsitektur Megah</span></li>
                     </ul>
-                    <div class="small fw-bold text-uppercase mb-1" style="font-size: 0.72rem; letter-spacing: 0.1em; color: #2ecc71;"><i class="bi bi-shield-plus me-1"></i> <span data-i18n="label_buffs">Buff Kondisi Sejarah</span></div>
+                    <div class="small fw-bold text-uppercase mb-1 apx-buff-label"><i class="bi bi-shield-plus me-1"></i> <span data-i18n="label_buffs">Buff Kondisi Sejarah</span></div>
                     <div class="small text-muted mb-2" style="font-size: 0.8rem; line-height: 1.5;" data-i18n-html="zenithar_buffs">
                         <span class="text-success fw-semibold">+5% Speed</span>, <span class="text-success fw-semibold">+7% Luck</span>, <span class="text-success fw-semibold">+6% All Damage &amp; Defense</span>, <span class="text-success fw-semibold">-5% Reduksi Serangan Kritis Musuh</span>.
                     </div>
-                    <div class="small fw-bold text-uppercase mb-1" style="font-size: 0.72rem; letter-spacing: 0.1em; color: #e74c3c;"><i class="bi bi-shield-minus me-1"></i> <span data-i18n="label_debuffs">Debuff Kondisi Fisik</span></div>
+                    <div class="small fw-bold text-uppercase mb-1 apx-debuff-label"><i class="bi bi-shield-minus me-1"></i> <span data-i18n="label_debuffs">Debuff Kondisi Fisik</span></div>
                     <div class="small text-muted" style="font-size: 0.8rem; line-height: 1.5;" data-i18n-html="zenithar_debuffs">
                         <span class="text-danger fw-semibold">+7% Kerentanan Racun</span>, makanan memulihkan hunger lebih lambat (-1 point) karena terbiasa dengan santapan istana steril.
                     </div>
@@ -130,25 +130,25 @@
             </div>
 
             <!-- 2. Solterra -->
-            <div class="apx-kingdom-province">
+            <div class="apx-kingdom-province apx-kingdom-solterra">
                 <div class="apx-province-header">
-                    <span class="apx-province-type" style="color: #ff7675;"><i class="bi bi-compass me-1"></i> <span data-i18n="solterra_type">TERITORI SELATAN &bull; MAGICIAN &amp; VETERAN</span></span>
-                    <h3 class="apx-province-name" style="color: #ff7675;">Solterra</h3>
+                    <span class="apx-province-type"><i class="bi bi-compass me-1"></i> <span data-i18n="solterra_type">TERITORI SELATAN &bull; MAGICIAN &amp; VETERAN</span></span>
+                    <h3 class="apx-province-name">Solterra</h3>
                 </div>
                 <p class="apx-province-desc" data-i18n="solterra_desc">
                     Dibentuk oleh para pesulap tempur agung (arcanists) serta prajurit garis depan terkuat bekas legiun Sions yang bermigrasi ke wilayah selatan. Memadukan kedahsyatan sihir elemen api dengan kekuatan fisik brutal tanpa ampun untuk menaklukkan alam yang mematikan.
                 </p>
                 <div class="mb-3">
-                    <div class="small fw-bold text-uppercase mb-1" style="font-size: 0.72rem; letter-spacing: 0.1em; color: #e17055;"><i class="bi bi-geo-alt me-1"></i> <span data-i18n="label_characteristics">Karakteristik Wilayah</span></div>
+                    <div class="small fw-bold text-uppercase mb-1 apx-province-spec-title"><i class="bi bi-geo-alt me-1"></i> <span data-i18n="label_characteristics">Karakteristik Wilayah</span></div>
                     <ul class="apx-province-specs mb-2">
                         <li><i class="bi bi-fire text-dim"></i> <span data-i18n="solterra_spec1">Cadas Vulkanik, Kawah Lahar &amp; Ignis Bastion</span></li>
                         <li><i class="bi bi-shield-shaded text-dim"></i> <span data-i18n="solterra_spec2">Penempaan Senjata Berat &amp; Nilai Jual Ore Tinggi</span></li>
                     </ul>
-                    <div class="small fw-bold text-uppercase mb-1" style="font-size: 0.72rem; letter-spacing: 0.1em; color: #2ecc71;"><i class="bi bi-shield-plus me-1"></i> <span data-i18n="label_buffs">Buff Kondisi Sejarah</span></div>
+                    <div class="small fw-bold text-uppercase mb-1 apx-buff-label"><i class="bi bi-shield-plus me-1"></i> <span data-i18n="label_buffs">Buff Kondisi Sejarah</span></div>
                     <div class="small text-muted mb-2" style="font-size: 0.8rem; line-height: 1.5;" data-i18n-html="solterra_buffs">
                         <span class="text-success fw-semibold">+15% Total Damage</span>, <span class="text-success fw-semibold">+10% Critical Damage</span>, <span class="text-success fw-semibold">+10% Mining Speed</span>, <span class="text-success fw-semibold">Rasio Jual Ore Tinggi (65%)</span>.
                     </div>
-                    <div class="small fw-bold text-uppercase mb-1" style="font-size: 0.72rem; letter-spacing: 0.1em; color: #e74c3c;"><i class="bi bi-shield-minus me-1"></i> <span data-i18n="label_debuffs">Debuff Kondisi Fisik</span></div>
+                    <div class="small fw-bold text-uppercase mb-1 apx-debuff-label"><i class="bi bi-shield-minus me-1"></i> <span data-i18n="label_debuffs">Debuff Kondisi Fisik</span></div>
                     <div class="small text-muted" style="font-size: 0.8rem; line-height: 1.5;" data-i18n-html="solterra_debuffs">
                         <span class="text-danger fw-semibold">-2 HP Maksimal (9 Hati)</span>, <span class="text-danger fw-semibold">+8% Damage Masuk</span>, <span class="text-danger fw-semibold">+7% Cepat Lapar</span>, lahan pertanian cepat kering di tanah cadas.
                     </div>
@@ -161,25 +161,25 @@
             </div>
 
             <!-- 3. Sylvamoor -->
-            <div class="apx-kingdom-province">
+            <div class="apx-kingdom-province apx-kingdom-sylvamoor">
                 <div class="apx-province-header">
-                    <span class="apx-province-type" style="color: #74b9ff;"><i class="bi bi-compass me-1"></i> <span data-i18n="sylvamoor_type">TERITORI BARAT &bull; PEKERJA &amp; PEJUANG RIMBA</span></span>
-                    <h3 class="apx-province-name" style="color: #74b9ff;">Sylvamoor</h3>
+                    <span class="apx-province-type"><i class="bi bi-compass me-1"></i> <span data-i18n="sylvamoor_type">TERITORI BARAT &bull; PEKERJA &amp; PEJUANG RIMBA</span></span>
+                    <h3 class="apx-province-name">Sylvamoor</h3>
                 </div>
                 <p class="apx-province-desc" data-i18n="sylvamoor_desc">
                     Dibangun oleh kaum pekerja, pembangun, petani lumbung, serta prajurit garda rakyat (pengguna sihir alam dasar dan prajurit non-sihir) yang mengungsi ke belantara rimba barat. Mengisolasi diri dari ambisi kekuasaan dan hidup selaras menjaga kelestarian Pohon Dunia.
                 </p>
                 <div class="mb-3">
-                    <div class="small fw-bold text-uppercase mb-1" style="font-size: 0.72rem; letter-spacing: 0.1em; color: #0984e3;"><i class="bi bi-geo-alt me-1"></i> <span data-i18n="label_characteristics">Karakteristik Wilayah</span></div>
+                    <div class="small fw-bold text-uppercase mb-1 apx-province-spec-title"><i class="bi bi-geo-alt me-1"></i> <span data-i18n="label_characteristics">Karakteristik Wilayah</span></div>
                     <ul class="apx-province-specs mb-2">
                         <li><i class="bi bi-tree text-dim"></i> <span data-i18n="sylvamoor_spec1">Rimba Kanopi Purba, Samudra Kristal &amp; Eldergrove</span></li>
                         <li><i class="bi bi-flower1 text-dim"></i> <span data-i18n="sylvamoor_spec2">Lumbung Agrikultur, Alkemis Herbal &amp; Pangan</span></li>
                     </ul>
-                    <div class="small fw-bold text-uppercase mb-1" style="font-size: 0.72rem; letter-spacing: 0.1em; color: #2ecc71;"><i class="bi bi-shield-plus me-1"></i> <span data-i18n="label_buffs">Buff Kondisi Sejarah</span></div>
+                    <div class="small fw-bold text-uppercase mb-1 apx-buff-label"><i class="bi bi-shield-plus me-1"></i> <span data-i18n="label_buffs">Buff Kondisi Sejarah</span></div>
                     <div class="small text-muted mb-2" style="font-size: 0.8rem; line-height: 1.5;" data-i18n-html="sylvamoor_buffs">
                         <span class="text-success fw-semibold">+2 HP Maksimal (11 Hati)</span>, <span class="text-success fw-semibold">+12% Luck</span>, <span class="text-success fw-semibold">+7% Extra Mob Drop</span>, <span class="text-success fw-semibold">Defense Tinggi (~12.6%)</span>, <span class="text-success fw-semibold">Kelembapan Lahan Abadi</span>.
                     </div>
-                    <div class="small fw-bold text-uppercase mb-1" style="font-size: 0.72rem; letter-spacing: 0.1em; color: #e74c3c;"><i class="bi bi-shield-minus me-1"></i> <span data-i18n="label_debuffs">Debuff Kondisi Fisik</span></div>
+                    <div class="small fw-bold text-uppercase mb-1 apx-debuff-label"><i class="bi bi-shield-minus me-1"></i> <span data-i18n="label_debuffs">Debuff Kondisi Fisik</span></div>
                     <div class="small text-muted" style="font-size: 0.8rem; line-height: 1.5;" data-i18n-html="sylvamoor_debuffs">
                         <span class="text-danger fw-semibold">Mabuk Ketinggian di Y &gt; 110</span> (Hunger/Weakness), <span class="text-danger fw-semibold">+15% Damage Terbakar Api</span>, <span class="text-danger fw-semibold">-10% Serangan PvP &amp; Mining</span>.
                     </div>
@@ -284,9 +284,9 @@
 @endphp
 
 <!-- Section: Explore Apexsions World (Live Interactive Server Map) -->
-<section class="apx-section apx-map-section position-relative overflow-hidden py-5" id="server-map" style="background: linear-gradient(180deg, var(--apx-bg-surface) 0%, var(--apx-bg-deep) 100%); border-top: 1px solid var(--apx-gold-border-subtle);">
+<section class="apx-section apx-map-section position-relative overflow-hidden py-5" id="server-map">
     <div class="container position-relative" style="z-index: 2;">
-        <div class="p-4 p-md-5 rounded-4 border border-warning border-opacity-25" style="background: radial-gradient(circle at 10% 20%, rgba(15, 23, 42, 0.95), rgba(9, 12, 19, 0.98)); box-shadow: 0 16px 40px rgba(0,0,0,0.6); border-radius: var(--apx-radius-lg);">
+        <div class="apx-map-card p-4 p-md-5">
             <div class="row align-items-center g-4">
                 <div class="col-lg-7">
                     <div class="d-flex align-items-center gap-2 mb-3 flex-wrap">
@@ -301,7 +301,7 @@
                                 ⚪ Map Standby
                             </span>
                         @endif
-                        <span class="badge bg-black bg-opacity-40 text-white-50 border border-secondary border-opacity-20 px-2 py-1 small font-monospace">
+                        <span class="badge apx-badge-port px-2 py-1 small font-monospace">
                             Port :32076
                         </span>
                     </div>
@@ -328,15 +328,15 @@
                 </div>
 
                 <div class="col-lg-5">
-                    <div class="p-4 rounded-3 border border-secondary border-opacity-20 bg-black bg-opacity-40 text-center position-relative overflow-hidden">
-                        <div class="mb-3 text-warning" style="font-size: 3rem; filter: drop-shadow(0 0 16px rgba(245, 158, 11, 0.4));">
+                    <div class="apx-map-preview-box p-4 rounded-3 text-center position-relative overflow-hidden">
+                        <div class="mb-3 apx-map-preview-icon" style="font-size: 3rem;">
                             <i class="bi bi-compass"></i>
                         </div>
-                        <h4 class="font-cinzel text-white mb-2" data-i18n="map_card_title">Visualisasi 3D Interaktif</h4>
-                        <p class="text-muted small mb-3" style="line-height: 1.6;" data-i18n="map_card_desc">
+                        <h4 class="font-cinzel apx-map-preview-title mb-2" data-i18n="map_card_title">Visualisasi 3D Interaktif</h4>
+                        <p class="apx-map-preview-desc text-muted small mb-3" style="line-height: 1.6;" data-i18n="map_card_desc">
                             Pantau pergerakan warga, bangunan megah kerajaan, dan benteng pertahanan dari sudut pandang 3D real-time beresolusi tinggi.
                         </p>
-                        <div class="d-flex justify-content-center gap-2 small font-monospace text-warning">
+                        <div class="d-flex justify-content-center gap-2 small font-monospace apx-map-preview-kingdoms">
                             <span>Zenithar</span> &bull; <span>Solterra</span> &bull; <span>Sylvamoor</span>
                         </div>
                     </div>
@@ -348,7 +348,7 @@
 @endif
 
 <!-- Official Rank Hierarchy Showcase (Pure Visual Artwork & Clean Showcase) -->
-<section class="apx-section py-5" id="ranks" style="background: var(--apx-bg-deep); border-top: 1px solid var(--apx-gold-border-subtle);">
+<section class="apx-section apx-ranks-section py-5" id="ranks">
     <div class="container">
         <!-- Section Header -->
         <div class="text-center mb-5">
@@ -764,7 +764,7 @@
 
 
 <!-- Connected Rite of Passage (Onboarding Stepper Section) -->
-<section class="apx-section py-5" id="getting-started" style="background: var(--apx-bg-base); border-top: 1px solid var(--apx-border);">
+<section class="apx-section apx-onboarding-section py-5" id="getting-started">
     <div class="container py-3">
         <div class="apx-section-header text-center mb-5">
             <div class="apx-section-kicker mb-2" data-i18n="step_kicker">GERBANG INISIASI</div>
@@ -831,16 +831,16 @@
         </div>
 
         <!-- Callout Banner: Panduan 15 Menit Pertama Warga Baru -->
-        <div class="mt-4 p-4 rounded text-center position-relative overflow-hidden" style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(13, 18, 30, 0.85) 100%); border: 1px solid var(--apx-gold-border); border-radius: var(--apx-radius-md);">
+        <div class="apx-quick-guide-banner mt-4 p-4 text-center position-relative overflow-hidden">
             <div class="row align-items-center">
                 <div class="col-lg-8 text-lg-start mb-3 mb-lg-0">
-                    <span class="badge mb-2" style="background: rgba(245, 158, 11, 0.2); color: var(--apx-gold-light); border: 1px solid var(--apx-gold-border); font-size: 0.72rem; letter-spacing: 0.08em;" data-i18n="guide_callout_badge">
+                    <span class="badge mb-2 apx-guide-callout-badge" data-i18n="guide_callout_badge">
                         <i class="bi bi-compass-fill me-1"></i> PANDUAN KILAT WARGA BARU
                     </span>
-                    <h3 class="mb-1 text-white" style="font-family: 'Cinzel', Georgia, serif; font-size: 1.35rem;" data-i18n="guide_callout_title">
+                    <h3 class="mb-1 apx-guide-callout-title" data-i18n="guide_callout_title">
                         Bingung Harus Melakukan Apa Setelah Mendarat di Spawn?
                     </h3>
-                    <p class="text-muted small mb-0" data-i18n="guide_callout_desc">
+                    <p class="apx-guide-callout-desc small mb-0" data-i18n="guide_callout_desc">
                         Pelajari peta jalan 15 menit dari mengambil starter kit, memilih kerajaan, menandai rumah, hingga menghasilkan pundi Rupiah pertama.
                     </p>
                 </div>
