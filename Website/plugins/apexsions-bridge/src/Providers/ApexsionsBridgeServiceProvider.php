@@ -78,6 +78,7 @@ class ApexsionsBridgeServiceProvider extends BasePluginServiceProvider
             'apexsions.players.manage' => 'Kelola & Eksekusi Aksi Pemain',
             'apexsions.ranks.view' => 'Lihat Hirarki & Data Rank',
             'apexsions.ranks.manage' => 'Kelola & Tetapkan Rank Pemain',
+            'apexsions.webstore.manage' => 'Kelola Produk & Visual Webstore',
             'apexsions.reports.view' => 'Lihat Laporan Pemain',
             'apexsions.reports.manage' => 'Kelola & Tindak Lanjuti Laporan',
             'apexsions.moderation.view' => 'Lihat Hukuman & Catatan Moderasi',
@@ -143,10 +144,10 @@ class ApexsionsBridgeServiceProvider extends BasePluginServiceProvider
                 'route' => 'apexsions-bridge.admin.ranks.index',
                 'permission' => 'admin.users',
             ],
-            'apexsions-votes' => [
-                'name' => 'Vote Management',
-                'icon' => 'bi bi-check2-circle',
-                'route' => 'apexsions-bridge.admin.votes.index',
+            'apexsions-webstore' => [
+                'name' => 'Webstore Manager',
+                'icon' => 'bi bi-shop-window',
+                'route' => 'apexsions-bridge.admin.webstore.index',
                 'permission' => 'admin.users',
             ],
             'apexsions-reports' => [

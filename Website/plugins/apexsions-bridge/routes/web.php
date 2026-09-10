@@ -18,6 +18,7 @@ use Azuriom\Plugin\ApexsionsBridge\Controllers\Admin\ServerAdminController;
 use Azuriom\Plugin\ApexsionsBridge\Controllers\Admin\TransactionAdminController;
 use Azuriom\Plugin\ApexsionsBridge\Controllers\Api\LinkVerificationController;
 use Azuriom\Plugin\ApexsionsBridge\Controllers\Admin\VoteAdminController;
+use Azuriom\Plugin\ApexsionsBridge\Controllers\Admin\WebstoreAdminController;
 use Azuriom\Plugin\ApexsionsBridge\Controllers\LeaderboardController;
 use Azuriom\Plugin\ApexsionsBridge\Controllers\ProfileManagementController;
 use Azuriom\Plugin\ApexsionsBridge\Controllers\PublicProfileController;
@@ -68,6 +69,15 @@ Route::middleware(['web', 'admin-access'])->prefix('admin')->name('admin.')->gro
         Route::get('/{rank_key}/edit', [RankAdminController::class, 'edit'])->name('edit');
         Route::put('/{rank_key}', [RankAdminController::class, 'update'])->name('update');
         Route::get('/{rank_key}', [RankAdminController::class, 'show'])->name('show');
+    });
+
+    // Webstore Manager (Centralized Package & Banner Administration)
+    Route::prefix('webstore')->name('webstore.')->middleware('can:admin.users')->group(function () {
+        Route::get('/', [WebstoreAdminController::class, 'index'])->name('index');
+        Route::get('/{id}/edit', [WebstoreAdminController::class, 'edit'])->name('edit');
+        Route::put('/{id}', [WebstoreAdminController::class, 'update'])->name('update');
+        Route::post('/{id}/toggle-status', [WebstoreAdminController::class, 'toggleStatus'])->name('toggle-status');
+        Route::post('/{id}/toggle-featured', [WebstoreAdminController::class, 'toggleFeatured'])->name('toggle-featured');
     });
 
     // Reports Center

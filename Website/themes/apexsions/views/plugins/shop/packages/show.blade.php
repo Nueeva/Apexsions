@@ -49,6 +49,13 @@
         $badgeClass = 'bg-warning text-dark border border-warning';
     }
 
+    // Custom badge from Webstore Manager
+    $adminCustomBadge = setting('apexsions.webstore.pkg_' . $package->id . '.badge');
+    if (!empty($adminCustomBadge)) {
+        $badgeText = $adminCustomBadge;
+        $badgeClass = 'bg-warning text-dark fw-bold border border-warning shadow-sm';
+    }
+
     $rankKey = null;
     if (str_contains($packageName, 'sions')) $rankKey = 'sions';
     elseif (str_contains($packageName, 'emperor')) $rankKey = 'emperor';
@@ -91,12 +98,30 @@
         ['name' => 'Friell', 'number' => '6285883161047', 'role' => 'Founder'],
     ]);
 
-    $primaryModalAdmin = $modalAdmins[0] ?? ['name' => 'Rifqi', 'number' => '6281212994597'];
-    $primaryModalNum = preg_replace('/[^0-9]/', '', $primaryModalAdmin['number']);
+    $customWaAdmin = setting('apexsions.webstore.pkg_' . $package->id . '.wa_admin');
+    if (!empty($customWaAdmin)) {
+        $primaryModalNum = preg_replace('/[^0-9]/', '', $customWaAdmin);
+    } else {
+        $primaryModalAdmin = $modalAdmins[0] ?? ['name' => 'Rifqi', 'number' => '6281212994597'];
+        $primaryModalNum = preg_replace('/[^0-9]/', '', $primaryModalAdmin['number']);
+    }
+
+    $customWaTemplate = setting('apexsions.webstore.pkg_' . $package->id . '.wa_template');
+    if (!empty($customWaTemplate)) {
+        $waEffectivePrice = $discountInfo['has_discount'] ? $discountInfo['discounted_price'] : (float)$package->getPrice();
+        $waMessage = str_replace(
+            ['{package}', '{price}', '{player}'],
+            [$package->name, 'Rp ' . number_format($waEffectivePrice, 0, ',', '.'), $linkedAccount->player_name ?? 'Player'],
+            $customWaTemplate
+        );
+    } else {
+        $waMessage = $discountInfo['whatsapp_message'];
+    }
+
     if ($isUpgradeAvailable && $upgradeWaUrl) {
         $primaryModalUrl = $upgradeWaUrl;
     } else {
-        $primaryModalUrl = 'https://wa.me/' . $primaryModalNum . '?text=' . rawurlencode($discountInfo['whatsapp_message']);
+        $primaryModalUrl = 'https://wa.me/' . $primaryModalNum . '?text=' . rawurlencode($waMessage);
     }
 @endphp
 
@@ -127,7 +152,7 @@
         <div class="modal-body p-4" style="color: var(--apx-text-sub); line-height: 1.7;">
             @if($package->hasImage() || $defaultImage)
                 <div class="mb-4 text-center rounded-3 overflow-hidden" style="max-height: 220px; border: 1px solid rgba(255,255,255,0.08); background: #0b0f19;">
-                    <img src="{{ $package->hasImage() ? $package->imageUrl() : $defaultImage }}" alt="{{ $package->name }}" style="width: 100%; height: 220px; object-fit: cover;">
+                    <img src="{{ $package->hasImage() ? $package->imageUrl() : $defaultImage }}" alt="{{ $package->name }}" style="width: 100%; height: 220px; object-fit: cover;" onerror="this.onerror=null; @if($defaultImage) this.src='{{ $defaultImage }}'; @endif">
                 </div>
             @endif
 

@@ -201,9 +201,21 @@
                 @php
                     $linkedAccount = auth()->check() ? \Azuriom\Plugin\ApexsionsBridge\Models\MinecraftAccount::where('user_id', auth()->id())->first() : null;
 
-                    // Collect featured packages: Sions Permanent, Exsio Pass, and Booster/Coin
+                    // Collect featured packages from Webstore Manager settings or fallback
                     $featuredPackages = collect();
                     if (isset($categories)) {
+                        foreach ($categories as $cat) {
+                            foreach ($cat->packages as $pkg) {
+                                if (setting('apexsions.webstore.pkg_' . $pkg->id . '.is_featured', '0') === '1') {
+                                    $pkg->setRelation('category', $cat);
+                                    $featuredPackages->push($pkg);
+                                }
+                            }
+                        }
+                    }
+
+                    // Fallback to default featured packages if none explicitly chosen
+                    if ($featuredPackages->isEmpty() && isset($categories)) {
                         foreach ($categories as $cat) {
                             foreach ($cat->packages as $pkg) {
                                 $pName = strtolower($pkg->name);
@@ -214,7 +226,7 @@
                             }
                         }
                     }
-                    $featuredPackages = $featuredPackages->take(3);
+                    $featuredPackages = $featuredPackages->take(6);
                 @endphp
 
                 <div class="row g-4">
@@ -258,15 +270,39 @@
                                 $badgeClass = 'bg-warning text-dark';
                             }
 
+                            // Custom badge from Webstore Manager
+                            $adminCustomBadge = setting('apexsions.webstore.pkg_' . $package->id . '.badge');
+                            if (!empty($adminCustomBadge)) {
+                                $badgeText = $adminCustomBadge;
+                                $badgeClass = 'bg-warning text-dark fw-bold border border-warning shadow-sm';
+                            }
+
                             $discountInfo = \Azuriom\Plugin\ApexsionsBridge\Services\BattlepassDiscountService::calculateDiscount(
                                 $linkedAccount,
                                 $package,
                                 (float) $package->getPrice()
                             );
 
-                            $primaryAdmin = $founderAdmins[0] ?? ['name' => 'Rifqi', 'number' => '6281212994597'];
-                            $primaryCleanNum = preg_replace('/[^0-9]/', '', $primaryAdmin['number']);
-                            $primaryWaUrl = 'https://wa.me/' . $primaryCleanNum . '?text=' . rawurlencode($discountInfo['whatsapp_message']);
+                            $customWaAdmin = setting('apexsions.webstore.pkg_' . $package->id . '.wa_admin');
+                            if (!empty($customWaAdmin)) {
+                                $primaryCleanNum = preg_replace('/[^0-9]/', '', $customWaAdmin);
+                            } else {
+                                $primaryAdmin = $founderAdmins[0] ?? ['name' => 'Rifqi', 'number' => '6281212994597'];
+                                $primaryCleanNum = preg_replace('/[^0-9]/', '', $primaryAdmin['number']);
+                            }
+
+                            $customWaTemplate = setting('apexsions.webstore.pkg_' . $package->id . '.wa_template');
+                            if (!empty($customWaTemplate)) {
+                                $waEffectivePrice = $discountInfo['has_discount'] ? $discountInfo['discounted_price'] : (float)$package->getPrice();
+                                $waMessage = str_replace(
+                                    ['{package}', '{price}', '{player}'],
+                                    [$package->name, 'Rp ' . number_format($waEffectivePrice, 0, ',', '.'), $linkedAccount->player_name ?? 'Player'],
+                                    $customWaTemplate
+                                );
+                            } else {
+                                $waMessage = $discountInfo['whatsapp_message'];
+                            }
+                            $primaryWaUrl = 'https://wa.me/' . $primaryCleanNum . '?text=' . rawurlencode($waMessage);
                         @endphp
 
                         <div class="col-md-6 col-xl-4">
@@ -296,10 +332,12 @@
                                         </div>
                                     </div>
 
-                                    @if($package->hasImage())
-                                        <img class="apx-package-image" src="{{ $package->imageUrl() }}" alt="{{ $package->name }}" loading="lazy">
-                                    @elseif($defaultImage)
-                                        <img class="apx-package-image" src="{{ $defaultImage }}" alt="{{ $package->name }}" loading="lazy">
+                                    @php
+                                        $effectiveImage = $package->hasImage() ? $package->imageUrl() : $defaultImage;
+                                    @endphp
+
+                                    @if($effectiveImage)
+                                        <img class="apx-package-image" src="{{ $effectiveImage }}" alt="{{ $package->name }}" loading="lazy" onerror="this.onerror=null; @if($defaultImage) this.src='{{ $defaultImage }}'; @else this.style.display='none'; @endif">
                                     @else
                                         <div class="d-flex align-items-center justify-content-center w-100 h-100" style="background: rgba(245, 158, 11, 0.08); color: var(--apx-gold); font-size: 2.2rem;">
                                             <i class="{{ $fallbackIcon }}"></i>

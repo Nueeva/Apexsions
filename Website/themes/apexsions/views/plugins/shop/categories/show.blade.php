@@ -264,19 +264,31 @@
                             $badgeText = 'PAKET RESMI';
                         }
 
+                        // Override badge with Webstore Manager custom badge if configured
+                        $adminCustomBadge = setting('apexsions.webstore.pkg_' . $package->id . '.badge');
+                        if (!empty($adminCustomBadge)) {
+                            $badgeText = $adminCustomBadge;
+                            $badgeClass = 'bg-warning text-dark fw-bold border border-warning shadow-sm';
+                        }
+
                         $isUpgradeAvailable = false;
                         $isAlreadyOwned = false;
                         $upgradeCalculation = null;
                         $upgradeWaUrl = null;
 
-                        if ($rankKey && $linkedAccount) {
-                            $userWeight = \Azuriom\Plugin\ApexsionsBridge\Services\RankService::getRankWeight($accountRank);
-                            $targetWeight = \Azuriom\Plugin\ApexsionsBridge\Services\RankService::getRankWeight($rankKey);
+                        if ($linkedAccount && $rankKey && $isPermanent) {
+                            $rankHierarchy = ['wanderer' => 10, 'ascendant' => 30, 'archon' => 40, 'sovereign' => 50, 'emperor' => 60, 'sions' => 70];
+                            $userRankWeight = $rankHierarchy[$accountRank] ?? 0;
+                            $targetRankWeight = $rankHierarchy[$rankKey] ?? 0;
 
-                            if ($isAccountPerm && $userWeight >= $targetWeight && $isPermanent) {
+                            if ($isAccountPerm && $userRankWeight >= $targetRankWeight) {
                                 $isAlreadyOwned = true;
-                            } elseif ($isAccountPerm && $isPermanent && $targetWeight > $userWeight) {
-                                $upgradeCalculation = \Azuriom\Plugin\ApexsionsBridge\Services\RankService::calculateUpgradePrice($linkedAccount, $rankKey);
+                            } elseif ($isAccountPerm && $targetRankWeight > $userRankWeight) {
+                                $upgradeCalculation = \Azuriom\Plugin\ApexsionsBridge\Services\BattlepassDiscountService::calculateRankUpgrade(
+                                    $linkedAccount,
+                                    $rankKey,
+                                    (float) $package->getPrice()
+                                );
                                 if (!empty($upgradeCalculation['eligible'])) {
                                     $isUpgradeAvailable = true;
                                     $upgradeWaUrl = \Azuriom\Plugin\ApexsionsBridge\Services\BattlepassDiscountService::generateUpgradeWhatsAppUrl(
@@ -294,12 +306,45 @@
                             (float) $package->getPrice()
                         );
 
-                        $primaryAdmin = $founderAdmins[0] ?? ['name' => 'Rifqi', 'number' => '6281212994597'];
-                        $primaryCleanNum = preg_replace('/[^0-9]/', '', $primaryAdmin['number']);
+                        // Override with Webstore Manager custom discount if defined
+                        $adminDiscount = setting('apexsions.webstore.pkg_' . $package->id . '.discount');
+                        if (!empty($adminDiscount) && is_numeric($adminDiscount) && (float)$adminDiscount > 0) {
+                            $adminDiscVal = (float) $adminDiscount;
+                            $origPrice = (float) $package->getPrice();
+                            $discPrice = max(0, $origPrice * (1 - ($adminDiscVal / 100)));
+                            $discountInfo['has_discount'] = true;
+                            $discountInfo['discount_percent'] = $adminDiscVal;
+                            $discountInfo['original_price'] = $origPrice;
+                            $discountInfo['discounted_price'] = $discPrice;
+                            $discountInfo['savings'] = $origPrice - $discPrice;
+                            $discountInfo['eligible_rank'] = 'Promo Spesial';
+                        }
+
+                        // WhatsApp Admin Routing Override
+                        $customWaAdmin = setting('apexsions.webstore.pkg_' . $package->id . '.wa_admin');
+                        if (!empty($customWaAdmin)) {
+                            $primaryCleanNum = preg_replace('/[^0-9]/', '', $customWaAdmin);
+                        } else {
+                            $primaryAdmin = $founderAdmins[0] ?? ['name' => 'Rifqi', 'number' => '6281212994597'];
+                            $primaryCleanNum = preg_replace('/[^0-9]/', '', $primaryAdmin['number']);
+                        }
+
+                        $customWaTemplate = setting('apexsions.webstore.pkg_' . $package->id . '.wa_template');
+                        if (!empty($customWaTemplate)) {
+                            $waEffectivePrice = $discountInfo['has_discount'] ? $discountInfo['discounted_price'] : (float)$package->getPrice();
+                            $waMessage = str_replace(
+                                ['{package}', '{price}', '{player}'],
+                                [$package->name, 'Rp ' . number_format($waEffectivePrice, 0, ',', '.'), $linkedAccount->player_name ?? 'Player'],
+                                $customWaTemplate
+                            );
+                        } else {
+                            $waMessage = $discountInfo['whatsapp_message'];
+                        }
+
                         if ($isUpgradeAvailable && $upgradeWaUrl) {
                             $primaryWaUrl = $upgradeWaUrl;
                         } else {
-                            $primaryWaUrl = 'https://wa.me/' . $primaryCleanNum . '?text=' . rawurlencode($discountInfo['whatsapp_message']);
+                            $primaryWaUrl = 'https://wa.me/' . $primaryCleanNum . '?text=' . rawurlencode($waMessage);
                         }
 
                         // Core specs for 2x2 micro-grid
@@ -355,10 +400,12 @@
                                     </div>
                                 </div>
 
-                                @if($package->hasImage())
-                                    <img class="apx-package-image" src="{{ $package->imageUrl() }}" alt="{{ $package->name }}" loading="lazy">
-                                @elseif($defaultImage)
-                                    <img class="apx-package-image" src="{{ $defaultImage }}" alt="{{ $package->name }}" loading="lazy">
+                                @php
+                                    $effectiveImage = $package->hasImage() ? $package->imageUrl() : $defaultImage;
+                                @endphp
+
+                                @if($effectiveImage)
+                                    <img class="apx-package-image" src="{{ $effectiveImage }}" alt="{{ $package->name }}" loading="lazy" onerror="this.onerror=null; @if($defaultImage) this.src='{{ $defaultImage }}'; @else this.style.display='none'; @endif">
                                 @else
                                     <div class="d-flex align-items-center justify-content-center w-100 h-100" style="background: rgba(245, 158, 11, 0.08); color: var(--apx-gold); font-size: 2.2rem;">
                                         <i class="{{ $fallbackIcon }}"></i>

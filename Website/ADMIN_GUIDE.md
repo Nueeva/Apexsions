@@ -73,6 +73,14 @@ Dashboard ini ditujukan khusus untuk operasional staf dan administrator:
      5. *Administrative Audit History*: Catatan riwayat aksi staf dan riwayat sanksi akun.
    - **Administrator Self-Protection**: Kebijakan proteksi mutlak yang mencegah administrator menghapus akunnya sendiri atau mendemosi/menghapus akun administrator terakhir yang tersisa (mengembalikan respon 403 Forbidden aman).
 
+11. **Webstore Product & Banner Manager (`/admin/webstore`):**
+    - **Pusat Manajemen Produk Terpadu**: Mengelola seluruh paket di semua kategori (Rank Kasta Donatur, Battlepass Musiman, Pundi Koin & Booster) dalam satu antarmuka terpusat.
+    - **Manajemen Visual & Banner (16:9)**: Unggah file banner kustom langsung ke storage publik dengan live preview, atau pilih langsung dari galeri preset grafis resmi server (`package-sions.jpg`, `package-emperor.jpg`, `package-exsio-pass.jpg`, dll.).
+    - **Tag Tampilan & Promo Kustom**: Atur pita badge khusus (e.g. "HOT DEAL", "BEST VALUE", "POPULER") dan toggle sorotan beranda ("Featured on Store Home").
+    - **Pricing & WhatsApp Routing**: Konfigurasi harga satuan, diskon promo, penentuan Founder penerima chat order WhatsApp (Rifqi, Friell, Favian), dan kustomisasi template pesan WhatsApp.
+    - **In-Game Command Triggers**: Edit daftar baris perintah konsol in-game Minecraft yang otomatis dieksekusi saat paket dikirimkan ke pemain.
+    - **Ketersediaan & Limit Akun**: Toggle status aktif (`is_enabled`) dan batas kuota pembelian per akun.
+
 ---
 
 ## 3. Custom Plugin Integration
