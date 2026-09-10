@@ -14,13 +14,16 @@ class LeaderboardController extends Controller
      */
     public function index(): View
     {
-        $topLevels = MinecraftAccount::whereNotNull('verified_at')
+        $baseQuery = MinecraftAccount::where('minecraft_username', 'not like', 'TruthTest%')
+            ->whereNotNull('minecraft_username');
+
+        $topLevels = (clone $baseQuery)
             ->orderByDesc('level')
             ->orderByDesc('xp')
             ->limit(10)
             ->get();
 
-        $topBalances = MinecraftAccount::whereNotNull('verified_at')
+        $topBalances = (clone $baseQuery)
             ->orderByDesc('balance_rupiah')
             ->limit(10)
             ->get();
@@ -50,7 +53,7 @@ class LeaderboardController extends Controller
             ],
         ];
 
-        $kingdomData = MinecraftAccount::whereNotNull('verified_at')
+        $kingdomData = (clone $baseQuery)
             ->whereIn('kingdom', ['ZENITHAR', 'SOLTERRA', 'SYLVAMOOR'])
             ->select('kingdom', DB::raw('count(*) as count'), DB::raw('sum(level) as total_levels'))
             ->groupBy('kingdom')
