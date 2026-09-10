@@ -6,7 +6,9 @@ import com.apexsions.customenchants.enchant.CustomEnchant;
 import com.apexsions.customenchants.gui.AdminItemCreatorGUI;
 import com.apexsions.customenchants.gui.input.NativeDialogAdapter;
 import com.apexsions.customenchants.gui.input.NativeDialogAdapter.DialogButtonData;
+import com.apexsions.customenchants.gui.input.EnchantsInputManager;
 import com.apexsions.customenchants.items.ColorUtil;
+import com.apexsions.customenchants.items.ItemLevelRequirement;
 import com.apexsions.customenchants.tools.ToolStatType;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -67,6 +69,13 @@ public class ItemEditDialogFlow {
                 desc.append("<gray>Tool Set Sinergi: <yellow>").append(cName).append("</yellow></gray>\n");
             }
         }
+
+        int reqLevel = ItemLevelRequirement.getRequiredLevel(item);
+        if (reqLevel > 0) {
+            desc.append("<gray>Syarat Level: <gold><bold>Level ").append(reqLevel).append("+</bold></gold></gray>\n");
+        } else {
+            desc.append("<gray>Syarat Level: <green>Bebas Digunakan</green></gray>\n");
+        }
         desc.append("<dark_gray>Pilih menu konfigurasi di bawah:</dark_gray>");
 
         List<DialogButtonData> buttons = new ArrayList<>();
@@ -92,6 +101,13 @@ public class ItemEditDialogFlow {
                         },
                         () -> openRoot(plugin, player, item, sourceSlot, creatorGUI)
                 )));
+
+        String levelLabel = reqLevel > 0 ? "LV. " + reqLevel + "+" : "TIDAK ADA";
+        buttons.add(new DialogButtonData(
+                "<gradient:#f39c12:#e67e22><bold>🎖 SYARAT LEVEL: " + levelLabel + "</bold></gradient>",
+                "Atur minimal level ApexsionsCore agar bisa memakai item ini (" + (reqLevel > 0 ? "Aktif: Lv. " + reqLevel : "Bebas") + ")",
+                () -> openLevelRequirementDialog(plugin, player, item, sourceSlot, creatorGUI)
+        ));
 
         if (isTool) {
             boolean isSetBonusActive = (creatorGUI != null && creatorGUI.isSetBonusConfigured());
@@ -1486,5 +1502,92 @@ public class ItemEditDialogFlow {
         });
         meta.lore(lore);
         item.setItemMeta(meta);
+    }
+
+    // ==========================================================
+    // 7. LEVEL REQUIREMENT CONFIGURATION DIALOG
+    // ==========================================================
+
+    public static boolean openLevelRequirementDialog(ApexsionsCustomEnchantsPlugin plugin, Player player,
+                                                     ItemStack item, int sourceSlot, AdminItemCreatorGUI creatorGUI) {
+        if (item == null || player == null || !player.isOnline()) return false;
+        int currentLevel = ItemLevelRequirement.getRequiredLevel(item);
+
+        StringBuilder desc = new StringBuilder();
+        desc.append("<gray>Tentukan syarat minimal level <gold>ApexsionsCore</gold> untuk memakai item ini.</gray>\n\n");
+        desc.append("<gray>Status Saat Ini: </gray>")
+                .append(currentLevel > 0 ? "<gold><bold>Level " + currentLevel + "+</bold></gold>" : "<green><bold>Bebas Digunakan (Level 1+)</bold></green>")
+                .append("\n<dark_gray>Pilih preset level atau ketik angka spesifik di bawah:</dark_gray>");
+
+        List<DialogButtonData> buttons = new ArrayList<>();
+        int[] presets = {5, 10, 20, 30, 50, 75, 100};
+        for (int lvl : presets) {
+            boolean isCur = (currentLevel == lvl);
+            String prefix = isCur ? "<green>✓ </green>" : "";
+            buttons.add(new DialogButtonData(
+                    prefix + "<gold><bold>🎖 LEVEL " + lvl + "+</bold></gold>",
+                    "Tetapkan syarat minimal ke Level " + lvl,
+                    () -> {
+                        ItemStack updated = ItemLevelRequirement.setRequiredLevel(item, lvl);
+                        if (creatorGUI != null) creatorGUI.updateItem(sourceSlot, updated);
+                        player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.3f);
+                        player.sendMessage(mm.deserialize("<green>✓ Syarat level berhasil diatur ke <gold><bold>Level " + lvl + "+</bold></gold>!</green>"));
+                        openRoot(plugin, player, updated, sourceSlot, creatorGUI);
+                    }
+            ));
+        }
+
+        buttons.add(new DialogButtonData("<aqua><bold>✍ KETIK LEVEL MANUAL (1 - 100)</bold></aqua>", "Masukkan angka level spesifik", () -> {
+            EnchantsInputManager.openInput(
+                    plugin,
+                    player,
+                    "INPUT SYARAT LEVEL",
+                    "Masukkan batas level minimal (1 - 100):",
+                    String.valueOf(currentLevel > 0 ? currentLevel : 10),
+                    inputStr -> {
+                        try {
+                            int parsed = Integer.parseInt(inputStr.trim());
+                            if (parsed < 1) parsed = 0;
+                            if (parsed > 100) parsed = 100;
+                            ItemStack updated = ItemLevelRequirement.setRequiredLevel(item, parsed);
+                            if (creatorGUI != null) creatorGUI.updateItem(sourceSlot, updated);
+                            player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.3f);
+                            player.sendMessage(mm.deserialize("<green>✓ Syarat level berhasil diatur ke <gold><bold>Level " + parsed + "+</bold></gold>!</green>"));
+                            openRoot(plugin, player, updated, sourceSlot, creatorGUI);
+                        } catch (NumberFormatException e) {
+                            player.sendMessage(mm.deserialize("<red>Angka tidak valid! Masukkan angka antara 1 dan 100.</red>"));
+                            player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
+                            openLevelRequirementDialog(plugin, player, item, sourceSlot, creatorGUI);
+                        }
+                    },
+                    () -> openLevelRequirementDialog(plugin, player, item, sourceSlot, creatorGUI)
+            );
+        }));
+
+        if (currentLevel > 0) {
+            buttons.add(new DialogButtonData("<red><bold>❌ HAPUS SYARAT LEVEL</bold></red>", "Hapus batasan level (bebas dipakai)", () -> {
+                ItemStack updated = ItemLevelRequirement.setRequiredLevel(item, 0);
+                if (creatorGUI != null) creatorGUI.updateItem(sourceSlot, updated);
+                player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, 0.8f, 1.2f);
+                player.sendMessage(mm.deserialize("<yellow>✓ Syarat level dihapus! Item kini bebas digunakan.</yellow>"));
+                openRoot(plugin, player, updated, sourceSlot, creatorGUI);
+            }));
+        }
+
+        DialogButtonData exitBtn = new DialogButtonData("<gray><bold>⬅ KEMBALI KE MENU ITEM</bold></gray>", "Kembali tanpa mengubah level", () -> {
+            player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1.0f, 1.0f);
+            openRoot(plugin, player, item, sourceSlot, creatorGUI);
+        });
+
+        return NativeDialogAdapter.showMultiActionDialog(
+                plugin,
+                player,
+                item,
+                "<gradient:#f39c12:#e67e22><bold>🎖 ATUR SYARAT LEVEL PENGGUNAAN 🎖</bold></gradient>",
+                desc.toString(),
+                buttons,
+                exitBtn,
+                2
+        );
     }
 }

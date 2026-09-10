@@ -97,6 +97,19 @@ public class ItemModifierGUI implements InventoryHolder {
                         mm.deserialize("<yellow>▶ Klik untuk memilih Custom Enchants via GUI</yellow>")
                 ), true));
 
+        // Slot 20: Minimum Level Requirement Picker
+        int minLevel = com.apexsions.customenchants.items.ItemLevelRequirement.getRequiredLevel(item);
+        inventory.setItem(20, createItem(Material.EXPERIENCE_BOTTLE,
+                "<gradient:#f39c12:#e67e22><bold>🎖 ATUR SYARAT MINIMAL LEVEL</bold></gradient>",
+                List.of(
+                        mm.deserialize("<gray>Tentukan batas level pemain di <gold>ApexsionsCore</gold></gray>"),
+                        mm.deserialize("<gray>agar dapat mengenakan atau memakai item ini.</gray>"),
+                        Component.empty(),
+                        mm.deserialize("<gray>Status saat ini: " + (minLevel > 0 ? "<gold><bold>Level " + minLevel + "+</bold></gold>" : "<green>Bebas Dipakai</green>") + "</gray>"),
+                        Component.empty(),
+                        mm.deserialize("<yellow>▶ Klik untuk mengatur syarat level item ini</yellow>")
+                ), minLevel > 0));
+
         // Slot 21: Vanilla Enchants Picker
         int activeVanilla = item.getEnchantments().size();
         inventory.setItem(21, createItem(Material.ENCHANTED_BOOK,
@@ -180,6 +193,17 @@ public class ItemModifierGUI implements InventoryHolder {
         if (slot == 19) {
             player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1.0f, 1.2f);
             new CustomEnchantPickerGUI(plugin, player, item, this, updated -> {
+                this.item = updated;
+                if (creatorGUI != null) creatorGUI.updateItem(sourceSlot, this.item);
+                this.open();
+            }).open();
+            return;
+        }
+
+        // Slot 20: Minimum Level Requirement Picker
+        if (slot == 20) {
+            player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1.0f, 1.2f);
+            new ItemLevelPickerGUI(plugin, player, item, this, updated -> {
                 this.item = updated;
                 if (creatorGUI != null) creatorGUI.updateItem(sourceSlot, this.item);
                 this.open();

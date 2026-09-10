@@ -3,7 +3,9 @@ package com.apexsions.customenchants.gui;
 import com.apexsions.core.kit.KitStatType;
 import com.apexsions.customenchants.ApexsionsCustomEnchantsPlugin;
 import com.apexsions.customenchants.gui.dialog.ItemEditDialogFlow;
+import com.apexsions.customenchants.gui.input.EnchantsInputManager;
 import com.apexsions.customenchants.items.ColorUtil;
+import com.apexsions.customenchants.items.ItemLevelRequirement;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
@@ -146,6 +148,16 @@ public class AdminItemCreatorGUI implements InventoryHolder {
         this.setBonusConfigured = configured;
     }
 
+    public int getCommonMinLevel() {
+        for (ItemStack is : placedItems.values()) {
+            if (is != null) {
+                int lvl = ItemLevelRequirement.getRequiredLevel(is);
+                if (lvl > 0) return lvl;
+            }
+        }
+        return 0;
+    }
+
     public void updateItem(int slot, ItemStack newItem) {
         if (newItem == null || newItem.getType().isAir()) {
             placedItems.remove(slot);
@@ -253,6 +265,18 @@ public class AdminItemCreatorGUI implements InventoryHolder {
         inventory.setItem(45, createItem(Material.RED_CONCRETE, "<red><bold>⬅ KEMBALIKAN SEMUA ITEM</bold></red>", List.of(
                 mm.deserialize("<gray>Ambil kembali seluruh item di slot creator ke tasmu.</gray>")
         ), false));
+
+        // Slot 47: Batch Level Requirement for All Set Pieces
+        int detectedSetMinLevel = getCommonMinLevel();
+        List<Component> levelSetLore = new ArrayList<>();
+        levelSetLore.add(mm.deserialize("<gray>Syarat Level Terdeteksi: </gray>").append(detectedSetMinLevel > 0 ? mm.deserialize("<gold><bold>Level " + detectedSetMinLevel + "+</bold></gold>") : mm.deserialize("<green>Bebas (Tidak Ada)</green>")));
+        levelSetLore.add(mm.deserialize("<gray>Total Item di Creator: <aqua>" + placedItems.size() + " item</aqua></gray>"));
+        levelSetLore.add(Component.empty());
+        levelSetLore.add(mm.deserialize("<yellow>▶ Klik Kiri: Tetapkan syarat level ke SEMUA item di slot</yellow>"));
+        levelSetLore.add(mm.deserialize("<red>▶ Klik Kanan / Shift: Hapus syarat level dari SEMUA item</red>"));
+        inventory.setItem(47, createItem(Material.EXPERIENCE_BOTTLE,
+                "<gradient:#f39c12:#e67e22><bold>🎖 ATUR SYARAT LEVEL SET</bold></gradient>",
+                levelSetLore, detectedSetMinLevel > 0));
 
         // Slot 48: Rename Set / Prefix via GUI
         List<Component> renameSetLore = new ArrayList<>();
@@ -597,6 +621,56 @@ public class AdminItemCreatorGUI implements InventoryHolder {
                 return;
             }
 
+            // Slot 47: Set Minimal Level for ALL Items
+            if (rawSlot == 47) {
+                event.setCancelled(true);
+                if (placedItems.isEmpty()) {
+                    player.sendMessage(mm.deserialize("<red>Letakkan setidaknya satu armor atau senjata/alat di creator terlebih dahulu!</red>"));
+                    player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
+                    return;
+                }
+
+                if (event.getClick() == ClickType.RIGHT || event.isShiftClick()) {
+                    // Reset all level requirements
+                    for (Map.Entry<Integer, ItemStack> entry : new ArrayList<>(placedItems.entrySet())) {
+                        ItemStack updated = ItemLevelRequirement.setRequiredLevel(entry.getValue(), 0);
+                        updateItem(entry.getKey(), updated);
+                    }
+                    player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, 0.8f, 1.2f);
+                    player.sendMessage(mm.deserialize("<yellow>✓ Syarat level berhasil dihapus dari SELURUH item dalam creator!</yellow>"));
+                    buildGUI();
+                } else {
+                    this.isNavigatingSubGUI = true;
+                    int cur = getCommonMinLevel();
+                    EnchantsInputManager.openInput(
+                            plugin,
+                            player,
+                            "SYARAT LEVEL SET",
+                            "Masukkan batas minimal level untuk SEMUA item set (1 - 100):",
+                            String.valueOf(cur > 0 ? cur : 10),
+                            inputStr -> {
+                                try {
+                                    int parsed = Integer.parseInt(inputStr.trim());
+                                    if (parsed < 1) parsed = 0;
+                                    if (parsed > 100) parsed = 100;
+                                    for (Map.Entry<Integer, ItemStack> entry : new ArrayList<>(placedItems.entrySet())) {
+                                        ItemStack updated = ItemLevelRequirement.setRequiredLevel(entry.getValue(), parsed);
+                                        updateItem(entry.getKey(), updated);
+                                    }
+                                    player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1.0f, 1.2f);
+                                    player.sendMessage(mm.deserialize("<green><bold>✓ SUKSES!</bold> Syarat level <gold><bold>Level " + parsed + "+</bold></gold> berhasil diterapkan ke seluruh item set!</green>"));
+                                } catch (NumberFormatException e) {
+                                    player.sendMessage(mm.deserialize("<red>Angka tidak valid! Masukkan angka antara 1 dan 100.</red>"));
+                                    player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
+                                }
+                                this.open();
+                            },
+                            this::open
+                    );
+                }
+                return;
+            }
+
             // Slot 48: Rename Set in Chat
             if (rawSlot == 48) {
                 event.setCancelled(true);
@@ -811,6 +885,12 @@ public class AdminItemCreatorGUI implements InventoryHolder {
 
         if (!this.globalSet2Stats.isEmpty() || !this.globalSet4Stats.isEmpty()) {
             this.setBonusConfigured = true;
+        }
+
+        // 6. Auto-read Minimum Level Requirement
+        int reqLvl = ItemLevelRequirement.getRequiredLevel(item);
+        if (reqLvl > 0) {
+            detectedAny = true;
         }
 
         if (detectedAny && !this.globalSetName.isBlank()) {
