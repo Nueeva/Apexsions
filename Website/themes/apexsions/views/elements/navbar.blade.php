@@ -37,15 +37,6 @@
                     </a>
                 </li>
 
-                <!-- 4. Server Map (BlueMap) -->
-                @if(\Azuriom\Plugin\ApexsionsBridge\Services\ServerMapService::isMapEnabled() && \Azuriom\Plugin\ApexsionsBridge\Services\ServerMapService::isNavigationVisible())
-                    <li class="nav-item">
-                        <a class="nav-link apx-nav-link @if(request()->is('server-map*')) active @endif d-inline-flex align-items-center gap-1" href="{{ url('/server-map') }}">
-                            <i class="bi bi-map text-warning"></i>
-                            <span data-i18n="nav_server_map">Server Map</span>
-                        </a>
-                    </li>
-                @endif
 
                 <!-- 5. Wiki -->
                 @if(plugins()->isEnabled('wiki'))
@@ -253,14 +244,6 @@
                     </a>
                 </li>
 
-                @if(\Azuriom\Plugin\ApexsionsBridge\Services\ServerMapService::isMapEnabled() && \Azuriom\Plugin\ApexsionsBridge\Services\ServerMapService::isNavigationVisible())
-                    <li class="nav-item">
-                        <a class="apx-drawer-link @if(request()->is('server-map*')) active @endif" href="{{ url('/server-map') }}">
-                            <i class="bi bi-map text-warning"></i>
-                            <span data-i18n="nav_server_map">Server Map</span>
-                        </a>
-                    </li>
-                @endif
 
                 @if(plugins()->isEnabled('wiki'))
                     <li class="nav-item">

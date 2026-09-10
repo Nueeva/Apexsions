@@ -1833,17 +1833,62 @@ a:hover {
     box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
     border-radius: var(--apx-radius-lg);
     border: 1px solid rgba(245, 158, 11, 0.25);
+    backdrop-filter: blur(12px);
 }
 
 .apx-map-preview-box {
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(245, 158, 11, 0.2);
+    background: radial-gradient(circle at center, rgba(17, 24, 39, 0.92), rgba(10, 14, 23, 0.98));
     border-radius: var(--apx-radius-md);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.apx-map-interactive-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(245, 158, 11, 0.5);
+    box-shadow: 0 16px 36px rgba(245, 158, 11, 0.15), 0 0 20px rgba(245, 158, 11, 0.1);
+}
+
+.apx-map-radar-wrapper {
+    position: relative;
+}
+
+.apx-map-radar-ring {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    border: 1px dashed rgba(245, 158, 11, 0.35);
+    animation: apx-radar-rotate 20s linear infinite;
+}
+
+.apx-map-radar-ping {
+    position: absolute;
+    inset: 15px;
+    border-radius: 50%;
+    border: 1px solid rgba(245, 158, 11, 0.4);
+    animation: apx-radar-pulse 2.8s ease-out infinite;
+}
+
+@keyframes apx-radar-rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+@keyframes apx-radar-pulse {
+    0% { transform: scale(0.85); opacity: 0.8; }
+    50% { transform: scale(1.15); opacity: 0.3; }
+    100% { transform: scale(1.35); opacity: 0; }
 }
 
 .apx-map-preview-icon {
     color: var(--apx-gold-light);
-    filter: drop-shadow(0 0 16px rgba(245, 158, 11, 0.4));
+    filter: drop-shadow(0 0 16px rgba(245, 158, 11, 0.5));
+    transition: transform 0.3s ease;
+}
+
+.apx-map-interactive-card:hover .apx-map-preview-icon {
+    transform: scale(1.08);
 }
 
 .apx-map-preview-title {
@@ -1860,8 +1905,54 @@ a:hover {
 
 .apx-badge-port {
     background: rgba(0, 0, 0, 0.4);
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(255, 255, 255, 0.7);
     border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.apx-badge-coords {
+    background: rgba(245, 158, 11, 0.08);
+    color: var(--apx-gold-light);
+    border: 1px solid rgba(245, 158, 11, 0.2);
+}
+
+.apx-chip-zenithar {
+    background: rgba(59, 130, 246, 0.15);
+    color: #93c5fd;
+    border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+.apx-chip-solterra {
+    background: rgba(245, 158, 11, 0.15);
+    color: #fcd34d;
+    border: 1px solid rgba(245, 158, 11, 0.35);
+}
+
+.apx-chip-sylvamoor {
+    background: rgba(16, 185, 129, 0.15);
+    color: #6ee7b7;
+    border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.apx-map-action-hint {
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.apx-map-interactive-card:hover .apx-map-action-hint {
+    transform: translateX(4px);
+    color: #fbbf24;
+}
+
+.apx-map-feature-item {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 0.65rem 0.85rem;
+    border-radius: var(--apx-radius-sm);
+    transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.apx-map-feature-item:hover {
+    background: rgba(245, 158, 11, 0.04);
+    border-color: rgba(245, 158, 11, 0.2);
 }
 
 .apx-quick-guide-banner {

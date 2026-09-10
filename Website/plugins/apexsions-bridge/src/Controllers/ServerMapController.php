@@ -4,23 +4,15 @@ namespace Azuriom\Plugin\ApexsionsBridge\Controllers;
 
 use Azuriom\Http\Controllers\Controller;
 use Azuriom\Plugin\ApexsionsBridge\Services\ServerMapService;
-use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 
 class ServerMapController extends Controller
 {
     /**
-     * Show the Server Map landing and inspection page.
+     * Redirect directly to the live 3D Server Map (BlueMap).
      */
-    public function index(): View
+    public function index(): RedirectResponse
     {
-        $mapUrl = ServerMapService::getMapUrl();
-        $isOnline = ServerMapService::isMapOnline();
-        $isEnabled = ServerMapService::isMapEnabled();
-
-        return view('apexsions-bridge::server-map', [
-            'mapUrl' => $mapUrl,
-            'isOnline' => $isOnline,
-            'isEnabled' => $isEnabled,
-        ]);
+        return redirect()->away(ServerMapService::getMapUrl());
     }
 }
