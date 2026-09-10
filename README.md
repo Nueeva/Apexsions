@@ -15,11 +15,12 @@ Apexsions/
 │   ├── docs/             # Dokumentasi teknis & arsitektur plugin
 │   ├── build.ps1         # Smart Turbo Multi-Compiler PowerShell
 │   ├── build.gradle      # Gradle root configuration
-│   └── DOKUMENTASI.md    # Manual teknis plugin
-├── Website/               # Aplikasi web portal & store
+│   └── DOKUMENTASI.md    # Manual teknis plugin Minecraft
+├── Website/               # Aplikasi web portal, store, bridge & theme
+├── DOKUMENTASI.md         # Master Technical Documentation & Ecosystem State
 ├── GEMINI.md              # AI Agent Development Guidelines
 ├── AGENTS.md             # Universal Coding Agent Guidelines
-└── README.md             # Dokumentasi utama repositori
+└── README.md             # Dokumentasi ringkas repositori
 ```
 
 ---

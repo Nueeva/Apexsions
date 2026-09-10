@@ -474,10 +474,15 @@ Prefer targeted validation over unnecessarily expensive full-project builds.
 
 Follow project-specific build instructions from `GEMINI.md`.
 
-### Token Conservation & Minimal Browser Automation Policy (MANDATORY)
-- **DILARANG** menggunakan headless browser, Playwright, atau `browser_subagent` secara berlebihan / berulang-ulang karena menghabiskan kuota token context secara masif.
-- Gunakan metode verifikasi yang ringan dan efisien: code inspection, syntax check, HTTP fetch/cURL, targeted unit test, atau isolated terminal check.
-- Otomasi browser hanya boleh digunakan jika diminta secara eksplisit oleh user atau jika benar-benar esensial untuk validasi akhir, dan dilakukan dalam 1 sesi ringkas tanpa spam screenshot.
+### Token Conservation & Strict Quota Reduction Protocol (MANDATORY)
+Untuk mencegah pemborosan kuota token dan menjaga efisiensi context window:
+1. **DILARANG Headless Browser & Playwright Loop:** Dilarang keras menggunakan `browser_subagent` atau otomasi browser secara berlebihan/berulang-ulang. Gunakan validasi ringan: inspeksi kode, syntax check (`php -l`), targeted unit test, atau HTTP fetch/cURL ringkas. Otomasi browser hanya boleh digunakan jika diminta eksplisit oleh user atau untuk 1x final verification ringkas tanpa spam screenshot.
+2. **Batasi Jangkauan Baca Berkas (`view_file`):** Dilarang melihat berkas secara utuh (ratusan baris) jika hanya membutuhkan bagian tertentu. Selalu gunakan `StartLine` dan `EndLine` dengan rentang terfokus (20–60 baris).
+3. **Pencarian Terarah (`grep_search`):** Hindari pencarian global tanpa filter. Selalu tentukan subfolder spesifik atau ekstensi berkas untuk mencegah luapan hasil.
+4. **Pembatasan Output Terminal (`run_command`):** Batasi perintah terminal yang berpotensi menghasilkan ribuan baris log menggunakan paging, filtering (`head -n 30`, `Select-Object -First 30`, `--short`, `--stat`).
+5. **Komunikasi Ringkas & Padat:** Hilangkan basa-basi percakapan, pengantar berulang, atau mengulang ringkasan yang sudah tercantum di artefak/dokumentasi. Langsung laporkan poin inti perubahan, hasil verifikasi, dan status commit.
+6. **Local-First Testing:** Uji dan validasi sintaks serta dependensi secara lokal sebelum menyentuh VPS produksi.
+7. **Atomic Batch Execution:** Satukan perbaikan yang saling terkait dalam satu siklus terencana, hindari bolak-balik eksekusi sebaris demi sebaris yang menghabiskan turn context.
 
 ---
 

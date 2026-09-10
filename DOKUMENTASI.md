@@ -1,0 +1,200 @@
+# DOKUMENTASI.md — Master Technical Documentation & Ecosystem State
+# Apexsions — The Peak Civilizations
+
+> **Repository:** `Nueeva/Apexsions`  
+> **Primary Branch:** `main`  
+> **Brand Name:** `Apexsions` (DILARANG menambahkan kata Network/SMP/Kingdom).  
+> **Tagline:** `The Peak Civilizations`  
+> **Dokumentasi Terakhir:** September 2026 (Sinkronisasi Penuh Pasca-Audit & Reset Memori)
+
+Dokumen ini adalah **Single Source of Truth** untuk seluruh pengembang dan AI Coding Agent. Dokumen ini merangkum arsitektur, konfigurasi server, kredensial produksi, standar keamanan, sistem webstore, BlueMap, dual-theme, serta 8 plugin Minecraft secara komprehensif.
+
+---
+
+## 🏛️ 1. Identitas Brand & Aturan Naming
+- **Nama Server / Brand:** `Apexsions` (Wajib murni nama ini di seluruh UI, log, judul, dan dokumentasi).
+- **Tagline Resmi:** `The Peak Civilizations`.
+- **Dilarang Keras:** Menambahkan imbuhan seperti "Apexsions SMP", "Apexsions Kingdom", "Apexsions Network".
+- **Palet Warna Utama:**
+  - Dark Mode (*Imperial Obsidian*): `#090A0D` (Void Black), `#111318` (Deep Obsidian), `#181A20` (Obsidian Surface), `#C9A45C` (Royal Gold), `#F4EFE6` (Celestial Ivory).
+  - Light Mode (*Sovereign Ivory*): `#F6F8FA` (Ivory Canvas), `#FFFFFF` (White Card), `#0F172A` (Charcoal Slate Text), `#8C6A2E` / `#9E7B3E` (Antique Gold Accent).
+
+---
+
+## 🌐 2. Infrastruktur & Kredensial Server Produksi
+
+### A. Web Server VPS (Azuriom CMS & Web Platform)
+- **IP Address:** `89.144.53.100`
+- **SSH Port:** `22`
+- **Username:** `root`
+- **Password:** `9tEMjeqysCYYqhRhxBvH`
+- **Domain Resmi:** `http://web.apexsions.my.id` (Akses langsung IP: `http://89.144.53.100`)
+- **Web Root:** `/var/www/azuriom`
+- **Custom Theme Path:** `/var/www/azuriom/themes/apexsions`
+- **Public Theme Assets:** `/var/www/azuriom/public/assets/themes/apexsions`
+- **WebBridge Plugin:** `/var/www/azuriom/plugins/apexsions-bridge`
+- **Database Seeder Master:** `/var/www/azuriom/database/seed_minecraft_systems.php`
+
+#### Perintah Rutin Operasional VPS
+```bash
+cd /var/www/azuriom
+php artisan view:clear && php artisan cache:clear && php artisan config:clear && php artisan route:clear
+chown -R www-data:www-data /var/www/azuriom/themes/apexsions /var/www/azuriom/public/assets/themes/apexsions
+systemctl reload nginx
+```
+
+### B. Game Server Minecraft (Jagoanhosting Pterodactyl SFTP)
+- **Host / Server:** `falcon04.jagoanhosting.id`
+- **Port SFTP:** `2022`
+- **Username:** `rifqiariansyah123jt3.27e4a2f6`
+- **Password:** `NuevaStore123#`
+- **Protokol:** SFTP (`sftp://falcon04.jagoanhosting.id:2022`)
+- **Runtime:** Paper API (Minecraft 26.2), Java 21 LTS.
+
+### C. WebBridge API & Security Token
+- **Endpoint:** `http://web.apexsions.my.id/api/apexsions-bridge`
+- **Secret Key:** `apexsions_bridge_key_live_2026`
+- **Player Sync API:** `POST /api/apexsions-bridge/sync-player`
+- **Konfigurasi Lokal Minecraft:** `Minecraft/plugins/ApexsionsCore/src/main/resources/config.yml` (`web-bridge`)
+
+### D. BlueMap 3D Interactive Server Map
+- **Port BlueMap Live:** `32076`
+- **URL Direct VPS:** `http://89.144.53.100:32076`
+- **URL Internal Website:** `http://web.apexsions.my.id/server-map` (Route `apexsions-bridge.server-map`)
+- **Status Integrasi:** Terhubung langsung dengan controller `ServerMapController.php`, live health-check probe port, serta fallback standby jika server offline.
+
+---
+
+## 💎 3. Sistem Webstore & Dual-Currency Architecture
+
+### A. Dual-Currency Model
+1. **Rupiah (Rp):** Mata uang resmi transaksi paket rank, privilege, dan bundel donatur webstore.
+2. **Diamond (💎):** Mata uang premium Minecraft in-game yang dapat dibeli via webstore dan digunakan di in-game `/shop`, `/ah`, `/ce`, dan lelang.
+   - **Kategori Khusus Webstore:** `Diamond Currency` (`/shop/category/diamond-currency`).
+   - **Pilihan Paket:**
+     - 100 Diamond (Rp 10.000)
+     - 250 Diamond (Rp 25.000)
+     - 500 Diamond (Rp 50.000)
+     - 1.000 Diamond (Rp 95.000)
+     - 2.500 Diamond (Rp 225.000)
+     - 5.000 Diamond (Rp 425.000)
+
+### B. Direct WhatsApp Order System (Fallback Midtrans)
+Karena akun payment gateway Midtrans belum aktif, seluruh checkout dialihkan otomatis ke WhatsApp Founder/Admin:
+- **Admin 1:** Rifqi (`6281212994597`)
+- **Admin 2:** Friell (`6285883161047`)
+- **Admin 3:** Favian (`6287729112281`)
+
+---
+
+## 🎨 4. Dual-Theme Engine (Obsidian Dark & Sovereign Ivory Light)
+
+### A. Fitur & Kepatuhan Visual
+- **Toggle Mode:** Tombol ikon bulan/matahari di navbar (`.apx-theme-toggle`). Status tersimpan di `localStorage.apx_theme` dan cookie.
+- **Sovereign Ivory Light Mode:**
+  - Seluruh kartu container, monolith ledger, kasta sosial, dan section berlatar belakang putih (`#FFFFFF` / `#F6F8FA`).
+  - Tipografi charcoal slate kontras tinggi (`#0F172A` / `#334155`) memenuhi standar WCAG AAA (> 14:1).
+  - Tiga Kerajaan memiliki warna aksen khas yang adaptif: Zenithar (Royal Gold `#8C6A2E`), Solterra (Crimson `#B91C1C`), Sylvamoor (Azure Blue `#0284C7`).
+- **Hard Cache-Busting:**
+  - Template `layouts/app.blade.php` memuat stylesheet dengan version tag dinamis:
+    `<link rel="stylesheet" href="{{ theme_asset('css/style.css') }}&v=20260911_lightfix_{{ @filemtime(...) ?: time() }}">`
+  - Memastikan browser pengunjung langsung memuat perubahan CSS tanpa tersangkut cache lama.
+
+---
+
+## 🌐 5. Sistem Bilingual & Aksesibilitas (`APX_I18N`)
+- **Engine Terjemahan:** Klien JavaScript di `themes/apexsions/assets/js/app.js` (sinkron dengan `public/assets/themes/apexsions/js/app.js`).
+- **Atribut HTML:** `data-i18n="key"`, `data-i18n-html="key"`, `data-i18n-placeholder="key"`.
+- **Bahasa yang Didukung:** Bahasa Indonesia (`id` - Default) dan English (`en`).
+- **Peralihan Instan:** Tidak memerlukan reload halaman web, transisi seketika dan tersimpan di `localStorage.apx_lang`.
+
+---
+
+## 🛡️ 6. Standar Keamanan Profil Publik Pemain
+- **Format URL Resmi:** `/player/{uuid}` (Menggunakan UUID resmi Minecraft atau ID unik database).
+- **Privasi:** DILARANG menggunakan username pemain sebagai URL slug resmi publik guna mencegah username enumeration dan scraping.
+- **Legacy Redirect:** Rute lama `/player/{username}` dialihkan secara otomatis menggunakan **HTTP 301 Permanent Redirect** ke `/player/{uuid}`.
+
+---
+
+## 👑 7. Hierarki 11 Kasta Sosial (Official Rank Hierarchy)
+
+Source of truth: `ranks.yml` & tabel database `apexsions_rank_configs`.
+
+| Tingkat | Kasta / Rank | Weight | Default Benefits & Catatan Operasional |
+| :--- | :--- | :---: | :--- |
+| **Tier V** | `ancestor` | 100 | The Ancestor / Founder / Owner (Apex Authority). |
+| **Tier IV** | `architect` | 95 | Realm Architect / Authority Builder (Setara). |
+| **Tier IV** | `overseer` | 95 | Integrity & Balance / Tribunal Authority (Setara). |
+| **Tier III** | `warden` | 90 | Head Staff / Admin Realm. |
+| **Tier III** | `herald` | 80 | Staff / Moderator / Helper Realm. |
+| **Tier II** | `sions` | 70 | Apex Donator (Tier Tertinggi Donatur). 10 Homes, 50 AH Slots, +100% Exp, 2x Diskon. |
+| **Tier II** | `emperor` | 60 | Donator Tier 4. 7 Homes, 35 AH Slots, +75% Exp. |
+| **Tier II** | `sovereign` | 50 | Donator Tier 3. 5 Homes, 25 AH Slots, +50% Exp. |
+| **Tier II** | `archon` | 40 | Donator Tier 2. 4 Homes, 18 AH Slots, +30% Exp. |
+| **Tier II** | `ascendant` | 30 | Donator Tier 1. 3 Homes, 12 AH Slots, +15% Exp. |
+| **Tier I** | `wanderer` | 10 | Warga Baru / Default Citizen (Foundation). 1 Home, 5 AH Slots. |
+
+*Catatan Khusus Staff:* Staff ranks (`ancestor`, `architect`, `overseer`, `warden`, `herald`) adalah **uncapped**, staf dapat membeli rank donatur tanpa terkena validasi "rank Anda sudah lebih tinggi".
+
+---
+
+## 🎮 8. Daftar 8 Plugin Suite Minecraft (Paper 26.2 / Java 21)
+
+Struktur modul berada di folder `Minecraft/plugins/`:
+
+1. **`ApexsionsCore`** (`com.apexsions.core.*`):
+   - 3 Kerajaan: **Zenithar** (Timur / Dinasti), **Solterra** (Selatan / Magician), **Sylvamoor** (Barat / Rimba).
+   - Auto-respawn ibukota terintegrasi BlueMap (`world.conf`).
+   - Progresi Level 1-100 dengan 13 sumber XP.
+   - GUI Inspector 54-Slot & Admin Panel (`/ac inspect <p>`, `/ac setspawn`, dll).
+   - Warp Navigasi & Editor Admin (`/warp`, `/warpmgr`).
+   - Proteksi PvP sesama kerajaan di wilayah teritorial sendiri.
+   - NightCore Native Dialog Input GUI (`CustomInputTextGUI`) tanpa anvil/sign crash.
+2. **`ApexsionsChat`** (`com.apexsions.chat.*`):
+   - Kyori MiniMessage formatting, Chat Channels (`Global`, `Kingdom`, `Staff`).
+   - Settings GUI (`/channel settings`), Profile Hub (`/channel profile`), Show Item (`/showitem`), Offline Mail (`/mail`).
+   - Staff Reports Desk 54-Slot (`/reports`).
+3. **`ApexsionsEconomy`** (`com.apexsions.economy.*`):
+   - Atomic multi-currency: Rupiah (Rp) & Diamond (💎).
+   - Auction House (`/ah`) dengan sistem Escrow Claim terisolasi.
+   - Barter/Trade 12-Slot terikat pajak teritorial antar-kerajaan.
+4. **`ApexsionsBattlepass`** (`com.apexsions.battlepass.*`):
+   - 200 Level BattlePass, Daily/Weekly/Monthly Quests, 4 Tier Pass.
+   - Visual GUI Editor 54-Slot (`/abp`).
+5. **`ApexsionsShop`** (`com.apexsions.shop.*`):
+   - Dynamic Market 6 kategori, Rasio Jual dasar **20%**, Formula Dinamis Multiplier Cuaca & Bioma Kerajaan.
+   - Price Clamping (50%-200%), Siaran tren pasar, GUI Jual Cepat 45-Slot (`/sell`).
+6. **`ApexsionsMedia`** (`com.apexsions.media.*`):
+   - Render multi-tile banner/logo asinkron, Raytrace line-of-sight hover glow, aksi interaksi URL terkonfirmasi.
+7. **`ApexsionsCustomEnchants`** (`com.apexsions.customenchants.*`):
+   - Dual-Currency Enchanter GUI (`/ce`), Toko Buku Sihir 54-Slot (`/ce shop`), 28 Custom Enchants, Admin Hub (`/ace`).
+8. **`ApexsionsCrates`** (`com.apexsions.crates.*`):
+   - Toko Kunci (`/crateshop`), Animasi pembukaan berbasis paket, milestone rewards.
+
+#### Build Command Plugin
+```powershell
+powershell -ExecutionPolicy Bypass -File .\Minecraft\build.ps1 Core
+powershell -ExecutionPolicy Bypass -File .\Minecraft\build.ps1 Chat
+powershell -ExecutionPolicy Bypass -File .\Minecraft\build.ps1 Economy
+powershell -ExecutionPolicy Bypass -File .\Minecraft\build.ps1 Battlepass
+powershell -ExecutionPolicy Bypass -File .\Minecraft\build.ps1 Shop
+powershell -ExecutionPolicy Bypass -File .\Minecraft\build.ps1 Media
+powershell -ExecutionPolicy Bypass -File .\Minecraft\build.ps1 CustomEnchants
+powershell -ExecutionPolicy Bypass -File .\Minecraft\build.ps1 Crates
+# Atau full suite:
+powershell -ExecutionPolicy Bypass -File .\Minecraft\build.ps1 -all
+```
+
+---
+
+## ⚡ 9. Protokol Penghematan Token & Kuota (Mandatory Agent Protocol)
+
+Wajib dipatuhi oleh seluruh coding agent di repositori Apexsions:
+1. **Dilarang Headless Browser / Playwright Berlebihan:** Dilarang menggunakan `browser_subagent` atau Playwright terus-menerus yang membakar kuota token context secara masif. Gunakan inspeksi kode lokal, verifikasi sintaks, script HTTP fetch/cURL ringkas, atau unit test. Browser automation hanya diizinkan jika diminta eksplisit oleh user atau untuk 1x verifikasi visual akhir ringkas.
+2. **Batasi Jangkauan Baca Berkas (`view_file`):** Jangan membaca ratusan baris berkas secara penuh. Selalu batasi dengan `StartLine` dan `EndLine` terfokus (20–60 baris).
+3. **Pencarian Terarah (`grep_search`):** Wajib mengarahkan pencarian ke berkas/folder spesifik, hindari pencarian global tanpa filter.
+4. **Pembatasan Output Terminal (`run_command`):** Batasi log perintah terminal menggunakan limit/paging (`head -n 30`, `--stat`, `--short`).
+5. **Komunikasi Ringkas & Padat:** Hapus basa-basi percakapan dan pengulangan ringkasan yang sudah tercantum di dokumentasi. Langsung laporkan poin inti perubahan, hasil uji, dan hash commit.
+6. **Local-First Validation:** Dilarang trial-and-error di VPS produksi. Pastikan validasi lokal lulus 100% sebelum deploy ke VPS.
+7. **Autonomous Push Mandate:** Setelah perubahan divalidasi secara lokal dan di-commit, otomatis push ke branch `origin/main` menggunakan safe push practices tanpa menunggu perintah terpisah.

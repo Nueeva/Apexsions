@@ -1278,12 +1278,16 @@ DILARANG melakukan trial-and-error atau eksperimen perbaikan langsung di server 
 2. **Minecraft Plugins:** Jalankan targeted build (`build.ps1`) dan validasi runtime lokal.
 3. **Clean Deployment:** Sinkronisasi atau upload ke VPS remote hanya diizinkan apabila seluruh checks di environment lokal telah lulus 100%. VPS adalah target *clean deployment*, bukan tempat debugging awal.
 
-### Token Conservation & Strict Playwright / Browser Automation Policy (ATURAN WAJIB)
+### Token Conservation & Strict Quota Reduction Policy (ATURAN WAJIB)
 
-DILARANG KERAS menggunakan headless browser, Playwright, atau `browser_subagent` secara berlebihan, berulang-ulang, atau mengambil screenshot terus-menerus karena menghabiskan kuota token context user secara masif:
-1. **Gunakan Validasi Ringan & Cepat:** Selalu utamakan inspeksi kode lokal, verifikasi CSS/DOM, script HTTP fetch/cURL, validasi sintaks, atau unit test terisolasi yang hemat token.
-2. **Larangan Polling Browser:** Dilarang meluncurkan browser subagent berulang kali hanya untuk memeriksa hal-hal yang sudah jelas di source code/stylesheet.
-3. **Kapan Browser Boleh Digunakan:** HANYA jika diminta secara eksplisit oleh user atau jika benar-benar esensial untuk 1x final visual check singkat, bukan di setiap langkah debugging.
+Untuk melindungi kuota token context dan memaksimalkan kecepatan serta ketepatan pengerjaan:
+1. **DILARANG Headless Browser / Playwright Loop:** Dilarang keras menggunakan `browser_subagent` atau Playwright secara berlebihan/berulang-ulang. Utamakan inspeksi kode lokal, verifikasi CSS/DOM, script HTTP fetch/cURL, validasi sintaks (`php -l`), atau unit test terisolasi yang hemat token. Otomasi browser hanya boleh digunakan jika diminta eksplisit oleh user atau jika benar-benar esensial untuk 1x final verification ringkas tanpa spam screenshot.
+2. **Batasi Jangkauan Baca Berkas (`view_file`):** Jangan pernah membaca ratusan baris berkas secara membabi-buta. Selalu gunakan `StartLine` dan `EndLine` terfokus (20–60 baris relevan).
+3. **Pencarian Terarah & Terfilter (`grep_search`):** Wajib mengarahkan pencarian ke direktori/berkas spesifik atau filter ekstensi agar context tidak dipenuhi puluhan baris hasil yang tidak relevan.
+4. **Pembatasan Output Terminal (`run_command`):** Batasi perintah terminal yang berpotensi menghasilkan output masif menggunakan pipa `head`, limit baris, atau opsi `--stat`/`--short`.
+5. **Komunikasi Ringkas & Padat:** Hindari basa-basi percakapan dan pengulangan ringkasan yang sudah tertulis di artefak atau dokumentasi. Fokus pada esensi: apa yang diubah, hasil uji, dan commit.
+6. **Local-First Testing:** Dilarang trial-and-error di VPS. Seluruh validasi sintaks dan logika wajib lulus secara lokal terlebih dahulu.
+7. **Atomic Batch Execution:** Rancang perubahan terstruktur dan eksekusi secara berkelompok, bukan satu baris per turn yang memicu putaran model tanpa akhir.
 
 ---
 
