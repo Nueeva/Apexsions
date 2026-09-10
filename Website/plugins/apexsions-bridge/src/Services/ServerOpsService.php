@@ -453,11 +453,13 @@ class ServerOpsService
             'player_username' => 'CONSOLE',
         ]);
 
-        // 4. Mark Audit Log Success
-        AuditService::success($audit, 'Enqueued in Bridge Delivery Queue', [
-            'delivery_id' => $delivery->id,
-            'action_id' => $actionId,
-        ]);
+        // 4. Associate Delivery ID with Audit Log (retains PENDING status until in-game execution reports back)
+        if ($audit) {
+            $meta = is_array($audit->metadata) ? $audit->metadata : json_decode($audit->metadata ?? '[]', true);
+            $meta['delivery_id'] = $delivery->id;
+            $meta['action_id'] = $actionId;
+            $audit->update(['metadata' => $meta]);
+        }
 
         return [
             'success' => true,

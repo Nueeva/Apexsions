@@ -432,7 +432,7 @@ class RankService
                     'normal_price' => $calculation['target_rank_price'],
                     'discount_amount' => max(0.0, $calculation['target_rank_price'] - $pricePaid),
                     'payment_method' => 'WHATSAPP_MANUAL',
-                    'sync_status' => 'DELIVERED',
+                    'sync_status' => 'PENDING',
                 ]);
             }
         }
@@ -556,7 +556,7 @@ class RankService
             'expires_at' => $expiresAt,
             'source' => $source,
             'payment_method' => 'WHATSAPP_MANUAL',
-            'sync_status' => 'DELIVERED',
+            'sync_status' => 'PENDING',
             'delivery_id' => $delivery->id,
             'notes' => $reason,
         ]);

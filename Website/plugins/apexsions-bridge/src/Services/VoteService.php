@@ -217,16 +217,16 @@ class VoteService
                 'idempotency_hash' => $idempotencyHash,
                 'voted_at' => now(),
                 'vote_status' => 'VALID',
-                'reward_status' => 'REWARDED',
+                'reward_status' => 'PENDING',
                 'keys_amount' => 3,
                 'money_amount' => 1000.00,
                 'keys_delivery_id' => $keyDelivery->id,
                 'money_delivery_id' => $moneyDelivery->id,
-                'rewarded_at' => now(),
+                'rewarded_at' => null,
                 'retry_count' => 0,
             ]);
 
-            // 5. Record Unified Audit Log
+            // 5. Record Unified Audit Log (status PENDING until delivery execution confirmed)
             AuditLog::create([
                 'action_id' => $voteUuid,
                 'actor_type' => 'SYSTEM',
@@ -240,7 +240,7 @@ class VoteService
                 'new_value' => '3x Vote Keys + Rp 1.000',
                 'reason' => 'Official vote confirmation on ' . $site->name . ' [' . $source . ']',
                 'source' => 'WEB_BRIDGE',
-                'status' => 'SUCCESS',
+                'status' => 'PENDING',
                 'metadata' => [
                     'vote_uuid' => $voteUuid,
                     'site_slug' => $site->slug,
@@ -298,8 +298,8 @@ class VoteService
         $tx->update([
             'keys_delivery_id' => $keyDelivery->id,
             'money_delivery_id' => $moneyDelivery->id,
-            'reward_status' => 'REWARDED',
-            'rewarded_at' => now(),
+            'reward_status' => 'PENDING',
+            'rewarded_at' => null,
             'retry_count' => $tx->retry_count + 1,
             'failure_reason' => null,
         ]);
@@ -314,10 +314,10 @@ class VoteService
             'target_id' => $uuid,
             'target_name' => $username,
             'old_value' => 'FAILED',
-            'new_value' => 'REWARDED',
+            'new_value' => 'RETRY_ENQUEUED',
             'reason' => 'Admin manual retry for Vote ' . $tx->vote_uuid,
             'source' => 'WEB_ADMIN',
-            'status' => 'SUCCESS',
+            'status' => 'PENDING',
             'metadata' => [
                 'vote_id' => $tx->id,
                 'retry_count' => $tx->retry_count,

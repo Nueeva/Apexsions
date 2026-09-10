@@ -191,6 +191,48 @@ class LinkVerificationController extends Controller
             'error_message' => $validated['error_message'] ?? null,
         ]);
 
+        // 1. Reactive RankPurchase state synchronization
+        try {
+            \Azuriom\Plugin\ApexsionsBridge\Models\RankPurchase::where('delivery_id', $delivery->id)
+                ->update(['sync_status' => $finalStatus]);
+        } catch (\Throwable $e) {
+            Log::warning('[Apexsions Bridge] Could not update RankPurchase sync status: ' . $e->getMessage());
+        }
+
+        // 2. Reactive VoteTransaction state synchronization
+        try {
+            $voteTx = \Azuriom\Plugin\ApexsionsBridge\Models\VoteTransaction::where('keys_delivery_id', $delivery->id)
+                ->orWhere('money_delivery_id', $delivery->id)
+                ->first();
+            if ($voteTx) {
+                if ($finalStatus === 'DELIVERED') {
+                    $keyDelivered = true;
+                    $moneyDelivered = true;
+                    if ($voteTx->keys_delivery_id) {
+                        $kd = Delivery::find($voteTx->keys_delivery_id);
+                        $keyDelivered = $kd && $kd->status === 'DELIVERED';
+                    }
+                    if ($voteTx->money_delivery_id) {
+                        $md = Delivery::find($voteTx->money_delivery_id);
+                        $moneyDelivered = $md && $md->status === 'DELIVERED';
+                    }
+                    if ($keyDelivered && $moneyDelivered) {
+                        $voteTx->update([
+                            'reward_status' => 'REWARDED',
+                            'rewarded_at' => Carbon::now(),
+                        ]);
+                    }
+                } else {
+                    $voteTx->update([
+                        'reward_status' => 'FAILED',
+                        'failure_reason' => $validated['error_message'] ?? 'Delivery failed in-game',
+                    ]);
+                }
+            }
+        } catch (\Throwable $e) {
+            Log::warning('[Apexsions Bridge] Could not update VoteTransaction reward status: ' . $e->getMessage());
+        }
+
         // If delivery or status payload has action_id, resolve associated AuditLog
         $actionId = !empty($validated['action_id']) ? $validated['action_id'] : $delivery->action_id;
         if (!empty($actionId)) {

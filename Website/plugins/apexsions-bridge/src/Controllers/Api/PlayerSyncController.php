@@ -88,9 +88,9 @@ class PlayerSyncController extends Controller
             $finalRank = $currentWebRank;
             $finalRankDisplay = $currentWebMeta['display_name'] ?? ucfirst($currentWebRank);
 
-            // Re-deliver command if no pending delivery exists
+            // Re-deliver command if no pending/processing delivery exists
             $hasPending = \Azuriom\Plugin\ApexsionsBridge\Models\Delivery::where('player_uuid', $uuid)
-                ->where('status', 'PENDING')
+                ->whereIn('status', ['PENDING', 'PROCESSING'])
                 ->where('command', 'LIKE', "%parent set {$finalRank}%")
                 ->exists();
 
