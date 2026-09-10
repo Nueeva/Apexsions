@@ -1831,6 +1831,122 @@ document.addEventListener('DOMContentLoaded', () => {
 
     initLanguageSwitcher();
 
+    // ==========================================================================
+    // 1.1 Apexsions Dual-Theme Engine (Dark Obsidian & Sovereign Ivory)
+    // ==========================================================================
+    const initThemeSwitcher = () => {
+        const themeToggles = document.querySelectorAll('.apx-theme-toggle');
+
+        const applyTheme = (theme) => {
+            document.documentElement.setAttribute('data-bs-theme', theme);
+            if (document.body) {
+                document.body.setAttribute('data-bs-theme', theme);
+            }
+
+            document.querySelectorAll('.apx-theme-icon-dark').forEach(icon => {
+                icon.classList.toggle('d-none', theme === 'light');
+            });
+            document.querySelectorAll('.apx-theme-icon-light').forEach(icon => {
+                icon.classList.toggle('d-none', theme === 'dark');
+            });
+            document.querySelectorAll('.apx-theme-text').forEach(el => {
+                el.textContent = theme === 'dark' ? 'Dark Mode' : 'Light Mode';
+            });
+
+            try {
+                localStorage.setItem('apx_theme', theme);
+                document.cookie = `apx_theme=${theme};path=/;max-age=31536000;SameSite=Lax`;
+            } catch (e) {}
+        };
+
+        themeToggles.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                const current = document.documentElement.getAttribute('data-bs-theme') || 'dark';
+                const target = current === 'dark' ? 'light' : 'dark';
+                applyTheme(target);
+            });
+        });
+
+        let currentTheme = 'dark';
+        try {
+            const saved = localStorage.getItem('apx_theme');
+            if (saved && (saved === 'dark' || saved === 'light')) {
+                currentTheme = saved;
+            } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
+                currentTheme = 'light';
+            }
+        } catch (e) {}
+
+        applyTheme(currentTheme);
+    };
+
+    initThemeSwitcher();
+
+    // ==========================================================================
+    // 1.2 Password Visibility Toggle with WCAG Accessibility
+    // ==========================================================================
+    const initPasswordToggles = () => {
+        document.querySelectorAll('.apx-password-toggle').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                const group = btn.closest('.input-group');
+                if (!group) return;
+                const input = group.querySelector('input');
+                if (!input) return;
+                const icon = btn.querySelector('i');
+
+                if (input.type === 'password') {
+                    input.type = 'text';
+                    if (icon) {
+                        icon.classList.remove('bi-eye');
+                        icon.classList.add('bi-eye-slash');
+                    }
+                    btn.setAttribute('aria-label', 'Sembunyikan kata sandi');
+                    btn.setAttribute('title', 'Sembunyikan kata sandi');
+                } else {
+                    input.type = 'password';
+                    if (icon) {
+                        icon.classList.remove('bi-eye-slash');
+                        icon.classList.add('bi-eye');
+                    }
+                    btn.setAttribute('aria-label', 'Tampilkan kata sandi');
+                    btn.setAttribute('title', 'Tampilkan kata sandi');
+                }
+            });
+        });
+    };
+
+    initPasswordToggles();
+
+    // ==========================================================================
+    // 1.3 Webstore Expandable Perks on Mobile
+    // ==========================================================================
+    const initPerkExpanders = () => {
+        document.querySelectorAll('[data-apx-toggle-perks]').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = btn.getAttribute('data-apx-toggle-perks');
+                const targetList = document.getElementById(targetId);
+                if (!targetList) return;
+
+                const isExpanded = targetList.classList.toggle('is-expanded');
+                const icon = btn.querySelector('i');
+                const textSpan = btn.querySelector('.apx-toggle-perks-text');
+
+                if (isExpanded) {
+                    if (icon) icon.className = 'bi bi-chevron-up ms-1';
+                    if (textSpan) textSpan.textContent = 'Sembunyikan Sebagian Benefit';
+                } else {
+                    if (icon) icon.className = 'bi bi-chevron-down ms-1';
+                    if (textSpan) textSpan.textContent = 'Lihat Semua Benefit';
+                }
+            });
+        });
+    };
+
+    initPerkExpanders();
+
     // 1. One-Click Copy for Server Address & Port with Visual Feedback
     const copyElements = document.querySelectorAll('[data-apx-copy]');
     copyElements.forEach(el => {

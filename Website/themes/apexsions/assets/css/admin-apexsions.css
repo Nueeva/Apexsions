@@ -1108,3 +1108,100 @@ body {
     color: #1A1D23 !important;
 }
 
+/* --------------------------------------------------------------------------
+   20. ADMIN RESPONSIVE & MOBILE-FIRST ENGINE
+   Viewports: 320px, 375px, 412px, 576px, 768px, 992px, 1200px
+   -------------------------------------------------------------------------- */
+
+/* Touch Target Compliance */
+.btn-sm, .btn-action, .btn-icon {
+    min-height: 38px;
+    min-width: 38px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Enhanced Responsive Tables with Scroll Cue */
+.table-responsive {
+    border-radius: 6px;
+    -webkit-overflow-scrolling: touch;
+    position: relative;
+}
+
+.table-responsive::-webkit-scrollbar {
+    height: 6px;
+}
+
+.table-responsive::-webkit-scrollbar-track {
+    background: var(--apx-bg-scrollbar-track);
+}
+
+.table-responsive::-webkit-scrollbar-thumb {
+    background: var(--apx-bg-scrollbar-thumb);
+    border-radius: 4px;
+}
+
+/* Enforce column minimum widths so text never crunches awkwardly */
+.table th, .table td {
+    white-space: nowrap;
+}
+
+.table th:first-child, .table td:first-child {
+    white-space: normal;
+    min-width: 140px;
+}
+
+/* Mobile Small & Standard (<= 767.98px) */
+@media (max-width: 767.98px) {
+    .container-fluid {
+        padding-left: 0.75rem !important;
+        padding-right: 0.75rem !important;
+    }
+
+    h1, .h1 { font-size: 1.6rem !important; }
+    h2, .h2 { font-size: 1.35rem !important; }
+    h3, .h3 { font-size: 1.15rem !important; }
+
+    /* Admin Action Bars */
+    .d-flex.align-items-center.justify-content-between.mb-4 {
+        flex-direction: column;
+        align-items: flex-start !important;
+        gap: 0.75rem;
+    }
+
+    /* Filter Toolbars */
+    .card .row.g-2 {
+        flex-direction: column;
+    }
+
+    .card .row.g-2 > div {
+        width: 100% !important;
+    }
+
+    /* Form Controls on Mobile */
+    .form-control, .form-select {
+        font-size: 1rem !important; /* Prevents auto-zoom on mobile */
+        min-height: 44px;
+    }
+
+    /* Table Actions on Mobile */
+    .table td:last-child {
+        min-width: 90px;
+    }
+
+    /* Modal dialogs */
+    .modal-dialog {
+        margin: 0.5rem;
+    }
+}
+
+/* Tablet Portrait (768px - 991.98px) */
+@media (min-width: 768px) and (max-width: 991.98px) {
+    .container-fluid {
+        padding-left: 1.25rem;
+        padding-right: 1.25rem;
+    }
+}
+
+

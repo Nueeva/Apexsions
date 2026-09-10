@@ -11,6 +11,22 @@
             <p class="apx-auth-subtitle">Apexsions | The Peak Civilizations</p>
         </div>
 
+        <!-- Registration Step Progress Indicator -->
+        <div class="apx-step-progress">
+            <div class="apx-step-item active">
+                <div class="apx-step-circle">1</div>
+                <div class="apx-step-label">Data Akun</div>
+            </div>
+            <div class="apx-step-item">
+                <div class="apx-step-circle">2</div>
+                <div class="apx-step-label">Verifikasi</div>
+            </div>
+            <div class="apx-step-item">
+                <div class="apx-step-circle">3</div>
+                <div class="apx-step-label">Aktif</div>
+            </div>
+        </div>
+
         <form method="POST" action="{{ route('register') }}" id="register-form">
             @csrf
 

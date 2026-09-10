@@ -479,7 +479,7 @@
                                 @endif
 
                                 <!-- Highlighted Perks -->
-                                <ul class="apx-package-perks mb-3">
+                                <ul class="apx-package-perks mb-2 is-collapsible" id="package-perks-{{ $package->id }}">
                                     @if($rankKey === 'sions')
                                         <li><i class="bi bi-graph-up-arrow text-warning"></i><span class="text-light">Jual: <strong>+17%</strong> • EXP: <strong>+20%</strong> • Bank: <strong>3.0x</strong></span></li>
                                         <li><i class="bi bi-terminal-fill text-warning"></i><span class="text-light">/craft, /anvil, /repair, /feed (3m), /hat, /ec</span></li>
@@ -543,6 +543,10 @@
                                     @endif
                                 </ul>
 
+                                <button type="button" class="apx-btn-perks-toggle" data-apx-toggle-perks="package-perks-{{ $package->id }}">
+                                    <span class="apx-toggle-perks-text">Lihat Semua Benefit</span> <i class="bi bi-chevron-down ms-1"></i>
+                                </button>
+
                                 <div class="apx-package-footer mt-auto d-flex flex-column gap-2 pt-2">
                                     @if($isAlreadyOwned)
                                         <button class="btn btn-outline-secondary w-100 py-2 disabled" disabled>
@@ -592,6 +596,10 @@
                         <a href="#shop" class="btn btn-sm btn-apx-outline">
                             <i class="bi bi-arrow-up-circle me-1"></i> Kembali ke Paket
                         </a>
+                    </div>
+
+                    <div class="apx-rank-matrix-scroll-hint d-lg-none">
+                        <i class="bi bi-arrow-left-right me-1"></i> Geser tabel ke samping untuk melihat seluruh kasta
                     </div>
 
                     <div class="apx-rank-matrix-table-scroll">
