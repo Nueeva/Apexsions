@@ -62,6 +62,11 @@ Route::middleware(['web', 'admin-access'])->prefix('admin')->name('admin.')->gro
         Route::get('/', [RankAdminController::class, 'index'])->name('index');
         Route::post('/assign', [RankAdminController::class, 'assign'])->name('assign');
         Route::post('/expire-trials', [RankAdminController::class, 'expireTrials'])->name('expire-trials');
+        Route::get('/settings', [RankAdminController::class, 'settings'])->name('settings');
+        Route::post('/settings', [RankAdminController::class, 'updateSettings'])->name('settings.update');
+        Route::get('/purchases', [RankAdminController::class, 'purchases'])->name('purchases');
+        Route::get('/{rank_key}/edit', [RankAdminController::class, 'edit'])->name('edit');
+        Route::put('/{rank_key}', [RankAdminController::class, 'update'])->name('update');
         Route::get('/{rank_key}', [RankAdminController::class, 'show'])->name('show');
     });
 

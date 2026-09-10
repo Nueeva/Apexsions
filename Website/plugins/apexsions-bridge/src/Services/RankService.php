@@ -5,14 +5,17 @@ namespace Azuriom\Plugin\ApexsionsBridge\Services;
 use Azuriom\Plugin\ApexsionsBridge\Models\AuditLog;
 use Azuriom\Plugin\ApexsionsBridge\Models\Delivery;
 use Azuriom\Plugin\ApexsionsBridge\Models\MinecraftAccount;
+use Azuriom\Plugin\ApexsionsBridge\Models\RankConfig;
+use Azuriom\Plugin\ApexsionsBridge\Models\RankPurchase;
+use Azuriom\Plugin\ApexsionsBridge\Models\RankRewardClaim;
 use Illuminate\Support\Str;
 
 class RankService
 {
     /**
-     * Source of truth definition of the 11 official server ranks from ranks.yml.
+     * Fallback definitions of the 11 official server ranks from ranks.yml.
      */
-    protected static array $ranks = [
+    protected static array $fallbackRanks = [
         'ancestor' => [
             'key' => 'ancestor',
             'display_name' => 'The Ancestor',
@@ -159,19 +162,55 @@ class RankService
     ];
 
     /**
-     * Get all rank definitions.
+     * Get all rank definitions, combining dynamic database configs with fallback definitions.
      */
     public static function getAllRanks(): array
     {
-        return self::$ranks;
-    }
+        $ranks = self::$fallbackRanks;
 
-    /**
-     * Alias for getAllRanks.
-     */
-    public static function getRankHierarchy(): array
-    {
-        return self::getAllRanks();
+        try {
+            $configs = RankConfig::where('is_active', true)->orderBy('order_index', 'asc')->get();
+            foreach ($configs as $cfg) {
+                $k = strtolower(trim($cfg->rank_key));
+                $ranks[$k] = [
+                    'key' => $k,
+                    'display_name' => $cfg->display_name,
+                    'badge' => $cfg->badge ?? $cfg->display_name,
+                    'prefix' => $cfg->prefix ?? "[{$cfg->display_name}] ",
+                    'color' => $cfg->color,
+                    'tier' => $cfg->tier,
+                    'role' => $cfg->role ?? ($cfg->tier . ' Civilized Rank'),
+                    'weight' => (int) $cfg->weight,
+                    'is_protected' => false,
+                    'is_default' => ($k === 'wanderer'),
+                    'description' => $cfg->description,
+                    'banner_image' => $cfg->banner_image,
+                    'card_image' => $cfg->card_image,
+                    'price_trial_30' => (float) $cfg->price_trial_30,
+                    'price_trial_90' => (float) $cfg->price_trial_90,
+                    'price_permanent' => (float) $cfg->price_permanent,
+                    'price_upgrade_override' => $cfg->price_upgrade_override ? (float) $cfg->price_upgrade_override : null,
+                    'money_reward_permanent' => (float) $cfg->money_reward_permanent,
+                    'benefit_max_homes' => (int) $cfg->benefit_max_homes,
+                    'benefit_max_auctions' => (int) $cfg->benefit_max_auctions,
+                    'benefit_max_enchants' => (int) $cfg->benefit_max_enchants,
+                    'benefit_rtp_cooldown' => (int) $cfg->benefit_rtp_cooldown,
+                    'benefit_shop_sell_bonus' => (float) $cfg->benefit_shop_sell_bonus,
+                    'benefit_xp_bonus' => (float) $cfg->benefit_xp_bonus,
+                    'benefit_bank_multiplier' => (float) $cfg->benefit_bank_multiplier,
+                    'benefit_feed_cooldown' => $cfg->benefit_feed_cooldown,
+                    'benefit_commands' => $cfg->benefit_commands ?? [],
+                    'benefit_kits' => $cfg->benefit_kits ?? [],
+                    'benefit_nick_permission' => $cfg->benefit_nick_permission ?? 'none',
+                    'benefit_battlepass_unlock' => $cfg->benefit_battlepass_unlock,
+                    'benefit_battlepass_discount' => (float) $cfg->benefit_battlepass_discount,
+                ];
+            }
+        } catch (\Throwable $e) {
+            // Fallback if DB table not yet migrated or query fails
+        }
+
+        return $ranks;
     }
 
     /**
@@ -180,10 +219,11 @@ class RankService
     public static function getRank(?string $key): ?array
     {
         if (empty($key)) {
-            return self::$ranks['wanderer'];
+            return self::getAllRanks()['wanderer'] ?? self::$fallbackRanks['wanderer'];
         }
         $normalized = strtolower(trim($key));
-        return self::$ranks[$normalized] ?? null;
+        $all = self::getAllRanks();
+        return $all[$normalized] ?? (self::$fallbackRanks[$normalized] ?? null);
     }
 
     /**
@@ -191,18 +231,27 @@ class RankService
      */
     public static function isValidRank(string $key): bool
     {
-        return isset(self::$ranks[strtolower(trim($key))]);
+        $all = self::getAllRanks();
+        return isset($all[strtolower(trim($key))]);
+    }
+
+    /**
+     * Get rank hierarchy weight.
+     */
+    public static function getRankWeight(string $rankKey): int
+    {
+        $meta = self::getRank($rankKey);
+        return $meta['weight'] ?? 10;
     }
 
     /**
      * Get the count of players holding each rank.
-     *
-     * @return array<string, int>
      */
     public static function getPlayerCounts(): array
     {
+        $ranks = self::getAllRanks();
         $counts = [];
-        foreach (array_keys(self::$ranks) as $key) {
+        foreach (array_keys($ranks) as $key) {
             $counts[$key] = 0;
         }
 
@@ -225,22 +274,24 @@ class RankService
     }
 
     /**
-     * One-time money rewards for permanent ranks (strictly non-inheritable and non-duplicable).
-     */
-    protected static array $rankRewards = [
-        'ascendant' => 50000.0,
-        'archon' => 80000.0,
-        'sovereign' => 120000.0,
-        'emperor' => 180000.0,
-        'sions' => 300000.0,
-    ];
-
-    /**
      * Get one-time money reward amount for a rank.
      */
     public static function getRankRewardAmount(string $rankKey): float
     {
-        return self::$rankRewards[strtolower(trim($rankKey))] ?? 0.0;
+        $rank = self::getRank($rankKey);
+        if ($rank && isset($rank['money_reward_permanent']) && $rank['money_reward_permanent'] > 0) {
+            return (float) $rank['money_reward_permanent'];
+        }
+
+        $fallbackRewards = [
+            'ascendant' => 50000.0,
+            'archon' => 80000.0,
+            'sovereign' => 120000.0,
+            'emperor' => 180000.0,
+            'sions' => 300000.0,
+        ];
+
+        return $fallbackRewards[strtolower(trim($rankKey))] ?? 0.0;
     }
 
     /**
@@ -248,24 +299,149 @@ class RankService
      */
     public static function hasClaimedReward(string $uuid, string $rankKey): bool
     {
-        return \Azuriom\Plugin\ApexsionsBridge\Models\RankRewardClaim::where('minecraft_uuid', $uuid)
+        return RankRewardClaim::where('minecraft_uuid', $uuid)
             ->where('rank', strtolower(trim($rankKey)))
             ->where('reward_type', 'MONEY_ONETIME')
             ->exists();
     }
 
     /**
-     * Execute safe rank assignment or change via LuckPerms delivery queue.
+     * Calculate Rank Upgrade eligibility and price for a player account.
      *
-     * @param mixed $actor The admin user performing the action
-     * @param MinecraftAccount $account The target Minecraft player account
-     * @param string $newRankKey The target rank identifier
-     * @param string $reason The mandatory reason for the audit trail
-     * @param string $rankType 'PERMANENT' or 'TRIAL'
-     * @param int|null $durationDays 30, 90, or null
-     * @param float $pricePaid Price paid if from purchase
-     * @param string $source 'WEB', 'ADMIN', 'WEBSTORE'
-     * @return array Result summary with status, message, and action_id
+     * Rule:
+     * - Only PERMANENT ranks can upgrade.
+     * - Target rank must be higher in weight than current rank.
+     * - Upgrade price = Target Permanent Price - Current Permanent Price (or custom override if set).
+     */
+    public static function calculateUpgradePrice(?MinecraftAccount $account, string $targetRankKey): array
+    {
+        $normalizedTarget = strtolower(trim($targetRankKey));
+        $targetMeta = self::getRank($normalizedTarget);
+
+        if (!$targetMeta) {
+            return [
+                'eligible' => false,
+                'message' => "Rank target '{$targetRankKey}' tidak ditemukan.",
+                'upgrade_price' => 0.0,
+            ];
+        }
+
+        if (!$account) {
+            return [
+                'eligible' => false,
+                'message' => 'Akun Minecraft belum terhubung.',
+                'upgrade_price' => (float) ($targetMeta['price_permanent'] ?? 0),
+            ];
+        }
+
+        $currentRankKey = strtolower(trim($account->rank ?? 'wanderer'));
+        $currentRankType = strtoupper(trim($account->rank_type ?? 'PERMANENT'));
+        $currentMeta = self::getRank($currentRankKey);
+
+        // 1. Must be Permanent rank to upgrade
+        if ($currentRankType !== 'PERMANENT') {
+            return [
+                'eligible' => false,
+                'message' => 'Hanya pemain dengan status rank Permanen yang berhak melakukan Upgrade Rank.',
+                'current_rank' => $currentRankKey,
+                'target_rank' => $normalizedTarget,
+                'upgrade_price' => (float) ($targetMeta['price_permanent'] ?? 0),
+            ];
+        }
+
+        $currentWeight = $currentMeta['weight'] ?? 10;
+        $targetWeight = $targetMeta['weight'] ?? 10;
+
+        // 2. Target rank must be higher than current rank
+        if ($targetWeight <= $currentWeight) {
+            return [
+                'eligible' => false,
+                'message' => "Anda sudah memiliki rank '{$currentMeta['display_name']}' atau rank yang lebih tinggi.",
+                'current_rank' => $currentRankKey,
+                'target_rank' => $normalizedTarget,
+                'upgrade_price' => 0.0,
+            ];
+        }
+
+        $currentPermanentPrice = (float) ($currentMeta['price_permanent'] ?? 0);
+        $targetPermanentPrice = (float) ($targetMeta['price_permanent'] ?? 0);
+
+        // Check if admin has set a custom upgrade price override
+        if (!empty($targetMeta['price_upgrade_override']) && $targetMeta['price_upgrade_override'] > 0) {
+            $upgradePrice = (float) $targetMeta['price_upgrade_override'];
+        } else {
+            $upgradePrice = max(0.0, $targetPermanentPrice - $currentPermanentPrice);
+        }
+
+        $targetReward = self::getRankRewardAmount($normalizedTarget);
+
+        return [
+            'eligible' => true,
+            'current_rank' => $currentRankKey,
+            'current_rank_display' => $currentMeta['display_name'] ?? ucfirst($currentRankKey),
+            'target_rank' => $normalizedTarget,
+            'target_rank_display' => $targetMeta['display_name'] ?? ucfirst($normalizedTarget),
+            'current_rank_price' => $currentPermanentPrice,
+            'target_rank_price' => $targetPermanentPrice,
+            'upgrade_price' => $upgradePrice,
+            'money_reward' => $targetReward,
+            'message' => "Memenuhi syarat upgrade dari {$currentMeta['display_name']} ke {$targetMeta['display_name']}.",
+        ];
+    }
+
+    /**
+     * Execute a validated Rank Upgrade.
+     */
+    public static function executeRankUpgrade(
+        $actor,
+        MinecraftAccount $account,
+        string $targetRankKey,
+        float $pricePaid = 0.0,
+        string $source = 'WEB'
+    ): array {
+        $calculation = self::calculateUpgradePrice($account, $targetRankKey);
+        if (!$calculation['eligible']) {
+            return [
+                'success' => false,
+                'message' => $calculation['message'],
+            ];
+        }
+
+        $oldRank = $account->rank;
+        $targetRank = strtolower(trim($targetRankKey));
+        $reason = "Upgrade Rank dari {$calculation['current_rank_display']} ke {$calculation['target_rank_display']}";
+
+        // Assign the new rank as Permanent
+        $result = self::assignRank(
+            $actor,
+            $account,
+            $targetRank,
+            $reason,
+            'PERMANENT',
+            null,
+            $pricePaid,
+            $source
+        );
+
+        if ($result['success']) {
+            // Update purchase record with upgrade metadata
+            if (!empty($result['purchase_id'])) {
+                RankPurchase::where('id', $result['purchase_id'])->update([
+                    'is_upgrade' => true,
+                    'previous_rank' => $oldRank,
+                    'normal_price' => $calculation['target_rank_price'],
+                    'discount_amount' => max(0.0, $calculation['target_rank_price'] - $pricePaid),
+                    'payment_method' => 'WHATSAPP_MANUAL',
+                    'sync_status' => 'DELIVERED',
+                ]);
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     * Execute safe rank assignment or change via LuckPerms delivery queue.
      */
     public static function assignRank(
         $actor,
@@ -287,10 +463,10 @@ class RankService
             ];
         }
 
-        $rankMeta = self::$ranks[$normalizedRank];
+        $rankMeta = self::getRank($normalizedRank);
 
         // Guard against assigning protected rank if not owner
-        if ($rankMeta['is_protected']) {
+        if (!empty($rankMeta['is_protected'])) {
             $ownerUuid = config('apexsions.owner_uuid', '00000000-0000-0000-0000-000000000000');
             if ($account->minecraft_uuid !== $ownerUuid && strcasecmp($actor->email ?? '', 'nueeva@users.noreply.github.com') !== 0) {
                 return [
@@ -345,7 +521,7 @@ class RankService
         // 2. Update local MinecraftAccount model
         $accountUpdates = [
             'rank' => $normalizedRank,
-            'rank_display' => $rankMeta['display_name'],
+            'rank_display' => $rankMeta['display_name'] ?? ucfirst($normalizedRank),
             'rank_type' => $normalizedType,
             'rank_expires_at' => $expiresAt,
         ];
@@ -364,7 +540,7 @@ class RankService
         $account->update($accountUpdates);
 
         // 3. Record purchase history
-        $purchase = \Azuriom\Plugin\ApexsionsBridge\Models\RankPurchase::create([
+        $purchase = RankPurchase::create([
             'user_id' => $account->user_id,
             'minecraft_account_id' => $account->id,
             'minecraft_uuid' => $account->minecraft_uuid,
@@ -373,18 +549,23 @@ class RankService
             'rank_type' => $normalizedType,
             'duration_days' => $durationDays,
             'price_paid' => $pricePaid,
+            'normal_price' => (float) ($rankMeta['price_permanent'] ?? $pricePaid),
+            'discount_amount' => 0.0,
             'status' => 'ACTIVE',
             'started_at' => now(),
             'expires_at' => $expiresAt,
             'source' => $source,
+            'payment_method' => 'WHATSAPP_MANUAL',
+            'sync_status' => 'DELIVERED',
+            'delivery_id' => $delivery->id,
             'notes' => $reason,
         ]);
 
         // 4. One-time rank money reward (ONLY for Permanent ranks, strictly for the purchased rank, no duplicates!)
         $rewardGranted = 0.0;
-        if ($normalizedType === 'PERMANENT' && isset(self::$rankRewards[$normalizedRank])) {
-            $rewardAmount = (float) self::$rankRewards[$normalizedRank];
-            if (self::claimPermanentMoneyReward($account, $normalizedRank, $rewardAmount, $purchase->id ?? null)) {
+        if ($normalizedType === 'PERMANENT') {
+            $rewardAmount = self::getRankRewardAmount($normalizedRank);
+            if ($rewardAmount > 0 && self::claimPermanentMoneyReward($account, $normalizedRank, $rewardAmount, $purchase->id ?? null)) {
                 $rewardGranted = $rewardAmount;
             }
         }
@@ -413,9 +594,9 @@ class RankService
                 'duration_days' => $durationDays,
                 'expires_at' => $expiresAt ? $expiresAt->toIso8601String() : null,
                 'reward_granted' => $rewardGranted,
-                'rank_display' => $rankMeta['display_name'],
-                'tier' => $rankMeta['tier'],
-                'weight' => $rankMeta['weight'],
+                'rank_display' => $rankMeta['display_name'] ?? ucfirst($normalizedRank),
+                'tier' => $rankMeta['tier'] ?? 'Tier II',
+                'weight' => $rankMeta['weight'] ?? 10,
                 'command' => $compoundCommand,
             ],
         ]);
@@ -431,6 +612,7 @@ class RankService
             'action_id' => $actionId,
             'delivery_id' => $delivery->id,
             'audit_id' => $audit->id,
+            'purchase_id' => $purchase->id,
             'new_rank' => $normalizedRank,
             'new_rank_display' => $rankMeta['display_name'],
             'rank_type' => $normalizedType,
@@ -451,7 +633,7 @@ class RankService
         $actionId = (string) Str::uuid();
 
         try {
-            \Azuriom\Plugin\ApexsionsBridge\Models\RankRewardClaim::create([
+            RankRewardClaim::create([
                 'minecraft_uuid' => $account->minecraft_uuid,
                 'minecraft_username' => $account->minecraft_username,
                 'rank' => $normalizedRank,
@@ -473,7 +655,7 @@ class RankService
             $account->increment('balance_rupiah', $amount);
 
             return true;
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             // Duplicate unique constraint prevented exploit
             return false;
         }
@@ -481,6 +663,7 @@ class RankService
 
     /**
      * Check and expire trial ranks across all accounts.
+     * Restores player's previous permanent rank if they had one, otherwise resets to wanderer.
      */
     public static function checkAndExpireTrials(): int
     {
@@ -497,8 +680,26 @@ class RankService
             $oldRank = $account->rank;
             $actionId = (string) Str::uuid();
 
-            // Set back to wanderer in LuckPerms
-            $command = "lp user {$account->minecraft_username} parent set wanderer; lp user {$account->minecraft_username} permission unset apexsions.rank.trial; lp user {$account->minecraft_username} permission unset apexsions.rank.permanent";
+            // Find highest permanent rank previously owned
+            $prevPermanent = RankPurchase::where('minecraft_account_id', $account->id)
+                ->where(function ($q) {
+                    $q->where('rank_type', 'PERMANENT')->orWhere('rank_type', 'permanent');
+                })
+                ->where('status', 'ACTIVE')
+                ->orderBy('id', 'desc')
+                ->first();
+
+            $restoreRank = $prevPermanent ? strtolower(trim($prevPermanent->rank)) : 'wanderer';
+            $restoreRankMeta = self::getRank($restoreRank);
+            $restoreDisplayName = $restoreRankMeta['display_name'] ?? ucfirst($restoreRank);
+
+            // Set back in LuckPerms
+            $command = "lp user {$account->minecraft_username} parent set {$restoreRank}; lp user {$account->minecraft_username} permission unset apexsions.rank.trial";
+            if ($restoreRank !== 'wanderer') {
+                $command .= "; lp user {$account->minecraft_username} permission set apexsions.rank.permanent true";
+            } else {
+                $command .= "; lp user {$account->minecraft_username} permission unset apexsions.rank.permanent";
+            }
 
             Delivery::create([
                 'action_id' => $actionId,
@@ -511,14 +712,14 @@ class RankService
 
             // Update account
             $account->update([
-                'rank' => 'wanderer',
-                'rank_display' => 'Wanderer',
+                'rank' => $restoreRank,
+                'rank_display' => $restoreDisplayName,
                 'rank_type' => 'PERMANENT',
                 'rank_expires_at' => null,
             ]);
 
-            // Mark purchase as expired
-            \Azuriom\Plugin\ApexsionsBridge\Models\RankPurchase::where('minecraft_account_id', $account->id)
+            // Mark trial purchase as expired
+            RankPurchase::where('minecraft_account_id', $account->id)
                 ->where(function ($q) {
                     $q->where('rank_type', 'TRIAL')->orWhere('rank_type', 'trial');
                 })
@@ -535,8 +736,8 @@ class RankService
                 'target_id' => $account->minecraft_uuid,
                 'target_name' => $account->minecraft_username,
                 'old_value' => $oldRank . ' (TRIAL)',
-                'new_value' => 'wanderer (PERMANENT)',
-                'reason' => 'Masa aktif trial rank telah habis.',
+                'new_value' => $restoreRank . ' (PERMANENT)',
+                'reason' => "Masa aktif trial rank telah habis. Dikembalikan ke {$restoreDisplayName}.",
                 'source' => 'SYSTEM',
                 'status' => 'SUCCESS',
             ]);

@@ -49,6 +49,37 @@
         $badgeClass = 'bg-warning text-dark border border-warning';
     }
 
+    $rankKey = null;
+    if (str_contains($packageName, 'sions')) $rankKey = 'sions';
+    elseif (str_contains($packageName, 'emperor')) $rankKey = 'emperor';
+    elseif (str_contains($packageName, 'sovereign')) $rankKey = 'sovereign';
+    elseif (str_contains($packageName, 'archon')) $rankKey = 'archon';
+    elseif (str_contains($packageName, 'ascendant')) $rankKey = 'ascendant';
+
+    $isUpgradeAvailable = false;
+    $isAlreadyOwned = false;
+    $upgradeCalculation = null;
+    $upgradeWaUrl = null;
+
+    if ($rankKey && $linkedAccount) {
+        $userWeight = \Azuriom\Plugin\ApexsionsBridge\Services\RankService::getRankWeight($accountRank);
+        $targetWeight = \Azuriom\Plugin\ApexsionsBridge\Services\RankService::getRankWeight($rankKey);
+
+        if ($isAccountPerm && $userWeight >= $targetWeight && $isPermanent) {
+            $isAlreadyOwned = true;
+        } elseif ($isAccountPerm && $isPermanent && $targetWeight > $userWeight) {
+            $upgradeCalculation = \Azuriom\Plugin\ApexsionsBridge\Services\RankService::calculateUpgradePrice($linkedAccount, $rankKey);
+            if (!empty($upgradeCalculation['eligible'])) {
+                $isUpgradeAvailable = true;
+                $upgradeWaUrl = \Azuriom\Plugin\ApexsionsBridge\Services\BattlepassDiscountService::generateUpgradeWhatsAppUrl(
+                    $accountRank,
+                    $rankKey,
+                    $upgradeCalculation['upgrade_price']
+                );
+            }
+        }
+    }
+
     $discountInfo = \Azuriom\Plugin\ApexsionsBridge\Services\BattlepassDiscountService::calculateDiscount(
         $linkedAccount,
         $package,
@@ -62,7 +93,11 @@
 
     $primaryModalAdmin = $modalAdmins[0] ?? ['name' => 'Rifqi', 'number' => '6281212994597'];
     $primaryModalNum = preg_replace('/[^0-9]/', '', $primaryModalAdmin['number']);
-    $primaryModalUrl = 'https://wa.me/' . $primaryModalNum . '?text=' . rawurlencode($discountInfo['whatsapp_message']);
+    if ($isUpgradeAvailable && $upgradeWaUrl) {
+        $primaryModalUrl = $upgradeWaUrl;
+    } else {
+        $primaryModalUrl = 'https://wa.me/' . $primaryModalNum . '?text=' . rawurlencode($discountInfo['whatsapp_message']);
+    }
 @endphp
 
 <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
@@ -159,7 +194,15 @@
 
         <div class="modal-footer d-flex justify-content-between align-items-center" style="background: var(--apx-bg-surface-raised); border-top: 1px solid var(--apx-border); padding: 1.25rem 1.5rem;">
             <div class="d-flex align-items-baseline gap-2">
-                @if($discountInfo['has_discount'])
+                @if($isAlreadyOwned)
+                    <span class="fs-5 fw-bold text-success"><i class="bi bi-patch-check-fill me-1"></i> Rank Sudah Dimiliki</span>
+                @elseif($isUpgradeAvailable)
+                    <span class="text-muted text-decoration-line-through small">Rp {{ number_format($upgradeCalculation['target_rank_price'], 0, ',', '.') }}</span>
+                    <span class="fs-4 fw-bold text-warning" style="font-family: 'Cinzel', Georgia, serif; color: #f1c40f !important;">
+                        Rp {{ number_format($upgradeCalculation['upgrade_price'], 0, ',', '.') }}
+                    </span>
+                    <span class="badge bg-purple text-white ms-1" style="background: linear-gradient(135deg, #8E2DE2, #4A00E0); font-size: 0.65rem;">UPGRADE</span>
+                @elseif($discountInfo['has_discount'])
                     <span class="text-muted text-decoration-line-through small">Rp {{ number_format($discountInfo['original_price'], 0, ',', '.') }}</span>
                     <span class="fs-4 fw-bold text-success" style="font-family: 'Cinzel', Georgia, serif;">
                         Rp {{ number_format($discountInfo['discounted_price'], 0, ',', '.') }}
@@ -178,9 +221,19 @@
 
             <div class="d-flex align-items-center gap-2">
                 <button type="button" class="btn btn-apx-outline" data-bs-dismiss="modal">Tutup</button>
-                <a href="{{ $primaryModalUrl }}" target="_blank" rel="noopener noreferrer" class="btn btn-apx-wa">
-                    <i class="bi bi-whatsapp me-1"></i> <span>Pesan Cepat via WhatsApp</span>
-                </a>
+                @if($isAlreadyOwned)
+                    <button class="btn btn-outline-success disabled" disabled>
+                        <i class="bi bi-check2-circle me-1"></i> Sudah Aktif
+                    </button>
+                @elseif($isUpgradeAvailable)
+                    <a href="{{ $primaryModalUrl }}" target="_blank" rel="noopener noreferrer" class="btn btn-warning fw-bold text-dark shadow-sm">
+                        <i class="bi bi-arrow-up-circle-fill me-1"></i> Upgrade ke {{ ucfirst($rankKey) }} via WA
+                    </a>
+                @else
+                    <a href="{{ $primaryModalUrl }}" target="_blank" rel="noopener noreferrer" class="btn btn-apx-wa">
+                        <i class="bi bi-whatsapp me-1"></i> <span>Pesan Cepat via WhatsApp</span>
+                    </a>
+                @endif
             </div>
         </div>
     </div>

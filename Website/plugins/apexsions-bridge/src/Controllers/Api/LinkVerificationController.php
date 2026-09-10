@@ -294,6 +294,9 @@ class LinkVerificationController extends Controller
             if (!empty($validated['plugins'])) {
                 \Azuriom\Plugin\ApexsionsBridge\Services\PluginRegistryService::syncFromHeartbeat($validated['plugins']);
             }
+
+            // Auto-check and expire trial ranks
+            \Azuriom\Plugin\ApexsionsBridge\Services\RankService::checkAndExpireTrials();
         } catch (\Throwable $e) {
             Log::warning('[Apexsions Bridge] Error recording server metrics: ' . $e->getMessage());
         }

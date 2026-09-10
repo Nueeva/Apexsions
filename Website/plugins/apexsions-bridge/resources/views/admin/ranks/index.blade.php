@@ -18,7 +18,13 @@
                     Manajemen resmi 11 rank realm Apexsions yang terhubung langsung dengan LuckPerms server Minecraft (<code class="text-warning">ranks.yml</code>). Penugasan atau pengubahan rank dieksekusi secara instan dan tercatat di Unified Audit Log.
                 </p>
             </div>
-            <div class="d-flex align-items-center gap-2">
+            <div class="d-flex flex-wrap align-items-center gap-2">
+                <a href="{{ route('apexsions-bridge.admin.ranks.purchases') }}" class="btn btn-outline-warning fw-bold px-3 shadow-sm">
+                    <i class="bi bi-receipt me-1"></i> Riwayat Transaksi
+                </a>
+                <a href="{{ route('apexsions-bridge.admin.ranks.settings') }}" class="btn btn-outline-light fw-bold px-3 shadow-sm">
+                    <i class="bi bi-gear-fill me-1"></i> Pengaturan Webstore & WA
+                </a>
                 <form action="{{ route('apexsions-bridge.admin.ranks.expire-trials') }}" method="POST" class="d-inline" onsubmit="return confirm('Jalankan pemindaian dan penonaktifan rank trial yang sudah kedaluwarsa?');">
                     @csrf
                     <button type="submit" class="btn btn-outline-info fw-bold px-3 shadow-sm">
@@ -146,8 +152,11 @@
                             </span>
                         </td>
                         <td class="text-end pe-4">
+                            <a href="{{ route('apexsions-bridge.admin.ranks.edit', $rankKey) }}" class="btn btn-sm btn-outline-info me-1">
+                                <i class="bi bi-pencil-square me-1"></i> Edit
+                            </a>
                             <a href="{{ route('apexsions-bridge.admin.ranks.show', $rankKey) }}" class="btn btn-sm btn-outline-warning">
-                                <i class="bi bi-people me-1"></i> Lihat Warga
+                                <i class="bi bi-people me-1"></i> Warga
                             </a>
                         </td>
                     </tr>
@@ -218,6 +227,13 @@
                             }
                         }
                     </script>
+
+                    <div class="form-check form-switch mb-3">
+                        <input class="form-check-input" type="checkbox" name="is_upgrade" id="isUpgradeSwitch" value="1">
+                        <label class="form-check-label small fw-bold text-info" for="isUpgradeSwitch">
+                            <i class="bi bi-arrow-up-circle me-1"></i> Jalankan sebagai Upgrade Rank (Validasi Permanent & Non-duplikasi Uang)
+                        </label>
+                    </div>
 
                     <div class="mb-3">
                         <label class="form-label small fw-bold">Alasan Perubahan / Penugasan <span class="text-danger">*</span></label>

@@ -197,6 +197,37 @@
                             $badgeText = 'PAKET RESMI';
                         }
 
+                        $rankKey = null;
+                        if (str_contains($packageName, 'sions')) $rankKey = 'sions';
+                        elseif (str_contains($packageName, 'emperor')) $rankKey = 'emperor';
+                        elseif (str_contains($packageName, 'sovereign')) $rankKey = 'sovereign';
+                        elseif (str_contains($packageName, 'archon')) $rankKey = 'archon';
+                        elseif (str_contains($packageName, 'ascendant')) $rankKey = 'ascendant';
+
+                        $isUpgradeAvailable = false;
+                        $isAlreadyOwned = false;
+                        $upgradeCalculation = null;
+                        $upgradeWaUrl = null;
+
+                        if ($rankKey && $linkedAccount) {
+                            $userWeight = \Azuriom\Plugin\ApexsionsBridge\Services\RankService::getRankWeight($accountRank);
+                            $targetWeight = \Azuriom\Plugin\ApexsionsBridge\Services\RankService::getRankWeight($rankKey);
+
+                            if ($isAccountPerm && $userWeight >= $targetWeight && $isPermanent) {
+                                $isAlreadyOwned = true;
+                            } elseif ($isAccountPerm && $isPermanent && $targetWeight > $userWeight) {
+                                $upgradeCalculation = \Azuriom\Plugin\ApexsionsBridge\Services\RankService::calculateUpgradePrice($linkedAccount, $rankKey);
+                                if (!empty($upgradeCalculation['eligible'])) {
+                                    $isUpgradeAvailable = true;
+                                    $upgradeWaUrl = \Azuriom\Plugin\ApexsionsBridge\Services\BattlepassDiscountService::generateUpgradeWhatsAppUrl(
+                                        $accountRank,
+                                        $rankKey,
+                                        $upgradeCalculation['upgrade_price']
+                                    );
+                                }
+                            }
+                        }
+
                         $discountInfo = \Azuriom\Plugin\ApexsionsBridge\Services\BattlepassDiscountService::calculateDiscount(
                             $linkedAccount,
                             $package,
@@ -205,12 +236,24 @@
 
                         $primaryAdmin = $founderAdmins[0] ?? ['name' => 'Rifqi', 'number' => '6281212994597'];
                         $primaryCleanNum = preg_replace('/[^0-9]/', '', $primaryAdmin['number']);
-                        $primaryWaUrl = 'https://wa.me/' . $primaryCleanNum . '?text=' . rawurlencode($discountInfo['whatsapp_message']);
+                        if ($isUpgradeAvailable && $upgradeWaUrl) {
+                            $primaryWaUrl = $upgradeWaUrl;
+                        } else {
+                            $primaryWaUrl = 'https://wa.me/' . $primaryCleanNum . '?text=' . rawurlencode($discountInfo['whatsapp_message']);
+                        }
                     @endphp
 
                     <div class="col-md-6 col-xl-4">
                         <div class="apx-package-card h-100 d-flex flex-column {{ $cardModifierClass }}">
-                            @if($badgeText)
+                            @if($isAlreadyOwned)
+                                <span class="apx-package-badge bg-success text-white border border-success">
+                                    <i class="bi bi-check-circle-fill me-1"></i> SUDAH DIMILIKI
+                                </span>
+                            @elseif($isUpgradeAvailable)
+                                <span class="apx-package-badge bg-purple text-white border border-info" style="background: linear-gradient(135deg, #8E2DE2, #4A00E0);">
+                                    <i class="bi bi-arrow-up-circle-fill me-1"></i> UPGRADE DARI {{ strtoupper($accountRank) }}
+                                </span>
+                            @elseif($badgeText)
                                 <span class="apx-package-badge {{ $badgeClass }}">
                                     @if($isPermanent)
                                         <i class="bi bi-patch-check-fill me-1"></i>
@@ -243,7 +286,14 @@
                                 <h3 class="apx-package-title">{{ $package->name }}</h3>
 
                                 <div class="apx-package-price-wrap mb-2">
-                                    @if($discountInfo['has_discount'])
+                                    @if($isAlreadyOwned)
+                                        <span class="apx-package-price text-success fs-5">
+                                            <i class="bi bi-patch-check-fill me-1"></i> Aktif di Akun
+                                        </span>
+                                    @elseif($isUpgradeAvailable)
+                                        <span class="apx-package-price-del">Rp {{ number_format($upgradeCalculation['target_rank_price'], 0, ',', '.') }}</span>
+                                        <span class="apx-package-price text-warning" style="color: #f1c40f !important;">Rp {{ number_format($upgradeCalculation['upgrade_price'], 0, ',', '.') }}</span>
+                                    @elseif($discountInfo['has_discount'])
                                         <span class="apx-package-price-del">Rp {{ number_format($discountInfo['original_price'], 0, ',', '.') }}</span>
                                         <span class="apx-package-price text-success">Rp {{ number_format($discountInfo['discounted_price'], 0, ',', '.') }}</span>
                                     @elseif($package->isDiscounted())
@@ -254,7 +304,13 @@
                                     @endif
                                 </div>
 
-                                @if($discountInfo['has_discount'])
+                                @if($isUpgradeAvailable)
+                                    <div class="mb-2">
+                                        <span class="apx-discount-chip">
+                                            <i class="bi bi-arrow-up-circle-fill"></i> Hemat Rp {{ number_format($upgradeCalculation['current_rank_price'], 0, ',', '.') }} (Harga Upgrade Selisih)
+                                        </span>
+                                    </div>
+                                @elseif($discountInfo['has_discount'])
                                     <div class="mb-2">
                                         <span class="apx-discount-chip">
                                             <i class="bi bi-tag-fill"></i> Hemat Rp {{ number_format($discountInfo['savings'], 0, ',', '.') }} (Diskon {{ $discountInfo['discount_percent'] }}% Rank {{ $discountInfo['eligible_rank'] }})
@@ -363,7 +419,14 @@
                                         @foreach($founderAdmins as $adm)
                                             @php
                                                 $admNum = preg_replace('/[^0-9]/', '', $adm['number']);
-                                                $admUrl = 'https://wa.me/' . $admNum . '?text=' . rawurlencode($discountInfo['whatsapp_message']);
+                                                if ($isUpgradeAvailable && $upgradeCalculation) {
+                                                    $template = setting('apexsions.whatsapp.template_upgrade', 'Min, aku mau upgrade rank dari {rank lama} ke {rank baru} yang harganya Rp.{harga upgrade}');
+                                                    $formattedPrice = number_format($upgradeCalculation['upgrade_price'], 0, ',', '.');
+                                                    $upgradeMsg = str_replace(['{rank lama}', '{rank baru}', '{harga upgrade}'], [ucfirst($accountRank), ucfirst($rankKey), $formattedPrice], $template);
+                                                    $admUrl = 'https://wa.me/' . $admNum . '?text=' . rawurlencode($upgradeMsg);
+                                                } else {
+                                                    $admUrl = 'https://wa.me/' . $admNum . '?text=' . rawurlencode($discountInfo['whatsapp_message']);
+                                                }
                                             @endphp
                                             <a href="{{ $admUrl }}" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-success py-1 px-2 d-flex align-items-center gap-1" style="font-size: 0.75rem;" title="Pesan paket ini via Founder {{ $adm['name'] }}">
                                                  <i class="bi bi-whatsapp"></i> {{ $adm['name'] }}
@@ -373,9 +436,19 @@
                                 </div>
 
                                 <div class="apx-package-footer mt-auto d-flex flex-column gap-2">
-                                    <a href="{{ $primaryWaUrl }}" target="_blank" rel="noopener noreferrer" class="btn btn-apx-wa w-100 py-2">
-                                        <i class="bi bi-whatsapp me-1"></i> <span data-i18n="shop_btn_wa">Pesan Cepat via WhatsApp</span>
-                                    </a>
+                                    @if($isAlreadyOwned)
+                                        <button class="btn btn-outline-success w-100 py-2 disabled" disabled>
+                                            <i class="bi bi-check2-circle me-1"></i> Rank Sudah Dimiliki
+                                        </button>
+                                    @elseif($isUpgradeAvailable)
+                                        <a href="{{ $primaryWaUrl }}" target="_blank" rel="noopener noreferrer" class="btn btn-warning fw-bold text-dark w-100 py-2 shadow-sm">
+                                            <i class="bi bi-arrow-up-circle-fill me-1"></i> Upgrade ke {{ ucfirst($rankKey) }} via WA
+                                        </a>
+                                    @else
+                                        <a href="{{ $primaryWaUrl }}" target="_blank" rel="noopener noreferrer" class="btn btn-apx-wa w-100 py-2">
+                                            <i class="bi bi-whatsapp me-1"></i> <span data-i18n="shop_btn_wa">Pesan Cepat via WhatsApp</span>
+                                        </a>
+                                    @endif
                                     <a href="#" class="btn btn-apx-outline w-100 py-1 small" data-package-url="{{ route('shop.packages.show', $package) }}">
                                         <i class="bi bi-info-circle me-1"></i> <span data-i18n="shop_btn_details">Rincian &amp; Benefit Lengkap</span>
                                     </a>

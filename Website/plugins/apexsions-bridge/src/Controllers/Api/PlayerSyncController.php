@@ -71,11 +71,49 @@ class PlayerSyncController extends Controller
             $account->verified_at = null;
         }
 
+        // Auto-check expired trials
+        \Azuriom\Plugin\ApexsionsBridge\Services\RankService::checkAndExpireTrials();
+
+        $inGameRank = strtolower($validated['rank'] ?? 'wanderer');
+        $inGameRankMeta = \Azuriom\Plugin\ApexsionsBridge\Services\RankService::getRank($inGameRank);
+        $inGameWeight = $inGameRankMeta['weight'] ?? 10;
+
+        $currentWebRank = strtolower($account->rank ?? 'wanderer');
+        $currentWebMeta = \Azuriom\Plugin\ApexsionsBridge\Services\RankService::getRank($currentWebRank);
+        $currentWebWeight = $currentWebMeta['weight'] ?? 10;
+        $isWebPermanent = $account->isPermanentRank();
+
+        // Determine authoritative rank:
+        if ($currentWebWeight > $inGameWeight && ($isWebPermanent || !$account->isRankExpired())) {
+            $finalRank = $currentWebRank;
+            $finalRankDisplay = $currentWebMeta['display_name'] ?? ucfirst($currentWebRank);
+
+            // Re-deliver command if no pending delivery exists
+            $hasPending = \Azuriom\Plugin\ApexsionsBridge\Models\Delivery::where('player_uuid', $uuid)
+                ->where('status', 'PENDING')
+                ->where('command', 'LIKE', "%parent set {$finalRank}%")
+                ->exists();
+
+            if (!$hasPending) {
+                \Azuriom\Plugin\ApexsionsBridge\Models\Delivery::create([
+                    'action_id' => (string) \Illuminate\Support\Str::uuid(),
+                    'idempotency_key' => 'AUTOSYNC_' . $uuid . '_' . $finalRank . '_' . time(),
+                    'player_uuid' => $uuid,
+                    'player_username' => $username,
+                    'command' => "lp user {$username} parent set {$finalRank}",
+                    'status' => 'PENDING',
+                ]);
+            }
+        } else {
+            $finalRank = $inGameRank;
+            $finalRankDisplay = $validated['rank_display'] ?? ($inGameRankMeta['display_name'] ?? ucfirst($inGameRank));
+        }
+
         $updateData = [
             'minecraft_uuid' => $uuid,
             'minecraft_username' => $username,
-            'rank' => strtolower($validated['rank'] ?? 'wanderer'),
-            'rank_display' => $validated['rank_display'] ?? ucfirst($validated['rank'] ?? 'Wanderer'),
+            'rank' => $finalRank,
+            'rank_display' => $finalRankDisplay,
             'kingdom' => strtoupper($validated['kingdom'] ?? 'NONE'),
             'kingdom_display' => $validated['kingdom_display'] ?? 'Belum Memilih',
             'level' => (int) ($validated['level'] ?? 1),
