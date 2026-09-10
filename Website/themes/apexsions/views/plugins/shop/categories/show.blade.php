@@ -284,10 +284,9 @@
                             if ($isAccountPerm && $userRankWeight >= $targetRankWeight) {
                                 $isAlreadyOwned = true;
                             } elseif ($isAccountPerm && $targetRankWeight > $userRankWeight) {
-                                $upgradeCalculation = \Azuriom\Plugin\ApexsionsBridge\Services\BattlepassDiscountService::calculateRankUpgrade(
+                                $upgradeCalculation = \Azuriom\Plugin\ApexsionsBridge\Services\RankService::calculateUpgradePrice(
                                     $linkedAccount,
-                                    $rankKey,
-                                    (float) $package->getPrice()
+                                    $rankKey
                                 );
                                 if (!empty($upgradeCalculation['eligible'])) {
                                     $isUpgradeAvailable = true;
