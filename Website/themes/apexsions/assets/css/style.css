@@ -3771,160 +3771,252 @@ code:not(pre code) {
 }
 
 
-/* ==========================================================================
-   RANK MATRIX, PASS TIERS, AND BENEFIT HIGHLIGHTS
-   ========================================================================== */
-.apx-package-card.apx-pkg-sio-pass {
-    border-color: rgba(245, 158, 11, 0.55);
-    background: linear-gradient(180deg, rgba(38, 26, 12, 0.9) 0%, var(--apx-bg-surface) 100%);
-    box-shadow: 0 8px 24px -4px rgba(245, 158, 11, 0.2);
+/* ==============================================================================
+   APEXSIONS WEBSTORE RANK UI/UX OVERHAUL (ZERO-COLLISION DESIGN SYSTEM)
+   ============================================================================== */
+
+/* Duration & Rank Filter Bar */
+.apx-rank-filter-bar {
+    background: var(--apx-bg-surface);
+    border: 1px solid var(--apx-gold-border-subtle);
+    border-radius: var(--apx-radius-md);
+    box-shadow: var(--apx-shadow-card);
+    transition: var(--apx-transition);
 }
 
-.apx-package-card.apx-pkg-sio-pass:hover {
-    border-color: #fbbf24;
-    box-shadow: 0 20px 42px -6px rgba(245, 158, 11, 0.4);
-    transform: translateY(-5px);
-}
-
-.apx-package-card.apx-pkg-exsio-pass {
-    border-color: rgba(168, 85, 247, 0.65);
-    background: linear-gradient(180deg, rgba(34, 14, 52, 0.9) 0%, var(--apx-bg-surface) 100%);
-    box-shadow: 0 8px 28px -4px rgba(168, 85, 247, 0.3);
-}
-
-.apx-package-card.apx-pkg-exsio-pass:hover {
-    border-color: #d8b4fe;
-    box-shadow: 0 22px 46px -6px rgba(168, 85, 247, 0.55);
-    transform: translateY(-5px);
-}
-
-.apx-rank-badge-overlay {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    width: 38px;
-    height: 38px;
-    filter: drop-shadow(0 2px 8px rgba(0,0,0,0.7));
-    z-index: 2;
-    transition: transform 0.25s ease;
-}
-
-.apx-package-card:hover .apx-rank-badge-overlay {
-    transform: scale(1.12) rotate(4deg);
-}
-
-.apx-badge-trial {
-    background: rgba(14, 165, 233, 0.2) !important;
-    color: #7dd3fc !important;
-    border: 1px solid rgba(56, 189, 248, 0.45) !important;
-}
-
-.apx-badge-perm {
-    background: linear-gradient(135deg, rgba(245, 158, 11, 0.25) 0%, rgba(217, 119, 6, 0.15) 100%) !important;
-    color: #fde047 !important;
-    border: 1px solid rgba(250, 204, 21, 0.6) !important;
-    box-shadow: 0 0 10px rgba(234, 179, 8, 0.2);
-}
-
-.apx-discount-chip {
+.apx-filter-btn {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: var(--apx-text-sub);
+    padding: 0.42rem 0.95rem;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
     display: inline-flex;
     align-items: center;
     gap: 0.35rem;
-    padding: 0.25rem 0.65rem;
-    border-radius: 9999px;
-    font-size: 0.72rem;
+    text-decoration: none;
+}
+
+.apx-filter-btn:hover {
+    background: rgba(245, 158, 11, 0.12);
+    border-color: var(--apx-gold);
+    color: #ffffff;
+    transform: translateY(-1px);
+}
+
+.apx-filter-btn.active {
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.3) 0%, rgba(20, 28, 46, 0.95) 100%);
+    border-color: var(--apx-gold);
+    color: var(--apx-gold-light);
     font-weight: 700;
-    letter-spacing: 0.02em;
-    background: rgba(34, 197, 94, 0.16);
-    color: #4ade80;
-    border: 1px solid rgba(34, 197, 94, 0.4);
+    box-shadow: 0 2px 10px rgba(245, 158, 11, 0.25);
 }
 
-/* Rank Comparison Matrix Table */
-.apx-rank-matrix-wrap {
-    background: var(--apx-bg-surface);
-    border: 1px solid var(--apx-gold-border-subtle);
-    border-radius: var(--apx-radius-lg);
-    box-shadow: var(--apx-shadow-elevated);
-    overflow: hidden;
-}
-
-.apx-rank-matrix-header {
-    background: linear-gradient(90deg, rgba(24, 28, 42, 0.95) 0%, rgba(15, 18, 28, 0.98) 100%);
-    border-bottom: 1px solid var(--apx-gold-border);
-    padding: 1.5rem 1.75rem;
-}
-
-.apx-rank-matrix-table-scroll {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-}
-
-.apx-rank-matrix-table {
-    width: 100%;
-    min-width: 820px;
-    border-collapse: separate;
-    border-spacing: 0;
-    margin: 0;
-    font-size: 0.86rem;
-}
-
-.apx-rank-matrix-table th,
-.apx-rank-matrix-table td {
-    padding: 0.85rem 1rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-    vertical-align: middle;
-    text-align: center;
-}
-
-.apx-rank-matrix-table th:first-child,
-.apx-rank-matrix-table td:first-child {
-    text-align: left;
-    position: sticky;
-    left: 0;
-    background: #0f1422;
-    z-index: 2;
-    font-weight: 600;
-    color: #f1f5f9;
-    border-right: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.apx-rank-matrix-table thead th {
-    background: #141a2e;
-    color: #cbd5e1;
-    font-family: 'Cinzel', Georgia, serif;
-    font-size: 0.88rem;
-    letter-spacing: 0.04em;
-    font-weight: 700;
-    border-bottom: 2px solid var(--apx-gold-border);
-}
-
-.apx-rank-matrix-table thead th.col-sions {
-    background: linear-gradient(180deg, rgba(234, 179, 8, 0.2) 0%, #171d33 100%);
+.apx-filter-btn.apx-filter-perm.active {
+    background: linear-gradient(135deg, rgba(234, 179, 8, 0.35) 0%, rgba(30, 24, 10, 0.95) 100%);
+    border-color: #fde047;
     color: #fde047;
-    border-bottom-color: #fde047;
 }
 
-.apx-rank-matrix-table tbody tr:hover td {
-    background-color: rgba(255, 255, 255, 0.03);
+/* Zero-Collision Header & Flexbox Top Bar */
+.apx-package-image-wrap {
+    position: relative;
+    height: 125px;
+    overflow: hidden;
+    background: #0b0f19;
+    border-bottom: 1px solid var(--apx-border);
+    border-radius: var(--apx-radius-lg) var(--apx-radius-lg) 0 0;
+    padding: 0 !important;
 }
 
-.apx-rank-matrix-table td.col-sions {
-    background-color: rgba(234, 179, 8, 0.04);
+.apx-package-image-wrap .apx-package-image {
+    width: 100%;
+    height: 100%;
+    max-height: 125px !important;
+    object-fit: cover !important;
+    object-position: center;
+    transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    opacity: 0.72;
 }
 
-.apx-matrix-val-gold {
-    color: #fbbf24;
-    font-weight: 700;
+.apx-package-card:hover .apx-package-image-wrap .apx-package-image {
+    transform: scale(1.08);
+    opacity: 0.9;
 }
 
-.apx-matrix-val-check {
-    color: #4ade80;
-    font-size: 1.1rem;
+.apx-package-image-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(15, 23, 42, 0.95) 0%, rgba(15, 23, 42, 0.35) 50%, rgba(15, 23, 42, 0.7) 100%);
+    pointer-events: none;
 }
 
-.apx-matrix-val-cross {
-    color: #64748b;
-    font-size: 0.9rem;
+.apx-package-top-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 0.65rem 0.85rem !important;
+    z-index: 3;
+    pointer-events: none;
+}
+
+.apx-package-top-bar > * {
+    pointer-events: auto;
+}
+
+.apx-rank-crest-icon {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+    filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.85));
+    border-radius: 50%;
+    background: rgba(15, 23, 42, 0.75);
+    padding: 2px;
+    border: 1px solid rgba(245, 158, 11, 0.35);
+    transition: transform 0.25s ease;
+}
+
+.apx-package-card:hover .apx-rank-crest-icon {
+    transform: scale(1.1) rotate(5deg);
+    border-color: var(--apx-gold);
+}
+
+.apx-rank-tier-tag {
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    color: #ffffff;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9);
+}
+
+.apx-package-badge {
+    position: static !important;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.68rem !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.06em !important;
+    padding: 0.25rem 0.65rem !important;
+    border-radius: 999px !important;
+    white-space: nowrap;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+.apx-badge-upgrade {
+    background: linear-gradient(135deg, #8E2DE2 0%, #4A00E0 100%) !important;
+    color: #ffffff !important;
+    border: 1px solid #c084fc !important;
+    box-shadow: 0 0 12px rgba(168, 85, 247, 0.45) !important;
+}
+
+/* 2x2 Core Spec Micro Grid */
+.apx-spec-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.4rem;
+}
+
+.apx-spec-pill {
+    background: rgba(255, 255, 255, 0.035);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: var(--apx-radius-sm);
+    padding: 0.35rem 0.55rem;
+    font-size: 0.74rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: #cbd5e1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: all 0.2s ease;
+}
+
+.apx-spec-pill:hover {
+    background: rgba(255, 255, 255, 0.065);
+    border-color: rgba(245, 158, 11, 0.3);
+    color: #ffffff;
+}
+
+.apx-spec-pill i {
+    font-size: 0.85rem;
+    flex-shrink: 0;
+}
+
+.apx-spec-pill strong {
+    color: #f1f5f9;
+}
+
+/* Card Body Typography & Spacing */
+.apx-package-title {
+    font-size: 1.15rem !important;
+    line-height: 1.3 !important;
+    margin-bottom: 0.2rem !important;
+    font-weight: 800 !important;
+}
+
+.apx-package-price-wrap {
+    margin-bottom: 0.75rem !important;
+}
+
+.apx-package-price {
+    font-size: 1.45rem !important;
+}
+
+.apx-package-price-del {
+    font-size: 0.85rem !important;
+}
+
+.apx-discount-chip {
+    font-size: 0.68rem !important;
+    padding: 0.15rem 0.55rem !important;
+    border-radius: 999px !important;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+/* Package Perks List */
+.apx-package-perks {
+    font-size: 0.8rem !important;
+    line-height: 1.65 !important;
+    margin-bottom: 1rem !important;
+}
+
+.apx-package-perks li {
+    gap: 0.45rem !important;
+    margin-bottom: 0.28rem !important;
+    word-break: break-word;
+}
+
+.apx-package-perks li i {
+    font-size: 0.88rem !important;
+    margin-top: 0.15rem !important;
+}
+
+/* Button & Action Polish */
+.apx-btn-glow {
+    box-shadow: 0 4px 16px rgba(234, 179, 8, 0.35);
+    transition: all 0.2s ease;
+}
+
+.apx-btn-glow:hover {
+    box-shadow: 0 6px 22px rgba(234, 179, 8, 0.55);
+    transform: translateY(-2px);
+}
+
+.apx-matrix-jump-btn {
+    font-weight: 600;
+    transition: color 0.2s ease;
+}
+
+.apx-matrix-jump-btn:hover {
+    color: var(--apx-gold-light) !important;
+    text-decoration: underline !important;
 }
 

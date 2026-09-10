@@ -238,23 +238,23 @@
                                 $cardModifierClass = 'apx-pkg-sions';
                                 $defaultImage = theme_asset('img/package-sions.jpg');
                                 $rankCrest = theme_asset('img/ranks/rank-sions.png');
-                                $badgeText = 'PERMANEN • APEX SIONS';
+                                $badgeText = 'PERMANEN';
                                 $badgeClass = 'apx-badge-perm';
                             } elseif (str_contains($packageName, 'exsio pass')) {
                                 $cardModifierClass = 'apx-pkg-exsio-pass';
                                 $defaultImage = theme_asset('img/package-exsio-pass.jpg');
                                 $fallbackIcon = 'bi bi-award-fill';
-                                $badgeText = 'ULTIMATE PASS • INCLUDES SIO';
+                                $badgeText = 'ULTIMATE PASS';
                                 $badgeClass = 'bg-primary text-white border border-info';
                             } elseif (str_contains($packageName, 'pass')) {
                                 $cardModifierClass = 'apx-pkg-sio-pass';
                                 $defaultImage = theme_asset('img/package-sio-pass.jpg');
                                 $fallbackIcon = 'bi bi-trophy-fill';
-                                $badgeText = 'SEASON PASS • JALUR EMAS';
+                                $badgeText = 'SEASON PASS';
                                 $badgeClass = 'bg-warning text-dark border border-warning';
                             } elseif (str_contains($packageName, 'booster')) {
                                 $fallbackIcon = 'bi bi-lightning-charge-fill';
-                                $badgeText = 'BOOSTER 72 JAM';
+                                $badgeText = 'BOOSTER 72J';
                                 $badgeClass = 'bg-warning text-dark';
                             }
 
@@ -271,31 +271,41 @@
 
                         <div class="col-md-6 col-xl-4">
                             <div class="apx-package-card h-100 d-flex flex-column {{ $cardModifierClass }}">
-                                @if($badgeText)
-                                    <span class="apx-package-badge {{ $badgeClass }}">
-                                        @if($isPermanent)
-                                            <i class="bi bi-patch-check-fill me-1"></i>
-                                        @else
-                                            <i class="bi bi-star-fill me-1"></i>
-                                        @endif
-                                        {{ $badgeText }}
-                                    </span>
-                                @endif
-
                                 <div class="apx-package-image-wrap position-relative">
-                                    @if($rankCrest)
-                                        <img class="apx-rank-badge-overlay" src="{{ $rankCrest }}" alt="Rank Crest" loading="lazy">
-                                    @endif
+                                    <div class="apx-package-top-bar d-flex justify-content-between align-items-center w-100">
+                                        <div class="d-flex align-items-center gap-2">
+                                            @if($rankCrest)
+                                                <img class="apx-rank-crest-icon" src="{{ $rankCrest }}" alt="Crest" loading="lazy">
+                                            @endif
+                                            @if(str_contains($packageName, 'sions'))
+                                                <span class="apx-rank-tier-tag">SIONS</span>
+                                            @endif
+                                        </div>
+
+                                        <div>
+                                            @if($badgeText)
+                                                <span class="apx-package-badge {{ $badgeClass }}">
+                                                    @if($isPermanent)
+                                                        <i class="bi bi-patch-check-fill me-1"></i>
+                                                    @else
+                                                        <i class="bi bi-star-fill me-1"></i>
+                                                    @endif
+                                                    {{ $badgeText }}
+                                                </span>
+                                            @endif
+                                        </div>
+                                    </div>
 
                                     @if($package->hasImage())
                                         <img class="apx-package-image" src="{{ $package->imageUrl() }}" alt="{{ $package->name }}" loading="lazy">
                                     @elseif($defaultImage)
-                                        <img class="apx-package-image" src="{{ $defaultImage }}" alt="{{ $package->name }}" style="max-height: 140px; width: 100%; object-fit: cover;" loading="lazy">
+                                        <img class="apx-package-image" src="{{ $defaultImage }}" alt="{{ $package->name }}" loading="lazy">
                                     @else
-                                        <div class="d-inline-flex align-items-center justify-content-center w-100" style="height: 140px; background: rgba(245, 158, 11, 0.08); color: var(--apx-gold); font-size: 2.5rem;">
+                                        <div class="d-flex align-items-center justify-content-center w-100 h-100" style="background: rgba(245, 158, 11, 0.08); color: var(--apx-gold); font-size: 2.2rem;">
                                             <i class="{{ $fallbackIcon }}"></i>
                                         </div>
                                     @endif
+                                    <div class="apx-package-image-overlay"></div>
                                 </div>
 
                                 <div class="apx-package-body d-flex flex-column flex-grow-1">

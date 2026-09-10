@@ -17,35 +17,35 @@
     if (str_contains($packageName, 'sions')) {
         $defaultImage = theme_asset('img/package-sions.jpg');
         $rankCrest = theme_asset('img/ranks/rank-sions.png');
-        $badgeText = $isPermanent ? 'PERMANEN • APEX SIONS' : ($isTrial90 ? 'TRIAL 90 HARI • SIONS' : 'TRIAL 30 HARI • SIONS');
+        $badgeText = $isPermanent ? 'PERMANEN' : ($isTrial90 ? 'TRIAL 90 HARI' : 'TRIAL 30 HARI');
         $badgeClass = $isPermanent ? 'apx-badge-perm' : 'apx-badge-trial';
     } elseif (str_contains($packageName, 'emperor')) {
         $defaultImage = theme_asset('img/package-emperor.jpg');
         $rankCrest = theme_asset('img/ranks/rank-emperor.png');
-        $badgeText = $isPermanent ? 'PERMANEN • EMPEROR' : ($isTrial90 ? 'TRIAL 90 HARI • EMPEROR' : 'TRIAL 30 HARI • EMPEROR');
+        $badgeText = $isPermanent ? 'PERMANEN' : ($isTrial90 ? 'TRIAL 90 HARI' : 'TRIAL 30 HARI');
         $badgeClass = $isPermanent ? 'apx-badge-perm' : 'apx-badge-trial';
     } elseif (str_contains($packageName, 'sovereign')) {
         $defaultImage = theme_asset('img/package-sovereign.jpg');
         $rankCrest = theme_asset('img/ranks/rank-sovereign.png');
-        $badgeText = $isPermanent ? 'PERMANEN • SOVEREIGN' : ($isTrial90 ? 'TRIAL 90 HARI • SOVEREIGN' : 'TRIAL 30 HARI • SOVEREIGN');
+        $badgeText = $isPermanent ? 'PERMANEN' : ($isTrial90 ? 'TRIAL 90 HARI' : 'TRIAL 30 HARI');
         $badgeClass = $isPermanent ? 'apx-badge-perm' : 'apx-badge-trial';
     } elseif (str_contains($packageName, 'archon')) {
         $defaultImage = theme_asset('img/package-archon.jpg');
         $rankCrest = theme_asset('img/ranks/rank-archon.png');
-        $badgeText = $isPermanent ? 'PERMANEN • ARCHON' : ($isTrial90 ? 'TRIAL 90 HARI • ARCHON' : 'TRIAL 30 HARI • ARCHON');
+        $badgeText = $isPermanent ? 'PERMANEN' : ($isTrial90 ? 'TRIAL 90 HARI' : 'TRIAL 30 HARI');
         $badgeClass = $isPermanent ? 'apx-badge-perm' : 'apx-badge-trial';
     } elseif (str_contains($packageName, 'ascendant')) {
         $defaultImage = theme_asset('img/package-ascendant.jpg');
         $rankCrest = theme_asset('img/ranks/rank-ascendant.png');
-        $badgeText = $isPermanent ? 'PERMANEN • ASCENDANT' : ($isTrial90 ? 'TRIAL 90 HARI • ASCENDANT' : 'TRIAL 30 HARI • ASCENDANT');
+        $badgeText = $isPermanent ? 'PERMANEN' : ($isTrial90 ? 'TRIAL 90 HARI' : 'TRIAL 30 HARI');
         $badgeClass = $isPermanent ? 'apx-badge-perm' : 'apx-badge-trial';
     } elseif (str_contains($packageName, 'exsio pass')) {
         $defaultImage = theme_asset('img/package-exsio-pass.jpg');
-        $badgeText = 'ULTIMATE PASS • INCLUDES SIO';
+        $badgeText = 'ULTIMATE PASS';
         $badgeClass = 'bg-primary text-white border border-info';
     } elseif (str_contains($packageName, 'sio pass') || str_contains($packageName, 'pass')) {
         $defaultImage = theme_asset('img/package-sio-pass.jpg');
-        $badgeText = 'SEASON PASS • JALUR EMAS';
+        $badgeText = 'SEASON PASS';
         $badgeClass = 'bg-warning text-dark border border-warning';
     }
 
