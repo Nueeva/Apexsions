@@ -30,6 +30,7 @@
 Thumbs.db
 
 # Website / Azuriom
+node_modules/
 /Website/vendor/
 /Website/node_modules/
 /Website/.env

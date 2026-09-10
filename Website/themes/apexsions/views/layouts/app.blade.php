@@ -216,5 +216,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ theme_asset('js/app.js') }}&t={{ @filemtime(public_path('assets/themes/apexsions/js/app.js')) ?: time() }}"></script>
     @stack('scripts')
+    @stack('footer-scripts')
 </body>
 </html>

@@ -3,25 +3,45 @@
 @section('title', 'Webstore Resmi Peradaban — Apexsions')
 @section('description', 'Pusat perbekalan resmi realm Apexsions. Tingkatkan supremasi kedaulatan dengan kasta donatur, seasonal battlepass, booster peradaban, dan pundi koin resmi.')
 
-@push('footer-scripts')
+@push('scripts')
     <script>
-        document.querySelectorAll('[data-package-url]').forEach(function (el) {
-            el.addEventListener('click', function (ev) {
-                ev.preventDefault();
+        (function() {
+            function initIndexModals() {
+                document.querySelectorAll('[data-package-url]').forEach(function (el) {
+                    if (el.dataset.boundClick) return;
+                    el.dataset.boundClick = 'true';
+                    el.addEventListener('click', function (ev) {
+                        ev.preventDefault();
+                        const url = el.getAttribute('data-package-url');
+                        if (!url) return;
 
-                axios.get(el.dataset['packageUrl']).then(function (response) {
-                    const itemModal = document.getElementById('itemModal');
-                    itemModal.innerHTML = response.data;
-                    new bootstrap.Modal(itemModal).show();
-                }).catch(function (error) {
-                    if (typeof createAlert === 'function') {
-                        createAlert('danger', error, true);
-                    } else {
-                        alert(error);
-                    }
+                        if (typeof axios !== 'undefined') {
+                            axios.get(url).then(function (response) {
+                                const itemModal = document.getElementById('itemModal');
+                                if (itemModal) {
+                                    itemModal.innerHTML = response.data;
+                                    if (typeof bootstrap !== 'undefined') {
+                                        bootstrap.Modal.getOrCreateInstance(itemModal).show();
+                                    }
+                                }
+                            }).catch(function (error) {
+                                if (typeof createAlert === 'function') {
+                                    createAlert('danger', error, true);
+                                } else {
+                                    alert('Gagal memuat rincian paket: ' + error);
+                                }
+                            });
+                        }
+                    });
                 });
-            });
-        });
+            }
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initIndexModals);
+            } else {
+                initIndexModals();
+            }
+        })();
     </script>
 @endpush
 

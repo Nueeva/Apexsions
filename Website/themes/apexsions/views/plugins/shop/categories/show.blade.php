@@ -3,50 +3,154 @@
 @section('title', $category->name . ' — Webstore Resmi')
 @section('description', 'Jelajahi paket ' . $category->name . ' di Webstore Resmi Apexsions. Pembelian aman, aktivasi otomatis instan di dalam server Minecraft (Java & Bedrock).')
 
-@push('footer-scripts')
+@push('scripts')
     <script>
-        document.querySelectorAll('[data-package-url]').forEach(function (el) {
-            el.addEventListener('click', function (ev) {
-                ev.preventDefault();
+        (function() {
+            function initShopCategoryInteractivity() {
+                // 1. Package details modal click handler
+                document.querySelectorAll('[data-package-url]').forEach(function (el) {
+                    if (el.dataset.boundClick) return;
+                    el.dataset.boundClick = 'true';
+                    el.addEventListener('click', function (ev) {
+                        ev.preventDefault();
+                        const url = el.getAttribute('data-package-url');
+                        if (!url) return;
 
-                axios.get(el.dataset['packageUrl']).then(function (response) {
-                    const itemModal = document.getElementById('itemModal');
-                    itemModal.innerHTML = response.data;
-                    new bootstrap.Modal(itemModal).show();
-                }).catch(function (error) {
-                    if (typeof createAlert === 'function') {
-                        createAlert('danger', error, true);
-                    } else {
-                        alert(error);
-                    }
-                });
-            });
-        });
-
-        // Interactive Duration Filter
-        document.addEventListener('DOMContentLoaded', function () {
-            const filterBtns = document.querySelectorAll('.apx-filter-btn');
-            const packageCols = document.querySelectorAll('.apx-package-col');
-
-            if (filterBtns.length > 0 && packageCols.length > 0) {
-                filterBtns.forEach(function (btn) {
-                    btn.addEventListener('click', function () {
-                        filterBtns.forEach(function (b) { b.classList.remove('active'); });
-                        this.classList.add('active');
-
-                        const filter = this.getAttribute('data-filter');
-                        packageCols.forEach(function (col) {
-                            const duration = col.getAttribute('data-duration');
-                            if (filter === 'all' || duration === filter) {
-                                col.style.display = '';
-                            } else {
-                                col.style.display = 'none';
-                            }
-                        });
+                        if (typeof axios !== 'undefined') {
+                            axios.get(url).then(function (response) {
+                                const itemModal = document.getElementById('itemModal');
+                                if (itemModal) {
+                                    itemModal.innerHTML = response.data;
+                                    if (typeof bootstrap !== 'undefined') {
+                                        bootstrap.Modal.getOrCreateInstance(itemModal).show();
+                                    }
+                                }
+                            }).catch(function (error) {
+                                if (typeof createAlert === 'function') {
+                                    createAlert('danger', error, true);
+                                } else {
+                                    alert('Gagal memuat rincian paket: ' + error);
+                                }
+                            });
+                        }
                     });
                 });
+
+                // 2. Expandable perks toggle handler
+                document.querySelectorAll('[data-apx-toggle-perks]').forEach(function (btn) {
+                    if (btn.dataset.boundClick) return;
+                    btn.dataset.boundClick = 'true';
+                    btn.addEventListener('click', function () {
+                        const targetId = this.getAttribute('data-apx-toggle-perks');
+                        const targetList = document.getElementById(targetId);
+                        if (targetList) {
+                            const isExpanded = targetList.classList.toggle('is-expanded');
+                            const textSpan = this.querySelector('.apx-toggle-perks-text');
+                            const icon = this.querySelector('i');
+                            if (textSpan) {
+                                textSpan.textContent = isExpanded ? 'Sembunyikan Benefit' : 'Lihat Semua Benefit';
+                            }
+                            if (icon) {
+                                icon.className = isExpanded ? 'bi bi-chevron-up ms-1' : 'bi bi-chevron-down ms-1';
+                            }
+                        }
+                    });
+                });
+
+                // 3. Multi-Axis Interactive Filtering Engine
+                const rankFilterBtns = document.querySelectorAll('.apx-filter-rank');
+                const durationFilterBtns = document.querySelectorAll('.apx-filter-duration');
+                const subcatFilterBtns = document.querySelectorAll('.apx-filter-subcat');
+                const packageCols = document.querySelectorAll('.apx-package-col');
+                const countSpan = document.getElementById('visiblePackageCount');
+                const emptyState = document.getElementById('apxFilterEmptyState');
+
+                let activeRank = 'all';
+                let activeDuration = 'all';
+                let activeSubcat = 'all';
+
+                function applyFilters() {
+                    let visibleCount = 0;
+
+                    packageCols.forEach(function (col) {
+                        const colRank = col.getAttribute('data-rank') || 'other';
+                        const colDuration = col.getAttribute('data-duration') || 'other';
+                        const colSubcat = col.getAttribute('data-subcat') || 'other';
+
+                        const matchRank = (activeRank === 'all' || colRank === activeRank);
+                        const matchDuration = (activeDuration === 'all' || colDuration === activeDuration);
+                        const matchSubcat = (activeSubcat === 'all' || colSubcat === activeSubcat);
+
+                        if (matchRank && matchDuration && matchSubcat) {
+                            col.style.display = '';
+                            visibleCount++;
+                        } else {
+                            col.style.display = 'none';
+                        }
+                    });
+
+                    if (countSpan) {
+                        countSpan.textContent = visibleCount;
+                    }
+
+                    if (emptyState) {
+                        emptyState.style.display = visibleCount === 0 ? '' : 'none';
+                    }
+                }
+
+                if (rankFilterBtns.length > 0) {
+                    rankFilterBtns.forEach(function (btn) {
+                        btn.addEventListener('click', function () {
+                            rankFilterBtns.forEach(function (b) { b.classList.remove('active'); });
+                            this.classList.add('active');
+                            activeRank = this.getAttribute('data-rank-filter') || 'all';
+                            applyFilters();
+                        });
+                    });
+                }
+
+                if (durationFilterBtns.length > 0) {
+                    durationFilterBtns.forEach(function (btn) {
+                        btn.addEventListener('click', function () {
+                            durationFilterBtns.forEach(function (b) { b.classList.remove('active'); });
+                            this.classList.add('active');
+                            activeDuration = this.getAttribute('data-duration-filter') || 'all';
+                            applyFilters();
+                        });
+                    });
+                }
+
+                if (subcatFilterBtns.length > 0) {
+                    subcatFilterBtns.forEach(function (btn) {
+                        btn.addEventListener('click', function () {
+                            subcatFilterBtns.forEach(function (b) { b.classList.remove('active'); });
+                            this.classList.add('active');
+                            activeSubcat = this.getAttribute('data-subcat-filter') || 'all';
+                            applyFilters();
+                        });
+                    });
+                }
+
+                const resetBtn = document.getElementById('apxResetFilterBtn');
+                if (resetBtn) {
+                    resetBtn.addEventListener('click', function () {
+                        activeRank = 'all';
+                        activeDuration = 'all';
+                        activeSubcat = 'all';
+                        rankFilterBtns.forEach(function (b) { b.classList.toggle('active', b.getAttribute('data-rank-filter') === 'all'); });
+                        durationFilterBtns.forEach(function (b) { b.classList.toggle('active', b.getAttribute('data-duration-filter') === 'all'); });
+                        subcatFilterBtns.forEach(function (b) { b.classList.toggle('active', b.getAttribute('data-subcat-filter') === 'all'); });
+                        applyFilters();
+                    });
+                }
             }
-        });
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initShopCategoryInteractivity);
+            } else {
+                initShopCategoryInteractivity();
+            }
+        })();
     </script>
 @endpush
 
@@ -61,10 +165,14 @@
     </div>
 
     <!-- Category Switcher Pills -->
-    @if(isset($categories) && count($categories) > 1)
+    @if(isset($categories) && count($categories) > 0)
         <div class="apx-store-nav-bar" role="tablist" aria-label="Pilih Kategori Webstore">
+            <a href="{{ route('shop.home') }}" class="apx-store-pill @if($category === null) active @endif">
+                <i class="bi bi-house-door-fill"></i>
+                <span data-i18n="shop_nav_home">Beranda Toko</span>
+            </a>
             @foreach($categories as $navCat)
-                <a href="{{ route('shop.categories.show', $navCat) }}" class="apx-store-pill @if($navCat->is($category)) active @endif">
+                <a href="{{ route('shop.categories.show', $navCat) }}" class="apx-store-pill @if($category && $navCat->is($category)) active @endif">
                     <i class="{{ $navCat->icon ?? 'bi bi-tag-fill' }}"></i>
                     <span>{{ $navCat->name }}</span>
                     @if($navCat->packages_count ?? false)
@@ -154,30 +262,112 @@
 
             @php
                 $isRankCategory = str_contains(strtolower($category->name), 'rank') || str_contains(strtolower($category->slug ?? ''), 'rank');
+                $isCoinsCategory = str_contains(strtolower($category->name), 'koin') || str_contains(strtolower($category->name), 'coin') || str_contains(strtolower($category->slug ?? ''), 'coin') || str_contains(strtolower($category->slug ?? ''), 'booster');
+                $isBattlepassCategory = str_contains(strtolower($category->name), 'battlepass') || str_contains(strtolower($category->slug ?? ''), 'battlepass') || str_contains(strtolower($category->slug ?? ''), 'pass');
             @endphp
 
             @if($isRankCategory)
-                <!-- Interactive Duration Filter Bar -->
-                <div class="apx-rank-filter-bar mb-4 d-flex align-items-center justify-content-between flex-wrap gap-2">
+                <!-- Interactive Multi-Axis Rank & Duration Filter Bar -->
+                <div class="apx-rank-filter-bar mb-4 p-3 d-flex flex-column gap-3">
+                    <!-- Row 1: Filter Kategori Kasta -->
+                    <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+                        <div class="d-flex align-items-center gap-2 flex-wrap">
+                            <span class="text-warning small fw-bold me-1 d-flex align-items-center gap-1">
+                                <i class="bi bi-shield-shaded"></i> <span>Kasta:</span>
+                            </span>
+                            <button type="button" class="apx-filter-btn apx-filter-rank active" data-rank-filter="all">
+                                <i class="bi bi-grid-fill"></i> Semua Kasta
+                            </button>
+                            <button type="button" class="apx-filter-btn apx-filter-rank apx-rank-btn-ascendant" data-rank-filter="ascendant">
+                                <i class="bi bi-shield-fill text-success"></i> Ascendant
+                            </button>
+                            <button type="button" class="apx-filter-btn apx-filter-rank apx-rank-btn-archon" data-rank-filter="archon">
+                                <i class="bi bi-shield-fill text-info"></i> Archon
+                            </button>
+                            <button type="button" class="apx-filter-btn apx-filter-rank apx-rank-btn-sovereign" data-rank-filter="sovereign">
+                                <i class="bi bi-shield-fill text-primary"></i> Sovereign
+                            </button>
+                            <button type="button" class="apx-filter-btn apx-filter-rank apx-rank-btn-emperor" data-rank-filter="emperor">
+                                <i class="bi bi-shield-fill text-danger"></i> Emperor
+                            </button>
+                            <button type="button" class="apx-filter-btn apx-filter-rank apx-rank-btn-sions" data-rank-filter="sions">
+                                <i class="bi bi-award-fill text-warning"></i> ✦ SIONS ✦
+                            </button>
+                        </div>
+                        <div>
+                            <a href="#matrix" class="apx-matrix-jump-btn text-warning text-decoration-none small d-flex align-items-center gap-1">
+                                <i class="bi bi-table"></i> <span>Matriks Benefit</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Divider -->
+                    <div style="border-top: 1px solid rgba(255, 255, 255, 0.08);"></div>
+
+                    <!-- Row 2: Filter Durasi & Counter -->
+                    <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+                        <div class="d-flex align-items-center gap-2 flex-wrap">
+                            <span class="text-muted small fw-semibold me-1 d-flex align-items-center gap-1">
+                                <i class="bi bi-hourglass-split"></i> <span>Durasi:</span>
+                            </span>
+                            <button type="button" class="apx-filter-btn apx-filter-duration active" data-duration-filter="all">
+                                <i class="bi bi-collection-fill"></i> Semua Durasi
+                            </button>
+                            <button type="button" class="apx-filter-btn apx-filter-duration apx-filter-perm" data-duration-filter="permanen">
+                                <i class="bi bi-patch-check-fill"></i> Permanen
+                            </button>
+                            <button type="button" class="apx-filter-btn apx-filter-duration" data-duration-filter="90-hari">
+                                <i class="bi bi-clock-history"></i> Trial 90 Hari
+                            </button>
+                            <button type="button" class="apx-filter-btn apx-filter-duration" data-duration-filter="30-hari">
+                                <i class="bi bi-calendar-event"></i> Trial 30 Hari
+                            </button>
+                        </div>
+                        <div class="text-muted small" id="packageFilterCounter" style="font-size: 0.8rem;">
+                            Menampilkan <span class="text-warning fw-bold font-monospace" id="visiblePackageCount">{{ count($category->packages) }}</span> paket
+                        </div>
+                    </div>
+                </div>
+            @elseif($isCoinsCategory)
+                <!-- Interactive Subcategory Filter for Coins & Boosters -->
+                <div class="apx-rank-filter-bar mb-4 p-3 d-flex align-items-center justify-content-between flex-wrap gap-2">
                     <div class="d-flex align-items-center gap-2 flex-wrap">
-                        <span class="text-muted small fw-semibold me-1"><i class="bi bi-funnel me-1"></i>Pilih Durasi:</span>
-                        <button type="button" class="apx-filter-btn active" data-filter="all">
-                            <i class="bi bi-grid-fill me-1"></i> Semua Kasta
+                        <span class="text-warning small fw-bold me-1 d-flex align-items-center gap-1">
+                            <i class="bi bi-funnel"></i> <span>Kategori:</span>
+                        </span>
+                        <button type="button" class="apx-filter-btn apx-filter-subcat active" data-subcat-filter="all">
+                            <i class="bi bi-grid-fill"></i> Semua Paket
                         </button>
-                        <button type="button" class="apx-filter-btn apx-filter-perm" data-filter="permanen">
-                            <i class="bi bi-patch-check-fill me-1"></i> Permanen
+                        <button type="button" class="apx-filter-btn apx-filter-subcat" data-subcat-filter="coins">
+                            <i class="bi bi-coin text-info"></i> Apex Coins
                         </button>
-                        <button type="button" class="apx-filter-btn" data-filter="90-hari">
-                            <i class="bi bi-clock-history me-1"></i> Trial 90 Hari
-                        </button>
-                        <button type="button" class="apx-filter-btn" data-filter="30-hari">
-                            <i class="bi bi-calendar-event me-1"></i> Trial 30 Hari
+                        <button type="button" class="apx-filter-btn apx-filter-subcat" data-subcat-filter="booster">
+                            <i class="bi bi-lightning-charge-fill text-warning"></i> Booster Server
                         </button>
                     </div>
-                    <div class="d-none d-md-flex align-items-center gap-2">
-                        <a href="#matrix" class="apx-matrix-jump-btn text-warning text-decoration-none small">
-                            <i class="bi bi-table me-1"></i> Lihat Matriks Benefit
-                        </a>
+                    <div class="text-muted small" id="packageFilterCounter" style="font-size: 0.8rem;">
+                        Menampilkan <span class="text-warning fw-bold font-monospace" id="visiblePackageCount">{{ count($category->packages) }}</span> paket
+                    </div>
+                </div>
+            @elseif($isBattlepassCategory)
+                <!-- Interactive Subcategory Filter for Battlepass -->
+                <div class="apx-rank-filter-bar mb-4 p-3 d-flex align-items-center justify-content-between flex-wrap gap-2">
+                    <div class="d-flex align-items-center gap-2 flex-wrap">
+                        <span class="text-warning small fw-bold me-1 d-flex align-items-center gap-1">
+                            <i class="bi bi-trophy"></i> <span>Tipe Pass:</span>
+                        </span>
+                        <button type="button" class="apx-filter-btn apx-filter-subcat active" data-subcat-filter="all">
+                            <i class="bi bi-grid-fill"></i> Semua Pass
+                        </button>
+                        <button type="button" class="apx-filter-btn apx-filter-subcat" data-subcat-filter="sio">
+                            <i class="bi bi-trophy-fill text-warning"></i> Sio Pass (100 Level)
+                        </button>
+                        <button type="button" class="apx-filter-btn apx-filter-subcat" data-subcat-filter="exsio">
+                            <i class="bi bi-stars text-info"></i> Exsio Pass (+20 Level)
+                        </button>
+                    </div>
+                    <div class="text-muted small" id="packageFilterCounter" style="font-size: 0.8rem;">
+                        Menampilkan <span class="text-warning fw-bold font-monospace" id="visiblePackageCount">{{ count($category->packages) }}</span> paket
                     </div>
                 </div>
             @endif
@@ -202,6 +392,17 @@
                         if ($isPermanent) $durationTag = 'permanen';
                         elseif ($isTrial90) $durationTag = '90-hari';
                         elseif ($isTrial30) $durationTag = '30-hari';
+
+                        $subcatTag = 'other';
+                        if (str_contains($packageName, 'koin') || str_contains($packageName, 'coin')) {
+                            $subcatTag = 'coins';
+                        } elseif (str_contains($packageName, 'booster')) {
+                            $subcatTag = 'booster';
+                        } elseif (str_contains($packageName, 'exsio')) {
+                            $subcatTag = 'exsio';
+                        } elseif (str_contains($packageName, 'sio pass') || str_contains($packageName, 'pass')) {
+                            $subcatTag = 'sio';
+                        }
 
                         $rankKey = null;
                         if (str_contains($packageName, 'sions')) $rankKey = 'sions';
@@ -361,7 +562,7 @@
                         }
                     @endphp
 
-                    <div class="col-md-6 col-xl-4 apx-package-col" data-duration="{{ $durationTag }}">
+                    <div class="col-md-6 col-xl-4 apx-package-col" data-duration="{{ $durationTag }}" data-rank="{{ $rankKey ?? 'other' }}" data-subcat="{{ $subcatTag }}">
                         <div class="apx-package-card h-100 d-flex flex-column {{ $cardModifierClass }}">
                             <!-- Zero-Collision Flexbox Header -->
                             <div class="apx-package-image-wrap position-relative">
@@ -576,6 +777,22 @@
                         </div>
                     </div>
                 @endforelse
+
+                <!-- Interactive Filter Empty State -->
+                <div class="col-12" id="apxFilterEmptyState" style="display: none;">
+                    <div class="card p-4 text-center" style="background: var(--apx-bg-surface); border: 1px dashed var(--apx-gold-border-subtle); border-radius: var(--apx-radius-md);">
+                        <div class="mb-2 text-warning fs-2">
+                            <i class="bi bi-funnel"></i>
+                        </div>
+                        <h5 class="text-white mb-1 font-cinzel">Tidak Ada Paket yang Sesuai Filter</h5>
+                        <p class="text-muted small mb-3">Tidak ditemukan paket yang memenuhi kombinasi kriteria filter yang sedang aktif.</p>
+                        <div>
+                            <button type="button" class="btn btn-sm btn-apx-outline px-3 py-2" id="apxResetFilterBtn">
+                                <i class="bi bi-arrow-counterclockwise me-1"></i> Reset Semua Filter
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <!-- Rank Benefit Comparison Matrix Section -->
