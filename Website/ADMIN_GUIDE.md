@@ -253,8 +253,20 @@ Pusat kendali kasta (Rank), penetapan harga dinamis, hierarki benefit server, se
    - Kustomisasi pesan template WhatsApp untuk pembelian normal, upgrade rank, dan pembelian BattlePass dengan diskon akun (Emperor 10%, Sions 15%).
 5. **Purchase & Upgrade Audit History (`/admin/ranks/purchases`):**
    - Rekam jejak seluruh transaksi pembelian rank dan upgrade, mencakup UUID pemain, status upgrade, rank asal, harga normal, diskon, jumlah yang dibayar, metode pembayaran, serta status pengiriman in-game.
-6. **Zero-Collision Webstore UX & Interactive Duration Filter:**
-   - **Interactive Duration Filter Bar (`[Semua Kasta]`, `[Permanen]`, `[Trial 90 Hari]`, `[Trial 30 Hari]`):** Memungkinkan pemain memfilter 15 varian paket kasta secara instan di sisi klien tanpa reload halaman, mereduksi kelelahan kognitif saat meninjau katalog.
+6. **Webstore Storefront Architecture & Multi-Axis Interactive Filter Engine:**
+   - **Dual-Axis Interactive Filtering (Kasta & Durasi):**
+     - **Baris 1 — Kategori Kasta (`data-rank-filter`):** `[Semua Kasta]`, `[Ascendant]` (Hijau Emerald), `[Archon]` (Cyan), `[Sovereign]` (Biru Royal), `[Emperor]` (Merah Crimson), dan `[✦ SIONS ✦]` (Emas-Ungu Pinnacle). Dilengkapi tombol pintas loncat ke Matriks Benefit (`#matrix`).
+     - **Baris 2 — Durasi Aktif (`data-duration-filter`):** `[Semua Durasi]`, `[Permanen]`, `[Trial 90 Hari]`, dan `[Trial 30 Hari]`.
+     - **Real-Time Dynamic Matching:** Logika filter di sisi klien mengevaluasi kedua sumbu secara bersamaan ($Kasta \land Durasi$), memperbarui status `.active` seketika, dan memperbarui counter paket aktif (`Menampilkan X paket`).
+   - **Subcategory Filters for Other Categories:**
+     - **Pundi Koin & Booster:** Filter instan `[Semua Paket]`, `[Apex Coins 💎]`, dan `[Booster Server ⚡]`.
+     - **Battlepass Musiman:** Filter instan `[Semua Pass]`, `[Sio Pass 🏆]`, dan `[Exsio Pass 👑]`.
+   - **Top Store Navigation Bar (`.apx-store-nav-bar`):**
+     - Menyediakan tombol *Beranda Toko* (`shop.home`) beserta seluruh kategori aktif lengkap dengan ikon Bootstrap dan badge jumlah paket (`packages_count`), mempertahankan status aktif (`.active`) secara dinamis.
+   - **Interactive Empty-State & Instant Reset (`#apxFilterEmptyState`):**
+     - Jika kombinasi kasta dan durasi tidak memiliki paket yang sesuai, antarmuka otomatis menampilkan card informatif dengan tombol **"Reset Semua Filter"** yang mengembalikan status filter ke default (`all`) dalam satu klik.
+   - **Robust Script Stack Lifecycle Architecture:**
+     - Mengintegrasikan `@push('scripts')` dengan fallback `@stack('footer-scripts')` pada layout master (`layouts/app.blade.php`), memastikan seluruh event listener (filter, expand perks, modal axios `[data-package-url]`) terpasang secara handal baik pada `DOMContentLoaded` maupun saat DOM telah selesai dimuat (*immediate execution*).
    - **Zero-Collision Flexbox Header (`.apx-package-top-bar`):** Lambang crest kasta dan teks tier ditempatkan pada sisi kiri dan label badge durasi ringkas (`PERMANEN`, `TRIAL 90H`, `TRIAL 30H`, `UPGRADE`, `DIMILIKI`) di sisi kanan dalam baris terpisah dengan `justify-content-between`, menjamin tidak ada tumpang tindih elemen visual pada seluruh resolusi desktop maupun layar seluler.
    - **2x2 Core Spec Micro-Grid (`.apx-spec-grid`):** Menyajikan batas operasional utama (/sethome, slot /ah lelang, custom enchants, dan cooldown /rtp) dalam micro-pills 2x2 yang padat dan terstruktur rapi.
    - **Clean Action Footer:** Mereduksi redundansi tombol kontak founder di dalam setiap card menjadi 1 CTA utama (`Pesan via WhatsApp` / `Upgrade via WA` / `Sudah Dimiliki`) dengan efek glow emas dan 1 tombol rincian modal (`Rincian & Benefit Lengkap`), menghilangkan tumpukan tombol bertumpuk yang sebelumnya memicu tabrakan visual vertikal.

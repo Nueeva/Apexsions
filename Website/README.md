@@ -59,6 +59,12 @@ Website/
 ### 3. Apexsions Brand Theme (`themes/apexsions`)
 - Modern dark aesthetic tailored for the Apexsions ecosystem with glassmorphism cards and noble gold accents.
 - Live server status badge and one-click IP copy widget (`apexsions.my.id:32348`).
+- **Webstore Storefront & Multi-Axis Filtering Engine**:
+  - **Dual-Axis Dynamic Filter**: Saring 15 varian paket kasta berdasarkan Kategori Kasta (`Semua Kasta`, `Ascendant`, `Archon`, `Sovereign`, `Emperor`, `✦ SIONS ✦`) dan Durasi (`Semua Durasi`, `Permanen`, `Trial 90 Hari`, `Trial 30 Hari`) secara bersamaan tanpa reload halaman, lengkap dengan efek kilau (*glow*) khas peradaban pada tombol aktif.
+  - **Subkategori Spesifik**: Filter instan untuk `Pundi Koin & Booster` (`Apex Coins 💎`, `Booster Server ⚡`) dan `Battlepass` (`Sio Pass 🏆`, `Exsio Pass 👑`).
+  - **Pills Navigasi Sinkron**: Bar navigasi atas (`.apx-store-nav-bar`) mengintegrasikan tombol *Beranda Toko* dan seluruh kategori dengan badge jumlah paket aktif.
+  - **Empty-State Cerdas**: Fallback notifikasi elegan dengan tombol *"Reset Semua Filter"* jika kombinasi filter tidak menghasilkan paket.
+  - **Script Stack Lifecycle**: Integrasi ganda `@push('scripts')` dan `@stack('footer-scripts')` pada `layouts/app.blade.php`, menjamin event listener modal dan filter selalu terpasang sempurna.
 - **Webstore WhatsApp Checkout (2 Founders)**: Automated direct order via WhatsApp (`wa.me`) supporting 2 Founders (`Rifqi`, `Friell`) with auto-filled order templates (package name, price, category, player IGN, and email) selagi gateway Midtrans dalam proses pengajuan.
 - **Fandom Gamepedia Wiki Portal**: Ensiklopedia peradaban interaktif dengan Fandom Infoboxes (3 Kerajaan, 11 Kasta, 28 Custom Enchants & Set Bonuses), tabel perbandingan responsif, dan tombol one-click copy command.
 - Direct integration with official Azuriom Wiki and Shop plugins.
