@@ -56,7 +56,13 @@ public class ShopCommand implements CommandExecutor, TabCompleter {
             if (args.length >= 2) {
                 String targetKingdom = args[1].toUpperCase();
                 if (targetKingdom.equals("ZENITHAR") || targetKingdom.equals("SOLTERRA") || targetKingdom.equals("SYLVAMOOR")) {
-                    new ShopMainMenu(plugin, player, targetKingdom).open();
+                    try {
+                        new ShopMainMenu(plugin, player, targetKingdom).open();
+                    } catch (Throwable t) {
+                        plugin.getLogger().severe("Gagal membuka ShopMainMenu (admin " + targetKingdom + "): " + t.getMessage());
+                        t.printStackTrace();
+                        sender.sendMessage(miniMessage.deserialize("<red>Terjadi kesalahan saat membuka menu toko kerajaan.</red>"));
+                    }
                     return true;
                 }
             }
@@ -72,7 +78,13 @@ public class ShopCommand implements CommandExecutor, TabCompleter {
             }
         }
 
-        new ShopMainMenu(plugin, player).open();
+        try {
+            new ShopMainMenu(plugin, player).open();
+        } catch (Throwable t) {
+            plugin.getLogger().severe("Gagal membuka ShopMainMenu untuk " + player.getName() + ": " + t.getMessage());
+            t.printStackTrace();
+            sender.sendMessage(miniMessage.deserialize("<red>Terjadi kesalahan saat membuka menu toko. Silakan hubungi admin!</red>"));
+        }
         return true;
     }
 

@@ -4,7 +4,14 @@ main: com.apexsions.shop.ApexsionsShop
 api-version: "1.21"
 author: Nueeva
 description: "Dynamic Kingdom Shop & Economy Market Plugin"
-softdepend: [ "ApexsionsCore", "ApexsionsEconomy", "Vault" ]
+softdepend:
+  - ApexsionsCore
+  - ApexsionsEconomy
+  - Vault
+  - PlaceholderAPI
+  - nightcore
+  - NightCore
+  - ExcellentCrates
 
 commands:
   shop:
@@ -30,8 +37,3 @@ permissions:
   apexsionsshop.admin:
     description: "Akses admin shop reload dan bypass"
     default: op
-
-softdepend:
-  - nightcore
-  - NightCore
-  - ExcellentCrates

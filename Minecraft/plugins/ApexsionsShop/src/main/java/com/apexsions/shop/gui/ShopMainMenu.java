@@ -22,7 +22,9 @@ public class ShopMainMenu extends ShopGui {
     public ShopMainMenu(ApexsionsShop plugin, Player player, String kingdomOverride) {
         super(plugin, player, kingdomOverride != null
                 ? "<gradient:#f1c40f:#e67e22><bold>[ PASAR " + kingdomOverride.toUpperCase() + " ]</bold></gradient>"
-                : plugin.getConfigManager().getGuiConfig().getString("titles.main-menu", "<dark_gray><bold>[ APEXSIONS MARKET ]</bold></dark_gray>"), 54);
+                : (plugin != null && plugin.getConfigManager() != null && plugin.getConfigManager().getGuiConfig() != null
+                    ? plugin.getConfigManager().getGuiConfig().getString("titles.main-menu", "<dark_gray><bold>[ APEXSIONS MARKET ]</bold></dark_gray>")
+                    : "<dark_gray><bold>[ APEXSIONS MARKET ]</bold></dark_gray>"), 54);
         this.kingdomOverride = kingdomOverride;
     }
 
@@ -31,19 +33,22 @@ public class ShopMainMenu extends ShopGui {
         fillBorder();
 
         // 1. Unified Player & Kingdom Info Banner (Slot 4 - Top Center)
-        double balance = plugin.getEconomyHook().getBalance(player);
+        double balance = plugin.getEconomyHook() != null ? plugin.getEconomyHook().getBalance(player) : 0.0;
         String kingdomName = kingdomOverride != null
-                ? plugin.getKingdomMarketService().getKingdomNameFormatted(kingdomOverride) + " <yellow>(Admin Preview)</yellow>"
-                : plugin.getKingdomMarketService().getKingdomNameFormatted(player);
-        double taxPercent = plugin.getTaxService().getTaxPercent(player, kingdomOverride);
-        String weatherDesc = plugin.getWeatherPriceService().getWeatherDescription(player.getWorld());
+                ? (plugin.getKingdomMarketService() != null ? plugin.getKingdomMarketService().getKingdomNameFormatted(kingdomOverride) : kingdomOverride) + " <yellow>(Admin Preview)</yellow>"
+                : (plugin.getKingdomMarketService() != null ? plugin.getKingdomMarketService().getKingdomNameFormatted(player) : "<gray>Tanpa Kerajaan</gray>");
+        double taxPercent = plugin.getTaxService() != null ? plugin.getTaxService().getTaxPercent(player, kingdomOverride) : 0.0;
+        String weatherDesc = (plugin.getWeatherPriceService() != null && player.getWorld() != null)
+                ? plugin.getWeatherPriceService().getWeatherDescription(player.getWorld())
+                : "<yellow>☀ Normal</yellow>";
+        String formattedBalance = plugin.getEconomyHook() != null ? plugin.getEconomyHook().format(balance) : "Rp. 0";
 
         setButton(4, new ShopGuiButton(new ShopItemBuilder(Material.PLAYER_HEAD)
                 .skullOwner(player)
                 .name("<gold><bold>" + player.getName() + "</bold></gold>")
                 .lore(List.of(
                         "<gray>Kerajaan: " + kingdomName + "</gray>",
-                        "<gray>Saldo Rupiah: <yellow><bold>" + plugin.getEconomyHook().format(balance) + "</bold></yellow></gray>",
+                        "<gray>Saldo Rupiah: <yellow><bold>" + formattedBalance + "</bold></yellow></gray>",
                         "<gray>Pajak Pasar: <red>" + String.format("%.1f", taxPercent) + "%</red></gray>",
                         "<gray>Kondisi Cuaca: <aqua>" + weatherDesc + "</aqua></gray>"
                 ))
@@ -58,7 +63,9 @@ public class ShopMainMenu extends ShopGui {
         for (int i = 0; i < categories.length && i < catSlots.length; i++) {
             ShopCategory category = categories[i];
             int slot = catSlots[i];
-            int itemCount = plugin.getItemRegistry().getItemsByCategory(category).size();
+            int itemCount = (plugin.getItemRegistry() != null && plugin.getItemRegistry().getItemsByCategory(category) != null)
+                    ? plugin.getItemRegistry().getItemsByCategory(category).size()
+                    : 0;
 
             setButton(slot, new ShopGuiButton(new ShopItemBuilder(category.getIcon())
                     .name("<gold><bold>" + category.getDisplayName() + "</bold></gold>")
