@@ -127,6 +127,9 @@ public class ApexsionsCorePlugin extends JavaPlugin {
     // Vanish Subsystem
     private com.apexsions.core.vanish.VanishManager vanishManager;
 
+    // Player Level Attribute Progression & Combat Engine
+    private com.apexsions.core.level.stat.PlayerAttributeService playerAttributeService;
+
     @Override
     public void onLoad() {
         applyDisableChannelLimit();
@@ -225,6 +228,11 @@ public class ApexsionsCorePlugin extends JavaPlugin {
             this.xpService = new XpService(this);
             this.xpSourceRegistry = new XpSourceRegistry(this);
             this.xpSourceRegistry.registerAll();
+
+            // Player Level Attribute Progression & Combat Engine
+            this.playerAttributeService = new com.apexsions.core.level.stat.PlayerAttributeService(this);
+            Bukkit.getPluginManager().registerEvents(playerAttributeService, this);
+            Bukkit.getPluginManager().registerEvents(new com.apexsions.core.combat.PlayerCombatProgressionListener(this), this);
 
             // 7. Rank Animation, Titles & Particle Cosmetics Engine
             this.rankAnimationManager = new com.apexsions.core.rank.RankAnimationManager(this);
@@ -655,6 +663,7 @@ public class ApexsionsCorePlugin extends JavaPlugin {
     public com.apexsions.core.integration.web.WebBridgeService getWebBridgeService() { return webBridgeService; }
     public com.apexsions.core.sions.SionsTemporalService getSionsTemporalService() { return sionsTemporalService; }
     public com.apexsions.core.vanish.VanishManager getVanishManager() { return vanishManager; }
+    public com.apexsions.core.level.stat.PlayerAttributeService getPlayerAttributeService() { return playerAttributeService; }
     public ApexsionsCoreAPI getApi() { return api; }
 
     private void registerBattlePassEventListener() {

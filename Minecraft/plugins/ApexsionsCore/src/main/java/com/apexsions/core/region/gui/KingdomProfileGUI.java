@@ -86,6 +86,16 @@ public class KingdomProfileGUI implements Listener {
             lore.add(miniMessage.deserialize("<gray>EXP: <yellow>" + xp + "</yellow><dark_gray>/</dark_gray><gold>" + (nextXp == Long.MAX_VALUE ? "MAX" : nextXp) + "</gold> <gray>(" + percent + "%)</gray></gray>"));
             lore.add(miniMessage.deserialize("<gray>Progres: </gray>" + progressBar));
             lore.add(miniMessage.deserialize("<gray>Kerajaan: " + kingdomDisplay + "</gray>"));
+
+            com.apexsions.core.level.stat.PlayerProgressionStats stats = com.apexsions.core.level.stat.PlayerStatCalculator.calculate(level);
+            lore.add(miniMessage.deserialize("<dark_gray>--------------------------------</dark_gray>"));
+            lore.add(miniMessage.deserialize("<gradient:#f1c40f:#e67e22><bold>⚔ STATISTIK TEMPUR PROGRESI</bold></gradient>"));
+            lore.add(miniMessage.deserialize("<gray>❤ Max Health : <green>" + stats.getTotalMaxHealth() + " HP</green> <dark_gray>(+" + stats.healthBonus() + " dari Level)</dark_gray></gray>"));
+            lore.add(miniMessage.deserialize("<gray>🗡 Base Attack: <red>+" + stats.attackBonus() + "</red> <dark_gray>(Bonus Fisik)</dark_gray></gray>"));
+            lore.add(miniMessage.deserialize("<gray>🏹 PvE Mastery: <aqua>" + stats.getFormattedPveDamagePercent() + " Dmg</aqua> <gray>•</gray> <blue>" + stats.getFormattedPveResistancePercent() + " Resis</blue></gray>"));
+            lore.add(miniMessage.deserialize("<gray>⚖ PvP Profile: <yellow>Fair-Play Normalized</yellow> <dark_gray>(Cap +4 HP / +0.8 Atk)</dark_gray></gray>"));
+            lore.add(miniMessage.deserialize("<dark_gray>--------------------------------</dark_gray>"));
+
             if (unclaimedCount > 0) {
                 lore.add(miniMessage.deserialize("<green>⚡ " + unclaimedCount + " Hadiah Siap Diambil</green>"));
             } else {
