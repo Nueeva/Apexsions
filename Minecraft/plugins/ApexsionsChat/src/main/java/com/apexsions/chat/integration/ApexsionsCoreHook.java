@@ -5,9 +5,8 @@ import com.apexsions.core.api.ApexsionsCoreAPI;
 import com.apexsions.core.api.ApexsionsCoreProvider;
 import com.apexsions.core.level.xp.XpSource;
 import com.apexsions.core.region.Region;
-import org.bukkit.entity.Player;
+import org.bukkit.Bukkit;
 
-import java.util.Optional;
 import java.util.UUID;
 
 public class ApexsionsCoreHook {
@@ -17,93 +16,146 @@ public class ApexsionsCoreHook {
 
     public ApexsionsCoreHook(ApexsionsChatPlugin plugin) {
         this.plugin = plugin;
-        try {
-            ApexsionsCoreAPI api = ApexsionsCoreProvider.get();
-            if (api != null) {
-                this.available = true;
-                plugin.getLogger().info("Successfully hooked into ApexsionsCore API.");
-            }
-        } catch (Throwable t) {
-            this.available = false;
+        this.available = checkAvailability();
+        if (this.available) {
+            plugin.getLogger().info("Successfully hooked into ApexsionsCore API.");
+        } else {
             plugin.getLogger().info("ApexsionsCore not available. Falling back to default progression data.");
         }
     }
 
+    private boolean checkAvailability() {
+        if (!Bukkit.getPluginManager().isPluginEnabled("ApexsionsCore")) {
+            return false;
+        }
+        try {
+            return CoreBridge.isAvailable();
+        } catch (Throwable t) {
+            return false;
+        }
+    }
+
     public boolean isAvailable() {
-        return ApexsionsCoreProvider.isAvailable();
+        if (!Bukkit.getPluginManager().isPluginEnabled("ApexsionsCore")) {
+            return false;
+        }
+        try {
+            return CoreBridge.isAvailable();
+        } catch (Throwable t) {
+            return false;
+        }
     }
 
     public int getPlayerLevel(UUID uuid) {
-        if (!isAvailable()) return 1;
+        if (!isAvailable() || uuid == null) return 1;
         try {
-            return ApexsionsCoreProvider.get().getLevel(uuid);
+            ApexsionsCoreAPI api = CoreBridge.getApi();
+            return api != null ? api.getLevel(uuid) : 1;
         } catch (Throwable t) {
             return 1;
         }
     }
 
     public long getPlayerXp(UUID uuid) {
-        if (!isAvailable()) return 0L;
+        if (!isAvailable() || uuid == null) return 0L;
         try {
-            return ApexsionsCoreProvider.get().getXp(uuid);
+            ApexsionsCoreAPI api = CoreBridge.getApi();
+            return api != null ? api.getXp(uuid) : 0L;
         } catch (Throwable t) {
             return 0L;
         }
     }
 
     public String getPlayerTitle(UUID uuid) {
-        if (!isAvailable()) return "Citizen";
+        if (!isAvailable() || uuid == null) return "Citizen";
         try {
-            return ApexsionsCoreProvider.get().getLevelTitle(uuid);
+            ApexsionsCoreAPI api = CoreBridge.getApi();
+            return api != null ? api.getLevelTitle(uuid) : "Citizen";
         } catch (Throwable t) {
             return "Citizen";
         }
     }
 
     public String getPlayerRegionKey(UUID uuid) {
-        if (!isAvailable()) return "NONE";
+        if (!isAvailable() || uuid == null) return "NONE";
         try {
-            Region region = ApexsionsCoreProvider.get().getRegion(uuid);
-            return region != null ? region.getKey() : "NONE";
+            ApexsionsCoreAPI api = CoreBridge.getApi();
+            if (api != null) {
+                Region region = api.getRegion(uuid);
+                return region != null ? region.getKey() : "NONE";
+            }
+            return "NONE";
         } catch (Throwable t) {
             return "NONE";
         }
     }
 
     public String getPlayerRegionName(UUID uuid) {
-        if (!isAvailable()) return "Wilderness";
+        if (!isAvailable() || uuid == null) return "Wilderness";
         try {
-            Region region = ApexsionsCoreProvider.get().getRegion(uuid);
-            return region != null ? region.getDisplayName() : "Wilderness";
+            ApexsionsCoreAPI api = CoreBridge.getApi();
+            if (api != null) {
+                Region region = api.getRegion(uuid);
+                return region != null ? region.getDisplayName() : "Wilderness";
+            }
+            return "Wilderness";
         } catch (Throwable t) {
             return "Wilderness";
         }
     }
 
     public void addXp(UUID uuid, long amount) {
-        if (!isAvailable()) return;
+        if (!isAvailable() || uuid == null) return;
         try {
-            ApexsionsCoreProvider.get().addXp(uuid, amount, XpSource.CHAT_GAME_WIN);
+            ApexsionsCoreAPI api = CoreBridge.getApi();
+            if (api != null) {
+                api.addXp(uuid, amount, XpSource.CHAT_GAME_WIN);
+            }
         } catch (Throwable t) {
             plugin.getLogger().warning("Failed to add XP to " + uuid + ": " + t.getMessage());
         }
     }
 
     public com.apexsions.core.api.PlayerChatProfile getPlayerChatProfile(UUID uuid) {
-        if (!isAvailable()) return null;
+        if (!isAvailable() || uuid == null) return null;
         try {
-            return ApexsionsCoreProvider.get().getPlayerChatProfile(uuid);
+            ApexsionsCoreAPI api = CoreBridge.getApi();
+            return api != null ? api.getPlayerChatProfile(uuid) : null;
         } catch (Throwable t) {
             return null;
         }
     }
 
     public boolean isPlayerVanished(UUID uuid) {
-        if (!isAvailable()) return false;
+        if (!isAvailable() || uuid == null) return false;
         try {
-            return ApexsionsCoreProvider.get().isVanished(uuid);
+            ApexsionsCoreAPI api = CoreBridge.getApi();
+            return api != null && api.isVanished(uuid);
         } catch (Throwable t) {
             return false;
         }
     }
+
+    /**
+     * Isolated helper class to ensure classloader does not attempt to resolve
+     * ApexsionsCoreProvider unless ApexsionsCore plugin is confirmed enabled in Bukkit.
+     */
+    private static class CoreBridge {
+        static boolean isAvailable() {
+            try {
+                return ApexsionsCoreProvider.isAvailable();
+            } catch (Throwable t) {
+                return false;
+            }
+        }
+
+        static ApexsionsCoreAPI getApi() {
+            try {
+                return ApexsionsCoreProvider.get();
+            } catch (Throwable t) {
+                return null;
+            }
+        }
+    }
 }
+

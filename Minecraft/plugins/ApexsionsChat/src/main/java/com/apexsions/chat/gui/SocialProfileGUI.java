@@ -79,7 +79,9 @@ public class SocialProfileGUI extends BaseChatGUI {
         SkullMeta sm = (SkullMeta) head.getItemMeta();
         if (sm != null) {
             sm.setOwningPlayer(target);
-            PlayerChatProfile profile = plugin.getApexsionsCoreHook().getPlayerChatProfile(target.getUniqueId());
+            PlayerChatProfile profile = (plugin.getApexsionsCoreHook() != null && plugin.getApexsionsCoreHook().isAvailable())
+                    ? plugin.getApexsionsCoreHook().getPlayerChatProfile(target.getUniqueId())
+                    : null;
 
             String pName = profile != null ? profile.playerName() : target.getName();
             String title = profile != null && profile.activeTitle() != null ? profile.activeTitle() : (profile != null ? profile.levelTitle() : "Wanderer");

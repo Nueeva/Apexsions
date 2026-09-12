@@ -30,8 +30,10 @@ public class ChatFormatter {
     public Component format(Player player, ChatChannel channel, String rawMessage) {
         UUID uuid = player.getUniqueId();
 
-        // 1. Gather clean profile DTO from Core API
-        PlayerChatProfile profile = plugin.getApexsionsCoreHook().getPlayerChatProfile(uuid);
+        // 1. Gather clean profile DTO from Core API (safe fallback if Core is absent)
+        PlayerChatProfile profile = (plugin.getApexsionsCoreHook() != null && plugin.getApexsionsCoreHook().isAvailable())
+                ? plugin.getApexsionsCoreHook().getPlayerChatProfile(uuid)
+                : null;
 
         String title = profile != null && profile.activeTitle() != null ? profile.activeTitle() : (profile != null ? profile.levelTitle() : "Citizen");
         String rank = profile != null ? profile.rank() : plugin.getLuckPermsHook().getPlayerRank(player);

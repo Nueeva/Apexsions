@@ -43,6 +43,9 @@ public class KingdomChannel implements ChatChannel {
     @Override
     public boolean canSpeak(Player player) {
         if (!player.hasPermission(getPermission())) return false;
+        if (plugin.getApexsionsCoreHook() == null || !plugin.getApexsionsCoreHook().isAvailable()) {
+            return false;
+        }
         String regionKey = plugin.getApexsionsCoreHook().getPlayerRegionKey(player.getUniqueId());
         return !regionKey.equalsIgnoreCase("NONE");
     }
@@ -50,6 +53,9 @@ public class KingdomChannel implements ChatChannel {
     @Override
     public boolean canReceive(Player recipient, Player sender) {
         if (sender == null || recipient == null) return false;
+        if (plugin.getApexsionsCoreHook() == null || !plugin.getApexsionsCoreHook().isAvailable()) {
+            return false;
+        }
         String senderRegion = plugin.getApexsionsCoreHook().getPlayerRegionKey(sender.getUniqueId());
         String recipientRegion = plugin.getApexsionsCoreHook().getPlayerRegionKey(recipient.getUniqueId());
         return !senderRegion.equalsIgnoreCase("NONE") && senderRegion.equalsIgnoreCase(recipientRegion);
