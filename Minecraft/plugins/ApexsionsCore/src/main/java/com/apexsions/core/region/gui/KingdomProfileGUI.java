@@ -185,7 +185,7 @@ public class KingdomProfileGUI implements Listener {
         ItemStack rtpBtn = createItem(Material.COMPASS,
                 "<light_purple><bold>Random Teleport (RTP)</bold></light_purple>",
                 "<gray>Teleportasi acak di dalam wilayah kerajaan.",
-                "<gray>Syarat: <white>Wajib berada di dalam wilayah</white></gray>",
+                "<gray>Area Diizinkan: <white>Wilayah Kerajaan atau Lobby</white></gray>",
                 "<light_purple>» Klik untuk RTP</light_purple>");
         inv.setItem(33, rtpBtn);
 

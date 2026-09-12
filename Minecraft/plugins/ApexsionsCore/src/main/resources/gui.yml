@@ -6,6 +6,10 @@ kingdom-select:
   title: "<dark_gray><bold>Pilih Kerajaan</bold></dark_gray>"
   size: 45
 
+kingdom-navigation:
+  title: "<dark_gray><bold>⚔ MENU KERAJAAN ⚔</bold></dark_gray>"
+  size: 27
+
 kingdom-profile:
   title: "<dark_gray><bold>Profil Kerajaan</bold></dark_gray>"
   size: 45

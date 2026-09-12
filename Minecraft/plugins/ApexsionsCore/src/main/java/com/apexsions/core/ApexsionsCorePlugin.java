@@ -27,6 +27,7 @@ import com.apexsions.core.player.TerritoryListener;
 import com.apexsions.core.region.KingdomRtpService;
 import com.apexsions.core.region.RegionManager;
 import com.apexsions.core.region.RegionTeleportService;
+import com.apexsions.core.region.gui.KingdomNavigationGUI;
 import com.apexsions.core.region.gui.KingdomProfileGUI;
 import com.apexsions.core.region.gui.KingdomTopGUI;
 import com.apexsions.core.region.gui.LevelRewardsGUI;
@@ -61,6 +62,7 @@ public class ApexsionsCorePlugin extends JavaPlugin {
     private RegionManager regionManager;
     private RegionTeleportService regionTeleportService;
     private KingdomRtpService kingdomRtpService;
+    private KingdomNavigationGUI kingdomNavigationGUI;
     private RegionSelectionGUI regionSelectionGUI;
     private KingdomProfileGUI kingdomProfileGUI;
     private KingdomTopGUI kingdomTopGUI;
@@ -162,6 +164,9 @@ public class ApexsionsCorePlugin extends JavaPlugin {
             this.regionManager.loadRegions();
             this.regionTeleportService = new RegionTeleportService(this);
             this.kingdomRtpService = new KingdomRtpService(this);
+
+            this.kingdomNavigationGUI = new KingdomNavigationGUI(this);
+            Bukkit.getPluginManager().registerEvents(kingdomNavigationGUI, this);
 
             this.regionSelectionGUI = new RegionSelectionGUI(this);
             Bukkit.getPluginManager().registerEvents(regionSelectionGUI, this);
@@ -573,6 +578,7 @@ public class ApexsionsCorePlugin extends JavaPlugin {
     public RegionManager getRegionManager() { return regionManager; }
     public RegionTeleportService getRegionTeleportService() { return regionTeleportService; }
     public KingdomRtpService getKingdomRtpService() { return kingdomRtpService; }
+    public KingdomNavigationGUI getKingdomNavigationGUI() { return kingdomNavigationGUI; }
     public RegionSelectionGUI getRegionSelectionGUI() { return regionSelectionGUI; }
     public KingdomProfileGUI getKingdomProfileGUI() { return kingdomProfileGUI; }
     public KingdomTopGUI getKingdomTopGUI() { return kingdomTopGUI; }

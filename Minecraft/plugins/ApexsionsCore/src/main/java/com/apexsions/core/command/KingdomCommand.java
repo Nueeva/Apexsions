@@ -50,12 +50,25 @@ public class KingdomCommand implements CommandExecutor, TabCompleter {
         }
 
         if (args.length == 0) {
-            handleKingdomTeleport(player);
+            handleKingdomMenu(player);
             return true;
         }
 
         String sub = args[0].toLowerCase();
         switch (sub) {
+            case "menu":
+            case "gui":
+            case "nav":
+                handleKingdomMenu(player);
+                break;
+
+            case "spawn":
+            case "capital":
+            case "ibukota":
+            case "tp":
+                handleKingdomTeleport(player);
+                break;
+
             case "choose":
             case "select":
             case "join":
@@ -65,8 +78,6 @@ public class KingdomCommand implements CommandExecutor, TabCompleter {
             case "info":
             case "profile":
             case "stats":
-            case "gui":
-            case "menu":
             case "level":
             case "lvl":
                 handleKingdomInfo(player);
@@ -139,8 +150,9 @@ public class KingdomCommand implements CommandExecutor, TabCompleter {
 
             default:
                 sender.sendMessage(miniMessage.deserialize("<gold><bold>Apexsions Kingdom Commands:</bold></gold>"));
-                sender.sendMessage(miniMessage.deserialize("<yellow>/kingdom</yellow> <gray>- Teleport to your kingdom spawn</gray>"));
-                sender.sendMessage(miniMessage.deserialize("<yellow>/kingdom rtp</yellow> <gray>- Random teleport strictly inside your kingdom</gray>"));
+                sender.sendMessage(miniMessage.deserialize("<yellow>/kingdom</yellow> <gray>- Buka Menu Navigasi Kerajaan (Ibukota & RTP)</gray>"));
+                sender.sendMessage(miniMessage.deserialize("<yellow>/kingdom spawn</yellow> <gray>- Teleport langsung ke ibukota kerajaan</gray>"));
+                sender.sendMessage(miniMessage.deserialize("<yellow>/kingdom rtp</yellow> <gray>- Random teleport di wilayah kerajaan (bisa dari Lobby)</gray>"));
                 sender.sendMessage(miniMessage.deserialize("<yellow>/kingdom choose</yellow> <gray>- Open kingdom selection GUI</gray>"));
                 sender.sendMessage(miniMessage.deserialize("<yellow>/kingdom info</yellow> <gray>- Open your interactive Kingdom Profile & Level GUI</gray>"));
                 sender.sendMessage(miniMessage.deserialize("<yellow>/kingdom top</yellow> <gray>- View the Hall of Fame & Kingdom Leaderboards</gray>"));
@@ -253,6 +265,22 @@ public class KingdomCommand implements CommandExecutor, TabCompleter {
         }
     }
 
+    private void handleKingdomMenu(Player player) {
+        if (!player.hasPermission("apexsionscore.command.region") && !player.hasPermission("kingdomcore.command.kingdom")) {
+            player.sendMessage(miniMessage.deserialize("<red>You do not have permission to use kingdom commands.</red>"));
+            return;
+        }
+
+        Optional<PlayerData> dataOpt = plugin.getPlayerDataService().getCached(player.getUniqueId());
+        if (dataOpt.isEmpty() || !dataOpt.get().hasRegion()) {
+            player.sendMessage(miniMessage.deserialize("<gradient:#f39c12:#f1c40f><bold>APEXSIONS REALM</bold></gradient> <dark_gray>»</dark_gray> <yellow>Anda belum memilih kerajaan! Membuka menu pemilihan kerajaan...</yellow>"));
+            plugin.getRegionSelectionGUI().open(player);
+            return;
+        }
+
+        plugin.getKingdomNavigationGUI().open(player);
+    }
+
     private void handleKingdomTeleport(Player player) {
         if (!player.hasPermission("apexsionscore.command.region") && !player.hasPermission("kingdomcore.command.kingdom")) {
             player.sendMessage(miniMessage.deserialize("<red>You do not have permission to teleport to your kingdom.</red>"));
@@ -315,7 +343,7 @@ public class KingdomCommand implements CommandExecutor, TabCompleter {
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (args.length == 1) {
-            List<String> list = new ArrayList<>(Arrays.asList("choose", "info", "top", "profile", "rewards", "claim", "xp", "guide", "level", "rtp", "wild", "wilderness"));
+            List<String> list = new ArrayList<>(Arrays.asList("menu", "spawn", "capital", "ibukota", "choose", "info", "top", "profile", "rewards", "claim", "xp", "guide", "level", "rtp", "wild", "wilderness"));
             if (sender.hasPermission("apexsionscore.admin")) {
                 list.add("admin");
                 list.add("setspawn");

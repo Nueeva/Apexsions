@@ -78,9 +78,12 @@ public class KingdomRtpService {
 
         Region region = regionOpt.get();
 
-        // 3. Strict Check: Player MUST currently be physically inside their own kingdom territory
-        if (!region.containsLocation(player.getLocation())) {
-            player.sendMessage(miniMessage.deserialize("<red>✖ Kamu hanya dapat menggunakan <yellow>/rtp</yellow> ketika sedang berada di dalam wilayah teritorial kerajaanmu (<gold>" + region.getDisplayName() + "</gold>)!</red>"));
+        // 3. Check: Player MUST currently be physically inside their own kingdom territory OR at the server lobby
+        boolean inOwnTerritory = region.containsLocation(player.getLocation());
+        boolean inLobby = isInLobby(player);
+
+        if (!inOwnTerritory && !inLobby) {
+            player.sendMessage(miniMessage.deserialize("<red>✖ Kamu hanya dapat menggunakan <yellow>/rtp</yellow> ketika sedang berada di dalam wilayah teritorial kerajaanmu (<gold>" + region.getDisplayName() + "</gold>) atau di Lobby!</red>"));
             return;
         }
 
@@ -106,6 +109,49 @@ public class KingdomRtpService {
         // 6. Start Search
         player.sendMessage(miniMessage.deserialize("<gold>🔍 Mencari lokasi acak yang aman di wilayah kerajaan <yellow>" + region.getDisplayName() + "</yellow>...</gold>"));
         findAndTeleport(player, region, 0, 30, cooldownSeconds);
+    }
+
+    /**
+     * Checks whether the player is currently located in the server lobby.
+     */
+    public boolean isInLobby(Player player) {
+        if (player == null) return false;
+        Location playerLoc = player.getLocation();
+        if (playerLoc.getWorld() == null) return false;
+
+        Location lobbyLoc = plugin.getConfigManager().getLobbyLocation();
+        if (lobbyLoc != null && lobbyLoc.getWorld() != null) {
+            String lobbyWorldName = lobbyLoc.getWorld().getName();
+            String playerWorldName = playerLoc.getWorld().getName();
+
+            if (playerWorldName.equalsIgnoreCase(lobbyWorldName)) {
+                // If the player has a kingdom, check if the kingdom world is distinct from the lobby world
+                Optional<PlayerData> dataOpt = plugin.getPlayerDataService().getCached(player.getUniqueId());
+                String kingdomWorld = dataOpt.flatMap(d -> plugin.getRegionManager().getRegion(d.getRegionId()))
+                        .map(Region::getWorldName)
+                        .orElse(null);
+
+                // If kingdom is in a separate world, anywhere in the lobby world is in lobby
+                if (kingdomWorld != null && !lobbyWorldName.equalsIgnoreCase(kingdomWorld)) {
+                    return true;
+                }
+
+                // If lobby world name explicitly contains lobby or hub
+                String lwLower = lobbyWorldName.toLowerCase(Locale.ROOT);
+                if (lwLower.contains("lobby") || lwLower.contains("hub")) {
+                    return true;
+                }
+
+                // If lobby and kingdom share the same world (e.g. "world"), check distance from lobby spawn
+                if (playerLoc.distanceSquared(lobbyLoc) <= 350.0 * 350.0) {
+                    return true;
+                }
+            }
+        }
+
+        // Fallback: check if current world name contains lobby, hub, or spawn
+        String wName = playerLoc.getWorld().getName().toLowerCase(Locale.ROOT);
+        return wName.contains("lobby") || wName.contains("hub") || wName.contains("spawn");
     }
 
     public long getCooldownSeconds(Player player) {
@@ -140,7 +186,8 @@ public class KingdomRtpService {
 
         World world = Bukkit.getWorld(region.getWorldName());
         if (world == null) {
-            world = player.getWorld();
+            player.sendMessage(miniMessage.deserialize("<red>Dunia kerajaan " + region.getDisplayName() + " belum dimuat di server.</red>"));
+            return;
         }
 
         TerritoryPolygon polygon = region.getPolygon();
