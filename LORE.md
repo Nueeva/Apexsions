@@ -60,13 +60,17 @@ Semesta Apexsions berdiri di atas **tiga lapisan eksistensi vertikal** yang teri
 ```
 
 ### 1. Upper Dimension — Aetherion (*Ranah Keteraturan Mutlak / Absolute Order*)
-Aetherion bukanlah surga dan bukan tempat tinggal manusia fana. Ranah ini adalah dimensi atas berwujud kristal monolit yang merepresentasikan **keteraturan mutlak (*Order*)**. Terlalu banyak keteraturan akan membekukan realitas menjadi statis tanpa kehendak bebas. Di ranah ini, berdirilah **The Aether Citadel**, pusat observasi tempat **The Aetherial Conclave** mengawasi agar hukum fisika, alur waktu, dan kestabilan dimensi semesta tidak runtuh.
+Aetherion bukanlah surga utopis dan bukan tempat tinggal manusia fana. Ranah ini adalah dimensi atas berwujud kristal monolit yang merepresentasikan **Keteraturan Mutlak (*Order*)**.
+* **Karakter Filosofis:** Terlalu banyak keteraturan dapat membekukan realitas menjadi kaku tanpa kehendak bebas (*Stagnant Stasis*).
+* **Pusat Pengawasan:** Berdiri megah **The Aether Citadel**, pusat observasi tempat **The Aetherial Conclave** mengawasi agar hukum fisika, alur waktu, dan kestabilan dimensi semesta tidak runtuh.
 
 ### 2. Mortal Dimension — Benua Apexsions (*Ranah Keseimbangan Dinamis / Equilibrium*)
 Dunia tempat peradaban fana bernapas, bertani, menambang, berniaga, dan berperang. Kehidupan di Apexsions dapat tumbuh subur justru karena berada tepat di titik temu antara keteraturan Aetherion dan kebebasan dinamis alam. Di benua inilah berdiri **Tiga Kerajaan Berdaulat**: **Zenithar**, **Solterra**, dan **Sylvamoor**.
 
 ### 3. Lower Dimension — Umbra (*Ranah Entropi & Kehampaan / Absolute Chaos*)
-Dahulu dikenal sebagai ranah bayang-bayang yang tenang (*The Umbral Realm*). Namun, ketidakstabilan hukum realitas di dalamnya menyebabkan ranah ini menjadi samudra entropi murni yang melanggar hukum termodinamika dan waktu. Energi di ranah ini dikenal sebagai **Void Energy**. Ketika portal buatan manusia meledak, Umbra terdistorsi menjadi **Dark Dimension**, melahirkan mutasi mengerikan pada makhluk hidup yang terpapar (*The Corrupted Legion*).
+Dahulu dikenal sebagai ranah bayang-bayang yang tenang (*The Umbral Realm*). Namun, ketidakstabilan hukum realitas di dalamnya menyebabkan ranah ini menjadi samudra entropi murni yang melanggar hukum termodinamika dan waktu.
+* **Karakter Filosofis:** Terlalu banyak entropi akan menghancurkan wujud fisik materi menjadi kekacauan tanpa bentuk (*Infinite Decay*).
+* **Energi Kehampaan:** Dikenal sebagai **Void Energy**. Ketika portal buatan manusia meledak di masa lampau, Umbra terdistorsi menjadi **Dark Dimension**, melahirkan mutasi mengerikan pada makhluk hidup yang terpapar (*The Corrupted Legion*).
 
 ---
 
@@ -76,11 +80,11 @@ Dahulu dikenal sebagai ranah bayang-bayang yang tenang (*The Umbral Realm*). Nam
 Berabad-abad silam, seluruh benua disatukan di bawah satu imperium tunggal: **Kekaisaran Sions (The Ancient Empire of Sions)**. Mereka mencapai puncak peradaban (*The Peak of Civilization*) melalui penguasaan arsitektur monolitik basal, penataan hukum agung, dan pengolahan sains elemen alam murni. Tidak ada pos penjagaan batas wilayah; peradaban fana hidup makmur dan harmonis.
 
 ### 2. Resonansi Kehampaan (*The Void Resonance*) & Tragedi Kaisar Terakhir
-Sejarah mencatat kaisar terakhir Sions sebagai pembawa malapetaka, namun arsip kuno mengungkap kebenaran yang lebih tragis: **The Promethean Hubris**.
+Sejarah populer sering mencap kaisar terakhir Sions sebagai monster haus kekuasaan. Namun arsip sakral mengungkap kenyataan yang jauh lebih tragis: **The Promethean Hubris**.
 
-Para astronom Sions mendeteksi bahwa peradaban mereka yang berkembang pesat sedang diamati secara intensif oleh entitas-entitas dari dimensi atas (*Aetherion*). Dihantui ketakutan bahwa umat manusia hanya akan dijadikan bidak kosmik atau dibatasi potensinya oleh hukum Aetherion, sang Kaisar memprakarsai proyek rahasia berkode **Operasi Tabula Obscura**.
+Para astronom dan arcanist Sions mendeteksi bahwa peradaban mereka yang berkembang pesat sedang diamati secara intensif oleh entitas-entitas dari dimensi atas (*Aetherion*). Dihantui kekhawatiran bahwa umat manusia hanya akan dijadikan bidak kosmik atau dibatasi potensinya oleh hukum Aetherion, sang Kaisar memprakarsai proyek rahasia berkode **Operasi Tabula Obscura**.
 
-Tujuannya bukanlah kejahatan murni, melainkan **ambisi membebaskan manusia dari ketergantungan kosmik**. Mereka mendeteksi gelombang anomali tak terbatas yang menembus kerak bumi: **The Void Resonance** dari dimensi Umbra. Sang Kaisar berencana memanfaatkan energi kehampaan ini sebagai bahan bakar mandiri untuk menciptakan mesin peradaban abadi dan pasukan pelindung kedaulatan manusia.
+Tujuannya bukanlah kejahatan murni, melainkan **ambisi membebaskan manusia dari ketergantungan kosmik**. Mereka mendeteksi gelombang anomali energi tak terbatas yang menembus kerak bumi: **The Void Resonance** dari dimensi Umbra. Sang Kaisar berencana memanfaatkan energi kehampaan ini sebagai bahan bakar mandiri untuk menciptakan mesin peradaban abadi dan pasukan pelindung kedaulatan manusia.
 
 ### 3. Meledaknya Retakan Kosmik (*The Dark Rift*)
 Namun, kecongkakan fana mengabaikan hukum kesetimbangan dimensi. Energi Umbra yang liar tidak dapat diikat oleh bejana buatan manusia. Pada malam ritual akbar aktivasi bejana fusi di pusat istana:
@@ -221,7 +225,55 @@ Ketiga kerajaan berdaulat memiliki struktur politik yang berbeda dan saling memb
 
 ---
 
-## ⚖️ Bab V: Sistem Identitas Kerajaan, Pasif Unik & Keunggulan Teritori
+## 🗳️ Bab V: Dinamika Politik Internal, Suksesi & Krisis Kepemimpinan
+
+Pemerintahan di ketiga kerajaan fana bukanlah entitas statis atau kekal tanpa tantangan. Keputusan warga dapat memicu krisis dan pergeseran doktrin politik:
+
+### 1. Krisis Suksesi Monarki Zenithar (*The Royal Council Crisis*)
+* **Mekanisme Krisis:** Apabila tingkat kepuasan warga (*Citizen Satisfaction*) merosot drastis akibat kegagalan suplai pangan atau beban pajak berlebih, Dewan Bangsawan (*Royal Council*) dapat mengajukan **Mosi Ketidakpercayaan**.
+* **Evolusi Doktrin:** Jika krisis berlarut-larut, Zenithar dapat bergeser dari *Gilded Aristocracy* menjadi **Merchant Guild Oligarchy** di mana arah kebijakan ekonomi ditentukan sepenuhnya oleh para konglomerat lelang.
+
+### 2. Tantangan Panglima Solterra (*The Warlord's Challenge*)
+* **Mekanisme Krisis:** Seorang Warlord yang gagal mempertahankan benteng dalam *Siege War* atau membiarkan krisis amunisi terjadi dapat ditantang secara terbuka oleh Komandan Tempur (*Commander*) yang memiliki kontribusi militer tertinggi.
+* **Resolusi Kepemimpinan:** Dilakukan melalui **Duel Kehormatan di Arena Kawah Bastion** atau pemungutan suara darurat oleh Dewan Perang (*War Council Vote*). Warlord baru berhak merombak doktrin dari *Aggressive Expansion* menjadi *Fortress Defense*.
+
+### 3. Kebuntuan Dewan Hayati Sylvamoor (*The Tri-Commune Deadlock*)
+* **Mekanisme Krisis:** Sylvamoor rentan terhadap perpecahan suara antara tiga serikat besar: **Serikat Tani Lumbung**, **Penjaga Rimba (*Forestry Guild*)**, dan **Nelayan Samudra Kristal**.
+* **Resolusi Kepemimpinan:** Jika terjadi kebuntuan (*Deadlock*), keputusan tertinggi diserahkan kepada musyawarah akbar warga di pelataran Pohon Dunia (*The Grand Moot*). Hasil musyawarah menentukan apakah Sylvamoor membuka isolasi dagang ke luar atau memperketat proteksi sumber daya.
+
+---
+
+## ⚖️ Bab VI: Indeks Stabilitas Kerajaan & Kas Perbendaharaan 3D
+
+Kas perbendaharaan kerajaan (`economy_kingdom_treasury`) tidak bekerja secara linear (kaya = otomatis kuat). Sistem kerajaan mengenal **Indeks Stabilitas (0 - 100)** yang mencakup 3 pilar:
+
+```text
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ INDEKS STABILITAS KERAJAAN (KINGDOM STABILITY INDEX)                        │
+├───────────────────┬───────────────────┬─────────────────────────────────────┤
+│ PILAR EKONOMI     │ PILAR INFRASTRUKTUR│ PILAR STABILITAS WARGA              │
+├───────────────────┼───────────────────┼─────────────────────────────────────┤
+│ • Saldo Kas Nexus │ • Perisai Chunk   │ • Kepuasan Warga (Ketersediaan Pangan│
+│ • Volume Pasar AH │ • Jalan & Pos     │ • Keletihan Perang (War Fatigue)    │
+│ • Rasio Ekspor    │ • Pertahanan Fort │ • Kestabilan Tensi Politik Internal │
+└───────────────────┴───────────────────┴─────────────────────────────────────┘
+```
+
+### 1. Ancaman Ketidakseimbangan Stabilitas (*Stability Imbalance*)
+* **Kas Kaya tapi Rakyat Lapar:** Sebuah kerajaan bisa memiliki kas Rp 50.000.000, namun jika rantai pasok pangan terputus akibat perang, kepuasan warga turun drastis, memicu kenaikan inflasi harga beli toko lokal (+15%).
+* **Keletihan Perang (*War Fatigue*):** Kerajaan yang terus-menerus terlibat dalam perang penaklukan tanpa memberi jeda rekonstruksi akan menderita penalti laju kelelahan lapar (*Exhaustion*) bagi seluruh warganya.
+
+### 2. Tingkatan Kas Kerajaan Berkelanjutan (*Treasury Milestones*)
+Setiap kali kas perbendaharaan stabil mencapai ambang batas, seluruh warga menikmati fasilitas nyata:
+* **Tier 1 (Rp 1.000.000):** Proteksi Chunk Dasar & Batas Klaim Pemukiman.
+* **Tier 2 (Rp 5.000.000):** Diskon 10% Biaya Transportasi Pos Antar-Wilayah.
+* **Tier 3 (Rp 15.000.000):** Penguatan +20% Daya Tahan Kristal Nexus dari Siege.
+* **Tier 4 (Rp 35.000.000):** Pembukaan Festival Pasar Dagang Bebas Pajak Mingguan.
+* **Tier 5 (Rp 75.000.000):** Pendirian Monumen Peradaban Abadi & Buff Global Faksi.
+
+---
+
+## ⚔️ Bab VII: Sistem Identitas Kerajaan, Pasif Unik & Keunggulan Teritori
 
 Menghindari inflasi stat ekstrem yang merusak meta PvP, setiap kerajaan dirancang dengan **spesialisasi taktis**, **pasif unik**, dan **keunggulan medan tempur alamiah**:
 
@@ -259,7 +311,7 @@ Menghindari inflasi stat ekstrem yang merusak meta PvP, setiap kerajaan dirancan
 
 ---
 
-## ⚜️ Bab VI: The Aetherial Conclave & Alam Sakral Aetherion (Admin & Staff Lore)
+## ⚜️ Bab VIII: The Aetherial Conclave & Protokol Operasional Lapangan (Staff & Admin Lore)
 
 > *"Tidak semua entitas yang mengawasi benua menginginkan takhta fana. The Aetherial Conclave bersemayam di batas langit kosmik, memastikan agar hukum realitas tidak kembali runtuh."*
 
@@ -286,27 +338,39 @@ Menghindari inflasi stat ekstrem yang merusak meta PvP, setiap kerajaan dirancan
 ```
 
 ### 1. Kedudukan Sakral Aetherion & The Conclave
-Di ranah **Aetherion (Upper Dimension)**, berdirilah benteng pengawasan purba **The Aether Citadel**. Ranah ini bukan kerajaan mortal, tidak memiliki warga fana, tidak menarik pajak perorangan, dan tidak dapat diklaim (`/k claim`).
+Di ranah **Aetherion (Upper Dimension)**, berdirilah benteng pengawasan purba **The Aether Citadel**. Ranah ini bukan kerajaan mortal, tidak memiliki warga fana, tidak menarik pajak perorangan, dan tidak dapat diklaim (`/k claim`). Penghuninya adalah **The Aetherial Conclave**—dewan entitas transenden penjaga kesetimbangan semesta.
 
-Penghuninya adalah **The Aetherial Conclave**—dewan entitas transenden yang bertugas menjaga keseimbangan antara Keteraturan (*Order*) dan Entropi (*Chaos*).
+### 2. Protokol Operasional Lapangan (Justifikasi Lore Tugas Admin & Staf)
+Aktivitas teknis harian staf server (developer, builder, admin, moderator) memiliki landasan naratif resmi yang tidak merusak imersi pemain:
 
-### 2. Dewan Hierarki The Aetherial Conclave
+```text
+┌──────────────────────────────┬──────────────────────────────┬──────────────────────────────────────────┐
+│ Aktivitas Teknis Staf        │ Padanan Entitas Lore         │ Narasi Imersif dalam Cerita              │
+├──────────────────────────────┼──────────────────────────────┼──────────────────────────────────────────┤
+│ Membangun Kota / WorldEdit   │ ✦ REALM ARCHITECT            │ "Restorasi Struktur Realitas"            │
+│ (//wand, bikin dungeon/spawn)│ (The Weavers of Reality)     │ Turun merajut kembali patahan dunia dan  │
+│                              │                              │ mendirikan monumen stabilitas benua.     │
+├──────────────────────────────┼──────────────────────────────┼──────────────────────────────────────────┤
+│ Cek Bug, Dupe & Anomali      │ ✦ OVERSEER OF REALMS         │ "Inspeksi Riak Anomali Dimensi"          │
+│ (/inspect, test dupe, lag)   │ (The Watchers of Equilibrium)│ Mengamati titik kebocoran hukum semesta  │
+│                              │                              │ agar pertukaran materi tetap setara.     │
+├──────────────────────────────┼──────────────────────────────┼──────────────────────────────────────────┤
+│ Moderasi, Banning & Anticheat│ ✦ WARDEN                     │ "Penegakan Hukum Entropi"                │
+│ (/ban, mute, kick cheater)   │ (The Lawbringers)            │ Menetralisir agen anomali yang berupaya  │
+│                              │                              │ merusak hukum fisika dunia fana.         │
+├──────────────────────────────┼──────────────────────────────┼──────────────────────────────────────────┤
+│ Bimbing Player / Siaran Info │ ✦ HERALD                     │ "Tugas Suci Utusan Cahaya"               │
+│ (Broadcast, helper chat)     │ (The Cosmic Messengers)      │ Menyampaikan titah dan bimbingan bagi    │
+│                              │                              │ pengelana yang baru terbangun di dunia.  │
+├──────────────────────────────┼──────────────────────────────┼──────────────────────────────────────────┤
+│ Staf Masuk Mode Senyap       │ ✦ THE VEIL OF AETHERION      │ "Tirai Gaib Aetherion"                   │
+│ (/vanish, /v, gamemode 3)    │ (Invisible Observation)      │ Mengamati dunia dari balik tirai gaib    │
+│                              │                              │ tanpa mengganggu keseimbangan mortal.    │
+└──────────────────────────────┴──────────────────────────────┴──────────────────────────────────────────┘
+```
 
-| Tingkat | Kasta Resmi | Kedudukan Kosmik & Tugas Lore | Padanan Operasional |
-| :--- | :--- | :--- | :--- |
-| **Tier V** | `✦ THE ANCESTOR` | Entitas Pertama penjaga pilar semesta. Mengawasi batas dimensi dan alur waktu kosmik. Turun tangan hanya pada krisis eksistensial dunia. | Server Founder / Owner |
-| **Tier IV** | `✦ REALM ARCHITECT` | Penjaga struktur realitas. Membangun infrastruktur kota, memperbaiki celah dunia, dan merancang sistem kehidupan fana. | Developers & Lead Builders |
-| **Tier IV** | `✦ OVERSEER OF REALMS` | Pengawas keseimbangan kedaulatan. Mengamati perputaran ekonomi, mencegah eksploitasi anomali, dan menjaga perimbangan kekuatan. | System Admins & Managers |
-| **Tier III** | `✦ WARDEN` | Penegak hukum dan keadilan. Menindak pelanggar aturan semesta, meredam eksploitasi ilegal, dan menjaga segel Terra Interdicta. | Head Staff & Senior Mods |
-| **Tier III** | `✦ HERALD` | Utusan resmi Conclave. Membimbing pengelana baru, menyampaikan maklumat semesta, dan menjaga etika komunikasi di chat. | Staff & Moderators |
-
-### 3. Doktrin Netralitas Kosmik (*The Prime Directive of Non-Interference*)
-The Aetherial Conclave memegang teguh sumpah netralitas:
-* **Bebas dari Politik Fana:** Mereka tidak memihak Zenithar, Solterra, maupun Sylvamoor dalam perang resmi, perebutan tahta, atau persaingan pasar lelang.
-* **Kapan Turun Tangan:** Conclave hanya melakukan intervensi jika terjadi **Anomali Realitas** (penggunaan cheat/hack, eksploitasi bug ilegal, duplikasi uang) atau **Kebocoran Dimensi Umbra** yang mengancam kepunahan seluruh benua.
-
-### 4. Sistem Avatar Kosmik (*Celestial Avatars*)
-Untuk menjaga kewibawaan cerita dan mencegah benturan peran (*ludonarrative dissonance*), staf tidak bertarung langsung sebagai karakter fana. Ketika diperlukan pengujian peradaban atau event raid akbar, Conclave memproyeksikan manifestasi energi mereka:
+### 3. Sistem Avatar Kosmik (*Celestial Avatars*) untuk Raid Boss
+Staf tidak bertarung secara fisik sebagai karakter biasa dalam event dungeon. Ketika pengujian peradaban dibutuhkan, Conclave memproyeksikan manifestasi energi:
 * **The First Avatar:** Manifestasi kehendak Ancestor dalam event pengadilan peradaban.
 * **The Worldshaper:** Avatar batu monolit yang dipanggil oleh Architect di arena dungeon purba.
 * **The Eternal Watcher:** Avatar mata kosmik milik Overseer yang menguji integritas para pahlawan.
@@ -314,7 +378,7 @@ Untuk menjaga kewibawaan cerita dan mencegah benturan peran (*ludonarrative diss
 
 ---
 
-## 🤝 Bab VII: Dinamika Geopolitik, Traktat Diplomasi & Sengketa Sumber Daya
+## 🤝 Bab IX: Dinamika Geopolitik, Traktat Diplomasi & Sengketa Sumber Daya
 
 Dinamika hubungan politik antar-kerajaan fana digerakkan oleh kebutuhan nyata:
 
@@ -337,40 +401,39 @@ Dinamika hubungan politik antar-kerajaan fana digerakkan oleh kebutuhan nyata:
 
 ---
 
-## 🏦 Bab VIII: Sistem Kas Kerajaan Berkelanjutan (*Kingdom Treasury Tiers*)
+## 🔐 Bab X: Terra Interdicta, Sistem Misteri Sions & Fragmen Arsip Kuno
 
-Pajak wilayah yang dibayarkan warga bukanlah uang hangus, melainkan dialirkan langsung ke **Kas Perbendaharaan Kerajaan (`economy_kingdom_treasury`)**. Setiap kali total kas mencapai tingkatan baru (*Treasury Milestones*), seluruh warga kerajaan menikmati manfaat nyata:
+Di jantung alam liar (*Wilderness*) yang memisahkan ketiga kerajaan, terbentang pusaran anomali paling berbahaya: **Terra Interdicta (Sanctum of Sions)**.
+
+Wilayah ini bukan sekadar tanah berbahaya, melainkan **Luka Realitas Dunia (*The Wound of the World*)** di mana hukum ruang dan waktu terdistorsi. Untuk menghidupkan rasa ingin tahu komunitas, tersebar **Fragmen Arsip Kuno (*The Sions Mystery System*)** yang terkuak secara bertahap:
 
 ```text
 ┌─────────────────────────────────────────────────────────────────────────────┐
-│ TINGKATAN KAS KERAJAAN (KINGDOM TREASURY MILESTONES)                        │
-├─────────┬──────────────────────────────┬────────────────────────────────────┤
-│ Tingkat │ Ambang Kas Rupiah (Rp)       │ Manfaat & Fasilitas Bagi Warga     │
-├─────────┼──────────────────────────────┼────────────────────────────────────┤
-│ Tier 1  │ Rp 1.000.000 (Kas Perintis)  │ Proteksi Chunk Dasar & Batas Klaim │
-│ Tier 2  │ Rp 5.000.000 (Kas Berkembang)│ Diskon 10% Biaya Transportasi Pos  │
-│ Tier 3  │ Rp 15.000.000 (Kemakmuran)   │ +20% Daya Tahan Kristal Nexus      │
-│ Tier 4  │ Rp 35.000.000 (Kedaulatan)   │ Pembukaan Festival Pasar Mingguan  │
-│ Tier 5  │ Rp 75.000.000 (Puncak Agung) │ Monumen Peradaban & Buff Global    │
-└─────────┴──────────────────────────────┴────────────────────────────────────┘
+│ FRAGMEN ARSIP KUNO SIONS (THE SIONS MYSTERY SYSTEM)                         │
+├──────────┬──────────────────────────────────────────────────────────────────┤
+│ Musim    │ Fragmen & Petunjuk Narasi yang Terkuak                           │
+├──────────┼──────────────────────────────────────────────────────────────────┤
+│ Season I │ Fragmen I: "Ketakutan Sang Kaisar terhadap Mata Pengawas Aetherion"│
+│          │ (Mengungkap bahwa Kaisar berniat melindungi otonomi manusia).    │
+├──────────┼──────────────────────────────────────────────────────────────────┤
+│ Season II│ Fragmen II: "Bukan Manusia yang Menemukan Kehampaan,              │
+│          │  melainkan Kehampaan yang Menjawab Panggilan Manusia"            │
+│          │ (Mengungkap awal mula terbentuknya Void Resonance).              │
+├──────────┼──────────────────────────────────────────────────────────────────┤
+│ Season III│ Fragmen III: "Mengapa Conclave Membiarkan Sions Runtuh?"        │
+│          │ (Mengungkap dilema moral antara membiarkan kehancuran atau       │
+│          │  membekukan kehendak bebas manusia selamanya).                   │
+├──────────┼──────────────────────────────────────────────────────────────────┤
+│ Season IV│ Fragmen IV: "Pesan Terakhir Kaisar: Waspadalah pada Retakan Kedua"│
+│          │ (Cetak biru penutupan The Second Rift sebelum bencana tiba).     │
+└──────────┴──────────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-## ☣️ Bab IX: Terra Interdicta — Luka Realitas Dunia (*The Wound of the World*)
+## 👑 Bab XI: Tatanan Sebelas Kasta Sosial & Kedudukan Donatur Patron
 
-Di jantung alam liar (*Wilderness*) yang memisahkan ketiga kerajaan, terbentang pusaran anomali paling berbahaya: **Terra Interdicta (Sanctum of Sions)**.
-
-Wilayah ini bukan sekadar tanah berbahaya, melainkan **Luka Realitas Dunia** di mana hukum ruang dan waktu terdistorsi akibat ledakan portal Sions:
-* **Distorsi Waktu & Cuaca:** Hujan asam kegelapan dan badai petir kehampaan turun tanpa henti, memblokir penglihatan dan merusak kompas kartografi biasa.
-* **The Corrupted Legion:** Ribuan prajurit legiun Sions yang bermutasi menjaga peti perbendaharaan kaisar yang terkubur, dilengkapi zirah yang kebal senjata biasa.
-* **Fenomena Guncangan Retakan (*Rift Surge*):** Setiap beberapa pekan, energi kehampaan meluap dari Terra Interdicta ke perbatasan benua. Pada saat ini, ketiga kerajaan fana dipaksa mendeklarasikan gencatan senjata demi menahan serbuan monster Umbra secara bersama-sama.
-
----
-
-## 👑 Bab X: Tatanan Sebelas Kasta Sosial (The Eleven Castes of Civilization)
-
-Hierarki sosial resmi mencerminkan tatanan entitas Aetherion di dimensi atas dan warga fana di dunia bawah:
+Hierarki sosial resmi mencerminkan pembagian tugas entitas kosmik di dimensi atas dan warga fana di dunia bawah:
 
 ```text
 [ TIER V ]  ✦ THE ANCESTOR (ancestor) — Supreme Creator & World Founder (Bobot: 100)
@@ -390,23 +453,14 @@ Hierarki sosial resmi mencerminkan tatanan entitas Aetherion di dimensi atas dan
 [ TIER I ]  ✦ WANDERER (wanderer) ───────── Default Citizen & Pondasi Benua (Bobot: 10)
 ```
 
-| Kasta / Tingkat | Nama Rank Resmi | Bobot Otoritas | Peran & Kedudukan Kosmik / Sosial |
-| :--- | :--- | :---: | :--- |
-| **Tier V** | `ancestor` | **100** | **The Ancestor / Pemilik Tahta Tunggal.** Penjaga pilar hukum semesta di Aetherion. |
-| **Tier IV** | `architect` | **95** | **Realm Architect.** Penjaga struktur realitas fana dan perancang sistem dunia. |
-| **Tier IV** | `overseer` | **95** | **Integrity & Balance Overseer.** Pengawas keseimbangan faksi, sirkulasi ekonomi, dan anomali. |
-| **Tier III** | `warden` | **90** | **Head Staff / Penegak Hukum.** Penindak pelanggar aturan realitas dan penjaga ketertiban. |
-| **Tier III** | `herald` | **80** | **Staff / Utusan Conclave.** Pembimbing pengelana baru dan penyampai maklumat semesta. |
-| **Tier II** | `sions` | **70** | **Apex Patron.** Donatur kasta tertinggi penyandang nama peradaban kuno, pelindung dunia. |
-| **Tier II** | `emperor` | **60** | **Donator Tier 4.** Bangsawan agung pendukung kemajuan peradaban fana. |
-| **Tier II** | `sovereign` | **50** | **Donator Tier 3.** Pemimpin kedaulatan regional dan penyokong ekonomi kerajaan fana. |
-| **Tier II** | `archon` | **40** | **Donator Tier 2.** Ksatria pelindung terpilih yang memperkuat benteng pertahanan perbatasan. |
-| **Tier II** | `ascendant` | **30** | **Donator Tier 1.** Jiwa yang telah bangkit dan memberikan sumbangsih awal bagi kemakmuran dunia. |
-| **Tier I** | `wanderer` | **10** | **Warga Baru / Pengelana Dasar.** Jiwa perintis yang baru tiba di benua, pondasi utama peradaban. |
+### Peran Kasta Donatur: *The Sovereign Patrons* (Penyokong Kemakmuran Fana)
+Donatur berbayar (`ascendant` s.d. `sions`) memiliki kedudukan prestisius sebagai **Penyokong Utama Peradaban Fana**:
+* **Rank Tertinggi `✦ SIONS ✦` (Rp 800.000):** Pemegang gelar patron kehormatan tertinggi penyandang nama peradaban kuno Sions. Diakui di ketiga kerajaan sebagai konglomerat agung yang menggerakkan roda pasar dan perbendaharaan peradaban.
+* **Kebebasan Memilih Kerajaan:** Donatur tidak dikunci ke faksi tertentu. Mereka bebas memilih menjadi bangsawan di Zenithar, panglima industri di Solterra, atau tetua agraris di Sylvamoor.
 
 ---
 
-## ⏳ Bab XI: Kalender Musim Tiga Bulanan & Alur Narasi Masa Depan (Quarterly Seasonal Roadmap)
+## ⏳ Bab XII: Kalender Musim Tiga Bulanan & Alur Narasi Masa Depan (Quarterly Seasonal Roadmap)
 
 Untuk menjaga agar semesta Apexsions selalu hidup dan bergerak bersama para pemain, dunia dijalankan berdasarkan **Siklus Musim 3 Bulanan (Quarterly Seasons)**. Setiap musim memiliki tema narasi, event dunia, dan implikasi gameplay tersendiri:
 
@@ -420,49 +474,29 @@ ERA OF TRIARCH          THE RESONANT SURGE      THE FRACTURED CONCORD   THE SECO
 AWAKENING               (Gema Kehampaan Umbra)  (Perang Kedaulatan)     THE CONCLAVE'S TRIAL
 ```
 
----
-
 ### 🟢 SEASON I: Era of Triarch Awakening (Fajar Tiga Kedaulatan)
 * **Periode:** Bulan 1 s.d. Bulan 3 *(Musim Berjalan Saat Ini)*
 * **Fokus Narasi:** Masa konsolidasi peradaban fana pasca-eksodus. Tiga kerajaan mendirikan fondasi ibukota, memperkuat benteng perbatasan, dan membuka rute perdagangan awal.
-* **Gameplay & Event Utama:**
-  * Pemain memilih kewarganegaraan (`/k choose`) dan mulai mengklaim teritori kedaulatan (`/k claim`).
-  * Pembangunan kas perbendaharaan kerajaan (`/k deposit`) untuk membuka fasilitas perisai nexus Tier 1 dan 2.
-  * Gempa getaran kecil mulai dirasakan di sekitar perbatasan Terra Interdicta, mengindikasikan segel kuno kaisar mulai melemah.
-
----
+* **Gameplay:** Pemain memilih kerajaan (`/k choose`), mengklaim teritori (`/k claim`), dan mengumpulkan kas perbendaharaan Tier 1 & 2.
 
 ### 🟡 SEASON II: The Resonant Surge (Gema Kehampaan Umbra)
 * **Periode:** Bulan 4 s.d. Bulan 6
-* **Fokus Narasi:** Resonansi kehampaan (*Void Resonance*) dari dimensi Umbra bergetar semakin kencang. Mineral anomali baru (*Umbral Shards*) mulai bermunculan di gua-gua bawah tanah terdalam (`Y < -40`).
-* **Gameplay & Event Utama:**
-  * **Perlombaan Teknologi Tambang:** Solterra dan Zenithar bersaing memperebutkan deposit kristal anomali di perbatasan.
-  * **Event Mingguan "Rift Surge":** Gelombang serbuan *The Corrupted Legion* meluap keluar dari Terra Interdicta setiap akhir pekan, menyerang pos perbatasan terluar ketiga kerajaan.
-  * **Pembukaan Dungeon Katakombe Sions:** Pemain tingkat tinggi dapat membentuk tim ekspedisi menembus labirin pinggiran Terra Interdicta untuk mencari cetak biru penempaan kuno.
-
----
+* **Fokus Narasi:** Resonansi kehampaan (*Void Resonance*) bergetar kencang. Mineral anomali baru (*Umbral Shards*) mulai bermunculan di gua-gua bawah tanah terdalam (`Y < -40`).
+* **Gameplay:** Perlombaan tambang Solterra vs Zenithar, event mingguan serbuan *Rift Surge* di perbatasan, dan pembukaan dungeon katakombe Sions.
 
 ### 🟠 SEASON III: The Fractured Concord (Retakan Aliansi & Perang Kedaulatan)
 * **Periode:** Bulan 7 s.d. Bulan 9
-* **Fokus Narasi:** Kelangkaan kayu dan air bersih memicu krisis diplomasi terbuka antara industri Solterra dan suaka Sylvamoor (*The Timber & Resource Crisis*). Zenithar berupaya memaksakan hegemoni perdagangan, memicu perang kedaulatan benua.
-* **Gameplay & Event Utama:**
-  * **Aktivasi Sistem Pengepungan Terjadwal (*Scheduled Siege Wars*):** Perebutan chunk perbatasan dan penjarahan kas perbendaharaan kerajaan musuh (`25% Treasury Spoils`) resmi dibuka.
-  * **Intervensi Penjaga Hukum:** The Aetherial Conclave mengirimkan *The Divine Sentinel* (Avatar Warden) ke medan tempur untuk mencegah kehancuran total struktur benua.
-  * **Sistem Diplomasi Tingkat Lanjut:** Kerajaan dapat mengesahkan pakta pertahanan atau embargo perdagangan resmi di pasar dinamis.
-
----
+* **Fokus Narasi:** Krisis pasokan kayu dan air bersih memicu perang kedaulatan benua antara industri Solterra dan suaka Sylvamoor.
+* **Gameplay:** Aktivasi sistem pengepungan resmi (*Scheduled Siege Wars*), penjarahan 25% kas musuh, dan intervensi *The Divine Warden* untuk mencegah kehancuran benua.
 
 ### 🔴 SEASON IV: The Second Rift & The Conclave's Trial (Celah Kedua & Ujian Sang Leluhur)
 * **Periode:** Bulan 10 s.d. Bulan 12 *(Grand Finale Tahun I)*
-* **Fokus Narasi:** Segel utama kaisar di jantung Terra Interdicta pecah seutuhnya, memicu ancaman **The Second Rift**. Kehampaan mengancam menelan seluruh benua Apexsions seperti halnya Kekaisaran Sions ribuan tahun silam.
-* **Gameplay & Event Utama:**
-  * **Gencatan Senjata Akbar (*The Grand Triarch Coalition*):** Ketiga kerajaan dipaksa menghentikan perselisihan politik fana dan bersatu di bawah bimbingan The Aetherial Conclave.
-  * **World Boss Raid Akbar:** Pemain dari seluruh penjuru kerajaan bertempur bersama melawan *The Corrupted Titan of Sions* di kawah terdalam Terra Interdicta.
-  * **The Ancestor's Judgment:** Keberhasilan pemain dalam mempertahankan benua menentukan apakah peradaban layak menerima anugerah teknologi baru memasuki Tahun Kedua peradaban.
+* **Fokus Narasi:** Segel utama kaisar di Terra Interdicta pecah seutuhnya, memicu ancaman **The Second Rift**.
+* **Gameplay:** Gencatan senjata akbar (*The Grand Triarch Coalition*), World Boss Raid melawan *The Corrupted Titan of Sions*, dan penghakiman peradaban oleh Ancestor (*The Ancestor's Judgment*).
 
 ---
 
-## 🔬 Bab XII: Audit & Peta Integrasi Sistem Teknis (Technical Architecture Mapping)
+## 🔬 Bab XIII: Audit & Peta Integrasi Sistem Teknis (Technical Architecture Mapping)
 
 > **Catatan Developer:** Bagian ini adalah cetak biru teknis (*technical blueprint*) yang memetakan bagaimana babad kosmik, kasta, dan karakteristik kerajaan dihubungkan ke dalam baris kode, konfigurasi plugin Minecraft, serta basis data web platform.
 
@@ -504,7 +538,7 @@ AWAKENING               (Gema Kehampaan Umbra)  (Perang Kedaulatan)     THE CONC
 
 ---
 
-## 🕊️ Bab XIII: Sumpah Pengelana Baru (The Wanderer's Oath)
+## 🕊️ Bab XIV: Sumpah Pengelana Baru (The Wanderer's Oath)
 
 Ketika seorang pengelana baru pertama kali membuka mata di altar kedatangan *Spawn Sanctum*, ia membawa kepingan takdir yang belum tertulis. Tidak ada paksaan untuk menjadi ksatria pedang, arsitek benteng, atau saudagar tambang. Namun, satu keputusan wajib diambil sebelum melangkah ke alam liar:
 
