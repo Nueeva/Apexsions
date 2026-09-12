@@ -73,16 +73,8 @@ public class CosmeticsMainGUI implements InventoryHolder {
         boolean isKill = (activeTab == CosmeticType.KILL_EFFECT);
         inventory.setItem(6, createTabItem(Material.DIAMOND_SWORD, "<gradient:#00d2d3:#54a0ff><bold>⚔ EFEK ELIMINASI</bold></gradient>", isKill));
 
-        // ════════════════ COSMETIC ITEMS MATRIX ════════════════
         PlayerData data = plugin.getPlayerDataService().getCached(player.getUniqueId()).orElse(null);
-        String currentActiveId = null;
-        if (data != null) {
-            currentActiveId = switch (activeTab) {
-                case AURA -> data.getActiveAura();
-                case TRAIL -> data.getActiveTrail();
-                case KILL_EFFECT -> data.getActiveKillEffect();
-            };
-        }
+        String currentActiveId = getActiveCosmeticId(data, activeTab);
 
         int[] displaySlots = new int[]{
                 19, 20, 21, 22, 23, 24, 25,
@@ -214,14 +206,7 @@ public class CosmeticsMainGUI implements InventoryHolder {
             }
 
             PlayerData data = plugin.getPlayerDataService().getCached(player.getUniqueId()).orElse(null);
-            String currentId = null;
-            if (data != null) {
-                currentId = switch (activeTab) {
-                    case AURA -> data.getActiveAura();
-                    case TRAIL -> data.getActiveTrail();
-                    case KILL_EFFECT -> data.getActiveKillEffect();
-                };
-            }
+            String currentId = getActiveCosmeticId(data, activeTab);
 
             if (currentId != null && currentId.equalsIgnoreCase(item.getId())) {
                 // Unequip
@@ -236,6 +221,14 @@ public class CosmeticsMainGUI implements InventoryHolder {
             }
             buildGUI();
         }
+    }
+
+    private String getActiveCosmeticId(PlayerData data, CosmeticType type) {
+        if (data == null || type == null) return null;
+        if (type == CosmeticType.AURA) return data.getActiveAura();
+        if (type == CosmeticType.TRAIL) return data.getActiveTrail();
+        if (type == CosmeticType.KILL_EFFECT) return data.getActiveKillEffect();
+        return null;
     }
 
     private ItemStack createGlass(Material mat, String name) {
