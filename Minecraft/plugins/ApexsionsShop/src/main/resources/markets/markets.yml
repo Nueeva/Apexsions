@@ -27,21 +27,18 @@ kingdoms:
     mob_drops-buy-multiplier: 1.00
 
   ZENITHAR:
-    tax-percent: 25.0
-    # Harga pasar cenderung fluktuatif & tidak stabil: harga beli tinggi, jual rendah
-    volatility-multiplier: 1.25    # Fluktuasi harga lebih lebar
-    ores-buy-multiplier: 1.15
-    ores-sell-multiplier: 0.80
-    food-buy-multiplier: 1.25
-    food-sell-multiplier: 0.75
-    farming-buy-multiplier: 1.20
-    farming-sell-multiplier: 0.80
-    blocks-buy-multiplier: 1.15
-    blocks-sell-multiplier: 0.80
-    dyes-buy-multiplier: 1.15
-    dyes-sell-multiplier: 0.80
-    mob_drops-buy-multiplier: 1.20
-    mob_drops-sell-multiplier: 0.80
+    tax-percent: 18.0
+    volatility-multiplier: 1.05    # Pasar stabil berkat perbankan kuat
+    blocks-buy-multiplier: 0.85    # Diskon 15% blok bangunan & marmer istana megah
+    dyes-buy-multiplier: 0.90
+    ores-buy-multiplier: 1.05
+    ores-sell-multiplier: 1.00
+    food-buy-multiplier: 1.05
+    food-sell-multiplier: 1.00
+    farming-buy-multiplier: 1.05
+    farming-sell-multiplier: 1.00
+    mob_drops-buy-multiplier: 1.05
+    mob_drops-sell-multiplier: 1.00
 
   SYLVAMOOR:
     tax-percent: 15.0

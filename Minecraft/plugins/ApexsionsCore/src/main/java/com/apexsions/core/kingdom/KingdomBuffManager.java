@@ -99,10 +99,10 @@ public class KingdomBuffManager {
                 }
             }
             case "ZENITHAR" -> {
-                // Speed +5%
-                addModifier(player, Attribute.MOVEMENT_SPEED, keySpeed, 0.05, AttributeModifier.Operation.ADD_SCALAR);
-                // Luck +7% (0.7 pada loot table)
-                addModifier(player, Attribute.LUCK, keyLuck, 0.7, AttributeModifier.Operation.ADD_NUMBER);
+                // Speed +8% (Kavaleri elit istana)
+                addModifier(player, Attribute.MOVEMENT_SPEED, keySpeed, 0.08, AttributeModifier.Operation.ADD_SCALAR);
+                // Luck +15% (1.5 pada loot table - Berkah dinasti matahari)
+                addModifier(player, Attribute.LUCK, keyLuck, 1.5, AttributeModifier.Operation.ADD_NUMBER);
             }
         }
 

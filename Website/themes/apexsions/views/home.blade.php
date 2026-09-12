@@ -115,11 +115,11 @@
                     </ul>
                     <div class="small fw-bold text-uppercase mb-1 apx-buff-label"><i class="bi bi-shield-plus me-1"></i> <span data-i18n="label_buffs">Buff Kondisi Sejarah</span></div>
                     <div class="small text-muted mb-2" style="font-size: 0.8rem; line-height: 1.5;" data-i18n-html="zenithar_buffs">
-                        <span class="text-success fw-semibold">+5% Speed</span>, <span class="text-success fw-semibold">+7% Luck</span>, <span class="text-success fw-semibold">[Royal Discipline] +6% All Damage &amp; Defense</span>, <span class="text-success fw-semibold">-5% Reduksi Serangan Kritis Musuh</span>.
+                        <span class="text-success fw-semibold">+8% Speed</span>, <span class="text-success fw-semibold">+15% Luck</span>, <span class="text-success fw-semibold">[Royal Discipline] +6% Damage &amp; Defense</span>, <span class="text-success fw-semibold">-25% Reduksi Serangan Kritis Musuh (Anti-Crit)</span>, <span class="text-success fw-semibold">Diskon 50% Pajak Lelang &amp; Bunga Bank +35%</span>.
                     </div>
                     <div class="small fw-bold text-uppercase mb-1 apx-debuff-label"><i class="bi bi-shield-minus me-1"></i> <span data-i18n="label_debuffs">Debuff Kondisi Fisik</span></div>
                     <div class="small text-muted" style="font-size: 0.8rem; line-height: 1.5;" data-i18n-html="zenithar_debuffs">
-                        <span class="text-danger fw-semibold">+7% Kerentanan Racun</span>, makanan memulihkan hunger lebih lambat (-1 point) karena terbiasa dengan santapan istana steril.
+                        <span class="text-danger fw-semibold">+7% Kerentanan Racun</span>, biaya tempa anvil sedikit lebih mahal (+1 Level EXP).
                     </div>
                 </div>
                 @if(plugins()->isEnabled('wiki'))

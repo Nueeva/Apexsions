@@ -88,7 +88,7 @@ public class KingdomCoreHook {
                 return configTax;
             }
             return switch (kingdomKey.toUpperCase()) {
-                case "ZENITHAR" -> 25.0;
+                case "ZENITHAR" -> 18.0;
                 case "SOLTERRA" -> 20.0;
                 case "SYLVAMOOR" -> 15.0;
                 default -> 10.0;

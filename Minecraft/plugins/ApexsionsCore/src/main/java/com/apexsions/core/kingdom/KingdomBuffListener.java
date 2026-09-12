@@ -204,12 +204,12 @@ public class KingdomBuffListener implements Listener {
             }
         }
 
-        // B. Defender adjustments (Zenithar Critical Reduction 5%)
+        // B. Defender adjustments (Zenithar Critical Reduction 25% - Hard counter Solterra)
         if (event.getEntity() instanceof Player defender) {
             String defenderKingdom = buffManager.getPlayerKingdomKey(defender.getUniqueId());
             if (defenderKingdom.equalsIgnoreCase("ZENITHAR") && event.isCritical()) {
-                // Critical reduction +5%
-                event.setDamage(event.getDamage() * 0.95);
+                // Critical reduction -25% (Aegis of the Sun)
+                event.setDamage(event.getDamage() * 0.75);
             }
         }
     }
@@ -297,23 +297,16 @@ public class KingdomBuffListener implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
-    public void onPlayerItemConsume(PlayerItemConsumeEvent event) {
-        Player player = event.getPlayer();
+    @EventHandler(priority = EventPriority.HIGH)
+    public void onPrepareAnvil(org.bukkit.event.inventory.PrepareAnvilEvent event) {
+        if (!(event.getView().getPlayer() instanceof Player player)) return;
         String kingdom = buffManager.getPlayerKingdomKey(player.getUniqueId());
         if (kingdom.equalsIgnoreCase("ZENITHAR")) {
-            // Makanan memberi hunger bar lebih sedikit (-1 point / -20% saturation)
-            if (event.getItem().getType().isEdible()) {
-                Bukkit.getScheduler().runTask(plugin, () -> {
-                    int currentFood = player.getFoodLevel();
-                    if (currentFood > 1) {
-                        player.setFoodLevel(currentFood - 1);
-                    }
-                    float currentSat = player.getSaturation();
-                    if (currentSat > 0f) {
-                        player.setSaturation(Math.max(0f, currentSat * 0.80f));
-                    }
-                });
+            // Aristocratic Pride Debuff: Penempaan barang mewah istana rumit (+1 Level EXP repair cost)
+            org.bukkit.inventory.AnvilInventory inv = event.getInventory();
+            int cost = inv.getRepairCost();
+            if (cost > 0) {
+                inv.setRepairCost(cost + 1);
             }
         }
     }

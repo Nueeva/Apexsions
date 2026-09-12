@@ -80,8 +80,8 @@ const APX_I18N = {
         zenithar_desc: 'Dipimpin oleh keluarga dinasti dan pengawal elit Kekaisaran Sions yang berhasil mempertahankan diri dari malapetaka, mengungsi ke timur menuju puncak cakrawala (Zenith). Menjunjung tinggi kemurnian tata krama istana, kavaleri suci, dan kubah menara langit.',
         zenithar_spec1: 'Puncak Cakrawala & Solarium Spire Citadel',
         zenithar_spec2: 'Penambangan Emas Murni & Arsitektur Megah',
-        zenithar_buffs: '<span class="text-success fw-semibold">+5% Speed</span>, <span class="text-success fw-semibold">+7% Luck</span>, <span class="text-success fw-semibold">[Royal Discipline] +6% All Damage &amp; Defense</span>, <span class="text-success fw-semibold">-5% Reduksi Serangan Kritis Musuh</span>.',
-        zenithar_debuffs: '<span class="text-danger fw-semibold">+7% Kerentanan Racun</span>, makanan memulihkan hunger lebih lambat (-1 point) karena terbiasa dengan santapan istana steril.',
+        zenithar_buffs: '<span class="text-success fw-semibold">+8% Speed</span>, <span class="text-success fw-semibold">+15% Luck</span>, <span class="text-success fw-semibold">[Royal Discipline] +6% Damage &amp; Defense</span>, <span class="text-success fw-semibold">-25% Reduksi Serangan Kritis Musuh (Anti-Crit)</span>, <span class="text-success fw-semibold">Diskon 50% Pajak Lelang &amp; Bunga Bank +35%</span>.',
+        zenithar_debuffs: '<span class="text-danger fw-semibold">+7% Kerentanan Racun</span>, biaya tempa anvil sedikit lebih mahal (+1 Level EXP).',
         zenithar_link: 'Arsip Zenithar',
 
         solterra_type: 'TERITORI SELATAN • MAGICIAN & VETERAN',
@@ -906,8 +906,8 @@ const APX_I18N = {
         zenithar_desc: 'Led by the royal dynasty and elite imperial guards of the Sions Empire who survived the catastrophe, fleeing eastward toward the celestial zenith. Upholding palace etiquette, sacred cavalry, and skyward spire citadels.',
         zenithar_spec1: 'Celestial Horizon & Solarium Spire Citadel',
         zenithar_spec2: 'Pure Gold Extraction & Grand Architectural Marvels',
-        zenithar_buffs: '<span class="text-success fw-semibold">+5% Speed</span>, <span class="text-success fw-semibold">+7% Luck</span>, <span class="text-success fw-semibold">[Royal Discipline] +6% All Damage &amp; Defense</span>, <span class="text-success fw-semibold">-5% Enemy Crit Reduction</span>.',
-        zenithar_debuffs: '<span class="text-danger fw-semibold">+7% Poison Vulnerability</span>, food replenishes hunger slower (-1 point) due to aristocratic dining habits.',
+        zenithar_buffs: '<span class="text-success fw-semibold">+8% Speed</span>, <span class="text-success fw-semibold">+15% Luck</span>, <span class="text-success fw-semibold">[Royal Discipline] +6% Damage &amp; Defense</span>, <span class="text-success fw-semibold">-25% Enemy Crit Reduction (Anti-Crit)</span>, <span class="text-success fw-semibold">50% Auction Tax Discount &amp; +35% Bank Yield</span>.',
+        zenithar_debuffs: '<span class="text-danger fw-semibold">+7% Poison Vulnerability</span>, anvil repairing costs slightly more (+1 Level EXP).',
         zenithar_link: 'Zenithar Archives',
 
         solterra_type: 'SOUTHERN TERRITORY • MAGICIANS & VETERANS',

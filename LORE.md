@@ -152,8 +152,9 @@ Ketiga kerajaan berdaulat memiliki struktur politik yang berbeda dan saling memb
 ║ • Struktur Politik   : Monarch ➔ Royal Council ➔ Nobles ➔ Citizens        ║
 ║ • Sifat Bangsa       : Virtue: Order, Honor, Sains • Flaw: Elitis & Kaku  ║
 ║ • Sektor Ekonomi     : Luxury Goods, Banking, Technology & Trade          ║
-║ • Skema Pajak Toko   : Base 20% + Royal Infrastructure 5% = Total 25.0%   ║
-║ • Pajak Transfer Pay : 10.0% (Cukai Birokrasi Perbankan Kerajaan)         ║
+║ • Skema Pajak Toko   : 18.0% (Kas Pertahanan Solarium Spire)               ║
+║ • Pajak Transfer Pay : 6.0% (Kliring Cepat Perbankan Kerajaan)            ║
+║ • Keistimewaan Khusus: Diskon 50% Pajak Lelang & Bunga Bank +35%          ║
 ╚════════════════════════════════════════════════════════════════════════════╝
 ```
 
@@ -161,7 +162,7 @@ Ketiga kerajaan berdaulat memiliki struktur politik yang berbeda dan saling memb
 * **Rantai Pasok Ekonomi:**
   * **Ekspor Utama:** Emas Murni Pegunungan, Lapis Lazuli Mutu Tinggi, Buku Sihir Penempaan Langka, Instrumen Presisi, dan Perhiasan Kristal.
   * **Kebutuhan Impor:** Pasokan Pangan Pokok (gandum/daging dari Sylvamoor) dan Logam Mentah Berat (besi dari Solterra).
-* **Justifikasi Pajak 25%:** Pajak tertinggi di benua terjustifikasi oleh fasilitas umum termegah: slot lelang terbanyak di pasar global, stabilitas perbankan, dan perisai nexus istana yang terlindungi secara maksimal.
+* **Monopoli Finansial & Perlindungan Istana:** Warga Zenithar memegang kendali sistem finansial benua: diskon 50% pajak lelang (`/ah`), bunga deposito bank pasif **+35%** (`/bank`), diskon 15% pembelian blok bangunan megah di `/shop`, serta perisai nexus istana yang terlindungi secara maksimal.
 
 ---
 
@@ -282,30 +283,32 @@ Menghindari inflasi stat ekstrem yang merusak meta PvP, setiap kerajaan dirancan
 │     ☀️ ZENITHAR         │      🌋 SOLTERRA        │      🌿 SYLVAMOOR       │
 ├─────────────────────────┼─────────────────────────┼─────────────────────────┤
 │ Identitas:              │ Identitas:              │ Identitas:              │
-│ BALANCED ELITE          │ AGGRESSIVE INDUSTRIAL   │ SURVIVAL & SUSTAIN      │
+│ CAPITALIST & DUELIST    │ AGGRESSIVE INDUSTRIAL   │ SURVIVAL & SUSTAIN      │
 │                         │                         │                         │
 │ Karakteristik Stat:     │ Karakteristik Stat:     │ Karakteristik Stat:     │
-│ • +4% Movement Speed    │ • +7% All Damage        │ • +10% Hasil Panen Tani │
-│ • +3% Total Damage      │ • +5% Mining Speed      │ • +7% Fishing & Mob Drop│
-│ • +4% Defense Diri      │ • +5% Ore Sell Value    │ • +5% Health (11 Hati)  │
-│ • +5% Luck / Loot Peti  │   (Rasio Jual Ore 65%)  │ • +5% Poison Resistance │
+│ • +8% Movement Speed    │ • +15% Total Damage     │ • +10% Hasil Panen Tani │
+│ • +15% Luck (Loot Box)  │ • +10% Crit Damage      │ • +12% Luck / Mob Drop  │
+│ • +6% All Damage/Defense│ • +10% Mining Speed     │ • +2 HP (Total 11 Hati) │
+│ • Diskon 50% Pajak Lelang│ • +5% Ore Sell Value   │ • +12.6% Total Defense  │
+│ • Bunga Bank Pasif +35% │   (Rasio Jual Ore 65%)  │ • -5% Poison Resistance │
+│ • Diskon 15% Blok Toko  │                         │ • Lahan Tani Anti-Kering│
 │                         │                         │                         │
 │ Unique Passive:         │ Unique Passive:         │ Unique Passive:         │
 │ ✦ Royal Discipline      │ ✦ Battle Momentum       │ ✦ Nature's Blessing     │
-│ (Saat HP di bawah 30%,  │ (Setelah mengeliminasi  │ (Regenerasi darah pasif │
-│  otomatis memicu efek   │  musuh/mob, mendapat    │  ringan saat berpijak   │
-│  Resistance I singkat;  │  lonjakan speed kilat   │  di bioma alami rimba   │
-│  memiliki cooldown)     │  selama beberapa detik) │  atau pesisir pantai)   │
+│ (Aegis of the Sun:      │ (Kedahsyatan sihir api  │ (Daya tahan bugar dari  │
+│  Meredam Crit musuh -25%│  dan momentum serang    │  pohon dunia purba;     │
+│  menjadi tumpul; counter│  fisik brutal tanpa     │  kebal kekeringan lahan │
+│  keras bagi Solterra)   │  kenal ampun)           │  dan herba beracun)     │
 │                         │                         │                         │
 │ Territory Advantage:    │ Territory Advantage:    │ Territory Advantage:    │
 │ Dataran Tinggi & Puncak │ Ngarai Badlands, Mesa,  │ Old Growth Taiga,       │
 │ Pegunungan (Y > 85)     │ Kawah Lahar, Nether     │ Hutan Kanopi, Samudra   │
 │                         │                         │                         │
 │ Kelemahan Seimbang:     │ Kelemahan Seimbang:     │ Kelemahan Seimbang:     │
-│ • Biaya Pasar Tinggi    │ • -3% Defense Diri      │ • -5% Mining Speed      │
-│ • Santapan Medan Perang │ • +10% Hunger Exhaustion│ • -5% Serangan Senjata  │
-│   Memulihkan -1 Point   │ • Tanah Tani Cepat Aus  │ • Mabuk Ketinggian      │
-│ • Kerentanan Racun +7%  │   dan Mengering         │   di Elevasi Y > 110    │
+│ • Biaya Tempa Anvil     │ • -2 HP (Total 9 Hati)  │ • -10% Mining Speed     │
+│   +1 Level EXP          │ • +8% Damage Diterima   │ • -10% PvP / -5% PvE Dmg│
+│ • Kerentanan Racun +7%  │ • +7% Hunger Exhaustion │ • +15% Damage Terbakar  │
+│                         │ • Lahan Cepat Kering    │ • Mabuk Y > 110         │
 └─────────────────────────┴─────────────────────────┴─────────────────────────┘
 ```
 

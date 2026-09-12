@@ -57,11 +57,6 @@ public class DynamicPriceCalculator {
         // Configurable Price Clamping (Default: 85% to 120% of base buy price)
         double minClamp = plugin.getConfigManager().getMarketsConfig().getDouble("clamping.min-buy-ratio", 0.85);
         double maxClamp = plugin.getConfigManager().getMarketsConfig().getDouble("clamping.max-buy-ratio", 1.20);
-        if (activeKingdom.equalsIgnoreCase("ZENITHAR")) {
-            // Zenithar price instability: wider fluctuation bounds
-            minClamp *= 0.90;
-            maxClamp *= 1.15;
-        }
 
         double effectiveUnit = Math.max(baseUnit * minClamp, Math.min(baseUnit * maxClamp, rawUnit));
         double rawTotal = effectiveUnit * quantity;
@@ -110,10 +105,6 @@ public class DynamicPriceCalculator {
         // Configurable Price Clamping
         double minClamp = plugin.getConfigManager().getMarketsConfig().getDouble("clamping.min-sell-ratio", 0.85);
         double maxClamp = plugin.getConfigManager().getMarketsConfig().getDouble("clamping.max-sell-ratio", 1.20);
-        if (activeKingdom.equalsIgnoreCase("ZENITHAR")) {
-            minClamp *= 0.85;
-            maxClamp *= 1.10;
-        }
 
         double effectiveUnit = Math.max(baseUnit * minClamp, Math.min(baseUnit * maxClamp, rawUnit));
         double baseRawTotal = effectiveUnit * quantity;

@@ -51,7 +51,7 @@ public class PayService {
                 kingdomName = region.getDisplayName();
                 String rKey = region.getKey().toUpperCase();
                 taxPercent = switch (rKey) {
-                    case "ZENITHAR" -> 10.0;
+                    case "ZENITHAR" -> 6.0;
                     case "SOLTERRA" -> 8.0;
                     case "SYLVAMOOR" -> 6.0;
                     default -> 5.0;

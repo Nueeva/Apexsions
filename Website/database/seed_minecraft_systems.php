@@ -1077,7 +1077,7 @@ MARKDOWN
         <tr><td class="fandom-infobox-label">Kerajaan 2</td><td class="fandom-infobox-value"><strong style="color: #f87171;">Solterra</strong> (Arah Selatan • Magician &amp; Veteran Perang)</td></tr>
         <tr><td class="fandom-infobox-label">Kerajaan 3</td><td class="fandom-infobox-value"><strong style="color: #4ade80;">Sylvamoor</strong> (Arah Barat • Pekerja &amp; Pejuang Rimba)</td></tr>
         <tr><td class="fandom-infobox-label">Perintah Pilih</td><td class="fandom-infobox-value"><code>/k</code> atau <code>/kingdom choose</code></td></tr>
-        <tr><td class="fandom-infobox-label">Pajak Wilayah</td><td class="fandom-infobox-value">Zenithar: 25% • Solterra: 20% • Sylvamoor: 15%</td></tr>
+        <tr><td class="fandom-infobox-label">Pajak Wilayah</td><td class="fandom-infobox-value">Zenithar: 18% • Solterra: 20% • Sylvamoor: 15%</td></tr>
         <tr><td class="fandom-infobox-label">Biaya Perdagangan</td><td class="fandom-infobox-value">Internal: Bebas Pajak • Lintas Kerajaan: Dikenakan Tarif Transportasi</td></tr>
     </table>
 </div>
@@ -1087,23 +1087,23 @@ Di Apexsions, tanah air terbagi menjadi tiga kerajaan otonom yang lahir dari Eks
 ---
 
 ### 1. Zenithar (Celestial & Solar Realm — Teritori Timur)
-*Penerus garis keturunan dinasti kekaisaran yang mempertahankan relik suci dan menara peradaban di puncak langit cakrawala.*
+*Penerus garis keturunan dinasti kekaisaran yang mempertahankan relik suci, pusat perbankan, dan menara peradaban di puncak langit cakrawala.*
 
 - **Asal-Usul Eksodus:** Dinasti & keluarga kerajaan Sions serta kavaleri pengawal kehormatan istana yang melarikan diri ke arah Timur.
 - **Ibukota:** Solarium Spire Citadel
 - **Koordinat Ibukota:** `world (-3028, 64, -5597)`
 - **Bioma Khas:** Sky Plains, High Peaks, Jagged Peaks
 - **Gelar Raja Tertinggi:** *Monarch of the Sun* (Gelar Tertinggi Pemain: *✦ EMPEROR OF ZENITHAR ✦*)
-- **Pajak Kas Wilayah:** 25% (Pemeliharaan istana megah & pertahanan perisai nexus)
+- **Pajak Kas Wilayah:** 18% (Kas Pertahanan Solarium Spire & Pemeliharaan Nexus)
 - **Karakteristik & Buff Resmi (In-Game):**
-  - `+5%` Kecepatan Gerak (*Speed Boost*) — Kelincahan formasi kavaleri elit.
-  - `+7%` Keberuntungan (*Luck Boost*) — Berkah kemakmuran dinasti matahari.
+  - `+8%` Kecepatan Gerak (*Speed Boost*) — Kelincahan kavaleri elit istana.
+  - `+15%` Keberuntungan (*Luck Boost*) — Berkah dinasti matahari & hoki jarahan harta karun.
   - **[Royal Discipline]** `+6%` Total Serangan & `+6%` Pertahanan Diri — Disiplin taktik pedang dan zirah emas istana.
-  - `-5%` Reduksi Serangan Critical Musuh — Tangguhnya perisai kehormatan.
+  - `-25%` Reduksi Serangan Critical Musuh (*Aegis of the Sun*) — Perisai anti-crit mutlak peredam gaya tempur Solterra.
+  - **Hak Istimewa Finansial:** Diskon 50% Pajak Lelang (`/ah`), Bunga Deposito Bank Pasif **+35%** (`/bank`), dan Diskon 15% Pembelian Blok Bangunan Megah di `/shop`.
 - **Kelemahan & Debuff Fisik (In-Game):**
-  - `+7%` Damage & Durasi Efek Racun (*Poison Vulnerability*) — Fisik bangsawan yang steril tidak kebal terhadap racun liar.
-  - Makanan Memulihkan Hunger Bar Lebih Sedikit (-1 Point) — Terbiasa dengan santapan jamuan istana steril.
-  - Harga pasar fluktuatif di pasar dinamis.
+  - `+7%` Damage & Durasi Efek Racun (*Poison Vulnerability*) — Fisik bangsawan steril tidak kebal terhadap racun liar.
+  - Biaya Tempa Anvil Sedikit Lebih Mahal (+1 Level EXP) — Penempaan barang mewah istana membutuhkan keahlian dan energi ekstra.
 
 ---
 
