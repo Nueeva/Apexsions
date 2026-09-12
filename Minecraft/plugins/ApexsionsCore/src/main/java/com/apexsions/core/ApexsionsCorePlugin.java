@@ -123,8 +123,14 @@ public class ApexsionsCorePlugin extends JavaPlugin {
     private com.apexsions.core.sions.SionsTemporalService sionsTemporalService;
 
     @Override
+    public void onLoad() {
+        applyDisableChannelLimit();
+    }
+
+    @Override
     public void onEnable() {
         instance = this;
+        applyDisableChannelLimit();
         long startTime = System.currentTimeMillis();
 
         getLogger().info("=========================================");
@@ -632,6 +638,35 @@ public class ApexsionsCorePlugin extends JavaPlugin {
                 true
             );
             getLogger().info("[WebBridge] Dynamic BattlePass level-up listener hooked successfully.");
+        } catch (Throwable ignored) {}
+    }
+
+    /**
+     * Paper 1.20.6+ / 26.2 enforces a default cap of 128 custom plugin channels per connection.
+     * Modern client mods (Fabric modpacks, Lunar, Badlion, Geyser) frequently exceed this limit,
+     * triggering "Cannot register channel. Too many channels registered!".
+     * This ensures the limit is bypassed seamlessly at startup and runtime.
+     */
+    private void applyDisableChannelLimit() {
+        try {
+            if (System.getProperty("paper.disableChannelLimit") == null) {
+                System.setProperty("paper.disableChannelLimit", "true");
+            }
+        } catch (Throwable ignored) {}
+
+        try {
+            Class<?> bridgeClass = Class.forName("io.papermc.paper.connection.PluginMessageBridgeImpl");
+            java.lang.reflect.Field field = bridgeClass.getDeclaredField("DISABLE_CHANNEL_LIMIT");
+            Class<?> unsafeClass = Class.forName("sun.misc.Unsafe");
+            java.lang.reflect.Field unsafeField = unsafeClass.getDeclaredField("theUnsafe");
+            unsafeField.setAccessible(true);
+            Object unsafe = unsafeField.get(null);
+            java.lang.reflect.Method staticFieldBase = unsafeClass.getMethod("staticFieldBase", java.lang.reflect.Field.class);
+            java.lang.reflect.Method staticFieldOffset = unsafeClass.getMethod("staticFieldOffset", java.lang.reflect.Field.class);
+            java.lang.reflect.Method putBoolean = unsafeClass.getMethod("putBoolean", Object.class, long.class, boolean.class);
+            Object base = staticFieldBase.invoke(unsafe, field);
+            long offset = ((Number) staticFieldOffset.invoke(unsafe, field)).longValue();
+            putBoolean.invoke(unsafe, base, offset, true);
         } catch (Throwable ignored) {}
     }
 }
