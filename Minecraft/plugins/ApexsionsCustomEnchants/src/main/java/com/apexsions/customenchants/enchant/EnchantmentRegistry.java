@@ -2,8 +2,10 @@ package com.apexsions.customenchants.enchant;
 
 import com.apexsions.customenchants.ApexsionsCustomEnchantsPlugin;
 import com.apexsions.customenchants.group.EnchantmentGroup;
+import com.apexsions.customenchants.items.ItemLevelRequirement;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -198,12 +200,13 @@ public class EnchantmentRegistry {
     public void rebuildItemLore(ItemMeta meta) {
         PersistentDataContainer pdc = meta.getPersistentDataContainer();
 
-        // 1. Gather existing lore lines that are NOT custom enchants or custom vanilla enchant lines
+        // 1. Gather existing lore lines that are NOT custom enchants, custom vanilla enchant lines, or level requirements
         List<Component> baseLore = new ArrayList<>();
         if (meta.hasLore() && meta.lore() != null) {
             for (Component c : meta.lore()) {
-                String plain = MiniMessage.miniMessage().serialize(c);
-                if (!isCustomOrVanillaEnchantLore(plain, meta)) {
+                String serialized = MiniMessage.miniMessage().serialize(c);
+                String plain = PlainTextComponentSerializer.plainText().serialize(c).trim().toUpperCase();
+                if (!isCustomOrVanillaEnchantLore(serialized, meta) && !ItemLevelRequirement.isLevelRequirementLore(plain)) {
                     baseLore.add(c);
                 }
             }
@@ -254,9 +257,60 @@ public class EnchantmentRegistry {
             newLore.add(mm.deserialize(line));
         }
 
-        // Append base lore
-        newLore.addAll(baseLore);
-        meta.lore(newLore);
+        // 4. Position-aware Assembly: Enchants -> Level Requirement -> Armor/Tool Set Bonus -> Remaining Base Lore
+        int minLevel = ItemLevelRequirement.getRequiredLevel(meta);
+        List<Component> combinedLore = new ArrayList<>(newLore);
+
+        int setBonusIndex = -1;
+        for (int i = 0; i < baseLore.size(); i++) {
+            String plain = PlainTextComponentSerializer.plainText().serialize(baseLore.get(i)).trim().toUpperCase();
+            if (ItemLevelRequirement.isSetBonusLine(plain)) {
+                setBonusIndex = i;
+                break;
+            }
+        }
+
+        if (setBonusIndex >= 0) {
+            // Add any base lines before set bonus
+            for (int i = 0; i < setBonusIndex; i++) {
+                combinedLore.add(baseLore.get(i));
+            }
+
+            // Insert level requirement if configured (after enchants & before set bonus)
+            if (minLevel > 0) {
+                if (!combinedLore.isEmpty()) {
+                    combinedLore.add(Component.empty());
+                }
+                combinedLore.add(ItemLevelRequirement.formatLevelLore(minLevel));
+            }
+
+            // Add separator before set bonus
+            if (!combinedLore.isEmpty()) {
+                combinedLore.add(Component.empty());
+            }
+
+            // Add set bonus lines and anything after
+            for (int i = setBonusIndex; i < baseLore.size(); i++) {
+                combinedLore.add(baseLore.get(i));
+            }
+        } else {
+            // No set bonus found in baseLore
+            if (minLevel > 0) {
+                if (!combinedLore.isEmpty()) {
+                    combinedLore.add(Component.empty());
+                }
+                combinedLore.add(ItemLevelRequirement.formatLevelLore(minLevel));
+            }
+
+            if (!baseLore.isEmpty()) {
+                if (!combinedLore.isEmpty()) {
+                    combinedLore.add(Component.empty());
+                }
+                combinedLore.addAll(baseLore);
+            }
+        }
+
+        meta.lore(ItemLevelRequirement.collapseDuplicateEmptyLines(combinedLore));
 
         // Apply glowing enchantment glint shimmer
         if (hasAnyCustom || hasHighLevelVanilla) {

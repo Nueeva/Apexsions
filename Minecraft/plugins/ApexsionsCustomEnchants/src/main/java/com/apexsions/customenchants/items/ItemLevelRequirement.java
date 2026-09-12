@@ -43,12 +43,94 @@ public final class ItemLevelRequirement {
         if (item == null || item.getType().isAir() || !item.hasItemMeta()) return 0;
         ItemMeta meta = item.getItemMeta();
         if (meta == null) return 0;
+        return getRequiredLevel(meta);
+    }
+
+    /**
+     * Gets the minimum required ApexsionsCore level from ItemMeta.
+     */
+    public static int getRequiredLevel(@Nullable ItemMeta meta) {
+        if (meta == null) return 0;
         PersistentDataContainer pdc = meta.getPersistentDataContainer();
         if (pdc.has(KEY_MIN_LEVEL, PersistentDataType.INTEGER)) {
             Integer val = pdc.get(KEY_MIN_LEVEL, PersistentDataType.INTEGER);
             return val != null ? Math.max(0, val) : 0;
         }
         return 0;
+    }
+
+    /**
+     * Returns the styled Adventure Component for the level requirement lore line.
+     */
+    public static @NotNull Component formatLevelLore(int level) {
+        return mm.deserialize("<gradient:#f39c12:#e67e22><bold>🎖 SYARAT PENGGUNAAN: </bold></gradient><yellow>Level </yellow><gold><bold>" + level + "+</bold></gold>");
+    }
+
+    /**
+     * Checks whether a plain-text line represents a level requirement lore line.
+     */
+    public static boolean isLevelRequirementLore(@Nullable String plainUpper) {
+        if (plainUpper == null || plainUpper.isBlank()) return false;
+        return plainUpper.contains("SYARAT PENGGUNAAN") ||
+               plainUpper.contains("SYARAT LEVEL") ||
+               plainUpper.contains("MINIMAL LEVEL") ||
+               plainUpper.contains("REQUIREMENT: LEVEL") ||
+               plainUpper.contains("LEVEL REQUIREMENT");
+    }
+
+    /**
+     * Checks whether a plain-text line represents a Set Bonus header.
+     */
+    public static boolean isSetBonusHeader(@Nullable String plainUpper) {
+        if (plainUpper == null || plainUpper.isBlank()) return false;
+        return plainUpper.contains("SET BONUS") ||
+               plainUpper.contains("WEAPON SET BONUS") ||
+               plainUpper.contains("TOOL SET BONUS");
+    }
+
+    /**
+     * Checks whether a plain-text line represents any part of an Armor/Tool/Weapon Set Bonus section.
+     */
+    public static boolean isSetBonusLine(@Nullable String plainUpper) {
+        if (plainUpper == null || plainUpper.isBlank()) return false;
+        if (isLevelRequirementLore(plainUpper)) return false;
+        return isSetBonusHeader(plainUpper) ||
+               plainUpper.contains("HALF SET") ||
+               plainUpper.contains("FULL SET") ||
+               plainUpper.contains("PIECES") ||
+               plainUpper.contains("MEMAKAI SET ARMOR") ||
+               (plainUpper.contains("SYARAT") && (plainUpper.contains("PIECE") || plainUpper.contains("SET"))) ||
+               plainUpper.contains("● EFEK") ||
+               plainUpper.contains("EFEK:");
+    }
+
+    /**
+     * Collapses consecutive empty lines and strips leading/trailing empty lines.
+     */
+    public static @NotNull List<Component> collapseDuplicateEmptyLines(@Nullable List<Component> lines) {
+        if (lines == null || lines.isEmpty()) return new ArrayList<>();
+        List<Component> result = new ArrayList<>();
+        boolean lastWasBlank = true; // trims leading empty lines
+
+        for (Component c : lines) {
+            boolean isBlank = plainSerializer.serialize(c).trim().isEmpty();
+            if (isBlank) {
+                if (!lastWasBlank) {
+                    result.add(Component.empty());
+                    lastWasBlank = true;
+                }
+            } else {
+                result.add(c);
+                lastWasBlank = false;
+            }
+        }
+
+        // Remove trailing empty lines
+        while (!result.isEmpty() && plainSerializer.serialize(result.get(result.size() - 1)).trim().isEmpty()) {
+            result.remove(result.size() - 1);
+        }
+
+        return result;
     }
 
     /**
@@ -84,47 +166,86 @@ public final class ItemLevelRequirement {
 
         for (Component c : lore) {
             String plain = plainSerializer.serialize(c).trim().toUpperCase();
-            if (plain.contains("SYARAT PENGGUNAAN") ||
-                plain.contains("SYARAT LEVEL") ||
-                plain.contains("MINIMAL LEVEL") ||
-                plain.contains("REQUIREMENT: LEVEL") ||
-                plain.contains("LEVEL REQUIREMENT")) {
+            if (isLevelRequirementLore(plain)) {
                 continue;
             }
             cleaned.add(c);
         }
 
-        // Clean trailing empty lines
-        while (!cleaned.isEmpty()) {
-            Component last = cleaned.get(cleaned.size() - 1);
-            String plain = plainSerializer.serialize(last).trim();
-            if (plain.isEmpty()) {
-                cleaned.remove(cleaned.size() - 1);
-            } else {
-                break;
-            }
-        }
-
-        meta.lore(cleaned);
+        meta.lore(collapseDuplicateEmptyLines(cleaned));
     }
 
     /**
      * Appends the styled level requirement lore line to the ItemMeta.
+     * Guaranteed position: AFTER enchant list and BEFORE armor/tool set bonus.
      */
     public static void applyLevelRequirementLore(@NotNull ItemMeta meta, int level) {
         if (level <= 0) return;
-        List<Component> lore = meta.hasLore() && meta.lore() != null ? new ArrayList<>(meta.lore()) : new ArrayList<>();
+        cleanLevelRequirementLore(meta);
 
-        // Add a blank separator if lore already exists and last line is not blank
-        if (!lore.isEmpty()) {
-            Component last = lore.get(lore.size() - 1);
-            if (!plainSerializer.serialize(last).trim().isEmpty()) {
-                lore.add(Component.empty());
+        List<Component> currentLore = meta.hasLore() && meta.lore() != null ? new ArrayList<>(meta.lore()) : new ArrayList<>();
+        Component reqLine = formatLevelLore(level);
+
+        if (currentLore.isEmpty()) {
+            currentLore.add(reqLine);
+            meta.lore(currentLore);
+            return;
+        }
+
+        // Find where the set bonus section begins, if present
+        int setBonusStartIndex = -1;
+        for (int i = 0; i < currentLore.size(); i++) {
+            String plain = plainSerializer.serialize(currentLore.get(i)).trim().toUpperCase();
+            if (isSetBonusLine(plain)) {
+                setBonusStartIndex = i;
+                break;
             }
         }
 
-        lore.add(mm.deserialize("<gradient:#f39c12:#e67e22><bold>🎖 SYARAT PENGGUNAAN: </bold></gradient><yellow>Level </yellow><gold><bold>" + level + "+</bold></gold>"));
-        meta.lore(lore);
+        List<Component> finalLore = new ArrayList<>();
+
+        if (setBonusStartIndex >= 0) {
+            // 1. Add everything before the set bonus (enchants, base description, etc.)
+            for (int i = 0; i < setBonusStartIndex; i++) {
+                finalLore.add(currentLore.get(i));
+            }
+
+            // Remove trailing blank lines before inserting level requirement
+            while (!finalLore.isEmpty() && plainSerializer.serialize(finalLore.get(finalLore.size() - 1)).trim().isEmpty()) {
+                finalLore.remove(finalLore.size() - 1);
+            }
+
+            // If there were lines before (e.g. enchants), add a blank separator line
+            if (!finalLore.isEmpty()) {
+                finalLore.add(Component.empty());
+            }
+
+            // 2. Add level requirement line
+            finalLore.add(reqLine);
+
+            // 3. Add a blank line separator before set bonus
+            finalLore.add(Component.empty());
+
+            // 4. Add the set bonus lines
+            for (int i = setBonusStartIndex; i < currentLore.size(); i++) {
+                finalLore.add(currentLore.get(i));
+            }
+        } else {
+            // No set bonus section: add after enchants/content
+            finalLore.addAll(currentLore);
+
+            while (!finalLore.isEmpty() && plainSerializer.serialize(finalLore.get(finalLore.size() - 1)).trim().isEmpty()) {
+                finalLore.remove(finalLore.size() - 1);
+            }
+
+            if (!finalLore.isEmpty()) {
+                finalLore.add(Component.empty());
+            }
+
+            finalLore.add(reqLine);
+        }
+
+        meta.lore(collapseDuplicateEmptyLines(finalLore));
     }
 
     /**

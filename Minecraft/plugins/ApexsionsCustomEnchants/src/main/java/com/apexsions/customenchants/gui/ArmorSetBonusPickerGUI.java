@@ -3,8 +3,10 @@ package com.apexsions.customenchants.gui;
 import com.apexsions.core.kit.KitStatType;
 import com.apexsions.customenchants.ApexsionsCustomEnchantsPlugin;
 import com.apexsions.customenchants.items.ColorUtil;
+import com.apexsions.customenchants.items.ItemLevelRequirement;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -362,12 +364,32 @@ public class ArmorSetBonusPickerGUI implements InventoryHolder {
         pdc.set(new NamespacedKey("apexsions", "set_stats"), PersistentDataType.STRING, sbLegacy.toString());
         pdc.set(new NamespacedKey("apexsions", "set_req"), PersistentDataType.INTEGER, !set4Stats.isEmpty() ? 4 : 2);
 
-        // Clean existing set bonus lore thoroughly using PlainText
+        // Clean existing set bonus lore thoroughly using PlainText (preserving level requirement)
         AdminItemCreatorGUI.cleanSetBonusLore(meta);
+
+        // Ensure level requirement is present before set bonus if configured in PDC
+        int reqLvl = ItemLevelRequirement.getRequiredLevel(meta);
+        if (reqLvl > 0) {
+            boolean hasLevelLore = false;
+            if (meta.hasLore() && meta.lore() != null) {
+                for (Component c : meta.lore()) {
+                    String plain = PlainTextComponentSerializer.plainText().serialize(c).trim().toUpperCase();
+                    if (ItemLevelRequirement.isLevelRequirementLore(plain)) {
+                        hasLevelLore = true;
+                        break;
+                    }
+                }
+            }
+            if (!hasLevelLore) {
+                ItemLevelRequirement.applyLevelRequirementLore(meta, reqLvl);
+            }
+        }
 
         // Update Lore
         List<Component> lore = meta.hasLore() && meta.lore() != null ? new ArrayList<>(meta.lore()) : new ArrayList<>();
-        lore.add(Component.empty());
+        if (!lore.isEmpty()) {
+            lore.add(Component.empty());
+        }
         Component setComp = (!cleanName.isBlank()) ? ColorUtil.parse(cleanName) : mm.deserialize("<yellow>APEXSIONS</yellow>");
         lore.add(mm.deserialize("<gold><bold>★ SET BONUS: </bold></gold>").append(setComp).append(mm.deserialize("<gold><bold> ★</bold></gold>")));
         if (!set2Stats.isEmpty()) {
@@ -383,7 +405,7 @@ public class ArmorSetBonusPickerGUI implements InventoryHolder {
             }
         }
 
-        meta.lore(lore);
+        meta.lore(ItemLevelRequirement.collapseDuplicateEmptyLines(lore));
         item.setItemMeta(meta);
     }
 

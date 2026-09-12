@@ -406,28 +406,17 @@ public class AdminItemCreatorGUI implements InventoryHolder {
 
         for (Component c : lore) {
             String plain = PlainTextComponentSerializer.plainText().serialize(c).trim().toUpperCase();
-            if (plain.contains("SET BONUS") ||
-                plain.contains("SYARAT") ||
-                plain.contains("EFEK") ||
-                plain.contains("PIECES") ||
-                plain.contains("HALF SET") ||
-                plain.contains("FULL SET")) {
+            if (ItemLevelRequirement.isLevelRequirementLore(plain)) {
+                cleaned.add(c);
+                continue;
+            }
+            if (ItemLevelRequirement.isSetBonusLine(plain)) {
                 continue;
             }
             cleaned.add(c);
         }
 
-        // Remove trailing empty lines that were previously inserted for spacing
-        while (!cleaned.isEmpty()) {
-            Component last = cleaned.get(cleaned.size() - 1);
-            String plain = PlainTextComponentSerializer.plainText().serialize(last).trim();
-            if (plain.isEmpty()) {
-                cleaned.remove(cleaned.size() - 1);
-            } else {
-                break;
-            }
-        }
-        meta.lore(cleaned);
+        meta.lore(ItemLevelRequirement.collapseDuplicateEmptyLines(cleaned));
     }
 
     public void removeFullsetBonusFromAll() {
@@ -484,13 +473,33 @@ public class AdminItemCreatorGUI implements InventoryHolder {
         pdc.set(new NamespacedKey("apexsions", "set_stats"), PersistentDataType.STRING, sbLegacy.toString());
         pdc.set(new NamespacedKey("apexsions", "set_req"), PersistentDataType.INTEGER, !globalSet4Stats.isEmpty() ? 4 : 2);
 
-        // Clean existing set bonus lore thoroughly using plain text matching
+        // Clean existing set bonus lore thoroughly using plain text matching (preserving level requirement)
         cleanSetBonusLore(meta);
+
+        // Ensure level requirement is present before set bonus if configured in PDC
+        int reqLvl = ItemLevelRequirement.getRequiredLevel(meta);
+        if (reqLvl > 0) {
+            boolean hasLevelLore = false;
+            if (meta.hasLore() && meta.lore() != null) {
+                for (Component c : meta.lore()) {
+                    String plain = PlainTextComponentSerializer.plainText().serialize(c).trim().toUpperCase();
+                    if (ItemLevelRequirement.isLevelRequirementLore(plain)) {
+                        hasLevelLore = true;
+                        break;
+                    }
+                }
+            }
+            if (!hasLevelLore) {
+                ItemLevelRequirement.applyLevelRequirementLore(meta, reqLvl);
+            }
+        }
 
         // Update lore with clean non-gradient colors
         if (!globalSet2Stats.isEmpty() || !globalSet4Stats.isEmpty()) {
             List<Component> lore = meta.hasLore() && meta.lore() != null ? new ArrayList<>(meta.lore()) : new ArrayList<>();
-            lore.add(Component.empty());
+            if (!lore.isEmpty()) {
+                lore.add(Component.empty());
+            }
             Component setComp = (!globalSetName.isBlank()) ? ColorUtil.parse(globalSetName) : mm.deserialize("<yellow>APEXSIONS</yellow>");
             lore.add(mm.deserialize("<gold><bold>★ SET BONUS: </bold></gold>").append(setComp).append(mm.deserialize("<gold><bold> ★</bold></gold>")));
             if (!globalSet2Stats.isEmpty()) {
@@ -505,7 +514,7 @@ public class AdminItemCreatorGUI implements InventoryHolder {
                     lore.add(mm.deserialize("<gray>  ● Efek: <aqua>" + e.getKey().getDisplayName() + " " + e.getKey().formatValue(e.getValue()) + "</aqua></gray>"));
                 }
             }
-            meta.lore(lore);
+            meta.lore(ItemLevelRequirement.collapseDuplicateEmptyLines(lore));
         }
         is.setItemMeta(meta);
     }
