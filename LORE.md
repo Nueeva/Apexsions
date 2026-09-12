@@ -8,12 +8,12 @@
 ## 🏛️ Identitas Semesta
 * **Nama Dunia:** `Apexsions` *(Dilarang menambahkan sebutan tambahan seperti SMP, Kingdom, atau Network)*
 * **Semboyan Resmi:** *The Peak Civilizations*
-* **Era Berjalan:** Era Rekonstruksi Pasca-Eksodus (The Age of Triarch Sovereignty)
+* **Era Berjalan:** Era Rekonstruksi Pasca-Eksodus (The Age of Triarch Sovereignty) & Pengawasan Tahta Leluhur Sions
 * **Pusat Koordinasi Dunia:** Benua Inti Apexsions
 
 ---
 
-## 📖 Bab I: Masa Keemasan Kekaisaran Sions (The Ancient Golden Age)
+## 📖 Bab I: Masa Keemasan Kekaisaran Kuno Sions (The Ancient Golden Age)
 
 Berabad-abad silam, jauh sebelum benua terbelah oleh benteng-benteng perbatasan dan bendera kerajaan yang saling bersaing, seluruh daratan dikenal sebagai **Kekaisaran Sions (The Ancient Empire of Sions)**. Tidak ada pos penjagaan antar-wilayah; peradaban manusia, kurcaci penambang, dan kaum bijak hutan hidup berdampingan di bawah satu titah kaisar yang arif.
 
@@ -39,14 +39,14 @@ Pada malam ritual agung ketika segel dimensi dipatahkan, hukum alam membalas den
 
 * Langit malam terbelah menjadi merah tembaga dan ungu pekat.
 * Seluruh istana megah, perpustakaan berkubah emas, dan balairung kaisar lenyap tertelan tanah amblas dalam hitungan jam.
-* Pasukan legiun yang terpapar energi gelap bermutasi seketika menjadi makhluk mengerikan yang haus darah, menyerang siapa saja tanpa membedakan kawan atau lawan.
+* Pasukan legiun yang terpapar energi gelap bermutasi seketika menjadi monstrositas mengerikan yang haus darah (*The Corrupted Legion*), menyerang siapa saja tanpa membedakan kawan atau lawan.
 * Hanya dalam satu malam kelam, imperium terbesar dalam sejarah dunia runtuh berkeping-keping.
 
 ---
 
 ## 🧭 Bab III: Eksodus Akbar & Berdirinya Tiga Kerajaan Berdaulat (The Great Exodus)
 
-Dari kepulan abu reruntuhan ibukota yang terbakar, para penyintas yang selamat menyadari bahwa tanah leluhur mereka telah tercemar selamanya. Dipimpin oleh para tokoh berintegritas tinggi, sisa-sisa bangsa Sions melarikan diri ke tiga penjuru mata angin. Perbedaan filosofi, keahlian, dan trauma masa lalu melahirkan **Tiga Kerajaan Berdaulat** yang tegak mandiri hingga hari ini:
+Dari kepulan abu reruntuhan ibukota yang terbakar, para penyintas yang selamat menyadari bahwa tanah leluhur mereka telah tercemar selamanya. Dipimpin oleh para perintis berjiwa luhur, sisa-sisa bangsa Sions melarikan diri ke tiga penjuru mata angin. Perbedaan filosofi, keahlian, dan trauma masa lalu melahirkan **Tiga Kerajaan Berdaulat** yang tegak mandiri hingga hari ini:
 
 ```
                                   [ZENITHAR]
@@ -71,56 +71,88 @@ Dari kepulan abu reruntuhan ibukota yang terbakar, para penyintas yang selamat m
 
 ---
 
+## 🗺️ Bab IV: Ensiklopedia Geografis, Karakteristik Wilayah & Stat Kerajaan
+
+Adaptasi selama berabad-abad di tanah pengungsian membentuk bentang alam, kebiasaan hidup, serta **fisiologi kodrati (Buff & Debuff In-Game)** yang aktif secara permanen pada setiap warga kerajaan melalui sistem `ApexsionsCore`.
+
+---
+
 ### 1. ☀️ Zenithar — Celestial & Solar Realm (Teritori Timur)
 
-*Penerus sah dinasti kekaisaran yang menjaga kemurnian tata krama istana, kehormatan kavaleri, dan relik suci di puncak tertinggi cakrawala.*
+*Penerus dinasti darah murni kekaisaran yang mempertahankan relik suci, tata krama istana, dan kehormatan kavaleri di puncak tertinggi cakrawala.*
 
-* **Asal-Usul Eksodus:** Kelompok yang berhasil bertahan di pusat istana adalah keluarga dinasti kerajaan (*Royal Bloodline*), para diplomat, cendekiawan tata negara, dan korps pengawal kehormatan kekaisaran. Mereka melarikan diri ke arah **Timur** menuju pegunungan berbatu tertinggi yang pertama kali disapa oleh fajar matahari (*Zenith*).
-* **Ibukota:** *Solarium Spire Citadel*
-* **Koordinat Geografis:** `world (-3028, 64, -5597)`
-* **Bentang Alam Khas:** Sky Plains, High Peaks, Jagged Peaks
-* **Gelar Penguasa Tertinggi:** *Monarch of the Sun*
-* **Gelar Prestise Pemain (Lv. 100):** `✦ EMPEROR OF ZENITHAR ✦`
-* **Tarif Pajak Kas Wilayah:** 25% *(Didedikasikan untuk pemeliharaan kubah pelindung marmer dan perisai nexus istana)*
+```
+╔════════════════════════════════════════════════════════════════════════════╗
+║ KARTOGRAFI & GEOGRAFI RESMI ZENITHAR                                      ║
+╠════════════════════════════════════════════════════════════════════════════╣
+║ • Ibukota Kerajaan   : Solarium Spire Citadel                             ║
+║ • Koordinat Pusat    : world (-3028, 64, -5597)                           ║
+║ • Bioma Ekosistem    : Sky Plains, High Peaks, Jagged Peaks, Stony Peaks  ║
+║ • Elevasi Rata-rata  : Ketinggian Tinggi (Y: 85 - 190)                    ║
+║ • Iklim & Cuaca      : Udara Pegunungan Sejuk, Angin Dingin Tipis, Cerah  ║
+║ • Penguasa Tertinggi : Monarch of the Sun                                 ║
+║ • Gelar Puncak (100) : ✦ EMPEROR OF ZENITHAR ✦                            ║
+║ • Pajak Wilayah      : 25.0% (Pemeliharaan Marmer Emas & Perisai Nexus)   ║
+╚════════════════════════════════════════════════════════════════════════════╝
+```
 
-#### Fisiologi Bangsa & Modifikasi Tempur (In-Game Stats):
-* **Keunggulan Kodrati (Buffs):**
-  * `+5%` Kecepatan Gerak (*Speed Boost*) — Kelincahan formasi kavaleri elit pelindung raja.
-  * `+7%` Keberuntungan (*Luck Boost*) — Berkah kemakmuran dinasti fajar matahari.
-  * `+6%` Total Serangan Fisik (*All Damage Boost*) — Penguasaan seni pedang dan anggar istana yang presisi.
-  * `+6%` Pertahanan Diri (*Defense*) — Perlindungan dari zirah plat baja bersepuh emas murni.
-  * `-5%` Reduksi Kerusakan Critical Musuh — Tangguhnya perisai kehormatan dalam menahan benturan maut.
-* **Kelemahan & Beban Sejarah (Debuffs):**
-  * `+7%` Kerentanan Racun (*Poison Vulnerability*) — Gaya hidup steril bangsawan membuat metabolisme mereka tidak kebal terhadap racun liar dan bisa ular rimba.
-  * Santapan Memulihkan Hunger Bar Lebih Sedikit (-1 Point) — Terbiasa dengan jamuan istana higienis; makanan medan perang lambat dicerna.
-  * Fluktuasi Pasar Dinamis — Biaya logistik tinggi di puncak ketinggian menyebabkan barang dagangan impor bernilai lebih mahal.
+#### A. Kondisi Geografis & Pertahanan Alamiah
+* **Topografi Dataran Tinggi:** Zenithar bertakhta di dataran tinggi bertebing curam yang menghadap langsung ke arah terbitnya fajar (*Zenith*). Lereng pegunungan terjal memberikan benteng alami dari serbuan infantri musuh, memaksa penyerang mendaki celah-celah sempit yang diawasi oleh garda pemanah kavaleri.
+* **Arsitektur Monolitik:** Didominasi oleh marmer putih bersih beraksen emas murni (*Gilded Marble*), menara-menara lancip observatorium, serta jalan layang megah yang menghubungkan puncak bukit satu ke bukit lainnya.
+* **Ketersediaan Sumber Daya:** Sangat kaya akan deposit Lapis Lazuli, Emas Pegunungan, dan Besi Berkualitas Tinggi. Namun tanah berbatu membuat pertanian gandum membutuhkan sistem terasering rumit dan pemeliharaan konstan.
+
+#### B. Fisiologi Kodrati: Buff & Debuff In-Game
+
+| Kategori | Efek / Parameter | Mekanisme & Penjelasan Tematik |
+| :--- | :--- | :--- |
+| **BUFF** | `+5%` Kecepatan Gerak (*Speed*) | Fisiologi kavaleri elit yang terlatih bermanuver lincah di jalur pegunungan terjal. |
+| **BUFF** | `+7%` Keberuntungan (*Luck*) | Berkah kemakmuran dinasti fajar matahari yang menarik peluang lebih baik dalam loot peti dan penempaan. |
+| **BUFF** | `+6%` Total Serangan (*All Damage*) | Presisi teknik anggar dan pedang rapier para ksatria istana berdisiplin tinggi. |
+| **BUFF** | `+6%` Pertahanan Diri (*Defense*) | Ketahanan zirah baja berlapis emas murni warisan istana kekaisaran. |
+| **BUFF** | `-5%` Reduksi Crit Musuh | Formasi perisai kehormatan yang mampu meredam benturan fatal dari serangan mematikan lawan. |
+| **DEBUFF** | `+7%` Kerentanan Racun (*Poison*) | Gaya hidup aristokrat yang steril membuat metabolisme tubuh mereka lemah terhadap racun liar dan racun serangga rimba. |
+| **DEBUFF** | Pemulihan Makanan Berkurang (-1) | Terbiasa dengan santapan hidangan istana yang bersih; ransum lapangan kasar memulihkan rasa kenyang lebih lambat. |
+| **DEBUFF** | Fluktuasi Pasar Dinamis | Akses pengiriman barang ke puncak gunung membutuhkan biaya logistik besar, menyebabkan harga impor cenderung lebih tinggi. |
 
 ---
 
 ### 2. 🌋 Solterra — Crimson Earth & Fire Empire (Teritori Selatan)
 
-*Kekaisaran tempur tanpa ampun bermahkotakan kawah lahar mendidih, badlands membara, dan benteng batu obsidian.*
+*Kekaisaran perang perkasa bermahkotakan kawah lahar mendidih, badlands membara, dan benteng batu obsidian.*
 
-* **Asal-Usul Eksodus:** Kelompok yang membelah jalan ke arah **Selatan** adalah para **pesulap tempur agung (*Combat Arcanists*)** dan para prajurit veteran garis depan terkuat dari bekas legiun Sions. Membenci kelemahan politik istana yang dianggap lamban, mereka menantang tanah paling brutal di muka bumi: gurun pasir tandus, ngarai mesa berbatu tajam, dan kaldera magma.
-* **Ibukota:** *Ignis Bastion Fortress*
-* **Koordinat Geografis:** `world (-5843, 65, 889)`
-* **Bentang Alam Khas:** Desert, Badlands / Mesa, Savanna Plateau, Kawah Vulkanik
-* **Gelar Penguasa Tertinggi:** *Warlord of the Dunes*
-* **Gelar Prestise Pemain (Lv. 100):** `✦ LORD OF SOLTERRA ✦`
-* **Tarif Pajak Kas Wilayah:** 20% *(Dialokasikan untuk industri metalurgi, pasokan senjata berat, dan bahan peledak)*
+```
+╔════════════════════════════════════════════════════════════════════════════╗
+║ KARTOGRAFI & GEOGRAFI RESMI SOLTERRA                                      ║
+╠════════════════════════════════════════════════════════════════════════════╣
+║ • Ibukota Kerajaan   : Ignis Bastion Fortress                             ║
+║ • Koordinat Pusat    : world (-5843, 65, 889)                             ║
+║ • Bioma Ekosistem    : Badlands / Mesa, Desert, Savanna Plateau, Caldera  ║
+║ • Elevasi Rata-rata  : Ngarai Cadas & Lembah Lahar (Y: 55 - 80)           ║
+║ • Iklim & Cuaca      : Panas Menyengat, Gersang Ekstrem, Udara Asap Magma ║
+║ • Penguasa Tertinggi : Warlord of the Dunes                               ║
+║ • Gelar Puncak (100) : ✦ LORD OF SOLTERRA ✦                               ║
+║ • Pajak Wilayah      : 20.0% (Industri Metalurgi, Mesin Perang & Senjata) ║
+╚════════════════════════════════════════════════════════════════════════════╝
+```
 
-#### Fisiologi Bangsa & Modifikasi Tempur (In-Game Stats):
-* **Keunggulan Kodrati (Buffs):**
-  * `+15%` Total Serangan (*All Damage Boost*) — Peleburan daya hancur sihir api terlarang dan tenaga fisik monster.
-  * `+10%` Serangan Kritis (*Critical Damage Boost*) — Tebasan kapak dan pedang besar yang diarahkan tepat ke titik mematikan lawan.
-  * `+10%` Kecepatan Menambang (*Mining Speed Boost*) — Tangan besi yang terbiasa memecah batu obsidian dan batuan cadas vulkanik.
-  * `+2%` Pertahanan Diri (*Defense*).
-  * Rasio Jual Hasil Tambang Tinggi (65% dari harga beli pasar) — Pusat perapian dan pandai besi terbesar di seluruh jagat Apexsions.
-* **Kelemahan & Beban Sejarah (Debuffs):**
-  * `-2 HP` Maksimal Darah (Total 9 Hati) — Efek samping luka bakar sihir panas internal serta kebiasaan bertarung tanpa baju zirah penutup dada.
-  * `+8%` Total Damage Diterima (*Damage Vulnerability*) — Agresivitas liar yang mengabaikan keselamatan dan pertahanan diri.
-  * `+7%` Laju Rasa Lapar (*Exhaustion Rate*) — Suhu gurun dan perapian membara membakar kalori tubuh jauh lebih cepat.
-  * Tanah pertanian dan tanaman cepat layu serta mengering akibat iklim gersang ekstrem.
+#### A. Kondisi Geografis & Pertahanan Alamiah
+* **Bentang Cadas Vulkanik:** Solterra berdiri kokoh di atas patahan tektonik aktif di wilayah selatan. Parit-parit lahar mendidih dan benteng batu basal hitam (*Obsidian Bastions*) menjadi barikade mematikan bagi siapa pun yang mencoba mendekat tanpa pengawalan.
+* **Arsitektur Tempur Kasar:** Bangunan bergaya brutalistik fungsional dari batuan merah terakota, batu magma berpendar, dan lempengan besi berat. Tidak ada ornamen sia-sia; setiap sudut dinding dirancang untuk memantulkan proyektil dan menahan gempuran bom TNT.
+* **Ketersediaan Sumber Daya:** Pusat metalurgi terbesar di benua. Melimpah ruah akan Redstone murni, Tembaga Keras, Besi Hitam, dan Serpihan Netherite. Namun, air tawar adalah komoditas mewah yang dijaga ketat di tangki-tangki bawah tanah.
+
+#### B. Fisiologi Kodrati: Buff & Debuff In-Game
+
+| Kategori | Efek / Parameter | Mekanisme & Penjelasan Tematik |
+| :--- | :--- | :--- |
+| **BUFF** | `+15%` Total Serangan (*All Damage*) | Perpaduan sihir api perusak dan kekuatan otot bertenaga raksasa para veteran garis depan. |
+| **BUFF** | `+10%` Serangan Kritis (*Crit Damage*) | Tebasan kapak tempur dan pedang berat yang selalu diarahkan membelah titik paling rapuh lawan. |
+| **BUFF** | `+10%` Kecepatan Menambang (*Mining*) | Lengan baja yang terbiasa mengayunkan beliung menghancurkan batu basal dan urat batuan cadas terik. |
+| **BUFF** | `+2%` Pertahanan Diri (*Defense*) | Kulit tebal yang terbiasa terpapar percikan bara api dan debu mesiu. |
+| **BUFF** | Rasio Jual Ore Tinggi (`65%`) | Pandai besi pandai memurnikan bijih mentah sehingga pedagang pasar menghargai hasil tambang Solterra lebih tinggi. |
+| **DEBUFF** | `-2 HP` Darah Maksimal (Total 9 Hati) | Efek samping luka bakar sihir api internal berkepanjangan serta doktrin bertarung tanpa zirah dada penuh. |
+| **DEBUFF** | `+8%` Kerentanan Damage Masuk | Sifat bertarung liar dan agresif membuat mereka sering mengabaikan pertahanan demi melancarkan serangan balasan. |
+| **DEBUFF** | `+7%` Laju Kelelahan (*Exhaustion*) | Suhu membakar badlands dan perapian pandai besi menguras cairan tubuh dan kalori jauh lebih cepat. |
+| **DEBUFF** | Tanah Pertanian Cepat Mengering | Iklim gersang tanpa ampun membuat blok tanah basah (*hydrated farmland*) cepat menguap dan kembali mengeras. |
 
 ---
 
@@ -128,44 +160,103 @@ Dari kepulan abu reruntuhan ibukota yang terbakar, para penyintas yang selamat m
 
 *Suaka kedamaian berdaulat di balik kanopi purba, samudra kristal biru, dan naungan sakral Pohon Dunia (World Tree).*
 
-* **Asal-Usul Eksodus:** Para pengungsi yang melangkah ke arah **Barat** adalah golongan rakyat pekerja keras: buruh konstruksi monolitik, pengrajin batu, arsitek lapangan, penenun, petani lumbung kekaisaran, didukung oleh barisan prajurit garda rakyat (pejuang gerilya non-sihir dan ahli herbalisme). Mereka bersumpah tidak akan pernah lagi tunduk pada nafsu perang takhta, lalu mendirikan suaka di mana kemakmuran diukur dari lumbung pangan dan keharmonisan hayati.
-* **Ibukota:** *Eldergrove Sanctuary*
-* **Koordinat Geografis:** `world (-9666, 64, -4812)`
-* **Bentang Alam Khas:** Old Growth Taiga, Dense Jungle, Warm Ocean, Pesisir Karang
-* **Gelar Penguasa Tertinggi:** *Guardian of the World Tree*
-* **Gelar Prestise Pemain (Lv. 100):** `✦ AVATAR OF SYLVAMOOR ✦`
-* **Tarif Pajak Kas Wilayah:** 15% *(Pajak terendah di benua, dikelola melalui musyawarah gotong-royong swadaya masyarakat)*
+```
+╔════════════════════════════════════════════════════════════════════════════╗
+║ KARTOGRAFI & GEOGRAFI RESMI SYLVAMOOR                                     ║
+╠════════════════════════════════════════════════════════════════════════════╣
+║ • Ibukota Kerajaan   : Eldergrove Sanctuary                               ║
+║ • Koordinat Pusat    : world (-9666, 64, -4812)                           ║
+║ • Bioma Ekosistem    : Old Growth Taiga, Dense Jungle, Warm Ocean, Coast  ║
+║ • Elevasi Rata-rata  : Lembah Hijau & Pesisir Pantai (Y: 62 - 75)         ║
+║ • Iklim & Cuaca      : Hujan Tropis Teratur, Udara Segar Lembap, Hutan    ║
+║ • Penguasa Tertinggi : Guardian of the World Tree                         ║
+║ • Gelar Puncak (100) : ✦ AVATAR OF SYLVAMOOR ✦                            ║
+║ • Pajak Wilayah      : 15.0% (Paling Rendah • Dikelola Gotong-Royong)     ║
+╚════════════════════════════════════════════════════════════════════════════╝
+```
 
-#### Fisiologi Bangsa & Modifikasi Tempur (In-Game Stats):
-* **Keunggulan Kodrati (Buffs):**
-  * `+2 HP` Maksimal Darah (Total 11 Hati) — Ketahanan tubuh alami hasil kerja keras fisik bertahun-tahun di alam terbuka.
-  * `+12%` Keberuntungan (*Luck Boost*) — Berkah kemakmuran dari keselarasan batin dengan getaran Pohon Dunia.
-  * `+7%` Peluang Ekstra Drop Monster (*Mob Drop Rate*) — Keahlian membedah dan memanfaatkan seluruh anatomi hasil buruan rimba.
-  * `+8%` Pertahanan Diri & `5%` Reduksi Kerusakan Masuk (*~12.6% Total Defense*) — Perlindungan getah dan kulit kayu purba.
-  * `-5%` Kerentanan & Durasi Efek Racun (*Poison Resistance*) — Pengetahuan mendalam tentang sari herba dan penawar racun alami.
-  * Lahan pertanian selalu subur dan lembap abadi (tidak pernah mengalami kekeringan).
-* **Kelemahan & Beban Sejarah (Debuffs):**
-  * Mabuk Ketinggian di `Y > 110` (Menderita Efek Hunger & Weakness Ringan) — Terbiasa tinggal di bawah teduhnya lembah hutan kanopi rimbun.
-  * `+15%` Kerusakan Akibat Terbakar (Api, Lahar, Magma) — Kelemahan mutlak serat sel hidup terhadap elemen api musuh.
-  * `-10%` Kecepatan Menambang — Kurang terlatih mengekstraksi batuan keras di kedalaman jurang bawah tanah.
-  * `-10%` Serangan Melawan Pemain (PvP) & `-5%` Serangan ke Monster (PvE) — Kodrat jiwa damai komunal yang lebih mengutamakan pertahanan ketimbang agresi membunuh.
+#### A. Kondisi Geografis & Pertahanan Alamiah
+* **Lembah Hutan Kanopi Kuno:** Terbentang di barat laut, terlindungi oleh pepohonan raksasa berusia ribuan tahun dan teluk samudra biru jernih. Labirin semak belukar dan rawa pasang surut membuat pasukan musuh berkuda mudah tersesat dan terjebak dalam perangkap akar alam liar.
+* **Arsitektur Organik Menyatu:** Rumah-rumah panggung di atas dahan pohon, jembatan gantung sulur hidup, dan kuil suci yang dipahat langsung di batang Pohon Dunia (*The World Tree*). Mereka tidak merusak alam; mereka hidup dari berkahnya.
+* **Ketersediaan Sumber Daya:** Lumbung pangan terbesar di benua. Memiliki suplai kayu tak terbatas, tanaman obat herbal, hasil laut kristal, wol berkualitas, serta deposit Emerald dan Diamond di gua-gua lumut bawah laut.
+
+#### B. Fisiologi Kodrati: Buff & Debuff In-Game
+
+| Kategori | Efek / Parameter | Mekanisme & Penjelasan Tematik |
+| :--- | :--- | :--- |
+| **BUFF** | `+2 HP` Darah Maksimal (Total 11 Hati)| Daya tahan biologis unggul hasil kerja fisik di alam terbuka dan konsumsi ramuan herbal murni. |
+| **BUFF** | `+12%` Keberuntungan (*Luck*) | Harmoni batin dengan getaran Pohon Dunia mendatangkan keberkahan hasil alam dan rezeki panen. |
+| **BUFF** | `+7%` Peluang Drop Mob (*Drop Rate*) | Kemahiran membedah dan memanfaatkan setiap jengkal anatomi buruan rimba tanpa menyisakan sampah. |
+| **BUFF** | Pertahanan Alamiah (`~12.6% Total`) | Perpaduan `+8%` defense zirah getah purba dan reduksi pasif `5%` seluruh damage yang masuk ke tubuh. |
+| **BUFF** | `-5%` Kerentanan Racun (*Poison Res.*) | Penguasaan ramuan penawar herbal memberikan kekebalan lebih tinggi terhadap bisa laba-laba dan racun tanaman. |
+| **BUFF** | Kelembapan Lahan Tani Abadi | Berkat anugerah roh air dan kanopi, tanah pertanian di Sylvamoor tidak pernah mengering atau berubah menjadi tandus. |
+| **DEBUFF** | Mabuk Ketinggian di `Y > 110` | Terbiasa bernapas di udara lembap lembah; berada di puncak tebing tipis menyebabkan pusing (*Hunger & Weakness*). |
+| **DEBUFF** | `+15%` Kerusakan Api & Lahar | Sel tubuh dan perlengkapan serat alami sangat sensitif terhadap jilatan api, magma, dan mantra pembakar. |
+| **DEBUFF** | `-10%` Kecepatan Menambang | Budaya menghormati batuan bumi membuat mereka tidak terbiasa mengekstraksi dinding gua dengan perkakas berat. |
+| **DEBUFF** | `-10%` PvP Damage & `-5%` PvE Damage | Jiwa komunal cinta damai; persenjataan mereka difokuskan untuk perlindungan diri, bukan agresi pembantaian. |
 
 ---
 
-## ☣️ Bab IV: Misteri Reruntuhan Episentrum di Jantung Wilderness (Terra Interdicta)
+## 🏛️ Bab V: Alam Sakral Sions — Tahta Kerajaan Khusus Otoritas & Dewan Leluhur (The Imperial Sovereign Realm of Sions)
 
-Tepat di titik tengah alam liar (*Wilderness*) yang membelah perbatasan ketiga kerajaan, terbentang zona anomali paling terlarang di benua: **Terra Interdicta (Sanctum of Sions)**.
+Di luar tiga kerajaan berdaulat milik bangsa fana, berdirilah ranah keempat yang paling agung sekaligus terisolasi dari pertikaian politik benua: **Tahta Kerajaan Sions (The Ancient Realm of Sions / Sions Sanctuary)**.
+
+```
+                                  [TAHTA SIONS]
+                         (Alam Sakral Di Atas Awan)
+                        Khusus Kasta Otoritas & Admin
+                          ancestor • architect • overseer
+                                warden • herald
+                                      │
+                                      ▼
+             Pengawasan, Keseimbangan Kosmik & Penegakan Hukum
+                                      │
+                 ┌────────────────────┼────────────────────┐
+                 ▼                    ▼                    ▼
+            [ZENITHAR]           [SOLTERRA]           [SYLVAMOOR]
+         (Kerajaan Fana)      (Kerajaan Fana)      (Kerajaan Fana)
+```
+
+### 1. Hakikat & Kedudukan Sakral Kerajaan Sions
+Kerajaan Sions bukanlah kerajaan fana yang dapat dipilih secara bebas oleh rakyat jelata melalui perintah `/k choose`. Kerajaan ini didedikasikan secara eksklusif bagi **Kasta Otoritas Tertinggi dan Dewan Staf Server**:
+* `ancestor` (Tier V — Sang Pendiri & Pemilik Tahta Tunggal)
+* `architect` & `overseer` (Tier IV — Pengawas Keseimbangan & Arsitek Benua)
+* `warden` & `herald` (Tier III — Panglima Hukum & Penjaga Kedamaian)
+
+Dalam kanon sejarah, Kerajaan Sions merepresentasikan sisa-sisa **intrapusaka kemurnian bangsa Sions asli** yang berhasil diangkat ke dimensi cakrawala sakral sebelum gelombang radiasi Dimensi Kegelapan sempat mencemari mereka. Dari atas takhta kristal monolit ini, para leluhur mengawasi jalannya peradaban tiga kerajaan di bawahnya.
+
+### 2. Filosofi & Peran Tahta Sions (*The Cosmic Stewards*)
+* **Penjaga Keseimbangan Kosmik (*Balance Stewards*):** Warga Kerajaan Sions tidak berpihak kepada Zenithar, Solterra, maupun Sylvamoor. Jika salah satu kerajaan menjadi terlalu tirani atau berupaya membakar tatanan dunia, dewan Sions berhak turun tangan merestorasi keadilan (*Pax Sions*).
+* **Arsitek Realitas & Infrastruktur:** Para *Architect* dan *Overseer* merancang hukum ekonomi, menyeimbangkan suplai pasar lelang, membangun fasilitas monumental, dan memastikan tidak ada anomali dimensi (bug/eksploitasi ilegal) yang merusak tanah air.
+* **Hakim Kedaulatan Tertinggi:** Segala perselisihan batas wilayah antar-kerajaan yang melanggar Piagam Sions diadili secara langsung oleh para *Warden* di balairung Pengadilan Monolit Sions.
+
+### 3. Karakteristik Realm & Hak Istimewa (Gameplay & Lore Privileges)
+1. **Kekebalan dari Debuff Fana (*Divine Immunity*):** Fisiologi darah murni leluhur Sions tidak terikat pada debuff dunia bawah. Mereka kebal terhadap mabuk ketinggian, tidak rapuh oleh racun gurun, dan tahan terhadap sengatan panas vulkanik.
+2. **Perisai Nexus Mutlak (*Absolute Sanctum Protection*):** Wilayah klaim Kerajaan Sions dilindungi oleh segel purba yang tidak dapat ditaklukkan melalui sistem pengepungan biasa (*Siege-Proof*).
+3. **Gerbang Dimensi Otoritas:** Memiliki akses instan ke seluruh penjuru benua melalui jaringan *Aetherial Portals* untuk melakukan patroli ketertiban, inspeksi pemain (`/inspect`), dan mediasi konflik.
+
+### 4. Rencana Implementasi Masa Depan (Development Roadmap)
+Secara teknis di masa mendatang (`ApexsionsCore`), Kerajaan Sions akan diintegrasikan sebagai faksi administratif mandiri:
+* Pendaftaran pemain ke kerajaan ini dikunci khusus berdasarkan permission kasta staf (`apexsions.admin` / rank weight `>= 80`).
+* Memiliki bendera monolit berwarna emas obsidian dengan lambang burung pembalik takdir (*The Phoenix of Sions*).
+* Memiliki balairung istana gantung sakral (*Aetherial Spire of Sions*) yang menjadi pusat musyawarah dewan admin dan tempat perjamuan diplomatik antar-raja.
+
+---
+
+## ☣️ Bab VI: Misteri Reruntuhan Episentrum di Jantung Wilderness (Terra Interdicta)
+
+Tepat di titik tengah alam liar (*Wilderness*) yang membelah perbatasan ketiga kerajaan fana, terbentang zona anomali paling terlarang di muka bumi: **Terra Interdicta (Sanctum of Sions)**.
 
 Wilayah ini adalah episentrum meledaknya portal Dimensi Kegelapan pada malam kehancuran. Hingga detik ini, Terra Interdicta sengaja dihapus dari peta kartografi resmi ketiga kerajaan karena beberapa anomali mematikan:
 1. **Kabut Kegelapan Abadi:** Langit di atas reruntuhan senantiasa berwarna hitam pekat, menolak sinar mentari maupun cahaya bintang.
-2. **Mutasi Sisa Legiun Sions:** Ribuan prajurit kekaisaran kuno yang terjebak di sana tidak pernah mati; mereka menjelma menjadi monstrositas bertingkat tinggi (*High-Tier Corrupted Elites & Boss Entities*) dengan senjata lapis kehampaan.
+2. **Mutasi Sisa Legiun Sions:** Ribuan prajurit kekaisaran kuno yang tertinggal bermutasi menjadi monstrositas bertingkat tinggi (*High-Tier Corrupted Elites & Boss Entities*) dengan senjata lapis kehampaan.
 3. **Peti Harta Terkutuk:** Berbagai ekspedisi nekat melaporkan bahwa di balik dinding basal yang runtuh tersimpan bilik perbendaharaan emas kaisar, cetak biru bangunan terlupakan, dan gulungan mantra magis kuno yang tak ternilai harganya.
 
-Hanya para petualang berpengalaman dengan perlengkapan berkasta *Legendary* atau *Fabled* yang mampu bertahan hidup di Terra Interdicta lebih dari beberapa menit.
+Hanya para petualang tangguh dengan perlengkapan berkasta *Legendary* atau *Fabled* yang mampu bertahan hidup di Terra Interdicta lebih dari beberapa menit.
 
 ---
 
-## 👑 Bab V: Tatanan Sebelas Kasta Sosial (The Eleven Castes of Civilization)
+## 👑 Bab VII: Tatanan Sebelas Kasta Sosial (The Eleven Castes of Civilization)
 
 Untuk menjaga stabilitas dunia dan menghormati kontribusi setiap jiwa terhadap eksistensi semesta Apexsions, ditegakkan **Tatanan Sebelas Kasta Sosial**:
 
@@ -175,6 +266,8 @@ Untuk menjaga stabilitas dunia dan menghormati kontribusi setiap jiwa terhadap e
 [ TIER IV ] ✦ REALM ARCHITECT (architect) ── ✦ OVERSEER OF REALMS (overseer) (Bobot: 95)
                │
 [ TIER III ]✦ WARDEN (warden) ───────────── ✦ HERALD (herald) (Bobot: 90 / 80)
+               │
+───────────────────────────────────────────── [BATAS DEWAN KERJAAN SIONS]
                │
 [ TIER II ] ✦ SIONS (sions) ─────────────── Apex Donator & Guardian of Lore (Bobot: 70)
             ✦ EMPEROR (emperor) ─────────── Donator Tier 4 (Bobot: 60)
@@ -187,21 +280,21 @@ Untuk menjaga stabilitas dunia dan menghormati kontribusi setiap jiwa terhadap e
 
 | Kasta / Tingkat | Nama Rank Resmi | Bobot Otoritas | Peran & Kedudukan Kosmik |
 | :--- | :--- | :---: | :--- |
-| **Tier V** | `ancestor` | **100** | **The Ancestor / Pemilik Tahta Tertinggi.** Penjaga hukum kodrat dan pencipta fondasi benua Apexsions. |
-| **Tier IV** | `architect` | **95** | **Realm Architect.** Perancang struktur dunia, keseimbangan gameplay, dan insinyur agung peradaban. |
-| **Tier IV** | `overseer` | **95** | **Integrity & Balance Overseer.** Penjaga integritas server, penyeimbang kekuatan antar-kerajaan, dan pengawas keadilan. |
-| **Tier III** | `warden` | **90** | **Head Staff / Penglima Tertinggi.** Penegak hukum tertinggi di medan perang dan koordinator administrasi daratan. |
-| **Tier III** | `herald` | **80** | **Staff / Moderator / Penjaga Gerbang.** Utusan resmi kerajaan yang membimbing rakyat dan menindak pelanggar kedamaian. |
-| **Tier II** | `sions` | **70** | **Apex Patron / Keturunan Sejati.** Kasta donatur tertinggi penyandang nama leluhur, penjaga perbendaharaan peradaban. |
-| **Tier II** | `emperor` | **60** | **Donator Tier 4.** Bangsawan agung pendukung ekspansi peradaban dengan hak istimewa istana. |
-| **Tier II** | `sovereign` | **50** | **Donator Tier 3.** Pemimpin kedaulatan regional dan penyokong ekonomi kerajaan. |
+| **Tier V** | `ancestor` | **100** | **The Ancestor / Pemilik Tahta Tertinggi.** Penjaga hukum kodrat dan pencipta fondasi benua Apexsions. Pemegang tahta tertinggi Kerajaan Sions. |
+| **Tier IV** | `architect` | **95** | **Realm Architect.** Perancang struktur dunia, insinyur tata ruang, dan penyeimbang sistem gameplay di ranah Sions. |
+| **Tier IV** | `overseer` | **95** | **Integrity & Balance Overseer.** Penjaga integritas server, penegak keadilan sistemik, dan pengawas perimbangan kekuatan. |
+| **Tier III** | `warden` | **90** | **Head Staff / Panglima Tertinggi.** Penegak hukum di medan tempur dan penindak pelanggar ketertiban benua. |
+| **Tier III** | `herald` | **80** | **Staff / Moderator / Penjaga Gerbang.** Pembimbing rakyat baru, pengawas kedamaian chat, dan utusan perdamaian dewan Sions. |
+| **Tier II** | `sions` | **70** | **Apex Patron / Keturunan Sejati.** Kasta donatur tertinggi penyandang nama leluhur, penyokong utama perbendaharaan peradaban. |
+| **Tier II** | `emperor` | **60** | **Donator Tier 4.** Bangsawan agung pendukung ekspansi peradaban dengan hak istimewa istana fana. |
+| **Tier II** | `sovereign` | **50** | **Donator Tier 3.** Pemimpin kedaulatan regional dan penyokong ekonomi kerajaan fana. |
 | **Tier II** | `archon` | **40** | **Donator Tier 2.** Ksatria pelindung terpilih yang memperkuat benteng pertahanan perbatasan. |
 | **Tier II** | `ascendant` | **30** | **Donator Tier 1.** Jiwa yang telah bangkit dan memberikan sumbangsih awal bagi kemakmuran dunia. |
 | **Tier I** | `wanderer` | **10** | **Warga Baru / Pengelana Dasar.** Jiwa perintis yang baru tiba di benua, pondasi utama regenerasi peradaban. |
 
 ---
 
-## ⚔️ Bab VI: Hukum Perang Kedaulatan, Nexus, dan Ekonomi Lintas Batas
+## ⚔️ Bab VIII: Hukum Perang Kedaulatan, Nexus, dan Ekonomi Lintas Batas
 
 Kedamaian di Apexsions bukanlah kepasrahan, melainkan keseimbangan kekuatan bersenjata yang diatur oleh piagam kehormatan:
 
@@ -226,7 +319,7 @@ Kedamaian di Apexsions bukanlah kepasrahan, melainkan keseimbangan kekuatan bers
 
 ---
 
-## 🕊️ Bab VII: Sumpah Pengelana Baru (The Wanderer's Oath)
+## 🕊️ Bab IX: Sumpah Pengelana Baru (The Wanderer's Oath)
 
 Ketika seorang pengelana baru pertama kali membuka mata di altar kedatangan *Spawn Sanctum*, ia membawa kepingan takdir yang belum tertulis. Tidak ada paksaan untuk menjadi ksatria pedang, arsitek benteng, atau saudagar tambang. Namun, satu keputusan wajib diambil sebelum melangkah ke alam liar:
 
@@ -242,5 +335,5 @@ Gunakan perintah suci:
 /kingdom choose
 ```
 
-Jawablah panggilan zaman. Ukir namamu dalam lembaran sejarah, bangun peradabanmu, dan buktikan bahwa bangsamu layak berdiri di puncak tertinggi:  
+Jawablah panggilan zaman. Ukir namamu dalam lembaran sejarah, bangun peradabanmu, dan buktikan bahwa bangsamu layak berdiri di puncak tertinggi di bawah pengawasan Tahta Sions:  
 **Apexsions — The Peak Civilizations.**
