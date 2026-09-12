@@ -13,7 +13,7 @@ import java.util.List;
 
 /**
  * Interactive Admin GUI for inspecting and previewing all 3 Kingdom Shops
- * (Zenithar 25% tax, Solterra 20% tax + 65% ore sell ratio, Sylvamoor 15% tax).
+ * (Zenithar 18% tax + 15% block discount, Solterra 20% tax + 65% ore sell ratio, Sylvamoor 15% tax).
  */
 public class AdminKingdomShopSelectorGUI extends ShopGui {
 

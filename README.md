@@ -44,7 +44,7 @@ Apexsions/
 
 ### 👑 ApexsionsCore
 - **3 Kerajaan Berdaulat Pasca-Runtuhnya Kekaisaran Sions**:
-  - **Zenithar** (Arah Timur / Zenith): Penerus Dinasti & Keluarga Kerajaan Sions yang bertahan bersama kavaleri kehormatan di puncak cakrawala (*Buff: Speed, Luck, Damage & Defense; Debuff: Kerentanan Racun, Porsi Makan*).
+  - **Zenithar** (Arah Timur / Zenith): Penerus Dinasti & Keluarga Kerajaan Sions yang bertahan bersama kavaleri kehormatan di puncak cakrawala (*Buff: Speed +8%, Luck +15%, [Royal Discipline] All Damage & Defense, -25% Anti-Crit, Diskon 50% Pajak Lelang, Bunga Bank +35%, Diskon 15% Blok Toko; Debuff: Kerentanan Racun, Biaya Tempa Anvil +1 EXP*).
   - **Solterra** (Arah Selatan): Persekutuan Pesulap Tempur (Magician) & Prajurit Garis Depan tangguh di kawah vulkanik cadas (*Buff: High Damage, Critical, Mining Speed; Debuff: -2 HP Darah, Vulnerability, Cepat Lapar*).
   - **Sylvamoor** (Arah Barat): Peradaban Mandiri Kaum Pekerja, Petani, dan Pejuang Rimba di kanopi purba (*Buff: +2 HP Darah, High Defense, Luck, Drop Rate; Debuff: Mabuk Ketinggian, Kerentanan Api, Reduced PvP*).
 - **Auto-Respawn Ibukota Kerajaan Terintegrasi BlueMap**:
@@ -363,7 +363,7 @@ Dari reruntuhan tersebut, sisa-sisa penduduk terpecah menjadi tiga peradaban bes
 1. **👑 Zenithar (Cakrawala Timur / Zenith Peak)**:
    - **Latar Belakang**: Dinasti bangsawan, keluarga kerajaan Sions yang selamat, dan ordo kavaleri suci yang hijrah ke pegunungan kristal timur.
    - **Filosofi**: Kemuliaan, garis keturunan murni, tata krama, dan benteng pertahanan tak tertembus.
-   - **Spesialisasi**: Logam mulia, penempaan armor kokoh, dan kecepatan manuver (*Buff: Speed, Luck, Damage & Defense; Debuff: Rentan Racun, Nafsu Makan Cepat*).
+   - **Spesialisasi**: Pusat perbankan, pasar lelang, diskon perbendaharaan istana, dan anti-crit dueling (*Buff: Speed +8%, Luck +15%, [Royal Discipline] Damage & Defense, -25% Anti-Crit, Diskon 50% Pajak Lelang, Bunga Bank +35%, Diskon 15% Blok Toko; Debuff: Rentan Racun, Biaya Tempa Anvil +1 EXP*).
 2. **⚔️ Solterra (Kawah Cadas Vulkanik Selatan)**:
    - **Latar Belakang**: Aliansi magician tempur, alkemis penjinak elemen, dan ksatria perang garis depan yang mendirikan kota di tanah vulkanik dan gurun emas tandus.
    - **Filosofi**: Kekuatan mutlak, disiplin tempur, dan penguasaan api serta sihir destruktif.

@@ -269,7 +269,7 @@ Ekosistem Apexsions tidak sekadar kumpulan plugin teknis terpisah, melainkan per
 Dahulu kala, benua ini dipersatukan di bawah satu imperium agung yang membentang tanpa batas: **Kekaisaran Kuno Sions**. Namun, ambisi pemimpin terakhirnya untuk melipatgandakan kekuatan pasukan dengan menyerap energi terlarang dari dimensi kegelapan (*Dark Dimension*) memicu malapetaka dahsyat (*The Great Rupture*). Kekaisaran runtuh dalam kehancuran kosmis, memaksa rakyatnya tercerai-berai:
 1. **Zenithar (Arah Timur / Zenith Cakrawala)**:
    - *Latar Belakang*: Keluarga dinasti kerajaan, bangsawan berdarah murni, dan kavaleri suci yang berhasil mempertahankan diri dan hijrah ke arah timur pegunungan kristal.
-   - *Karakteristik & Buff*: Menjunjung tinggi kehormatan dan pertahanan suci (*Buff: Speed, Luck, Damage Reduction; Debuff: Kerentanan Racun, Porsi Makan*).
+   - *Karakteristik & Buff*: Pusat perbankan, pasar lelang, kavaleri istana, dan pertahanan anti-crit (*Buff: Speed +8%, Luck +15%, [Royal Discipline] Damage & Defense, -25% Anti-Crit, Diskon 50% Pajak Lelang, Bunga Bank +35%, Diskon 15% Blok Toko; Debuff: Kerentanan Racun, Biaya Tempa Anvil +1 EXP*).
 2. **Solterra (Arah Selatan / Kawah Emas Vulkanik)**:
    - *Latar Belakang*: Para ahli sihir tempur (Magicians), alkemis, dan tentara tangguh berpengalaman yang memisahkan diri ke tanah tandus dan lembah cadas selatan.
    - *Karakteristik & Buff*: Menguasai peleburan bijih logam, kekuatan fisik destruktif, dan api (*Buff: Serangan Tinggi, Critical Hit, Mining Haste; Debuff: -2 HP Darah, Rentan Kerusakan, Cepat Lapar*).

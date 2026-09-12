@@ -63,7 +63,7 @@ public class ShopAdminSubGUI implements InventoryHolder {
             hMeta.lore(List.of(
                     mm.deserialize("<gray>Plugin:</gray> <gold>ApexsionsShop v1.0.0</gold>"),
                     mm.deserialize("<gray>Mekanisme:</gray> <yellow>Dynamic Pricing + Regional Kingdom Multiplier</yellow>"),
-                    mm.deserialize("<gray>Pajak Kerajaan:</gray> <aqua>Zenithar 25% | Solterra 20% | Sylvamoor 15%</aqua>"),
+                    mm.deserialize("<gray>Pajak Kerajaan:</gray> <aqua>Zenithar 18% | Solterra 20% | Sylvamoor 15%</aqua>"),
                     Component.empty(),
                     mm.deserialize("<yellow>Pilih opsi di bawah untuk mengatur dinamika pasar.</yellow>")
             ));
@@ -74,7 +74,7 @@ public class ShopAdminSubGUI implements InventoryHolder {
         // Slot 19: Inspect 3 Kingdom Shops (/shopadmin)
         inventory.setItem(19, createActionItem(Material.GOLDEN_HELMET, "<gradient:#f39c12:#d35400><bold>👑 INSPEKSI TOKO 3 KERAJAAN</bold></gradient>",
                 List.of("<gray>Lihat katalog toko & harga unik tiap kerajaan:</gray>",
-                        "<dark_gray>•</dark_gray> <gold>Zenithar</gold> <gray>(Pajak 25%, Volatilitas Tinggi)</gray>",
+                        "<dark_gray>•</dark_gray> <gold>Zenithar</gold> <gray>(Pajak 18%, Diskon Blok Istana 15%)</gray>",
                         "<dark_gray>•</dark_gray> <yellow>Solterra</yellow> <gray>(Pajak 20%, Ore Stabil & 65% Sell)</gray>",
                         "<dark_gray>•</dark_gray> <green>Sylvamoor</green> <gray>(Pajak 15%, Diskon Agrikultur)</gray>",
                         "",
