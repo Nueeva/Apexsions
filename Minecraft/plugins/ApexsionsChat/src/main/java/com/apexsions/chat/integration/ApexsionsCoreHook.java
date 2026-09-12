@@ -97,4 +97,13 @@ public class ApexsionsCoreHook {
             return null;
         }
     }
+
+    public boolean isPlayerVanished(UUID uuid) {
+        if (!isAvailable()) return false;
+        try {
+            return ApexsionsCoreProvider.get().isVanished(uuid);
+        } catch (Throwable t) {
+            return false;
+        }
+    }
 }

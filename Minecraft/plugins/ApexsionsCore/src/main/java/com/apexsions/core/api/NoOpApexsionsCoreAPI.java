@@ -142,4 +142,24 @@ public class NoOpApexsionsCoreAPI implements ApexsionsCoreAPI {
     public double getKingdomTax(@NotNull String kingdomKey) {
         return 10.0;
     }
+
+    @Override
+    public boolean isVanished(@NotNull UUID uuid) {
+        return false;
+    }
+
+    @Override
+    public void setVanished(@NotNull org.bukkit.entity.Player player, boolean vanished) {
+        // No-Op
+    }
+
+    @Override
+    public @NotNull java.util.Set<UUID> getVanishedPlayers() {
+        return java.util.Collections.emptySet();
+    }
+
+    @Override
+    public @NotNull com.apexsions.core.vanish.VanishManager getVanishManager() {
+        throw new UnsupportedOperationException("ApexsionsCore is currently unavailable.");
+    }
 }

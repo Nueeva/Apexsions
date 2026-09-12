@@ -20,6 +20,16 @@ softdepend:
 
 
 commands:
+  vanish:
+    aliases:
+      - v
+    description: Toggle staff vanish mode with fake leave/join notifications and full ghost mode.
+    permission: apexsions.vanish
+    usage: /vanish [-s|list|<player>]
+  v:
+    description: Shortcut for /vanish.
+    permission: apexsions.vanish
+    usage: /v [-s|list|<player>]
   sions:
     description: Sions Temporal Reconstruction administration and control.
     permission: apexsions.admin
@@ -280,4 +290,13 @@ permissions:
   kingdomcore.command.rtp:
     default: true
   kingdomcore.admin:
+    default: op
+  apexsions.vanish:
+    description: Allows entering vanish mode.
+    default: op
+  apexsions.vanish.see:
+    description: Allows seeing vanished players in world and in TAB list.
+    default: op
+  apexsions.vanish.others:
+    description: Allows toggling vanish for other players.
     default: op

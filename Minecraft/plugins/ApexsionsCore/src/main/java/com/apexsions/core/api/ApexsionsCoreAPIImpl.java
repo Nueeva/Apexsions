@@ -224,4 +224,26 @@ public class ApexsionsCoreAPIImpl implements ApexsionsCoreAPI {
             default -> 10.0;
         };
     }
+
+    @Override
+    public boolean isVanished(@NotNull UUID uuid) {
+        return plugin.getVanishManager() != null && plugin.getVanishManager().isVanished(uuid);
+    }
+
+    @Override
+    public void setVanished(@NotNull org.bukkit.entity.Player player, boolean vanished) {
+        if (plugin.getVanishManager() != null) {
+            plugin.getVanishManager().setVanished(player, vanished, false);
+        }
+    }
+
+    @Override
+    public @NotNull java.util.Set<UUID> getVanishedPlayers() {
+        return plugin.getVanishManager() != null ? plugin.getVanishManager().getVanishedPlayers() : java.util.Collections.emptySet();
+    }
+
+    @Override
+    public @NotNull com.apexsions.core.vanish.VanishManager getVanishManager() {
+        return plugin.getVanishManager();
+    }
 }

@@ -139,6 +139,15 @@ public class PlayerInspectorGUI implements InventoryHolder {
         inventory.setItem(34, createActionItem(Material.IRON_BOOTS, "<red><bold>👢 KICK PEMAIN</bold></red>",
                 List.of("<gray>Keluarkan pemain dari server secara paksa.</gray>", "<yellow>▶ Klik untuk kick</yellow>")));
 
+        boolean isTargetVanished = plugin.getVanishManager() != null && plugin.getVanishManager().isVanished(target);
+        inventory.setItem(35, createActionItem(Material.ENDER_EYE,
+                isTargetVanished ? "<red><bold>👻 VANISH: AKTIF</bold></red>" : "<green><bold>👁️ VANISH: NONAKTIF</bold></green>",
+                List.of(
+                        "<gray>Status: " + (isTargetVanished ? "<red><bold>Tak terlihat (Vanished)</bold></red>" : "<green><bold>Terlihat (Visible)</bold></green>") + "</gray>",
+                        "<gray>Hilangkan pemain dari dunia dan TAB list.</gray>",
+                        "<yellow>▶ Klik untuk toggle Vanish</yellow>"
+                )));
+
         // Slot 38: BattlePass Quick Control
         String bpBadge = BattlePassGivePassGUI.resolvePlayerPassBadge(target.getUniqueId());
         int bpTier = BattlePassGivePassGUI.resolvePlayerTier(target.getUniqueId());
@@ -399,6 +408,15 @@ public class PlayerInspectorGUI implements InventoryHolder {
                 );
             }
             new PlayerManagerGUI(plugin, admin).open();
+            return;
+        }
+        if (slot == 35) { // Toggle Vanish
+            if (plugin.getVanishManager() != null) {
+                boolean nowV = plugin.getVanishManager().toggleVanish(target, false);
+                admin.sendMessage(mm.deserialize("<green>✓ Mode vanish untuk <yellow>" + target.getName() + "</yellow> berhasil diubah menjadi: "
+                        + (nowV ? "<red><bold>VANISHED</bold></red>" : "<green><bold>VISIBLE</bold></green>") + "!</green>"));
+                buildGUI();
+            }
             return;
         }
         if (slot == 38) { // BattlePass Quick Control

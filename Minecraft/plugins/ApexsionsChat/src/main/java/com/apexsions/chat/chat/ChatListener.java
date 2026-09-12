@@ -119,6 +119,14 @@ public class ChatListener implements Listener {
             return; // Already announced in this session
         }
 
+        // If player is vanished, suppress join broadcast entirely
+        if (plugin.getApexsionsCoreHook() != null && plugin.getApexsionsCoreHook().isPlayerVanished(uuid)) {
+            if (event != null) {
+                event.joinMessage(null);
+            }
+            return;
+        }
+
         if (plugin.getConfigManager().getMainConfig().getBoolean("join-quit-messages.enabled", true)) {
             String rank = "<gray>[Wanderer]</gray>";
             String kingdom = "Belum Memilih";
@@ -182,6 +190,12 @@ public class ChatListener implements Listener {
                 event.quitMessage(null);
                 return;
             }
+        }
+
+        // If player is vanished, silence quit broadcast entirely
+        if (plugin.getApexsionsCoreHook() != null && plugin.getApexsionsCoreHook().isPlayerVanished(uuid)) {
+            event.quitMessage(null);
+            return;
         }
 
         if (plugin.getConfigManager().getMainConfig().getBoolean("join-quit-messages.enabled", true)) {

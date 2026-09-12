@@ -76,6 +76,21 @@ public class PlayerManagerGUI implements InventoryHolder {
         }
         inventory.setItem(0, filterItem);
 
+        // Header Slot 2: Quick Vanish Button for Admin
+        boolean myVanish = plugin.getVanishManager() != null && plugin.getVanishManager().isVanished(admin);
+        ItemStack vItem = new ItemStack(Material.ENDER_EYE);
+        ItemMeta vMeta = vItem.getItemMeta();
+        if (vMeta != null) {
+            vMeta.displayName(mm.deserialize(myVanish ? "<red><bold>👻 VANISH: AKTIF</bold></red>" : "<green><bold>👁️ VANISH: NONAKTIF</bold></green>"));
+            vMeta.lore(List.of(
+                    mm.deserialize("<gray>Status Anda: " + (myVanish ? "<red><bold>Tak Terlihat</bold></red>" : "<green><bold>Terlihat</bold></green>") + "</gray>"),
+                    Component.empty(),
+                    mm.deserialize("<yellow>▶ Klik untuk toggle Vanish diri Anda</yellow>")
+            ));
+            vItem.setItemMeta(vMeta);
+        }
+        inventory.setItem(2, vItem);
+
         // Header Slot 4: Player Hub Status
         int totalOnline = Bukkit.getOnlinePlayers().size();
         ItemStack statusItem = new ItemStack(Material.PLAYER_HEAD);
@@ -147,15 +162,19 @@ public class PlayerManagerGUI implements InventoryHolder {
             SkullMeta sm = (SkullMeta) skull.getItemMeta();
             if (sm != null) {
                 sm.setOwningPlayer(target);
-                sm.displayName(mm.deserialize("<gold><bold>" + target.getName() + "</bold></gold>"));
-                sm.lore(List.of(
-                        mm.deserialize("<gray>Kerajaan: <yellow>" + kName + "</yellow></gray>"),
-                        mm.deserialize("<gray>Level: <gold>Lv. " + level + "</gold> <dark_gray>(" + xp + " XP)</dark_gray></gray>"),
-                        mm.deserialize("<gray>Ping: <green>" + target.getPing() + "ms</green></gray>"),
-                        mm.deserialize("<gray>Darah: <red>" + (int) target.getHealth() + "/" + (int) target.getMaxHealth() + " HP</red></gray>"),
-                        Component.empty(),
-                        mm.deserialize("<yellow>▶ Klik untuk Membuka Player Inspector (Full Access)!</yellow>")
-                ));
+                boolean isTargetV = plugin.getVanishManager() != null && plugin.getVanishManager().isVanished(target);
+                sm.displayName(mm.deserialize("<gold><bold>" + target.getName() + "</bold></gold>" + (isTargetV ? " <red><bold>[👻 VANISHED]</bold></red>" : "")));
+                List<Component> sLore = new ArrayList<>();
+                if (isTargetV) {
+                    sLore.add(mm.deserialize("<red><bold>● STATUS: VANISHED (Tak terlihat oleh umum)</bold></red>"));
+                }
+                sLore.add(mm.deserialize("<gray>Kerajaan: <yellow>" + kName + "</yellow></gray>"));
+                sLore.add(mm.deserialize("<gray>Level: <gold>Lv. " + level + "</gold> <dark_gray>(" + xp + " XP)</dark_gray></gray>"));
+                sLore.add(mm.deserialize("<gray>Ping: <green>" + target.getPing() + "ms</green></gray>"));
+                sLore.add(mm.deserialize("<gray>Darah: <red>" + (int) target.getHealth() + "/" + (int) target.getMaxHealth() + " HP</red></gray>"));
+                sLore.add(Component.empty());
+                sLore.add(mm.deserialize("<yellow>▶ Klik untuk Membuka Player Inspector (Full Access)!</yellow>"));
+                sm.lore(sLore);
                 skull.setItemMeta(sm);
             }
             inventory.setItem(slot, skull);
@@ -219,6 +238,14 @@ public class PlayerManagerGUI implements InventoryHolder {
             };
             page = 0;
             buildGUI();
+            return;
+        }
+
+        if (slot == 2) { // Toggle Vanish for Admin
+            if (plugin.getVanishManager() != null) {
+                plugin.getVanishManager().toggleVanish(admin, false);
+                buildGUI();
+            }
             return;
         }
 

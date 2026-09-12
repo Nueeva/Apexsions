@@ -124,6 +124,9 @@ public class ApexsionsCorePlugin extends JavaPlugin {
     // Sions Temporal Reconstruction Engine
     private com.apexsions.core.sions.SionsTemporalService sionsTemporalService;
 
+    // Vanish Subsystem
+    private com.apexsions.core.vanish.VanishManager vanishManager;
+
     @Override
     public void onLoad() {
         applyDisableChannelLimit();
@@ -282,6 +285,10 @@ public class ApexsionsCorePlugin extends JavaPlugin {
             Bukkit.getPluginManager().registerEvents(new com.apexsions.core.sions.SionsTemporalListener(sionsTemporalService), this);
             Bukkit.getPluginManager().registerEvents(new com.apexsions.core.sions.SionsContainerLockListener(sionsTemporalService), this);
 
+            // Vanish Subsystem
+            this.vanishManager = new com.apexsions.core.vanish.VanishManager(this);
+            Bukkit.getPluginManager().registerEvents(new com.apexsions.core.vanish.VanishListener(this, vanishManager), this);
+
             // 10. Commands
             registerCommands();
 
@@ -319,6 +326,10 @@ public class ApexsionsCorePlugin extends JavaPlugin {
         // Stop Sions Temporal Service
         if (sionsTemporalService != null) {
             sionsTemporalService.onDisable();
+        }
+
+        if (vanishManager != null) {
+            vanishManager.shutdown();
         }
 
         // Stop Web Bridge Service
@@ -558,6 +569,19 @@ public class ApexsionsCorePlugin extends JavaPlugin {
             sionsCmd.setTabCompleter(sionsHandler);
         }
 
+        // /vanish (aliases: /v)
+        com.apexsions.core.command.VanishCommand vanishHandler = new com.apexsions.core.command.VanishCommand(this, vanishManager);
+        PluginCommand vanishCmd = getCommand("vanish");
+        if (vanishCmd != null) {
+            vanishCmd.setExecutor(vanishHandler);
+            vanishCmd.setTabCompleter(vanishHandler);
+        }
+        PluginCommand vCmd = getCommand("v");
+        if (vCmd != null) {
+            vCmd.setExecutor(vanishHandler);
+            vCmd.setTabCompleter(vanishHandler);
+        }
+
         // /maintenance
         com.apexsions.core.command.MaintenanceCommand maintenanceHandler = new com.apexsions.core.command.MaintenanceCommand(this);
         PluginCommand maintenanceCmd = getCommand("maintenance");
@@ -622,6 +646,7 @@ public class ApexsionsCorePlugin extends JavaPlugin {
     public com.apexsions.core.kit.KitArmorSetListener getKitArmorSetListener() { return kitArmorSetListener; }
     public com.apexsions.core.integration.web.WebBridgeService getWebBridgeService() { return webBridgeService; }
     public com.apexsions.core.sions.SionsTemporalService getSionsTemporalService() { return sionsTemporalService; }
+    public com.apexsions.core.vanish.VanishManager getVanishManager() { return vanishManager; }
     public ApexsionsCoreAPI getApi() { return api; }
 
     private void registerBattlePassEventListener() {

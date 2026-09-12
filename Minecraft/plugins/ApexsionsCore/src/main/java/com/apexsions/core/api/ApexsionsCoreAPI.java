@@ -129,4 +129,26 @@ public interface ApexsionsCoreAPI {
      * Gets the configured tax percentage for a kingdom (e.g. Zenithar 25.0, Solterra 20.0, Sylvamoor 15.0).
      */
     double getKingdomTax(@NotNull String kingdomKey);
+
+    /**
+     * Checks if a player is currently in vanish mode.
+     */
+    boolean isVanished(@NotNull UUID uuid);
+
+    /**
+     * Sets the vanish state of a player.
+     */
+    void setVanished(@NotNull org.bukkit.entity.Player player, boolean vanished);
+
+    /**
+     * Gets an unmodifiable set of all vanished player UUIDs.
+     */
+    @NotNull
+    java.util.Set<UUID> getVanishedPlayers();
+
+    /**
+     * Gets the Vanish Manager.
+     */
+    @NotNull
+    com.apexsions.core.vanish.VanishManager getVanishManager();
 }
