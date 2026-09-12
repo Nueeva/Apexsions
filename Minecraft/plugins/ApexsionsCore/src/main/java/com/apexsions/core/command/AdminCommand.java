@@ -80,7 +80,7 @@ public class AdminCommand implements CommandExecutor, TabCompleter {
             case "setregion":
             case "setkingdom":
                 if (args.length < 3) {
-                    sender.sendMessage(miniMessage.deserialize("<red>Usage: /ac setkingdom <player> <kingdomKey></red>"));
+                    sender.sendMessage(miniMessage.deserialize("<red>Usage: /ac setkingdom <player> <ZENITHAR|SOLTERRA|SYLVAMOOR></red>"));
                     return true;
                 }
                 handleSetRegion(sender, args[1], args[2]);
@@ -186,8 +186,20 @@ public class AdminCommand implements CommandExecutor, TabCompleter {
                 return;
             }
 
-            Optional<Region> k1 = plugin.getRegionManager().getRegion(args[2]);
-            Optional<Region> k2 = plugin.getRegionManager().getRegion(args[3]);
+            String k1Input = args[2].toUpperCase(Locale.ROOT);
+            String k2Input = args[3].toUpperCase(Locale.ROOT);
+            if (k1Input.equals("SIONS") || k2Input.equals("SIONS")) {
+                sender.sendMessage(miniMessage.deserialize("<red>SIONS adalah reruntuhan kuno (Terra Interdicta) dan tidak berpartisipasi dalam Perang Kerajaan!</red>"));
+                return;
+            }
+
+            if (!plugin.getRegionManager().isPlayableKingdom(k1Input) || !plugin.getRegionManager().isPlayableKingdom(k2Input)) {
+                sender.sendMessage(miniMessage.deserialize("<red>Perang hanya dapat dideklarasikan antar-kerajaan fana: ZENITHAR, SOLTERRA, SYLVAMOOR.</red>"));
+                return;
+            }
+
+            Optional<Region> k1 = plugin.getRegionManager().getRegion(k1Input);
+            Optional<Region> k2 = plugin.getRegionManager().getRegion(k2Input);
 
             if (k1.isEmpty() || k2.isEmpty()) {
                 sender.sendMessage(miniMessage.deserialize("<red>Salah satu nama kerajaan tidak valid!</red>"));
@@ -315,9 +327,20 @@ public class AdminCommand implements CommandExecutor, TabCompleter {
             return;
         }
 
-        Optional<Region> regionOpt = plugin.getRegionManager().getRegion(regionKey);
+        String key = regionKey.toUpperCase(Locale.ROOT);
+        if (key.equals("SIONS")) {
+            sender.sendMessage(miniMessage.deserialize("<red>Kerajaan SIONS adalah reruntuhan terlarang kuno (Terra Interdicta), bukan faksi fana yang dapat dihuni! Pilih: ZENITHAR, SOLTERRA, atau SYLVAMOOR.</red>"));
+            return;
+        }
+
+        if (!plugin.getRegionManager().isPlayableKingdom(key)) {
+            sender.sendMessage(miniMessage.deserialize("<red>Kerajaan '" + regionKey + "' tidak valid! Pilihan resmi: ZENITHAR, SOLTERRA, SYLVAMOOR.</red>"));
+            return;
+        }
+
+        Optional<Region> regionOpt = plugin.getRegionManager().getRegion(key);
         if (regionOpt.isEmpty()) {
-            sender.sendMessage(miniMessage.deserialize("<red>Kingdom '" + regionKey + "' does not exist.</red>"));
+            sender.sendMessage(miniMessage.deserialize("<red>Kingdom '" + regionKey + "' does not exist in registry.</red>"));
             return;
         }
 
@@ -358,7 +381,17 @@ public class AdminCommand implements CommandExecutor, TabCompleter {
     }
 
     private void handleSetSpawn(Player player, String kingdomKey) {
-        String key = kingdomKey.toUpperCase();
+        String key = kingdomKey.toUpperCase(Locale.ROOT);
+        if (key.equals("SIONS")) {
+            player.sendMessage(miniMessage.deserialize("<red>SIONS adalah reruntuhan kuno (Terra Interdicta) dan tidak memiliki ibukota fana! Titik spawn hanya untuk: ZENITHAR, SOLTERRA, SYLVAMOOR.</red>"));
+            return;
+        }
+
+        if (!plugin.getRegionManager().isPlayableKingdom(key)) {
+            player.sendMessage(miniMessage.deserialize("<red>Kerajaan <yellow>" + key + "</yellow> tidak valid! Pilihan resmi: ZENITHAR, SOLTERRA, SYLVAMOOR.</red>"));
+            return;
+        }
+
         Optional<Region> regionOpt = plugin.getRegionManager().getRegion(key);
         if (regionOpt.isEmpty()) {
             player.sendMessage(miniMessage.deserialize("<red>Kerajaan <yellow>" + key + "</yellow> tidak ditemukan! Pilihan: ZENITHAR, SOLTERRA, SYLVAMOOR.</red>"));
@@ -398,7 +431,7 @@ public class AdminCommand implements CommandExecutor, TabCompleter {
         sender.sendMessage(miniMessage.deserialize("<yellow>/ac war <start|stop|status></yellow> <gray>- Manage kingdom wars</gray>"));
         sender.sendMessage(miniMessage.deserialize("<yellow>/ac setlevel <player> <level></yellow> <gray>- Set player level (1-100)</gray>"));
         sender.sendMessage(miniMessage.deserialize("<yellow>/ac addxp <player> <amount></yellow> <gray>- Grant progression XP</gray>"));
-        sender.sendMessage(miniMessage.deserialize("<yellow>/ac setkingdom <player> <kingdomKey></yellow> <gray>- Transfer player kingdom</gray>"));
+        sender.sendMessage(miniMessage.deserialize("<yellow>/ac setkingdom <player> <kingdomKey></yellow> <gray>- Transfer player kingdom (Zenithar, Solterra, Sylvamoor)</gray>"));
         sender.sendMessage(miniMessage.deserialize("<yellow>/ac resetkingdom <player></yellow> <gray>- Reset player kingdom allegiance</gray>"));
         sender.sendMessage(miniMessage.deserialize("<yellow>/ac setlobby</yellow> <gray>- Set lobby spawn to your current location/world</gray>"));
         sender.sendMessage(miniMessage.deserialize("<yellow>/ac setspawn <kingdom></yellow> <gray>- Set kingdom capital spawn to your current location</gray>"));
@@ -415,19 +448,19 @@ public class AdminCommand implements CommandExecutor, TabCompleter {
             return filter(Arrays.asList("start", "stop", "status"), args[1]);
         }
         if (args.length == 2 && (args[0].equalsIgnoreCase("setspawn") || args[0].equalsIgnoreCase("setcapital") || args[0].equalsIgnoreCase("setkingdomspawn"))) {
-            return filter(new ArrayList<>(plugin.getRegionManager().getRegions().stream().map(Region::getKey).toList()), args[1]);
+            return filter(plugin.getRegionManager().getPlayableKingdomKeys(), args[1]);
         }
         if (args.length == 2 && (args[0].equalsIgnoreCase("setlevel") || args[0].equalsIgnoreCase("addxp") || args[0].equalsIgnoreCase("setkingdom") || args[0].equalsIgnoreCase("resetkingdom") || args[0].equalsIgnoreCase("info") || args[0].equalsIgnoreCase("sync"))) {
             return null; // Player names
         }
         if (args.length == 3 && args[0].equalsIgnoreCase("war") && args[1].equalsIgnoreCase("start")) {
-            return filter(new ArrayList<>(plugin.getRegionManager().getRegions().stream().map(Region::getKey).toList()), args[2]);
+            return filter(plugin.getRegionManager().getPlayableKingdomKeys(), args[2]);
         }
         if (args.length == 4 && args[0].equalsIgnoreCase("war") && args[1].equalsIgnoreCase("start")) {
-            return filter(new ArrayList<>(plugin.getRegionManager().getRegions().stream().map(Region::getKey).toList()), args[3]);
+            return filter(plugin.getRegionManager().getPlayableKingdomKeys(), args[3]);
         }
         if (args.length == 3 && args[0].equalsIgnoreCase("setkingdom")) {
-            return filter(new ArrayList<>(plugin.getRegionManager().getRegions().stream().map(Region::getKey).toList()), args[2]);
+            return filter(plugin.getRegionManager().getPlayableKingdomKeys(), args[2]);
         }
         return Collections.emptyList();
     }

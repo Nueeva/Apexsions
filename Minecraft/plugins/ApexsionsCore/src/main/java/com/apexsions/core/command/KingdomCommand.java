@@ -181,7 +181,17 @@ public class KingdomCommand implements CommandExecutor, TabCompleter {
             return;
         }
 
-        String kingdomInput = args[1].toUpperCase();
+        String kingdomInput = args[1].toUpperCase(Locale.ROOT);
+        if (kingdomInput.equals("SIONS")) {
+            sender.sendMessage(miniMessage.deserialize("<red>SIONS adalah reruntuhan terlarang kuno (Terra Interdicta), bukan kerajaan berdaulat aktif!</red>"));
+            return;
+        }
+
+        if (!plugin.getRegionManager().isPlayableKingdom(kingdomInput)) {
+            sender.sendMessage(miniMessage.deserialize("<red>Kerajaan <yellow>" + kingdomInput + "</yellow> tidak ditemukan! Pilih: ZENITHAR, SOLTERRA, atau SYLVAMOOR.</red>"));
+            return;
+        }
+
         Optional<Region> regionOpt = plugin.getRegionManager().getRegion(kingdomInput);
         if (regionOpt.isEmpty()) {
             sender.sendMessage(miniMessage.deserialize("<red>Kerajaan <yellow>" + kingdomInput + "</yellow> tidak ditemukan! Pilih: ZENITHAR, SOLTERRA, atau SYLVAMOOR.</red>"));
@@ -225,7 +235,17 @@ public class KingdomCommand implements CommandExecutor, TabCompleter {
             return;
         }
 
-        String kingdomInput = args[1].toUpperCase();
+        String kingdomInput = args[1].toUpperCase(Locale.ROOT);
+        if (kingdomInput.equals("SIONS")) {
+            sender.sendMessage(miniMessage.deserialize("<red>Kekaisaran Sions telah runtuh berabad-abad silam! Tidak ada gelar Raja yang dapat dinobatkan untuk SIONS. Pilih: ZENITHAR, SOLTERRA, atau SYLVAMOOR.</red>"));
+            return;
+        }
+
+        if (!plugin.getRegionManager().isPlayableKingdom(kingdomInput)) {
+            sender.sendMessage(miniMessage.deserialize("<red>Kerajaan <yellow>" + kingdomInput + "</yellow> tidak ditemukan! Pilih: ZENITHAR, SOLTERRA, atau SYLVAMOOR.</red>"));
+            return;
+        }
+
         Optional<Region> regionOpt = plugin.getRegionManager().getRegion(kingdomInput);
         if (regionOpt.isEmpty()) {
             sender.sendMessage(miniMessage.deserialize("<red>Kerajaan <yellow>" + kingdomInput + "</yellow> tidak ditemukan! Pilih: ZENITHAR, SOLTERRA, atau SYLVAMOOR.</red>"));

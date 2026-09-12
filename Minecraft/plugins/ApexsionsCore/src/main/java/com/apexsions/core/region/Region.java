@@ -59,6 +59,14 @@ public class Region {
         this.displayName = displayName;
     }
 
+    /**
+     * Checks whether this region is a playable mortal kingdom (Zenithar, Solterra, Sylvamoor),
+     * as opposed to forbidden ancient ruins (e.g. Sions / Terra Interdicta).
+     */
+    public boolean isPlayable() {
+        return !"SIONS".equalsIgnoreCase(key);
+    }
+
     public String getWorldName() {
         return worldName;
     }

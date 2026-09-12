@@ -111,6 +111,17 @@ public class RegionManager {
         return Collections.unmodifiableCollection(regionsById.values());
     }
 
+    public static final List<String> PLAYABLE_KINGDOMS = List.of("ZENITHAR", "SOLTERRA", "SYLVAMOOR");
+
+    public boolean isPlayableKingdom(String key) {
+        if (key == null) return false;
+        return PLAYABLE_KINGDOMS.contains(key.toUpperCase(Locale.ROOT));
+    }
+
+    public List<String> getPlayableKingdomKeys() {
+        return PLAYABLE_KINGDOMS;
+    }
+
     public void registerRegion(Region region) {
         regionsById.put(region.getId(), region);
         regionsByKey.put(region.getKey().toUpperCase(Locale.ROOT), region);
