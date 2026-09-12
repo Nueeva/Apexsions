@@ -78,6 +78,18 @@ Apexsions/
     - `CRITICAL_DAMAGE_BOOST`: Peningkatan kerusakan pukulan kritis (%)
     - `EXTRA_MAX_HEALTH`: Peningkatan atribut hati maksimal
     - `MOVEMENT_SPEED_BOOST`: Peningkatan kecepatan lari/gerak atribut
+- **RPG Progresi Stat Karakter (Diminishing Curves)**:
+  - Injeksi atribut native Paper (`Attribute.MAX_HEALTH` maks +12 HP $\rightarrow$ total 32 HP / 16 hati pada Lv 100, `Attribute.ATTACK_DAMAGE` maks +1.90 pukulan fisik).
+  - Bonus pengali damage monster PvE khusus (maks +26.5%) dan ketahanan alami terhadap serangan monster (maks 10.0%).
+- **Unified Combat Pipeline & Smart PvP Normalizer**:
+  - Tiga lapis prioritas event (`NORMAL` $\rightarrow$ `HIGH` $\rightarrow$ `HIGHEST`).
+  - Pemotongan otomatis kelebihan attack level di atas cap $+0.80$ di sesi PvP.
+  - Normalisasi damage masuk defender ber-HP tinggi ke skala $24.0\text{ HP}$ (+4 HP cap) tanpa bug heart-flicker dan bebas risiko double-survivability dengan armor.
+  - Bonus PvE ($+26.5\%$) otomatis dinonaktifkan ($0\%$) saat duel sesama pemain / Kingdom War.
+- **Ekosistem 6-Tier Monster Progression**:
+  - Tier 1 (Kerajaan Lv 1–5), Tier 2 (Wilderness Lv 5–20 weighted), Tier 3 (Dangerous Wilds Lv 20–40), Tier 4 (High-Risk Outposts Lv 40–65), Tier 5 (Terra Interdicta / Sions Lv 65–90), dan Tier 6 (Raid Mini-Boss Voran Lv 90 & World Boss Kaisar Valerius Lv 100).
+- **Profil Tempur Real-Time (`/k info` & `/k profile`)**:
+  - Lore skull pemain di slot 13 menampilkan ringkasan live Max HP, Base Attack, PvE Mastery, dan Fair-Play PvP Profile.
 
 ### 💬 ApexsionsChat
 - **Interactive Chat ID-Card & Social Profile GUI (27-Slot)**:

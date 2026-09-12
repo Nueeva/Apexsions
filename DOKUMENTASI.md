@@ -147,6 +147,9 @@ Struktur modul berada di folder `Minecraft/plugins/`:
    - 3 Kerajaan: **Zenithar** (Timur / Dinasti), **Solterra** (Selatan / Magician), **Sylvamoor** (Barat / Rimba).
    - Auto-respawn ibukota terintegrasi BlueMap (`world.conf`).
    - Progresi Level 1-100 dengan 13 sumber XP.
+   - **RPG Stat Scaling (Diminishing Curves):** Injeksi atribut native Paper (`Attribute.MAX_HEALTH` maks +12 HP, `Attribute.ATTACK_DAMAGE` maks +1.90), bonus PvE damage khusus monster (maks +26.5%), dan mitigasi resistensi monster (maks 10%).
+   - **Unified Combat Engine & Smart PvP Normalizer:** Pipeline terisolasi dengan prioritas event (`NORMAL` -> `HIGH` -> `HIGHEST`), pemotongan excess attack > +0.80 di PvP, dan normalisasi proporsional defender ber-HP tinggi ke skala 24 HP tanpa bug heart-flicker.
+   - **Profil Tempur Real-Time (`/k info`):** Lore kepala pemain di GUI profil menampilkan statistik fisik, keunggulan PvE, dan status profil fair-play PvP.
    - GUI Inspector 54-Slot & Admin Panel (`/ac inspect <p>`, `/ac setspawn`, dll).
    - Warp Navigasi & Editor Admin (`/warp`, `/warpmgr`).
    - Proteksi PvP sesama kerajaan di wilayah teritorial sendiri.
@@ -198,3 +201,87 @@ Wajib dipatuhi oleh seluruh coding agent di repositori Apexsions:
 5. **Komunikasi Ringkas & Padat:** Hapus basa-basi percakapan dan pengulangan ringkasan yang sudah tercantum di dokumentasi. Langsung laporkan poin inti perubahan, hasil uji, dan hash commit.
 6. **Local-First Validation:** Dilarang trial-and-error di VPS produksi. Pastikan validasi lokal lulus 100% sebelum deploy ke VPS.
 7. **Autonomous Push Mandate:** Setelah perubahan divalidasi secara lokal dan di-commit, otomatis push ke branch `origin/main` menggunakan safe push practices tanpa menunggu perintah terpisah.
+
+---
+
+## ⚔️ 10. Sistem Tempur RPG, Progresi Atribut & Ekosistem Monster 6-Tier
+
+Ekosistem tempur Apexsions menggabungkan **RPG Character Progression** dengan **Fair-Play PvP Normalization** untuk memastikan pemain merasakan perkembangan kekuatan nyata di PvE tanpa merusak keseimbangan perang antar-kerajaan (*Kingdom War*).
+
+### A. Formula Diminishing Returns Progresi Atribut Pemain (Level 1–100)
+Dihitung secara matematis murni di `com.apexsions.core.level.stat.PlayerStatCalculator`:
+
+1. **Max Health Bonus ($HP_{bonus}$):**
+   - **Lv 1–25:** $+0.20\text{ HP}$ / level (+$5.0\text{ HP}$ di Lv 25 $\rightarrow$ Total $25.0\text{ HP}$ / 12.5 Hati).
+   - **Lv 26–50:** $+0.15\text{ HP}$ / level (+$3.75\text{ HP}$ di Lv 50 $\rightarrow$ Total $28.75\text{ HP}$ / ~14.5 Hati).
+   - **Lv 51–75:** $+0.10\text{ HP}$ / level (+$2.50\text{ HP}$ di Lv 75 $\rightarrow$ Total $31.25\text{ HP}$ / ~15.5 Hati).
+   - **Lv 76–100:** $+0.03\text{ HP}$ / level (+$0.75\text{ HP}$ di Lv 100 $\rightarrow$ Total **$32.0\text{ HP}$ / 16 Hati Maksimal**).
+   - *Injeksi:* Paper Native `Attribute.MAX_HEALTH` (`apex_level_health`).
+
+2. **Attack Damage Bonus ($ATK_{bonus}$):**
+   - **Lv 1–30:** $+0.03\text{ Attack}$ / level (+$0.90\text{ Attack}$ di Lv 30).
+   - **Lv 31–60:** $+0.02\text{ Attack}$ / level (+$0.60\text{ Attack}$ di Lv 60 $\rightarrow$ Total $+1.50\text{ Attack}$).
+   - **Lv 61–100:** $+0.01\text{ Attack}$ / level (+$0.40\text{ Attack}$ di Lv 100 $\rightarrow$ Total **$+1.90\text{ Attack}$ Maksimal**).
+   - *Injeksi:* Paper Native `Attribute.ATTACK_DAMAGE` (`apex_level_attack`).
+
+3. **PvE Damage Multiplier ($PvE_{mult}$ - Khusus Monster):**
+   - **Lv 1–20:** $+0.50\%$ / level ($+10.0\%$ di Lv 20).
+   - **Lv 21–50:** $+0.30\%$ / level ($+9.0\%$ di Lv 50 $\rightarrow$ Total $+19.0\%$).
+   - **Lv 51–75:** $+0.20\%$ / level ($+5.0\%$ di Lv 75 $\rightarrow$ Total $+24.0\%$).
+   - **Lv 76–100:** $+0.10\%$ / level ($+2.5\%$ di Lv 100 $\rightarrow$ Total **$+26.5\%$ Maksimal**).
+
+4. **PvE Resistance ($RES_{pve}$ - Mitigasi Serangan Monster):**
+   - **Lv 1–24:** $0\%$
+   - **Lv 25–49:** $2.5\%$
+   - **Lv 50–74:** $5.0\%$
+   - **Lv 75–99:** $7.5\%$
+   - **Lv 100:** **$10.0\%$ Maksimal**
+
+---
+
+### B. Arsitektur Unified Combat Engine & Smart PvP Normalizer
+Kalkulasi tempur terbagi dalam 3 tahap terisolasi untuk mencegah *multiplicative compounding trap* dengan buff kerajaan dan armor kit:
+
+```text
+[Priority: NORMAL]  PlayerCombatProgressionListener
+   ├── PvE Outgoing: Damage × (1 + PvE_mult)
+   ├── PvE Incoming: Damage × (1 - RES_pve)
+   └── PvP Outgoing: Pemangkasan Excess Attack > +0.80 dari base damage
+           ↓
+[Priority: HIGH]    KingdomBuffListener & KitArmorSetListener
+   ├── Solterra (+15% dmg / +10% crit), Zenithar (+6% dmg / -25% crit taken), Sylvamoor (-10% pvp / -5% pve)
+   └── Kit Armor Set Bonus (ATTACK_DAMAGE_BOOST, CRITICAL_DAMAGE_BOOST, Tool Set +25%)
+           ↓
+[Priority: HIGHEST] SmartCombatNormalizer (PvP Only)
+   └── Normalisasi Defender ber-HP tinggi: Damage × (ActualMaxHP / 24.0)
+```
+
+#### Keunggulan Desain Smart Normalizer:
+* **Anti Double-Survivability:** Karena Bukkit `event.setDamage()` memodifikasi pre-armor damage, faktor $\text{ActualMaxHP}$ di pembilang dan penyebut saling menghilangkan. Pemain Level 100 dengan armor Netherite tetap kehilangan persentase bar darah yang setara dengan kolam $24.0\text{ HP}$ (+4 HP cap).
+* **Bebas Glitch:** Tidak mengubah atau memotong bar hati visual pemain saat bertarung di PvP (tidak ada *heart-flickering*).
+* **Isolasi Total:** Bonus PvE ($+26.5\%$) dan resistensi monster ($10\%$) mati total ($0\%$) dalam PvP.
+
+---
+
+### C. Ekosistem 6-Tier Monster Progression & Dynamic Spawning
+Menghilangkan jurang kekosongan konten (Lv 16–74) dengan pembagian zona bertingkat dan *weighted random levels* di MythicMobs:
+
+| Tier | Wilayah / Zona | Rentang Level | Bobot Spawning & Karakteristik | Peran Gameplay |
+| :---: | :--- | :---: | :--- | :--- |
+| **Tier 1** | **Wilayah Kerajaan** *(Capital & Claims)* | **Lv. 1 – 5** | • 60% Lv 1–2<br>• 30% Lv 3–4<br>• 10% Lv 5 | Zona aman, adaptasi pemula, farming bahan pokok. |
+| **Tier 2** | **Alam Liar (*Wilderness*)** | **Lv. 5 – 20** | • 45% Lv 5–9 (*Forest Stalker*)<br>• 35% Lv 8–16 (*Dune Marauder*)<br>• 20% Lv 12–20 (*Canyon Marksman*) | Eksplorasi malam survival, perburuan bahan standar. |
+| **Tier 3** | **Lembah Berbahaya (*Dangerous Wilds*)** | **Lv. 20 – 40** | • Weighted random Lv 20–40<br>• Troll, Spider Matriarch, Dark Cultist | Mid-game barrier, eksplorasi gua & hutan tua. |
+| **Tier 4** | **Zona Korupsi & Outpost Bandit** | **Lv. 40 – 65** | • Weighted random Lv 40–65<br>• Drop fragmen relic & custom enchant tier 1-2 | Dungeon bawah tanah, perburuan tim kecil. |
+| **Tier 5** | **Reruntuhan Kuno Sions (*Terra Interdicta*)** | **Lv. 65 – 90** | • Lv 65–78: *Sions Fallen Legionnaire*<br>• Lv 65–75: *Sions Void Crawler*<br>• Lv 75–85: *Sions Void Assassin* & *Channeler*<br>• Lv 80–90: *Sions Ruin Sentinel* & *Void Knight* | Endgame grinding, farming Kunci Elit & Dark Core. |
+| **Tier 6** | **World Raid Lair** | **Lv. 90 – 100** | • Mini-Boss: *Voran, The Ruined Commander* (**Lv. 90**)<br>• World Raid Boss: *Kaisar Valerius* (**Lv. 100**) | Puncak tantangan server, multi-phase raid boss. |
+
+---
+
+### D. Antarmuka Profil Pemain (`/k info` / `/k profile`)
+Setiap pemain dapat melihat profil status fisiknya secara transparan di Slot 13 GUI Profil Kerajaan:
+```text
+❤ Max Health : 32.0 HP (+12.0 dari Level)
+🗡 Base Attack: +1.90 (Bonus Fisik)
+🏹 PvE Mastery: +26.5% Dmg • 10.0% Resis
+⚖ PvP Profile: Fair-Play Normalized (Cap +4 HP / +0.8 Atk)
+```
