@@ -46,7 +46,8 @@ public class BattlePassLeaderboardMenu extends Gui {
 
         PlayerData data = plugin.getPlayerManager().getPlayerData(player);
         int myRank = plugin.getLeaderboardService().getPlayerRank(player.getUniqueId());
-        String rankStr = (myRank > 0 && myRank <= 100) ? ("#" + myRank) : "Belum Masuk Top 100";
+        boolean isExempt = plugin.getLeaderboardService().isLeaderboardExempt(player.getUniqueId());
+        String rankStr = isExempt ? "Dikecualikan (Staf/Admin)" : ((myRank > 0 && myRank <= 100) ? ("#" + myRank) : "Belum Masuk Top 100");
 
         int maxLevel = plugin.getRewardManager().getMaxLevel();
         int currentLevel = data != null ? data.getLevel() : 1;

@@ -52,7 +52,8 @@ public class EconomyLeaderboardMenu extends Gui {
 
         int myRank = plugin.getLeaderboardService().getPlayerRank(player.getUniqueId(), currencyId);
         double myBal = plugin.getCurrencyService().getBalance(player.getUniqueId(), currencyId);
-        String rankStr = (myRank > 0 && myRank <= 100) ? ("#" + myRank) : "Belum Masuk Top 100";
+        boolean isExempt = plugin.getLeaderboardService().isLeaderboardExempt(player.getUniqueId());
+        String rankStr = isExempt ? "Dikecualikan (Staf/Admin)" : ((myRank > 0 && myRank <= 100) ? ("#" + myRank) : "Belum Masuk Top 100");
 
         // 1. Leaderboard Info Banner (Slot 0)
         setButton(0, new GuiButton(new ItemBuilder(Material.NETHER_STAR)

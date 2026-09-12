@@ -246,4 +246,14 @@ public class ApexsionsCoreAPIImpl implements ApexsionsCoreAPI {
     public @NotNull com.apexsions.core.vanish.VanishManager getVanishManager() {
         return plugin.getVanishManager();
     }
+
+    @Override
+    public boolean isLeaderboardExempt(@NotNull UUID uuid) {
+        if (uuid == null) return false;
+        if (plugin.getLuckPermsHook() != null) {
+            return plugin.getLuckPermsHook().isStaffOrAdmin(uuid);
+        }
+        org.bukkit.OfflinePlayer op = org.bukkit.Bukkit.getOfflinePlayer(uuid);
+        return op != null && op.isOp();
+    }
 }

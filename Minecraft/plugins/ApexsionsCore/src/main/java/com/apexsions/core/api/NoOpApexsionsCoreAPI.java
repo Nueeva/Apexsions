@@ -162,4 +162,11 @@ public class NoOpApexsionsCoreAPI implements ApexsionsCoreAPI {
     public @NotNull com.apexsions.core.vanish.VanishManager getVanishManager() {
         throw new UnsupportedOperationException("ApexsionsCore is currently unavailable.");
     }
+
+    @Override
+    public boolean isLeaderboardExempt(@NotNull UUID uuid) {
+        if (uuid == null) return false;
+        org.bukkit.OfflinePlayer op = org.bukkit.Bukkit.getOfflinePlayer(uuid);
+        return op != null && op.isOp();
+    }
 }

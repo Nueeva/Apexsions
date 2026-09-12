@@ -151,4 +151,9 @@ public interface ApexsionsCoreAPI {
      */
     @NotNull
     com.apexsions.core.vanish.VanishManager getVanishManager();
+
+    /**
+     * Checks if a player is exempted from public leaderboards (e.g. Server Admins, Staff, OPs).
+     */
+    boolean isLeaderboardExempt(@NotNull UUID uuid);
 }

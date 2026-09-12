@@ -61,6 +61,9 @@ public class BattlePassLeaderboardService {
             int rank = 1;
 
             for (PlayerData d : list) {
+                if (isLeaderboardExempt(d.getUuid())) {
+                    continue; // Skip server admins and staff
+                }
                 if (rank > 100) break; // Cap at Top 100
 
                 OfflinePlayer op = Bukkit.getOfflinePlayer(d.getUuid());
@@ -90,9 +93,45 @@ public class BattlePassLeaderboardService {
     }
 
     public int getPlayerRank(UUID uuid) {
+        if (isLeaderboardExempt(uuid)) {
+            return -1;
+        }
         if (System.currentTimeMillis() - lastUpdate > CACHE_DURATION_MS) {
             refreshLeaderboard();
         }
         return rankMap.getOrDefault(uuid, -1);
+    }
+
+    /**
+     * Checks if a player is server staff, admin, OP, or exempt from public leaderboards.
+     */
+    public boolean isLeaderboardExempt(UUID uuid) {
+        if (uuid == null) return false;
+
+        // 1. Authoritative check via ApexsionsCore API
+        if (Bukkit.getPluginManager().isPluginEnabled("ApexsionsCore")) {
+            try {
+                if (com.apexsions.core.api.ApexsionsCoreProvider.isAvailable()) {
+                    return com.apexsions.core.api.ApexsionsCoreProvider.get().isLeaderboardExempt(uuid);
+                }
+            } catch (Throwable ignored) {}
+        }
+
+        // 2. Fallback: Bukkit OP
+        OfflinePlayer op = Bukkit.getOfflinePlayer(uuid);
+        if (op != null && op.isOp()) {
+            return true;
+        }
+
+        // 3. Fallback: Online player permissions
+        org.bukkit.entity.Player onlineP = Bukkit.getPlayer(uuid);
+        if (onlineP != null && (onlineP.isOp() 
+                || onlineP.hasPermission("apexsions.admin") 
+                || onlineP.hasPermission("apexsions.staff") 
+                || onlineP.hasPermission("apexsions.leaderboard.exempt"))) {
+            return true;
+        }
+
+        return false;
     }
 }

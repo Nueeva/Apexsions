@@ -105,13 +105,16 @@ public class KingdomTopGUI implements Listener {
         headerLore.add(miniMessage.deserialize("<gold>⚔ Kejayaan dan kemakmuran abadi bagi " + region.getDisplayName() + "!</gold>"));
         inv.setItem(4, createItem(kIcon, "<gradient:#ffeaa7:#ffd700><bold>👑 KERAJAAN " + region.getDisplayName().toUpperCase(Locale.ROOT) + "</bold></gradient>", headerLore));
 
+        boolean isStaff = plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isStaffOrAdmin(player.getUniqueId());
+        String rankDisplay = (playerRank > 0) ? "#" + playerRank : (isStaff ? "Dikecualikan (Staf/Admin)" : "Belum Masuk Peringkat");
+
         // 3. Leaderboard Info Banner (Slot 0)
         List<Component> infoLore = new ArrayList<>();
         infoLore.add(miniMessage.deserialize("<gray>Peringkat pahlawan terkuat dan tertinggi</gray>"));
         infoLore.add(miniMessage.deserialize("<gray>berdasarkan perolehan Level & EXP di <yellow>" + region.getDisplayName() + "</yellow>.</gray>"));
         infoLore.add(miniMessage.deserialize(""));
         infoLore.add(miniMessage.deserialize("<gray>Total Peserta: <aqua>Top 10 Pahlawan</aqua></gray>"));
-        infoLore.add(miniMessage.deserialize("<gray>Peringkat Anda: <yellow>" + (playerRank > 0 ? "#" + playerRank : "Belum Masuk Peringkat") + "</yellow></gray>"));
+        infoLore.add(miniMessage.deserialize("<gray>Peringkat Anda: <yellow>" + rankDisplay + "</yellow></gray>"));
         inv.setItem(0, createItem(Material.NETHER_STAR, "<gradient:#f6d365:#fda085><bold>👑 TOP KERAJAAN RANKINGS</bold></gradient>", infoLore));
 
         // 4. Territory Status Banner (Slot 8)
@@ -119,7 +122,7 @@ public class KingdomTopGUI implements Listener {
         statusLore.add(miniMessage.deserialize("<gray>Wilayah: <white>" + region.getWorldName() + "</white></gray>"));
         statusLore.add(miniMessage.deserialize("<gray>Situasi: " + (warActive ? "<red>Siaga Perang (Wartime)</red>" : "<green>Wilayah Terlindungi (Aman)</green>") + "</gray>"));
         statusLore.add(miniMessage.deserialize(""));
-        statusLore.add(miniMessage.deserialize("<gray>Peringkat Kamu: <gold>" + (playerRank > 0 ? "#" + playerRank : "-") + "</gold></gray>"));
+        statusLore.add(miniMessage.deserialize("<gray>Peringkat Kamu: <gold>" + (playerRank > 0 ? "#" + playerRank : (isStaff ? "Staf/Admin" : "-")) + "</gold></gray>"));
         inv.setItem(8, createItem(Material.CLOCK, "<gold><bold>⚔ STATUS KERAJAAN</bold></gold>", statusLore));
 
         // 5. Render 10-Slot Symmetrical Pyramid with Player Heads
@@ -169,7 +172,7 @@ public class KingdomTopGUI implements Listener {
         List<Component> myRankLore = new ArrayList<>();
         myRankLore.add(miniMessage.deserialize("<gray>Nama: <white>" + player.getName() + "</white></gray>"));
         myRankLore.add(miniMessage.deserialize("<gray>Kerajaan: <yellow>" + region.getDisplayName() + "</yellow></gray>"));
-        myRankLore.add(miniMessage.deserialize("<gray>Peringkat Anda: <gold><bold>" + (playerRank > 0 ? "#" + playerRank : "Belum Masuk Peringkat") + "</bold></gold></gray>"));
+        myRankLore.add(miniMessage.deserialize("<gray>Peringkat Anda: <gold><bold>" + rankDisplay + "</bold></gold></gray>"));
         myRankLore.add(miniMessage.deserialize("<gray>Level: <yellow>Lv. " + pData.getLevel() + "</yellow></gray>"));
         myRankLore.add(miniMessage.deserialize("<gray>Total EXP: <aqua>" + String.format("%,d", pData.getXp()) + " XP</aqua></gray>"));
         myRankLore.add(miniMessage.deserialize(""));

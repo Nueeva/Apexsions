@@ -5,7 +5,12 @@ import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
 import net.luckperms.api.model.user.User;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Integration layer for reading LuckPerms rank, prefix, and metadata.
@@ -16,6 +21,7 @@ public class LuckPermsHook {
     private LuckPerms luckPerms;
     private LuckPermsRankProvisioner rankProvisioner;
     private boolean available = false;
+    private final Map<UUID, Boolean> staffCache = new ConcurrentHashMap<>();
 
     public LuckPermsHook(ApexsionsCorePlugin plugin) {
         this.plugin = plugin;
@@ -34,7 +40,9 @@ public class LuckPermsHook {
 
                 // Listen for LuckPerms rank / group / node changes to automatically update nametags
                 this.luckPerms.getEventBus().subscribe(plugin, net.luckperms.api.event.user.UserDataRecalculateEvent.class, event -> {
-                    Player p = Bukkit.getPlayer(event.getUser().getUniqueId());
+                    UUID uId = event.getUser().getUniqueId();
+                    invalidateStaffCache(uId);
+                    Player p = Bukkit.getPlayer(uId);
                     if (p != null && p.isOnline() && plugin.getRankAnimationManager() != null) {
                         Bukkit.getScheduler().runTask(plugin, () -> {
                             if (p.isOnline()) {
@@ -118,6 +126,68 @@ public class LuckPermsHook {
             case "wanderer" -> 10;
             default -> 5;
         };
+    }
+
+    /**
+     * Checks if a player is server admin, staff, or exempt from public leaderboards.
+     */
+    public boolean isStaffOrAdmin(UUID uuid) {
+        if (uuid == null) return false;
+        Boolean cached = staffCache.get(uuid);
+        if (cached != null) return cached;
+
+        boolean result = computeIsStaffOrAdmin(uuid);
+        staffCache.put(uuid, result);
+        return result;
+    }
+
+    private boolean computeIsStaffOrAdmin(UUID uuid) {
+        OfflinePlayer op = Bukkit.getOfflinePlayer(uuid);
+        if (op != null && op.isOp()) {
+            return true;
+        }
+
+        Player onlineP = Bukkit.getPlayer(uuid);
+        if (onlineP != null && (onlineP.isOp() 
+                || onlineP.hasPermission("apexsions.admin") 
+                || onlineP.hasPermission("apexsions.staff") 
+                || onlineP.hasPermission("apexsions.leaderboard.exempt"))) {
+            return true;
+        }
+
+        if (isAvailable()) {
+            try {
+                User user = luckPerms.getUserManager().getUser(uuid);
+                if (user == null) {
+                    user = luckPerms.getUserManager().loadUser(uuid).join();
+                }
+                if (user != null) {
+                    if (user.getCachedData().getPermissionData().checkPermission("apexsions.admin").asBoolean()
+                            || user.getCachedData().getPermissionData().checkPermission("apexsions.staff").asBoolean()
+                            || user.getCachedData().getPermissionData().checkPermission("apexsions.leaderboard.exempt").asBoolean()) {
+                        return true;
+                    }
+                    String primary = user.getPrimaryGroup();
+                    if (getRankWeight(primary) >= 80) {
+                        return true;
+                    }
+                    for (net.luckperms.api.node.Node node : user.getNodes()) {
+                        if (node instanceof net.luckperms.api.node.types.InheritanceNode inh) {
+                            if (getRankWeight(inh.getGroupName()) >= 80) {
+                                return true;
+                            }
+                        }
+                    }
+                }
+            } catch (Exception ignored) {}
+        }
+        return false;
+    }
+
+    public void invalidateStaffCache(UUID uuid) {
+        if (uuid != null) {
+            staffCache.remove(uuid);
+        }
     }
 
     public String getPlayerRank(Player player) {

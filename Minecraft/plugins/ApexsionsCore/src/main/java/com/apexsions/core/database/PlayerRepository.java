@@ -138,6 +138,7 @@ public class PlayerRepository {
     public CompletableFuture<java.util.List<PlayerData>> getTopPlayersByRegionAsync(UUID regionId, int limit) {
         return db.supplyAsync(() -> {
             java.util.List<PlayerData> list = new java.util.ArrayList<>();
+            int candidateLimit = Math.max(50, limit * 3);
             String sql = "SELECT uuid, username, level, xp, region_id, claimed_rewards, created_at, updated_at " +
                     "FROM players WHERE region_id = ? ORDER BY level DESC, xp DESC LIMIT ?";
             try (Connection conn = db.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -146,12 +147,18 @@ public class PlayerRepository {
                 } else {
                     ps.setObject(1, regionId);
                 }
-                ps.setInt(2, Math.max(1, limit));
+                ps.setInt(2, candidateLimit);
 
                 try (ResultSet rs = ps.executeQuery()) {
                     while (rs.next()) {
                         Object uuidObj = rs.getObject("uuid");
                         UUID pUuid = (uuidObj instanceof UUID u) ? u : UUID.fromString(uuidObj.toString());
+
+                        // Exclude server admins / staff from leaderboard
+                        if (plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isStaffOrAdmin(pUuid)) {
+                            continue;
+                        }
+
                         String username = rs.getString("username");
                         int level = rs.getInt("level");
                         long xp = rs.getLong("xp");
@@ -174,6 +181,9 @@ public class PlayerRepository {
                             data.setClaimedRewardsFromString(claimedRewardsStr);
                         }
                         list.add(data);
+                        if (list.size() >= limit) {
+                            break;
+                        }
                     }
                 }
             } catch (SQLException e) {
@@ -185,7 +195,11 @@ public class PlayerRepository {
 
     public CompletableFuture<Integer> getPlayerRankInRegionAsync(UUID playerUuid, UUID regionId) {
         return db.supplyAsync(() -> {
-            String sql = "SELECT COUNT(*) + 1 AS rank FROM players p1 " +
+            if (plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isStaffOrAdmin(playerUuid)) {
+                return -1; // Admin / Staff is exempt from public leaderboards
+            }
+
+            String sql = "SELECT p1.uuid FROM players p1 " +
                     "INNER JOIN players p2 ON p2.uuid = ? " +
                     "WHERE p1.region_id = ? AND (p1.level > p2.level OR (p1.level = p2.level AND p1.xp > p2.xp))";
             try (Connection conn = db.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -197,9 +211,16 @@ public class PlayerRepository {
                     ps.setObject(2, regionId);
                 }
                 try (ResultSet rs = ps.executeQuery()) {
-                    if (rs.next()) {
-                        return rs.getInt("rank");
+                    int rank = 1;
+                    while (rs.next()) {
+                        Object uuidObj = rs.getObject("uuid");
+                        UUID higherUuid = (uuidObj instanceof UUID u) ? u : UUID.fromString(uuidObj.toString());
+                        if (plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isStaffOrAdmin(higherUuid)) {
+                            continue; // Skip admin from rank position counting
+                        }
+                        rank++;
                     }
+                    return rank;
                 }
             } catch (SQLException e) {
                 plugin.getLogger().log(Level.SEVERE, "Failed calculating rank for player: " + playerUuid, e);
