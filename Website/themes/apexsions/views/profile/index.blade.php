@@ -24,13 +24,20 @@
     $currentRankKey = strtolower($linkedAccount->rank ?? 'wanderer');
     $currentRankInfo = $rankStyles[$currentRankKey] ?? $rankStyles['wanderer'];
 
+    $staffRanks = ['ancestor', 'architect', 'overseer', 'warden', 'herald'];
+    $isStaff = in_array($currentRankKey, $staffRanks, true);
+
     $kingdomColors = [
         'ZENITHAR' => ['color' => '#f39c12', 'icon' => 'bi-sun', 'name' => 'Zenithar'],
         'SOLTERRA' => ['color' => '#e74c3c', 'icon' => 'bi-fire', 'name' => 'Solterra'],
         'SYLVAMOOR' => ['color' => '#2ecc71', 'icon' => 'bi-tree', 'name' => 'Sylvamoor'],
+        'AETHERION' => ['color' => '#00f2fe', 'icon' => 'bi-stars', 'name' => 'Aetherion (The Conclave)'],
         'NONE' => ['color' => '#7f8c8d', 'icon' => 'bi-compass', 'name' => 'Belum Memilih'],
     ];
     $currentKingdomKey = strtoupper($linkedAccount->kingdom ?? 'NONE');
+    if ($isStaff && ($currentKingdomKey === 'NONE' || empty($currentKingdomKey))) {
+        $currentKingdomKey = 'AETHERION';
+    }
     $currentKingdom = $kingdomColors[$currentKingdomKey] ?? $kingdomColors['NONE'];
 
     $xpPercent = 0;
@@ -120,10 +127,12 @@
                             <span class="text-secondary small" data-i18n="profile_kingdom_label">Kerajaan Faksi:</span>
                             <span class="fw-bold ms-1" style="color: {{ $currentKingdom['color'] }};">
                                 <i class="bi {{ $currentKingdom['icon'] }}"></i>
-                                @if($currentKingdomKey === 'NONE')
+                                @if($currentKingdomKey === 'AETHERION')
+                                    <span data-i18n="kingdom_aetherion_name">Aetherion (The Conclave)</span>
+                                @elseif($currentKingdomKey === 'NONE')
                                     <span data-i18n="profile_kingdom_none">Belum Memilih</span>
                                 @else
-                                    {{ $currentKingdom['name'] }}
+                                    <span data-i18n="kingdom_{{ strtolower($currentKingdomKey) }}_name">{{ $currentKingdom['name'] }}</span>
                                 @endif
                             </span>
                             @if($linkedAccount->level_title)

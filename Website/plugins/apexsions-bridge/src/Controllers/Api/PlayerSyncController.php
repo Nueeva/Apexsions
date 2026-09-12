@@ -122,6 +122,22 @@ class PlayerSyncController extends Controller
             $finalRankDisplay = $validated['rank_display'] ?? ($inGameRankMeta['display_name'] ?? ucfirst($inGameRank));
         }
 
+        $staffRanks = ['ancestor', 'architect', 'overseer', 'warden', 'herald'];
+        $syncedKingdom = strtoupper($validated['kingdom'] ?? 'NONE');
+        $syncedKingdomDisplay = $validated['kingdom_display'] ?? 'Belum Memilih';
+
+        // Sions adalah reruntuhan kuno terlarang (Terra Interdicta) dan bukan kerajaan aktif
+        if ($syncedKingdom === 'SIONS') {
+            $syncedKingdom = 'NONE';
+            $syncedKingdomDisplay = 'Belum Memilih';
+        }
+
+        // Entitas The Aetherial Conclave (Dimensi Atas) fallback ke Aetherion
+        if (in_array(strtolower($finalRank), $staffRanks, true) && ($syncedKingdom === 'NONE' || empty($syncedKingdom) || in_array($syncedKingdom, ['ZENITHAR', 'SOLTERRA', 'SYLVAMOOR'], true))) {
+            $syncedKingdom = 'AETHERION';
+            $syncedKingdomDisplay = 'Aetherion (The Conclave)';
+        }
+
         $updateData = [
             'minecraft_uuid' => $uuid,
             'minecraft_username' => $username,
@@ -130,8 +146,8 @@ class PlayerSyncController extends Controller
             'floodgate_uuid' => $isBedrock ? $uuid : ($account->floodgate_uuid ?? null),
             'rank' => $finalRank,
             'rank_display' => $finalRankDisplay,
-            'kingdom' => strtoupper($validated['kingdom'] ?? 'NONE'),
-            'kingdom_display' => $validated['kingdom_display'] ?? 'Belum Memilih',
+            'kingdom' => $syncedKingdom,
+            'kingdom_display' => $syncedKingdomDisplay,
             'level' => (int) ($validated['level'] ?? 1),
             'xp' => (int) ($validated['xp'] ?? 0),
             'required_xp' => (int) ($validated['required_xp'] ?? 100),

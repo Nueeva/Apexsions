@@ -20,13 +20,20 @@
     $currentRankKey = strtolower($account->rank ?? 'wanderer');
     $currentRankInfo = $rankStyles[$currentRankKey] ?? $rankStyles['wanderer'];
 
+    $staffRanks = ['ancestor', 'architect', 'overseer', 'warden', 'herald'];
+    $isStaff = in_array($currentRankKey, $staffRanks, true);
+
     $kingdomColors = [
         'ZENITHAR' => ['color' => '#f39c12', 'icon' => 'bi-sun', 'name' => 'Zenithar'],
         'SOLTERRA' => ['color' => '#e74c3c', 'icon' => 'bi-fire', 'name' => 'Solterra'],
         'SYLVAMOOR' => ['color' => '#2ecc71', 'icon' => 'bi-tree', 'name' => 'Sylvamoor'],
+        'AETHERION' => ['color' => '#00f2fe', 'icon' => 'bi-stars', 'name' => 'Aetherion (The Conclave)'],
         'NONE' => ['color' => '#7f8c8d', 'icon' => 'bi-compass', 'name' => 'Belum Memilih'],
     ];
     $currentKingdomKey = strtoupper($account->kingdom ?? 'NONE');
+    if ($isStaff && ($currentKingdomKey === 'NONE' || empty($currentKingdomKey))) {
+        $currentKingdomKey = 'AETHERION';
+    }
     $currentKingdom = $kingdomColors[$currentKingdomKey] ?? $kingdomColors['NONE'];
 
     $xpPercent = 0;
@@ -69,9 +76,15 @@
                         <span class="badge px-3 py-2 text-uppercase" style="{{ $currentRankInfo['badge'] }}">
                             {{ $currentRankInfo['name'] }}
                         </span>
-                        <span class="badge px-3 py-2" style="background: {{ $currentKingdom['color'] }}20; color: {{ $currentKingdom['color'] }}; border: 1px solid {{ $currentKingdom['color'] }}40;">
-                            <i class="bi {{ $currentKingdom['icon'] }} me-1"></i> <span data-i18n="profile_pub_kingdom_prefix">Kerajaan</span> <span data-i18n="kingdom_{{ strtolower($currentKingdomKey) }}_name">{{ $currentKingdom['name'] }}</span>
-                        </span>
+                        @if($currentKingdomKey === 'AETHERION')
+                            <span class="badge px-3 py-2" style="background: rgba(0, 242, 254, 0.15); color: #00f2fe; border: 1px solid rgba(0, 242, 254, 0.5); box-shadow: 0 0 12px rgba(0, 242, 254, 0.3);">
+                                <i class="bi bi-stars me-1"></i> <span data-i18n="kingdom_aetherion_name">Aetherion (The Conclave)</span>
+                            </span>
+                        @else
+                            <span class="badge px-3 py-2" style="background: {{ $currentKingdom['color'] }}20; color: {{ $currentKingdom['color'] }}; border: 1px solid {{ $currentKingdom['color'] }}40;">
+                                <i class="bi {{ $currentKingdom['icon'] }} me-1"></i> <span data-i18n="profile_pub_kingdom_prefix">Kerajaan</span> <span data-i18n="kingdom_{{ strtolower($currentKingdomKey) }}_name">{{ $currentKingdom['name'] }}</span>
+                            </span>
+                        @endif
                         @if($account->active_title)
                             <span class="badge bg-warning text-dark fw-bold px-3 py-2">
                                 <i class="bi bi-award-fill me-1"></i> {{ strip_tags($account->active_title) }}

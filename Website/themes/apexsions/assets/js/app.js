@@ -748,6 +748,7 @@ const APX_I18N = {
         kingdom_zenithar_name: 'Zenithar',
         kingdom_solterra_name: 'Solterra',
         kingdom_sylvamoor_name: 'Sylvamoor',
+        kingdom_aetherion_name: 'Aetherion (The Conclave)',
         kingdom_none_name: 'Tanpa Kerajaan',
 
         // Profile & BattlePass
@@ -1575,6 +1576,7 @@ const APX_I18N = {
         kingdom_zenithar_name: 'Zenithar',
         kingdom_solterra_name: 'Solterra',
         kingdom_sylvamoor_name: 'Sylvamoor',
+        kingdom_aetherion_name: 'Aetherion (The Conclave)',
         kingdom_none_name: 'No Kingdom',
 
         // Profile & BattlePass

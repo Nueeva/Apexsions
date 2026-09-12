@@ -3,6 +3,11 @@
 @section('title', 'Player 360: ' . $account->minecraft_username)
 
 @section('content')
+@php
+    $staffRanks = ['ancestor', 'architect', 'overseer', 'warden', 'herald'];
+    $isStaff = in_array(strtolower($account->rank), $staffRanks, true) || ($currentRankMeta['weight'] ?? 0) >= 80;
+    $kCode = strtoupper($account->kingdom ?? 'NONE');
+@endphp
 <div class="mb-4">
     <a href="{{ route('apexsions-bridge.admin.players.index') }}" class="btn btn-sm btn-outline-secondary mb-3">
         <i class="bi bi-arrow-left me-1"></i> Kembali ke Daftar Warga
@@ -395,37 +400,87 @@
 
                     <!-- 4. KINGDOM TAB -->
                     <div class="tab-pane fade" id="kingdom" role="tabpanel">
-                        <div class="p-4 rounded bg-dark border border-secondary mb-4">
-                            <h5 class="fw-bold text-white mb-2">Afiliasi Kerajaan</h5>
-                            @if($account->kingdom && strtoupper($account->kingdom) !== 'NONE')
-                                <div class="d-flex align-items-center gap-3 mb-3">
-                                    <span class="badge bg-warning text-dark fs-6 px-3 py-2 fw-bold">
-                                        ⚜ {{ $account->kingdom_display ?: $account->kingdom }}
-                                    </span>
-                                    <button type="button" class="btn btn-sm btn-outline-warning" data-bs-toggle="modal" data-bs-target="#setKingdomModal">
-                                        Pindah Kerajaan
-                                    </button>
-                                    <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#resetKingdomModal">
-                                        Reset Kerajaan
-                                    </button>
-                                </div>
-                            @else
-                                <p class="text-muted small mb-3">Warga ini belum menentukan kesetiaan kerajaan (Belum Memilih).</p>
-                                <button type="button" class="btn btn-sm btn-warning fw-bold mb-3" data-bs-toggle="modal" data-bs-target="#setKingdomModal">
-                                    Tetapkan Kerajaan
-                                </button>
-                            @endif
+                        @php
+                            $staffRanks = ['ancestor', 'architect', 'overseer', 'warden', 'herald'];
+                            $isStaff = in_array(strtolower($account->rank), $staffRanks, true) || ($currentRankMeta['weight'] ?? 0) >= 80;
+                            $kCode = strtoupper($account->kingdom ?? 'NONE');
+                        @endphp
 
-                            <div class="pt-3 border-top border-secondary d-flex justify-content-between align-items-center">
-                                <div>
-                                    <span class="fw-bold text-warning d-block"><i class="bi bi-crown me-1"></i> Takhta Raja (Monarch)</span>
-                                    <small class="text-muted">Gelar kehormatan tertinggi & hak veto kerajaan.</small>
+                        @if($isStaff || $kCode === 'AETHERION')
+                            <div class="p-4 rounded mb-4" style="background: linear-gradient(135deg, rgba(0, 242, 254, 0.08) 0%, rgba(10, 16, 32, 0.95) 100%); border: 1px solid rgba(0, 242, 254, 0.4); box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);">
+                                <div class="d-flex align-items-center justify-content-between mb-3 flex-wrap gap-2">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <span class="fs-4 text-info">✦</span>
+                                        <div>
+                                            <h5 class="fw-bold text-white mb-0" style="font-family: 'Cinzel', serif;">
+                                                The Aetherial Conclave (Dimensi Atas)
+                                            </h5>
+                                            <small class="text-info opacity-75">Mandat Entitas Transenden & Pengawas Realitas Apexsions</small>
+                                        </div>
+                                    </div>
+                                    <span class="badge bg-info text-dark fs-6 px-3 py-2 fw-bold border border-light">
+                                        ✦ Aetherion (The Conclave)
+                                    </span>
                                 </div>
-                                <button type="button" class="btn btn-sm btn-outline-warning" data-bs-toggle="modal" data-bs-target="#monarchModal">
-                                    Kelola Takhta Raja
-                                </button>
+
+                                <div class="alert alert-dark border-info border-opacity-50 py-3 small mb-3 text-light" style="background: rgba(0,0,0,0.5);">
+                                    <div class="d-flex align-items-start gap-2">
+                                        <i class="bi bi-info-circle-fill text-info fs-5 mt-n1"></i>
+                                        <div>
+                                            <strong>Tatanan Lore Apexsions:</strong> Pemain ini menyandang gelar staf Conclave (<strong>{{ ucfirst($account->rank) }}</strong>). Sesuai kanon resmi Apexsions, entitas dimensi atas tidak terikat pada faksi mortal (<strong>Zenithar, Solterra, Sylvamoor</strong>), tidak dapat menduduki takhta Raja fana, dan kebal terhadap pertikaian Kingdom War.
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="d-flex align-items-center gap-2">
+                                    <form action="{{ route('apexsions-bridge.admin.players.action', $account->minecraft_uuid) }}" method="POST" class="d-inline">
+                                        @csrf
+                                        <input type="hidden" name="action_type" value="SET_KINGDOM">
+                                        <input type="hidden" name="kingdom" value="AETHERION">
+                                        <input type="hidden" name="reason" value="Pemulihan mandat faksi dimensi atas Aetherion">
+                                        <button type="submit" class="btn btn-sm btn-outline-info">
+                                            <i class="bi bi-stars me-1"></i> Pulihkan Mandat Aetherion
+                                        </button>
+                                    </form>
+
+                                    <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#resetKingdomModal">
+                                        <i class="bi bi-arrow-counterclockwise me-1"></i> Reset Status Faksi
+                                    </button>
+                                </div>
                             </div>
-                        </div>
+                        @else
+                            <div class="p-4 rounded bg-dark border border-secondary mb-4">
+                                <h5 class="fw-bold text-white mb-2">Afiliasi Kerajaan</h5>
+                                @if($account->kingdom && strtoupper($account->kingdom) !== 'NONE')
+                                    <div class="d-flex align-items-center gap-3 mb-3">
+                                        <span class="badge bg-warning text-dark fs-6 px-3 py-2 fw-bold">
+                                            ⚜ {{ $account->kingdom_display ?: $account->kingdom }}
+                                        </span>
+                                        <button type="button" class="btn btn-sm btn-outline-warning" data-bs-toggle="modal" data-bs-target="#setKingdomModal">
+                                            Pindah Kerajaan
+                                        </button>
+                                        <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#resetKingdomModal">
+                                            Reset Kerajaan
+                                        </button>
+                                    </div>
+                                @else
+                                    <p class="text-muted small mb-3">Warga ini belum menentukan kesetiaan kerajaan (Belum Memilih).</p>
+                                    <button type="button" class="btn btn-sm btn-warning fw-bold mb-3" data-bs-toggle="modal" data-bs-target="#setKingdomModal">
+                                        Tetapkan Kerajaan
+                                    </button>
+                                @endif
+
+                                <div class="pt-3 border-top border-secondary d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <span class="fw-bold text-warning d-block"><i class="bi bi-crown me-1"></i> Takhta Raja (Monarch)</span>
+                                        <small class="text-muted">Gelar kehormatan tertinggi & hak veto kerajaan.</small>
+                                    </div>
+                                    <button type="button" class="btn btn-sm btn-outline-warning" data-bs-toggle="modal" data-bs-target="#monarchModal">
+                                        Kelola Takhta Raja
+                                    </button>
+                                </div>
+                            </div>
+                        @endif
                     </div>
 
                     <!-- 5. MODERATION TAB -->
@@ -610,15 +665,27 @@
                         <button type="button" class="btn btn-sm btn-outline-light text-start" data-bs-toggle="modal" data-bs-target="#addXpModal">
                             <i class="bi bi-lightning-charge me-2 text-warning"></i> Tambah Progression XP
                         </button>
-                        <button type="button" class="btn btn-sm btn-outline-light text-start" data-bs-toggle="modal" data-bs-target="#setKingdomModal">
-                            <i class="bi bi-shield-shaded me-2 text-warning"></i> Ganti Afiliasi Kerajaan
-                        </button>
+                        @if($isStaff)
+                            <button type="button" class="btn btn-sm btn-outline-info text-start" data-bs-toggle="modal" data-bs-target="#setKingdomModal">
+                                <i class="bi bi-stars me-2 text-info"></i> Mandat Faksi Conclave (Aetherion)
+                            </button>
+                        @else
+                            <button type="button" class="btn btn-sm btn-outline-light text-start" data-bs-toggle="modal" data-bs-target="#setKingdomModal">
+                                <i class="bi bi-shield-shaded me-2 text-warning"></i> Ganti Afiliasi Kerajaan
+                            </button>
+                        @endif
                         <button type="button" class="btn btn-sm btn-outline-info text-start @if(!$isOnline) disabled @endif" data-bs-toggle="modal" data-bs-target="#setGameModeModal" @if(!$isOnline) title="Pemain sedang offline" @endif>
                             <i class="bi bi-controller me-2 text-info"></i> Ubah GameMode @if(!$isOnline) <small class="badge bg-secondary ms-1">Offline</small> @endif
                         </button>
-                        <button type="button" class="btn btn-sm btn-outline-warning text-start" data-bs-toggle="modal" data-bs-target="#monarchModal">
-                            <i class="bi bi-crown me-2 text-warning"></i> Kelola Takhta Raja (Monarch)
-                        </button>
+                        @if($isStaff)
+                            <button type="button" class="btn btn-sm btn-outline-secondary text-start disabled" title="Staf Conclave tidak dapat menduduki takhta mortal">
+                                <i class="bi bi-crown me-2 text-muted"></i> Takhta Raja Mortal <small class="badge bg-secondary ms-1">Terkunci</small>
+                            </button>
+                        @else
+                            <button type="button" class="btn btn-sm btn-outline-warning text-start" data-bs-toggle="modal" data-bs-target="#monarchModal">
+                                <i class="bi bi-crown me-2 text-warning"></i> Kelola Takhta Raja (Monarch)
+                            </button>
+                        @endif
                     </div>
                 </div>
 
@@ -902,9 +969,18 @@
                 @csrf
                 <input type="hidden" name="action_type" value="SET_KINGDOM">
                 <div class="modal-body">
+                    @if($isStaff)
+                        <div class="alert alert-warning py-2 small mb-3">
+                            <i class="bi bi-exclamation-triangle-fill me-1"></i>
+                            <strong>Peringatan Lore Conclave:</strong> Pemain ini berpangkat staf Conclave (<strong>{{ ucfirst($account->rank) }}</strong>). Entitas dimensi atas tidak dapat berafiliasi dengan kerajaan fana. Memilih faksi fana akan ditolak demi integritas kanon semesta.
+                        </div>
+                    @endif
                     <div class="mb-3">
-                        <label class="form-label small fw-bold">Pilih Kerajaan <span class="text-danger">*</span></label>
+                        <label class="form-label small fw-bold">Pilih Kerajaan / Mandat <span class="text-danger">*</span></label>
                         <select name="kingdom" class="form-select " required>
+                            @if($isStaff)
+                                <option value="AETHERION" @if(strtoupper($account->kingdom) === 'AETHERION' || strtoupper($account->kingdom) === 'NONE') selected @endif>✦ Aetherion (The Aetherial Conclave / Dimensi Atas)</option>
+                            @endif
                             <option value="ZENITHAR" @if(strtoupper($account->kingdom) === 'ZENITHAR') selected @endif>Zenithar (Kekayaan & Keemasan)</option>
                             <option value="SOLTERRA" @if(strtoupper($account->kingdom) === 'SOLTERRA') selected @endif>Solterra (Api & Pertambangan)</option>
                             <option value="SYLVAMOOR" @if(strtoupper($account->kingdom) === 'SYLVAMOOR') selected @endif>Sylvamoor (Alam & Hutan)</option>
@@ -1155,9 +1231,16 @@
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                <div class="alert alert-warning py-2 small mb-3">
-                    <i class="bi bi-exclamation-triangle-fill me-1"></i> Penobatan Raja memberikan gelar kehormatan realm, hak veto wilayah, dan pengumuman siaran resmi ke seluruh pemain di server.
-                </div>
+                @if($isStaff)
+                    <div class="alert alert-danger py-2 small mb-3">
+                        <i class="bi bi-shield-x me-1"></i>
+                        <strong>Mandat Conclave Transenden:</strong> Pemain ini berpangkat staf Conclave (<strong>{{ ucfirst($account->rank) }}</strong>). Entitas dimensi atas dilarang menduduki takhta Raja fana!
+                    </div>
+                @else
+                    <div class="alert alert-warning py-2 small mb-3">
+                        <i class="bi bi-exclamation-triangle-fill me-1"></i> Penobatan Raja memberikan gelar kehormatan realm, hak veto wilayah, dan pengumuman siaran resmi ke seluruh pemain di server.
+                    </div>
+                @endif
 
                 <!-- Form Penobatan -->
                 <form action="{{ route('apexsions-bridge.admin.players.action', $account->minecraft_uuid) }}" method="POST" class="mb-4 pb-3 border-bottom border-secondary">
@@ -1166,7 +1249,7 @@
                     <h6 class="fw-bold text-warning mb-2"><i class="bi bi-award me-1"></i> Nobatkan Menjadi Raja</h6>
                     <div class="mb-3">
                         <label class="form-label small fw-bold">Kerajaan Takhta <span class="text-danger">*</span></label>
-                        <select name="kingdom" class="form-select" required>
+                        <select name="kingdom" class="form-select" required @if($isStaff) disabled @endif>
                             <option value="ZENITHAR" @if(strtoupper($account->kingdom) === 'ZENITHAR') selected @endif>Zenithar (Gelar: Raja Zenithar)</option>
                             <option value="SOLTERRA" @if(strtoupper($account->kingdom) === 'SOLTERRA') selected @endif>Solterra (Gelar: Raja Solterra)</option>
                             <option value="SYLVAMOOR" @if(strtoupper($account->kingdom) === 'SYLVAMOOR') selected @endif>Sylvamoor (Gelar: Raja Sylvamoor)</option>
@@ -1174,9 +1257,9 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label small fw-bold">Alasan Penobatan <span class="text-danger">*</span></label>
-                        <input type="text" name="reason" class="form-control" placeholder="Alasan administratif penobatan raja..." required maxlength="250">
+                        <input type="text" name="reason" class="form-control" placeholder="Alasan administratif penobatan raja..." required maxlength="250" @if($isStaff) disabled @endif>
                     </div>
-                    <button type="submit" class="btn btn-warning w-100 fw-bold">
+                    <button type="submit" class="btn btn-warning w-100 fw-bold" @if($isStaff) disabled title="Staf Conclave dilarang menjadi Raja mortal" @endif>
                         <i class="bi bi-crown me-1"></i> Nobatkan Sebagai Raja
                     </button>
                 </form>

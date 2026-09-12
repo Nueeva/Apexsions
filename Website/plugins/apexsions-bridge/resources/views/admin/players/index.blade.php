@@ -37,9 +37,17 @@
 
             <div class="col-md-2">
                 <select name="kingdom" class="form-select form-select-sm">
-                    <option value="all">-- Semua Kerajaan --</option>
+                    <option value="all">-- Semua Kerajaan / Faksi --</option>
                     @foreach($availableKingdoms as $kd)
-                        <option value="{{ $kd }}" @selected(strtoupper($selectedKingdom) === strtoupper($kd))>{{ $kd }}</option>
+                        <option value="{{ $kd }}" @selected(strtoupper($selectedKingdom) === strtoupper($kd))>
+                            @if($kd === 'AETHERION')
+                                ✦ Aetherion (The Conclave)
+                            @elseif($kd === 'NONE')
+                                Tanpa Kerajaan (Mortal)
+                            @else
+                                {{ $kd }}
+                            @endif
+                        </option>
                     @endforeach
                 </select>
             </div>
@@ -129,17 +137,25 @@
                             </td>
                             <td>
                                 @php
+                                    $staffRanks = ['ancestor', 'architect', 'overseer', 'warden', 'herald'];
+                                    $isStaff = in_array(strtolower($player->rank), $staffRanks, true);
                                     $kCode = strtoupper($player->kingdom ?? 'NONE');
-                                    $kColors = [
-                                        'ZENITHAR' => 'bg-warning text-dark fw-bold',
-                                        'SOLTERRA' => 'bg-danger text-white fw-bold',
-                                        'SYLVAMOOR' => 'bg-success text-white fw-bold',
-                                    ];
-                                    $kBadge = $kColors[$kCode] ?? 'bg-secondary text-light';
-                                    $kName = $player->kingdom_display ?: ($kCode === 'NONE' ? 'Belum Memilih' : ucfirst(strtolower($player->kingdom)));
+
+                                    if ($isStaff || $kCode === 'AETHERION') {
+                                        $kBadge = 'bg-info text-dark fw-bold border border-info';
+                                        $kName = '✦ Aetherion (Conclave)';
+                                    } else {
+                                        $kColors = [
+                                            'ZENITHAR' => 'bg-warning text-dark fw-bold',
+                                            'SOLTERRA' => 'bg-danger text-white fw-bold',
+                                            'SYLVAMOOR' => 'bg-success text-white fw-bold',
+                                        ];
+                                        $kBadge = $kColors[$kCode] ?? 'bg-secondary text-light';
+                                        $kName = $player->kingdom_display ?: ($kCode === 'NONE' ? 'Belum Memilih' : ucfirst(strtolower($player->kingdom)));
+                                    }
                                 @endphp
                                 <span class="badge {{ $kBadge }} px-2 py-1" style="letter-spacing: 0.5px;">
-                                    @if($kCode !== 'NONE') ⚜ @endif {{ $kName }}
+                                    @if(!$isStaff && $kCode !== 'NONE' && $kCode !== 'AETHERION') ⚜ @endif {{ $kName }}
                                 </span>
                             </td>
                             <td>

@@ -60,7 +60,21 @@ class PlayerAdminController extends Controller
         }
 
         if (!empty($kingdom) && $kingdom !== 'all') {
-            $query->whereRaw('UPPER(kingdom) = ?', [strtoupper($kingdom)]);
+            $upperK = strtoupper($kingdom);
+            $staffRanks = ['ancestor', 'architect', 'overseer', 'warden', 'herald'];
+            if ($upperK === 'AETHERION') {
+                $query->where(function ($q) use ($staffRanks) {
+                    $q->whereRaw('UPPER(kingdom) = ?', ['AETHERION'])
+                      ->orWhereIn('rank', $staffRanks);
+                });
+            } elseif ($upperK === 'NONE') {
+                $query->where(function ($q) {
+                    $q->whereRaw('UPPER(kingdom) = ?', ['NONE'])
+                      ->orWhereNull('kingdom');
+                })->whereNotIn('rank', $staffRanks);
+            } else {
+                $query->whereRaw('UPPER(kingdom) = ?', [$upperK]);
+            }
         }
 
         if ($status === 'online') {
@@ -82,7 +96,7 @@ class PlayerAdminController extends Controller
 
         // Distinct filters
         $availableRanks = array_keys(RankService::getAllRanks());
-        $availableKingdoms = ['ZENITHAR', 'SOLTERRA', 'SYLVAMOOR', 'NONE'];
+        $availableKingdoms = ['ZENITHAR', 'SOLTERRA', 'SYLVAMOOR', 'AETHERION', 'NONE'];
 
         return view('apexsions-bridge::admin.players.index', [
             'players' => $players,
@@ -218,7 +232,7 @@ class PlayerAdminController extends Controller
             'amount' => ['nullable', 'numeric', 'min:0'],
             'level' => ['nullable', 'integer', 'min:1', 'max:100'],
             'xp_amount' => ['nullable', 'integer', 'min:1'],
-            'kingdom' => ['nullable', 'string', 'in:ZENITHAR,SOLTERRA,SYLVAMOOR'],
+            'kingdom' => ['nullable', 'string', 'in:ZENITHAR,SOLTERRA,SYLVAMOOR,AETHERION'],
             'pass_type' => ['nullable', 'string', 'in:sio,exsio'],
             'tier' => ['nullable', 'integer', 'min:1', 'max:100'],
             'gamemode' => ['nullable', 'string', 'in:SURVIVAL,CREATIVE,ADVENTURE,SPECTATOR'],
@@ -394,13 +408,34 @@ class PlayerAdminController extends Controller
         // 6. SET KINGDOM ALLEGIANCE
         if ($actionType === 'SET_KINGDOM') {
             $kingdom = strtoupper($validated['kingdom'] ?? 'ZENITHAR');
-            $command = "ac setkingdom {$account->minecraft_username} {$kingdom}";
+            $staffRanks = ['ancestor', 'architect', 'overseer', 'warden', 'herald'];
+            $isStaff = in_array(strtolower($account->rank), $staffRanks, true);
+
+            // Lore Guard: Entitas dimensi atas (The Aetherial Conclave) tidak boleh berafiliasi dengan kerajaan mortal
+            if ($isStaff && in_array($kingdom, ['ZENITHAR', 'SOLTERRA', 'SYLVAMOOR'], true)) {
+                return back()->with('error', "Pemain {$account->minecraft_username} adalah entitas The Aetherial Conclave (Dimensi Atas) dan tidak dapat menjadi warga kerajaan fana!");
+            }
+
+            // Lore Guard: Warga mortal biasa dilarang masuk ke faksi Aetherion
+            if (!$isStaff && $kingdom === 'AETHERION') {
+                return back()->with('error', "Faksi Aetherion hanya diperuntukkan bagi entitas The Aetherial Conclave (Staf Realm)!");
+            }
 
             $oldKingdom = $account->kingdom;
-            $account->update([
-                'kingdom' => $kingdom,
-                'kingdom_display' => ucfirst(strtolower($kingdom)),
-            ]);
+
+            if ($kingdom === 'AETHERION') {
+                $command = "ac resetkingdom {$account->minecraft_username}";
+                $account->update([
+                    'kingdom' => 'AETHERION',
+                    'kingdom_display' => 'Aetherion (The Conclave)',
+                ]);
+            } else {
+                $command = "ac setkingdom {$account->minecraft_username} {$kingdom}";
+                $account->update([
+                    'kingdom' => $kingdom,
+                    'kingdom_display' => ucfirst(strtolower($kingdom)),
+                ]);
+            }
 
             $delivery = Delivery::create([
                 'action_id' => $actionId,
@@ -428,17 +463,26 @@ class PlayerAdminController extends Controller
                 'metadata' => ['delivery_id' => $delivery->id, 'command' => $command],
             ]);
 
-            return back()->with('success', "Afiliasi kerajaan {$account->minecraft_username} berhasil diubah ke {$kingdom}!");
+            $successMsg = ($kingdom === 'AETHERION')
+                ? "Afiliasi {$account->minecraft_username} berhasil ditetapkan ke Aetherion (The Aetherial Conclave)!"
+                : "Afiliasi kerajaan {$account->minecraft_username} berhasil diubah ke {$kingdom}!";
+
+            return back()->with('success', $successMsg);
         }
 
         // 7. RESET KINGDOM ALLEGIANCE
         if ($actionType === 'RESET_KINGDOM') {
             $command = "ac resetkingdom {$account->minecraft_username}";
+            $staffRanks = ['ancestor', 'architect', 'overseer', 'warden', 'herald'];
+            $isStaff = in_array(strtolower($account->rank), $staffRanks, true);
 
             $oldKingdom = $account->kingdom;
+            $newKingdom = $isStaff ? 'AETHERION' : 'NONE';
+            $newDisplay = $isStaff ? 'Aetherion (The Conclave)' : 'Belum Memilih';
+
             $account->update([
-                'kingdom' => 'NONE',
-                'kingdom_display' => 'Belum Memilih',
+                'kingdom' => $newKingdom,
+                'kingdom_display' => $newDisplay,
             ]);
 
             $delivery = Delivery::create([
@@ -460,14 +504,18 @@ class PlayerAdminController extends Controller
                 'target_id' => $account->minecraft_uuid,
                 'target_name' => $account->minecraft_username,
                 'old_value' => $oldKingdom ?: 'NONE',
-                'new_value' => 'NONE',
+                'new_value' => $newKingdom,
                 'reason' => $reason,
                 'source' => 'WEB',
                 'status' => 'PENDING',
                 'metadata' => ['delivery_id' => $delivery->id, 'command' => $command],
             ]);
 
-            return back()->with('success', "Afiliasi kerajaan {$account->minecraft_username} berhasil di-reset (Belum Memilih)!");
+            $resetMsg = $isStaff
+                ? "Afiliasi {$account->minecraft_username} dikembalikan ke Mandat Aetherion (The Conclave)!"
+                : "Afiliasi kerajaan {$account->minecraft_username} berhasil di-reset (Belum Memilih)!";
+
+            return back()->with('success', $resetMsg);
         }
 
         // 8. KICK PLAYER (Online only)
@@ -721,8 +769,15 @@ class PlayerAdminController extends Controller
 
         // 15. APPOINT MONARCH / KING
         if ($actionType === 'APPOINT_KING') {
+            $staffRanks = ['ancestor', 'architect', 'overseer', 'warden', 'herald'];
+            $isStaff = in_array(strtolower($account->rank), $staffRanks, true);
+
+            if ($isStaff) {
+                return back()->with('error', "Pemain {$account->minecraft_username} adalah entitas The Aetherial Conclave (Dimensi Atas) dan dilarang menduduki takhta Raja kerajaan fana!");
+            }
+
             $kingdom = strtoupper($validated['kingdom'] ?? ($account->kingdom ?: 'ZENITHAR'));
-            if ($kingdom === 'NONE' || empty($kingdom)) {
+            if ($kingdom === 'NONE' || empty($kingdom) || $kingdom === 'AETHERION') {
                 $kingdom = 'ZENITHAR';
             }
             $command = "kingdom setking {$kingdom} {$account->minecraft_username}";
