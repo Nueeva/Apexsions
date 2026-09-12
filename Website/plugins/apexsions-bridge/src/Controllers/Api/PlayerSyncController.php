@@ -53,10 +53,23 @@ class PlayerSyncController extends Controller
             'battlepass_pass_name' => ['nullable', 'string', 'max:64'],
             'apex_coins' => ['nullable', 'numeric', 'min:0'],
             'unlocked_titles' => ['nullable', 'array'],
+            'is_bedrock' => ['nullable', 'boolean'],
+            'edition' => ['nullable', 'string', 'max:16'],
+            'auth_mode' => ['nullable', 'string', 'max:32'],
         ]);
 
         $uuid = $validated['player_uuid'];
         $username = $validated['player_username'];
+
+        // Auto-detect Bedrock edition based on explicit flag, username prefix, or Floodgate UUID format
+        $isBedrock = (bool) ($request->input('is_bedrock') ?? false)
+            || strtoupper($request->input('edition') ?? '') === 'BEDROCK'
+            || str_starts_with($username, '.')
+            || str_starts_with($username, '*')
+            || str_starts_with($uuid, '00000000-0000-0000-');
+
+        $edition = $isBedrock ? 'BEDROCK' : 'JAVA';
+        $authMode = $isBedrock ? 'BEDROCK_FLOODGATE' : 'JAVA_ONLINE';
 
         // Find linked account by UUID or username
         $account = MinecraftAccount::where('minecraft_uuid', $uuid)
@@ -65,8 +78,8 @@ class PlayerSyncController extends Controller
 
         if (!$account) {
             $account = new MinecraftAccount();
-            $account->edition = 'JAVA';
-            $account->auth_mode = 'JAVA_ONLINE';
+            $account->edition = $edition;
+            $account->auth_mode = $authMode;
             $account->user_id = null;
             $account->verified_at = null;
         }
@@ -112,6 +125,9 @@ class PlayerSyncController extends Controller
         $updateData = [
             'minecraft_uuid' => $uuid,
             'minecraft_username' => $username,
+            'edition' => $edition,
+            'auth_mode' => $authMode,
+            'floodgate_uuid' => $isBedrock ? $uuid : ($account->floodgate_uuid ?? null),
             'rank' => $finalRank,
             'rank_display' => $finalRankDisplay,
             'kingdom' => strtoupper($validated['kingdom'] ?? 'NONE'),

@@ -98,7 +98,7 @@
                                             {{ $player->minecraft_username }}
                                         </a>
                                         <small class="text-muted d-block" style="font-size: 0.72rem;">
-                                            <span class="badge {{ $player->isBedrock() ? 'bg-primary' : 'bg-dark border border-secondary' }}" style="font-size: 0.65rem;">
+                                            <span class="badge {{ $player->isBedrock() ? 'bg-info text-dark fw-bold' : 'bg-dark border border-secondary text-muted' }}" style="font-size: 0.65rem;">
                                                 {{ $player->edition }}
                                             </span>
                                             <code class="text-muted">{{ Str::limit($player->minecraft_uuid, 14, '...') }}</code>

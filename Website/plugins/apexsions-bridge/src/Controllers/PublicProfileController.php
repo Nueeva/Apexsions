@@ -47,11 +47,16 @@ class PublicProfileController extends Controller
                 $pName = $foundPlayer['name'] ?? ($isUuid ? 'Player' : $identifier);
                 $pUuid = $foundPlayer['uuid'] ?? ($isUuid ? $identifier : null);
 
+                $isBedrock = str_starts_with($pName, '.')
+                    || str_starts_with($pName, '*')
+                    || ($pUuid && str_starts_with($pUuid, '00000000-0000-0000-'));
+
                 $account = MinecraftAccount::create([
                     'minecraft_username' => $pName,
                     'minecraft_uuid' => $pUuid,
-                    'edition' => 'JAVA',
-                    'auth_mode' => 'JAVA_ONLINE',
+                    'edition' => $isBedrock ? 'BEDROCK' : 'JAVA',
+                    'auth_mode' => $isBedrock ? 'BEDROCK_FLOODGATE' : 'JAVA_ONLINE',
+                    'floodgate_uuid' => $isBedrock ? $pUuid : null,
                     'rank' => 'wanderer',
                     'rank_display' => 'Wanderer',
                     'kingdom' => 'NONE',

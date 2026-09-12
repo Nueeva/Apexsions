@@ -525,12 +525,17 @@ public class WebBridgeService {
         }
         titlesJson.append("]");
 
+        boolean isBedrock = com.apexsions.core.gui.input.BedrockFormAdapter.isBedrockPlayer(player);
+        String edition = isBedrock ? "BEDROCK" : "JAVA";
+        String authMode = isBedrock ? "BEDROCK_FLOODGATE" : "JAVA_ONLINE";
+
         String jsonPayload = String.format(
                 Locale.ROOT,
                 "{\"player_uuid\":\"%s\",\"player_username\":\"%s\",\"rank\":\"%s\",\"rank_display\":\"%s\"," +
                 "\"kingdom\":\"%s\",\"kingdom_display\":\"%s\",\"level\":%d,\"xp\":%d,\"required_xp\":%d," +
                 "\"level_title\":\"%s\",\"active_title\":\"%s\",\"balance_rupiah\":%.2f,\"balance_diamond\":%.2f," +
                 "\"battlepass_tier\":%d,\"battlepass_xp\":%d,\"battlepass_required_xp\":%d,\"battlepass_has_premium\":%b,\"battlepass_pass_name\":\"%s\",\"apex_coins\":%d," +
+                "\"is_bedrock\":%b,\"edition\":\"%s\",\"auth_mode\":\"%s\"," +
                 "\"unlocked_titles\":%s}",
                 escapeJson(uuid.toString()),
                 escapeJson(username),
@@ -551,6 +556,9 @@ public class WebBridgeService {
                 bpStats.hasPremium(),
                 escapeJson(bpStats.passName()),
                 bpStats.apexCoins(),
+                isBedrock,
+                edition,
+                authMode,
                 titlesJson.toString()
         );
 

@@ -143,10 +143,42 @@ class MinecraftAccount extends Model
     }
 
     /**
+     * Accessor for edition: auto-detects Bedrock if username prefix or UUID indicates Bedrock.
+     */
+    public function getEditionAttribute($value): string
+    {
+        if ($this->isBedrock()) {
+            return 'BEDROCK';
+        }
+        return $value ? strtoupper($value) : 'JAVA';
+    }
+
+    /**
+     * Accessor for auth_mode: auto-detects Bedrock Floodgate if applicable.
+     */
+    public function getAuthModeAttribute($value): string
+    {
+        if ($this->isBedrock()) {
+            return 'BEDROCK_FLOODGATE';
+        }
+        return $value ? strtoupper($value) : 'JAVA_ONLINE';
+    }
+
+    /**
      * Check if this is a Bedrock Floodgate account.
      */
     public function isBedrock(): bool
     {
-        return $this->edition === 'BEDROCK' || $this->auth_mode === 'BEDROCK_FLOODGATE';
+        $rawEdition = strtoupper($this->attributes['edition'] ?? '');
+        $rawAuthMode = strtoupper($this->attributes['auth_mode'] ?? '');
+        $username = (string) ($this->minecraft_username ?? '');
+        $uuid = (string) ($this->minecraft_uuid ?? '');
+
+        return $rawEdition === 'BEDROCK'
+            || $rawAuthMode === 'BEDROCK_FLOODGATE'
+            || !empty($this->attributes['floodgate_uuid'])
+            || str_starts_with($username, '.')
+            || str_starts_with($username, '*')
+            || str_starts_with($uuid, '00000000-0000-0000-');
     }
 }
