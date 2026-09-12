@@ -38,9 +38,8 @@
 
                 <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ route('home') }}" title="{{ site_name() }} — Kembali ke Beranda">
                     <div class="sidebar-brand-text mx-3 text-center">
-                        <div class="d-flex align-items-center justify-content-center gap-2 mb-1">
-                            <img src="{{ asset('assets/themes/apexsions/img/logo-ornate-gold.png') }}" alt="Apexsions" style="height: 32px; width: auto; filter: drop-shadow(0 0 8px rgba(201, 164, 92, 0.45));">
-                            <span style="font-family: 'Cinzel', serif; font-size: 1.15rem; font-weight: 800; letter-spacing: 2px; color: #F1D58A; text-shadow: 0 0 12px rgba(201,164,92,0.4);">APEXSIONS</span>
+                        <div class="d-flex align-items-center justify-content-center mb-1">
+                            <img src="{{ asset('assets/themes/apexsions/img/logo-ornate-gold.png') }}" alt="Apexsions" style="height: 38px; max-height: 44px; width: auto; filter: drop-shadow(0 0 10px rgba(201, 164, 92, 0.45));">
                         </div>
                         <small class="d-block text-center font-weight-bold" style="color: #9E7B3E; font-size: 0.68rem; letter-spacing: 1.5px;">
                             THE PEAK CIVILIZATIONS &bull; CORE

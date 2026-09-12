@@ -258,8 +258,8 @@ body {
 }
 
 #sidebar .sidebar-brand-text img {
-    filter: drop-shadow(0 0 8px rgba(201, 164, 92, 0.45));
-    max-height: 30px;
+    filter: drop-shadow(0 0 10px rgba(201, 164, 92, 0.45));
+    max-height: 44px;
 }
 
 #sidebar .sidebar-brand-text small {
