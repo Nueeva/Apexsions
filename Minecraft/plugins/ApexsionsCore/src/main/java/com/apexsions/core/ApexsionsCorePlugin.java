@@ -156,6 +156,14 @@ public class ApexsionsCorePlugin extends JavaPlugin {
             // 3. Caches & Player Services
             try {
                 com.github.benmanes.caffeine.cache.RemovalCause.values();
+                com.github.benmanes.caffeine.cache.Cache<String, String> warmup = com.github.benmanes.caffeine.cache.Caffeine.newBuilder()
+                        .maximumSize(10)
+                        .expireAfterWrite(1, java.util.concurrent.TimeUnit.MINUTES)
+                        .build();
+                warmup.put("warmup", "1");
+                warmup.put("warmup", "2"); // forces BoundedLocalCache$UpdateTask
+                warmup.invalidate("warmup"); // forces BoundedLocalCache$RemovalTask
+                warmup.cleanUp(); // forces BoundedLocalCache$PerformCleanupTask
             } catch (Throwable t) {
                 getLogger().warning("Failed to preload Caffeine classes: " + t.getMessage());
             }

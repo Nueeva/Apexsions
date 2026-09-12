@@ -36,9 +36,12 @@ public class BlockPlacementTracker implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBlockPlace(BlockPlaceEvent event) {
-        Block block = event.getBlock();
-        long key = getBlockKey(block.getLocation());
-        placedBlocks.put(key, Boolean.TRUE);
+        try {
+            Block block = event.getBlock();
+            long key = getBlockKey(block.getLocation());
+            placedBlocks.put(key, Boolean.TRUE);
+        } catch (Throwable ignored) {
+        }
     }
 
     /**
