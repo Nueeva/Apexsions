@@ -270,7 +270,7 @@
         </div>
 
         <!-- Section Footnote Accents -->
-        <div class="d-flex justify-content-between align-items-center pt-3 border-top border-secondary border-opacity-15 text-uppercase small flex-wrap gap-2" style="letter-spacing: 0.16em; color: var(--apx-text-dim);">
+        <div class="d-flex justify-content-between align-items-center mt-5 pt-4 border-top border-secondary border-opacity-15 text-uppercase small flex-wrap gap-2" style="letter-spacing: 0.16em; color: var(--apx-text-dim);">
             <div>CIVILIZATIONS RISE BY DECREE &bull; FORGED BY CITIZENS</div>
             <div>THE PEAK CIVILIZATIONS</div>
         </div>
@@ -283,135 +283,133 @@
     $serverMapOnline = \Azuriom\Plugin\ApexsionsBridge\Services\ServerMapService::isMapOnline();
 @endphp
 
-<!-- Section: Explore Apexsions World (Live Interactive Server Map) -->
-<section class="apx-section apx-map-section position-relative overflow-hidden py-5" id="server-map">
+<!-- Section: Explore Apexsions World (Tactical Cartography & Sovereign Atlas) -->
+<section class="apx-section apx-map-section position-relative overflow-hidden py-5 py-lg-6" id="server-map">
     <div class="container position-relative" style="z-index: 2;">
-        <div class="apx-map-card p-4 p-md-5">
+        <div class="apx-map-monolith p-4 p-md-5">
             <div class="row align-items-center g-4 g-lg-5">
+                <!-- Left Column: Cartographic Intel & Sovereign Navigation -->
                 <div class="col-lg-7">
-                    <div class="d-flex align-items-center gap-2 mb-3 flex-wrap">
-                        <span class="apx-section-kicker" data-i18n="map_kicker">PETA REAL-TIME SERVER</span>
-                        @if($serverMapOnline)
-                            <span class="badge bg-success bg-opacity-20 text-success border border-success border-opacity-30 px-2.5 py-1 small d-inline-flex align-items-center gap-1.5">
-                                <span class="spinner-grow spinner-grow-sm text-success" style="width: 0.45rem; height: 0.45rem;" role="status"></span>
-                                <span>🟢 Map Online</span>
+                    <!-- Clean Telemetry Strip (Anti-slop: zero capsule badge clutter) -->
+                    <div class="d-flex align-items-center gap-3 mb-3 flex-wrap apx-map-telemetry-strip">
+                        <span class="apx-section-kicker mb-0" data-i18n="map_kicker">KARTOGRAFI REALM</span>
+                        <div class="apx-telemetry-badge-cluster d-inline-flex align-items-center gap-2 font-monospace">
+                            <span class="apx-telemetry-status d-inline-flex align-items-center gap-1.5 {{ $serverMapOnline ? 'is-online' : 'is-standby' }}">
+                                <span class="apx-telemetry-beacon"></span>
+                                <span class="apx-telemetry-status-text" data-i18n="{{ $serverMapOnline ? 'map_status_online' : 'map_status_standby' }}">
+                                    {{ $serverMapOnline ? 'ATLAS ONLINE' : 'ATLAS STANDBY' }}
+                                </span>
                             </span>
-                        @else
-                            <span class="badge bg-secondary bg-opacity-20 text-muted border border-secondary border-opacity-30 px-2.5 py-1 small">
-                                ⚪ Map Standby
-                            </span>
-                        @endif
-                        <span class="badge apx-badge-port px-2 py-1 small font-monospace">
-                            3D BlueMap Live
-                        </span>
-                        <span class="badge apx-badge-coords px-2 py-1 small font-monospace text-muted">
-                            📍 -6500, -3500
-                        </span>
+                            <span class="apx-telemetry-divider opacity-30">/</span>
+                            <span class="apx-telemetry-engine">BLUEMAP 3D</span>
+                            <span class="apx-telemetry-divider opacity-30">/</span>
+                            <span class="apx-telemetry-coords text-gold opacity-90">X: -6500, Z: -3500</span>
+                        </div>
                     </div>
 
                     <h2 class="apx-world-title mb-3" data-i18n="map_title">
-                        Explore Apexsions World
+                        Eksplorasi Bentang Alam Apexsions
                     </h2>
 
-                    <p class="apx-world-lead text-muted mb-4" style="max-width: 680px; font-size: 1.05rem; line-height: 1.75;" data-i18n="map_lead">
-                        Jelajahi peradaban Apexsions secara langsung melalui visualisasi 3D interaktif beresolusi tinggi. Pantau benteng kerajaan, persebaran warga, serta panorama daratan dari sudut pandang bebas tanpa batas.
+                    <p class="apx-world-lead text-sub mb-4" data-i18n="map_lead">
+                        Jelajahi peradaban Apexsions secara langsung melalui visualisasi 3D interaktif beresolusi tinggi. Pantau benteng kerajaan, persebaran warga, serta batas wilayah kedaulatan dari sudut pandang bebas tanpa batas.
                     </p>
 
-                    <!-- Feature Highlights Grid -->
-                    <div class="row g-3 mb-4">
-                        <div class="col-sm-6">
-                            <div class="d-flex align-items-start gap-2.5 apx-map-feature-item">
-                                <div class="apx-feature-icon-bullet mt-1 text-warning">
-                                    <i class="bi bi-camera-video-fill"></i>
+                    <!-- Cartographic Capabilities (Architectural Pillars, anti-slop) -->
+                    <div class="row g-3 mb-4 apx-carto-capabilities">
+                        <div class="col-md-4 col-sm-6">
+                            <div class="apx-carto-spec-card h-100">
+                                <div class="d-flex align-items-center gap-2 mb-1.5">
+                                    <i class="bi bi-compass text-gold"></i>
+                                    <span class="apx-spec-title fw-semibold text-main" data-i18n="map_feat_persp_title">Perspektif 3D Bebas</span>
                                 </div>
-                                <div>
-                                    <div class="fw-semibold text-white small">Perspektif 3D Bebas</div>
-                                    <div class="text-muted" style="font-size: 0.8rem;">Rotasi, zoom, dan jelajahi struktur realm secara mulus.</div>
-                                </div>
+                                <div class="apx-spec-desc text-dim" data-i18n="map_feat_persp_desc">Rotasi orbital 360°, sudut isometrik, dan inspeksi topografi kontur dunia.</div>
                             </div>
                         </div>
-                        <div class="col-sm-6">
-                            <div class="d-flex align-items-start gap-2.5 apx-map-feature-item">
-                                <div class="apx-feature-icon-bullet mt-1 text-success">
-                                    <i class="bi bi-people-fill"></i>
+                        <div class="col-md-4 col-sm-6">
+                            <div class="apx-carto-spec-card h-100">
+                                <div class="d-flex align-items-center gap-2 mb-1.5">
+                                    <i class="bi bi-geo-alt text-gold"></i>
+                                    <span class="apx-spec-title fw-semibold text-main" data-i18n="map_feat_track_title">Pelacakan Warga</span>
                                 </div>
-                                <div>
-                                    <div class="fw-semibold text-white small">Live Player Tracking</div>
-                                    <div class="text-muted" style="font-size: 0.8rem;">Posisi pemain dan pergerakan warga terdeteksi real-time.</div>
-                                </div>
+                                <div class="apx-spec-desc text-dim" data-i18n="map_feat_track_desc">Pantau koordinat pergerakan pemain dan pemukiman secara real-time.</div>
                             </div>
                         </div>
-                        <div class="col-sm-6">
-                            <div class="d-flex align-items-start gap-2.5 apx-map-feature-item">
-                                <div class="apx-feature-icon-bullet mt-1 text-info">
-                                    <i class="bi bi-shield-shaded"></i>
+                        <div class="col-md-4 col-sm-12">
+                            <div class="apx-carto-spec-card h-100">
+                                <div class="d-flex align-items-center gap-2 mb-1.5">
+                                    <i class="bi bi-shield text-gold"></i>
+                                    <span class="apx-spec-title fw-semibold text-main" data-i18n="map_feat_bounds_title">Teritorial 3 Kerajaan</span>
                                 </div>
-                                <div>
-                                    <div class="fw-semibold text-white small">Kedaulatan 3 Kerajaan</div>
-                                    <div class="text-muted" style="font-size: 0.8rem;">Batas teritorial Zenithar, Solterra, dan Sylvamoor.</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="d-flex align-items-start gap-2.5 apx-map-feature-item">
-                                <div class="apx-feature-icon-bullet mt-1 text-warning">
-                                    <i class="bi bi-sun-fill"></i>
-                                </div>
-                                <div>
-                                    <div class="fw-semibold text-white small">Siklus Cuaca &amp; Hari</div>
-                                    <div class="text-muted" style="font-size: 0.8rem;">Visualisasi siang, malam, dan pencahayaan in-game.</div>
-                                </div>
+                                <div class="apx-spec-desc text-dim" data-i18n="map_feat_bounds_desc">Visualisasi batas kedaulatan Zenithar, Solterra, dan Sylvamoor.</div>
                             </div>
                         </div>
                     </div>
 
+                    <!-- Actions Bar -->
                     <div class="d-flex flex-wrap align-items-center gap-3">
-                        <a href="{{ $serverMapUrl }}" target="_blank" rel="noopener noreferrer" class="btn btn-apx-gold px-4 py-3 fw-bold d-inline-flex align-items-center gap-2 apx-btn-glow">
-                            <i class="bi bi-compass-fill"></i>
-                            <span data-i18n="map_btn_open">Jelajahi Server Map 3D</span>
+                        <a href="{{ $serverMapUrl }}" target="_blank" rel="noopener noreferrer" class="btn btn-apx-gold px-4 py-2.5 fw-bold d-inline-flex align-items-center gap-2 apx-btn-glow">
+                            <i class="bi bi-compass"></i>
+                            <span data-i18n="map_btn_open">Buka Atlas Satelit 3D</span>
                             <i class="bi bi-box-arrow-up-right small ms-1"></i>
                         </a>
-                        <span class="text-muted small d-inline-flex align-items-center gap-1.5">
-                            <i class="bi bi-info-circle text-warning"></i>
-                            Membuka di tab baru (Port 32076)
+                        <span class="text-dim small font-monospace d-inline-flex align-items-center gap-2">
+                            <i class="bi bi-globe2 text-gold opacity-75"></i>
+                            <span data-i18n="map_tab_note">Satelit BlueMap Resolusi Penuh</span>
                         </span>
                     </div>
                 </div>
 
+                <!-- Right Column: Tactical Cartography Viewport Frame -->
                 <div class="col-lg-5">
-                    <a href="{{ $serverMapUrl }}" target="_blank" rel="noopener noreferrer" class="text-decoration-none d-block">
-                        <div class="apx-map-preview-box p-4 rounded-3 text-center position-relative overflow-hidden apx-map-interactive-card">
-                            <!-- Card Header Badge -->
-                            <div class="d-flex justify-content-between align-items-center mb-3 text-uppercase font-monospace" style="font-size: 0.72rem; letter-spacing: 0.08em;">
-                                <span class="text-warning"><i class="bi bi-broadcast me-1"></i> BLUE MAP LIVE</span>
-                                <span class="badge bg-warning bg-opacity-10 text-warning border border-warning border-opacity-25 px-2 py-0.5">3D CAM</span>
+                    <a href="{{ $serverMapUrl }}" target="_blank" rel="noopener noreferrer" class="text-decoration-none d-block apx-carto-link">
+                        <div class="apx-carto-viewport position-relative overflow-hidden">
+                            <!-- Background Cartography Media Layer -->
+                            <div class="apx-carto-media-layer">
+                                <img src="{{ theme_asset('img/realm-showcase.jpg') }}" alt="Apexsions Realm Cartography Viewport" class="apx-carto-media-img" loading="lazy" decoding="async" width="800" height="450">
+                                <div class="apx-carto-vignette"></div>
+                                <div class="apx-carto-scanlines"></div>
                             </div>
 
-                            <!-- Radar Compass Ring -->
-                            <div class="apx-map-radar-wrapper position-relative mx-auto my-3 d-flex align-items-center justify-content-center" style="width: 120px; height: 120px;">
-                                <div class="apx-map-radar-ping"></div>
-                                <div class="apx-map-radar-ring"></div>
-                                <div class="apx-map-preview-icon position-relative" style="font-size: 3.2rem; z-index: 2;">
-                                    <i class="bi bi-compass"></i>
+                            <!-- Imperial Chiseled Corner Reticles -->
+                            <span class="apx-carto-bracket apx-bracket-tl"></span>
+                            <span class="apx-carto-bracket apx-bracket-tr"></span>
+                            <span class="apx-carto-bracket apx-bracket-bl"></span>
+                            <span class="apx-carto-bracket apx-bracket-br"></span>
+
+                            <!-- HUD Header: Top Telemetry -->
+                            <div class="apx-carto-hud-top d-flex justify-content-between align-items-center">
+                                <div class="d-flex align-items-center gap-2">
+                                    <span class="apx-hud-indicator {{ $serverMapOnline ? 'is-live' : 'is-idle' }}"></span>
+                                    <span class="apx-hud-title font-monospace" data-i18n="map_viewport_tag">REALM OBSERVER // LIVE</span>
+                                </div>
+                                <span class="apx-hud-coords font-monospace">X: -6500 / Z: -3500</span>
+                            </div>
+
+                            <!-- HUD Center: Tactical Reticle & Territory Scope -->
+                            <div class="apx-carto-hud-center text-center">
+                                <div class="apx-carto-reticle mx-auto mb-2">
+                                    <i class="bi bi-crosshair2"></i>
+                                </div>
+                                <h4 class="font-cinzel apx-carto-realm-title mb-1.5" data-i18n="map_viewport_title">
+                                    Atlas Tiga Kerajaan
+                                </h4>
+                                <div class="apx-carto-kingdoms d-flex justify-content-center align-items-center gap-2 font-monospace">
+                                    <span class="apx-kingdom-tag tag-zenithar">ZENITHAR</span>
+                                    <span class="apx-tag-separator">•</span>
+                                    <span class="apx-kingdom-tag tag-solterra">SOLTERRA</span>
+                                    <span class="apx-tag-separator">•</span>
+                                    <span class="apx-kingdom-tag tag-sylvamoor">SYLVAMOOR</span>
                                 </div>
                             </div>
 
-                            <h4 class="font-cinzel apx-map-preview-title mb-1" data-i18n="map_card_title">Visualisasi 3D Interaktif</h4>
-                            <p class="apx-map-preview-desc text-muted small mb-3" style="line-height: 1.55;" data-i18n="map_card_desc">
-                                Klik untuk membuka perspektif penuh daratan Apexsions dari satelit peradaban.
-                            </p>
-
-                            <!-- Kingdom Sectors Pills -->
-                            <div class="d-flex flex-wrap justify-content-center gap-1.5 small font-monospace apx-map-preview-kingdoms mb-3">
-                                <span class="badge apx-chip-zenithar px-2 py-1">🏰 Zenithar</span>
-                                <span class="badge apx-chip-solterra px-2 py-1">☀️ Solterra</span>
-                                <span class="badge apx-chip-sylvamoor px-2 py-1">🌿 Sylvamoor</span>
-                            </div>
-
-                            <!-- Live Action Prompt -->
-                            <div class="d-inline-flex align-items-center gap-1 text-warning small fw-semibold apx-map-action-hint">
-                                <span>Buka Peta Layar Penuh</span>
-                                <i class="bi bi-arrow-right"></i>
+                            <!-- HUD Footer: Interactive Action Strip -->
+                            <div class="apx-carto-hud-bottom d-flex justify-content-between align-items-center">
+                                <span class="apx-hud-lens font-monospace">FOV 3D &bull; 60 FPS</span>
+                                <span class="apx-hud-action-cta d-inline-flex align-items-center gap-1.5 font-monospace">
+                                    <span data-i18n="map_viewport_prompt">JELAJAHI PETA LAYAR PENUH</span>
+                                    <i class="bi bi-arrow-up-right small"></i>
+                                </span>
                             </div>
                         </div>
                     </a>

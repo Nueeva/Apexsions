@@ -1824,135 +1824,278 @@ a:hover {
 }
 
 .apx-map-section {
-    background: linear-gradient(180deg, var(--apx-bg-surface) 0%, var(--apx-bg-deep) 100%);
+    background: linear-gradient(180deg, var(--apx-bg-deep) 0%, #0d0f15 50%, var(--apx-bg-deep) 100%);
     border-top: 1px solid var(--apx-gold-border-subtle);
+    border-bottom: 1px solid var(--apx-border);
 }
 
-.apx-map-card {
-    background: radial-gradient(circle at 10% 20%, rgba(15, 23, 42, 0.95), rgba(9, 12, 19, 0.98));
-    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
-    border-radius: var(--apx-radius-lg);
-    border: 1px solid rgba(245, 158, 11, 0.25);
-    backdrop-filter: blur(12px);
-}
-
-.apx-map-preview-box {
-    border: 1px solid rgba(245, 158, 11, 0.2);
-    background: radial-gradient(circle at center, rgba(17, 24, 39, 0.92), rgba(10, 14, 23, 0.98));
+.apx-map-monolith {
+    background: linear-gradient(155deg, rgba(24, 26, 32, 0.95) 0%, rgba(14, 16, 22, 0.98) 100%);
+    border: 1px solid rgba(201, 164, 92, 0.18);
     border-radius: var(--apx-radius-md);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-    transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
-}
-
-.apx-map-interactive-card:hover {
-    transform: translateY(-4px);
-    border-color: rgba(245, 158, 11, 0.5);
-    box-shadow: 0 16px 36px rgba(245, 158, 11, 0.15), 0 0 20px rgba(245, 158, 11, 0.1);
-}
-
-.apx-map-radar-wrapper {
+    box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.85);
     position: relative;
 }
 
-.apx-map-radar-ring {
+/* Telemetry Strip */
+.apx-map-telemetry-strip {
+    font-size: 0.78rem;
+}
+
+.apx-telemetry-badge-cluster {
+    background: rgba(9, 10, 13, 0.65);
+    border: 1px solid rgba(244, 239, 230, 0.08);
+    border-radius: var(--apx-radius-xs);
+    padding: 0.28rem 0.65rem;
+    font-size: 0.73rem;
+    letter-spacing: 0.04em;
+    color: var(--apx-text-dim);
+}
+
+.apx-telemetry-status.is-online .apx-telemetry-status-text {
+    color: var(--apx-emerald-light);
+    font-weight: 600;
+}
+
+.apx-telemetry-status.is-standby .apx-telemetry-status-text {
+    color: var(--apx-text-dim);
+}
+
+.apx-telemetry-beacon {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    display: inline-block;
+    background: var(--apx-text-dim);
+}
+
+.apx-telemetry-status.is-online .apx-telemetry-beacon {
+    background: var(--apx-emerald);
+    box-shadow: 0 0 8px var(--apx-emerald);
+}
+
+.apx-telemetry-engine {
+    color: var(--apx-ivory-stone);
+}
+
+/* Cartographic Capabilities Grid */
+.apx-carto-capabilities {
+    margin-top: 0.5rem;
+}
+
+.apx-carto-spec-card {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(244, 239, 230, 0.06);
+    border-radius: var(--apx-radius-xs);
+    padding: 0.85rem 0.95rem;
+    transition: var(--apx-transition);
+}
+
+.apx-carto-spec-card:hover {
+    background: rgba(201, 164, 92, 0.04);
+    border-color: rgba(201, 164, 92, 0.22);
+}
+
+.apx-spec-title {
+    font-size: 0.85rem;
+    letter-spacing: 0.01em;
+}
+
+.apx-spec-desc {
+    font-size: 0.76rem;
+    line-height: 1.55;
+}
+
+/* Tactical Cartography Viewport */
+.apx-carto-link {
+    display: block;
+}
+
+.apx-carto-viewport {
+    background: #090A0D;
+    border: 1px solid rgba(201, 164, 92, 0.25);
+    border-radius: var(--apx-radius-sm);
+    box-shadow: 0 14px 36px rgba(0, 0, 0, 0.7);
+    min-height: 330px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 1.25rem;
+    transition: var(--apx-transition);
+}
+
+.apx-carto-link:hover .apx-carto-viewport {
+    border-color: rgba(201, 164, 92, 0.55);
+    box-shadow: 0 18px 44px rgba(0, 0, 0, 0.85), 0 0 20px rgba(201, 164, 92, 0.12);
+    transform: translateY(-3px);
+}
+
+/* Media Layer */
+.apx-carto-media-layer {
     position: absolute;
     inset: 0;
-    border-radius: 50%;
-    border: 1px dashed rgba(245, 158, 11, 0.35);
-    animation: apx-radar-rotate 20s linear infinite;
+    z-index: 1;
+    overflow: hidden;
 }
 
-.apx-map-radar-ping {
+.apx-carto-media-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    filter: brightness(0.65) contrast(1.15) saturate(0.85);
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), filter 0.6s ease;
+}
+
+.apx-carto-link:hover .apx-carto-media-img {
+    transform: scale(1.04);
+    filter: brightness(0.75) contrast(1.1) saturate(0.95);
+}
+
+.apx-carto-vignette {
     position: absolute;
-    inset: 15px;
+    inset: 0;
+    background: radial-gradient(circle at center, rgba(9, 10, 13, 0.35) 0%, rgba(9, 10, 13, 0.88) 100%);
+}
+
+.apx-carto-scanlines {
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.08) 0px, rgba(0, 0, 0, 0.08) 1px, transparent 1px, transparent 3px);
+    pointer-events: none;
+}
+
+/* Imperial Chiseled Corner Reticles */
+.apx-carto-bracket {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    z-index: 3;
+    pointer-events: none;
+    border-color: var(--apx-gold);
+    transition: border-color 0.25s ease, transform 0.25s ease;
+}
+
+.apx-bracket-tl { top: 8px; left: 8px; border-top: 2px solid; border-left: 2px solid; }
+.apx-bracket-tr { top: 8px; right: 8px; border-top: 2px solid; border-right: 2px solid; }
+.apx-bracket-bl { bottom: 8px; left: 8px; border-bottom: 2px solid; border-left: 2px solid; }
+.apx-bracket-br { bottom: 8px; right: 8px; border-bottom: 2px solid; border-right: 2px solid; }
+
+.apx-carto-link:hover .apx-bracket-tl { transform: translate(-2px, -2px); border-color: var(--apx-gold-radiant); }
+.apx-carto-link:hover .apx-bracket-tr { transform: translate(2px, -2px); border-color: var(--apx-gold-radiant); }
+.apx-carto-link:hover .apx-bracket-bl { transform: translate(-2px, 2px); border-color: var(--apx-gold-radiant); }
+.apx-carto-link:hover .apx-bracket-br { transform: translate(2px, 2px); border-color: var(--apx-gold-radiant); }
+
+/* HUD Header */
+.apx-carto-hud-top {
+    position: relative;
+    z-index: 2;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+}
+
+.apx-hud-indicator {
+    width: 6px;
+    height: 6px;
     border-radius: 50%;
-    border: 1px solid rgba(245, 158, 11, 0.4);
-    animation: apx-radar-pulse 2.8s ease-out infinite;
+    display: inline-block;
 }
 
-@keyframes apx-radar-rotate {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
+.apx-hud-indicator.is-live {
+    background: var(--apx-emerald);
+    box-shadow: 0 0 8px var(--apx-emerald);
 }
 
-@keyframes apx-radar-pulse {
-    0% { transform: scale(0.85); opacity: 0.8; }
-    50% { transform: scale(1.15); opacity: 0.3; }
-    100% { transform: scale(1.35); opacity: 0; }
+.apx-hud-indicator.is-idle {
+    background: var(--apx-text-dim);
 }
 
-.apx-map-preview-icon {
+.apx-hud-title {
     color: var(--apx-gold-light);
-    filter: drop-shadow(0 0 16px rgba(245, 158, 11, 0.5));
-    transition: transform 0.3s ease;
+    font-size: 0.72rem;
 }
 
-.apx-map-interactive-card:hover .apx-map-preview-icon {
-    transform: scale(1.08);
+.apx-hud-coords {
+    color: var(--apx-ivory-stone);
+    font-size: 0.7rem;
 }
 
-.apx-map-preview-title {
-    color: #ffffff;
+/* HUD Center */
+.apx-carto-hud-center {
+    position: relative;
+    z-index: 2;
+    padding: 1.5rem 0;
 }
 
-.apx-map-preview-desc {
-    color: var(--apx-text-muted);
-}
-
-.apx-map-preview-kingdoms {
+.apx-carto-reticle {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 1px dashed rgba(201, 164, 92, 0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
     color: var(--apx-gold-light);
+    font-size: 1.25rem;
+    background: rgba(9, 10, 13, 0.55);
+    backdrop-filter: blur(4px);
+    transition: transform 0.35s ease, border-color 0.35s ease, color 0.35s ease;
 }
 
-.apx-badge-port {
-    background: rgba(0, 0, 0, 0.4);
-    color: rgba(255, 255, 255, 0.7);
-    border: 1px solid rgba(255, 255, 255, 0.15);
+.apx-carto-link:hover .apx-carto-reticle {
+    transform: rotate(90deg) scale(1.1);
+    border-color: var(--apx-gold-radiant);
+    color: var(--apx-gold-radiant);
 }
 
-.apx-badge-coords {
-    background: rgba(245, 158, 11, 0.08);
-    color: var(--apx-gold-light);
-    border: 1px solid rgba(245, 158, 11, 0.2);
+.apx-carto-realm-title {
+    color: var(--apx-ivory-celestial);
+    font-size: 1.2rem;
+    letter-spacing: 0.04em;
 }
 
-.apx-chip-zenithar {
-    background: rgba(59, 130, 246, 0.15);
-    color: #93c5fd;
-    border: 1px solid rgba(59, 130, 246, 0.3);
+.apx-carto-kingdoms {
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
 }
 
-.apx-chip-solterra {
-    background: rgba(245, 158, 11, 0.15);
-    color: #fcd34d;
-    border: 1px solid rgba(245, 158, 11, 0.35);
+.apx-kingdom-tag {
+    color: var(--apx-ivory-stone);
+    font-size: 0.7rem;
+    transition: color 0.2s ease;
 }
 
-.apx-chip-sylvamoor {
-    background: rgba(16, 185, 129, 0.15);
-    color: #6ee7b7;
-    border: 1px solid rgba(16, 185, 129, 0.3);
+.apx-kingdom-tag.tag-zenithar { color: #93c5fd; }
+.apx-kingdom-tag.tag-solterra { color: #fcd34d; }
+.apx-kingdom-tag.tag-sylvamoor { color: #6ee7b7; }
+
+.apx-tag-separator {
+    color: rgba(255, 255, 255, 0.25);
 }
 
-.apx-map-action-hint {
-    transition: transform 0.2s ease, color 0.2s ease;
+/* HUD Footer */
+.apx-carto-hud-bottom {
+    position: relative;
+    z-index: 2;
+    padding-top: 0.65rem;
+    border-top: 1px solid rgba(244, 239, 230, 0.08);
+    font-size: 0.72rem;
 }
 
-.apx-map-interactive-card:hover .apx-map-action-hint {
-    transform: translateX(4px);
-    color: #fbbf24;
+.apx-hud-lens {
+    color: var(--apx-text-dim);
 }
 
-.apx-map-feature-item {
-    background: rgba(255, 255, 255, 0.02);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    padding: 0.65rem 0.85rem;
-    border-radius: var(--apx-radius-sm);
-    transition: border-color 0.2s ease, background-color 0.2s ease;
+.apx-hud-action-cta {
+    color: var(--apx-gold);
+    font-size: 0.73rem;
+    letter-spacing: 0.06em;
+    transition: color 0.2s ease, transform 0.2s ease;
 }
 
-.apx-map-feature-item:hover {
-    background: rgba(245, 158, 11, 0.04);
-    border-color: rgba(245, 158, 11, 0.2);
+.apx-carto-link:hover .apx-hud-action-cta {
+    color: var(--apx-gold-radiant);
+    transform: translateX(3px);
 }
 
 .apx-quick-guide-banner {
@@ -3695,44 +3838,38 @@ code:not(pre code) {
     background: linear-gradient(to top, rgba(255, 255, 255, 0.85) 0%, transparent 60%) !important;
 }
 
-/* --- 7. Interactive Server Map --- */
+/* --- 7. Tactical Cartography Map Monolith --- */
 [data-bs-theme="light"] .apx-map-section {
-    background: #F6F8FA !important;
+    background: #F4F1EA !important;
     border-top: 1px solid rgba(158, 123, 62, 0.2) !important;
+    border-bottom: 1px solid rgba(158, 123, 62, 0.15) !important;
 }
 
-[data-bs-theme="light"] .apx-map-card {
+[data-bs-theme="light"] .apx-map-monolith {
     background: #FFFFFF !important;
     border: 1px solid rgba(158, 123, 62, 0.25) !important;
-    box-shadow: 0 8px 30px rgba(15, 23, 42, 0.08) !important;
+    box-shadow: 0 10px 32px rgba(15, 23, 42, 0.08) !important;
 }
 
-[data-bs-theme="light"] .apx-map-preview-box {
-    background: #F8FAFC !important;
-    border: 1px solid rgba(158, 123, 62, 0.2) !important;
-}
-
-[data-bs-theme="light"] .apx-map-preview-icon {
-    color: #9E7B3E !important;
-    filter: drop-shadow(0 0 10px rgba(158, 123, 62, 0.25)) !important;
-}
-
-[data-bs-theme="light"] .apx-map-preview-title {
-    color: #0F172A !important;
-}
-
-[data-bs-theme="light"] .apx-map-preview-desc {
-    color: #334155 !important;
-}
-
-[data-bs-theme="light"] .apx-map-preview-kingdoms {
-    color: #8C6A2E !important;
-}
-
-[data-bs-theme="light"] .apx-badge-port {
+[data-bs-theme="light"] .apx-telemetry-badge-cluster {
     background: #F1F5F9 !important;
-    color: #334155 !important;
-    border: 1px solid #CBD5E1 !important;
+    border-color: #E2E8F0 !important;
+    color: #475569 !important;
+}
+
+[data-bs-theme="light"] .apx-carto-spec-card {
+    background: #F8FAFC !important;
+    border-color: #E2E8F0 !important;
+}
+
+[data-bs-theme="light"] .apx-carto-spec-card:hover {
+    background: #FFFDF8 !important;
+    border-color: rgba(158, 123, 62, 0.35) !important;
+}
+
+[data-bs-theme="light"] .apx-carto-viewport {
+    border-color: rgba(158, 123, 62, 0.3) !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15) !important;
 }
 
 /* --- 8. Social Castes Section (11 Castes) --- */
