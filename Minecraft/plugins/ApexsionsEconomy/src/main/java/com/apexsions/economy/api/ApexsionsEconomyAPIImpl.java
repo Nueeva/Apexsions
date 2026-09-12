@@ -65,4 +65,14 @@ public class ApexsionsEconomyAPIImpl implements ApexsionsEconomyAPI {
     public @NotNull String formatCompact(double amount) {
         return NumberFormatUtil.formatCompact(amount);
     }
+
+    @Override
+    public java.util.concurrent.CompletableFuture<Void> depositKingdomTreasury(@NotNull String kingdomKey, @NotNull String currencyId, double amount) {
+        return plugin.getRepository().depositKingdomTreasury(kingdomKey, currencyId, amount);
+    }
+
+    @Override
+    public java.util.concurrent.CompletableFuture<Double> getKingdomTreasury(@NotNull String kingdomKey, @NotNull String currencyId) {
+        return plugin.getRepository().getKingdomTreasury(kingdomKey, currencyId);
+    }
 }

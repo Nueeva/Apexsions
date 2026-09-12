@@ -185,6 +185,12 @@ public class QuantitySelectMenu extends ShopGui {
             long xpEarned = Math.min(20, Math.max(1, (long) (totalCost / 1000.0)));
             plugin.getKingdomCoreHook().addXp(player.getUniqueId(), xpEarned);
 
+            String kingdomKey = kingdomOverride != null ? kingdomOverride : plugin.getKingdomCoreHook().getPlayerKingdom(player);
+            if (result.taxAmount() > 0 && !kingdomKey.equalsIgnoreCase("NONE")) {
+                plugin.getEconomyHook().depositKingdomTreasury(kingdomKey, result.taxAmount());
+                org.bukkit.Bukkit.getPluginManager().callEvent(new com.apexsions.shop.api.event.KingdomTaxCollectEvent(player, kingdomKey, result.taxAmount()));
+            }
+
             player.sendMessage(MM.deserialize(plugin.getConfig().getString("messages.prefix", "") +
                     plugin.getConfig().getString("messages.buy-success", "<green>Beli berhasil!</green>")
                             .replace("%amount%", String.valueOf(quantity))
@@ -225,6 +231,12 @@ public class QuantitySelectMenu extends ShopGui {
 
         long xpEarned = Math.min(20, Math.max(1, (long) (payout / 1000.0)));
         plugin.getKingdomCoreHook().addXp(player.getUniqueId(), xpEarned);
+
+        String kingdomKey = kingdomOverride != null ? kingdomOverride : plugin.getKingdomCoreHook().getPlayerKingdom(player);
+        if (result.taxAmount() > 0 && !kingdomKey.equalsIgnoreCase("NONE")) {
+            plugin.getEconomyHook().depositKingdomTreasury(kingdomKey, result.taxAmount());
+            org.bukkit.Bukkit.getPluginManager().callEvent(new com.apexsions.shop.api.event.KingdomTaxCollectEvent(player, kingdomKey, result.taxAmount()));
+        }
 
         player.sendMessage(MM.deserialize(plugin.getConfig().getString("messages.prefix", "") +
                 plugin.getConfig().getString("messages.sell-success", "<green>Jual berhasil!</green>")

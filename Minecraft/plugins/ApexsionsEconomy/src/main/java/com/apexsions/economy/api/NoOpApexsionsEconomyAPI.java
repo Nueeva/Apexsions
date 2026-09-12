@@ -61,4 +61,14 @@ public class NoOpApexsionsEconomyAPI implements ApexsionsEconomyAPI {
     public @NotNull String formatCompact(double amount) {
         return String.valueOf((long) amount);
     }
+
+    @Override
+    public java.util.concurrent.CompletableFuture<Void> depositKingdomTreasury(@NotNull String kingdomKey, @NotNull String currencyId, double amount) {
+        return java.util.concurrent.CompletableFuture.completedFuture(null);
+    }
+
+    @Override
+    public java.util.concurrent.CompletableFuture<Double> getKingdomTreasury(@NotNull String kingdomKey, @NotNull String currencyId) {
+        return java.util.concurrent.CompletableFuture.completedFuture(0.0);
+    }
 }

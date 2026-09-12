@@ -21,7 +21,9 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.lang.reflect.Method;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * 54-Slot Interactive Kingdom Detail & Lore Information GUI.
@@ -187,19 +189,47 @@ public class KingdomInfoGUI implements Listener {
         // 5. Slot 25: Tarif Pajak Wilayah
         ItemStack taxItem = new ItemStack(Material.EMERALD);
         ItemMeta taxMeta = taxItem.getItemMeta();
+        double taxRate = regSec != null ? regSec.getDouble("tax-percent", 10.0) : 10.0;
         if (taxMeta != null) {
-            taxMeta.displayName(mm.deserialize("<green><bold>💰 Tarif Pajak & Ekonomi Wilayah</bold></green>"));
-            double taxRate = regSec != null ? regSec.getDouble("tax-percent", 10.0) : 10.0;
+            taxMeta.displayName(mm.deserialize("<green><bold>💰 Kas Kerajaan & Tarif Pajak</bold></green>"));
             taxMeta.lore(List.of(
                     Component.empty(),
                     mm.deserialize("<gray>Pajak Transaksi Pasar: <gold><bold>" + String.format("%.1f", taxRate) + "%</bold></gold></gray>"),
+                    mm.deserialize("<gray>Kas Perbendaharaan: <yellow>Memuat data...</yellow></gray>"),
                     Component.empty(),
-                    mm.deserialize("<gray>Pajak ditarik otomatis dari transaksi pasar</gray>"),
-                    mm.deserialize("<gray>dan dialokasikan untuk kas perbendaharaan kerajaan.</gray>")
+                    mm.deserialize("<gray>Pajak belanja (/shop) & lelang (/ah)</gray>"),
+                    mm.deserialize("<gray>otomatis memperkaya kas kerajaan ini!</gray>")
             ));
             taxItem.setItemMeta(taxMeta);
         }
         inv.setItem(25, taxItem);
+
+        // Fetch Treasury async from ApexsionsEconomy if present
+        fetchKingdomTreasuryAsync(kingdomKey).thenAccept(balance -> {
+            if (balance != null) {
+                Bukkit.getScheduler().runTask(plugin, () -> {
+                    if (player.getOpenInventory().getTopInventory().getHolder() instanceof KingdomInfoHolder h
+                            && h.getKingdomKey().equalsIgnoreCase(kingdomKey)) {
+                        ItemStack updated = inv.getItem(25);
+                        if (updated != null) {
+                            ItemMeta m = updated.getItemMeta();
+                            if (m != null) {
+                                m.lore(List.of(
+                                        Component.empty(),
+                                        mm.deserialize("<gray>Pajak Transaksi Pasar: <gold><bold>" + String.format("%.1f", taxRate) + "%</bold></gold></gray>"),
+                                        mm.deserialize("<gray>Kas Perbendaharaan: <green><bold>Rp " + String.format("%,.0f", balance).replace(',', '.') + "</bold></green></gray>"),
+                                        Component.empty(),
+                                        mm.deserialize("<gray>Pajak belanja (/shop) & lelang (/ah)</gray>"),
+                                        mm.deserialize("<gray>otomatis memperkaya kas kerajaan ini!</gray>")
+                                ));
+                                updated.setItemMeta(m);
+                                inv.setItem(25, updated);
+                            }
+                        }
+                    }
+                });
+            }
+        });
 
         // 6. Slot 29: Buff Spesialisasi Kerajaan
         ItemStack buffItem = new ItemStack(Material.BEACON);
@@ -394,5 +424,22 @@ public class KingdomInfoGUI implements Listener {
         if (event.getInventory().getHolder() instanceof KingdomInfoHolder) {
             event.setCancelled(true);
         }
+    }
+
+    @SuppressWarnings("unchecked")
+    private CompletableFuture<Double> fetchKingdomTreasuryAsync(String kingdomKey) {
+        if (Bukkit.getPluginManager().isPluginEnabled("ApexsionsEconomy")) {
+            try {
+                Class<?> providerClass = Class.forName("com.apexsions.economy.api.ApexsionsEconomyProvider");
+                Method isAvail = providerClass.getMethod("isAvailable");
+                if ((Boolean) isAvail.invoke(null)) {
+                    Method getMethod = providerClass.getMethod("get");
+                    Object api = getMethod.invoke(null);
+                    Method getTreasury = api.getClass().getMethod("getKingdomTreasury", String.class, String.class);
+                    return (CompletableFuture<Double>) getTreasury.invoke(api, kingdomKey, "rupiah");
+                }
+            } catch (Throwable ignored) {}
+        }
+        return CompletableFuture.completedFuture(null);
     }
 }

@@ -24,9 +24,8 @@ regions:
     buffs:
       - "<green>+5% Kecepatan Gerak (Speed)</green>"
       - "<green>+7% Keberuntungan (Luck Boost)</green>"
-      - "<green>+6% Total Serangan (All Damage Boost)</green>"
-      - "<green>+6% Pertahanan Diri (Defense Reduction)</green>"
-      - "<green>+5% Reduksi Serangan Critical Musuh</green>"
+      - "<green>[Royal Discipline] +6% All Damage & +6% Defense</green>"
+      - "<green>-5% Reduksi Serangan Critical Musuh</green>"
     nerfs:
       - "<red>+7% Damage & Durasi Efek Racun (Poison Vulnerability)</red>"
       - "<red>Makanan Memulihkan Hunger Bar Lebih Sedikit (-1 Point)</red>"
@@ -38,11 +37,11 @@ regions:
       - "<gold><b>Zenithar (Arah Timur)</b></gold>"
       - "<dark_gray>Dinasti Kerajaan & Kavaleri Kehormatan Sions</dark_gray>"
       - "<gray>Melarikan diri ke timur menuju puncak cakrawala pasca"
-      - "<gray>runtuhnya Kekaisaran Sions akibat Dimensi Kegelapan."
+      - "<gray>runtuhnya Kekaisaran Sions akibat Celah Dimensi Umbra."
       - ""
       - "<green><b>Kondisi Sejarah (Buff):</b></green>"
       - "<gray> • <green>+5% Speed</green> & <green>+7% Luck</green>"
-      - "<gray> • <green>+6% Damage</green> & <green>+6% Defense</green>"
+      - "<gray> • <green>[Royal Discipline] +6% Damage & Defense</green>"
       - "<gray> • <green>-5% Reduksi Serangan Kritis Musuh</green>"
       - ""
       - "<red><b>Kondisi Fisik (Debuff):</b></red>"
@@ -74,7 +73,7 @@ regions:
       title: "Warlord of the Dunes"
     tax-percent: 20.0
     buffs:
-      - "<green>+15% Total Serangan (All Damage Boost)</green>"
+      - "<green>[Battle Momentum] +15% All Damage Boost</green>"
       - "<green>+10% Serangan Critical (Critical Damage Boost)</green>"
       - "<green>+2% Pertahanan Diri (Defense Reduction)</green>"
       - "<green>+10% Kecepatan Menambang (Mining Speed Boost)</green>"
@@ -94,7 +93,7 @@ regions:
       - "<gray>memadukan sihir penghancur dengan kekuatan fisik brutal."
       - ""
       - "<green><b>Kondisi Sejarah (Buff):</b></green>"
-      - "<gray> • <green>+15% All Damage</green> & <green>+10% Critical Damage</green>"
+      - "<gray> • <green>[Battle Momentum] +15% Damage & +10% Crit</green>"
       - "<gray> • <green>+10% Mining Speed</green> & <green>+2% Defense</green>"
       - "<gray> • <green>Rasio Jual Ore Tinggi (65%)</green>"
       - ""
@@ -128,11 +127,11 @@ regions:
       title: "Guardian of the World Tree"
     tax-percent: 15.0
     buffs:
+      - "<green>[Nature's Blessing] +2 HP Max Health (Total 11 Hati)</green>"
       - "<green>+12% Keberuntungan (Luck Boost)</green>"
       - "<green>+7% Peluang Ekstra Drop Monster (Mob Drop Rate)</green>"
       - "<green>+8% Defense & 5% Reduksi Damage Masuk (~12.6% Total Defense)</green>"
       - "<green>-5% Damage & Durasi Efek Racun (Poison Resistance)</green>"
-      - "<green>+2 HP Maksimal Darah (Total 11 Hati)</green>"
       - "<green>Kelembapan Lahan Pertanian & Tanaman Stabil</green>"
     nerfs:
       - "<red>Mabuk Ketinggian di Y > 110 (Efek Hunger & Weakness Ringan)</red>"
@@ -150,7 +149,7 @@ regions:
       - "<gray>meninggalkan ambisi tahta dan hidup selaras dengan alam."
       - ""
       - "<green><b>Kondisi Sejarah (Buff):</b></green>"
-      - "<gray> • <green>+2 HP Max Health (Total 11 Hati)</green>"
+      - "<gray> • <green>[Nature's Blessing] +2 HP (11 Hati)</green>"
       - "<gray> • <green>+12% Luck</green> & <green>+7% Mob Drop Rate</green>"
       - "<gray> • <green>Defense Tinggi (~12.6%)</green> & <green>-5% Racun</green>"
       - "<gray> • <green>Kelembapan Lahan Pertanian Abadi</green>"

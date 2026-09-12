@@ -1,0 +1,39 @@
+# ============================================================
+# APEXSIONS: SIONS RUINS CECUNGUK & MINION AUTOMATIC SPAWNS
+# ============================================================
+
+SionsLegionnaireSpawn:
+  MobType: SionsLegionnaire
+  Worlds: world
+  Chance: 0.60
+  Priority: 5
+  Action: REPLACE
+  Conditions:
+    - distance{d=<250;point=-6119,92,-3457} true
+
+SionsVoidCrawlerSpawn:
+  MobType: SionsVoidCrawler
+  Worlds: world
+  Chance: 0.50
+  Priority: 5
+  Action: REPLACE
+  Conditions:
+    - distance{d=<250;point=-6119,92,-3457} true
+
+SionsVoidAssassinSpawn:
+  MobType: SionsVoidAssassin
+  Worlds: world
+  Chance: 0.20
+  Priority: 6
+  Action: REPLACE
+  Conditions:
+    - distance{d=<200;point=-6119,92,-3457} true
+
+SionsVoidChannelerSpawn:
+  MobType: SionsVoidChanneler
+  Worlds: world
+  Chance: 0.15
+  Priority: 6
+  Action: REPLACE
+  Conditions:
+    - distance{d=<180;point=-6119,92,-3457} true

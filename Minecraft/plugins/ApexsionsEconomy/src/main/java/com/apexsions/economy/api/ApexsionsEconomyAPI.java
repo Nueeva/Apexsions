@@ -33,4 +33,8 @@ public interface ApexsionsEconomyAPI {
 
     @NotNull
     String formatCompact(double amount);
+
+    java.util.concurrent.CompletableFuture<Void> depositKingdomTreasury(@NotNull String kingdomKey, @NotNull String currencyId, double amount);
+
+    java.util.concurrent.CompletableFuture<Double> getKingdomTreasury(@NotNull String kingdomKey, @NotNull String currencyId);
 }

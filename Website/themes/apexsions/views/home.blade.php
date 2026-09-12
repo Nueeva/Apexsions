@@ -92,7 +92,7 @@
                 Runtuhnya Kekaisaran Sions &amp; Eksodus Tiga Kerajaan
             </h2>
             <p class="apx-world-lead text-muted" style="max-width: 820px; font-size: 1.05rem; line-height: 1.75;" data-i18n-html="world_lead">
-                Dahulu kala, satu peradaban tunggal yang mahaluas—<strong>Kekaisaran Sions</strong>—menaungi seluruh penjuru realm dalam kemakmuran tanpa pernah menyentuh ilmu hitam. Namun kehancuran tak terelakkan tiba ketika ambisi pemimpinnya memaksakan penggunaan energi terlarang dari <strong>Dimensi Kegelapan (Dark Dimension)</strong> demi melipatgandakan kekuatan pasukan. Kekuatan gelap yang tak terkendali meremukkan ibukota agung kekaisaran dan memicu <em>Eksodus Akbar</em> ke tiga penjuru mata angin: dinasti kerajaan melarikan diri ke timur (<strong>Zenithar</strong>), kaum pekerja dan prajurit bertahan hidup ke rimba barat (<strong>Sylvamoor</strong>), serta para pesulap agung dan prajurit tempur terkuat hijrah ke cadas selatan (<strong>Solterra</strong>).
+                Dahulu kala, satu peradaban tunggal yang mahaluas—<strong>Kekaisaran Sions</strong>—menaungi seluruh benua Apexsions dalam kemakmuran tanpa pernah menyentuh ilmu hitam. Namun kehancuran tak terelakkan tiba ketika ambisi kaisar terakhir memaksakan pembukaan portal ke <strong>Dimensi Kegelapan Umbra</strong> demi meraih keabadian. Kekuatan gelap yang meluap meremukkan ibukota agung kekaisaran dan memicu <em>Eksodus Akbar</em> ke tiga penjuru: dinasti kerajaan melarikan diri ke timur (<strong>Zenithar</strong>), kaum pekerja dan penjaga rimba ke barat (<strong>Sylvamoor</strong>), serta para pesulap agung dan prajurit tempur terkuat ke cadas selatan (<strong>Solterra</strong>).
             </p>
         </div>
 
@@ -115,7 +115,7 @@
                     </ul>
                     <div class="small fw-bold text-uppercase mb-1 apx-buff-label"><i class="bi bi-shield-plus me-1"></i> <span data-i18n="label_buffs">Buff Kondisi Sejarah</span></div>
                     <div class="small text-muted mb-2" style="font-size: 0.8rem; line-height: 1.5;" data-i18n-html="zenithar_buffs">
-                        <span class="text-success fw-semibold">+5% Speed</span>, <span class="text-success fw-semibold">+7% Luck</span>, <span class="text-success fw-semibold">+6% All Damage &amp; Defense</span>, <span class="text-success fw-semibold">-5% Reduksi Serangan Kritis Musuh</span>.
+                        <span class="text-success fw-semibold">+5% Speed</span>, <span class="text-success fw-semibold">+7% Luck</span>, <span class="text-success fw-semibold">[Royal Discipline] +6% All Damage &amp; Defense</span>, <span class="text-success fw-semibold">-5% Reduksi Serangan Kritis Musuh</span>.
                     </div>
                     <div class="small fw-bold text-uppercase mb-1 apx-debuff-label"><i class="bi bi-shield-minus me-1"></i> <span data-i18n="label_debuffs">Debuff Kondisi Fisik</span></div>
                     <div class="small text-muted" style="font-size: 0.8rem; line-height: 1.5;" data-i18n-html="zenithar_debuffs">
@@ -146,7 +146,7 @@
                     </ul>
                     <div class="small fw-bold text-uppercase mb-1 apx-buff-label"><i class="bi bi-shield-plus me-1"></i> <span data-i18n="label_buffs">Buff Kondisi Sejarah</span></div>
                     <div class="small text-muted mb-2" style="font-size: 0.8rem; line-height: 1.5;" data-i18n-html="solterra_buffs">
-                        <span class="text-success fw-semibold">+15% Total Damage</span>, <span class="text-success fw-semibold">+10% Critical Damage</span>, <span class="text-success fw-semibold">+10% Mining Speed</span>, <span class="text-success fw-semibold">Rasio Jual Ore Tinggi (65%)</span>.
+                        <span class="text-success fw-semibold">[Battle Momentum] +15% Total Damage</span>, <span class="text-success fw-semibold">+10% Critical Damage</span>, <span class="text-success fw-semibold">+10% Mining Speed</span>, <span class="text-success fw-semibold">Rasio Jual Ore Tinggi (65%)</span>.
                     </div>
                     <div class="small fw-bold text-uppercase mb-1 apx-debuff-label"><i class="bi bi-shield-minus me-1"></i> <span data-i18n="label_debuffs">Debuff Kondisi Fisik</span></div>
                     <div class="small text-muted" style="font-size: 0.8rem; line-height: 1.5;" data-i18n-html="solterra_debuffs">
@@ -177,7 +177,7 @@
                     </ul>
                     <div class="small fw-bold text-uppercase mb-1 apx-buff-label"><i class="bi bi-shield-plus me-1"></i> <span data-i18n="label_buffs">Buff Kondisi Sejarah</span></div>
                     <div class="small text-muted mb-2" style="font-size: 0.8rem; line-height: 1.5;" data-i18n-html="sylvamoor_buffs">
-                        <span class="text-success fw-semibold">+2 HP Maksimal (11 Hati)</span>, <span class="text-success fw-semibold">+12% Luck</span>, <span class="text-success fw-semibold">+7% Extra Mob Drop</span>, <span class="text-success fw-semibold">Defense Tinggi (~12.6%)</span>, <span class="text-success fw-semibold">Kelembapan Lahan Abadi</span>.
+                        <span class="text-success fw-semibold">[Nature's Blessing] +2 HP Maksimal (11 Hati)</span>, <span class="text-success fw-semibold">+12% Luck</span>, <span class="text-success fw-semibold">+7% Extra Mob Drop</span>, <span class="text-success fw-semibold">Defense Tinggi (~12.6%)</span>, <span class="text-success fw-semibold">Kelembapan Lahan Abadi</span>.
                     </div>
                     <div class="small fw-bold text-uppercase mb-1 apx-debuff-label"><i class="bi bi-shield-minus me-1"></i> <span data-i18n="label_debuffs">Debuff Kondisi Fisik</span></div>
                     <div class="small text-muted" style="font-size: 0.8rem; line-height: 1.5;" data-i18n-html="sylvamoor_debuffs">

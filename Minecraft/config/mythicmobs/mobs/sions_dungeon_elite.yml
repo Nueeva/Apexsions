@@ -1,0 +1,98 @@
+# ============================================================
+# APEXSIONS: ELITE FORBIDDEN RUINS MOBS
+# ============================================================
+
+# 1. Assassin Bayangan: Menghilang lalu menusuk dari belakang
+SionsVoidAssassin:
+  Type: SKELETON
+  Display: '<#9b59b6>[Lv.40] <gradient:#2c3e50:#8e44ad>Sions Shadowstalker</gradient>'
+  Health: 220
+  Damage: 18
+  Armor: 12
+  Options:
+    MovementSpeed: 0.32
+    Silent: true
+  Equipment:
+    - NETHERITE_SWORD HAND
+    - LEATHER_HELMET HEAD
+    - LEATHER_CHESTPLATE CHEST
+  Drops:
+    - SionsEliteKey 1 0.35      # 35% drop Kunci Elit Ksatria
+    - SionsAncientRelic 1-2 0.5
+    - exp 60 1.0
+  Skills:
+    # Mengelabui pemain: Berubah transparan dan teleport ke belakang punggung korban
+    - skill{s=ShadowStep} @Target ~onTimer:140 ?targetWithin{d=15} 0.7
+    - effect:particles{p=smoke;a=20;hs=0.5;vs=1} @self ~onTimer:10
+
+# 2. Golem Penjaga Gerbang: Menembakkan panah energi void peledak
+SionsRuinSentinel:
+  Type: IRON_GOLEM
+  Display: '<#e67e22>[Lv.55] <gradient:#d35400:#f39c12>Sions Ruin Sentinel</gradient>'
+  Health: 600
+  Damage: 25
+  Armor: 20
+  Options:
+    KnockbackResistance: 1.0
+    MovementSpeed: 0.20
+  Drops:
+    - SionsEliteKey 1 0.35      # 35% drop Kunci Elit Ksatria
+    - SionsAncientRelic 2-4 0.8
+    - CorruptedDarkCore 1 0.4
+    - exp 150 1.0
+  Skills:
+    # Hentakan tanah stun jika pemain terlalu dekat
+    - skill{s=GroundShatter} @PlayersInRadius{r=6} ~onDamaged =75% 1.0
+    - skill{s=GroundShatter} @PlayersInRadius{r=6} ~onDamaged =25% 1.0
+    # Tembakan meriam energi void jarak jauh
+    - skill{s=VoidMortar} @Target ~onTimer:180 ?targetWithin{d=25}
+
+# 3. Rahib Pemuja Kegelapan: Menyembuhkan pasukan di sekitarnya
+SionsCultistPriest:
+  Type: WITCH
+  Display: '<#c0392b>[Lv.45] <light_purple>Sions Corrupted Channeler</light_purple>'
+  Health: 280
+  Damage: 10
+  Options:
+    MovementSpeed: 0.24
+  Drops:
+    - SionsEliteKey 1 0.35      # 35% drop Kunci Elit
+    - SionsAncientRelic 1-3 0.7
+    - exp 100 1.0
+  Skills:
+    # Heals mob teman dalam radius 12 blok
+    - skill{s=AuraHealMinions} @MobsInRadius{r=12} ~onTimer:100
+    - message{m="<dark_purple>Channeler mengalirkan energi regenerasi ke pasukan Sions!</dark_purple>"} @PlayersInRadius{r=15} ~onTimer:100 0.3
+
+# 4. Kesatria Pelindung Imperium (Elite Knight di Titik Spawner -6126 92 -3459)
+SionsVoidKnight:
+  Type: WITHER_SKELETON
+  Display: '<#e74c3c>[Lv.50] <gradient:#c0392b:#f39c12>Sions Imperial Void Knight</gradient>'
+  Health: 450
+  Damage: 22
+  Armor: 18
+  Options:
+    KnockbackResistance: 0.8
+    MovementSpeed: 0.28
+    FollowRange: 30
+    Despawn: false
+  Equipment:
+    - NETHERITE_SWORD HAND
+    - SHIELD OFFHAND
+    - NETHERITE_HELMET HEAD
+    - DIAMOND_CHESTPLATE CHEST
+    - DIAMOND_LEGGINGS LEGS
+    - NETHERITE_BOOTS FEET
+  Drops:
+    - SionsEliteKey 1 0.50      # 50% peluang tinggi drop Kunci Elit
+    - CorruptedDarkCore 1-2 0.7
+    - SionsAncientRelic 3-6 1.0
+    - exp 250 1.0
+  Skills:
+    - message{m="<red><bold>[KSATRIA SIONS]</bold></red> <gray>Pedang kekaisaran tidak akan pernah tumpul di hadapan penyusup!</gray>"} @PlayersInRadius{r=25} ~onCombat 0.3
+    - skill{s=VoidSlash} @Target ~onTimer:160 ?targetWithin{d=8}
+    - sound{s=item.shield.block;v=1;p=0.8} @self ~onDamaged
+    # Hadiah Custom Enchants dari Ksatria Elit
+    - command{c="ace givebook <target.name> strike 3 85 15"} @PlayersInRadius{r=30} ~onDeath 0.35
+    - command{c="ace givebook <target.name> ward 3 85 15"} @PlayersInRadius{r=30} ~onDeath 0.30
+    - command{c="ace givedust <target.name> magic 20"} @PlayersInRadius{r=30} ~onDeath 0.40

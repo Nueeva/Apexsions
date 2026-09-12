@@ -1,0 +1,77 @@
+# 1. Shadow Step: Menghilang dan menusuk dari belakang pemain
+ShadowStep:
+  Skills:
+    - effect:particles{p=portal;a=50;hs=0.5;vs=1} @self
+    - sound{s=entity.enderman.teleport;v=1.5;p=0.8} @self
+    - teleport @Target
+    - effect:particles{p=crit;a=30;hs=0.3;vs=0.5} @Target
+    - damage{a=22;pk=true} @Target
+    - potion{type=DARKNESS;duration=50;level=1} @Target
+
+
+# 2. Void Mortar: Lingkaran bahaya di tanah 1.5 detik sebelum meledak!
+VoidMortar:
+  Skills:
+    # Gambar lingkaran partikel bahaya di tanah tempat target berdiri
+    - effect:particlebox{p=flame;a=40;radius=3} @Target
+    - sound{s=block.respawn_anchor.charge;v=1.5;p=0.5} @Target
+    - delay 30 # Menunggu 1.5 detik (Pemain bisa lari menghindar!)
+    - explosion{yield=2;blockdamage=false} @Target
+    - damage{a=35} @PlayersInRadius{r=4;target=true}
+    - effect:particles{p=dragon_breath;a=100;hs=2;vs=1} @Target
+
+# 3. Hentakan Golem (Ground Shatter)
+GroundShatter:
+  Skills:
+    - sound{s=entity.iron_golem.attack;v=2;p=0.5} @self
+    - effect:particles{p=block_marker;material=DIRT;a=120;hs=4;vs=0.5} @self
+    - throw{velocity=7;velocityY=6} @PlayersInRadius{r=6}
+    - damage{a=20} @PlayersInRadius{r=6}
+    - potion{type=SLOWNESS;duration=100;level=2} @PlayersInRadius{r=6}
+
+# 4. Aura Heal Minion untuk Sang Priest
+AuraHealMinions:
+  Skills:
+    - heal{a=40} @MobsInRadius{r=12;types=SionsVoidAssassin,SionsRuinSentinel,SionsCultistPriest,SionsLegionnaire}
+    - effect:particles{p=villager_happy;a=25;hs=2;vs=1} @MobsInRadius{r=12;types=SionsVoidAssassin,SionsRuinSentinel,SionsCultistPriest,SionsLegionnaire}
+    - sound{s=entity.experience_orb.pickup;v=1;p=1.2} @self
+
+# 5. Tebasan Pedang Valerius
+VoidSlash:
+  Skills:
+    - sound{s=entity.player.attack.sweep;v=1.5;p=0.6} @self
+    - projectile{onTick=VoidSlash_Tick;onHit=VoidSlash_Hit;v=18;i=1;hR=1.5;vR=1.5;maxR=15} @Target
+
+VoidSlash_Tick:
+  Skills:
+    - effect:particles{p=sweep_attack;a=2;hs=0.2;vs=0.2} @origin
+    - effect:particles{p=witch;a=6;hs=0.3;vs=0.3} @origin
+
+VoidSlash_Hit:
+  Skills:
+    - damage{a=28;pk=true}
+    - potion{type=WITHER;duration=80;level=2}
+
+# 6. Fase Tameng Kebal Valerius (Memanggil 2 Sions Guardian)
+ValeriusShieldPhase:
+  Skills:
+    - message{m="<gold><bold>[VALERIUS]</bold></gold> <yellow>Pelindung Dimensi Gelap diaktifkan! Para ksatria setiaku, bangkitlah!</yellow>"} @PlayersInRadius{r=35}
+    - potion{type=RESISTANCE;duration=400;level=5} @self
+    - effect:particles{p=enchantment_table;a=150;hs=2;vs=2} @self
+    - sound{s=block.beacon.activate;v=2;p=0.5} @self
+    - summon{type=SionsVoidAssassin;radius=4;amount=2} @self
+
+# 7. Hujan Bintang Kegelapan (Cataclysm Rain)
+VoidCataclysmRain:
+  Skills:
+    - sound{s=entity.wither.ambient;v=2;p=0.5} @self
+    - orbital{onTick=MeteorTick;onHit=MeteorHit;points=8;interval=20;duration=80;radius=8} @self
+
+MeteorTick:
+  Skills:
+    - effect:particles{p=squid_ink;a=10;hs=0.5;vs=0.5} @origin
+
+MeteorHit:
+  Skills:
+    - damage{a=30;pk=true}
+    - ignite{ticks=60}

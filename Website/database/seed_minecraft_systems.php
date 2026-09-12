@@ -1001,8 +1001,16 @@ MARKDOWN
         'content' => <<<MARKDOWN
 # Babad Sejarah: Runtuhnya Kekaisaran Sions & Eksodus Akbar
 
-> *"Dahulu kala, satu panji menaungi seluruh cakrawala. Namun ketika kecongkakan membuka gerbang Dimensi Kegelapan demi menciptakan pasukan yang tak terkalahkan, tanah leluhur runtuh ke dalam jurang kehampaan."*<br>
+> *"Dahulu kala, satu panji menaungi seluruh cakrawala. Namun ketika kecongkakan membuka gerbang Dimensi Kegelapan Umbra demi meraih keabadian, tanah leluhur runtuh ke dalam jurang kehampaan."*<br>
 > — **Arsip Suci Kerajaan, Kitab Babad Sions, Bab I: Bait Kehancuran**
+
+---
+
+### Kosmologi Tiga Lapis Realitas (The Three Layers of Reality)
+Alam semesta Apexsions bertumpu pada keseimbangan tiga lapis realitas:
+1. **Aetherion (Alam Atas / Absolute Order):** Dimensi keteraturan mutlak yang dihuni oleh The Aetherial Conclave (*Ancestor, Architect, Overseer, Warden, Herald*). Mereka tidak campur tangan dalam peperangan fana, melainkan menjaga stabilitas hukum semesta dan menjatuhkan anomali korupsi realitas.
+2. **Benua Apexsions (Alam Fana / Equilibrium):** Dunia tempat manusia hidup, menambang, bercocok tanam, mendirikan kota, dan mengibarkan panji kedaulatan.
+3. **Umbra (Dimensi Kegelapan / Absolute Chaos):** Jurang kehampaan purba tanpa bentuk. Energi Umbra sangat korosif dan menghancurkan apa pun yang disentuhnya.
 
 ---
 
@@ -1013,10 +1021,10 @@ Sepanjang sejarah berdirinya, Kekaisaran Sions memegang teguh satu hukum suci ya
 
 ---
 
-### Ambisi Terlarang & Bencana Dimensi Kegelapan (The Dark Dimension Cataclysm)
-Namun, kedamaian abadi tersebut dirusak oleh ketamakan sang kaisar terakhir. Terobsesi memperluas kedaulatan hingga ke batas tak terhingga, sang pemimpin secara rahasia memerintahkan para ilmuwan istana untuk menembus batas realitas dan membuka portal ke **Dimensi Kegelapan (Dark Dimension)**. Tujuannya adalah menyuntikkan energi hitam purba ke dalam tubuh seluruh pasukan kekaisaran demi menciptakan legiun petarung abadi.
+### Tragedi Kaisar Valerius & Bencana Celah Umbra (The Dark Rift Cataclysm)
+Namun, kedamaian abadi tersebut dirusak oleh ketamakan kaisar terakhir: **Valerius**. Terobsesi memperluas kedaulatan hingga ke batas abadi dan menolak kematian fana, sang kaisar secara rahasia memerintahkan para ilmuwan istana untuk menembus batas realitas dan membuka celah ke **Dimensi Kegelapan Umbra**.
 
-Karena bangsa Sions sama sekali tidak pernah beradaptasi atau menggunakan kekuatan gelap, energi Dimensi Kegelapan tersebut bergolak liar tak terkendali. Celah dimensi meledak menjadi badai kosmik hitam (*The Dark Rift Cataclysm*). Langit terbelah, ibukota agung kekaisaran hancur berkeping-keping, dan tahta tunggal Sions runtuh seketika dalam satu malam kelam.
+Karena bangsa Sions sama sekali tidak pernah beradaptasi dengan energi Umbra, celah tersebut bergolak liar tak terkendali menjadi badai kosmik hitam (*The Dark Rift Cataclysm*). Langit terbelah, ibukota agung kekaisaran hancur berkeping-keping, dan tahta tunggal Sions runtuh seketika dalam satu malam kelam. Sang kaisar sendiri tertelan kutukan kehampaan dan menjadi entitas bayangan abadi di reruntuhan istana.
 
 ---
 
@@ -1024,33 +1032,25 @@ Karena bangsa Sions sama sekali tidak pernah beradaptasi atau menggunakan kekuat
 Dari kepulan abu malapetaka itu, para penyintas yang tercerai-berai mengorganisasi diri dan melarikan diri ke tiga penjuru mata angin, melahirkan **Tiga Kerajaan Berdaulat** yang tegak hingga hari ini:
 
 #### 1. Zenithar (Arah Timur / Zenith) — Dinasti Kerajaan & Kavaleri Elit
-Pihak yang berhasil mempertahankan diri di pusat istana adalah **keluarga dinasti kerajaan (Royal Bloodline)** bersama korps pengawal kehormatan kekaisaran. Membawa serta pusaka mahkota, kitab hukum tata krama, dan emas perbendaharaan, mereka bergerak ke **Arah Timur** menuju dataran tinggi berbatu dan puncak pegunungan cakrawala (*Zenith*). Di sana, mereka mendirikan *Solarium Spire Citadel*, memulihkan martabat kekaisaran, dan bersumpah menjaga kemurnian tata krama istana.
+Pihak yang berhasil mempertahankan diri di pusat istana adalah **keluarga dinasti kerajaan (Royal Bloodline)** bersama korps pengawal kehormatan kekaisaran. Membawa serta pusaka mahkota, kitab hukum tata krama, dan emas perbendaharaan, mereka bergerak ke **Arah Timur** menuju dataran tinggi berbatu dan puncak pegunungan cakrawala (*Zenith*). Di sana, mereka mendirikan *Solarium Spire Citadel*, memulihkan martabat kekaisaran, dan mengasah pasif **[Royal Discipline]** untuk menjaga kemurnian tata krama istana.
 
 #### 2. Sylvamoor (Arah Barat) — Kaum Pekerja, Petani & Pembela Hayati
-Penyintas yang bergerak ke **Arah Barat** adalah golongan rakyat pekerja keras: para buruh konstruksi, pengrajin batu, arsitek lapangan, dan petani lumbung kekaisaran, didampingi oleh prajurit garda rakyat (gabungan prajurit yang menguasai sihir alam dasar dan prajurit non-sihir yang tangguh). Menolak ambisi takhta yang telah menghancurkan tanah air mereka, mereka memasuki rimba kanopi purba dan pesisir samudra kristal, mendirikan *Eldergrove Sanctuary* untuk hidup berdampingan selaras dengan alam dan Pohon Dunia.
+Penyintas yang bergerak ke **Arah Barat** adalah golongan rakyat pekerja keras: para buruh konstruksi, pengrajin batu, arsitek lapangan, dan petani lumbung kekaisaran, didampingi oleh prajurit garda rakyat (gabungan prajurit yang menguasai sihir alam dasar dan prajurit non-sihir yang tangguh). Menolak ambisi takhta yang telah menghancurkan tanah air mereka, mereka memasuki rimba kanopi purba dan pesisir samudra kristal, mendirikan *Eldergrove Sanctuary* dan menerima **[Nature's Blessing]** untuk hidup berdampingan selaras dengan alam dan Pohon Dunia.
 
 #### 3. Solterra (Arah Selatan) — Pesulap Tempur & Veteran Garis Depan
-Kelompok yang mengarah ke **Arah Selatan** adalah para **pesulap tempur agung (Magicians/Arcanists)** serta para prajurit veteran garis depan terkuat dan paling tangguh dari bekas angkatan bersenjata Sions. Mereka sengaja menantang wilayah ekstrem: kawah vulkanik membara, tanah cadas, dan gurun pasir terik. Di sana mereka membangun benteng obsidian *Ignis Bastion Fortress*, memadukan kedahsyatan sihir elemen api dengan kekuatan fisik brutal tanpa ampun untuk mendominasi lingkungan keras.
+Kelompok yang mengarah ke **Arah Selatan** adalah para **pesulap tempur agung (Magicians/Arcanists)** serta para prajurit veteran garis depan terkuat dan paling tangguh dari bekas angkatan bersenjata Sions. Mereka sengaja menantang wilayah ekstrem: kawah vulkanik membara, tanah cadas, dan gurun pasir terik. Di sana mereka membangun benteng obsidian *Ignis Bastion Fortress*, menyulut pasif **[Battle Momentum]** yang memadukan kedahsyatan sihir elemen api dengan kekuatan fisik brutal tanpa ampun.
 
 ---
 
-### Warisan Sejarah: Pembentukan Buff & Debuff
-Kondisi masa lalu para pendiri serta adaptasi geografis selama ratusan tahun membentuk fisiologi unik pada warga masing-masing kerajaan:
-- **Warga Zenithar** memiliki kelincahan kavaleri (+5% Speed) dan pertahanan perisai elit, namun fisik aristokrat mereka rentan terhadap racun liar (+7% Poison) dan membutuhkan nutrisi makanan berkualitas.
-- **Warga Solterra** dianugerahi daya hancur luar biasa (+15% Damage & +10% Crit), namun gaya bertarung agresif tanpa pelindung tebal membuat mereka lebih rapuh (-2 HP Max Health & +8% Damage Masuk).
-- **Warga Sylvamoor** memiliki fisik pekerja yang sangat bugar (+2 HP Max Health / 11 Hati & Ketahanan Hayati Tinggi), namun jiwa agraris mereka lemah terhadap api (+15% Fire Damage) dan mengalami mabuk ketinggian di tebing tinggi (Y > 110).
+### Misteri Reruntuhan Terra Interdicta & Raid Boss Kaisar Valerius
+Tepat di titik tengah alam liar (*Wilderness*) di koordinat `X: 0, Z: 0`, terbentang zona terlarang: **Terra Interdicta** (Reruntuhan Episentrum Sions). Wilayah ini dikelilingi kabut anomali kegelapan dan menolak klaim wilayah biasa.
 
----
-
-### Misteri Reruntuhan Episentrum di Jantung Wilderness (Terra Interdicta)
-Tepat di titik tengah alam liar (*Wilderness*) yang memisahkan perbatasan ketiga kerajaan, tersembunyi puing-puing raksasa dari istana pusat Kekaisaran Sions yang telah runtuh. Wilayah ini sengaja tidak dicantumkan dalam kartografi resmi kerajaan mana pun karena distorsi dimensi purba serta kabut anomali kegelapan yang menolak pemetaan biasa.
-
-Para penjelajah dan pemburu harta karun membisikkan bahwa di dalam reruntuhan terkutuk ini tersimpan peninggalan pusaka kaisar, peti perbendaharaan emas kuno, dan gulungan mantra terlarang. Namun, tempat ini dijaga oleh **monster-monster berlevel tinggi dan sisa-sisa legiun prajurit Sions yang telah bermutasi** akibat paparan energi Dimensi Kegelapan abadi—menjadikannya zona ekspedisi paling berbahaya sekaligus paling berharga di seluruh jagat Apexsions.
+Di kedalaman reruntuhan ini, bersemayam **Raid Boss Lv. 100: Valerius — Sang Kaisar Terakhir**. Menumbangkan Valerius menjamin drop **Kunci Void Kaisar (SionsBossKey)** untuk membuka peti shulker tahta purba, serta berpeluang menjatuhkan pedang pusaka dewa **ValeriusVoidblade** dan **Mahkota Dinasti Sions (CrownOfSions)**.
 
 ---
 
 ### Ikrar Sumpah Warga Baru
-Kini, setiap pengelana baru (*Wanderer*) yang menginjakkan kaki di tanah Apexsions harus memilih jalannya: Apakah Anda akan menjunjung martabat dinasti di **Zenithar**, menaklukkan cadas api di **Solterra**, atau merengkuh kedamaian rimba di **Sylvamoor**? Pilihan Anda adalah takdir peradaban Anda!
+Kini, setiap pengelana baru (*Wanderer*) yang menginjakkan kaki di tanah Apexsions harus memilih jalannya: Apakah Anda akan menjunjung martabat dinasti di **Zenithar**, menaklukkan cadas api di **Solterra**, atau merengkuh kedamaian rimba di **Sylvamoor**? Ketik `/k` di dalam game untuk mengikat sumpah!
 MARKDOWN
         ,
         'created_at' => $now,
@@ -1098,8 +1098,7 @@ Di Apexsions, tanah air terbagi menjadi tiga kerajaan otonom yang lahir dari Eks
 - **Karakteristik & Buff Resmi (In-Game):**
   - `+5%` Kecepatan Gerak (*Speed Boost*) — Kelincahan formasi kavaleri elit.
   - `+7%` Keberuntungan (*Luck Boost*) — Berkah kemakmuran dinasti matahari.
-  - `+6%` Total Serangan (*All Damage Boost*) — Disiplin taktik pedang kerajaan.
-  - `+6%` Pertahanan Diri (*Defense*) — Kokohnya zirah lapis emas istana.
+  - **[Royal Discipline]** `+6%` Total Serangan & `+6%` Pertahanan Diri — Disiplin taktik pedang dan zirah emas istana.
   - `-5%` Reduksi Serangan Critical Musuh — Tangguhnya perisai kehormatan.
 - **Kelemahan & Debuff Fisik (In-Game):**
   - `+7%` Damage & Durasi Efek Racun (*Poison Vulnerability*) — Fisik bangsawan yang steril tidak kebal terhadap racun liar.
@@ -1118,8 +1117,7 @@ Di Apexsions, tanah air terbagi menjadi tiga kerajaan otonom yang lahir dari Eks
 - **Gelar Raja Tertinggi:** *Warlord of the Dunes* (Gelar Tertinggi Pemain: *✦ LORD OF SOLTERRA ✦*)
 - **Pajak Kas Wilayah:** 20%
 - **Karakteristik & Buff Resmi (In-Game):**
-  - `+15%` Total Serangan (*All Damage Boost*) — Kedahsyatan sihir penghancur dan kekuatan fisik brutal.
-  - `+10%` Serangan Kritis (*Critical Damage Boost*) — Tebasan mematikan tak kenal ampun.
+  - **[Battle Momentum]** `+15%` Total Serangan & `+10%` Serangan Kritis (*Critical Damage*) — Kedahsyatan sihir penghancur dan kekuatan fisik brutal.
   - `+10%` Kecepatan Menambang (*Mining Speed Boost*) — Pengalaman memecah cadas vulkanik dan obsidian.
   - `+2%` Pertahanan Diri (*Defense*).
   - Nilai Jual Ore Tinggi (Rasio jual bijih tambang stabil di 65% harga beli) — Pusat penempaan senjata berat.
@@ -1141,8 +1139,7 @@ Di Apexsions, tanah air terbagi menjadi tiga kerajaan otonom yang lahir dari Eks
 - **Gelar Raja Tertinggi:** *Guardian of the World Tree* (Gelar Tertinggi Pemain: *✦ AVATAR OF SYLVAMOOR ✦*)
 - **Pajak Kas Wilayah:** 15% (Sistem gotong-royong swadaya masyarakat)
 - **Karakteristik & Buff Resmi (In-Game):**
-  - `+2 HP` Maksimal Darah (Total 11 Hati) — Daya tahan fisik prima dari kaum pekerja keras.
-  - `+12%` Keberuntungan (*Luck Boost*) — Berkah hayati keselarasan dengan alam.
+  - **[Nature's Blessing]** `+2 HP` Maksimal Darah (Total 11 Hati) & `+12%` Keberuntungan (*Luck Boost*) — Daya tahan prima dan keselarasan dengan alam.
   - `+7%` Peluang Ekstra Drop Monster (*Mob Drop Rate*) — Keahlian membedah anatomi hasil buruan rimba.
   - `+8% Defense & 5% Reduksi Damage Masuk (~12.6% Total Defense)` — Perlindungan kulit pohon purba.
   - `-5%` Damage & Durasi Racun (*Poison Resistance*) — Penguasaan alkemi herbal dan penawar alami.

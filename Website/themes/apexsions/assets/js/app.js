@@ -70,7 +70,7 @@ const APX_I18N = {
         // World & Lore
         world_kicker: 'LORE & TATANAN WILAYAH',
         world_title: 'Runtuhnya Kekaisaran Sions & Eksodus Tiga Kerajaan',
-        world_lead: 'Dahulu kala, satu peradaban tunggal yang mahaluas—<strong>Kekaisaran Sions</strong>—menaungi seluruh penjuru realm dalam kemakmuran tanpa pernah menyentuh ilmu hitam. Namun kehancuran tak terelakkan tiba ketika ambisi pemimpinnya memaksakan penggunaan energi terlarang dari <strong>Dimensi Kegelapan (Dark Dimension)</strong> demi melipatgandakan kekuatan pasukan. Kekuatan gelap yang tak terkendali meremukkan ibukota agung kekaisaran dan memicu <em>Eksodus Akbar</em> ke tiga penjuru mata angin: dinasti kerajaan melarikan diri ke timur (<strong>Zenithar</strong>), kaum pekerja dan prajurit bertahan hidup ke rimba barat (<strong>Sylvamoor</strong>), serta para pesulap agung dan prajurit tempur terkuat hijrah ke cadas selatan (<strong>Solterra</strong>).',
+        world_lead: 'Dahulu kala, satu peradaban tunggal yang mahaluas—<strong>Kekaisaran Sions</strong>—menaungi seluruh benua Apexsions dalam kemakmuran tanpa pernah menyentuh ilmu hitam. Namun kehancuran tak terelakkan tiba ketika ambisi kaisar terakhir memaksakan pembukaan portal ke <strong>Dimensi Kegelapan Umbra</strong> demi meraih keabadian. Kekuatan gelap yang meluap meremukkan ibukota agung kekaisaran dan memicu <em>Eksodus Akbar</em> ke tiga penjuru: dinasti kerajaan melarikan diri ke timur (<strong>Zenithar</strong>), kaum pekerja dan penjaga rimba ke barat (<strong>Sylvamoor</strong>), serta para pesulap agung dan prajurit tempur terkuat ke cadas selatan (<strong>Solterra</strong>).',
 
         // Kingdoms
         label_characteristics: 'Karakteristik Wilayah',
@@ -80,7 +80,7 @@ const APX_I18N = {
         zenithar_desc: 'Dipimpin oleh keluarga dinasti dan pengawal elit Kekaisaran Sions yang berhasil mempertahankan diri dari malapetaka, mengungsi ke timur menuju puncak cakrawala (Zenith). Menjunjung tinggi kemurnian tata krama istana, kavaleri suci, dan kubah menara langit.',
         zenithar_spec1: 'Puncak Cakrawala & Solarium Spire Citadel',
         zenithar_spec2: 'Penambangan Emas Murni & Arsitektur Megah',
-        zenithar_buffs: '<span class="text-success fw-semibold">+5% Speed</span>, <span class="text-success fw-semibold">+7% Luck</span>, <span class="text-success fw-semibold">+6% All Damage &amp; Defense</span>, <span class="text-success fw-semibold">-5% Reduksi Serangan Kritis Musuh</span>.',
+        zenithar_buffs: '<span class="text-success fw-semibold">+5% Speed</span>, <span class="text-success fw-semibold">+7% Luck</span>, <span class="text-success fw-semibold">[Royal Discipline] +6% All Damage &amp; Defense</span>, <span class="text-success fw-semibold">-5% Reduksi Serangan Kritis Musuh</span>.',
         zenithar_debuffs: '<span class="text-danger fw-semibold">+7% Kerentanan Racun</span>, makanan memulihkan hunger lebih lambat (-1 point) karena terbiasa dengan santapan istana steril.',
         zenithar_link: 'Arsip Zenithar',
 
@@ -88,7 +88,7 @@ const APX_I18N = {
         solterra_desc: 'Dibentuk oleh para pesulap tempur agung (arcanists) serta prajurit garis depan terkuat bekas legiun Sions yang bermigrasi ke wilayah selatan. Memadukan kedahsyatan sihir elemen api dengan kekuatan fisik brutal tanpa ampun untuk menaklukkan alam yang mematikan.',
         solterra_spec1: 'Cadas Vulkanik, Kawah Lahar & Ignis Bastion',
         solterra_spec2: 'Penempaan Senjata Berat & Nilai Jual Ore Tinggi',
-        solterra_buffs: '<span class="text-success fw-semibold">+15% Total Damage</span>, <span class="text-success fw-semibold">+10% Critical Damage</span>, <span class="text-success fw-semibold">+10% Mining Speed</span>, <span class="text-success fw-semibold">Rasio Jual Ore Tinggi (65%)</span>.',
+        solterra_buffs: '<span class="text-success fw-semibold">[Battle Momentum] +15% Total Damage</span>, <span class="text-success fw-semibold">+10% Critical Damage</span>, <span class="text-success fw-semibold">+10% Mining Speed</span>, <span class="text-success fw-semibold">Rasio Jual Ore Tinggi (65%)</span>.',
         solterra_debuffs: '<span class="text-danger fw-semibold">-2 HP Maksimal (9 Hati)</span>, <span class="text-danger fw-semibold">+8% Damage Masuk</span>, <span class="text-danger fw-semibold">+7% Cepat Lapar</span>, lahan pertanian cepat kering di tanah cadas.',
         solterra_link: 'Arsip Solterra',
 
@@ -96,7 +96,7 @@ const APX_I18N = {
         sylvamoor_desc: 'Dibangun oleh kaum pekerja, pembangun, petani lumbung, serta prajurit garda rakyat (pengguna sihir alam dasar dan prajurit non-sihir) yang mengungsi ke belantara rimba barat. Mengisolasi diri dari ambisi kekuasaan dan hidup selaras menjaga kelestarian Pohon Dunia.',
         sylvamoor_spec1: 'Rimba Kanopi Purba, Samudra Kristal & Eldergrove',
         sylvamoor_spec2: 'Lumbung Agrikultur, Alkemis Herbal & Pangan',
-        sylvamoor_buffs: '<span class="text-success fw-semibold">+2 HP Maksimal (11 Hati)</span>, <span class="text-success fw-semibold">+12% Luck</span>, <span class="text-success fw-semibold">+7% Extra Mob Drop</span>, <span class="text-success fw-semibold">Defense Tinggi (~12.6%)</span>, <span class="text-success fw-semibold">Kelembapan Lahan Abadi</span>.',
+        sylvamoor_buffs: '<span class="text-success fw-semibold">[Nature\'s Blessing] +2 HP Maksimal (11 Hati)</span>, <span class="text-success fw-semibold">+12% Luck</span>, <span class="text-success fw-semibold">+7% Extra Mob Drop</span>, <span class="text-success fw-semibold">Defense Tinggi (~12.6%)</span>, <span class="text-success fw-semibold">Kelembapan Lahan Abadi</span>.',
         sylvamoor_debuffs: '<span class="text-danger fw-semibold">Mabuk Ketinggian di Y > 110</span> (Hunger/Weakness), <span class="text-danger fw-semibold">+15% Damage Terbakar Api</span>, <span class="text-danger fw-semibold">-10% Serangan PvP & Mining</span>.',
         sylvamoor_link: 'Arsip Sylvamoor',
 
@@ -896,7 +896,7 @@ const APX_I18N = {
         // World & Lore
         world_kicker: 'LORE & TERRITORIAL ORDER',
         world_title: 'Fall of the Sions Empire & Exodus of the Three Kingdoms',
-        world_lead: 'Long ago, a single vast civilization—the <strong>Sions Empire</strong>—ruled over the entire realm in prosperity without ever touching dark arts. Yet inevitable doom struck when its leader\'s ambition forced the harnessing of forbidden energy from the <strong>Dark Dimension</strong> to multiply troop power. Uncontrolled darkness shattered the empire\'s grand capital and triggered the <em>Great Exodus</em> in three directions: the royal dynasty fled eastward (<strong>Zenithar</strong>), the laborers and survivalist rangers took refuge in the western wildwoods (<strong>Sylvamoor</strong>), while the supreme battle mages and veteran warriors migrated south into the volcanic crags (<strong>Solterra</strong>).',
+        world_lead: 'Long ago, a single vast civilization—the <strong>Sions Empire</strong>—ruled over the entire continent of Apexsions in prosperity without ever touching dark arts. Yet inevitable doom struck when the final emperor\'s ambition forced the opening of a portal to the <strong>Umbra Dark Dimension</strong> to attain immortality. The surging chaotic darkness shattered the imperial capital and triggered the <em>Great Exodus</em> in three directions: the royal dynasty fled eastward (<strong>Zenithar</strong>), the laborers and wildwood guardians westward (<strong>Sylvamoor</strong>), and supreme battle arcanists and veteran warriors to the southern crags (<strong>Solterra</strong>).',
 
         // Kingdoms
         label_characteristics: 'Territory Characteristics',
@@ -906,7 +906,7 @@ const APX_I18N = {
         zenithar_desc: 'Led by the royal dynasty and elite imperial guards of the Sions Empire who survived the catastrophe, fleeing eastward toward the celestial zenith. Upholding palace etiquette, sacred cavalry, and skyward spire citadels.',
         zenithar_spec1: 'Celestial Horizon & Solarium Spire Citadel',
         zenithar_spec2: 'Pure Gold Extraction & Grand Architectural Marvels',
-        zenithar_buffs: '<span class="text-success fw-semibold">+5% Speed</span>, <span class="text-success fw-semibold">+7% Luck</span>, <span class="text-success fw-semibold">+6% All Damage &amp; Defense</span>, <span class="text-success fw-semibold">-5% Enemy Crit Reduction</span>.',
+        zenithar_buffs: '<span class="text-success fw-semibold">+5% Speed</span>, <span class="text-success fw-semibold">+7% Luck</span>, <span class="text-success fw-semibold">[Royal Discipline] +6% All Damage &amp; Defense</span>, <span class="text-success fw-semibold">-5% Enemy Crit Reduction</span>.',
         zenithar_debuffs: '<span class="text-danger fw-semibold">+7% Poison Vulnerability</span>, food replenishes hunger slower (-1 point) due to aristocratic dining habits.',
         zenithar_link: 'Zenithar Archives',
 
@@ -914,7 +914,7 @@ const APX_I18N = {
         solterra_desc: 'Founded by supreme battle arcanists and the mightiest front-line veterans of the former Sions legions who migrated south. Blending explosive fire-element sorcery with brutal physical prowess to master a deadly volcanic frontier.',
         solterra_spec1: 'Volcanic Crags, Magma Calderas & Ignis Bastion',
         solterra_spec2: 'Heavy Weapon Forging & High Ore Sell Ratios',
-        solterra_buffs: '<span class="text-success fw-semibold">+15% Total Damage</span>, <span class="text-success fw-semibold">+10% Critical Damage</span>, <span class="text-success fw-semibold">+10% Mining Speed</span>, <span class="text-success fw-semibold">High Ore Sell Ratio (65%)</span>.',
+        solterra_buffs: '<span class="text-success fw-semibold">[Battle Momentum] +15% Total Damage</span>, <span class="text-success fw-semibold">+10% Critical Damage</span>, <span class="text-success fw-semibold">+10% Mining Speed</span>, <span class="text-success fw-semibold">High Ore Sell Ratio (65%)</span>.',
         solterra_debuffs: '<span class="text-danger fw-semibold">-2 Max HP (9 Hearts)</span>, <span class="text-danger fw-semibold">+8% Incoming Damage</span>, <span class="text-danger fw-semibold">+7% Faster Hunger</span>, farmland dries rapidly on arid stone.',
         solterra_link: 'Solterra Archives',
 
@@ -922,7 +922,7 @@ const APX_I18N = {
         sylvamoor_desc: 'Constructed by laborers, master builders, agrarian farmers, and populist rangers who retreated into the deep western canopy. Isolating themselves from imperial power struggles to live in balance with the Great World Tree.',
         sylvamoor_spec1: 'Ancient Canopy Wildwoods, Crystal Seas & Eldergrove',
         sylvamoor_spec2: 'Agrarian Granaries, Herbal Alchemy & Sustainable Food',
-        sylvamoor_buffs: '<span class="text-success fw-semibold">+2 Max HP (11 Hearts)</span>, <span class="text-success fw-semibold">+12% Luck</span>, <span class="text-success fw-semibold">+7% Extra Mob Drops</span>, <span class="text-success fw-semibold">High Natural Defense (~12.6%)</span>, <span class="text-success fw-semibold">Eternal Soil Hydration</span>.',
+        sylvamoor_buffs: '<span class="text-success fw-semibold">[Nature\'s Blessing] +2 Max HP (11 Hearts)</span>, <span class="text-success fw-semibold">+12% Luck</span>, <span class="text-success fw-semibold">+7% Extra Mob Drops</span>, <span class="text-success fw-semibold">High Natural Defense (~12.6%)</span>, <span class="text-success fw-semibold">Eternal Soil Hydration</span>.',
         sylvamoor_debuffs: '<span class="text-danger fw-semibold">Altitude Sickness at Y > 110</span> (Hunger/Weakness), <span class="text-danger fw-semibold">+15% Burn Damage</span>, <span class="text-danger fw-semibold">-10% PvP Damage & Mining Speed</span>.',
         sylvamoor_link: 'Sylvamoor Archives',
 

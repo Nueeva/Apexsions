@@ -82,4 +82,11 @@ public class EconomyHook {
         String symbol = plugin.getConfig().getString("economy.currency-symbol", "Rp. ");
         return symbol + String.format("%,.0f", amount).replace(',', '.');
     }
+
+    public void depositKingdomTreasury(String kingdomKey, double amount) {
+        if (kingdomKey == null || kingdomKey.equalsIgnoreCase("NONE") || amount <= 0) return;
+        if (ApexsionsEconomyProvider.isAvailable()) {
+            ApexsionsEconomyProvider.get().depositKingdomTreasury(kingdomKey, "rupiah", amount);
+        }
+    }
 }
