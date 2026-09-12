@@ -23,6 +23,11 @@ public class BlockPlacementTracker implements Listener {
         int cacheSize = configManager.getBlockTrackerCacheSize();
         int expireHours = configManager.getBlockTrackerExpireHours();
 
+        try {
+            com.github.benmanes.caffeine.cache.RemovalCause.values();
+        } catch (Throwable ignored) {
+        }
+
         this.placedBlocks = Caffeine.newBuilder()
                 .maximumSize(cacheSize)
                 .expireAfterWrite(expireHours, TimeUnit.HOURS)
@@ -43,7 +48,14 @@ public class BlockPlacementTracker implements Listener {
         long key = getBlockKey(block.getLocation());
         Boolean present = placedBlocks.getIfPresent(key);
         if (present != null && present) {
-            placedBlocks.invalidate(key);
+            try {
+                placedBlocks.invalidate(key);
+            } catch (Throwable t) {
+                try {
+                    placedBlocks.asMap().remove(key);
+                } catch (Throwable ignored) {
+                }
+            }
             return true;
         }
         return false;

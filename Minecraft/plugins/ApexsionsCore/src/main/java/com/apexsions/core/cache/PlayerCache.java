@@ -17,6 +17,10 @@ public class PlayerCache {
     private final Cache<UUID, PlayerData> cache;
 
     public PlayerCache() {
+        try {
+            com.github.benmanes.caffeine.cache.RemovalCause.values();
+        } catch (Throwable ignored) {
+        }
         this.cache = Caffeine.newBuilder()
                 .expireAfterAccess(30, TimeUnit.MINUTES)
                 .maximumSize(10_000)
@@ -32,7 +36,14 @@ public class PlayerCache {
     }
 
     public void invalidate(UUID uuid) {
-        cache.invalidate(uuid);
+        try {
+            cache.invalidate(uuid);
+        } catch (Throwable t) {
+            try {
+                cache.asMap().remove(uuid);
+            } catch (Throwable ignored) {
+            }
+        }
     }
 
     public Collection<PlayerData> getAllCached() {
@@ -40,6 +51,13 @@ public class PlayerCache {
     }
 
     public void clear() {
-        cache.invalidateAll();
+        try {
+            cache.invalidateAll();
+        } catch (Throwable t) {
+            try {
+                cache.asMap().clear();
+            } catch (Throwable ignored) {
+            }
+        }
     }
 }

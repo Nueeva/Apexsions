@@ -29,6 +29,10 @@ public class ImageRenderer {
     private final Cache<String, byte[][][]> imageTileCache;
 
     public ImageRenderer(int maxCachedImages, int expireMinutes) {
+        try {
+            com.github.benmanes.caffeine.cache.RemovalCause.values();
+        } catch (Throwable ignored) {
+        }
         this.imageTileCache = Caffeine.newBuilder()
                 .maximumSize(maxCachedImages)
                 .expireAfterAccess(expireMinutes, TimeUnit.MINUTES)
@@ -126,7 +130,14 @@ public class ImageRenderer {
     }
 
     public void invalidateCache() {
-        imageTileCache.invalidateAll();
+        try {
+            imageTileCache.invalidateAll();
+        } catch (Throwable t) {
+            try {
+                imageTileCache.asMap().clear();
+            } catch (Throwable ignored) {
+            }
+        }
     }
 
     public static class CustomMapRenderer extends MapRenderer {

@@ -143,6 +143,11 @@ public class ApexsionsCorePlugin extends JavaPlugin {
             this.regionRepository = new RegionRepository(this, databaseManager);
 
             // 3. Caches & Player Services
+            try {
+                com.github.benmanes.caffeine.cache.RemovalCause.values();
+            } catch (Throwable t) {
+                getLogger().warning("Failed to preload Caffeine classes: " + t.getMessage());
+            }
             this.playerCache = new PlayerCache();
             this.playerDataService = new PlayerDataService(this, playerRepository, playerCache);
 
