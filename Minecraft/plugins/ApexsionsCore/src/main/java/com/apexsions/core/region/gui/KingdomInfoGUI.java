@@ -304,8 +304,27 @@ public class KingdomInfoGUI implements Listener {
         Optional<PlayerData> pDataOpt = plugin.getPlayerDataService().getCached(player.getUniqueId());
         UUID playerRegId = pDataOpt.map(PlayerData::getRegionId).orElse(null);
 
+        boolean isStaff = plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isConclaveStaff(player);
         ItemStack actionBtn;
-        if (playerRegId != null && playerRegId.equals(region.getId())) {
+        if (isStaff) {
+            actionBtn = new ItemStack(Material.BEACON);
+            ItemMeta m = actionBtn.getItemMeta();
+            if (m != null) {
+                m.displayName(mm.deserialize("<gradient:#00f2fe:#4facfe><bold>✦ THE AETHERIAL CONCLAVE ✦</bold></gradient>"));
+                m.lore(List.of(
+                        Component.empty(),
+                        mm.deserialize("<gray>Dimensi Asal: <aqua>The Aether Citadel (Aetherion)</aqua></gray>"),
+                        mm.deserialize("<gray>Otoritas: <gold>Dewan Pengawas Kosmik Transenden</gold></gray>"),
+                        Component.empty(),
+                        mm.deserialize("<dark_gray>Sebagai entitas transenden dimensi atas, Anda</dark_gray>"),
+                        mm.deserialize("<dark_gray>mengamati dan menjaga keseimbangan alam semesta.</dark_gray>"),
+                        mm.deserialize("<dark_gray>Anda tidak dapat terikat sumpah setia kerajaan fana.</dark_gray>")
+                ));
+                m.addEnchant(Enchantment.UNBREAKING, 1, true);
+                m.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+                actionBtn.setItemMeta(m);
+            }
+        } else if (playerRegId != null && playerRegId.equals(region.getId())) {
             actionBtn = new ItemStack(Material.EMERALD_BLOCK);
             ItemMeta m = actionBtn.getItemMeta();
             if (m != null) {
@@ -317,32 +336,15 @@ public class KingdomInfoGUI implements Listener {
                 actionBtn.setItemMeta(m);
             }
         } else if (playerRegId != null) {
-            boolean isAdmin = player.hasPermission("apexsionscore.admin") || player.isOp();
-            if (isAdmin) {
-                actionBtn = new ItemStack(Material.GOLDEN_SWORD);
-                ItemMeta m = actionBtn.getItemMeta();
-                if (m != null) {
-                    m.displayName(mm.deserialize("<gradient:#f1c40f:#e67e22><bold>⚡ PINDAH KERAJAAN (ADMIN OVERRIDE) ⚡</bold></gradient>"));
-                    m.lore(List.of(
-                            Component.empty(),
-                            mm.deserialize("<yellow>Klik untuk pindah sumpah setia ke " + region.getDisplayName() + ".</yellow>"),
-                            mm.deserialize("<gold>• Hak istimewa Administrator</gold>")
-                    ));
-                    m.addEnchant(Enchantment.UNBREAKING, 1, true);
-                    m.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES);
-                    actionBtn.setItemMeta(m);
-                }
-            } else {
-                actionBtn = new ItemStack(Material.BARRIER);
-                ItemMeta m = actionBtn.getItemMeta();
-                if (m != null) {
-                    m.displayName(mm.deserialize("<red><bold>🔒 TERKUNCI</bold></red>"));
-                    m.lore(List.of(
-                            Component.empty(),
-                            mm.deserialize("<gray>Anda sudah terikat pada kerajaan lain!</gray>")
-                    ));
-                    actionBtn.setItemMeta(m);
-                }
+            actionBtn = new ItemStack(Material.BARRIER);
+            ItemMeta m = actionBtn.getItemMeta();
+            if (m != null) {
+                m.displayName(mm.deserialize("<red><bold>🔒 TERKUNCI</bold></red>"));
+                m.lore(List.of(
+                        Component.empty(),
+                        mm.deserialize("<gray>Anda sudah terikat pada kerajaan lain!</gray>")
+                ));
+                actionBtn.setItemMeta(m);
             }
         } else {
             actionBtn = new ItemStack(Material.NETHERITE_SWORD);
@@ -399,6 +401,15 @@ public class KingdomInfoGUI implements Listener {
 
         // Action / Pledge Allegiance button (Slot 49)
         if (slot == 49) {
+            if (plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isConclaveStaff(player)) {
+                player.playSound(player.getLocation(), Sound.BLOCK_BEACON_ACTIVATE, 1.0f, 1.5f);
+                player.sendMessage(mm.deserialize(
+                        "<gradient:#00f2fe:#4facfe><bold>✦ THE AETHERIAL CONCLAVE ✦</bold></gradient>\n" +
+                        "<aqua>Sebagai entitas transenden dari dimensi <bold>Aetherion</bold>, Anda mengawasi keseimbangan kosmik alam semesta dan tidak dapat terikat sumpah setia kepada kerajaan bangsa fana!</aqua>"
+                ));
+                return;
+            }
+
             Optional<PlayerData> pDataOpt = plugin.getPlayerDataService().getCached(player.getUniqueId());
             if (pDataOpt.isEmpty()) {
                 player.sendMessage(mm.deserialize("<red>Data profilmu sedang dimuat. Silakan coba lagi.</red>"));
@@ -406,8 +417,7 @@ public class KingdomInfoGUI implements Listener {
             }
 
             PlayerData data = pDataOpt.get();
-            boolean isAdmin = player.hasPermission("apexsionscore.admin") || player.isOp();
-            if (data.hasRegion() && !isAdmin) {
+            if (data.hasRegion()) {
                 player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
                 player.sendMessage(mm.deserialize("<red>Kamu sudah bersumpah setia pada suatu kerajaan!</red>"));
                 return;

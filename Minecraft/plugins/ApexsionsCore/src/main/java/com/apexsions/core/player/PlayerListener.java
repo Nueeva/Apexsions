@@ -58,6 +58,11 @@ public class PlayerListener implements Listener {
 
         // 3. Reconcile Level progression in case player has accumulated XP
         plugin.getPlayerDataService().getCached(player.getUniqueId()).ifPresent(data -> {
+            if (plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isConclaveStaff(player)) {
+                if (data.hasRegion()) {
+                    plugin.getPlayerDataService().updateRegion(player.getUniqueId(), null);
+                }
+            }
             plugin.getLevelManager().reconcileLevel(data, player);
         });
 
@@ -84,6 +89,12 @@ public class PlayerListener implements Listener {
         if (!player.hasPlayedBefore()) {
             Bukkit.getScheduler().runTaskLater(plugin, () -> {
                 if (player.isOnline()) {
+                    boolean isStaff = plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isConclaveStaff(player);
+                    if (isStaff) {
+                        player.sendMessage(miniMessage.deserialize("<gradient:#00f2fe:#4facfe><bold>✦ THE AETHERIAL CONCLAVE ✦</bold></gradient> <dark_gray>➔</dark_gray> <aqua>Salam transenden dari Aetherion, Yang Mulia Pengawas Semesta. Anda adalah entitas dimensi atas penjaga keseimbangan Apexsions.</aqua>"));
+                        return;
+                    }
+
                     net.kyori.adventure.title.Title.Times times = net.kyori.adventure.title.Title.Times.times(
                             java.time.Duration.ofMillis(500),
                             java.time.Duration.ofMillis(4000),

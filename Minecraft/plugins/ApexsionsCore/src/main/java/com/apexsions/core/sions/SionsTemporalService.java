@@ -166,8 +166,8 @@ public class SionsTemporalService {
             timeStr = sec + " Detik";
         }
 
-        String chatMsg = "<dark_purple>✦ [Kerajaan Sions]</dark_purple> <yellow>Segel waktu kuno bergetar! Wilayah ini akan mengalami pemulihan temporal dalam <aqua><bold>" + timeStr + "</bold></aqua>.</yellow>";
-        String actionMsg = "<gradient:#8e44ad:#d4af37>⏳ Pemulihan Temporal Sions: <yellow><bold>" + timeStr + "</bold></yellow></gradient>";
+        String chatMsg = "<dark_purple>✦ [TERRA INTERDICTA]</dark_purple> <yellow>Segel waktu kuno bergetar! Wilayah anomali ini akan mengalami rekonstruksi temporal dalam <aqua><bold>" + timeStr + "</bold></aqua>.</yellow>";
+        String actionMsg = "<gradient:#8e44ad:#d4af37>⏳ Rekonstruksi Temporal Sions: <yellow><bold>" + timeStr + "</bold></yellow></gradient>";
 
         boolean serverWide = plugin.getConfig().getBoolean("sions-temporal.broadcast-server", false);
 
@@ -257,8 +257,8 @@ public class SionsTemporalService {
 
         // 3. Broadcast Lore Reconstruction Announcement
         if (announce && restoredCount > 0) {
-            String message = "<dark_purple>✦ [SIONS] </dark_purple><light_purple><bold>REKONSTRUKSI TEMPORAL KERAJAAN SIONS!</bold></light_purple><newline>" +
-                    "<gray>Waktu temporal telah berputar kembali. <gold>" + restoredCount + "</gold> struktur kuno telah menyusun kembali dirinya ke wujud semula!</gray>";
+            String message = "<dark_purple>✦ [SIONS] </dark_purple><light_purple><bold>ANOMALI TEMPORAL TERRA INTERDICTA (SIONS)!</bold></light_purple><newline>" +
+                    "<gray>Gaya gravitasi dan anomali waktu kuno telah berputar. <gold>" + restoredCount + "</gold> reruntuhan peradaban kuno telah menyusun kembali dirinya!</gray>";
 
             boolean serverWide = plugin.getConfig().getBoolean("sions-temporal.broadcast-server", false);
             if (serverWide) {

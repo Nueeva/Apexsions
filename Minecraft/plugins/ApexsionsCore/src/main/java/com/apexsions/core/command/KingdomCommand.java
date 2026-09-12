@@ -4,6 +4,7 @@ import com.apexsions.core.ApexsionsCorePlugin;
 import com.apexsions.core.player.PlayerData;
 import com.apexsions.core.region.Region;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -149,7 +150,7 @@ public class KingdomCommand implements CommandExecutor, TabCompleter {
                 break;
 
             default:
-                sender.sendMessage(miniMessage.deserialize("<gold><bold>Apexsions Kingdom Commands:</bold></gold>"));
+                sender.sendMessage(miniMessage.deserialize("<gold><bold>Apexsions — Kingdom System Commands:</bold></gold>"));
                 sender.sendMessage(miniMessage.deserialize("<yellow>/kingdom</yellow> <gray>- Buka Menu Navigasi Kerajaan (Ibukota & RTP)</gray>"));
                 sender.sendMessage(miniMessage.deserialize("<yellow>/kingdom spawn</yellow> <gray>- Teleport langsung ke ibukota kerajaan</gray>"));
                 sender.sendMessage(miniMessage.deserialize("<yellow>/kingdom rtp</yellow> <gray>- Random teleport di wilayah kerajaan (bisa dari Lobby)</gray>"));
@@ -163,6 +164,7 @@ public class KingdomCommand implements CommandExecutor, TabCompleter {
                     sender.sendMessage(miniMessage.deserialize("<gold>/kingdom setspawn <kingdom></gold> <gray>- Atur titik spawn ibukota kerajaan</gray>"));
                     sender.sendMessage(miniMessage.deserialize("<gold>/kingdom setking <kingdom> <player></gold> <gray>- Angkat Raja baru kerajaan</gray>"));
                     sender.sendMessage(miniMessage.deserialize("<gold>/kingdom unsetking <kingdom></gold> <gray>- Cabut gelar Raja kerajaan</gray>"));
+                    sender.sendMessage(miniMessage.deserialize("<gold>/kingdom war <start|stop|status></gold> <gray>- Kelola Kingdom War</gray>"));
                 }
                 break;
         }
@@ -309,6 +311,10 @@ public class KingdomCommand implements CommandExecutor, TabCompleter {
 
         Optional<PlayerData> dataOpt = plugin.getPlayerDataService().getCached(player.getUniqueId());
         if (dataOpt.isEmpty() || !dataOpt.get().hasRegion()) {
+            if (plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isConclaveStaff(player)) {
+                player.sendMessage(miniMessage.deserialize("<gradient:#00f2fe:#4facfe><bold>✦ THE AETHERIAL CONCLAVE ✦</bold></gradient> <dark_gray>➔</dark_gray> <aqua>Sebagai entitas transenden Aetherion, Anda tidak terikat pada satu ibukota fana. Gunakan <gold>/lobby</gold> atau teleport admin untuk berpindah wilayah.</aqua>"));
+                return;
+            }
             player.sendMessage(miniMessage.deserialize("<gradient:#f39c12:#f1c40f><bold>APEXSIONS REALM</bold></gradient> <dark_gray>»</dark_gray> <yellow>Anda belum memilih kerajaan! Membuka menu pemilihan kerajaan...</yellow>"));
             plugin.getRegionSelectionGUI().open(player);
             return;
@@ -327,6 +333,15 @@ public class KingdomCommand implements CommandExecutor, TabCompleter {
     private void handleKingdomChoose(Player player) {
         if (!player.hasPermission("apexsionscore.command.region") && !player.hasPermission("kingdomcore.command.kingdom.choose")) {
             player.sendMessage(miniMessage.deserialize("<red>You do not have permission to choose a kingdom.</red>"));
+            return;
+        }
+
+        if (plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isConclaveStaff(player)) {
+            player.sendMessage(miniMessage.deserialize(
+                    "<gradient:#00f2fe:#4facfe><bold>✦ THE AETHERIAL CONCLAVE ✦</bold></gradient>\n" +
+                    "<aqua>Sebagai entitas transenden dari dimensi <bold>Aetherion</bold>, Anda mengawasi keseimbangan kosmik alam semesta dan tidak dapat terikat sumpah setia kepada kerajaan bangsa fana (Zenithar, Solterra, Sylvamoor)!</aqua>"
+            ));
+            player.playSound(player.getLocation(), Sound.BLOCK_BEACON_ACTIVATE, 1.0f, 1.5f);
             return;
         }
 

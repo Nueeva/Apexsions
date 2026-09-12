@@ -73,7 +73,10 @@ public class KingdomProfileGUI implements Listener {
         int unclaimedCount = plugin.getRewardManager().getUnclaimedCount(data);
 
         Optional<Region> regionOpt = data.getRegionId() != null ? plugin.getRegionManager().getRegion(data.getRegionId()) : Optional.empty();
-        String kingdomDisplay = regionOpt.map(Region::getDisplayName).orElse("<gray>Belum Memilih</gray>");
+        boolean isStaff = plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isConclaveStaff(player);
+        String kingdomDisplay = regionOpt.map(Region::getDisplayName).orElse(
+                isStaff ? "<gradient:#00f2fe:#4facfe><bold>✦ Aetherion (Conclave) ✦</bold></gradient>" : "<gray>Belum Memilih</gray>"
+        );
 
         ItemStack skull = new ItemStack(Material.PLAYER_HEAD);
         SkullMeta skullMeta = (SkullMeta) skull.getItemMeta();
@@ -118,7 +121,15 @@ public class KingdomProfileGUI implements Listener {
         }
 
         // 3. Slot 20: Kingdom Card
-        if (regionOpt.isPresent()) {
+        if (isStaff && regionOpt.isEmpty()) {
+            ItemStack conclaveItem = createItem(Material.BEACON,
+                    "<gradient:#00f2fe:#4facfe><bold>✦ THE AETHERIAL CONCLAVE ✦</bold></gradient>",
+                    "<gray>Dimensi Asal: <aqua>The Aether Citadel (Aetherion)</aqua></gray>",
+                    "<gray>Status: <gold>Dewan Pengawas Kosmik Transenden</gold></gray>",
+                    "<gray>Otoritas: <yellow>Menjaga Keseimbangan Semesta Apexsions</yellow></gray>",
+                    "<dark_gray>Tidak terikat faksi fana (Zenithar/Solterra/Sylvamoor).</dark_gray>");
+            inv.setItem(20, conclaveItem);
+        } else if (regionOpt.isPresent()) {
             Region reg = regionOpt.get();
             Material iconMat = switch (reg.getKey()) {
                 case "ZENITHAR" -> Material.GOLD_BLOCK;
@@ -220,6 +231,13 @@ public class KingdomProfileGUI implements Listener {
 
         // Kingdom choose (Slot 20)
         if (slot == 20) {
+            if (plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isConclaveStaff(player)) {
+                player.playSound(player.getLocation(), Sound.BLOCK_BEACON_ACTIVATE, 1.0f, 1.5f);
+                player.sendMessage(miniMessage.deserialize(
+                        "<gradient:#00f2fe:#4facfe><bold>✦ THE AETHERIAL CONCLAVE ✦</bold></gradient> <dark_gray>➔</dark_gray> <aqua>Sebagai pengawas dimensi atas Aetherion, Anda tidak terikat oleh kerajaan fana manapun.</aqua>"
+                ));
+                return;
+            }
             Optional<PlayerData> dataOpt = plugin.getPlayerDataService().getCached(player.getUniqueId());
             if (dataOpt.isPresent() && !dataOpt.get().hasRegion()) {
                 plugin.getRegionSelectionGUI().open(player);
@@ -239,6 +257,8 @@ public class KingdomProfileGUI implements Listener {
             if (dataOpt.isPresent() && dataOpt.get().hasRegion()) {
                 player.closeInventory();
                 plugin.getRegionTeleportService().teleportToRegion(player);
+            } else if (plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isConclaveStaff(player)) {
+                player.sendMessage(miniMessage.deserialize("<gradient:#00f2fe:#4facfe><bold>✦ THE AETHERIAL CONCLAVE ✦</bold></gradient> <dark_gray>➔</dark_gray> <aqua>Sebagai entitas transenden, gunakan <gold>/lobby</gold> atau navigasi admin untuk berpindah dimensi.</aqua>"));
             }
             return;
         }

@@ -41,6 +41,10 @@ public class KingdomNavigationGUI implements Listener {
     public void open(Player player) {
         Optional<PlayerData> dataOpt = plugin.getPlayerDataService().getCached(player.getUniqueId());
         if (dataOpt.isEmpty() || !dataOpt.get().hasRegion()) {
+            if (plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isConclaveStaff(player)) {
+                player.sendMessage(miniMessage.deserialize("<gradient:#00f2fe:#4facfe><bold>✦ THE AETHERIAL CONCLAVE ✦</bold></gradient> <dark_gray>➔</dark_gray> <aqua>Sebagai entitas transenden Aetherion, Anda tidak terikat oleh ibukota fana tunggal. Silakan gunakan <gold>/lobby</gold> atau teleportasi admin.</aqua>"));
+                return;
+            }
             player.sendMessage(miniMessage.deserialize("<gradient:#f39c12:#f1c40f><bold>APEXSIONS REALM</bold></gradient> <dark_gray>»</dark_gray> <yellow>Anda belum memilih kerajaan! Membuka menu pemilihan kerajaan...</yellow>"));
             plugin.getRegionSelectionGUI().open(player);
             return;

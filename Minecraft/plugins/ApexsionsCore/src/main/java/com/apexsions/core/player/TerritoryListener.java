@@ -66,8 +66,8 @@ public class TerritoryListener implements Listener {
                         message = "<aqua><bold>⚑ Territory: </bold><blue>Kingdom of Sylvamoor</blue></aqua> <gray>(Azure Realm)</gray>";
                         break;
                     case "SIONS":
-                        message = "<dark_purple><bold>⚑ Territory: </bold><light_purple>Kerajaan Sions</light_purple></dark_purple> <gray>(The Secret Civilization)</gray>";
-                        sound = Sound.BLOCK_RESPAWN_ANCHOR_CHARGE;
+                        message = "<dark_red><bold>☠ Teritori Terlarang: </bold><gradient:#8e44ad:#9b59b6><bold>TERRA INTERDICTA</bold></gradient></dark_red> <gray>(Reruntuhan Kuno Sions • Zona Anomali)</gray>";
+                        sound = Sound.BLOCK_RESPAWN_ANCHOR_DEPLETE;
                         break;
                     default:
                         message = "<gold><bold>⚑ Territory: </bold>" + region.getDisplayName() + "</gold>";

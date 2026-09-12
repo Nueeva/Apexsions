@@ -327,9 +327,14 @@ public class AdminCommand implements CommandExecutor, TabCompleter {
             return;
         }
 
+        if (plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isConclaveStaff(target)) {
+            sender.sendMessage(miniMessage.deserialize("<red>✕ Gagal: " + target.getName() + " adalah entitas The Aetherial Conclave (Dimensi Atas Aetherion)! Staff pengawas kosmik tidak dapat didaftarkan ke kerajaan mortal manapun.</red>"));
+            return;
+        }
+
         String key = regionKey.toUpperCase(Locale.ROOT);
         if (key.equals("SIONS")) {
-            sender.sendMessage(miniMessage.deserialize("<red>Kerajaan SIONS adalah reruntuhan terlarang kuno (Terra Interdicta), bukan faksi fana yang dapat dihuni! Pilih: ZENITHAR, SOLTERRA, atau SYLVAMOOR.</red>"));
+            sender.sendMessage(miniMessage.deserialize("<red>SIONS adalah wilayah reruntuhan kuno terlarang (Terra Interdicta), bukan faksi fana yang dapat dihuni! Pilih: ZENITHAR, SOLTERRA, atau SYLVAMOOR.</red>"));
             return;
         }
 
@@ -358,8 +363,14 @@ public class AdminCommand implements CommandExecutor, TabCompleter {
         }
 
         plugin.getPlayerDataService().updateRegion(target.getUniqueId(), null);
-        sender.sendMessage(miniMessage.deserialize("<green>Reset kingdom allegiance of " + target.getName() + ".</green>"));
-        target.sendMessage(miniMessage.deserialize("<yellow>Your kingdom allegiance has been reset by an administrator. You may choose again using <gold>/kingdom choose</gold>.</yellow>"));
+        boolean isStaff = plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isConclaveStaff(target);
+        if (isStaff) {
+            sender.sendMessage(miniMessage.deserialize("<green>Reset status kerajaan " + target.getName() + " kembali ke asal dimensi Aetherion.</green>"));
+            target.sendMessage(miniMessage.deserialize("<gradient:#00f2fe:#4facfe><bold>✦ THE AETHERIAL CONCLAVE ✦</bold></gradient> <aqua>Afiliasi kerajaan Anda telah dibersihkan kembali ke entitas kosmik Aetherion.</aqua>"));
+        } else {
+            sender.sendMessage(miniMessage.deserialize("<green>Reset kingdom allegiance of " + target.getName() + ".</green>"));
+            target.sendMessage(miniMessage.deserialize("<yellow>Your kingdom allegiance has been reset by an administrator. You may choose again using <gold>/kingdom choose</gold>.</yellow>"));
+        }
     }
 
     private void handleInfo(CommandSender sender, String playerName) {

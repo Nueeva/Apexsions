@@ -31,7 +31,7 @@ public class KitUserGUI implements InventoryHolder {
     public KitUserGUI(ApexsionsCorePlugin plugin, Player player) {
         this.plugin = plugin;
         this.player = player;
-        this.inventory = Bukkit.createInventory(this, 54, mm.deserialize("<gradient:#f1c40f:#e67e22><bold>📦 APEXSIONS KITS KERJAAN 📦</bold></gradient>"));
+        this.inventory = Bukkit.createInventory(this, 54, mm.deserialize("<gradient:#f1c40f:#e67e22><bold>📦 APEXSIONS KITS PERADABAN 📦</bold></gradient>"));
         buildGUI();
     }
 

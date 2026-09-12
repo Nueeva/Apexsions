@@ -38,6 +38,15 @@ public class RegionSelectionGUI implements Listener {
     }
 
     public void open(Player player) {
+        if (plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isConclaveStaff(player)) {
+            player.sendMessage(miniMessage.deserialize(
+                    "<gradient:#00f2fe:#4facfe><bold>✦ THE AETHERIAL CONCLAVE ✦</bold></gradient>\n" +
+                    "<aqua>Sebagai entitas transenden dari dimensi <bold>Aetherion</bold>, Anda mengawasi keseimbangan kosmik alam semesta dan tidak dapat terikat sumpah setia kepada kerajaan bangsa fana (Zenithar, Solterra, Sylvamoor)!</aqua>"
+            ));
+            player.playSound(player.getLocation(), Sound.BLOCK_BEACON_ACTIVATE, 1.0f, 1.5f);
+            return;
+        }
+
         RegionSelectHolder holder = new RegionSelectHolder();
         String titleStr = plugin.getConfigManager().getGuiConfig().getString("kingdom-select.title", "<dark_gray><bold>⚔ PILIH KERAJAAN APEXSIONS ⚔</bold></dark_gray>");
         int size = plugin.getConfigManager().getGuiConfig().getInt("kingdom-select.size", 45);

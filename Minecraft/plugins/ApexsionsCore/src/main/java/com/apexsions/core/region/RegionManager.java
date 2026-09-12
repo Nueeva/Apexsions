@@ -48,7 +48,7 @@ public class RegionManager {
             sions = new Region(
                     sionsId,
                     "SIONS",
-                    "Kerajaan Sions",
+                    "Terra Interdicta (Sions)",
                     "world",
                     -6119.0,
                     92.0,

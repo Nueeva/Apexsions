@@ -39,6 +39,15 @@ public class KingdomConfirmGUI implements Listener {
     }
 
     public void open(Player player, String kingdomKey) {
+        if (plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isConclaveStaff(player)) {
+            player.sendMessage(mm.deserialize(
+                    "<gradient:#00f2fe:#4facfe><bold>✦ THE AETHERIAL CONCLAVE ✦</bold></gradient>\n" +
+                    "<aqua>Sebagai entitas transenden dari dimensi <bold>Aetherion</bold>, Anda mengawasi keseimbangan kosmik alam semesta dan tidak dapat terikat sumpah setia kepada kerajaan bangsa fana!</aqua>"
+            ));
+            player.playSound(player.getLocation(), Sound.BLOCK_BEACON_ACTIVATE, 1.0f, 1.5f);
+            return;
+        }
+
         Optional<Region> regionOpt = plugin.getRegionManager().getRegion(kingdomKey);
         if (regionOpt.isEmpty()) return;
 
@@ -164,9 +173,18 @@ public class KingdomConfirmGUI implements Listener {
                 return;
             }
 
+            if (plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isConclaveStaff(player)) {
+                player.playSound(player.getLocation(), Sound.BLOCK_BEACON_ACTIVATE, 1.0f, 1.5f);
+                player.sendMessage(mm.deserialize(
+                        "<gradient:#00f2fe:#4facfe><bold>✦ THE AETHERIAL CONCLAVE ✦</bold></gradient>\n" +
+                        "<aqua>Sebagai entitas transenden dari dimensi <bold>Aetherion</bold>, Anda mengawasi keseimbangan kosmik alam semesta dan tidak dapat terikat sumpah setia kepada kerajaan bangsa fana!</aqua>"
+                ));
+                player.closeInventory();
+                return;
+            }
+
             PlayerData data = dataOpt.get();
-            boolean isAdmin = player.hasPermission("apexsionscore.admin") || player.isOp();
-            if (data.hasRegion() && !isAdmin) {
+            if (data.hasRegion()) {
                 player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
                 player.sendMessage(mm.deserialize("<red>Kamu sudah bersumpah setia pada suatu kerajaan!</red>"));
                 player.closeInventory();

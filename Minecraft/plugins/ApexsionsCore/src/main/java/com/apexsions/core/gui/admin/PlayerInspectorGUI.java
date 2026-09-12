@@ -448,6 +448,12 @@ public class PlayerInspectorGUI implements InventoryHolder {
     }
 
     private void toggleMonarch() {
+        if (plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isConclaveStaff(target)) {
+            admin.sendMessage(mm.deserialize("<red>✕ Target (" + target.getName() + ") adalah staf The Aetherial Conclave! Entitas dimensi atas tidak dapat dinobatkan sebagai Raja fana.</red>"));
+            admin.playSound(admin.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
+            return;
+        }
+
         String pKingdom = plugin.getApi().getPlayerRegionKey(target.getUniqueId());
         if (pKingdom == null || pKingdom.equalsIgnoreCase("NONE")) {
             admin.sendMessage(mm.deserialize("<red>Pemain belum memilih kerajaan!</red>"));
@@ -568,6 +574,12 @@ public class PlayerInspectorGUI implements InventoryHolder {
     }
 
     private void changeKingdom(String kingdomKey) {
+        if (plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isConclaveStaff(target)) {
+            admin.sendMessage(mm.deserialize("<red>✕ Target (" + target.getName() + ") adalah staf The Aetherial Conclave (Dimensi Aetherion)! Entitas dimensi atas tidak dapat dimasukkan ke kerajaan fana manapun.</red>"));
+            admin.playSound(admin.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
+            return;
+        }
+
         Region region = plugin.getRegionManager().getRegion(kingdomKey).orElse(null);
         if (region == null) {
             admin.sendMessage(mm.deserialize("<red>Kerajaan " + kingdomKey + " tidak ditemukan!</red>"));

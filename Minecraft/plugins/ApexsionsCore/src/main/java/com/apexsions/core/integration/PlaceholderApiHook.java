@@ -150,6 +150,10 @@ public class PlaceholderApiHook extends PlaceholderExpansion {
                         return regionOpt.get().getKey();
                     }
                 }
+                if (offlinePlayer.isOnline() && offlinePlayer.getPlayer() != null
+                        && plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isConclaveStaff(offlinePlayer.getPlayer())) {
+                    return "AETHERION";
+                }
                 return "NONE";
 
             case "region_name":
@@ -160,6 +164,10 @@ public class PlaceholderApiHook extends PlaceholderExpansion {
                     if (regionOpt.isPresent()) {
                         return regionOpt.get().getDisplayName();
                     }
+                }
+                if (offlinePlayer.isOnline() && offlinePlayer.getPlayer() != null
+                        && plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isConclaveStaff(offlinePlayer.getPlayer())) {
+                    return "✦ Aetherion ✦";
                 }
                 return "Belum Memilih";
 
@@ -319,6 +327,10 @@ public class PlaceholderApiHook extends PlaceholderExpansion {
                             default -> "<gradient:#70a1ff:#1e90ff><bold>[" + k + "]</bold></gradient>";
                         };
                     }
+                }
+                if (offlinePlayer.isOnline() && offlinePlayer.getPlayer() != null
+                        && plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isConclaveStaff(offlinePlayer.getPlayer())) {
+                    return "<gradient:#00f2fe:#4facfe><bold>[AETHERION]</bold></gradient>";
                 }
                 return "<dark_gray>[No Kingdom]</dark_gray>";
 

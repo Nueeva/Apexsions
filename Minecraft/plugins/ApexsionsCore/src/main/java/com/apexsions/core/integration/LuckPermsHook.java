@@ -190,6 +190,20 @@ public class LuckPermsHook {
         }
     }
 
+    public boolean isConclaveStaff(Player player) {
+        if (player == null) return false;
+        if (player.isOp()) return true;
+        if (player.hasPermission("apexsions.admin") || player.hasPermission("apexsions.staff") || player.hasPermission("apexsionscore.admin")) {
+            return true;
+        }
+        String rankKey = getPlayerRankKey(player);
+        return getRankWeight(rankKey) >= 80;
+    }
+
+    public boolean isConclaveStaff(java.util.UUID uuid) {
+        if (uuid == null) return false;
+        return isStaffOrAdmin(uuid);
+    }
     public String getPlayerRank(Player player) {
         if (!isAvailable() || player == null) {
             return plugin.getConfigManager().getDefaultRank();

@@ -40,13 +40,13 @@ public class LobbyCommand implements CommandExecutor {
             return true;
         }
 
-        player.sendMessage(miniMessage.deserialize("<gold>Teleporting to the lobby...</gold>"));
+        player.sendMessage(miniMessage.deserialize("<gold>Teleportasi menuju Spawn Sanctum (The Threshold of Realities)...</gold>"));
         player.teleportAsync(lobbyLoc).thenAccept(success -> {
             if (success) {
                 player.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1.0f, 1.0f);
-                player.sendMessage(miniMessage.deserialize("<green>Welcome to the lobby!</green>"));
+                player.sendMessage(miniMessage.deserialize("<green>Selamat datang di Spawn Sanctum (The Threshold)!</green>"));
             } else {
-                player.sendMessage(miniMessage.deserialize("<red>Failed to teleport to lobby.</red>"));
+                player.sendMessage(miniMessage.deserialize("<red>Gagal melakukan teleportasi ke Spawn Sanctum.</red>"));
             }
         });
 

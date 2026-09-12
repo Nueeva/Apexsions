@@ -53,7 +53,7 @@ public class SionsCommand implements CommandExecutor, TabCompleter {
 
         SionsTemporalService s = getTemporalService();
         if (s == null) {
-            sender.sendMessage(miniMessage.deserialize("<red>✖ Sistem Rekonstruksi Temporal Kerajaan Sions saat ini tidak aktif.</red>"));
+            sender.sendMessage(miniMessage.deserialize("<red>✖ Sistem Rekonstruksi Temporal Terra Interdicta (Sions) saat ini tidak aktif.</red>"));
             return true;
         }
 
@@ -65,7 +65,7 @@ public class SionsCommand implements CommandExecutor, TabCompleter {
                 long remMin = remainingSec / 60;
                 long remSec = remainingSec % 60;
 
-                sender.sendMessage(miniMessage.deserialize("<gradient:#8e44ad:#9b59b6><bold>✦ KERAJAAN SIONS — STATUS REKONSTRUKSI TEMPORAL</bold></gradient>"));
+                sender.sendMessage(miniMessage.deserialize("<gradient:#8e44ad:#9b59b6><bold>✦ TERRA INTERDICTA (SIONS) — STATUS REKONSTRUKSI TEMPORAL</bold></gradient>"));
                 sender.sendMessage(miniMessage.deserialize("<gray>Sistem Temporal: <green>" + (s.isEnabled() ? "AKTIF" : "NONAKTIF") + "</green></gray>"));
                 sender.sendMessage(miniMessage.deserialize("<gray>Interval Reset: <gold>" + s.getIntervalMinutes() + " Menit (per jam)</gold></gray>"));
                 sender.sendMessage(miniMessage.deserialize("<gray>Block Terubah Aktif: <yellow><bold>" + count + "</bold></yellow> block</gray>"));
@@ -110,17 +110,17 @@ public class SionsCommand implements CommandExecutor, TabCompleter {
                 final int fMinY = minY;
                 final int fMaxY = maxY;
 
-                sender.sendMessage(miniMessage.deserialize("<yellow>Memulai pemindaian dan pembuatan baseline Kerajaan Sions (Y: <gold>" + fMinY + "</gold> s/d <gold>" + fMaxY + "</gold>)... Harap tunggu sebentar.</yellow>"));
+                sender.sendMessage(miniMessage.deserialize("<yellow>Memulai pemindaian dan pembuatan baseline Terra Interdicta (Sions) (Y: <gold>" + fMinY + "</gold> s/d <gold>" + fMaxY + "</gold>)... Harap tunggu sebentar.</yellow>"));
 
                 s.saveBaseline(fMinY, fMaxY, savedCount -> {
-                    sender.sendMessage(miniMessage.deserialize("<green>✔ Berhasil mengunci dan menyimpan <gold>" + savedCount + "</gold> block sebagai baseline permanen Kerajaan Sions!</green>"));
+                    sender.sendMessage(miniMessage.deserialize("<green>✔ Berhasil mengunci dan menyimpan <gold>" + savedCount + "</gold> block sebagai baseline permanen Terra Interdicta (Sions)!</green>"));
                     if (sender instanceof Player p) {
                         p.playSound(p.getLocation(), Sound.BLOCK_BEACON_ACTIVATE, 1.0f, 1.2f);
                     }
                 });
             }
             case "restore" -> {
-                sender.sendMessage(miniMessage.deserialize("<yellow>Menjalankan rekonstruksi manual untuk Kerajaan Sions...</yellow>"));
+                sender.sendMessage(miniMessage.deserialize("<yellow>Menjalankan rekonstruksi manual untuk Terra Interdicta (Sions)...</yellow>"));
                 int restored = s.restoreAll(true);
                 sender.sendMessage(miniMessage.deserialize("<green>✔ Berhasil merekonstruksi <gold>" + restored + "</gold> block kembali ke wujud aslinya!</green>"));
             }
@@ -195,7 +195,7 @@ public class SionsCommand implements CommandExecutor, TabCompleter {
                 }
                 boolean nowBypassing = s.toggleBypass(player);
                 if (nowBypassing) {
-                    player.sendMessage(miniMessage.deserialize("<green>✔ Mode bypass <bold>AKTIF</bold>! Perubahan block Anda di Kerajaan Sions bersifat PERMANEN dan tidak akan di-rollback.</green>"));
+                    player.sendMessage(miniMessage.deserialize("<green>✔ Mode bypass <bold>AKTIF</bold>! Perubahan block Anda di Terra Interdicta (Sions) bersifat PERMANEN dan tidak akan di-rollback.</green>"));
                     player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1.0f, 2.0f);
                 } else {
                     player.sendMessage(miniMessage.deserialize("<yellow>Mode bypass <bold>NONAKTIF</bold>. Perubahan block Anda sekarang akan dicatat dan di-restore setiap jam.</yellow>"));
@@ -212,12 +212,12 @@ public class SionsCommand implements CommandExecutor, TabCompleter {
                     Optional<Location> spawnOpt = sionsOpt.get().getBukkitSpawnLocation();
                     if (spawnOpt.isPresent()) {
                         player.teleport(spawnOpt.get());
-                        player.sendMessage(miniMessage.deserialize("<dark_purple>✦</dark_purple> <light_purple>Diteleportasi ke jantung rahasia Kerajaan Sions.</light_purple>"));
+                        player.sendMessage(miniMessage.deserialize("<dark_purple>✦</dark_purple> <light_purple>Diteleportasi ke jantung reruntuhan kuno Terra Interdicta (Sions).</light_purple>"));
                         player.playSound(player.getLocation(), Sound.ITEM_CHORUS_FRUIT_TELEPORT, 1.0f, 1.0f);
                         return true;
                     }
                 }
-                sender.sendMessage(miniMessage.deserialize("<red>Lokasi spawn Kerajaan Sions belum tersedia.</red>"));
+                sender.sendMessage(miniMessage.deserialize("<red>Lokasi spawn Terra Interdicta (Sions) belum tersedia.</red>"));
             }
             default -> sendHelp(sender);
         }
@@ -233,7 +233,7 @@ public class SionsCommand implements CommandExecutor, TabCompleter {
         sender.sendMessage(miniMessage.deserialize("<gold>/sions setkey [common|elite|boss]</gold> <gray>➔ Jadikan item di tangan sebagai template kunci tier tersebut</gray>"));
         sender.sendMessage(miniMessage.deserialize("<gold>/sions givekey [player] [common|elite|boss] [qty]</gold> <gray>➔ Berikan kunci Sions sesuai tier</gray>"));
         sender.sendMessage(miniMessage.deserialize("<gold>/sions bypass</gold> <gray>➔ Toggle mode edit permanen bagi arsitek/admin</gray>"));
-        sender.sendMessage(miniMessage.deserialize("<gold>/sions tp</gold> <gray>➔ Teleport ke koordinat pusat Kerajaan Sions</gray>"));
+        sender.sendMessage(miniMessage.deserialize("<gold>/sions tp</gold> <gray>➔ Teleport ke koordinat pusat Terra Interdicta (Sions)</gray>"));
     }
 
     @Override

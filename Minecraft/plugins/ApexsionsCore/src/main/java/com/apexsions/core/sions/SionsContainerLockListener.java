@@ -104,7 +104,7 @@ public class SionsContainerLockListener implements Listener {
 
         event.setCancelled(true);
         player.playSound(block.getLocation(), Sound.BLOCK_CHEST_LOCKED, 1.0f, 0.6f);
-        player.sendMessage(miniMessage.deserialize("<red>🔒 Anda tidak dapat menghancurkan peti relik Kerajaan Sions!</red>"));
+        player.sendMessage(miniMessage.deserialize("<red>🔒 Anda tidak dapat menghancurkan peti relik Terra Interdicta (Sions)!</red>"));
     }
 
     private void grantContainerCustomEnchantLoot(Player player, SionsKeyTier tier, Location loc) {
