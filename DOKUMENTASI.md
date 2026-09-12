@@ -326,3 +326,19 @@ Kekaisaran Sions bukan lagi kerajaan aktif atau faksi yang dapat dihuni, melaink
 1. **Nama Server Murni:** Penegakan nama tunggal **`Apexsions`**. Perintah `/kingdom` help menu menggunakan format `Apexsions — Kingdom System Commands:`.
 2. **Spawn Sanctum (Bab XIV):** Perintah `/lobby` mengantarkan pemain menuju **Spawn Sanctum (The Threshold of Realities)** sebagai poros gerbang antar-dimensi semesta Apexsions.
 3. **Standarisasi Kit GUI:** Judul menu `/kits` distandarkan menjadi `📦 APEXSIONS KITS PERADABAN 📦`.
+
+---
+
+### D. Penyelarasan Web Platform & Admin Panel (Azuriom & WebBridge)
+1. **Fallback Mandat Staf Conclave (`AETHERION`):**
+   - Staf dimensi atas (`ancestor`, `architect`, `overseer`, `warden`, `herald`, atau weight $\ge 80$) tidak dapat berafiliasi dengan kerajaan fana (*Zenithar*, *Solterra*, *Sylvamoor*).
+   - Tindakan `SET_KINGDOM` pada web admin secara cerdas menolak penempatan staf Conclave ke kerajaan mortal demi integritas lore.
+   - `RESET_KINGDOM` secara otomatis melakukan fallback transenden ke `AETHERION` (*Aetherion (The Conclave)*) bagi akun staf, dan `NONE` (*Belum Memilih*) bagi warga biasa.
+   - Guard `APPOINT_KING`: Memblokir penobatan takhta mortal untuk entitas pengawas dimensi atas Conclave.
+2. **Eliminasi Kerajaan Sions pada Web Interface:**
+   - Sions (*Terra Interdicta*) dihapus secara total dari pilihan kerajaan aktif pada formulir web admin.
+   - Sanitasi otomatis di `PlayerSyncController`: Jika ada data lama atau paket sinkronisasi mengirimkan faksi `SIONS`, sistem otomatis menormalisasikannya ke `NONE` (mortal) atau `AETHERION` (staf).
+3. **Penyempurnaan Visual & UI Admin / Publik:**
+   - Direktori warga admin (`/admin/players`) memiliki filter khusus `✦ Aetherion (The Conclave)` dan lencana tabel kosmik `bg-info`.
+   - Modul Player 360 Overview (`show.blade.php`) menghadirkan kartu eksklusif *The Aetherial Conclave* serta peringatan visual pada modal aksi.
+   - Tampilan profil publik (`/player/{uuid}`) dan tema profil (`/profile`) menampilkan lencana faksi Aetherion dengan ikon `bi-stars` dan dukungan bilingual i18n (`kingdom_aetherion_name`).
