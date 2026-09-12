@@ -285,3 +285,44 @@ Setiap pemain dapat melihat profil status fisiknya secara transparan di Slot 13 
 🏹 PvE Mastery: +26.5% Dmg • 10.0% Resis
 ⚖ PvP Profile: Fair-Play Normalized (Cap +4 HP / +0.8 Atk)
 ```
+
+---
+
+## 🌌 11. The Aetherial Conclave (Dimensi Atas Aetherion) & Standarisasi Lore Sistem
+
+Berdasarkan kanon kosmologi di `LORE.md` (Bab I, II, VIII, dan XIV), tata kelola peran dan peradaban semesta Apexsions distandarkan secara ketat:
+
+### A. Doktrin Transendensi The Aetherial Conclave
+Staf dan pengawas tertinggi server (*Ancestor, Architect, Overseer, Warden, Herald*) diakui secara sistemik sebagai entitas dimensi atas yang bersemayam di **The Aether Citadel (Aetherion)**:
+* **Penetapan Status Transenden:** Diidentifikasi melalui `LuckPermsHook.isConclaveStaff(player/uuid)` berbasis OP, permission staff (`apexsions.admin`, `apexsions.staff`, `apexsionscore.admin`), dan bobot rank $\ge 80$.
+* **Larangan Sumpah Setia Mortal:** Staf Conclave dilarang keras terikat sumpah setia kepada kerajaan bangsa fana (*Zenithar*, *Solterra*, *Sylvamoor*). Upaya memilih kerajaan via `/kingdom choose`, `/k join`, `RegionSelectionGUI`, dan `KingdomConfirmGUI` dibatalkan seketika dengan pesan transenden kosmik.
+* **Slot Khusus di GUI Info (`KingdomInfoGUI`):** Slot 49 bagi staf menampilkan *Beacon of The Aetherial Conclave* (bukan tombol "Pilih Kerajaan"). Klik dibatalkan secara aman dengan efek suara `BLOCK_BEACON_ACTIVATE`.
+* **Proteksi Administratif & GUI Inspeksi:**
+  - Perintah admin `/ac setregion <player> <kingdom>` menolak pendaftaran staf Conclave ke kerajaan mortal manapun.
+  - Perintah reset `/ac resetregion` mengembalikan status staf murni ke entitas dimensi Aetherion tanpa prompt pemilihan fana.
+  - `PlayerInspectorGUI`: Melindungi staf agar tidak dapat dimasukkan ke kerajaan fana atau dinobatkan sebagai Raja mortal (`toggleMonarch`).
+* **Visualisasi Profil & PlaceholderAPI:**
+  - Di `KingdomProfileGUI` (`/k info`), identitas kerajaan staf menampilkan `✦ Aetherion (Conclave) ✦` dan slot 20 menampilkan kartu *The Aetherial Conclave*.
+  - Placeholder `%apexsions_kingdom%` mengembalikan `AETHERION`.
+  - Placeholder `%apexsions_kingdom_name%` mengembalikan `✦ Aetherion ✦`.
+  - Placeholder `%apexsions_kingdom_badge%` mengembalikan `<gradient:#00f2fe:#4facfe><bold>[AETHERION]</bold></gradient>`.
+* **Pembersihan Otomatis Saat Login (`PlayerListener`):** Menghapus `regionId` mortal secara otomatis jika akun staf sebelumnya tidak sengaja terdaftar, serta memberikan greeting resmi Conclave pada pemain baru berstatus staf tanpa memaksa pembukaan menu pemilihan kerajaan.
+
+---
+
+### B. Arsitektur Zona Terlarang Sions (*Terra Interdicta*)
+Kekaisaran Sions bukan lagi kerajaan aktif atau faksi yang dapat dihuni, melainkan zona bahaya tingkat tinggi berstatus **Terra Interdicta**:
+* **Teritori Poligon Permanen:** Terdaftar di `RegionManager` sebagai `"Terra Interdicta (Sions)"` dengan 11 titik koordinat batas wilayah.
+* **Pemberitahuan Teritorial:** Pemain yang melintasi perbatasan menerima pesan action bar:
+  `<dark_red><bold>☠ Teritori Terlarang: </bold><gradient:#8e44ad:#9b59b6><bold>TERRA INTERDICTA</bold></gradient></dark_red> <gray>(Reruntuhan Kuno Sions • Zona Anomali)</gray>`.
+* **Anomali Temporal Engine (`/sions`):**
+  - Pemulihan struktur reruntuhan kuno otomatis setiap 60 menit (`SionsTemporalService`).
+  - Proteksi peti relik kuno dari kehancuran paksa (`SionsContainerLockListener`) dengan sistem kunci 3-tier (*Common*, *Elite*, *Boss*).
+  - Siaran rekonstruksi resmi: `ANOMALI TEMPORAL TERRA INTERDICTA (SIONS)!`.
+
+---
+
+### C. Penegakan Brand & Sistem Spawn Sanctum
+1. **Nama Server Murni:** Penegakan nama tunggal **`Apexsions`**. Perintah `/kingdom` help menu menggunakan format `Apexsions — Kingdom System Commands:`.
+2. **Spawn Sanctum (Bab XIV):** Perintah `/lobby` mengantarkan pemain menuju **Spawn Sanctum (The Threshold of Realities)** sebagai poros gerbang antar-dimensi semesta Apexsions.
+3. **Standarisasi Kit GUI:** Judul menu `/kits` distandarkan menjadi `📦 APEXSIONS KITS PERADABAN 📦`.

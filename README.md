@@ -43,16 +43,24 @@ Apexsions/
 ## 🌟 2. Fitur Unggulan Setiap Plugin
 
 ### 👑 ApexsionsCore
+- **✦ The Aetherial Conclave (Dimensi Atas Aetherion)**:
+  - Staf dan pengawas tertinggi (*Ancestor, Architect, Overseer, Warden, Herald*) diakui sebagai entitas kosmik dari dimensi atas yang mengawasi tatanan semesta.
+  - Dilindungi secara sistemik dari keterikatan faksi fana (Zenithar/Solterra/Sylvamoor) pada `/kingdom choose`, GUI Sumpah Setia, `/ac setregion`, dan Player Inspector.
+  - Tampilan profil khusus `✦ Aetherion (Conclave) ✦` dan PlaceholderAPI `%apexsions_kingdom%` -> `AETHERION`.
 - **3 Kerajaan Berdaulat Pasca-Runtuhnya Kekaisaran Sions**:
   - **Zenithar** (Arah Timur / Zenith): Penerus Dinasti & Keluarga Kerajaan Sions yang bertahan bersama kavaleri kehormatan di puncak cakrawala (*Buff: Speed +8%, Luck +15%, [Royal Discipline] All Damage & Defense, -25% Anti-Crit, Diskon 50% Pajak Lelang, Bunga Bank +35%, Diskon 15% Blok Toko; Debuff: Kerentanan Racun, Biaya Tempa Anvil +1 EXP*).
   - **Solterra** (Arah Selatan): Persekutuan Pesulap Tempur (Magician) & Prajurit Garis Depan tangguh di kawah vulkanik cadas (*Buff: High Damage, Critical, Mining Speed; Debuff: -2 HP Darah, Vulnerability, Cepat Lapar*).
   - **Sylvamoor** (Arah Barat): Peradaban Mandiri Kaum Pekerja, Petani, dan Pejuang Rimba di kanopi purba (*Buff: +2 HP Darah, High Defense, Luck, Drop Rate; Debuff: Mabuk Ketinggian, Kerentanan Api, Reduced PvP*).
+- **Terra Interdicta (Reruntuhan Kuno Sions)**:
+  - Zona bahaya kuno maut berstatus terlarang dengan 11 titik batas poligon permanen.
+  - *Hourly Temporal Engine*: Reset otomatis setiap 60 menit memulihkan blok rusak/terubah ke kondisi awal disertai peringatan anomali temporal.
+  - Peti relik kuno terkunci rapat dan hanya dapat dibuka menggunakan Sions Key 3-Tier (*Common*, *Elite*, *Boss*).
 - **Auto-Respawn Ibukota Kerajaan Terintegrasi BlueMap**:
-  - Pemain yang gugur langsung otomatis respawn di titik pusat ibukota kerajaannya (menggantikan fallback default ke lobby).
+  - Pemain yang gugur langsung otomatis respawn di titik pusat ibukota kerajaannya (menggantikan fallback default ke Spawn Sanctum).
   - Koordinat sinkron otomatis dengan marker BlueMap (`world.conf`).
   - Dilengkapi in-game manager command `/ac setspawn <kingdom>` dan `/k setspawn <kingdom>` untuk memindahkan spawn seketika.
 - **Ultimate Admin Control Panel & Deep Player Inspector (54-Slot GUI)**:
-  - Akses penuh administrasi pemain dari GUI: Ubah saldo Rupiah/Diamond, ubah level (1-100) & XP, ganti kerajaan seketika, dan penobatan **👑 Raja Kerajaan (Monarch)** dengan siaran global.
+  - Akses penuh administrasi pemain dari GUI: Ubah saldo Rupiah/Diamond, ubah level (1-100) & XP, ganti kerajaan seketika, dan penobatan **👑 Raja Kerajaan (Monarch)** dengan siaran global (dengan proteksi staf Conclave).
   - Quick Tooling: Teleportasi, tarik pemain, inspeksi live inventory & EnderChest, Heal & Feed instan, GameMode switcher (Survival/Creative/Adventure/Spectator), dan Kick sanksi.
 - **Sistem Warp GUI Player & Admin Editor GUI**:
   - `/warp` & `/warps`: GUI navigasi 54-slot dengan filter tab kategori (`SERVER`, `RESOURCE`, `EVENT`, `KINGDOM`, `PVP`, `GENERAL`).

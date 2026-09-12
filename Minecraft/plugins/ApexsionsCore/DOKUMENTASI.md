@@ -168,17 +168,43 @@ Sistem otomatis pada Anvil untuk kenyamanan perbaikan dan penggabungan item:
 
 ---
 
-## 🌌 Kerajaan Sions (The Secret Civilization) & Hourly Temporal Engine
-- **Secret Territory Polygon**: 11 titik poligon presisi terdaftar via fallback `RegionManager.ensureSionsRegion()`, tetap aktif in-game meski disembunyikan dari BlueMap `world.conf`.
+## 🌌 Terra Interdicta (Reruntuhan Kuno Sions) & Anomali Temporal Engine
+Kekaisaran Sions yang telah runtuh kini berstatus sebagai **Terra Interdicta** (wilayah terlarang dan zona anomali temporal maut):
+- **Secret Territory Polygon**: 11 titik poligon presisi terdaftar via fallback `RegionManager.ensureSionsRegion()` dengan nama display `"Terra Interdicta (Sions)"`.
 - **Hourly Temporal Engine (`SionsTemporalService`)**:
-  - Reset otomatis setiap **60 menit (1 jam)** mengembalikan semua blok rusak, diletakkan, dan diledakkan ke kondisi awal (*pristine state*).
+  - Reset otomatis setiap **60 menit (1 jam)** mengembalikan semua blok rusak, diletakkan, dan diledakkan ke kondisi semula (*pristine state*).
   - Menggunakan struktur in-memory snapshot (`putIfAbsent`) tanpa query database berat.
-- **Pencegahan Eksploitasi**: Opsi `prevent-item-drops: true` menonaktifkan drop item dari blok yang ditambang di Sions untuk mencegah duplikasi sebelum reset berkala.
+  - Siaran rekonstruksi resmi: `ANOMALI TEMPORAL TERRA INTERDICTA (SIONS)!`.
+- **Pencegahan Eksploitasi & Kunci Relik Kuno**:
+  - Peti relik di Terra Interdicta terlindungi oleh `SionsContainerLockListener` dan hanya dapat dibuka menggunakan **Sions Key** 3-tier (*Common*, *Elite*, *Boss*).
+  - Pemain tidak dapat menghancurkan peti relik secara manual.
 - **Perintah Admin (`apexsionscore.admin.sions`)**:
-  - `/sions status`: Memeriksa jumlah blok termodifikasi dan sisa waktu hitung mundur.
-  - `/sions restore`: Reset instan darurat.
-  - `/sions bypass`: Toggle mode arsitek untuk modifikasi permanen.
-  - `/sions tp`: Teleportasi ke pusat ibukota Sions.
+  - `/sions status`: Memeriksa jumlah blok termodifikasi, baseline, dan sisa waktu hitung mundur.
+  - `/sions set [minY] [maxY]`: Mengunci baseline permanen dunia saat ini.
+  - `/sions restore`: Reset rekonstruksi seketika secara manual.
+  - `/sions setkey <tier>`: Menjadikan item di tangan sebagai template kunci.
+  - `/sions givekey <player> <tier> [qty]`: Memberikan kunci relik kepada pemain.
+  - `/sions bypass`: Toggle mode arsitek untuk modifikasi permanen tanpa terkena rollback.
+  - `/sions tp`: Teleportasi ke pusat reruntuhan kuno Terra Interdicta (Sions).
+
+---
+
+## ✦ The Aetherial Conclave (Dimensi Atas Aetherion)
+Sesuai amanat `LORE.md` Bab I & VIII, staf dan penguasa tertinggi server (*Ancestor, Architect, Overseer, Warden, Herald*) diakui sebagai entitas kosmik dari dimensi atas (**Aetherion**):
+1. **Pencegahan Keterikatan Kerajaan Mortal**:
+   - `LuckPermsHook.isConclaveStaff(player)` mendeteksi staf berdasarkan OP, izin staf, atau bobot rank $\ge 80$.
+   - Staf dilarang bersumpah setia kepada 3 kerajaan mortal bangsa fana (*Zenithar*, *Solterra*, *Sylvamoor*). Perintah `/kingdom choose`, `/k join`, `RegionSelectionGUI`, dan `KingdomConfirmGUI` dibatalkan seketika.
+   - Slot 49 pada `KingdomInfoGUI` menampilkan *Beacon of The Aetherial Conclave* dan membatalkan aksi sumpah setia ke faksi fana.
+2. **Proteksi Administrasi**:
+   - `/ac setregion <player> <kingdom>` menolak mendaftarkan staf ke kerajaan mortal manapun.
+   - `PlayerInspectorGUI`: Melindungi staf agar tidak dapat dimasukkan ke kerajaan fana atau dinobatkan sebagai Raja fana.
+3. **Sinkronisasi Profil & PlaceholderAPI**:
+   - Di `/k info` (`KingdomProfileGUI`), status kerajaan staf menampilkan `✦ Aetherion (Conclave) ✦` dan slot 20 menampilkan kartu *The Aetherial Conclave*.
+   - `%apexsions_kingdom%` mengembalikan `AETHERION`.
+   - `%apexsions_kingdom_name%` mengembalikan `✦ Aetherion ✦`.
+   - `%apexsions_kingdom_badge%` mengembalikan `<gradient:#00f2fe:#4facfe><bold>[AETHERION]</bold></gradient>`.
+4. **Auto-Cleanse on Join**:
+   - `PlayerListener` secara otomatis menghapus `regionId` mortal jika akun staf sebelumnya tidak sengaja terdaftar, serta menyambut staf baru dengan sambutan resmi Conclave tanpa memaksa pembukaan menu pemilihan kerajaan.
 
 ---
 
