@@ -92,7 +92,8 @@ Adaptasi selama berabad-abad di tanah pengungsian membentuk bentang alam, kebias
 ║ • Iklim & Cuaca      : Udara Pegunungan Sejuk, Angin Dingin Tipis, Cerah  ║
 ║ • Penguasa Tertinggi : Monarch of the Sun                                 ║
 ║ • Gelar Puncak (100) : ✦ EMPEROR OF ZENITHAR ✦                            ║
-║ • Pajak Wilayah      : 25.0% (Pemeliharaan Marmer Emas & Perisai Nexus)   ║
+║ • Pajak Toko Wilayah : 25.0% (Pemeliharaan Marmer Emas & Perisai Nexus)   ║
+║ • Pajak Transfer Pay : 10.0% (Cukai Birokrasi Bangsawan)                  ║
 ╚════════════════════════════════════════════════════════════════════════════╝
 ```
 
@@ -105,14 +106,14 @@ Adaptasi selama berabad-abad di tanah pengungsian membentuk bentang alam, kebias
 
 | Kategori | Efek / Parameter | Mekanisme & Penjelasan Tematik |
 | :--- | :--- | :--- |
-| **BUFF** | `+5%` Kecepatan Gerak (*Speed*) | Fisiologi kavaleri elit yang terlatih bermanuver lincah di jalur pegunungan terjal. |
-| **BUFF** | `+7%` Keberuntungan (*Luck*) | Berkah kemakmuran dinasti fajar matahari yang menarik peluang lebih baik dalam loot peti dan penempaan. |
-| **BUFF** | `+6%` Total Serangan (*All Damage*) | Presisi teknik anggar dan pedang rapier para ksatria istana berdisiplin tinggi. |
-| **BUFF** | `+6%` Pertahanan Diri (*Defense*) | Ketahanan zirah baja berlapis emas murni warisan istana kekaisaran. |
-| **BUFF** | `-5%` Reduksi Crit Musuh | Formasi perisai kehormatan yang mampu meredam benturan fatal dari serangan mematikan lawan. |
-| **DEBUFF** | `+7%` Kerentanan Racun (*Poison*) | Gaya hidup aristokrat yang steril membuat metabolisme tubuh mereka lemah terhadap racun liar dan racun serangga rimba. |
-| **DEBUFF** | Pemulihan Makanan Berkurang (-1) | Terbiasa dengan santapan hidangan istana yang bersih; ransum lapangan kasar memulihkan rasa kenyang lebih lambat. |
-| **DEBUFF** | Fluktuasi Pasar Dinamis | Akses pengiriman barang ke puncak gunung membutuhkan biaya logistik besar, menyebabkan harga impor cenderung lebih tinggi. |
+| **BUFF** | `+5%` Kecepatan Gerak (*Speed*) | Fisiologi kavaleri elit yang terlatih bermanuver lincah di jalur pegunungan terjal (`Attribute.MOVEMENT_SPEED +0.05`). |
+| **BUFF** | `+7%` Keberuntungan (*Luck*) | Berkah kemakmuran dinasti fajar matahari yang menarik peluang lebih baik dalam loot peti dan penempaan (`Attribute.LUCK +0.7`). |
+| **BUFF** | `+6%` Total Serangan (*All Damage*) | Presisi teknik anggar dan pedang rapier para ksatria istana berdisiplin tinggi (`Damage * 1.06`). |
+| **BUFF** | `+6%` Pertahanan Diri (*Defense*) | Ketahanan zirah baja berlapis emas murni warisan istana kekaisaran (`Damage Diterima * 0.94`). |
+| **BUFF** | `-5%` Reduksi Crit Musuh | Formasi perisai kehormatan yang mampu meredam benturan fatal dari serangan mematikan lawan (`Critical Damage * 0.95`). |
+| **DEBUFF** | `+7%` Kerentanan Racun (*Poison*) | Gaya hidup aristokrat yang steril membuat metabolisme tubuh mereka lemah terhadap racun liar (`Durasi & Damage Racun * 1.07`). |
+| **DEBUFF** | Pemulihan Makanan Berkurang (-1) | Terbiasa dengan santapan hidangan istana yang bersih; ransum lapangan kasar memulihkan rasa kenyang lebih lambat (`FoodLevel -1`). |
+| **DEBUFF** | Fluktuasi Pasar Dinamis | Akses pengiriman barang ke puncak gunung membutuhkan biaya logistik besar, menyebabkan harga impor cenderung lebih tinggi (`Volatility 1.25x`). |
 
 ---
 
@@ -131,7 +132,8 @@ Adaptasi selama berabad-abad di tanah pengungsian membentuk bentang alam, kebias
 ║ • Iklim & Cuaca      : Panas Menyengat, Gersang Ekstrem, Udara Asap Magma ║
 ║ • Penguasa Tertinggi : Warlord of the Dunes                               ║
 ║ • Gelar Puncak (100) : ✦ LORD OF SOLTERRA ✦                               ║
-║ • Pajak Wilayah      : 20.0% (Industri Metalurgi, Mesin Perang & Senjata) ║
+║ • Pajak Toko Wilayah : 20.0% (Industri Metalurgi, Mesin Perang & Senjata) ║
+║ • Pajak Transfer Pay : 8.0% (Cukai Logistik Ekspedisi Militer)            ║
 ╚════════════════════════════════════════════════════════════════════════════╝
 ```
 
@@ -144,15 +146,15 @@ Adaptasi selama berabad-abad di tanah pengungsian membentuk bentang alam, kebias
 
 | Kategori | Efek / Parameter | Mekanisme & Penjelasan Tematik |
 | :--- | :--- | :--- |
-| **BUFF** | `+15%` Total Serangan (*All Damage*) | Perpaduan sihir api perusak dan kekuatan otot bertenaga raksasa para veteran garis depan. |
-| **BUFF** | `+10%` Serangan Kritis (*Crit Damage*) | Tebasan kapak tempur dan pedang berat yang selalu diarahkan membelah titik paling rapuh lawan. |
-| **BUFF** | `+10%` Kecepatan Menambang (*Mining*) | Lengan baja yang terbiasa mengayunkan beliung menghancurkan batu basal dan urat batuan cadas terik. |
-| **BUFF** | `+2%` Pertahanan Diri (*Defense*) | Kulit tebal yang terbiasa terpapar percikan bara api dan debu mesiu. |
-| **BUFF** | Rasio Jual Ore Tinggi (`65%`) | Pandai besi pandai memurnikan bijih mentah sehingga pedagang pasar menghargai hasil tambang Solterra lebih tinggi. |
-| **DEBUFF** | `-2 HP` Darah Maksimal (Total 9 Hati) | Efek samping luka bakar sihir api internal berkepanjangan serta doktrin bertarung tanpa zirah dada penuh. |
-| **DEBUFF** | `+8%` Kerentanan Damage Masuk | Sifat bertarung liar dan agresif membuat mereka sering mengabaikan pertahanan demi melancarkan serangan balasan. |
-| **DEBUFF** | `+7%` Laju Kelelahan (*Exhaustion*) | Suhu membakar badlands dan perapian pandai besi menguras cairan tubuh dan kalori jauh lebih cepat. |
-| **DEBUFF** | Tanah Pertanian Cepat Mengering | Iklim gersang tanpa ampun membuat blok tanah basah (*hydrated farmland*) cepat menguap dan kembali mengeras. |
+| **BUFF** | `+15%` Total Serangan (*All Damage*) | Perpaduan sihir api perusak dan kekuatan otot bertenaga raksasa para veteran garis depan (`Damage * 1.15`). |
+| **BUFF** | `+10%` Serangan Kritis (*Crit Damage*) | Tebasan kapak tempur dan pedang berat yang selalu diarahkan membelah titik paling rapuh lawan (`Crit Damage * 1.10`). |
+| **BUFF** | `+10%` Kecepatan Menambang (*Mining*) | Lengan baja yang terbiasa mengayunkan beliung menghancurkan batu basal dan batuan cadas terik (`Mining Speed +0.10` / `Haste`). |
+| **BUFF** | `+2%` Pertahanan Diri (*Defense*) | Kulit tebal yang terbiasa terpapar percikan bara api dan debu mesiu (`Damage Diterima * 0.98`). |
+| **BUFF** | Rasio Jual Ore Tinggi (`65%`) | Pandai besi pandai memurnikan bijih mentah sehingga pedagang pasar menghargai hasil tambang Solterra lebih tinggi (`ores-sell-ratio: 0.65`). |
+| **DEBUFF** | `-2 HP` Darah Maksimal (Total 9 Hati) | Efek samping luka bakar sihir api internal berkepanjangan serta doktrin bertarung tanpa zirah dada penuh (`Attribute.MAX_HEALTH -2.0`). |
+| **DEBUFF** | `+8%` Kerentanan Damage Masuk | Sifat bertarung liar dan agresif membuat mereka sering mengabaikan pertahanan demi melancarkan serangan balasan (`Damage Diterima * 1.08`). |
+| **DEBUFF** | `+7%` Laju Kelelahan (*Exhaustion*) | Suhu membakar badlands dan perapian pandai besi menguras cairan tubuh dan kalori jauh lebih cepat (`FoodLevel Chance Drop -1`). |
+| **DEBUFF** | Tanah Pertanian Cepat Mengering | Iklim gersang tanpa ampun membuat blok tanah basah (*hydrated farmland*) cepat menguap dan kembali mengeras (`Moisture Event`). |
 
 ---
 
@@ -171,7 +173,8 @@ Adaptasi selama berabad-abad di tanah pengungsian membentuk bentang alam, kebias
 ║ • Iklim & Cuaca      : Hujan Tropis Teratur, Udara Segar Lembap, Hutan    ║
 ║ • Penguasa Tertinggi : Guardian of the World Tree                         ║
 ║ • Gelar Puncak (100) : ✦ AVATAR OF SYLVAMOOR ✦                            ║
-║ • Pajak Wilayah      : 15.0% (Paling Rendah • Dikelola Gotong-Royong)     ║
+║ • Pajak Toko Wilayah : 15.0% (Paling Rendah • Dikelola Gotong-Royong)     ║
+║ • Pajak Transfer Pay : 6.0% (Iuran Kesejahteraan Bersama)                 ║
 ╚════════════════════════════════════════════════════════════════════════════╝
 ```
 
@@ -184,16 +187,16 @@ Adaptasi selama berabad-abad di tanah pengungsian membentuk bentang alam, kebias
 
 | Kategori | Efek / Parameter | Mekanisme & Penjelasan Tematik |
 | :--- | :--- | :--- |
-| **BUFF** | `+2 HP` Darah Maksimal (Total 11 Hati)| Daya tahan biologis unggul hasil kerja fisik di alam terbuka dan konsumsi ramuan herbal murni. |
-| **BUFF** | `+12%` Keberuntungan (*Luck*) | Harmoni batin dengan getaran Pohon Dunia mendatangkan keberkahan hasil alam dan rezeki panen. |
-| **BUFF** | `+7%` Peluang Drop Mob (*Drop Rate*) | Kemahiran membedah dan memanfaatkan setiap jengkal anatomi buruan rimba tanpa menyisakan sampah. |
-| **BUFF** | Pertahanan Alamiah (`~12.6% Total`) | Perpaduan `+8%` defense zirah getah purba dan reduksi pasif `5%` seluruh damage yang masuk ke tubuh. |
-| **BUFF** | `-5%` Kerentanan Racun (*Poison Res.*) | Penguasaan ramuan penawar herbal memberikan kekebalan lebih tinggi terhadap bisa laba-laba dan racun tanaman. |
-| **BUFF** | Kelembapan Lahan Tani Abadi | Berkat anugerah roh air dan kanopi, tanah pertanian di Sylvamoor tidak pernah mengering atau berubah menjadi tandus. |
-| **DEBUFF** | Mabuk Ketinggian di `Y > 110` | Terbiasa bernapas di udara lembap lembah; berada di puncak tebing tipis menyebabkan pusing (*Hunger & Weakness*). |
-| **DEBUFF** | `+15%` Kerusakan Api & Lahar | Sel tubuh dan perlengkapan serat alami sangat sensitif terhadap jilatan api, magma, dan mantra pembakar. |
-| **DEBUFF** | `-10%` Kecepatan Menambang | Budaya menghormati batuan bumi membuat mereka tidak terbiasa mengekstraksi dinding gua dengan perkakas berat. |
-| **DEBUFF** | `-10%` PvP Damage & `-5%` PvE Damage | Jiwa komunal cinta damai; persenjataan mereka difokuskan untuk perlindungan diri, bukan agresi pembantaian. |
+| **BUFF** | `+2 HP` Darah Maksimal (Total 11 Hati)| Daya tahan biologis unggul hasil kerja fisik di alam terbuka dan konsumsi ramuan herbal murni (`Attribute.MAX_HEALTH +2.0`). |
+| **BUFF** | `+12%` Keberuntungan (*Luck*) | Harmoni batin dengan getaran Pohon Dunia mendatangkan keberkahan hasil alam dan rezeki panen (`Attribute.LUCK +1.2`). |
+| **BUFF** | `+7%` Peluang Drop Mob (*Drop Rate*) | Kemahiran membedah dan memanfaatkan setiap jengkal anatomi buruan rimba tanpa menyisakan sampah (`EntityDeathEvent Extra Drop`). |
+| **BUFF** | Pertahanan Alamiah (`~12.6% Total`) | Perpaduan `+8%` defense zirah getah purba dan reduksi pasif `5%` seluruh damage yang masuk ke tubuh (`Damage Diterima * 0.92 * 0.95`). |
+| **BUFF** | `-5%` Kerentanan Racun (*Poison Res.*) | Penguasaan ramuan penawar herbal memberikan kekebalan lebih tinggi terhadap bisa laba-laba dan racun tanaman (`Durasi & Damage * 0.95`). |
+| **BUFF** | Kelembapan Lahan Tani Abadi | Berkat anugerah roh air dan kanopi, tanah pertanian di Sylvamoor tidak pernah mengering atau berubah menjadi tandus (`Moisture Cancel`). |
+| **DEBUFF** | Mabuk Ketinggian di `Y > 110` | Terbiasa bernapas di udara lembap lembah; berada di puncak tebing tipis menyebabkan pusing (`Hunger & Weakness Potion Effect`). |
+| **DEBUFF** | `+15%` Kerusakan Api & Lahar | Sel tubuh dan perlengkapan serat alami sangat sensitif terhadap jilatan api, magma, dan mantra pembakar (`Damage Api * 1.15`). |
+| **DEBUFF** | `-10%` Kecepatan Menambang | Budaya menghormati batuan bumi membuat mereka tidak terbiasa mengekstraksi dinding gua dengan perkakas berat (`Mining Speed -0.10`). |
+| **DEBUFF** | `-10%` PvP Damage & `-5%` PvE Damage | Jiwa komunal cinta damai; persenjataan mereka difokuskan untuk perlindungan diri, bukan agresi pembantaian (`Player * 0.90`, `Mob * 0.95`). |
 
 ---
 
@@ -267,7 +270,7 @@ Untuk menjaga stabilitas dunia dan menghormati kontribusi setiap jiwa terhadap e
                │
 [ TIER III ]✦ WARDEN (warden) ───────────── ✦ HERALD (herald) (Bobot: 90 / 80)
                │
-───────────────────────────────────────────── [BATAS DEWAN KERJAAN SIONS]
+───────────────────────────────────────────── [BATAS DEWAN KERAJAAN SIONS]
                │
 [ TIER II ] ✦ SIONS (sions) ─────────────── Apex Donator & Guardian of Lore (Bobot: 70)
             ✦ EMPEROR (emperor) ─────────── Donator Tier 4 (Bobot: 60)
@@ -319,7 +322,125 @@ Kedamaian di Apexsions bukanlah kepasrahan, melainkan keseimbangan kekuatan bers
 
 ---
 
-## 🕊️ Bab IX: Sumpah Pengelana Baru (The Wanderer's Oath)
+## 🔬 Bab IX: Audit Komprehensif & Peta Integrasi Sistem Teknis (Technical Architecture & Lore Mapping)
+
+> **Catatan Developer:** Bagian ini adalah cetak biru teknis (*technical blueprint*) yang memetakan bagaimana seluruh babad sejarah, kasta, dan karakteristik kerajaan dihubungkan ke dalam baris kode, konfigurasi plugin Minecraft, serta basis data web platform. **Wajib dikonsultasikan sebelum melakukan revisi lore.**
+
+```
+                                  EKOSISTEM KODE & LORE
+                                            │
+        ┌───────────────────┬───────────────┴───────────────┬───────────────────┐
+        ▼                   ▼                               ▼                   ▼
+ [ApexsionsCore]     [ApexsionsShop]                [ApexsionsEconomy]   [ApexsionsChat]
+  • kingdoms.yml      • markets.yml                  • AuctionService     • channels.yml
+  • titles.yml        • TaxService                   • PayService         • games.yml
+  • BuffManager       • DynamicPriceCalculator       • KingdomTreasury    • ChannelGUI
+  • BuffListener      • KingdomTaxCollectEvent         (Database SQL)
+        │                   │                               │                   │
+        └───────────────────┼───────────────────────────────┴───────────────────┘
+                            ▼
+               [Azuriom WebBridge & Website]
+                • seed_minecraft_systems.php (Wiki)
+                • LeaderboardController (Standings)
+                • KingdomTreasury.php (Eloquent Model)
+                • server-map.blade.php / home.blade.php
+```
+
+### 1. Matriks Integrasi Berkas & Komponen Kode
+
+| Sistem / Fitur | Berkas Kode & Konfigurasi Utama | Data / Logika Lore yang Terhubung |
+| :--- | :--- | :--- |
+| **Identitas & Koordinat Kerajaan** | `Minecraft/plugins/ApexsionsCore/src/main/resources/kingdoms/kingdoms.yml` | Nama display, icon, koordinat ibukota, bioma khas, raja, pajak, buff, nerf, dan starting/supreme titles. |
+| **Modifikasi Atribut Fisik (Paper)** | `com.apexsions.core.kingdom.KingdomBuffManager` | Injeksi atribut Paper: `MAX_HEALTH`, `MOVEMENT_SPEED`, `LUCK`, `BLOCK_BREAK_SPEED`, heartbeat task altitude sickness `Y > 110`. |
+| **Kalkulasi Tempur & Pertanian** | `com.apexsions.core.kingdom.KingdomBuffListener` | `EntityPotionEffectEvent` (racun), `EntityDamageEvent` (api/defense), `EntityDamageByEntityEvent` (damage/crit), `MoistureChangeEvent` (farmland), `FoodLevelChangeEvent` (lapar), `PlayerItemConsumeEvent` (santapan higienis). |
+| **Progresi 1-100 & Gelar Kerajaan** | `Minecraft/plugins/ApexsionsCore/src/main/resources/progression/titles.yml` | Gelar level per 10 tier berdasarkan kerajaan (Solaris Archon, Dune Warlord, Druidic Lord, dsb.) serta gelar kasta tertinggi. |
+| **Pajak Toko & Pasar Dinamis** | `Minecraft/plugins/ApexsionsShop/src/main/resources/markets/markets.yml` | Pajak toko (`SOLTERRA: 20%`, `ZENITHAR: 25%`, `SYLVAMOOR: 15%`), rasio jual ore 65% di Solterra, volatilitas 1.25x di Zenithar, diskon bahan pertanian di Sylvamoor. |
+| **Layanan Pajak Toko In-Game** | `com.apexsions.shop.dynamic.TaxService` | Membaca pajak kerajaan via `KingdomCoreHook.getPlayerKingdomTax()`. Mengeluarkan event `KingdomTaxCollectEvent`. |
+| **Pajak Transfer Antar-Pemain (`/pay`)** | `com.apexsions.economy.service.PayService` | Pajak transaksi instan: `ZENITHAR 10%`, `SOLTERRA 8%`, `SYLVAMOOR 6%`, `Default 5%`. |
+| **Pajak Lelang & Kas Kerajaan** | `com.apexsions.economy.service.AuctionService` | Pajak lelang flat 5% yang otomatis disetorkan ke kas kerajaan penjual di tabel `economy_kingdom_treasury`. Batas listing lelang berdasarkan rank. |
+| **Penyimpanan Kas SQL** | `com.apexsions.economy.database.EconomyRepository` | Query `INSERT/UPDATE economy_kingdom_treasury` untuk saldo kas mata uang `rupiah` dan `diamond`. |
+| **Saluran Chat Kerajaan (`/k`)** | `Minecraft/plugins/ApexsionsChat/src/main/resources/channels/channels.yml` | Channel `kingdom` dengan `kingdom-filtering: true` (hanya sesama warga satu kerajaan yang dapat membaca pesan) dan tag chat berwarna. |
+| **Kuis Trivia Obrolan** | `Minecraft/plugins/ApexsionsChat/src/main/resources/games/games.yml` | Pertanyaan tebak kata dan trivia berhadiah koin mengenai sejarah Sions, Zenithar, Solterra, Sylvamoor, dan Terra Interdicta. |
+| **Peta Taktis & Radar Web** | `Website/themes/apexsions/views/home.blade.php` & `server-map.blade.php` | Visualisasi radar kompas, kartu bentang alam, koordinat kartografi, dan penanda wilayah Terra Interdicta. |
+| **Papan Peringkat Web** | `Azuriom/Plugin/ApexsionsBridge/Controllers/LeaderboardController.php` | Agregasi total warga, rata-rata level, dan kekuatan faksi untuk `ZENITHAR`, `SOLTERRA`, dan `SYLVAMOOR`. |
+| **Ensiklopedia Ensiklopedia Wiki** | `Website/database/seed_minecraft_systems.php` | 1800+ baris data seeder ensiklopedia sistem, babad sejarah, rincian kedaulatan, dan panduan kasta. |
+
+---
+
+### 2. Audit Status Integrasi Fitur: Aktif vs Celah (Gaps)
+
+Berdasarkan hasil audit mendalam terhadap seluruh basis kode, berikut adalah status keselarasan antara lore tertulis dengan sistem komputasi aktual:
+
+```
+┌─────────────────────────────────────────────────────────────────────────────────────────────┐
+│ STATUS AUDIT INTEGRASI FITUR                                                                │
+├──────────────────────────────────────┬────────────┬─────────────────────────────────────────┤
+│ Fitur / Mekanika                     │ Status     │ Catatan Arsitektur & Rekomendasi        │
+├──────────────────────────────────────┼────────────┼─────────────────────────────────────────┤
+│ Buff Atribut Fisik (Speed, HP, Luck) │ ✅ AKTIF   │ Berjalan via Paper AttributeModifier.   │
+│ Combat Modifiers (Damage, Crit, Def) │ ✅ AKTIF   │ Terkalkulasi via Bukkit Damage Listener.│
+│ Perilaku Farmland & Makanan          │ ✅ AKTIF   │ Terkalkulasi via Bukkit Moisture Event. │
+│ Chat Filtering per Kerajaan (`/k`)   │ ✅ AKTIF   │ Terisolasi di ApexsionsChat.            │
+│ Pajak Transfer `/pay`                │ ⚠️ PARSIAL │ Pajak dipotong dari pengirim, namun     │
+│                                      │            │ belum disetor ke SQL treasury (hangus). │
+│ Pajak Toko `/shop`                   │ ⚠️ PARSIAL │ Pajak terhitung di harga transaksi,     │
+│                                      │            │ event terpanggil, namun belum auto-sync │
+│                                      │            │ ke tabel `economy_kingdom_treasury`.    │
+│ Pajak Lelang `/ah`                   │ ✅ AKTIF   │ 5% flat sukses masuk ke SQL Treasury.   │
+│ Faksi Kerajaan Sions (Admin)         │ ⏳ ROADMAP │ Baru terdaftar di narasi LORE.md,       │
+│                                      │            │ belum teregistrasi di kingdoms.yml & DB.│
+│ Kuis Trivia Chat Lore                │ ✅ AKTIF   │ Soal trivia sejarah aktif di chat.      │
+│ Peringkat Faksi Web Leaderboard      │ ✅ AKTIF   │ Agregasi data akun pemain real-time.    │
+└──────────────────────────────────────┴────────────┴─────────────────────────────────────────┘
+```
+
+---
+
+### 3. Matriks Perbandingan Angka & Rumus Ekonomi Lintas Sistem
+
+Terdapat beberapa perbedaan parameter angka di antara berkas konfigurasi yang perlu diperhatikan saat merumuskan revisi lore:
+
+1. **Pajak Toko Kerajaan (`tax-percent`):**
+   * `kingdoms.yml` (Core) dan `markets.yml` (Shop) keduanya selaras:
+     * **Zenithar:** `25.0%`
+     * **Solterra:** `20.0%`
+     * **Sylvamoor:** `15.0%`
+2. **Pajak Transfer Antar-Pemain (`/pay` di `PayService.java`):**
+   * Menggunakan skema tarif berjenjang terpisah:
+     * **Zenithar:** `10.0%`
+     * **Solterra:** `8.0%`
+     * **Sylvamoor:** `6.0%`
+     * **Tanpa Kerajaan (Wanderer):** `5.0%`
+3. **Pajak Pasar Lelang (`AuctionService.java`):**
+   * Flat `5.0%` untuk seluruh transaksi lelang terlepas dari asal kerajaan, dengan hasil pajak disalurkan ke kas kerajaan pihak penjual barang.
+4. **Rasio Jual Bijih Tambang (`ores-sell-ratio` di `markets.yml`):**
+   * Standar pasar adalah `0.50` (50% dari harga beli). Di Solterra, rasio ini ditingkatkan secara khusus menjadi `0.65` (65% dari harga beli) dan kebal terhadap penurunan harga akibat banjir pasokan (*supply saturation*).
+
+---
+
+### 4. Protokol & Checklist Sebelum Melakukan Revisi Lore (Pre-Revision Checklist)
+
+Jika Anda berencana mengubah narasi, nama kerajaan, atau persentase atribut di masa mendatang, pastikan Anda memperbarui titik-titik kode berikut agar tidak terjadi ketidaksinkronan (*desynchronization*):
+
+* [ ] **Perubahan Nama atau Kunci Kerajaan (Misal: Mengubah ID Kerajaan):**
+  * Wajib mengubah `kingdoms.yml` di `ApexsionsCore`.
+  * Wajib mengubah enum/string di `KingdomBuffManager.java` dan `KingdomBuffListener.java`.
+  * Wajib mengubah `markets.yml` di `ApexsionsShop`.
+  * Wajib mengubah `PayService.java` di `ApexsionsEconomy`.
+  * Wajib mengubah `channels.yml` (`kingdom-tags`) di `ApexsionsChat`.
+  * Wajib mengubah `LeaderboardController.php` di WebBridge plugin.
+  * Wajib menjalankan migrasi/query database untuk mengubah kolom `kingdom` pada tabel `minecraft_accounts` dan `apexsions_kingdom_treasury`.
+* [ ] **Perubahan Angka Buff / Debuff:**
+  * Sinkronkan lore tertulis di `LORE.md` dengan nilai desimal di `KingdomBuffManager.java` (`AttributeModifier`) dan `KingdomBuffListener.java`.
+* [ ] **Aktivasi Kerajaan Sions (Tahta Admin) ke Ranah Gameplay:**
+  * Tambahkan entri `SIONS` ke dalam `kingdoms.yml` dengan flag `admin-only: true`.
+  * Tambahkan tag `SIONS: "<gradient:#ffd700:#e67e22><bold>[SIONS]</bold></gradient>"` di `channels.yml`.
+  * Tambahkan pengecekan permission `apexsions.admin` agar pemain non-staf tidak dapat memilih kerajaan ini.
+  * Masukkan baris baru untuk `SIONS` pada tabel `apexsions_kingdom_treasury`.
+
+---
+
+## 🕊️ Bab X: Sumpah Pengelana Baru (The Wanderer's Oath)
 
 Ketika seorang pengelana baru pertama kali membuka mata di altar kedatangan *Spawn Sanctum*, ia membawa kepingan takdir yang belum tertulis. Tidak ada paksaan untuk menjadi ksatria pedang, arsitek benteng, atau saudagar tambang. Namun, satu keputusan wajib diambil sebelum melangkah ke alam liar:
 
