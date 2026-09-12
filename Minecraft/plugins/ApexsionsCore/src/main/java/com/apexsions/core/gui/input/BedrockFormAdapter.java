@@ -151,8 +151,8 @@ public class BedrockFormAdapter {
     public static boolean openVoteForm(
             Plugin plugin,
             Player player,
-            String voteUrl,
-            String shortUrl
+            String directVoteUrl,
+            String webPortalUrl
     ) {
         if (!isBedrockPlayer(player)) return false;
 
@@ -171,19 +171,19 @@ public class BedrockFormAdapter {
                     + "§e§lImbalan Sah Tiap Suara:\n"
                     + " §e• §f3x Kunci Peti Pusaka (Vote Keys)\n"
                     + " §a• §fRp 1.000 Saldo Uang Peradaban\n\n"
-                    + "§b§lAlamat Web Voting (Browser HP / PC):\n"
-                    + " §f" + shortUrl + "\n"
-                    + " §7(atau: " + voteUrl + ")\n\n"
-                    + "§6§lPanduan Suara:\n"
-                    + "§71. Buka browser HP/PC ke: §f" + shortUrl + "\n"
-                    + "§72. Masukkan username: §e" + player.getName() + "\n"
-                    + "§73. Berikan suara di platform voting tersebut.\n"
-                    + "§a4. Hadiah 3x Keys & Rp 1.000 otomatis masuk tanpa perlu verifikasi manual!";
+                    + "§b§lTautan Resmi Voting:\n"
+                    + " §f• Vote Langsung: " + directVoteUrl + "\n"
+                    + " §f• Portal Web: " + webPortalUrl + "\n\n"
+                    + "§6§lPanduan Suara Cepat:\n"
+                    + "§71. Pilih tombol 'Vote di Minecraft-MP' di bawah untuk mendapatkan link di chat.\n"
+                    + "§72. Masukkan username: §e" + player.getName() + " §7di halaman vote.\n"
+                    + "§a3. Hadiah 3x Keys & Rp 1.000 otomatis masuk tanpa perlu verifikasi manual!";
 
             builder.getClass().getMethod("content", String.class).invoke(builder, content);
 
             // Buttons
-            builder.getClass().getMethod("button", String.class).invoke(builder, "📋 Kirim Tautan ke Chat");
+            builder.getClass().getMethod("button", String.class).invoke(builder, "🗳 Vote di Minecraft-MP");
+            builder.getClass().getMethod("button", String.class).invoke(builder, "🌐 Buka Portal Web & Streak");
             builder.getClass().getMethod("button", String.class).invoke(builder, "🎁 Informasi Imbalan");
             builder.getClass().getMethod("button", String.class).invoke(builder, "✕ Tutup");
 
@@ -196,14 +196,18 @@ public class BedrockFormAdapter {
                         int clickedId = (Integer) clickedM.invoke(response);
                         Bukkit.getScheduler().runTask(plugin, () -> {
                             if (clickedId == 0) {
-                                // Send link directly into chat
-                                player.sendMessage("§6[APEXSIONS VOTE] §fTautan voting resmi: §b" + shortUrl);
+                                // Direct Vote Link
+                                player.sendMessage("§6[APEXSIONS VOTE] §fTautan voting Minecraft-MP: §b" + directVoteUrl);
                                 player.sendMessage("§7Username untuk voting: §e" + player.getName());
                                 player.sendMessage("§7Imbalan: §e3x Vote Keys §f+ §aRp 1.000§7.");
                             } else if (clickedId == 1) {
+                                // Portal Web Link
+                                player.sendMessage("§6[APEXSIONS VOTE] §fPortal Web Bilik Suara: §b" + webPortalUrl);
+                                player.sendMessage("§7Cek ranking voter, histori vote, dan streak harian peradaban Anda.");
+                            } else if (clickedId == 2) {
                                 // Info message
                                 player.sendMessage("§6[APEXSIONS VOTE] §eImbalan Suara Sah: §f3x Kunci Peti Vote + Rp 1.000 saldo peradaban.");
-                                player.sendMessage("§7Cooldown: 24 Jam per platform. Kunjungi §b" + shortUrl + " §7untuk memilih.");
+                                player.sendMessage("§7Auto-Reward: Hadiah otomatis masuk begitu Anda selesai memberikan suara!");
                             }
                         });
                     }

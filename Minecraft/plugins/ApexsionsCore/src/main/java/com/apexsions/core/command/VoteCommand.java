@@ -27,8 +27,8 @@ public class VoteCommand implements CommandExecutor, TabCompleter {
 
     private final ApexsionsCorePlugin plugin;
     private final MiniMessage mm = MiniMessage.miniMessage();
-    private static final String FULL_VOTE_URL = "http://web.apexsions.my.id/vote";
-    private static final String SHORT_VOTE_URL = "apexsions.my.id/vote";
+    private static final String DIRECT_VOTE_URL = "https://minecraft-mp.com/server/363636/vote/";
+    private static final String WEB_PORTAL_URL = "https://web.apexsions.my.id/vote";
 
     public VoteCommand(ApexsionsCorePlugin plugin) {
         this.plugin = plugin;
@@ -39,7 +39,7 @@ public class VoteCommand implements CommandExecutor, TabCompleter {
         if (sender instanceof Player player) {
             if (BedrockFormAdapter.isBedrockPlayer(player)) {
                 // Bedrock Experience: Open SimpleForm first
-                boolean opened = BedrockFormAdapter.openVoteForm(plugin, player, FULL_VOTE_URL, SHORT_VOTE_URL);
+                boolean opened = BedrockFormAdapter.openVoteForm(plugin, player, DIRECT_VOTE_URL, WEB_PORTAL_URL);
                 if (!opened) {
                     // Bedrock Chat Fallback (No misleading clickable prompt)
                     sendBedrockChatMessage(player);
@@ -66,12 +66,21 @@ public class VoteCommand implements CommandExecutor, TabCompleter {
         Component rewardKey = mm.deserialize("  <yellow>🎁 3x Kunci Peti Pusaka (Vote Keys)</yellow>");
         Component rewardMoney = mm.deserialize("  <green>💰 Rp 1.000 Saldo Peradaban</green>");
 
-        Component clickPrompt = mm.deserialize("<click:open_url:'" + FULL_VOTE_URL + "'>"
-                + "<hover:show_text:'<yellow>Klik di sini untuk membuka Bilik Suara Web Apexsions!</yellow>'>"
-                + "<gradient:#fbbf24:#f59e0b><bold>[ 🗳 KLIK DI SINI UNTUK MEMBERIKAN SUARA ]</bold></gradient>"
+        Component directVoteButton = mm.deserialize("<click:open_url:'" + DIRECT_VOTE_URL + "'>"
+                + "<hover:show_text:'<green>Klik di sini untuk langsung memberikan suara di Minecraft-MP (Platform #1)!</green>'>"
+                + "<gradient:#10b981:#059669><bold>[ 🗳 VOTE DI MINECRAFT-MP ]</bold></gradient>"
                 + "</hover></click>");
 
-        Component shortUrlLine = mm.deserialize("<gray>Tautan Singkat / Short URL: </gray><aqua><underlined>" + SHORT_VOTE_URL + "</underlined></aqua> <dark_gray>(atau <aqua>" + FULL_VOTE_URL + "</aqua>)</dark_gray>");
+        Component webPortalButton = mm.deserialize("<click:open_url:'" + WEB_PORTAL_URL + "'>"
+                + "<hover:show_text:'<yellow>Klik di sini untuk membuka Portal Web Bilik Suara (Cek streak, leaderboard, & statistik)!</yellow>'>"
+                + "<gradient:#fbbf24:#f59e0b><bold>[ 🌐 PORTAL BILIK SUARA WEB ]</bold></gradient>"
+                + "</hover></click>");
+
+        Component buttonLine = Component.text("  ")
+                .append(directVoteButton)
+                .append(Component.text("   "))
+                .append(webPortalButton);
+
         Component footer = mm.deserialize("<green>⚡ <bold>Auto-Reward:</bold> Cukup beri suara di platform, 3x Keys & Rp 1.000 otomatis masuk!</green>");
 
         player.sendMessage(Component.empty());
@@ -83,8 +92,8 @@ public class VoteCommand implements CommandExecutor, TabCompleter {
         player.sendMessage(rewardKey);
         player.sendMessage(rewardMoney);
         player.sendMessage(Component.empty());
-        player.sendMessage(clickPrompt);
-        player.sendMessage(shortUrlLine);
+        player.sendMessage(buttonLine);
+        player.sendMessage(Component.empty());
         player.sendMessage(footer);
         player.sendMessage(divider);
         player.sendMessage(Component.empty());
@@ -99,10 +108,14 @@ public class VoteCommand implements CommandExecutor, TabCompleter {
         Component rewardKey = mm.deserialize("  <yellow>🎁 3x Kunci Peti Pusaka (Vote Keys)</yellow>");
         Component rewardMoney = mm.deserialize("  <green>💰 Rp 1.000 Saldo Peradaban</green>");
 
-        Component linkHeader = mm.deserialize("<yellow>Buka Alamat Berikut di Browser HP / Komputer Anda:</yellow>");
-        Component shortUrlLine = mm.deserialize("  <gradient:#38bdf8:#818cf8><bold>" + SHORT_VOTE_URL + "</bold></gradient> <gray>(atau " + FULL_VOTE_URL + ")</gray>");
-        Component userHint = mm.deserialize("<gray>Masukkan Username Minecraft Anda: </gray><gold>" + player.getName() + "</gold>");
-        Component footer = mm.deserialize("<green>⚡ <bold>Auto-Reward:</bold> Hadiah otomatis diproses begitu Anda vote di platform tanpa perlu verifikasi manual!</green>");
+        Component linkDirectHeader = mm.deserialize("<yellow>1. Tautan Vote Langsung (Minecraft-MP):</yellow>");
+        Component linkDirect = mm.deserialize("   <aqua>" + DIRECT_VOTE_URL + "</aqua>");
+
+        Component linkWebHeader = mm.deserialize("<yellow>2. Portal Web Bilik Suara & Streak:</yellow>");
+        Component linkWeb = mm.deserialize("   <aqua>" + WEB_PORTAL_URL + "</aqua>");
+
+        Component userHint = mm.deserialize("<gray>Gunakan Username: </gray><gold>" + player.getName() + "</gold>");
+        Component footer = mm.deserialize("<green>⚡ <bold>Auto-Reward:</bold> Hadiah otomatis diproses begitu Anda vote tanpa perlu klaim manual!</green>");
 
         player.sendMessage(Component.empty());
         player.sendMessage(divider);
@@ -113,9 +126,12 @@ public class VoteCommand implements CommandExecutor, TabCompleter {
         player.sendMessage(rewardKey);
         player.sendMessage(rewardMoney);
         player.sendMessage(Component.empty());
-        player.sendMessage(linkHeader);
-        player.sendMessage(shortUrlLine);
+        player.sendMessage(linkDirectHeader);
+        player.sendMessage(linkDirect);
+        player.sendMessage(linkWebHeader);
+        player.sendMessage(linkWeb);
         player.sendMessage(userHint);
+        player.sendMessage(Component.empty());
         player.sendMessage(footer);
         player.sendMessage(divider);
         player.sendMessage(Component.empty());
@@ -125,12 +141,14 @@ public class VoteCommand implements CommandExecutor, TabCompleter {
         Component divider = mm.deserialize("<gradient:#f59e0b:#d97706>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</gradient>");
         Component title = mm.deserialize("<gold>⚔ </gold><yellow><bold>APEXSIONS BILIK SUARA (VOTING)</bold></yellow><gold> ⚔</gold>");
         Component rewards = mm.deserialize("<yellow>🎁 3x Vote Keys</yellow> <gray>+</gray> <green>💰 Rp 1.000 Saldo Peradaban</green>");
-        Component url = mm.deserialize("<gray>Kunjungi: </gray><aqua>" + SHORT_VOTE_URL + "</aqua> <gray>(" + FULL_VOTE_URL + ")</gray>");
+        Component directLine = mm.deserialize("<gray>Vote Langsung: </gray><aqua>" + DIRECT_VOTE_URL + "</aqua>");
+        Component webLine = mm.deserialize("<gray>Portal Web: </gray><aqua>" + WEB_PORTAL_URL + "</aqua>");
 
         sender.sendMessage(divider);
         sender.sendMessage(title);
         sender.sendMessage(rewards);
-        sender.sendMessage(url);
+        sender.sendMessage(directLine);
+        sender.sendMessage(webLine);
         sender.sendMessage(divider);
     }
 
