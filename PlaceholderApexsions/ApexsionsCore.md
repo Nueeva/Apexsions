@@ -100,11 +100,13 @@ Plugin **ApexsionsCore** merupakan fondasi utama peradaban server Apexsions. Sel
 
 | Placeholder | Alias Alternatif | Tipe Nilai | Contoh Output | Keterangan Lengkap |
 | :--- | :--- | :--- | :--- | :--- |
-| `%apexsions_online_zenithar%` | - | Angka | `12` | Jumlah anggota Kerajaan Zenithar yang sedang online di server. |
-| `%apexsions_online_solterra%` | - | Angka | `9` | Jumlah anggota Kerajaan Solterra yang sedang online di server. |
-| `%apexsions_online_sylvamoor%` | - | Angka | `15` | Jumlah anggota Kerajaan Sylvamoor yang sedang online di server. |
-| `%apexsions_online_kingdom_members%` | - | Angka | `12` | Jumlah anggota online dari kerajaan yang sama dengan pemain. |
-| `%apexsions_staff_online%` | `%apexsions_staffonline%` | Angka | `4` | Jumlah staf yang sedang online (OP, permission `apexsions.staff`, atau grup staf). |
+| `%apexsions_online%` | `%apexsions_online_players%`, `%apexsions_server_online%` | Angka | `36` | Jumlah pemain online aktif di server (secara otomatis mengecualikan staf dalam mode vanish). |
+| `%apexsions_online_zenithar%` | - | Angka | `12` | Jumlah anggota Kerajaan Zenithar yang sedang online di server (mengecualikan vanish). |
+| `%apexsions_online_solterra%` | - | Angka | `9` | Jumlah anggota Kerajaan Solterra yang sedang online di server (mengecualikan vanish). |
+| `%apexsions_online_sylvamoor%` | - | Angka | `15` | Jumlah anggota Kerajaan Sylvamoor yang sedang online di server (mengecualikan vanish). |
+| `%apexsions_online_kingdom_members%` | - | Angka | `12` | Jumlah anggota online dari kerajaan yang sama dengan pemain (mengecualikan vanish). |
+| `%apexsions_staff_online%` | `%apexsions_staffonline%` | Angka | `4` | Jumlah staf yang sedang online (staf vanish otomatis disembunyikan dari non-staf). |
+| `%apexsions_vanished%` | `%apexsions_is_vanished%` | Boolean | `true` / `false` | Mengetahui apakah pemain yang diperiksa sedang berada dalam mode vanish. |
 
 ---
 
@@ -126,7 +128,7 @@ Simpan pada file konfigurasi plugin TAB (`plugins/TAB/config.yml`):
 tablist-name-formatting:
   default: "%apexsions_rank_badge% &f%player_name% %apexsions_title_suffix%"
 header:
-  - "<gradient:#FFD700:#FFA500><bold>APEXSIONS NETWORK</bold></gradient>"
+  - "<gradient:#FFD700:#FFA500><bold>APEXSIONS</bold></gradient>"
   - "&7The Peak Civilizations &8| &fPemain: &a%server_online%&7/&f100"
   - ""
 footer:

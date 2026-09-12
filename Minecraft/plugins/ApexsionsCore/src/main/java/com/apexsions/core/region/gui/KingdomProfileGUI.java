@@ -110,8 +110,10 @@ public class KingdomProfileGUI implements Listener {
         long onlineKingdomCount = 0;
         if (regionOpt.isPresent()) {
             Region r = regionOpt.get();
+            boolean canSeeVanish = player.hasPermission("apexsions.vanish.see");
             onlineKingdomCount = Bukkit.getOnlinePlayers().stream()
-                    .filter(p -> plugin.getApi().getPlayerRegionKey(p.getUniqueId()).equalsIgnoreCase(r.getKey()))
+                    .filter(p -> (canSeeVanish || plugin.getVanishManager() == null || !plugin.getVanishManager().isVanished(p))
+                            && plugin.getApi().getPlayerRegionKey(p.getUniqueId()).equalsIgnoreCase(r.getKey()))
                     .count();
         }
 

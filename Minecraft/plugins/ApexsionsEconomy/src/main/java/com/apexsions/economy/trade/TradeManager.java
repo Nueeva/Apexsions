@@ -83,6 +83,11 @@ public class TradeManager implements Listener {
     public synchronized boolean sendRequest(Player sender, Player target) {
         if (sender == null || target == null || !sender.isOnline() || !target.isOnline()) return false;
 
+        if (!sender.canSee(target) && !sender.hasPermission("apexsions.vanish.see")) {
+            sender.sendMessage("§cPemain §e" + target.getName() + " §ctidak ditemukan atau sedang offline!");
+            return false;
+        }
+
         if (sender.getUniqueId().equals(target.getUniqueId())) {
             sender.sendMessage("§cAnda tidak dapat mengajak diri sendiri untuk trade!");
             return false;

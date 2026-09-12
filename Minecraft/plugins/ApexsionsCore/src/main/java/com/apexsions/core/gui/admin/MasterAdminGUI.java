@@ -228,7 +228,10 @@ public class MasterAdminGUI implements InventoryHolder {
             long maxMB = heap.getMax() / (1024 * 1024);
 
             lore.add(mm.deserialize("<gray>Memory RAM:</gray> <yellow>" + usedMB + " MB</yellow> <dark_gray>/</dark_gray> <gold>" + maxMB + " MB</gold>"));
-            lore.add(mm.deserialize("<gray>Pemain Online:</gray> <green><bold>" + Bukkit.getOnlinePlayers().size() + "</bold></green>"));
+            int totalOnline = Bukkit.getOnlinePlayers().size();
+            int vanishedCount = plugin.getVanishManager() != null ? plugin.getVanishManager().getVanishedCount() : 0;
+            String onlineTxt = totalOnline + (vanishedCount > 0 ? " <gray>(" + (totalOnline - vanishedCount) + " Publik + " + vanishedCount + " Vanished)</gray>" : "");
+            lore.add(mm.deserialize("<gray>Pemain Online:</gray> <green><bold>" + onlineTxt + "</bold></green>"));
             lore.add(mm.deserialize("<gray>Status War:</gray> " + (plugin.getWarManager().isWarActive() ? "<red><bold>⚔ PERANG AKTIF</bold></red>" : "<green>Damai</green>")));
             lore.add(mm.deserialize("<gray>Server Suite:</gray> <green>● 8/8 Plugin Terintegrasi</green>"));
             meta.lore(lore);

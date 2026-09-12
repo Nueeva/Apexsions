@@ -74,7 +74,7 @@ public class PayMenu extends Gui {
                 .build(), event -> {
             plugin.getChatInputManager().startInput(player, "Masukkan nama penerima transfer:", targetName -> {
                 Player target = Bukkit.getPlayer(targetName);
-                if (target == null || !target.isOnline()) {
+                if (target == null || !target.isOnline() || (!player.canSee(target) && !player.hasPermission("apexsions.vanish.see"))) {
                     player.sendMessage("§cPemain " + targetName + " tidak ditemukan atau sedang offline!");
                     open();
                     return;
@@ -90,9 +90,12 @@ public class PayMenu extends Gui {
 
         // 3. Online Players Grid (Slots 10..16, 19..25, 28..34, 37..43)
         List<Player> onlineList = new ArrayList<>();
+        boolean canSeeVanish = player.hasPermission("apexsions.vanish.see");
         for (Player p : Bukkit.getOnlinePlayers()) {
             if (!p.getUniqueId().equals(player.getUniqueId())) {
-                onlineList.add(p);
+                if (canSeeVanish || (player.canSee(p) && !p.hasMetadata("vanished") && !p.hasMetadata("vanish"))) {
+                    onlineList.add(p);
+                }
             }
         }
 

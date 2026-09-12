@@ -7,6 +7,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.io.File;
@@ -81,6 +82,9 @@ public class VanishManager {
             player.setCollidable(false);
             player.setSleepingIgnored(true);
             player.setAllowFlight(true);
+            player.setMetadata("vanished", new FixedMetadataValue(plugin, true));
+            player.setMetadata("vanish", new FixedMetadataValue(plugin, true));
+            notifyTabVanish(player, true);
 
             // Hide from normal players, ensure visible to staff
             for (Player viewer : Bukkit.getOnlinePlayers()) {
@@ -125,6 +129,9 @@ public class VanishManager {
             vanishedPlayers.remove(uuid);
             player.setCollidable(true);
             player.setSleepingIgnored(false);
+            player.removeMetadata("vanished", plugin);
+            player.removeMetadata("vanish", plugin);
+            notifyTabVanish(player, false);
 
             // Re-show to all players
             for (Player viewer : Bukkit.getOnlinePlayers()) {
@@ -201,6 +208,9 @@ public class VanishManager {
             joiner.setCollidable(false);
             joiner.setSleepingIgnored(true);
             joiner.setAllowFlight(true);
+            joiner.setMetadata("vanished", new FixedMetadataValue(plugin, true));
+            joiner.setMetadata("vanish", new FixedMetadataValue(plugin, true));
+            notifyTabVanish(joiner, true);
 
             // Hide the vanished joiner from everyone except staff
             for (Player viewer : Bukkit.getOnlinePlayers()) {
@@ -275,6 +285,10 @@ public class VanishManager {
         if (reminderTask != null && !reminderTask.isCancelled()) {
             reminderTask.cancel();
         }
+        for (Player p : Bukkit.getOnlinePlayers()) {
+            p.removeMetadata("vanished", plugin);
+            p.removeMetadata("vanish", plugin);
+        }
         saveData();
     }
 
@@ -286,6 +300,28 @@ public class VanishManager {
             try {
                 vanishedPlayers.add(UUID.fromString(s));
             } catch (Exception ignored) {}
+        }
+        for (Player p : Bukkit.getOnlinePlayers()) {
+            if (isVanished(p.getUniqueId())) {
+                p.setMetadata("vanished", new FixedMetadataValue(plugin, true));
+                p.setMetadata("vanish", new FixedMetadataValue(plugin, true));
+                notifyTabVanish(p, true);
+            }
+        }
+    }
+
+    private void notifyTabVanish(Player player, boolean vanished) {
+        try {
+            Class<?> tabApiClass = Class.forName("me.neznamy.tab.api.TabAPI");
+            Object tabApi = tabApiClass.getMethod("getInstance").invoke(null);
+            if (tabApi != null) {
+                Object tabPlayer = tabApiClass.getMethod("getPlayer", UUID.class).invoke(tabApi, player.getUniqueId());
+                if (tabPlayer != null) {
+                    tabPlayer.getClass().getMethod("setVanished", boolean.class).invoke(tabPlayer, vanished);
+                }
+            }
+        } catch (Throwable ignored) {
+            // TAB plugin not loaded or differing version; Bukkit metadata handles vanish automatically
         }
     }
 

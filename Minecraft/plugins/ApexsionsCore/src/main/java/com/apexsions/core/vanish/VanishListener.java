@@ -52,6 +52,8 @@ public class VanishListener implements Listener {
         Player player = event.getPlayer();
         if (vanishManager.isVanished(player)) {
             event.quitMessage(null);
+            player.removeMetadata("vanished", plugin);
+            player.removeMetadata("vanish", plugin);
         }
     }
 

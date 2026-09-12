@@ -83,7 +83,7 @@ public class TradeCommand implements CommandExecutor, TabCompleter {
         // Direct request to player: /trade <playerName>
         String targetName = args[0];
         Player target = Bukkit.getPlayer(targetName);
-        if (target == null || !target.isOnline()) {
+        if (target == null || !target.isOnline() || (!player.canSee(target) && !player.hasPermission("apexsions.vanish.see"))) {
             player.sendMessage("§cPemain §e" + targetName + " §ctidak ditemukan atau sedang offline!");
             return true;
         }
@@ -95,6 +95,7 @@ public class TradeCommand implements CommandExecutor, TabCompleter {
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         List<String> completions = new ArrayList<>();
+        boolean canSeeVanish = !(sender instanceof Player) || sender.hasPermission("apexsions.vanish.see");
         if (args.length == 1) {
             String query = args[0].toLowerCase();
             List<String> subs = List.of("accept", "deny", "toggle", "on", "off", "cancel");
@@ -102,13 +103,19 @@ public class TradeCommand implements CommandExecutor, TabCompleter {
                 if (sub.startsWith(query)) completions.add(sub);
             }
             for (Player p : Bukkit.getOnlinePlayers()) {
-                if (sender instanceof Player self && p.getUniqueId().equals(self.getUniqueId())) continue;
+                if (sender instanceof Player self) {
+                    if (p.getUniqueId().equals(self.getUniqueId())) continue;
+                    if (!canSeeVanish && (!self.canSee(p) || p.hasMetadata("vanished") || p.hasMetadata("vanish"))) continue;
+                }
                 if (p.getName().toLowerCase().startsWith(query)) completions.add(p.getName());
             }
         } else if (args.length == 2 && (args[0].equalsIgnoreCase("accept") || args[0].equalsIgnoreCase("deny"))) {
             String query = args[1].toLowerCase();
             for (Player p : Bukkit.getOnlinePlayers()) {
-                if (sender instanceof Player self && p.getUniqueId().equals(self.getUniqueId())) continue;
+                if (sender instanceof Player self) {
+                    if (p.getUniqueId().equals(self.getUniqueId())) continue;
+                    if (!canSeeVanish && (!self.canSee(p) || p.hasMetadata("vanished") || p.hasMetadata("vanish"))) continue;
+                }
                 if (p.getName().toLowerCase().startsWith(query)) completions.add(p.getName());
             }
         }

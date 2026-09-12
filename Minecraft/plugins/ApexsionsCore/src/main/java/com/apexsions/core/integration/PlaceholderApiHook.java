@@ -52,8 +52,62 @@ public class PlaceholderApiHook extends PlaceholderExpansion {
 
     @Override
     public @Nullable String onRequest(OfflinePlayer offlinePlayer, @NotNull String params) {
+        String pLower = params.toLowerCase();
+
+        // 1. Server-wide / online count placeholders (can be requested with or without viewer)
+        switch (pLower) {
+            case "staff_online":
+            case "staffonline":
+                return String.valueOf(countStaffOnline(offlinePlayer));
+
+            case "online":
+            case "online_players":
+            case "players_online":
+            case "server_online":
+                return String.valueOf(countTotalOnline(offlinePlayer));
+
+            case "online_zenithar":
+                return String.valueOf(countKingdomOnline("ZENITHAR", offlinePlayer));
+
+            case "online_solterra":
+                return String.valueOf(countKingdomOnline("SOLTERRA", offlinePlayer));
+
+            case "online_sylvamoor":
+                return String.valueOf(countKingdomOnline("SYLVAMOOR", offlinePlayer));
+
+            case "war_status":
+                if (plugin.getWarManager() != null && plugin.getWarManager().isWarActive()) {
+                    return "WAR";
+                }
+                return "PEACE";
+
+            case "war_timer":
+                if (plugin.getWarManager() != null) {
+                    return String.valueOf(plugin.getWarManager().getRemainingSeconds());
+                }
+                return "0";
+        }
+
         if (offlinePlayer == null) {
             return "";
+        }
+
+        if (pLower.equals("vanished") || pLower.equals("is_vanished")) {
+            boolean v = plugin.getVanishManager() != null && plugin.getVanishManager().isVanished(offlinePlayer.getUniqueId());
+            return v ? "true" : "false";
+        }
+
+        if (pLower.equals("combat_tagged")) {
+            if (plugin.getCombatTagService() != null) {
+                return String.valueOf(plugin.getCombatTagService().isCombatTagged(offlinePlayer.getUniqueId()));
+            }
+            return "false";
+        }
+        if (pLower.equals("combat_timer")) {
+            if (plugin.getCombatTagService() != null) {
+                return String.valueOf(plugin.getCombatTagService().getRemainingSeconds(offlinePlayer.getUniqueId()));
+            }
+            return "0";
         }
 
         Optional<PlayerData> dataOpt = plugin.getPlayerDataService().getCached(offlinePlayer.getUniqueId());
@@ -63,7 +117,7 @@ public class PlaceholderApiHook extends PlaceholderExpansion {
 
         PlayerData data = dataOpt.get();
 
-        switch (params.toLowerCase()) {
+        switch (pLower) {
             case "level":
                 return String.valueOf(data.getLevel());
 
@@ -289,51 +343,14 @@ public class PlaceholderApiHook extends PlaceholderExpansion {
                 }
                 return "false";
 
-            case "combat_tagged":
-                if (plugin.getCombatTagService() != null) {
-                    return String.valueOf(plugin.getCombatTagService().isCombatTagged(offlinePlayer.getUniqueId()));
-                }
-                return "false";
-
-            case "combat_timer":
-                if (plugin.getCombatTagService() != null) {
-                    return String.valueOf(plugin.getCombatTagService().getRemainingSeconds(offlinePlayer.getUniqueId()));
-                }
-                return "0";
-
-            case "war_status":
-                if (plugin.getWarManager() != null && plugin.getWarManager().isWarActive()) {
-                    return "WAR";
-                }
-                return "PEACE";
-
-            case "war_timer":
-                if (plugin.getWarManager() != null) {
-                    return String.valueOf(plugin.getWarManager().getRemainingSeconds());
-                }
-                return "0";
-
-            case "online_zenithar":
-                return String.valueOf(countKingdomOnline("ZENITHAR"));
-
-            case "online_solterra":
-                return String.valueOf(countKingdomOnline("SOLTERRA"));
-
-            case "online_sylvamoor":
-                return String.valueOf(countKingdomOnline("SYLVAMOOR"));
-
             case "online_kingdom_members":
                 if (data.getRegionId() != null) {
                     Optional<Region> rOpt = plugin.getRegionManager().getRegion(data.getRegionId());
                     if (rOpt.isPresent()) {
-                        return String.valueOf(countKingdomOnline(rOpt.get().getKey()));
+                        return String.valueOf(countKingdomOnline(rOpt.get().getKey(), offlinePlayer));
                     }
                 }
                 return "0";
-
-            case "staff_online":
-            case "staffonline":
-                return String.valueOf(countStaffOnline());
 
             case "cosmetic_aura":
                 return data.getActiveAura() != null ? data.getActiveAura() : "None";
@@ -349,9 +366,20 @@ public class PlaceholderApiHook extends PlaceholderExpansion {
         }
     }
 
-    private long countStaffOnline() {
+    private long countTotalOnline(@Nullable OfflinePlayer viewer) {
+        boolean canSeeVanish = viewer != null && viewer.isOnline() && viewer.getPlayer() != null && viewer.getPlayer().hasPermission("apexsions.vanish.see");
+        return Bukkit.getOnlinePlayers().stream()
+                .filter(p -> canSeeVanish || plugin.getVanishManager() == null || !plugin.getVanishManager().isVanished(p))
+                .count();
+    }
+
+    private long countStaffOnline(@Nullable OfflinePlayer viewer) {
+        boolean canSeeVanish = viewer != null && viewer.isOnline() && viewer.getPlayer() != null && viewer.getPlayer().hasPermission("apexsions.vanish.see");
         return Bukkit.getOnlinePlayers().stream()
                 .filter(p -> {
+                    if (!canSeeVanish && plugin.getVanishManager() != null && plugin.getVanishManager().isVanished(p)) {
+                        return false;
+                    }
                     if (p.isOp() || p.hasPermission("apexsions.staff")) return true;
                     if (plugin.getLuckPermsHook() != null) {
                         String r = plugin.getLuckPermsHook().getPlayerRankKey(p).toLowerCase();
@@ -362,9 +390,15 @@ public class PlaceholderApiHook extends PlaceholderExpansion {
                 .count();
     }
 
-    private long countKingdomOnline(String kingdomKey) {
+    private long countKingdomOnline(String kingdomKey, @Nullable OfflinePlayer viewer) {
+        boolean canSeeVanish = viewer != null && viewer.isOnline() && viewer.getPlayer() != null && viewer.getPlayer().hasPermission("apexsions.vanish.see");
         return Bukkit.getOnlinePlayers().stream()
-                .filter(p -> plugin.getApi().getPlayerRegionKey(p.getUniqueId()).equalsIgnoreCase(kingdomKey))
+                .filter(p -> {
+                    if (!canSeeVanish && plugin.getVanishManager() != null && plugin.getVanishManager().isVanished(p)) {
+                        return false;
+                    }
+                    return plugin.getApi().getPlayerRegionKey(p.getUniqueId()).equalsIgnoreCase(kingdomKey);
+                })
                 .count();
     }
 

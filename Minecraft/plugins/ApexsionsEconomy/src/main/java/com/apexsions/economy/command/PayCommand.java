@@ -41,7 +41,7 @@ public class PayCommand implements CommandExecutor, TabCompleter {
 
         String targetName = args[0];
         Player target = Bukkit.getPlayer(targetName);
-        if (target == null) {
+        if (target == null || (!player.canSee(target) && !player.hasPermission("apexsions.vanish.see"))) {
             player.sendMessage("§cPemain " + targetName + " tidak ditemukan atau sedang offline!");
             return true;
         }
@@ -69,8 +69,13 @@ public class PayCommand implements CommandExecutor, TabCompleter {
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         if (args.length == 1) {
             List<String> list = new ArrayList<>();
+            boolean canSeeVanish = !(sender instanceof Player) || sender.hasPermission("apexsions.vanish.see");
             for (Player p : Bukkit.getOnlinePlayers()) {
-                if (!p.getName().equalsIgnoreCase(sender.getName())) list.add(p.getName());
+                if (!p.getName().equalsIgnoreCase(sender.getName())) {
+                    if (canSeeVanish || (sender instanceof Player sp && sp.canSee(p) && !p.hasMetadata("vanished") && !p.hasMetadata("vanish"))) {
+                        list.add(p.getName());
+                    }
+                }
             }
             return list;
         }

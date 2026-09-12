@@ -47,7 +47,9 @@ public class MentionParser {
             String punctuation = targetName.substring(cleanName.length());
 
             Player target = Bukkit.getPlayerExact(cleanName);
-            if (target != null && target.isOnline() && !target.equals(sender)) {
+            boolean canSeeVanish = sender.hasPermission("apexsions.vanish.see");
+            boolean visible = target != null && (canSeeVanish || (sender.canSee(target) && !target.hasMetadata("vanished") && !target.hasMetadata("vanish")));
+            if (target != null && target.isOnline() && !target.equals(sender) && visible) {
                 if (!notifiedPlayers.contains(target.getUniqueId())) {
                     notifiedPlayers.add(target.getUniqueId());
                     notifyPlayer(target, sender);

@@ -41,7 +41,8 @@ public class RealNameCommand implements CommandExecutor, TabCompleter {
                 if (opt.isPresent()) {
                     String realName = opt.get();
                     Player target = Bukkit.getPlayerExact(realName);
-                    boolean isOnline = target != null && target.isOnline();
+                    boolean canSeeVanish = !(sender instanceof Player) || sender.hasPermission("apexsions.vanish.see");
+                    boolean isOnline = target != null && target.isOnline() && (canSeeVanish || (!(sender instanceof Player sp) || (sp.canSee(target) && !target.hasMetadata("vanished") && !target.hasMetadata("vanish"))));
 
                     sender.sendMessage(miniMessage.deserialize(
                             "<gradient:#ffeaa7:#55efc4><bold>✦ IDENTITAS PEMAIN REALNAME ✦</bold></gradient>\n" +
@@ -62,7 +63,11 @@ public class RealNameCommand implements CommandExecutor, TabCompleter {
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (args.length == 1) {
             List<String> list = new ArrayList<>();
+            boolean canSeeVanish = !(sender instanceof Player) || sender.hasPermission("apexsions.vanish.see");
             for (Player p : Bukkit.getOnlinePlayers()) {
+                if (sender instanceof Player sp && !canSeeVanish && (!sp.canSee(p) || p.hasMetadata("vanished") || p.hasMetadata("vanish"))) {
+                    continue;
+                }
                 var data = plugin.getNicknameService().getNicknameData(p.getUniqueId());
                 if (data.hasNickname()) {
                     list.add(data.getNicknameRaw());

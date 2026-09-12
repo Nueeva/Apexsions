@@ -51,9 +51,19 @@ public class MotdManager implements Listener {
 
         event.motd(motdComponent);
 
+        // Deduct vanished staff from visible player count
+        int visiblePlayers = event.getNumPlayers();
+        if (plugin.getVanishManager() != null) {
+            visiblePlayers = Math.max(0, visiblePlayers - plugin.getVanishManager().getVanishedCount());
+            event.setNumPlayers(visiblePlayers);
+            try {
+                event.getListedPlayers().removeIf(p -> p != null && plugin.getVanishManager().isVanished(p.id()));
+            } catch (Throwable ignored) {}
+        }
+
         // Player Count customization from motd.yml
         if (config.getBoolean("player-count.just-one-more-slot", false)) {
-            event.setMaxPlayers(event.getNumPlayers() + 1);
+            event.setMaxPlayers(visiblePlayers + 1);
         } else if (config.getBoolean("player-count.custom-max-players", false)) {
             event.setMaxPlayers(config.getInt("player-count.max-players", 100));
         }

@@ -88,9 +88,14 @@ public class WebBridgeService {
 
     private void sendHeartbeat() {
         try {
-            int onlinePlayers = Bukkit.getOnlinePlayers().size();
+            List<Player> onlineList = new ArrayList<>();
+            for (Player p : Bukkit.getOnlinePlayers()) {
+                if (plugin.getVanishManager() == null || !plugin.getVanishManager().isVanished(p)) {
+                    onlineList.add(p);
+                }
+            }
+            int onlinePlayers = onlineList.size();
             int maxPlayers = Bukkit.getMaxPlayers();
-            List<Player> onlineList = new ArrayList<>(Bukkit.getOnlinePlayers());
             double tps = 20.0;
             try {
                 double[] tpsArr = Bukkit.getTPS();
