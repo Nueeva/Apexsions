@@ -17,4 +17,4 @@ Disallow: /password/*
 Disallow: /email/*
 Disallow: /api/*
 
-Sitemap: http://web.apexsions.my.id/sitemap.xml
+Sitemap: https://web.apexsions.my.id/sitemap.xml

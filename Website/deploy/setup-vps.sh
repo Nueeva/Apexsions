@@ -150,7 +150,7 @@ APP_NAME="Apexsions"
 APP_ENV=production
 APP_KEY=
 APP_DEBUG=false
-APP_URL=http://web.apexsions.my.id
+APP_URL=https://web.apexsions.my.id
 
 LOG_CHANNEL=stack
 LOG_DEPRECATIONS_CHANNEL=null

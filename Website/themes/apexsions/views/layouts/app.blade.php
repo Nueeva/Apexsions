@@ -23,37 +23,42 @@
         $isHome = request()->routeIs('home') || empty($rawTitle) || $rawTitle === 'Beranda' || $rawTitle === 'Home';
 
         if ($isHome) {
-            $pageTitle = 'Apexsions - Minecraft Survival & Kingdom Server Indonesia';
+            $pageTitle = 'Apexsions | Minecraft Server Survival & Kingdom Indonesia';
         } elseif (str_contains($rawTitle, 'Apexsions')) {
             $pageTitle = $rawTitle;
         } else {
             $pageTitle = $rawTitle . ' | ' . $site;
         }
 
-        $defaultDesc = 'Bergabunglah di Apexsions, server Minecraft Indonesia dengan sistem Survival, Kingdom, BattlePass, Economy, Auction, Custom Enchants, Crates, dan dunia yang terus berkembang.';
+        $defaultDesc = 'Apexsions adalah Official Minecraft Server Indonesia (Java & Bedrock). Bergabunglah ke peradaban Survival Kerajaan, 11 kasta sosial, BattlePass, ekonomi realm, dan perang wilayah.';
         $rawDesc = trim($__env->yieldContent('description'));
         if (empty($rawDesc) || $rawDesc === 'The Peak Civilizations' || $rawDesc === setting('description')) {
             $metaDesc = $defaultDesc;
         } else {
             $metaDesc = $rawDesc;
         }
+
+        // Authoritative Canonical Base URL (Strict HTTPS web.apexsions.my.id)
+        $canonicalBase = 'https://web.apexsions.my.id';
+        $pathInfo = request()->getPathInfo();
+        $canonicalUrl = $canonicalBase . ($pathInfo === '/' ? '' : $pathInfo);
     @endphp
 
     <title>{{ $pageTitle }}</title>
 
     <meta name="description" content="{{ $metaDesc }}">
-    <meta name="keywords" content="Minecraft Indonesia, Minecraft Survival Indonesia, Minecraft SMP Indonesia, Minecraft Server Indonesia, Minecraft Java Bedrock Indonesia, Server Minecraft Survival, Apexsions Minecraft">
+    <meta name="keywords" content="Apexsions, Apexsions Minecraft Server, Apexsions Minecraft, Server Minecraft Indonesia, Minecraft Survival Indonesia, Minecraft SMP Indonesia, Minecraft Java Bedrock Indonesia, Server Minecraft Survival">
     <meta name="author" content="Apexsions">
     <meta name="robots" content="index, follow">
     <meta name="theme-color" content="#090c13">
-    <link rel="canonical" href="{{ url()->current() }}">
+    <link rel="canonical" href="{{ $canonicalUrl }}">
 
     <!-- Open Graph & Social Cards -->
     <meta property="og:site_name" content="Apexsions">
     <meta property="og:title" content="{{ $pageTitle }}">
     <meta property="og:description" content="{{ $metaDesc }}">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:url" content="{{ $canonicalUrl }}">
     <meta property="og:image" content="{{ theme_asset('img/og-preview.jpg') }}&v={{ @filemtime(public_path('assets/themes/apexsions/img/og-preview.jpg')) ?: '4' }}">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
@@ -76,44 +81,55 @@
         "@@graph": [
             {
                 "@@type": "Organization",
-                "@@id": "{{ url('/') }}/#organization",
+                "@@id": "{{ $canonicalBase }}/#organization",
                 "name": "Apexsions",
-                "url": "{{ url('/') }}",
+                "alternateName": [
+                    "Apexsions Minecraft Server",
+                    "Apexsions Indonesia",
+                    "Apexsions Minecraft",
+                    "Apexsions SMP",
+                    "Apexsions Kingdom"
+                ],
+                "disambiguatingDescription": "Apexsions adalah Official Game Server Minecraft Indonesia bertema Survival Kerajaan (The Peak Civilizations), bukan penyedia server web hosting.",
+                "url": "{{ $canonicalBase }}",
                 "logo": "{{ theme_asset('img/logo.png') }}",
                 "description": "Apexsions - The Peak Civilizations. Server Minecraft Survival & Kingdom Server Indonesia.",
                 "sameAs": [
-                    "https://discord.gg/apexsions"
+                    "https://discord.gg/apexsions",
+                    "https://minecraft-mp.com/server/363636/"
                 ]
             },
             {
                 "@@type": "WebSite",
-                "@@id": "{{ url('/') }}/#website",
-                "url": "{{ url('/') }}",
-                "name": "Apexsions",
-                "description": "Apexsions - Minecraft Survival & Kingdom Server Indonesia",
+                "@@id": "{{ $canonicalBase }}/#website",
+                "url": "{{ $canonicalBase }}",
+                "name": "Apexsions Minecraft Server",
+                "alternateName": "Apexsions",
+                "description": "Apexsions - Official Minecraft Survival & Kingdom Server Indonesia",
                 "publisher": {
-                    "@@id": "{{ url('/') }}/#organization"
+                    "@@id": "{{ $canonicalBase }}/#organization"
                 },
                 "inLanguage": ["id", "en"],
                 "potentialAction": {
                     "@@type": "SearchAction",
-                    "target": "{{ route('home') }}?search={search_term_string}",
+                    "target": "{{ $canonicalBase }}/?search={search_term_string}",
                     "query-input": "required name=search_term_string"
                 }
             },
             {
-                "@@type": "VideoGame",
-                "@@id": "{{ url('/') }}/#game",
-                "name": "Apexsions — The Peak Civilizations",
+                "@@type": ["VideoGame", "SoftwareApplication"],
+                "@@id": "{{ $canonicalBase }}/#game",
+                "name": "Apexsions — Minecraft Server Survival & Kingdom Indonesia",
+                "alternateName": "Apexsions Minecraft Server",
                 "description": "Server Minecraft Survival Kerajaan, RPG, dan peradaban berdaulat dengan 11 kasta sosial, 3 kerajaan otonom (Zenithar, Solterra, Sylvamoor), ekonomi Rupiah & Diamond, dan perang wilayah mingguan.",
                 "genre": ["Survival", "Role-playing video game", "Sandbox", "Multiplayer"],
-                "gamePlatform": ["PC / Java Edition", "Mobile / iOS / Android / Bedrock Edition", "Console"],
-                "operatingSystem": "Cross-platform",
+                "gamePlatform": ["PC / Java Edition (1.20 - 1.21.x)", "Mobile / iOS / Android / Bedrock Edition", "Console"],
+                "operatingSystem": "Cross-platform Java & Bedrock",
                 "applicationCategory": "GameServer",
-                "url": "{{ url('/') }}",
+                "url": "{{ $canonicalBase }}",
                 "image": "{{ theme_asset('img/og-preview.jpg') }}",
                 "publisher": {
-                    "@@id": "{{ url('/') }}/#organization"
+                    "@@id": "{{ $canonicalBase }}/#organization"
                 },
                 "aggregateRating": {
                     "@@type": "AggregateRating",
