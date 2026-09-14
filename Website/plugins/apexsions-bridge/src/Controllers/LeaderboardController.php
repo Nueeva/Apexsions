@@ -28,13 +28,6 @@ class LeaderboardController extends Controller
             ->limit(10)
             ->get();
 
-        $topBattlepass = (clone $baseQuery)
-            ->where('battlepass_tier', '>', 0)
-            ->orderByDesc('battlepass_tier')
-            ->orderByDesc('battlepass_xp')
-            ->limit(10)
-            ->get();
-
         // Kingdom faction distribution & power (only from eligible non-staff citizens)
         $kingdoms = [
             'ZENITHAR' => [
@@ -76,7 +69,6 @@ class LeaderboardController extends Controller
         return view('apexsions-bridge::leaderboard', [
             'topLevels' => $topLevels,
             'topBalances' => $topBalances,
-            'topBattlepass' => $topBattlepass,
             'kingdoms' => $kingdoms,
         ]);
     }

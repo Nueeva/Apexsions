@@ -68,14 +68,14 @@
         @endforeach
     </div>
 
-    <!-- ==================== TOP PROGRESSION, ECONOMY & BATTLEPASS TABLES ==================== -->
+    <!-- ==================== TOP PROGRESSION & ECONOMY TABLES ==================== -->
     <div class="row g-4">
         <!-- 1. Top Level Progression -->
-        <div class="col-xl-4 col-lg-6">
+        <div class="col-lg-6">
             <div class="card bg-dark border-secondary border-opacity-25 h-100 shadow">
                 <div class="card-header bg-black bg-opacity-30 border-secondary border-opacity-25 p-3 d-flex align-items-center justify-content-between">
-                    <h2 class="h6 fw-bold text-gold font-cinzel mb-0">
-                        <i class="bi bi-star-fill text-warning me-2"></i> <span data-i18n="leaderboard_top_level_title">Top 10 Level &amp; EXP</span>
+                    <h2 class="h5 fw-bold text-gold font-cinzel mb-0">
+                        <i class="bi bi-star-fill text-warning me-2"></i> <span data-i18n="leaderboard_top_level_title">Top 10 Level &amp; Pengalaman (EXP)</span>
                     </h2>
                     <span class="badge bg-warning bg-opacity-20 text-warning" data-i18n="leaderboard_badge_progression">Progresi</span>
                 </div>
@@ -84,7 +84,7 @@
                         <table class="table table-dark table-hover align-middle mb-0">
                             <thead class="text-secondary small text-uppercase bg-black bg-opacity-40">
                                 <tr>
-                                    <th class="ps-3 py-3" style="width: 50px;">#</th>
+                                    <th class="ps-3 py-3" style="width: 60px;">#</th>
                                     <th data-i18n="leaderboard_th_player">Pemain</th>
                                     <th data-i18n="leaderboard_th_rank">Rank</th>
                                     <th class="text-end pe-3" data-i18n="leaderboard_th_level_xp">Level &amp; XP</th>
@@ -138,11 +138,11 @@
         </div>
 
         <!-- 2. Top Economy Balance -->
-        <div class="col-xl-4 col-lg-6">
+        <div class="col-lg-6">
             <div class="card bg-dark border-secondary border-opacity-25 h-100 shadow">
                 <div class="card-header bg-black bg-opacity-30 border-secondary border-opacity-25 p-3 d-flex align-items-center justify-content-between">
-                    <h2 class="h6 fw-bold text-gold font-cinzel mb-0">
-                        <i class="bi bi-cash-coin text-success me-2"></i> <span data-i18n="leaderboard_top_balance_title">Top 10 Konglomerat Realm</span>
+                    <h2 class="h5 fw-bold text-gold font-cinzel mb-0">
+                        <i class="bi bi-cash-coin text-success me-2"></i> <span data-i18n="leaderboard_top_balance_title">Top 10 Konglomerat Realm (Saldo)</span>
                     </h2>
                     <span class="badge bg-success bg-opacity-20 text-success" data-i18n="leaderboard_badge_economy">Ekonomi</span>
                 </div>
@@ -151,7 +151,7 @@
                         <table class="table table-dark table-hover align-middle mb-0">
                             <thead class="text-secondary small text-uppercase bg-black bg-opacity-40">
                                 <tr>
-                                    <th class="ps-3 py-3" style="width: 50px;">#</th>
+                                    <th class="ps-3 py-3" style="width: 60px;">#</th>
                                     <th data-i18n="leaderboard_th_player">Pemain</th>
                                     <th data-i18n="leaderboard_th_kingdom">Kerajaan</th>
                                     <th class="text-end pe-3" data-i18n="leaderboard_th_wealth">Kekayaan</th>
@@ -190,68 +190,6 @@
                                 @empty
                                     <tr>
                                         <td colspan="4" class="text-center py-4 text-muted" data-i18n="leaderboard_empty_economy">Belum ada data kekayaan pemain.</td>
-                                    </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 3. Top BattlePass Rankings -->
-        <div class="col-xl-4 col-lg-12">
-            <div class="card bg-dark border-secondary border-opacity-25 h-100 shadow">
-                <div class="card-header bg-black bg-opacity-30 border-secondary border-opacity-25 p-3 d-flex align-items-center justify-content-between">
-                    <h2 class="h6 fw-bold text-gold font-cinzel mb-0">
-                        <i class="bi bi-trophy-fill text-info me-2"></i> <span data-i18n="leaderboard_top_battlepass_title">Top 10 Jawara BattlePass</span>
-                    </h2>
-                    <span class="badge bg-info bg-opacity-20 text-info" data-i18n="leaderboard_badge_battlepass">BattlePass</span>
-                </div>
-                <div class="card-body p-0">
-                    <div class="table-responsive">
-                        <table class="table table-dark table-hover align-middle mb-0">
-                            <thead class="text-secondary small text-uppercase bg-black bg-opacity-40">
-                                <tr>
-                                    <th class="ps-3 py-3" style="width: 50px;">#</th>
-                                    <th data-i18n="leaderboard_th_player">Pemain</th>
-                                    <th data-i18n="leaderboard_th_pass_type">Jalur Pass</th>
-                                    <th class="text-end pe-3" data-i18n="leaderboard_th_tier_xp">Tier &amp; XP</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @forelse($topBattlepass as $idx => $p)
-                                    @php
-                                        $hasPremium = (bool) ($p->battlepass_has_premium ?? false);
-                                        $passName = $p->battlepass_pass_name ?? ($hasPremium ? 'Premium Pass' : 'Free Track');
-                                    @endphp
-                                    <tr>
-                                        <td class="ps-3 fw-bold">
-                                            @if($idx === 0) <span class="text-warning"><i class="bi bi-trophy-fill"></i> 1</span>
-                                            @elseif($idx === 1) <span class="text-secondary"><i class="bi bi-trophy-fill"></i> 2</span>
-                                            @elseif($idx === 2) <span class="text-danger"><i class="bi bi-trophy-fill"></i> 3</span>
-                                            @else <span class="text-muted">{{ $idx + 1 }}</span>
-                                            @endif
-                                        </td>
-                                        <td>
-                                            <a href="{{ url('/player/' . ($p->minecraft_uuid ?: $p->id)) }}" class="text-decoration-none text-white d-flex align-items-center gap-2">
-                                                <img src="https://mc-heads.net/avatar/{{ $p->minecraft_uuid ?: $p->minecraft_username }}/32" alt="{{ $p->minecraft_username }}" class="rounded" width="32" height="32">
-                                                <span class="fw-bold">{{ $p->minecraft_username }}</span>
-                                            </a>
-                                        </td>
-                                        <td>
-                                            <span class="badge {{ $hasPremium ? 'bg-warning bg-opacity-20 text-warning border border-warning border-opacity-25' : 'bg-secondary bg-opacity-20 text-secondary' }}">
-                                                <i class="bi {{ $hasPremium ? 'bi-patch-check-fill' : 'bi-shield' }}"></i> {{ $passName }}
-                                            </span>
-                                        </td>
-                                        <td class="text-end pe-3">
-                                            <span class="fw-bold text-info">Tier {{ $p->battlepass_tier ?? 1 }}</span>
-                                            <span class="d-block small text-muted">{{ number_format($p->battlepass_xp ?? 0) }} XP</span>
-                                        </td>
-                                    </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan="4" class="text-center py-4 text-muted" data-i18n="leaderboard_empty_battlepass">Belum ada progres BattlePass.</td>
                                     </tr>
                                 @endforelse
                             </tbody>

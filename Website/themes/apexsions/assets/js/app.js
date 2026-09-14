@@ -732,12 +732,6 @@ const APX_I18N = {
         leaderboard_th_wealth: 'Kekayaan',
         leaderboard_empty_players: 'Belum ada data pemain terverifikasi.',
         leaderboard_empty_economy: 'Belum ada data kekayaan pemain.',
-        leaderboard_top_battlepass_title: 'Top 10 Jawara BattlePass',
-        leaderboard_badge_battlepass: 'BattlePass',
-        leaderboard_th_pass_type: 'Jalur Pass',
-        leaderboard_th_tier_xp: 'Tier & XP',
-        leaderboard_empty_battlepass: 'Belum ada progres BattlePass pemain.',
-
         // Public Profile & Kingdoms
         profile_pub_back: 'Kembali ke Papan Peringkat',
         profile_pub_kingdom_prefix: 'Kerajaan',
@@ -1565,12 +1559,6 @@ const APX_I18N = {
         leaderboard_th_wealth: 'Wealth',
         leaderboard_empty_players: 'No verified player data recorded yet.',
         leaderboard_empty_economy: 'No player wealth data recorded yet.',
-        leaderboard_top_battlepass_title: 'Top 10 BattlePass Champions',
-        leaderboard_badge_battlepass: 'BattlePass',
-        leaderboard_th_pass_type: 'Pass Track',
-        leaderboard_th_tier_xp: 'Tier & XP',
-        leaderboard_empty_battlepass: 'No player BattlePass progress recorded yet.',
-
         // Public Profile & Kingdoms
         profile_pub_back: 'Back to Leaderboards',
         profile_pub_kingdom_prefix: 'Kingdom',
