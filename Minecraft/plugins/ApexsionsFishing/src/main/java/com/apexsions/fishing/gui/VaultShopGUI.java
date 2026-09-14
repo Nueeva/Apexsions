@@ -185,14 +185,17 @@ public class VaultShopGUI implements InventoryHolder {
         long priceRupiah = cfg.getLong("pages." + targetPage + ".price-rupiah", 0);
         int priceDiamond = cfg.getInt("pages." + targetPage + ".price-diamond", 0);
 
-        boolean buyWithDiamond = event.getClick().isRightClick() || targetPage > 5;
+        boolean isRightClick = event.getClick().isRightClick();
+        boolean isLeftClick = event.getClick().isLeftClick();
 
         // Check restriction on Rupiah for pages > 5
-        if (!buyWithDiamond && targetPage > 5) {
+        if (targetPage > 5 && isLeftClick) {
             player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
-            player.sendMessage(mm.deserialize("<red>⚠ Pembelian menggunakan Rupiah dibatasi hanya sampai Halaman 5! Gunakan Diamond untuk halaman ini.</red>"));
+            player.sendMessage(mm.deserialize("<red>⚠ Pembelian menggunakan Rupiah dibatasi hanya sampai Halaman 5! Halaman " + targetPage + " hanya dapat dibeli menggunakan Diamond.</red>"));
             return;
         }
+
+        boolean buyWithDiamond = isRightClick || targetPage > 5;
 
         if (!com.apexsions.economy.api.ApexsionsEconomyProvider.isAvailable()) {
             player.sendMessage(mm.deserialize("<red>Sistem ekonomi sedang tidak tersedia.</red>"));

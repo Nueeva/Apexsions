@@ -40,6 +40,13 @@ public class FishingListener implements Listener {
                 }
                 break;
 
+            case BITE:
+                // Auto-catch trigger on bite!
+                if (plugin.getRodManager().isAutoCatchRod(rod) && event.getHook() != null) {
+                    plugin.getAfkFishingService().triggerBiteCatch(player, event.getHook(), rod);
+                }
+                break;
+
             case REEL_IN:
             case IN_GROUND:
             case FAILED_ATTEMPT:
@@ -76,6 +83,28 @@ public class FishingListener implements Listener {
             default:
                 break;
         }
+    }
+
+    @EventHandler
+    public void onItemHeldChange(org.bukkit.event.player.PlayerItemHeldEvent event) {
+        plugin.getAfkFishingService().cancelCast(event.getPlayer());
+    }
+
+    @EventHandler
+    public void onSwapHand(org.bukkit.event.player.PlayerSwapHandItemsEvent event) {
+        plugin.getAfkFishingService().cancelCast(event.getPlayer());
+    }
+
+    @EventHandler
+    public void onDropItem(org.bukkit.event.player.PlayerDropItemEvent event) {
+        if (event.getItemDrop().getItemStack().getType() == org.bukkit.Material.FISHING_ROD) {
+            plugin.getAfkFishingService().cancelCast(event.getPlayer());
+        }
+    }
+
+    @EventHandler
+    public void onTeleport(org.bukkit.event.player.PlayerTeleportEvent event) {
+        plugin.getAfkFishingService().cancelCast(event.getPlayer());
     }
 
     @EventHandler

@@ -283,15 +283,18 @@ public class LootGenerator {
     }
 
     public boolean isFishingItem(@Nullable ItemStack item) {
-        if (item == null || item.getType().isAir() || !item.hasItemMeta()) return false;
+        if (item == null || item.getType().isAir()) return false;
+        // Always allow fishing rods and raw fish/bait materials even without meta
+        if (item.getType() == Material.FISHING_ROD || item.getType() == Material.COD
+                || item.getType() == Material.SALMON || item.getType() == Material.TROPICAL_FISH
+                || item.getType() == Material.PUFFERFISH) {
+            return true;
+        }
+        if (!item.hasItemMeta()) return false;
         ItemMeta meta = item.getItemMeta();
         if (meta == null) return false;
         PersistentDataContainer pdc = meta.getPersistentDataContainer();
-        if (pdc.has(keyCatchType, PersistentDataType.STRING)) return true;
-        if (pdc.has(keyFishId, PersistentDataType.STRING)) return true;
-        if (item.getType() == Material.FISHING_ROD) return true;
-        return item.getType() == Material.COD || item.getType() == Material.SALMON
-                || item.getType() == Material.TROPICAL_FISH || item.getType() == Material.PUFFERFISH;
+        return pdc.has(keyCatchType, PersistentDataType.STRING) || pdc.has(keyFishId, PersistentDataType.STRING);
     }
 
     public boolean isFish(@Nullable ItemStack item) {

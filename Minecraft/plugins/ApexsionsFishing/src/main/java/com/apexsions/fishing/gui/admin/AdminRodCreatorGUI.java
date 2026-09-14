@@ -41,6 +41,8 @@ public class AdminRodCreatorGUI implements InventoryHolder {
     private double weightBonus = 0.15; // +15%
     private int catchSpeedSeconds = 15;
     private int minLevel = 10;
+    private double priceRupiah = 250000;
+    private double priceDiamond = 100;
     private boolean unbreakable = false;
     private int customModelData = 0;
     private final Map<Enchantment, Integer> enchants = new LinkedHashMap<>();
@@ -56,6 +58,7 @@ public class AdminRodCreatorGUI implements InventoryHolder {
     public static final int SLOT_CMD = 28;
     public static final int SLOT_ENCHANTS = 29;
     public static final int SLOT_CYCLE_NAME = 30;
+    public static final int SLOT_PRICE = 32;
     public static final int SLOT_SAVE = 33;
     public static final int SLOT_GIVE = 40;
     public static final int SLOT_BACK = 49;
@@ -77,6 +80,8 @@ public class AdminRodCreatorGUI implements InventoryHolder {
             this.weightBonus = existing.getWeightBonus();
             this.catchSpeedSeconds = existing.getCatchSpeedSeconds();
             this.minLevel = existing.getMinLevel();
+            this.priceRupiah = existing.getPriceRupiah();
+            this.priceDiamond = existing.getPriceDiamond();
             this.unbreakable = existing.isUnbreakable();
             this.customModelData = existing.getCustomModelData();
         }
@@ -207,7 +212,20 @@ public class AdminRodCreatorGUI implements InventoryHolder {
                         "<yellow>▶ Klik untuk ganti template nama preset</yellow>"
                 )));
 
-        // 11. Save to Catalog Slot 33
+        // 11. Price Setting Slot 32
+        inventory.setItem(SLOT_PRICE, createGuiItem(Material.GOLD_INGOT,
+                "<gold><bold>Pengaturan Harga Beli Toko</bold></gold>",
+                List.of(
+                        "<gray>Harga Rupiah: <yellow><bold>Rp " + String.format("%,d", (long) priceRupiah) + "</bold></yellow></gray>",
+                        "<gray>Harga Diamond: <aqua><bold>" + String.format("%,d", (long) priceDiamond) + " Diamond</bold></aqua></gray>",
+                        "",
+                        "<yellow>● Klik Kiri:</yellow> <white>+Rp 50,000</white>",
+                        "<yellow>● Klik Kanan:</yellow> <white>-Rp 50,000</white>",
+                        "<yellow>● Shift + Klik Kiri:</yellow> <white>+25 Diamond</white>",
+                        "<yellow>● Shift + Klik Kanan:</yellow> <white>-25 Diamond</white>"
+                )));
+
+        // 12. Save to Catalog Slot 33
         inventory.setItem(SLOT_SAVE, createGuiItem(Material.WRITABLE_BOOK,
                 "<gradient:#00ff87:#60efff><bold>💾 Simpan ke Katalog (rods.yml)</bold></gradient>",
                 List.of(
@@ -217,7 +235,7 @@ public class AdminRodCreatorGUI implements InventoryHolder {
                         "<yellow>▶ Klik untuk menyimpan data pancingan</yellow>"
                 )));
 
-        // 12. Give Rod Slot 40
+        // 13. Give Rod Slot 40
         inventory.setItem(SLOT_GIVE, createGuiItem(Material.DISPENSER,
                 "<gradient:#ffaa00:#ffd700><bold>🎁 Ambil Pancingan Ini</bold></gradient>",
                 List.of(
@@ -227,7 +245,7 @@ public class AdminRodCreatorGUI implements InventoryHolder {
                         "<yellow>▶ Klik untuk mengambil pancingan</yellow>"
                 )));
 
-        // 13. Back Button Slot 49
+        // 14. Back Button Slot 49
         inventory.setItem(SLOT_BACK, createGuiItem(Material.ARROW,
                 "<yellow><bold>◀ Kembali ke Menu Admin</bold></yellow>",
                 List.of("<gray>Klik untuk kembali ke Admin Hub.</gray>")));
@@ -332,6 +350,19 @@ public class AdminRodCreatorGUI implements InventoryHolder {
                 player.playSound(player.getLocation(), Sound.ITEM_BOOK_PAGE_TURN, 1.0f, 1.2f);
                 render();
             }
+            case SLOT_PRICE -> {
+                if (click.isShiftClick() && click.isRightClick()) {
+                    priceDiamond = Math.max(10, priceDiamond - 25);
+                } else if (click.isShiftClick()) {
+                    priceDiamond = Math.min(5000, priceDiamond + 25);
+                } else if (click.isRightClick()) {
+                    priceRupiah = Math.max(10000, priceRupiah - 50000);
+                } else {
+                    priceRupiah = Math.min(10000000, priceRupiah + 50000);
+                }
+                player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.2f);
+                render();
+            }
             case SLOT_SAVE -> {
                 saveToRodsConfig();
             }
@@ -385,7 +416,7 @@ public class AdminRodCreatorGUI implements InventoryHolder {
     private void saveToRodsConfig() {
         FishingRodData data = new FishingRodData(
                 rodId, displayName, autoCatch, luckBonus, weightBonus,
-                catchSpeedSeconds, minLevel, 500000, 250, unbreakable, customModelData,
+                catchSpeedSeconds, minLevel, priceRupiah, priceDiamond, unbreakable, customModelData,
                 List.of("<dark_gray>Pancingan resmi peradaban Apexsions.</dark_gray>")
         );
 

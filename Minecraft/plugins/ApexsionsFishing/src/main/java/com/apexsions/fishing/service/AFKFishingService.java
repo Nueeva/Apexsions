@@ -62,6 +62,11 @@ public class AFKFishingService {
         activeTasks.put(player.getUniqueId(), task);
     }
 
+    public void triggerBiteCatch(Player player, FishHook hook, ItemStack rod) {
+        cancelCast(player);
+        performAutoCatch(player, hook, rod);
+    }
+
     public void cancelCast(Player player) {
         BukkitTask task = activeTasks.remove(player.getUniqueId());
         if (task != null) {
@@ -81,9 +86,44 @@ public class AFKFishingService {
     private void performAutoCatch(Player player, FishHook hook, ItemStack rod) {
         activeTasks.remove(player.getUniqueId());
 
+        if (!player.isOnline() || hook == null || hook.isDead() || !hook.isValid()) {
+            return;
+        }
+
+        // 1. Water presence and depth check
+        if (!hook.isInWater()) {
+            return;
+        }
+
+        int minDepth = plugin.getConfig().getInt("settings.afk-fishing.min-water-depth", 2);
+        if (minDepth > 1) {
+            Location checkLoc = hook.getLocation().clone();
+            boolean hasDepth = true;
+            for (int d = 0; d < minDepth; d++) {
+                if (!checkLoc.getBlock().isLiquid()) {
+                    hasDepth = false;
+                    break;
+                }
+                checkLoc.subtract(0, 1, 0);
+            }
+            if (!hasDepth) {
+                player.sendMessage(mm.deserialize("<yellow>Kedalaman air terlalu dangkal untuk memancing! Minimal kedalaman " + minDepth + " blok air.</yellow>"));
+                return;
+            }
+        }
+
+        // 2. Validate current held rod
+        ItemStack currentRod = player.getInventory().getItemInMainHand();
+        if (!plugin.getRodManager().isAutoCatchRod(currentRod)) {
+            currentRod = player.getInventory().getItemInOffHand();
+        }
+        if (!plugin.getRodManager().isAutoCatchRod(currentRod)) {
+            return;
+        }
+
         Location hookLoc = hook.getLocation();
 
-        // Sound & Particle effects
+        // 3. Sound & Particle effects
         if (plugin.getConfig().getBoolean("settings.afk-fishing.sound-effects", true)) {
             player.playSound(hookLoc, Sound.ENTITY_FISHING_BOBBER_SPLASH, 1.0f, 1.2f);
             player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 0.8f, 1.4f);
@@ -93,10 +133,10 @@ public class AFKFishingService {
             hookLoc.getWorld().spawnParticle(Particle.BUBBLE, hookLoc, 15, 0.2, 0.2, 0.2, 0.05);
         }
 
-        // Generate Catch
-        LootGenerator.CatchResult result = plugin.getLootGenerator().generateCatch(player, rod);
+        // 4. Generate Catch
+        LootGenerator.CatchResult result = plugin.getLootGenerator().generateCatch(player, currentRod);
 
-        // Update player stats
+        // 5. Update player stats
         if (result.isFish) {
             plugin.getVaultStorage().getStats(player.getUniqueId()).recordCatch(
                     result.lootItem.getId(),
@@ -106,7 +146,7 @@ public class AFKFishingService {
             );
         }
 
-        // Broadcast if Secret or Legendary
+        // 6. Broadcast if Secret or Legendary
         if (result.isSecret && plugin.getConfig().getBoolean("settings.broadcasts.secret-catch", true)) {
             Bukkit.broadcast(mm.deserialize("<newline><gradient:#ff007f:#7928ca><bold>★ APEXSIONS SECRET DISCOVERY ★</bold></gradient><newline>" +
                     "<yellow>Pemancing tangguh <white><bold>" + player.getName() + "</bold></white> berhasil menangkap <gold>" +
@@ -120,7 +160,7 @@ public class AFKFishingService {
                     String.format("%.2f", result.weightKg) + " kg</yellow>!"));
         }
 
-        // Deliver item
+        // 7. Deliver item (Inventory -> Vault -> Ground)
         Map<Integer, ItemStack> overflow = player.getInventory().addItem(result.item);
         if (!overflow.isEmpty()) {
             for (ItemStack left : overflow.values()) {
@@ -136,8 +176,47 @@ public class AFKFishingService {
 
         player.sendMessage(mm.deserialize("<green>✦ Berhasil menangkap: </green>").append(result.item.displayName()));
 
-        // Hook despawn after catch
+        // 8. Deduct Rod Durability if breakable
+        boolean rodBroken = false;
+        org.bukkit.inventory.meta.ItemMeta rMeta = currentRod.getItemMeta();
+        if (rMeta != null && !rMeta.isUnbreakable() && rMeta instanceof org.bukkit.inventory.meta.Damageable dmg) {
+            int unbreaking = currentRod.getEnchantmentLevel(org.bukkit.enchantments.Enchantment.UNBREAKING);
+            boolean takeDmg = true;
+            if (unbreaking > 0) {
+                if (java.util.concurrent.ThreadLocalRandom.current().nextInt(unbreaking + 1) > 0) {
+                    takeDmg = false;
+                }
+            }
+            if (takeDmg) {
+                int newDmg = dmg.getDamage() + 1;
+                dmg.setDamage(newDmg);
+                currentRod.setItemMeta(dmg);
+                if (newDmg >= currentRod.getType().getMaxDurability()) {
+                    currentRod.setAmount(0);
+                    player.playSound(player.getLocation(), Sound.ENTITY_ITEM_BREAK, 1.0f, 1.0f);
+                    player.sendMessage(mm.deserialize("<red><bold>PANCINGAN PATAH!</bold> Alat pancing Anda telah rusak karena kehabisan ketahanan.</red>"));
+                    rodBroken = true;
+                }
+            }
+        }
+
+        // 9. Remove old hook
         hook.remove();
+
+        // 10. Auto-Recast Loop for continuous AFK fishing
+        if (!rodBroken && plugin.getConfig().getBoolean("settings.afk-fishing.auto-recast", true)) {
+            Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                if (!player.isOnline()) return;
+                ItemStack held = player.getInventory().getItemInMainHand();
+                if (!plugin.getRodManager().isAutoCatchRod(held)) {
+                    held = player.getInventory().getItemInOffHand();
+                }
+                if (plugin.getRodManager().isAutoCatchRod(held)) {
+                    FishHook newHook = player.launchProjectile(FishHook.class);
+                    registerCast(player, newHook, held);
+                }
+            }, 25L); // 1.25s recast
+        }
     }
 
     public void cancelAllTasks() {

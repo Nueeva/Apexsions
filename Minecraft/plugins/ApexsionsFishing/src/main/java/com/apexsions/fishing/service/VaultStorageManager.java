@@ -58,17 +58,34 @@ public class VaultStorageManager {
             for (String pKey : pagesSec.getKeys(false)) {
                 try {
                     int pNum = Integer.parseInt(pKey);
-                    List<?> list = pagesSec.getList(pKey);
-                    if (list != null) {
-                        ItemStack[] items = new ItemStack[PlayerVaultData.SLOTS_PER_PAGE];
-                        for (int i = 0; i < Math.min(list.size(), PlayerVaultData.SLOTS_PER_PAGE); i++) {
-                            Object obj = list.get(i);
-                            if (obj instanceof ItemStack is) {
-                                items[i] = is;
+                    ItemStack[] items = new ItemStack[PlayerVaultData.SLOTS_PER_PAGE];
+
+                    // Priority 1: ConfigurationSection by slot index (e.g. 0: ItemStack, 5: ItemStack)
+                    if (pagesSec.isConfigurationSection(pKey)) {
+                        ConfigurationSection pageSec = pagesSec.getConfigurationSection(pKey);
+                        if (pageSec != null) {
+                            for (String sKey : pageSec.getKeys(false)) {
+                                try {
+                                    int slot = Integer.parseInt(sKey);
+                                    if (slot >= 0 && slot < PlayerVaultData.SLOTS_PER_PAGE) {
+                                        items[slot] = pageSec.getItemStack(sKey);
+                                    }
+                                } catch (NumberFormatException ignored) {}
                             }
                         }
-                        data.setPage(pNum, items);
+                    } else if (pagesSec.isList(pKey)) {
+                        // Priority 2: Fallback to list
+                        List<?> list = pagesSec.getList(pKey);
+                        if (list != null) {
+                            for (int i = 0; i < Math.min(list.size(), PlayerVaultData.SLOTS_PER_PAGE); i++) {
+                                Object obj = list.get(i);
+                                if (obj instanceof ItemStack is) {
+                                    items[i] = is;
+                                }
+                            }
+                        }
                     }
+                    data.setPage(pNum, items);
                 } catch (NumberFormatException ignored) {}
             }
         }
@@ -106,12 +123,22 @@ public class VaultStorageManager {
         if (vault == null && stats == null) return;
 
         File file = new File(dataFolder, uuid.toString() + ".yml");
-        FileConfiguration cfg = new YamlConfiguration();
+        FileConfiguration cfg = file.exists() ? YamlConfiguration.loadConfiguration(file) : new YamlConfiguration();
 
         if (vault != null) {
             cfg.set("vault.unlocked-pages", vault.getUnlockedPages());
             for (Map.Entry<Integer, ItemStack[]> entry : vault.getAllPages().entrySet()) {
-                cfg.set("vault.pages." + entry.getKey(), Arrays.asList(entry.getValue()));
+                int pageNum = entry.getKey();
+                ItemStack[] items = entry.getValue();
+                String pagePath = "vault.pages." + pageNum;
+                cfg.set(pagePath, null); // Clear old data for page
+
+                for (int slot = 0; slot < items.length; slot++) {
+                    ItemStack is = items[slot];
+                    if (is != null && !is.getType().isAir()) {
+                        cfg.set(pagePath + "." + slot, is);
+                    }
+                }
             }
         }
 

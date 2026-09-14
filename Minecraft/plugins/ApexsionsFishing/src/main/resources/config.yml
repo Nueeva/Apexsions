@@ -13,6 +13,8 @@ settings:
     # Efek suara & partikel saat kail menyambar
     sound-effects: true
     particle-effects: true
+    # Otomatis lempar kembali kail untuk AFK fishing berkelanjutan
+    auto-recast: true
 
   # Brankas Penyimpanan Hasil Mancing (Fishing Vault)
   vault:

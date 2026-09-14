@@ -142,6 +142,28 @@ public class FishSellGUI implements InventoryHolder {
                     return;
                 }
             }
+
+            // Check Number Key swap (1-9 hotbar buttons)
+            if (event.getClick() == org.bukkit.event.inventory.ClickType.NUMBER_KEY) {
+                int hotbarSlot = event.getHotbarButton();
+                if (hotbarSlot >= 0 && hotbarSlot < 9) {
+                    ItemStack hotbarItem = player.getInventory().getItem(hotbarSlot);
+                    if (hotbarItem != null && !hotbarItem.getType().isAir() && !plugin.getLootGenerator().isFish(hotbarItem)) {
+                        event.setCancelled(true);
+                        player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
+                        player.sendMessage(mm.deserialize("<red>⚠ Barang dari hotbar bukan ikan segar!</red>"));
+                        return;
+                    }
+                }
+            }
+
+            // Check Double Click / Collect to cursor
+            if (event.getClick() == org.bukkit.event.inventory.ClickType.DOUBLE_CLICK) {
+                if (cursorItem != null && !cursorItem.getType().isAir() && !plugin.getLootGenerator().isFish(cursorItem)) {
+                    event.setCancelled(true);
+                    return;
+                }
+            }
         }
 
         // 3. Shift-Clicking from player inventory into sell box

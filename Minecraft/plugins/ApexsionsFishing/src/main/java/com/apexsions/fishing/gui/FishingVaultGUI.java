@@ -218,12 +218,35 @@ public class FishingVaultGUI implements InventoryHolder {
 
         // 2. Clicks in Top Inventory (Slots 0-44)
         if (rawSlot < 45) {
+            // Check Cursor item placement
             ItemStack cursorItem = event.getCursor();
             if (cursorItem != null && !cursorItem.getType().isAir()) {
                 if (!plugin.getLootGenerator().isFishingItem(cursorItem)) {
                     event.setCancelled(true);
                     player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
                     player.sendMessage(mm.deserialize("<red>⚠ Kotak Penyimpanan Mancing hanya dapat menyimpan ikan, hasil tangkapan, umpan, dan pancingan!</red>"));
+                    return;
+                }
+            }
+
+            // Check Number Key swap (1-9 hotbar buttons)
+            if (event.getClick() == ClickType.NUMBER_KEY) {
+                int hotbarSlot = event.getHotbarButton();
+                if (hotbarSlot >= 0 && hotbarSlot < 9) {
+                    ItemStack hotbarItem = player.getInventory().getItem(hotbarSlot);
+                    if (hotbarItem != null && !hotbarItem.getType().isAir() && !plugin.getLootGenerator().isFishingItem(hotbarItem)) {
+                        event.setCancelled(true);
+                        player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
+                        player.sendMessage(mm.deserialize("<red>⚠ Barang dari hotbar bukan barang hasil memancing!</red>"));
+                        return;
+                    }
+                }
+            }
+
+            // Check Double Click / Collect to cursor
+            if (event.getClick() == ClickType.DOUBLE_CLICK) {
+                if (cursorItem != null && !cursorItem.getType().isAir() && !plugin.getLootGenerator().isFishingItem(cursorItem)) {
+                    event.setCancelled(true);
                     return;
                 }
             }
