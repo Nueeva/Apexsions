@@ -187,6 +187,20 @@ public class MasterAdminGUI implements InventoryHolder {
                         "<gold>▶ Klik Kanan: Buka Crate Key Shop Admin</gold>"
                 )));
 
+        // 10. Slot 31: ApexsionsFishing (/fish admin & /fish creator)
+        inventory.setItem(31, createModuleItem(Material.FISHING_ROD,
+                "<gradient:#00c6ff:#0072ff><bold>🎣 APEXSIONS FISHING</bold></gradient>",
+                List.of(
+                        "<gray>AFK Fishing, Brankas & Rod Creator:</gray>",
+                        "<dark_gray>•</dark_gray> <aqua>Master Admin Fishing Hub (/fish admin)</aqua>",
+                        "<dark_gray>•</dark_gray> <aqua>Dedicated Rod Creator (/fish creator)</aqua>",
+                        "<dark_gray>•</dark_gray> <aqua>Inspeksi Brankas & Harga 30 Halaman</aqua>",
+                        "<dark_gray>•</dark_gray> <aqua>Toko Pancingan & Jual Ikan Dinamis</aqua>",
+                        "",
+                        "<yellow>▶ Klik Kiri: Buka Fishing Admin Hub</yellow>",
+                        "<gold>▶ Klik Kanan: Buka Rod Creator</gold>"
+                )));
+
         // Bottom Row Slot 49: Close
         ItemStack closeBtn = new ItemStack(Material.BARRIER);
         ItemMeta closeMeta = closeBtn.getItemMeta();
@@ -302,9 +316,10 @@ public class MasterAdminGUI implements InventoryHolder {
             player.performCommand("media reload");
             player.performCommand("crate reload");
             player.performCommand("ace reload");
+            player.performCommand("fish reload");
             player.sendMessage(mm.deserialize("<gradient:#2ecc71:#f1c40f><bold>═════════════════════════════════════════════════</bold></gradient>"));
             player.sendMessage(mm.deserialize("<green><bold>✓ SELURUH PLUGIN APEXSIONS SUITE BERHASIL DIMUAT ULANG!</bold></green>"));
-            player.sendMessage(mm.deserialize("<gray>ApexsionsCore, Chat, Economy, Crates, Battlepass, Shop, Media, CustomEnchants</gray>"));
+            player.sendMessage(mm.deserialize("<gray>ApexsionsCore, Chat, Economy, Crates, Battlepass, Shop, Media, CustomEnchants, Fishing</gray>"));
             player.sendMessage(mm.deserialize("<gradient:#2ecc71:#f1c40f><bold>═════════════════════════════════════════════════</bold></gradient>"));
             player.playSound(player.getLocation(), Sound.UI_TOAST_CHALLENGE_COMPLETE, 1.0f, 1.2f);
             return;
@@ -356,6 +371,17 @@ public class MasterAdminGUI implements InventoryHolder {
             player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.8f, 1.2f);
             player.closeInventory();
             player.performCommand("ace");
+            return;
+        }
+
+        if (slot == 31) { // ApexsionsFishing (/fish admin & /fish creator)
+            player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.8f, 1.2f);
+            player.closeInventory();
+            if (event.isRightClick()) {
+                player.performCommand("fish creator");
+            } else {
+                player.performCommand("fish admin");
+            }
             return;
         }
 

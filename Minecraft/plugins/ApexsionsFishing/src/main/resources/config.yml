@@ -1,0 +1,38 @@
+# ==============================================================================
+#           APEXSIONS FISHING — KONFIGURASI UTAMA (config.yml)
+# ==============================================================================
+
+settings:
+  # Sistem AFK Fishing
+  afk-fishing:
+    enabled: true
+    # Jeda standar auto-reel tanpa enchant/bonus rod (dalam detik)
+    default-catch-delay-seconds: 20
+    # Syarat kedalaman air minimal di bawah kail
+    min-water-depth: 2
+    # Efek suara & partikel saat kail menyambar
+    sound-effects: true
+    particle-effects: true
+
+  # Brankas Penyimpanan Hasil Mancing (Fishing Vault)
+  vault:
+    # Batas maksimal halaman penyimpanan
+    max-pages: 30
+    # Jumlah halaman awal gratis untuk warga biasa
+    default-unlocked-pages: 1
+    # Batas pembelian halaman menggunakan mata uang Rupiah
+    rupiah-page-limit: 5
+
+  # Broadcast pengumuman tangkapan puncak
+  broadcasts:
+    secret-catch: true
+    legendary-catch: true
+
+messages:
+  prefix: "<gradient:#00c6ff:#0072ff><bold>[ APEX FISHING ]</bold></gradient> "
+  no-permission: "<red>Anda tidak memiliki izin untuk menggunakan perintah ini.</red>"
+  level-too-low: "<red><bold>LEVEL TIDAK MENCUKUPI!</bold></red> <gray>Anda membutuhkan minimal <yellow>Level %d</yellow> untuk menggunakan pancingan ini!</gray>"
+  vault-not-unlocked: "<red>Halaman penyimpanan ini belum terbuka! Beli di Toko Brankas.</red>"
+  vault-invalid-item: "<red><bold>ITEM DITOLAK!</bold></red> <gray>Fishing Vault hanya menerima ikan, hasil pancingan, alat pancing, dan umpan!</gray>"
+  sell-success: "<green>Berhasil menjual <gold>%d ekor ikan</gold> (<yellow>%.2f kg</yellow>) seharga <yellow><bold>Rp %s</bold></yellow>!</green>"
+  sell-no-fish: "<yellow>Tidak ada ikan valid di inventori yang dapat dijual.</yellow>"

@@ -73,7 +73,8 @@ $allPlugins = @(
     @{ Name = 'ApexsionsShop';           Path = 'plugins\ApexsionsShop' },
     @{ Name = 'ApexsionsMedia';          Path = 'plugins\ApexsionsMedia' },
     @{ Name = 'ApexsionsCustomEnchants'; Path = 'plugins\ApexsionsCustomEnchants' },
-    @{ Name = 'ApexsionsCrates';         Path = 'plugins\ApexsionsCrates' }
+    @{ Name = 'ApexsionsCrates';         Path = 'plugins\ApexsionsCrates' },
+    @{ Name = 'ApexsionsFishing';        Path = 'plugins\ApexsionsFishing' }
 )
 
 function Test-PluginModified {

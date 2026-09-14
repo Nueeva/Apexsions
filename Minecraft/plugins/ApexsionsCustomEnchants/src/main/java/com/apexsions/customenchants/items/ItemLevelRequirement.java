@@ -181,71 +181,7 @@ public final class ItemLevelRequirement {
      */
     public static void applyLevelRequirementLore(@NotNull ItemMeta meta, int level) {
         if (level <= 0) return;
-        cleanLevelRequirementLore(meta);
-
-        List<Component> currentLore = meta.hasLore() && meta.lore() != null ? new ArrayList<>(meta.lore()) : new ArrayList<>();
-        Component reqLine = formatLevelLore(level);
-
-        if (currentLore.isEmpty()) {
-            currentLore.add(reqLine);
-            meta.lore(currentLore);
-            return;
-        }
-
-        // Find where the set bonus section begins, if present
-        int setBonusStartIndex = -1;
-        for (int i = 0; i < currentLore.size(); i++) {
-            String plain = plainSerializer.serialize(currentLore.get(i)).trim().toUpperCase();
-            if (isSetBonusLine(plain)) {
-                setBonusStartIndex = i;
-                break;
-            }
-        }
-
-        List<Component> finalLore = new ArrayList<>();
-
-        if (setBonusStartIndex >= 0) {
-            // 1. Add everything before the set bonus (enchants, base description, etc.)
-            for (int i = 0; i < setBonusStartIndex; i++) {
-                finalLore.add(currentLore.get(i));
-            }
-
-            // Remove trailing blank lines before inserting level requirement
-            while (!finalLore.isEmpty() && plainSerializer.serialize(finalLore.get(finalLore.size() - 1)).trim().isEmpty()) {
-                finalLore.remove(finalLore.size() - 1);
-            }
-
-            // If there were lines before (e.g. enchants), add a blank separator line
-            if (!finalLore.isEmpty()) {
-                finalLore.add(Component.empty());
-            }
-
-            // 2. Add level requirement line
-            finalLore.add(reqLine);
-
-            // 3. Add a blank line separator before set bonus
-            finalLore.add(Component.empty());
-
-            // 4. Add the set bonus lines
-            for (int i = setBonusStartIndex; i < currentLore.size(); i++) {
-                finalLore.add(currentLore.get(i));
-            }
-        } else {
-            // No set bonus section: add after enchants/content
-            finalLore.addAll(currentLore);
-
-            while (!finalLore.isEmpty() && plainSerializer.serialize(finalLore.get(finalLore.size() - 1)).trim().isEmpty()) {
-                finalLore.remove(finalLore.size() - 1);
-            }
-
-            if (!finalLore.isEmpty()) {
-                finalLore.add(Component.empty());
-            }
-
-            finalLore.add(reqLine);
-        }
-
-        meta.lore(collapseDuplicateEmptyLines(finalLore));
+        ItemLoreOrganizer.organizeLore(meta, level);
     }
 
     /**

@@ -1,0 +1,257 @@
+# ==============================================================================
+#           APEXSIONS FISHING — TABEL LOOT & SPESIES (loot.yml)
+# ==============================================================================
+
+# Kategori Rarity:
+# 1. COMMON     (Putih/Abu)
+# 2. UNCOMMON   (Hijau Zamrud)
+# 3. RARE       (Biru Aqua)
+# 4. EPIC       (Ungu Kerajaan)
+# 5. LEGENDARY  (Emas Murni)
+# 6. SECRET     (Gradien Mistis Neon & Merah Crimson)
+
+loot:
+  # ============================================================================
+  # 1. SPESIES IKAN (Tipe: FISH - Memiliki Bobot Kg & Dapat Dijual di Nelayan)
+  # ============================================================================
+  fishes:
+    # COMMON
+    raw_cod:
+      material: "COD"
+      display-name: "<white>Ikan Kod Atlantik</white>"
+      rarity: "COMMON"
+      chance-weight: 35.0
+      min-weight: 0.5
+      max-weight: 3.5
+      base-price: 250
+      description: "Ikan kod konsumsi umum yang melimpah di perairan tenang."
+
+    pond_carp:
+      material: "COD"
+      display-name: "<white>Ikan Karper Danau</white>"
+      rarity: "COMMON"
+      chance-weight: 25.0
+      min-weight: 1.0
+      max-weight: 5.0
+      base-price: 350
+      description: "Ikan air tawar bersisik tebal kegemaran warga desa."
+
+    swamp_catfish:
+      material: "COD"
+      display-name: "<white>Ikan Lele Rawa Purba</white>"
+      rarity: "COMMON"
+      chance-weight: 20.0
+      min-weight: 1.2
+      max-weight: 6.5
+      base-price: 450
+      description: "Ikan berkumis panjang yang hidup di dasar air berlumpur."
+
+    # UNCOMMON
+    raw_salmon:
+      material: "SALMON"
+      display-name: "<green>Ikan Salmon Merah</green>"
+      rarity: "UNCOMMON"
+      chance-weight: 15.0
+      min-weight: 2.0
+      max-weight: 9.0
+      base-price: 800
+      description: "Ikan gesit berlemak sehat yang sering melawan arus deras."
+
+    tropical_fish:
+      material: "TROPICAL_FISH"
+      display-name: "<green>Ikan Badut Terumbu</green>"
+      rarity: "UNCOMMON"
+      chance-weight: 12.0
+      min-weight: 0.2
+      max-weight: 2.5
+      base-price: 950
+      description: "Ikan karang hias berwarna cerah yang lincah."
+
+    pufferfish:
+      material: "PUFFERFISH"
+      display-name: "<green>Ikan Buntal Racun</green>"
+      rarity: "UNCOMMON"
+      chance-weight: 10.0
+      min-weight: 0.5
+      max-weight: 3.0
+      base-price: 1200
+      description: "Dapat menggembung dan memiliki duri beracun mematikan."
+
+    lake_bass:
+      material: "SALMON"
+      display-name: "<green>Ikan Bass Muara</green>"
+      rarity: "UNCOMMON"
+      chance-weight: 8.0
+      min-weight: 3.5
+      max-weight: 12.0
+      base-price: 1500
+      description: "Ikan predator muara yang bertenaga saat menyambar kail."
+
+    # RARE
+    bluefin_tuna:
+      material: "COD"
+      display-name: "<aqua><bold>Tuna Sirip Biru Samudra</bold></aqua>"
+      rarity: "RARE"
+      chance-weight: 4.5
+      min-weight: 15.0
+      max-weight: 65.0
+      base-price: 4500
+      description: "Tangkapan favorit juragan kapal samudra berharga tinggi."
+
+    golden_stingray:
+      material: "SALMON"
+      display-name: "<aqua><bold>Ikan Pari Emas</bold></aqua>"
+      rarity: "RARE"
+      chance-weight: 3.5
+      min-weight: 10.0
+      max-weight: 45.0
+      base-price: 5500
+      description: "Pari karang dengan kilauan sisik kuning keemasan langka."
+
+    # EPIC
+    swordfish:
+      material: "SALMON"
+      display-name: "<light_purple><bold>Ikan Todak Predator</bold></light_purple>"
+      rarity: "EPIC"
+      chance-weight: 1.8
+      min-weight: 40.0
+      max-weight: 140.0
+      base-price: 14000
+      description: "Memiliki moncong panjang setajam pedang penembus arus."
+
+    ancient_arapaima:
+      material: "COD"
+      display-name: "<light_purple><bold>Arapaima Hutan Purba</bold></light_purple>"
+      rarity: "EPIC"
+      chance-weight: 1.2
+      min-weight: 60.0
+      max-weight: 220.0
+      base-price: 20000
+      description: "Raksasa sungai purba yang jarang sekali menampakkan diri."
+
+    # LEGENDARY
+    megalodon_pup:
+      material: "COD"
+      display-name: "<gold><bold>⚡ Megalodon Purba Muda ⚡</bold></gold>"
+      rarity: "LEGENDARY"
+      chance-weight: 0.4
+      min-weight: 150.0
+      max-weight: 550.0
+      base-price: 65000
+      description: "Keturunan penguasa samudra prasejarah bergigi gerigi raksasa."
+
+    kraken_tentacle_fish:
+      material: "SALMON"
+      display-name: "<gold><bold>🔱 Bayangan Tentakel Kraken 🔱</bold></gold>"
+      rarity: "LEGENDARY"
+      chance-weight: 0.25
+      min-weight: 200.0
+      max-weight: 800.0
+      base-price: 95000
+      description: "Ikan abisal berlendir hitam yang menyerap aura monster palung."
+
+    # SECRET
+    leviathan_essence:
+      material: "HEART_OF_THE_SEA"
+      display-name: "<gradient:#ff007f:#7928ca><bold>★ LEVIATHAN PRIME AWAKENED ★</bold></gradient>"
+      rarity: "SECRET"
+      chance-weight: 0.05
+      min-weight: 500.0
+      max-weight: 1600.0
+      base-price: 300000
+      description: "Wujud inti sang dewa lautan purba yang mendiami kedalaman tak terhingga."
+
+    celestial_aether_koi:
+      material: "NAUTILUS_SHELL"
+      display-name: "<gradient:#ff007f:#00ffff><bold>★ CELESTIAL AETHER KOI ★</bold></gradient>"
+      rarity: "SECRET"
+      chance-weight: 0.03
+      min-weight: 600.0
+      max-weight: 2000.0
+      base-price: 450000
+      description: "Ikan koi surgawi bercahaya bintang yang jatuh dari dimensi Aetherion."
+
+  # ============================================================================
+  # 2. JUNK VANILLA (Tipe: JUNK - Barang Sampah Mancing Vanilla)
+  # ============================================================================
+  junk:
+    leather_boots:
+      material: "LEATHER_BOOTS"
+      display-name: "<white>Sepatu Bot Usang</white>"
+      rarity: "COMMON"
+      chance-weight: 14.0
+    string:
+      material: "STRING"
+      display-name: "<white>Benang Tersangkut</white>"
+      rarity: "COMMON"
+      chance-weight: 10.0
+    stick:
+      material: "STICK"
+      display-name: "<white>Ranting Patah</white>"
+      rarity: "COMMON"
+      chance-weight: 10.0
+    bowl:
+      material: "BOWL"
+      display-name: "<white>Mangkuk Kayu Hanyut</white>"
+      rarity: "COMMON"
+      chance-weight: 8.0
+    lily_pad:
+      material: "LILY_PAD"
+      display-name: "<white>Daun Teratai Air</white>"
+      rarity: "COMMON"
+      chance-weight: 12.0
+    bone:
+      material: "BONE"
+      display-name: "<green>Tulang Dasar Air</green>"
+      rarity: "UNCOMMON"
+      chance-weight: 6.0
+    ink_sac:
+      material: "INK_SAC"
+      display-name: "<green>Kantung Tinta Cumi</green>"
+      rarity: "UNCOMMON"
+      chance-weight: 7.0
+    tripwire_hook:
+      material: "TRIPWIRE_HOOK"
+      display-name: "<green>Kaitan Kawat Karatan</green>"
+      rarity: "UNCOMMON"
+      chance-weight: 5.0
+    leather:
+      material: "LEATHER"
+      display-name: "<green>Lembaran Kulit Basah</green>"
+      rarity: "UNCOMMON"
+      chance-weight: 6.0
+
+  # ============================================================================
+  # 3. TREASURE VANILLA (Tipe: TREASURE - Harta Karun Mancing Vanilla)
+  # ============================================================================
+  treasure:
+    saddle:
+      material: "SADDLE"
+      display-name: "<aqua><bold>Pelana Kuda Purba</bold></aqua>"
+      rarity: "RARE"
+      chance-weight: 3.5
+    name_tag:
+      material: "NAME_TAG"
+      display-name: "<aqua><bold>Label Nama Keberuntungan</bold></aqua>"
+      rarity: "RARE"
+      chance-weight: 3.5
+    nautilus_shell:
+      material: "NAUTILUS_SHELL"
+      display-name: "<aqua><bold>Cangkang Nautilus Kerajaan</bold></aqua>"
+      rarity: "RARE"
+      chance-weight: 3.0
+    bow:
+      material: "BOW"
+      display-name: "<aqua><bold>Busur Prajurit Danau</bold></aqua>"
+      rarity: "RARE"
+      chance-weight: 2.5
+    enchanted_book:
+      material: "ENCHANTED_BOOK"
+      display-name: "<light_purple><bold>Kitab Sihir Pusaka Air</bold></light_purple>"
+      rarity: "EPIC"
+      chance-weight: 1.5
+    enchanted_rod:
+      material: "FISHING_ROD"
+      display-name: "<light_purple><bold>Pancingan Bertuah Kuno</bold></light_purple>"
+      rarity: "EPIC"
+      chance-weight: 1.0

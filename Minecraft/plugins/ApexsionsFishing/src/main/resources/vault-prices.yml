@@ -1,0 +1,70 @@
+# ==============================================================================
+#           APEXSIONS FISHING — HARGA EKSPANSI BRANKAS (vault-prices.yml)
+# ==============================================================================
+# Halaman 1: Gratis (Default semua warga)
+# Halaman 2 s/d 5: Dual Currency (Bisa dibeli dengan Rupiah ATAU Diamond)
+# Halaman 6 s/d 30: KHUSUS DIAMOND (Pembelian Rupiah dikunci secara permanen)
+
+pages:
+  2:
+    price-rupiah: 50000
+    price-diamond: 50
+  3:
+    price-rupiah: 100000
+    price-diamond: 100
+  4:
+    price-rupiah: 200000
+    price-diamond: 200
+  5:
+    price-rupiah: 350000
+    price-diamond: 350
+  6:
+    price-diamond: 500
+  7:
+    price-diamond: 600
+  8:
+    price-diamond: 700
+  9:
+    price-diamond: 800
+  10:
+    price-diamond: 950
+  11:
+    price-diamond: 1100
+  12:
+    price-diamond: 1250
+  13:
+    price-diamond: 1400
+  14:
+    price-diamond: 1550
+  15:
+    price-diamond: 1700
+  16:
+    price-diamond: 1850
+  17:
+    price-diamond: 2000
+  18:
+    price-diamond: 2150
+  19:
+    price-diamond: 2300
+  20:
+    price-diamond: 2500
+  21:
+    price-diamond: 2700
+  22:
+    price-diamond: 2900
+  23:
+    price-diamond: 3100
+  24:
+    price-diamond: 3300
+  25:
+    price-diamond: 3500
+  26:
+    price-diamond: 3750
+  27:
+    price-diamond: 4000
+  28:
+    price-diamond: 4300
+  29:
+    price-diamond: 4650
+  30:
+    price-diamond: 5000

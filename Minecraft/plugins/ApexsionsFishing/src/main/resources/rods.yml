@@ -1,0 +1,34 @@
+# ==============================================================================
+#           APEXSIONS FISHING — KATALOG PANCINGAN RESMI (rods.yml)
+# ==============================================================================
+
+rods:
+  standard_autocatch:
+    display-name: "<gradient:#3498db:#2980b9><bold>🎣 PANCINGAN AUTO-CATCH BIASA</bold></gradient>"
+    auto-catch: true
+    luck-bonus: 0.0
+    weight-bonus: 0.0
+    catch-speed-seconds: 20
+    min-level: 1
+    price-rupiah: 150000
+    price-diamond: 75
+    unbreakable: false
+    custom-model-data: 1001
+    description:
+      - "<gray>Pancingan otomatis resmi peradaban Apexsions.</gray>"
+      - "<gray>Dilengkapi pegas otomatis untuk menarik kail saat menyambar.</gray>"
+
+  lucky_autocatch:
+    display-name: "<gradient:#f1c40f:#e67e22><bold>✨ PANCINGAN AUTO-CATCH BERUNTUNG ✨</bold></gradient>"
+    auto-catch: true
+    luck-bonus: 0.25 # +25% Luck
+    weight-bonus: 0.20 # +20% Bobot Ikan
+    catch-speed-seconds: 15 # Auto-catch lebih cepat (15s)
+    min-level: 15 # Membutuhkan minimal Level 15
+    price-rupiah: 500000
+    price-diamond: 250
+    unbreakable: false
+    custom-model-data: 1002
+    description:
+      - "<gray>Ditempa dengan intisari permata lautan keberuntungan.</gray>"
+      - "<gray>Mendongkrak peluang ikan langka dan bobot raksasa.</gray>"

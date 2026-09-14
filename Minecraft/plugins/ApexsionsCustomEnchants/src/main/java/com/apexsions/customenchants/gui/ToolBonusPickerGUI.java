@@ -3,6 +3,7 @@ package com.apexsions.customenchants.gui;
 import com.apexsions.customenchants.ApexsionsCustomEnchantsPlugin;
 import com.apexsions.customenchants.items.ColorUtil;
 import com.apexsions.customenchants.items.ItemLevelRequirement;
+import com.apexsions.customenchants.items.ItemLoreOrganizer;
 import com.apexsions.customenchants.tools.ToolStatType;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -325,40 +326,17 @@ public class ToolBonusPickerGUI implements InventoryHolder {
         }
         pdc.set(new NamespacedKey("apexsions", "tool_stats"), PersistentDataType.STRING, sb.toString());
 
-        // Clean existing tool bonus lore thoroughly (preserving level requirement)
-        AdminItemCreatorGUI.cleanSetBonusLore(meta);
-
-        // Ensure level requirement is present before tool set bonus if configured in PDC
-        int reqLvl = ItemLevelRequirement.getRequiredLevel(meta);
-        if (reqLvl > 0) {
-            boolean hasLevelLore = false;
-            if (meta.hasLore() && meta.lore() != null) {
-                for (Component c : meta.lore()) {
-                    String plain = PlainTextComponentSerializer.plainText().serialize(c).trim().toUpperCase();
-                    if (ItemLevelRequirement.isLevelRequirementLore(plain)) {
-                        hasLevelLore = true;
-                        break;
-                    }
-                }
-            }
-            if (!hasLevelLore) {
-                ItemLevelRequirement.applyLevelRequirementLore(meta, reqLvl);
-            }
-        }
-
-        List<Component> lore = meta.hasLore() && meta.lore() != null ? new ArrayList<>(meta.lore()) : new ArrayList<>();
-        if (!lore.isEmpty()) {
-            lore.add(Component.empty());
-        }
+        // Update Lore via centralized ItemLoreOrganizer
         String headerTitle = AdminItemCreatorGUI.isWeapon(item) ? "WEAPON SET BONUS" : "TOOL SET BONUS";
         Component setComp = (!setName.isBlank()) ? ColorUtil.parse(setName) : mm.deserialize("<gradient:#e74c3c:#f39c12><bold>CUSTOM</bold></gradient>");
-        lore.add(mm.deserialize("<gradient:#e74c3c:#f39c12><bold>★ " + headerTitle + ": </bold></gradient>").append(setComp).append(mm.deserialize("<gradient:#e74c3c:#f39c12><bold> ★</bold></gradient>")));
-        lore.add(mm.deserialize("<gray>Syarat: Memakai Set Armor </gray>").append(!setName.isBlank() ? ColorUtil.parse(setName) : mm.deserialize("<gold>Terkait</gold>")));
+        List<Component> setLines = new ArrayList<>();
+        setLines.add(mm.deserialize("<gradient:#e74c3c:#f39c12><bold>★ " + headerTitle + ": </bold></gradient>").append(setComp).append(mm.deserialize("<gradient:#e74c3c:#f39c12><bold> ★</bold></gradient>")));
+        setLines.add(mm.deserialize("<gray>Syarat: Memakai Set Armor </gray>").append(!setName.isBlank() ? ColorUtil.parse(setName) : mm.deserialize("<gold>Terkait</gold>")));
         for (Map.Entry<ToolStatType, Double> e : activeStats.entrySet()) {
-            lore.add(mm.deserialize("<gray>  ● Efek: <aqua>" + e.getKey().getDisplayName() + " " + e.getKey().formatValue(e.getValue()) + "</aqua></gray>"));
+            setLines.add(mm.deserialize("<gray>  ● Efek: <aqua>" + e.getKey().getDisplayName() + " " + e.getKey().formatValue(e.getValue()) + "</aqua></gray>"));
         }
 
-        meta.lore(ItemLevelRequirement.collapseDuplicateEmptyLines(lore));
+        ItemLoreOrganizer.applySetBonusSection(meta, setLines);
         item.setItemMeta(meta);
     }
 
@@ -371,7 +349,7 @@ public class ToolBonusPickerGUI implements InventoryHolder {
         pdc.remove(new NamespacedKey("apexsions", "tool_bonus"));
         pdc.remove(new NamespacedKey("apexsions", "tool_stats"));
 
-        AdminItemCreatorGUI.cleanSetBonusLore(meta);
+        ItemLoreOrganizer.applySetBonusSection(meta, null);
         item.setItemMeta(meta);
     }
 

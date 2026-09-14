@@ -6,6 +6,7 @@ import com.apexsions.customenchants.gui.dialog.ItemEditDialogFlow;
 import com.apexsions.customenchants.gui.input.EnchantsInputManager;
 import com.apexsions.customenchants.items.ColorUtil;
 import com.apexsions.customenchants.items.ItemLevelRequirement;
+import com.apexsions.customenchants.items.ItemLoreOrganizer;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
@@ -400,23 +401,8 @@ public class AdminItemCreatorGUI implements InventoryHolder {
     }
 
     public static void cleanSetBonusLore(ItemMeta meta) {
-        if (meta == null || !meta.hasLore() || meta.lore() == null) return;
-        List<Component> lore = new ArrayList<>(meta.lore());
-        List<Component> cleaned = new ArrayList<>();
-
-        for (Component c : lore) {
-            String plain = PlainTextComponentSerializer.plainText().serialize(c).trim().toUpperCase();
-            if (ItemLevelRequirement.isLevelRequirementLore(plain)) {
-                cleaned.add(c);
-                continue;
-            }
-            if (ItemLevelRequirement.isSetBonusLine(plain)) {
-                continue;
-            }
-            cleaned.add(c);
-        }
-
-        meta.lore(ItemLevelRequirement.collapseDuplicateEmptyLines(cleaned));
+        if (meta == null) return;
+        ItemLoreOrganizer.applySetBonusSection(meta, null);
     }
 
     public void removeFullsetBonusFromAll() {
@@ -473,48 +459,26 @@ public class AdminItemCreatorGUI implements InventoryHolder {
         pdc.set(new NamespacedKey("apexsions", "set_stats"), PersistentDataType.STRING, sbLegacy.toString());
         pdc.set(new NamespacedKey("apexsions", "set_req"), PersistentDataType.INTEGER, !globalSet4Stats.isEmpty() ? 4 : 2);
 
-        // Clean existing set bonus lore thoroughly using plain text matching (preserving level requirement)
-        cleanSetBonusLore(meta);
-
-        // Ensure level requirement is present before set bonus if configured in PDC
-        int reqLvl = ItemLevelRequirement.getRequiredLevel(meta);
-        if (reqLvl > 0) {
-            boolean hasLevelLore = false;
-            if (meta.hasLore() && meta.lore() != null) {
-                for (Component c : meta.lore()) {
-                    String plain = PlainTextComponentSerializer.plainText().serialize(c).trim().toUpperCase();
-                    if (ItemLevelRequirement.isLevelRequirementLore(plain)) {
-                        hasLevelLore = true;
-                        break;
-                    }
-                }
-            }
-            if (!hasLevelLore) {
-                ItemLevelRequirement.applyLevelRequirementLore(meta, reqLvl);
-            }
-        }
-
-        // Update lore with clean non-gradient colors
+        // Update lore with clean standardized ordering
         if (!globalSet2Stats.isEmpty() || !globalSet4Stats.isEmpty()) {
-            List<Component> lore = meta.hasLore() && meta.lore() != null ? new ArrayList<>(meta.lore()) : new ArrayList<>();
-            if (!lore.isEmpty()) {
-                lore.add(Component.empty());
-            }
+            List<Component> setLines = new ArrayList<>();
             Component setComp = (!globalSetName.isBlank()) ? ColorUtil.parse(globalSetName) : mm.deserialize("<yellow>APEXSIONS</yellow>");
-            lore.add(mm.deserialize("<gold><bold>★ SET BONUS: </bold></gold>").append(setComp).append(mm.deserialize("<gold><bold> ★</bold></gold>")));
+            setLines.add(mm.deserialize("<gold><bold>★ SET BONUS: </bold></gold>").append(setComp).append(mm.deserialize("<gold><bold> ★</bold></gold>")));
             if (!globalSet2Stats.isEmpty()) {
-                lore.add(mm.deserialize("<gray>Syarat: <yellow>2 Pieces (Half Set)</yellow></gray>"));
+                setLines.add(mm.deserialize("<gray>Syarat: <yellow>2 Pieces (Half Set)</yellow></gray>"));
                 for (Map.Entry<KitStatType, Double> e : globalSet2Stats.entrySet()) {
-                    lore.add(mm.deserialize("<gray>  ● Efek: <aqua>" + e.getKey().getDisplayName() + " " + e.getKey().formatValue(e.getValue()) + "</aqua></gray>"));
+                    setLines.add(mm.deserialize("<gray>  ● Efek: <aqua>" + e.getKey().getDisplayName() + " " + e.getKey().formatValue(e.getValue()) + "</aqua></gray>"));
                 }
             }
             if (!globalSet4Stats.isEmpty()) {
-                lore.add(mm.deserialize("<gray>Syarat: <yellow>4 Pieces (Full Set)</yellow></gray>"));
+                setLines.add(mm.deserialize("<gray>Syarat: <yellow>4 Pieces (Full Set)</yellow></gray>"));
                 for (Map.Entry<KitStatType, Double> e : globalSet4Stats.entrySet()) {
-                    lore.add(mm.deserialize("<gray>  ● Efek: <aqua>" + e.getKey().getDisplayName() + " " + e.getKey().formatValue(e.getValue()) + "</aqua></gray>"));
+                    setLines.add(mm.deserialize("<gray>  ● Efek: <aqua>" + e.getKey().getDisplayName() + " " + e.getKey().formatValue(e.getValue()) + "</aqua></gray>"));
                 }
             }
-            meta.lore(ItemLevelRequirement.collapseDuplicateEmptyLines(lore));
+            ItemLoreOrganizer.applySetBonusSection(meta, setLines);
+        } else {
+            ItemLoreOrganizer.applySetBonusSection(meta, null);
         }
         is.setItemMeta(meta);
     }

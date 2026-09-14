@@ -1,0 +1,32 @@
+name: ApexsionsFishing
+version: 1.0.0
+main: com.apexsions.fishing.ApexsionsFishing
+api-version: '1.21'
+author: Nueeva
+description: AFK Fishing, Rarity & Weight Engine, Vault Storage & Rod Creator for Apexsions Suite
+softdepend:
+  - ApexsionsCore
+  - ApexsionsEconomy
+  - ApexsionsCustomEnchants
+  - PlaceholderAPI
+
+commands:
+  fish:
+    description: Menu utama peradaban memancing Apexsions
+    aliases: [fishing, mancing]
+    permission: apexsions.fishing.use
+  vault:
+    description: Membuka Fishing Vault brankas penyimpanan hasil pancingan
+    aliases: [fishvault, fvault]
+    permission: apexsions.fishing.vault
+
+permissions:
+  apexsions.fishing.use:
+    description: Izin menggunakan fitur dasar memancing
+    default: true
+  apexsions.fishing.vault:
+    description: Izin membuka Fishing Vault
+    default: true
+  apexsions.fishing.admin:
+    description: Izin akses panel admin dan pembuat pancingan
+    default: op
