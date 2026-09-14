@@ -139,6 +139,10 @@ public class ChatListener implements Listener {
             } else if (plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isAvailable()) {
                 rank = plugin.getLuckPermsHook().getPlayerRank(player);
             }
+            if ((kingdom.equalsIgnoreCase("Belum Memilih") || kingdom.equalsIgnoreCase("NONE"))
+                    && plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isConclaveStaff(player)) {
+                kingdom = "<gradient:#00f2fe:#4facfe><bold>✦ Aetherion ✦</bold></gradient>";
+            }
 
             String template = plugin.getConfigManager().getMainConfig().getString(
                     "join-quit-messages.join-format",
@@ -209,6 +213,10 @@ public class ChatListener implements Listener {
                 }
             } else if (plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isAvailable()) {
                 rank = plugin.getLuckPermsHook().getPlayerRank(player);
+            }
+            if ((kingdom.equalsIgnoreCase("Belum Memilih") || kingdom.equalsIgnoreCase("NONE"))
+                    && plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isConclaveStaff(player)) {
+                kingdom = "<gradient:#00f2fe:#4facfe><bold>✦ Aetherion ✦</bold></gradient>";
             }
 
             String template = plugin.getConfigManager().getMainConfig().getString(

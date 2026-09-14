@@ -98,19 +98,21 @@ public class KingdomBuffListener implements Listener {
                 Bukkit.getScheduler().runTask(plugin, () -> player.addPotionEffect(newEffect));
             }
         } else if (kingdom.equalsIgnoreCase("ZENITHAR")) {
-            // Zenithar: Durasi poison bertambah 7%
-            int modifiedDuration = (int) Math.ceil(effect.getDuration() * 1.07);
-            if (modifiedDuration != effect.getDuration()) {
-                event.setCancelled(true);
-                PotionEffect newEffect = new PotionEffect(
-                        effect.getType(),
-                        modifiedDuration,
-                        effect.getAmplifier(),
-                        effect.isAmbient(),
-                        effect.hasParticles(),
-                        effect.hasIcon()
-                );
-                Bukkit.getScheduler().runTask(plugin, () -> player.addPotionEffect(newEffect));
+            // Zenithar Debuff: Durasi racun & wither bertambah 15% (Fisik steril bangsawan istana rentan racun liar & pembusukan)
+            if (effect.getType() == PotionEffectType.POISON || effect.getType() == PotionEffectType.WITHER) {
+                int modifiedDuration = (int) Math.ceil(effect.getDuration() * 1.15);
+                if (modifiedDuration != effect.getDuration()) {
+                    event.setCancelled(true);
+                    PotionEffect newEffect = new PotionEffect(
+                            effect.getType(),
+                            modifiedDuration,
+                            effect.getAmplifier(),
+                            effect.isAmbient(),
+                            effect.hasParticles(),
+                            effect.hasIcon()
+                    );
+                    Bukkit.getScheduler().runTask(plugin, () -> player.addPotionEffect(newEffect));
+                }
             }
         }
     }
@@ -127,16 +129,31 @@ public class KingdomBuffListener implements Listener {
         // 1. Poison Damage checks
         if (cause == EntityDamageEvent.DamageCause.POISON) {
             if (kingdom.equalsIgnoreCase("SYLVAMOOR")) {
-                // Sylvamoor: Damage racun -5%
-                event.setDamage(event.getDamage() * 0.95);
+                // Sylvamoor Blessing: Racun rimba hanya mengurangi darah hingga tersisa 3 hati (6.0 HP), tidak sampai sekarat setengah hati
+                double currentHealth = player.getHealth();
+                if (currentHealth <= 6.0) {
+                    event.setCancelled(true);
+                    return;
+                } else if (currentHealth - event.getDamage() < 6.0) {
+                    event.setDamage(Math.max(0.0, currentHealth - 6.0));
+                }
             } else if (kingdom.equalsIgnoreCase("ZENITHAR")) {
-                // Zenithar: Damage racun +7%
-                event.setDamage(event.getDamage() * 1.07);
+                // Zenithar Debuff: Kerentanan racun +15%
+                event.setDamage(event.getDamage() * 1.15);
             }
             return;
         }
 
-        // 2. Fire Damage checks
+        // 2. Wither Damage checks
+        if (cause == EntityDamageEvent.DamageCause.WITHER) {
+            if (kingdom.equalsIgnoreCase("ZENITHAR")) {
+                // Zenithar Debuff: Kerentanan pembusukan kutukan Wither +15%
+                event.setDamage(event.getDamage() * 1.15);
+                return;
+            }
+        }
+
+        // 3. Fire Damage checks
         if (cause == EntityDamageEvent.DamageCause.FIRE
                 || cause == EntityDamageEvent.DamageCause.FIRE_TICK
                 || cause == EntityDamageEvent.DamageCause.LAVA
@@ -149,19 +166,19 @@ public class KingdomBuffListener implements Listener {
             }
         }
 
-        // 3. Defense & Incoming Damage adjustments
+        // 4. Defense & Incoming Damage adjustments
         switch (kingdom) {
             case "SYLVAMOOR" -> {
-                // Defense +8% & Pengurangan damage 5% (~12.6% reduction)
-                event.setDamage(event.getDamage() * 0.92 * 0.95);
+                // Sylvamoor: Pertahanan rimba 15% (multiplier 0.85)
+                event.setDamage(event.getDamage() * 0.85);
             }
             case "SOLTERRA" -> {
-                // Defense +2%, namun Damage Diterima +8% (Debuff net vulnerability ~5.8%)
+                // Solterra: Defense +2%, namun Damage Diterima +8% (Debuff net vulnerability ~5.8%)
                 event.setDamage(event.getDamage() * 0.98 * 1.08);
             }
             case "ZENITHAR" -> {
-                // Defense 6%
-                event.setDamage(event.getDamage() * 0.94);
+                // Zenithar: Reduksi damage masuk 20% (multiplier 0.80 - Menggantikan Anti-Crit)
+                event.setDamage(event.getDamage() * 0.80);
             }
         }
     }
@@ -204,14 +221,7 @@ public class KingdomBuffListener implements Listener {
             }
         }
 
-        // B. Defender adjustments (Zenithar Critical Reduction 25% - Hard counter Solterra)
-        if (event.getEntity() instanceof Player defender) {
-            String defenderKingdom = buffManager.getPlayerKingdomKey(defender.getUniqueId());
-            if (defenderKingdom.equalsIgnoreCase("ZENITHAR") && event.isCritical()) {
-                // Critical reduction -25% (Aegis of the Sun)
-                event.setDamage(event.getDamage() * 0.75);
-            }
-        }
+        // B. Defender adjustments: Zenithar Anti-Crit telah digantikan dengan reduksi damage flat 20% pada onEntityDamage.
     }
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
@@ -291,6 +301,13 @@ public class KingdomBuffListener implements Listener {
             // Hunger bar cepat berkurang +7%
             if (event.getFoodLevel() < player.getFoodLevel()) {
                 if (ThreadLocalRandom.current().nextDouble() < 0.07) {
+                    event.setFoodLevel(Math.max(0, event.getFoodLevel() - 1));
+                }
+            }
+        } else if (kingdom.equalsIgnoreCase("ZENITHAR")) {
+            // Zenithar Aristocratic Metabolism: Cepat lelah di luar santapan istana (+12% hunger exhaustion)
+            if (event.getFoodLevel() < player.getFoodLevel()) {
+                if (ThreadLocalRandom.current().nextDouble() < 0.12) {
                     event.setFoodLevel(Math.max(0, event.getFoodLevel() - 1));
                 }
             }

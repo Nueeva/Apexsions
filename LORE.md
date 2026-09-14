@@ -288,27 +288,28 @@ Menghindari inflasi stat ekstrem yang merusak meta PvP, setiap kerajaan dirancan
 │ Karakteristik Stat:     │ Karakteristik Stat:     │ Karakteristik Stat:     │
 │ • +8% Movement Speed    │ • +15% Total Damage     │ • +10% Hasil Panen Tani │
 │ • +15% Luck (Loot Box)  │ • +10% Crit Damage      │ • +12% Luck / Mob Drop  │
-│ • +6% All Damage/Defense│ • +10% Mining Speed     │ • +2 HP (Total 11 Hati) │
-│ • Diskon 50% Pajak Lelang│ • +5% Ore Sell Value   │ • +12.6% Total Defense  │
-│ • Bunga Bank Pasif +35% │   (Rasio Jual Ore 65%)  │ • -5% Poison Resistance │
+│ • +6% All Damage        │ • +10% Mining Speed     │ • +2 HP (Total 11 Hati) │
+│ • Diskon 30% Pajak Lelang│ • +5% Ore Sell Value   │ • +15% Total Defense    │
+│ • Bunga Bank Pasif +25% │   (Rasio Jual Ore 65%)  │ • Racun Cap di 3 Hati   │
 │ • Diskon 15% Blok Toko  │                         │ • Lahan Tani Anti-Kering│
 │                         │                         │                         │
 │ Unique Passive:         │ Unique Passive:         │ Unique Passive:         │
 │ ✦ Royal Discipline      │ ✦ Battle Momentum       │ ✦ Nature's Blessing     │
-│ (Aegis of the Sun:      │ (Kedahsyatan sihir api  │ (Daya tahan bugar dari  │
-│  Meredam Crit musuh -25%│  dan momentum serang    │  pohon dunia purba;     │
-│  menjadi tumpul; counter│  fisik brutal tanpa     │  kebal kekeringan lahan │
-│  keras bagi Solterra)   │  kenal ampun)           │  dan herba beracun)     │
+│ (Royal Aegis:           │ (Kedahsyatan sihir api  │ (Daya tahan bugar dari  │
+│  20% Reduksi seluruh    │  dan momentum serang    │  pohon dunia purba;     │
+│  damage serangan masuk) │  fisik brutal tanpa     │  kebal kekeringan lahan │
+│                         │  kenal ampun)           │  & racun stop di 3 hati)│
 │                         │                         │                         │
 │ Territory Advantage:    │ Territory Advantage:    │ Territory Advantage:    │
 │ Dataran Tinggi & Puncak │ Ngarai Badlands, Mesa,  │ Old Growth Taiga,       │
 │ Pegunungan (Y > 85)     │ Kawah Lahar, Nether     │ Hutan Kanopi, Samudra   │
 │                         │                         │                         │
 │ Kelemahan Seimbang:     │ Kelemahan Seimbang:     │ Kelemahan Seimbang:     │
-│ • Biaya Tempa Anvil     │ • -2 HP (Total 9 Hati)  │ • -10% Mining Speed     │
-│   +1 Level EXP          │ • +8% Damage Diterima   │ • -10% PvP / -5% PvE Dmg│
-│ • Kerentanan Racun +7%  │ • +7% Hunger Exhaustion │ • +15% Damage Terbakar  │
-│                         │ • Lahan Cepat Kering    │ • Mabuk Y > 110         │
+│ • +15% Kerentanan Racun │ • -2 HP (Total 9 Hati)  │ • -10% Mining Speed     │
+│   dan Efek Wither       │ • +8% Damage Diterima   │ • -10% PvP / -5% PvE Dmg│
+│ • +12% Hunger Exhaustion│ • +7% Hunger Exhaustion │ • +15% Damage Terbakar  │
+│ • -10% Mining Speed     │ • Lahan Cepat Kering    │ • Mabuk Y > 110         │
+│ • Anvil +1 Level EXP    │                         │                         │
 └─────────────────────────┴─────────────────────────┴─────────────────────────┘
 ```
 

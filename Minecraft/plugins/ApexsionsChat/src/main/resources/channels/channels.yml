@@ -30,6 +30,7 @@ channels:
 # Kingdom chat tags matching ApexsionsCore realms
 kingdom-tags:
   none: "<gray>[Unpledged]</gray>"
+  AETHERION: "<gradient:#00f2fe:#4facfe><bold>[AETHERION]</bold></gradient>"
   ZENITHAR: "<gradient:#ffe900:#f39c12><bold>[ZENITHAR]</bold></gradient>"
   SOLTERRA: "<gradient:#ff4d4d:#c0392b><bold>[SOLTERRA]</bold></gradient>"
   SYLVAMOOR: "<gradient:#11998e:#38ef7d><bold>[SYLVAMOOR]</bold></gradient>"

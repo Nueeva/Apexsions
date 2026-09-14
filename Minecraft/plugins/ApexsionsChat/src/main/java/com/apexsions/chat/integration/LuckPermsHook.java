@@ -87,6 +87,31 @@ public class LuckPermsHook {
         };
     }
 
+    public boolean isConclaveStaff(Player player) {
+        if (player == null) return false;
+        if (player.isOp() || player.hasPermission("apexsions.admin") || player.hasPermission("apexsions.staff")) {
+            return true;
+        }
+        return getRankWeight(getPlayerRankKey(player)) >= 80;
+    }
+
+    public boolean isConclaveStaff(java.util.UUID uuid) {
+        if (uuid == null) return false;
+        Player online = Bukkit.getPlayer(uuid);
+        if (online != null) {
+            return isConclaveStaff(online);
+        }
+        if (!isAvailable()) return false;
+        try {
+            User user = luckPerms.getUserManager().loadUser(uuid).join();
+            if (user != null) {
+                String pGrp = user.getPrimaryGroup();
+                return getRankWeight(pGrp) >= 80;
+            }
+        } catch (Throwable ignored) {}
+        return false;
+    }
+
     public String getPlayerRankMentionFormat(Player player) {
         String rankKey = getPlayerRankKey(player);
         return switch (rankKey.toLowerCase().trim()) {

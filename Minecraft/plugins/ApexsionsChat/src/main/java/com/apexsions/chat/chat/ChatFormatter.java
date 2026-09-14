@@ -39,6 +39,9 @@ public class ChatFormatter {
         String rank = profile != null ? profile.rank() : plugin.getLuckPermsHook().getPlayerRank(player);
         int level = profile != null ? profile.level() : 1;
         String regionKey = profile != null ? profile.kingdomKey() : "NONE";
+        if (regionKey.equalsIgnoreCase("NONE") && plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isConclaveStaff(player)) {
+            regionKey = "AETHERION";
+        }
         String kingdomTag = getKingdomTag(regionKey);
 
         // 2. Build interactive player name component with rich ID-Card hover tooltip and click-to-profile action
@@ -83,6 +86,11 @@ public class ChatFormatter {
         int maxHp = profile != null ? profile.maxHealth() : (int) player.getMaxHealth();
         int ping = profile != null ? profile.ping() : player.getPing();
         String kingdomDisplay = profile != null ? profile.kingdomDisplayName() : "Belum Memilih";
+        if ((kingdomDisplay.equalsIgnoreCase("Belum Memilih") || kingdomDisplay.equalsIgnoreCase("NONE"))
+                && plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isConclaveStaff(player)) {
+            kingdomDisplay = "<gradient:#00f2fe:#4facfe><bold>✦ Aetherion (The Conclave) ✦</bold></gradient>";
+        }
+        String kingdomLine = kingdomDisplay.contains("<") ? kingdomDisplay : "<gold>" + kingdomDisplay + "</gold>";
 
         String rankBadge = switch (rank.toLowerCase()) {
             case "ancestor" -> "<gradient:#8B0000:#FF0000><bold>👑 ANCESTOR</bold></gradient>";
@@ -114,7 +122,7 @@ public class ChatFormatter {
                 nickLine +
                 "<gray>Gelar:</gray> " + title + "\n" +
                 "<gray>Rank:</gray> " + rankBadge + "\n" +
-                "<gray>Kerajaan:</gray> <gold>" + kingdomDisplay + "</gold>" + (profile != null && profile.isMonarch() ? " <yellow><bold>[RAJA]</bold></yellow>" : "") + "\n" +
+                "<gray>Afiliasi:</gray> " + kingdomLine + (profile != null && profile.isMonarch() ? " <yellow><bold>[RAJA]</bold></yellow>" : "") + "\n" +
                 "<gray>Level Karakter:</gray> <yellow>Lv. " + level + "</yellow> <dark_gray>(" + xp + " / " + (reqXp == Long.MAX_VALUE ? "MAX" : reqXp) + " XP)</dark_gray>\n" +
                 "<gray>Saldo Rupiah:</gray> <green><bold>Rp " + String.format("%,.0f", balance) + "</bold></green>\n" +
                 "<gray>Status Darah:</gray> <red>" + hp + "/" + maxHp + " ❤</red> <gray>• Ping:</gray> <green>" + ping + "ms</green>\n\n" +
@@ -171,6 +179,9 @@ public class ChatFormatter {
         FileConfiguration config = plugin.getConfigManager().getChannelsConfig();
         if (regionKey == null || regionKey.isEmpty() || regionKey.equalsIgnoreCase("NONE")) {
             return config.getString("kingdom-tags.none", "<gray>[Unpledged]</gray>");
+        }
+        if (regionKey.equalsIgnoreCase("AETHERION")) {
+            return config.getString("kingdom-tags.AETHERION", "<gradient:#00f2fe:#4facfe><bold>[AETHERION]</bold></gradient>");
         }
         return config.getString("kingdom-tags." + regionKey.toUpperCase(), "<gold>[" + regionKey + "]</gold>");
     }

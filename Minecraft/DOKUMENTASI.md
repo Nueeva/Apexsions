@@ -269,13 +269,13 @@ Ekosistem Apexsions tidak sekadar kumpulan plugin teknis terpisah, melainkan per
 Dahulu kala, benua ini dipersatukan di bawah satu imperium agung yang membentang tanpa batas: **Kekaisaran Kuno Sions**. Namun, ambisi pemimpin terakhirnya untuk melipatgandakan kekuatan pasukan dengan menyerap energi terlarang dari dimensi kegelapan (*Dark Dimension*) memicu malapetaka dahsyat (*The Great Rupture*). Kekaisaran runtuh dalam kehancuran kosmis, memaksa rakyatnya tercerai-berai:
 1. **Zenithar (Arah Timur / Zenith Cakrawala)**:
    - *Latar Belakang*: Keluarga dinasti kerajaan, bangsawan berdarah murni, dan kavaleri suci yang berhasil mempertahankan diri dan hijrah ke arah timur pegunungan kristal.
-   - *Karakteristik & Buff*: Pusat perbankan, pasar lelang, kavaleri istana, dan pertahanan anti-crit (*Buff: Speed +8%, Luck +15%, [Royal Discipline] Damage & Defense, -25% Anti-Crit, Diskon 50% Pajak Lelang, Bunga Bank +35%, Diskon 15% Blok Toko; Debuff: Kerentanan Racun, Biaya Tempa Anvil +1 EXP*).
+   - *Karakteristik & Buff*: Pusat perbankan, pasar lelang, kavaleri istana, dan pertahanan reduksi (*Buff: Speed +8%, Luck +15%, [Royal Discipline] Damage +6%, [Royal Aegis] 20% Reduksi Damage Masuk, Diskon 30% Pajak Lelang, Bunga Bank +25%, Diskon 15% Blok Toko; Debuff: Kerentanan Racun & Wither +15%, +12% Cepat Lapar, -10% Kecepatan Menambang, Biaya Tempa Anvil +1 EXP*).
 2. **Solterra (Arah Selatan / Kawah Emas Vulkanik)**:
    - *Latar Belakang*: Para ahli sihir tempur (Magicians), alkemis, dan tentara tangguh berpengalaman yang memisahkan diri ke tanah tandus dan lembah cadas selatan.
    - *Karakteristik & Buff*: Menguasai peleburan bijih logam, kekuatan fisik destruktif, dan api (*Buff: Serangan Tinggi, Critical Hit, Mining Haste; Debuff: -2 HP Darah, Rentan Kerusakan, Cepat Lapar*).
 3. **Sylvamoor (Arah Barat / Belantara Kanopi Purba)**:
    - *Latar Belakang*: Kaum pekerja, pemburu, petani, serta tentara non-magis yang bersatu dan bermigrasi ke hutan rimba raksasa barat.
-   - *Karakteristik & Buff*: Mengembangkan keahlian hidup berdampingan dengan alam, foraging, dan kelincahan berburu (*Buff: +2 HP Darah, Pertahanan Tinggi, Drop Rate Melimpah; Debuff: Mabuk Ketinggian, Kerentanan Api*).
+   - *Karakteristik & Buff*: Mengembangkan keahlian hidup berdampingan dengan alam, foraging, dan kelincahan berburu (*Buff: +2 HP Darah, Pertahanan Rimba +15%, Racun Stop di 3 Hati, Drop Rate Melimpah; Debuff: Mabuk Ketinggian, Kerentanan Api*).
 
 ### B. Matriks Kesinambungan Fitur Plugin dengan Lore:
 - **Auto-Respawn Ibukota Kerajaan (`ApexsionsCore`)**: Saat gugur, jiwa prajurit ditarik kembali ke altar suci ibukota peradaban masing-masing (sinkron dengan peta teritorial BlueMap).

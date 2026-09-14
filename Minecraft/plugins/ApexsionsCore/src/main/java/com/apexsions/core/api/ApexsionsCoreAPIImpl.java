@@ -50,6 +50,13 @@ public class ApexsionsCoreAPIImpl implements ApexsionsCoreAPI {
 
     @Override
     public @NotNull String getPlayerRegionKey(@NotNull UUID uuid) {
+        if (plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isConclaveStaff(uuid)) {
+            return "AETHERION";
+        }
+        org.bukkit.entity.Player player = org.bukkit.Bukkit.getPlayer(uuid);
+        if (player != null && (player.isOp() || (plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isConclaveStaff(player)))) {
+            return "AETHERION";
+        }
         Region reg = getRegion(uuid);
         return reg != null ? reg.getKey() : "NONE";
     }
@@ -154,9 +161,16 @@ public class ApexsionsCoreAPIImpl implements ApexsionsCoreAPI {
             default -> "<gray>[Wanderer]</gray>";
         };
 
+        boolean isConclave = (player != null && plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isConclaveStaff(player))
+                || (plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isConclaveStaff(uuid))
+                || (player != null && player.isOp());
+
         String kingdomKey = "NONE";
         String kingdomDisplay = "Belum Memilih";
-        if (data != null && data.getRegionId() != null) {
+        if (isConclave) {
+            kingdomKey = "AETHERION";
+            kingdomDisplay = "<gradient:#00f2fe:#4facfe><bold>✦ Aetherion (The Conclave) ✦</bold></gradient>";
+        } else if (data != null && data.getRegionId() != null) {
             Region r = plugin.getRegionManager().getRegion(data.getRegionId()).orElse(null);
             if (r != null) {
                 kingdomKey = r.getKey();

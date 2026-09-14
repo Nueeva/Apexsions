@@ -88,13 +88,18 @@ public class SocialProfileGUI extends BaseChatGUI {
             String rank = profile != null ? profile.rank() : "Member";
             int level = profile != null ? profile.level() : 1;
             String kingdom = profile != null ? profile.kingdomDisplayName() : "Belum Memilih";
+            if ((kingdom.equalsIgnoreCase("Belum Memilih") || kingdom.equalsIgnoreCase("NONE"))
+                    && plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isConclaveStaff(target)) {
+                kingdom = "<gradient:#00f2fe:#4facfe><bold>✦ Aetherion (The Conclave) ✦</bold></gradient>";
+            }
+            String kingdomLine = kingdom.contains("<") ? kingdom : "<gold><bold>" + kingdom + "</bold></gold>";
             double balance = profile != null ? profile.balanceRupiah() : 0.0;
 
             sm.displayName(mm.deserialize("<gradient:#f1c40f:#e67e22><bold>👑 " + pName + "</bold></gradient>"));
             List<Component> lore = new ArrayList<>();
             lore.add(mm.deserialize("<gray>Gelar:</gray> " + title));
             lore.add(mm.deserialize("<gray>Rank Donatur:</gray> <yellow>" + rank + "</yellow>"));
-            lore.add(mm.deserialize("<gray>Kerajaan:</gray> <gold><bold>" + kingdom + "</bold></gold>" + (profile != null && profile.isMonarch() ? " <yellow><bold>[RAJA]</bold></yellow>" : "")));
+            lore.add(mm.deserialize("<gray>Afiliasi:</gray> " + kingdomLine + (profile != null && profile.isMonarch() ? " <yellow><bold>[RAJA]</bold></yellow>" : "")));
             lore.add(mm.deserialize("<gray>Level Karakter:</gray> <yellow>Lv. " + level + "</yellow>"));
             lore.add(mm.deserialize("<gray>Saldo Rupiah:</gray> <green><bold>Rp " + String.format("%,.0f", balance) + "</bold></green>"));
             lore.add(mm.deserialize("<gray>Status Ping:</gray> <aqua>" + target.getPing() + "ms</aqua>"));

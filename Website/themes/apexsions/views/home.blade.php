@@ -115,11 +115,11 @@
                     </ul>
                     <div class="small fw-bold text-uppercase mb-1 apx-buff-label"><i class="bi bi-shield-plus me-1"></i> <span data-i18n="label_buffs">Buff Kondisi Sejarah</span></div>
                     <div class="small text-muted mb-2" style="font-size: 0.8rem; line-height: 1.5;" data-i18n-html="zenithar_buffs">
-                        <span class="text-success fw-semibold">+8% Speed</span>, <span class="text-success fw-semibold">+15% Luck</span>, <span class="text-success fw-semibold">[Royal Discipline] +6% Damage &amp; Defense</span>, <span class="text-success fw-semibold">-25% Reduksi Serangan Kritis Musuh (Anti-Crit)</span>, <span class="text-success fw-semibold">Diskon 50% Pajak Lelang &amp; Bunga Bank +35%</span>.
+                        <span class="text-success fw-semibold">+8% Speed</span>, <span class="text-success fw-semibold">+15% Luck</span>, <span class="text-success fw-semibold">[Royal Discipline] +6% All Damage</span>, <span class="text-success fw-semibold">[Royal Aegis] 20% Reduksi Damage Masuk</span>, <span class="text-success fw-semibold">Diskon 30% Pajak Lelang &amp; Bunga Bank +25%</span>.
                     </div>
                     <div class="small fw-bold text-uppercase mb-1 apx-debuff-label"><i class="bi bi-shield-minus me-1"></i> <span data-i18n="label_debuffs">Debuff Kondisi Fisik</span></div>
                     <div class="small text-muted" style="font-size: 0.8rem; line-height: 1.5;" data-i18n-html="zenithar_debuffs">
-                        <span class="text-danger fw-semibold">+7% Kerentanan Racun</span>, biaya tempa anvil sedikit lebih mahal (+1 Level EXP).
+                        <span class="text-danger fw-semibold">+15% Kerentanan Racun &amp; Wither</span>, <span class="text-danger fw-semibold">+12% Cepat Lapar</span>, <span class="text-danger fw-semibold">-10% Kecepatan Menambang</span>, biaya tempa anvil sedikit lebih mahal (+1 Level EXP).
                     </div>
                 </div>
                 @if(plugins()->isEnabled('wiki'))
@@ -177,7 +177,7 @@
                     </ul>
                     <div class="small fw-bold text-uppercase mb-1 apx-buff-label"><i class="bi bi-shield-plus me-1"></i> <span data-i18n="label_buffs">Buff Kondisi Sejarah</span></div>
                     <div class="small text-muted mb-2" style="font-size: 0.8rem; line-height: 1.5;" data-i18n-html="sylvamoor_buffs">
-                        <span class="text-success fw-semibold">[Nature's Blessing] +2 HP Maksimal (11 Hati)</span>, <span class="text-success fw-semibold">+12% Luck</span>, <span class="text-success fw-semibold">+7% Extra Mob Drop</span>, <span class="text-success fw-semibold">Defense Tinggi (~12.6%)</span>, <span class="text-success fw-semibold">Kelembapan Lahan Abadi</span>.
+                        <span class="text-success fw-semibold">[Nature's Blessing] +2 HP Maksimal (11 Hati)</span>, <span class="text-success fw-semibold">+12% Luck</span>, <span class="text-success fw-semibold">+7% Extra Mob Drop</span>, <span class="text-success fw-semibold">Defense Rimba (+15%)</span>, <span class="text-success fw-semibold">Racun Berhenti di 3 Hati</span>, <span class="text-success fw-semibold">Kelembapan Lahan Abadi</span>.
                     </div>
                     <div class="small fw-bold text-uppercase mb-1 apx-debuff-label"><i class="bi bi-shield-minus me-1"></i> <span data-i18n="label_debuffs">Debuff Kondisi Fisik</span></div>
                     <div class="small text-muted" style="font-size: 0.8rem; line-height: 1.5;" data-i18n-html="sylvamoor_debuffs">

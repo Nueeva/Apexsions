@@ -103,6 +103,10 @@ public class KingdomBuffManager {
                 addModifier(player, Attribute.MOVEMENT_SPEED, keySpeed, 0.08, AttributeModifier.Operation.ADD_SCALAR);
                 // Luck +15% (1.5 pada loot table - Berkah dinasti matahari)
                 addModifier(player, Attribute.LUCK, keyLuck, 1.5, AttributeModifier.Operation.ADD_NUMBER);
+                // Mining speed -10% (Bangsawan istana bukan pekerja tambang kasar)
+                if (miningAttribute != null) {
+                    addModifier(player, miningAttribute, keyMining, -0.10, AttributeModifier.Operation.ADD_SCALAR);
+                }
             }
         }
 
@@ -126,6 +130,7 @@ public class KingdomBuffManager {
         player.removePotionEffect(PotionEffectType.HUNGER);
         player.removePotionEffect(PotionEffectType.WEAKNESS);
         player.removePotionEffect(PotionEffectType.HASTE);
+        player.removePotionEffect(PotionEffectType.MINING_FATIGUE);
 
         // Clamp health if current health exceeds max health after modifier removal
         AttributeInstance maxHealthAttr = player.getAttribute(Attribute.MAX_HEALTH);
@@ -172,6 +177,11 @@ public class KingdomBuffManager {
                 // Fallback subtle Haste for mining speed if attribute not available
                 if (miningAttribute == null) {
                     player.addPotionEffect(new PotionEffect(PotionEffectType.HASTE, 50, 0, true, false, false));
+                }
+            } else if (kingdom.equalsIgnoreCase("ZENITHAR")) {
+                // Fallback Mining Fatigue for aristocratic mining debuff if attribute not available
+                if (miningAttribute == null) {
+                    player.addPotionEffect(new PotionEffect(PotionEffectType.MINING_FATIGUE, 50, 0, true, false, false));
                 }
             }
         }

@@ -80,8 +80,8 @@ const APX_I18N = {
         zenithar_desc: 'Dipimpin oleh keluarga dinasti dan pengawal elit Kekaisaran Sions yang berhasil mempertahankan diri dari malapetaka, mengungsi ke timur menuju puncak cakrawala (Zenith). Menjunjung tinggi kemurnian tata krama istana, kavaleri suci, dan kubah menara langit.',
         zenithar_spec1: 'Puncak Cakrawala & Solarium Spire Citadel',
         zenithar_spec2: 'Penambangan Emas Murni & Arsitektur Megah',
-        zenithar_buffs: '<span class="text-success fw-semibold">+8% Speed</span>, <span class="text-success fw-semibold">+15% Luck</span>, <span class="text-success fw-semibold">[Royal Discipline] +6% Damage &amp; Defense</span>, <span class="text-success fw-semibold">-25% Reduksi Serangan Kritis Musuh (Anti-Crit)</span>, <span class="text-success fw-semibold">Diskon 50% Pajak Lelang &amp; Bunga Bank +35%</span>.',
-        zenithar_debuffs: '<span class="text-danger fw-semibold">+7% Kerentanan Racun</span>, biaya tempa anvil sedikit lebih mahal (+1 Level EXP).',
+        zenithar_buffs: '<span class="text-success fw-semibold">+8% Speed</span>, <span class="text-success fw-semibold">+15% Luck</span>, <span class="text-success fw-semibold">[Royal Discipline] +6% All Damage</span>, <span class="text-success fw-semibold">[Royal Aegis] 20% Reduksi Damage Masuk</span>, <span class="text-success fw-semibold">Diskon 30% Pajak Lelang &amp; Bunga Bank +25%</span>.',
+        zenithar_debuffs: '<span class="text-danger fw-semibold">+15% Kerentanan Racun &amp; Wither</span>, <span class="text-danger fw-semibold">+12% Cepat Lapar</span>, <span class="text-danger fw-semibold">-10% Kecepatan Menambang</span>, biaya tempa anvil sedikit lebih mahal (+1 Level EXP).',
         zenithar_link: 'Arsip Zenithar',
 
         solterra_type: 'TERITORI SELATAN • MAGICIAN & VETERAN',
@@ -96,7 +96,7 @@ const APX_I18N = {
         sylvamoor_desc: 'Dibangun oleh kaum pekerja, pembangun, petani lumbung, serta prajurit garda rakyat (pengguna sihir alam dasar dan prajurit non-sihir) yang mengungsi ke belantara rimba barat. Mengisolasi diri dari ambisi kekuasaan dan hidup selaras menjaga kelestarian Pohon Dunia.',
         sylvamoor_spec1: 'Rimba Kanopi Purba, Samudra Kristal & Eldergrove',
         sylvamoor_spec2: 'Lumbung Agrikultur, Alkemis Herbal & Pangan',
-        sylvamoor_buffs: '<span class="text-success fw-semibold">[Nature\'s Blessing] +2 HP Maksimal (11 Hati)</span>, <span class="text-success fw-semibold">+12% Luck</span>, <span class="text-success fw-semibold">+7% Extra Mob Drop</span>, <span class="text-success fw-semibold">Defense Tinggi (~12.6%)</span>, <span class="text-success fw-semibold">Kelembapan Lahan Abadi</span>.',
+        sylvamoor_buffs: '<span class="text-success fw-semibold">[Nature\'s Blessing] +2 HP Maksimal (11 Hati)</span>, <span class="text-success fw-semibold">+12% Luck</span>, <span class="text-success fw-semibold">+7% Extra Mob Drop</span>, <span class="text-success fw-semibold">Defense Rimba (+15%)</span>, <span class="text-success fw-semibold">Racun Berhenti di 3 Hati</span>, <span class="text-success fw-semibold">Kelembapan Lahan Abadi</span>.',
         sylvamoor_debuffs: '<span class="text-danger fw-semibold">Mabuk Ketinggian di Y > 110</span> (Hunger/Weakness), <span class="text-danger fw-semibold">+15% Damage Terbakar Api</span>, <span class="text-danger fw-semibold">-10% Serangan PvP & Mining</span>.',
         sylvamoor_link: 'Arsip Sylvamoor',
 
@@ -907,8 +907,8 @@ const APX_I18N = {
         zenithar_desc: 'Led by the royal dynasty and elite imperial guards of the Sions Empire who survived the catastrophe, fleeing eastward toward the celestial zenith. Upholding palace etiquette, sacred cavalry, and skyward spire citadels.',
         zenithar_spec1: 'Celestial Horizon & Solarium Spire Citadel',
         zenithar_spec2: 'Pure Gold Extraction & Grand Architectural Marvels',
-        zenithar_buffs: '<span class="text-success fw-semibold">+8% Speed</span>, <span class="text-success fw-semibold">+15% Luck</span>, <span class="text-success fw-semibold">[Royal Discipline] +6% Damage &amp; Defense</span>, <span class="text-success fw-semibold">-25% Enemy Crit Reduction (Anti-Crit)</span>, <span class="text-success fw-semibold">50% Auction Tax Discount &amp; +35% Bank Yield</span>.',
-        zenithar_debuffs: '<span class="text-danger fw-semibold">+7% Poison Vulnerability</span>, anvil repairing costs slightly more (+1 Level EXP).',
+        zenithar_buffs: '<span class="text-success fw-semibold">+8% Speed</span>, <span class="text-success fw-semibold">+15% Luck</span>, <span class="text-success fw-semibold">[Royal Discipline] +6% All Damage</span>, <span class="text-success fw-semibold">[Royal Aegis] 20% Damage Reduction</span>, <span class="text-success fw-semibold">30% Auction Tax Discount &amp; +25% Bank Yield</span>.',
+        zenithar_debuffs: '<span class="text-danger fw-semibold">+15% Poison &amp; Wither Vulnerability</span>, <span class="text-danger fw-semibold">+12% Hunger Exhaustion</span>, <span class="text-danger fw-semibold">-10% Mining Speed</span>, anvil repairing costs slightly more (+1 Level EXP).',
         zenithar_link: 'Zenithar Archives',
 
         solterra_type: 'SOUTHERN TERRITORY • MAGICIANS & VETERANS',
@@ -923,7 +923,7 @@ const APX_I18N = {
         sylvamoor_desc: 'Constructed by laborers, master builders, agrarian farmers, and populist rangers who retreated into the deep western canopy. Isolating themselves from imperial power struggles to live in balance with the Great World Tree.',
         sylvamoor_spec1: 'Ancient Canopy Wildwoods, Crystal Seas & Eldergrove',
         sylvamoor_spec2: 'Agrarian Granaries, Herbal Alchemy & Sustainable Food',
-        sylvamoor_buffs: '<span class="text-success fw-semibold">[Nature\'s Blessing] +2 Max HP (11 Hearts)</span>, <span class="text-success fw-semibold">+12% Luck</span>, <span class="text-success fw-semibold">+7% Extra Mob Drops</span>, <span class="text-success fw-semibold">High Natural Defense (~12.6%)</span>, <span class="text-success fw-semibold">Eternal Soil Hydration</span>.',
+        sylvamoor_buffs: '<span class="text-success fw-semibold">[Nature\'s Blessing] +2 Max HP (11 Hearts)</span>, <span class="text-success fw-semibold">+12% Luck</span>, <span class="text-success fw-semibold">+7% Extra Mob Drops</span>, <span class="text-success fw-semibold">Forest Defense (+15%)</span>, <span class="text-success fw-semibold">Poison Threshold at 3 Hearts</span>, <span class="text-success fw-semibold">Eternal Soil Hydration</span>.',
         sylvamoor_debuffs: '<span class="text-danger fw-semibold">Altitude Sickness at Y > 110</span> (Hunger/Weakness), <span class="text-danger fw-semibold">+15% Burn Damage</span>, <span class="text-danger fw-semibold">-10% PvP Damage & Mining Speed</span>.',
         sylvamoor_link: 'Sylvamoor Archives',
 

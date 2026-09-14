@@ -154,9 +154,9 @@ public class AuctionService {
                 if (kingdom == null || kingdom.equalsIgnoreCase("NONE")) {
                     kingdom = "ZENITHAR";
                 }
-                // Zenithar Aristocratic Privilege: 50% discount on auction tax!
+                // Zenithar Aristocratic Privilege: 30% discount on auction tax!
                 if ("ZENITHAR".equalsIgnoreCase(kingdom)) {
-                    taxPercent = taxPercent * 0.50;
+                    taxPercent = taxPercent * 0.70;
                 }
                 double taxAmount = Math.max(0, Math.floor(listing.getPrice() * (taxPercent / 100.0)));
                 double sellerNet = listing.getPrice() - taxAmount;

@@ -74,11 +74,11 @@ public class BankDepositService {
         else if (player.hasPermission("apexsions.bank.multiplier.sovereign") || player.hasPermission("apexsions.rank.sovereign")) base = 1.5; // 1.5x
         else if (player.hasPermission("apexsions.bank.multiplier.archon") || player.hasPermission("apexsions.rank.archon")) base = 1.2; // 1.2x
 
-        // Zenithar Aristocratic Mastery: +35% higher bank deposit yield!
+        // Zenithar Aristocratic Mastery: +25% higher bank deposit yield!
         if (plugin.getCoreHook() != null) {
             String kingdom = plugin.getCoreHook().getPlayerKingdom(player.getUniqueId());
             if ("ZENITHAR".equalsIgnoreCase(kingdom)) {
-                base *= 1.35;
+                base *= 1.25;
             }
         }
         return base;
