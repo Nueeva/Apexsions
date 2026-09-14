@@ -254,7 +254,7 @@ public class AdminRodCreatorGUI implements InventoryHolder {
     private ItemStack buildPreviewRod() {
         FishingRodData data = new FishingRodData(
                 rodId, displayName, autoCatch, luckBonus, weightBonus,
-                catchSpeedSeconds, minLevel, 250000, 100, unbreakable, customModelData,
+                catchSpeedSeconds, minLevel, priceRupiah, priceDiamond, unbreakable, customModelData,
                 List.of("<dark_gray>Pancingan mahakarya rakitan Realm Architect.</dark_gray>")
         );
 

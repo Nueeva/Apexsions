@@ -382,9 +382,17 @@ public class FishingVaultGUI implements InventoryHolder {
     private void depositAllFromInventory() {
         int moved = 0;
         Inventory pInv = player.getInventory();
+        int heldSlot = player.getInventory().getHeldItemSlot();
+
         for (int s = 0; s < pInv.getSize(); s++) {
+            // Safeguard: Never deposit item from active held slot or off-hand (slot 40)
+            if (s == heldSlot || s == 40) continue;
+
             ItemStack item = pInv.getItem(s);
             if (item != null && !item.getType().isAir() && plugin.getLootGenerator().isFishingItem(item)) {
+                // Safeguard: Never deposit fishing rods via "Deposit All", keep them equipped/in bag
+                if (item.getType() == Material.FISHING_ROD) continue;
+
                 // Find empty slot in vault
                 for (int vSlot = 0; vSlot < PlayerVaultData.SLOTS_PER_PAGE; vSlot++) {
                     ItemStack vItem = inventory.getItem(vSlot);

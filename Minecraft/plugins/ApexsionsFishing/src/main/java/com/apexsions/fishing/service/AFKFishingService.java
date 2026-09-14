@@ -41,6 +41,9 @@ public class AFKFishingService {
         int playerLevel = plugin.getPlayerCoreLevel(player);
         if (minLevel > 0 && playerLevel < minLevel) {
             cancelCast(player);
+            if (hook != null && !hook.isDead()) {
+                hook.remove();
+            }
             return;
         }
 
@@ -98,6 +101,10 @@ public class AFKFishingService {
         int minDepth = plugin.getConfig().getInt("settings.afk-fishing.min-water-depth", 2);
         if (minDepth > 1) {
             Location checkLoc = hook.getLocation().clone();
+            // Start from first liquid block at or below hook to avoid bobbing surface float inaccuracies
+            if (!checkLoc.getBlock().isLiquid()) {
+                checkLoc.subtract(0, 0.5, 0);
+            }
             boolean hasDepth = true;
             for (int d = 0; d < minDepth; d++) {
                 if (!checkLoc.getBlock().isLiquid()) {
@@ -113,9 +120,11 @@ public class AFKFishingService {
         }
 
         // 2. Validate current held rod
+        boolean isOffHand = false;
         ItemStack currentRod = player.getInventory().getItemInMainHand();
         if (!plugin.getRodManager().isAutoCatchRod(currentRod)) {
             currentRod = player.getInventory().getItemInOffHand();
+            isOffHand = true;
         }
         if (!plugin.getRodManager().isAutoCatchRod(currentRod)) {
             return;
@@ -189,13 +198,23 @@ public class AFKFishingService {
             }
             if (takeDmg) {
                 int newDmg = dmg.getDamage() + 1;
-                dmg.setDamage(newDmg);
-                currentRod.setItemMeta(dmg);
                 if (newDmg >= currentRod.getType().getMaxDurability()) {
-                    currentRod.setAmount(0);
+                    if (isOffHand) {
+                        player.getInventory().setItemInOffHand(null);
+                    } else {
+                        player.getInventory().setItemInMainHand(null);
+                    }
                     player.playSound(player.getLocation(), Sound.ENTITY_ITEM_BREAK, 1.0f, 1.0f);
                     player.sendMessage(mm.deserialize("<red><bold>PANCINGAN PATAH!</bold> Alat pancing Anda telah rusak karena kehabisan ketahanan.</red>"));
                     rodBroken = true;
+                } else {
+                    dmg.setDamage(newDmg);
+                    currentRod.setItemMeta(dmg);
+                    if (isOffHand) {
+                        player.getInventory().setItemInOffHand(currentRod);
+                    } else {
+                        player.getInventory().setItemInMainHand(currentRod);
+                    }
                 }
             }
         }
@@ -206,7 +225,7 @@ public class AFKFishingService {
         // 10. Auto-Recast Loop for continuous AFK fishing
         if (!rodBroken && plugin.getConfig().getBoolean("settings.afk-fishing.auto-recast", true)) {
             Bukkit.getScheduler().runTaskLater(plugin, () -> {
-                if (!player.isOnline()) return;
+                if (!player.isOnline() || player.isDead()) return;
                 ItemStack held = player.getInventory().getItemInMainHand();
                 if (!plugin.getRodManager().isAutoCatchRod(held)) {
                     held = player.getInventory().getItemInOffHand();

@@ -76,6 +76,10 @@ public class FishingListener implements Listener {
                         for (Player p : Bukkit.getOnlinePlayers()) {
                             p.playSound(p.getLocation(), Sound.UI_TOAST_CHALLENGE_COMPLETE, 0.9f, 1.0f);
                         }
+                    } else if (res.lootItem.getRarity() == FishRarity.LEGENDARY && plugin.getConfig().getBoolean("settings.broadcasts.legendary-catch", true)) {
+                        Bukkit.broadcast(mm.deserialize("<gold><bold>[LEGENDA SAMUDRA]</bold></gold> <yellow>" + player.getName() +
+                                "</yellow> menangkap <gold>" + res.lootItem.getDisplayName() + "</gold> seberat <yellow>" +
+                                String.format("%.2f", res.weightKg) + " kg</yellow>!"));
                     }
                 }
                 break;
@@ -105,6 +109,11 @@ public class FishingListener implements Listener {
     @EventHandler
     public void onTeleport(org.bukkit.event.player.PlayerTeleportEvent event) {
         plugin.getAfkFishingService().cancelCast(event.getPlayer());
+    }
+
+    @EventHandler
+    public void onPlayerDeath(org.bukkit.event.entity.PlayerDeathEvent event) {
+        plugin.getAfkFishingService().cancelCast(event.getEntity());
     }
 
     @EventHandler
