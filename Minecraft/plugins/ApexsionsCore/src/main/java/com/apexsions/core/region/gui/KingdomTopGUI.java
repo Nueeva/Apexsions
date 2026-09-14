@@ -105,7 +105,8 @@ public class KingdomTopGUI implements Listener {
         headerLore.add(miniMessage.deserialize("<gold>⚔ Kejayaan dan kemakmuran abadi bagi " + region.getDisplayName() + "!</gold>"));
         inv.setItem(4, createItem(kIcon, "<gradient:#ffeaa7:#ffd700><bold>👑 KERAJAAN " + region.getDisplayName().toUpperCase(Locale.ROOT) + "</bold></gradient>", headerLore));
 
-        boolean isStaff = plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isStaffOrAdmin(player.getUniqueId());
+        boolean isStaff = (plugin.getApi() != null && plugin.getApi().isLeaderboardExempt(player.getUniqueId()))
+                || (plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isStaffOrAdmin(player.getUniqueId()));
         String rankDisplay = (playerRank > 0) ? "#" + playerRank : (isStaff ? "Dikecualikan (Staf/Admin)" : "Belum Masuk Peringkat");
 
         // 3. Leaderboard Info Banner (Slot 0)
@@ -124,6 +125,11 @@ public class KingdomTopGUI implements Listener {
         statusLore.add(miniMessage.deserialize(""));
         statusLore.add(miniMessage.deserialize("<gray>Peringkat Kamu: <gold>" + (playerRank > 0 ? "#" + playerRank : (isStaff ? "Staf/Admin" : "-")) + "</gold></gray>"));
         inv.setItem(8, createItem(Material.CLOCK, "<gold><bold>⚔ STATUS KERAJAAN</bold></gold>", statusLore));
+
+        // Extra safeguard: purge any staff/exempt players from topPlayers list
+        if (plugin.getApi() != null) {
+            topPlayers.removeIf(tp -> plugin.getApi().isLeaderboardExempt(tp.getUuid()));
+        }
 
         // 5. Render 10-Slot Symmetrical Pyramid with Player Heads
         for (int i = 0; i < PYRAMID_SLOTS.length; i++) {

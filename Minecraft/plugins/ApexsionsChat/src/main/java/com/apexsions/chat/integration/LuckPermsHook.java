@@ -89,8 +89,16 @@ public class LuckPermsHook {
 
     public boolean isConclaveStaff(Player player) {
         if (player == null) return false;
-        if (player.isOp() || player.hasPermission("apexsions.admin") || player.hasPermission("apexsions.staff")) {
+        if (player.isOp() || player.hasPermission("apexsions.admin") || player.hasPermission("apexsions.staff")
+                || player.hasPermission("apexsionscore.admin") || player.hasPermission("apexsions.conclave")) {
             return true;
+        }
+        if (com.apexsions.core.api.ApexsionsCoreProvider.isAvailable()) {
+            try {
+                if (com.apexsions.core.api.ApexsionsCoreProvider.get().isLeaderboardExempt(player.getUniqueId())) {
+                    return true;
+                }
+            } catch (Throwable ignored) {}
         }
         return getRankWeight(getPlayerRankKey(player)) >= 80;
     }
@@ -101,6 +109,21 @@ public class LuckPermsHook {
         if (online != null) {
             return isConclaveStaff(online);
         }
+        if (com.apexsions.core.api.ApexsionsCoreProvider.isAvailable()) {
+            try {
+                if (com.apexsions.core.api.ApexsionsCoreProvider.get().isLeaderboardExempt(uuid)) {
+                    return true;
+                }
+            } catch (Throwable ignored) {}
+        }
+        org.bukkit.OfflinePlayer op = Bukkit.getOfflinePlayer(uuid);
+        if (op != null && op.isOp()) return true;
+        try {
+            for (org.bukkit.OfflinePlayer operator : Bukkit.getOperators()) {
+                if (uuid.equals(operator.getUniqueId())) return true;
+                if (op != null && op.getName() != null && op.getName().equalsIgnoreCase(operator.getName())) return true;
+            }
+        } catch (Throwable ignored) {}
         if (!isAvailable()) return false;
         try {
             User user = luckPerms.getUserManager().loadUser(uuid).join();

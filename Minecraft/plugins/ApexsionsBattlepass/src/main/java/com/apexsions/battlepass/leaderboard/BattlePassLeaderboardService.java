@@ -39,10 +39,16 @@ public class BattlePassLeaderboardService {
             // Include any offline player that ever joined the server
             for (OfflinePlayer op : Bukkit.getOfflinePlayers()) {
                 if (op.getUniqueId() != null && !merged.containsKey(op.getUniqueId())) {
+                    if (isLeaderboardExempt(op.getUniqueId())) {
+                        continue;
+                    }
                     PlayerData d = new PlayerData(op.getUniqueId(), seasonId);
                     merged.put(op.getUniqueId(), d);
                 }
             }
+
+            // Purge any exempt players loaded from DB or memory cache
+            merged.entrySet().removeIf(entry -> isLeaderboardExempt(entry.getKey()));
 
             List<PlayerData> list = new ArrayList<>(merged.values());
             // Sort: 1. Level DESC, 2. XP DESC, 3. Currency DESC, 4. UUID
@@ -117,19 +123,39 @@ public class BattlePassLeaderboardService {
             } catch (Throwable ignored) {}
         }
 
-        // 2. Fallback: Bukkit OP
+        // 2. Bukkit OP
         OfflinePlayer op = Bukkit.getOfflinePlayer(uuid);
         if (op != null && op.isOp()) {
             return true;
         }
 
-        // 3. Fallback: Online player permissions
+        // 3. Bukkit Operators list (covers offline OPs in ops.json)
+        try {
+            for (OfflinePlayer operator : Bukkit.getOperators()) {
+                if (uuid.equals(operator.getUniqueId())) return true;
+                if (op != null && op.getName() != null && op.getName().equalsIgnoreCase(operator.getName())) return true;
+            }
+        } catch (Throwable ignored) {}
+
+        // 4. Online player permissions
         org.bukkit.entity.Player onlineP = Bukkit.getPlayer(uuid);
         if (onlineP != null && (onlineP.isOp() 
                 || onlineP.hasPermission("apexsions.admin") 
                 || onlineP.hasPermission("apexsions.staff") 
+                || onlineP.hasPermission("apexsionscore.admin")
+                || onlineP.hasPermission("apexsions.conclave")
                 || onlineP.hasPermission("apexsions.leaderboard.exempt"))) {
             return true;
+        }
+
+        // 5. Name-based match for server founders and staff
+        if (op != null && op.getName() != null) {
+            String name = op.getName().toLowerCase(java.util.Locale.ROOT).replaceAll("^[.*_]+", "");
+            if (name.contains("nueeva") || name.contains("nuevaid") || name.contains("rifqi") 
+                    || name.contains("friell") || name.contains("favian") || name.contains("fanerf") 
+                    || name.contains("kazrienvall")) {
+                return true;
+            }
         }
 
         return false;

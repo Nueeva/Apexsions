@@ -160,6 +160,7 @@ public class VaultStorageManager {
     public List<PlayerFishingStats> getTopHeaviestCatch(int limit) {
         ensureAllDataLoaded();
         List<PlayerFishingStats> list = new ArrayList<>(statsCache.values());
+        list.removeIf(stats -> isLeaderboardExempt(stats.getPlayerUuid()));
         list.sort((a, b) -> Double.compare(b.getHeaviestFishWeight(), a.getHeaviestFishWeight()));
         return list.subList(0, Math.min(limit, list.size()));
     }
@@ -167,6 +168,7 @@ public class VaultStorageManager {
     public List<PlayerFishingStats> getTopTotalWeight(int limit) {
         ensureAllDataLoaded();
         List<PlayerFishingStats> list = new ArrayList<>(statsCache.values());
+        list.removeIf(stats -> isLeaderboardExempt(stats.getPlayerUuid()));
         list.sort((a, b) -> Double.compare(b.getTotalWeightCaught(), a.getTotalWeightCaught()));
         return list.subList(0, Math.min(limit, list.size()));
     }
@@ -174,6 +176,7 @@ public class VaultStorageManager {
     public List<PlayerFishingStats> getTopTotalFish(int limit) {
         ensureAllDataLoaded();
         List<PlayerFishingStats> list = new ArrayList<>(statsCache.values());
+        list.removeIf(stats -> isLeaderboardExempt(stats.getPlayerUuid()));
         list.sort((a, b) -> Long.compare(b.getTotalFishCaught(), a.getTotalFishCaught()));
         return list.subList(0, Math.min(limit, list.size()));
     }
@@ -189,5 +192,58 @@ public class VaultStorageManager {
                 } catch (IllegalArgumentException ignored) {}
             }
         }
+    }
+
+    /**
+     * Checks if a player is server staff, admin, OP, or exempt from public leaderboards.
+     */
+    public boolean isLeaderboardExempt(UUID uuid) {
+        if (uuid == null) return false;
+
+        // 1. Authoritative check via ApexsionsCore API
+        if (Bukkit.getPluginManager().isPluginEnabled("ApexsionsCore")) {
+            try {
+                if (com.apexsions.core.api.ApexsionsCoreProvider.isAvailable()) {
+                    return com.apexsions.core.api.ApexsionsCoreProvider.get().isLeaderboardExempt(uuid);
+                }
+            } catch (Throwable ignored) {}
+        }
+
+        // 2. Bukkit OP
+        org.bukkit.OfflinePlayer op = Bukkit.getOfflinePlayer(uuid);
+        if (op != null && op.isOp()) {
+            return true;
+        }
+
+        // 3. Operators list check (covers offline OPs in ops.json)
+        try {
+            for (org.bukkit.OfflinePlayer operator : Bukkit.getOperators()) {
+                if (uuid.equals(operator.getUniqueId())) return true;
+                if (op != null && op.getName() != null && op.getName().equalsIgnoreCase(operator.getName())) return true;
+            }
+        } catch (Throwable ignored) {}
+
+        // 4. Online player permissions
+        org.bukkit.entity.Player onlineP = Bukkit.getPlayer(uuid);
+        if (onlineP != null && (onlineP.isOp() 
+                || onlineP.hasPermission("apexsions.admin") 
+                || onlineP.hasPermission("apexsions.staff") 
+                || onlineP.hasPermission("apexsionscore.admin")
+                || onlineP.hasPermission("apexsions.conclave")
+                || onlineP.hasPermission("apexsions.leaderboard.exempt"))) {
+            return true;
+        }
+
+        // 5. Name-based match for server founders and staff
+        if (op != null && op.getName() != null) {
+            String name = op.getName().toLowerCase(java.util.Locale.ROOT).replaceAll("^[.*_]+", "");
+            if (name.contains("nueeva") || name.contains("nuevaid") || name.contains("rifqi") 
+                    || name.contains("friell") || name.contains("favian") || name.contains("fanerf") 
+                    || name.contains("kazrienvall")) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

@@ -181,4 +181,78 @@ class MinecraftAccount extends Model
             || str_starts_with($username, '*')
             || str_starts_with($uuid, '00000000-0000-0000-');
     }
+
+    /**
+     * Check if this account belongs to an admin, OP, or upper-dimension entity (The Conclave).
+     */
+    public function isUpperDimension(): bool
+    {
+        $rank = strtolower(trim($this->rank ?? ''));
+        $upperRanks = [
+            'ancestor', 'architect', 'overseer', 'warden', 'herald',
+            'owner', 'founder', 'admin', 'headadmin', 'mod', 'moderator',
+            'helper', 'staff', 'conclave', 'dev', 'developer'
+        ];
+        if (in_array($rank, $upperRanks, true)) {
+            return true;
+        }
+
+        $kingdom = strtoupper(trim($this->kingdom ?? ''));
+        if ($kingdom === 'AETHERION') {
+            return true;
+        }
+
+        $cleanUsername = strtolower(ltrim(trim($this->minecraft_username ?? ''), '.*_'));
+        $staffUsernames = [
+            'nueeva', 'nuevaid', 'nuevaidx', 'rifqi', 'rifqiariansyah',
+            'friell', 'frielll',
+            'favian', 'fanerf',
+            'kazrienvall'
+        ];
+        if (in_array($cleanUsername, $staffUsernames, true)) {
+            return true;
+        }
+
+        if ($this->user && $this->user->role && $this->user->role->is_admin) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Scope a query to only include players eligible for public leaderboards
+     * (strictly excluding server admins, OPs, upper-dimension Conclave ranks, and test accounts).
+     */
+    public function scopeLeaderboardEligible($query)
+    {
+        $upperRanks = [
+            'ancestor', 'architect', 'overseer', 'warden', 'herald',
+            'owner', 'founder', 'admin', 'headadmin', 'mod', 'moderator',
+            'helper', 'staff', 'conclave', 'dev', 'developer'
+        ];
+        $staffUsernames = [
+            'nueeva', 'nuevaid', 'nuevaidx', 'rifqi', 'rifqiariansyah',
+            'friell', 'frielll',
+            'favian', 'fanerf',
+            'kazrienvall'
+        ];
+
+        return $query->whereNotNull('minecraft_username')
+            ->where('minecraft_username', '!=', '')
+            ->where('minecraft_username', 'not like', 'TruthTest%')
+            ->whereNotIn(\Illuminate\Support\Facades\DB::raw('LOWER(rank)'), $upperRanks)
+            ->where(function ($q) {
+                $q->whereNull('kingdom')
+                    ->orWhere(\Illuminate\Support\Facades\DB::raw('UPPER(kingdom)'), '!=', 'AETHERION');
+            })
+            ->where(function ($q) use ($staffUsernames) {
+                foreach ($staffUsernames as $u) {
+                    $q->where(\Illuminate\Support\Facades\DB::raw('LOWER(minecraft_username)'), 'not like', "%{$u}%");
+                }
+            })
+            ->whereDoesntHave('user.role', function ($rq) {
+                $rq->where('is_admin', true);
+            });
+    }
 }

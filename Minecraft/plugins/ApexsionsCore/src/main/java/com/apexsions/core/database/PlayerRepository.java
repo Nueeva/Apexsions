@@ -155,7 +155,8 @@ public class PlayerRepository {
                         UUID pUuid = (uuidObj instanceof UUID u) ? u : UUID.fromString(uuidObj.toString());
 
                         // Exclude server admins / staff from leaderboard
-                        if (plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isStaffOrAdmin(pUuid)) {
+                        if ((plugin.getApi() != null && plugin.getApi().isLeaderboardExempt(pUuid))
+                                || (plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isStaffOrAdmin(pUuid))) {
                             continue;
                         }
 
@@ -195,7 +196,8 @@ public class PlayerRepository {
 
     public CompletableFuture<Integer> getPlayerRankInRegionAsync(UUID playerUuid, UUID regionId) {
         return db.supplyAsync(() -> {
-            if (plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isStaffOrAdmin(playerUuid)) {
+            if ((plugin.getApi() != null && plugin.getApi().isLeaderboardExempt(playerUuid))
+                    || (plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isStaffOrAdmin(playerUuid))) {
                 return -1; // Admin / Staff is exempt from public leaderboards
             }
 
@@ -215,7 +217,8 @@ public class PlayerRepository {
                     while (rs.next()) {
                         Object uuidObj = rs.getObject("uuid");
                         UUID higherUuid = (uuidObj instanceof UUID u) ? u : UUID.fromString(uuidObj.toString());
-                        if (plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isStaffOrAdmin(higherUuid)) {
+                        if ((plugin.getApi() != null && plugin.getApi().isLeaderboardExempt(higherUuid))
+                                || (plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isStaffOrAdmin(higherUuid))) {
                             continue; // Skip admin from rank position counting
                         }
                         rank++;
@@ -231,7 +234,8 @@ public class PlayerRepository {
 
     public CompletableFuture<Integer> getTotalPlayersInRegionAsync(UUID regionId) {
         return db.supplyAsync(() -> {
-            String sql = "SELECT COUNT(*) AS total FROM players WHERE region_id = ?";
+            String sql = "SELECT uuid FROM players WHERE region_id = ?";
+            int count = 0;
             try (Connection conn = db.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
                 if (db.isUsingFallback()) {
                     ps.setString(1, regionId.toString());
@@ -239,10 +243,17 @@ public class PlayerRepository {
                     ps.setObject(1, regionId);
                 }
                 try (ResultSet rs = ps.executeQuery()) {
-                    if (rs.next()) {
-                        return rs.getInt("total");
+                    while (rs.next()) {
+                        Object uuidObj = rs.getObject("uuid");
+                        UUID pUuid = (uuidObj instanceof UUID u) ? u : UUID.fromString(uuidObj.toString());
+                        if ((plugin.getApi() != null && plugin.getApi().isLeaderboardExempt(pUuid))
+                                || (plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isStaffOrAdmin(pUuid))) {
+                            continue;
+                        }
+                        count++;
                     }
                 }
+                return count;
             } catch (SQLException e) {
                 plugin.getLogger().log(Level.SEVERE, "Failed counting players for region: " + regionId, e);
             }

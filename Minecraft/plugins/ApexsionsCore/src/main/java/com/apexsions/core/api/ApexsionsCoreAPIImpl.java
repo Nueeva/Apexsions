@@ -264,10 +264,60 @@ public class ApexsionsCoreAPIImpl implements ApexsionsCoreAPI {
     @Override
     public boolean isLeaderboardExempt(@NotNull UUID uuid) {
         if (uuid == null) return false;
-        if (plugin.getLuckPermsHook() != null) {
-            return plugin.getLuckPermsHook().isStaffOrAdmin(uuid);
-        }
+
+        // 1. Direct OP check
         org.bukkit.OfflinePlayer op = org.bukkit.Bukkit.getOfflinePlayer(uuid);
-        return op != null && op.isOp();
+        if (op != null && op.isOp()) return true;
+
+        // 2. Operators list check (covers offline OPs in ops.json)
+        try {
+            for (org.bukkit.OfflinePlayer operator : org.bukkit.Bukkit.getOperators()) {
+                if (uuid.equals(operator.getUniqueId())) return true;
+                if (op != null && op.getName() != null && op.getName().equalsIgnoreCase(operator.getName())) return true;
+            }
+        } catch (Throwable ignored) {}
+
+        // 3. Online player permissions and OP
+        org.bukkit.entity.Player onlineP = org.bukkit.Bukkit.getPlayer(uuid);
+        if (onlineP != null && (onlineP.isOp() 
+                || onlineP.hasPermission("apexsions.admin") 
+                || onlineP.hasPermission("apexsions.staff") 
+                || onlineP.hasPermission("apexsionscore.admin")
+                || onlineP.hasPermission("apexsions.conclave")
+                || onlineP.hasPermission("apexsions.leaderboard.exempt"))) {
+            return true;
+        }
+
+        // 4. Kingdom check: AETHERION (The Conclave / Upper Dimension)
+        if (plugin.getRegionManager() != null && plugin.getPlayerDataService() != null) {
+            try {
+                PlayerData pData = plugin.getPlayerDataService().getCached(uuid).orElse(null);
+                if (pData != null && pData.getRegionId() != null) {
+                    Region r = plugin.getRegionManager().getRegion(pData.getRegionId()).orElse(null);
+                    if (r != null && "AETHERION".equalsIgnoreCase(r.getKey())) {
+                        return true;
+                    }
+                }
+            } catch (Throwable ignored) {}
+        }
+
+        // 5. LuckPerms hook check (rank weight >= 80, groups, and nodes)
+        if (plugin.getLuckPermsHook() != null) {
+            if (plugin.getLuckPermsHook().isStaffOrAdmin(uuid) || plugin.getLuckPermsHook().isConclaveStaff(uuid)) {
+                return true;
+            }
+        }
+
+        // 6. Name-based match for server founders and staff
+        if (op != null && op.getName() != null) {
+            String name = op.getName().toLowerCase(java.util.Locale.ROOT).replaceAll("^[.*_]+", "");
+            if (name.contains("nueeva") || name.contains("nuevaid") || name.contains("rifqi") 
+                    || name.contains("friell") || name.contains("favian") || name.contains("fanerf") 
+                    || name.contains("kazrienvall")) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

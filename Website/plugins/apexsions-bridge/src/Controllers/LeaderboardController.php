@@ -14,8 +14,7 @@ class LeaderboardController extends Controller
      */
     public function index(): View
     {
-        $baseQuery = MinecraftAccount::where('minecraft_username', 'not like', 'TruthTest%')
-            ->whereNotNull('minecraft_username');
+        $baseQuery = MinecraftAccount::leaderboardEligible();
 
         $topLevels = (clone $baseQuery)
             ->orderByDesc('level')
@@ -25,10 +24,18 @@ class LeaderboardController extends Controller
 
         $topBalances = (clone $baseQuery)
             ->orderByDesc('balance_rupiah')
+            ->orderByDesc('balance_diamond')
             ->limit(10)
             ->get();
 
-        // Kingdom faction distribution & power
+        $topBattlepass = (clone $baseQuery)
+            ->where('battlepass_tier', '>', 0)
+            ->orderByDesc('battlepass_tier')
+            ->orderByDesc('battlepass_xp')
+            ->limit(10)
+            ->get();
+
+        // Kingdom faction distribution & power (only from eligible non-staff citizens)
         $kingdoms = [
             'ZENITHAR' => [
                 'name' => 'Zenithar',
@@ -69,6 +76,7 @@ class LeaderboardController extends Controller
         return view('apexsions-bridge::leaderboard', [
             'topLevels' => $topLevels,
             'topBalances' => $topBalances,
+            'topBattlepass' => $topBattlepass,
             'kingdoms' => $kingdoms,
         ]);
     }

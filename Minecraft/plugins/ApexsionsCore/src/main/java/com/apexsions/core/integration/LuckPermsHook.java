@@ -114,10 +114,10 @@ public class LuckPermsHook {
     public int getRankWeight(String rankKey) {
         if (rankKey == null) return 0;
         return switch (rankKey.toLowerCase().trim()) {
-            case "ancestor", "owner" -> 100;
-            case "architect", "overseer" -> 95;
+            case "ancestor", "owner", "founder" -> 100;
+            case "architect", "overseer", "developer", "dev" -> 95;
             case "warden", "admin", "headadmin" -> 90;
-            case "herald", "mod", "moderator" -> 80;
+            case "herald", "mod", "moderator", "helper", "staff", "conclave" -> 80;
             case "sions" -> 70;
             case "emperor" -> 60;
             case "sovereign" -> 50;
@@ -142,19 +142,61 @@ public class LuckPermsHook {
     }
 
     private boolean computeIsStaffOrAdmin(UUID uuid) {
+        if (uuid == null) return false;
+
+        // 1. Direct OP check
         OfflinePlayer op = Bukkit.getOfflinePlayer(uuid);
         if (op != null && op.isOp()) {
             return true;
         }
 
+        // 2. Operators list check (covers offline OPs in ops.json)
+        try {
+            for (OfflinePlayer operator : Bukkit.getOperators()) {
+                if (uuid.equals(operator.getUniqueId())) {
+                    return true;
+                }
+                if (op != null && op.getName() != null && op.getName().equalsIgnoreCase(operator.getName())) {
+                    return true;
+                }
+            }
+        } catch (Throwable ignored) {}
+
+        // 3. Online player permissions and OP
         Player onlineP = Bukkit.getPlayer(uuid);
         if (onlineP != null && (onlineP.isOp() 
                 || onlineP.hasPermission("apexsions.admin") 
                 || onlineP.hasPermission("apexsions.staff") 
+                || onlineP.hasPermission("apexsionscore.admin")
+                || onlineP.hasPermission("apexsions.conclave")
                 || onlineP.hasPermission("apexsions.leaderboard.exempt"))) {
             return true;
         }
 
+        // 4. Name-based match for server founders and staff (case-insensitive & handles Bedrock dot prefix)
+        if (op != null && op.getName() != null) {
+            String name = op.getName().toLowerCase(java.util.Locale.ROOT).replaceAll("^[.*_]+", "");
+            if (name.contains("nueeva") || name.contains("nuevaid") || name.contains("rifqi") 
+                    || name.contains("friell") || name.contains("favian") || name.contains("fanerf") 
+                    || name.contains("kazrienvall")) {
+                return true;
+            }
+        }
+
+        // 5. Kingdom check: AETHERION (Upper Dimension / The Conclave)
+        if (plugin.getRegionManager() != null && plugin.getPlayerDataService() != null) {
+            try {
+                com.apexsions.core.player.PlayerData pData = plugin.getPlayerDataService().getCached(uuid).orElse(null);
+                if (pData != null && pData.getRegionId() != null) {
+                    com.apexsions.core.region.Region r = plugin.getRegionManager().getRegion(pData.getRegionId()).orElse(null);
+                    if (r != null && "AETHERION".equalsIgnoreCase(r.getKey())) {
+                        return true;
+                    }
+                }
+            } catch (Throwable ignored) {}
+        }
+
+        // 6. LuckPerms user permission and node inspection
         if (isAvailable()) {
             try {
                 User user = luckPerms.getUserManager().getUser(uuid);
@@ -162,11 +204,6 @@ public class LuckPermsHook {
                     user = luckPerms.getUserManager().loadUser(uuid).join();
                 }
                 if (user != null) {
-                    if (user.getCachedData().getPermissionData().checkPermission("apexsions.admin").asBoolean()
-                            || user.getCachedData().getPermissionData().checkPermission("apexsions.staff").asBoolean()
-                            || user.getCachedData().getPermissionData().checkPermission("apexsions.leaderboard.exempt").asBoolean()) {
-                        return true;
-                    }
                     String primary = user.getPrimaryGroup();
                     if (getRankWeight(primary) >= 80) {
                         return true;
@@ -177,9 +214,30 @@ public class LuckPermsHook {
                                 return true;
                             }
                         }
+                        String key = node.getKey().toLowerCase(java.util.Locale.ROOT);
+                        if (key.startsWith("group.")) {
+                            String grp = key.substring(6);
+                            if (getRankWeight(grp) >= 80) {
+                                return true;
+                            }
+                        }
+                        if (key.equals("apexsions.admin") || key.equals("apexsions.staff") 
+                                || key.equals("apexsionscore.admin") || key.equals("apexsions.conclave") 
+                                || key.equals("apexsions.leaderboard.exempt")) {
+                            return true;
+                        }
                     }
+                    try {
+                        if (user.getCachedData().getPermissionData().checkPermission("apexsions.admin").asBoolean()
+                                || user.getCachedData().getPermissionData().checkPermission("apexsions.staff").asBoolean()
+                                || user.getCachedData().getPermissionData().checkPermission("apexsionscore.admin").asBoolean()
+                                || user.getCachedData().getPermissionData().checkPermission("apexsions.conclave").asBoolean()
+                                || user.getCachedData().getPermissionData().checkPermission("apexsions.leaderboard.exempt").asBoolean()) {
+                            return true;
+                        }
+                    } catch (Throwable ignored) {}
                 }
-            } catch (Exception ignored) {}
+            } catch (Throwable ignored) {}
         }
         return false;
     }
@@ -193,7 +251,7 @@ public class LuckPermsHook {
     public boolean isConclaveStaff(Player player) {
         if (player == null) return false;
         if (player.isOp()) return true;
-        if (player.hasPermission("apexsions.admin") || player.hasPermission("apexsions.staff") || player.hasPermission("apexsionscore.admin")) {
+        if (player.hasPermission("apexsions.admin") || player.hasPermission("apexsions.staff") || player.hasPermission("apexsionscore.admin") || player.hasPermission("apexsions.conclave")) {
             return true;
         }
         String rankKey = getPlayerRankKey(player);
@@ -203,6 +261,55 @@ public class LuckPermsHook {
     public boolean isConclaveStaff(java.util.UUID uuid) {
         if (uuid == null) return false;
         return isStaffOrAdmin(uuid);
+    }
+
+    public String getPlayerRankKey(UUID uuid) {
+        if (uuid == null) return "wanderer";
+        Player online = Bukkit.getPlayer(uuid);
+        if (online != null) {
+            return getPlayerRankKey(online);
+        }
+        if (!isAvailable()) {
+            OfflinePlayer op = Bukkit.getOfflinePlayer(uuid);
+            return (op != null && op.isOp()) ? "ancestor" : "wanderer";
+        }
+        try {
+            User user = luckPerms.getUserManager().getUser(uuid);
+            if (user == null) {
+                user = luckPerms.getUserManager().loadUser(uuid).join();
+            }
+            if (user != null) {
+                String highestGroup = "wanderer";
+                int highestWeight = -1;
+                for (net.luckperms.api.node.Node node : user.getNodes()) {
+                    if (node instanceof net.luckperms.api.node.types.InheritanceNode inh) {
+                        String grp = inh.getGroupName().toLowerCase().trim();
+                        int weight = getRankWeight(grp);
+                        if (weight > highestWeight) {
+                            highestWeight = weight;
+                            highestGroup = grp;
+                        }
+                    } else if (node.getKey().toLowerCase().startsWith("group.")) {
+                        String grp = node.getKey().substring(6).toLowerCase().trim();
+                        int weight = getRankWeight(grp);
+                        if (weight > highestWeight) {
+                            highestWeight = weight;
+                            highestGroup = grp;
+                        }
+                    }
+                }
+                String primary = user.getPrimaryGroup();
+                if (primary != null && !primary.isEmpty()) {
+                    int weight = getRankWeight(primary);
+                    if (weight > highestWeight) {
+                        highestGroup = primary.toLowerCase().trim();
+                    }
+                }
+                return highestGroup.equalsIgnoreCase("default") ? "wanderer" : highestGroup;
+            }
+        } catch (Throwable ignored) {}
+        OfflinePlayer op = Bukkit.getOfflinePlayer(uuid);
+        return (op != null && op.isOp()) ? "ancestor" : "wanderer";
     }
     public String getPlayerRank(Player player) {
         if (!isAvailable() || player == null) {

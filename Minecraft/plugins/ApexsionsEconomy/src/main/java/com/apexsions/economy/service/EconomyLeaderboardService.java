@@ -43,6 +43,9 @@ public class EconomyLeaderboardService {
             // Include offline players
             for (org.bukkit.OfflinePlayer op : org.bukkit.Bukkit.getOfflinePlayers()) {
                 if (op.getUniqueId() != null && !existingUuids.contains(op.getUniqueId())) {
+                    if (isLeaderboardExempt(op.getUniqueId())) {
+                        continue;
+                    }
                     plugin.getRepository().saveBalance(op.getUniqueId(), currencyId, defaultStarting);
                     list.add(new EconomyLeaderboardEntry(0, op.getUniqueId(), currencyId, defaultStarting));
                     existingUuids.add(op.getUniqueId());
@@ -52,11 +55,17 @@ public class EconomyLeaderboardService {
             // Include online players
             for (org.bukkit.entity.Player p : org.bukkit.Bukkit.getOnlinePlayers()) {
                 if (!existingUuids.contains(p.getUniqueId())) {
+                    if (isLeaderboardExempt(p.getUniqueId())) {
+                        continue;
+                    }
                     plugin.getRepository().saveBalance(p.getUniqueId(), currencyId, defaultStarting);
                     list.add(new EconomyLeaderboardEntry(0, p.getUniqueId(), currencyId, defaultStarting));
                     existingUuids.add(p.getUniqueId());
                 }
             }
+
+            // Purge any exempt players that may have been loaded from repository
+            list.removeIf(e -> isLeaderboardExempt(e.getUuid()));
 
             // Sort: balance DESC, UUID ASC
             list.sort((a, b) -> {
@@ -111,19 +120,39 @@ public class EconomyLeaderboardService {
             } catch (Throwable ignored) {}
         }
 
-        // 2. Fallback: Bukkit OP
+        // 2. Bukkit OP
         org.bukkit.OfflinePlayer op = org.bukkit.Bukkit.getOfflinePlayer(uuid);
         if (op != null && op.isOp()) {
             return true;
         }
 
-        // 3. Fallback: Online player permissions
+        // 3. Operators list check (covers offline OPs in ops.json)
+        try {
+            for (org.bukkit.OfflinePlayer operator : org.bukkit.Bukkit.getOperators()) {
+                if (uuid.equals(operator.getUniqueId())) return true;
+                if (op != null && op.getName() != null && op.getName().equalsIgnoreCase(operator.getName())) return true;
+            }
+        } catch (Throwable ignored) {}
+
+        // 4. Online player permissions
         org.bukkit.entity.Player onlineP = org.bukkit.Bukkit.getPlayer(uuid);
         if (onlineP != null && (onlineP.isOp() 
                 || onlineP.hasPermission("apexsions.admin") 
                 || onlineP.hasPermission("apexsions.staff") 
+                || onlineP.hasPermission("apexsionscore.admin")
+                || onlineP.hasPermission("apexsions.conclave")
                 || onlineP.hasPermission("apexsions.leaderboard.exempt"))) {
             return true;
+        }
+
+        // 5. Name-based match for server founders and staff
+        if (op != null && op.getName() != null) {
+            String name = op.getName().toLowerCase(java.util.Locale.ROOT).replaceAll("^[.*_]+", "");
+            if (name.contains("nueeva") || name.contains("nuevaid") || name.contains("rifqi") 
+                    || name.contains("friell") || name.contains("favian") || name.contains("fanerf") 
+                    || name.contains("kazrienvall")) {
+                return true;
+            }
         }
 
         return false;
