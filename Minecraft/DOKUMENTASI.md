@@ -1,10 +1,10 @@
 # Dokumentasi Master Apexsions Plugin Suite — Minecraft 26.2 (The Peak Civilizations)
 
-Dokumentasi resmi yang merangkum arsitektur menyeluruh, interaksi antar-plugin, matriks izin & perintah, konfigurasi modular, serta integrasi gameplay untuk 8 plugin utama di ekosistem **Apexsions**.
+Dokumentasi resmi yang merangkum arsitektur menyeluruh, interaksi antar-plugin, matriks izin & perintah, konfigurasi modular, serta integrasi gameplay untuk 9 plugin utama di ekosistem **Apexsions**.
 
 ---
 
-## 🏛️ 1. Ikhtisar Arsitektur 8 Plugin (Plugin Ecosystem Matrix)
+## 🏛️ 1. Ikhtisar Arsitektur 9 Plugin (Plugin Ecosystem Matrix)
 
 ```
                             ┌────────────────────────┐
@@ -29,6 +29,11 @@ Dokumentasi resmi yang merangkum arsitektur menyeluruh, interaksi antar-plugin, 
                                                     ┌───────────▼───────────┐
                                                     │   ApexsionsCrates     │
                                                     │ (Keys, Pity & Opening)│
+                                                    └───────────┬───────────┘
+                                                                │
+                                                    ┌───────────▼───────────┐
+                                                    │   ApexsionsFishing    │
+                                                    │(AFK, Vaults & Anglers)│
                                                     └───────────────────────┘
 ```
 
@@ -40,6 +45,7 @@ Dokumentasi resmi yang merangkum arsitektur menyeluruh, interaksi antar-plugin, 
 6. **`ApexsionsMedia`** (`com.apexsions.media.*`): Sistem render banner/logo gambar multi-tile asinkron (PNG/JPG/URL), raytrace line-of-sight hover glowing & actionbar tooltip, serta aksi interaksi tautan URL web/salin clipboard terkonfirmasi (100% vanilla & Bedrock compatible).
 7. **`ApexsionsCustomEnchants`** (`com.apexsions.customenchants.*`): Dual-Currency Enchanter Gacha GUI (`/ce`), Toko Buku Sihir Spesifik 54-Slot (`/ce shop`), 28 Custom Enchantments berkekuatan tinggi, Mystery & Magic Dust, White & Black Scrolls, Central Admin Hub (`/ace`), Katalog `/ace enchants`, dan Interactive Armor Set Builder (`/ace create`) dengan sinkronisasi ID otomatis.
 8. **`ApexsionsCrates`** (`com.apexsions.crates.*`): Toko Kunci Crate (`/crateshop`), sistem animasi pembukaan berbasis paket (PacketEvents/ProtocolLib), milestone progression, unified tiered effective weight chance formula, dan integrasi hadiah ekonomi / kit.
+9. **`ApexsionsFishing`** (`com.apexsions.fishing.*`): Sistem AFK Fishing interaktif & Active Reel Engine, Rarity & Weight Engine 6-tier (`COMMON`, `UNCOMMON`, `RARE`, `EPIC`, `LEGENDARY`, `MYTHIC`), Fishing Vault brankas penyimpanan 54-slot (`/vault`), Toko Penjualan Ikan & Delivery Market (`/fish sell`), Auto-Catch Rods Creator & Upgrade Engine (`/fish rods`), dan Leaderboard Top Angler terintegrasi kebijakan pengecualian staf.
 
 ---
 
@@ -70,6 +76,11 @@ Dokumentasi resmi yang merangkum arsitektur menyeluruh, interaksi antar-plugin, 
   /npc cmd add -p k
   ```
 - **Alur Cerdas `/k`**: Pemain yang belum berikrar otomatis diarahkan ke menu pemilihan kerajaan (`RegionSelectionGUI`), sedangkan pemain yang telah bersumpah setia langsung dipindahkan ke ibukota kerajaannya via `RegionTeleportService`.
+
+### F. Ekosistem Pemancingan & Integrasi Ekonomi/Core (`ApexsionsFishing` ↔ `ApexsionsEconomy`, `ApexsionsCore`, & `ApexsionsCustomEnchants`)
+- **Dual-Currency Fish Market:** Penjualan tangkapan ikan (`/fish sell`) langsung mentransfer saldo Rupiah atau Diamond ke akun pemain secara atomic via `ApexsionsEconomyAPI`.
+- **Top Angler Leaderboard Exemption:** Papan peringkat nelayan terbaik (`/vault top`) menyaring akun staf, OP, dan entitas Aetherion menggunakan `ApexsionsCoreAPI.isLeaderboardExempt(uuid)` guna memastikan supremasi kompetisi dipegang oleh warga fana.
+- **Custom Rods & Enchantment Compatibility:** Pancingan dari `AutoCatchRodManager` terintegrasi harmonis dengan enchantments dari `ApexsionsCustomEnchants` serta progression hooks.
 
 ---
 
@@ -240,6 +251,19 @@ Dokumentasi resmi yang merangkum arsitektur menyeluruh, interaksi antar-plugin, 
 
 ---
 
+### 🎣 ApexsionsFishing
+| Perintah | Alias | Deskripsi | Hak Akses | Default |
+| :--- | :--- | :--- | :--- | :---: |
+| `/fish` | `/fishing`, `/mancing` | Membuka Menu Utama Peradaban Memancing Apexsions | `apexsions.fishing.use` | `true` |
+| `/vault` | `/fishvault`, `/fvault` | Membuka Fishing Vault brankas penyimpanan hasil pancingan 54-slot | `apexsions.fishing.vault` | `true` |
+| `/fish shop` | `/fish market` | Membuka Toko Perlengkapan & Peningkatan Kapasitas Brankas Ikan | `apexsions.fishing.use` | `true` |
+| `/fish sell` | - | Membuka Antarmuka Penjualan Ikan & Delivery Market (Dual-Currency) | `apexsions.fishing.use` | `true` |
+| `/fish rods` | - | Membuka Toko Joran Pancing Spesial & Auto-Catch Rods | `apexsions.fishing.use` | `true` |
+| `/fish admin` | `/fishadm` | Panel Administrasi Nelayan & Rod Creator Editor (Admin) | `apexsions.fishing.admin` | `op` |
+| `/fish reload`| - | Memuat ulang konfigurasi ikan, rarity, bioma, dan bobot tangkapan | `apexsions.fishing.admin` | `op` |
+
+---
+
 ## ⚡ 4. Panduan Kompilasi Multi-Compiler (`build.ps1`)
 
 Untuk efisiensi dan kecepatan pengembangan, **HANYA** kompilasi plugin yang mengalami perubahan kode:
@@ -254,6 +278,7 @@ powershell -ExecutionPolicy Bypass -File .\build.ps1 Shop
 powershell -ExecutionPolicy Bypass -File .\build.ps1 Media
 powershell -ExecutionPolicy Bypass -File .\build.ps1 CustomEnchants
 powershell -ExecutionPolicy Bypass -File .\build.ps1 Crates
+powershell -ExecutionPolicy Bypass -File .\build.ps1 Fishing
 
 # 2. Kompilasi Seluruh Suite (Gunakan HANYA jika semua modul berubah):
 powershell -ExecutionPolicy Bypass -File .\build.ps1 -all
@@ -440,4 +465,18 @@ Ekosistem Apexsions mengintegrasikan server Minecraft (Paper 26.2) dengan portal
    - Transaksi diproteksi oleh SHA-256 idempotency hash berbasis tanggal/jam untuk mencegah eksploitasi reward ganda.
 6. **Pusat Manajemen Rank Admin (`/admin/ranks`)**:
    - Konfigurasi lengkap harga, batas benefit, template pesan WhatsApp, dan pelacakan riwayat transaksi/upgrade di `/admin/ranks/purchases`.
+
+### G. Kebijakan Pengecualian Leaderboard 6-Lapis (Leaderboard Exemption Contract):
+1. **Penyaringan Otomatis Multi-Layer**:
+   - Menjamin bahwa seluruh posisi teratas papan peringkat murni diperebutkan oleh warga fana biasa (*Citizens* & *Donators*).
+   - Akun staf, OP, dan entitas Aetherion disaring keluar dari seluruh leaderboard publik melalui 6 lapisan verifikasi:
+     - **Bukkit Operator (OP)**: `player.isOp()` / `ops.json`.
+     - **Staff Rank Weight $\ge 80$**: `ancestor` (100), `architect` (95), `overseer` (95), `warden` (90), `herald` (80).
+     - **Afiliasi Kerajaan Transenden Aetherion**: `kingdom_id = 'AETHERION'` (The Aetherial Conclave).
+     - **Permission Nodes**: `apexsions.admin`, `apexsions.staff`, `apexsionscore.admin`, `apexsions.conclave`, `apexsions.leaderboard.exempt`.
+     - **Azuriom Web Administrator**: `role->is_admin == true`.
+     - **Blacklist Akun Staf/Founder**: `nueeva`, `nuevaid`, `rifqi`, `friell`, `favian`, `fanerf`, `kazrienvall`.
+2. **Cakupan Penyaringan In-Game & Web**:
+   - In-Game: `/kingdom top` (`ApexsionsCore`), `/baltop` (`ApexsionsEconomy`), `/abp top` (`ApexsionsBattlepass`), `/vault top` (`ApexsionsFishing`).
+   - Web Platform (`https://web.apexsions.my.id/leaderboard`): Menampilkan secara ketat **2 Tabel Utama** (Level & Saldo Rupiah). Leaderboard BattlePass ditiadakan dari portal web (eksklusif in-game) demi menjaga kesederhanaan, performa, dan fokus antarmuka web.
 

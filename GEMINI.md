@@ -408,7 +408,7 @@ Kesalahan spelling atau modifikasi brand tidak boleh diperkenalkan pada:
 
 # 08. Official Plugin Suite
 
-Enam plugin utama:
+Sembilan plugin resmi dalam ekosistem:
 
 ```text
 ApexsionsCore
@@ -417,6 +417,9 @@ ApexsionsEconomy
 ApexsionsBattlepass
 ApexsionsShop
 ApexsionsMedia
+ApexsionsCustomEnchants
+ApexsionsCrates
+ApexsionsFishing
 ```
 
 ## ApexsionsCore
@@ -488,6 +491,36 @@ Raytrace Hover Glow
 URL Actions
 ```
 
+## ApexsionsCustomEnchants
+
+```text
+Dual-Currency Enchanter
+Custom Enchantments
+Armor Sets Builder
+Tinkerer
+```
+
+## ApexsionsCrates
+
+```text
+Key Shop
+Opening Animation
+Milestone Rewards
+Pity Progression
+```
+
+## ApexsionsFishing
+
+```text
+AFK Fishing
+Active Reel Engine
+Rarity & Weight
+Fishing Vault
+Fish Delivery Market
+Auto-Catch Rods
+Top Angler Leaderboard
+```
+
 ---
 
 # 09. Java Package Convention
@@ -501,6 +534,9 @@ com.apexsions.economy.*
 com.apexsions.battlepass.*
 com.apexsions.shop.*
 com.apexsions.media.*
+com.apexsions.customenchants.*
+com.apexsions.crates.*
+com.apexsions.fishing.*
 ```
 
 Jangan mencampurkan package antar-plugin.
@@ -586,6 +622,9 @@ powershell -ExecutionPolicy Bypass -File .\build.ps1 Economy
 powershell -ExecutionPolicy Bypass -File .\build.ps1 Battlepass
 powershell -ExecutionPolicy Bypass -File .\build.ps1 Shop
 powershell -ExecutionPolicy Bypass -File .\build.ps1 Media
+powershell -ExecutionPolicy Bypass -File .\build.ps1 CustomEnchants
+powershell -ExecutionPolicy Bypass -File .\build.ps1 Crates
+powershell -ExecutionPolicy Bypass -File .\build.ps1 Fishing
 ```
 
 Full build:
@@ -616,6 +655,11 @@ Bridge Secret Key: apexsions_bridge_key_live_2026
 - Profil publik wajib menggunakan **ID Unik** (UUID resmi Minecraft atau database ID): `/player/{uuid}`.
 - Dilarang menjadikan username sebagai slug URL resmi untuk melindungi privasi pemain dari scraper / username enumeration.
 - Seluruh rute lama berbasis username wajib dialihkan menggunakan **HTTP 301 Permanent Redirect** ke URL ID unik.
+
+### Standar Papan Peringkat Web & Kebijakan Pengecualian 6-Lapis
+- Papan peringkat publik web (`/leaderboard`) strictly hanya menampilkan **2 Tabel Utama**: Level & EXP dan Perbendaharaan Saldo Rupiah.
+- Leaderboard BattlePass dilarang ditambahkan ke website (eksklusif in-game).
+- Seluruh akun staf (weight $\ge 80$), operator (OP), kerajaan transenden Aetherion, role admin, dan founder blacklist wajib disaring keluar (dikecualikan) secara otomatis dari seluruh leaderboard publik baik web maupun in-game.
 
 ---
 

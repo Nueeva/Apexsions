@@ -7,7 +7,7 @@
 > **Tagline:** `The Peak Civilizations`  
 > **Dokumentasi Terakhir:** September 2026 (Sinkronisasi Penuh Pasca-Audit & Reset Memori)
 
-Dokumen ini adalah **Single Source of Truth** untuk seluruh pengembang dan AI Coding Agent. Dokumen ini merangkum arsitektur, konfigurasi server, kredensial produksi, standar keamanan, sistem webstore, BlueMap, dual-theme, serta 8 plugin Minecraft secara komprehensif.
+Dokumen ini adalah **Single Source of Truth** untuk seluruh pengembang dan AI Coding Agent. Dokumen ini merangkum arsitektur, konfigurasi server, kredensial produksi, standar keamanan, sistem webstore, BlueMap, dual-theme, serta 9 plugin Minecraft secara komprehensif.
 
 ---
 
@@ -139,7 +139,7 @@ Source of truth: `ranks.yml` & tabel database `apexsions_rank_configs`.
 
 ---
 
-## 🎮 8. Daftar 8 Plugin Suite Minecraft (Paper 26.2 / Java 21)
+## 🎮 8. Daftar 9 Plugin Suite Minecraft (Paper 26.2 / Java 21)
 
 Struktur modul berada di folder `Minecraft/plugins/`:
 
@@ -174,6 +174,13 @@ Struktur modul berada di folder `Minecraft/plugins/`:
    - Dual-Currency Enchanter GUI (`/ce`), Toko Buku Sihir 54-Slot (`/ce shop`), 28 Custom Enchants, Admin Hub (`/ace`).
 8. **`ApexsionsCrates`** (`com.apexsions.crates.*`):
    - Toko Kunci (`/crateshop`), Animasi pembukaan berbasis paket, milestone rewards.
+9. **`ApexsionsFishing`** (`com.apexsions.fishing.*`):
+   - Sistem **AFK Fishing** dan **Active Reel Engine** dengan mekanik tangkapan interaktif.
+   - **Rarity & Weight Engine 6-Tier:** `COMMON`, `UNCOMMON`, `RARE`, `EPIC`, `LEGENDARY`, `MYTHIC` dengan bobot berat gram realistis dan nilai jual dinamis.
+   - **Fishing Vault Storage 54-Slot (`/vault`):** Brankas penyimpanan tangkapan ikan eksklusif per pemain dengan fitur upgrade kapasitas (`VaultShopGUI`).
+   - **Fish Market & Instant Delivery (`/fish sell`):** Pasar penjualan ikan terintegrasi `ApexsionsEconomy` (Rupiah/Diamond) dengan bonus pengiriman.
+   - **Auto-Catch Rods & Upgrade Engine (`/fish rods`):** Joran pancing khusus dengan durabilitas, kecepatan gigitan, dan auto-reel chance.
+   - **Top Angler Leaderboard:** Terintegrasi dengan kebijakan pengecualian staf, OP, dan dimensi atas Aetherion.
 
 #### Build Command Plugin
 ```powershell
@@ -185,6 +192,7 @@ powershell -ExecutionPolicy Bypass -File .\Minecraft\build.ps1 Shop
 powershell -ExecutionPolicy Bypass -File .\Minecraft\build.ps1 Media
 powershell -ExecutionPolicy Bypass -File .\Minecraft\build.ps1 CustomEnchants
 powershell -ExecutionPolicy Bypass -File .\Minecraft\build.ps1 Crates
+powershell -ExecutionPolicy Bypass -File .\Minecraft\build.ps1 Fishing
 # Atau full suite:
 powershell -ExecutionPolicy Bypass -File .\Minecraft\build.ps1 -all
 ```
@@ -342,3 +350,93 @@ Kekaisaran Sions bukan lagi kerajaan aktif atau faksi yang dapat dihuni, melaink
    - Direktori warga admin (`/admin/players`) memiliki filter khusus `✦ Aetherion (The Conclave)` dan lencana tabel kosmik `bg-info`.
    - Modul Player 360 Overview (`show.blade.php`) menghadirkan kartu eksklusif *The Aetherial Conclave* serta peringatan visual pada modal aksi.
    - Tampilan profil publik (`/player/{uuid}`) dan tema profil (`/profile`) menampilkan lencana faksi Aetherion dengan ikon `bi-stars` dan dukungan bilingual i18n (`kingdom_aetherion_name`).
+
+---
+
+## 🏆 12. Kebijakan Papan Peringkat (Leaderboard Exemption Policy) & Struktur Leaderboard
+
+Untuk menjaga asas integritas kompetisi, keadilan bermain (*fair-play*), dan keselarasan kanon kosmologi (staf adalah entitas transenden The Conclave, bukan warga fana yang bersaing di papan peringkat), seluruh leaderboard baik di platform web maupun in-game menerapkan kebijakan pengecualian terstandarisasi.
+
+### A. Kebijakan 6-Lapis Pengecualian Akun (Leaderboard Exemption Contract)
+Pemain otomatis **dikecualikan (dieliminasi)** dari seluruh papan peringkat publik jika memenuhi salah satu dari kriteria berikut:
+1. **Bukkit Operator (OP):** Terdaftar di `ops.json` atau berstatus `player.isOp() == true`.
+2. **Staff Rank Weight $\ge 80$:** Memiliki rank staf LuckPerms (`ancestor` [100], `architect` [95], `overseer` [95], `warden` [90], `herald` [80]).
+3. **Afiliasi Kerajaan Transenden Aetherion:** Terdaftar dengan `kingdom_id = 'AETHERION'` (The Aetherial Conclave).
+4. **Hak Akses & Permission Nodes:** Memiliki salah satu permission administratif:
+   - `apexsions.admin`
+   - `apexsions.staff`
+   - `apexsionscore.admin`
+   - `apexsions.conclave`
+   - `apexsions.leaderboard.exempt`
+5. **Hak Akses Web Azuriom CMS:** Memiliki role administrator web (`role->is_admin == true`).
+6. **Daftar Hitam Akun Founder & Developer:** Akun staf/founder yang terdaftar dalam daftar hitam username:
+   - `nueeva`, `nuevaid`, `rifqi`, `friell`, `favian`, `fanerf`, `kazrienvall`.
+
+### B. Struktur Papan Peringkat Web Platform (`/leaderboard`)
+Halaman papan peringkat web (`https://web.apexsions.my.id/leaderboard`) secara ketat menyajikan **2 Tabel Utama**:
+1. **🏆 Peringkat Level & EXP Warga (*Civilization Level & Mastery*):**
+   - Mengurutkan warga berdasarkan akumulasi level (1–100) dan total perolehan XP.
+   - Dilengkapi avatar 3D pemain, lencana kasta donatur/warga, serta afiliasi kerajaan mortal (*Zenithar*, *Solterra*, *Sylvamoor*).
+2. **💰 Peringkat Perbendaharaan Saldo Rupiah (*Economic Wealth & Treasury*):**
+   - Mengurutkan warga berdasarkan total saldo Rupiah (Rp) yang tersimpan di rekening moneter server.
+   - Format mata uang Rupiah presisi (`Rp xxx.xxx`).
+- **Batasan Arsitektur Web (MANDATORY):** Leaderboard BattlePass **DITIADAKAN DARI WEB** dan bersifat eksklusif in-game (`/abp top`). Kebijakan ini menjaga antarmuka web tetap bersih, mewah, terfokus pada status peradaban permanen, dan tidak membebani performa query web server.
+
+### C. Sinkronisasi Leaderboard In-Game (Cross-Plugin Enforcement)
+Di lingkungan Minecraft server, filter pengecualian dieksekusi secara asinkron sebelum rendering GUI:
+- **`ApexsionsCore` (`KingdomTopGUI` & `/kingdom top`):** Menyaring akun yang memenuhi `ApexsionsCoreAPI.isLeaderboardExempt(uuid)` dari daftar peringkat level tertinggi kerajaan dan server.
+- **`ApexsionsEconomy` (`EconomyLeaderboardService` & `/baltop`):** Menyaring akun staf dan OP dari daftar pemain terkaya.
+- **`ApexsionsBattlepass` (`BattlePassLeaderboardService` & `/abp top`):** Menyaring akun staf dari daftar progres tier pass tertinggi.
+- **`ApexsionsFishing` (`VaultStorageManager` & `/vault top`):** Menyaring akun staf dari daftar tangkapan ikan terbanyak dan ikan terberat (*Top Anglers*).
+
+---
+
+## 🔍 13. Standarisasi SEO, Google Search Console, Schema JSON-LD & Proteksi Domain
+
+Platform web Apexsions menerapkan arsitektur SEO enterprise dan proteksi integritas domain yang ketat untuk memastikan visibilitas pencarian Google optimal dan terlindungi dari manipulasi eksternal.
+
+### A. Standarisasi `sitemap.xml` & Nginx Response Headers
+- **Format Berkas:** Berada di `Website/public/sitemap.xml` dengan namespace W3C resmi (`<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`).
+- **Index URLs:** Memuat seluruh rute publik penting (`/`, `/about-us`, `/rules`, `/leaderboard`, `/server-map`, `/shop`, `/vote`, `/wiki`).
+- **Pembaruan Berkala:** Tanggal `<lastmod>` distandarkan ke versi termutakhir (`2026-09-15`).
+- **Nginx Server Directives (`/etc/nginx/sites-available/azuriom`):**
+  ```nginx
+  location = /sitemap.xml {
+      root /var/www/azuriom/public;
+      default_type application/xml;
+      add_header Content-Type "application/xml; charset=utf-8";
+      add_header X-Robots-Tag "all, index, follow";
+      add_header Access-Control-Allow-Origin "*";
+      add_header Cache-Control "public, max-age=3600";
+      try_files $uri =404;
+  }
+  ```
+  Menjamin bot mesin pencari (khususnya Googlebot) menerima `Content-Type: application/xml` murni tanpa terkena intercept routing aplikasi.
+
+### B. Schema.org Structured Data (JSON-LD) & Entity Disambiguation
+Disuntikkan secara statis di `<head>` master layout `themes/apexsions/views/layouts/app.blade.php`:
+1. **Entitas `@type: Organization` & `@type: WebSite`:**
+   - Menetapkan nama resmi entitas: `Apexsions`.
+   - Menetapkan URL canonical resmi: `https://web.apexsions.my.id/`.
+   - Menetapkan slogan: `The Peak Civilizations`.
+2. **Disambiguating Description (Pembeda Entitas Google Knowledge Graph):**
+   - Menegaskan deskripsi entitas: *"Apexsions adalah server peradaban Minecraft Indonesia independen bertema 3 Kerajaan besar (Zenithar, Solterra, Sylvamoor) dengan ekonomi atomic Rupiah dan RPG progression. Apexsions sama sekali tidak berafiliasi dengan perusahaan software bernama Apexion atau penyedia hosting bernama Apex Hosting."*
+   - Memastikan algoritma pencarian Google tidak mencampuradukkan indeks atau menyajikan snippet yang keliru terhadap entitas bisnis lain.
+
+### C. Proteksi Domain Liar & Mitigasi Backlink Parasitik (*Rogue Domain Neutralization*)
+Server VPS (`89.144.53.100`) dikonfigurasi dengan blok `default_server` pada Nginx untuk menangkal domain eksternal yang mengarahkan IP address atau DNS record tanpa izin (misalnya domain spam `professionelle-dachsanierung.com`):
+```nginx
+server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+    server_name _;
+    return 301 https://web.apexsions.my.id$request_uri;
+}
+```
+- **Fungsi Proteksi:** Mengalihkan seluruh traffic dan robot crawler domain liar menggunakan **HTTP 301 Permanent SEO Redirect** ke domain resmi `https://web.apexsions.my.id/`.
+- **Dampak SEO:** Mengonsolidasikan otoritas link (link equity) kembali ke Apexsions dan menghapus asosiasi negatif domain spam dari indeks mesin pencari.
+
+### D. Status Indeks Google Search Console
+- **Status URL:** Terverifikasi resmi dengan status **"URL ada di Google"** (*URL is on Google*).
+- **Pengindeksan:** Halaman canonical dinyatakan valid (`https://web.apexsions.my.id/`).
+- **Spider Crawl:** Telah dirayapi oleh *Googlebot untuk Ponsel cerdas* (Smartphone Crawler) dengan kepatuhan penuh terhadap standar keramahan seluler (*mobile-friendly*) dan keterbacaan aset CSS/JS.
