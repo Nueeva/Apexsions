@@ -191,6 +191,21 @@ public class DatabaseManager {
             stmt.execute("CREATE INDEX IF NOT EXISTS idx_players_level ON players(level);");
             stmt.execute("CREATE INDEX IF NOT EXISTS idx_regions_key ON regions(key);");
 
+            // Sovereign Land Claims Table
+            stmt.execute("CREATE TABLE IF NOT EXISTS apexsions_claims (" +
+                    "id VARCHAR(36) PRIMARY KEY, " +
+                    "owner_id VARCHAR(36) NOT NULL, " +
+                    "owner_name VARCHAR(32) NOT NULL, " +
+                    "world VARCHAR(128) NOT NULL, " +
+                    "chunk_x INTEGER NOT NULL, " +
+                    "chunk_z INTEGER NOT NULL, " +
+                    "trusted_players TEXT NOT NULL DEFAULT '', " +
+                    "created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, " +
+                    "CONSTRAINT uq_claim_chunk UNIQUE (world, chunk_x, chunk_z));");
+
+            stmt.execute("CREATE INDEX IF NOT EXISTS idx_claims_owner ON apexsions_claims(owner_id);");
+            stmt.execute("CREATE INDEX IF NOT EXISTS idx_claims_world_chunk ON apexsions_claims(world, chunk_x, chunk_z);");
+
             // Seed initial starter kingdoms matching BlueMap world.conf
             try {
                 stmt.execute("INSERT INTO regions (id, key, display_name, world_name, spawn_x, spawn_y, spawn_z, spawn_yaw, spawn_pitch, enabled) " +

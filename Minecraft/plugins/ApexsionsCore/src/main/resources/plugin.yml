@@ -215,8 +215,38 @@ commands:
     description: Open the interactive Admin Kit Management GUI.
     permission: apexsions.admin
     usage: /kitadmin
+  claim:
+    aliases:
+      - land
+      - landclaim
+    description: Sovereign land claiming and territory management.
+    usage: /claim [gui|info|trust|untrust|list|unclaim]
+  unclaim:
+    description: Unclaim the current chunk.
+    usage: /unclaim
+  trust:
+    description: Trust a player in your claimed lands.
+    usage: /trust <player>
+  untrust:
+    description: Revoke trust from a player in your claimed lands.
+    usage: /untrust <player>
+  claiminfo:
+    description: View claim information and display visual particle boundaries.
+    usage: /claiminfo
 
 permissions:
+  apexsions.claim.use:
+    description: Allows claiming lands.
+    default: true
+  apexsions.claim.unlimited:
+    description: Allows unlimited land claiming.
+    default: op
+  apexsions.admin.bypass.claim:
+    description: Allows bypassing land claim protections.
+    default: op
+  apexsions.staff.alerts:
+    description: Allows receiving anti-xray security alerts.
+    default: op
   apexsionscore.command.enchant:
     description: Allows applying custom enchantments with 4x multiplier.
     default: op

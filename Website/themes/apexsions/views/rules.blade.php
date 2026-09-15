@@ -207,7 +207,7 @@
                                     <i class="bi bi-shield-check text-emerald me-1"></i> <span data-i18n="rules_prevention_title">BENTUK PENCEGAHAN SISTEM AKTIF:</span>
                                 </div>
                                 <div class="apx-prevention-text" data-i18n="rules_r2_3_prev">
-                                    Sistem proteksi <code>TerritoryListener</code> dan <code>RegionManager</code> secara otomatis membatalkan event pembongkaran blok, penempatan blok, dan pembukaan peti oleh pemain non-warga wilayah berdaulat.
+                                    Sistem proteksi kedaulatan tanah (<code>/claim</code>, <code>/trust</code>, <code>/unclaim</code>) dan <code>ClaimProtectionListener</code> secara otomatis membatalkan event pembongkaran blok, penempatan blok, penuangan cairan, dan pembukaan peti oleh pemain luar. Pemain dapat memvisualisasikan batas chunk dengan partikel emas via <code>/claim info</code>.
                                 </div>
                             </div>
                         </div>

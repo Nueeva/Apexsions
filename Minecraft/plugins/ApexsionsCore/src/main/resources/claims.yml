@@ -1,0 +1,59 @@
+# ===================================================================
+# Apexsions - Land Claim & Territory Protection Configuration
+# ===================================================================
+
+# Maximum claimed chunks allowed per player based on rank weight / name
+claim-limits:
+  wanderer: 4
+  ascendant: 8
+  archon: 12
+  sovereign: 16
+  emperor: 24
+  sions: 32
+  herald: 64
+  warden: 128
+  overseer: 256
+  architect: 512
+  ancestor: 9999
+
+# Worlds where land claiming is disabled
+disabled-worlds:
+  - "world_nether"
+  - "world_the_end"
+
+# Anti-Grief Protection Rules
+protection:
+  protect-blocks: true
+  protect-containers: true
+  protect-doors-gates: true
+  protect-redstone-levers: true
+  protect-passive-entities: true
+  prevent-explosions: true
+  prevent-fluid-placing: true
+
+# Chunk Visualizer
+visualizer:
+  enabled: true
+  duration-seconds: 8
+  particle: "DUST"
+  color-hex: "#d4af37"
+
+# Anti-XRay Monitor
+anti-xray:
+  enabled: true
+  spike-threshold: 10
+  window-seconds: 60
+  max-reach-distance: 5.5
+  monitored-ores:
+    - "DIAMOND_ORE"
+    - "DEEPSLATE_DIAMOND_ORE"
+    - "ANCIENT_DEBRIS"
+    - "EMERALD_ORE"
+    - "DEEPSLATE_EMERALD_ORE"
+
+# Redstone Watchdog TPS Protector
+redstone-watchdog:
+  enabled: true
+  max-pulses-per-window: 20
+  window-ticks: 40
+  break-clock-on-abuse: false

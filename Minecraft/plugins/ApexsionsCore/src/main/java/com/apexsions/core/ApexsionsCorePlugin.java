@@ -130,6 +130,16 @@ public class ApexsionsCorePlugin extends JavaPlugin {
     // Player Level Attribute Progression & Combat Engine
     private com.apexsions.core.level.stat.PlayerAttributeService playerAttributeService;
 
+    // Land Claim & Territory Protection Subsystem
+    private com.apexsions.core.claim.ClaimRepository claimRepository;
+    private com.apexsions.core.claim.ClaimManager claimManager;
+    private com.apexsions.core.claim.gui.ClaimGUI claimGUI;
+    private com.apexsions.core.claim.ClaimProtectionListener claimProtectionListener;
+
+    // Security & Anti-Abuse Subsystem
+    private com.apexsions.core.security.AntiXrayListener antiXrayListener;
+    private com.apexsions.core.security.RedstoneWatchdogListener redstoneWatchdogListener;
+
     @Override
     public void onLoad() {
         applyDisableChannelLimit();
@@ -326,6 +336,21 @@ public class ApexsionsCorePlugin extends JavaPlugin {
 
             // 14. Inbound Vote Integration (NuVotifier / Votifier)
             new com.apexsions.core.listener.VoteListener(this).registerIfAvailable();
+
+            // 15. Sovereign Land Claim & Territory Anti-Grief Engine
+            this.claimRepository = new com.apexsions.core.claim.ClaimRepository(databaseManager, getLogger());
+            this.claimManager = new com.apexsions.core.claim.ClaimManager(this, claimRepository);
+            this.claimManager.loadClaims();
+            this.claimGUI = new com.apexsions.core.claim.gui.ClaimGUI(this, claimManager);
+            Bukkit.getPluginManager().registerEvents(claimGUI, this);
+            this.claimProtectionListener = new com.apexsions.core.claim.ClaimProtectionListener(this, claimManager);
+            Bukkit.getPluginManager().registerEvents(claimProtectionListener, this);
+
+            // 16. Security Subsystems (Anti-XRay & Redstone Watchdog)
+            this.antiXrayListener = new com.apexsions.core.security.AntiXrayListener(this);
+            Bukkit.getPluginManager().registerEvents(antiXrayListener, this);
+            this.redstoneWatchdogListener = new com.apexsions.core.security.RedstoneWatchdogListener(this);
+            Bukkit.getPluginManager().registerEvents(redstoneWatchdogListener, this);
 
             long elapsed = System.currentTimeMillis() - startTime;
             getLogger().info("ApexsionsCore loaded and enabled successfully in " + elapsed + "ms!");
@@ -605,12 +630,43 @@ public class ApexsionsCorePlugin extends JavaPlugin {
             maintenanceCmd.setExecutor(maintenanceHandler);
             maintenanceCmd.setTabCompleter(maintenanceHandler);
         }
+
+        // /claim (aliases: /land, /unclaim, /trust, /untrust, /claiminfo)
+        com.apexsions.core.claim.ClaimCommand claimHandler = new com.apexsions.core.claim.ClaimCommand(this, claimManager, claimGUI);
+        PluginCommand claimCmd = getCommand("claim");
+        if (claimCmd != null) {
+            claimCmd.setExecutor(claimHandler);
+            claimCmd.setTabCompleter(claimHandler);
+        }
+        PluginCommand unclaimCmd = getCommand("unclaim");
+        if (unclaimCmd != null) {
+            unclaimCmd.setExecutor(claimHandler);
+            unclaimCmd.setTabCompleter(claimHandler);
+        }
+        PluginCommand trustCmd = getCommand("trust");
+        if (trustCmd != null) {
+            trustCmd.setExecutor(claimHandler);
+            trustCmd.setTabCompleter(claimHandler);
+        }
+        PluginCommand untrustCmd = getCommand("untrust");
+        if (untrustCmd != null) {
+            untrustCmd.setExecutor(claimHandler);
+            untrustCmd.setTabCompleter(claimHandler);
+        }
+        PluginCommand claiminfoCmd = getCommand("claiminfo");
+        if (claiminfoCmd != null) {
+            claiminfoCmd.setExecutor(claimHandler);
+            claiminfoCmd.setTabCompleter(claimHandler);
+        }
     }
 
     public static ApexsionsCorePlugin getInstance() { return instance; }
 
     public ConfigManager getConfigManager() { return configManager; }
     public DatabaseManager getDatabaseManager() { return databaseManager; }
+    public com.apexsions.core.claim.ClaimManager getClaimManager() { return claimManager; }
+    public com.apexsions.core.claim.ClaimRepository getClaimRepository() { return claimRepository; }
+    public com.apexsions.core.claim.gui.ClaimGUI getClaimGUI() { return claimGUI; }
     public PlayerRepository getPlayerRepository() { return playerRepository; }
     public RegionRepository getRegionRepository() { return regionRepository; }
     public PlayerCache getPlayerCache() { return playerCache; }

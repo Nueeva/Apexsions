@@ -57,6 +57,31 @@ plugins/ApexsionsCore/
 | `/sions restore` | - | Memulihkan paksa seluruh blok Sions seketika | `apexsionscore.admin.sions` | `op` |
 | `/sions bypass` | - | Toggle mode bypass arsitek (modifikasi tanpa rollback) | `apexsionscore.admin.sions` | `op` |
 | `/sions tp` | - | Teleportasi langsung ke titik pusat ibukota Sions | `apexsionscore.admin.sions` | `op` |
+| `/claim` | `/land`, `/landclaim` | Mengklaim chunk tanah 16x16 lokasi berdiri | `apexsions.claim.use` | `true` |
+| `/claim gui` | `/claim menu` | Membuka antarmuka interaktif manajemen tanah | `apexsions.claim.use` | `true` |
+| `/claim info` | `/claiminfo` | Menampilkan info tanah & partikel batas chunk emas | `apexsions.claim.use` | `true` |
+| `/claim trust <p>` | `/trust <p>` | Memberikan izin bangun & interaksi peti pada teman | `apexsions.claim.use` | `true` |
+| `/claim untrust <p>`| `/untrust <p>` | Mencabut izin trust teman dari seluruh tanah Anda | `apexsions.claim.use` | `true` |
+| `/claim list` | - | Menampilkan daftar seluruh koordinat tanah milik pemain | `apexsions.claim.use` | `true` |
+| `/unclaim` | - | Melepas klaim chunk tanah lokasi saat ini | `apexsions.claim.use` | `true` |
+| `/claim unclaimall` | - | Melepas seluruh klaim tanah milik pemain | `apexsions.claim.use` | `true` |
+
+---
+
+## ⚑ Sistem Kedaulatan Tanah & Proteksi Anti-Griefing (`com.apexsions.core.claim`)
+
+1. **Klaim Tanah Berbasis Chunk ($16 \times 16$ blok)**:
+   - Pemain dapat mengamankan wilayah menggunakan `/claim`.
+   - Kuota klaim terhubung dengan sistem rank (`wanderer`: 4 chunks, hingga `sions`: 32 chunks dan admin tak terbatas).
+   - Visualisasi batas wilayah menggunakan partikel debu emas (`Particle.DUST`) berdurasi 8 detik via `/claim info`.
+2. **Proteksi Anti-Griefing Otomatis (`ClaimProtectionListener`)**:
+   - Membatalkan `BlockBreakEvent` dan `BlockPlaceEvent` bagi pemain non-trusted.
+   - Mengunci kontainer (Chest, Barrel, Shulker, Hopper, Furnace, Dispenser) dan saklar/pintu dari pemain luar.
+   - Mencegah penuangan lava/air dan kerusakan entitas pasif (hewan ternak, item frame, armor stand).
+   - Menetralkan ledakan TNT dan Creeper di wilayah klaim.
+3. **Keamanan Anti-XRay & Redstone Watchdog (`com.apexsions.core.security`)**:
+   - `AntiXrayListener`: Memantau lonjakan penambangan bijih berharga (Diamond, Debris, Emerald) dan menyiarkan alert koordinat real-time ke staf jika terdeteksi anomali spike ($>8$ bijih dalam 60s), serta membatasi jangkauan raytrace blok ($>5.8$m).
+   - `RedstoneWatchdogListener`: Mendeteksi sirkuit loop berkecepatan tinggi ($>25$ pulsa dalam 2s) dan otomatis memutus sinyal daya untuk menjaga 20 TPS server.
 
 ---
 
