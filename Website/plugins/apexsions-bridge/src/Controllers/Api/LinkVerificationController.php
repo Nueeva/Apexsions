@@ -627,6 +627,63 @@ class LinkVerificationController extends Controller
     }
 
     /**
+     * Ingest an entire land claims snapshot from in-game ClaimManager.
+     */
+    public function syncClaims(Request $request): JsonResponse
+    {
+        if (!$this->authenticateServer($request)) {
+            return response()->json(['error' => 'Unauthorized server request.'], 401);
+        }
+
+        $validated = $request->validate([
+            'claims' => ['required', 'array'],
+            'claims.*.id' => ['required', 'string'],
+            'claims.*.owner_uuid' => ['required', 'string'],
+            'claims.*.owner_name' => ['required', 'string'],
+            'claims.*.world' => ['required', 'string'],
+            'claims.*.chunk_x' => ['required', 'integer'],
+            'claims.*.chunk_z' => ['required', 'integer'],
+            'claims.*.trusted_count' => ['nullable', 'integer'],
+            'claims.*.created_at' => ['nullable'],
+        ]);
+
+        $incomingClaims = $validated['claims'];
+        $syncedIds = [];
+
+        foreach ($incomingClaims as $item) {
+            $syncedIds[] = $item['id'];
+            $createdAt = isset($item['created_at']) && is_numeric($item['created_at'])
+                ? \Carbon\Carbon::createFromTimestampMs((int) $item['created_at'])
+                : now();
+
+            \Azuriom\Plugin\ApexsionsBridge\Models\Claim::updateOrCreate(
+                [
+                    'world' => $item['world'],
+                    'chunk_x' => $item['chunk_x'],
+                    'chunk_z' => $item['chunk_z'],
+                ],
+                [
+                    'claim_id' => $item['id'],
+                    'owner_uuid' => $item['owner_uuid'],
+                    'owner_name' => $item['owner_name'],
+                    'trusted_count' => $item['trusted_count'] ?? 0,
+                    'in_game_created_at' => $createdAt,
+                ]
+            );
+        }
+
+        // Cleanup claims that no longer exist in the snapshot
+        if (!empty($syncedIds)) {
+            \Azuriom\Plugin\ApexsionsBridge\Models\Claim::whereNotIn('claim_id', $syncedIds)->delete();
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'synced_count' => count($incomingClaims),
+        ]);
+    }
+
+    /**
      * Ingest an in-game transaction record into the central Transaction Explorer.
      */
     public function syncTransaction(Request $request): JsonResponse

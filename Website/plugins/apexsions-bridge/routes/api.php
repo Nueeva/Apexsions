@@ -18,6 +18,9 @@ Route::post('/audit/log', [LinkVerificationController::class, 'ingestAuditLog'])
 Route::post('/reports/sync', [LinkVerificationController::class, 'syncReport'])->name('reports.sync');
 Route::post('/punishments/sync', [LinkVerificationController::class, 'syncPunishment'])->name('punishments.sync');
 
+// Land Claims Ingestion Endpoint
+Route::post('/claims/sync-all', [LinkVerificationController::class, 'syncClaims'])->name('claims.sync-all');
+
 // In-game Economy Ingestion Endpoints
 Route::post('/economy/transactions/sync', [LinkVerificationController::class, 'syncTransaction'])->name('economy.transactions.sync');
 Route::post('/economy/auctions/sync', [LinkVerificationController::class, 'syncAuction'])->name('economy.auctions.sync');

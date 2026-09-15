@@ -206,6 +206,27 @@ public class DatabaseManager {
             stmt.execute("CREATE INDEX IF NOT EXISTS idx_claims_owner ON apexsions_claims(owner_id);");
             stmt.execute("CREATE INDEX IF NOT EXISTS idx_claims_world_chunk ON apexsions_claims(world, chunk_x, chunk_z);");
 
+            // Unified Bans Table
+            stmt.execute("CREATE TABLE IF NOT EXISTS apexsions_bans (" +
+                    "id VARCHAR(36) PRIMARY KEY, " +
+                    "player_uuid VARCHAR(36) NOT NULL, " +
+                    "player_name VARCHAR(32) NOT NULL, " +
+                    "ip_address VARCHAR(45), " +
+                    "banned_by VARCHAR(64) NOT NULL, " +
+                    "reason TEXT NOT NULL, " +
+                    "ban_type VARCHAR(16) NOT NULL DEFAULT 'NAME', " +
+                    "banned_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, " +
+                    "expires_at TIMESTAMP NULL, " +
+                    "active BOOLEAN NOT NULL DEFAULT TRUE, " +
+                    "unbanned_by VARCHAR(64) NULL, " +
+                    "unban_reason TEXT NULL, " +
+                    "unbanned_at TIMESTAMP NULL);");
+
+            stmt.execute("CREATE INDEX IF NOT EXISTS idx_bans_player_uuid ON apexsions_bans(player_uuid);");
+            stmt.execute("CREATE INDEX IF NOT EXISTS idx_bans_player_name ON apexsions_bans(player_name);");
+            stmt.execute("CREATE INDEX IF NOT EXISTS idx_bans_ip ON apexsions_bans(ip_address);");
+            stmt.execute("CREATE INDEX IF NOT EXISTS idx_bans_active ON apexsions_bans(active);");
+
             // Seed initial starter kingdoms matching BlueMap world.conf
             try {
                 stmt.execute("INSERT INTO regions (id, key, display_name, world_name, spawn_x, spawn_y, spawn_z, spawn_yaw, spawn_pitch, enabled) " +

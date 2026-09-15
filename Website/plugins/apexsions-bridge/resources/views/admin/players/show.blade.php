@@ -61,6 +61,32 @@
     </div>
 </div>
 
+@if($activeBan)
+    <div class="alert alert-danger border-danger border-opacity-50 p-4 mb-4 shadow" style="background: linear-gradient(135deg, rgba(220, 38, 38, 0.25), rgba(153, 27, 27, 0.4)); border-radius: 12px;">
+        <div class="d-flex flex-wrap justify-content-between align-items-center">
+            <div>
+                <h5 class="fw-bold text-danger mb-1">
+                    <i class="bi bi-shield-fill-exclamation me-2"></i> PERHATIAN: PEMAIN SEDANG DI-BAN (SANKSI AKTIF)
+                </h5>
+                <div class="text-white small mb-2">
+                    Alasan: <strong>{{ $activeBan->reason }}</strong> | Oleh Staf: <strong>{{ $activeBan->staff_name ?? 'System' }}</strong>
+                </div>
+                <div class="text-muted small">
+                    Durasi: <span class="badge bg-danger">{{ $activeBan->isPermanent() ? 'PERMANEN' : round($activeBan->duration_seconds / 3600) . ' Jam' }}</span>
+                    @if(!$activeBan->isPermanent() && $activeBan->expires_at)
+                        | Berakhir: {{ $activeBan->expires_at->diffForHumans() }} ({{ $activeBan->expires_at->format('d M Y H:i') }})
+                    @endif
+                </div>
+            </div>
+            <div class="mt-3 mt-md-0">
+                <button type="button" class="btn btn-success fw-bold px-3 py-2 shadow-sm" data-bs-toggle="modal" data-bs-target="#unbanPlayerModal">
+                    <i class="bi bi-unlock-fill me-1"></i> Cabut Sanksi Ban (Unban)
+                </button>
+            </div>
+        </div>
+    </div>
+@endif
+
 <div class="row g-4">
     <!-- Main Content Tabs -->
     <div class="col-lg-8">
@@ -85,6 +111,11 @@
                     <li class="nav-item" role="presentation">
                         <button class="nav-link py-3 text-uppercase fw-bold" id="kingdom-tab" data-bs-toggle="tab" data-bs-target="#kingdom" type="button" role="tab" style="letter-spacing: 1px; font-size: 0.8rem;">
                             <i class="bi bi-shield-shaded me-1"></i> Kerajaan
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link py-3 text-uppercase fw-bold" id="claims-tab" data-bs-toggle="tab" data-bs-target="#claims" type="button" role="tab" style="letter-spacing: 1px; font-size: 0.8rem;">
+                            <i class="bi bi-geo-alt-fill me-1 text-warning"></i> Land Claims ({{ count($playerClaims) }})
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
@@ -605,6 +636,75 @@
                             </table>
                         </div>
                     </div>
+
+                    <!-- 7. LAND CLAIMS TAB -->
+                    <div class="tab-pane fade" id="claims" role="tabpanel">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h6 class="fw-bold text-white mb-0">
+                                <i class="bi bi-geo-alt-fill me-2 text-warning"></i> Wilayah Kedaulatan Terklaim ({{ count($playerClaims) }} Chunks)
+                            </h6>
+                            <a href="{{ route('apexsions-bridge.admin.claims.index', ['search' => $account->minecraft_username]) }}" class="btn btn-sm btn-outline-warning">
+                                <i class="bi bi-box-arrow-up-right me-1"></i> Buka di Claims Explorer
+                            </a>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-dark table-hover mb-0 align-middle">
+                                <thead>
+                                    <tr>
+                                        <th>Dunia (World)</th>
+                                        <th>Chunk Coord</th>
+                                        <th>Blok Pusat (X, Z)</th>
+                                        <th>Trusted</th>
+                                        <th>Tgl Klaim</th>
+                                        <th class="text-end">Aksi Otoritatif</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @forelse($playerClaims as $pclaim)
+                                        <tr>
+                                            <td>
+                                                <span class="badge bg-secondary bg-opacity-25 text-light border border-secondary border-opacity-25">
+                                                    {{ $pclaim->world }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span class="font-monospace text-warning">
+                                                    [{{ $pclaim->chunk_x }}, {{ $pclaim->chunk_z }}]
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span class="font-monospace text-muted small">
+                                                    X: {{ ($pclaim->chunk_x * 16) + 8 }}, Z: {{ ($pclaim->chunk_z * 16) + 8 }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span class="badge bg-info bg-opacity-10 text-info">
+                                                    {{ $pclaim->trusted_count }} dipercaya
+                                                </span>
+                                            </td>
+                                            <td class="text-muted small">
+                                                {{ $pclaim->created_at->format('d M Y, H:i') }}
+                                            </td>
+                                            <td class="text-end">
+                                                <form action="{{ route('apexsions-bridge.admin.claims.unclaim', $pclaim->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin mencabut paksa klaim chunk ini dari pemain?');">
+                                                    @csrf
+                                                    <button type="submit" class="btn btn-outline-danger btn-sm py-1 px-2">
+                                                        <i class="bi bi-trash3-fill me-1"></i> Force Unclaim
+                                                    </button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td colspan="6" class="text-center py-4 text-muted">
+                                                Pemain ini belum mengklaim tanah atau wilayah kedaulatan di realm.
+                                            </td>
+                                        </tr>
+                                    @endforelse
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -710,6 +810,15 @@
                 <div class="mb-3">
                     <span class="small fw-bold text-muted text-uppercase d-block mb-2" style="font-size: 0.72rem;">🛡 Moderasi & Aksi In-Game</span>
                     <div class="d-grid gap-2">
+                        @if($activeBan)
+                            <button type="button" class="btn btn-sm btn-success text-start fw-bold" data-bs-toggle="modal" data-bs-target="#unbanPlayerModal">
+                                <i class="bi bi-unlock-fill me-2 text-white"></i> Cabut Sanksi Ban (Unban)
+                            </button>
+                        @else
+                            <button type="button" class="btn btn-sm btn-outline-danger text-start fw-bold" data-bs-toggle="modal" data-bs-target="#banPlayerModal">
+                                <i class="bi bi-slash-circle-fill me-2 text-danger"></i> Ban Pemain (Sanksi)
+                            </button>
+                        @endif
                         <button type="button" class="btn btn-sm btn-outline-danger text-start @if(!$isOnline) disabled @endif" data-bs-toggle="modal" data-bs-target="#kickPlayerModal" @if(!$isOnline) title="Pemain sedang offline" @endif>
                             <i class="bi bi-box-arrow-right me-2 text-danger"></i> Kick Pemain @if(!$isOnline) <small class="badge bg-secondary ms-1">Offline</small> @endif
                         </button>
@@ -1289,6 +1398,85 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
             </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Ban Player -->
+<div class="modal fade" id="banPlayerModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="background: #151820; border: 1px solid rgba(220, 53, 69, 0.5); color: #fff;">
+            <div class="modal-header border-secondary">
+                <h5 class="modal-title fw-bold text-danger">
+                    <i class="bi bi-slash-circle-fill me-2"></i> Ban Pemain: {{ $account->minecraft_username }}
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <form action="{{ route('apexsions-bridge.admin.players.action', $account->minecraft_uuid) }}" method="POST">
+                @csrf
+                <input type="hidden" name="action_type" value="BAN_PLAYER">
+                <div class="modal-body">
+                    <div class="alert alert-danger bg-danger bg-opacity-10 border-danger border-opacity-25 text-danger small mb-3">
+                        <i class="bi bi-exclamation-triangle-fill me-1"></i>
+                        Sanksi ban ini akan dicatat ke database terpadu Apexsions, disinkronkan ke native Paper BanList, dan memutuskan koneksi pemain sebelum tahap otentikasi login AuthMe.
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold">Durasi Ban (Jam) <span class="text-muted">(Kosongkan untuk Ban Permanen)</span></label>
+                        <input type="number" name="duration_hours" class="form-control bg-dark text-white border-secondary" placeholder="Contoh: 24 (1 hari), 168 (7 hari), atau kosongkan untuk permanen..." min="1">
+                        <small class="text-muted">Jika dikosongkan, hukuman akan berlaku secara permanen tanpa batas waktu.</small>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold">Alasan Sanksi Ban <span class="text-danger">*</span></label>
+                        <textarea name="reason" class="form-control bg-dark text-white border-secondary" rows="3" placeholder="Sebutkan pasal regulasi dan detail pelanggaran..." required minlength="3" maxlength="250"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer border-secondary">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-danger fw-bold" onclick="return confirm('Yakin ingin menjatuhkan sanksi BAN pada pemain ini?');">
+                        <i class="bi bi-hammer me-1"></i> Eksekusi Ban Otoritatif
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Unban Player -->
+<div class="modal fade" id="unbanPlayerModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="background: #151820; border: 1px solid rgba(40, 167, 69, 0.5); color: #fff;">
+            <div class="modal-header border-secondary">
+                <h5 class="modal-title fw-bold text-success">
+                    <i class="bi bi-unlock-fill me-2"></i> Cabut Sanksi Ban: {{ $account->minecraft_username }}
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <form action="{{ route('apexsions-bridge.admin.players.action', $account->minecraft_uuid) }}" method="POST">
+                @csrf
+                <input type="hidden" name="action_type" value="UNBAN_PLAYER">
+                <div class="modal-body">
+                    <div class="alert alert-success bg-success bg-opacity-10 border-success border-opacity-25 text-success small mb-3">
+                        <i class="bi bi-info-circle-fill me-1"></i>
+                        Pencabutan ban akan mengaktifkan kembali akun pemain di seluruh sistem (ApexsionsCore, Bukkit native, dan Web Moderation Center).
+                    </div>
+                    @if($activeBan)
+                        <div class="p-3 bg-dark rounded border border-secondary mb-3 small">
+                            <div>Alasan Ban: <span class="text-warning">{{ $activeBan->reason }}</span></div>
+                            <div>Oleh: <span class="text-info">{{ $activeBan->staff_name ?? 'System' }}</span></div>
+                        </div>
+                    @endif
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold">Alasan Pencabutan Ban (Pardon Reason) <span class="text-danger">*</span></label>
+                        <input type="text" name="reason" class="form-control bg-dark text-white border-secondary" placeholder="Contoh: Banding diterima / Masa percobaan / Salah paham regulasi..." required minlength="3" maxlength="250">
+                    </div>
+                </div>
+                <div class="modal-footer border-secondary">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-success fw-bold">
+                        <i class="bi bi-check-circle-fill me-1"></i> Cabut Sanksi Ban Sekarang
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 </div>

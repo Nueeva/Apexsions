@@ -276,6 +276,9 @@ public class ClaimManager {
 
         claims.put(key, newClaim);
         repository.saveClaim(newClaim);
+        if (plugin.getWebBridgeService() != null) {
+            plugin.getWebBridgeService().syncClaimsAsync(getAllClaims());
+        }
 
         showChunkBoundary(player, chunk);
         player.playSound(player.getLocation(), Sound.BLOCK_RESPAWN_ANCHOR_SET_SPAWN, 0.7f, 1.2f);
@@ -298,6 +301,9 @@ public class ClaimManager {
 
         claims.remove(key);
         repository.deleteClaim(chunk.getWorld().getName(), chunk.getX(), chunk.getZ());
+        if (plugin.getWebBridgeService() != null) {
+            plugin.getWebBridgeService().syncClaimsAsync(getAllClaims());
+        }
 
         player.playSound(player.getLocation(), Sound.BLOCK_BEACON_DEACTIVATE, 0.6f, 1.0f);
         return new ClaimResult(true, "<gold>✔ Berhasil melepas klaim tanah pada chunk [" + chunk.getX() + ", " + chunk.getZ() + "].</gold>");
@@ -313,9 +319,42 @@ public class ClaimManager {
             claims.remove(c.getChunkKey());
         }
         repository.deleteClaimsByOwner(player.getUniqueId());
+        if (plugin.getWebBridgeService() != null) {
+            plugin.getWebBridgeService().syncClaimsAsync(getAllClaims());
+        }
 
         player.playSound(player.getLocation(), Sound.BLOCK_BEACON_DEACTIVATE, 0.7f, 0.8f);
         return new ClaimResult(true, "<gold>✔ Berhasil melepas seluruh <yellow>" + list.size() + "</yellow> klaim tanah Anda.</gold>");
+    }
+
+    public boolean forceUnclaimChunk(String world, int chunkX, int chunkZ) {
+        String key = ClaimChunk.buildChunkKey(world, chunkX, chunkZ);
+        ClaimChunk removed = claims.remove(key);
+        if (removed != null) {
+            repository.deleteClaim(world, chunkX, chunkZ);
+            if (plugin.getWebBridgeService() != null) {
+                plugin.getWebBridgeService().syncClaimsAsync(getAllClaims());
+            }
+            return true;
+        }
+        return false;
+    }
+
+    public int forceUnclaimAll(UUID ownerUuid) {
+        List<ClaimChunk> list = getClaimsByOwner(ownerUuid);
+        if (list.isEmpty()) return 0;
+        for (ClaimChunk c : list) {
+            claims.remove(c.getChunkKey());
+        }
+        repository.deleteClaimsByOwner(ownerUuid);
+        if (plugin.getWebBridgeService() != null) {
+            plugin.getWebBridgeService().syncClaimsAsync(getAllClaims());
+        }
+        return list.size();
+    }
+
+    public Collection<ClaimChunk> getAllClaims() {
+        return Collections.unmodifiableCollection(claims.values());
     }
 
     public ClaimResult trustPlayer(Player owner, UUID targetId, String targetName) {

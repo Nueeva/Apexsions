@@ -82,14 +82,28 @@ public class ClaimCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
-        // Main /claim command
-        if (!(sender instanceof Player player)) {
-            if (args.length > 0 && args[0].equalsIgnoreCase("reload")) {
-                claimManager.loadConfig();
-                sender.sendMessage(mm.deserialize("<green>✔ Konfigurasi claims.yml berhasil dimuat ulang.</green>"));
+        // Admin subcommands for Console and In-game Staff
+        if (args.length > 0 && args[0].equalsIgnoreCase("admin")) {
+            if (!sender.hasPermission("apexsions.admin") && !sender.isOp()) {
+                sender.sendMessage(mm.deserialize("<red>✖ Anda tidak memiliki izin untuk administrasi klaim tanah.</red>"));
                 return true;
             }
-            sender.sendMessage("Hanya pemain yang dapat menggunakan perintah /claim.");
+            handleAdminSubcommand(sender, args);
+            return true;
+        }
+
+        if (args.length > 0 && args[0].equalsIgnoreCase("reload")) {
+            if (!sender.hasPermission("apexsions.admin") && !sender.isOp()) {
+                sender.sendMessage(mm.deserialize("<red>✖ Anda tidak memiliki izin untuk memuat ulang claims.</red>"));
+                return true;
+            }
+            claimManager.loadConfig();
+            sender.sendMessage(mm.deserialize("<green>✔ Konfigurasi claims.yml berhasil dimuat ulang.</green>"));
+            return true;
+        }
+
+        if (!(sender instanceof Player player)) {
+            sender.sendMessage("Hanya pemain yang dapat menggunakan perintah interaktif /claim.");
             return true;
         }
 
@@ -127,18 +141,59 @@ public class ClaimCommand implements CommandExecutor, TabCompleter {
                 handleUntrust(player, args[1]);
             }
             case "list" -> handleList(player);
-            case "reload" -> {
-                if (!player.hasPermission("apexsions.admin")) {
-                    player.sendMessage(mm.deserialize("<red>✖ Anda tidak memiliki izin untuk memuat ulang claims.</red>"));
-                    return true;
-                }
-                claimManager.loadConfig();
-                player.sendMessage(mm.deserialize("<green>✔ Konfigurasi claims.yml berhasil dimuat ulang.</green>"));
-            }
             default -> sendHelp(player);
         }
 
         return true;
+    }
+
+    private void handleAdminSubcommand(CommandSender sender, String[] args) {
+        if (args.length < 2) {
+            sender.sendMessage(mm.deserialize("<gold>Penggunaan Admin:</gold> <yellow>/claim admin <unclaim|unclaimall|sync></yellow>"));
+            return;
+        }
+
+        String action = args[1].toLowerCase();
+        switch (action) {
+            case "unclaim" -> {
+                if (args.length < 5) {
+                    sender.sendMessage(mm.deserialize("<yellow>Penggunaan: /claim admin unclaim <world> <chunkX> <chunkZ></yellow>"));
+                    return;
+                }
+                String world = args[2];
+                try {
+                    int cx = Integer.parseInt(args[3]);
+                    int cz = Integer.parseInt(args[4]);
+                    boolean ok = claimManager.forceUnclaimChunk(world, cx, cz);
+                    if (ok) {
+                        sender.sendMessage(mm.deserialize("<green>✔ Berhasil melepas klaim tanah chunk [" + cx + ", " + cz + "] di dunia " + world + ".</green>"));
+                    } else {
+                        sender.sendMessage(mm.deserialize("<yellow>⚠ Tidak ada klaim aktif pada chunk tersebut.</yellow>"));
+                    }
+                } catch (NumberFormatException e) {
+                    sender.sendMessage(mm.deserialize("<red>Koordinat chunk harus berupa angka integer.</red>"));
+                }
+            }
+            case "unclaimall" -> {
+                if (args.length < 3) {
+                    sender.sendMessage(mm.deserialize("<yellow>Penggunaan: /claim admin unclaimall <nama_pemain></yellow>"));
+                    return;
+                }
+                String target = args[2];
+                org.bukkit.OfflinePlayer off = Bukkit.getOfflinePlayer(target);
+                int count = claimManager.forceUnclaimAll(off.getUniqueId());
+                sender.sendMessage(mm.deserialize("<green>✔ Berhasil melepas seluruh (" + count + ") klaim tanah milik " + target + ".</green>"));
+            }
+            case "sync" -> {
+                if (plugin.getWebBridgeService() != null) {
+                    plugin.getWebBridgeService().syncClaimsAsync(claimManager.getAllClaims());
+                    sender.sendMessage(mm.deserialize("<green>✔ Sinkronisasi seluruh klaim tanah (" + claimManager.getAllClaims().size() + ") ke Web Platform sedang dikirim...</green>"));
+                } else {
+                    sender.sendMessage(mm.deserialize("<red>WebBridgeService tidak aktif.</red>"));
+                }
+            }
+            default -> sender.sendMessage(mm.deserialize("<red>Aksi admin klaim tidak valid. Pilihan: unclaim, unclaimall, sync.</red>"));
+        }
     }
 
     private void handleInfo(Player player) {

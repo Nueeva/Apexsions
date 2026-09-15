@@ -140,6 +140,10 @@ public class ApexsionsCorePlugin extends JavaPlugin {
     private com.apexsions.core.security.AntiXrayListener antiXrayListener;
     private com.apexsions.core.security.RedstoneWatchdogListener redstoneWatchdogListener;
 
+    // Unified Moderation & Ban Subsystem
+    private com.apexsions.core.moderation.BanRepository banRepository;
+    private com.apexsions.core.moderation.BanManager banManager;
+
     @Override
     public void onLoad() {
         applyDisableChannelLimit();
@@ -351,6 +355,21 @@ public class ApexsionsCorePlugin extends JavaPlugin {
             Bukkit.getPluginManager().registerEvents(antiXrayListener, this);
             this.redstoneWatchdogListener = new com.apexsions.core.security.RedstoneWatchdogListener(this);
             Bukkit.getPluginManager().registerEvents(redstoneWatchdogListener, this);
+
+            // 17. Unified Moderation & Ban Engine (Inter-plugin centralized ban/unban)
+            this.banRepository = new com.apexsions.core.moderation.BanRepository(this, databaseManager);
+            this.banManager = new com.apexsions.core.moderation.BanManager(this, banRepository);
+            Bukkit.getPluginManager().registerEvents(new com.apexsions.core.moderation.BanGateListener(this, banManager), this);
+
+            // Neutralize and override conflicting Essentials moderation commands
+            com.apexsions.core.moderation.EssentialsBanOverride.overrideEssentials(this);
+
+            // Initial Land Claims Web Sync
+            if (this.webBridgeService != null) {
+                Bukkit.getScheduler().runTaskLater(this, () -> {
+                    this.webBridgeService.syncClaimsAsync(this.claimManager.getAllClaims());
+                }, 100L);
+            }
 
             long elapsed = System.currentTimeMillis() - startTime;
             getLogger().info("ApexsionsCore loaded and enabled successfully in " + elapsed + "ms!");
@@ -658,12 +677,24 @@ public class ApexsionsCorePlugin extends JavaPlugin {
             claiminfoCmd.setExecutor(claimHandler);
             claiminfoCmd.setTabCompleter(claimHandler);
         }
+
+        // Unified Ban System (/ban, /tempban, /unban, /pardon, /banip, /unbanip, /checkban, /banlist)
+        com.apexsions.core.moderation.BanCommand banCommandHandler = new com.apexsions.core.moderation.BanCommand(this, banManager);
+        String[] banCmdNames = {"ban", "tempban", "unban", "pardon", "banip", "unbanip", "checkban", "banlist"};
+        for (String bCmd : banCmdNames) {
+            PluginCommand pCmd = getCommand(bCmd);
+            if (pCmd != null) {
+                pCmd.setExecutor(banCommandHandler);
+                pCmd.setTabCompleter(banCommandHandler);
+            }
+        }
     }
 
     public static ApexsionsCorePlugin getInstance() { return instance; }
 
     public ConfigManager getConfigManager() { return configManager; }
     public DatabaseManager getDatabaseManager() { return databaseManager; }
+    public com.apexsions.core.moderation.BanManager getBanManager() { return banManager; }
     public com.apexsions.core.claim.ClaimManager getClaimManager() { return claimManager; }
     public com.apexsions.core.claim.ClaimRepository getClaimRepository() { return claimRepository; }
     public com.apexsions.core.claim.gui.ClaimGUI getClaimGUI() { return claimGUI; }

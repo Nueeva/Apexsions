@@ -454,6 +454,94 @@ public class WebBridgeService {
     }
 
     /**
+     * Report an in-game moderation punishment (e.g. BAN) to the Web Moderation Center.
+     */
+    public CompletableFuture<Boolean> syncPunishmentAsync(String playerUuid, String playerName, String type,
+                                                          String reason, String staffName, Long durationSeconds) {
+        if (!enabled) return CompletableFuture.completedFuture(false);
+        try {
+            String actionId = UUID.randomUUID().toString();
+            String durationField = durationSeconds != null ? ",\"duration_seconds\":" + durationSeconds : "";
+            String jsonPayload = String.format(
+                    "{\"action_id\":\"%s\",\"player_uuid\":\"%s\",\"player_name\":\"%s\",\"type\":\"%s\",\"reason\":\"%s\",\"staff_name\":\"%s\"%s}",
+                    escapeJson(actionId),
+                    escapeJson(playerUuid),
+                    escapeJson(playerName),
+                    escapeJson(type),
+                    escapeJson(reason),
+                    escapeJson(staffName),
+                    durationField
+            );
+
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(apiUrl + "/punishments/sync"))
+                    .timeout(Duration.ofSeconds(5))
+                    .header("Content-Type", "application/json")
+                    .header("Accept", "application/json")
+                    .header("X-Apexsions-Key", apiKey)
+                    .POST(HttpRequest.BodyPublishers.ofString(jsonPayload))
+                    .build();
+
+            return httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString())
+                    .thenApply(res -> res.statusCode() == 200 || res.statusCode() == 201)
+                    .exceptionally(ex -> {
+                        plugin.getLogger().log(Level.FINE, "[WebBridge] Failed to sync punishment to web: " + ex.getMessage());
+                        return false;
+                    });
+        } catch (Exception e) {
+            plugin.getLogger().log(Level.FINE, "[WebBridge] syncPunishmentAsync error: " + e.getMessage());
+            return CompletableFuture.completedFuture(false);
+        }
+    }
+
+    /**
+     * Synchronize entire active land claims snapshot to the web platform for Admin Dashboard inspection.
+     */
+    public CompletableFuture<Boolean> syncClaimsAsync(Collection<com.apexsions.core.claim.ClaimChunk> claimsList) {
+        if (!enabled || claimsList == null) return CompletableFuture.completedFuture(false);
+        try {
+            StringBuilder sb = new StringBuilder();
+            sb.append("{\"claims\":[");
+            boolean first = true;
+            for (var c : claimsList) {
+                if (!first) sb.append(",");
+                first = false;
+                sb.append(String.format(
+                        "{\"id\":\"%s\",\"owner_uuid\":\"%s\",\"owner_name\":\"%s\",\"world\":\"%s\",\"chunk_x\":%d,\"chunk_z\":%d,\"trusted_count\":%d,\"created_at\":%d}",
+                        escapeJson(c.getId().toString()),
+                        escapeJson(c.getOwnerId().toString()),
+                        escapeJson(c.getOwnerName()),
+                        escapeJson(c.getWorld()),
+                        c.getChunkX(),
+                        c.getChunkZ(),
+                        c.getTrustedPlayers().size(),
+                        c.getCreatedAt()
+                ));
+            }
+            sb.append("]}");
+
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(apiUrl + "/claims/sync-all"))
+                    .timeout(Duration.ofSeconds(10))
+                    .header("Content-Type", "application/json")
+                    .header("Accept", "application/json")
+                    .header("X-Apexsions-Key", apiKey)
+                    .POST(HttpRequest.BodyPublishers.ofString(sb.toString()))
+                    .build();
+
+            return httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString())
+                    .thenApply(res -> res.statusCode() == 200 || res.statusCode() == 201)
+                    .exceptionally(ex -> {
+                        plugin.getLogger().log(Level.FINE, "[WebBridge] Failed to sync claims snapshot to web: " + ex.getMessage());
+                        return false;
+                    });
+        } catch (Exception e) {
+            plugin.getLogger().log(Level.FINE, "[WebBridge] syncClaimsAsync error: " + e.getMessage());
+            return CompletableFuture.completedFuture(false);
+        }
+    }
+
+    /**
      * Periodically synchronize all currently online players' stats to the web platform.
      */
     public void syncAllOnlinePlayers() {

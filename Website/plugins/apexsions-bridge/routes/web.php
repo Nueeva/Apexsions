@@ -100,6 +100,12 @@ Route::middleware(['web', 'admin-access'])->prefix('admin')->name('admin.')->gro
         Route::post('/{id}/pardon', [ModerationAdminController::class, 'pardon'])->name('pardon');
     });
 
+    // Land Claims & Anti-Grief Territory Management
+    Route::prefix('claims')->name('claims.')->middleware('can:admin.users')->group(function () {
+        Route::get('/', [\Azuriom\Plugin\ApexsionsBridge\Controllers\Admin\ClaimAdminController::class, 'index'])->name('index');
+        Route::post('/{id}/unclaim', [\Azuriom\Plugin\ApexsionsBridge\Controllers\Admin\ClaimAdminController::class, 'unclaim'])->name('unclaim');
+    });
+
     // Economy Operations & Market Control
     Route::prefix('economy')->name('economy.')->middleware('can:admin.users')->group(function () {
         Route::get('/', [EconomyAdminController::class, 'index'])->name('index');

@@ -177,6 +177,17 @@ class PlayerAdminController extends Controller
         $allRanks = RankService::getAllRanks();
         $currentRankMeta = RankService::getRank($account->rank);
 
+        // Fetch active ban if any
+        $activeBan = Punishment::where('player_uuid', $account->minecraft_uuid)
+            ->where('type', 'BAN')
+            ->where('status', 'ACTIVE')
+            ->first();
+
+        // Fetch land claims owned by this player
+        $playerClaims = \Azuriom\Plugin\ApexsionsBridge\Models\Claim::where('owner_uuid', $account->minecraft_uuid)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
         // Record a read audit log for sensitive viewing if needed
         AuditService::log([
             'action' => 'PLAYER_VIEW',
@@ -199,6 +210,8 @@ class PlayerAdminController extends Controller
             'auditLogs' => $auditLogs,
             'rankHistory' => $rankHistory,
             'punishments' => $punishments,
+            'activeBan' => $activeBan,
+            'playerClaims' => $playerClaims,
             'reportsAgainst' => $reportsAgainst,
             'reportsCreated' => $reportsCreated,
             'playerTransactions' => $playerTransactions,
@@ -222,10 +235,11 @@ class PlayerAdminController extends Controller
             'action_type' => [
                 'required',
                 'string',
-                'in:ASSIGN_RANK,RESET_RANK,ADJUST_BALANCE,SET_LEVEL,ADD_XP,SET_KINGDOM,RESET_KINGDOM,KICK_PLAYER,HEAL_FEED,BATTLEPASS_PASS,BATTLEPASS_TIER,DISPATCH_ALERT,TRIGGER_SYNC,SET_GAMEMODE,APPOINT_KING,REVOKE_KING',
+                'in:ASSIGN_RANK,RESET_RANK,ADJUST_BALANCE,SET_LEVEL,ADD_XP,SET_KINGDOM,RESET_KINGDOM,KICK_PLAYER,HEAL_FEED,BATTLEPASS_PASS,BATTLEPASS_TIER,DISPATCH_ALERT,TRIGGER_SYNC,SET_GAMEMODE,APPOINT_KING,REVOKE_KING,BAN_PLAYER,UNBAN_PLAYER',
             ],
             'reason' => ['required', 'string', 'min:3', 'max:250'],
             'message' => ['nullable', 'string', 'max:250'],
+            'duration_hours' => ['nullable', 'integer', 'min:1'],
             'rank' => ['nullable', 'string'],
             'currency' => ['nullable', 'string', 'in:rupiah,diamond'],
             'sub_type' => ['nullable', 'string', 'in:give,take,set'],
@@ -550,6 +564,20 @@ class PlayerAdminController extends Controller
             ]);
 
             return back()->with('success', "Perintah kick untuk {$account->minecraft_username} berhasil dikirim ke server!");
+        }
+
+        // 8.5. BAN PLAYER (Centralized Authoritative Moderation)
+        if ($actionType === 'BAN_PLAYER') {
+            $durationHours = !empty($validated['duration_hours']) ? (int) $validated['duration_hours'] : null;
+            ModerationService::ban($account->minecraft_uuid, $account->minecraft_username, $durationHours, $reason, $actor);
+            $durStr = $durationHours ? "selama {$durationHours} jam" : "secara permanen";
+            return back()->with('success', "Pemain {$account->minecraft_username} berhasil di-ban {$durStr}!");
+        }
+
+        // 8.6. UNBAN PLAYER (PARDON)
+        if ($actionType === 'UNBAN_PLAYER') {
+            ModerationService::unban($account->minecraft_uuid, $account->minecraft_username, $reason, $actor);
+            return back()->with('success', "Sanksi ban untuk {$account->minecraft_username} berhasil dicabut!");
         }
 
         // 9. HEAL & FEED (Online only)

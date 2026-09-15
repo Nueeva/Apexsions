@@ -165,6 +165,12 @@ class ApexsionsBridgeServiceProvider extends BasePluginServiceProvider
                 'route' => 'apexsions-bridge.admin.moderation.index',
                 'permission' => 'admin.users',
             ],
+            'apexsions-claims' => [
+                'name' => 'Land Claims & Anti-Grief',
+                'icon' => 'bi bi-geo-alt-fill',
+                'route' => 'apexsions-bridge.admin.claims.index',
+                'permission' => 'admin.users',
+            ],
             'apexsions-votes' => [
                 'name' => 'Vote Management',
                 'icon' => 'bi bi-patch-check-fill',

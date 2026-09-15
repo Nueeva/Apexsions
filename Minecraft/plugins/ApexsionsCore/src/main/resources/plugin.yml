@@ -233,6 +233,48 @@ commands:
   claiminfo:
     description: View claim information and display visual particle boundaries.
     usage: /claiminfo
+  ban:
+    description: Authoritative moderation ban command.
+    permission: apexsions.admin.ban
+    usage: /ban <player> [duration] [reason...]
+  tempban:
+    description: Authoritative temporary moderation ban command.
+    permission: apexsions.admin.ban
+    usage: /tempban <player> <duration> [reason...]
+  unban:
+    aliases:
+      - pardon
+    description: Authoritative moderation unban / pardon command.
+    permission: apexsions.admin.unban
+    usage: /unban <player|uuid> [reason...]
+  pardon:
+    description: Alias for /unban.
+    permission: apexsions.admin.unban
+    usage: /pardon <player|uuid> [reason...]
+  banip:
+    description: Authoritative network IP ban command.
+    permission: apexsions.admin.banip
+    usage: /banip <player|ip> [duration] [reason...]
+  unbanip:
+    aliases:
+      - pardonip
+    description: Authoritative network IP unban / pardon command.
+    permission: apexsions.admin.unban
+    usage: /unbanip <ip>
+  pardonip:
+    description: Alias for /unbanip.
+    permission: apexsions.admin.unban
+    usage: /pardonip <ip>
+  checkban:
+    aliases:
+      - baninfo
+    description: Check the active ban status of a player.
+    permission: apexsions.admin.ban
+    usage: /checkban <player>
+  banlist:
+    description: View all currently active bans.
+    permission: apexsions.admin.ban
+    usage: /banlist
 
 permissions:
   apexsions.claim.use:
