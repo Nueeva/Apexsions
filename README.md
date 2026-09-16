@@ -29,7 +29,7 @@ Apexsions/
 
 | Plugin | Versi | Status | Package Root Java | Deskripsi & Fokus Utama |
 | :--- | :---: | :---: | :--- | :--- |
-| **`ApexsionsCore`** | `1.0.0` | ![Active](https://img.shields.io/badge/Status-Active-brightgreen) | `com.apexsions.core.*` | Otoritas Wilayah Kerajaan (*Zenithar*, *Solterra*, *Sylvamoor*), Sistem Warp Navigasi GUI & Admin Editor GUI, Perlindungan PvP Teritorial Kerajaan, Progresi Leveling (13 XP Sources), BlueMap Polygons, Leaderboard GUI (`/kingdom top`), Kingdom War Manager, PvP Combat Tag (15s), Kingdom-Bounded `/rtp`, Enforcer TPA EssentialsX, dan Sistem Kit Kerajaan Terintegrasi (`/kits`) dengan Armor Set Bonus Berbasis Stat. |
+| **`ApexsionsCore`** | `1.0.0` | ![Active](https://img.shields.io/badge/Status-Active-brightgreen) | `com.apexsions.core.*` | Otoritas Wilayah Kerajaan (*Zenithar*, *Solterra*, *Sylvamoor*), Kedaulatan Wilayah Tanah (`/claim`) dengan Pajak Upkeep Progresif & Brankas Klaim, Hak Istimewa Upper Dimension Conclave, Anti-Griefing, Anti-Xray Monitor, Redstone Watchdog, Sistem Moderasi Terpusat (`/ban`), Sistem Warp Navigasi GUI & Admin Editor GUI, Perlindungan PvP Teritorial Kerajaan, Progresi Leveling (13 XP Sources), BlueMap Polygons, Leaderboard GUI (`/kingdom top`), Kingdom War Manager, PvP Combat Tag (15s), Kingdom-Bounded `/rtp`, Enforcer TPA EssentialsX, dan Sistem Kit Kerajaan Terintegrasi (`/kits`) dengan Armor Set Bonus Berbasis Stat. |
 | **`ApexsionsChat`** | `1.0.0` | ![Active](https://img.shields.io/badge/Status-Active-brightgreen) | `com.apexsions.chat.*` | Komunikasi Kyori MiniMessage, Channel (*Global*, *Kingdom*, *Staff*), Chat Settings GUI (`/channel settings`), Pamer Item (`/showitem`), Surat Offline (`/mail`), Chat Games, dan Moderasi Lapis Tiga dengan Staff Reports GUI. |
 | **`ApexsionsEconomy`** | `1.0.0` | ![Active](https://img.shields.io/badge/Status-Active-brightgreen) | `com.apexsions.economy.*` | Multi-Currency (`Rupiah`, `Diamond`), Transfer Cepat (`/pay`), Pasar Lelang (`/ah`) dengan Escrow Claim, dan Barter/Trade 12-Slot dengan Pajak Transportasi Antar-Kerajaan. |
 | **`ApexsionsBattlepass`** | `1.0.0` | ![Active](https://img.shields.io/badge/Status-Active-brightgreen) | `com.apexsions.battlepass.*` | 200 Level BattlePass, Season Management, Quests (Daily, Weekly, Monthly), Tingkatan Pass (`FREE`, `PREMIUM`, `PREMIUM+`, `ULTIMATE`), dan Visual Admin GUI Editor 54-Slot (`/abp`). |
@@ -37,6 +37,7 @@ Apexsions/
 | **`ApexsionsMedia`** | `1.0.0` | ![Active](https://img.shields.io/badge/Status-Active-brightgreen) | `com.apexsions.media.*` | Render Banner/Logo Gambar Multi-Tile Asinkron (PNG/JPG/URL) dengan deteksi ukuran otomatis, Raytrace Line-of-Sight Hover Glowing, Actionbar Tooltips, Replikasi/Pindah Banner (`/media place`, `/media copy`), dan Interaksi Tautan Konfirmasi Web (`[Buka URL]` & `[Salin Clipboard]`). |
 | **`ApexsionsCustomEnchants`** | `1.0.0` | ![Active](https://img.shields.io/badge/Status-Active-brightgreen) | `com.apexsions.customenchants.*` | Sistem Custom Enchantment Mewah: Enchanter Gacha Dual-Currency (`/ce`), Toko Buku Spesifik 3x Harga, Mystery & Magic Dust Booster, White & Black Scrolls, Admin Hub (`/ace`), Replika Katalog `/ae admin` (`/ace enchants`), Interactive Item & Armor Set Builder (`/ace create`), dan Tinkerer Coming Soon. |
 | **`ApexsionsCrates`** | `1.0.0` | ![Active](https://img.shields.io/badge/Status-Active-brightgreen) | `com.apexsions.crates.*` | Sistem Peti Hadiah Mewah & Kunci Crate: Toko Pembelian Kunci (`/crateshop`), Milestone Progression, Animasi Pembukaan Mewah, dan Integrasi Hadiah Ekonomi / Kit. |
+| **`ApexsionsFishing`** | `1.0.0` | ![Active](https://img.shields.io/badge/Status-Active-brightgreen) | `com.apexsions.fishing.*` | Sistem AFK & Active Reel Fishing interaktif, Rarity & Weight Engine 6-Tier (`COMMON` hingga `MYTHIC`), Virtual Bait Quota System (`/fish bait`), Native Dialog Admin Rod Creator GUI (`AdminRodCreatorGUI`), Fishing Vault Storage 54-Slot (`/vault`), Pasar Ikan & Pengiriman Instan (`/fish sell`), serta Joran Khusus Auto-Catch (`/fish rods`). |
 
 ---
 
@@ -98,6 +99,23 @@ Apexsions/
   - Tier 1 (Kerajaan Lv 1–5), Tier 2 (Wilderness Lv 5–20 weighted), Tier 3 (Dangerous Wilds Lv 20–40), Tier 4 (High-Risk Outposts Lv 40–65), Tier 5 (Terra Interdicta / Sions Lv 65–90), dan Tier 6 (Raid Mini-Boss Voran Lv 90 & World Boss Kaisar Valerius Lv 100).
 - **Profil Tempur Real-Time (`/k info` & `/k profile`)**:
   - Lore skull pemain di slot 13 menampilkan ringkasan live Max HP, Base Attack, PvE Mastery, dan Fair-Play PvP Profile.
+- **Kedaulatan Wilayah Tanah (Sovereign Land Claims) & Upkeep Progresif (`/claim`)**:
+  - `/claim`: Klaim wilayah chunk tanah berdaulat yang dinaungi panji kerajaan pemain.
+  - `/claim gui`: Antarmuka visual 45-slot untuk mengelola brankas klaim, toggle flag wilayah, dan hierarki peran anggota.
+  - **Formula Pajak Progresif**: $\text{Tarif Harian} = 100 \times (1 + (\text{Total Chunks} - 1) \times 0.15)$ untuk mencegah penimbunan tanah kosong liar.
+  - **Aliran Kas Kerajaan**: 50% sewa disalurkan ke Kas Kerajaan pemain (`Kingdom Treasury`) dan 50% dibakar dari sirkulasi server (*money sink*).
+  - **Masa Tenggang 72 Jam & Auto-Unclaim**: Status menunggak (`GRACE_PERIOD`) memberi waktu 3 hari disertai peringatan suara & judul sebelum klaim disita otomatis menjadi alam liar (*Wilderness*).
+  - **Hak Istimewa Kedaulatan Upper Dimension Conclave**: Entitas dimensi atas (`ancestor`, `architect`, `overseer`, `warden`, `herald`) dan pemegang `apexsions.claim.unlimited` menikmati kuota tak terbatas (`∞`), bebas pajak sewa (`Rp 0/hari`), dan kebal dari masa tenggang maupun penyitaan otomatis sesuai kanon `LORE.md`.
+  - **Granular Flags & Hierarki Peran**: Kontrol flag (`pvp`, `mob_spawn`, `fire_spread`, `explosions`, `greeting`, `farewell`) dan 4 tingkatan peran (`OWNER`, `MANAGER`, `BUILDER`, `VISITOR`).
+  - **Pengepungan Perang Kerajaan (Siege Mode)**: Saat Kingdom War aktif, klaim musuh dapat diserbu jika pemilik atau anggotanya sedang online.
+- **Sistem Moderasi Otoritatif Terpusat (Centralized Ban Engine)**:
+  - Perintah otoritatif terpadu: `/ban`, `/tempban`, `/unban`, `/pardon`, `/banip`, `/unbanip`, `/checkban`, `/banlist`.
+  - Mengeliminasi redundansi EssentialsX ban/kick commands dan memeriksa status sanksi pada level soket jaringan (`AsyncPlayerPreLoginEvent`) sebelum fase login AuthMe.
+  - Terintegrasi penuh secara dua arah dengan Web Admin Azuriom (`/admin/players/{id}`) dan dashboard finansial teritorial (`/admin/claims`).
+- **Sistem Keamanan Anti-Griefing, Anti-Xray & Redstone Watchdog**:
+  - **Proteksi Anti-Griefing**: Membatalkan 100% perusakan/penempatan blok, pembakaran, dan pencurian kontainer oleh non-anggota berizin di wilayah berdaulat.
+  - **Anti-Xray Ore Spike Tracker**: Memantau lonjakan penambangan bijih langka ($\ge 8$ bijih per 60 detik) serta reach hack ($> 5.8\text{m}$) dengan siaran alert audio-visual ke meja staf.
+  - **Redstone Watchdog Engine**: Membekukan otomatis osilasi sirkuit redstone liar ($> 25$ pulsa per 2 detik) dengan partikel asap dan audio alert demi mempertahankan kestabilan 20 TPS server.
 
 ### 💬 ApexsionsChat
 - **Interactive Chat ID-Card & Social Profile GUI (27-Slot)**:
@@ -175,6 +193,24 @@ Apexsions/
 - **Integrasi Penuh Ekosistem Apexsions**:
   - Pemberian hadiah kustom otomatis: Custom Enchants, Battlepass XP, Diamond voucher, dan Kit voucher.
 
+### 🎣 ApexsionsFishing
+- **AFK Fishing & Active Reel Engine**:
+  - Mode santai AFK fishing dan mekanik tarikan interaktif (*Active Reel*) yang menantang kecepatan reaksi pemain.
+- **Rarity & Weight Engine 6-Tier**:
+  - Klasifikasi tangkapan: `COMMON`, `UNCOMMON`, `RARE`, `EPIC`, `LEGENDARY`, `MYTHIC`.
+  - Bobot gram realistis per spesies yang mempengaruhi nilai jual pasar secara proporsional.
+- **Virtual Bait Quota System (`/fish bait` / `BaitShopGUI`)**:
+  - Kuota umpan virtual tersimpan aman di database tanpa memakan ruang tas inventaris.
+  - Memberikan bonus peluang gigitan instan dan peluang menangkap ikan langka berbobot raksasa.
+- **Native Dialog Admin Rod Creator GUI (`AdminRodCreatorGUI`)**:
+  - Pembuatan joran kustom admin berbasis `NativeDialogAdapter` dan antarmuka numerik aman tanpa bug crash anvil.
+- **Fishing Vault Storage 54-Slot (`/vault`)**:
+  - Brankas penyimpanan tangkapan ikan eksklusif per pemain yang dapat ditingkatkan kapasitasnya (`VaultShopGUI`).
+- **Fish Market & Instant Delivery (`/fish sell`)**:
+  - Penjualan langsung seluruh isi brankas atau inventaris ke pasar ikan terintegrasi `ApexsionsEconomy` (Rupiah/Diamond).
+- **Auto-Catch Rods & Upgrade Engine (`/fish rods`)**:
+  - Joran khusus bertingkat dengan durabilitas kustom, percepatan waktu gigitan, dan peluang auto-reel.
+
 ---
 
 ## 📜 3. Master Command List & Permissions Matrix
@@ -223,6 +259,24 @@ Apexsions/
 | `/kits delete <id>` | - | Menghapus kit kerajaan dari sistem | `apexsionscore.admin` | `op` |
 | `/kits list` | - | Menampilkan daftar seluruh kit aktif | `apexsionscore.admin` | `op` |
 | `/kits resetcd <p> <id>` | - | Mereset cooldown kit pemain tertentu | `apexsionscore.admin` | `op` |
+| `/claim` | - | Mengklaim chunk tanah tempat berdiri menjadi wilayah berdaulat | `apexsions.claim.use` | `true` |
+| `/claim gui` | `/claim menu` | Membuka antarmuka manajemen wilayah 45-slot (Bank, Flags, Anggota) | `apexsions.claim.use` | `true` |
+| `/claim unclaim` | `/unclaim` | Melepas klaim chunk tempat berdiri kembali ke alam liar | `apexsions.claim.use` | `true` |
+| `/claim deposit <amt>` | `/claim bank` | Menyetor saldo Rupiah ke brankas wilayah untuk membayar sewa upkeep | `apexsions.claim.use` | `true` |
+| `/claim withdraw <amt>` | - | Menarik saldo Rupiah dari brankas wilayah (Khusus Owner) | `apexsions.claim.use` | `true` |
+| `/claim add <p>` | `/claim invite` | Mengundang pemain menjadi anggota wilayah | `apexsions.claim.use` | `true` |
+| `/claim remove <p>` | `/claim kick` | Menghapus keanggotaan pemain dari wilayah | `apexsions.claim.use` | `true` |
+| `/claim role <p> <role>` | - | Mengatur peran anggota (`BUILDER`, `MANAGER`) | `apexsions.claim.use` | `true` |
+| `/claim flag <flag> <val>` | - | Mengatur flag wilayah (`pvp`, `mob_spawn`, `explosions`, dll) | `apexsions.claim.use` | `true` |
+| `/claim list` | - | Menampilkan daftar seluruh petak wilayah yang dimiliki | `apexsions.claim.use` | `true` |
+| `/claim admin` | `/aclaim` | Panel administrasi klaim tanah seluruh server (Admin) | `apexsions.claim.admin` | `op` |
+| `/ban <p> [alasan]` | - | Menjatuhkan sanksi ban permanen terpusat ke pemain | `apexsions.ban` | `op` |
+| `/tempban <p> <dur> [al]`| - | Menjatuhkan sanksi ban sementara (e.g. 1d, 7d, 30d) | `apexsions.tempban` | `op` |
+| `/unban <p>` | `/pardon` | Mencabut sanksi ban pemain terdaftar | `apexsions.unban` | `op` |
+| `/banip <ip/p> [alasan]` | - | Menjatuhkan sanksi ban IP terpusat | `apexsions.banip` | `op` |
+| `/unbanip <ip>` | `/pardonip` | Mencabut sanksi ban IP | `apexsions.unbanip` | `op` |
+| `/checkban <p>` | - | Memeriksa status sanksi aktif, alasan, dan durasi ban pemain | `apexsions.checkban` | `op` |
+| `/banlist` | - | Menampilkan daftar riwayat dan pemain yang sedang ter-ban | `apexsions.banlist` | `op` |
 
 ### 💬 Modul ApexsionsChat
 | Perintah | Alias | Deskripsi | Hak Akses (Permission) | Default |
@@ -323,6 +377,17 @@ Apexsions/
 | `/crateshop` | `/keyshop`, `/cratekeyshop` | Membuka Toko Pembelian Crate Keys Resmi Apexsions | `apexsionscrates.user` | `true` |
 | `/crateshop reload` | - | Memuat ulang konfigurasi peti hadiah dan harga kunci | `apexsionscrates.admin` | `op` |
 
+### 🎣 Modul ApexsionsFishing
+| Perintah | Alias | Deskripsi | Hak Akses (Permission) | Default |
+| :--- | :--- | :--- | :--- | :---: |
+| `/fish` | `/mancing` | Membuka menu utama perikanan Apexsions | `apexsionsfishing.use` | `true` |
+| `/fish bait` | `/bait`, `/umpan` | Membuka Toko Kuota Umpan Virtual (`BaitShopGUI`) | `apexsionsfishing.use` | `true` |
+| `/fish rods` | `/rods`, `/joran` | Membuka katalog & peningkatan joran kustom | `apexsionsfishing.use` | `true` |
+| `/fish sell` | `/fish market` | Menjual hasil tangkapan ikan secara instan | `apexsionsfishing.use` | `true` |
+| `/vault` | `/fishvault` | Membuka Brankas Penyimpanan Ikan 54-slot | `apexsionsfishing.use` | `true` |
+| `/fish admin rod` | `/adminrod` | Membuka Dialog Native Admin Rod Creator GUI | `apexsionsfishing.admin` | `op` |
+| `/fish reload` | - | Memuat ulang seluruh konfigurasi perikanan | `apexsionsfishing.admin` | `op` |
+
 ---
 
 ## 🛠️ 4. Kompilasi & Build Otomatis
@@ -339,8 +404,9 @@ powershell -ExecutionPolicy Bypass -File .\build.ps1 Battlepass
 powershell -ExecutionPolicy Bypass -File .\build.ps1 Shop
 powershell -ExecutionPolicy Bypass -File .\build.ps1 CustomEnchants
 powershell -ExecutionPolicy Bypass -File .\build.ps1 Crates
+powershell -ExecutionPolicy Bypass -File .\build.ps1 Fishing
 
-# 2. Kompilasi SELURUH 8 plugin suite serentak:
+# 2. Kompilasi SELURUH 9 plugin suite serentak:
 powershell -ExecutionPolicy Bypass -File .\build.ps1 -All
 ```
 
@@ -353,6 +419,7 @@ File `.jar` hasil kompilasi siap pasang akan tersedia di:
 - `Minecraft/build/libs/ApexsionsMedia-1.0.0.jar`
 - `Minecraft/build/libs/ApexsionsCustomEnchants-1.0.0.jar`
 - `Minecraft/build/libs/ApexsionsCrates-1.0.0.jar`
+- `Minecraft/build/libs/ApexsionsFishing-1.0.0.jar`
 
 ---
 

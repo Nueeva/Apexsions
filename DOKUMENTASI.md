@@ -149,7 +149,11 @@ Struktur modul berada di folder `Minecraft/plugins/`:
    - Progresi Level 1-100 dengan 13 sumber XP.
    - **RPG Stat Scaling (Diminishing Curves):** Injeksi atribut native Paper (`Attribute.MAX_HEALTH` maks +12 HP, `Attribute.ATTACK_DAMAGE` maks +1.90), bonus PvE damage khusus monster (maks +26.5%), dan mitigasi resistensi monster (maks 10%).
    - **Unified Combat Engine & Smart PvP Normalizer:** Pipeline terisolasi dengan prioritas event (`NORMAL` -> `HIGH` -> `HIGHEST`), pemotongan excess attack > +0.80 di PvP, dan normalisasi proporsional defender ber-HP tinggi ke skala 24 HP tanpa bug heart-flicker.
-   - **Profil Tempur Real-Time (`/k info`):** Lore kepala pemain di GUI profil menampilkan statistik fisik, keunggulan PvE, dan status profil fair-play PvP.
+   - **Sovereign Land Claiming & Upkeep Economy (`/claim`):** Brankas deposit mandiri per wilayah (`Claim Bank`), Pajak Harian Progresif ($100 \times (1 + (\text{Total Chunks} - 1) \times 0.15)$), 50% setoran otomatis ke Kas Kerajaan (`KingdomTreasury`), Masa Tenggang 72 Jam (*Grace Period*) dengan auto-unclaim saat penunggakan berlanjut.
+   - **Kedaulatan Upper Dimension Conclave:** Kuota klaim **Tanpa Batas (`∞`)** dan **Bebas Pajak Upkeep (`Rp 0.0/hari`)** bagi entitas Conclave (Weight $\ge 80$: `ancestor`, `architect`, `overseer`, `warden`, `herald`) sesuai kanon `LORE.md`.
+   - **Flags & Peran Granular:** Pengaturan flags wilayah (`pvp`, `mob_spawn`, `fire_spread`, `explosions`, `greeting`, `farewell`) dan 4 hierarki peran warga (`OWNER`, `MANAGER`, `BUILDER`, `VISITOR`).
+   - **Kingdom War Siege Mode:** Perlindungan wilayah musuh terbuka untuk diserbu saat status perang resmi berkobar (jika pemilik online).
+   - **Centralized Moderation Engine:** Sistem ban/unban otoritatif terpadu (`/ban`, `/tempban`, `/unban`, `/pardon`, `/banip`, `/unbanip`, `/checkban`, `/banlist`), socket-level pre-login gatekeeper menangkal bypass AuthMe, dan eliminasi fragmentasi sanksi EssentialsX.
    - GUI Inspector 54-Slot & Admin Panel (`/ac inspect <p>`, `/ac setspawn`, dll).
    - Warp Navigasi & Editor Admin (`/warp`, `/warpmgr`).
    - Proteksi PvP sesama kerajaan di wilayah teritorial sendiri.
@@ -177,6 +181,8 @@ Struktur modul berada di folder `Minecraft/plugins/`:
 9. **`ApexsionsFishing`** (`com.apexsions.fishing.*`):
    - Sistem **AFK Fishing** dan **Active Reel Engine** dengan mekanik tangkapan interaktif.
    - **Rarity & Weight Engine 6-Tier:** `COMMON`, `UNCOMMON`, `RARE`, `EPIC`, `LEGENDARY`, `MYTHIC` dengan bobot berat gram realistis dan nilai jual dinamis.
+   - **Virtual Bait Quota System (`/fish bait` / `BaitShopGUI`):** Kuota umpan virtual tersimpan di database (`baits.yml`) dengan peluang gigitan dan bonus bobot ikan langka.
+   - **Native Dialog Admin Rod Creator GUI (`AdminRodCreatorGUI`):** Pembuatan dan konfigurasi joran khusus admin via `NativeDialogAdapter` & `FishingInputGUI` tanpa resiko crash anvil.
    - **Fishing Vault Storage 54-Slot (`/vault`):** Brankas penyimpanan tangkapan ikan eksklusif per pemain dengan fitur upgrade kapasitas (`VaultShopGUI`).
    - **Fish Market & Instant Delivery (`/fish sell`):** Pasar penjualan ikan terintegrasi `ApexsionsEconomy` (Rupiah/Diamond) dengan bonus pengiriman.
    - **Auto-Catch Rods & Upgrade Engine (`/fish rods`):** Joran pancing khusus dengan durabilitas, kecepatan gigitan, dan auto-reel chance.
@@ -440,3 +446,111 @@ server {
 - **Status URL:** Terverifikasi resmi dengan status **"URL ada di Google"** (*URL is on Google*).
 - **Pengindeksan:** Halaman canonical dinyatakan valid (`https://web.apexsions.my.id/`).
 - **Spider Crawl:** Telah dirayapi oleh *Googlebot untuk Ponsel cerdas* (Smartphone Crawler) dengan kepatuhan penuh terhadap standar keramahan seluler (*mobile-friendly*) dan keterbacaan aset CSS/JS.
+
+---
+
+## 🏰 14. Sistem Kedaulatan Wilayah (Sovereign Land Claiming), Upkeep Progresif & Hak Istimewa Upper Dimension
+
+Sistem kedaulatan tanah di Apexsions menghubungkan proteksi anti-griefing, ekonomi sewa wilayah progresif, kas kerajaan, dan perang peradaban dalam satu ekosistem terpadu:
+
+### A. Brankas Wilayah & Formula Pajak Progresif (Upkeep Economy)
+1. **Brankas Wilayah (Claim Bank):**
+   Setiap petak klaim memiliki brankas dana mandiri. Pemain menyetor saldo Rupiah via `/claim deposit <nominal>` atau tombol setoran cepat Rp1.000 / Rp10.000 di `/claim gui`.
+2. **Formula Pajak Progresif:**
+   $$\text{Tarif Harian Per Chunk} = 100 \times (1 + (\text{Total Chunks Milik Pemain} - 1) \times 0.15)$$
+   Mekanisme ini mencegah penimbunan tanah kosong berlebih oleh segelintir pemain dan merangsang perputaran ekonomi peradaban.
+3. **Aliran Kas Kerajaan (Kingdom Treasury Split):**
+   Setiap siklus 24 jam, pemotongan sewa otomatis terjadi:
+   - **50%** disalurkan langsung ke Kas Kerajaan pemain (`ApexsionsEconomyProvider.depositKingdomTreasury`) untuk mendanai pertahanan kerajaan.
+   - **50%** dibakar dari peredaran (*money sink* server).
+
+### B. Masa Tenggang (Grace Period 72 Jam) & Penyitaan Otomatis (Auto-Unclaim)
+1. **Status Menunggak:** Jika brankas klaim kosong saat jatuh tempo, status tanah berubah menjadi `GRACE_PERIOD` selama 72 jam (3 hari).
+2. **Peringatan Login & Movement:** Pemilik yang login atau melangkah ke dalam wilayah menunggak menerima audio alert dan notifikasi durasi sisa masa tenggang.
+3. **Penyitaan Wilayah (Auto-Unclaim):** Jika 72 jam habis tanpa setoran saldo baru, sistem melepas klaim tanah secara otomatis dan mengembalikannya menjadi alam liar (*Wilderness*).
+
+### C. Hak Istimewa Kedaulatan Upper Dimension Conclave (Lore-Compliant per `LORE.md`)
+Berdasarkan kanon kosmologi `LORE.md` (Bab I & Bab VIII: The Aetherial Conclave):
+1. **Klaim Tanpa Batas (Unlimited Claims):**
+   Entitas Upper Dimension (`ancestor` [100], `architect` [95], `overseer` [95], `warden` [90], `herald` [80], serta pemegang izin `apexsions.claim.unlimited`) memiliki kuota tanpa batas (`-1` / `Integer.MAX_VALUE`). Tugas suci mereka merajut realitas dan membangun monumen peradaban tidak dibatasi oleh kuota fana.
+2. **Bebas Pajak Sewa Wilayah (Upkeep Tax Exemption):**
+   Tarif harian dihitung `Rp 0.0/hari`. Wilayah Conclave dan staf dikecualikan dari pemotongan pajak dan tidak akan pernah mengalami masa tenggang (*grace period*) maupun penyitaan (*auto-unclaim*).
+3. **Format Antarmuka:** Kuota di `/claim gui` dan `/claim list` menampilkan `"∞ (Tak Terbatas)"`.
+
+### D. Flags Wilayah & Pembagian Peran Granular
+- **Pengaturan Flag Mandiri (`/claim flag <flag> <nilai>`):**
+  - `pvp`: On/Off (Duel antar-pemain di dalam klaim).
+  - `mob_spawn`: On/Off (Mencegah monster agresif muncul di dalam base).
+  - `fire_spread`: On/Off (Mencegah api menyebar dari lahar/petir).
+  - `explosions`: On/Off (Mencegah kerusakan akibat ledakan creeper/tnt).
+  - `greeting` & `farewell`: Judul sinematik saat melintasi batas klaim.
+- **Hierarki Peran Warga (`/claim role <pemain> <peran>`):**
+  - `OWNER`: Hak kepemilikan mutlak, penarikan dana, pengaturan flag, delegasi izin.
+  - `MANAGER`: Pengelola yang berhak mengundang warga, mengubah flag, dan memantau brankas.
+  - `BUILDER`: Berhak membangun, menaruh/menghancurkan blok, dan mengakses kontainer.
+  - `VISITOR`: Hanya bisa melintas tanpa izin modifikasi blok atau kontainer.
+
+### E. Integrasi Perang Pengepungan (Kingdom War Siege Mode)
+- Wilayah klaim bernaung di bawah panji Kerajaan pemiliknya (`kingdom_id`).
+- Saat status **Kingdom War** resmi aktif antar dua kerajaan, wilayah klaim musuh dapat diserbu (*Siege Mode*) jika pemilik atau anggota wilayah sedang online.
+- Setelah masa perang selesai, wilayah otomatis kembali ke proteksi damai 100%.
+
+---
+
+## ⚖️ 15. Sistem Moderasi Otoritatif Terpusat (Centralized Ban Engine) & Integrasi Web Admin
+
+Menghilangkan fragmentasi sistem penegakan disiplin antar-plugin dan mengintegrasikan moderasi in-game dengan Web Admin Azuriom:
+
+### A. Perintah Otoritatif Terpadu (ApexsionsCore)
+- Perintah aktif: `/ban`, `/tempban`, `/unban`, `/pardon`, `/banip`, `/unbanip`, `/checkban`, `/banlist`.
+- **Eliminasi Redundansi EssentialsX:** Perintah moderasi EssentialsX (`ban`, `tempban`, `unban`, `pardon`, `banip`, `unbanip`, `kick`, `mute`, `unmute`) dinonaktifkan permanen pada `disabled-commands` di `Essentials/config.yml` serta dineutralkan oleh `EssentialsBanOverride`.
+- **Socket-Level Pre-Login Gatekeeper (`AsyncPlayerPreLoginEvent`):** Pemeriksaan ban dijalankan pada soket jaringan sebelum AuthMe berjalan. Pemain ter-ban langsung diputus koneksinya dengan layar cinematic (*Disconnection Screen*), mencegah eksploitasi bypass password atau login evasion.
+- **Arsitektur Failsafe Lazy Auto-Resolution:** `ClaimCommand` dan `BanCommand` menggunakan dynamic fallback `plugin.getClaimManager()` dan `plugin.getBanManager()`, mencegah risiko `NullPointerException` jika perintah dipanggil sebelum inisialisasi modul selesai.
+
+### B. Dashboard Finansial & Teritorial Web Admin (`/admin/claims`)
+- **5 Kartu Metrik Emas Gelap:** Total Chunks Terklaim, Wilayah Lunas/Aktif, Menunggak (Grace Period), Total Saldo Brankas Terkumpul, dan Total Pemilik Aktif.
+- **Filter Komprehensif:** Pencarian instan berdasarkan nama pemain, UUID, dimensi dunia, status pembayaran (Lunas/Menunggak/Kedaluwarsa), dan afiliasi kerajaan.
+- **Tindakan Admin:**
+  - **Suntik Saldo (*Admin Deposit*):** Menyuntikkan dana darurat ke brankas klaim pemain via antrean `Delivery` console.
+  - **Tagih Pajak Sekarang (*Force Collect Tax*):** Memaksa eksekusi penagihan pajak dan evaluasi masa tenggang manual dari web.
+  - **Sync In-Game:** Memicu sinkronisasi data instan dari game server ke database web.
+  - **Live BlueMap Link:** Tautan koordinat langsung ke penampil peta 3D.
+- **Panel Moderasi Terpadu (`/admin/players/{id}`):** Tab Ban/Unban terpusat untuk menjatuhkan dan mencabut sanksi pemain langsung dari browser.
+
+---
+
+## 🛡️ 16. Sistem Keamanan Anti-Griefing, Anti-Xray Monitor & Redstone Watchdog Engine
+
+ApexsionsCore dilengkapi sistem proteksi keamanan dan integritas server berlapis tinggi:
+
+### A. Proteksi Anti-Griefing Wilayah Berdaulat (`ClaimProtectionListener`)
+1. **Proteksi Blok & Kontainer:**
+   - Pemain tanpa izin (`VISITOR` / non-anggota) dicegah 100% dari menaruh blok (`BlockPlaceEvent`), menghancurkan blok (`BlockBreakEvent`), serta mengakses kontainer (`CHEST`, `BARREL`, `SHULKER_BOX`, `HOPPER`, `FURNACE`, dll).
+   - Tindakan ilegal dibatalkan dengan audio alert `BLOCK_CHEST_LOCKED` dan actionbar real-time ber-throttle (1,5 detik) agar tidak membebani network bandwidth.
+2. **Proteksi Bencana Alam & Lingkungan:**
+   - **Penyebaran Api:** Mencegah api melahap blok di dalam klaim jika flag `fire_spread` bernilai `false`.
+   - **Ledakan Lingkungan:** Melindungi struktur dari ledakan Creeper, TNT liar, Wither, dan Respawn Anchor jika flag `explosions` bernilai `false`.
+   - **Pencegahan Pencurian Kendaraan & Lukisan:** Melindungi Armor Stand, Item Frame, Lukisan, dan Minecart dari kerusakan oleh entitas non-izin.
+3. **Pemisahan Kedaulatan & Wilderness:**
+   - Wilayah alam liar (*Wilderness*) tetap bebas untuk dieksplorasi dan ditambang secara wajar, namun wilayah peradaban yang berdaulat terlindungi penuh.
+
+### B. Anti-Xray Ore Mining Spike Tracker & Reach Gatekeeper (`AntiXrayListener`)
+1. **Raytrace Reach Validation:**
+   - Memvalidasi jarak interaksi blok pemain mode Survival/Adventure terhadap jarak mata (`getEyeLocation`).
+   - Interaksi di atas jarak wajar ($> 5.8\text{ meter}$) dibatalkan seketika (`BlockBreakEvent.setCancelled(true)`) dengan notifikasi actionbar pencegahan reach-hack.
+2. **Deteksi Anomali Penambangan Bijih Langka (Ore Spike):**
+   - Memantau penambangan bijih krusial: `DIAMOND_ORE`, `DEEPSLATE_DIAMOND_ORE`, `ANCIENT_DEBRIS`, `EMERALD_ORE`, `DEEPSLATE_EMERALD_ORE`.
+   - Melacak lonjakan penambangan dalam sliding window 60 detik. Jika pemain menambang $\ge 8$ bijih langka dalam tempo 60 detik, sistem otomatis mendeteksi anomali.
+3. **Peringatan Staf Otomatis (Staff Alert Desk):**
+   - Staf online (pemegang izin `apexsions.staff` atau OP) menerima siaran pesan alert merah tua bersuara lonceng (`BLOCK_NOTE_BLOCK_BELL`) yang mencantumkan nama pemain, jumlah bijih, durasi, serta koordinat persis $[X, Y, Z]$.
+   - Dilengkapi cooldown peringatan 45 detik per pemain untuk mencegah spam log staf.
+
+### C. Watchdog Osilasi Redstone Cepat Anti-Lag (`RedstoneWatchdogListener`)
+1. **Pencegahan Mesin Lag (Lag Machine Suppression):**
+   - Memantau frekuensi osilasi sinyal redstone (`BlockRedstoneEvent`) pada setiap koordinat blok menggunakan pelacak pulsa geser (*Sliding Pulse Tracker*).
+2. **Ambang Batas Keamanan:**
+   - Batas toleransi: Maksimal **25 pulsa per 2.000 milidetik (2 detik)**.
+   - Jika sirkuit melebihi batas ini (mengindikasikan redstone clock ilegal atau loop laggy), watchdog otomatis membekukan sinyal dengan menetapkan `event.setNewCurrent(0)`.
+3. **Visual & Audio Alert:**
+   - Memunculkan partikel asap (`Particle.SMOKE`) dan suara pemadaman (`Sound.BLOCK_FIRE_EXTINGUISH`) di titik sumber clock.
+   - Mengirim notifikasi actionbar ke seluruh pemain dalam radius 15 blok: *"⚠ Sirkuit redstone cepat dibekukan sementara demi menjaga kestabilan 20 TPS server."*
