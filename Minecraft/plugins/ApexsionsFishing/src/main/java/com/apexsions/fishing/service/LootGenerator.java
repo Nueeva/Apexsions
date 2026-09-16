@@ -43,6 +43,10 @@ public class LootGenerator {
     private final List<FishingLootItem> treasureTable = new ArrayList<>();
     private final Map<String, FishingLootItem> allItemsById = new LinkedHashMap<>();
 
+    private double cfgWeightFish = 55.0;
+    private double cfgWeightJunk = 30.0;
+    private double cfgWeightTreasure = 15.0;
+
     public LootGenerator(ApexsionsFishing plugin) {
         this.plugin = plugin;
         this.keyFishId = new NamespacedKey(plugin, "fish_id");
@@ -124,6 +128,13 @@ public class LootGenerator {
                 allItemsById.put(key.toLowerCase(), item);
             }
         }
+
+        // 4. Load Category Weights
+        this.cfgWeightFish = cfg.getDouble("loot.category-weights.fish", 55.0);
+        this.cfgWeightJunk = cfg.getDouble("loot.category-weights.junk", 30.0);
+        this.cfgWeightTreasure = cfg.getDouble("loot.category-weights.treasure", 15.0);
+
+        plugin.getLogger().info("LootGenerator dimuat: " + fishTable.size() + " spesies ikan, " + junkTable.size() + " sampah laut, " + treasureTable.size() + " harta karun. (Bobot Pool: Ikan=" + cfgWeightFish + ", Junk=" + cfgWeightJunk + ", Treasure=" + cfgWeightTreasure + ")");
     }
 
     public static class CatchResult {
@@ -146,12 +157,10 @@ public class LootGenerator {
         double luckBonus = plugin.getRodManager().getLuckBonus(rod);
         double weightBonus = plugin.getRodManager().getWeightBonus(rod);
 
-        // Calculate Category Pool
-        // Base category weights: Junk = 25, Fish = 60, Treasure = 15
-        // Luck bonus pushes Junk DOWN and pushes Fish & Treasure UP
-        double junkWeight = Math.max(5.0, 25.0 * (1.0 - Math.min(0.8, luckBonus)));
-        double treasureWeight = 15.0 * (1.0 + luckBonus * 1.5);
-        double fishWeight = 60.0 * (1.0 + luckBonus * 0.5);
+        // Calculate Category Pool based on configured weights
+        double junkWeight = Math.max(5.0, cfgWeightJunk * (1.0 - Math.min(0.75, luckBonus)));
+        double treasureWeight = cfgWeightTreasure * (1.0 + luckBonus * 1.5);
+        double fishWeight = cfgWeightFish * (1.0 + luckBonus * 0.5);
 
         double totalCatWeight = junkWeight + fishWeight + treasureWeight;
         double roll = ThreadLocalRandom.current().nextDouble() * totalCatWeight;

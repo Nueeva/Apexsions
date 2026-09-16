@@ -13,6 +13,7 @@ public class PlayerFishingStats {
     private String heaviestFishName;
     private int secretCatches;
     private final Map<String, Double> personalBestPerSpecies = new HashMap<>();
+    private int virtualBait = 0;
 
     public PlayerFishingStats(UUID uuid) {
         this.uuid = uuid;
@@ -21,6 +22,7 @@ public class PlayerFishingStats {
         this.heaviestFishWeight = 0.0;
         this.heaviestFishName = "-";
         this.secretCatches = 0;
+        this.virtualBait = 0;
     }
 
     public UUID getUuid() {
@@ -99,5 +101,25 @@ public class PlayerFishingStats {
 
     public double getPersonalBest(String speciesId) {
         return personalBestPerSpecies.getOrDefault(speciesId.toLowerCase(), 0.0);
+    }
+
+    public int getVirtualBait() {
+        return virtualBait;
+    }
+
+    public void setVirtualBait(int virtualBait) {
+        this.virtualBait = Math.max(0, virtualBait);
+    }
+
+    public void addVirtualBait(int amount) {
+        this.virtualBait = Math.max(0, this.virtualBait + amount);
+    }
+
+    public boolean consumeVirtualBait() {
+        if (this.virtualBait > 0) {
+            this.virtualBait--;
+            return true;
+        }
+        return false;
     }
 }

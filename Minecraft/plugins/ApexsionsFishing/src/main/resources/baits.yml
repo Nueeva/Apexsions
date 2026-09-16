@@ -1,0 +1,51 @@
+# ==============================================================================
+#           APEXSIONS FISHING — TOKO KUOTA UMPAN VIRTUAL (baits.yml)
+# ==============================================================================
+# Sistem Umpan Virtual (Zero Inventory Clutter).
+# Kuota umpan tersimpan di akun pemain dan otomatis terpotong saat Auto-Catch berhasil.
+# Pancingan biasa (vanilla) tidak memerlukan kuota umpan.
+
+packages:
+  starter:
+    display-name: "<green><bold>Paket Umpan Pemula (50 Kuota)</bold></green>"
+    amount: 50
+    price-rupiah: 50000
+    price-diamond: 10
+    material: "STRING"
+    custom-model-data: 0
+    description:
+      - "<gray>Paket hemat berisi 50 saldo kuota umpan virtual.</gray>"
+      - "<gray>Cocok untuk pemancing yang baru mencoba auto-catch.</gray>"
+
+  standard:
+    display-name: "<aqua><bold>Paket Umpan Standar (200 Kuota)</bold></aqua>"
+    amount: 200
+    price-rupiah: 180000
+    price-diamond: 35
+    material: "GLOW_BERRIES"
+    custom-model-data: 0
+    description:
+      - "<gray>Paket favorit berisi 200 saldo kuota umpan virtual.</gray>"
+      - "<gray>Cukup untuk sesi memancing santai sepanjang hari.</gray>"
+
+  expert:
+    display-name: "<gold><bold>Paket Nelayan Handal (500 Kuota)</bold></gold>"
+    amount: 500
+    price-rupiah: 400000
+    price-diamond: 75
+    material: "PRISMARINE_SHARD"
+    custom-model-data: 0
+    description:
+      - "<gray>Paket besar berisi 500 saldo kuota umpan virtual.</gray>"
+      - "<gray>Pilihan ekonomis bagi penakluk samudra.</gray>"
+
+  ocean_master:
+    display-name: "<gradient:#ff007f:#7928ca><bold>Paket Samudra Raya (1.000 Kuota)</bold></gradient>"
+    amount: 1000
+    price-rupiah: 750000
+    price-diamond: 130
+    material: "HEART_OF_THE_SEA"
+    custom-model-data: 0
+    description:
+      - "<gray>Paket super masif berisi 1.000 kuota umpan virtual.</gray>"
+      - "<gray>Diskon terbaik untuk maraton AFK fishing tanpa henti.</gray>"

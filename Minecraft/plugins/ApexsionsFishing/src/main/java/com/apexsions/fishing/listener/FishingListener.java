@@ -36,6 +36,14 @@ public class FishingListener implements Listener {
             case FISHING:
                 // Hook cast into water
                 if (event.getHook() != null && plugin.getRodManager().isAutoCatchRod(rod)) {
+                    int bait = plugin.getVaultStorage().getStats(player.getUniqueId()).getVirtualBait();
+                    if (bait <= 0) {
+                        event.setCancelled(true);
+                        if (event.getHook() != null) event.getHook().remove();
+                        player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 1.0f, 0.8f);
+                        player.sendMessage(mm.deserialize("<red><bold>SALDO UMPAN KOSONG!</bold></red> <gray>Pancingan Auto-Catch membutuhkan kuota umpan! Beli kuota via <yellow>/fish bait</yellow>.</gray>"));
+                        return;
+                    }
                     plugin.getAfkFishingService().registerCast(player, event.getHook(), rod);
                 }
                 break;
@@ -67,6 +75,15 @@ public class FishingListener implements Listener {
                                 res.weightKg,
                                 res.isSecret
                         );
+                        player.sendActionBar(mm.deserialize("<green>Tangkapan Ikan: </green>")
+                                .append(mm.deserialize(res.lootItem.getDisplayName()))
+                                .append(mm.deserialize(" <gold>(" + String.format("%.2f", res.weightKg) + " kg)</gold>")));
+                    } else if (res.lootItem.getCatchType() == com.apexsions.fishing.model.CatchType.JUNK) {
+                        player.sendActionBar(mm.deserialize("<gray>Sampah Perairan: </gray>")
+                                .append(mm.deserialize(res.lootItem.getDisplayName())));
+                    } else if (res.lootItem.getCatchType() == com.apexsions.fishing.model.CatchType.TREASURE) {
+                        player.sendActionBar(mm.deserialize("<aqua><bold>HARTA SAMUDRA!</bold></aqua> ")
+                                .append(mm.deserialize(res.lootItem.getDisplayName())));
                     }
 
                     if (res.isSecret && plugin.getConfig().getBoolean("settings.broadcasts.secret-catch", true)) {

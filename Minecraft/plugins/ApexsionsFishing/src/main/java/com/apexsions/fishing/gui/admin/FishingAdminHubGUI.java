@@ -32,6 +32,7 @@ public class FishingAdminHubGUI implements InventoryHolder {
     public static final int SLOT_LOOT_TABLE = 13;
     public static final int SLOT_VAULT_PRICES = 14;
     public static final int SLOT_AFK_SETTINGS = 15;
+    public static final int SLOT_BAIT_SHOP = 16;
     public static final int SLOT_RELOAD = 22;
     public static final int SLOT_CLOSE = 31;
 
@@ -115,6 +116,16 @@ public class FishingAdminHubGUI implements InventoryHolder {
                         "<gray>Dikelola melalui <white>config.yml</white></gray>"
                 )));
 
+        // Slot 16: Bait Shop
+        inventory.setItem(SLOT_BAIT_SHOP, createGuiItem(Material.GLOW_BERRIES,
+                "<gradient:#00c6ff:#0072ff><bold>⚡ Toko Kuota Umpan Virtual</bold></gradient>",
+                List.of(
+                        "<gray>Kelola dan beli saldo kuota umpan</gray>",
+                        "<gray>virtual untuk pancingan Auto-Catch.</gray>",
+                        "",
+                        "<yellow>▶ Klik untuk buka Toko Umpan</yellow>"
+                )));
+
         // Slot 22: Reload
         inventory.setItem(SLOT_RELOAD, createGuiItem(Material.NETHER_STAR,
                 "<gradient:#ffaa00:#ffd700><bold>🔄 Muat Ulang Konfigurasi (Reload)</bold></gradient>",
@@ -147,6 +158,10 @@ public class FishingAdminHubGUI implements InventoryHolder {
                 }
                 player.playSound(player.getLocation(), Sound.ENTITY_ITEM_PICKUP, 1.0f, 1.2f);
                 player.sendMessage(mm.deserialize("<green>Semua pancingan resmi katalog berhasil diberikan ke inventory Anda!</green>"));
+            }
+            case SLOT_BAIT_SHOP -> {
+                new com.apexsions.fishing.gui.BaitShopGUI(plugin, player).open();
+                player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1.0f, 1.0f);
             }
             case SLOT_RELOAD -> {
                 plugin.reloadConfig();

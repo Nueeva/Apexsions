@@ -12,6 +12,14 @@
 
 loot:
   # ============================================================================
+  # BOBOT KATEGORI LOOT (Total Probabilitas Pool)
+  # ============================================================================
+  category-weights:
+    fish: 55.0       # 55% Peluang Ikan
+    junk: 30.0       # 30% Peluang Sampah Laut (Junk)
+    treasure: 15.0   # 15% Peluang Harta Karun (Treasure)
+
+  # ============================================================================
   # 1. SPESIES IKAN (Tipe: FISH - Memiliki Bobot Kg & Dapat Dijual di Nelayan)
   # ============================================================================
   fishes:

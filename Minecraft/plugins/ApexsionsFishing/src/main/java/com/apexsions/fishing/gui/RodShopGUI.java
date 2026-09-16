@@ -99,6 +99,15 @@ public class RodShopGUI implements InventoryHolder {
             inventory.setItem(slot, preview);
         }
 
+        // Bait Shop shortcut at Slot 29
+        inventory.setItem(29, createGuiItem(Material.GLOW_BERRIES,
+                "<gradient:#00c6ff:#0072ff><bold>⚡ Toko Kuota Umpan (Bait)</bold></gradient>",
+                List.of(
+                        "<gray>Isi ulang saldo kuota umpan virtual untuk Auto-Catch.</gray>",
+                        "",
+                        "<yellow>▶ Klik untuk buka Toko Umpan</yellow>"
+                )));
+
         // Back button at Slot 31
         inventory.setItem(31, createGuiItem(Material.ARROW,
                 "<yellow><bold>◀ Kembali</bold></yellow>",
@@ -108,6 +117,12 @@ public class RodShopGUI implements InventoryHolder {
     public void handleClick(@NotNull InventoryClickEvent event) {
         event.setCancelled(true);
         int slot = event.getRawSlot();
+
+        if (slot == 29) {
+            new BaitShopGUI(plugin, player).open();
+            player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1.0f, 1.0f);
+            return;
+        }
 
         if (slot == 31) {
             player.closeInventory();

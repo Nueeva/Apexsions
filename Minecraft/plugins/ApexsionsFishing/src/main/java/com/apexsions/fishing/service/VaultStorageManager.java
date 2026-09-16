@@ -106,6 +106,7 @@ public class VaultStorageManager {
         stats.setHeaviestFishWeight(cfg.getDouble("stats.heaviest-weight", 0.0));
         stats.setHeaviestFishName(cfg.getString("stats.heaviest-name", "-"));
         stats.setSecretCatches(cfg.getInt("stats.secret-catches", 0));
+        stats.setVirtualBait(cfg.getInt("stats.virtual-bait", 0));
 
         ConfigurationSection pbSec = cfg.getConfigurationSection("stats.personal-bests");
         if (pbSec != null) {
@@ -148,6 +149,7 @@ public class VaultStorageManager {
             cfg.set("stats.heaviest-weight", stats.getHeaviestFishWeight());
             cfg.set("stats.heaviest-name", stats.getHeaviestFishName());
             cfg.set("stats.secret-catches", stats.getSecretCatches());
+            cfg.set("stats.virtual-bait", stats.getVirtualBait());
             for (Map.Entry<String, Double> pb : stats.getPersonalBestPerSpecies().entrySet()) {
                 cfg.set("stats.personal-bests." + pb.getKey(), pb.getValue());
             }

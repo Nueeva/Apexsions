@@ -40,6 +40,8 @@ public class FishingGUIListener implements Listener {
             gui.handleClick(event);
         } else if (holder instanceof AdminRodCreatorGUI gui) {
             gui.handleClick(event);
+        } else if (holder instanceof BaitShopGUI gui) {
+            gui.handleClick(event);
         }
     }
 

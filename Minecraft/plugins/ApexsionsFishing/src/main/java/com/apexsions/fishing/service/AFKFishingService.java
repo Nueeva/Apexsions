@@ -47,6 +47,19 @@ public class AFKFishingService {
             return;
         }
 
+        if (plugin.getRodManager().isAutoCatchRod(rod)) {
+            int bait = plugin.getVaultStorage().getStats(player.getUniqueId()).getVirtualBait();
+            if (bait <= 0) {
+                cancelCast(player);
+                if (hook != null && !hook.isDead()) {
+                    hook.remove();
+                }
+                player.sendMessage(mm.deserialize("<red><bold>SALDO UMPAN HABIS!</bold></red> <gray>Pancingan Auto-Catch membutuhkan saldo kuota umpan! Beli kuota via <yellow>/fish bait</yellow>.</gray>"));
+                player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 1.0f, 0.8f);
+                return;
+            }
+        }
+
         cancelCast(player);
 
         int delaySeconds = plugin.getRodManager().getCatchSpeed(rod);
@@ -142,6 +155,18 @@ public class AFKFishingService {
             hookLoc.getWorld().spawnParticle(Particle.BUBBLE, hookLoc, 15, 0.2, 0.2, 0.2, 0.05);
         }
 
+        // 3b. Consume 1 Virtual Bait
+        boolean hasBait = plugin.getVaultStorage().getStats(player.getUniqueId()).consumeVirtualBait();
+        int remainingBait = plugin.getVaultStorage().getStats(player.getUniqueId()).getVirtualBait();
+        plugin.getVaultStorage().savePlayerData(player.getUniqueId());
+
+        if (!hasBait) {
+            hook.remove();
+            player.sendMessage(mm.deserialize("<red><bold>SALDO UMPAN HABIS!</bold></red> <gray>Pancingan Auto-Catch membutuhkan saldo kuota umpan! Beli kuota via <yellow>/fish bait</yellow>.</gray>"));
+            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 1.0f, 0.8f);
+            return;
+        }
+
         // 4. Generate Catch
         LootGenerator.CatchResult result = plugin.getLootGenerator().generateCatch(player, currentRod);
 
@@ -183,7 +208,19 @@ public class AFKFishingService {
             }
         }
 
-        player.sendMessage(mm.deserialize("<green>✦ Berhasil menangkap: </green>").append(result.item.displayName()));
+        if (result.isFish) {
+            player.sendActionBar(mm.deserialize("<gradient:#00c6ff:#0072ff>[Auto-Catch]</gradient> <green>Mendapatkan </green>")
+                    .append(mm.deserialize(result.lootItem.getDisplayName()))
+                    .append(mm.deserialize(" <gold>(" + String.format("%.2f", result.weightKg) + " kg)</gold> <dark_gray>•</dark_gray> <yellow>Sisa Umpan: <bold>" + remainingBait + "</bold></yellow>")));
+        } else if (result.lootItem.getCatchType() == com.apexsions.fishing.model.CatchType.JUNK) {
+            player.sendActionBar(mm.deserialize("<gradient:#00c6ff:#0072ff>[Auto-Catch]</gradient> <gray>Mendapatkan Sampah: </gray>")
+                    .append(mm.deserialize(result.lootItem.getDisplayName()))
+                    .append(mm.deserialize(" <dark_gray>•</dark_gray> <yellow>Sisa Umpan: <bold>" + remainingBait + "</bold></yellow>")));
+        } else if (result.lootItem.getCatchType() == com.apexsions.fishing.model.CatchType.TREASURE) {
+            player.sendActionBar(mm.deserialize("<gradient:#00c6ff:#0072ff>[Auto-Catch]</gradient> <aqua><bold>HARTA SAMUDRA!</bold></aqua> ")
+                    .append(mm.deserialize(result.lootItem.getDisplayName()))
+                    .append(mm.deserialize(" <dark_gray>•</dark_gray> <yellow>Sisa Umpan: <bold>" + remainingBait + "</bold></yellow>")));
+        }
 
         // 8. Deduct Rod Durability if breakable
         boolean rodBroken = false;
@@ -224,6 +261,12 @@ public class AFKFishingService {
 
         // 10. Auto-Recast Loop for continuous AFK fishing
         if (!rodBroken && plugin.getConfig().getBoolean("settings.afk-fishing.auto-recast", true)) {
+            if (remainingBait <= 0) {
+                player.sendMessage(mm.deserialize("<yellow><bold>[AFK Fishing]</bold> Kuota umpan Anda telah habis! Auto-recast dihentikan. Beli kuota di <gold>/fish bait</gold>.</yellow>"));
+                player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 1.0f, 0.8f);
+                return;
+            }
+
             Bukkit.getScheduler().runTaskLater(plugin, () -> {
                 if (!player.isOnline() || player.isDead()) return;
                 ItemStack held = player.getInventory().getItemInMainHand();
@@ -231,6 +274,9 @@ public class AFKFishingService {
                     held = player.getInventory().getItemInOffHand();
                 }
                 if (plugin.getRodManager().isAutoCatchRod(held)) {
+                    if (plugin.getVaultStorage().getStats(player.getUniqueId()).getVirtualBait() <= 0) {
+                        return;
+                    }
                     FishHook newHook = player.launchProjectile(FishHook.class);
                     registerCast(player, newHook, held);
                 }

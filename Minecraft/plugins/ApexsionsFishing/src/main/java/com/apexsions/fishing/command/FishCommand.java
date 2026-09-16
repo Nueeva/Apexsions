@@ -127,6 +127,47 @@ public class FishCommand implements CommandExecutor, TabCompleter {
                 new AdminRodCreatorGUI(plugin, player).open();
                 player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1.0f, 1.0f);
             }
+            case "bait", "umpan" -> {
+                if (args.length >= 2 && (args[1].equalsIgnoreCase("give") || args[1].equalsIgnoreCase("set") || args[1].equalsIgnoreCase("take"))) {
+                    if (!player.hasPermission("apexsions.fishing.admin")) {
+                        player.sendMessage(mm.deserialize("<red>Anda tidak memiliki izin untuk perintah ini.</red>"));
+                        return true;
+                    }
+                    if (args.length < 4) {
+                        player.sendMessage(mm.deserialize("<red>Penggunaan: /fish bait <give|set|take> <pemain> <jumlah></red>"));
+                        return true;
+                    }
+                    Player target = Bukkit.getPlayer(args[2]);
+                    if (target == null) {
+                        player.sendMessage(mm.deserialize("<red>Pemain " + args[2] + " tidak ditemukan atau sedang offline.</red>"));
+                        return true;
+                    }
+                    int amount;
+                    try {
+                        amount = Integer.parseInt(args[3]);
+                    } catch (NumberFormatException e) {
+                        player.sendMessage(mm.deserialize("<red>Jumlah harus berupa angka bulat positif!</red>"));
+                        return true;
+                    }
+                    var stats = plugin.getVaultStorage().getStats(target.getUniqueId());
+                    String action = args[1].toLowerCase();
+                    if (action.equals("give")) {
+                        stats.addVirtualBait(amount);
+                        player.sendMessage(mm.deserialize("<green>Berhasil memberikan <gold>" + amount + " kuota umpan</gold> kepada <white>" + target.getName() + "</white>!</green>"));
+                        target.sendMessage(mm.deserialize("<green>Anda menerima <gold>" + amount + " kuota umpan virtual</gold> dari Admin!</green>"));
+                    } else if (action.equals("set")) {
+                        stats.setVirtualBait(amount);
+                        player.sendMessage(mm.deserialize("<green>Berhasil mengatur saldo umpan <white>" + target.getName() + "</white> menjadi <gold>" + amount + " kuota</gold>!</green>"));
+                    } else if (action.equals("take")) {
+                        stats.setVirtualBait(Math.max(0, stats.getVirtualBait() - amount));
+                        player.sendMessage(mm.deserialize("<green>Berhasil mengurangi <gold>" + amount + " kuota umpan</gold> dari <white>" + target.getName() + "</white>!</green>"));
+                    }
+                    plugin.getVaultStorage().savePlayerData(target.getUniqueId());
+                    return true;
+                }
+                new com.apexsions.fishing.gui.BaitShopGUI(plugin, player).open();
+                player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1.0f, 1.0f);
+            }
             case "give" -> {
                 if (!player.hasPermission("apexsions.fishing.admin")) {
                     player.sendMessage(mm.deserialize("<red>Anda tidak memiliki izin untuk perintah ini.</red>"));
@@ -178,6 +219,8 @@ public class FishCommand implements CommandExecutor, TabCompleter {
             list.add("sell");
             list.add("top");
             list.add("journal");
+            list.add("bait");
+            list.add("umpan");
             if (sender.hasPermission("apexsions.fishing.admin")) {
                 list.add("admin");
                 list.add("creator");
@@ -185,6 +228,15 @@ public class FishCommand implements CommandExecutor, TabCompleter {
                 list.add("reload");
             }
             return list.stream().filter(s -> s.toLowerCase().startsWith(args[0].toLowerCase())).toList();
+        }
+
+        if (args.length == 2 && (args[0].equalsIgnoreCase("bait") || args[0].equalsIgnoreCase("umpan")) && sender.hasPermission("apexsions.fishing.admin")) {
+            return List.of("give", "set", "take").stream().filter(s -> s.startsWith(args[1].toLowerCase())).toList();
+        }
+
+        if (args.length == 3 && (args[0].equalsIgnoreCase("bait") || args[0].equalsIgnoreCase("umpan")) && sender.hasPermission("apexsions.fishing.admin")) {
+            return Bukkit.getOnlinePlayers().stream().map(Player::getName)
+                    .filter(n -> n.toLowerCase().startsWith(args[2].toLowerCase())).toList();
         }
 
         if (args.length == 2 && args[0].equalsIgnoreCase("give") && sender.hasPermission("apexsions.fishing.admin")) {

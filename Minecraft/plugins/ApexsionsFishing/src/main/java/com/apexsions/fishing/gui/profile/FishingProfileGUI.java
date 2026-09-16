@@ -1,6 +1,7 @@
 package com.apexsions.fishing.gui.profile;
 
 import com.apexsions.fishing.ApexsionsFishing;
+import com.apexsions.fishing.gui.BaitShopGUI;
 import com.apexsions.fishing.gui.FishSellGUI;
 import com.apexsions.fishing.gui.FishingVaultGUI;
 import com.apexsions.fishing.gui.RodShopGUI;
@@ -35,6 +36,7 @@ public class FishingProfileGUI implements InventoryHolder {
     private final MiniMessage mm = MiniMessage.miniMessage();
 
     public static final int SLOT_STATS = 13;
+    public static final int SLOT_BAIT = 19;
     public static final int SLOT_VAULT = 20;
     public static final int SLOT_JOURNAL = 21;
     public static final int SLOT_LEADERBOARD = 22;
@@ -85,6 +87,7 @@ public class FishingProfileGUI implements InventoryHolder {
             lore.add(mm.deserialize("<yellow>● Total Bobot Ditimbang:</yellow> <gold><bold>" + String.format("%.2f", stats.getTotalWeightCaught()) + " kg</bold></gold>"));
             lore.add(mm.deserialize("<yellow>● Tangkapan Terberat (PB):</yellow> <aqua><bold>" + String.format("%.2f", stats.getHeaviestFishWeight()) + " kg</bold></aqua> <gray>(" + stats.getHeaviestFishName() + ")</gray>"));
             lore.add(mm.deserialize("<yellow>● Tangkapan Rahasia (SECRET):</yellow> <light_purple><bold>" + stats.getSecretCatches() + " Spesies</bold></light_purple>"));
+            lore.add(mm.deserialize("<yellow>● Kuota Umpan (Virtual):</yellow> <gold><bold>" + String.format("%,d", stats.getVirtualBait()) + " Bait</bold></gold>"));
             lore.add(mm.deserialize("<yellow>● Kapasitas Brankas:</yellow> <green><bold>" + vaultData.getUnlockedPages() + " / 30 Halaman</bold></green>"));
             lore.add(Component.empty());
             lore.add(mm.deserialize("<gradient:#00c6ff:#0072ff>\"Setiap tarikan kail membawa legenda baru di Apexsions.\"</gradient>"));
@@ -92,6 +95,18 @@ public class FishingProfileGUI implements InventoryHolder {
             skull.setItemMeta(sMeta);
         }
         inventory.setItem(SLOT_STATS, skull);
+
+        // Slot 19: Toko Umpan Virtual
+        inventory.setItem(SLOT_BAIT, createGuiItem(Material.GLOW_BERRIES,
+                "<gradient:#ffaa00:#ff5500><bold>🪱 Toko Umpan Virtual (Auto-Catch)</bold></gradient>",
+                List.of(
+                        "<gray>Beli kuota umpan virtual untuk pancingan</gray>",
+                        "<gray>auto-catch tanpa memenuhi inventory!</gray>",
+                        "",
+                        "<yellow>● Sisa Umpan Anda:</yellow> <gold><bold>" + String.format("%,d", stats.getVirtualBait()) + " Bait</bold></gold>",
+                        "",
+                        "<yellow>▶ Klik untuk beli kuota umpan</yellow>"
+                )));
 
         // Slot 20: Buka Brankas Mancing
         inventory.setItem(SLOT_VAULT, createGuiItem(Material.CHEST,
@@ -154,6 +169,10 @@ public class FishingProfileGUI implements InventoryHolder {
         int slot = event.getRawSlot();
 
         switch (slot) {
+            case SLOT_BAIT -> {
+                new BaitShopGUI(plugin, player).open();
+                player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1.0f, 1.0f);
+            }
             case SLOT_VAULT -> {
                 new FishingVaultGUI(plugin, player).open();
                 player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1.0f, 1.0f);
