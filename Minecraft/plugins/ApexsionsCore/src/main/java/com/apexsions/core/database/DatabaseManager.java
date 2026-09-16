@@ -192,31 +192,30 @@ public class DatabaseManager {
             stmt.execute("CREATE INDEX IF NOT EXISTS idx_regions_key ON regions(key);");
 
             // Sovereign Land Claims Table
-            stmt.execute("CREATE TABLE IF NOT EXISTS apexsions_claims (" +
-                    "id VARCHAR(36) PRIMARY KEY, " +
-                    "owner_id VARCHAR(36) NOT NULL, " +
-                    "owner_name VARCHAR(32) NOT NULL, " +
-                    "world VARCHAR(128) NOT NULL, " +
-                    "chunk_x INTEGER NOT NULL, " +
-                    "chunk_z INTEGER NOT NULL, " +
-                    "trusted_players TEXT NOT NULL DEFAULT '', " +
-                    "bank_balance REAL NOT NULL DEFAULT 0.0, " +
-                    "daily_upkeep REAL NOT NULL DEFAULT 100.0, " +
-                    "status VARCHAR(32) NOT NULL DEFAULT 'ACTIVE', " +
-                    "grace_period_until TIMESTAMP NULL, " +
-                    "last_tax_collected_at TIMESTAMP NULL, " +
-                    "flags TEXT NOT NULL DEFAULT '{}', " +
-                    "roles TEXT NOT NULL DEFAULT '{}', " +
-                    "kingdom_id VARCHAR(64) NULL, " +
-                    "created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, " +
-                    "CONSTRAINT uq_claim_chunk UNIQUE (world, chunk_x, chunk_z));");
+            try {
+                stmt.execute("CREATE TABLE IF NOT EXISTS apexsions_claims (" +
+                        "id VARCHAR(36) PRIMARY KEY, " +
+                        "owner_id VARCHAR(36) NOT NULL, " +
+                        "owner_name VARCHAR(32) NOT NULL, " +
+                        "world VARCHAR(128) NOT NULL, " +
+                        "chunk_x INTEGER NOT NULL, " +
+                        "chunk_z INTEGER NOT NULL, " +
+                        "trusted_players TEXT NOT NULL DEFAULT '', " +
+                        "bank_balance REAL NOT NULL DEFAULT 0.0, " +
+                        "daily_upkeep REAL NOT NULL DEFAULT 100.0, " +
+                        "status VARCHAR(32) NOT NULL DEFAULT 'ACTIVE', " +
+                        "grace_period_until TIMESTAMP NULL, " +
+                        "last_tax_collected_at TIMESTAMP NULL, " +
+                        "flags TEXT NOT NULL DEFAULT '{}', " +
+                        "roles TEXT NOT NULL DEFAULT '{}', " +
+                        "kingdom_id VARCHAR(64) NULL, " +
+                        "created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, " +
+                        "CONSTRAINT uq_claim_chunk UNIQUE (world, chunk_x, chunk_z));");
+            } catch (SQLException e) {
+                plugin.getLogger().warning("Error ensuring apexsions_claims table: " + e.getMessage());
+            }
 
-            stmt.execute("CREATE INDEX IF NOT EXISTS idx_claims_owner ON apexsions_claims(owner_id);");
-            stmt.execute("CREATE INDEX IF NOT EXISTS idx_claims_world_chunk ON apexsions_claims(world, chunk_x, chunk_z);");
-            stmt.execute("CREATE INDEX IF NOT EXISTS idx_claims_status ON apexsions_claims(status);");
-            stmt.execute("CREATE INDEX IF NOT EXISTS idx_claims_kingdom ON apexsions_claims(kingdom_id);");
-
-            // Migration safety: Add missing columns if upgrading existing SQLite database
+            // Migration safety: MUST add missing columns BEFORE creating indexes on them
             addColumnIfNotExists(stmt, "apexsions_claims", "bank_balance", "REAL NOT NULL DEFAULT 0.0");
             addColumnIfNotExists(stmt, "apexsions_claims", "daily_upkeep", "REAL NOT NULL DEFAULT 100.0");
             addColumnIfNotExists(stmt, "apexsions_claims", "status", "VARCHAR(32) NOT NULL DEFAULT 'ACTIVE'");
@@ -226,26 +225,36 @@ public class DatabaseManager {
             addColumnIfNotExists(stmt, "apexsions_claims", "roles", "TEXT NOT NULL DEFAULT '{}'");
             addColumnIfNotExists(stmt, "apexsions_claims", "kingdom_id", "VARCHAR(64) NULL");
 
-            // Unified Bans Table
-            stmt.execute("CREATE TABLE IF NOT EXISTS apexsions_bans (" +
-                    "id VARCHAR(36) PRIMARY KEY, " +
-                    "player_uuid VARCHAR(36) NOT NULL, " +
-                    "player_name VARCHAR(32) NOT NULL, " +
-                    "ip_address VARCHAR(45), " +
-                    "banned_by VARCHAR(64) NOT NULL, " +
-                    "reason TEXT NOT NULL, " +
-                    "ban_type VARCHAR(16) NOT NULL DEFAULT 'NAME', " +
-                    "banned_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, " +
-                    "expires_at TIMESTAMP NULL, " +
-                    "active BOOLEAN NOT NULL DEFAULT TRUE, " +
-                    "unbanned_by VARCHAR(64) NULL, " +
-                    "unban_reason TEXT NULL, " +
-                    "unbanned_at TIMESTAMP NULL);");
+            // Indexes for claims (Columns now exist)
+            createIndexSafe(stmt, "idx_claims_owner", "apexsions_claims(owner_id)");
+            createIndexSafe(stmt, "idx_claims_world_chunk", "apexsions_claims(world, chunk_x, chunk_z)");
+            createIndexSafe(stmt, "idx_claims_status", "apexsions_claims(status)");
+            createIndexSafe(stmt, "idx_claims_kingdom", "apexsions_claims(kingdom_id)");
 
-            stmt.execute("CREATE INDEX IF NOT EXISTS idx_bans_player_uuid ON apexsions_bans(player_uuid);");
-            stmt.execute("CREATE INDEX IF NOT EXISTS idx_bans_player_name ON apexsions_bans(player_name);");
-            stmt.execute("CREATE INDEX IF NOT EXISTS idx_bans_ip ON apexsions_bans(ip_address);");
-            stmt.execute("CREATE INDEX IF NOT EXISTS idx_bans_active ON apexsions_bans(active);");
+            // Unified Bans Table
+            try {
+                stmt.execute("CREATE TABLE IF NOT EXISTS apexsions_bans (" +
+                        "id VARCHAR(36) PRIMARY KEY, " +
+                        "player_uuid VARCHAR(36) NOT NULL, " +
+                        "player_name VARCHAR(32) NOT NULL, " +
+                        "ip_address VARCHAR(45), " +
+                        "banned_by VARCHAR(64) NOT NULL, " +
+                        "reason TEXT NOT NULL, " +
+                        "ban_type VARCHAR(16) NOT NULL DEFAULT 'NAME', " +
+                        "banned_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, " +
+                        "expires_at TIMESTAMP NULL, " +
+                        "active BOOLEAN NOT NULL DEFAULT TRUE, " +
+                        "unbanned_by VARCHAR(64) NULL, " +
+                        "unban_reason TEXT NULL, " +
+                        "unbanned_at TIMESTAMP NULL);");
+            } catch (SQLException e) {
+                plugin.getLogger().warning("Error ensuring apexsions_bans table: " + e.getMessage());
+            }
+
+            createIndexSafe(stmt, "idx_bans_player_uuid", "apexsions_bans(player_uuid)");
+            createIndexSafe(stmt, "idx_bans_player_name", "apexsions_bans(player_name)");
+            createIndexSafe(stmt, "idx_bans_ip", "apexsions_bans(ip_address)");
+            createIndexSafe(stmt, "idx_bans_active", "apexsions_bans(active)");
 
             // Seed initial starter kingdoms matching BlueMap world.conf
             try {
@@ -320,8 +329,19 @@ public class DatabaseManager {
     private void addColumnIfNotExists(Statement stmt, String table, String column, String type) {
         try {
             stmt.execute("ALTER TABLE " + table + " ADD COLUMN " + column + " " + type + ";");
-        } catch (SQLException ignored) {
-            // Column already exists
+        } catch (SQLException e) {
+            String msg = e.getMessage();
+            if (msg == null || (!msg.toLowerCase().contains("duplicate column") && !msg.toLowerCase().contains("already exists"))) {
+                plugin.getLogger().fine("Column " + column + " already exists or note: " + msg);
+            }
+        }
+    }
+
+    private void createIndexSafe(Statement stmt, String indexName, String tableAndCols) {
+        try {
+            stmt.execute("CREATE INDEX IF NOT EXISTS " + indexName + " ON " + tableAndCols + ";");
+        } catch (SQLException e) {
+            plugin.getLogger().warning("Could not create index " + indexName + ": " + e.getMessage());
         }
     }
 }
