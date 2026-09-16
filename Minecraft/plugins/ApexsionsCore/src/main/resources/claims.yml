@@ -2,7 +2,7 @@
 # Apexsions - Land Claim & Territory Protection Configuration
 # ===================================================================
 
-# Maximum claimed chunks allowed per player based on rank weight / name
+# Maximum claimed chunks allowed per player based on rank weight / name (-1 = Unlimited)
 claim-limits:
   wanderer: 4
   ascendant: 8
@@ -10,11 +10,12 @@ claim-limits:
   sovereign: 16
   emperor: 24
   sions: 32
-  herald: 64
-  warden: 128
-  overseer: 256
-  architect: 512
-  ancestor: 9999
+  # Upper Dimension (The Aetherial Conclave): Tanpa Batas (Unlimited per LORE.md)
+  herald: -1
+  warden: -1
+  overseer: -1
+  architect: -1
+  ancestor: -1
 
 # Progressive Tax & Upkeep Economy
 tax:
@@ -26,6 +27,7 @@ tax:
   grace-period-hours: 72
   kingdom-treasury-split: 0.50
   unclaim-on-grace-expire: true
+  exempt-upper-dimension: true
 
 # Siege War Mechanics during Kingdom War
 siege-war:

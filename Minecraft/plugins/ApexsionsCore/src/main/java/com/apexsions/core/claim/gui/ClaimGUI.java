@@ -59,9 +59,14 @@ public class ClaimGUI implements Listener {
             skullMeta.setOwningPlayer(player);
             skullMeta.displayName(mm.deserialize("<gold><bold>" + player.getName() + "</bold></gold> <gray>• Status Teritori</gray>"));
             List<Component> lore = new ArrayList<>();
-            lore.add(mm.deserialize("<gray>Total Kepemilikan: </gray><gold>" + owned + "</gold><gray>/</gray><yellow>" + max + "</yellow> <gray>chunks</gray>"));
-            double pct = max > 0 ? (double) owned / max * 100.0 : 0;
-            lore.add(mm.deserialize("<gray>Penggunaan Kuota: </gray><aqua>" + String.format("%.1f", pct) + "%</aqua>"));
+            String maxLabel = max == Integer.MAX_VALUE ? "∞ (Tak Terbatas)" : String.valueOf(max);
+            lore.add(mm.deserialize("<gray>Total Kepemilikan: </gray><gold>" + owned + "</gold><gray>/</gray><yellow>" + maxLabel + "</yellow> <gray>chunks</gray>"));
+            if (max == Integer.MAX_VALUE) {
+                lore.add(mm.deserialize("<gray>Penggunaan Kuota: </gray><aqua>Tanpa Batas (Upper Dimension)</aqua>"));
+            } else {
+                double pct = max > 0 ? (double) owned / max * 100.0 : 0;
+                lore.add(mm.deserialize("<gray>Penggunaan Kuota: </gray><aqua>" + String.format("%.1f", pct) + "%</aqua>"));
+            }
             lore.add(mm.deserialize(""));
             lore.add(mm.deserialize("<dark_gray>Chunk saat ini: [" + currentChunk.getX() + ", " + currentChunk.getZ() + "]</dark_gray>"));
             if (chunkClaim.isPresent()) {

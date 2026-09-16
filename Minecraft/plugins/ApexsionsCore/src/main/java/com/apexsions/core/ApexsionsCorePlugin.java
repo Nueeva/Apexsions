@@ -319,9 +319,6 @@ public class ApexsionsCorePlugin extends JavaPlugin {
             this.vanishManager = new com.apexsions.core.vanish.VanishManager(this);
             Bukkit.getPluginManager().registerEvents(new com.apexsions.core.vanish.VanishListener(this, vanishManager), this);
 
-            // 10. Commands
-            registerCommands();
-
             // 11. Kingdom Buffs & Traits Engine
             this.kingdomBuffManager = new com.apexsions.core.kingdom.KingdomBuffManager(this);
             this.kingdomBuffManager.start();
@@ -360,6 +357,9 @@ public class ApexsionsCorePlugin extends JavaPlugin {
             this.banRepository = new com.apexsions.core.moderation.BanRepository(this, databaseManager);
             this.banManager = new com.apexsions.core.moderation.BanManager(this, banRepository);
             Bukkit.getPluginManager().registerEvents(new com.apexsions.core.moderation.BanGateListener(this, banManager), this);
+
+            // 18. Command Registration (All subsystems and managers are fully active)
+            registerCommands();
 
             // Neutralize and override conflicting Essentials moderation commands
             com.apexsions.core.moderation.EssentialsBanOverride.overrideEssentials(this);

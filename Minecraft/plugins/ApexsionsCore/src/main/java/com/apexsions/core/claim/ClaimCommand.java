@@ -22,18 +22,33 @@ import java.util.*;
 public class ClaimCommand implements CommandExecutor, TabCompleter {
 
     private final ApexsionsCorePlugin plugin;
-    private final ClaimManager claimManager;
-    private final ClaimGUI claimGUI;
+    private ClaimManager claimManager;
+    private ClaimGUI claimGUI;
     private final MiniMessage mm = MiniMessage.miniMessage();
 
     public ClaimCommand(ApexsionsCorePlugin plugin, ClaimManager claimManager, ClaimGUI claimGUI) {
         this.plugin = plugin;
-        this.claimManager = claimManager;
-        this.claimGUI = claimGUI;
+        this.claimManager = claimManager != null ? claimManager : (plugin != null ? plugin.getClaimManager() : null);
+        this.claimGUI = claimGUI != null ? claimGUI : (plugin != null ? plugin.getClaimGUI() : null);
+    }
+
+    private ClaimManager getClaimManager() {
+        if (this.claimManager != null) return this.claimManager;
+        if (plugin != null) this.claimManager = plugin.getClaimManager();
+        return this.claimManager;
+    }
+
+    private ClaimGUI getClaimGUI() {
+        if (this.claimGUI != null) return this.claimGUI;
+        if (plugin != null) this.claimGUI = plugin.getClaimGUI();
+        return this.claimGUI;
     }
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+        if (this.claimManager == null && plugin != null) this.claimManager = plugin.getClaimManager();
+        if (this.claimGUI == null && plugin != null) this.claimGUI = plugin.getClaimGUI();
+
         String cmdName = command.getName().toLowerCase();
 
         // Shortcuts
@@ -353,10 +368,11 @@ public class ClaimCommand implements CommandExecutor, TabCompleter {
     }
 
     private void handleList(Player player) {
-        List<ClaimChunk> list = claimManager.getClaimsByOwner(player.getUniqueId());
-        int max = claimManager.getMaxClaims(player);
+        List<ClaimChunk> list = getClaimManager().getClaimsByOwner(player.getUniqueId());
+        int max = getClaimManager().getMaxClaims(player);
+        String maxStr = max == Integer.MAX_VALUE ? "∞" : String.valueOf(max);
 
-        player.sendMessage(mm.deserialize("<gradient:#ffd700:#ffa500><bold>Daftar Wilayah Tanah Anda (" + list.size() + "/" + max + "):</bold></gradient>"));
+        player.sendMessage(mm.deserialize("<gradient:#ffd700:#ffa500><bold>Daftar Wilayah Tanah Anda (" + list.size() + "/" + maxStr + "):</bold></gradient>"));
         if (list.isEmpty()) {
             player.sendMessage(mm.deserialize("<gray>Anda belum mengklaim petak tanah satupun. Berdirilah di chunk pilihan Anda dan ketik <yellow>/claim</yellow>.</gray>"));
             return;
@@ -397,6 +413,9 @@ public class ClaimCommand implements CommandExecutor, TabCompleter {
 
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+        if (this.claimManager == null && plugin != null) this.claimManager = plugin.getClaimManager();
+        if (this.claimGUI == null && plugin != null) this.claimGUI = plugin.getClaimGUI();
+
         List<String> completions = new ArrayList<>();
         if (args.length == 1) {
             List<String> subs = new ArrayList<>(List.of("gui", "info", "bank", "deposit", "withdraw", "flag", "role", "trust", "untrust", "list", "unclaim", "unclaimall"));

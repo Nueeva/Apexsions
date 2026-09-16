@@ -51,6 +51,7 @@ public class ClaimManager {
     private int gracePeriodHours = 72;
     private double kingdomTreasurySplit = 0.50;
     private boolean unclaimOnGraceExpire = true;
+    private boolean exemptUpperDimension = true;
 
     // Siege War Configuration
     private boolean siegeWarEnabled = true;
@@ -100,6 +101,7 @@ public class ClaimManager {
         gracePeriodHours = config.getInt("tax.grace-period-hours", 72);
         kingdomTreasurySplit = config.getDouble("tax.kingdom-treasury-split", 0.50);
         unclaimOnGraceExpire = config.getBoolean("tax.unclaim-on-grace-expire", true);
+        exemptUpperDimension = config.getBoolean("tax.exempt-upper-dimension", true);
 
         // Siege War settings
         siegeWarEnabled = config.getBoolean("siege-war.enabled", true);
@@ -179,8 +181,19 @@ public class ClaimManager {
     }
 
     public int getMaxClaims(Player player) {
-        if (player.isOp() || player.hasPermission("apexsions.admin.claim.unlimited") || player.hasPermission("apexsions.admin")) {
-            return 9999;
+        if (player.isOp() || player.hasPermission("apexsions.admin.claim.unlimited") || player.hasPermission("apexsions.claim.unlimited") || player.hasPermission("apexsions.admin")) {
+            return Integer.MAX_VALUE;
+        }
+
+        if (plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isAvailable()) {
+            if (plugin.getLuckPermsHook().isStaffOrAdmin(player.getUniqueId())) {
+                return Integer.MAX_VALUE;
+            }
+            String rankKey = plugin.getLuckPermsHook().getPlayerRankKey(player);
+            if (rankKey != null && claimLimits.containsKey(rankKey.toLowerCase())) {
+                int limit = claimLimits.get(rankKey.toLowerCase());
+                return limit <= -1 ? Integer.MAX_VALUE : limit;
+            }
         }
 
         int highestPermLimit = 0;
@@ -197,24 +210,32 @@ public class ClaimManager {
             return highestPermLimit;
         }
 
-        if (plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isAvailable()) {
-            String rankKey = plugin.getLuckPermsHook().getPlayerRankKey(player);
-            if (rankKey != null && claimLimits.containsKey(rankKey.toLowerCase())) {
-                return claimLimits.get(rankKey.toLowerCase());
-            }
-        }
+        int def = claimLimits.getOrDefault("wanderer", 4);
+        return def <= -1 ? Integer.MAX_VALUE : def;
+    }
 
-        return claimLimits.getOrDefault("wanderer", 4);
+    /**
+     * Checks if a territory owner is exempt from daily upkeep tax (Upper Dimension / Staff).
+     */
+    public boolean isTaxExempt(UUID ownerId) {
+        if (!exemptUpperDimension || ownerId == null) return false;
+        if (plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isStaffOrAdmin(ownerId)) {
+            return true;
+        }
+        OfflinePlayer op = Bukkit.getOfflinePlayer(ownerId);
+        return op != null && op.isOp();
     }
 
     // --- Progressive Tax & Upkeep Calculation ---
 
     public double calculateChunkDailyTax(UUID ownerId) {
+        if (isTaxExempt(ownerId)) return 0.0;
         int totalClaims = Math.max(1, getClaimCount(ownerId));
         return baseTaxPerChunk * (1.0 + (totalClaims - 1) * progressiveMultiplier);
     }
 
     public double calculateTotalDailyTax(UUID ownerId) {
+        if (isTaxExempt(ownerId)) return 0.0;
         int totalClaims = getClaimCount(ownerId);
         if (totalClaims <= 0) return 0.0;
         double perChunk = calculateChunkDailyTax(ownerId);
@@ -236,6 +257,15 @@ public class ClaimManager {
             UUID ownerId = entry.getKey();
             List<ClaimChunk> chunks = entry.getValue();
             if (chunks.isEmpty()) continue;
+
+            if (isTaxExempt(ownerId)) {
+                for (ClaimChunk claim : chunks) {
+                    claim.setDailyUpkeep(0.0);
+                    claim.setStatus(ClaimStatus.ACTIVE);
+                    claim.setGracePeriodUntil(0L);
+                }
+                continue;
+            }
 
             double chunkRate = calculateChunkDailyTax(ownerId);
 
@@ -612,7 +642,7 @@ public class ClaimManager {
 
         int currentClaims = getClaimCount(player.getUniqueId());
         int maxClaims = getMaxClaims(player);
-        if (currentClaims >= maxClaims) {
+        if (maxClaims != Integer.MAX_VALUE && currentClaims >= maxClaims) {
             return new ClaimResult(false, "<red>✖ Kuota klaim Anda sudah penuh (<gold>" + currentClaims + "/" + maxClaims + "</gold> chunks)! Tingkatkan kasta atau rank untuk mendapatkan lebih banyak tanah.</red>");
         }
 
@@ -642,7 +672,12 @@ public class ClaimManager {
         showChunkBoundary(player, chunk);
         player.playSound(player.getLocation(), Sound.BLOCK_RESPAWN_ANCHOR_SET_SPAWN, 0.7f, 1.2f);
 
-        return new ClaimResult(true, "<green>✔ Berhasil mengklaim tanah di chunk <gold>[" + chunk.getX() + ", " + chunk.getZ() + "]</gold>! Pajak harian: <gold>Rp" + String.format("%,.0f", initialRate) + "/hari</gold>. Setor saldo via <yellow>/claim deposit</yellow>.</green>");
+        String maxStr = maxClaims == Integer.MAX_VALUE ? "∞" : String.valueOf(maxClaims);
+        String taxNotice = initialRate > 0
+                ? "Pajak harian: <gold>Rp" + String.format("%,.0f", initialRate) + "/hari</gold>. Setor saldo via <yellow>/claim deposit</yellow>."
+                : "<aqua>Wilayah Dewan Aetherion (Upper Dimension — Bebas Pajak Upkeep).</aqua>";
+
+        return new ClaimResult(true, "<green>✔ Berhasil mengklaim tanah di chunk <gold>[" + chunk.getX() + ", " + chunk.getZ() + "]</gold>! Kuota terpakai: <gold>" + (currentClaims + 1) + "/" + maxStr + "</gold>. " + taxNotice + "</green>");
     }
 
     public ClaimResult unclaimCurrentChunk(Player player) {

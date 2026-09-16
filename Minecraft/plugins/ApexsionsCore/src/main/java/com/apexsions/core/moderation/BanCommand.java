@@ -24,17 +24,25 @@ import java.util.regex.Pattern;
 public class BanCommand implements CommandExecutor, TabCompleter {
 
     private final ApexsionsCorePlugin plugin;
-    private final BanManager banManager;
+    private BanManager banManager;
     private final MiniMessage mm = MiniMessage.miniMessage();
     private static final Pattern DURATION_PATTERN = Pattern.compile("(?i)(?:(\\d+)y)?(?:(\\d+)mo)?(?:(\\d+)w)?(?:(\\d+)d)?(?:(\\d+)h)?(?:(\\d+)m)?(?:(\\d+)s)?");
 
     public BanCommand(ApexsionsCorePlugin plugin, BanManager banManager) {
         this.plugin = plugin;
-        this.banManager = banManager;
+        this.banManager = banManager != null ? banManager : (plugin != null ? plugin.getBanManager() : null);
+    }
+
+    private BanManager getBanManager() {
+        if (this.banManager != null) return this.banManager;
+        if (plugin != null) this.banManager = plugin.getBanManager();
+        return this.banManager;
     }
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+        if (this.banManager == null && plugin != null) this.banManager = plugin.getBanManager();
+
         String cmd = label.toLowerCase();
 
         switch (cmd) {
@@ -268,6 +276,8 @@ public class BanCommand implements CommandExecutor, TabCompleter {
 
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+        if (this.banManager == null && plugin != null) this.banManager = plugin.getBanManager();
+
         String cmd = label.toLowerCase();
         if (args.length == 1) {
             List<String> list = new ArrayList<>();
