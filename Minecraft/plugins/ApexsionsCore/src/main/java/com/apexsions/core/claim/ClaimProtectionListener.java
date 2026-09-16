@@ -10,15 +10,15 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockBurnEvent;
 import org.bukkit.event.block.BlockExplodeEvent;
+import org.bukkit.event.block.BlockIgniteEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
-import org.bukkit.event.player.PlayerBucketEmptyEvent;
-import org.bukkit.event.player.PlayerBucketFillEvent;
-import org.bukkit.event.player.PlayerInteractEntityEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.*;
 
 import java.util.Map;
 import java.util.Optional;
@@ -26,7 +26,7 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Enforces anti-griefing protections on claimed lands and sovereign kingdom territory.
+ * Enforces anti-griefing protections, flag states, and boundary titles on claimed lands.
  */
 public class ClaimProtectionListener implements Listener {
 
@@ -55,6 +55,11 @@ public class ClaimProtectionListener implements Listener {
             player.sendActionBar(mm.deserialize("<red>✖ Wilayah ini dilindungi oleh kedaulatan Kerajaan!</red>"));
         }
         player.playSound(player.getLocation(), Sound.BLOCK_CHEST_LOCKED, 0.5f, 1.2f);
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onPlayerMove(PlayerMoveEvent event) {
+        claimManager.handlePlayerMove(event.getPlayer(), event.getFrom(), event.getTo());
     }
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
@@ -118,16 +123,50 @@ public class ClaimProtectionListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onEntityDamage(EntityDamageByEntityEvent event) {
-        if (!claimManager.isProtectPassiveEntities()) return;
         Entity victim = event.getEntity();
+        Player attacker = resolvePlayer(event.getDamager());
 
-        // Check if victim is passive animal, villager, or armor stand
+        // 1. PvP Flag Enforcement
+        if (victim instanceof Player && attacker != null) {
+            if (!claimManager.isPvpAllowed(victim.getLocation())) {
+                event.setCancelled(true);
+                attacker.sendActionBar(mm.deserialize("<red>✖ Wilayah ini menonaktifkan pertempuran PvP!</red>"));
+                return;
+            }
+        }
+
+        // 2. Passive Entity Protection
+        if (!claimManager.isProtectPassiveEntities()) return;
         if (victim instanceof Animals || victim instanceof Villager || victim instanceof ArmorStand || victim instanceof ItemFrame) {
-            Player attacker = resolvePlayer(event.getDamager());
             if (attacker != null && !claimManager.canBuild(attacker, victim.getLocation())) {
                 event.setCancelled(true);
                 sendThrottledAlert(attacker, victim.getLocation());
             }
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+    public void onCreatureSpawn(CreatureSpawnEvent event) {
+        if (event.getEntity() instanceof Monster) {
+            if (!claimManager.isMobSpawnAllowed(event.getLocation())) {
+                event.setCancelled(true);
+            }
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+    public void onBlockIgnite(BlockIgniteEvent event) {
+        if (!claimManager.isFireSpreadAllowed(event.getBlock().getLocation())) {
+            if (event.getCause() == BlockIgniteEvent.IgniteCause.SPREAD || event.getCause() == BlockIgniteEvent.IgniteCause.LAVA) {
+                event.setCancelled(true);
+            }
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+    public void onBlockBurn(BlockBurnEvent event) {
+        if (!claimManager.isFireSpreadAllowed(event.getBlock().getLocation())) {
+            event.setCancelled(true);
         }
     }
 
@@ -155,14 +194,12 @@ public class ClaimProtectionListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onEntityExplode(EntityExplodeEvent event) {
-        if (!claimManager.isPreventExplosions()) return;
-        event.blockList().removeIf(b -> claimManager.getClaimAt(b.getLocation()).isPresent());
+        event.blockList().removeIf(b -> !claimManager.isExplosionsAllowed(b.getLocation()));
     }
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onBlockExplode(BlockExplodeEvent event) {
-        if (!claimManager.isPreventExplosions()) return;
-        event.blockList().removeIf(b -> claimManager.getClaimAt(b.getLocation()).isPresent());
+        event.blockList().removeIf(b -> !claimManager.isExplosionsAllowed(b.getLocation()));
     }
 
     private Player resolvePlayer(Entity damager) {

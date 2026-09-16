@@ -644,6 +644,13 @@ class LinkVerificationController extends Controller
             'claims.*.chunk_x' => ['required', 'integer'],
             'claims.*.chunk_z' => ['required', 'integer'],
             'claims.*.trusted_count' => ['nullable', 'integer'],
+            'claims.*.bank_balance' => ['nullable', 'numeric'],
+            'claims.*.daily_upkeep' => ['nullable', 'numeric'],
+            'claims.*.status' => ['nullable', 'string'],
+            'claims.*.grace_period_until' => ['nullable'],
+            'claims.*.kingdom_id' => ['nullable', 'string'],
+            'claims.*.flags' => ['nullable'],
+            'claims.*.roles' => ['nullable'],
             'claims.*.created_at' => ['nullable'],
         ]);
 
@@ -656,6 +663,21 @@ class LinkVerificationController extends Controller
                 ? \Carbon\Carbon::createFromTimestampMs((int) $item['created_at'])
                 : now();
 
+            $graceUntil = null;
+            if (!empty($item['grace_period_until']) && is_numeric($item['grace_period_until']) && (int) $item['grace_period_until'] > 0) {
+                $graceUntil = \Carbon\Carbon::createFromTimestampMs((int) $item['grace_period_until']);
+            }
+
+            $flags = null;
+            if (!empty($item['flags'])) {
+                $flags = is_array($item['flags']) ? $item['flags'] : json_decode($item['flags'], true);
+            }
+
+            $roles = null;
+            if (!empty($item['roles'])) {
+                $roles = is_array($item['roles']) ? $item['roles'] : json_decode($item['roles'], true);
+            }
+
             \Azuriom\Plugin\ApexsionsBridge\Models\Claim::updateOrCreate(
                 [
                     'world' => $item['world'],
@@ -667,6 +689,13 @@ class LinkVerificationController extends Controller
                     'owner_uuid' => $item['owner_uuid'],
                     'owner_name' => $item['owner_name'],
                     'trusted_count' => $item['trusted_count'] ?? 0,
+                    'bank_balance' => (float) ($item['bank_balance'] ?? 0.0),
+                    'daily_upkeep' => (float) ($item['daily_upkeep'] ?? 100.0),
+                    'status' => strtoupper($item['status'] ?? 'ACTIVE'),
+                    'grace_period_until' => $graceUntil,
+                    'kingdom_id' => !empty($item['kingdom_id']) ? $item['kingdom_id'] : null,
+                    'flags' => $flags,
+                    'roles' => $roles,
                     'in_game_created_at' => $createdAt,
                 ]
             );

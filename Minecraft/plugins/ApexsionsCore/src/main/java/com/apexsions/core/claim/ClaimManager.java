@@ -4,6 +4,7 @@ import com.apexsions.core.ApexsionsCorePlugin;
 import com.apexsions.core.player.PlayerData;
 import com.apexsions.core.region.Region;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.title.Title;
 import org.bukkit.*;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -11,12 +12,15 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.io.File;
+import java.lang.reflect.Method;
+import java.time.Duration;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 
 /**
- * Service managing land claims, access control, quota checks, and boundary visualizations.
+ * Enterprise service managing land claims, progressive taxation, grace periods,
+ * flag controls, citizen roles, and kingdom integration.
  */
 public class ClaimManager {
 
@@ -38,10 +42,31 @@ public class ClaimManager {
     private int visualizerDurationSeconds = 8;
     private Color boundaryColor = Color.fromRGB(212, 175, 55); // Gold
 
+    // Progressive Tax Configuration
+    private boolean taxEnabled = true;
+    private double baseTaxPerChunk = 100.0;
+    private double progressiveMultiplier = 0.15;
+    private int checkIntervalMinutes = 30;
+    private int taxPeriodHours = 24;
+    private int gracePeriodHours = 72;
+    private double kingdomTreasurySplit = 0.50;
+    private boolean unclaimOnGraceExpire = true;
+
+    // Siege War Configuration
+    private boolean siegeWarEnabled = true;
+    private boolean allowHostileRaid = true;
+    private boolean requireOwnerOnline = true;
+
+    private BukkitTask taxCollectorTask;
+
+    // Player position cache to detect entering/leaving claims
+    private final Map<UUID, String> lastPlayerChunkKey = new ConcurrentHashMap<>();
+
     public ClaimManager(ApexsionsCorePlugin plugin, ClaimRepository repository) {
         this.plugin = plugin;
         this.repository = repository;
         loadConfig();
+        startTaxCollectorScheduler();
     }
 
     public void loadConfig() {
@@ -66,6 +91,21 @@ public class ClaimManager {
             disabledWorlds.add(w.toLowerCase());
         }
 
+        // Tax settings
+        taxEnabled = config.getBoolean("tax.enabled", true);
+        baseTaxPerChunk = config.getDouble("tax.base-tax-per-chunk", 100.0);
+        progressiveMultiplier = config.getDouble("tax.progressive-multiplier", 0.15);
+        checkIntervalMinutes = config.getInt("tax.check-interval-minutes", 30);
+        taxPeriodHours = config.getInt("tax.tax-period-hours", 24);
+        gracePeriodHours = config.getInt("tax.grace-period-hours", 72);
+        kingdomTreasurySplit = config.getDouble("tax.kingdom-treasury-split", 0.50);
+        unclaimOnGraceExpire = config.getBoolean("tax.unclaim-on-grace-expire", true);
+
+        // Siege War settings
+        siegeWarEnabled = config.getBoolean("siege-war.enabled", true);
+        allowHostileRaid = config.getBoolean("siege-war.allow-hostile-raid", true);
+        requireOwnerOnline = config.getBoolean("siege-war.require-owner-online", true);
+
         protectBlocks = config.getBoolean("protection.protect-blocks", true);
         protectContainers = config.getBoolean("protection.protect-containers", true);
         protectDoorsGates = config.getBoolean("protection.protect-doors-gates", true);
@@ -78,13 +118,29 @@ public class ClaimManager {
         visualizerDurationSeconds = config.getInt("visualizer.duration-seconds", 8);
     }
 
+    public void startTaxCollectorScheduler() {
+        if (taxCollectorTask != null && !taxCollectorTask.isCancelled()) {
+            taxCollectorTask.cancel();
+        }
+        if (!taxEnabled) return;
+
+        long intervalTicks = checkIntervalMinutes * 60L * 20L;
+        taxCollectorTask = Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, this::processTaxCollectionCycle, 20L * 60L, intervalTicks);
+    }
+
+    public void stopScheduler() {
+        if (taxCollectorTask != null && !taxCollectorTask.isCancelled()) {
+            taxCollectorTask.cancel();
+        }
+    }
+
     public void loadClaims() {
         repository.loadAllClaims().thenAccept(list -> {
             claims.clear();
             for (ClaimChunk c : list) {
                 claims.put(c.getChunkKey(), c);
             }
-            plugin.getLogger().info("Loaded " + claims.size() + " sovereign land claims from database.");
+            plugin.getLogger().info("Loaded " + claims.size() + " sovereign land claims with tax & roles from database.");
         }).exceptionally(ex -> {
             plugin.getLogger().log(Level.SEVERE, "Could not load claims into memory", ex);
             return null;
@@ -127,7 +183,6 @@ public class ClaimManager {
             return 9999;
         }
 
-        // Check permission-based custom limits (e.g. apexsions.claim.limit.50)
         int highestPermLimit = 0;
         for (var perm : player.getEffectivePermissions()) {
             String pName = perm.getPermission().toLowerCase();
@@ -142,7 +197,6 @@ public class ClaimManager {
             return highestPermLimit;
         }
 
-        // Fallback to LuckPerms primary group or rank mapping
         if (plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isAvailable()) {
             String rankKey = plugin.getLuckPermsHook().getPlayerRankKey(player);
             if (rankKey != null && claimLimits.containsKey(rankKey.toLowerCase())) {
@@ -153,6 +207,181 @@ public class ClaimManager {
         return claimLimits.getOrDefault("wanderer", 4);
     }
 
+    // --- Progressive Tax & Upkeep Calculation ---
+
+    public double calculateChunkDailyTax(UUID ownerId) {
+        int totalClaims = Math.max(1, getClaimCount(ownerId));
+        return baseTaxPerChunk * (1.0 + (totalClaims - 1) * progressiveMultiplier);
+    }
+
+    public double calculateTotalDailyTax(UUID ownerId) {
+        int totalClaims = getClaimCount(ownerId);
+        if (totalClaims <= 0) return 0.0;
+        double perChunk = calculateChunkDailyTax(ownerId);
+        return perChunk * totalClaims;
+    }
+
+    public void processTaxCollectionCycle() {
+        if (!taxEnabled) return;
+        long now = System.currentTimeMillis();
+        long periodMs = taxPeriodHours * 3600L * 1000L;
+
+        // Group claims by owner to calculate bulk tax accurately
+        Map<UUID, List<ClaimChunk>> ownerClaims = new HashMap<>();
+        for (ClaimChunk c : claims.values()) {
+            ownerClaims.computeIfAbsent(c.getOwnerId(), k -> new ArrayList<>()).add(c);
+        }
+
+        for (Map.Entry<UUID, List<ClaimChunk>> entry : ownerClaims.entrySet()) {
+            UUID ownerId = entry.getKey();
+            List<ClaimChunk> chunks = entry.getValue();
+            if (chunks.isEmpty()) continue;
+
+            double chunkRate = calculateChunkDailyTax(ownerId);
+
+            for (ClaimChunk claim : chunks) {
+                claim.setDailyUpkeep(chunkRate);
+
+                // Check if tax collection interval is due
+                if (now - claim.getLastTaxCollectedAt() >= periodMs) {
+                    if (claim.deduct(chunkRate)) {
+                        // Successfully collected
+                        claim.setStatus(ClaimStatus.ACTIVE);
+                        claim.setGracePeriodUntil(0);
+                        claim.setLastTaxCollectedAt(now);
+                        repository.updateClaimFinancials(claim);
+
+                        // Split with Kingdom Treasury
+                        if (claim.getKingdomId() != null && !claim.getKingdomId().isBlank() && kingdomTreasurySplit > 0) {
+                            double treasuryShare = chunkRate * kingdomTreasurySplit;
+                            depositKingdomTreasury(claim.getKingdomId(), treasuryShare);
+                        }
+                    } else {
+                        // Failed to collect tax - Enter or progress grace period
+                        if (claim.getStatus() != ClaimStatus.GRACE_PERIOD) {
+                            claim.setStatus(ClaimStatus.GRACE_PERIOD);
+                            claim.setGracePeriodUntil(now + (gracePeriodHours * 3600L * 1000L));
+                            repository.updateClaimFinancials(claim);
+
+                            // Notify online owner
+                            Player owner = Bukkit.getPlayer(ownerId);
+                            if (owner != null && owner.isOnline()) {
+                                owner.sendMessage(mm.deserialize("<red><b>⚠ [PAJAK WILAYAH]</b> Saldo brankas klaim Anda di <gold>[" + claim.getChunkX() + ", " + claim.getChunkZ() + "]</gold> habis! Masa tenggang <b>72 jam</b> dimulai sebelum tanah disita.</red>"));
+                                owner.playSound(owner.getLocation(), Sound.BLOCK_NOTE_BLOCK_DIDGERIDOO, 1.0f, 0.6f);
+                            }
+                        } else if (claim.isGracePeriodExpired()) {
+                            // Grace period expired!
+                            if (unclaimOnGraceExpire) {
+                                Bukkit.getScheduler().runTask(plugin, () -> {
+                                    forceUnclaimChunk(claim.getWorld(), claim.getChunkX(), claim.getChunkZ());
+                                    Player owner = Bukkit.getPlayer(ownerId);
+                                    if (owner != null && owner.isOnline()) {
+                                        owner.sendMessage(mm.deserialize("<dark_red><b>✖ [PENYITAAN TANAH]</b> Masa tenggang klaim Anda di <gold>[" + claim.getChunkX() + ", " + claim.getChunkZ() + "]</gold> telah berakhir! Tanah telah disita dan kembali menjadi alam liar.</dark_red>"));
+                                        owner.playSound(owner.getLocation(), Sound.ENTITY_LIGHTNING_BOLT_THUNDER, 0.7f, 1.0f);
+                                    }
+                                });
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        if (plugin.getWebBridgeService() != null) {
+            plugin.getWebBridgeService().syncClaimsAsync(getAllClaims());
+        }
+    }
+
+    private void depositKingdomTreasury(String kingdomKey, double amount) {
+        if (kingdomKey == null || kingdomKey.isBlank() || amount <= 0) return;
+        if (Bukkit.getPluginManager().isPluginEnabled("ApexsionsEconomy")) {
+            try {
+                Class<?> providerClass = Class.forName("com.apexsions.economy.api.ApexsionsEconomyProvider");
+                Method isAvail = providerClass.getMethod("isAvailable");
+                if ((Boolean) isAvail.invoke(null)) {
+                    Method getMethod = providerClass.getMethod("get");
+                    Object api = getMethod.invoke(null);
+                    Method deposit = api.getClass().getMethod("depositKingdomTreasury", String.class, String.class, double.class);
+                    deposit.invoke(api, kingdomKey, "rupiah", amount);
+                }
+            } catch (Throwable ignored) {}
+        }
+    }
+
+    // --- Financial Operations (Deposit & Withdraw) ---
+
+    public ClaimResult depositBank(Player player, double amount) {
+        if (amount <= 0) {
+            return new ClaimResult(false, "<red>✖ Jumlah nominal deposit harus lebih besar dari 0!</red>");
+        }
+
+        List<ClaimChunk> playerClaims = getClaimsByOwner(player.getUniqueId());
+        if (playerClaims.isEmpty()) {
+            return new ClaimResult(false, "<yellow>⚠ Anda belum memiliki klaim tanah apapun.</yellow>");
+        }
+
+        if (plugin.getVaultHook() != null && plugin.getVaultHook().hasEconomy()) {
+            double balance = plugin.getVaultHook().getBalance(player);
+            if (balance < amount) {
+                return new ClaimResult(false, "<red>✖ Saldo dompet Anda tidak cukup! Memiliki: <gold>Rp" + String.format("%,.0f", balance) + "</gold>.</red>");
+            }
+            plugin.getVaultHook().withdraw(player, amount);
+        }
+
+        // Distribute deposit evenly across all owned chunks
+        double perChunk = amount / playerClaims.size();
+        for (ClaimChunk c : playerClaims) {
+            c.deposit(perChunk);
+            repository.updateClaimFinancials(c);
+        }
+
+        if (plugin.getWebBridgeService() != null) {
+            plugin.getWebBridgeService().syncClaimsAsync(getAllClaims());
+        }
+
+        player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 0.7f, 1.4f);
+        return new ClaimResult(true, "<green>✔ Berhasil menyetor <gold>Rp" + String.format("%,.0f", amount) + "</gold> ke Brankas Wilayah! Terbagi ke <yellow>" + playerClaims.size() + "</yellow> chunk tanah Anda.</green>");
+    }
+
+    public ClaimResult withdrawBank(Player player, double amount) {
+        if (amount <= 0) {
+            return new ClaimResult(false, "<red>✖ Jumlah penarikan harus lebih besar dari 0!</red>");
+        }
+
+        List<ClaimChunk> playerClaims = getClaimsByOwner(player.getUniqueId());
+        if (playerClaims.isEmpty()) {
+            return new ClaimResult(false, "<yellow>⚠ Anda tidak memiliki klaim tanah.</yellow>");
+        }
+
+        double totalVaulted = 0.0;
+        for (ClaimChunk c : playerClaims) {
+            totalVaulted += c.getBankBalance();
+        }
+
+        if (totalVaulted < amount) {
+            return new ClaimResult(false, "<red>✖ Total saldo brankas klaim Anda tidak mencukupi! Tersedia: <gold>Rp" + String.format("%,.0f", totalVaulted) + "</gold>.</red>");
+        }
+
+        double perChunk = amount / playerClaims.size();
+        for (ClaimChunk c : playerClaims) {
+            c.deduct(perChunk);
+            repository.updateClaimFinancials(c);
+        }
+
+        if (plugin.getVaultHook() != null && plugin.getVaultHook().hasEconomy()) {
+            plugin.getVaultHook().deposit(player, amount);
+        }
+
+        if (plugin.getWebBridgeService() != null) {
+            plugin.getWebBridgeService().syncClaimsAsync(getAllClaims());
+        }
+
+        player.playSound(player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_CHIME, 0.8f, 1.2f);
+        return new ClaimResult(true, "<green>✔ Berhasil menarik <gold>Rp" + String.format("%,.0f", amount) + "</gold> dari Brankas Wilayah ke dompet Anda.</green>");
+    }
+
+    // --- Access Control & Granular Permissions ---
+
     public boolean canBuild(Player player, Location loc) {
         if (player == null || loc == null) return false;
         if (player.isOp() || player.hasPermission("apexsions.admin.bypass.claim") || player.hasPermission("apexsions.admin")) {
@@ -162,31 +391,34 @@ public class ClaimManager {
         Optional<ClaimChunk> claimOpt = getClaimAt(loc);
         if (claimOpt.isPresent()) {
             ClaimChunk claim = claimOpt.get();
-            return claim.isTrusted(player.getUniqueId());
+
+            // Check active Siege War condition
+            if (isSiegeRaidAllowed(player, claim)) {
+                return true;
+            }
+
+            ClaimRole role = claim.getRole(player.getUniqueId());
+            return role.isAtLeast(ClaimRole.BUILDER);
         }
 
-        // If not claimed by player, check Kingdom sovereign territory
+        // Sovereign kingdom check
         if (plugin.getRegionManager() != null) {
             Optional<Region> regionOpt = plugin.getRegionManager().getRegionAt(loc);
-            if (regionOpt.isPresent()) {
-                Region region = regionOpt.get();
-                if (region.isPlayable()) {
-                    Optional<PlayerData> pData = plugin.getPlayerDataService().getCached(player.getUniqueId());
-                    UUID playerKingdom = pData.map(PlayerData::getRegionId).orElse(null);
-                    if (playerKingdom != null && playerKingdom.equals(region.getId())) {
-                        return true; // Member of this kingdom building in kingdom wilderness
-                    } else {
-                        // Outsider/Foreign kingdom member
-                        if (plugin.getWarManager() != null && plugin.getWarManager().isWarActive()) {
-                            return true; // War time allows interaction
-                        }
-                        return false; // Sovereign kingdom blocks foreign griefing
+            if (regionOpt.isPresent() && regionOpt.get().isPlayable()) {
+                Optional<PlayerData> pData = plugin.getPlayerDataService().getCached(player.getUniqueId());
+                UUID playerKingdom = pData.map(PlayerData::getRegionId).orElse(null);
+                if (playerKingdom != null && playerKingdom.equals(regionOpt.get().getId())) {
+                    return true;
+                } else {
+                    if (plugin.getWarManager() != null && plugin.getWarManager().isWarActive()) {
+                        return true;
                     }
+                    return false;
                 }
             }
         }
 
-        return true; // Neutral wilderness
+        return true;
     }
 
     public boolean canInteract(Player player, Location loc, Material mat) {
@@ -198,18 +430,28 @@ public class ClaimManager {
         Optional<ClaimChunk> claimOpt = getClaimAt(loc);
         if (claimOpt.isPresent()) {
             ClaimChunk claim = claimOpt.get();
-            if (claim.isTrusted(player.getUniqueId())) {
+
+            if (isSiegeRaidAllowed(player, claim)) {
                 return true;
             }
 
-            // Check if material is container or locked mechanism
-            if (isContainer(mat) || isRestrictedMechanism(mat)) {
+            ClaimRole role = claim.getRole(player.getUniqueId());
+            if (role.isAtLeast(ClaimRole.BUILDER)) {
+                return true;
+            }
+
+            // Container requires at least BUILDER
+            if (isContainer(mat)) {
                 return false;
+            }
+
+            // Door / Gate / Button allows VISITOR unless restricted
+            if (isRestrictedMechanism(mat) && !protectDoorsGates) {
+                return true;
             }
             return false;
         }
 
-        // Territory check for sovereign chests
         if (isContainer(mat) && plugin.getRegionManager() != null) {
             Optional<Region> regionOpt = plugin.getRegionManager().getRegionAt(loc);
             if (regionOpt.isPresent() && regionOpt.get().isPlayable()) {
@@ -217,7 +459,7 @@ public class ClaimManager {
                 UUID playerKingdom = pData.map(PlayerData::getRegionId).orElse(null);
                 if (playerKingdom == null || !playerKingdom.equals(regionOpt.get().getId())) {
                     if (plugin.getWarManager() == null || !plugin.getWarManager().isWarActive()) {
-                        return false; // Cannot loot chests in foreign kingdom without war
+                        return false;
                     }
                 }
             }
@@ -226,26 +468,129 @@ public class ClaimManager {
         return true;
     }
 
-    public boolean isContainer(Material mat) {
-        if (mat == null) return false;
-        return switch (mat) {
-            case CHEST, TRAPPED_CHEST, BARREL, SHULKER_BOX, WHITE_SHULKER_BOX, ORANGE_SHULKER_BOX,
-                 MAGENTA_SHULKER_BOX, LIGHT_BLUE_SHULKER_BOX, YELLOW_SHULKER_BOX, LIME_SHULKER_BOX,
-                 PINK_SHULKER_BOX, GRAY_SHULKER_BOX, LIGHT_GRAY_SHULKER_BOX, CYAN_SHULKER_BOX,
-                 PURPLE_SHULKER_BOX, BLUE_SHULKER_BOX, BROWN_SHULKER_BOX, GREEN_SHULKER_BOX,
-                 RED_SHULKER_BOX, BLACK_SHULKER_BOX, HOPPER, FURNACE, BLAST_FURNACE, SMOKER,
-                 DISPENSER, DROPPER, BREWING_STAND, CHISELED_BOOKSHELF, CRAFTER -> true;
-            default -> false;
-        };
+    public boolean isPvpAllowed(Location loc) {
+        Optional<ClaimChunk> claimOpt = getClaimAt(loc);
+        if (claimOpt.isPresent()) {
+            ClaimChunk claim = claimOpt.get();
+            return claim.getBooleanFlag("pvp", false);
+        }
+        return true;
     }
 
-    public boolean isRestrictedMechanism(Material mat) {
-        if (mat == null) return false;
-        String name = mat.name();
-        return name.endsWith("_DOOR") || name.endsWith("_TRAPDOOR") || name.endsWith("_GATE")
-                || name.endsWith("_BUTTON") || mat == Material.LEVER || mat == Material.REPEATER
-                || mat == Material.COMPARATOR;
+    public boolean isMobSpawnAllowed(Location loc) {
+        Optional<ClaimChunk> claimOpt = getClaimAt(loc);
+        if (claimOpt.isPresent()) {
+            ClaimChunk claim = claimOpt.get();
+            return claim.getBooleanFlag("mob_spawn", false);
+        }
+        return true;
     }
+
+    public boolean isFireSpreadAllowed(Location loc) {
+        Optional<ClaimChunk> claimOpt = getClaimAt(loc);
+        if (claimOpt.isPresent()) {
+            ClaimChunk claim = claimOpt.get();
+            return claim.getBooleanFlag("fire_spread", false);
+        }
+        return true;
+    }
+
+    public boolean isExplosionsAllowed(Location loc) {
+        Optional<ClaimChunk> claimOpt = getClaimAt(loc);
+        if (claimOpt.isPresent()) {
+            ClaimChunk claim = claimOpt.get();
+            return claim.getBooleanFlag("explosions", false);
+        }
+        return !preventExplosions;
+    }
+
+    private boolean isSiegeRaidAllowed(Player attacker, ClaimChunk claim) {
+        if (!siegeWarEnabled || !allowHostileRaid) return false;
+        if (plugin.getWarManager() == null || !plugin.getWarManager().isWarActive()) return false;
+
+        // Check if owner or any claim member is online
+        if (requireOwnerOnline) {
+            Player owner = Bukkit.getPlayer(claim.getOwnerId());
+            boolean anyoneOnline = (owner != null && owner.isOnline());
+            if (!anyoneOnline) {
+                for (UUID memberId : claim.getMemberRoles().keySet()) {
+                    Player m = Bukkit.getPlayer(memberId);
+                    if (m != null && m.isOnline()) {
+                        anyoneOnline = true;
+                        break;
+                    }
+                }
+            }
+            if (!anyoneOnline) return false;
+        }
+
+        // Check kingdom hostility
+        if (claim.getKingdomId() == null || claim.getKingdomId().isBlank()) return false;
+        Optional<PlayerData> aData = plugin.getPlayerDataService().getCached(attacker.getUniqueId());
+        if (aData.isEmpty() || aData.get().getRegionId() == null) return false;
+
+        Optional<Region> aRegion = plugin.getRegionManager().getRegionById(aData.get().getRegionId());
+        Optional<Region> cRegion = plugin.getRegionManager().getRegion(claim.getKingdomId());
+
+        if (aRegion.isPresent() && cRegion.isPresent()) {
+            return plugin.getWarManager().isWarActiveBetween(aRegion.get(), cRegion.get());
+        }
+        return false;
+    }
+
+    // --- Boundary Navigation & Titles ---
+
+    public void handlePlayerMove(Player player, Location from, Location to) {
+        if (from.getBlockX() >> 4 == to.getBlockX() >> 4 && from.getBlockZ() >> 4 == to.getBlockZ() >> 4) {
+            return;
+        }
+
+        String toKey = ClaimChunk.buildChunkKey(to.getWorld().getName(), to.getBlockX() >> 4, to.getBlockZ() >> 4);
+        String fromKey = lastPlayerChunkKey.put(player.getUniqueId(), toKey);
+
+        Optional<ClaimChunk> toClaimOpt = getClaimAt(to);
+        Optional<ClaimChunk> fromClaimOpt = Optional.ofNullable(fromKey != null ? claims.get(fromKey) : null);
+
+        // Entering new territory
+        if (toClaimOpt.isPresent()) {
+            ClaimChunk toClaim = toClaimOpt.get();
+            if (fromClaimOpt.isEmpty() || !fromClaimOpt.get().getOwnerId().equals(toClaim.getOwnerId())) {
+                sendTerritoryGreeting(player, toClaim);
+            }
+        } else if (fromClaimOpt.isPresent()) {
+            // Leaving territory
+            ClaimChunk fromClaim = fromClaimOpt.get();
+            sendTerritoryFarewell(player, fromClaim);
+        }
+    }
+
+    private void sendTerritoryGreeting(Player player, ClaimChunk claim) {
+        String greeting = claim.getFlag("greeting", null);
+        String statusNote = claim.isInGracePeriod() ? " <red>[MENUNGGAK PAJAK]</red>" : "";
+
+        if (greeting != null && !greeting.isBlank()) {
+            player.sendActionBar(mm.deserialize(greeting + statusNote));
+        } else {
+            String ownerDisplay = claim.isOwner(player.getUniqueId()) ? "<green>Wilayah Anda Sendiri</green>" : "<gold>Wilayah " + claim.getOwnerName() + "</gold>";
+            player.sendActionBar(mm.deserialize("<gray>Memasuki</gray> " + ownerDisplay + statusNote));
+        }
+
+        // Warn owner if their own claim is delinquent
+        if (claim.isOwner(player.getUniqueId()) && claim.isInGracePeriod()) {
+            player.sendMessage(mm.deserialize("<red><b>⚠ [PAJAK TERHUTANG]</b> Wilayah ini berada dalam <b>Masa Tenggang</b>! Segera setor via <yellow>/claim deposit</yellow>.</red>"));
+        }
+    }
+
+    private void sendTerritoryFarewell(Player player, ClaimChunk claim) {
+        String farewell = claim.getFlag("farewell", null);
+        if (farewell != null && !farewell.isBlank()) {
+            player.sendActionBar(mm.deserialize(farewell));
+        } else {
+            player.sendActionBar(mm.deserialize("<gray>Meninggalkan wilayah <gold>" + claim.getOwnerName() + "</gold> ➔ <green>Alam Liar</green></gray>"));
+        }
+    }
+
+    // --- Claim & Unclaim Core ---
 
     public ClaimResult claimCurrentChunk(Player player) {
         Chunk chunk = player.getLocation().getChunk();
@@ -271,8 +616,22 @@ public class ClaimManager {
             return new ClaimResult(false, "<red>✖ Kuota klaim Anda sudah penuh (<gold>" + currentClaims + "/" + maxClaims + "</gold> chunks)! Tingkatkan kasta atau rank untuk mendapatkan lebih banyak tanah.</red>");
         }
 
+        // Determine player's Kingdom
+        String kingdomKey = null;
+        if (plugin.getRegionManager() != null) {
+            Optional<PlayerData> pData = plugin.getPlayerDataService().getCached(player.getUniqueId());
+            if (pData.isPresent() && pData.get().getRegionId() != null) {
+                Optional<Region> reg = plugin.getRegionManager().getRegionById(pData.get().getRegionId());
+                if (reg.isPresent()) {
+                    kingdomKey = reg.get().getKey();
+                }
+            }
+        }
+
+        double initialRate = calculateChunkDailyTax(player.getUniqueId());
         ClaimChunk newClaim = new ClaimChunk(UUID.randomUUID(), player.getUniqueId(), player.getName(),
-                worldName, chunk.getX(), chunk.getZ(), null, System.currentTimeMillis());
+                worldName, chunk.getX(), chunk.getZ(), null, null, null,
+                0.0, initialRate, ClaimStatus.ACTIVE, 0L, System.currentTimeMillis(), kingdomKey, System.currentTimeMillis());
 
         claims.put(key, newClaim);
         repository.saveClaim(newClaim);
@@ -283,7 +642,7 @@ public class ClaimManager {
         showChunkBoundary(player, chunk);
         player.playSound(player.getLocation(), Sound.BLOCK_RESPAWN_ANCHOR_SET_SPAWN, 0.7f, 1.2f);
 
-        return new ClaimResult(true, "<green>✔ Berhasil mengklaim tanah di chunk <gold>[" + chunk.getX() + ", " + chunk.getZ() + "]</gold>! Total tanah Anda: <gold>" + (currentClaims + 1) + "/" + maxClaims + "</gold> chunks.</green>");
+        return new ClaimResult(true, "<green>✔ Berhasil mengklaim tanah di chunk <gold>[" + chunk.getX() + ", " + chunk.getZ() + "]</gold>! Pajak harian: <gold>Rp" + String.format("%,.0f", initialRate) + "/hari</gold>. Setor saldo via <yellow>/claim deposit</yellow>.</green>");
     }
 
     public ClaimResult unclaimCurrentChunk(Player player) {
@@ -357,46 +716,56 @@ public class ClaimManager {
         return Collections.unmodifiableCollection(claims.values());
     }
 
-    public ClaimResult trustPlayer(Player owner, UUID targetId, String targetName) {
+    // --- Role & Flag Commands ---
+
+    public ClaimResult setRole(Player owner, UUID targetId, String targetName, ClaimRole role) {
         List<ClaimChunk> ownerClaims = getClaimsByOwner(owner.getUniqueId());
         if (ownerClaims.isEmpty()) {
-            return new ClaimResult(false, "<yellow>⚠ Anda belum memiliki klaim tanah apapun untuk menambahkan izin trust.</yellow>");
+            return new ClaimResult(false, "<yellow>⚠ Anda belum memiliki wilayah klaim.</yellow>");
         }
 
-        boolean addedAny = false;
         for (ClaimChunk c : ownerClaims) {
-            if (c.addTrust(targetId)) {
-                addedAny = true;
-                repository.updateTrustedPlayers(c);
-            }
+            c.setRole(targetId, role);
+            repository.updateClaimRoles(c);
         }
 
-        if (addedAny) {
-            return new ClaimResult(true, "<green>✔ Pemain <gold>" + targetName + "</gold> kini dipercaya (trusted) di seluruh wilayah klaim Anda.</green>");
+        if (plugin.getWebBridgeService() != null) {
+            plugin.getWebBridgeService().syncClaimsAsync(getAllClaims());
+        }
+
+        if (role == null || role == ClaimRole.VISITOR) {
+            return new ClaimResult(true, "<gold>✔ Izin warga <yellow>" + targetName + "</yellow> telah dicabut dari seluruh wilayah klaim Anda.</gold>");
         } else {
-            return new ClaimResult(false, "<yellow>⚠ Pemain " + targetName + " sudah berstatus trusted di wilayah Anda.</yellow>");
+            return new ClaimResult(true, "<green>✔ Pemain <gold>" + targetName + "</gold> kini memiliki peran " + role.getBadge() + " di seluruh wilayah klaim Anda.</green>");
         }
     }
 
+    public ClaimResult setFlag(Player player, String flagKey, String value) {
+        Optional<ClaimChunk> claimOpt = getClaimAt(player.getLocation());
+        if (claimOpt.isEmpty()) {
+            return new ClaimResult(false, "<yellow>⚠ Berdirilah di dalam petak klaim Anda untuk mengubah pengaturan flag!</yellow>");
+        }
+        ClaimChunk claim = claimOpt.get();
+        if (!claim.isOwner(player.getUniqueId()) && !claim.getRole(player.getUniqueId()).isAtLeast(ClaimRole.MANAGER) && !player.isOp()) {
+            return new ClaimResult(false, "<red>✖ Anda memerlukan peran minimal <gradient:#00c6ff:#0072ff>Pengelola (Manager)</gradient> untuk mengubah flag wilayah!</red>");
+        }
+
+        claim.setFlag(flagKey, value);
+        repository.updateClaimFlags(claim);
+
+        if (plugin.getWebBridgeService() != null) {
+            plugin.getWebBridgeService().syncClaimsAsync(getAllClaims());
+        }
+
+        return new ClaimResult(true, "<green>✔ Flag <gold>" + flagKey + "</gold> wilayah ini telah diatur ke: <yellow>" + value + "</yellow>.</green>");
+    }
+
+    public ClaimResult trustPlayer(Player owner, UUID targetId, String targetName) {
+        return setRole(owner, targetId, targetName, ClaimRole.BUILDER);
+    }
+
     public ClaimResult untrustPlayer(Player owner, UUID targetId, String targetName) {
-        List<ClaimChunk> ownerClaims = getClaimsByOwner(owner.getUniqueId());
-        if (ownerClaims.isEmpty()) {
-            return new ClaimResult(false, "<yellow>⚠ Anda belum memiliki klaim tanah.</yellow>");
-        }
-
-        boolean removedAny = false;
-        for (ClaimChunk c : ownerClaims) {
-            if (c.removeTrust(targetId)) {
-                removedAny = true;
-                repository.updateTrustedPlayers(c);
-            }
-        }
-
-        if (removedAny) {
-            return new ClaimResult(true, "<gold>✔ Izin trust pemain <yellow>" + targetName + "</yellow> telah dicabut dari seluruh wilayah klaim Anda.</gold>");
-        } else {
-            return new ClaimResult(false, "<yellow>⚠ Pemain " + targetName + " tidak terdaftar di daftar trusted Anda.</yellow>");
-        }
+        return setRole(owner, targetId, targetName, ClaimRole.VISITOR);
     }
 
     public void showChunkBoundary(Player player, Chunk chunk) {
@@ -412,7 +781,7 @@ public class ClaimManager {
         Particle.DustOptions dust = new Particle.DustOptions(boundaryColor, 1.2f);
 
         BukkitTask task = Bukkit.getScheduler().runTaskTimer(plugin, new Runnable() {
-            int ticksLeft = visualizerDurationSeconds * 2; // runs every 10 ticks (0.5s)
+            int ticksLeft = visualizerDurationSeconds * 2;
 
             @Override
             public void run() {
@@ -439,33 +808,34 @@ public class ClaimManager {
         Bukkit.getScheduler().runTaskLater(plugin, task::cancel, visualizerDurationSeconds * 20L);
     }
 
-    public boolean isProtectBlocks() {
-        return protectBlocks;
+    public boolean isContainer(Material mat) {
+        if (mat == null) return false;
+        return switch (mat) {
+            case CHEST, TRAPPED_CHEST, BARREL, SHULKER_BOX, WHITE_SHULKER_BOX, ORANGE_SHULKER_BOX,
+                 MAGENTA_SHULKER_BOX, LIGHT_BLUE_SHULKER_BOX, YELLOW_SHULKER_BOX, LIME_SHULKER_BOX,
+                 PINK_SHULKER_BOX, GRAY_SHULKER_BOX, LIGHT_GRAY_SHULKER_BOX, CYAN_SHULKER_BOX,
+                 PURPLE_SHULKER_BOX, BLUE_SHULKER_BOX, BROWN_SHULKER_BOX, GREEN_SHULKER_BOX,
+                 RED_SHULKER_BOX, BLACK_SHULKER_BOX, HOPPER, FURNACE, BLAST_FURNACE, SMOKER,
+                 DISPENSER, DROPPER, BREWING_STAND, CHISELED_BOOKSHELF, CRAFTER -> true;
+            default -> false;
+        };
     }
 
-    public boolean isProtectContainers() {
-        return protectContainers;
+    public boolean isRestrictedMechanism(Material mat) {
+        if (mat == null) return false;
+        String name = mat.name();
+        return name.endsWith("_DOOR") || name.endsWith("_TRAPDOOR") || name.endsWith("_GATE")
+                || name.endsWith("_BUTTON") || mat == Material.LEVER || mat == Material.REPEATER
+                || mat == Material.COMPARATOR;
     }
 
-    public boolean isProtectDoorsGates() {
-        return protectDoorsGates;
-    }
-
-    public boolean isProtectRedstone() {
-        return protectRedstone;
-    }
-
-    public boolean isProtectPassiveEntities() {
-        return protectPassiveEntities;
-    }
-
-    public boolean isPreventExplosions() {
-        return preventExplosions;
-    }
-
-    public boolean isPreventFluidPlacing() {
-        return preventFluidPlacing;
-    }
+    public boolean isProtectBlocks() { return protectBlocks; }
+    public boolean isProtectContainers() { return protectContainers; }
+    public boolean isProtectDoorsGates() { return protectDoorsGates; }
+    public boolean isProtectRedstone() { return protectRedstone; }
+    public boolean isProtectPassiveEntities() { return protectPassiveEntities; }
+    public boolean isPreventExplosions() { return preventExplosions; }
+    public boolean isPreventFluidPlacing() { return preventFluidPlacing; }
 
     public record ClaimResult(boolean success, String message) {}
 }

@@ -506,8 +506,8 @@ public class WebBridgeService {
             for (var c : claimsList) {
                 if (!first) sb.append(",");
                 first = false;
-                sb.append(String.format(
-                        "{\"id\":\"%s\",\"owner_uuid\":\"%s\",\"owner_name\":\"%s\",\"world\":\"%s\",\"chunk_x\":%d,\"chunk_z\":%d,\"trusted_count\":%d,\"created_at\":%d}",
+                sb.append(String.format(java.util.Locale.US,
+                        "{\"id\":\"%s\",\"owner_uuid\":\"%s\",\"owner_name\":\"%s\",\"world\":\"%s\",\"chunk_x\":%d,\"chunk_z\":%d,\"trusted_count\":%d,\"bank_balance\":%.2f,\"daily_upkeep\":%.2f,\"status\":\"%s\",\"grace_period_until\":%d,\"kingdom_id\":\"%s\",\"flags\":\"%s\",\"created_at\":%d}",
                         escapeJson(c.getId().toString()),
                         escapeJson(c.getOwnerId().toString()),
                         escapeJson(c.getOwnerName()),
@@ -515,6 +515,12 @@ public class WebBridgeService {
                         c.getChunkX(),
                         c.getChunkZ(),
                         c.getTrustedPlayers().size(),
+                        c.getBankBalance(),
+                        c.getDailyUpkeep(),
+                        escapeJson(c.getStatus().name()),
+                        c.getGracePeriodUntil(),
+                        escapeJson(c.getKingdomId() != null ? c.getKingdomId() : ""),
+                        escapeJson(c.getFlagsSerialized()),
                         c.getCreatedAt()
                 ));
             }

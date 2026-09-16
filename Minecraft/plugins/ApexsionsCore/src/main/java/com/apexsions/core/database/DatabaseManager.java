@@ -200,11 +200,31 @@ public class DatabaseManager {
                     "chunk_x INTEGER NOT NULL, " +
                     "chunk_z INTEGER NOT NULL, " +
                     "trusted_players TEXT NOT NULL DEFAULT '', " +
+                    "bank_balance REAL NOT NULL DEFAULT 0.0, " +
+                    "daily_upkeep REAL NOT NULL DEFAULT 100.0, " +
+                    "status VARCHAR(32) NOT NULL DEFAULT 'ACTIVE', " +
+                    "grace_period_until TIMESTAMP NULL, " +
+                    "last_tax_collected_at TIMESTAMP NULL, " +
+                    "flags TEXT NOT NULL DEFAULT '{}', " +
+                    "roles TEXT NOT NULL DEFAULT '{}', " +
+                    "kingdom_id VARCHAR(64) NULL, " +
                     "created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, " +
                     "CONSTRAINT uq_claim_chunk UNIQUE (world, chunk_x, chunk_z));");
 
             stmt.execute("CREATE INDEX IF NOT EXISTS idx_claims_owner ON apexsions_claims(owner_id);");
             stmt.execute("CREATE INDEX IF NOT EXISTS idx_claims_world_chunk ON apexsions_claims(world, chunk_x, chunk_z);");
+            stmt.execute("CREATE INDEX IF NOT EXISTS idx_claims_status ON apexsions_claims(status);");
+            stmt.execute("CREATE INDEX IF NOT EXISTS idx_claims_kingdom ON apexsions_claims(kingdom_id);");
+
+            // Migration safety: Add missing columns if upgrading existing SQLite database
+            addColumnIfNotExists(stmt, "apexsions_claims", "bank_balance", "REAL NOT NULL DEFAULT 0.0");
+            addColumnIfNotExists(stmt, "apexsions_claims", "daily_upkeep", "REAL NOT NULL DEFAULT 100.0");
+            addColumnIfNotExists(stmt, "apexsions_claims", "status", "VARCHAR(32) NOT NULL DEFAULT 'ACTIVE'");
+            addColumnIfNotExists(stmt, "apexsions_claims", "grace_period_until", "TIMESTAMP NULL");
+            addColumnIfNotExists(stmt, "apexsions_claims", "last_tax_collected_at", "TIMESTAMP NULL");
+            addColumnIfNotExists(stmt, "apexsions_claims", "flags", "TEXT NOT NULL DEFAULT '{}'");
+            addColumnIfNotExists(stmt, "apexsions_claims", "roles", "TEXT NOT NULL DEFAULT '{}'");
+            addColumnIfNotExists(stmt, "apexsions_claims", "kingdom_id", "VARCHAR(64) NULL");
 
             // Unified Bans Table
             stmt.execute("CREATE TABLE IF NOT EXISTS apexsions_bans (" +
@@ -295,5 +315,13 @@ public class DatabaseManager {
 
     public boolean isUsingFallback() {
         return usingFallback;
+    }
+
+    private void addColumnIfNotExists(Statement stmt, String table, String column, String type) {
+        try {
+            stmt.execute("ALTER TABLE " + table + " ADD COLUMN " + column + " " + type + ";");
+        } catch (SQLException ignored) {
+            // Column already exists
+        }
     }
 }

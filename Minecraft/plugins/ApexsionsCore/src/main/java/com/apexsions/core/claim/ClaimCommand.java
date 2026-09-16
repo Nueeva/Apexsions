@@ -17,7 +17,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.*;
 
 /**
- * Command handler for /claim, /unclaim, /trust, /untrust, and /claiminfo.
+ * Enhanced command handler for /claim, /unclaim, /trust, /untrust, and tax/role/flag subcommands.
  */
 public class ClaimCommand implements CommandExecutor, TabCompleter {
 
@@ -126,6 +126,50 @@ public class ClaimCommand implements CommandExecutor, TabCompleter {
                 var res = claimManager.unclaimAll(player);
                 player.sendMessage(mm.deserialize(res.message()));
             }
+            case "deposit" -> {
+                if (args.length < 2) {
+                    player.sendMessage(mm.deserialize("<yellow>Penggunaan: /claim deposit <nominal></yellow>"));
+                    return true;
+                }
+                try {
+                    double amount = Double.parseDouble(args[1]);
+                    var res = claimManager.depositBank(player, amount);
+                    player.sendMessage(mm.deserialize(res.message()));
+                } catch (NumberFormatException e) {
+                    player.sendMessage(mm.deserialize("<red>Nominal harus berupa angka valid!</red>"));
+                }
+            }
+            case "withdraw" -> {
+                if (args.length < 2) {
+                    player.sendMessage(mm.deserialize("<yellow>Penggunaan: /claim withdraw <nominal></yellow>"));
+                    return true;
+                }
+                try {
+                    double amount = Double.parseDouble(args[1]);
+                    var res = claimManager.withdrawBank(player, amount);
+                    player.sendMessage(mm.deserialize(res.message()));
+                } catch (NumberFormatException e) {
+                    player.sendMessage(mm.deserialize("<red>Nominal harus berupa angka valid!</red>"));
+                }
+            }
+            case "bank", "tax" -> handleBankInfo(player);
+            case "flag" -> {
+                if (args.length < 3) {
+                    player.sendMessage(mm.deserialize("<yellow>Penggunaan: /claim flag <pvp|mob_spawn|fire_spread|explosions|greeting|farewell> <nilai></yellow>"));
+                    return true;
+                }
+                String flagKey = args[1].toLowerCase();
+                String flagVal = String.join(" ", Arrays.copyOfRange(args, 2, args.length));
+                var res = claimManager.setFlag(player, flagKey, flagVal);
+                player.sendMessage(mm.deserialize(res.message()));
+            }
+            case "role" -> {
+                if (args.length < 3) {
+                    player.sendMessage(mm.deserialize("<yellow>Penggunaan: /claim role <nama_pemain> <manager|builder|visitor|remove></yellow>"));
+                    return true;
+                }
+                handleRole(player, args[1], args[2]);
+            }
             case "trust" -> {
                 if (args.length < 2) {
                     player.sendMessage(mm.deserialize("<yellow>Penggunaan: /claim trust <nama_pemain></yellow>"));
@@ -147,9 +191,57 @@ public class ClaimCommand implements CommandExecutor, TabCompleter {
         return true;
     }
 
+    private void handleRole(Player player, String targetName, String roleStr) {
+        OfflinePlayer target = Bukkit.getOfflinePlayer(targetName);
+        ClaimRole role = roleStr.equalsIgnoreCase("remove") ? ClaimRole.VISITOR : ClaimRole.fromString(roleStr);
+        var res = claimManager.setRole(player, target.getUniqueId(), targetName, role);
+        player.sendMessage(mm.deserialize(res.message()));
+    }
+
+    private void handleBankInfo(Player player) {
+        List<ClaimChunk> claims = claimManager.getClaimsByOwner(player.getUniqueId());
+        if (claims.isEmpty()) {
+            player.sendMessage(mm.deserialize("<yellow>⚠ Anda belum memiliki wilayah klaim tanah.</yellow>"));
+            return;
+        }
+
+        double totalVaulted = 0.0;
+        double dailyTaxTotal = claimManager.calculateTotalDailyTax(player.getUniqueId());
+        double perChunkTax = claimManager.calculateChunkDailyTax(player.getUniqueId());
+
+        boolean anyInGrace = false;
+        long minGraceTime = Long.MAX_VALUE;
+
+        for (ClaimChunk c : claims) {
+            totalVaulted += c.getBankBalance();
+            if (c.isInGracePeriod()) {
+                anyInGrace = true;
+                if (c.getGracePeriodUntil() < minGraceTime) minGraceTime = c.getGracePeriodUntil();
+            }
+        }
+
+        double daysRemaining = dailyTaxTotal > 0 ? (totalVaulted / dailyTaxTotal) : 999.0;
+
+        player.sendMessage(mm.deserialize("<gradient:#ffd700:#ffa500><bold>━━━━━━━━━━━━━ [ BRANKAS PAJAK WILAYAH ] ━━━━━━━━━━━━━</bold></gradient>"));
+        player.sendMessage(mm.deserialize("<gray>Total Wilayah: </gray><gold>" + claims.size() + " chunks</gold>"));
+        player.sendMessage(mm.deserialize("<gray>Tarif Pajak: </gray><yellow>Rp" + String.format("%,.0f", perChunkTax) + "/chunk/hari</yellow> (Progresif)"));
+        player.sendMessage(mm.deserialize("<gray>Total Tagihan: </gray><red>Rp" + String.format("%,.0f", dailyTaxTotal) + "/hari</red> (50% Kas Kerajaan)"));
+        player.sendMessage(mm.deserialize("<gray>Saldo Brankas: </gray><green><b>Rp" + String.format("%,.0f", totalVaulted) + "</b></green>"));
+        player.sendMessage(mm.deserialize("<gray>Estimasi Bertahan: </gray><aqua>" + String.format("%.1f", daysRemaining) + " hari</aqua>"));
+
+        if (anyInGrace) {
+            long remainingMs = minGraceTime - System.currentTimeMillis();
+            long hours = Math.max(0, remainingMs / (3600 * 1000L));
+            player.sendMessage(mm.deserialize("<dark_red><b>⚠ STATUS: MENUNGGAK PAJAK!</b> Sisa waktu masa tenggang: <b>" + hours + " jam</b> sebelum penyitaan!</dark_red>"));
+        } else {
+            player.sendMessage(mm.deserialize("<green>✔ Status Pembayaran: <b>LUNAS & AKTIF</b></green>"));
+        }
+        player.sendMessage(mm.deserialize("<gray>Setor saldo: <yellow>/claim deposit <nominal></yellow> • Tarik: <yellow>/claim withdraw <nominal></yellow></gray>"));
+    }
+
     private void handleAdminSubcommand(CommandSender sender, String[] args) {
         if (args.length < 2) {
-            sender.sendMessage(mm.deserialize("<gold>Penggunaan Admin:</gold> <yellow>/claim admin <unclaim|unclaimall|sync></yellow>"));
+            sender.sendMessage(mm.deserialize("<gold>Penggunaan Admin:</gold> <yellow>/claim admin <unclaim|unclaimall|sync|collecttax|deposit></yellow>"));
             return;
         }
 
@@ -180,7 +272,7 @@ public class ClaimCommand implements CommandExecutor, TabCompleter {
                     return;
                 }
                 String target = args[2];
-                org.bukkit.OfflinePlayer off = Bukkit.getOfflinePlayer(target);
+                OfflinePlayer off = Bukkit.getOfflinePlayer(target);
                 int count = claimManager.forceUnclaimAll(off.getUniqueId());
                 sender.sendMessage(mm.deserialize("<green>✔ Berhasil melepas seluruh (" + count + ") klaim tanah milik " + target + ".</green>"));
             }
@@ -192,7 +284,38 @@ public class ClaimCommand implements CommandExecutor, TabCompleter {
                     sender.sendMessage(mm.deserialize("<red>WebBridgeService tidak aktif.</red>"));
                 }
             }
-            default -> sender.sendMessage(mm.deserialize("<red>Aksi admin klaim tidak valid. Pilihan: unclaim, unclaimall, sync.</red>"));
+            case "collecttax" -> {
+                claimManager.processTaxCollectionCycle();
+                sender.sendMessage(mm.deserialize("<green>✔ Siklus penagihan pajak dan pemeriksaan masa tenggang wilayah berhasil dieksekusi.</green>"));
+            }
+            case "deposit" -> {
+                if (args.length < 4) {
+                    sender.sendMessage(mm.deserialize("<yellow>Penggunaan: /claim admin deposit <nama_pemain> <nominal></yellow>"));
+                    return;
+                }
+                String targetName = args[2];
+                try {
+                    double amount = Double.parseDouble(args[3]);
+                    OfflinePlayer target = Bukkit.getOfflinePlayer(targetName);
+                    List<ClaimChunk> targetClaims = claimManager.getClaimsByOwner(target.getUniqueId());
+                    if (targetClaims.isEmpty()) {
+                        sender.sendMessage(mm.deserialize("<yellow>⚠ Pemain " + targetName + " tidak memiliki klaim tanah.</yellow>"));
+                        return;
+                    }
+                    double perChunk = amount / targetClaims.size();
+                    for (ClaimChunk c : targetClaims) {
+                        c.deposit(perChunk);
+                        plugin.getClaimRepository().updateClaimFinancials(c);
+                    }
+                    if (plugin.getWebBridgeService() != null) {
+                        plugin.getWebBridgeService().syncClaimsAsync(claimManager.getAllClaims());
+                    }
+                    sender.sendMessage(mm.deserialize("<green>✔ Berhasil menyuntikkan saldo deposit Rp" + String.format("%,.0f", amount) + " ke brankas klaim " + targetName + ".</green>"));
+                } catch (NumberFormatException e) {
+                    sender.sendMessage(mm.deserialize("<red>Nominal harus berupa angka valid!</red>"));
+                }
+            }
+            default -> sender.sendMessage(mm.deserialize("<red>Aksi admin klaim tidak valid. Pilihan: unclaim, unclaimall, sync, collecttax, deposit.</red>"));
         }
     }
 
@@ -206,91 +329,115 @@ public class ClaimCommand implements CommandExecutor, TabCompleter {
         if (claimOpt.isPresent()) {
             ClaimChunk c = claimOpt.get();
             player.sendMessage(mm.deserialize("<gray>Pemilik Tanah: </gray><gold><bold>" + c.getOwnerName() + "</bold></gold>"));
-            Set<UUID> trusted = c.getTrustedPlayers();
-            if (trusted.isEmpty()) {
-                player.sendMessage(mm.deserialize("<gray>Warga Terpercaya: </gray><dark_gray>Tidak ada</dark_gray>"));
+            player.sendMessage(mm.deserialize("<gray>Status: </gray>" + c.getStatus().getBadge()));
+            player.sendMessage(mm.deserialize("<gray>Saldo Chunk: </gray><green>Rp" + String.format("%,.0f", c.getBankBalance()) + "</green> • Pajak: <yellow>Rp" + String.format("%,.0f", c.getDailyUpkeep()) + "/hari</yellow>"));
+
+            var roles = c.getMemberRoles();
+            if (roles.isEmpty()) {
+                player.sendMessage(mm.deserialize("<gray>Warga Terdaftar: </gray><dark_gray>Tidak ada</dark_gray>"));
             } else {
-                List<String> names = new ArrayList<>();
-                for (UUID u : trusted) {
-                    OfflinePlayer op = Bukkit.getOfflinePlayer(u);
-                    names.add(op.getName() != null ? op.getName() : u.toString().substring(0, 8));
+                List<String> roleDisplays = new ArrayList<>();
+                for (var entry : roles.entrySet()) {
+                    OfflinePlayer op = Bukkit.getOfflinePlayer(entry.getKey());
+                    String name = op.getName() != null ? op.getName() : entry.getKey().toString().substring(0, 8);
+                    roleDisplays.add(name + " (" + entry.getValue().name() + ")");
                 }
-                player.sendMessage(mm.deserialize("<gray>Warga Terpercaya: </gray><green>" + String.join(", ", names) + "</green>"));
+                player.sendMessage(mm.deserialize("<gray>Warga: </gray><aqua>" + String.join(", ", roleDisplays) + "</aqua>"));
             }
+
+            player.sendMessage(mm.deserialize("<gray>Flags: </gray><yellow>PvP=" + c.getFlag("pvp", "false") + ", MobSpawn=" + c.getFlag("mob_spawn", "false") + ", Api=" + c.getFlag("fire_spread", "false") + "</yellow>"));
         } else {
-            player.sendMessage(mm.deserialize("<gray>Status Tanah: </gray><green>Publik / Wilderness (Belum Diklaim)</green>"));
-            player.sendMessage(mm.deserialize("<gray>Ketik </gray><gold>/claim</gold><gray> untuk menguasai chunk ini.</gray>"));
+            player.sendMessage(mm.deserialize("<gray>Status Wilayah: </gray><green>Alam Liar (Belum Diklaim)</green>"));
+            player.sendMessage(mm.deserialize("<gray>Ketik <yellow>/claim</yellow> untuk mengamankan tanah ini.</gray>"));
+        }
+    }
+
+    private void handleList(Player player) {
+        List<ClaimChunk> list = claimManager.getClaimsByOwner(player.getUniqueId());
+        int max = claimManager.getMaxClaims(player);
+
+        player.sendMessage(mm.deserialize("<gradient:#ffd700:#ffa500><bold>Daftar Wilayah Tanah Anda (" + list.size() + "/" + max + "):</bold></gradient>"));
+        if (list.isEmpty()) {
+            player.sendMessage(mm.deserialize("<gray>Anda belum mengklaim petak tanah satupun. Berdirilah di chunk pilihan Anda dan ketik <yellow>/claim</yellow>.</gray>"));
+            return;
         }
 
-        claimManager.showChunkBoundary(player, chunk);
-        player.sendMessage(mm.deserialize("<yellow>✨ Partikel debu emas menandai batas 16x16 chunk ini.</yellow>"));
-        player.sendMessage(mm.deserialize("<gradient:#d4af37:#f39c12><bold>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</bold></gradient>"));
+        for (ClaimChunk c : list) {
+            String status = c.isInGracePeriod() ? "<red>[MENUNGGAK]</red>" : "<green>[AMAN]</green>";
+            player.sendMessage(mm.deserialize("<gray>• </gray><gold>" + c.getWorld() + "</gold> <yellow>[" + c.getChunkX() + ", " + c.getChunkZ() + "]</yellow> " + status + " <gray>(Saldo: Rp" + String.format("%,.0f", c.getBankBalance()) + ")</gray>"));
+        }
     }
 
     private void handleTrust(Player player, String targetName) {
         OfflinePlayer target = Bukkit.getOfflinePlayer(targetName);
-        if (target.getUniqueId().equals(player.getUniqueId())) {
-            player.sendMessage(mm.deserialize("<red>✖ Anda tidak perlu menambahkan izin trust pada diri Anda sendiri.</red>"));
-            return;
-        }
-        var res = claimManager.trustPlayer(player, target.getUniqueId(), target.getName() != null ? target.getName() : targetName);
+        var res = claimManager.trustPlayer(player, target.getUniqueId(), targetName);
         player.sendMessage(mm.deserialize(res.message()));
     }
 
     private void handleUntrust(Player player, String targetName) {
         OfflinePlayer target = Bukkit.getOfflinePlayer(targetName);
-        var res = claimManager.untrustPlayer(player, target.getUniqueId(), target.getName() != null ? target.getName() : targetName);
+        var res = claimManager.untrustPlayer(player, target.getUniqueId(), targetName);
         player.sendMessage(mm.deserialize(res.message()));
     }
 
-    private void handleList(Player player) {
-        List<ClaimChunk> claims = claimManager.getClaimsByOwner(player.getUniqueId());
-        int max = claimManager.getMaxClaims(player);
-
-        player.sendMessage(mm.deserialize("<gradient:#d4af37:#f39c12><bold>━━━━━━ [ DAFTAR KLAIM TANAH ANDA (" + claims.size() + "/" + max + ") ] ━━━━━━</bold></gradient>"));
-        if (claims.isEmpty()) {
-            player.sendMessage(mm.deserialize("<gray>Anda belum memiliki tanah yang diklaim. Berdirilah di area bebas dan ketik <gold>/claim</gold>!</gray>"));
-        } else {
-            for (int i = 0; i < claims.size(); i++) {
-                ClaimChunk c = claims.get(i);
-                int blockX = (c.getChunkX() << 4) + 8;
-                int blockZ = (c.getChunkZ() << 4) + 8;
-                player.sendMessage(mm.deserialize("<gold>" + (i + 1) + ". </gold><white>" + c.getWorld() + "</white> <gray>• Chunk: </gray><yellow>[" + c.getChunkX() + ", " + c.getChunkZ() + "]</yellow> <dark_gray>(~X: " + blockX + ", Z: " + blockZ + ")</dark_gray>"));
-            }
-        }
-        player.sendMessage(mm.deserialize("<gradient:#d4af37:#f39c12><bold>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</bold></gradient>"));
-    }
-
     private void sendHelp(Player player) {
-        player.sendMessage(mm.deserialize("<gradient:#d4af37:#f39c12><bold>⚑ PANDUAN SISTEM KLAIM TANAH APEXSIONS</bold></gradient>"));
-        player.sendMessage(mm.deserialize("<gold>/claim</gold> <gray>— Mengklaim chunk tanah tempat Anda berdiri.</gray>"));
-        player.sendMessage(mm.deserialize("<gold>/claim gui</gold> <gray>— Membuka antarmuka menu manajemen tanah.</gray>"));
-        player.sendMessage(mm.deserialize("<gold>/claim info</gold> <gray>— Melihat pemilik & memunculkan batas visual chunk.</gray>"));
-        player.sendMessage(mm.deserialize("<gold>/claim trust <pemain></gold> <gray>— Memberikan izin bangun/buka peti pada teman.</gray>"));
-        player.sendMessage(mm.deserialize("<gold>/claim untrust <pemain></gold> <gray>— Mencabut izin trust teman.</gray>"));
-        player.sendMessage(mm.deserialize("<gold>/claim list</gold> <gray>— Menampilkan daftar koordinat seluruh tanah Anda.</gray>"));
-        player.sendMessage(mm.deserialize("<gold>/unclaim</gold> <gray>— Melepas klaim chunk saat ini.</gray>"));
+        player.sendMessage(mm.deserialize("<gradient:#ffd700:#ffa500><bold>Bantuan Kedaulatan Wilayah (Land Claim):</bold></gradient>"));
+        player.sendMessage(mm.deserialize("<yellow>/claim</yellow> <gray>- Klaim chunk 16x16 tempat Anda berdiri saat ini</gray>"));
+        player.sendMessage(mm.deserialize("<yellow>/claim gui</yellow> <gray>- Buka menu antarmuka visual manajemen klaim</gray>"));
+        player.sendMessage(mm.deserialize("<yellow>/claim bank</yellow> <gray>- Info saldo brankas, pajak progresif, & masa tenggang</gray>"));
+        player.sendMessage(mm.deserialize("<yellow>/claim deposit <jumlah></yellow> <gray>- Setor koin ke brankas pajak wilayah</gray>"));
+        player.sendMessage(mm.deserialize("<yellow>/claim withdraw <jumlah></yellow> <gray>- Tarik koin dari brankas wilayah</gray>"));
+        player.sendMessage(mm.deserialize("<yellow>/claim role <pemain> <peran></yellow> <gray>- Atur peran (manager, builder, visitor)</gray>"));
+        player.sendMessage(mm.deserialize("<yellow>/claim flag <flag> <nilai></yellow> <gray>- Atur flag (pvp, mob_spawn, fire_spread)</gray>"));
+        player.sendMessage(mm.deserialize("<yellow>/claim info</yellow> <gray>- Cek status kepemilikan dan flag chunk saat ini</gray>"));
+        player.sendMessage(mm.deserialize("<yellow>/claim list</yellow> <gray>- Lihat daftar seluruh petak tanah milik Anda</gray>"));
+        player.sendMessage(mm.deserialize("<yellow>/claim unclaim</yellow> <gray>- Melepas klaim chunk tempat Anda berdiri</gray>"));
+        player.sendMessage(mm.deserialize("<yellow>/claim unclaimall</yellow> <gray>- Melepas seluruh klaim tanah Anda</gray>"));
     }
 
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        String cmdName = command.getName().toLowerCase();
-        if (cmdName.equals("trust") || cmdName.equals("untrust")) {
-            if (args.length == 1) {
-                return Bukkit.getOnlinePlayers().stream().map(Player::getName).filter(n -> n.toLowerCase().startsWith(args[0].toLowerCase())).toList();
-            }
-            return Collections.emptyList();
-        }
-
+        List<String> completions = new ArrayList<>();
         if (args.length == 1) {
-            List<String> subs = List.of("gui", "info", "trust", "untrust", "list", "unclaim", "unclaimall", "reload");
-            return subs.stream().filter(s -> s.startsWith(args[0].toLowerCase())).toList();
+            List<String> subs = new ArrayList<>(List.of("gui", "info", "bank", "deposit", "withdraw", "flag", "role", "trust", "untrust", "list", "unclaim", "unclaimall"));
+            if (sender.hasPermission("apexsions.admin") || sender.isOp()) {
+                subs.add("admin");
+                subs.add("reload");
+            }
+            for (String s : subs) {
+                if (s.startsWith(args[0].toLowerCase())) completions.add(s);
+            }
+            return completions;
         }
 
-        if (args.length == 2 && (args[0].equalsIgnoreCase("trust") || args[0].equalsIgnoreCase("untrust"))) {
-            return Bukkit.getOnlinePlayers().stream().map(Player::getName).filter(n -> n.toLowerCase().startsWith(args[1].toLowerCase())).toList();
+        if (args.length == 2 && args[0].equalsIgnoreCase("flag")) {
+            for (String f : List.of("pvp", "mob_spawn", "fire_spread", "explosions", "greeting", "farewell")) {
+                if (f.startsWith(args[1].toLowerCase())) completions.add(f);
+            }
+            return completions;
         }
 
-        return Collections.emptyList();
+        if (args.length == 3 && args[0].equalsIgnoreCase("flag")) {
+            for (String v : List.of("true", "false")) {
+                if (v.startsWith(args[2].toLowerCase())) completions.add(v);
+            }
+            return completions;
+        }
+
+        if (args.length == 3 && args[0].equalsIgnoreCase("role")) {
+            for (String r : List.of("manager", "builder", "visitor", "remove")) {
+                if (r.startsWith(args[2].toLowerCase())) completions.add(r);
+            }
+            return completions;
+        }
+
+        if (args.length == 2 && args[0].equalsIgnoreCase("admin")) {
+            for (String a : List.of("unclaim", "unclaimall", "sync", "collecttax", "deposit")) {
+                if (a.startsWith(args[1].toLowerCase())) completions.add(a);
+            }
+            return completions;
+        }
+
+        return completions;
     }
 }

@@ -16,6 +16,23 @@ claim-limits:
   architect: 512
   ancestor: 9999
 
+# Progressive Tax & Upkeep Economy
+tax:
+  enabled: true
+  base-tax-per-chunk: 100.0
+  progressive-multiplier: 0.15
+  check-interval-minutes: 30
+  tax-period-hours: 24
+  grace-period-hours: 72
+  kingdom-treasury-split: 0.50
+  unclaim-on-grace-expire: true
+
+# Siege War Mechanics during Kingdom War
+siege-war:
+  enabled: true
+  allow-hostile-raid: true
+  require-owner-online: true
+
 # Worlds where land claiming is disabled
 disabled-worlds:
   - "world_nether"

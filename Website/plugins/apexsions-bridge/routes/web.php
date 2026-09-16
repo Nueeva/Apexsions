@@ -104,6 +104,9 @@ Route::middleware(['web', 'admin-access'])->prefix('admin')->name('admin.')->gro
     Route::prefix('claims')->name('claims.')->middleware('can:admin.users')->group(function () {
         Route::get('/', [\Azuriom\Plugin\ApexsionsBridge\Controllers\Admin\ClaimAdminController::class, 'index'])->name('index');
         Route::post('/{id}/unclaim', [\Azuriom\Plugin\ApexsionsBridge\Controllers\Admin\ClaimAdminController::class, 'unclaim'])->name('unclaim');
+        Route::post('/{id}/deposit', [\Azuriom\Plugin\ApexsionsBridge\Controllers\Admin\ClaimAdminController::class, 'deposit'])->name('deposit');
+        Route::post('/collect-tax', [\Azuriom\Plugin\ApexsionsBridge\Controllers\Admin\ClaimAdminController::class, 'collectTax'])->name('collect-tax');
+        Route::post('/sync', [\Azuriom\Plugin\ApexsionsBridge\Controllers\Admin\ClaimAdminController::class, 'sync'])->name('sync');
     });
 
     // Economy Operations & Market Control
