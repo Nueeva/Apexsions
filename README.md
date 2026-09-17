@@ -389,6 +389,13 @@ Apexsions/
 | `/fish admin rod` | `/adminrod` | Membuka Dialog Native Admin Rod Creator GUI | `apexsionsfishing.admin` | `op` |
 | `/fish reload` | - | Memuat ulang seluruh konfigurasi perikanan | `apexsionsfishing.admin` | `op` |
 
+### 🔐 Modul Autentikasi Lintas Platform (FastLogin + Floodgate + AuthMe)
+| Perintah | Alias | Deskripsi | Hak Akses (Permission) | Default |
+| :--- | :--- | :--- | :--- | :---: |
+| `/premium` | `/prem`, `/loginfast` | Menandai akun sebagai Java Premium (konfirmasi 2x + 1x kick by-design) | `fastlogin.bukkit.command.premium` | `true` |
+| `/cracked <player>` | `/unpremium` | Memulihkan akun terkunci ke login password AuthMe (Staf Warden+) | `fastlogin.bukkit.command.cracked` | `op` |
+| `/fldelete <player>` | - | Menghapus profil cache pemain dari FastLogin.db | `fastlogin.bukkit.command.delete` | `op` |
+
 ---
 
 ## 🛠️ 4. Kompilasi & Build Otomatis

@@ -299,3 +299,41 @@ Arsitektur sinkronisasi dan antrean eksekusi perintah WebBridge (`apexsions-brid
 - **Diskon Terverifikasi**: Diskon 10% untuk pemegang Emperor Permanent dan 15% untuk Sions Permanent dihitung server-side sebelum membentuk link WhatsApp.
 - **Hirarki Exsio Pass**: Akun dengan Exsio Pass secara otomatis memiliki akses dan hak klaim reward untuk seluruh tingkatan Sio Pass dan Citizen Pass (`PlayerData.java`).
 - **Isolasi Reward Uang Permanen**: Reward uang tunai permanen (misal Sions Rp 300.000, Emperor Rp 180.000) bersifat terisolasi dan non-kumulatif, dilindungi oleh unique constraint tabel `apexsions_rank_rewards_claimed`.
+
+---
+
+## 13. Operasional Autentikasi & SOP Pemulihan Akun Terkunci (/cracked)
+
+Panduan operasional bagi jajaran staf (Warden, Overseer, Architect, Ancestor) untuk menangani sistem autentikasi dual-platform dan tiket pemulihan akun:
+
+### A. Alur Kerja Sistem Autentikasi
+1. **Pemain Java Premium Original:**
+   - Mengetik `/premium` 2× untuk verifikasi. Dikeluarkan dari server 1× (*by-design*).
+   - Setelah masuk kembali, pemain tidak perlu memasukkan kata sandi AuthMe selamanya.
+2. **Pemain Bedrock Edition:**
+   - Mengetik `/register <pass> <pass>` **persis 1× saat join pertama kali**.
+   - Seterusnya login otomatis via enkripsi sesi Xbox Live Floodgate.
+3. **Pemain Java Launcher Crack:**
+   - Tetap menggunakan kata sandi AuthMe (`/login <password>`) seperti biasa.
+   - Terlindungi dari penguncian akun oleh pengaturan `autoRegister: false`.
+
+### B. SOP Penanganan Tiket: Pemain Crack Terkunci Akibat Salah Ketik `/premium`
+* **Gejala / Laporan Pemain:**
+  Pemain crack melaporkan gagal masuk ke server dengan pesan kick:  
+  `[Apexsions] Sesi tidak valid (gagal verifikasi Mojang). Jika kamu memakai launcher crack, akunmu terkunci. Hubungi staf Discord untuk pemulihan.`
+* **Penyebab:**
+  Pemain launcher crack mengabaikan peringatan dan mengetik `/premium` sebanyak dua kali. FastLogin kemudian mencoba memvalidasi sesi enkripsi ke Mojang dan menolak koneksi karena akun bukan Minecraft berbayar resmi.
+* **Langkah Pemulihan Staf (Turnaround Time: < 30 Detik):**
+  1. Verifikasi bahwa pelapor adalah pemilik sah akun (cek riwayat pendaftaran tiket/Discord).
+  2. Buka konsol server atau jalankan perintah langsung di in-game chat (Staf Warden/Overseer):
+     ```text
+     /cracked <player>
+     ```
+  3. FastLogin akan mencabut flag premium di `FastLogin.db` dan merespons:
+     `[Apexsions] Status premium dicabut. Silakan login kembali dengan kata sandi AuthMe.`
+  4. Beritahukan pemain untuk mencoba login kembali. Seluruh saldo, inventori, dan level karakter tetap 100% aman di offline UUID.
+
+### C. Matriks Izin Staf untuk FastLogin
+- `fastlogin.bukkit.command.cracked`: Diberikan otomatis ke grup `warden`, `overseer`, `architect`, dan `ancestor` untuk memulihkan akun anggota komunitas.
+- Pemain Bedrock dicegah menjalankan perintah `/premium` melalui negasi izin LuckPerms `context[origin=bedrock]`.
+

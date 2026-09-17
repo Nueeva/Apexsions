@@ -641,3 +641,61 @@ Spesifikasi atribut, persentase pajak wilayah, dan kondisi fisik ketiga kerajaan
 ### D. ✦ The Aetherial Conclave (Dimensi Atas Aetherion)
 - **Status:** Entitas kosmik non-fana pengawas semesta (Weight $\ge 80$, OP, dan jajaran staf).
 - **Hak Istimewa:** Bebas permanen dari pajak wilayah, klaim chunk tanpa batas, serta isolasi dari bias konflik 3 kerajaan dunia fana.
+
+---
+
+## 🔐 19. Arsitektur Autentikasi Nir-Hambatan (Zero-Friction Auto-Login) & Proteksi Identitas Dual-Platform
+
+Mengintegrasikan ekosistem **AuthMeReloaded (v6.0.1)**, **Floodgate (v2.2.5)**, dan **FastLogin (v1.12-kick-toggle)** pada runtime Paper 26.2 (Java 21 LTS) untuk menghadirkan pengalaman masuk server instan tanpa kompromi keamanan:
+
+### A. Matriks Autentikasi 3-Tier
+| Tipe Klien / Pemain | Metode Autentikasi | Interaksi Masuk Server | Status Keamanan & Enkripsi |
+|---|---|---|---|
+| **Java Premium Original** | Mojang Session Encryption via FastLogin | Ketik `/premium` 2× saat pertama kali (1× kick by-design). Selanjutnya **auto-login instan** tanpa password selamanya. | Handshake resmi Mojang via ProtocolLib v5.4.0. Anti-pembajakan 100%. |
+| **Bedrock Edition (Mobile/Win10/Console)** | Xbox Live Authentication via Floodgate | Registrasi AuthMe (`/register`) **persis 1× seumur hidup**. Seterusnya **auto-login otomatis** via sesi Floodgate (`autoLoginFloodgate: true`). | Namespace terlindungi prefix `.` (tidak bisa dispoof Java). |
+| **Java Crack (Non-Paid Launcher)** | Standar AuthMe Password Protection | Wajib memasukkan kata sandi AuthMe (`/register` & `/login`) setiap kali masuk ke server. | Password hash Argon2/BCrypt di AuthMe. Nol risiko pembajakan akun pemain lain. |
+
+### B. Kebijakan Keamanan Konservatif (Nol Risiko Lockout Veteran)
+1. **`autoRegister: false`:**
+   - Menjamin bahwa pemain crack veteran yang memakai nickname original milik pemain luar **TIDAK PERNAH DIKUNCI** dengan password acak.
+   - FastLogin tidak pernah secara sepihak mendaftarkan akun di AuthMe secara otomatis.
+2. **`premiumUuid: false` (Integritas UUID Mutlak):**
+   - Seluruh data pemain (saldo Rupiah, saldo Diamond, level karakter 1–100, klaim wilayah kerajaan, dan link profil publik web Azuriom `/player/{uuid}`) **tetap mengacu pada Offline UUID (`OfflinePlayer:<name>`)**.
+   - Ketika pemain Java beralih menjadi Premium (`/premium`), UUID mereka tidak pernah berganti, sehingga 0% risiko data loss atau data terputus (*orphaned data*).
+3. **`allowFloodgateNameConflict: false`:**
+   - Mencegah konflik nama antara pemain Bedrock dan Java, serta memastikan namespace Bedrock selalu terisolasi via prefix `.`.
+
+### C. Alur Konfirmasi Dua Tahap `/premium` & 1× Kick By-Design
+1. Pemain Java Original login ke server menggunakan password AuthMe untuk terakhir kali.
+2. Pemain mengetik `/premium` $\rightarrow$ Muncul peringatan resmi berbahasa Indonesia (`premium-warning: true`).
+3. Pemain mengetik `/premium` kedua kali untuk mengonfirmasi $\rightarrow$ Server mengeluarkan pemain 1× (`kick-toggle: true`).
+   * *Catatan Penting:* Pengeluaran ini adalah mekanisme wajib (*by-design*) agar pada sambungan berikutnya, ProtocolLib dapat menginisiasi enkripsi handshake langsung dengan server otentikasi Mojang.
+4. Pemain masuk kembali $\rightarrow$ Auto-login aktif permanen.
+
+### D. Isolasi Izin LuckPerms & Prosedur Pemulihan Akun Staf
+1. **Isolasi Pemain Bedrock:**
+   - Agar pemain Bedrock tidak sengaja memicu verifikasi sesi Java Mojang:
+     ```powershell
+     lp group default permission set fastlogin.bukkit.command.premium false context[origin=bedrock]
+     ```
+2. **Izin Pemulihan untuk Staf Tiket (Tier III & IV):**
+   - Diberikan ke grup `warden` dan `overseer`:
+     ```powershell
+     lp group warden permission set fastlogin.bukkit.command.cracked true
+     lp group overseer permission set fastlogin.bukkit.command.cracked true
+     ```
+3. **SOP Penanganan Salah Ketik / Akun Terkunci:**
+   - Jika pemain launcher crack tidak sengaja mengetik `/premium` hingga terkunci (`invalid-session`):
+     1. Pemain melapor via tiket Discord atau Staff Reports Desk.
+     2. Staf memeriksa status akun via `%fastlogin_status%`.
+     3. Staf mengeksekusi perintah: `/cracked <player>`.
+     4. Status akun dikembalikan menjadi crack seketika di `FastLogin.db`, dan pemain dapat login kembali menggunakan kata sandi AuthMe lamanya tanpa kehilangan data apa pun.
+
+### E. Resolusi Kompatibilitas Geyser 2.11.3 & Java 21 Verifier
+- Rilis FastLogin upstream memanggil metode `GeyserImpl.getConfig()` lama yang tidak kompatibel dengan Geyser 2.11.3 (MC 26.2).
+- Dilakukan penyesuaian biner terarah pada `FastLoginBukkit.class` agar inisialisasi melewati wrapper lama Geyser dan langsung mengaitkan **`FloodgateService` resmi (`FloodgateApi.getInstance()`)**.
+- Penyesuaian ini mematuhi standar StackMapTable Java 21 LTS, menghasilkan proses inisialisasi boot yang 100% bersih tanpa `NoSuchMethodError` atau `VerifyError`.
+
+### F. Lokalisasi Menyeluruh 20/20 Key (`plugins/FastLogin/messages.yml`)
+Seluruh 20 string lokalisasi FastLogin telah diterjemahkan ke Bahasa Indonesia dengan standar visual dan warna resmi Apexsions (`&8[&6Apexsions&8]&r`, `&a`, `&c`, `&e`), termasuk pesan krusial `invalid-session` dan `premium-warning`.
+

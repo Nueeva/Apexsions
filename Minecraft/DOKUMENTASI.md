@@ -480,3 +480,42 @@ Ekosistem Apexsions mengintegrasikan server Minecraft (Paper 26.2) dengan portal
    - In-Game: `/kingdom top` (`ApexsionsCore`), `/baltop` (`ApexsionsEconomy`), `/abp top` (`ApexsionsBattlepass`), `/vault top` (`ApexsionsFishing`).
    - Web Platform (`https://web.apexsions.my.id/leaderboard`): Menampilkan secara ketat **2 Tabel Utama** (Level & Saldo Rupiah). Leaderboard BattlePass ditiadakan dari portal web (eksklusif in-game) demi menjaga kesederhanaan, performa, dan fokus antarmuka web.
 
+---
+
+## 🔐 11. Integrasi Autentikasi Lintas Platform: FastLogin, Floodgate & AuthMeReloaded
+
+Mengintegrasikan ekosistem autentikasi aman tanpa hambatan (*zero-friction*) bagi pemain Java Original dan Bedrock, sekaligus memproteksi akun pemain crack dari pembajakan nama:
+
+### A. Matriks Kompatibilitas Runtime
+- **Server Engine:** Paper version 26.2-92-main (Minecraft 26.2, Java 21 LTS).
+- **Packet Interceptor:** ProtocolLib v5.4.0.
+- **Cross-Platform Bridge:** Geyser-Spigot v2.11.3 + Floodgate v2.2.5 (Prefix: `.`).
+- **Auth Core:** AuthMeReloaded v6.0.1-b2770 (`plugins/AuthMe/authme.db`).
+- **Auto-Login Layer:** FastLogin v1.12-kick-toggle (`plugins/FastLogin/FastLogin.db`).
+
+### B. Konfigurasi Otoritatif (`plugins/FastLogin/config.yml`)
+- `autoLoginFloodgate: true`: Pemain Bedrock login otomatis via enkripsi sesi Xbox Live Floodgate setelah registrasi awal.
+- `autoRegister: false`: Melindungi pemain crack veteran yang memakai nickname Mojang agar tidak terkunci dengan password acak.
+- `premiumUuid: false`: Menjaga seluruh data pemain dan link profil web `/player/{uuid}` tetap konsisten pada offline UUID (`OfflinePlayer:<name>`).
+- `allowFloodgateNameConflict: false`: Mengamankan namespace Bedrock dari potensi tabrakan nama dengan pemain Java.
+- `prevent-proxy-connections=false` di `server.properties` $\leftrightarrow$ `useProxyAgnosticResolver: true` harmonis.
+
+### C. Daftar Perintah & Izin Autentikasi
+| Perintah | Alias | Izin Default | Target Pengguna | Fungsi |
+|---|---|---|---|---|
+| `/premium` | `/prem`, `/loginfast` | `fastlogin.bukkit.command.premium` | Java Premium | Menandai akun sebagai akun berbayar Mojang (konfirmasi 2x + 1x kick by-design). |
+| `/cracked <player>` | `/unpremium` | `fastlogin.bukkit.command.cracked` | Staf (Warden+) | Mencabut status premium dan memulihkan akun ke login kata sandi AuthMe. |
+| `/fldelete <player>` | - | `fastlogin.bukkit.command.delete` | Admin (OP) | Menghapus entri profil pemain dari `FastLogin.db`. |
+
+### D. Konfigurasi Izin LuckPerms
+```powershell
+# Blokir pemain Bedrock agar tidak memicu verifikasi Java Mojang
+lp group default permission set fastlogin.bukkit.command.premium false context[origin=bedrock]
+
+# Berikan izin recovery akun ke jajaran staf Tier III (Warden) & Tier IV (Overseer)
+lp group warden permission set fastlogin.bukkit.command.cracked true
+lp group overseer permission set fastlogin.bukkit.command.cracked true
+```
+
+### E. Integrasi PlaceholderAPI
+- `%fastlogin_status%`: Mengembalikan nilai `Premium` atau `Cracked`. Terintegrasi dengan TAB scoreboard 6.1.2 dan Staff Player Inspector.
