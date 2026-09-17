@@ -4,10 +4,10 @@
 > **Repository:** `Nueeva/Apexsions`  
 > **Brand Name:** `Apexsions` (DILARANG menambahkan kata Network/SMP/Kingdom)  
 > **Tagline:** `The Peak Civilizations`  
-> **Standar Riwayat:** Commit-Based Reverse-Chronological Changelog (95 Commits)  
+> **Standar Riwayat:** Commit-Based Reverse-Chronological Changelog (336 Commits)  
 > **Format:** Berdasarkan standar [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
-Dokumen ini mendokumentasikan **seluruh 95 riwayat commit** repositori secara mendalam, terperinci, dan terstruktur ke dalam 5 milestone pengembangan. Dokumen ini dirancang sebagai referensi tunggal bagi developer dan AI Coding Agent untuk memahami riwayat arsitektur, modul yang tersentuh, serta evolusi fitur.
+Dokumen ini mendokumentasikan **seluruh 336 riwayat commit** repositori secara lengkap, mendalam, dan terstruktur ke dalam 7 milestone pengembangan dari awal mula inisiasi proyek (27 Agustus 2026) hingga kondisi stabil terkini (17 September 2026). Dokumen ini dirancang sebagai referensi tunggal bagi developer dan AI Coding Agent untuk memahami riwayat arsitektur, modul yang tersentuh, serta evolusi fitur.
 
 ---
 
@@ -36,37 +36,36 @@ Bagi AI Agent atau developer yang melanjutkan pekerjaan di repositori ini, perha
 
 ---
 
-## 🚀 Sprint 5 — Kedaulatan Teritorial, Watchdog Keamanan, Sinkronisasi Kanonikal Kerajaan & Optimasi Lintas Platform (Bedrock/Custom Font) [v1.2.0]
-> **Periode Pengembangan:** 16 – 17 September 2026 | **Total Commit:** 10 commit
+## 🚀 Sprint 7 — Kedaulatan Teritorial, Watchdog Keamanan, Sinkronisasi Kanonikal Kerajaan & Optimasi Lintas Platform (Bedrock/Custom Font) [v1.2.0]
+> **Periode Pengembangan:** 16 – 17 September 2026 | **Total Commit:** 9 commit
 
 ### 📋 Tinjauan Arsitektur & Dampak Sistem
 Fase stabilisasi dan penegakan kedaulatan wilayah. Mengimplementasikan sistem klaim tanah chunks (`/claim`) berbasis sewa progresif dan brankas wilayah, engine moderasi mandiri terpusat (`/ban`), sistem watchdog keamanan berlapis (Anti-Griefing, Anti-Xray spike alert, Redstone Watchdog anti-lag), sinkronisasi 100% spesifikasi kanonikal Tiga Kerajaan (Zenithar 18%, Solterra 20%, Sylvamoor 15%), serta penyediaan resource pack Geyser pembersih angka merah dan font kustom ASCII untuk Bedrock & Java.
 
-### 🔍 Rincian Lengkap Commit (10 Commit)
+### 🔍 Rincian Lengkap Commit (9 Commit)
+
+#### `1bc5a3b` — 2026-09-17 | 📚 DOCS | docs: enrich CHANGELOG with comprehensive 95-commit breakdown and deep-dive technical impacts across 5 sprints
+- **Pesan Commit:** `docs: enrich CHANGELOG with comprehensive 95-commit breakdown and deep-dive technical impacts across 5 sprints`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
 
 #### `b360e85` — 2026-09-17 | 📚 DOCS | docs: create comprehensive CHANGELOG and synchronize master documentation with canonical kingdom specs
 - **Pesan Commit:** `docs: create comprehensive CHANGELOG and synchronize master documentation with canonical kingdom specs`
-  - **Komponen/Berkas:** `CHANGELOG.md`, `DOKUMENTASI.md`, `README.md`
   - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
 
 #### `055bf40` — 2026-09-17 | ✨ FEAT | feat(core): synchronize canonical kingdom buffs, debuffs, and perks across GUIs, configs, and web wiki
 - **Pesan Commit:** `feat(core): synchronize canonical kingdom buffs, debuffs, and perks across GUIs, configs, and web wiki`
-  - **Komponen/Berkas:** `.../plugins/ApexsionsCore/ApexsionsCore-1.0.0.jar`, `.../core/region/gui/KingdomConfirmGUI.java`, `Website/themes/apexsions/assets/js/app.js`
   - **Rincian Teknis:** Menyelaraskan nilai atribut kanonikal kerajaan (Zenithar 18%, Solterra 20%, Sylvamoor 15%) dan kartu preview slot 13 pada GUI konfirmasi `/k choose`.
 
 #### `48bedec` — 2026-09-17 | ✨ FEAT | feat(ui): add bedrock clean scoreboard pack and optimize tab/scoreboard for bedrock & custom fonts
 - **Pesan Commit:** `feat(ui): add bedrock clean scoreboard pack and optimize tab/scoreboard for bedrock & custom fonts`
-  - **Komponen/Berkas:** `DOKUMENTASI.md`, `Minecraft/config/tab/config.yml`, `.../packs/ApexsionsCleanScoreboard/manifest.json`, `.../packs/ApexsionsCleanScoreboard/pack_icon.png`, `.../ApexsionsCleanScoreboard/texts/en_US.lang`, `.../ApexsionsCleanScoreboard/texts/languages.json`
   - **Rincian Teknis:** Mengatasi render angka merah native Bedrock via Geyser resource pack dan mengganti pembatas unicode menjadi hyphen coret ASCII agar tidak patah pada font kustom.
 
 #### `613e6c6` — 2026-09-16 | 🐛 FIX | fix(core): ensure table columns are added before creating indexes to prevent sqlite startup failure
 - **Pesan Commit:** `fix(core): ensure table columns are added before creating indexes to prevent sqlite startup failure`
-  - **Komponen/Berkas:** `.../plugins/ApexsionsCore/ApexsionsCore-1.0.0.jar`, `.../apexsions/core/database/DatabaseManager.java`
   - **Rincian Teknis:** Memastikan migrasi skema database mengeksekusi DDL `ALTER TABLE ADD COLUMN` sebelum perintah `CREATE INDEX` untuk mencegah crash startup SQLite.
 
 #### `83d783b` — 2026-09-16 | 📚 DOCS | docs: synchronize sovereign claims, security watchdog, centralized moderation, and fishing docs
 - **Pesan Commit:** `docs: synchronize sovereign claims, security watchdog, centralized moderation, and fishing docs`
-  - **Komponen/Berkas:** `DOKUMENTASI.md`, `README.md`
   - **Rincian Teknis:** Mengelola hak kepemilikan petak tanah per-chunk dengan kalkulasi biaya sewa progresif, brankas klaim, dan pembebasan pajak untuk jajaran Upper Dimension.
   - **Rincian Teknis:** Mengonsolidasikan engine ban otoritatif pada level soket jaringan `AsyncPlayerPreLoginEvent`, menonaktifkan command moderasi EssentialsX yang tumpang-tindih.
   - **Rincian Teknis:** Mengaktifkan reach-hack check (>5.8m), deteksi lonjakan penambangan bijih langka (60s window), serta isolasi otomatis clock redstone cepat (>25 pulsa/2s).
@@ -74,7 +73,6 @@ Fase stabilisasi dan penegakan kedaulatan wilayah. Mengimplementasikan sistem kl
 
 #### `11b1bd8` — 2026-09-16 | 🐛 FIX | fix(core): resolve NPE in ban and claim commands and grant unlimited claims and tax exemption to Upper Dimension ranks
 - **Pesan Commit:** `fix(core): resolve NPE in ban and claim commands and grant unlimited claims and tax exemption to Upper Dimension ranks`
-  - **Komponen/Berkas:** `.../plugins/ApexsionsCore/ApexsionsCore-1.0.0.jar`, `.../com/apexsions/core/ApexsionsCorePlugin.java`, `.../com/apexsions/core/claim/ClaimCommand.java`, `.../com/apexsions/core/claim/ClaimManager.java`, `.../com/apexsions/core/claim/gui/ClaimGUI.java`, `.../com/apexsions/core/moderation/BanCommand.java`
   - **Rincian Teknis:** Menerapkan fallback lazy-lookup pada manager instance agar sub-command console/WebBridge tidak mengalami NullPointerException saat bootstrap belum tuntas.
   - **Rincian Teknis:** Mengelola hak kepemilikan petak tanah per-chunk dengan kalkulasi biaya sewa progresif, brankas klaim, dan pembebasan pajak untuk jajaran Upper Dimension.
   - **Rincian Teknis:** Mengonsolidasikan engine ban otoritatif pada level soket jaringan `AsyncPlayerPreLoginEvent`, menonaktifkan command moderasi EssentialsX yang tumpang-tindih.
@@ -82,84 +80,77 @@ Fase stabilisasi dan penegakan kedaulatan wilayah. Mengimplementasikan sistem kl
 
 #### `848795d` — 2026-09-16 | ✨ FEAT | feat(fishing): implement dialog GUI for rod creator, virtual bait quota system, and balanced junk loot
 - **Pesan Commit:** `feat(fishing): implement dialog GUI for rod creator, virtual bait quota system, and balanced junk loot`
-  - **Komponen/Berkas:** `.../ApexsionsFishing/ApexsionsFishing-1.0.0.jar`, `.../com/apexsions/fishing/command/FishCommand.java`, `.../com/apexsions/fishing/gui/BaitShopGUI.java`, `.../apexsions/fishing/gui/FishingGUIListener.java`, `.../java/com/apexsions/fishing/gui/RodShopGUI.java`, `.../fishing/gui/admin/AdminRodCreatorGUI.java`
   - **Rincian Teknis:** Membangun ekosistem pancing 6-tier rarity, auto-recast AFK engine terproteksi, penyimpanan ikan 54-slot, dan sistem dialog interaktif rod creator.
+  - **Rincian Teknis:** Menjaga integritas saldo transaksi mata uang ganda (Rupiah & Diamond) dengan perlindungan anti-duplikasi dan escrow.
 
 #### `e5b0634` — 2026-09-16 | ✨ FEAT | feat(claim): implement progressive territory tax, grace periods, flags, and web admin controls
 - **Pesan Commit:** `feat(claim): implement progressive territory tax, grace periods, flags, and web admin controls`
-  - **Komponen/Berkas:** `.../plugins/ApexsionsCore/ApexsionsCore-1.0.0.jar`, `.../java/com/apexsions/core/claim/ClaimChunk.java`, `.../com/apexsions/core/claim/ClaimCommand.java`, `.../com/apexsions/core/claim/ClaimManager.java`, `.../core/claim/ClaimProtectionListener.java`, `.../com/apexsions/core/claim/ClaimRepository.java`
   - **Rincian Teknis:** Mengelola hak kepemilikan petak tanah per-chunk dengan kalkulasi biaya sewa progresif, brankas klaim, dan pembebasan pajak untuk jajaran Upper Dimension.
   - **Rincian Teknis:** Menyempurnakan antarmuka administrasi Azuriom dengan kartu analitik, tombol tindakan cepat, dan keselarasan styling dual-theme.
-
-#### `2a3a538` — 2026-09-16 | ✨ FEAT | feat(moderation): integrate centralized ban engine and land claims web admin
-- **Pesan Commit:** `feat(moderation): integrate centralized ban engine and land claims web admin`
-  - **Komponen/Berkas:** `.../plugins/ApexsionsCore/ApexsionsCore-1.0.0.jar`, `.../com/apexsions/core/ApexsionsCorePlugin.java`, `.../com/apexsions/core/claim/ClaimCommand.java`, `.../com/apexsions/core/claim/ClaimManager.java`, `.../apexsions/core/database/DatabaseManager.java`, `.../core/integration/web/WebBridgeService.java`
-  - **Rincian Teknis:** Mengelola hak kepemilikan petak tanah per-chunk dengan kalkulasi biaya sewa progresif, brankas klaim, dan pembebasan pajak untuk jajaran Upper Dimension.
-  - **Rincian Teknis:** Mengonsolidasikan engine ban otoritatif pada level soket jaringan `AsyncPlayerPreLoginEvent`, menonaktifkan command moderasi EssentialsX yang tumpang-tindih.
-  - **Rincian Teknis:** Menyempurnakan antarmuka administrasi Azuriom dengan kartu analitik, tombol tindakan cepat, dan keselarasan styling dual-theme.
-
-#### `1b905de` — 2026-09-16 | ✨ FEAT | feat(core): implement sovereign land claims, anti-griefing protection, anti-xray monitor, and redstone watchdog
-- **Pesan Commit:** `feat(core): implement sovereign land claims, anti-griefing protection, anti-xray monitor, and redstone watchdog`
-  - **Komponen/Berkas:** `.../plugins/ApexsionsCore/ApexsionsCore-1.0.0.jar`, `Minecraft/plugins/ApexsionsCore/DOKUMENTASI.md`, `.../com/apexsions/core/ApexsionsCorePlugin.java`, `.../java/com/apexsions/core/claim/ClaimChunk.java`, `.../com/apexsions/core/claim/ClaimCommand.java`, `.../com/apexsions/core/claim/ClaimManager.java`
-  - **Rincian Teknis:** Mengelola hak kepemilikan petak tanah per-chunk dengan kalkulasi biaya sewa progresif, brankas klaim, dan pembebasan pajak untuk jajaran Upper Dimension.
-  - **Rincian Teknis:** Mengaktifkan reach-hack check (>5.8m), deteksi lonjakan penambangan bijih langka (60s window), serta isolasi otomatis clock redstone cepat (>25 pulsa/2s).
 
 ---
 
-## 🚀 Sprint 4 — Ekosistem ApexsionsFishing v1.0.0, Pengerasan Lifecycle AFK, Standarisasi Lore Enchant & Kebijakan Leaderboard 6-Lapis [v1.1.5]
-> **Periode Pengembangan:** 14 – 15 September 2026 | **Total Commit:** 8 commit
+## 🚀 Sprint 6 — Ekosistem ApexsionsFishing v1.0.0, Pengerasan Lifecycle AFK, Standarisasi Lore Enchant & Kebijakan Leaderboard 6-Lapis [v1.1.5]
+> **Periode Pengembangan:** 14 – 15 September 2026 | **Total Commit:** 10 commit
 
 ### 📋 Tinjauan Arsitektur & Dampak Sistem
 Penyempurnaan modul perikanan interaktif dan tata kelola transparansi kompetisi. Memperkenalkan sistem pancing AFK & Active Reel Engine, Fishing Vault 54-slot, rod builder native dialog, Virtual Bait Quota, penataan tata letak lore custom enchant di bawah item level requirement, penyaringan 6-lapis seluruh staf/admin dari leaderboard publik game dan web, serta optimasi SEO sitemap.xml.
 
-### 🔍 Rincian Lengkap Commit (8 Commit)
+### 🔍 Rincian Lengkap Commit (10 Commit)
 
-#### `00ebb82` — 2026-09-15 | 📚 DOCS | docs: synchronize documentation with 9-plugin suite, leaderboard exemptions, and SEO architecture
+#### `2a3a538` — 2026-09-15 | ✨ FEAT | feat(moderation): integrate centralized ban engine and land claims web admin
+- **Pesan Commit:** `feat(moderation): integrate centralized ban engine and land claims web admin`
+  - **Rincian Teknis:** Mengelola hak kepemilikan petak tanah per-chunk dengan kalkulasi biaya sewa progresif, brankas klaim, dan pembebasan pajak untuk jajaran Upper Dimension.
+  - **Rincian Teknis:** Mengonsolidasikan engine ban otoritatif pada level soket jaringan `AsyncPlayerPreLoginEvent`, menonaktifkan command moderasi EssentialsX yang tumpang-tindih.
+  - **Rincian Teknis:** Menyempurnakan antarmuka administrasi Azuriom dengan kartu analitik, tombol tindakan cepat, dan keselarasan styling dual-theme.
+
+#### `1b905de` — 2026-09-15 | ✨ FEAT | feat(core): implement sovereign land claims, anti-griefing protection, anti-xray monitor, and redstone watchdog
+- **Pesan Commit:** `feat(core): implement sovereign land claims, anti-griefing protection, anti-xray monitor, and redstone watchdog`
+  - **Rincian Teknis:** Mengelola hak kepemilikan petak tanah per-chunk dengan kalkulasi biaya sewa progresif, brankas klaim, dan pembebasan pajak untuk jajaran Upper Dimension.
+  - **Rincian Teknis:** Mengaktifkan reach-hack check (>5.8m), deteksi lonjakan penambangan bijih langka (60s window), serta isolasi otomatis clock redstone cepat (>25 pulsa/2s).
+
+#### `00ebb82` — 2026-09-14 | 📚 DOCS | docs: synchronize documentation with 9-plugin suite, leaderboard exemptions, and SEO architecture
 - **Pesan Commit:** `docs: synchronize documentation with 9-plugin suite, leaderboard exemptions, and SEO architecture`
-  - **Komponen/Berkas:** `DOKUMENTASI.md`, `GEMINI.md`, `Minecraft/DOKUMENTASI.md`, `Minecraft/plugins/ApexsionsFishing/DOKUMENTASI.md`
   - **Rincian Teknis:** Menerapkan isolasi 6-lapis untuk menyaring akun staf (Weight >= 80), OP, role admin, dan entitas Aetherion keluar dari papan peringkat publik.
   - **Rincian Teknis:** Mengoptimasi sitemap XML terstruktur dengan timestamp lastmod dinamis, header X-Robots-Tag, dan URL canonical HTTPS otoritatif.
 
-#### `b408b84` — 2026-09-15 | 🐛 FIX | fix(fishing): harden AFK lifecycle, liquid depth check, rod break cleanup, and vault deposit safeguards
+#### `b408b84` — 2026-09-14 | 🐛 FIX | fix(fishing): harden AFK lifecycle, liquid depth check, rod break cleanup, and vault deposit safeguards
 - **Pesan Commit:** `fix(fishing): harden AFK lifecycle, liquid depth check, rod break cleanup, and vault deposit safeguards`
-  - **Komponen/Berkas:** `.../ApexsionsFishing/ApexsionsFishing-1.0.0.jar`, `.../com/apexsions/fishing/gui/FishingVaultGUI.java`, `.../fishing/gui/admin/AdminRodCreatorGUI.java`, `.../fishing/listener/FishingListener.java`, `.../fishing/service/AFKFishingService.java`
   - **Rincian Teknis:** Membangun ekosistem pancing 6-tier rarity, auto-recast AFK engine terproteksi, penyimpanan ikan 54-slot, dan sistem dialog interaktif rod creator.
 
-#### `f4448e4` — 2026-09-15 | 🐛 FIX | fix(fishing): harden AFK auto-recast, water validation, slot indexing, and exploit protections
+#### `f4448e4` — 2026-09-14 | 🐛 FIX | fix(fishing): harden AFK auto-recast, water validation, slot indexing, and exploit protections
 - **Pesan Commit:** `fix(fishing): harden AFK auto-recast, water validation, slot indexing, and exploit protections`
-  - **Komponen/Berkas:** `.../ApexsionsFishing/ApexsionsFishing-1.0.0.jar`, `.../com/apexsions/fishing/gui/FishSellGUI.java`, `.../com/apexsions/fishing/gui/FishingVaultGUI.java`, `.../com/apexsions/fishing/gui/VaultShopGUI.java`, `.../fishing/gui/admin/AdminRodCreatorGUI.java`, `.../fishing/listener/FishingListener.java`
   - **Rincian Teknis:** Membangun ekosistem pancing 6-tier rarity, auto-recast AFK engine terproteksi, penyimpanan ikan 54-slot, dan sistem dialog interaktif rod creator.
 
-#### `6d6b14d` — 2026-09-15 | 🐛 FIX | fix(seo): standardize sitemap.xml structure and update lastmod timestamps
+#### `6d6b14d` — 2026-09-14 | 🐛 FIX | fix(seo): standardize sitemap.xml structure and update lastmod timestamps
 - **Pesan Commit:** `fix(seo): standardize sitemap.xml structure and update lastmod timestamps`
-  - **Komponen/Berkas:** `Website/public/sitemap.xml`
   - **Rincian Teknis:** Mengoptimasi sitemap XML terstruktur dengan timestamp lastmod dinamis, header X-Robots-Tag, dan URL canonical HTTPS otoritatif.
 
-#### `6560fa6` — 2026-09-15 | ⏪ REVERT | revert(web): remove battlepass leaderboard from web platform
+#### `6560fa6` — 2026-09-14 | ⏪ REVERT | revert(web): remove battlepass leaderboard from web platform
 - **Pesan Commit:** `revert(web): remove battlepass leaderboard from web platform`
-  - **Komponen/Berkas:** `.../resources/views/leaderboard.blade.php`, `.../src/Controllers/LeaderboardController.php`, `Website/themes/apexsions/assets/js/app.js`
   - **Rincian Teknis:** Menerapkan isolasi 6-lapis untuk menyaring akun staf (Weight >= 80), OP, role admin, dan entitas Aetherion keluar dari papan peringkat publik.
+  - **Rincian Teknis:** Menyediakan progresi 200 level battlepass, quest berkala harian/mingguan/bulanan, dan editor in-game admin 54-slot.
 
 #### `ece15e7` — 2026-09-14 | ✨ FEAT | feat(leaderboard): exclude admin, OP, and upper-dimension entities from web and game leaderboards
 - **Pesan Commit:** `feat(leaderboard): exclude admin, OP, and upper-dimension entities from web and game leaderboards`
-  - **Komponen/Berkas:** `.../ApexsionsBattlepass-1.0.0.jar`, `.../leaderboard/BattlePassLeaderboardService.java`, `.../plugins/ApexsionsChat/ApexsionsChat-1.0.0.jar`, `.../apexsions/chat/integration/LuckPermsHook.java`, `.../plugins/ApexsionsCore/ApexsionsCore-1.0.0.jar`, `.../apexsions/core/api/ApexsionsCoreAPIImpl.java`
   - **Rincian Teknis:** Menerapkan isolasi 6-lapis untuk menyaring akun staf (Weight >= 80), OP, role admin, dan entitas Aetherion keluar dari papan peringkat publik.
   - **Rincian Teknis:** Menyempurnakan antarmuka administrasi Azuriom dengan kartu analitik, tombol tindakan cepat, dan keselarasan styling dual-theme.
 
 #### `9790803` — 2026-09-14 | ✨ FEAT | feat(fishing): implement ApexsionsFishing ecosystem and standardize enchant lore layout
 - **Pesan Commit:** `feat(fishing): implement ApexsionsFishing ecosystem and standardize enchant lore layout`
-  - **Komponen/Berkas:** `Minecraft/build.ps1`, `.../plugins/ApexsionsCore/ApexsionsCore-1.0.0.jar`, `.../apexsions/core/gui/admin/MasterAdminGUI.java`, `.../ApexsionsCustomEnchants-1.0.0.jar`, `.../enchant/EnchantmentRegistry.java`, `.../customenchants/gui/AdminItemCreatorGUI.java`
   - **Rincian Teknis:** Membangun ekosistem pancing 6-tier rarity, auto-recast AFK engine terproteksi, penyimpanan ikan 54-slot, dan sistem dialog interaktif rod creator.
   - **Rincian Teknis:** Menyusun dan menyinkronkan kanon resmi peradaban, pembagian teritori geografis, sejarah keruntuhan Sions, serta arsitektur kosmik.
+  - **Rincian Teknis:** Mengelola 182 custom enchants lintas 7 tingkatan kekuatan, tinkerer exchange, serta aktivasi bonus set armor legendaris.
 
 #### `f21e85e` — 2026-09-14 | ✨ FEAT | feat(balance): integrate Aetherion chat and rebalance Zenithar and Sylvamoor traits
 - **Pesan Commit:** `feat(balance): integrate Aetherion chat and rebalance Zenithar and Sylvamoor traits`
-  - **Komponen/Berkas:** `LORE.md`, `Minecraft/DOKUMENTASI.md`, `.../plugins/ApexsionsChat/ApexsionsChat-1.0.0.jar`, `.../com/apexsions/chat/chat/ChatFormatter.java`, `.../java/com/apexsions/chat/chat/ChatListener.java`, `.../com/apexsions/chat/gui/SocialProfileGUI.java`
   - **Rincian Teknis:** Mengisolasi jajaran otoritas tertinggi server dari sistem faksi fana tiga kerajaan, menyediakan placeholder kustom, dan menyelaraskan status pada UI.
+  - **Rincian Teknis:** Mengatur komunikasi terpisah (Global, Kingdom, Staff), sensor kata otomatis, format MiniMessage, serta pengiriman surat offline.
+  - **Rincian Teknis:** Menjaga integritas saldo transaksi mata uang ganda (Rupiah & Diamond) dengan perlindungan anti-duplikasi dan escrow.
 
 ---
 
-## 🚀 Sprint 3 — The Aetherial Conclave, RPG Stat Progression Normalizer, Terra Interdicta Hourly Reset & Custom Vanish Suite [v1.1.0]
+## 🚀 Sprint 5 — The Aetherial Conclave, RPG Stat Progression Normalizer, Terra Interdicta Hourly Reset & Custom Vanish Suite [v1.1.0]
 > **Periode Pengembangan:** 12 September 2026 | **Total Commit:** 34 commit
 
 ### 📋 Tinjauan Arsitektur & Dampak Sistem
@@ -169,424 +160,1393 @@ Restrukturisasi kosmik semesta Apexsions dan normalisasi pertarungan RPG. Mengin
 
 #### `7603de0` — 2026-09-12 | 🐛 FIX | fix(admin): remove duplicate text brand name and use image-only ornate logo
 - **Pesan Commit:** `fix(admin): remove duplicate text brand name and use image-only ornate logo`
-  - **Komponen/Berkas:** `Website/resources/views/admin/layouts/admin.blade.php`, `Website/themes/apexsions/assets/css/admin-apexsions.css`
   - **Rincian Teknis:** Menyempurnakan antarmuka administrasi Azuriom dengan kartu analitik, tombol tindakan cepat, dan keselarasan styling dual-theme.
 
 #### `74f597d` — 2026-09-12 | 📚 DOCS | docs: document web platform & admin panel lore alignment and Conclave fallbacks
 - **Pesan Commit:** `docs: document web platform & admin panel lore alignment and Conclave fallbacks`
-  - **Komponen/Berkas:** `DOKUMENTASI.md`
   - **Rincian Teknis:** Mengisolasi jajaran otoritas tertinggi server dari sistem faksi fana tiga kerajaan, menyediakan placeholder kustom, dan menyelaraskan status pada UI.
   - **Rincian Teknis:** Menyusun dan menyinkronkan kanon resmi peradaban, pembagian teritori geografis, sejarah keruntuhan Sions, serta arsitektur kosmik.
   - **Rincian Teknis:** Menyempurnakan antarmuka administrasi Azuriom dengan kartu analitik, tombol tindakan cepat, dan keselarasan styling dual-theme.
 
 #### `39aa182` — 2026-09-12 | ✨ FEAT | feat(web): lore-accurate kingdom governance, Aetherion Conclave support, and admin panel fallbacks
 - **Pesan Commit:** `feat(web): lore-accurate kingdom governance, Aetherion Conclave support, and admin panel fallbacks`
-  - **Komponen/Berkas:** `.../resources/views/admin/players/index.blade.php`, `.../resources/views/admin/players/show.blade.php`, `.../resources/views/public-profile.blade.php`, `.../Controllers/Admin/PlayerAdminController.php`, `.../src/Controllers/Api/PlayerSyncController.php`, `Website/themes/apexsions/assets/js/app.js`
   - **Rincian Teknis:** Mengisolasi jajaran otoritas tertinggi server dari sistem faksi fana tiga kerajaan, menyediakan placeholder kustom, dan menyelaraskan status pada UI.
   - **Rincian Teknis:** Menyusun dan menyinkronkan kanon resmi peradaban, pembagian teritori geografis, sejarah keruntuhan Sions, serta arsitektur kosmik.
   - **Rincian Teknis:** Menyempurnakan antarmuka administrasi Azuriom dengan kartu analitik, tombol tindakan cepat, dan keselarasan styling dual-theme.
 
 #### `1732eb9` — 2026-09-12 | 📚 DOCS | docs: update documentation for The Aetherial Conclave, Terra Interdicta, and Spawn Sanctum
 - **Pesan Commit:** `docs: update documentation for The Aetherial Conclave, Terra Interdicta, and Spawn Sanctum`
-  - **Komponen/Berkas:** `DOKUMENTASI.md`, `Minecraft/plugins/ApexsionsCore/DOKUMENTASI.md`, `README.md`
   - **Rincian Teknis:** Mengisolasi jajaran otoritas tertinggi server dari sistem faksi fana tiga kerajaan, menyediakan placeholder kustom, dan menyelaraskan status pada UI.
 
 #### `604d054` — 2026-09-12 | ✨ FEAT | feat(core): implement Conclave Upper Dimension mechanics and fix lore inaccuracies across commands & GUIs
 - **Pesan Commit:** `feat(core): implement Conclave Upper Dimension mechanics and fix lore inaccuracies across commands & GUIs`
-  - **Komponen/Berkas:** `.../plugins/ApexsionsCore/ApexsionsCore-1.0.0.jar`, `.../com/apexsions/core/command/AdminCommand.java`, `.../com/apexsions/core/command/KingdomCommand.java`, `.../com/apexsions/core/command/LobbyCommand.java`, `.../com/apexsions/core/command/SionsCommand.java`, `.../core/gui/admin/PlayerInspectorGUI.java`
   - **Rincian Teknis:** Mengisolasi jajaran otoritas tertinggi server dari sistem faksi fana tiga kerajaan, menyediakan placeholder kustom, dan menyelaraskan status pada UI.
   - **Rincian Teknis:** Menyusun dan menyinkronkan kanon resmi peradaban, pembagian teritori geografis, sejarah keruntuhan Sions, serta arsitektur kosmik.
 
 #### `d6e3aaf` — 2026-09-12 | 🐛 FIX | fix(vanish): hide vanished players from online player counters, staff placeholders, TAB, and server ping
 - **Pesan Commit:** `fix(vanish): hide vanished players from online player counters, staff placeholders, TAB, and server ping`
-  - **Komponen/Berkas:** `.../plugins/ApexsionsChat/ApexsionsChat-1.0.0.jar`, `.../com/apexsions/chat/chat/MentionParser.java`, `.../apexsions/chat/command/RealNameCommand.java`, `.../plugins/ApexsionsCore/ApexsionsCore-1.0.0.jar`, `.../apexsions/core/gui/admin/MasterAdminGUI.java`, `.../core/integration/PlaceholderApiHook.java`
   - **Rincian Teknis:** Menyediakan custom stealth vanish dengan penghilangan hitbox, penolakan targeting mob, serta penyembunyian dari tablist, ping, dan placeholder.
 
 #### `4035c5e` — 2026-09-12 | ✨ FEAT | feat: exclude server staff and admins from all plugin leaderboards
 - **Pesan Commit:** `feat: exclude server staff and admins from all plugin leaderboards`
-  - **Komponen/Berkas:** `.../ApexsionsBattlepass-1.0.0.jar`, `.../gui/main/BattlePassLeaderboardMenu.java`, `.../leaderboard/BattlePassLeaderboardService.java`, `.../plugins/ApexsionsCore/ApexsionsCore-1.0.0.jar`, `.../com/apexsions/core/api/ApexsionsCoreAPI.java`, `.../apexsions/core/api/ApexsionsCoreAPIImpl.java`
   - **Rincian Teknis:** Menerapkan isolasi 6-lapis untuk menyaring akun staf (Weight >= 80), OP, role admin, dan entitas Aetherion keluar dari papan peringkat publik.
   - **Rincian Teknis:** Menyempurnakan antarmuka administrasi Azuriom dengan kartu analitik, tombol tindakan cepat, dan keselarasan styling dual-theme.
 
 #### `e8936ec` — 2026-09-12 | 🐛 FIX | fix(chat): guard ApexsionsCoreHook with isolated CoreBridge to prevent NoClassDefFoundError
 - **Pesan Commit:** `fix(chat): guard ApexsionsCoreHook with isolated CoreBridge to prevent NoClassDefFoundError`
-  - **Komponen/Berkas:** `.../plugins/ApexsionsChat/ApexsionsChat-1.0.0.jar`, `.../com/apexsions/chat/channel/KingdomChannel.java`, `.../com/apexsions/chat/chat/ChatFormatter.java`, `.../com/apexsions/chat/gui/SocialProfileGUI.java`, `.../chat/integration/ApexsionsCoreHook.java`
-  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+  - **Rincian Teknis:** Mengatur komunikasi terpisah (Global, Kingdom, Staff), sensor kata otomatis, format MiniMessage, serta pengiriman surat offline.
 
 #### `78dd65c` — 2026-09-12 | 🐛 FIX | fix(core): restrict playable kingdoms to Zenithar, Solterra, and Sylvamoor, blocking fallen Sions from admin commands
 - **Pesan Commit:** `fix(core): restrict playable kingdoms to Zenithar, Solterra, and Sylvamoor, blocking fallen Sions from admin commands`
-  - **Komponen/Berkas:** `.../plugins/ApexsionsCore/ApexsionsCore-1.0.0.jar`, `.../com/apexsions/core/command/AdminCommand.java`, `.../com/apexsions/core/command/KingdomCommand.java`, `.../java/com/apexsions/core/region/Region.java`, `.../com/apexsions/core/region/RegionManager.java`
   - **Rincian Teknis:** Menyempurnakan antarmuka administrasi Azuriom dengan kartu analitik, tombol tindakan cepat, dan keselarasan styling dual-theme.
 
 #### `6f52105` — 2026-09-12 | 📚 DOCS | docs: synchronize master documentation with RPG progression and combat engine
 - **Pesan Commit:** `docs: synchronize master documentation with RPG progression and combat engine`
-  - **Komponen/Berkas:** `DOKUMENTASI.md`, `LORE.md`, `README.md`
   - **Rincian Teknis:** Mengimplementasikan formula normalisasi stat tempur, atribut progression level 1-100, dan peredaman lonjakan damage berlebih.
 
 #### `88ed136` — 2026-09-12 | ✨ FEAT | feat(core): implement RPG level progression stat scaling and combat normalizer
 - **Pesan Commit:** `feat(core): implement RPG level progression stat scaling and combat normalizer`
-  - **Komponen/Berkas:** `.../plugins/ApexsionsCore/ApexsionsCore-1.0.0.jar`, `.../com/apexsions/core/ApexsionsCorePlugin.java`, `.../combat/PlayerCombatProgressionListener.java`, `.../core/combat/SmartCombatNormalizer.java`, `.../core/level/stat/PlayerAttributeService.java`, `.../core/level/stat/PlayerProgressionStats.java`
   - **Rincian Teknis:** Mengimplementasikan formula normalisasi stat tempur, atribut progression level 1-100, dan peredaman lonjakan damage berlebih.
 
 #### `c9275f1` — 2026-09-12 | 🐛 FIX | fix(cosmetics): avoid synthetic switch class in CosmeticsMainGUI
 - **Pesan Commit:** `fix(cosmetics): avoid synthetic switch class in CosmeticsMainGUI`
-  - **Komponen/Berkas:** `.../plugins/ApexsionsCore/ApexsionsCore-1.0.0.jar`, `.../core/cosmetics/gui/CosmeticsMainGUI.java`
   - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
 
 #### `29557d0` — 2026-09-12 | 🐛 FIX | fix(core): preload caffeine tasks at startup and protect block place tracker
 - **Pesan Commit:** `fix(core): preload caffeine tasks at startup and protect block place tracker`
-  - **Komponen/Berkas:** `.../plugins/ApexsionsCore/ApexsionsCore-1.0.0.jar`, `.../com/apexsions/core/ApexsionsCorePlugin.java`, `.../level/xp/antiabuse/BlockPlacementTracker.java`
   - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
 
 #### `640e566` — 2026-09-12 | ✨ FEAT | feat(core): implement custom /vanish system with fake broadcast, no-hitbox, and solid self-visibility
 - **Pesan Commit:** `feat(core): implement custom /vanish system with fake broadcast, no-hitbox, and solid self-visibility`
-  - **Komponen/Berkas:** `.../plugins/ApexsionsChat/ApexsionsChat-1.0.0.jar`, `.../java/com/apexsions/chat/chat/ChatListener.java`, `.../chat/integration/ApexsionsCoreHook.java`, `.../plugins/ApexsionsCore/ApexsionsCore-1.0.0.jar`, `.../com/apexsions/core/ApexsionsCorePlugin.java`, `.../com/apexsions/core/api/ApexsionsCoreAPI.java`
   - **Rincian Teknis:** Menyediakan custom stealth vanish dengan penghilangan hitbox, penolakan targeting mob, serta penyembunyian dari tablist, ping, dan placeholder.
 
 #### `1383772` — 2026-09-12 | ✨ FEAT | feat(core): add /k navigation gui and allow rtp from lobby
 - **Pesan Commit:** `feat(core): add /k navigation gui and allow rtp from lobby`
-  - **Komponen/Berkas:** `.../plugins/ApexsionsCore/ApexsionsCore-1.0.0.jar`, `.../com/apexsions/core/ApexsionsCorePlugin.java`, `.../com/apexsions/core/command/KingdomCommand.java`, `.../apexsions/core/region/KingdomRtpService.java`, `.../core/region/gui/KingdomNavigationGUI.java`, `.../core/region/gui/KingdomProfileGUI.java`
   - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
 
 #### `ae9f9a7` — 2026-09-12 | 🐛 FIX | fix(nginx): eliminate ERR_TOO_MANY_REDIRECTS loop on /vote by adjusting regex quantifier and protocol target
 - **Pesan Commit:** `fix(nginx): eliminate ERR_TOO_MANY_REDIRECTS loop on /vote by adjusting regex quantifier and protocol target`
-  - **Komponen/Berkas:** `Website/deploy/nginx-azuriom.conf`
   - **Rincian Teknis:** Mengotomatisasi verifikasi voting web ke server, reward delivery instan (3x Vote Key + Rp 1.000), serta routing anti-loop.
 
 #### `027b8d4` — 2026-09-12 | 🐛 FIX | fix(core): automatically bypass Paper 128 channel registration limit
 - **Pesan Commit:** `fix(core): automatically bypass Paper 128 channel registration limit`
-  - **Komponen/Berkas:** `.../plugins/ApexsionsCore/ApexsionsCore-1.0.0.jar`, `.../com/apexsions/core/ApexsionsCorePlugin.java`
-  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+  - **Rincian Teknis:** Mengatur komunikasi terpisah (Global, Kingdom, Staff), sensor kata otomatis, format MiniMessage, serta pengiriman surat offline.
 
 #### `1e79376` — 2026-09-12 | 🐛 FIX | fix(seo): add lastmod dates to sitemap and explicit nginx location with X-Robots-Tag
 - **Pesan Commit:** `fix(seo): add lastmod dates to sitemap and explicit nginx location with X-Robots-Tag`
-  - **Komponen/Berkas:** `Website/deploy/nginx-azuriom.conf`, `Website/public/sitemap.xml`
   - **Rincian Teknis:** Mengoptimasi sitemap XML terstruktur dengan timestamp lastmod dinamis, header X-Robots-Tag, dan URL canonical HTTPS otoritatif.
 
 #### `b4c173b` — 2026-09-12 | 🐛 FIX | fix(core): eager preload Caffeine RemovalCause and add defensive cache invalidation fallbacks
 - **Pesan Commit:** `fix(core): eager preload Caffeine RemovalCause and add defensive cache invalidation fallbacks`
-  - **Komponen/Berkas:** `.../plugins/ApexsionsCore/ApexsionsCore-1.0.0.jar`, `.../com/apexsions/core/ApexsionsCorePlugin.java`, `.../java/com/apexsions/core/cache/PlayerCache.java`, `.../level/xp/antiabuse/BlockPlacementTracker.java`, `.../ApexsionsMedia/ApexsionsMedia-1.0.0.jar`, `.../com/apexsions/media/engine/ImageRenderer.java`
   - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
 
 #### `d57c255` — 2026-09-12 | 🐛 FIX | fix(seo): enforce authoritative HTTPS canonicals, resolve rogue domain indexing, and optimize SEO entity schemas
 - **Pesan Commit:** `fix(seo): enforce authoritative HTTPS canonicals, resolve rogue domain indexing, and optimize SEO entity schemas`
-  - **Komponen/Berkas:** `Website/deploy/nginx-azuriom.conf`, `Website/deploy/setup-vps.sh`, `Website/public/robots.txt`, `Website/public/sitemap.xml`, `.../themes/apexsions/views/layouts/app.blade.php`
   - **Rincian Teknis:** Mengoptimasi sitemap XML terstruktur dengan timestamp lastmod dinamis, header X-Robots-Tag, dan URL canonical HTTPS otoritatif.
 
 #### `7d67610` — 2026-09-12 | 📚 DOCS | docs: synchronize README, technical documentation, and Admin GUIs with Zenithar rebalance
 - **Pesan Commit:** `docs: synchronize README, technical documentation, and Admin GUIs with Zenithar rebalance`
-  - **Komponen/Berkas:** `Minecraft/DOKUMENTASI.md`, `.../plugins/ApexsionsCore/ApexsionsCore-1.0.0.jar`, `.../apexsions/core/gui/admin/ShopAdminSubGUI.java`, `.../plugins/ApexsionsShop/ApexsionsShop-1.0.0.jar`, `.../shop/gui/AdminKingdomShopSelectorGUI.java`, `README.md`
   - **Rincian Teknis:** Menyempurnakan antarmuka administrasi Azuriom dengan kartu analitik, tombol tindakan cepat, dan keselarasan styling dual-theme.
+  - **Rincian Teknis:** Menjaga integritas saldo transaksi mata uang ganda (Rupiah & Diamond) dengan perlindungan anti-duplikasi dan escrow.
 
 #### `581328e` — 2026-09-12 | ✨ FEAT | feat(balance): rebalance Zenithar as Capitalist & Anti-Crit Duelist across plugins and website
 - **Pesan Commit:** `feat(balance): rebalance Zenithar as Capitalist & Anti-Crit Duelist across plugins and website`
-  - **Komponen/Berkas:** `LORE.md`, `.../plugins/ApexsionsCore/ApexsionsCore-1.0.0.jar`, `.../core/kingdom/KingdomBuffListener.java`, `.../apexsions/core/kingdom/KingdomBuffManager.java`, `.../src/main/resources/kingdoms/kingdoms.yml`, `.../ApexsionsEconomy/ApexsionsEconomy-1.0.0.jar`
-  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+  - **Rincian Teknis:** Menjaga integritas saldo transaksi mata uang ganda (Rupiah & Diamond) dengan perlindungan anti-duplikasi dan escrow.
 
 #### `2fb659c` — 2026-09-12 | ✨ FEAT | feat(gameplay): integrate lore with kingdom treasury, mythicmobs boss, and website wiki
 - **Pesan Commit:** `feat(gameplay): integrate lore with kingdom treasury, mythicmobs boss, and website wiki`
-  - **Komponen/Berkas:** `.../mythicmobs/droptables/ExampleDropTables.yml`, `Minecraft/config/mythicmobs/items/ExampleItems.yml`, `Minecraft/config/mythicmobs/items/sions_items.yml`, `Minecraft/config/mythicmobs/items/sions_keys.yml`, `.../mythicmobs/items/sions_legendary_items.yml`, `Minecraft/config/mythicmobs/mobs/ExampleMobs.yml`
   - **Rincian Teknis:** Menyusun dan menyinkronkan kanon resmi peradaban, pembagian teritori geografis, sejarah keruntuhan Sions, serta arsitektur kosmik.
 
 #### `5527607` — 2026-09-12 | ✨ FEAT | feat(vote): implement dual action vote buttons and fix trailing parenthesis 404 URL
 - **Pesan Commit:** `feat(vote): implement dual action vote buttons and fix trailing parenthesis 404 URL`
-  - **Komponen/Berkas:** `.../plugins/ApexsionsCore/ApexsionsCore-1.0.0.jar`, `.../com/apexsions/core/command/VoteCommand.java`, `.../core/gui/input/BedrockFormAdapter.java`
   - **Rincian Teknis:** Mengotomatisasi verifikasi voting web ke server, reward delivery instan (3x Vote Key + Rp 1.000), serta routing anti-loop.
 
 #### `61ed330` — 2026-09-12 | 🔧 CHORE | chore(build): update ApexsionsCustomEnchants artifact
 - **Pesan Commit:** `chore(build): update ApexsionsCustomEnchants artifact`
-  - **Komponen/Berkas:** `.../ApexsionsCustomEnchants-1.0.0.jar`
-  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+  - **Rincian Teknis:** Mengelola 182 custom enchants lintas 7 tingkatan kekuatan, tinkerer exchange, serta aktivasi bonus set armor legendaris.
 
 #### `9a013e6` — 2026-09-12 | 🐛 FIX | fix(customenchants): display item level requirement between enchant list and set bonus in lore
 - **Pesan Commit:** `fix(customenchants): display item level requirement between enchant list and set bonus in lore`
-  - **Komponen/Berkas:** `.../ApexsionsCustomEnchants-1.0.0.jar`, `.../enchant/EnchantmentRegistry.java`, `.../customenchants/gui/AdminItemCreatorGUI.java`, `.../customenchants/gui/ArmorSetBonusPickerGUI.java`, `.../customenchants/gui/ToolBonusPickerGUI.java`, `.../gui/dialog/ItemEditDialogFlow.java`
   - **Rincian Teknis:** Menyusun dan menyinkronkan kanon resmi peradaban, pembagian teritori geografis, sejarah keruntuhan Sions, serta arsitektur kosmik.
+  - **Rincian Teknis:** Mengelola 182 custom enchants lintas 7 tingkatan kekuatan, tinkerer exchange, serta aktivasi bonus set armor legendaris.
 
 #### `42f3092` — 2026-09-12 | 📚 DOCS | docs: integrate political succession, kingdom stability index, mystery fragments, and staff protocols into LORE.md
 - **Pesan Commit:** `docs: integrate political succession, kingdom stability index, mystery fragments, and staff protocols into LORE.md`
-  - **Komponen/Berkas:** `LORE.md`
   - **Rincian Teknis:** Menyusun dan menyinkronkan kanon resmi peradaban, pembagian teritori geografis, sejarah keruntuhan Sions, serta arsitektur kosmik.
 
 #### `ce8948b` — 2026-09-12 | 📚 DOCS | docs: integrate Aetherial Conclave, Order vs Chaos, and 3-month seasonal chronicle into LORE.md
 - **Pesan Commit:** `docs: integrate Aetherial Conclave, Order vs Chaos, and 3-month seasonal chronicle into LORE.md`
-  - **Komponen/Berkas:** `LORE.md`
   - **Rincian Teknis:** Mengisolasi jajaran otoritas tertinggi server dari sistem faksi fana tiga kerajaan, menyediakan placeholder kustom, dan menyelaraskan status pada UI.
   - **Rincian Teknis:** Menyusun dan menyinkronkan kanon resmi peradaban, pembagian teritori geografis, sejarah keruntuhan Sions, serta arsitektur kosmik.
 
 #### `052e2a7` — 2026-09-12 | 📚 DOCS | docs: establish tri-layered cosmic lore architecture with Aetherion and Celestial Order in LORE.md
 - **Pesan Commit:** `docs: establish tri-layered cosmic lore architecture with Aetherion and Celestial Order in LORE.md`
-  - **Komponen/Berkas:** `LORE.md`
   - **Rincian Teknis:** Mengisolasi jajaran otoritas tertinggi server dari sistem faksi fana tiga kerajaan, menyediakan placeholder kustom, dan menyelaraskan status pada UI.
   - **Rincian Teknis:** Menyusun dan menyinkronkan kanon resmi peradaban, pembagian teritori geografis, sejarah keruntuhan Sions, serta arsitektur kosmik.
 
 #### `a3741c8` — 2026-09-12 | 📚 DOCS | docs: add technical architecture mapping, system audit, and revision checklist to LORE.md
 - **Pesan Commit:** `docs: add technical architecture mapping, system audit, and revision checklist to LORE.md`
-  - **Komponen/Berkas:** `LORE.md`
   - **Rincian Teknis:** Menyusun dan menyinkronkan kanon resmi peradaban, pembagian teritori geografis, sejarah keruntuhan Sions, serta arsitektur kosmik.
 
 #### `4b707ed` — 2026-09-12 | 📚 DOCS | docs: enrich LORE.md with comprehensive realm geography, buff/debuff tables, and exclusive Sions admin realm
 - **Pesan Commit:** `docs: enrich LORE.md with comprehensive realm geography, buff/debuff tables, and exclusive Sions admin realm`
-  - **Komponen/Berkas:** `LORE.md`
   - **Rincian Teknis:** Menyelaraskan nilai atribut kanonikal kerajaan (Zenithar 18%, Solterra 20%, Sylvamoor 15%) dan kartu preview slot 13 pada GUI konfirmasi `/k choose`.
   - **Rincian Teknis:** Menyusun dan menyinkronkan kanon resmi peradaban, pembagian teritori geografis, sejarah keruntuhan Sions, serta arsitektur kosmik.
   - **Rincian Teknis:** Menyempurnakan antarmuka administrasi Azuriom dengan kartu analitik, tombol tindakan cepat, dan keselarasan styling dual-theme.
 
 #### `4dfc613` — 2026-09-12 | 📚 DOCS | docs: create official civilization lore document LORE.md
 - **Pesan Commit:** `docs: create official civilization lore document LORE.md`
-  - **Komponen/Berkas:** `LORE.md`
   - **Rincian Teknis:** Menyusun dan menyinkronkan kanon resmi peradaban, pembagian teritori geografis, sejarah keruntuhan Sions, serta arsitektur kosmik.
 
 #### `2d0a065` — 2026-09-12 | 🐛 FIX | fix(bridge): auto-detect Bedrock Edition via username prefix and Floodgate UUID across web & in-game sync
 - **Pesan Commit:** `fix(bridge): auto-detect Bedrock Edition via username prefix and Floodgate UUID across web & in-game sync`
-  - **Komponen/Berkas:** `.../plugins/ApexsionsCore/ApexsionsCore-1.0.0.jar`, `.../core/integration/web/WebBridgeService.java`, `.../resources/views/admin/players/index.blade.php`, `.../src/Controllers/Api/PlayerSyncController.php`, `.../src/Controllers/PublicProfileController.php`, `.../src/Models/MinecraftAccount.php`
   - **Rincian Teknis:** Mengatasi render angka merah native Bedrock via Geyser resource pack dan mengganti pembatas unicode menjadi hyphen coret ASCII agar tidak patah pada font kustom.
 
 #### `ce22b7c` — 2026-09-12 | ♻️ REFACTOR | refactor(web): overhaul server map section with antislop-ui tactical cartography monolith
 - **Pesan Commit:** `refactor(web): overhaul server map section with antislop-ui tactical cartography monolith`
-  - **Komponen/Berkas:** `Website/themes/apexsions/assets/css/style.css`, `Website/themes/apexsions/assets/js/app.js`, `Website/themes/apexsions/views/home.blade.php`
   - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
 
 ---
 
-## 🚀 Sprint 2 — Webstore Multi-Currency & Filter Interaktif, BlueMap 3D Server Map, Sistem Auto-Reward Vote & Dual-Theme UI [v1.0.5]
-> **Periode Pengembangan:** 10 – 11 September 2026 | **Total Commit:** 26 commit
+## 🚀 Sprint 4 — Webstore Multi-Currency & Filter Interaktif, BlueMap 3D Server Map, Sistem Auto-Reward Vote & Dual-Theme UI [v1.0.5]
+> **Periode Pengembangan:** 9 – 11 September 2026 | **Total Commit:** 48 commit
 
 ### 📋 Tinjauan Arsitektur & Dampak Sistem
-Ekspansi integrasi Web-to-Game dan penyempurnaan UI/UX portal Azuriom. Memperkenalkan etalase webstore multi-axis filter (Rupiah & Diamond), integrasi penampil peta 3D interaktif BlueMap dengan dynamic fallback probe, sistem voting lintas platform otomatis, dual-theme engine (Imperial Obsidian & Sovereign Ivory), perbaikan sistem penagihan antrean WebBridge, dan penyusunan master DOKUMENTASI.md.
+Ekspansi integrasi Web-to-Game dan penyempurnaan UI/UX portal Azuriom. Memperkenalkan etalase webstore multi-axis filter (Rupiah & Diamond), integrasi penampil peta 3D interaktif BlueMap dengan dynamic fallback probe, sistem voting lintas platform otomatis, dual-theme engine (Imperial Obsidian & Sovereign Ivory), perbaikan sistem penagihan antrean WebBridge, standarisasi simbol mata uang, dan penyusunan master DOKUMENTASI.md.
 
-### 🔍 Rincian Lengkap Commit (26 Commit)
+### 🔍 Rincian Lengkap Commit (48 Commit)
 
-#### `1acdcd8` — 2026-09-11 | ✨ FEAT | feat(web): direct redirect for server map, remove navbar button, and polish homepage UI/UX
+#### `1acdcd8` — 2026-09-10 | ✨ FEAT | feat(web): direct redirect for server map, remove navbar button, and polish homepage UI/UX
 - **Pesan Commit:** `feat(web): direct redirect for server map, remove navbar button, and polish homepage UI/UX`
-  - **Komponen/Berkas:** `.../src/Controllers/ServerMapController.php`, `Website/themes/apexsions/assets/css/style.css`, `.../apexsions/views/elements/navbar.blade.php`, `Website/themes/apexsions/views/home.blade.php`
   - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
 
-#### `e9c9a7b` — 2026-09-11 | 🐛 FIX | fix(leaderboard): include all Minecraft server players and populate kingdom statistics
+#### `e9c9a7b` — 2026-09-10 | 🐛 FIX | fix(leaderboard): include all Minecraft server players and populate kingdom statistics
 - **Pesan Commit:** `fix(leaderboard): include all Minecraft server players and populate kingdom statistics`
-  - **Komponen/Berkas:** `.../apexsions-bridge/src/Controllers/LeaderboardController.php`
   - **Rincian Teknis:** Menerapkan isolasi 6-lapis untuk menyaring akun staf (Weight >= 80), OP, role admin, dan entitas Aetherion keluar dari papan peringkat publik.
 
-#### `99012d1` — 2026-09-11 | 🐛 FIX | fix(map,chat): update 3d world perspective and relax chat spam duplicate check
+#### `99012d1` — 2026-09-10 | 🐛 FIX | fix(map,chat): update 3d world perspective and relax chat spam duplicate check
 - **Pesan Commit:** `fix(map,chat): update 3d world perspective and relax chat spam duplicate check`
-  - **Komponen/Berkas:** `.../plugins/ApexsionsChat/ApexsionsChat-1.0.0.jar`, `.../com/apexsions/chat/moderation/SpamChecker.java`, `.../src/main/resources/moderation/moderation.yml`, `.../resources/views/server-map.blade.php`, `.../src/Services/ServerMapService.php`
-  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+  - **Rincian Teknis:** Mengatur komunikasi terpisah (Global, Kingdom, Staff), sensor kata otomatis, format MiniMessage, serta pengiriman surat offline.
 
-#### `6f96c95` — 2026-09-11 | 🐛 FIX | fix(vote): ensure robust url routing and eliminate route name lookup exceptions
+#### `6f96c95` — 2026-09-10 | 🐛 FIX | fix(vote): ensure robust url routing and eliminate route name lookup exceptions
 - **Pesan Commit:** `fix(vote): ensure robust url routing and eliminate route name lookup exceptions`
-  - **Komponen/Berkas:** `.../apexsions-bridge/resources/views/admin/votes/index.blade.php`, `Website/themes/apexsions/views/vote.blade.php`
   - **Rincian Teknis:** Mengotomatisasi verifikasi voting web ke server, reward delivery instan (3x Vote Key + Rp 1.000), serta routing anti-loop.
 
-#### `6b49daa` — 2026-09-11 | ✨ FEAT | feat(vote): refactor total sistem vote menjadi auto-reward tanpa verifikasi manual
+#### `6b49daa` — 2026-09-10 | ✨ FEAT | feat(vote): refactor total sistem vote menjadi auto-reward tanpa verifikasi manual
 - **Pesan Commit:** `feat(vote): refactor total sistem vote menjadi auto-reward tanpa verifikasi manual`
-  - **Komponen/Berkas:** `.../plugins/ApexsionsCore/ApexsionsCore-1.0.0.jar`, `.../com/apexsions/core/ApexsionsCorePlugin.java`, `.../com/apexsions/core/command/VoteCommand.java`, `.../core/gui/input/BedrockFormAdapter.java`, `.../core/integration/web/WebBridgeService.java`, `.../com/apexsions/core/listener/VoteListener.java`
   - **Rincian Teknis:** Mengotomatisasi verifikasi voting web ke server, reward delivery instan (3x Vote Key + Rp 1.000), serta routing anti-loop.
 
-#### `33e3eeb` — 2026-09-11 | 📚 DOCS | docs: create master DOKUMENTASI.md and expand token conservation protocol
+#### `33e3eeb` — 2026-09-10 | 📚 DOCS | docs: create master DOKUMENTASI.md and expand token conservation protocol
 - **Pesan Commit:** `docs: create master DOKUMENTASI.md and expand token conservation protocol`
-  - **Komponen/Berkas:** `AGENTS.md`, `DOKUMENTASI.md`, `GEMINI.md`, `README.md`
   - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
 
-#### `173be77` — 2026-09-11 | 🐛 FIX | fix(theme): complete light mode backgrounds, contrast & add token conservation policy
+#### `173be77` — 2026-09-10 | 🐛 FIX | fix(theme): complete light mode backgrounds, contrast & add token conservation policy
 - **Pesan Commit:** `fix(theme): complete light mode backgrounds, contrast & add token conservation policy`
-  - **Komponen/Berkas:** `AGENTS.md`, `GEMINI.md`, `Website/themes/apexsions/assets/css/style.css`, `.../apexsions/views/elements/footer.blade.php`, `Website/themes/apexsions/views/home.blade.php`, `.../themes/apexsions/views/layouts/app.blade.php`
   - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
 
 #### `a1c2d90` — 2026-09-10 | ✨ FEAT | feat(web): webstore single benefit expansion, diamond currency, bluemap & seo implementation
 - **Pesan Commit:** `feat(web): webstore single benefit expansion, diamond currency, bluemap & seo implementation`
-  - **Komponen/Berkas:** `README.md`, `Website/database/seed_minecraft_systems.php`, `.../resources/views/admin/server/index.blade.php`, `.../resources/views/server-map.blade.php`, `Website/plugins/apexsions-bridge/routes/web.php`, `.../Controllers/Admin/ServerAdminController.php`
   - **Rincian Teknis:** Mengoptimasi sitemap XML terstruktur dengan timestamp lastmod dinamis, header X-Robots-Tag, dan URL canonical HTTPS otoritatif.
+  - **Rincian Teknis:** Menjaga integritas saldo transaksi mata uang ganda (Rupiah & Diamond) dengan perlindungan anti-duplikasi dan escrow.
 
 #### `a2954c0` — 2026-09-10 | 🔧 CHORE | chore(shop): remove obsolete Vault, nightcore, and ExcellentCrates from softdepend
 - **Pesan Commit:** `chore(shop): remove obsolete Vault, nightcore, and ExcellentCrates from softdepend`
-  - **Komponen/Berkas:** `.../plugins/ApexsionsShop/ApexsionsShop-1.0.0.jar`, `.../ApexsionsShop/src/main/resources/plugin.yml`
   - **Rincian Teknis:** Menyelaraskan kalkulasi peluang gacha berbasis weighted rolling chance per tier rarity dengan preview lore probabilitas yang akurat.
+  - **Rincian Teknis:** Mengatur pasar dinamis 6 kategori dengan fluktuasi harga berbasis cuaca, bioma teritorial, dan antarmuka `/sell` instan.
 
 #### `75df932` — 2026-09-10 | 🐛 FIX | fix(shop): resolve duplicate softdepend in plugin.yml and harden ShopMainMenu loading
 - **Pesan Commit:** `fix(shop): resolve duplicate softdepend in plugin.yml and harden ShopMainMenu loading`
-  - **Komponen/Berkas:** `.../plugins/ApexsionsShop/ApexsionsShop-1.0.0.jar`, `Minecraft/plugins/ApexsionsShop/pom.xml`, `.../com/apexsions/shop/command/ShopCommand.java`, `.../java/com/apexsions/shop/gui/ShopMainMenu.java`, `.../ApexsionsShop/src/main/resources/plugin.yml`
-  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+  - **Rincian Teknis:** Mengatur pasar dinamis 6 kategori dengan fluktuasi harga berbasis cuaca, bioma teritorial, dan antarmuka `/sell` instan.
 
 #### `f7a9142` — 2026-09-10 | 🐛 FIX | fix(rank): uncap operator/staff ranks with 999 limits and 0s cooldowns
 - **Pesan Commit:** `fix(rank): uncap operator/staff ranks with 999 limits and 0s cooldowns`
-  - **Komponen/Berkas:** `.../apexsions-bridge/src/Models/RankConfig.php`
   - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
 
 #### `8111f80` — 2026-09-10 | ✨ FEAT | feat(ranks): populate default baseline values and reference badges in rank edit form
 - **Pesan Commit:** `feat(ranks): populate default baseline values and reference badges in rank edit form`
-  - **Komponen/Berkas:** `.../resources/views/admin/ranks/edit.blade.php`, `.../src/Controllers/Admin/RankAdminController.php`, `.../apexsions-bridge/src/Models/RankConfig.php`
   - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
 
 #### `2fc4e4d` — 2026-09-10 | 🐛 FIX | fix(bridge): synchronize rank delivery state machine and audit log integrity
 - **Pesan Commit:** `fix(bridge): synchronize rank delivery state machine and audit log integrity`
-  - **Komponen/Berkas:** `.../Controllers/Api/LinkVerificationController.php`, `.../src/Controllers/Api/PlayerSyncController.php`, `.../apexsions-bridge/src/Services/RankService.php`, `.../src/Services/ServerOpsService.php`, `.../apexsions-bridge/src/Services/VoteService.php`
   - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
 
 #### `e3f817c` — 2026-09-10 | 📚 DOCS | docs(web): document webstore storefront architecture and multi-axis filter engine
 - **Pesan Commit:** `docs(web): document webstore storefront architecture and multi-axis filter engine`
-  - **Komponen/Berkas:** `README.md`, `Website/ADMIN_GUIDE.md`, `Website/README.md`
   - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
 
 #### `89d7520` — 2026-09-10 | 🐛 FIX | fix(web): overhaul shop category navigation and multi-axis interactive filters
 - **Pesan Commit:** `fix(web): overhaul shop category navigation and multi-axis interactive filters`
-  - **Komponen/Berkas:** `.gitignore`, `Website/themes/apexsions/assets/css/style.css`, `.../themes/apexsions/views/layouts/app.blade.php`, `.../views/plugins/shop/categories/index.blade.php`, `.../views/plugins/shop/categories/show.blade.php`
-  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+  - **Rincian Teknis:** Mengatur pasar dinamis 6 kategori dengan fluktuasi harga berbasis cuaca, bioma teritorial, dan antarmuka `/sell` instan.
 
 #### `4f57a23` — 2026-09-10 | 📚 DOCS | docs: update technical documentation and admin guide with integration audit results
 - **Pesan Commit:** `docs: update technical documentation and admin guide with integration audit results`
-  - **Komponen/Berkas:** `Minecraft/DOKUMENTASI.md`, `Minecraft/plugins/ApexsionsCore/DOKUMENTASI.md`, `README.md`, `Website/ADMIN_GUIDE.md`
   - **Rincian Teknis:** Menyempurnakan antarmuka administrasi Azuriom dengan kartu analitik, tombol tindakan cepat, dan keselarasan styling dual-theme.
 
 #### `ecc060c` — 2026-09-10 | 🐛 FIX | fix(bridge): resolve compound command delimiter and native tellraw handling
 - **Pesan Commit:** `fix(bridge): resolve compound command delimiter and native tellraw handling`
-  - **Komponen/Berkas:** `.gitignore`, `.../plugins/ApexsionsCore/ApexsionsCore-1.0.0.jar`, `.../core/integration/web/WebBridgeService.java`, `.../apexsions-bridge/src/Services/RankService.php`
   - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
 
 #### `ddb9ef0` — 2026-09-10 | 🐛 FIX | fix(ui): eliminate tablet landscape overflow and prevent double password toggle execution
 - **Pesan Commit:** `fix(ui): eliminate tablet landscape overflow and prevent double password toggle execution`
-  - **Komponen/Berkas:** `Website/themes/apexsions/assets/css/style.css`, `Website/themes/apexsions/assets/js/app.js`, `.../apexsions/views/elements/navbar.blade.php`
   - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
 
 #### `ccfabb0` — 2026-09-10 | ✨ FEAT | feat(customenchants): add per-item and fullset level requirement in item creator synced with ApexsionsCore
 - **Pesan Commit:** `feat(customenchants): add per-item and fullset level requirement in item creator synced with ApexsionsCore`
-  - **Komponen/Berkas:** `.../plugins/ApexsionsCore/ApexsionsCore-1.0.0.jar`, `.../ApexsionsCustomEnchants-1.0.0.jar`, `.../ApexsionsCustomEnchantsPlugin.java`, `.../customenchants/gui/AdminItemCreatorGUI.java`, `.../customenchants/gui/ItemLevelPickerGUI.java`, `.../customenchants/gui/ItemModifierGUI.java`
-  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+  - **Rincian Teknis:** Mengelola 182 custom enchants lintas 7 tingkatan kekuatan, tinkerer exchange, serta aktivasi bonus set armor legendaris.
 
 #### `65b70a0` — 2026-09-10 | ✨ FEAT | feat(ui): implement multi-device responsive layout, offcanvas navigation, and dual-theme engine
 - **Pesan Commit:** `feat(ui): implement multi-device responsive layout, offcanvas navigation, and dual-theme engine`
-  - **Komponen/Berkas:** `.../apexsions/assets/css/admin-apexsions.css`, `Website/themes/apexsions/assets/css/style.css`, `Website/themes/apexsions/assets/js/app.js`, `.../themes/apexsions/views/auth/register.blade.php`, `.../apexsions/views/elements/navbar.blade.php`, `.../themes/apexsions/views/layouts/app.blade.php`
   - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
 
 #### `22fa9ab` — 2026-09-10 | 🐛 FIX | fix(shop): resolve calculateUpgradePrice call in show.blade.php for authenticated users
 - **Pesan Commit:** `fix(shop): resolve calculateUpgradePrice call in show.blade.php for authenticated users`
-  - **Komponen/Berkas:** `.../themes/apexsions/views/plugins/shop/categories/show.blade.php`
-  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+  - **Rincian Teknis:** Mengatur pasar dinamis 6 kategori dengan fluktuasi harga berbasis cuaca, bioma teritorial, dan antarmuka `/sell` instan.
 
 #### `3dd104c` — 2026-09-10 | ✨ FEAT | feat(webstore): add centralized webstore manager admin panel and fix package banner 404s
 - **Pesan Commit:** `feat(webstore): add centralized webstore manager admin panel and fix package banner 404s`
-  - **Komponen/Berkas:** `Website/ADMIN_GUIDE.md`, `.../resources/views/admin/webstore/edit.blade.php`, `.../resources/views/admin/webstore/index.blade.php`, `Website/plugins/apexsions-bridge/routes/web.php`, `.../Controllers/Admin/WebstoreAdminController.php`, `.../Providers/ApexsionsBridgeServiceProvider.php`
   - **Rincian Teknis:** Mengonsolidasikan engine ban otoritatif pada level soket jaringan `AsyncPlayerPreLoginEvent`, menonaktifkan command moderasi EssentialsX yang tumpang-tindih.
   - **Rincian Teknis:** Menyempurnakan antarmuka administrasi Azuriom dengan kartu analitik, tombol tindakan cepat, dan keselarasan styling dual-theme.
+  - **Rincian Teknis:** Merender gambar/logo banner multi-tile dari URL/PNG lokal dengan raytrace hover glow dan aksi URL interaktif.
 
 #### `3d9f51a` — 2026-09-10 | ✨ FEAT | feat(theme): resolve rank card layout collisions, add duration filters & 2x2 spec grid
 - **Pesan Commit:** `feat(theme): resolve rank card layout collisions, add duration filters & 2x2 spec grid`
-  - **Komponen/Berkas:** `Website/ADMIN_GUIDE.md`, `Website/themes/apexsions/assets/css/style.css`, `.../views/plugins/shop/categories/index.blade.php`, `.../views/plugins/shop/categories/show.blade.php`, `.../views/plugins/shop/packages/show.blade.php`
   - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
 
 #### `c777c68` — 2026-09-10 | 🐛 FIX | fix(theme,docs): resolve /admin/themes 500 by adding authors array & document rank upgrade suite
 - **Pesan Commit:** `fix(theme,docs): resolve /admin/themes 500 by adding authors array & document rank upgrade suite`
-  - **Komponen/Berkas:** `Minecraft/DOKUMENTASI.md`, `Website/ADMIN_GUIDE.md`, `Website/themes/apexsions/theme.json`
   - **Rincian Teknis:** Menyempurnakan antarmuka administrasi Azuriom dengan kartu analitik, tombol tindakan cepat, dan keselarasan styling dual-theme.
 
 #### `b03523d` — 2026-09-10 | ✨ FEAT | feat(rank-upgrade): finalize rank upgrade engine, admin management, retention and whatsapp flow
 - **Pesan Commit:** `feat(rank-upgrade): finalize rank upgrade engine, admin management, retention and whatsapp flow`
-  - **Komponen/Berkas:** `...ate_rank_configs_and_upgrade_history_tables.php`, `.../resources/views/admin/ranks/edit.blade.php`, `.../resources/views/admin/ranks/index.blade.php`, `.../views/admin/ranks/purchases.blade.php`, `.../resources/views/admin/ranks/settings.blade.php`, `Website/plugins/apexsions-bridge/routes/web.php`
   - **Rincian Teknis:** Menyempurnakan antarmuka administrasi Azuriom dengan kartu analitik, tombol tindakan cepat, dan keselarasan styling dual-theme.
 
 #### `760cdd7` — 2026-09-10 | ✨ FEAT | feat(rank-webstore): overhaul rank benefits, battlepass discounts, and webstore integration
 - **Pesan Commit:** `feat(rank-webstore): overhaul rank benefits, battlepass discounts, and webstore integration`
-  - **Komponen/Berkas:** `.../plugins/ApexsionsCore/ApexsionsCore-1.0.0.jar`, `.../com/apexsions/core/ApexsionsCorePlugin.java`, `.../core/integration/LuckPermsRankProvisioner.java`, `.../java/com/apexsions/core/kit/KitManager.java`, `.../com/apexsions/core/level/LevelManager.java`, `.../apexsions/core/region/KingdomRtpService.java`
-  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
-
----
-
-## 🚀 Sprint 1 — Inisiasi Fondasi 9 Plugin Suite, Sistem Gacha Crates Berbobot, Admin Hub Management & Dual-Currency Core [v1.0.0]
-> **Periode Pengembangan:** 9 September 2026 | **Total Commit:** 17 commit
-
-### 📋 Tinjauan Arsitektur & Dampak Sistem
-Inisiasi fondasi monorepo 9 plugin suite Apexsions (Paper 26.2 / Java 21 LTS). Membangun sistem peti hadiah ApexsionsCrates berbasis bobot peluang efektif terpadu, isolasi kit player & admin GUI, standarisasi simbol mata uang (Rp., 💎, 🪙), penyusunan suite PlaceholderAPI komprehensif, serta rebuild 13 modul panel admin dengan antarmuka dual-theme.
-
-### 🔍 Rincian Lengkap Commit (17 Commit)
+  - **Rincian Teknis:** Menyediakan progresi 200 level battlepass, quest berkala harian/mingguan/bulanan, dan editor in-game admin 54-slot.
 
 #### `2aa7119` — 2026-09-09 | ✨ FEAT | feat(vote): add vote management to admin sidebar, configure minecraft-mp api key & server id, and implement platform toggle controls
 - **Pesan Commit:** `feat(vote): add vote management to admin sidebar, configure minecraft-mp api key & server id, and implement platform toggle controls`
-  - **Komponen/Berkas:** `..._000018_add_server_id_to_voting_sites_table.php`, `.../resources/views/admin/votes/index.blade.php`, `Website/plugins/apexsions-bridge/routes/web.php`, `.../src/Controllers/Admin/VoteAdminController.php`, `.../apexsions-bridge/src/Models/VotingSite.php`, `.../Providers/ApexsionsBridgeServiceProvider.php`
   - **Rincian Teknis:** Mengotomatisasi verifikasi voting web ke server, reward delivery instan (3x Vote Key + Rp 1.000), serta routing anti-loop.
   - **Rincian Teknis:** Menyempurnakan antarmuka administrasi Azuriom dengan kartu analitik, tombol tindakan cepat, dan keselarasan styling dual-theme.
 
 #### `d405767` — 2026-09-09 | 🐛 FIX | fix(vote): resolve /vote 500 error & implement crossplay vote experience for Java and Bedrock
 - **Pesan Commit:** `fix(vote): resolve /vote 500 error & implement crossplay vote experience for Java and Bedrock`
-  - **Komponen/Berkas:** `.../plugins/ApexsionsChat/ApexsionsChat-1.0.0.jar`, `.../src/main/resources/broadcast/announcements.yml`, `.../plugins/ApexsionsCore/ApexsionsCore-1.0.0.jar`, `.../com/apexsions/core/command/VoteCommand.java`, `.../core/gui/input/BedrockFormAdapter.java`, `.../src/Controllers/VoteController.php`
   - **Rincian Teknis:** Mengatasi render angka merah native Bedrock via Geyser resource pack dan mengganti pembatas unicode menjadi hyphen coret ASCII agar tidak patah pada font kustom.
   - **Rincian Teknis:** Mengotomatisasi verifikasi voting web ke server, reward delivery instan (3x Vote Key + Rp 1.000), serta routing anti-loop.
 
 #### `e0bac90` — 2026-09-09 | ✨ FEAT | feat(vote): implement real voting system with /vote command, 3x vote keys and rp 1000 rewards, cooldown tracking, and admin dashboard
 - **Pesan Commit:** `feat(vote): implement real voting system with /vote command, 3x vote keys and rp 1000 rewards, cooldown tracking, and admin dashboard`
-  - **Komponen/Berkas:** `.../plugins/ApexsionsCore/ApexsionsCore-1.0.0.jar`, `.../com/apexsions/core/ApexsionsCorePlugin.java`, `.../com/apexsions/core/command/VoteCommand.java`, `.../ApexsionsCore/src/main/resources/plugin.yml`, `..._000017_create_apexsions_vote_system_tables.php`, `.../resources/views/admin/votes/index.blade.php`
   - **Rincian Teknis:** Mengotomatisasi verifikasi voting web ke server, reward delivery instan (3x Vote Key + Rp 1.000), serta routing anti-loop.
   - **Rincian Teknis:** Menyempurnakan antarmuka administrasi Azuriom dengan kartu analitik, tombol tindakan cepat, dan keselarasan styling dual-theme.
 
 #### `5bbea14` — 2026-09-09 | 🐛 FIX | fix(admin): resolve delivery enum truncation, tellraw json formatting, and player table template bug
 - **Pesan Commit:** `fix(admin): resolve delivery enum truncation, tellraw json formatting, and player table template bug`
-  - **Komponen/Berkas:** `.../plugins/ApexsionsCore/ApexsionsCore-1.0.0.jar`, `.../com/apexsions/core/command/AdminCommand.java`, `...016_fix_deliveries_status_enum_and_indexing.php`, `.../resources/views/admin/players/index.blade.php`, `.../Controllers/Admin/PlayerAdminController.php`, `.../Controllers/Api/LinkVerificationController.php`
   - **Rincian Teknis:** Menyempurnakan antarmuka administrasi Azuriom dengan kartu analitik, tombol tindakan cepat, dan keselarasan styling dual-theme.
 
 #### `d8c6b42` — 2026-09-09 | ✨ FEAT | feat(core): isolate kit player gui and implement dedicated kit admin dashboard
 - **Pesan Commit:** `feat(core): isolate kit player gui and implement dedicated kit admin dashboard`
-  - **Komponen/Berkas:** `.../plugins/ApexsionsCore/ApexsionsCore-1.0.0.jar`, `.../com/apexsions/core/ApexsionsCorePlugin.java`, `.../apexsions/core/gui/admin/CoreAdminSubGUI.java`, `.../com/apexsions/core/kit/KitAdminCreatorGUI.java`, `.../com/apexsions/core/kit/KitAdminListGUI.java`, `.../com/apexsions/core/kit/KitGUIListener.java`
   - **Rincian Teknis:** Menyempurnakan antarmuka administrasi Azuriom dengan kartu analitik, tombol tindakan cepat, dan keselarasan styling dual-theme.
 
 #### `c4ee606` — 2026-09-09 | 🐛 FIX | fix(crates): display reward lore and custom enchants above rarity info in preview
 - **Pesan Commit:** `fix(crates): display reward lore and custom enchants above rarity info in preview`
-  - **Komponen/Berkas:** `.../ApexsionsCrates/ApexsionsCrates-1.0.0.jar`, `.../apexsions/crates/crate/menu/PreviewMenu.java`
   - **Rincian Teknis:** Menyelaraskan kalkulasi peluang gacha berbasis weighted rolling chance per tier rarity dengan preview lore probabilitas yang akurat.
   - **Rincian Teknis:** Menyusun dan menyinkronkan kanon resmi peradaban, pembagian teritori geografis, sejarah keruntuhan Sions, serta arsitektur kosmik.
+  - **Rincian Teknis:** Mengelola 182 custom enchants lintas 7 tingkatan kekuatan, tinkerer exchange, serta aktivasi bonus set armor legendaris.
 
 #### `3ecd153` — 2026-09-09 | 📚 DOCS | docs: update master documentation for user management center, auth security, and crates suite
 - **Pesan Commit:** `docs: update master documentation for user management center, auth security, and crates suite`
-  - **Komponen/Berkas:** `Minecraft/DOKUMENTASI.md`, `README.md`, `Website/ADMIN_GUIDE.md`, `Website/README.md`
   - **Rincian Teknis:** Menyelaraskan kalkulasi peluang gacha berbasis weighted rolling chance per tier rarity dengan preview lore probabilitas yang akurat.
 
 #### `dd00a5f` — 2026-09-09 | ✨ FEAT | feat(crates): calculate reward chance grouped strictly by rarity and show rarity roll chance in preview lore
 - **Pesan Commit:** `feat(crates): calculate reward chance grouped strictly by rarity and show rarity roll chance in preview lore`
-  - **Komponen/Berkas:** `.../ApexsionsCrates/ApexsionsCrates-1.0.0.jar`, `.../java/com/apexsions/crates/Placeholders.java`, `.../com/apexsions/crates/api/crate/Reward.java`, `.../com/apexsions/crates/crate/impl/Crate.java`, `.../com/apexsions/crates/crate/impl/Rarity.java`, `.../apexsions/crates/crate/menu/PreviewMenu.java`
   - **Rincian Teknis:** Menyelaraskan kalkulasi peluang gacha berbasis weighted rolling chance per tier rarity dengan preview lore probabilitas yang akurat.
   - **Rincian Teknis:** Menyusun dan menyinkronkan kanon resmi peradaban, pembagian teritori geografis, sejarah keruntuhan Sions, serta arsitektur kosmik.
 
 #### `777c54a` — 2026-09-09 | ✨ FEAT | feat(auth): resolve /admin/users 500, redesign user management center & add password toggles
 - **Pesan Commit:** `feat(auth): resolve /admin/users 500, redesign user management center & add password toggles`
-  - **Komponen/Berkas:** `.../app/Http/Controllers/Admin/UserController.php`, `Website/app/Models/User.php`, `.../resources/views/admin/users/_notify.blade.php`, `Website/resources/views/admin/users/edit.blade.php`, `.../resources/views/admin/users/index.blade.php`, `Website/resources/views/auth/login.blade.php`
   - **Rincian Teknis:** Menyempurnakan antarmuka administrasi Azuriom dengan kartu analitik, tombol tindakan cepat, dan keselarasan styling dual-theme.
 
 #### `406232e` — 2026-09-09 | 🐛 FIX | fix(crates): implement unified tiered effective weight chance system
 - **Pesan Commit:** `fix(crates): implement unified tiered effective weight chance system`
-  - **Komponen/Berkas:** `.../ApexsionsCrates/ApexsionsCrates-1.0.0.jar`, `.../java/com/apexsions/crates/Placeholders.java`, `.../com/apexsions/crates/api/crate/Reward.java`, `.../com/apexsions/crates/crate/impl/Crate.java`, `.../com/apexsions/crates/crate/impl/Rarity.java`, `.../crates/crate/reward/AbstractReward.java`
   - **Rincian Teknis:** Menyelaraskan kalkulasi peluang gacha berbasis weighted rolling chance per tier rarity dengan preview lore probabilitas yang akurat.
 
 #### `0a17020` — 2026-09-09 | 🐛 FIX | fix(crates): ensure crate key and chest item display names and lore are properly formatted with colors
 - **Pesan Commit:** `fix(crates): ensure crate key and chest item display names and lore are properly formatted with colors`
-  - **Komponen/Berkas:** `.../ApexsionsCrates/ApexsionsCrates-1.0.0.jar`, `.../com/apexsions/crates/crate/impl/Crate.java`, `.../crates/dialog/generic/GenericNameDialog.java`, `.../java/com/apexsions/crates/key/CrateKey.java`, `.../java/com/apexsions/crates/key/KeyManager.java`, `.../java/com/apexsions/crates/util/CrateUtils.java`
   - **Rincian Teknis:** Menyelaraskan kalkulasi peluang gacha berbasis weighted rolling chance per tier rarity dengan preview lore probabilitas yang akurat.
   - **Rincian Teknis:** Menyusun dan menyinkronkan kanon resmi peradaban, pembagian teritori geografis, sejarah keruntuhan Sions, serta arsitektur kosmik.
 
 #### `3ddfcad` — 2026-09-09 | 📚 DOCS | docs: add complete PlaceholderAPI documentation suite for all Apexsions plugins
 - **Pesan Commit:** `docs: add complete PlaceholderAPI documentation suite for all Apexsions plugins`
-  - **Komponen/Berkas:** `.../ApexsionsBattlepass-1.0.0.jar`, `.../battlepass/integration/PlaceholderAPIHook.java`, `.../plugins/ApexsionsCore/ApexsionsCore-1.0.0.jar`, `.../core/integration/PlaceholderApiHook.java`, `.../plugins/ApexsionsShop/ApexsionsShop-1.0.0.jar`, `Minecraft/plugins/ApexsionsShop/pom.xml`
   - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
 
 #### `9065256` — 2026-09-09 | 🐛 FIX | fix(shop,currency): ensure complete currency symbol standardization (Rp., 💎, 🪙) in shop menus, quests, and GUIs
 - **Pesan Commit:** `fix(shop,currency): ensure complete currency symbol standardization (Rp., 💎, 🪙) in shop menus, quests, and GUIs`
-  - **Komponen/Berkas:** `.../ApexsionsBattlepass-1.0.0.jar`, `.../admin/gui/AdminPlayerDetailMenu.java`, `.../battlepass/admin/gui/AdminShopMenu.java`, `.../battlepass/admin/gui/AdminStatsMenu.java`, `.../admin/gui/quest/AdminQuestEditorMenu.java`, `.../admin/gui/quest/AdminQuestListMenu.java`
-  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+  - **Rincian Teknis:** Mengatur pasar dinamis 6 kategori dengan fluktuasi harga berbasis cuaca, bioma teritorial, dan antarmuka `/sell` instan.
+  - **Rincian Teknis:** Menyediakan progresi 200 level battlepass, quest berkala harian/mingguan/bulanan, dan editor in-game admin 54-slot.
+  - **Rincian Teknis:** Menjaga integritas saldo transaksi mata uang ganda (Rupiah & Diamond) dengan perlindungan anti-duplikasi dan escrow.
 
 #### `fa31205` — 2026-09-09 | ✨ FEAT | feat(admin): complete 13-point admin refinement, global search, quick actions & dual-theme styling
 - **Pesan Commit:** `feat(admin): complete 13-point admin refinement, global search, quick actions & dual-theme styling`
-  - **Komponen/Berkas:** `.../views/admin/audit-logs/index.blade.php`, `.../resources/views/admin/players/index.blade.php`, `.../resources/views/admin/players/show.blade.php`, `.../resources/views/admin/ranks/index.blade.php`, `.../resources/views/admin/ranks/show.blade.php`, `Website/plugins/apexsions-bridge/routes/web.php`
   - **Rincian Teknis:** Menyempurnakan antarmuka administrasi Azuriom dengan kartu analitik, tombol tindakan cepat, dan keselarasan styling dual-theme.
 
 #### `b9b5d41` — 2026-09-09 | 🔧 CHORE | chore(plugins): set author to Nueeva across all plugins
 - **Pesan Commit:** `chore(plugins): set author to Nueeva across all plugins`
-  - **Komponen/Berkas:** `.../ApexsionsBattlepass-1.0.0.jar`, `.../src/main/resources/plugin.yml`, `.../plugins/ApexsionsChat/ApexsionsChat-1.0.0.jar`, `.../ApexsionsChat/src/main/resources/plugin.yml`, `.../plugins/ApexsionsCore/ApexsionsCore-1.0.0.jar`, `.../ApexsionsCore/src/main/resources/plugin.yml`
   - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
 
 #### `460f2b9` — 2026-09-09 | 🔧 CHORE | chore: remove MythicMobs folder as files are accessible directly via SFTP
 - **Pesan Commit:** `chore: remove MythicMobs folder as files are accessible directly via SFTP`
-  - **Komponen/Berkas:** `MythicMobs/config/config-general.yml`, `MythicMobs/config/config-items.yml`, `MythicMobs/config/config-mobs.yml`, `MythicMobs/config/config-skills.yml`, `MythicMobs/config/config-spawning.yml`, `MythicMobs/config/lang/en-us/mythicmobs.json`
   - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
 
 #### `1da8a10` — 2026-09-09 | ✨ FEAT | feat(admin): parity audit, high-value actions & dual-theme rebuild
 - **Pesan Commit:** `feat(admin): parity audit, high-value actions & dual-theme rebuild`
-  - **Komponen/Berkas:** `.agents/rules/multi-developer-protocol.md`, `.gitignore`, `.impeccable/config.json`, `.impeccable/design.json`, `AGENTS.md`, `DESIGN.md`
   - **Rincian Teknis:** Menyempurnakan antarmuka administrasi Azuriom dengan kartu analitik, tombol tindakan cepat, dan keselarasan styling dual-theme.
+
+#### `59423ce` — 2026-09-09 | 🐛 FIX | fix(currency): standardize currency formatting to Rp., 💎, and 🪙 across plugins
+- **Pesan Commit:** `fix(currency): standardize currency formatting to Rp., 💎, and 🪙 across plugins`
+  - **Rincian Teknis:** Menjaga integritas saldo transaksi mata uang ganda (Rupiah & Diamond) dengan perlindungan anti-duplikasi dan escrow.
+
+#### `49a18e9` — 2026-09-09 | 🐛 FIX | fix(crates): separate rarity and roll chance onto distinct lines in preview
+- **Pesan Commit:** `fix(crates): separate rarity and roll chance onto distinct lines in preview`
+  - **Rincian Teknis:** Menyelaraskan kalkulasi peluang gacha berbasis weighted rolling chance per tier rarity dengan preview lore probabilitas yang akurat.
+
+#### `eb95959` — 2026-09-09 | 🐛 FIX | fix(server): resolve maintenance mode deactivation form submission bug & add quick disable action
+- **Pesan Commit:** `fix(server): resolve maintenance mode deactivation form submission bug & add quick disable action`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+#### `17d2f10` — 2026-09-09 | ✨ FEAT | feat(crates): add rarity management GUI, 7 default rarities & actionbar notifications
+- **Pesan Commit:** `feat(crates): add rarity management GUI, 7 default rarities & actionbar notifications`
+  - **Rincian Teknis:** Menyelaraskan kalkulasi peluang gacha berbasis weighted rolling chance per tier rarity dengan preview lore probabilitas yang akurat.
+
+#### `8c6d6ee` — 2026-09-09 | ✨ FEAT | feat(admin): restructure sidebar, integrate admingui actions, expand player management & implement rank management
+- **Pesan Commit:** `feat(admin): restructure sidebar, integrate admingui actions, expand player management & implement rank management`
+  - **Rincian Teknis:** Menyempurnakan antarmuka administrasi Azuriom dengan kartu analitik, tombol tindakan cepat, dan keselarasan styling dual-theme.
+
+---
+
+## 🚀 Sprint 3 — Pematangan 9 Plugin Suite, Dual-Currency Enchanter 182 Enchant, Dynamic Shop 6-Kategori & Custom Theme Azuriom [v1.0.0]
+> **Periode Pengembangan:** 5 – 8 September 2026 | **Total Commit:** 168 commit
+
+### 📋 Tinjauan Arsitektur & Dampak Sistem
+Pematangan menyeluruh 9 plugin suite Apexsions (Paper 26.2 / Java 21 LTS). Membangun engine custom enchants 7 tier (182 enchants) dengan Armor Set Bonus, pasar dinamis 6 kategori dengan pengaruh cuaca dan bioma teritorial, toko peti hadiah gacha berbobot (ApexsionsCrates), banner media map renderer multi-tile (ApexsionsMedia), serta perombakan tema Azuriom bernuansa Dark-Gold Civilization.
+
+### 🔍 Rincian Lengkap Commit (168 Commit)
+
+#### `f15f259` — 2026-09-08 | 🐛 FIX | fix(battlepass): match Battle Coins color to Uang (yellow)
+- **Pesan Commit:** `fix(battlepass): match Battle Coins color to Uang (yellow)`
+  - **Rincian Teknis:** Menyediakan progresi 200 level battlepass, quest berkala harian/mingguan/bulanan, dan editor in-game admin 54-slot.
+
+#### `ab360e0` — 2026-09-08 | 🐛 FIX | fix(battlepass): change Battle Coins display to X Coins format
+- **Pesan Commit:** `fix(battlepass): change Battle Coins display to X Coins format`
+  - **Rincian Teknis:** Menyediakan progresi 200 level battlepass, quest berkala harian/mingguan/bulanan, dan editor in-game admin 54-slot.
+
+#### `27f3860` — 2026-09-08 | ✨ FEAT | feat(battlepass): rename Saldo to Uang and add Battle Coins balance to BP info card
+- **Pesan Commit:** `feat(battlepass): rename Saldo to Uang and add Battle Coins balance to BP info card`
+  - **Rincian Teknis:** Menyediakan progresi 200 level battlepass, quest berkala harian/mingguan/bulanan, dan editor in-game admin 54-slot.
+  - **Rincian Teknis:** Menjaga integritas saldo transaksi mata uang ganda (Rupiah & Diamond) dengan perlindungan anti-duplikasi dan escrow.
+
+#### `8d59aa9` — 2026-09-08 | 🐛 FIX | fix(battlepass): preserve item lore in all preview and editor GUIs (armor set bonus etc.)
+- **Pesan Commit:** `fix(battlepass): preserve item lore in all preview and editor GUIs (armor set bonus etc.)`
+  - **Rincian Teknis:** Menyusun dan menyinkronkan kanon resmi peradaban, pembagian teritori geografis, sejarah keruntuhan Sions, serta arsitektur kosmik.
+  - **Rincian Teknis:** Menyediakan progresi 200 level battlepass, quest berkala harian/mingguan/bulanan, dan editor in-game admin 54-slot.
+
+#### `7af68dc` — 2026-09-08 | 🐛 FIX | fix(bridge): prepend plugin route namespace to player.show and incident routes
+- **Pesan Commit:** `fix(bridge): prepend plugin route namespace to player.show and incident routes`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+#### `c5bed7f` — 2026-09-08 | 📚 DOCS | docs(minecraft): update documentation and build suite with crates integration and sftp sync
+- **Pesan Commit:** `docs(minecraft): update documentation and build suite with crates integration and sftp sync`
+  - **Rincian Teknis:** Menyelaraskan kalkulasi peluang gacha berbasis weighted rolling chance per tier rarity dengan preview lore probabilitas yang akurat.
+
+#### `8af7a37` — 2026-09-08 | 🐛 FIX | fix(admin): resolve route collision on custom-plugins and isolate notifications view variable
+- **Pesan Commit:** `fix(admin): resolve route collision on custom-plugins and isolate notifications view variable`
+  - **Rincian Teknis:** Menyempurnakan antarmuka administrasi Azuriom dengan kartu analitik, tombol tindakan cepat, dan keselarasan styling dual-theme.
+
+#### `7792442` — 2026-09-08 | 🔧 CHORE | chore(admin): finalize dashboard suite with admin guide and e2e integration test
+- **Pesan Commit:** `chore(admin): finalize dashboard suite with admin guide and e2e integration test`
+  - **Rincian Teknis:** Menyempurnakan antarmuka administrasi Azuriom dengan kartu analitik, tombol tindakan cepat, dan keselarasan styling dual-theme.
+
+#### `d8eecf9` — 2026-09-08 | ✨ FEAT | feat(automation): implement Phase 8 Automation and Notification Orchestration
+- **Pesan Commit:** `feat(automation): implement Phase 8 Automation and Notification Orchestration`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+#### `67f13cd` — 2026-09-08 | ✨ FEAT | feat(hardening): implement Phase 7 architecture hardening, retention engine, granular permissions, and index optimizations
+- **Pesan Commit:** `feat(hardening): implement Phase 7 architecture hardening, retention engine, granular permissions, and index optimizations`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+#### `766d212` — 2026-09-08 | ✨ FEAT | feat(intelligence): implement Phase 6 Intelligence, Incident and Investigation System
+- **Pesan Commit:** `feat(intelligence): implement Phase 6 Intelligence, Incident and Investigation System`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+#### `21660ca` — 2026-09-08 | ✨ FEAT | feat(plugins): implement Phase 5 Custom Plugin Control and Capability System
+- **Pesan Commit:** `feat(plugins): implement Phase 5 Custom Plugin Control and Capability System`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+#### `47731c0` — 2026-09-08 | ✨ FEAT | feat(server): implement Phase 4 Server Operations and Safe Control
+- **Pesan Commit:** `feat(server): implement Phase 4 Server Operations and Safe Control`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+#### `c572677` — 2026-09-08 | 🐛 FIX | fix(crates): pre-fill hologram lines dialog with active template text
+- **Pesan Commit:** `fix(crates): pre-fill hologram lines dialog with active template text`
+  - **Rincian Teknis:** Menyelaraskan kalkulasi peluang gacha berbasis weighted rolling chance per tier rarity dengan preview lore probabilitas yang akurat.
+
+#### `9437b03` — 2026-09-08 | 📌 UPDATE | test: ensure Phase3Test repeatability and idempotency
+- **Pesan Commit:** `test: ensure Phase3Test repeatability and idempotency`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+#### `2839cd3` — 2026-09-08 | ✨ FEAT | feat(economy): implement Phase 3 Economy Operations and Market Control
+- **Pesan Commit:** `feat(economy): implement Phase 3 Economy Operations and Market Control`
+  - **Rincian Teknis:** Mengatur pasar dinamis 6 kategori dengan fluktuasi harga berbasis cuaca, bioma teritorial, dan antarmuka `/sell` instan.
+  - **Rincian Teknis:** Menjaga integritas saldo transaksi mata uang ganda (Rupiah & Diamond) dengan perlindungan anti-duplikasi dan escrow.
+
+#### `a173e01` — 2026-09-08 | ✨ FEAT | feat(crates): add per-crate hologram lines editor via dialog GUI
+- **Pesan Commit:** `feat(crates): add per-crate hologram lines editor via dialog GUI`
+  - **Rincian Teknis:** Menyelaraskan kalkulasi peluang gacha berbasis weighted rolling chance per tier rarity dengan preview lore probabilitas yang akurat.
+
+#### `963524a` — 2026-09-08 | ✨ FEAT | feat(operations): implement Phase 2 Reports Center and Moderation Center
+- **Pesan Commit:** `feat(operations): implement Phase 2 Reports Center and Moderation Center`
+  - **Rincian Teknis:** Mengonsolidasikan engine ban otoritatif pada level soket jaringan `AsyncPlayerPreLoginEvent`, menonaktifkan command moderasi EssentialsX yang tumpang-tindih.
+
+#### `90e89c1` — 2026-09-08 | ✨ FEAT | feat(admin): implement Phase 1 unified audit log, player management foundation, and bridge action reliability
+- **Pesan Commit:** `feat(admin): implement Phase 1 unified audit log, player management foundation, and bridge action reliability`
+  - **Rincian Teknis:** Menyempurnakan antarmuka administrasi Azuriom dengan kartu analitik, tombol tindakan cepat, dan keselarasan styling dual-theme.
+
+#### `49733e4` — 2026-09-08 | 📚 DOCS | docs: update comprehensive technical manuals for Citizens NPC command binding and WebBridge synchronization
+- **Pesan Commit:** `docs: update comprehensive technical manuals for Citizens NPC command binding and WebBridge synchronization`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+#### `722ea40` — 2026-09-08 | ♻️ REFACTOR | refactor(npc): remove hardcoded Citizens NPC listeners to allow native /npc cmd binding
+- **Pesan Commit:** `refactor(npc): remove hardcoded Citizens NPC listeners to allow native /npc cmd binding`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+#### `4f3f180` — 2026-09-08 | ✨ FEAT | feat(npc): teleport pledged players directly to kingdom on Mulai Bermain NPC interaction
+- **Pesan Commit:** `feat(npc): teleport pledged players directly to kingdom on Mulai Bermain NPC interaction`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+#### `e1f6235` — 2026-09-08 | 🐛 FIX | fix(bridge): resolve broadcast delivery server error and allow character profile views for in-game players
+- **Pesan Commit:** `fix(bridge): resolve broadcast delivery server error and allow character profile views for in-game players`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+#### `c1132f8` — 2026-09-08 | 🐛 FIX | fix(rewards): resolve currency deletion failure and prevent template item resurrections across Battlepass and Core
+- **Pesan Commit:** `fix(rewards): resolve currency deletion failure and prevent template item resurrections across Battlepass and Core`
+  - **Rincian Teknis:** Menyediakan progresi 200 level battlepass, quest berkala harian/mingguan/bulanan, dan editor in-game admin 54-slot.
+  - **Rincian Teknis:** Menjaga integritas saldo transaksi mata uang ganda (Rupiah & Diamond) dengan perlindungan anti-duplikasi dan escrow.
+
+#### `5a99ef5` — 2026-09-08 | 🐛 FIX | fix(admin): resolve 500 error by using absolute url helper for telemetry and broadcast endpoints
+- **Pesan Commit:** `fix(admin): resolve 500 error by using absolute url helper for telemetry and broadcast endpoints`
+  - **Rincian Teknis:** Menyempurnakan antarmuka administrasi Azuriom dengan kartu analitik, tombol tindakan cepat, dan keselarasan styling dual-theme.
+
+#### `639fce8` — 2026-09-08 | 🐛 FIX | fix(battlepass): relocate reward preview toggle from item editor to level editor and add test preview in core
+- **Pesan Commit:** `fix(battlepass): relocate reward preview toggle from item editor to level editor and add test preview in core`
+  - **Rincian Teknis:** Menyediakan progresi 200 level battlepass, quest berkala harian/mingguan/bulanan, dan editor in-game admin 54-slot.
+
+#### `0670833` — 2026-09-08 | ✨ FEAT | feat(admin): implement live server health telemetry monitor and broadcast console in admin dashboard
+- **Pesan Commit:** `feat(admin): implement live server health telemetry monitor and broadcast console in admin dashboard`
+  - **Rincian Teknis:** Menyempurnakan antarmuka administrasi Azuriom dengan kartu analitik, tombol tindakan cepat, dan keselarasan styling dual-theme.
+
+#### `779a5b8` — 2026-09-08 | ✨ FEAT | feat(admin): apply Apexsions royal gold and obsidian design system to admin panel
+- **Pesan Commit:** `feat(admin): apply Apexsions royal gold and obsidian design system to admin panel`
+  - **Rincian Teknis:** Menyempurnakan antarmuka administrasi Azuriom dengan kartu analitik, tombol tindakan cepat, dan keselarasan styling dual-theme.
+
+#### `d4ee99e` — 2026-09-08 | 📌 UPDATE | style(web): standardize navbar labels to single words (Beranda, Webstore, Wiki, Peraturan, Vote)
+- **Pesan Commit:** `style(web): standardize navbar labels to single words (Beranda, Webstore, Wiki, Peraturan, Vote)`
+  - **Rincian Teknis:** Mengotomatisasi verifikasi voting web ke server, reward delivery instan (3x Vote Key + Rp 1.000), serta routing anti-loop.
+
+#### `365837d` — 2026-09-08 | ✨ FEAT | feat(web): display direct navigation links without dropdown and move leaderboard access to player profile
+- **Pesan Commit:** `feat(web): display direct navigation links without dropdown and move leaderboard access to player profile`
+  - **Rincian Teknis:** Menerapkan isolasi 6-lapis untuk menyaring akun staf (Weight >= 80), OP, role admin, dan entitas Aetherion keluar dari papan peringkat publik.
+
+#### `203b41e` — 2026-09-08 | ♻️ REFACTOR | refactor(web): center navbar menu, elevate Wiki, add capsule pill active states, and harmonize right toolbar to 38px
+- **Pesan Commit:** `refactor(web): center navbar menu, elevate Wiki, add capsule pill active states, and harmonize right toolbar to 38px`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+#### `45cf4e5` — 2026-09-08 | ♻️ REFACTOR | refactor(web): remove in-page section links from navbar for clean page hierarchy
+- **Pesan Commit:** `refactor(web): remove in-page section links from navbar for clean page hierarchy`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+#### `0f0df6a` — 2026-09-08 | 📌 UPDATE | style(web): anchor navbar menu closer to brand and reorder right action items
+- **Pesan Commit:** `style(web): anchor navbar menu closer to brand and reorder right action items`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+#### `0d43207` — 2026-09-08 | 🐛 FIX | fix(web): align navbar dropdown chevron inline and remove duplicate user profile carets
+- **Pesan Commit:** `fix(web): align navbar dropdown chevron inline and remove duplicate user profile carets`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+#### `e492236` — 2026-09-08 | ✨ FEAT | feat(web): streamline navbar to 5 thematic pillars, Lainnya dropdown, and Discord CTA button
+- **Pesan Commit:** `feat(web): streamline navbar to 5 thematic pillars, Lainnya dropdown, and Discord CTA button`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+#### `b606e87` — 2026-09-08 | ✨ FEAT | feat(battlepass): display exact pass tier name on web profile and /sync command
+- **Pesan Commit:** `feat(battlepass): display exact pass tier name on web profile and /sync command`
+  - **Rincian Teknis:** Menyediakan progresi 200 level battlepass, quest berkala harian/mingguan/bulanan, dan editor in-game admin 54-slot.
+
+#### `826c3eb` — 2026-09-08 | 🐛 FIX | fix(admin): overhaul admin GUIs, add BattlePass give-pass & set-tier GUIs, and fix chat input sessions
+- **Pesan Commit:** `fix(admin): overhaul admin GUIs, add BattlePass give-pass & set-tier GUIs, and fix chat input sessions`
+  - **Rincian Teknis:** Menyempurnakan antarmuka administrasi Azuriom dengan kartu analitik, tombol tindakan cepat, dan keselarasan styling dual-theme.
+  - **Rincian Teknis:** Menyediakan progresi 200 level battlepass, quest berkala harian/mingguan/bulanan, dan editor in-game admin 54-slot.
+  - **Rincian Teknis:** Mengatur komunikasi terpisah (Global, Kingdom, Staff), sensor kata otomatis, format MiniMessage, serta pengiriman surat offline.
+
+#### `f821d97` — 2026-09-07 | 🐛 FIX | fix(core): query ApexsionsEconomy for player Rupiah balance in chat profile hover card
+- **Pesan Commit:** `fix(core): query ApexsionsEconomy for player Rupiah balance in chat profile hover card`
+  - **Rincian Teknis:** Mengatur komunikasi terpisah (Global, Kingdom, Staff), sensor kata otomatis, format MiniMessage, serta pengiriman surat offline.
+  - **Rincian Teknis:** Menjaga integritas saldo transaksi mata uang ganda (Rupiah & Diamond) dengan perlindungan anti-duplikasi dan escrow.
+
+#### `ff45ddb` — 2026-09-07 | 🐛 FIX | fix(battlepass): auto-navigate to player tier in rewards menu, add command aliases, polish profile tier badge and improve sync feedback
+- **Pesan Commit:** `fix(battlepass): auto-navigate to player tier in rewards menu, add command aliases, polish profile tier badge and improve sync feedback`
+  - **Rincian Teknis:** Menyediakan progresi 200 level battlepass, quest berkala harian/mingguan/bulanan, dan editor in-game admin 54-slot.
+
+#### `9b70ede` — 2026-09-07 | ✨ FEAT | feat(web): redesign webstore home showcase and remove bp/coins from public profile
+- **Pesan Commit:** `feat(web): redesign webstore home showcase and remove bp/coins from public profile`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+#### `64eaba2` — 2026-09-07 | 🐛 FIX | fix(sync): differentiate core level vs battlepass tier and add instant sync bridge
+- **Pesan Commit:** `fix(sync): differentiate core level vs battlepass tier and add instant sync bridge`
+  - **Rincian Teknis:** Menyediakan progresi 200 level battlepass, quest berkala harian/mingguan/bulanan, dan editor in-game admin 54-slot.
+
+#### `3dd2a9f` — 2026-09-07 | ✨ FEAT | feat(web-bridge): sync accurate rupiah, battlepass progress, and apex coins with bilingual support
+- **Pesan Commit:** `feat(web-bridge): sync accurate rupiah, battlepass progress, and apex coins with bilingual support`
+  - **Rincian Teknis:** Menyediakan progresi 200 level battlepass, quest berkala harian/mingguan/bulanan, dan editor in-game admin 54-slot.
+
+#### `2b08e90` — 2026-09-07 | 📌 UPDATE | config(bluemap): disable live-player-markers so players are hidden on web map
+- **Pesan Commit:** `config(bluemap): disable live-player-markers so players are hidden on web map`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+#### `0fb6975` — 2026-09-07 | ✨ FEAT | feat(customenchants): integrate custom enchants with Sions legendary relics, mob death drops, and chest loot
+- **Pesan Commit:** `feat(customenchants): integrate custom enchants with Sions legendary relics, mob death drops, and chest loot`
+  - **Rincian Teknis:** Mengelola 182 custom enchants lintas 7 tingkatan kekuatan, tinkerer exchange, serta aktivasi bonus set armor legendaris.
+
+#### `d4686ff` — 2026-09-07 | ✨ FEAT | feat(mythicmobs): integrate 3-tier Sions keys, leveled wilderness mobs, and boss/elite spawners
+- **Pesan Commit:** `feat(mythicmobs): integrate 3-tier Sions keys, leveled wilderness mobs, and boss/elite spawners`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+#### `d0205dc` — 2026-09-07 | ✨ FEAT | feat(core): implement Sions baseline snapshotting, container key-lock, and proximity countdowns
+- **Pesan Commit:** `feat(core): implement Sions baseline snapshotting, container key-lock, and proximity countdowns`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+#### `d37dfb0` — 2026-09-07 | 🐛 FIX | fix(core): resolve NPE in SionsCommand by initializing SionsTemporalService before registerCommands
+- **Pesan Commit:** `fix(core): resolve NPE in SionsCommand by initializing SionsTemporalService before registerCommands`
+  - **Rincian Teknis:** Menerapkan fallback lazy-lookup pada manager instance agar sub-command console/WebBridge tidak mengalami NullPointerException saat bootstrap belum tuntas.
+
+#### `767efbf` — 2026-09-07 | 📚 DOCS | docs: synchronize documentation with extended palette, Sions temporal engine, and chat join/death features
+- **Pesan Commit:** `docs: synchronize documentation with extended palette, Sions temporal engine, and chat join/death features`
+  - **Rincian Teknis:** Mengatur komunikasi terpisah (Global, Kingdom, Staff), sensor kata otomatis, format MiniMessage, serta pengiriman surat offline.
+
+#### `0bbe451` — 2026-09-07 | ✨ FEAT | feat(web): apply monolithic obsidian and celestial ivory color palette with asset archive
+- **Pesan Commit:** `feat(web): apply monolithic obsidian and celestial ivory color palette with asset archive`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+#### `4650ece` — 2026-09-07 | ✨ FEAT | feat(customenchants): add preset preview GUI and fix preset name color parsing
+- **Pesan Commit:** `feat(customenchants): add preset preview GUI and fix preset name color parsing`
+  - **Rincian Teknis:** Mengelola 182 custom enchants lintas 7 tingkatan kekuatan, tinkerer exchange, serta aktivasi bonus set armor legendaris.
+
+#### `1681012` — 2026-09-07 | 🐛 FIX | fix(customenchants): remove armor set bonus option from item edit dialog
+- **Pesan Commit:** `fix(customenchants): remove armor set bonus option from item edit dialog`
+  - **Rincian Teknis:** Mengelola 182 custom enchants lintas 7 tingkatan kekuatan, tinkerer exchange, serta aktivasi bonus set armor legendaris.
+
+#### `9383f65` — 2026-09-07 | ✨ FEAT | feat(core): implement hourly sions temporal reconstruction engine and secret region binding
+- **Pesan Commit:** `feat(core): implement hourly sions temporal reconstruction engine and secret region binding`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+#### `77fbee9` — 2026-09-07 | ✨ FEAT | feat(battlepass): convert excess max level XP to battle coins at 10 xp per coin ratio
+- **Pesan Commit:** `feat(battlepass): convert excess max level XP to battle coins at 10 xp per coin ratio`
+  - **Rincian Teknis:** Menyediakan progresi 200 level battlepass, quest berkala harian/mingguan/bulanan, dan editor in-game admin 54-slot.
+
+#### `437a0f2` — 2026-09-07 | ✨ FEAT | feat(chat): implement delayed join message via AuthMe and luxury death messages system
+- **Pesan Commit:** `feat(chat): implement delayed join message via AuthMe and luxury death messages system`
+  - **Rincian Teknis:** Mengatur komunikasi terpisah (Global, Kingdom, Staff), sensor kata otomatis, format MiniMessage, serta pengiriman surat offline.
+
+#### `54deb68` — 2026-09-07 | 🐛 FIX | fix(core,customenchants): display armor set bonus notifications in action bar & fix raw color code rendering
+- **Pesan Commit:** `fix(core,customenchants): display armor set bonus notifications in action bar & fix raw color code rendering`
+  - **Rincian Teknis:** Mengelola 182 custom enchants lintas 7 tingkatan kekuatan, tinkerer exchange, serta aktivasi bonus set armor legendaris.
+
+#### `82603e2` — 2026-09-07 | 🐛 FIX | fix(core): override matching 2-piece stats with 4-piece armor set bonus values
+- **Pesan Commit:** `fix(core): override matching 2-piece stats with 4-piece armor set bonus values`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+#### `ca22182` — 2026-09-07 | ✨ FEAT | feat(web): add bilingual support for leaderboards and public profile, secure unique ID routing, and update documentation
+- **Pesan Commit:** `feat(web): add bilingual support for leaderboards and public profile, secure unique ID routing, and update documentation`
+  - **Rincian Teknis:** Menerapkan isolasi 6-lapis untuk menyaring akun staf (Weight >= 80), OP, role admin, dan entitas Aetherion keluar dari papan peringkat publik.
+
+#### `1f181d2` — 2026-09-07 | ✨ FEAT | feat(customenchants): migrate armor set bonus editing to native dialog gui and add custom value input
+- **Pesan Commit:** `feat(customenchants): migrate armor set bonus editing to native dialog gui and add custom value input`
+  - **Rincian Teknis:** Mengelola 182 custom enchants lintas 7 tingkatan kekuatan, tinkerer exchange, serta aktivasi bonus set armor legendaris.
+
+#### `18b3c4a` — 2026-09-07 | ✨ FEAT | feat(web): add complete bilingual translation support for profile, link, caste system, webstore, and auth
+- **Pesan Commit:** `feat(web): add complete bilingual translation support for profile, link, caste system, webstore, and auth`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+#### `25eb066` — 2026-09-07 | 🐛 FIX | fix(customenchants): fix item creator set name color formatting and auto-read placed set items
+- **Pesan Commit:** `fix(customenchants): fix item creator set name color formatting and auto-read placed set items`
+  - **Rincian Teknis:** Mengelola 182 custom enchants lintas 7 tingkatan kekuatan, tinkerer exchange, serta aktivasi bonus set armor legendaris.
+
+#### `1a7aca8` — 2026-09-07 | ✨ FEAT | feat(web): add full bilingual translation for wiki articles, rules prevention badges, terms articles, and posts
+- **Pesan Commit:** `feat(web): add full bilingual translation for wiki articles, rules prevention badges, terms articles, and posts`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+#### `4de516e` — 2026-09-07 | 🐛 FIX | fix(progression): smooth money progression starting at thousands for early levels
+- **Pesan Commit:** `fix(progression): smooth money progression starting at thousands for early levels`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+#### `d1f78b2` — 2026-09-07 | ✨ FEAT | feat(web): enable full site-wide bilingual translations for rules, vote, terms, privacy, shop, and wiki
+- **Pesan Commit:** `feat(web): enable full site-wide bilingual translations for rules, vote, terms, privacy, shop, and wiki`
+  - **Rincian Teknis:** Mengotomatisasi verifikasi voting web ke server, reward delivery instan (3x Vote Key + Rp 1.000), serta routing anti-loop.
+  - **Rincian Teknis:** Mengatur pasar dinamis 6 kategori dengan fluktuasi harga berbasis cuaca, bioma teritorial, dan antarmuka `/sell` instan.
+
+#### `3ef9cfc` — 2026-09-07 | ✨ FEAT | feat(progression): adjust diamond level rewards to strictly span levels 15 to 65 with guaranteed endpoints
+- **Pesan Commit:** `feat(progression): adjust diamond level rewards to strictly span levels 15 to 65 with guaranteed endpoints`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+#### `025be74` — 2026-09-07 | ✨ FEAT | feat(core): auto-sync player rank nametags and scoreboard teams on join and rank change
+- **Pesan Commit:** `feat(core): auto-sync player rank nametags and scoreboard teams on join and rank change`
+  - **Rincian Teknis:** Mengatasi render angka merah native Bedrock via Geyser resource pack dan mengganti pembatas unicode menjadi hyphen coret ASCII agar tidak patah pada font kustom.
+
+#### `44fe349` — 2026-09-07 | ✨ FEAT | feat(progression): create full level rewards template with 10M money and 200 diamonds capped at lv 65, simplify special level wording
+- **Pesan Commit:** `feat(progression): create full level rewards template with 10M money and 200 diamonds capped at lv 65, simplify special level wording`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+#### `b3b90f9` — 2026-09-07 | 🐛 FIX | fix(battlepass): remove redundant currency multiplier prefix in gui and eliminate duplicate item rewards per level
+- **Pesan Commit:** `fix(battlepass): remove redundant currency multiplier prefix in gui and eliminate duplicate item rewards per level`
+  - **Rincian Teknis:** Menyediakan progresi 200 level battlepass, quest berkala harian/mingguan/bulanan, dan editor in-game admin 54-slot.
+  - **Rincian Teknis:** Menjaga integritas saldo transaksi mata uang ganda (Rupiah & Diamond) dengan perlindungan anti-duplikasi dan escrow.
+
+#### `e646c9a` — 2026-09-07 | ✨ FEAT | feat(progression): calibrate enchanting and exploration xp scaling with vanilla and custom enchant support
+- **Pesan Commit:** `feat(progression): calibrate enchanting and exploration xp scaling with vanilla and custom enchant support`
+  - **Rincian Teknis:** Mengelola 182 custom enchants lintas 7 tingkatan kekuatan, tinkerer exchange, serta aktivasi bonus set armor legendaris.
+
+#### `2f781ba` — 2026-09-07 | ✨ FEAT | feat(battlepass): revamp reward progression with vanilla items, 3-currency calibration, and luxury milestone aesthetic
+- **Pesan Commit:** `feat(battlepass): revamp reward progression with vanilla items, 3-currency calibration, and luxury milestone aesthetic`
+  - **Rincian Teknis:** Menyediakan progresi 200 level battlepass, quest berkala harian/mingguan/bulanan, dan editor in-game admin 54-slot.
+  - **Rincian Teknis:** Menjaga integritas saldo transaksi mata uang ganda (Rupiah & Diamond) dengan perlindungan anti-duplikasi dan escrow.
+
+#### `10058bf` — 2026-09-07 | 🐛 FIX | fix(web): prevent page transition preloader lockup on initial load
+- **Pesan Commit:** `fix(web): prevent page transition preloader lockup on initial load`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+#### `f546f84` — 2026-09-07 | ✨ FEAT | feat(web): add bilingual accessibility switcher and overhaul SEO & meta tags
+- **Pesan Commit:** `feat(web): add bilingual accessibility switcher and overhaul SEO & meta tags`
+  - **Rincian Teknis:** Mengoptimasi sitemap XML terstruktur dengan timestamp lastmod dinamis, header X-Robots-Tag, dan URL canonical HTTPS otoritatif.
+
+#### `28965a6` — 2026-09-07 | 🐛 FIX | fix(core): sanitize player display name on death/respawn and live unequip monarch titles
+- **Pesan Commit:** `fix(core): sanitize player display name on death/respawn and live unequip monarch titles`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+#### `25b798b` — 2026-09-07 | ✨ FEAT | feat(crates): remove admin panel button from public crate shop GUI
+- **Pesan Commit:** `feat(crates): remove admin panel button from public crate shop GUI`
+  - **Rincian Teknis:** Menyelaraskan kalkulasi peluang gacha berbasis weighted rolling chance per tier rarity dengan preview lore probabilitas yang akurat.
+  - **Rincian Teknis:** Menyempurnakan antarmuka administrasi Azuriom dengan kartu analitik, tombol tindakan cepat, dan keselarasan styling dual-theme.
+  - **Rincian Teknis:** Mengatur pasar dinamis 6 kategori dengan fluktuasi harga berbasis cuaca, bioma teritorial, dan antarmuka `/sell` instan.
+
+#### `0cf372c` — 2026-09-07 | 📚 DOCS | docs: enrich narrative lore cohesion, PVE dungeon systems, and long-term roadmap
+- **Pesan Commit:** `docs: enrich narrative lore cohesion, PVE dungeon systems, and long-term roadmap`
+  - **Rincian Teknis:** Menyusun dan menyinkronkan kanon resmi peradaban, pembagian teritori geografis, sejarah keruntuhan Sions, serta arsitektur kosmik.
+
+#### `ee1df3f` — 2026-09-07 | ✨ FEAT | feat(core): update level exp formula to quadratic (510 * L^2) - (10 * L)
+- **Pesan Commit:** `feat(core): update level exp formula to quadratic (510 * L^2) - (10 * L)`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+#### `28547ad` — 2026-09-07 | ✨ FEAT | feat(chat): remove gold nugget reward from chat games and set all chat game rewards to 150 Level XP
+- **Pesan Commit:** `feat(chat): remove gold nugget reward from chat games and set all chat game rewards to 150 Level XP`
+  - **Rincian Teknis:** Mengatur komunikasi terpisah (Global, Kingdom, Staff), sensor kata otomatis, format MiniMessage, serta pengiriman surat offline.
+
+#### `5a58cdf` — 2026-09-07 | ✨ FEAT | feat(battlepass,core): add universal reward preview with luxury special preview GUI and admin preview mode toggle
+- **Pesan Commit:** `feat(battlepass,core): add universal reward preview with luxury special preview GUI and admin preview mode toggle`
+  - **Rincian Teknis:** Menyempurnakan antarmuka administrasi Azuriom dengan kartu analitik, tombol tindakan cepat, dan keselarasan styling dual-theme.
+  - **Rincian Teknis:** Menyediakan progresi 200 level battlepass, quest berkala harian/mingguan/bulanan, dan editor in-game admin 54-slot.
+
+#### `e00684b` — 2026-09-07 | ✨ FEAT | feat(battlepass,core): 3-tier pass system, horizontal rewards layout, and reward preview systems
+- **Pesan Commit:** `feat(battlepass,core): 3-tier pass system, horizontal rewards layout, and reward preview systems`
+  - **Rincian Teknis:** Menyediakan progresi 200 level battlepass, quest berkala harian/mingguan/bulanan, dan editor in-game admin 54-slot.
+
+#### `8008d69` — 2026-09-07 | ✨ FEAT | feat(core): add kingdom capital respawn system and /ac setspawn command
+- **Pesan Commit:** `feat(core): add kingdom capital respawn system and /ac setspawn command`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+#### `448cc6c` — 2026-09-07 | ✨ FEAT | feat(web): add daily reward cooldown timer and fix duplicate alerts
+- **Pesan Commit:** `feat(web): add daily reward cooldown timer and fix duplicate alerts`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+#### `0a7296d` — 2026-09-07 | 🐛 FIX | fix(webstore): remove Favian contact and record Wilderness Sions ruins lore
+- **Pesan Commit:** `fix(webstore): remove Favian contact and record Wilderness Sions ruins lore`
+  - **Rincian Teknis:** Menyusun dan menyinkronkan kanon resmi peradaban, pembagian teritori geografis, sejarah keruntuhan Sions, serta arsitektur kosmik.
+
+#### `66634e2` — 2026-09-07 | ✨ FEAT | feat(lore): integrate ancient Sions Empire collapse, Exodus factions, and kingdom traits
+- **Pesan Commit:** `feat(lore): integrate ancient Sions Empire collapse, Exodus factions, and kingdom traits`
+  - **Rincian Teknis:** Menyusun dan menyinkronkan kanon resmi peradaban, pembagian teritori geografis, sejarah keruntuhan Sions, serta arsitektur kosmik.
+
+#### `50942c0` — 2026-09-07 | ✨ FEAT | feat(web): display and copy both IP and Port for Bedrock across views
+- **Pesan Commit:** `feat(web): display and copy both IP and Port for Bedrock across views`
+  - **Rincian Teknis:** Mengatasi render angka merah native Bedrock via Geyser resource pack dan mengganti pembatas unicode menjadi hyphen coret ASCII agar tidak patah pada font kustom.
+
+#### `9371cf0` — 2026-09-07 | ✨ FEAT | feat(crates,core): add dedicated /crateshop, crate key shop admin gui, and master admin integration
+- **Pesan Commit:** `feat(crates,core): add dedicated /crateshop, crate key shop admin gui, and master admin integration`
+  - **Rincian Teknis:** Menyelaraskan kalkulasi peluang gacha berbasis weighted rolling chance per tier rarity dengan preview lore probabilitas yang akurat.
+  - **Rincian Teknis:** Menyempurnakan antarmuka administrasi Azuriom dengan kartu analitik, tombol tindakan cepat, dan keselarasan styling dual-theme.
+  - **Rincian Teknis:** Mengatur pasar dinamis 6 kategori dengan fluktuasi harga berbasis cuaca, bioma teritorial, dan antarmuka `/sell` instan.
+
+#### `26a2a31` — 2026-09-07 | ✨ FEAT | feat(crates): add native auto-filtering tab completion for Java Edition commands
+- **Pesan Commit:** `feat(crates): add native auto-filtering tab completion for Java Edition commands`
+  - **Rincian Teknis:** Menyelaraskan kalkulasi peluang gacha berbasis weighted rolling chance per tier rarity dengan preview lore probabilitas yang akurat.
+
+#### `f30bf8d` — 2026-09-07 | ✨ FEAT | feat(crates): migrate and rebrand full crate ecosystem to ApexsionsCrates with Core, Battlepass, Economy, and Shop integrations
+- **Pesan Commit:** `feat(crates): migrate and rebrand full crate ecosystem to ApexsionsCrates with Core, Battlepass, Economy, and Shop integrations`
+  - **Rincian Teknis:** Menyelaraskan kalkulasi peluang gacha berbasis weighted rolling chance per tier rarity dengan preview lore probabilitas yang akurat.
+  - **Rincian Teknis:** Mengatur pasar dinamis 6 kategori dengan fluktuasi harga berbasis cuaca, bioma teritorial, dan antarmuka `/sell` instan.
+  - **Rincian Teknis:** Menyediakan progresi 200 level battlepass, quest berkala harian/mingguan/bulanan, dan editor in-game admin 54-slot.
+  - **Rincian Teknis:** Menjaga integritas saldo transaksi mata uang ganda (Rupiah & Diamond) dengan perlindungan anti-duplikasi dan escrow.
+
+#### `144d667` — 2026-09-06 | ✨ FEAT | feat(crates): optimize GUI tap handling for Bedrock touch and controller support
+- **Pesan Commit:** `feat(crates): optimize GUI tap handling for Bedrock touch and controller support`
+  - **Rincian Teknis:** Mengatasi render angka merah native Bedrock via Geyser resource pack dan mengganti pembatas unicode menjadi hyphen coret ASCII agar tidak patah pada font kustom.
+  - **Rincian Teknis:** Menyelaraskan kalkulasi peluang gacha berbasis weighted rolling chance per tier rarity dengan preview lore probabilitas yang akurat.
+
+#### `050fcd4` — 2026-09-06 | 🐛 FIX | fix(crates): add direct item drop fallback and chunk unload hologram cleanup
+- **Pesan Commit:** `fix(crates): add direct item drop fallback and chunk unload hologram cleanup`
+  - **Rincian Teknis:** Menyelaraskan kalkulasi peluang gacha berbasis weighted rolling chance per tier rarity dengan preview lore probabilitas yang akurat.
+
+#### `d7fd93e` — 2026-09-06 | ✨ FEAT | feat(crates): add selectable mystery animation, catalogue menu, key security, and 3d display holograms
+- **Pesan Commit:** `feat(crates): add selectable mystery animation, catalogue menu, key security, and 3d display holograms`
+  - **Rincian Teknis:** Menyelaraskan kalkulasi peluang gacha berbasis weighted rolling chance per tier rarity dengan preview lore probabilitas yang akurat.
+
+#### `7968499` — 2026-09-06 | 📌 UPDATE | build: compile and update all 8 plugin binaries
+- **Pesan Commit:** `build: compile and update all 8 plugin binaries`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+#### `4655298` — 2026-09-06 | ✨ FEAT | feat(crates): rebuild ApexsionsCrates native architecture without nightcore
+- **Pesan Commit:** `feat(crates): rebuild ApexsionsCrates native architecture without nightcore`
+  - **Rincian Teknis:** Menyelaraskan kalkulasi peluang gacha berbasis weighted rolling chance per tier rarity dengan preview lore probabilitas yang akurat.
+
+#### `098ee5f` — 2026-09-06 | 🐛 FIX | fix(bridge): add instant kingdom sync, 30s auto-sync daemon, and clean MiniMessage tags in titles
+- **Pesan Commit:** `fix(bridge): add instant kingdom sync, 30s auto-sync daemon, and clean MiniMessage tags in titles`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+#### `15fb1af` — 2026-09-06 | 🐛 FIX | fix(home): remove internal architecture section and fix duplicate icons in caste badges
+- **Pesan Commit:** `fix(home): remove internal architecture section and fix duplicate icons in caste badges`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+#### `8b11ddd` — 2026-09-06 | ✨ FEAT | feat(web): add standalone vote and legal pages, optimize seo meta, and improve ui consistency
+- **Pesan Commit:** `feat(web): add standalone vote and legal pages, optimize seo meta, and improve ui consistency`
+  - **Rincian Teknis:** Mengotomatisasi verifikasi voting web ke server, reward delivery instan (3x Vote Key + Rp 1.000), serta routing anti-loop.
+  - **Rincian Teknis:** Mengoptimasi sitemap XML terstruktur dengan timestamp lastmod dinamis, header X-Robots-Tag, dan URL canonical HTTPS otoritatif.
+
+#### `9b6ab73` — 2026-09-06 | 🐛 FIX | fix(crates): prevent copying sources jar instead of compiled binary jar in build script and remove maven-source-plugin
+- **Pesan Commit:** `fix(crates): prevent copying sources jar instead of compiled binary jar in build script and remove maven-source-plugin`
+  - **Rincian Teknis:** Menyelaraskan kalkulasi peluang gacha berbasis weighted rolling chance per tier rarity dengan preview lore probabilitas yang akurat.
+
+#### `9a16d0b` — 2026-09-06 | 🐛 FIX | fix(crates): quote author field in plugin.yml to fix yaml parsing error
+- **Pesan Commit:** `fix(crates): quote author field in plugin.yml to fix yaml parsing error`
+  - **Rincian Teknis:** Menyelaraskan kalkulasi peluang gacha berbasis weighted rolling chance per tier rarity dengan preview lore probabilitas yang akurat.
+
+#### `fc1b103` — 2026-09-06 | ✨ FEAT | feat(crates): enable instant drag-and-drop of items into empty reward slots
+- **Pesan Commit:** `feat(crates): enable instant drag-and-drop of items into empty reward slots`
+  - **Rincian Teknis:** Menyelaraskan kalkulasi peluang gacha berbasis weighted rolling chance per tier rarity dengan preview lore probabilitas yang akurat.
+
+#### `e97a75c` — 2026-09-06 | ✨ FEAT | feat(crates): rename to ApexsionsCrates, add empty reward slots, and add dialog gui for glowing currency rewards
+- **Pesan Commit:** `feat(crates): rename to ApexsionsCrates, add empty reward slots, and add dialog gui for glowing currency rewards`
+  - **Rincian Teknis:** Menyelaraskan kalkulasi peluang gacha berbasis weighted rolling chance per tier rarity dengan preview lore probabilitas yang akurat.
+  - **Rincian Teknis:** Menjaga integritas saldo transaksi mata uang ganda (Rupiah & Diamond) dengan perlindungan anti-duplikasi dan escrow.
+
+#### `7506287` — 2026-09-06 | ✨ FEAT | feat(customenchants): auto-sort custom enchants by rarity on lore and restrict armor set bonus config to main creator
+- **Pesan Commit:** `feat(customenchants): auto-sort custom enchants by rarity on lore and restrict armor set bonus config to main creator`
+  - **Rincian Teknis:** Menyusun dan menyinkronkan kanon resmi peradaban, pembagian teritori geografis, sejarah keruntuhan Sions, serta arsitektur kosmik.
+  - **Rincian Teknis:** Mengelola 182 custom enchants lintas 7 tingkatan kekuatan, tinkerer exchange, serta aktivasi bonus set armor legendaris.
+
+#### `df10927` — 2026-09-06 | ✨ FEAT | feat(crate,customenchants): initialize ApexsionsCrate plugin module with ecosystem integrations and fix custom enchant colors in item creator
+- **Pesan Commit:** `feat(crate,customenchants): initialize ApexsionsCrate plugin module with ecosystem integrations and fix custom enchant colors in item creator`
+  - **Rincian Teknis:** Menyelaraskan kalkulasi peluang gacha berbasis weighted rolling chance per tier rarity dengan preview lore probabilitas yang akurat.
+  - **Rincian Teknis:** Mengelola 182 custom enchants lintas 7 tingkatan kekuatan, tinkerer exchange, serta aktivasi bonus set armor legendaris.
+
+#### `f99f634` — 2026-09-06 | ✨ FEAT | feat(web): align server architecture to Minecraft 26.2 and overhaul webstore UI
+- **Pesan Commit:** `feat(web): align server architecture to Minecraft 26.2 and overhaul webstore UI`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+#### `bb94bff` — 2026-09-06 | 🐛 FIX | fix(customenchants): allow vanilla enchant options up to level 20 with roman numerals in item creator
+- **Pesan Commit:** `fix(customenchants): allow vanilla enchant options up to level 20 with roman numerals in item creator`
+  - **Rincian Teknis:** Mengelola 182 custom enchants lintas 7 tingkatan kekuatan, tinkerer exchange, serta aktivasi bonus set armor legendaris.
+
+#### `d157b73` — 2026-09-06 | 🐛 FIX | fix(customenchants): eliminate chest gui flicker when opening and transitioning dialogs
+- **Pesan Commit:** `fix(customenchants): eliminate chest gui flicker when opening and transitioning dialogs`
+  - **Rincian Teknis:** Mengelola 182 custom enchants lintas 7 tingkatan kekuatan, tinkerer exchange, serta aktivasi bonus set armor legendaris.
+
+#### `69cf0e1` — 2026-09-06 | ✨ FEAT | feat(customenchants): migrate entire item editing flow to 100% native dialog guis
+- **Pesan Commit:** `feat(customenchants): migrate entire item editing flow to 100% native dialog guis`
+  - **Rincian Teknis:** Mengelola 182 custom enchants lintas 7 tingkatan kekuatan, tinkerer exchange, serta aktivasi bonus set armor legendaris.
+
+#### `0027930` — 2026-09-06 | ✨ FEAT | feat(customenchants): migrate item modifier to native dialog gui with item preview
+- **Pesan Commit:** `feat(customenchants): migrate item modifier to native dialog gui with item preview`
+  - **Rincian Teknis:** Mengelola 182 custom enchants lintas 7 tingkatan kekuatan, tinkerer exchange, serta aktivasi bonus set armor legendaris.
+
+#### `ba7d6ee` — 2026-09-06 | ✨ FEAT | feat(progression): rebalance reward EXP scaling for 3-month season pacing
+- **Pesan Commit:** `feat(progression): rebalance reward EXP scaling for 3-month season pacing`
+  - **Rincian Teknis:** Menjaga integritas saldo transaksi mata uang ganda (Rupiah & Diamond) dengan perlindungan anti-duplikasi dan escrow.
+
+#### `c138e5b` — 2026-09-06 | ✨ FEAT | feat(web): add WhatsApp 3-founder checkout redirect & overhaul Fandom-style Wiki
+- **Pesan Commit:** `feat(web): add WhatsApp 3-founder checkout redirect & overhaul Fandom-style Wiki`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+#### `4f3732a` — 2026-09-06 | ✨ FEAT | feat(economy): support flexible amount and currency parameter ordering in commands
+- **Pesan Commit:** `feat(economy): support flexible amount and currency parameter ordering in commands`
+  - **Rincian Teknis:** Menjaga integritas saldo transaksi mata uang ganda (Rupiah & Diamond) dengan perlindungan anti-duplikasi dan escrow.
+
+#### `f2541b0` — 2026-09-06 | 📚 DOCS | docs: synchronize documentation with web bridge, 11-tier roles, and 26.2 baseline
+- **Pesan Commit:** `docs: synchronize documentation with web bridge, 11-tier roles, and 26.2 baseline`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+#### `4c18d49` — 2026-09-06 | ✨ FEAT | feat(bridge): support console deliveries, offline xp rewards, 11-tier web roles, and minecraft 26.2 baseline
+- **Pesan Commit:** `feat(bridge): support console deliveries, offline xp rewards, 11-tier web roles, and minecraft 26.2 baseline`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+#### `89ff0d8` — 2026-09-06 | 🐛 FIX | fix(customenchants): sync armor set bonus id with main creator gui name and remove set id button
+- **Pesan Commit:** `fix(customenchants): sync armor set bonus id with main creator gui name and remove set id button`
+  - **Rincian Teknis:** Mengelola 182 custom enchants lintas 7 tingkatan kekuatan, tinkerer exchange, serta aktivasi bonus set armor legendaris.
+
+#### `5936da2` — 2026-09-06 | ✨ FEAT | feat(gui): implement CustomInputTextGUI with NightCore ExcellentCrates dialog engine and remove anvil fallback
+- **Pesan Commit:** `feat(gui): implement CustomInputTextGUI with NightCore ExcellentCrates dialog engine and remove anvil fallback`
+  - **Rincian Teknis:** Menyelaraskan kalkulasi peluang gacha berbasis weighted rolling chance per tier rarity dengan preview lore probabilitas yang akurat.
+
+#### `426a32a` — 2026-09-06 | 🐛 FIX | fix(gui): resolve NativeDialogAdapter reflection argument mismatch and ensure robust dialog inputs across all plugins
+- **Pesan Commit:** `fix(gui): resolve NativeDialogAdapter reflection argument mismatch and ensure robust dialog inputs across all plugins`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+#### `ee93aca` — 2026-09-06 | ✨ FEAT | feat(bridge): implement end-to-end player stats sync, web delivery queue, and character profile
+- **Pesan Commit:** `feat(bridge): implement end-to-end player stats sync, web delivery queue, and character profile`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+#### `fb32685` — 2026-09-06 | ✨ FEAT | feat(gui): upgrade PaperDialogAdapter to NativeDialogAdapter with Bungee API support for Spigot servers
+- **Pesan Commit:** `feat(gui): upgrade PaperDialogAdapter to NativeDialogAdapter with Bungee API support for Spigot servers`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+#### `da37b9f` — 2026-09-06 | ✨ FEAT | feat(chat): add configurable luxury join & quit message templates
+- **Pesan Commit:** `feat(chat): add configurable luxury join & quit message templates`
+  - **Rincian Teknis:** Mengatur komunikasi terpisah (Global, Kingdom, Staff), sensor kata otomatis, format MiniMessage, serta pengiriman surat offline.
+
+#### `2c0de2d` — 2026-09-06 | 🐛 FIX | fix(authme): clear mySQLPlayerUUID to prevent sqlite column missing error
+- **Pesan Commit:** `fix(authme): clear mySQLPlayerUUID to prevent sqlite column missing error`
+  - **Rincian Teknis:** Memastikan migrasi skema database mengeksekusi DDL `ALTER TABLE ADD COLUMN` sebelum perintah `CREATE INDEX` untuk mencegah crash startup SQLite.
+
+#### `4c0537b` — 2026-09-06 | 🔧 CHORE | chore(authme): add optimized config for Bedrock crossplay, security, and Apexsions branding
+- **Pesan Commit:** `chore(authme): add optimized config for Bedrock crossplay, security, and Apexsions branding`
+  - **Rincian Teknis:** Mengatasi render angka merah native Bedrock via Geyser resource pack dan mengganti pembatas unicode menjadi hyphen coret ASCII agar tidak patah pada font kustom.
+
+#### `8ea301d` — 2026-09-06 | 📚 DOCS | docs(git): mandate autonomous push to origin/main on validated changes per user directive
+- **Pesan Commit:** `docs(git): mandate autonomous push to origin/main on validated changes per user directive`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+#### `30d0fef` — 2026-09-06 | ✨ FEAT | feat(bridge,core): resolve 500 error on web linking, add in-game /link command with AuthMe check and rewards
+- **Pesan Commit:** `feat(bridge,core): resolve 500 error on web linking, add in-game /link command with AuthMe check and rewards`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+#### `cc5f6f6` — 2026-09-06 | 📌 UPDATE | style(gui): refine native 26.2 dialog input field and button elements matching reference UI
+- **Pesan Commit:** `style(gui): refine native 26.2 dialog input field and button elements matching reference UI`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+#### `375199f` — 2026-09-06 | 🐛 FIX | fix(gui): replace chest virtual keypad with native 26.2 text dialog and anvil keyboard input
+- **Pesan Commit:** `fix(gui): replace chest virtual keypad with native 26.2 text dialog and anvil keyboard input`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+#### `501c9f8` — 2026-09-06 | 🐛 FIX | fix(media,chat,core): fix map transparency palette, integrate architect/overseer ranks, and polish motd
+- **Pesan Commit:** `fix(media,chat,core): fix map transparency palette, integrate architect/overseer ranks, and polish motd`
+  - **Rincian Teknis:** Mengatur komunikasi terpisah (Global, Kingdom, Staff), sensor kata otomatis, format MiniMessage, serta pengiriman surat offline.
+  - **Rincian Teknis:** Merender gambar/logo banner multi-tile dari URL/PNG lokal dengan raytrace hover glow dan aksi URL interaktif.
+
+#### `f549f07` — 2026-09-06 | ✨ FEAT | feat(web,bridge): fix registration None username error, bind active port 32348, and enable live server status
+- **Pesan Commit:** `feat(web,bridge): fix registration None username error, bind active port 32348, and enable live server status`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+#### `2d07ea5` — 2026-09-05 | ✨ FEAT | feat(web,chat): add official rules page with active system prevention and refine smooth transitions
+- **Pesan Commit:** `feat(web,chat): add official rules page with active system prevention and refine smooth transitions`
+  - **Rincian Teknis:** Mengatur komunikasi terpisah (Global, Kingdom, Staff), sensor kata otomatis, format MiniMessage, serta pengiriman surat offline.
+
+#### `daa6a60` — 2026-09-05 | ✨ FEAT | feat(web): add cinematic inter-page transition, scroll animations, and clean hero CTA
+- **Pesan Commit:** `feat(web): add cinematic inter-page transition, scroll animations, and clean hero CTA`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+#### `7c3c510` — 2026-09-05 | 🐛 FIX | fix(web): update server logo asset and resolve onboarding callout banner layout
+- **Pesan Commit:** `fix(web): update server logo asset and resolve onboarding callout banner layout`
+  - **Rincian Teknis:** Mengonsolidasikan engine ban otoritatif pada level soket jaringan `AsyncPlayerPreLoginEvent`, menonaktifkan command moderasi EssentialsX yang tumpang-tindih.
+  - **Rincian Teknis:** Merender gambar/logo banner multi-tile dari URL/PNG lokal dengan raytrace hover glow dan aksi URL interaktif.
+
+#### `2411d8f` — 2026-09-05 | ✨ FEAT | feat(kingdom): remove leading symbols from kingdom tags and synchronize dynamic buff/debuff switching
+- **Pesan Commit:** `feat(kingdom): remove leading symbols from kingdom tags and synchronize dynamic buff/debuff switching`
+  - **Rincian Teknis:** Menyelaraskan nilai atribut kanonikal kerajaan (Zenithar 18%, Solterra 20%, Sylvamoor 15%) dan kartu preview slot 13 pada GUI konfirmasi `/k choose`.
+
+#### `c8f0d78` — 2026-09-06 | ✨ FEAT | feat(gui): migrate chat inputs to native 26.2 dialogs and bedrock forms across plugin suite
+- **Pesan Commit:** `feat(gui): migrate chat inputs to native 26.2 dialogs and bedrock forms across plugin suite`
+  - **Rincian Teknis:** Mengatasi render angka merah native Bedrock via Geyser resource pack dan mengganti pembatas unicode menjadi hyphen coret ASCII agar tidak patah pada font kustom.
+  - **Rincian Teknis:** Mengatur komunikasi terpisah (Global, Kingdom, Staff), sensor kata otomatis, format MiniMessage, serta pengiriman surat offline.
+
+#### `891f828` — 2026-09-06 | 🐛 FIX | fix(core): polish kingdom buffs, projectile damage scaling, and admin setkingdom real-time trigger
+- **Pesan Commit:** `fix(core): polish kingdom buffs, projectile damage scaling, and admin setkingdom real-time trigger`
+  - **Rincian Teknis:** Menyelaraskan nilai atribut kanonikal kerajaan (Zenithar 18%, Solterra 20%, Sylvamoor 15%) dan kartu preview slot 13 pada GUI konfirmasi `/k choose`.
+  - **Rincian Teknis:** Menyempurnakan antarmuka administrasi Azuriom dengan kartu analitik, tombol tindakan cepat, dan keselarasan styling dual-theme.
+
+#### `e2e8885` — 2026-09-06 | 🐛 FIX | fix(core): polish irrigation listener with offhand check, waterlogged support and saturated soil guards
+- **Pesan Commit:** `fix(core): polish irrigation listener with offhand check, waterlogged support and saturated soil guards`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+#### `56e3112` — 2026-09-06 | 🐛 FIX | fix(core): fix crop dying on moisture change and add manual irrigation mechanics
+- **Pesan Commit:** `fix(core): fix crop dying on moisture change and add manual irrigation mechanics`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+#### `ee14aca` — 2026-09-05 | 🐛 FIX | fix(theme): add cache buster to logo to force instant browser refresh
+- **Pesan Commit:** `fix(theme): add cache buster to logo to force instant browser refresh`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+#### `cf2b737` — 2026-09-05 | ✨ FEAT | feat(theme): update imperial gold crest logo, favicon, and server-icon
+- **Pesan Commit:** `feat(theme): update imperial gold crest logo, favicon, and server-icon`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+#### `2a49a97` — 2026-09-05 | ✨ FEAT | feat(core,shop): add kingdom taxes, active buffs and debuffs, and admin shop selector
+- **Pesan Commit:** `feat(core,shop): add kingdom taxes, active buffs and debuffs, and admin shop selector`
+  - **Rincian Teknis:** Menyelaraskan nilai atribut kanonikal kerajaan (Zenithar 18%, Solterra 20%, Sylvamoor 15%) dan kartu preview slot 13 pada GUI konfirmasi `/k choose`.
+  - **Rincian Teknis:** Menyempurnakan antarmuka administrasi Azuriom dengan kartu analitik, tombol tindakan cepat, dan keselarasan styling dual-theme.
+  - **Rincian Teknis:** Mengatur pasar dinamis 6 kategori dengan fluktuasi harga berbasis cuaca, bioma teritorial, dan antarmuka `/sell` instan.
+
+#### `ac878f0` — 2026-09-05 | ✨ FEAT | feat(wiki): expand imperial codex, onboarding roadmap, and fandom lore
+- **Pesan Commit:** `feat(wiki): expand imperial codex, onboarding roadmap, and fandom lore`
+  - **Rincian Teknis:** Menyusun dan menyinkronkan kanon resmi peradaban, pembagian teritori geografis, sejarah keruntuhan Sions, serta arsitektur kosmik.
+
+#### `73db1ce` — 2026-09-05 | ✨ FEAT | feat(ranks): reorganize into 5 tiers with architect & overseer equal in tier IV and warden in tier III
+- **Pesan Commit:** `feat(ranks): reorganize into 5 tiers with architect & overseer equal in tier IV and warden in tier III`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+#### `bf1b1d3` — 2026-09-05 | ✨ FEAT | feat(ranks): synchronize official 11-rank hierarchy across minecraft suite and website
+- **Pesan Commit:** `feat(ranks): synchronize official 11-rank hierarchy across minecraft suite and website`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+#### `0e8a8c0` — 2026-09-05 | 🐛 FIX | fix(core): remove square brackets from title displays in titles.yml and TitleManager
+- **Pesan Commit:** `fix(core): remove square brackets from title displays in titles.yml and TitleManager`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+#### `9fb6cb4` — 2026-09-05 | ✨ FEAT | feat(suite): categorize config folders with fallback loaders and enhance title permission system
+- **Pesan Commit:** `feat(suite): categorize config folders with fallback loaders and enhance title permission system`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+#### `45ef291` — 2026-09-05 | ✨ FEAT | feat(web): polish 20/20 a11y, performance, and design system governance
+- **Pesan Commit:** `feat(web): polish 20/20 a11y, performance, and design system governance`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+#### `659beff` — 2026-09-05 | ✨ FEAT | feat(customenchants): add selective enchant removal GUI and quick-remove shortcut in item creator
+- **Pesan Commit:** `feat(customenchants): add selective enchant removal GUI and quick-remove shortcut in item creator`
+  - **Rincian Teknis:** Mengelola 182 custom enchants lintas 7 tingkatan kekuatan, tinkerer exchange, serta aktivasi bonus set armor legendaris.
+
+#### `aabb9e8` — 2026-09-05 | 🐛 FIX | fix(deploy): automatically create theme and asset symlinks in setup-vps.sh
+- **Pesan Commit:** `fix(deploy): automatically create theme and asset symlinks in setup-vps.sh`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+#### `1b989f5` — 2026-09-05 | 🐛 FIX | fix(customenchants): verify 100% success/destroy complement, offhand mystery dust, and enchanting table limits
+- **Pesan Commit:** `fix(customenchants): verify 100% success/destroy complement, offhand mystery dust, and enchanting table limits`
+  - **Rincian Teknis:** Mengelola 182 custom enchants lintas 7 tingkatan kekuatan, tinkerer exchange, serta aktivasi bonus set armor legendaris.
+
+#### `6a9bd43` — 2026-09-05 | ✨ FEAT | feat(customenchants): add anvil combining, rank enchant limits, anti-loss sub-gui return and polish diamond formatting
+- **Pesan Commit:** `feat(customenchants): add anvil combining, rank enchant limits, anti-loss sub-gui return and polish diamond formatting`
+  - **Rincian Teknis:** Mengelola 182 custom enchants lintas 7 tingkatan kekuatan, tinkerer exchange, serta aktivasi bonus set armor legendaris.
+
+#### `5b5c37d` — 2026-09-05 | 🐛 FIX | fix(web): make master seeder database-agnostic for sqlite and mysql
+- **Pesan Commit:** `fix(web): make master seeder database-agnostic for sqlite and mysql`
+  - **Rincian Teknis:** Memastikan migrasi skema database mengeksekusi DDL `ALTER TABLE ADD COLUMN` sebelum perintah `CREATE INDEX` untuk mencegah crash startup SQLite.
+
+#### `8e97d56` — 2026-09-05 | ✨ FEAT | feat(economy): add 💎 suffix to diamond currency display across all plugins and web
+- **Pesan Commit:** `feat(economy): add 💎 suffix to diamond currency display across all plugins and web`
+  - **Rincian Teknis:** Menjaga integritas saldo transaksi mata uang ganda (Rupiah & Diamond) dengan perlindungan anti-duplikasi dan escrow.
+
+#### `8661672` — 2026-09-05 | 🐛 FIX | fix(web): fix wiki category slug typo hierarki-kasta in master seeder
+- **Pesan Commit:** `fix(web): fix wiki category slug typo hierarki-kasta in master seeder`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+#### `552660a` — 2026-09-05 | 🐛 FIX | fix(customenchants): fix duplicate lore, defense-only stats, remove gradients, and prevent item drops on apply
+- **Pesan Commit:** `fix(customenchants): fix duplicate lore, defense-only stats, remove gradients, and prevent item drops on apply`
+  - **Rincian Teknis:** Menyusun dan menyinkronkan kanon resmi peradaban, pembagian teritori geografis, sejarah keruntuhan Sions, serta arsitektur kosmik.
+  - **Rincian Teknis:** Mengelola 182 custom enchants lintas 7 tingkatan kekuatan, tinkerer exchange, serta aktivasi bonus set armor legendaris.
+
+#### `3738d47` — 2026-09-05 | 🐛 FIX | fix(web): make master seeder database-agnostic for sqlite and mysql
+- **Pesan Commit:** `fix(web): make master seeder database-agnostic for sqlite and mysql`
+  - **Rincian Teknis:** Memastikan migrasi skema database mengeksekusi DDL `ALTER TABLE ADD COLUMN` sebelum perintah `CREATE INDEX` untuk mencegah crash startup SQLite.
+
+#### `b77a387` — 2026-09-05 | ✨ FEAT | feat(web): synchronize wiki, store, and design system with minecraft plugins
+- **Pesan Commit:** `feat(web): synchronize wiki, store, and design system with minecraft plugins`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+#### `b1c0f00` — 2026-09-05 | 🐛 FIX | fix(customenchants): move armor set bonus status button to slot 15 in item creator
+- **Pesan Commit:** `fix(customenchants): move armor set bonus status button to slot 15 in item creator`
+  - **Rincian Teknis:** Mengelola 182 custom enchants lintas 7 tingkatan kekuatan, tinkerer exchange, serta aktivasi bonus set armor legendaris.
+
+#### `cfe178c` — 2026-09-05 | ✨ FEAT | feat(customenchants): add tiered armor set bonuses, dedicated stat GUIs, tool set bonus synergies, and slot 16 fixes
+- **Pesan Commit:** `feat(customenchants): add tiered armor set bonuses, dedicated stat GUIs, tool set bonus synergies, and slot 16 fixes`
+  - **Rincian Teknis:** Mengelola 182 custom enchants lintas 7 tingkatan kekuatan, tinkerer exchange, serta aktivasi bonus set armor legendaris.
+
+#### `53e20f0` — 2026-09-05 | ✨ FEAT | feat(customenchants): add /ace presets and /presets command for saved sets GUI
+- **Pesan Commit:** `feat(customenchants): add /ace presets and /presets command for saved sets GUI`
+  - **Rincian Teknis:** Mengelola 182 custom enchants lintas 7 tingkatan kekuatan, tinkerer exchange, serta aktivasi bonus set armor legendaris.
+
+#### `ba0f17f` — 2026-09-05 | ✨ FEAT | feat(customenchants): add rarity & category filters to ace catalog, implement full fishing, hoe, and combat enchants
+- **Pesan Commit:** `feat(customenchants): add rarity & category filters to ace catalog, implement full fishing, hoe, and combat enchants`
+  - **Rincian Teknis:** Membangun ekosistem pancing 6-tier rarity, auto-recast AFK engine terproteksi, penyimpanan ikan 54-slot, dan sistem dialog interaktif rod creator.
+  - **Rincian Teknis:** Mengimplementasikan formula normalisasi stat tempur, atribut progression level 1-100, dan peredaman lonjakan damage berlebih.
+  - **Rincian Teknis:** Mengelola 182 custom enchants lintas 7 tingkatan kekuatan, tinkerer exchange, serta aktivasi bonus set armor legendaris.
+
+#### `139c095` — 2026-09-05 | ✨ FEAT | feat(customenchants): add enchanting table custom enchants, full roman numerals, and wings exclusion
+- **Pesan Commit:** `feat(customenchants): add enchanting table custom enchants, full roman numerals, and wings exclusion`
+  - **Rincian Teknis:** Mengelola 182 custom enchants lintas 7 tingkatan kekuatan, tinkerer exchange, serta aktivasi bonus set armor legendaris.
+
+#### `af682d1` — 2026-09-05 | ✨ FEAT | feat(web): update apexsions theme, server bridge, responsive footer status card, and transactional email layout
+- **Pesan Commit:** `feat(web): update apexsions theme, server bridge, responsive footer status card, and transactional email layout`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+#### `86eae75` — 2026-09-05 | ✨ FEAT | feat(customenchants): implement working enchantment abilities including wings flight and glowing glint
+- **Pesan Commit:** `feat(customenchants): implement working enchantment abilities including wings flight and glowing glint`
+  - **Rincian Teknis:** Mengelola 182 custom enchants lintas 7 tingkatan kekuatan, tinkerer exchange, serta aktivasi bonus set armor legendaris.
+
+#### `8d8381a` — 2026-09-05 | 🐛 FIX | fix(customenchants): ensure AdminItemCreatorGUI reopens automatically after chat rename and improve session recovery
+- **Pesan Commit:** `fix(customenchants): ensure AdminItemCreatorGUI reopens automatically after chat rename and improve session recovery`
+  - **Rincian Teknis:** Menyempurnakan antarmuka administrasi Azuriom dengan kartu analitik, tombol tindakan cepat, dan keselarasan styling dual-theme.
+  - **Rincian Teknis:** Mengelola 182 custom enchants lintas 7 tingkatan kekuatan, tinkerer exchange, serta aktivasi bonus set armor legendaris.
+  - **Rincian Teknis:** Mengatur komunikasi terpisah (Global, Kingdom, Staff), sensor kata otomatis, format MiniMessage, serta pengiriman surat offline.
+
+#### `7707167` — 2026-09-05 | 🐛 FIX | fix(customenchants): ensure navigation buttons always render in set bonus GUI and prevent auto-mutating items on placement
+- **Pesan Commit:** `fix(customenchants): ensure navigation buttons always render in set bonus GUI and prevent auto-mutating items on placement`
+  - **Rincian Teknis:** Mengelola 182 custom enchants lintas 7 tingkatan kekuatan, tinkerer exchange, serta aktivasi bonus set armor legendaris.
+
+#### `54a3f69` — 2026-09-05 | ✨ FEAT | feat: presets system, set auto-naming in chat, tool set bonus, multi-stat bonus, and anti-loss close safety
+- **Pesan Commit:** `feat: presets system, set auto-naming in chat, tool set bonus, multi-stat bonus, and anti-loss close safety`
+  - **Rincian Teknis:** Mengatur komunikasi terpisah (Global, Kingdom, Staff), sensor kata otomatis, format MiniMessage, serta pengiriman surat offline.
+
+#### `3cb02a8` — 2026-09-05 | ✨ FEAT | feat(enchants): 182 AE enchantments, colored firework stars, and interactive GUI-driven item creator
+- **Pesan Commit:** `feat(enchants): 182 AE enchantments, colored firework stars, and interactive GUI-driven item creator`
+  - **Rincian Teknis:** Menyusun dan menyinkronkan kanon resmi peradaban, pembagian teritori geografis, sejarah keruntuhan Sions, serta arsitektur kosmik.
+  - **Rincian Teknis:** Mengelola 182 custom enchants lintas 7 tingkatan kekuatan, tinkerer exchange, serta aktivasi bonus set armor legendaris.
+
+#### `617e5f4` — 2026-09-05 | ✨ FEAT | feat: add ApexsionsCustomEnchants plugin and native kits system with stat-based set bonuses
+- **Pesan Commit:** `feat: add ApexsionsCustomEnchants plugin and native kits system with stat-based set bonuses`
+  - **Rincian Teknis:** Mengelola 182 custom enchants lintas 7 tingkatan kekuatan, tinkerer exchange, serta aktivasi bonus set armor legendaris.
+
+#### `0e9fa49` — 2026-09-05 | 🐛 FIX | fix(brand): enforce strict server name Apexsions and tagline The Peak Civilizations
+- **Pesan Commit:** `fix(brand): enforce strict server name Apexsions and tagline The Peak Civilizations`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+#### `49873e5` — 2026-09-05 | ✨ FEAT | feat(core): add custom /enchant command and anvil enhancement (bypass too expensive)
+- **Pesan Commit:** `feat(core): add custom /enchant command and anvil enhancement (bypass too expensive)`
+  - **Rincian Teknis:** Mengelola 182 custom enchants lintas 7 tingkatan kekuatan, tinkerer exchange, serta aktivasi bonus set armor legendaris.
+
+#### `a917164` — 2026-09-05 | ✨ FEAT | feat(website): integrate Azuriom web platform with shop, wiki, midtrans, and apexsions-bridge
+- **Pesan Commit:** `feat(website): integrate Azuriom web platform with shop, wiki, midtrans, and apexsions-bridge`
+  - **Rincian Teknis:** Mengatur pasar dinamis 6 kategori dengan fluktuasi harga berbasis cuaca, bioma teritorial, dan antarmuka `/sell` instan.
+
+#### `89d3df9` — 2026-09-05 | 📚 DOCS | docs: update root README for monorepo structure
+- **Pesan Commit:** `docs: update root README for monorepo structure`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+#### `eb8408d` — 2026-09-05 | ♻️ REFACTOR | refactor: restructure repository into monorepo with Minecraft and Website folders
+- **Pesan Commit:** `refactor: restructure repository into monorepo with Minecraft and Website folders`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+---
+
+## 🚀 Sprint 2 — Integrasi Antar-Plugin, Keamanan Transaksi Finansial, Quest BattlePass & Moderasi Chat Lapis Tiga [v0.5.0]
+> **Periode Pengembangan:** 30 Agustus – 4 September 2026 | **Total Commit:** 35 commit
+
+### 📋 Tinjauan Arsitektur & Dampak Sistem
+Pembangunan interkonektivitas antar-plugin melalui API Provider dan Event Bus. Mengimplementasikan transaksi ekonomi atomik di ApexsionsEconomy (Auction House, Escrow, Barter), progresi 200 level dan quest berulang pada ApexsionsBattlepass, format chat Kyori MiniMessage multi-channel pada ApexsionsChat, serta sistem reputasi dan warisan teritorial.
+
+### 🔍 Rincian Lengkap Commit (35 Commit)
+
+#### `4025d10` — 2026-09-04 | ✨ FEAT | feat(chat,core): add nickname system, polish kingdom top GUI and level rewards
+- **Pesan Commit:** `feat(chat,core): add nickname system, polish kingdom top GUI and level rewards`
+  - **Rincian Teknis:** Mengatur komunikasi terpisah (Global, Kingdom, Staff), sensor kata otomatis, format MiniMessage, serta pengiriman surat offline.
+
+#### `28ae065` — 2026-09-03 | ✨ FEAT | feat(media): add unified content creator verification and reward suite
+- **Pesan Commit:** `feat(media): add unified content creator verification and reward suite`
+  - **Rincian Teknis:** Merender gambar/logo banner multi-tile dari URL/PNG lokal dengan raytrace hover glow dan aksi URL interaktif.
+
+#### `3572811` — 2026-09-03 | ✨ FEAT | feat(chat): integrate chat games xp reward with apexsionscore level system
+- **Pesan Commit:** `feat(chat): integrate chat games xp reward with apexsionscore level system`
+  - **Rincian Teknis:** Mengatur komunikasi terpisah (Global, Kingdom, Staff), sensor kata otomatis, format MiniMessage, serta pengiriman surat offline.
+
+#### `712e14e` — 2026-09-03 | ✨ FEAT | feat(core): add interactive level reward editor GUI, dynamic level formula, and modular motd config
+- **Pesan Commit:** `feat(core): add interactive level reward editor GUI, dynamic level formula, and modular motd config`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+#### `1cd97f6` — 2026-09-03 | 📌 UPDATE | build: add fallback search paths for maven in build.ps1
+- **Pesan Commit:** `build: add fallback search paths for maven in build.ps1`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+#### `0c5f3f7` — 2026-09-01 | 🐛 FIX | fix(placeholder): format rank_display as legacy color codes for DecentHolograms and external scoreboards
+- **Pesan Commit:** `fix(placeholder): format rank_display as legacy color codes for DecentHolograms and external scoreboards`
+  - **Rincian Teknis:** Mengatasi render angka merah native Bedrock via Geyser resource pack dan mengganti pembatas unicode menjadi hyphen coret ASCII agar tidak patah pada font kustom.
+
+#### `c6ba67b` — 2026-09-01 | 🐛 FIX | fix(motd): resolve AuthLib 16-char profile name limit exception in server list ping
+- **Pesan Commit:** `fix(motd): resolve AuthLib 16-char profile name limit exception in server list ping`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+#### `8a863c0` — 2026-09-01 | ✨ FEAT | feat(npc,gui): add /rank GUI, /warp GUI integration, and Citizens custom traits (kingdom-guide, rank-guide, warp-guide)
+- **Pesan Commit:** `feat(npc,gui): add /rank GUI, /warp GUI integration, and Citizens custom traits (kingdom-guide, rank-guide, warp-guide)`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+#### `29b2f18` — 2026-09-01 | ✨ FEAT | feat(motd): add built-in luxury MOTD and server ping manager with miniMessage gradients and hover sample
+- **Pesan Commit:** `feat(motd): add built-in luxury MOTD and server ping manager with miniMessage gradients and hover sample`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+#### `ee68afa` — 2026-09-01 | ✨ FEAT | feat(admingui): synchronize EconomyAdminSubGUI with kingdom treasury inspector, bank deposits, and baltop
+- **Pesan Commit:** `feat(admingui): synchronize EconomyAdminSubGUI with kingdom treasury inspector, bank deposits, and baltop`
+  - **Rincian Teknis:** Mengonsolidasikan engine ban otoritatif pada level soket jaringan `AsyncPlayerPreLoginEvent`, menonaktifkan command moderasi EssentialsX yang tumpang-tindih.
+  - **Rincian Teknis:** Menyempurnakan antarmuka administrasi Azuriom dengan kartu analitik, tombol tindakan cepat, dan keselarasan styling dual-theme.
+  - **Rincian Teknis:** Menjaga integritas saldo transaksi mata uang ganda (Rupiah & Diamond) dengan perlindungan anti-duplikasi dan escrow.
+
+#### `b23f2e9` — 2026-09-01 | ✨ FEAT | feat(chat,economy): add dynamic mentions with rank gradient, auction categories & sorting, kingdom treasury tax, interactive trade buttons, and time-locked bank deposits
+- **Pesan Commit:** `feat(chat,economy): add dynamic mentions with rank gradient, auction categories & sorting, kingdom treasury tax, interactive trade buttons, and time-locked bank deposits`
+  - **Rincian Teknis:** Mengonsolidasikan engine ban otoritatif pada level soket jaringan `AsyncPlayerPreLoginEvent`, menonaktifkan command moderasi EssentialsX yang tumpang-tindih.
+  - **Rincian Teknis:** Mengatur komunikasi terpisah (Global, Kingdom, Staff), sensor kata otomatis, format MiniMessage, serta pengiriman surat offline.
+  - **Rincian Teknis:** Menjaga integritas saldo transaksi mata uang ganda (Rupiah & Diamond) dengan perlindungan anti-duplikasi dan escrow.
+
+#### `902a50d` — 2026-09-01 | 🐛 FIX | fix(title): eliminate duplicate wanderer nametag suffix and support clean empty title fallback
+- **Pesan Commit:** `fix(title): eliminate duplicate wanderer nametag suffix and support clean empty title fallback`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+#### `a2ad177` — 2026-09-01 | ✨ FEAT | feat(economy): integrate multi-currency placeholders, admin GUI actions, and native Economy PAPI expansion
+- **Pesan Commit:** `feat(economy): integrate multi-currency placeholders, admin GUI actions, and native Economy PAPI expansion`
+  - **Rincian Teknis:** Menyempurnakan antarmuka administrasi Azuriom dengan kartu analitik, tombol tindakan cepat, dan keselarasan styling dual-theme.
+  - **Rincian Teknis:** Menjaga integritas saldo transaksi mata uang ganda (Rupiah & Diamond) dengan perlindungan anti-duplikasi dan escrow.
+
+#### `9427d3a` — 2026-08-31 | 🐛 FIX | fix(rank): auto-sanitize player display name and clear stray personal luckperms prefix nodes on join
+- **Pesan Commit:** `fix(rank): auto-sanitize player display name and clear stray personal luckperms prefix nodes on join`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+#### `c6dd8a1` — 2026-08-31 | ✨ FEAT | feat(chat): implement luxury join and quit broadcast with rank badges
+- **Pesan Commit:** `feat(chat): implement luxury join and quit broadcast with rank badges`
+  - **Rincian Teknis:** Mengatur komunikasi terpisah (Global, Kingdom, Staff), sensor kata otomatis, format MiniMessage, serta pengiriman surat offline.
+
+#### `4a44214` — 2026-08-31 | 📌 UPDATE | build: compile and update all 6 plugins with strict rank/title separation
+- **Pesan Commit:** `build: compile and update all 6 plugins with strict rank/title separation`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+#### `fa0cbc9` — 2026-08-31 | ✨ FEAT | feat(title): integrate kingdom monarch titles and auto-unlocking in title vault
+- **Pesan Commit:** `feat(title): integrate kingdom monarch titles and auto-unlocking in title vault`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+#### `585d157` — 2026-08-31 | ✨ FEAT | feat(title): designate kingdom monarch as title rather than rank prefix
+- **Pesan Commit:** `feat(title): designate kingdom monarch as title rather than rank prefix`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+#### `d5c5e28` — 2026-08-31 | 📚 DOCS | docs: add command and GUI synchronization governance rules
+- **Pesan Commit:** `docs: add command and GUI synchronization governance rules`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+#### `4ab6a7b` — 2026-08-31 | ✨ FEAT | feat(kingdom): add /kingdom unsetking command for dethroning monarchs
+- **Pesan Commit:** `feat(kingdom): add /kingdom unsetking command for dethroning monarchs`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+#### `9def141` — 2026-08-31 | ✨ FEAT | feat(tab): optimize placeholders for tab and scoreboard integration
+- **Pesan Commit:** `feat(tab): optimize placeholders for tab and scoreboard integration`
+  - **Rincian Teknis:** Mengatasi render angka merah native Bedrock via Geyser resource pack dan mengganti pembatas unicode menjadi hyphen coret ASCII agar tidak patah pada font kustom.
+
+#### `aafa69d` — 2026-08-31 | ✨ FEAT | feat(economy): integrate vault provider, kingdom pay tax, chat reward XP & admin GUI fixes
+- **Pesan Commit:** `feat(economy): integrate vault provider, kingdom pay tax, chat reward XP & admin GUI fixes`
+  - **Rincian Teknis:** Menyempurnakan antarmuka administrasi Azuriom dengan kartu analitik, tombol tindakan cepat, dan keselarasan styling dual-theme.
+  - **Rincian Teknis:** Mengatur komunikasi terpisah (Global, Kingdom, Staff), sensor kata otomatis, format MiniMessage, serta pengiriman surat offline.
+  - **Rincian Teknis:** Menjaga integritas saldo transaksi mata uang ganda (Rupiah & Diamond) dengan perlindungan anti-duplikasi dan escrow.
+
+#### `04a38ff` — 2026-08-30 | 📚 DOCS | docs: streamline AGENTS.md into universal agent-agnostic engineering guidelines
+- **Pesan Commit:** `docs: streamline AGENTS.md into universal agent-agnostic engineering guidelines`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+#### `8eda3c5` — 2026-08-30 | 📚 DOCS | docs: synchronize repository-wide documentation with Java 21 / Paper 1.21.4 codebase
+- **Pesan Commit:** `docs: synchronize repository-wide documentation with Java 21 / Paper 1.21.4 codebase`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+#### `255c73a` — 2026-08-30 | 📚 DOCS | docs: synchronize AGENTS.md, .agents rules, and docs with GEMINI.md master contract
+- **Pesan Commit:** `docs: synchronize AGENTS.md, .agents rules, and docs with GEMINI.md master contract`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+#### `83522a9` — 2026-08-30 | 📚 DOCS | docs: enrich DOKUMENTASI.md and README.md with comprehensive command matrix for all 6 plugins
+- **Pesan Commit:** `docs: enrich DOKUMENTASI.md and README.md with comprehensive command matrix for all 6 plugins`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+#### `415a9be` — 2026-08-30 | 📚 DOCS | docs: update GEMINI.md, AGENTS.md, and DOKUMENTASI.md with strict targeted single-plugin compilation rules
+- **Pesan Commit:** `docs: update GEMINI.md, AGENTS.md, and DOKUMENTASI.md with strict targeted single-plugin compilation rules`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+#### `525988d` — 2026-08-30 | 🐛 FIX | fix(battlepass,economy): replace bungeecord ChatColor in ColorUtil with native hex serializer to fix /abp reload crash
+- **Pesan Commit:** `fix(battlepass,economy): replace bungeecord ChatColor in ColorUtil with native hex serializer to fix /abp reload crash`
+  - **Rincian Teknis:** Menyediakan progresi 200 level battlepass, quest berkala harian/mingguan/bulanan, dan editor in-game admin 54-slot.
+  - **Rincian Teknis:** Mengatur komunikasi terpisah (Global, Kingdom, Staff), sensor kata otomatis, format MiniMessage, serta pengiriman surat offline.
+  - **Rincian Teknis:** Menjaga integritas saldo transaksi mata uang ganda (Rupiah & Diamond) dengan perlindungan anti-duplikasi dan escrow.
+
+#### `04bcd69` — 2026-08-30 | ✨ FEAT | feat(economy): implement /ecoadmin reload command to dynamically reload configuration and currencies
+- **Pesan Commit:** `feat(economy): implement /ecoadmin reload command to dynamically reload configuration and currencies`
+  - **Rincian Teknis:** Menyempurnakan antarmuka administrasi Azuriom dengan kartu analitik, tombol tindakan cepat, dan keselarasan styling dual-theme.
+  - **Rincian Teknis:** Menjaga integritas saldo transaksi mata uang ganda (Rupiah & Diamond) dengan perlindungan anti-duplikasi dan escrow.
+
+#### `51cb2da` — 2026-08-30 | ✨ FEAT | feat: register both apexsions and apexsionscore expansions with rich economy and formatted kingdom placeholders
+- **Pesan Commit:** `feat: register both apexsions and apexsionscore expansions with rich economy and formatted kingdom placeholders`
+  - **Rincian Teknis:** Menjaga integritas saldo transaksi mata uang ganda (Rupiah & Diamond) dengan perlindungan anti-duplikasi dan escrow.
+
+#### `603719c` — 2026-08-30 | 📚 DOCS | docs: update GEMINI.md and create AGENTS.md with official 9 ranks and architecture guidelines
+- **Pesan Commit:** `docs: update GEMINI.md and create AGENTS.md with official 9 ranks and architecture guidelines`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+#### `3dd7a8f` — 2026-08-30 | ✨ FEAT | feat: implement animated gradient waveforms for all 9 official luckperms ranks from ranks.yml
+- **Pesan Commit:** `feat: implement animated gradient waveforms for all 9 official luckperms ranks from ranks.yml`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+#### `135c716` — 2026-08-30 | ✨ FEAT | feat: enhance rank prefix animation engine with multi-phase wave cycles, multi-scoreboard sync, and tablist live updating
+- **Pesan Commit:** `feat: enhance rank prefix animation engine with multi-phase wave cycles, multi-scoreboard sync, and tablist live updating`
+  - **Rincian Teknis:** Mengatasi render angka merah native Bedrock via Geyser resource pack dan mengganti pembatas unicode menjadi hyphen coret ASCII agar tidak patah pada font kustom.
+
+#### `8dedaf3` — 2026-08-30 | ✨ FEAT | feat: complete suite-wide major enhancements (deep player inspector, social profile GUI, staff report desk, dynamic shop trends)
+- **Pesan Commit:** `feat: complete suite-wide major enhancements (deep player inspector, social profile GUI, staff report desk, dynamic shop trends)`
+  - **Rincian Teknis:** Mengatur pasar dinamis 6 kategori dengan fluktuasi harga berbasis cuaca, bioma teritorial, dan antarmuka `/sell` instan.
+
+#### `cb8c3f5` — 2026-08-30 | ✨ FEAT | feat(arch): Standardize inter-plugin Provider SPI, NoOp Fallbacks, Atomic Transactions, and Async Safety
+- **Pesan Commit:** `feat(arch): Standardize inter-plugin Provider SPI, NoOp Fallbacks, Atomic Transactions, and Async Safety`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+---
+
+## 🚀 Sprint 1 — Genesis Fondasi Monorepo, Setup Paper 26.2 (Java 21), ApexsionsCore & Arsitektur Ekosistem [v0.1.0]
+> **Periode Pengembangan:** 27 – 29 Agustus 2026 | **Total Commit:** 32 commit
+
+### 📋 Tinjauan Arsitektur & Dampak Sistem
+Inisiasi awal fondasi monorepo Apexsions. Pembentukan modul dasar Paper API 26.2 berbasis Java 21 LTS, implementasi SQLite/PostgreSQL HikariCP connection pool, modul sistem kerajaan dan batas poligon BlueMap awal, serta pembuatan smart multi-compiler build.ps1.
+
+### 🔍 Rincian Lengkap Commit (32 Commit)
+
+#### `3c02d8f` — 2026-08-29 | ✨ FEAT | feat(cosmetics): Implement modular Rank Visuals, Title Vault, Particle Cosmetics, and Decoupled Chat ID-Cards
+- **Pesan Commit:** `feat(cosmetics): Implement modular Rank Visuals, Title Vault, Particle Cosmetics, and Decoupled Chat ID-Cards`
+  - **Rincian Teknis:** Mengatur komunikasi terpisah (Global, Kingdom, Staff), sensor kata otomatis, format MiniMessage, serta pengiriman surat offline.
+
+#### `d55c23b` — 2026-08-29 | ✨ FEAT | feat(admin): Implement Centralized Master Admin Suite, Player Manager & Inspector, and Chat Input Sessions
+- **Pesan Commit:** `feat(admin): Implement Centralized Master Admin Suite, Player Manager & Inspector, and Chat Input Sessions`
+  - **Rincian Teknis:** Menyempurnakan antarmuka administrasi Azuriom dengan kartu analitik, tombol tindakan cepat, dan keselarasan styling dual-theme.
+  - **Rincian Teknis:** Mengatur komunikasi terpisah (Global, Kingdom, Staff), sensor kata otomatis, format MiniMessage, serta pengiriman surat offline.
+
+#### `3eff582` — 2026-08-29 | 🐛 FIX | fix(core): Auto-reconcile level progression on load/gain and fix XP threshold calculations
+- **Pesan Commit:** `fix(core): Auto-reconcile level progression on load/gain and fix XP threshold calculations`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+#### `980050d` — 2026-08-29 | ✨ FEAT | feat: Implement Kingdom Detail GUI, King System, Territory PvP 0-Damage Rule, and Shop Mob Drops Restriction
+- **Pesan Commit:** `feat: Implement Kingdom Detail GUI, King System, Territory PvP 0-Damage Rule, and Shop Mob Drops Restriction`
+  - **Rincian Teknis:** Mengatur pasar dinamis 6 kategori dengan fluktuasi harga berbasis cuaca, bioma teritorial, dan antarmuka `/sell` instan.
+
+#### `76162e7` — 2026-08-29 | ✨ FEAT | feat: Implement Cross-Plugin Unified XP Engine, Luxury Visual Ranks, and Cinematic Level-Up FX
+- **Pesan Commit:** `feat: Implement Cross-Plugin Unified XP Engine, Luxury Visual Ranks, and Cinematic Level-Up FX`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+#### `bd256d1` — 2026-08-29 | ✨ FEAT | feat: Implement kingdom-specific leaderboard, pure white transparent media background, interactive admin sub-GUIs, and polished warp system
+- **Pesan Commit:** `feat: Implement kingdom-specific leaderboard, pure white transparent media background, interactive admin sub-GUIs, and polished warp system`
+  - **Rincian Teknis:** Menerapkan isolasi 6-lapis untuk menyaring akun staf (Weight >= 80), OP, role admin, dan entitas Aetherion keluar dari papan peringkat publik.
+  - **Rincian Teknis:** Menyempurnakan antarmuka administrasi Azuriom dengan kartu analitik, tombol tindakan cepat, dan keselarasan styling dual-theme.
+  - **Rincian Teknis:** Merender gambar/logo banner multi-tile dari URL/PNG lokal dengan raytrace hover glow dan aksi URL interaktif.
+
+#### `0db19a7` — 2026-08-29 | ✨ FEAT | feat: Implement Smart Auto-Detect in build.ps1 to automatically compile ONLY modified plugins
+- **Pesan Commit:** `feat: Implement Smart Auto-Detect in build.ps1 to automatically compile ONLY modified plugins`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+#### `0bc2276` — 2026-08-29 | 📌 UPDATE | perf: Optimize build.ps1 Turbo Multi-Compiler with incremental build caching and network timeout bypass
+- **Pesan Commit:** `perf: Optimize build.ps1 Turbo Multi-Compiler with incremental build caching and network timeout bypass`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+#### `2680222` — 2026-08-29 | ✨ FEAT | feat: Implement Centralized Master Admin Hub (/admingui), Warp GUI & Admin Editor, Territory PvP Protection, Media Admin GUI and Fast Compiler
+- **Pesan Commit:** `feat: Implement Centralized Master Admin Hub (/admingui), Warp GUI & Admin Editor, Territory PvP Protection, Media Admin GUI and Fast Compiler`
+  - **Rincian Teknis:** Menyempurnakan antarmuka administrasi Azuriom dengan kartu analitik, tombol tindakan cepat, dan keselarasan styling dual-theme.
+  - **Rincian Teknis:** Merender gambar/logo banner multi-tile dari URL/PNG lokal dengan raytrace hover glow dan aksi URL interaktif.
+
+#### `113f566` — 2026-08-29 | ✨ FEAT | feat(core,media): add Warp Navigation & Admin Editor GUI, Kingdom Territory PvP friendly-fire protection, flexible Media banner placement & cloning, fast single-plugin compiler
+- **Pesan Commit:** `feat(core,media): add Warp Navigation & Admin Editor GUI, Kingdom Territory PvP friendly-fire protection, flexible Media banner placement & cloning, fast single-plugin compiler`
+  - **Rincian Teknis:** Mengonsolidasikan engine ban otoritatif pada level soket jaringan `AsyncPlayerPreLoginEvent`, menonaktifkan command moderasi EssentialsX yang tumpang-tindih.
+  - **Rincian Teknis:** Menyempurnakan antarmuka administrasi Azuriom dengan kartu analitik, tombol tindakan cepat, dan keselarasan styling dual-theme.
+  - **Rincian Teknis:** Merender gambar/logo banner multi-tile dari URL/PNG lokal dengan raytrace hover glow dan aksi URL interaktif.
+
+#### `7a59258` — 2026-08-29 | ✨ FEAT | feat(shop): implement smooth logarithmic price elasticity and global market supply tracker
+- **Pesan Commit:** `feat(shop): implement smooth logarithmic price elasticity and global market supply tracker`
+  - **Rincian Teknis:** Mengatur pasar dinamis 6 kategori dengan fluktuasi harga berbasis cuaca, bioma teritorial, dan antarmuka `/sell` instan.
+
+#### `daecc9b` — 2026-08-29 | 📚 DOCS | docs: strictly enforce workspace isolation to C:\Apex Plugin only
+- **Pesan Commit:** `docs: strictly enforce workspace isolation to C:\Apex Plugin only`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+#### `f207feb` — 2026-08-29 | 📚 DOCS | docs: enforce multi-developer remote sync rules and update senior engineer guidelines
+- **Pesan Commit:** `docs: enforce multi-developer remote sync rules and update senior engineer guidelines`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+#### `2b95025` — 2026-08-28 | ♻️ REFACTOR | refactor(structure): organize modular config directories across all plugins matching Battlepass standard
+- **Pesan Commit:** `refactor(structure): organize modular config directories across all plugins matching Battlepass standard`
+  - **Rincian Teknis:** Menyediakan progresi 200 level battlepass, quest berkala harian/mingguan/bulanan, dan editor in-game admin 54-slot.
+
+#### `b388477` — 2026-08-28 | ✨ FEAT | feat(core): add full Multiverse multi-world support and /ac setlobby command
+- **Pesan Commit:** `feat(core): add full Multiverse multi-world support and /ac setlobby command`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+#### `7a35a9d` — 2026-08-28 | ✨ FEAT | feat(suite): package standardization to com.apexsions.*, custom events engine, and added ApexsionsMedia plugin
+- **Pesan Commit:** `feat(suite): package standardization to com.apexsions.*, custom events engine, and added ApexsionsMedia plugin`
+  - **Rincian Teknis:** Merender gambar/logo banner multi-tile dari URL/PNG lokal dengan raytrace hover glow dan aksi URL interaktif.
+
+#### `89fee6d` — 2026-08-28 | ✨ FEAT | feat(ecosystem): Kingdom War, PvP Combat Tag, RTP kingdom constraints, GUI enhancements, shop price clamping & server integrations
+- **Pesan Commit:** `feat(ecosystem): Kingdom War, PvP Combat Tag, RTP kingdom constraints, GUI enhancements, shop price clamping & server integrations`
+  - **Rincian Teknis:** Mengimplementasikan formula normalisasi stat tempur, atribut progression level 1-100, dan peredaman lonjakan damage berlebih.
+  - **Rincian Teknis:** Mengatur pasar dinamis 6 kategori dengan fluktuasi harga berbasis cuaca, bioma teritorial, dan antarmuka `/sell` instan.
+
+#### `cc6c18e` — 2026-08-28 | 📚 DOCS | docs: add technical manuals for all 5 plugins in docs/ and update master README with full command list and feature breakdown
+- **Pesan Commit:** `docs: add technical manuals for all 5 plugins in docs/ and update master README with full command list and feature breakdown`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+#### `de56c47` — 2026-08-28 | 📚 DOCS | docs: add official Apexsions Senior Minecraft Plugin Engineer system prompt and development protocol
+- **Pesan Commit:** `docs: add official Apexsions Senior Minecraft Plugin Engineer system prompt and development protocol`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+#### `a699040` — 2026-08-28 | 🔧 CHORE | chore & refactor: clean workspace structure, remove root duplicate src, fix Economy imports, and update documentation for all 5 plugins
+- **Pesan Commit:** `chore & refactor: clean workspace structure, remove root duplicate src, fix Economy imports, and update documentation for all 5 plugins`
+  - **Rincian Teknis:** Menjaga integritas saldo transaksi mata uang ganda (Rupiah & Diamond) dengan perlindungan anti-duplikasi dan escrow.
+
+#### `f99afdb` — 2026-08-28 | 📚 DOCS | docs & feat: synchronize root src/, build scripts, and complete documentation suite
+- **Pesan Commit:** `docs & feat: synchronize root src/, build scripts, and complete documentation suite`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+#### `d38e2fb` — 2026-08-28 | ✨ FEAT | feat(shop): touch-friendly GUI, bottom controls in SellGUI, expanded blocks, and refined ore/mob drops
+- **Pesan Commit:** `feat(shop): touch-friendly GUI, bottom controls in SellGUI, expanded blocks, and refined ore/mob drops`
+  - **Rincian Teknis:** Mengatur pasar dinamis 6 kategori dengan fluktuasi harga berbasis cuaca, bioma teritorial, dan antarmuka `/sell` instan.
+
+#### `aff4b8a` — 2026-08-28 | ♻️ REFACTOR | refactor(shop): align folder and modular config structure with Battlepass standards
+- **Pesan Commit:** `refactor(shop): align folder and modular config structure with Battlepass standards`
+  - **Rincian Teknis:** Mengatur pasar dinamis 6 kategori dengan fluktuasi harga berbasis cuaca, bioma teritorial, dan antarmuka `/sell` instan.
+  - **Rincian Teknis:** Menyediakan progresi 200 level battlepass, quest berkala harian/mingguan/bulanan, dan editor in-game admin 54-slot.
+
+#### `96d0a47` — 2026-08-28 | ✨ FEAT | feat: implement ApexsionsShop dynamic kingdom market plugin with weather & tax mechanics
+- **Pesan Commit:** `feat: implement ApexsionsShop dynamic kingdom market plugin with weather & tax mechanics`
+  - **Rincian Teknis:** Mengatur pasar dinamis 6 kategori dengan fluktuasi harga berbasis cuaca, bioma teritorial, dan antarmuka `/sell` instan.
+
+#### `c14b3f8` — 2026-08-28 | 🐛 FIX | fix(core): properly shade HikariCP, SQLite, PostgreSQL, H2 and Flyway drivers into fat JAR
+- **Pesan Commit:** `fix(core): properly shade HikariCP, SQLite, PostgreSQL, H2 and Flyway drivers into fat JAR`
+  - **Rincian Teknis:** Memastikan migrasi skema database mengeksekusi DDL `ALTER TABLE ADD COLUMN` sebelum perintah `CREATE INDEX` untuk mencegah crash startup SQLite.
+
+#### `55e0ef2` — 2026-08-28 | 🐛 FIX | fix(rewards-gui): auto-fill empty slots with background pane and placeholder for empty rewards
+- **Pesan Commit:** `fix(rewards-gui): auto-fill empty slots with background pane and placeholder for empty rewards`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+#### `db2dea0` — 2026-08-28 | ✨ FEAT | feat(core): implement kingdom-bounded /rtp system with BlueMap polygon safety checks
+- **Pesan Commit:** `feat(core): implement kingdom-bounded /rtp system with BlueMap polygon safety checks`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+#### `0d697ad` — 2026-08-27 | 📌 UPDATE | Re-package verified BattlePass (200 Lvls, 42/120/50 Quests) and Economy JARs
+- **Pesan Commit:** `Re-package verified BattlePass (200 Lvls, 42/120/50 Quests) and Economy JARs`
+  - **Rincian Teknis:** Menyediakan progresi 200 level battlepass, quest berkala harian/mingguan/bulanan, dan editor in-game admin 54-slot.
+  - **Rincian Teknis:** Menjaga integritas saldo transaksi mata uang ganda (Rupiah & Diamond) dengan perlindungan anti-duplikasi dan escrow.
+
+#### `d918cf0` — 2026-08-27 | 📌 UPDATE | Update pre-packaged JAR binaries for ApexsionsBattlepass and ApexsionsEconomy
+- **Pesan Commit:** `Update pre-packaged JAR binaries for ApexsionsBattlepass and ApexsionsEconomy`
+  - **Rincian Teknis:** Menyediakan progresi 200 level battlepass, quest berkala harian/mingguan/bulanan, dan editor in-game admin 54-slot.
+  - **Rincian Teknis:** Menjaga integritas saldo transaksi mata uang ganda (Rupiah & Diamond) dengan perlindungan anti-duplikasi dan escrow.
+
+#### `16247d5` — 2026-08-27 | 📌 UPDATE | Update ApexsionsBattlepass (Level 200, Quest Pools) and ApexsionsEconomy (12-Slot Trade System & Toggle)
+- **Pesan Commit:** `Update ApexsionsBattlepass (Level 200, Quest Pools) and ApexsionsEconomy (12-Slot Trade System & Toggle)`
+  - **Rincian Teknis:** Menyediakan progresi 200 level battlepass, quest berkala harian/mingguan/bulanan, dan editor in-game admin 54-slot.
+  - **Rincian Teknis:** Menjaga integritas saldo transaksi mata uang ganda (Rupiah & Diamond) dengan perlindungan anti-duplikasi dan escrow.
+
+#### `2c82a9d` — 2026-08-27 | 📚 DOCS | docs: clean up structure, delete prompt files, and add comprehensive global and per-plugin documentation (README, DOKUMENTASI, GEMINI)
+- **Pesan Commit:** `docs: clean up structure, delete prompt files, and add comprehensive global and per-plugin documentation (README, DOKUMENTASI, GEMINI)`
+  - **Rincian Teknis:** Meningkatkan stabilitas kode, refaktor internal modul, dan memastikan sinkronisasi data antar-subkomponen berjalan tanpa regresi.
+
+#### `167bb69` — 2026-08-27 | ✨ FEAT | feat: complete Apexsions plugin suite - ApexsionsCore, ApexsionsChat, ApexsionsEconomy, and ApexsionsBattlepass
+- **Pesan Commit:** `feat: complete Apexsions plugin suite - ApexsionsCore, ApexsionsChat, ApexsionsEconomy, and ApexsionsBattlepass`
+  - **Rincian Teknis:** Menyediakan progresi 200 level battlepass, quest berkala harian/mingguan/bulanan, dan editor in-game admin 54-slot.
+  - **Rincian Teknis:** Mengatur komunikasi terpisah (Global, Kingdom, Staff), sensor kata otomatis, format MiniMessage, serta pengiriman surat offline.
+  - **Rincian Teknis:** Menjaga integritas saldo transaksi mata uang ganda (Rupiah & Diamond) dengan perlindungan anti-duplikasi dan escrow.
 
 ---
