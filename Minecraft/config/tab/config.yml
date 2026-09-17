@@ -1,0 +1,197 @@
+# ==============================================================================
+#                 APEXSIONS — LUXURY TAB & SCOREBOARD CONFIG
+# ==============================================================================
+
+header-footer:
+  enabled: true
+  designs:
+    default:
+      header:
+      - '<#f1c40f>&m                          </#e67e22>'
+      - '<#f1c40f>&l✦ <#e67e22>&lAPEXSIONS <#f1c40f>&l✦'
+      - '&7Selamat datang, &f&l%player% &8| &e%apexsions_kingdom_formatted%'
+      - '&7Online: &a%online% &8• &7Staf: &e%apexsions_staff_online%'
+      - ''
+      footer:
+      - ''
+      - '&7Ping: &b%ping%ms &8| &7TPS: %tps%'
+      - '&eWeb: &fweb.apexsions.my.id &8• &9Discord: &fdiscord.gg/apexsions'
+      - '<#f1c40f>&m                          </#e67e22>'
+
+tablist-name-formatting:
+  enabled: true
+  disable-condition: '%world%=disabledworld'
+
+scoreboard-teams:
+  enabled: true
+  enable-collision: true
+  invisible-nametags: false
+  sorting-types:
+  - GROUPS:ancestor,architect,overseer,warden,herald,sions,emperor,sovereign,archon,ascendant,wanderer,default
+  - PLACEHOLDER_A_TO_Z:%player%
+  case-sensitive-sorting: false
+  can-see-friendly-invisibles: false
+  disable-condition: '%world%=disabledworld'
+
+playerlist-objective:
+  enabled: true
+  value: '%ping%'
+  fancy-value: '&b%ping%ms'
+  title: '&e&lPING'
+  render-type: INTEGER
+  disable-condition: '%world%=disabledworld'
+
+belowname-objective:
+  enabled: false
+  fancy-value-default: NPC
+  fancy-value: '&c%health%'
+  disable-condition: '%world%=disabledworld'
+
+prevent-spectator-effect:
+  enabled: false
+
+bossbar:
+  enabled: true
+  toggle-command: /bossbar
+  remember-toggle-choice: false
+  hidden-by-default: false
+  bars:
+    ApexsionsInfo:
+      display-condition: "%world%=lobby"
+      style: NOTCHED_10
+      color: YELLOW
+      progress: '100'
+      text: 'Kunjungi Web kami di &fweb.apexsions.my.id'
+
+scoreboard:
+  enabled: true
+  toggle-command: /sb
+  remember-toggle-choice: true
+  hidden-by-default: false
+  delay-on-join-milliseconds: 0
+  scoreboards:
+    scoreboard-bedrock:
+      title: '<#f1c40f>&l✦ APEXSIONS ✦</#e67e22>'
+      display-condition: '%bedrock%=true'
+      lines:
+      - '&8&m------------'
+      - ' &6👑 &fRank: %apexsions_rank_display%'
+      - ' &e🏛 &fKerajaan: &e%apexsions_kingdom_formatted%'
+      - ' &a💵 &fUang: &a%apexsions_balance_rupiah_formatted%'
+      - ' &3⚔ &fLevel: &b%apexsions_level%'
+      - ' &a👥 &fOnline: &a%online%'
+      - '&8&m------------'
+      - '&eplay.apexsions.my.id'
+    scoreboard-1.20.3+:
+      title: '<#f1c40f>&l✦ APEXSIONS ✦</#e67e22>'
+      display-condition: '%player-version-id%>=765;%bedrock%=false'
+      lines:
+      - '&8&m------------------'
+      - '&7⏰ %time% &8• &b%ping%ms &8• &a%online% Online'
+      - ''
+      - '<#f1c40f>&l>> PROFIL'
+      - ' &6👑 &fRANK: %apexsions_rank_animated%'
+      - ' &e🏛 &fKINGDOM: &e%apexsions_kingdom_formatted%'
+      - ''
+      - '<#10ac84>&l>> EKONOMI'
+      - ' &a💵 &fRUPIAH: &a%apexsions_balance_rupiah_formatted%'
+      - ' &b💎 &fDIAMOND: &b%apexsions_balance_diamond_formatted%'
+      - ' &6🪙 &fCOINS: &e%apexsionsbattlepass_currency_formatted%'
+      - ''
+      - '<#00d2d3>&l>> PROGRESI'
+      - ' &3⚔ &fLEVEL: &b%apexsions_level% &8(&3%apexsions_xp%&7/&3%apexsions_req_xp%&8)'
+      - '&8&m------------------'
+      - '&eplay.apexsions.my.id'
+    scoreboard:
+      title: '<#f1c40f>&l✦ APEXSIONS ✦</#e67e22>'
+      lines:
+      - '&8&m------------------'
+      - '&7⏰ %time% &8• &b%ping%ms &8• &a%online% Online'
+      - ''
+      - '<#f1c40f>&l>> PROFIL'
+      - ' &6👑 &fRANK: %apexsions_rank_display%'
+      - ' &e🏛 &fKINGDOM: &e%apexsions_kingdom_formatted%'
+      - ''
+      - '<#10ac84>&l>> EKONOMI'
+      - ' &a💵 &fRUPIAH: &a%apexsions_balance_rupiah_formatted%'
+      - ' &b💎 &fDIAMOND: &b%apexsions_balance_diamond_formatted%'
+      - ' &6🪙 &fCOINS: &b%apexsionsbattlepass_currency_formatted%'
+      - ''
+      - '<#00d2d3>&l>> PROGRESI'
+      - ' &3⚔ &fLEVEL: &b%apexsions_level% &8(&3%apexsions_xp%&7/&3%apexsions_req_xp%&8)'
+      - '&8&m------------------'
+      - '&eplay.apexsions.my.id'
+
+layout:
+  enabled: false
+
+ping-spoof:
+  enabled: false
+  value: 0
+
+global-playerlist:
+  enabled: false
+  update-latency: false
+
+placeholders:
+  date-format: dd/MM/yyyy
+  time-format: HH:mm:ss
+  time-offset: 0
+  register-tab-expansion: false
+  locale: id-ID
+
+placeholder-output-replacements:
+  '%essentials_vanished%':
+    'yes': '&7[Vanished]'
+    'no': ''
+  '%apexsions_active_title%':
+    '': '&7-'
+    'None': '&7-'
+    'none': '&7-'
+
+placeholder-refresh-intervals:
+  default-refresh-interval: 500
+  '%server_uptime%': 1000
+  '%tps%': 1000
+  '%server_unique_joins%': 5000
+  '%player_health%': 200
+  '%player_ping%': 1000
+  '%apexsions_rank_animated%': 200
+  '%apexsions_rank_display%': 1000
+  '%apexsions_kingdom_formatted%': 1000
+  '%apexsions_level%': 1000
+  '%apexsions_xp%': 1000
+  '%apexsions_staffonline%': 1000
+  '%apexsions_balance_rupiah_formatted%': 1000
+  '%apexsions_balance_diamond_formatted%': 1000
+  '%apexsionsbattlepass_currency_formatted%': 1000
+
+assign-groups-by-permissions: false
+primary-group-finding-list:
+- ancestor
+- architect
+- overseer
+- warden
+- herald
+- sions
+- emperor
+- sovereign
+- archon
+- ascendant
+- wanderer
+- default
+
+permission-refresh-interval: 1000
+debug: false
+mysql:
+  enabled: false
+proxy-support:
+  enabled: false
+components:
+  minimessage-support: true
+  disable-shadow-for-heads: true
+config-version: 7
+use-online-uuid-in-tablist: true
+compensate-for-packetevents-bug: false
+per-world-playerlist:
+  enabled: false

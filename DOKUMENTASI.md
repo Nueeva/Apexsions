@@ -554,3 +554,29 @@ ApexsionsCore dilengkapi sistem proteksi keamanan dan integritas server berlapis
 3. **Visual & Audio Alert:**
    - Memunculkan partikel asap (`Particle.SMOKE`) dan suara pemadaman (`Sound.BLOCK_FIRE_EXTINGUISH`) di titik sumber clock.
    - Mengirim notifikasi actionbar ke seluruh pemain dalam radius 15 blok: *"⚠ Sirkuit redstone cepat dibekukan sementara demi menjaga kestabilan 20 TPS server."*
+
+---
+
+## 📱 17. Integrasi UI Lintas Platform (Bedrock Mobile & Java Custom Font Friendly)
+
+Ekosistem Apexsions mengadopsi standar antarmuka lintas platform (Java & Bedrock Edition) yang dirancang khusus untuk kenyamanan visual:
+
+### A. Bedrock Clean Scoreboard Server Pack (`Geyser-Spigot`)
+1. **Peniadaan Angka Merah Klien Bedrock:**
+   - Secara *hardcoded native*, Minecraft Bedrock Edition selalu merender kolom skor merah (`15, 14, 13...`) di sisi kanan sidebar.
+   - Diatasi melalui Server Resource Pack otomatis (`ApexsionsCleanScoreboard.zip`) yang ditempatkan pada `plugins/Geyser-Spigot/packs/`.
+   - Berkas `ui/scoreboards.json` menetapkan `"scoreboard_sidebar/main/lists/scores": { "ignored": true }`, sehingga antarmuka Bedrock melewatkan render kolom angka secara penuh tanpa perlu tindakan manual dari sisi pemain.
+
+### B. Conditional Scoreboard Khusus Bedrock (`%bedrock%=true`)
+1. **Ultra-Compact Mobile Layout:**
+   - Menghindari pembengkakan lebar layar (sebelumnya mencapai 30%–40% layar sentuh ponsel akibat baris teks panjang dan 17 baris vertikal).
+   - Template `scoreboard-bedrock` memangkas konten menjadi 8 baris esensial (Rank, Kerajaan, Saldo Rupiah, Level, Online, dan Server IP).
+   - Membatasi panjang teks maksimal $\le 19\text{ karakter}$, menciutkan ukuran antarmuka menjadi hanya $\sim 10\%-12\%$ di pojok kanan atas layar ponsel tanpa menghalangi tombol kendali sentuh.
+
+### C. Kompatibilitas Penuh Font Kustom Java (Custom Font Friendly)
+1. **Pemberantasan Garis Pecah Unicode (`\u2500`):**
+   - Karakter pembatas kotak Unicode `──────────` diubah menjadi karakter ASCII hyphen standar berkode coret (`&8&m------------------`).
+   - Menghilangkan celah garis terputus-putus (*jagged gaps*), kotak tanda tanya (*missing glyphs*), maupun ketidaksejajaran baseline saat pemain menggunakan Resource Pack ber-font kustom (Faithful, Modern Font, TTF, dll).
+2. **Penyelarasan Header & Brand:**
+   - Mengganti sub-header menjadi format universal `>> PROFIL`, `>> EKONOMI`, `>> PROGRESI`.
+   - Menghapus embel-embel "Kingdom" pada judul Tablist/Header (`APEXSIONS`) sesuai aturan identitas brand resmi.
