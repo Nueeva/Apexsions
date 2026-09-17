@@ -2298,9 +2298,9 @@ const WIKI_DATA = {
 <h3>⏱ Minutes 5–8: Swear Allegiance to a Kingdom (/k)</h3>
 <p>In Apexsions, your power multiplies upon joining one of the Three Sovereign Kingdoms. Type <code>/k</code> to open the selection interface:</p>
 <ul>
-<li>☀️ <strong>Zenithar (Celestial Horizon):</strong> Suited for miners and castle architects. Grants <code>+15%</code> Mining Speed &amp; Experience Buff.</li>
-<li>🔥 <strong>Solterra (Crimson Flames &amp; Sands):</strong> Tailored for PvP duelists and conquerors. Grants <code>+15%</code> Melee Damage &amp; Fire Immunity in homeland.</li>
-<li>🌿 <strong>Sylvamoor (Living Canopy &amp; Oceans):</strong> Perfect for farmers, breeders, and merchants. Grants <code>+20%</code> Crop Harvests &amp; Health Regeneration.</li>
+<li>☀️ <strong>Zenithar (Celestial Horizon):</strong> Realm of nobility and royal cavalry. Grants <code>+8%</code> Speed, <code>+15%</code> Luck, <code>+6%</code> Damage, and <code>20%</code> Royal Aegis Damage Reduction.</li>
+<li>🔥 <strong>Solterra (Crimson Flames &amp; Sands):</strong> Tailored for aggressive combat and conquerors. Grants <code>+15%</code> Damage, <code>+10%</code> Crit Damage, <code>+10%</code> Mining Speed, and 65% Ore Sell Ratio.</li>
+<li>🌿 <strong>Sylvamoor (Living Canopy &amp; Oceans):</strong> Perfect for agrarians and deep canopy rangers. Grants <code>+2</code> Max HP (11 Hearts), <code>+12%</code> Luck, <code>+15%</code> Forest Defense, and Eternal Soil Hydration.</li>
 </ul>
 <p><em>Choose the realm that best aligns with your playstyle!</em></p>
 <hr>
@@ -2476,9 +2476,9 @@ const WIKI_DATA = {
 <div class="table-responsive mb-4"><table class="table fandom-stat-table">
 <thead><tr><th>Kingdom</th><th>Direction</th><th>Capital</th><th>Tax</th><th>Primary Attribute Buffs</th></tr></thead>
 <tbody>
-<tr><td><strong class="text-warning">Zenithar</strong></td><td>East</td><td>Solarium Spire Citadel</td><td>25%</td><td>+5% Speed, +7% Luck, +6% All Damage &amp; Defense, -5% Enemy Crit</td></tr>
+<tr><td><strong class="text-warning">Zenithar</strong></td><td>East</td><td>Solarium Spire Citadel</td><td>18%</td><td>+8% Speed, +15% Luck, +6% Damage, Royal Aegis (20% DMG Red.)</td></tr>
 <tr><td><strong class="text-danger">Solterra</strong></td><td>South</td><td>Ignis Bastion Fortress</td><td>20%</td><td>+15% All Damage, +10% Crit Damage, +10% Mining Speed, 65% Ore Sell Ratio</td></tr>
-<tr><td><strong class="text-success">Sylvamoor</strong></td><td>West</td><td>Eldergrove Sanctuary</td><td>15%</td><td>+2 Max HP (11 Hearts), +12% Luck, +7% Mob Drops, High Physical Defense</td></tr>
+<tr><td><strong class="text-success">Sylvamoor</strong></td><td>West</td><td>Eldergrove Sanctuary</td><td>15%</td><td>+2 Max HP (11 Hearts), +12% Luck, +7% Mob Drops, +15% Forest Defense</td></tr>
 </tbody>
 </table></div>
 <hr>
@@ -2486,24 +2486,24 @@ const WIKI_DATA = {
 <ul>
 <li><strong>Founders:</strong> Imperial dynasty survivors &amp; elite palace cavalry.</li>
 <li><strong>Capital:</strong> Solarium Spire Citadel <code>world (-3028, 64, -5597)</code></li>
-<li><strong>Official Buffs:</strong> +5% Movement Speed, +7% Luck, +6% Total Damage &amp; Defense, -5% Enemy Crit Damage.</li>
-<li><strong>Debuffs:</strong> +7% Poison Vulnerability, food restores 1 fewer hunger point due to aristocratic lifestyle.</li>
+<li><strong>Official Buffs:</strong> +8% Movement Speed, +15% Luck, [Royal Discipline] +6% Damage, [Royal Aegis] 20% Incoming Damage Reduction, 30% Auction Tax Discount &amp; +25% Bank Yield, 15% Kingdom Shop Building Blocks Discount.</li>
+<li><strong>Debuffs:</strong> +15% Poison &amp; Wither Vulnerability (Damage &amp; Duration), +12% Faster Hunger depletion, -10% Mining Speed, Anvil repair costs +1 Level EXP.</li>
 </ul>
 <hr>
 <h3>2. Solterra (Crimson Earth &amp; Volcanic Empire)</h3>
 <ul>
 <li><strong>Founders:</strong> Master combat arcanists &amp; front-line military veterans.</li>
 <li><strong>Capital:</strong> Ignis Bastion Fortress <code>world (-5843, 65, 889)</code></li>
-<li><strong>Official Buffs:</strong> +15% Damage, +10% Crit Damage, +10% Mining Speed, High Ore Selling Ratio (65%).</li>
-<li><strong>Debuffs:</strong> -2 Max HP (9 Hearts total), +8% Incoming Damage, +7% Faster Hunger depletion.</li>
+<li><strong>Official Buffs:</strong> [Battle Momentum] +15% Total Damage, +10% Crit Damage, +2% Defense, +10% Mining Speed, High Ore Selling Ratio (65%).</li>
+<li><strong>Debuffs:</strong> -2 Max HP (9 Hearts total), +8% Incoming Damage, +7% Faster Hunger depletion, Farmland dries rapidly on arid terrain.</li>
 </ul>
 <hr>
 <h3>3. Sylvamoor (Ancient Canopy &amp; Crystal Ocean Realm)</h3>
 <ul>
 <li><strong>Founders:</strong> Working class builders, agrarians, and wildwood rangers.</li>
 <li><strong>Capital:</strong> Eldergrove Sanctuary <code>world (-9666, 64, -4812)</code></li>
-<li><strong>Official Buffs:</strong> +2 Max HP (11 Hearts total), +12% Luck, +7% Mob Drops, Eternal Soil Hydration.</li>
-<li><strong>Debuffs:</strong> Altitude Sickness at Y > 110, +15% Fire Vulnerability, -10% PvP Damage &amp; Mining Speed.</li>
+<li><strong>Official Buffs:</strong> [Nature's Blessing] +2 Max HP (11 Hearts total), +12% Luck, +7% Extra Mob Drops, Forest Defense (+15%), [Forest Grace] Poison threshold at 3 Hearts, Eternal Soil Hydration.</li>
+<li><strong>Debuffs:</strong> Altitude Sickness at Y > 110 (Hunger/Weakness), +15% Fire Burn Vulnerability, -10% Mining Speed, -10% PvP Damage &amp; -5% PvE Damage.</li>
 </ul>`,
 
         '7': `<h1>Kingdom Territory Claims &amp; Nexus Protection</h1>

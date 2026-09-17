@@ -107,7 +107,48 @@ public class KingdomConfirmGUI implements Listener {
         }
         inv.setItem(11, confirmBtn);
 
-        // 3. Slot 15: Cancel Button (BATAL)
+        // 3. Slot 13: Kingdom Summary & Perks Preview
+        org.bukkit.configuration.ConfigurationSection regionsSec = plugin.getConfigManager().getSection("regions");
+        org.bukkit.configuration.ConfigurationSection regSec = regionsSec != null ? regionsSec.getConfigurationSection(kingdomKey) : null;
+
+        Material iconMat = switch (kingdomKey.toUpperCase(java.util.Locale.ROOT)) {
+            case "ZENITHAR" -> Material.GOLD_BLOCK;
+            case "SOLTERRA" -> Material.REDSTONE_BLOCK;
+            case "SYLVAMOOR" -> Material.DIAMOND_BLOCK;
+            default -> Material.EMERALD_BLOCK;
+        };
+        ItemStack summaryItem = new ItemStack(iconMat);
+        ItemMeta sm = summaryItem.getItemMeta();
+        if (sm != null) {
+            sm.displayName(mm.deserialize(region.getDisplayName()));
+            List<Component> sLore = new java.util.ArrayList<>();
+            sLore.add(Component.empty());
+            sLore.add(mm.deserialize("<gold>Ibukota:</gold> <yellow>" + (regSec != null ? regSec.getString("capital.name", "Ibukota") : "Ibukota") + "</yellow>"));
+            sLore.add(mm.deserialize("<gold>Pajak Wilayah:</gold> <yellow>" + (regSec != null ? regSec.getDouble("tax-percent", 18.0) : 18.0) + "%</yellow>"));
+            sLore.add(Component.empty());
+            sLore.add(mm.deserialize("<green><bold>✦ Spesialisasi & Keunggulan (Buff):</bold></green>"));
+            if (regSec != null) {
+                List<String> buffs = regSec.getStringList("buffs");
+                for (String b : buffs) {
+                    sLore.add(mm.deserialize(" <green>•</green> " + b));
+                }
+            }
+            sLore.add(Component.empty());
+            sLore.add(mm.deserialize("<red><bold>✖ Kelemahan Kerajaan (Nerf):</bold></red>"));
+            if (regSec != null) {
+                List<String> nerfs = regSec.getStringList("nerfs");
+                for (String n : nerfs) {
+                    sLore.add(mm.deserialize(" <red>•</red> " + n));
+                }
+            }
+            sLore.add(Component.empty());
+            sLore.add(mm.deserialize("<dark_gray>Pilihan sumpah setia bersifat permanen seumur hidup.</dark_gray>"));
+            sm.lore(sLore);
+            summaryItem.setItemMeta(sm);
+        }
+        inv.setItem(13, summaryItem);
+
+        // 4. Slot 15: Cancel Button (BATAL)
         ItemStack cancelBtn = new ItemStack(Material.RED_CONCRETE);
         ItemMeta canm = cancelBtn.getItemMeta();
         if (canm != null) {
