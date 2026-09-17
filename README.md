@@ -11,12 +11,13 @@ Repository monorepo resmi untuk ekosistem **Apexsions**:
 ```text
 Apexsions/
 ├── Minecraft/             # Seluruh kode sumber, konfigurasi, dan build plugin Minecraft
-│   ├── plugins/          # 7 Plugin Suite (ApexsionsCore, Chat, Economy, Battlepass, Shop, Media, CustomEnchants)
+│   ├── plugins/          # 9 Plugin Suite (ApexsionsCore, Chat, Economy, Battlepass, Shop, Media, CustomEnchants, Crates, Fishing)
 │   ├── docs/             # Dokumentasi teknis & arsitektur plugin
 │   ├── build.ps1         # Smart Turbo Multi-Compiler PowerShell
 │   ├── build.gradle      # Gradle root configuration
 │   └── DOKUMENTASI.md    # Manual teknis plugin Minecraft
 ├── Website/               # Aplikasi web portal, store, bridge & theme
+├── CHANGELOG.md           # Riwayat perubahan kronologis & panduan handoff AI/dev
 ├── DOKUMENTASI.md         # Master Technical Documentation & Ecosystem State
 ├── GEMINI.md              # AI Agent Development Guidelines
 ├── AGENTS.md             # Universal Coding Agent Guidelines
@@ -25,7 +26,7 @@ Apexsions/
 
 ---
 
-## 📦 1. Daftar 8 Plugin Suite Utama (di `Minecraft/plugins/`)
+## 📦 1. Daftar 9 Plugin Suite Utama (di `Minecraft/plugins/`)
 
 | Plugin | Versi | Status | Package Root Java | Deskripsi & Fokus Utama |
 | :--- | :---: | :---: | :--- | :--- |

@@ -5,7 +5,8 @@
 > **Primary Branch:** `main`  
 > **Brand Name:** `Apexsions` (DILARANG menambahkan kata Network/SMP/Kingdom).  
 > **Tagline:** `The Peak Civilizations`  
-> **Dokumentasi Terakhir:** September 2026 (Sinkronisasi Penuh Pasca-Audit & Reset Memori)
+> **Dokumentasi Terakhir:** September 2026 (Sinkronisasi Penuh Pasca-Audit & Reset Memori)  
+> **Riwayat Perubahan & Handoff AI:** Lihat [CHANGELOG.md](file:///c:/Users/Friel/Documents/Rifqi%20Ariansyah/Apexsions/CHANGELOG.md) untuk detail kronologis pembaruan.
 
 Dokumen ini adalah **Single Source of Truth** untuk seluruh pengembang dan AI Coding Agent. Dokumen ini merangkum arsitektur, konfigurasi server, kredensial produksi, standar keamanan, sistem webstore, BlueMap, dual-theme, serta 9 plugin Minecraft secara komprehensif.
 
@@ -580,3 +581,63 @@ Ekosistem Apexsions mengadopsi standar antarmuka lintas platform (Java & Bedrock
 2. **Penyelarasan Header & Brand:**
    - Mengganti sub-header menjadi format universal `>> PROFIL`, `>> EKONOMI`, `>> PROGRESI`.
    - Menghapus embel-embel "Kingdom" pada judul Tablist/Header (`APEXSIONS`) sesuai aturan identitas brand resmi.
+
+---
+
+## 👑 18. Spesifikasi Kanonikal Tiga Kerajaan Berdaulat (Buff, Debuff & Perks)
+
+Spesifikasi atribut, persentase pajak wilayah, dan kondisi fisik ketiga kerajaan berdaulat telah disinkronkan 100% di seluruh komponen (`kingdoms.yml`, Java GUI, listener gameplay, dan web wiki):
+
+### A. ☀️ Kerajaan Zenithar (Arah Timur / Puncak Cakrawala)
+- **Afiliasi & Lore:** Penerus dinasti kerajaan dan korps pengawal kehormatan Kekaisaran Sions yang bertahan di puncak cakrawala (*Solarium Spire Citadel*).
+- **Ibukota:** Solarium Spire Citadel `world (-3028, 64, -5597)`
+- **Pajak Kas Wilayah:** `18.0%`
+- **Buff Kanonikal:**
+  - `+8% Speed Boost` (Kecepatan gerak meningkat).
+  - `+15% Luck Boost` (Peningkatan peluang drop & gacha).
+  - `[Royal Discipline] +6% All Damage` (Disiplin kavaleri istana).
+  - `[Royal Aegis] 20% Reduksi Damage Masuk` (Peredam serangan fisik & proyektil).
+  - Hak Istimewa Pasar: Diskon 30% Pajak Lelang & Bunga Simpanan Bank +25%.
+  - Diskon 15% Blok Bangunan Megah di Toko Kerajaan.
+- **Debuff Kanonikal:**
+  - `+15% Kerentanan Racun & Wither` (Damage & durasi efek meningkat akibat gaya hidup higienis istana).
+  - `+12% Cepat Lapar` (*Aristocratic Exhaustion*).
+  - `-10% Kecepatan Menambang` (Bukan pekerja kasar tambang).
+  - Biaya tempa anvil sedikit lebih mahal (+1 Level EXP).
+
+### B. 🔥 Kerajaan Solterra (Arah Selatan / Kawah Vulkanik Cadas)
+- **Afiliasi & Lore:** Persekutuan pesulap tempur agung (*Arcanists*) dan prajurit garis depan terkuat bekas legiun Sions yang menaklukkan alam vulkanik mematikan (*Ignis Bastion Fortress*).
+- **Ibukota:** Ignis Bastion Fortress `world (-5843, 65, 889)`
+- **Pajak Kas Wilayah:** `20.0%`
+- **Buff Kanonikal:**
+  - `[Battle Momentum] +15% Total Damage` (Kekuatan ofensif brutal).
+  - `+10% Critical Damage` (Daya rusak serangan kritikal).
+  - `+2% Defense` (Ketahanan tubuh terlatih perang).
+  - `+10% Kecepatan Menambang` (Eksploitasi cadas vulkanik).
+  - Rasio Jual Ore Tinggi (65% dari harga beli pasar).
+- **Debuff Kanonikal:**
+  - `-2 HP Maksimal (9 Hati)` (Tubuh rapuh terpapar panas ekstrem kawah).
+  - `+8% Kerentanan Damage Masuk` (Gaya bertarung mengorbankan pertahanan diri).
+  - `+7% Cepat Lapar` (Metabolisme tempur tinggi).
+  - Lahan pertanian cepat mengering di tanah cadas.
+
+### C. 🌿 Kerajaan Sylvamoor (Arah Barat / Rimba Kanopi Purba)
+- **Afiliasi & Lore:** Kaum pembangun, petani lumbung, pekerja, dan prajurit garda rakyat yang hidup selaras menjaga kelestarian Pohon Dunia (*Eldergrove Sanctuary*).
+- **Ibukota:** Eldergrove Sanctuary `world (-9666, 64, -4812)`
+- **Pajak Kas Wilayah:** `15.0%`
+- **Buff Kanonikal:**
+  - `[Nature's Blessing] +2 HP Maksimal (11 Hati)` (Vitalitas alami kanopi purba).
+  - `+12% Luck Boost` (Keberkahan alam rimba).
+  - `+7% Extra Mob Drops` (Kelimpahan hasil buruan).
+  - `Pertahanan Rimba (+15%)` saat berada di bioma hutan/rimba.
+  - `[Forest Grace]` Efek racun otomatis berhenti saat darah tersisa 3 hati.
+  - Kelembapan lahan pertanian abadi (tanah tidak pernah tandus).
+- **Debuff Kanonikal:**
+  - `Mabuk Ketinggian di Y > 110` (Efek Hunger & Weakness akibat terbiasa di bawah kanopi).
+  - `+15% Kerentanan Kerusakan Terbakar Api`.
+  - `-10% Kecepatan Menambang`.
+  - `-10% Kerusakan PvP` & `-5% Kerusakan PvE` (Filosofi pasifis dan cinta kedamaian).
+
+### D. ✦ The Aetherial Conclave (Dimensi Atas Aetherion)
+- **Status:** Entitas kosmik non-fana pengawas semesta (Weight $\ge 80$, OP, dan jajaran staf).
+- **Hak Istimewa:** Bebas permanen dari pajak wilayah, klaim chunk tanpa batas, serta isolasi dari bias konflik 3 kerajaan dunia fana.
