@@ -36,6 +36,22 @@ Bagi AI Agent atau developer yang melanjutkan pekerjaan di repositori ini, perha
 
 ---
 
+## 🚀 Sprint 8 — Sistem Auto-Login Tanpa Hambatan & Proteksi Identitas Lintas Platform (FastLogin, Floodgate & AuthMe) [v1.3.0]
+> **Periode Pengembangan:** 18 September 2026 | **Status:** Live & Production-Ready
+
+### 📋 Tinjauan Arsitektur & Dampak Sistem
+Implementasi arsitektur autentikasi nir-hambatan (*zero-friction auto-login*) menggabungkan ekosistem **AuthMeReloaded**, **Floodgate (Geyser)**, dan **FastLogin** pada Paper 26.2 (Java 21 LTS). Sistem ini memberikan kenyamanan maksimal bagi pemain asli dan Bedrock tanpa mengorbankan keamanan akun pemain launcher crack:
+1. **Pemain Java Premium Original:** Cukup verifikasi 1× via perintah `/premium` (alur konfirmasi 2-tahap + 1× kick *by-design*). Setelah itu, seluruh koneksi berikutnya langsung melewati enkripsi handshake resmi Mojang tanpa perlu memasukkan password AuthMe selamanya.
+2. **Pemain Bedrock Edition:** Terhubung via Floodgate (`.PlayerName`). Mendaftar `/register` persis 1× seumur hidup di AuthMe, setelah itu seluruh login berikutnya otomatis terautentikasi via sesi Xbox Live (`autoLoginFloodgate: true`).
+3. **Pemain Java Crack (Anti-Impersonation & Nol Lockout):**
+   - Pemain crack yang menggunakan nickname premium milik orang lain **TIDAK TERKUNCI** berkat kebijakan konservatif `autoRegister: false`. Mereka tetap disajikan prompt kata sandi AuthMe biasa.
+   - Percobaan pembajakan nickname Java Premium oleh launcher crack ditolak seketika pada lapisan network handshake (`invalid-session`).
+4. **Kedaulatan Data & URL Web (/player/{uuid}):** Menjaga `premiumUuid: false` memastikan seluruh data (saldo Rupiah, saldo Diamond, level 100, klaim wilayah kerajaan, dan slug URL web platform Azuriom `/player/{uuid}`) tetap konsisten pada offline UUID tanpa risiko data terputus/yatim (*orphaned data*).
+5. **Resolusi Kompatibilitas Geyser 2.11.3 & Java 21 Verifier:** Menyesuaikan pemanggilan internal `GeyserImpl` pada FastLogin binary agar tidak terjadi `NoSuchMethodError` pada versi Geyser terbaru, memungkinkan aktivasi 100% mulus bersama Floodgate.
+6. **Lokalisasi Menyeluruh 20/20 Key:** Seluruh pesan peringatan, status premium, pesan penolakan sesi bajakan, serta panduan pemulihan akun telah dilokalisasi ke Bahasa Indonesia sesuai palet identitas brand Apexsions.
+
+---
+
 ## 🚀 Sprint 7 — Kedaulatan Teritorial, Watchdog Keamanan, Sinkronisasi Kanonikal Kerajaan & Optimasi Lintas Platform (Bedrock/Custom Font) [v1.2.0]
 > **Periode Pengembangan:** 16 – 17 September 2026 | **Total Commit:** 9 commit
 
