@@ -32,12 +32,26 @@ public class RtpCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
-        plugin.getKingdomRtpService().executeRtp(player);
+        if (args.length > 0 && ((plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isConclaveStaff(player)) || player.hasPermission("apexsionscore.admin"))) {
+            plugin.getKingdomRtpService().executeRtpTargeted(player, args[0]);
+        } else {
+            plugin.getKingdomRtpService().executeRtp(player);
+        }
         return true;
     }
 
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
+        if (args.length == 1 && sender instanceof Player p && ((plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isConclaveStaff(p)) || p.hasPermission("apexsionscore.admin"))) {
+            List<String> list = java.util.Arrays.asList("zenithar", "solterra", "sylvamoor", "wild");
+            List<String> result = new java.util.ArrayList<>();
+            for (String s : list) {
+                if (s.toLowerCase().startsWith(args[0].toLowerCase())) {
+                    result.add(s);
+                }
+            }
+            return result;
+        }
         return Collections.emptyList();
     }
 }

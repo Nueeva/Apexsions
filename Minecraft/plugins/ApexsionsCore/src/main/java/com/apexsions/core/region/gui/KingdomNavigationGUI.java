@@ -40,24 +40,37 @@ public class KingdomNavigationGUI implements Listener {
 
     public void open(Player player) {
         Optional<PlayerData> dataOpt = plugin.getPlayerDataService().getCached(player.getUniqueId());
-        if (dataOpt.isEmpty() || !dataOpt.get().hasRegion()) {
-            if (plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isConclaveStaff(player)) {
-                player.sendMessage(miniMessage.deserialize("<gradient:#00f2fe:#4facfe><bold>✦ THE AETHERIAL CONCLAVE ✦</bold></gradient> <dark_gray>➔</dark_gray> <aqua>Sebagai entitas transenden Aetherion, Anda tidak terikat oleh ibukota fana tunggal. Silakan gunakan <gold>/lobby</gold> atau teleportasi admin.</aqua>"));
+        PlayerData data = dataOpt.orElse(null);
+        Region targetRegion = null;
+
+        if (plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isConclaveStaff(player)) {
+            if (plugin.getMortalEmulationManager() != null && plugin.getMortalEmulationManager().isEmulating(player.getUniqueId())) {
+                String emulated = plugin.getMortalEmulationManager().getEmulatedKingdom(player.getUniqueId()).orElse("ZENITHAR");
+                targetRegion = plugin.getRegionManager().getRegion(emulated).orElse(null);
+            } else {
+                if (plugin.getConclaveNavigationGUI() != null) {
+                    plugin.getConclaveNavigationGUI().open(player);
+                    return;
+                }
+            }
+        }
+
+        if (targetRegion == null) {
+            if (data == null || !data.hasRegion()) {
+                player.sendMessage(miniMessage.deserialize("<gradient:#f39c12:#f1c40f><bold>APEXSIONS REALM</bold></gradient> <dark_gray>»</dark_gray> <yellow>Anda belum memilih kerajaan! Membuka menu pemilihan kerajaan...</yellow>"));
+                plugin.getRegionSelectionGUI().open(player);
                 return;
             }
-            player.sendMessage(miniMessage.deserialize("<gradient:#f39c12:#f1c40f><bold>APEXSIONS REALM</bold></gradient> <dark_gray>»</dark_gray> <yellow>Anda belum memilih kerajaan! Membuka menu pemilihan kerajaan...</yellow>"));
-            plugin.getRegionSelectionGUI().open(player);
-            return;
+
+            Optional<Region> regionOpt = plugin.getRegionManager().getRegion(data.getRegionId());
+            if (regionOpt.isEmpty()) {
+                player.sendMessage(miniMessage.deserialize("<red>Data kerajaan kamu tidak ditemukan.</red>"));
+                return;
+            }
+            targetRegion = regionOpt.get();
         }
 
-        PlayerData data = dataOpt.get();
-        Optional<Region> regionOpt = plugin.getRegionManager().getRegion(data.getRegionId());
-        if (regionOpt.isEmpty()) {
-            player.sendMessage(miniMessage.deserialize("<red>Data kerajaan kamu tidak ditemukan.</red>"));
-            return;
-        }
-
-        Region region = regionOpt.get();
+        Region region = targetRegion;
         KingdomNavHolder holder = new KingdomNavHolder();
         String titleStr = plugin.getConfigManager().getGuiConfig().getString("kingdom-navigation.title", "<dark_gray><bold>⚔ MENU KERAJAAN ⚔</bold></dark_gray>");
         Component title = miniMessage.deserialize(titleStr);
@@ -124,7 +137,8 @@ public class KingdomNavigationGUI implements Listener {
             List<Component> lore = new ArrayList<>();
             lore.add(miniMessage.deserialize("<gray>Warga: <white>" + player.getName() + "</white></gray>"));
             lore.add(miniMessage.deserialize("<gray>Kerajaan: <gold><bold>" + region.getDisplayName() + "</bold></gold></gray>"));
-            lore.add(miniMessage.deserialize("<gray>Level Progresi: <gold><bold>" + data.getLevel() + "</bold></gold> <dark_gray>/ 100</dark_gray></gray>"));
+            int lvl = data != null ? data.getLevel() : 1;
+            lore.add(miniMessage.deserialize("<gray>Level Progresi: <gold><bold>" + lvl + "</bold></gold> <dark_gray>/ 100</dark_gray></gray>"));
             String kingName = plugin.getConfigManager().getKingdomKing(region.getKey());
             if (kingName == null || kingName.isBlank()) kingName = "Belum Ditunjuk";
             lore.add(miniMessage.deserialize("<gray>Raja Saat Ini: <yellow>" + kingName + "</yellow></gray>"));

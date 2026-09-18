@@ -297,8 +297,8 @@
                             <button type="button" class="apx-filter-btn apx-filter-duration apx-filter-perm" data-duration-filter="permanen">
                                 <i class="bi bi-patch-check-fill"></i> Permanen
                             </button>
-                            <button type="button" class="apx-filter-btn apx-filter-duration" data-duration-filter="90-hari">
-                                <i class="bi bi-clock-history"></i> Trial 90 Hari
+                            <button type="button" class="apx-filter-btn apx-filter-duration" data-duration-filter="120-hari">
+                                <i class="bi bi-clock-history"></i> Trial 120 Hari
                             </button>
                             <button type="button" class="apx-filter-btn apx-filter-duration" data-duration-filter="30-hari">
                                 <i class="bi bi-calendar-event"></i> Trial 30 Hari
@@ -365,13 +365,13 @@
                         $badgeClass = '';
 
                         $isTrial30 = str_contains($packageName, '30 hari') || str_contains($packageName, 'trial 30');
-                        $isTrial90 = str_contains($packageName, '90 hari') || str_contains($packageName, 'trial 90');
-                        $isTrial = $isTrial30 || $isTrial90 || str_contains($packageName, 'trial');
+                        $isTrial120 = str_contains($packageName, '120 hari') || str_contains($packageName, 'trial 120') || str_contains($packageName, '90 hari') || str_contains($packageName, 'trial 90');
+                        $isTrial = $isTrial30 || $isTrial120 || str_contains($packageName, 'trial');
                         $isPermanent = str_contains($packageName, 'permanen');
 
                         $durationTag = 'other';
                         if ($isPermanent) $durationTag = 'permanen';
-                        elseif ($isTrial90) $durationTag = '90-hari';
+                        elseif ($isTrial120) $durationTag = '120-hari';
                         elseif ($isTrial30) $durationTag = '30-hari';
 
                         $subcatTag = 'other';
@@ -396,31 +396,31 @@
                             $cardModifierClass = 'apx-pkg-sions';
                             $defaultImage = theme_asset('img/package-sions.jpg');
                             $rankCrest = theme_asset('img/ranks/rank-sions.png');
-                            $badgeText = $isPermanent ? 'PERMANEN' : ($isTrial90 ? 'TRIAL 90H' : 'TRIAL 30H');
+                            $badgeText = $isPermanent ? 'PERMANEN' : ($isTrial120 ? 'TRIAL 120H' : 'TRIAL 30H');
                             $badgeClass = $isPermanent ? 'apx-badge-perm' : 'apx-badge-trial';
                         } elseif ($rankKey === 'emperor') {
                             $cardModifierClass = 'apx-pkg-emperor';
                             $defaultImage = theme_asset('img/package-emperor.jpg');
                             $rankCrest = theme_asset('img/ranks/rank-emperor.png');
-                            $badgeText = $isPermanent ? 'PERMANEN' : ($isTrial90 ? 'TRIAL 90H' : 'TRIAL 30H');
+                            $badgeText = $isPermanent ? 'PERMANEN' : ($isTrial120 ? 'TRIAL 120H' : 'TRIAL 30H');
                             $badgeClass = $isPermanent ? 'apx-badge-perm' : 'apx-badge-trial';
                         } elseif ($rankKey === 'sovereign') {
                             $cardModifierClass = 'apx-pkg-sovereign';
                             $defaultImage = theme_asset('img/package-sovereign.jpg');
                             $rankCrest = theme_asset('img/ranks/rank-sovereign.png');
-                            $badgeText = $isPermanent ? 'PERMANEN' : ($isTrial90 ? 'TRIAL 90H' : 'TRIAL 30H');
+                            $badgeText = $isPermanent ? 'PERMANEN' : ($isTrial120 ? 'TRIAL 120H' : 'TRIAL 30H');
                             $badgeClass = $isPermanent ? 'apx-badge-perm' : 'apx-badge-trial';
                         } elseif ($rankKey === 'archon') {
                             $cardModifierClass = 'apx-pkg-archon';
                             $defaultImage = theme_asset('img/package-archon.jpg');
                             $rankCrest = theme_asset('img/ranks/rank-archon.png');
-                            $badgeText = $isPermanent ? 'PERMANEN' : ($isTrial90 ? 'TRIAL 90H' : 'TRIAL 30H');
+                            $badgeText = $isPermanent ? 'PERMANEN' : ($isTrial120 ? 'TRIAL 120H' : 'TRIAL 30H');
                             $badgeClass = $isPermanent ? 'apx-badge-perm' : 'apx-badge-trial';
                         } elseif ($rankKey === 'ascendant') {
                             $cardModifierClass = 'apx-pkg-ascendant';
                             $defaultImage = theme_asset('img/package-ascendant.jpg');
                             $rankCrest = theme_asset('img/ranks/rank-ascendant.png');
-                            $badgeText = $isPermanent ? 'PERMANEN' : ($isTrial90 ? 'TRIAL 90H' : 'TRIAL 30H');
+                            $badgeText = $isPermanent ? 'PERMANEN' : ($isTrial120 ? 'TRIAL 120H' : 'TRIAL 30H');
                             $badgeClass = $isPermanent ? 'apx-badge-perm' : 'apx-badge-trial';
                         } elseif (str_contains($packageName, 'exsio pass')) {
                             $cardModifierClass = 'apx-pkg-exsio-pass';

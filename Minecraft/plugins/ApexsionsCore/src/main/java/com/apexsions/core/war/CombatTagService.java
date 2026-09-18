@@ -32,6 +32,14 @@ public class CombatTagService implements Listener {
     }
 
     public boolean isCombatTagged(UUID uuid) {
+        if (uuid == null) return false;
+        if (plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isConclaveStaff(uuid)) {
+            return false;
+        }
+        Player p = Bukkit.getPlayer(uuid);
+        if (p != null && (p.hasPermission("apexsionscore.admin.bypass.combat") || p.hasPermission("apexsionscore.admin"))) {
+            return false;
+        }
         Long expireTime = combatTags.get(uuid);
         if (expireTime == null) return false;
         if (System.currentTimeMillis() > expireTime) {
@@ -57,6 +65,13 @@ public class CombatTagService implements Listener {
     }
 
     public void tagPlayer(Player player) {
+        if (player == null) return;
+        if (plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isConclaveStaff(player)) {
+            return;
+        }
+        if (player.hasPermission("apexsionscore.admin.bypass.combat") || player.hasPermission("apexsionscore.admin")) {
+            return;
+        }
         boolean wasTagged = isCombatTagged(player.getUniqueId());
         combatTags.put(player.getUniqueId(), System.currentTimeMillis() + COMBAT_DURATION_MS);
 

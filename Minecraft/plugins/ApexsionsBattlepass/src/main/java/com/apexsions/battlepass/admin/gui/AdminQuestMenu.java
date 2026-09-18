@@ -82,16 +82,16 @@ public class AdminQuestMenu extends Gui {
         // 4. Monthly Quests Summary (Slot 22)
         Map<Integer, Map<String, Quest>> monthly = plugin.getQuestManager().getMonthlyQuests();
         List<String> monthlyLore = new ArrayList<>();
-        monthlyLore.add("&7Month Berjalan: &fMonth " + currentMonth + " &8(dari 3 Bulan)");
+        monthlyLore.add("&7Month Berjalan: &fMonth " + currentMonth + " &8(dari 4 Bulan)");
         monthlyLore.add("&7Sisa Waktu Monthly: &a" + plugin.getQuestManager().getPeriodService().getMonthlyTimeLeft());
         monthlyLore.add(" ");
-        for (int m = 1; m <= 3; m++) {
+        for (int m = 1; m <= 4; m++) {
             Map<String, Quest> mQuests = monthly.getOrDefault(m, Map.of());
             monthlyLore.add("&dMonth " + m + ": &f" + mQuests.size() + " Quests " + (m == currentMonth ? "&a[AKTIF]" : "&7[TERKUNCI]"));
         }
 
         setButton(22, new GuiButton(new ItemBuilder(Material.DIAMOND)
-                .name("&b&lMONTHLY QUESTS (MONTHS 1-3)")
+                .name("&b&lMONTHLY QUESTS (MONTHS 1-4)")
                 .lore(monthlyLore)
                 .build()));
 

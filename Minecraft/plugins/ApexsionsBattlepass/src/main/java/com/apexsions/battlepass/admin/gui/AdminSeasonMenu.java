@@ -47,7 +47,7 @@ public class AdminSeasonMenu extends Gui {
         setButton(13, new GuiButton(new ItemBuilder(Material.CLOCK)
                 .name("&b&lPROGRESI PERIODE & WEEKS")
                 .lore(List.of(
-                        "&7Month Berjalan: &fMonth " + currentMonth + " &8(dari 3 Bulan)",
+                        "&7Month Berjalan: &fMonth " + currentMonth + " &8(dari 4 Bulan)",
                         "&7Week Berjalan: &f" + weekLabel,
                         "&7Special Week Tersedia Bulan Ini: " + (hasSpecialWeek ? "&aYa (" + specialWeekDays + " Hari)" : "&cTidak (28 Hari)"),
                         "&7Sisa Waktu Daily: &e" + plugin.getQuestManager().getPeriodService().getDailyResetTimeLeft(),

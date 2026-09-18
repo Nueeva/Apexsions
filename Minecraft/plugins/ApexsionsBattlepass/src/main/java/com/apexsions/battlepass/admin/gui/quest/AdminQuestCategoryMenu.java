@@ -73,14 +73,14 @@ public class AdminQuestCategoryMenu extends Gui {
             new AdminQuestListMenu(plugin, player, QuestCategory.WEEKLY, QuestPeriodService.SPECIAL_WEEK_INDEX, this).open();
         }));
 
-        // 4. Monthly Quests Buttons (Slots 29, 31, 33)
-        for (int m = 1; m <= 3; m++) {
+        // 4. Monthly Quests Buttons (Slots 28, 30, 32, 34)
+        for (int m = 1; m <= 4; m++) {
             final int monthIdx = m;
-            int slot = (m == 1) ? 29 : (m == 2) ? 31 : 33;
+            int slot = 28 + (m - 1) * 2;
             setButton(slot, new GuiButton(new ItemBuilder(Material.DIAMOND)
                     .name("&b&lMONTHLY QUESTS - MONTH " + m)
                     .lore(List.of(
-                            "&7Kelola quest bulanan untuk Bulan ke-" + m + " (dari 3 Bulan Season).",
+                            "&7Kelola quest bulanan untuk Bulan ke-" + m + " (dari 4 Bulan Season).",
                             " ",
                             "&eKlik untuk membuka >"
                     ))

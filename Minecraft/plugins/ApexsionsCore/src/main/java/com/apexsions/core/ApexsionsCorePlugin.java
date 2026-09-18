@@ -63,6 +63,7 @@ public class ApexsionsCorePlugin extends JavaPlugin {
     private RegionTeleportService regionTeleportService;
     private KingdomRtpService kingdomRtpService;
     private KingdomNavigationGUI kingdomNavigationGUI;
+    private com.apexsions.core.region.gui.ConclaveNavigationGUI conclaveNavigationGUI;
     private RegionSelectionGUI regionSelectionGUI;
     private KingdomProfileGUI kingdomProfileGUI;
     private KingdomTopGUI kingdomTopGUI;
@@ -70,6 +71,7 @@ public class ApexsionsCorePlugin extends JavaPlugin {
     private com.apexsions.core.region.gui.MilestoneRewardPreviewGUI milestoneRewardPreviewGUI;
     private com.apexsions.core.region.gui.StandardLevelRewardPreviewGUI standardLevelRewardPreviewGUI;
     private XpGuideGUI xpGuideGUI;
+    private com.apexsions.core.player.MortalEmulationManager mortalEmulationManager;
 
     // War & Combat
     private CombatTagService combatTagService;
@@ -195,6 +197,11 @@ public class ApexsionsCorePlugin extends JavaPlugin {
 
             this.kingdomNavigationGUI = new KingdomNavigationGUI(this);
             Bukkit.getPluginManager().registerEvents(kingdomNavigationGUI, this);
+
+            this.conclaveNavigationGUI = new com.apexsions.core.region.gui.ConclaveNavigationGUI(this);
+            Bukkit.getPluginManager().registerEvents(conclaveNavigationGUI, this);
+
+            this.mortalEmulationManager = new com.apexsions.core.player.MortalEmulationManager(this);
 
             this.regionSelectionGUI = new RegionSelectionGUI(this);
             Bukkit.getPluginManager().registerEvents(regionSelectionGUI, this);
@@ -706,6 +713,8 @@ public class ApexsionsCorePlugin extends JavaPlugin {
     public RegionTeleportService getRegionTeleportService() { return regionTeleportService; }
     public KingdomRtpService getKingdomRtpService() { return kingdomRtpService; }
     public KingdomNavigationGUI getKingdomNavigationGUI() { return kingdomNavigationGUI; }
+    public com.apexsions.core.region.gui.ConclaveNavigationGUI getConclaveNavigationGUI() { return conclaveNavigationGUI; }
+    public com.apexsions.core.player.MortalEmulationManager getMortalEmulationManager() { return mortalEmulationManager; }
     public RegionSelectionGUI getRegionSelectionGUI() { return regionSelectionGUI; }
     public KingdomProfileGUI getKingdomProfileGUI() { return kingdomProfileGUI; }
     public KingdomTopGUI getKingdomTopGUI() { return kingdomTopGUI; }

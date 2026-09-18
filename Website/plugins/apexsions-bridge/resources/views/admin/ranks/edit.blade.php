@@ -109,7 +109,7 @@
                         </div>
                     </div>
                     <div class="col-md-4">
-                        <label class="form-label small fw-bold">Harga Trial (90 Hari) <span class="badge bg-dark text-warning border border-warning border-opacity-25 ms-1 fw-normal" style="font-size: 0.72rem;">Default: Rp {{ number_format($defaults['price_trial_90'] ?? 0, 0, ',', '.') }}</span></label>
+                        <label class="form-label small fw-bold">Harga Trial (120 Hari / 1 Season) <span class="badge bg-dark text-warning border border-warning border-opacity-25 ms-1 fw-normal" style="font-size: 0.72rem;">Default: Rp {{ number_format($defaults['price_trial_90'] ?? 0, 0, ',', '.') }}</span></label>
                         <div class="input-group">
                             <span class="input-group-text">Rp</span>
                             <input type="number" name="price_trial_90" class="form-control" value="{{ old('price_trial_90', $config->price_trial_90 ?? ($defaults['price_trial_90'] ?? 0)) }}" min="0" required>

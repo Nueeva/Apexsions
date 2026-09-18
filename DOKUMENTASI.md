@@ -86,6 +86,15 @@ Karena akun payment gateway Midtrans belum aktif, seluruh checkout dialihkan oto
 - **Admin 2:** Friell (`6285883161047`)
 - **Admin 3:** Favian (`6287729112281`)
 
+### C. Varian Durasi Paket Kasta & Kebijakan Reset Season (120 Hari)
+- **Varian Durasi:**
+  - **Permanen:** Seumur hidup, aman dan tetap abadi melintasi seluruh siklus reset dunia/wipe.
+  - **Trial 120 Hari (1 Season Penuh):** Berlaku sepanjang 1 siklus Era penuh (4 bulan / 120 hari).
+  - **Trial 30 Hari (1 Bulan):** Paket uji coba hemat per satu bulan kalender.
+- **Siklus Reset Peta (120 Hari / 4 Bulan per Era):**
+  - **Wiped:** Peta dunia, klaim wilayah, inventory, level RPG (Lv 1-100), saldo kas perbendaharaan kerajaan (`economy_kingdom_treasury`), dan progres Battlepass.
+  - **Permanent (Kept):** Rank donatur permanen (`sions`, `emperor`, `sovereign`, `archon`, `ascendant`), sisa saldo Diamond webstore, dan gelar kehormatan sejarah.
+
 ---
 
 ## 🎨 4. Dual-Theme Engine (Obsidian Dark & Sovereign Ivory Light)
@@ -168,7 +177,7 @@ Struktur modul berada di folder `Minecraft/plugins/`:
    - Auction House (`/ah`) dengan sistem Escrow Claim terisolasi.
    - Barter/Trade 12-Slot terikat pajak teritorial antar-kerajaan.
 4. **`ApexsionsBattlepass`** (`com.apexsions.battlepass.*`):
-   - 200 Level BattlePass, Daily/Weekly/Monthly Quests, 4 Tier Pass.
+   - 200 Level BattlePass, Daily/Weekly/Monthly Quests (Siklus 4 Bulan / 120 Hari per Era), 4 Tier Pass.
    - Visual GUI Editor 54-Slot (`/abp`).
 5. **`ApexsionsShop`** (`com.apexsions.shop.*`):
    - Dynamic Market 6 kategori, Rasio Jual dasar **20%**, Formula Dinamis Multiplier Cuaca & Bioma Kerajaan.
@@ -739,6 +748,47 @@ Untuk mempercepat pemahaman arsitektur, mendeteksi *god nodes*, serta menghemat 
    ```powershell
    Start-Process "graphify-out/graph.html"
    ```
-   *Catatan Keamanan Git:* Folder `graphify-out/` secara ketat diabaikan oleh `.gitignore` untuk menjaga ukuran repositori tetap ramping dan bersih.
+54: 
+---
+
+## 🏛️ 16. Sistem Navigasi Upper Realm, Portal Kosmik Conclave & Emulasi Mortal
+
+Sistem ini didesain khusus untuk menyelesaikan tantangan operasional staf dan pengawas dimensi atas (*The Aetherial Conclave* / Bobot Rank $\ge 80$), di mana entitas Conclave sebelumnya dibatasi dari interaksi fana sehingga menyulitkan navigasi, perbaikan wilayah, pengujian fitur (*testing*), dan teleportasi ke ibukota mortal.
+
+### A. Portal Navigasi Kosmik Conclave (`ConclaveNavigationGUI`)
+- **Akses Otomatis:** Mengetik `/k`, `/kingdom`, atau `/region` oleh staf Upper Realm otomatis membuka antarmuka portal 27-slot bergaya kosmik (`#00f2fe` ke `#4facfe`), alih-alih menampilkan pesan error atau menu fana standar.
+- **Fitur Tombol Terintegrasi:**
+  - **Slot 4:** Teleportasi ke *The Aether Citadel / Spawn Lobby Utama*.
+  - **Slot 10, 12, 14:** Ibukota *Zenithar*, *Solterra*, dan *Sylvamoor* dengan dual-action:
+    - `[Klik Kiri]`: Teleportasi instan ke titik spawn resmi ibukota.
+    - `[Klik Kanan]`: *Random Teleport (RTP)* langsung di wilayah kedaulatan kerajaan tersebut.
+  - **Slot 16:** Teleportasi ke *Terra Interdicta* (Reruntuhan Kuno Sions).
+  - **Slot 19:** *Smart Kingdom RTP Dispatcher* (mendeteksi teritori berdiri atau acak kerajaan mortal).
+  - **Slot 22:** *Simulasi Warga Fana* (Mortal Incarnation Mode) dengan rotasi satu-klik: Zenithar $\rightarrow$ Solterra $\rightarrow$ Sylvamoor $\rightarrow$ Off.
+  - **Slot 25:** Akses pintas ke *Master Admin Hub* (`/admin`).
+
+### B. Perintah Teleportasi & RTP Terarah
+1. **Teleportasi Ibukota:**
+   - `/ac spawn <ZENITHAR|SOLTERRA|SYLVAMOOR|SIONS|LOBBY>`: Teleportasi admin langsung tanpa delay.
+   - `/k spawn <ZENITHAR|SOLTERRA|SYLVAMOOR|SIONS|LOBBY>`: Perintah langsung yang dapat digunakan staf Conclave dengan tab-completion lengkap.
+2. **Targeted & Smart RTP:**
+   - `/ac rtp [ZENITHAR|SOLTERRA|SYLVAMOOR|WILD]`: Memicu teleportasi acak terarah di teritori kerajaan target.
+   - `/rtp [kingdom]`: Mendukung argumen kerajaan khusus bagi staf Conclave dan admin.
+
+### C. Mode Emulasi Warga Fana (`MortalEmulationManager`)
+- **Tujuan:** Memungkinkan staf Conclave menguji toko (`ApexsionsShop`), buff/debuff kerajaan (`KingdomBuffManager`), chat faksi (`ApexsionsChat`), dan batas wilayah tanpa mengubah data permanen di database (`ranks.yml` dan `PlayerData` tetap murni Aetherion).
+- **Perintah:**
+  - `/ac emulate <ZENITHAR|SOLTERRA|SYLVAMOOR>`: Mengaktifkan mode penyamaran fana.
+  - `/ac emulate off`: Mengakhiri simulasi dan kembali ke eksistensi murni Aetherion.
+- **Pembersihan Otomatis:** Saat staf logout (`PlayerQuitEvent`), status emulasi otomatis dihapus untuk mencegah memory leak.
+
+### D. Bypass Proteksi & Hak Khusus Conclave
+1. **Combat Tag (15 Detik):** Staf Upper Realm dan pemegang izin `apexsionscore.admin.bypass.combat` otomatis bebas dari pembatasan combat tag saat teleportasi darurat.
+2. **Teleportasi Dua Arah (TPA):** Essentials TPA antara staf Conclave dan pemain fana otomatis meloloskan pengecekan kesamaan faksi (`validateTpa`) dan batas teritorial.
+3. **Klaim Tanah Kedutaan:** Saat staf Conclave mengklaim tanah mortal, chunk dicatat sebagai kedutaan `AETHERION` dengan tarif pajak upkeep bebas ($Rp0$), serta memiliki bypass interaksi (`canInteract`) dan pembangunan (`canBuild`) di seluruh teritori fana.
+4. **Dual-Action di Admin GUI (`CoreAdminSubGUI`):**
+   - `[Klik Kiri]`: Teleportasi langsung ke ibukota kerajaan.
+   - `[Shift + Klik Kanan]`: Menetapkan ulang titik spawn ibukota kerajaan pada koordinat admin saat ini.
+
 
 

@@ -41,6 +41,12 @@ public class ApexsionsCoreAPIImpl implements ApexsionsCoreAPI {
 
     @Override
     public @Nullable Region getRegion(@NotNull UUID uuid) {
+        if (plugin.getMortalEmulationManager() != null && plugin.getMortalEmulationManager().isEmulating(uuid)) {
+            String emuKey = plugin.getMortalEmulationManager().getEmulatedKingdom(uuid).orElse(null);
+            if (emuKey != null) {
+                return plugin.getRegionManager().getRegion(emuKey).orElse(null);
+            }
+        }
         PlayerData data = getPlayerData(uuid);
         if (data != null && data.getRegionId() != null) {
             return plugin.getRegionManager().getRegion(data.getRegionId()).orElse(null);
@@ -50,6 +56,9 @@ public class ApexsionsCoreAPIImpl implements ApexsionsCoreAPI {
 
     @Override
     public @NotNull String getPlayerRegionKey(@NotNull UUID uuid) {
+        if (plugin.getMortalEmulationManager() != null && plugin.getMortalEmulationManager().isEmulating(uuid)) {
+            return plugin.getMortalEmulationManager().getEmulatedKingdom(uuid).orElse("AETHERION");
+        }
         if (plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isConclaveStaff(uuid)) {
             return "AETHERION";
         }

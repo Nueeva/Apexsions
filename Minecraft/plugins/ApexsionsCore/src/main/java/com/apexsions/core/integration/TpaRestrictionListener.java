@@ -52,7 +52,10 @@ public class TpaRestrictionListener implements Listener {
         // 1. Check Combat Tag on Any Teleport Command
         if (isTeleportCommand(cmd, parts)) {
             if (plugin.getCombatTagService() != null && plugin.getCombatTagService().isCombatTagged(sender.getUniqueId())) {
-                if (!sender.hasPermission("apexsionscore.admin.bypass.tpa")) {
+                boolean hasBypass = sender.hasPermission("apexsionscore.admin.bypass.tpa") ||
+                        sender.hasPermission("apexsionscore.admin.bypass.combat") ||
+                        (plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isConclaveStaff(sender));
+                if (!hasBypass) {
                     long remaining = plugin.getCombatTagService().getRemainingSeconds(sender.getUniqueId());
                     event.setCancelled(true);
                     sender.sendMessage(miniMessage.deserialize("<red>⚔ Kamu sedang dalam mode tempur (Combat Tag: <yellow>" + remaining + "s</yellow>)! Teleportasi <yellow>/" + cmd + "</yellow> dinonaktifkan.</red>"));
@@ -77,8 +80,8 @@ public class TpaRestrictionListener implements Listener {
                 return; // Let Essentials handle self-tpa
             }
 
-            // Bypass permission for admins
-            if (sender.hasPermission("apexsionscore.admin.bypass.tpa")) {
+            // Bypass permission for admins and Conclave staff
+            if (sender.hasPermission("apexsionscore.admin.bypass.tpa") || (plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isConclaveStaff(sender))) {
                 return;
             }
 
@@ -100,7 +103,9 @@ public class TpaRestrictionListener implements Listener {
             if (senderUuid != null) {
                 Player requester = Bukkit.getPlayer(senderUuid);
                 if (requester != null && requester.isOnline()) {
-                    if (!sender.hasPermission("apexsionscore.admin.bypass.tpa")) {
+                    boolean hasBypass = sender.hasPermission("apexsionscore.admin.bypass.tpa") ||
+                            (plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isConclaveStaff(sender));
+                    if (!hasBypass) {
                         String failureReason = validateTpa(requester, sender);
                         if (failureReason != null) {
                             event.setCancelled(true);
@@ -143,6 +148,13 @@ public class TpaRestrictionListener implements Listener {
             if (plugin.getCombatTagService().isCombatTagged(target.getUniqueId())) {
                 return "<red>✖ Teleportasi ditolak! Pemain tujuan (<yellow>" + target.getName() + "</yellow>) sedang dalam mode tempur.</red>";
             }
+        }
+
+        // Check if either player is Conclave staff or has admin bypass
+        boolean p1Staff = (plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isConclaveStaff(sender)) || sender.hasPermission("apexsionscore.admin.bypass.tpa");
+        boolean p2Staff = (plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isConclaveStaff(target)) || target.hasPermission("apexsionscore.admin.bypass.tpa");
+        if (p1Staff || p2Staff) {
+            return null; // Conclave staff bypasses kingdom mismatch and territory bounds
         }
 
         String p1Key = plugin.getApi().getPlayerRegionKey(sender.getUniqueId());

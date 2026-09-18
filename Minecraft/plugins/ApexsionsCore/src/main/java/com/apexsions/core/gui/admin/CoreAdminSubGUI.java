@@ -124,14 +124,23 @@ public class CoreAdminSubGUI implements InventoryHolder {
         inventory.setItem(29, createActionItem(Material.BEACON, "<light_purple><bold>🏛 ATUR SPAWN LOBBY</bold></light_purple>",
                 List.of("<gray>Tetapkan titik spawn lobby server pada posisimu.</gray>", "<yellow>▶ Klik untuk setel spawn</yellow>")));
 
-        inventory.setItem(30, createActionItem(Material.GOLD_INGOT, "<gold><bold>📍 ATUR SPAWN ZENITHAR</bold></gold>",
-                List.of("<gray>Tetapkan titik ibukota Zenithar pada posisimu.</gray>", "<yellow>▶ Klik untuk setel titik spawn</yellow>")));
+        inventory.setItem(30, createActionItem(Material.GOLD_INGOT, "<gold><bold>📍 IBUKOTA ZENITHAR</bold></gold>",
+                List.of("<gray>Ibukota kerajaan emas dan kavaleri cakrawala.</gray>",
+                        "",
+                        "<yellow>▶ [Klik Kiri] Teleportasi ke Ibukota</yellow>",
+                        "<red>▶ [Shift + Klik Kanan] Setel Ulang Spawn Disini</red>")));
 
-        inventory.setItem(31, createActionItem(Material.FIRE_CHARGE, "<red><bold>📍 ATUR SPAWN SOLTERRA</bold></red>",
-                List.of("<gray>Tetapkan titik ibukota Solterra pada posisimu.</gray>", "<yellow>▶ Klik untuk setel titik spawn</yellow>")));
+        inventory.setItem(31, createActionItem(Material.FIRE_CHARGE, "<red><bold>📍 IBUKOTA SOLTERRA</bold></red>",
+                List.of("<gray>Ibukota benteng magma dan pejuang api.</gray>",
+                        "",
+                        "<yellow>▶ [Klik Kiri] Teleportasi ke Ibukota</yellow>",
+                        "<red>▶ [Shift + Klik Kanan] Setel Ulang Spawn Disini</red>")));
 
-        inventory.setItem(32, createActionItem(Material.LILY_PAD, "<green><bold>📍 ATUR SPAWN SYLVAMOOR</bold></green>",
-                List.of("<gray>Tetapkan titik ibukota Sylvamoor pada posisimu.</gray>", "<yellow>▶ Klik untuk setel titik spawn</yellow>")));
+        inventory.setItem(32, createActionItem(Material.LILY_PAD, "<green><bold>📍 IBUKOTA SYLVAMOOR</bold></green>",
+                List.of("<gray>Ibukota peradaban kanopi dan rimba kuno.</gray>",
+                        "",
+                        "<yellow>▶ [Klik Kiri] Teleportasi ke Ibukota</yellow>",
+                        "<red>▶ [Shift + Klik Kanan] Setel Ulang Spawn Disini</red>")));
 
         inventory.setItem(33, createActionItem(Material.COMPASS, "<aqua><bold>🧭 UJI COBA KINGDOM RTP</bold></aqua>",
                 List.of("<gray>Teleportasi acak di wilayah kerajaan pemain.</gray>", "<yellow>▶ Klik untuk uji coba RTP</yellow>")));
@@ -253,18 +262,33 @@ public class CoreAdminSubGUI implements InventoryHolder {
             return;
         }
 
-        if (slot == 30) { // Set Spawn Zenithar
-            player.performCommand("ac setspawn ZENITHAR");
+        if (slot == 30) { // Zenithar
+            if (event.isShiftClick() && event.isRightClick()) {
+                player.performCommand("ac setspawn ZENITHAR");
+            } else {
+                player.closeInventory();
+                player.performCommand("ac spawn ZENITHAR");
+            }
             return;
         }
 
-        if (slot == 31) { // Set Spawn Solterra
-            player.performCommand("ac setspawn SOLTERRA");
+        if (slot == 31) { // Solterra
+            if (event.isShiftClick() && event.isRightClick()) {
+                player.performCommand("ac setspawn SOLTERRA");
+            } else {
+                player.closeInventory();
+                player.performCommand("ac spawn SOLTERRA");
+            }
             return;
         }
 
-        if (slot == 32) { // Set Spawn Sylvamoor
-            player.performCommand("ac setspawn SYLVAMOOR");
+        if (slot == 32) { // Sylvamoor
+            if (event.isShiftClick() && event.isRightClick()) {
+                player.performCommand("ac setspawn SYLVAMOOR");
+            } else {
+                player.closeInventory();
+                player.performCommand("ac spawn SYLVAMOOR");
+            }
             return;
         }
 

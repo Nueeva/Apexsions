@@ -119,9 +119,9 @@ $shopPackages = [
     ],
     [
         'category_id' => 1,
-        'name' => 'Ascendant (Trial 90 Hari)',
-        'short_description' => 'Paket Trial 90 Hari Ascendant dengan diskon hemat untuk warga aktif peradaban.',
-        'description' => "### Hak Istimewa Kasta Ascendant (Trial 90 Hari)\n" .
+        'name' => 'Ascendant (Trial 120 Hari)',
+        'short_description' => 'Paket Trial 120 Hari (1 Season Penuh) Ascendant dengan diskon hemat untuk warga aktif peradaban.',
+        'description' => "### Hak Istimewa Kasta Ascendant (Trial 120 Hari)\n" .
             "- **Mencakup:** Seluruh keuntungan kasta Ascendant Trial.\n" .
             "- **Maksimal Homes:** 3 Homes (`/sethome`).\n" .
             "- **Batas Listing Lelang:** 4 Barang aktif di Auction House (`/ah`).\n" .
@@ -129,11 +129,11 @@ $shopPackages = [
             "- **Cooldown RTP:** 2 Menit 15 Detik (`/rtp` / `/tpr`).\n" .
             "- **Bonus Jual Shop:** +3% Harga jual komoditas di Toko Kerajaan (`/shop`).\n" .
             "- **Bonus EXP Level:** +5% Pengganda kenaikan EXP Level Karakter.\n" .
-            "- **Masa Aktif:** 90 Hari (3 Bulan Penuh).",
+            "- **Masa Aktif:** 120 Hari (4 Bulan Penuh / 1 Season).",
         'position' => 2,
         'image' => 'package-ascendant.jpg',
         'price' => 45000,
-        'commands' => json_encode(['lp user {player} parent addtemp ascendant 90d', 'lp user {player} permission settemp apexsions.rank.trial true 90d']),
+        'commands' => json_encode(['lp user {player} parent addtemp ascendant 120d', 'lp user {player} permission settemp apexsions.rank.trial true 120d']),
         'has_quantity' => false,
         'is_enabled' => true,
         'created_at' => $now,
@@ -193,9 +193,9 @@ $shopPackages = [
     ],
     [
         'category_id' => 1,
-        'name' => 'Archon (Trial 90 Hari)',
-        'short_description' => 'Paket 90 Hari Archon dengan seluruh utilitas craft, enderchest, dan bunga bank 1.2x.',
-        'description' => "### Hak Istimewa Kasta Archon (Trial 90 Hari)\n" .
+        'name' => 'Archon (Trial 120 Hari)',
+        'short_description' => 'Paket 120 Hari Archon dengan seluruh utilitas craft, enderchest, dan bunga bank 1.2x.',
+        'description' => "### Hak Istimewa Kasta Archon (Trial 120 Hari)\n" .
             "- **Mencakup:** Seluruh keuntungan kasta Archon Trial.\n" .
             "- **Maksimal Homes:** 4 Homes (`/sethome`).\n" .
             "- **Batas Listing Lelang:** 7 Barang aktif di Auction House (`/ah`).\n" .
@@ -205,11 +205,11 @@ $shopPackages = [
             "- **Bonus EXP Level:** +8% Pengganda kenaikan EXP Level Karakter.\n" .
             "- **Imbal Hasil Deposito Bank:** 1.2x Multiplier Bunga Bank (`/bank`).\n" .
             "- **Perintah Utilitas:** `/craft`, `/enderchest`.\n" .
-            "- **Masa Aktif:** 90 Hari.",
+            "- **Masa Aktif:** 120 Hari (4 Bulan Penuh / 1 Season).",
         'position' => 5,
         'image' => 'package-archon.jpg',
         'price' => 95000,
-        'commands' => json_encode(['lp user {player} parent addtemp archon 90d', 'lp user {player} permission settemp apexsions.rank.trial true 90d']),
+        'commands' => json_encode(['lp user {player} parent addtemp archon 120d', 'lp user {player} permission settemp apexsions.rank.trial true 120d']),
         'has_quantity' => false,
         'is_enabled' => true,
         'created_at' => $now,
@@ -271,9 +271,9 @@ $shopPackages = [
     ],
     [
         'category_id' => 1,
-        'name' => 'Sovereign (Trial 90 Hari)',
-        'short_description' => 'Paket 90 Hari Sovereign dengan batas 5 homes, 10 lelang, dan 8 custom enchants.',
-        'description' => "### Hak Istimewa Kasta Sovereign (Trial 90 Hari)\n" .
+        'name' => 'Sovereign (Trial 120 Hari)',
+        'short_description' => 'Paket 120 Hari Sovereign dengan batas 5 homes, 10 lelang, dan 8 custom enchants.',
+        'description' => "### Hak Istimewa Kasta Sovereign (Trial 120 Hari)\n" .
             "- **Mencakup:** Seluruh keuntungan kasta Sovereign Trial.\n" .
             "- **Maksimal Homes:** 5 Homes (`/sethome`).\n" .
             "- **Batas Listing Lelang:** 10 Barang aktif di Auction House (`/ah`).\n" .
@@ -283,11 +283,11 @@ $shopPackages = [
             "- **Bonus EXP Level:** +10% Pengganda kenaikan EXP Level Karakter.\n" .
             "- **Imbal Hasil Deposito Bank:** 1.5x Multiplier Bunga Bank (`/bank`).\n" .
             "- **Perintah Utilitas:** `/craft`, `/anvil`, `/smithing`, `/enderchest`.\n" .
-            "- **Masa Aktif:** 90 Hari.",
+            "- **Masa Aktif:** 120 Hari (4 Bulan Penuh / 1 Season).",
         'position' => 8,
         'image' => 'package-sovereign.jpg',
         'price' => 180000,
-        'commands' => json_encode(['lp user {player} parent addtemp sovereign 90d', 'lp user {player} permission settemp apexsions.rank.trial true 90d']),
+        'commands' => json_encode(['lp user {player} parent addtemp sovereign 120d', 'lp user {player} permission settemp apexsions.rank.trial true 120d']),
         'has_quantity' => false,
         'is_enabled' => true,
         'created_at' => $now,
@@ -350,9 +350,9 @@ $shopPackages = [
     ],
     [
         'category_id' => 1,
-        'name' => 'Emperor (Trial 90 Hari)',
-        'short_description' => 'Paket 90 Hari Emperor dengan 7 homes, 14 lelang, 11 enchants, dan bunga bank 2.0x.',
-        'description' => "### Hak Istimewa Kasta Emperor (Trial 90 Hari)\n" .
+        'name' => 'Emperor (Trial 120 Hari)',
+        'short_description' => 'Paket 120 Hari Emperor dengan 7 homes, 14 lelang, 11 enchants, dan bunga bank 2.0x.',
+        'description' => "### Hak Istimewa Kasta Emperor (Trial 120 Hari)\n" .
             "- **Mencakup:** Seluruh keuntungan kasta Emperor Trial.\n" .
             "- **Maksimal Homes:** 7 Homes (`/sethome`).\n" .
             "- **Batas Listing Lelang:** 14 Barang aktif di Auction House (`/ah`).\n" .
@@ -362,11 +362,11 @@ $shopPackages = [
             "- **Bonus EXP Level:** +14% Pengganda kenaikan EXP Level Karakter.\n" .
             "- **Imbal Hasil Deposito Bank:** 2.0x Multiplier Bunga Bank (`/bank`).\n" .
             "- **Perintah Utilitas:** `/craft`, `/anvil`, `/smithing`, `/repair`, `/feed`, `/hat`, `/enderchest`.\n" .
-            "- **Masa Aktif:** 90 Hari.",
+            "- **Masa Aktif:** 120 Hari (4 Bulan Penuh / 1 Season).",
         'position' => 11,
         'image' => 'package-emperor.jpg',
         'price' => 320000,
-        'commands' => json_encode(['lp user {player} parent addtemp emperor 90d', 'lp user {player} permission settemp apexsions.rank.trial true 90d']),
+        'commands' => json_encode(['lp user {player} parent addtemp emperor 120d', 'lp user {player} permission settemp apexsions.rank.trial true 120d']),
         'has_quantity' => false,
         'is_enabled' => true,
         'created_at' => $now,
@@ -432,9 +432,9 @@ $shopPackages = [
     ],
     [
         'category_id' => 1,
-        'name' => 'Sions (Trial 90 Hari)',
-        'short_description' => 'Paket 90 Hari Sions: Pengalaman puncak kasta peradaban Apexsions.',
-        'description' => "### Hak Istimewa Kasta Sions (Trial 90 Hari)\n" .
+        'name' => 'Sions (Trial 120 Hari)',
+        'short_description' => 'Paket 120 Hari Sions: Pengalaman puncak kasta peradaban Apexsions.',
+        'description' => "### Hak Istimewa Kasta Sions (Trial 120 Hari)\n" .
             "- **Mencakup:** Seluruh keuntungan kasta Sions Trial.\n" .
             "- **Maksimal Homes:** 10 Homes (`/sethome`).\n" .
             "- **Batas Listing Lelang:** 20 Barang aktif di Auction House (`/ah`).\n" .
@@ -444,11 +444,11 @@ $shopPackages = [
             "- **Bonus EXP Level:** +20% Pengganda kenaikan EXP Level Karakter.\n" .
             "- **Imbal Hasil Deposito Bank:** 3.0x Multiplier Bunga Bank (`/bank`).\n" .
             "- **Perintah Utilitas:** `/craft`, `/anvil`, `/smithing`, `/repair`, `/feed` (Cooldown 3 Menit), `/hat`, `/enderchest`.\n" .
-            "- **Masa Aktif:** 90 Hari.",
+            "- **Masa Aktif:** 120 Hari (4 Bulan Penuh / 1 Season).",
         'position' => 14,
         'image' => 'package-sions.jpg',
         'price' => 550000,
-        'commands' => json_encode(['lp user {player} parent addtemp sions 90d', 'lp user {player} permission settemp apexsions.rank.trial true 90d']),
+        'commands' => json_encode(['lp user {player} parent addtemp sions 120d', 'lp user {player} permission settemp apexsions.rank.trial true 120d']),
         'has_quantity' => false,
         'is_enabled' => true,
         'created_at' => $now,

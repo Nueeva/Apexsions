@@ -563,7 +563,7 @@ Portal web resmi Apexsions dibangun di atas platform **Azuriom** dengan tema khu
 5. **Manajemen Mandiri Profil Warga (`/profile`)**:
    - Melihat saldo sinkronisasi (Rupiah & Diamond), status klaim hadiah harian (*Daily Reward*), ubah password akun Minecraft, ubah gelar aktif (*Active Title*), dan pemutusan tautan akun (*Unlink*).
 6. **Webstore Donasi & Interactive Storefront (`/shop`)**:
-   - **Multi-Axis Filter Engine**: Dual-axis dynamic filtering (Kasta: `Semua`, `Ascendant`, `Archon`, `Sovereign`, `Emperor`, `✦ SIONS ✦` dan Durasi: `Semua`, `Permanen`, `90 Hari`, `30 Hari`), subkategori instan (`Pundi Koin & Booster`, `Battlepass`), bar navigasi atas sinkron (`.apx-store-nav-bar`), counter paket real-time, dan fallback empty-state dengan tombol reset instan.
+   - **Multi-Axis Filter Engine**: Dual-axis dynamic filtering (Kasta: `Semua`, `Ascendant`, `Archon`, `Sovereign`, `Emperor`, `✦ SIONS ✦` dan Durasi: `Semua`, `Permanen`, `120 Hari`, `30 Hari`), subkategori instan (`Pundi Koin & Booster`, `Battlepass`), bar navigasi atas sinkron (`.apx-store-nav-bar`), counter paket real-time, dan fallback empty-state dengan tombol reset instan.
    - **Checkout WhatsApp & Modal Benefit**: Pengalihan checkout pemesanan otomatis via WhatsApp 2 Founder (`Rifqi`, `Friell`) dengan format data pre-filled, modal rincian benefit berbasis AJAX/Axios, dan integrasi keranjang belanja Azuriom.
 7. **Arsip Hukum & Ensiklopedia Wiki (`/rules`, `/terms`, `/privacy`, `/wiki`)**:
    - 4 Pilar aturan server beserta matriks sistem pencegahan aktif (*Levenshtein SpamChecker*, *ProfanityChecker*), syarat transaksi, kebijakan privasi data akun, dan portal fandom ensiklopedia lengkap.

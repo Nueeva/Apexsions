@@ -36,6 +36,29 @@ Bagi AI Agent atau developer yang melanjutkan pekerjaan di repositori ini, perha
 
 ---
 
+## ⏳ Seasonal Architecture & Triannual Era Milestone — Migrasi Siklus 4 Bulan (120 Hari per Reset) & Sinkronisasi Ekosistem [v1.3.4]
+> **Periode Pengembangan:** 18 September 2026 | **Status:** Implemented & Verified Locally
+
+### 📋 Ikhtisar Migrasi Siklus Caturwulan & Reset Dunia
+Meredesain siklus peradaban dan progres musiman dari 3 bulan (90 hari) ke **Siklus 4 Bulan Penuh (120 Hari per Era / Triannual Cycle)** dengan **Reset & Wipe Total Peta Dunia di setiap akhir Season**:
+1. **Pembaruan Babad & Kosmologi (`LORE.md`):**
+   - Bab I: Siklus Waktu Peradaban disesuaikan menjadi *Kalender Musim Empat Bulanan (Triannual Seasonal Chronicle / 120 Hari per Era)*.
+   - Bab XII: Roadmap 3 Era per Tahun (Season I: Awakening & Resonant Surge, Season II: Fractured Concord & War of Sovereignty, Season III: Second Rift & Grand Reckoning) dengan World Wipe di hari ke-120 tiap musim.
+   - Hak Keabadian Donatur: Seluruh rank permanen, saldo diamond, dan gelar kehormatan sejarah 100% aman dan abadi melintasi reset.
+2. **Ekspansi Engine `ApexsionsBattlepass`:**
+   - `SeasonManager.java`: Kalkulasi bulan dinamis modulo 4 (`monthsPassed % 4 + 1`, cap di 4).
+   - `MonthlyPeriodMenu.java`: Banner informasi 4 bulan, grid 4 tombol bulanan di slot `[10, 12, 14, 16]`.
+   - `AdminSeasonMenu.java`, `AdminQuestMenu.java`, `AdminQuestCategoryMenu.java`: Mendukung pengelolaan quest Bulan 1 s/d Bulan 4 di slot `[28, 30, 32, 34]`.
+   - Teruji sukses dikompilasi dengan `build.ps1 Battlepass` (0 error).
+3. **Web Platform & Webstore Storefront (`Azuriom` & `apexsions-bridge`):**
+   - `seed_minecraft_systems.php`: Paket kasta trial ditingkatkan dari 90 hari ke `Trial 120 Hari (1 Season Penuh)` dengan durasi LuckPerms `120d`.
+   - `categories/show.blade.php`, `index.blade.php`, `packages/show.blade.php`: Filter tombol durasi `120-hari`, pill badge `TRIAL 120 HARI` / `TRIAL 120H`, dan fallback backward-compatible.
+   - `RankAdminController.php` & Admin Views: Sinkronisasi harga paket 120 hari dan opsi dropdown 120 hari.
+4. **Dokumentasi Master:**
+   - `DOKUMENTASI.md` & `README.md`: Sinkronisasi penjelasan siklus caturwulan dan varian durasi paket webstore.
+
+---
+
 ## 🧹 Repository Architecture & Workspace Cleanup Milestone — Deduplikasi Berkas, Sentralisasi Hub `docs/`, & Tata Kelola Bersih [v1.3.3]
 > **Periode Pengembangan:** 18 September 2026 | **Status:** Implemented & Synchronized to Main
 

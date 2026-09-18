@@ -10,7 +10,7 @@
 * **Semboyan Resmi:** *The Peak Civilizations*
 * **Era Berjalan:** Era Rekonstruksi Triarki (The Age of Triarch Sovereignty) di bawah Pengawasan Aetherial Conclave
 * **Pusat Koordinasi Dunia:** Benua Inti Apexsions
-* **Siklus Waktu Peradaban:** Kalender Musim Tiga Bulanan (*Quarterly Seasonal Chronicle*)
+* **Siklus Waktu Peradaban:** Kalender Musim Empat Bulanan (*Triannual Seasonal Chronicle / 120 Hari per Era*)
 
 ---
 
@@ -464,39 +464,54 @@ Donatur berbayar (`ascendant` s.d. `sions`) memiliki kedudukan prestisius sebaga
 
 ---
 
-## ⏳ Bab XII: Kalender Musim Tiga Bulanan & Alur Narasi Masa Depan (Quarterly Seasonal Roadmap)
+## ⏳ Bab XII: Kalender Musim Empat Bulanan & Siklus Reset Dunia (Triannual Seasonal Roadmap)
 
-Untuk menjaga agar semesta Apexsions selalu hidup dan bergerak bersama para pemain, dunia dijalankan berdasarkan **Siklus Musim 3 Bulanan (Quarterly Seasons)**. Setiap musim memiliki tema narasi, event dunia, dan implikasi gameplay tersendiri:
+Untuk menjaga agar semesta Apexsions selalu segar, kompetitif, dan tidak mengalami kejenuhan ekonomi, dunia dijalankan berdasarkan **Siklus Musim 4 Bulanan (120 Hari per Era / Triannual Seasonal Cycle)**. Setiap akhir musim ditutup dengan klimaks narasi akbar dan **Reset Total Peta Dunia (*World Wipe & New Dawn*)**:
 
 ```text
        TAHUN I: THE CHRONICLES OF RESTORATION & THE SECOND RIFT
                                    │
-   ┌───────────────────────┬───────┴───────────────┬───────────────────────┐
-   ▼                       ▼                       ▼                       ▼
-SEASON I (Bulan 1-3)    SEASON II (Bulan 4-6)   SEASON III (Bulan 7-9)  SEASON IV (Bulan 10-12)
-ERA OF TRIARCH          THE RESONANT SURGE      THE FRACTURED CONCORD   THE SECOND RIFT &
-AWAKENING               (Gema Kehampaan Umbra)  (Perang Kedaulatan)     THE CONCLAVE'S TRIAL
+   ┌───────────────────────────────┼───────────────────────────────┐
+   ▼                               ▼                               ▼
+SEASON I (Bulan 1-4)            SEASON II (Bulan 5-8)           SEASON III (Bulan 9-12)
+ERA OF TRIARCH AWAKENING        THE FRACTURED CONCORD           THE SECOND RIFT &
+& RESONANT SURGE                & WAR OF SOVEREIGNTY            THE GRAND RECKONING
+[ 120 Hari ➔ WIPE / RESET ]     [ 120 Hari ➔ WIPE / RESET ]     [ 120 Hari ➔ REKADENSI AKBAR ]
 ```
 
-### 🟢 SEASON I: Era of Triarch Awakening (Fajar Tiga Kedaulatan)
-* **Periode:** Bulan 1 s.d. Bulan 3 *(Musim Berjalan Saat Ini)*
-* **Fokus Narasi:** Masa konsolidasi peradaban fana pasca-eksodus. Tiga kerajaan mendirikan fondasi ibukota, memperkuat benteng perbatasan, dan membuka rute perdagangan awal.
-* **Gameplay:** Pemain memilih kerajaan (`/k choose`), mengklaim teritori (`/k claim`), dan mengumpulkan kas perbendaharaan Tier 1 & 2.
+### 🟢 SEASON I: Era of Triarch Awakening & Resonant Surge (Fajar Tiga Kedaulatan)
+* **Periode:** Bulan 1 s.d. Bulan 4 *(Musim Berjalan Saat Ini - 120 Hari)*
+* **Fokus Narasi:** Masa konsolidasi peradaban fana pasca-eksodus. Tiga kerajaan mendirikan fondasi ibukota, memperkuat benteng perbatasan, membuka rute perdagangan awal, hingga di bulan ke-3 dan ke-4 gelombang resonansi kehampaan (*Void Resonance*) mulai memunculkan *Umbral Shards* di gua bawah tanah terdalam (`Y < -40`).
+* **Gameplay:** Pemain memilih kerajaan (`/k choose`), mengklaim teritori (`/k claim`), memacu ekonomi perbendaharaan, dan berlomba mengamankan deposit mineral langka sebelum bencana retakan meluas.
+* **Akhir Musim (Hari ke-120):** Ledakan anomali perbatasan menutup siklus Season I dan memicu rekonstruksi dunia baru.
 
-### 🟡 SEASON II: The Resonant Surge (Gema Kehampaan Umbra)
-* **Periode:** Bulan 4 s.d. Bulan 6
-* **Fokus Narasi:** Resonansi kehampaan (*Void Resonance*) bergetar kencang. Mineral anomali baru (*Umbral Shards*) mulai bermunculan di gua-gua bawah tanah terdalam (`Y < -40`).
-* **Gameplay:** Perlombaan tambang Solterra vs Zenithar, event mingguan serbuan *Rift Surge* di perbatasan, dan pembukaan dungeon katakombe Sions.
+### 🟡 SEASON II: The Fractured Concord & War of Sovereignty (Retakan Aliansi & Perang Kedaulatan)
+* **Periode:** Bulan 5 s.d. Bulan 8 *(120 Hari)*
+* **Fokus Narasi:** Kelangkaan sumber daya akibat anomali Umbra memicu sengketa kedaulatan benua terbuka antara industri baja Solterra, aristokrasi emas Zenithar, dan suaka hayati Sylvamoor.
+* **Gameplay:** Aktivasi sistem perang pengepungan terjadwal (*Scheduled Siege Wars*), penjarahan hingga 25% saldo kas perbendaharaan musuh, perang traktat embargo dagang, dan intervensi *The Divine Warden* ketika tensi perang mengancam kehancuran total.
+* **Akhir Musim (Hari ke-120):** Traktat damai paksa runtuh, menyisakan debu kehancuran menuju pertempuran kosmik terakhir.
 
-### 🟠 SEASON III: The Fractured Concord (Retakan Aliansi & Perang Kedaulatan)
-* **Periode:** Bulan 7 s.d. Bulan 9
-* **Fokus Narasi:** Krisis pasokan kayu dan air bersih memicu perang kedaulatan benua antara industri Solterra dan suaka Sylvamoor.
-* **Gameplay:** Aktivasi sistem pengepungan resmi (*Scheduled Siege Wars*), penjarahan 25% kas musuh, dan intervensi *The Divine Warden* untuk mencegah kehancuran benua.
+### 🔴 SEASON III: The Second Rift & The Grand Reckoning (Celah Kedua & Pengadilan Sang Leluhur)
+* **Periode:** Bulan 9 s.d. Bulan 12 *(120 Hari - Grand Finale Tahun I)*
+* **Fokus Narasi:** Segel kuno kaisar di Terra Interdicta pecah seutuhnya, memicu ancaman kiamat benua **The Second Rift**.
+* **Gameplay:** Gencatan senjata akbar tiga kerajaan (*The Grand Triarch Coalition*), serbuan World Boss Raid melawan *The Corrupted Titan of Sions*, dan pengadilan peradaban oleh Ancestor (*The Ancestor's Judgment*).
+* **Akhir Musim (Hari ke-120):** Dunia mengalami kataklisme pembersihan kosmik menyeluruh, melahirkan benua baru untuk menyambut peradaban **Tahun II**.
 
-### 🔴 SEASON IV: The Second Rift & The Conclave's Trial (Celah Kedua & Ujian Sang Leluhur)
-* **Periode:** Bulan 10 s.d. Bulan 12 *(Grand Finale Tahun I)*
-* **Fokus Narasi:** Segel utama kaisar di Terra Interdicta pecah seutuhnya, memicu ancaman **The Second Rift**.
-* **Gameplay:** Gencatan senjata akbar (*The Grand Triarch Coalition*), World Boss Raid melawan *The Corrupted Titan of Sions*, dan penghakiman peradaban oleh Ancestor (*The Ancestor's Judgment*).
+---
+
+### 🛡️ Kebijakan Reset Dunia & Hak Keabadian Donatur (Reset & Retention Policy)
+Setiap kali pergantian Season 4 Bulanan (120 Hari) tiba, server melakukan **Reset Peta Dunia (World Wipe)** dengan batasan perlindungan ketat:
+
+1. **Entitas yang Di-reset (Wiped):**
+   * Peta dunia (*Overworld*, *Nether*, *The End*), wilayah klaim kerajaan, dan bangunan pemukiman.
+   * Inventory pemain, Ender Chest, dan brankas ikan (`/vault`).
+   * Level Karakter RPG (Level 1–100) dan akumulasi EXP.
+   * Saldo kas perbendaharaan kerajaan (`economy_kingdom_treasury`) dan saldo ekonomi reguler pemain.
+   * Progres BattlePass musim berjalan.
+2. **Entitas yang Tetap Abadi (Permanent / Kept):**
+   * **Rank Donatur Permanen:** Seluruh kepemilikan kasta (`sions`, `emperor`, `sovereign`, `archon`, `ascendant`) yang dibeli permanen **100% aman dan langsung aktif kembali** saat login di musim baru.
+   * **Saldo Diamond Webstore:** Sisa saldo Diamond premium pemain tetap tersimpan di akun.
+   * **Gelar Kehormatan & Catatan Sejarah:** Gelar prestasi penguasa musim lalu terukir di prasasti Hall of Fame di spawn baru.
 
 ---
 

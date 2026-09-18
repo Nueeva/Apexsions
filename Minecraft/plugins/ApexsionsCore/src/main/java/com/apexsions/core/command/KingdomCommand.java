@@ -67,7 +67,7 @@ public class KingdomCommand implements CommandExecutor, TabCompleter {
             case "capital":
             case "ibukota":
             case "tp":
-                handleKingdomTeleport(player);
+                handleKingdomTeleport(player, args);
                 break;
 
             case "choose":
@@ -293,6 +293,17 @@ public class KingdomCommand implements CommandExecutor, TabCompleter {
             return;
         }
 
+        if (plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isConclaveStaff(player)) {
+            if (plugin.getMortalEmulationManager() != null && plugin.getMortalEmulationManager().isEmulating(player.getUniqueId())) {
+                plugin.getKingdomNavigationGUI().open(player);
+                return;
+            }
+            if (plugin.getConclaveNavigationGUI() != null) {
+                plugin.getConclaveNavigationGUI().open(player);
+                return;
+            }
+        }
+
         Optional<PlayerData> dataOpt = plugin.getPlayerDataService().getCached(player.getUniqueId());
         if (dataOpt.isEmpty() || !dataOpt.get().hasRegion()) {
             player.sendMessage(miniMessage.deserialize("<gradient:#f39c12:#f1c40f><bold>APEXSIONS REALM</bold></gradient> <dark_gray>»</dark_gray> <yellow>Anda belum memilih kerajaan! Membuka menu pemilihan kerajaan...</yellow>"));
@@ -303,18 +314,56 @@ public class KingdomCommand implements CommandExecutor, TabCompleter {
         plugin.getKingdomNavigationGUI().open(player);
     }
 
-    private void handleKingdomTeleport(Player player) {
+    private void handleKingdomTeleport(Player player, String[] args) {
         if (!player.hasPermission("apexsionscore.command.region") && !player.hasPermission("kingdomcore.command.kingdom")) {
             player.sendMessage(miniMessage.deserialize("<red>You do not have permission to teleport to your kingdom.</red>"));
             return;
         }
 
-        Optional<PlayerData> dataOpt = plugin.getPlayerDataService().getCached(player.getUniqueId());
-        if (dataOpt.isEmpty() || !dataOpt.get().hasRegion()) {
-            if (plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isConclaveStaff(player)) {
-                player.sendMessage(miniMessage.deserialize("<gradient:#00f2fe:#4facfe><bold>✦ THE AETHERIAL CONCLAVE ✦</bold></gradient> <dark_gray>➔</dark_gray> <aqua>Sebagai entitas transenden Aetherion, Anda tidak terikat pada satu ibukota fana. Gunakan <gold>/lobby</gold> atau teleport admin untuk berpindah wilayah.</aqua>"));
+        if (plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isConclaveStaff(player)) {
+            // Explicit target provided: /k spawn <kingdom|lobby>
+            if (args.length > 1) {
+                String target = args[1].toUpperCase();
+                if (target.equalsIgnoreCase("LOBBY") || target.equalsIgnoreCase("SPAWN")) {
+                    org.bukkit.Location lobby = plugin.getConfigManager().getLobbyLocation();
+                    if (lobby != null) {
+                        player.teleportAsync(lobby);
+                        player.sendMessage(miniMessage.deserialize("<green>✓ Teleportasi kosmik berhasil ke <aqua>The Aether Citadel / Spawn Lobby</aqua>!</green>"));
+                        player.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 0.8f, 1.2f);
+                    } else {
+                        player.sendMessage(miniMessage.deserialize("<red>✕ Titik spawn lobby belum diatur! Gunakan /ac setlobby.</red>"));
+                    }
+                    return;
+                }
+                Optional<Region> rOpt = plugin.getRegionManager().getRegion(target);
+                if (rOpt.isPresent()) {
+                    plugin.getRegionTeleportService().teleport(player, rOpt.get());
+                    return;
+                } else {
+                    player.sendMessage(miniMessage.deserialize("<red>Kerajaan <yellow>" + args[1] + "</yellow> tidak ditemukan! Pilihan: ZENITHAR, SOLTERRA, SYLVAMOOR, SIONS, LOBBY</red>"));
+                    return;
+                }
+            }
+
+            // Check if emulating a mortal kingdom
+            if (plugin.getMortalEmulationManager() != null && plugin.getMortalEmulationManager().isEmulating(player.getUniqueId())) {
+                String emulated = plugin.getMortalEmulationManager().getEmulatedKingdom(player.getUniqueId()).orElse("ZENITHAR");
+                Optional<Region> emuReg = plugin.getRegionManager().getRegion(emulated);
+                if (emuReg.isPresent()) {
+                    plugin.getRegionTeleportService().teleport(player, emuReg.get());
+                    return;
+                }
+            }
+
+            // Otherwise, open Conclave portal
+            if (plugin.getConclaveNavigationGUI() != null) {
+                plugin.getConclaveNavigationGUI().open(player);
                 return;
             }
+        }
+
+        Optional<PlayerData> dataOpt = plugin.getPlayerDataService().getCached(player.getUniqueId());
+        if (dataOpt.isEmpty() || !dataOpt.get().hasRegion()) {
             player.sendMessage(miniMessage.deserialize("<gradient:#f39c12:#f1c40f><bold>APEXSIONS REALM</bold></gradient> <dark_gray>»</dark_gray> <yellow>Anda belum memilih kerajaan! Membuka menu pemilihan kerajaan...</yellow>"));
             plugin.getRegionSelectionGUI().open(player);
             return;
@@ -396,6 +445,10 @@ public class KingdomCommand implements CommandExecutor, TabCompleter {
             return result;
         } else if (args.length == 2 && (args[0].equalsIgnoreCase("setking") || args[0].equalsIgnoreCase("unsetking") || args[0].equalsIgnoreCase("removeking") || args[0].equalsIgnoreCase("setspawn") || args[0].equalsIgnoreCase("setcapital"))) {
             return Arrays.asList("ZENITHAR", "SOLTERRA", "SYLVAMOOR");
+        } else if (args.length == 2 && (args[0].equalsIgnoreCase("spawn") || args[0].equalsIgnoreCase("capital") || args[0].equalsIgnoreCase("ibukota") || args[0].equalsIgnoreCase("tp"))) {
+            if (sender instanceof Player p && ((plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isConclaveStaff(p)) || p.hasPermission("apexsionscore.admin"))) {
+                return Arrays.asList("ZENITHAR", "SOLTERRA", "SYLVAMOOR", "SIONS", "LOBBY");
+            }
         } else if (args.length == 2 && (args[0].equalsIgnoreCase("rewards") || args[0].equalsIgnoreCase("reward"))) {
             if (sender.hasPermission("apexsionscore.admin")) {
                 return Collections.singletonList("admin");

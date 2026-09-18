@@ -173,6 +173,9 @@ public class PlayerListener implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void onQuit(PlayerQuitEvent event) {
+        if (plugin.getMortalEmulationManager() != null) {
+            plugin.getMortalEmulationManager().handleQuit(event.getPlayer().getUniqueId());
+        }
         if (plugin.getWebBridgeService() != null) {
             plugin.getWebBridgeService().syncPlayerAsync(event.getPlayer());
         }

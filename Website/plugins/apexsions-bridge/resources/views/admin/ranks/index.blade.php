@@ -213,6 +213,7 @@
                             <label class="form-label small fw-bold">Durasi Hari <span class="text-danger">*</span></label>
                             <select name="duration_days" class="form-select">
                                 <option value="30">30 Hari</option>
+                                <option value="120">120 Hari (1 Season)</option>
                                 <option value="90">90 Hari</option>
                                 <option value="7">7 Hari (Spesial)</option>
                             </select>

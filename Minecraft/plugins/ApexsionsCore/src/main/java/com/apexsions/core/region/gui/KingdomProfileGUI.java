@@ -258,7 +258,10 @@ public class KingdomProfileGUI implements Listener {
                 player.closeInventory();
                 plugin.getRegionTeleportService().teleportToRegion(player);
             } else if (plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isConclaveStaff(player)) {
-                player.sendMessage(miniMessage.deserialize("<gradient:#00f2fe:#4facfe><bold>✦ THE AETHERIAL CONCLAVE ✦</bold></gradient> <dark_gray>➔</dark_gray> <aqua>Sebagai entitas transenden, gunakan <gold>/lobby</gold> atau navigasi admin untuk berpindah dimensi.</aqua>"));
+                player.closeInventory();
+                if (plugin.getConclaveNavigationGUI() != null) {
+                    plugin.getConclaveNavigationGUI().open(player);
+                }
             }
             return;
         }

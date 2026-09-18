@@ -28,17 +28,17 @@ public class MonthlyPeriodMenu extends Gui {
         setButton(4, new GuiButton(new ItemBuilder(Material.CLOCK)
                 .name("&d&lPERIODE BULANAN SEASON")
                 .lore(List.of(
-                        "&7Bulan Berjalan: &fMonth " + currentMonth + " &8(dari 3 Bulan Season)",
+                        "&7Bulan Berjalan: &fMonth " + currentMonth + " &8(dari 4 Bulan Season)",
                         "&7Sisa Waktu Bulan Ini: &a" + timeLeft,
                         "&7Quest bulanan dirancang untuk progres jangka panjang!"
                 ))
                 .build()));
 
-        // 2. Month 1, Month 2, Month 3 Buttons (Slots 11, 13, 15)
-        int[] slots = { 11, 13, 15 };
-        String[] monthNames = { "Month 1 (Bulan Ke-1)", "Month 2 (Bulan Ke-2)", "Month 3 (Bulan Ke-3)" };
+        // 2. Month 1, Month 2, Month 3, Month 4 Buttons (Slots 10, 12, 14, 16)
+        int[] slots = { 10, 12, 14, 16 };
+        String[] monthNames = { "Month 1 (Bulan Ke-1)", "Month 2 (Bulan Ke-2)", "Month 3 (Bulan Ke-3)", "Month 4 (Bulan Ke-4)" };
 
-        for (int m = 1; m <= 3; m++) {
+        for (int m = 1; m <= 4; m++) {
             final int monthNum = m;
             QuestStatus status = plugin.getQuestManager().getPeriodService().getMonthlyPeriodStatus(monthNum);
 

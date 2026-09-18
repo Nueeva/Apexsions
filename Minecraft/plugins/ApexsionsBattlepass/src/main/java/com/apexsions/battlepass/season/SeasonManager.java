@@ -119,7 +119,7 @@ public class SeasonManager {
     }
 
     /**
-     * Calculate current active month index (1, 2, or 3) relative to the Season Start Date.
+     * Calculate current active month index (1, 2, 3, or 4) relative to the Season Start Date.
      */
     public int getCurrentMonthNumber() {
         ZonedDateTime now = ZonedDateTime.now(zoneId);
@@ -127,7 +127,7 @@ public class SeasonManager {
 
         // Calculate months between start of season and now
         long monthsPassed = ChronoUnit.MONTHS.between(currentSeason.getStartDate().toLocalDate().withDayOfMonth(1), now.toLocalDate().withDayOfMonth(1));
-        int monthNum = (int) (monthsPassed % 3) + 1;
-        return Math.max(1, Math.min(3, monthNum));
+        int monthNum = (int) (monthsPassed % 4) + 1;
+        return Math.max(1, Math.min(4, monthNum));
     }
 }

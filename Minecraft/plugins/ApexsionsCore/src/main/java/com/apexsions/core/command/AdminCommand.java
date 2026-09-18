@@ -6,6 +6,7 @@ import com.apexsions.core.player.PlayerData;
 import com.apexsions.core.region.Region;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
+import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -160,6 +161,22 @@ public class AdminCommand implements CommandExecutor, TabCompleter {
                 if (sender instanceof Player pCancel) {
                     plugin.getAdminChatInputManager().cancelSession(pCancel.getUniqueId(), true);
                 }
+                break;
+
+            case "spawn":
+            case "tp":
+            case "capital":
+                handleAdminSpawn(sender, args);
+                break;
+
+            case "rtp":
+            case "krtp":
+                handleAdminRtp(sender, args);
+                break;
+
+            case "emulate":
+            case "incarnate":
+                handleAdminEmulate(sender, args);
                 break;
 
             default:
@@ -446,13 +463,91 @@ public class AdminCommand implements CommandExecutor, TabCompleter {
         sender.sendMessage(miniMessage.deserialize("<yellow>/ac resetkingdom <player></yellow> <gray>- Reset player kingdom allegiance</gray>"));
         sender.sendMessage(miniMessage.deserialize("<yellow>/ac setlobby</yellow> <gray>- Set lobby spawn to your current location/world</gray>"));
         sender.sendMessage(miniMessage.deserialize("<yellow>/ac setspawn <kingdom></yellow> <gray>- Set kingdom capital spawn to your current location</gray>"));
+        sender.sendMessage(miniMessage.deserialize("<yellow>/ac spawn <kingdom|lobby></yellow> <gray>- Direct teleport to capital/lobby</gray>"));
+        sender.sendMessage(miniMessage.deserialize("<yellow>/ac rtp [kingdom]</yellow> <gray>- Trigger smart or targeted kingdom RTP</gray>"));
+        sender.sendMessage(miniMessage.deserialize("<yellow>/ac emulate <kingdom|off></yellow> <gray>- Toggle mortal kingdom emulation</gray>"));
         sender.sendMessage(miniMessage.deserialize("<yellow>/ac info <player></yellow> <gray>- Inspect player progression data</gray>"));
+    }
+
+    private void handleAdminSpawn(CommandSender sender, String[] args) {
+        if (!(sender instanceof Player player)) {
+            sender.sendMessage(miniMessage.deserialize("<red>Only in-game players can use /ac spawn.</red>"));
+            return;
+        }
+
+        if (args.length < 2) {
+            if (plugin.getConclaveNavigationGUI() != null) {
+                plugin.getConclaveNavigationGUI().open(player);
+                return;
+            }
+            player.sendMessage(miniMessage.deserialize("<red>Usage: /ac spawn <ZENITHAR|SOLTERRA|SYLVAMOOR|SIONS|LOBBY></red>"));
+            return;
+        }
+
+        String target = args[1].toUpperCase();
+        if (target.equals("LOBBY") || target.equals("SPAWN")) {
+            org.bukkit.Location lobby = plugin.getConfigManager().getLobbyLocation();
+            if (lobby != null) {
+                player.teleportAsync(lobby);
+                player.sendMessage(miniMessage.deserialize("<green>✓ Teleportasi admin berhasil ke <aqua>The Aether Citadel / Spawn Lobby</aqua>!</green>"));
+                player.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 0.8f, 1.2f);
+            } else {
+                player.sendMessage(miniMessage.deserialize("<red>✕ Titik spawn lobby belum diatur! Gunakan /ac setlobby.</red>"));
+            }
+            return;
+        }
+
+        Optional<Region> rOpt = plugin.getRegionManager().getRegion(target);
+        if (rOpt.isPresent()) {
+            plugin.getRegionTeleportService().teleport(player, rOpt.get());
+        } else {
+            player.sendMessage(miniMessage.deserialize("<red>Kerajaan <yellow>" + args[1] + "</yellow> tidak valid! Pilihan: ZENITHAR, SOLTERRA, SYLVAMOOR, SIONS, LOBBY</red>"));
+        }
+    }
+
+    private void handleAdminRtp(CommandSender sender, String[] args) {
+        if (!(sender instanceof Player player)) {
+            sender.sendMessage(miniMessage.deserialize("<red>Only in-game players can use /ac rtp.</red>"));
+            return;
+        }
+
+        if (args.length >= 2) {
+            plugin.getKingdomRtpService().executeRtpTargeted(player, args[1]);
+        } else {
+            plugin.getKingdomRtpService().executeRtp(player);
+        }
+    }
+
+    private void handleAdminEmulate(CommandSender sender, String[] args) {
+        if (!(sender instanceof Player player)) {
+            sender.sendMessage(miniMessage.deserialize("<red>Only in-game players can use /ac emulate.</red>"));
+            return;
+        }
+
+        if (plugin.getMortalEmulationManager() == null) {
+            player.sendMessage(miniMessage.deserialize("<red>Sistem Mortal Emulation belum aktif.</red>"));
+            return;
+        }
+
+        if (args.length < 2) {
+            String current = plugin.getMortalEmulationManager().getEmulatedKingdom(player.getUniqueId()).orElse("NONE");
+            player.sendMessage(miniMessage.deserialize("<yellow>Mode Emulasi Mortal saat ini: <gold>" + current + "</gold></yellow>"));
+            player.sendMessage(miniMessage.deserialize("<yellow>Penggunaan: /ac emulate <ZENITHAR|SOLTERRA|SYLVAMOOR|OFF></yellow>"));
+            return;
+        }
+
+        String target = args[1].toUpperCase();
+        if (target.equals("OFF") || target.equals("CLEAR") || target.equals("RESET") || target.equals("STOP")) {
+            plugin.getMortalEmulationManager().clearEmulation(player);
+        } else {
+            plugin.getMortalEmulationManager().setEmulation(player, target);
+        }
     }
 
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (args.length == 1) {
-            List<String> list = Arrays.asList("reload", "war", "setlevel", "addxp", "setkingdom", "resetkingdom", "setlobby", "setspawn", "info", "sync");
+            List<String> list = Arrays.asList("reload", "war", "setlevel", "addxp", "setkingdom", "resetkingdom", "setlobby", "setspawn", "spawn", "rtp", "emulate", "info", "sync");
             return filter(list, args[0]);
         }
         if (args.length == 2 && args[0].equalsIgnoreCase("war")) {
@@ -460,6 +555,15 @@ public class AdminCommand implements CommandExecutor, TabCompleter {
         }
         if (args.length == 2 && (args[0].equalsIgnoreCase("setspawn") || args[0].equalsIgnoreCase("setcapital") || args[0].equalsIgnoreCase("setkingdomspawn"))) {
             return filter(plugin.getRegionManager().getPlayableKingdomKeys(), args[1]);
+        }
+        if (args.length == 2 && (args[0].equalsIgnoreCase("spawn") || args[0].equalsIgnoreCase("tp") || args[0].equalsIgnoreCase("capital"))) {
+            return filter(Arrays.asList("ZENITHAR", "SOLTERRA", "SYLVAMOOR", "SIONS", "LOBBY"), args[1]);
+        }
+        if (args.length == 2 && (args[0].equalsIgnoreCase("rtp") || args[0].equalsIgnoreCase("krtp"))) {
+            return filter(Arrays.asList("ZENITHAR", "SOLTERRA", "SYLVAMOOR", "WILD"), args[1]);
+        }
+        if (args.length == 2 && (args[0].equalsIgnoreCase("emulate") || args[0].equalsIgnoreCase("incarnate"))) {
+            return filter(Arrays.asList("ZENITHAR", "SOLTERRA", "SYLVAMOOR", "OFF"), args[1]);
         }
         if (args.length == 2 && (args[0].equalsIgnoreCase("setlevel") || args[0].equalsIgnoreCase("addxp") || args[0].equalsIgnoreCase("setkingdom") || args[0].equalsIgnoreCase("resetkingdom") || args[0].equalsIgnoreCase("info") || args[0].equalsIgnoreCase("sync"))) {
             return null; // Player names

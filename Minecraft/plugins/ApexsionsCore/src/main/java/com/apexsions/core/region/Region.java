@@ -178,4 +178,8 @@ public class Region {
                 spawnYaw != null ? spawnYaw : 0f,
                 spawnPitch != null ? spawnPitch : 0f));
     }
+
+    public Location getSpawnLocation() {
+        return getBukkitSpawnLocation().orElse(null);
+    }
 }

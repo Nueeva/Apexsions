@@ -54,10 +54,37 @@ public class KingdomRtpService {
             return;
         }
 
-        // 1. Check Combat Tag
-        if (plugin.getCombatTagService() != null && plugin.getCombatTagService().isCombatTagged(player.getUniqueId())) {
+        // 1. Check Combat Tag (Bypassed for Conclave Staff)
+        boolean isStaff = plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isConclaveStaff(player);
+        if (!isStaff && plugin.getCombatTagService() != null && plugin.getCombatTagService().isCombatTagged(player.getUniqueId())) {
             long remaining = plugin.getCombatTagService().getRemainingSeconds(player.getUniqueId());
             player.sendMessage(miniMessage.deserialize("<red>⚔ Kamu sedang dalam mode tempur (Combat Tag: <yellow>" + remaining + "s</yellow>)! RTP dinonaktifkan.</red>"));
+            return;
+        }
+
+        // Conclave Staff Smart RTP Routing
+        if (isStaff) {
+            // Check if staff is currently emulating a mortal kingdom
+            if (plugin.getMortalEmulationManager() != null) {
+                Optional<String> emu = plugin.getMortalEmulationManager().getEmulatedKingdom(player.getUniqueId());
+                if (emu.isPresent()) {
+                    executeRtpTargeted(player, emu.get());
+                    return;
+                }
+            }
+
+            // Check if staff is standing in any playable kingdom territory
+            Optional<Region> currentRegion = plugin.getRegionManager().getRegionAt(player.getLocation());
+            if (currentRegion.isPresent() && currentRegion.get().isPlayable()) {
+                executeRtpTargeted(player, currentRegion.get().getKey());
+                return;
+            }
+
+            // Outside mortal territory -> open Conclave Navigation GUI
+            player.sendMessage(miniMessage.deserialize("<gradient:#00f2fe:#4facfe><bold>✦ THE AETHERIAL CONCLAVE ✦</bold></gradient> <dark_gray>➔</dark_gray> <aqua>Silakan pilih kerajaan mortal tujuan RTP melalui portal dimensi.</aqua>"));
+            if (plugin.getConclaveNavigationGUI() != null) {
+                plugin.getConclaveNavigationGUI().open(player);
+            }
             return;
         }
 
@@ -98,10 +125,9 @@ public class KingdomRtpService {
         long cooldownSeconds = getCooldownSeconds(player);
         if (!player.hasPermission("apexsionscore.rtp.bypass") && cooldownSeconds > 0) {
             Long expireTime = cooldowns.get(player.getUniqueId());
-            if (expireTime != null && expireTime > now) {
-                long remaining = (expireTime - now + 999) / 1000;
-                String remainingFormatted = formatCooldown(remaining);
-                player.sendMessage(miniMessage.deserialize("<red>Tunggu <yellow>" + remainingFormatted + "</yellow> lagi sebelum dapat menggunakan /rtp kembali.</red>"));
+            if (expireTime != null && now < expireTime) {
+                long leftSeconds = Math.max(1, (expireTime - now) / 1000);
+                player.sendMessage(miniMessage.deserialize("<red>⏳ Harap tunggu <yellow>" + leftSeconds + " detik</yellow> sebelum menggunakan /rtp kembali.</red>"));
                 return;
             }
         }
@@ -109,6 +135,24 @@ public class KingdomRtpService {
         // 6. Start Search
         player.sendMessage(miniMessage.deserialize("<gold>🔍 Mencari lokasi acak yang aman di wilayah kerajaan <yellow>" + region.getDisplayName() + "</yellow>...</gold>"));
         findAndTeleport(player, region, 0, 30, cooldownSeconds);
+    }
+
+    /**
+     * Executes targeted RTP into a specific kingdom by name (Admin/Conclave feature).
+     */
+    public void executeRtpTargeted(Player player, String kingdomKey) {
+        if (player == null || kingdomKey == null) return;
+        String keyUpper = kingdomKey.toUpperCase(Locale.ROOT);
+        Optional<Region> regionOpt = plugin.getRegionManager().getRegion(keyUpper);
+
+        if (regionOpt.isEmpty() || !regionOpt.get().isPlayable()) {
+            player.sendMessage(miniMessage.deserialize("<red>✕ Kerajaan <yellow>" + kingdomKey + "</yellow> tidak ditemukan atau bukan wilayah yang dapat di-RTP!</red>"));
+            return;
+        }
+
+        Region region = regionOpt.get();
+        player.sendMessage(miniMessage.deserialize("<gradient:#00f2fe:#4facfe><bold>✦ CELESTIAL RTP ✦</bold></gradient> <gray>Mencari lokasi acak di teritori <gold>" + region.getDisplayName() + "</gold>...</gray>"));
+        findAndTeleport(player, region, 0, 30, 0L);
     }
 
     /**

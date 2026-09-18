@@ -262,8 +262,8 @@
                             $badgeClass = '';
 
                             $isTrial30 = str_contains($packageName, '30 hari') || str_contains($packageName, 'trial 30');
-                            $isTrial90 = str_contains($packageName, '90 hari') || str_contains($packageName, 'trial 90');
-                            $isTrial = $isTrial30 || $isTrial90 || str_contains($packageName, 'trial');
+                            $isTrial120 = str_contains($packageName, '120 hari') || str_contains($packageName, 'trial 120') || str_contains($packageName, '90 hari') || str_contains($packageName, 'trial 90');
+                            $isTrial = $isTrial30 || $isTrial120 || str_contains($packageName, 'trial');
                             $isPermanent = str_contains($packageName, 'permanen');
 
                             if (str_contains($packageName, 'sions')) {

@@ -191,7 +191,10 @@ class RankAdminController extends Controller
         try {
             if (class_exists(Package::class)) {
                 Package::where('name', 'LIKE', "{$validated['display_name']} (Trial 30 Hari)%")->update(['price' => $validated['price_trial_30']]);
-                Package::where('name', 'LIKE', "{$validated['display_name']} (Trial 90 Hari)%")->update(['price' => $validated['price_trial_90']]);
+                Package::where(function ($query) use ($validated) {
+                    $query->where('name', 'LIKE', "{$validated['display_name']} (Trial 120 Hari)%")
+                          ->orWhere('name', 'LIKE', "{$validated['display_name']} (Trial 90 Hari)%");
+                })->update(['price' => $validated['price_trial_90']]);
                 Package::where('name', 'LIKE', "{$validated['display_name']} (Permanen)%")->update(['price' => $validated['price_permanent']]);
             }
         } catch (\Throwable $ignored) {}

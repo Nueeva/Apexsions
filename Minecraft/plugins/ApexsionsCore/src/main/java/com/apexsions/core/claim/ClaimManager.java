@@ -414,7 +414,8 @@ public class ClaimManager {
 
     public boolean canBuild(Player player, Location loc) {
         if (player == null || loc == null) return false;
-        if (player.isOp() || player.hasPermission("apexsions.admin.bypass.claim") || player.hasPermission("apexsions.admin")) {
+        if (player.isOp() || player.hasPermission("apexsions.admin.bypass.claim") || player.hasPermission("apexsions.admin")
+                || (plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isConclaveStaff(player))) {
             return true;
         }
 
@@ -453,7 +454,8 @@ public class ClaimManager {
 
     public boolean canInteract(Player player, Location loc, Material mat) {
         if (player == null || loc == null) return false;
-        if (player.isOp() || player.hasPermission("apexsions.admin.bypass.claim") || player.hasPermission("apexsions.admin")) {
+        if (player.isOp() || player.hasPermission("apexsions.admin.bypass.claim") || player.hasPermission("apexsions.admin")
+                || (plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isConclaveStaff(player))) {
             return true;
         }
 
@@ -648,7 +650,9 @@ public class ClaimManager {
 
         // Determine player's Kingdom
         String kingdomKey = null;
-        if (plugin.getRegionManager() != null) {
+        if (plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isConclaveStaff(player)) {
+            kingdomKey = "AETHERION";
+        } else if (plugin.getRegionManager() != null) {
             Optional<PlayerData> pData = plugin.getPlayerDataService().getCached(player.getUniqueId());
             if (pData.isPresent() && pData.get().getRegionId() != null) {
                 Optional<Region> reg = plugin.getRegionManager().getRegionById(pData.get().getRegionId());
