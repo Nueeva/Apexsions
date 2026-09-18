@@ -7,6 +7,7 @@ use Azuriom\Plugin\ApexsionsBridge\Controllers\Admin\AuctionAdminController;
 use Azuriom\Plugin\ApexsionsBridge\Controllers\Admin\EconomyAdminController;
 use Azuriom\Plugin\ApexsionsBridge\Controllers\Admin\AutomationAdminController;
 use Azuriom\Plugin\ApexsionsBridge\Controllers\Admin\IncidentAdminController;
+use Azuriom\Plugin\ApexsionsBridge\Controllers\Admin\MarketAdminController;
 use Azuriom\Plugin\ApexsionsBridge\Controllers\Admin\IntelligenceAdminController;
 use Azuriom\Plugin\ApexsionsBridge\Controllers\Admin\ModerationAdminController;
 use Azuriom\Plugin\ApexsionsBridge\Controllers\Admin\NotificationAdminController;
@@ -127,6 +128,17 @@ Route::middleware(['web', 'admin-access'])->prefix('admin')->name('admin.')->gro
             Route::post('/{id}/quarantine', [AuctionAdminController::class, 'quarantine'])->name('quarantine');
             Route::post('/{id}/cancel', [AuctionAdminController::class, 'cancel'])->name('cancel');
         });
+    });
+
+    // Kingdom Market & Dynamic Shop Administration
+    Route::prefix('market')->name('market.')->middleware('can:admin.users')->group(function () {
+        Route::get('/', [MarketAdminController::class, 'index'])->name('index');
+        Route::post('/kingdoms', [MarketAdminController::class, 'updateKingdoms'])->name('kingdoms.update');
+        Route::post('/dynamics', [MarketAdminController::class, 'updateDynamics'])->name('dynamics.update');
+        Route::post('/items', [MarketAdminController::class, 'updateItem'])->name('items.update');
+        Route::post('/items/batch', [MarketAdminController::class, 'batchUpdateItems'])->name('items.batch');
+        Route::post('/sync-now', [MarketAdminController::class, 'syncNow'])->name('sync-now');
+        Route::post('/reset-defaults', [MarketAdminController::class, 'resetDefaults'])->name('reset-defaults');
     });
 
     // Server Operations & Safe Control

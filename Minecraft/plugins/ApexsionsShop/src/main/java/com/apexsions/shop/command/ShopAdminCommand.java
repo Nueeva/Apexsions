@@ -39,8 +39,27 @@ public class ShopAdminCommand implements CommandExecutor, TabCompleter {
 
         if (args.length > 0 && args[0].equalsIgnoreCase("reload")) {
             plugin.reloadPluginConfig();
+            if (plugin.getWebMarketSyncService() != null) {
+                plugin.getWebMarketSyncService().syncAsync();
+            }
             sender.sendMessage(miniMessage.deserialize(plugin.getConfig().getString("messages.prefix", "") +
-                    plugin.getConfig().getString("messages.reload-success", "<green>Konfigurasi berhasil dimuat ulang!</green>")));
+                    plugin.getConfig().getString("messages.reload-success", "<green>Konfigurasi berhasil dimuat ulang & disinkronkan!</green>")));
+            return true;
+        }
+
+        if (args.length > 0 && args[0].equalsIgnoreCase("sync")) {
+            sender.sendMessage(miniMessage.deserialize("<gold>[ApexsionsShop]</gold> <yellow>Menghubungi WebBridge API untuk menarik konfigurasi pasar...</yellow>"));
+            if (plugin.getWebMarketSyncService() != null) {
+                plugin.getWebMarketSyncService().syncAsync().thenAccept(success -> {
+                    if (success) {
+                        sender.sendMessage(miniMessage.deserialize("<gold>[ApexsionsShop]</gold> <green>Konfigurasi pasar & harga item sukses disinkronkan dari web!</green>"));
+                    } else {
+                        sender.sendMessage(miniMessage.deserialize("<gold>[ApexsionsShop]</gold> <red>Gagal menyinkronkan dari WebBridge API. Cek log server.</red>"));
+                    }
+                });
+            } else {
+                sender.sendMessage(miniMessage.deserialize("<red>Layanan WebMarketSyncService tidak tersedia.</red>"));
+            }
             return true;
         }
 
@@ -85,7 +104,7 @@ public class ShopAdminCommand implements CommandExecutor, TabCompleter {
         List<String> completions = new ArrayList<>();
         if (args.length == 1) {
             String input = args[0].toLowerCase(Locale.ROOT);
-            for (String sub : List.of("view", "kingdoms", "reload", "zenithar", "solterra", "sylvamoor")) {
+            for (String sub : List.of("view", "kingdoms", "reload", "sync", "zenithar", "solterra", "sylvamoor")) {
                 if (sub.startsWith(input)) {
                     completions.add(sub);
                 }

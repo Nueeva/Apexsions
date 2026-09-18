@@ -88,6 +88,7 @@ class ApexsionsBridgeServiceProvider extends BasePluginServiceProvider
             'apexsions.moderation.manage' => 'Terapkan & Cabut Hukuman',
             'apexsions.economy.view' => 'Pantau Transaksi & Pelelangan',
             'apexsions.economy.manage' => 'Penyesuaian Saldo & Karantina Lelang',
+            'apexsions.market.manage' => 'Kelola Pasar Kerajaan & Harga Komoditas',
             'apexsions.server.view' => 'Pantau Telemetry & Health Server',
             'apexsions.server.manage' => 'Aksi Operasional Server & Maintenance',
             'apexsions.plugins.view' => 'Lihat Plugin Suite & Kapabilitas',
@@ -193,6 +194,12 @@ class ApexsionsBridgeServiceProvider extends BasePluginServiceProvider
                 'name' => 'Auction Inspector',
                 'icon' => 'bi bi-shop',
                 'route' => 'apexsions-bridge.admin.economy.auctions.index',
+                'permission' => 'admin.users',
+            ],
+            'apexsions-market' => [
+                'name' => 'Kingdom Market & Shop',
+                'icon' => 'bi bi-shop-window',
+                'route' => 'apexsions-bridge.admin.market.index',
                 'permission' => 'admin.users',
             ],
             'apexsions-server' => [

@@ -37,4 +37,7 @@ Route::post('/events/sync', [LinkVerificationController::class, 'syncEvent'])->n
 Route::match(['get', 'post'], '/vote/callback/{siteSlug}', [\Azuriom\Plugin\ApexsionsBridge\Controllers\VoteController::class, 'handleCallback'])->name('vote.callback');
 Route::post('/vote/check-status', [\Azuriom\Plugin\ApexsionsBridge\Controllers\VoteController::class, 'checkStatus'])->name('vote.check-status');
 
+// Kingdom Market & Dynamic Shop Configuration Endpoint for Game Server
+Route::get('/shop/config', [\Azuriom\Plugin\ApexsionsBridge\Controllers\Admin\MarketAdminController::class, 'getShopConfig'])->name('shop.config');
+
 

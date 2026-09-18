@@ -31,6 +31,20 @@ const APX_I18N = {
         nav_admin_panel: 'Admin Panel',
         nav_logout: 'Keluar',
 
+        // Admin Market
+        admin_market_title: 'Kingdom Market & Shop Admin',
+        admin_market_subtitle: 'Kendali terpusat perbankan komoditas, tarif pajak 3 kerajaan, kurva saturasi pasokan, dan katalog item in-game.',
+        admin_market_sync_btn: 'Sinkronkan ke Game Server',
+        admin_market_reset_btn: 'Reset ke Standar Seimbang',
+        admin_market_total_items: 'Total Komoditas',
+        admin_market_avg_ratio: 'Rata-Rata Rasio Jual',
+        admin_market_taxes: 'Tarif Pajak Kerajaan',
+        admin_market_bridge_status: 'WebBridge Status',
+        tab_kingdoms: 'Tiga Kerajaan & Pajak',
+        tab_dynamics: 'Pasar Dinamis & Cuaca',
+        tab_catalog: 'Katalog Item & Harga',
+        tab_sync: 'Sinkronisasi & API',
+
         // Hero
         hero_brand_mark: 'APEXSIONS • THE PEAK CIVILIZATIONS',
         hero_axis_foundation: 'FONDASI',
@@ -854,6 +868,20 @@ const APX_I18N = {
         nav_order_history: 'Purchase History',
         nav_admin_panel: 'Admin Panel',
         nav_logout: 'Logout',
+
+        // Admin Market
+        admin_market_title: 'Kingdom Market & Shop Admin',
+        admin_market_subtitle: 'Centralized control for commodity banking, 3-kingdom taxes, supply saturation curves, and in-game item catalog.',
+        admin_market_sync_btn: 'Sync to Game Server',
+        admin_market_reset_btn: 'Reset to Balanced Defaults',
+        admin_market_total_items: 'Total Commodities',
+        admin_market_avg_ratio: 'Average Sell Ratio',
+        admin_market_taxes: 'Kingdom Tax Rates',
+        admin_market_bridge_status: 'WebBridge Status',
+        tab_kingdoms: 'Three Kingdoms & Taxes',
+        tab_dynamics: 'Dynamic Market & Weather',
+        tab_catalog: 'Item Catalog & Pricing',
+        tab_sync: 'Sync & API',
 
         // Hero
         hero_brand_mark: 'APEXSIONS • THE PEAK CIVILIZATIONS',

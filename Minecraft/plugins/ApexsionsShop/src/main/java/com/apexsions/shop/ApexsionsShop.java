@@ -38,6 +38,7 @@ public class ApexsionsShop extends JavaPlugin implements ApexsionsShopAPI {
     private TaxService taxService;
     private DynamicPriceCalculator dynamicPriceCalculator;
     private MarketBroadcastService marketBroadcastService;
+    private com.apexsions.shop.sync.WebMarketSyncService webMarketSyncService;
 
     @Override
     public void onEnable() {
@@ -65,6 +66,12 @@ public class ApexsionsShop extends JavaPlugin implements ApexsionsShopAPI {
         this.dynamicPriceCalculator = new DynamicPriceCalculator(this);
         this.marketBroadcastService = new MarketBroadcastService(this);
         this.marketBroadcastService.start();
+
+        // 2.1. Initialize WebMarketSyncService & schedule initial async pull
+        this.webMarketSyncService = new com.apexsions.shop.sync.WebMarketSyncService(this);
+        getServer().getScheduler().runTaskLaterAsynchronously(this, () -> {
+            webMarketSyncService.syncAsync();
+        }, 100L);
 
         // 3. Register SPI API Provider
         com.apexsions.shop.api.ApexsionsShopProvider.register(this);
@@ -122,6 +129,9 @@ public class ApexsionsShop extends JavaPlugin implements ApexsionsShopAPI {
         if (configManager != null) {
             configManager.load();
         }
+        if (webMarketSyncService != null) {
+            webMarketSyncService.reloadSettings();
+        }
         if (itemRegistry != null) {
             itemRegistry.load();
         }
@@ -129,6 +139,10 @@ public class ApexsionsShop extends JavaPlugin implements ApexsionsShopAPI {
 
     public static ApexsionsShop getInstance() {
         return instance;
+    }
+
+    public com.apexsions.shop.sync.WebMarketSyncService getWebMarketSyncService() {
+        return webMarketSyncService;
     }
 
     public MarketBroadcastService getMarketBroadcastService() {
