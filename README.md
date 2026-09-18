@@ -12,17 +12,25 @@ Repository monorepo resmi untuk ekosistem **Apexsions**:
 Apexsions/
 ├── Minecraft/             # Seluruh kode sumber, konfigurasi, dan build plugin Minecraft
 │   ├── plugins/          # 9 Plugin Suite (ApexsionsCore, Chat, Economy, Battlepass, Shop, Media, CustomEnchants, Crates, Fishing)
-│   ├── docs/             # Dokumentasi teknis & arsitektur plugin
+│   ├── config/           # Konfigurasi runtime server (AuthMe, BlueMap, MythicMobs, TAB)
+│   ├── packs/            # Resource packs & custom scoreboard assets
 │   ├── build.ps1         # Smart Turbo Multi-Compiler PowerShell
 │   ├── build.gradle      # Gradle root configuration
 │   └── DOKUMENTASI.md    # Manual teknis plugin Minecraft
 ├── Website/               # Aplikasi web portal, store, bridge & theme
+├── docs/                  # Hub dokumentasi terpusat
+│   ├── placeholders/     # Panduan lengkap PlaceholderAPI per modul plugin
+│   ├── prompts/          # Spesifikasi sistem prompt AI Minecraft Plugin Engineer
+│   └── *.md              # Manual teknis modul & panduan integrasi database
 ├── .agents/               # Custom rules & workflows untuk Google Antigravity & AI Agents
 ├── graphify-out/          # Persistent Knowledge Graph (11.8k+ nodes, visualizer, audit report)
 ├── CHANGELOG.md           # Riwayat perubahan kronologis & panduan handoff AI/dev
 ├── DOKUMENTASI.md         # Master Technical Documentation & Ecosystem State
 ├── GEMINI.md              # AI Agent Development Guidelines
 ├── AGENTS.md             # Universal Coding Agent Guidelines
+├── LORE.md                # Kitab kanon kosmologi & tatanan semesta Apexsions
+├── DESIGN.md              # Sistem desain visual (Obsidian, Ivory & Royal Gold)
+├── PRODUCT.md             # Blueprint spesifikasi produk portal web
 └── README.md             # Dokumentasi ringkas repositori
 ```
 
@@ -435,7 +443,7 @@ File `.jar` hasil kompilasi siap pasang akan tersedia di:
 
 ## 📚 5. Indeks Dokumentasi Lengkap (`docs/`)
 
-Untuk panduan teknis mendalam per modul, silakan baca dokumentasi di folder `docs/`:
+Untuk panduan teknis mendalam per modul dan ekosistem, silakan baca dokumentasi di folder `docs/`:
 - 👑 [**ApexsionsCore Manual**](docs/APEXSIONS_CORE.md)
 - 💬 [**ApexsionsChat Manual**](docs/APEXSIONS_CHAT.md)
 - 💰 [**ApexsionsEconomy Manual**](docs/APEXSIONS_ECONOMY.md)
@@ -443,8 +451,12 @@ Untuk panduan teknis mendalam per modul, silakan baca dokumentasi di folder `doc
 - 🛒 [**ApexsionsShop Manual**](docs/APEXSIONS_SHOP.md)
 - 🖼️ [**ApexsionsMedia Manual**](docs/APEXSIONS_MEDIA.md)
 - 🏛️ [**Ecosystem Architecture Guide**](docs/ECOSYSTEM_ARCHITECTURE.md)
+- 🌟 [**PlaceholderAPI Reference Guide**](docs/placeholders/README.md)
+- 🤖 [**System Prompt: Senior Plugin Engineer**](docs/prompts/SYSTEM_PROMPT_MINECRAFT_ENGINEER.md)
+- 🗄️ [**PostgreSQL Economy Integration Guide**](docs/ECONOMY_INTEGRATION_POSTGRESQL.md)
+- 🗄️ [**PostgreSQL Battlepass Integration Guide**](docs/BATTLEPASS_INTEGRATION_POSTGRESQL.md)
+- 🎮 [**Minecraft Plugin Suite Technical Manual**](Minecraft/DOKUMENTASI.md)
 - 🛡️ [**Apexsions Admin & Operations Guide**](Website/ADMIN_GUIDE.md)
-- 🗄️ [**PostgreSQL Integration Guide**](docs/ECONOMY_INTEGRATION_POSTGRESQL.md)
 
 ---
 

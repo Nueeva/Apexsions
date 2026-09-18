@@ -36,6 +36,26 @@ Bagi AI Agent atau developer yang melanjutkan pekerjaan di repositori ini, perha
 
 ---
 
+## 🧹 Repository Architecture & Workspace Cleanup Milestone — Deduplikasi Berkas, Sentralisasi Hub `docs/`, & Tata Kelola Bersih [v1.3.3]
+> **Periode Pengembangan:** 18 September 2026 | **Status:** Implemented & Synchronized to Main
+
+### 📋 Ikhtisar Perapihan & Restrukturisasi Berkas Repositori
+Menertibkan struktur folder dan berkas repositori Apexsions, mengeliminasi seluruh redundansi, dan mengkonsolidasikan dokumentasi ke hub terpusat:
+1. **Eliminasi Berkas Duplikat & Stale:**
+   - Menghapus direktori bersarang ganda `Minecraft/.agents/` yang tidak valid.
+   - Menghapus salinan usang dari `AGENTS.md`, `GEMINI.md`, dan `README.md` di dalam folder `Minecraft/`, memastikan Single Source of Truth berada di root repositori.
+   - Menghapus `Minecraft/.gitignore` yang 100% redundan dengan root `.gitignore`.
+   - Menghapus artefak biner usang `Minecraft/plugins/ApexsionsCrates/ApexsionsCrate-1.0.0.jar` yang bertipe nama tunggal (typo).
+2. **Sentralisasi Hub Dokumentasi Terpusat (`docs/`):**
+   - Memindahkan seluruh berkas manual modul plugin dan panduan integrasi arsitektur dari `Minecraft/docs/` ke root `docs/` (`APEXSIONS_CORE.md`, `APEXSIONS_CHAT.md`, `APEXSIONS_ECONOMY.md`, `APEXSIONS_BATTLEPASS.md`, `APEXSIONS_SHOP.md`, `APEXSIONS_MEDIA.md`, `ECOSYSTEM_ARCHITECTURE.md`, `ECONOMY_INTEGRATION_POSTGRESQL.md`, `BATTLEPASS_INTEGRATION_POSTGRESQL.md`).
+   - Memindahkan direktori dokumentasi placeholder `PlaceholderApexsions/` dari root repositori ke `docs/placeholders/`, serta memperbaiki seluruh hyperlink internal ke relative path yang valid.
+   - Memindahkan master system prompt `SYSTEM PROMPT_ Apexsions Senior Minecraft Plugin Engineer.md` dari root dan `Minecraft/` ke format standar `docs/prompts/SYSTEM_PROMPT_MINECRAFT_ENGINEER.md`.
+3. **Penyelarasan Indeks & Navigasi Monorepo:**
+   - Memperbarui diagram pohon arsitektur monorepo pada `README.md` agar mencerminkan keberadaan `docs/`, `docs/placeholders/`, `docs/prompts/`, dan aset runtime `Minecraft/config/` serta `Minecraft/packs/`.
+   - Memutakhirkan indeks dokumentasi lengkap pada `README.md` sehingga seluruh link ke manual modul, placeholder, prompt, dan panduan teknis 100% aktif dan terhubung.
+
+---
+
 ## 🛠️ Tooling & Infrastructure Milestone — Integrasi Native Graphify Knowledge Graph & Antigravity Workflow [v1.3.2]
 > **Periode Pengembangan:** 18 September 2026 | **Status:** Implemented & Synchronized to Main
 
