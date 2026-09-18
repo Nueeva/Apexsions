@@ -47,5 +47,5 @@ decompiled/
 # Scratch & temporary diagnostic scripts
 scratch/
 
-
-
+# Graphify knowledge graph outputs
+graphify-out/
