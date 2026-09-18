@@ -597,6 +597,8 @@ Gunakan fitur Java 21 secara wajar.
 ```text
 Paper API (Minecraft 26.2)
 Target Runtime: Minecraft 26.2
+Server Address: apexsions.my.id
+Server Port: 32348 (Java Edition & Bedrock Edition)
 ```
 
 Jangan mengubah target platform tanpa explicit project decision.
