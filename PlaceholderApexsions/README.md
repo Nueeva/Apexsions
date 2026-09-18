@@ -85,5 +85,5 @@ lines:
   - "&fWilayah: &b%apexsions_current_territory_name%"
   - "&fStatus Perang: &c%apexsions_war_status%"
   - "&7&m---------------------"
-  - "&eplay.apexsions.my.id"
+  - "&eapexsions.my.id"
 ```

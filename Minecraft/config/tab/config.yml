@@ -74,14 +74,23 @@ scoreboard:
       title: '<#f1c40f>&l✦ APEXSIONS ✦</#e67e22>'
       display-condition: '%bedrock%=true'
       lines:
-      - '&8&m------------'
-      - ' &6👑 &fRank: %apexsions_rank_display%'
-      - ' &e🏛 &fKerajaan: &e%apexsions_kingdom_formatted%'
-      - ' &a💵 &fUang: &a%apexsions_balance_rupiah_formatted%'
-      - ' &3⚔ &fLevel: &b%apexsions_level%'
-      - ' &a👥 &fOnline: &a%online%'
-      - '&8&m------------'
-      - '&eplay.apexsions.my.id'
+      - '&8&m------------------'
+      - '&7⏰ %time% &8• &b%ping%ms &8• &a%online% Online'
+      - ''
+      - '<#f1c40f>&l>> PROFIL'
+      - ' &6👑 &fRANK: %apexsions_rank_display%'
+      - ' &e🏛 &fKINGDOM: &e%apexsions_kingdom_formatted%'
+      - ''
+      - '<#10ac84>&l>> EKONOMI'
+      - ' &a💵 &fRUPIAH: &a%apexsions_balance_rupiah_formatted%'
+      - ' &b💎 &fDIAMOND: &b%apexsions_balance_diamond_formatted%'
+      - ' &6🪙 &fCOINS: &e%apexsionsbattlepass_currency_formatted%'
+      - ''
+      - '<#00d2d3>&l>> PROGRESI'
+      - ' &3⚔ &fLEVEL: &b%apexsions_level% &8(&3%apexsions_xp%&7/&3%apexsions_req_xp%&8)'
+      - '&8&m------------------'
+      - '&eapexsions.my.id'
+      - '&7web: &fweb.apexsions.my.id'
     scoreboard-1.20.3+:
       title: '<#f1c40f>&l✦ APEXSIONS ✦</#e67e22>'
       display-condition: '%player-version-id%>=765;%bedrock%=false'
@@ -101,7 +110,8 @@ scoreboard:
       - '<#00d2d3>&l>> PROGRESI'
       - ' &3⚔ &fLEVEL: &b%apexsions_level% &8(&3%apexsions_xp%&7/&3%apexsions_req_xp%&8)'
       - '&8&m------------------'
-      - '&eplay.apexsions.my.id'
+      - '&eapexsions.my.id'
+      - '&7web: &fweb.apexsions.my.id'
     scoreboard:
       title: '<#f1c40f>&l✦ APEXSIONS ✦</#e67e22>'
       lines:
@@ -120,7 +130,8 @@ scoreboard:
       - '<#00d2d3>&l>> PROGRESI'
       - ' &3⚔ &fLEVEL: &b%apexsions_level% &8(&3%apexsions_xp%&7/&3%apexsions_req_xp%&8)'
       - '&8&m------------------'
-      - '&eplay.apexsions.my.id'
+      - '&eapexsions.my.id'
+      - '&7web: &fweb.apexsions.my.id'
 
 layout:
   enabled: false

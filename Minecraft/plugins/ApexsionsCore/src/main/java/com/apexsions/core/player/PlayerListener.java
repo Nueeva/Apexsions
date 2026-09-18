@@ -147,8 +147,15 @@ public class PlayerListener implements Listener {
         }
 
         boolean overrideBed = plugin.getConfigManager().isOverrideBedSpawn();
-        if ((event.isBedSpawn() || event.isAnchorSpawn()) && !overrideBed) {
-            return;
+        if (!overrideBed) {
+            if (event.isBedSpawn() || event.isAnchorSpawn()) {
+                return;
+            }
+            Location bedLoc = player.getRespawnLocation();
+            if (bedLoc != null) {
+                event.setRespawnLocation(bedLoc);
+                return;
+            }
         }
 
         plugin.getPlayerDataService().getCached(player.getUniqueId()).ifPresent(data -> {

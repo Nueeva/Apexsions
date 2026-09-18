@@ -36,6 +36,37 @@ Bagi AI Agent atau developer yang melanjutkan pekerjaan di repositori ini, perha
 
 ---
 
+## 🚀 Sprint 9 — Resolusi Audit Live Staging: Zero-Friction Bedrock/Premium, Harmonisasi IP & Scoreboard, Leveling Monster Kerajaan, Bed Respawn & Hardening Permissions [v1.3.1]
+> **Periode Pengembangan:** 18 September 2026 | **Status:** Live & Deployed to Production
+
+### 📋 Tinjauan Perbaikan & Audit 8 Temuan Utama
+Berdasarkan hasil audit komprehensif pada pengujian live staging server, seluruh 8 isu kritis telah diselesaikan dan diterapkan langsung:
+1. **Resolusi Monster Level 58 di Wilayah Ibukota Kerajaan:**
+   - **Akar Masalah:** MythicMobs `MobLeveling.WorldScaling` aktif dengan parameter `ScaleVanillaMobs: true` dan `PerBlocksFromSpawn: 250`. Akibatnya, monster biasa di wilayah ibukota Sylvamoor (`-9666, -4812` / jarak ~10.800 blok dari spawn) otomatis diskalakan menjadi Level 58. Ditambah lagi, berkas default `ExampleRandomSpawns.yml` menggantikan monster biasa dengan `SkeletalKnight` dan `SkeletonKing` secara global.
+   - **Solusi:** Menonaktifkan `WorldScaling` global dan `ScaleVanillaMobs` pada `config-mobs.yml`. Menghapus spawn contoh `ExampleRandomSpawns.yml`. Menambahkan kondisi `notinregion zenithar,solterra,sylvamoor` pada seluruh random spawns `wilderness.yml` agar monster berlevel liar tidak pernah memasuki teritori kerajaan.
+2. **Standardisasi IP Server Game & Web Platform:**
+   - IP server game Minecraft resmi di seluruh papan skor, pengumuman, dan konfigurasi TAB ditetapkan murni ke **`apexsions.my.id`** (tanpa subdomain play).
+   - Domain platform web resmi ditetapkan ke **`web.apexsions.my.id`**.
+3. **Harmonisasi Papan Skor (Scoreboard) Bedrock & Java:**
+   - Menghapus pemangkasan berlebihan pada Bedrock scoreboard di TAB config.
+   - Papan skor Bedrock kini 100% identik dengan Java: memuat bagian PROFIL (Rank, Kerajaan), EKONOMI (Rupiah, Diamond, Coins Battlepass), PROGRESI (Level & Batang Kemajuan EXP), serta footer ganda `apexsions.my.id` dan `web.apexsions.my.id`.
+4. **Zero-Friction Bedrock Join (Bebas Register/Login):**
+   - Mengaktifkan `autoRegisterFloodgate: 'true'` dan `autoLoginFloodgate: 'true'` di FastLogin.
+   - Pemain Bedrock via Floodgate (`.PlayerName`) kini langsung terdaftar secara otomatis dengan hash aman di AuthMe dan terautentikasi instan saat pertama kali masuk tanpa pernah melihat prompt `/register`.
+5. **Autentikasi Java Premium Otomatis & Resolusi Perintah `/premium`:**
+   - **Akar Masalah:** AuthMe memiliki perintah `/premium` bawaan (dengan status `enablePremium: false`) yang mencegat pemanggilan perintah sebelum sampai ke FastLogin, menghasilkan galat *"this server do not enable the premium"*.
+   - **Solusi:** Menambahkan alias mutlak pada `commands.yml` server (`premium`, `prem`, `cracked` dialihkan langsung ke `fastlogin:premium $$1-` dan `fastlogin:cracked $$1-`). Mengaktifkan `autoRegister: true` pada FastLogin sehingga pemain Java original otomatis diverifikasi melalui handshake sesi Mojang saat login pertama.
+6. **Resolusi Prioritas Bed Spawn vs Respawn Kerajaan:**
+   - **Akar Masalah:** EssentialsSpawn memiliki `respawn-at-home: false`, yang secara otomatis mematikan fungsi `respawn-at-home-bed: true`, dan `PlayerListener` ApexsionsCore hanya memeriksa flag boolean `isBedSpawn()`.
+   - **Solusi:** Mengatur `respawn-at-home: true`, `respawn-at-home-bed: true`, `respawn-at-anchor: true`, dan `respawn-listener-priority: lowest` pada Essentials. Pada `PlayerListener.java`, menambahkan verifikasi eksplisit `player.getRespawnLocation() != null` untuk menjamin pemain yang telah menyetel kasur/anchor tetap respawn di tempat tidurnya dan hanya dialihkan ke ibukota kerajaan jika kasur hancur/hilang.
+7. **Hardening Matriks Izin (Permissions) Rank Default (Wanderer):**
+   - Mengonfigurasi matriks izin lengkap pada `ranks.yml` untuk pangkat `wanderer`:
+     - **Whitelist Izin Bermain:** Essentials dasar (spawn, home, sethome, delhome, tpa, tpaccept, tpdeny, warp, msg, reply, pay, balance, balancetop, rules, afk, mail, suicide, build), fitur Apexsions (pemilihan kerajaan, sistem klaim chunks, rtp, toko pasar dinamis, lelang ah, battlepass, pembukaan peti crate, custom enchants & tinkerer, memancing fishing, obrolan chat, profil & leaderboard), serta utilitas pemain (`/premium`, `/cracked`, `/skin`, `/sb`, `/bossbar`).
+     - **Blacklist/Negasi Keamanan Ketat:** Menolak keras akses perintah admin/operator/staf (`-essentials.op`, `-essentials.fly`, `-essentials.god`, `-essentials.heal`, `-essentials.gamemode.*`, `-essentials.give`, `-essentials.vanish`, `-essentials.ban`, `-bukkit.command.*`, `-minecraft.command.*`, `-luckperms.*`, `-worldedit.*`, `-worldguard.*`, `-apexsions.admin.*`, `-mythicmobs.admin`).
+   - Disinkronkan secara otomatis dan idempoten ke LuckPerms oleh `LuckPermsRankProvisioner`.
+
+---
+
 ## 🚀 Sprint 8 — Sistem Auto-Login Tanpa Hambatan & Proteksi Identitas Lintas Platform (FastLogin, Floodgate & AuthMe) [v1.3.0]
 > **Periode Pengembangan:** 18 September 2026 | **Status:** Live & Production-Ready
 
