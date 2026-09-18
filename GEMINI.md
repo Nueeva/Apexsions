@@ -89,9 +89,10 @@ Sebelum mengubah kode:
 1. Baca `GEMINI.md`.
 2. Baca `AGENTS.md` jika tersedia.
 3. Baca dokumentasi relevan.
-4. Identifikasi plugin yang terdampak.
-5. Identifikasi dependency antar-plugin.
-6. Identifikasi existing implementation.
+4. **Konsultasikan Knowledge Graph (`graphify query` / `graphify path`):** Periksa relasi modul/kelas yang ada sebelum membaca banyak file secara manual.
+5. Identifikasi plugin yang terdampak.
+6. Identifikasi dependency antar-plugin.
+7. Identifikasi existing implementation.
 
 Agent harus mengetahui:
 
@@ -2482,8 +2483,31 @@ GEMINI.md
 AGENTS.md
 ```
 
-together when required.
-
-The goal is not to preserve the current repository forever.
-
 The goal is to preserve **consistency, safety, maintainability, and a truthful representation of the current system**.
+
+---
+
+# 58. Knowledge Graph Architecture & Graphify Protocol
+
+Repositori Apexsions dilengkapi dengan arsitektur **Persistent Knowledge Graph** berbasis **Graphify** (`graphify-out/`). Sistem ini memetakan seluruh kelas Java (Paper API), relasi antar-plugin, konfigurasi YAML/JSON, dan integrasi WebBridge/Azuriom ke dalam graf terstruktur (11.805+ nodes, 38.282+ edges, 524 cluster komunitas modul).
+
+## 58.1. Knowledge Graph Exploration Rules
+
+Sebelum membaca berkas mentah secara acak atau melakukan grep luas yang memboroskan konteks:
+
+1. **Konsultasikan Knowledge Graph:**
+   - Gunakan `graphify query "<keyword/konsep>"` untuk traversal BFS/DFS terfokus.
+   - Gunakan `graphify path "<NodeA>" "<NodeB>"` untuk menemukan jalur relasi terpendek (dependency trace) antara dua kelas, listener, atau service.
+   - Gunakan `graphify explain "<NodeID>"` untuk mendapatkan ringkasan struktural dari simbol atau kelas tertentu.
+2. **Visualisasi Interaktif:**
+   - File `graphify-out/graph.html` dapat dibuka di browser (`Start-Process "graphify-out/graph.html"`) untuk inspeksi visual interaktif berbasis komunitas dan relasi antar-komponen.
+   - File `graphify-out/GRAPH_REPORT.md` menyajikan ringkasan "god nodes" (komponen sentral dengan keterkaitan tertinggi) dan anomali arsitektur.
+3. **Penyelarasan Pasca-Modifikasi Kode:**
+   - Setiap kali menyelesaikan siklus penulisan atau refaktor kode pada sesi kerja, jalankan:
+     ```powershell
+     graphify update .
+     ```
+   - Perintah ini berjalan murni pada tingkat AST lokal (tanpa biaya token LLM/API) untuk menyinkronkan node dan edge pada `graphify-out/graph.json`.
+4. **Git Hygiene & Storage Boundaries:**
+   - Direktori `graphify-out/` wajib selalu diabaikan oleh Git via `.gitignore` untuk mencegah pembengkakan riwayat commit akibat artefak graf JSON (28+ MB) dan cache SHA-256.
+

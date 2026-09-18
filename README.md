@@ -17,6 +17,8 @@ Apexsions/
 │   ├── build.gradle      # Gradle root configuration
 │   └── DOKUMENTASI.md    # Manual teknis plugin Minecraft
 ├── Website/               # Aplikasi web portal, store, bridge & theme
+├── .agents/               # Custom rules & workflows untuk Google Antigravity & AI Agents
+├── graphify-out/          # Persistent Knowledge Graph (11.8k+ nodes, visualizer, audit report)
 ├── CHANGELOG.md           # Riwayat perubahan kronologis & panduan handoff AI/dev
 ├── DOKUMENTASI.md         # Master Technical Documentation & Ecosystem State
 ├── GEMINI.md              # AI Agent Development Guidelines
@@ -632,3 +634,15 @@ Portal web resmi Apexsions dibangun di atas platform **Azuriom** dengan tema khu
    - **Open Graph & Twitter Card**: Pratinjau gambar sinematik 1200x630 (`og-preview.jpg`) dengan tipografi peradaban emas & obsidian dan kartu `summary_large_image`.
    - **Structured Data JSON-LD**: Skema `Organization` (Apexsions), `WebSite`, dan `VideoGame` / `GameServer` valid.
    - **Technical SEO**: Berkas publik `robots.txt` dengan izin perayapan halaman utama dan proteksi endpoint administratif, serta indeks kanonikal `sitemap.xml`.
+
+---
+
+## 🧠 5. Navigasi Arsitektur Berbasis Knowledge Graph (`graphify`)
+
+Monorepo Apexsions mengintegrasikan **Graphify Knowledge Graph** (`graphify-out/`) yang memetakan seluruh kelas, service, event listener, dan antarmuka web (11.805+ nodes, 38.282+ edges, 524 komunitas modul).
+
+### Perintah Cepat Pengembang:
+- **Visualisasi Interaktif:** `Start-Process "graphify-out/graph.html"` (Buka di browser).
+- **Tanya Keterkaitan Komponen:** `graphify query "<nama-fitur/kelas>"`
+- **Trace Jalur Dependensi:** `graphify path "<KelasA>" "<KelasB>"`
+- **Sinkronisasi Pasca-Coding:** `graphify update .` (Ekstraksi AST lokal, instan, 0 token API).

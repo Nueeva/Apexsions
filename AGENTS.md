@@ -102,11 +102,12 @@ Before modifying code:
 1. Read `GEMINI.md`.
 2. Read this `AGENTS.md`.
 3. Read relevant technical documentation.
-4. Locate the existing implementation.
-5. Search for related classes, services, APIs, commands, events, and configuration.
-6. Identify affected modules/plugins.
-7. Identify consumers and dependencies.
-8. Determine what must remain untouched.
+4. **Consult Knowledge Graph (`graphify query` / `graphify path`):** Search the persistent graph at `graphify-out/` to discover existing classes, call chains, and module dependencies before manual file inspection.
+5. Locate the existing implementation.
+6. Search for related classes, services, APIs, commands, events, and configuration.
+7. Identify affected modules/plugins.
+8. Identify consumers and dependencies.
+9. Determine what must remain untouched.
 
 Never implement a feature in isolation without checking whether equivalent functionality already exists.
 
@@ -483,6 +484,7 @@ Untuk mencegah pemborosan kuota token dan menjaga efisiensi context window:
 5. **Komunikasi Ringkas & Padat:** Hilangkan basa-basi percakapan, pengantar berulang, atau mengulang ringkasan yang sudah tercantum di artefak/dokumentasi. Langsung laporkan poin inti perubahan, hasil verifikasi, dan status commit.
 6. **Local-First Testing:** Uji dan validasi sintaks serta dependensi secara lokal sebelum menyentuh VPS produksi.
 7. **Atomic Batch Execution:** Satukan perbaikan yang saling terkait dalam satu siklus terencana, hindari bolak-balik eksekusi sebaris demi sebaris yang menghabiskan turn context.
+8. **Knowledge Graph-First Exploration:** Manfaatkan `graphify query "<keyword>"` dan `graphify path "<A>" "<B>"` untuk memahami arsitektur dan relasi pemanggilan sebelum membaca file besar secara manual. Sinkronkan graf dengan `graphify update .` pasca-perubahan kode (AST lokal tanpa kuota token).
 
 ---
 

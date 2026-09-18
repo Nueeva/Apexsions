@@ -699,3 +699,46 @@ Mengintegrasikan ekosistem **AuthMeReloaded (v6.0.1)**, **Floodgate (v2.2.5)**, 
 ### F. Lokalisasi Menyeluruh 20/20 Key (`plugins/FastLogin/messages.yml`)
 Seluruh 20 string lokalisasi FastLogin telah diterjemahkan ke Bahasa Indonesia dengan standar visual dan warna resmi Apexsions (`&8[&6Apexsions&8]&r`, `&a`, `&c`, `&e`), termasuk pesan krusial `invalid-session` dan `premium-warning`.
 
+---
+
+## 🧠 20. Arsitektur Graphify Knowledge Graph & Navigasi Kode Berbasis Graf (Developer & AI Tooling)
+
+Untuk mempercepat pemahaman arsitektur, mendeteksi *god nodes*, serta menghemat kuota token AI secara drastis, repositori Apexsions telah dilengkapi dengan **Persistent Knowledge Graph** bertenaga **Graphify**:
+
+### A. Metrik & Ruang Lingkup Graf Pengetahuan
+* **Total Simbol (Nodes):** 11.805 entitas (Kelas Java, Method, Interface, Service, Controller Web, Listener, dan Config Section).
+* **Total Relasi (Edges):** 38.282 relasi pemanggilan (*calls*), implementasi (*implements*), referensi dependensi (*references*), dan keterkaitan modul.
+* **Komunitas Modul (Clusters):** 524 cluster fungsional yang terdeteksi via algoritma modularitas Leiden/Louvain.
+* **Berkas Sumber Terindeks:** 1.462 berkas kode di seluruh 9 plugin Minecraft, WebBridge Azuriom, dan konfigurasi inti.
+
+### B. Lingkungan Runtime Perkakas
+* **Python Baseline:** Python 3.12 LTS (Windows 64-bit).
+* **Parser Engine:** Tree-Sitter dengan pustaka multi-bahasa lengkap (`tree-sitter-java`, `tree-sitter-php`, `tree-sitter-javascript`, `tree-sitter-typescript`, `tree-sitter-python`, dll).
+* **Package CLI:** `graphifyy` (v0.9.63+).
+
+### C. Panduan Penggunaan Harian untuk Pengembang & AI Agent
+1. **Pencarian Konsep & Relasi Cepat (BFS Traversal):**
+   ```bash
+   graphify query "PlayerListener"
+   graphify query "WebBridgeService"
+   ```
+2. **Menemukan Jalur Ketergantungan Terpendek (Shortest Path):**
+   ```bash
+   graphify path "PlayerListener" "RankProvisioner"
+   ```
+3. **Penjelasan Rinci Node/Simbol:**
+   ```bash
+   graphify explain "ApexsionsCorePlugin"
+   ```
+4. **Sinkronisasi Graf Pasca-Pengembangan Kode (Cepat & Bebas Biaya Token):**
+   ```powershell
+   graphify update .
+   ```
+   *Catatan:* Perintah ini hanya memproses berkas yang berubah berdasarkan hash SHA-256 dan mengekstrak AST secara lokal tanpa memanggil API LLM.
+5. **Inspeksi Visual Interaktif (Browser):**
+   ```powershell
+   Start-Process "graphify-out/graph.html"
+   ```
+   *Catatan Keamanan Git:* Folder `graphify-out/` secara ketat diabaikan oleh `.gitignore` untuk menjaga ukuran repositori tetap ramping dan bersih.
+
+

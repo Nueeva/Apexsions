@@ -519,3 +519,33 @@ lp group overseer permission set fastlogin.bukkit.command.cracked true
 
 ### E. Integrasi PlaceholderAPI
 - `%fastlogin_status%`: Mengembalikan nilai `Premium` atau `Cracked`. Terintegrasi dengan TAB scoreboard 6.1.2 dan Staff Player Inspector.
+
+---
+
+## 🛠️ 19. Perkakas Pengembang & Knowledge Graph Plugin Suite (`graphify`)
+
+Untuk memudahkan penelusuran arsitektur 9 plugin dan ratusan kelas internal Paper API, repositori telah dilengkapi dengan database **Knowledge Graph Graphify** (`graphify-out/`):
+
+1. **Perintah Cepat CLI untuk Developer Plugin:**
+   - Menelusuri seluruh kelas dan listener yang mengonsumsi suatu API:
+     ```bash
+     graphify query "ApexsionsCoreAPI"
+     graphify query "PlayerListener"
+     ```
+   - Menemukan dependensi antar-plugin:
+     ```bash
+     graphify path "ApexsionsEconomyAPI" "DynamicMarketService"
+     ```
+   - Penjelasan struktur kelas/modul:
+     ```bash
+     graphify explain "ApexsionsCorePlugin"
+     ```
+2. **Sinkronisasi Pasca-Kompilasi Maven:**
+   - Setelah menambahkan listener, event, atau service baru di plugin Minecraft, jalankan:
+     ```powershell
+     graphify update .
+     ```
+   - Pembaruan graf berjalan seketika (AST Tree-Sitter lokal) tanpa biaya token API.
+3. **Visualisasi Arsitektur Interaktif:**
+   - Buka `graphify-out/graph.html` di browser untuk melihat peta klaster relasi 9 plugin secara visual.
+
