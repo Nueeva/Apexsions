@@ -36,6 +36,29 @@ Bagi AI Agent atau developer yang melanjutkan pekerjaan di repositori ini, perha
 
 ---
 
+## 🏛️ Upper Realm Cosmic Portal, Smart RTP, Capital Navigation & Mortal Emulation Milestone [v1.3.5]
+> **Periode Pengembangan:** 18 September 2026 | **Status:** Implemented, Tested, & Verified Locally
+
+### 📋 Ikhtisar Peningkatan Operasional Dimensi Atas (The Aetherial Conclave)
+Menyelesaikan kendala operasional bagi entitas dimensi atas (staf Conclave / bobot rank $\ge 80$) yang sebelumnya terhambat berinteraksi di dimensi fana untuk navigasi, perbaikan wilayah, pengujian fitur (*testing*), dan teleportasi ibukota:
+1. **The Aetherial Conclave Realm Portal (`ConclaveNavigationGUI`):**
+   - Mengalihkan eksekusi `/k`, `/kingdom`, atau `/region` oleh staf Conclave langsung ke GUI portal kosmik 27-slot bergaya cyan-electric (`#00f2fe` ke `#4facfe`).
+   - Menyediakan tombol navigasi cepat ke Lobby Utama, Ibukota Zenithar, Solterra, Sylvamoor (Dual Action: Klik Kiri = Teleportasi Ibukota, Klik Kanan = Targeted RTP), Terra Interdicta (Sions), Smart RTP Dispatcher, Simulasi Warga Fana, dan Master Admin Hub.
+2. **Perintah Teleportasi Ibukota & RTP Terarah:**
+   - `/ac spawn <ZENITHAR|SOLTERRA|SYLVAMOOR|SIONS|LOBBY>` dan `/k spawn <kingdom|lobby>` untuk teleportasi langsung staf/admin tanpa delay.
+   - `/ac rtp [kingdom]` dan `/rtp [kingdom]` untuk teleportasi acak terarah di teritori fana yang dipilih.
+3. **Mortal Incarnation Engine (`MortalEmulationManager`):**
+   - Memungkinkan staf mengaktifkan mode penyamaran kerajaan mortal (`/ac emulate <ZENITHAR|SOLTERRA|SYLVAMOOR|OFF>`) untuk menguji toko dynamic market, buff/debuff kerajaan, chat teritorial, dan izin wilayah dari sudut pandang warga biasa tanpa mengubah status kanon di database.
+   - Otomatis membersihkan status penyamaran saat pemain logout (`PlayerQuitEvent`).
+4. **Dual-Action Teleportasi Ibukota di Admin GUI (`CoreAdminSubGUI`):**
+   - Slots 30, 31, 32 di `CoreAdminSubGUI` kini mendukung [Klik Kiri] untuk teleportasi langsung ke ibukota dan [Shift + Klik Kanan] untuk menetapkan ulang koordinat spawn ibukota di posisi admin.
+5. **Bypass Proteksi Komprehensif:**
+   - Bebas hambatan Combat Tag 15 detik bagi staf/admin saat menjalankan perintah teleportasi darurat.
+   - Bypass pembatasan TPA Essentials dua arah antara staf Conclave dan pemain fana.
+   - Pendaftaran klaim tanah staf sebagai kedutaan `AETHERION` ($0 upkeep tax) dengan bypass izin membangun dan interaksi di seluruh teritori fana.
+
+---
+
 ## ⏳ Seasonal Architecture & Triannual Era Milestone — Migrasi Siklus 4 Bulan (120 Hari per Reset) & Sinkronisasi Ekosistem [v1.3.4]
 > **Periode Pengembangan:** 18 September 2026 | **Status:** Implemented & Verified Locally
 
