@@ -62,8 +62,12 @@ Berdasarkan hasil audit komprehensif pada pengujian live staging server, seluruh
 7. **Hardening Matriks Izin (Permissions) Rank Default (Wanderer):**
    - Mengonfigurasi matriks izin lengkap pada `ranks.yml` untuk pangkat `wanderer`:
      - **Whitelist Izin Bermain:** Essentials dasar (spawn, home, sethome, delhome, tpa, tpaccept, tpdeny, warp, msg, reply, pay, balance, balancetop, rules, afk, mail, suicide, build), fitur Apexsions (pemilihan kerajaan, sistem klaim chunks, rtp, toko pasar dinamis, lelang ah, battlepass, pembukaan peti crate, custom enchants & tinkerer, memancing fishing, obrolan chat, profil & leaderboard), serta utilitas pemain (`/premium`, `/cracked`, `/skin`, `/sb`, `/bossbar`).
-     - **Blacklist/Negasi Keamanan Ketat:** Menolak keras akses perintah admin/operator/staf (`-essentials.op`, `-essentials.fly`, `-essentials.god`, `-essentials.heal`, `-essentials.gamemode.*`, `-essentials.give`, `-essentials.vanish`, `-essentials.ban`, `-bukkit.command.*`, `-minecraft.command.*`, `-luckperms.*`, `-worldedit.*`, `-worldguard.*`, `-apexsions.admin.*`, `-mythicmobs.admin`).
-   - Disinkronkan secara otomatis dan idempoten ke LuckPerms oleh `LuckPermsRankProvisioner`.
+8. **Sapu Bersih Lingkungan Server & Hardening Proteksi Dunia:**
+   - **Hardening Lobi Multiverse:** Mengonfigurasi `minecraft:lobby` dengan `spawning.monster.spawn: false`, `pvp: false`, `hunger: false`, dan `auto-heal: true` agar area penyambutan 100% aman dan damai.
+   - **WorldGuard Lobi:** Menambahkan flag `mob-spawning: deny` pada region cuboid `lobby`.
+   - **Branded MOTD:** Mengonfigurasi MOTD `server.properties` dengan palet warna emas dan mencantumkan IP `apexsions.my.id` serta situs `web.apexsions.my.id`.
+   - **Pembersihan Domain Repositori:** Memperbaiki seluruh rujukan lawas domain di `PRODUCT.md`.
+   - **Preservasi Boss & Upper Realm:** Seluruh monster dungeon/raid resmi Sions Ruins (`EmperorValerius` Lv.100, `SionsVoidKnight` Lv.50) tetap terjaga sebagai Out-of-Scope lore, dan izin kedaulatan staf dimensi atas (*The Aetherial Conclave*) tetap utuh tak tersentuh.
 
 ---
 
