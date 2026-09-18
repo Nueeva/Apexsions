@@ -89,7 +89,7 @@ public class DynamicPriceCalculator {
         String activeKingdom = plugin.getKingdomMarketService().resolveKingdom(player, kingdomOverride);
         double customRatio = plugin.getKingdomMarketService().getCustomSellRatio(item, player, kingdomOverride);
 
-        // Standard sell is 20% of base buy, or custom kingdom ratio (e.g. Solterra Ores 65%)
+        // Standard sell is 20% of base buy, or custom kingdom ratio (e.g. Solterra Ores 30%)
         double baseUnit = (customRatio > 0) ? (item.getBaseBuyPrice() * customRatio) : item.getBaseSellPrice();
 
         double weatherMult = player != null ? plugin.getWeatherPriceService().getSellMultiplier(item, player.getWorld()) : 1.00;

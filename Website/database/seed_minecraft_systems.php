@@ -1120,7 +1120,7 @@ Di Apexsions, tanah air terbagi menjadi tiga kerajaan otonom yang lahir dari Eks
   - **[Battle Momentum]** `+15%` Total Serangan & `+10%` Serangan Kritis (*Critical Damage*) — Kedahsyatan sihir penghancur dan kekuatan fisik brutal.
   - `+10%` Kecepatan Menambang (*Mining Speed Boost*) — Pengalaman memecah cadas vulkanik dan obsidian.
   - `+2%` Pertahanan Diri (*Defense*).
-  - Nilai Jual Ore Tinggi (Rasio jual bijih tambang stabil di 65% harga beli) — Pusat penempaan senjata berat.
+  - Nilai Jual Ore Tinggi (Rasio jual bijih tambang stabil di 30% harga beli, di atas standar 20%) — Pusat penempaan senjata berat.
 - **Kelemahan & Debuff Fisik (In-Game):**
   - `-2 HP` Maksimal Darah (Total 9 Hati) — Efek samping luka sihir panas dan kebiasaan bertarung tanpa armor pelindung penuh.
   - `+8%` Total Damage Diterima (*Damage Vulnerability*) — Kecerobohan agresif dalam duel.
@@ -1249,7 +1249,7 @@ Ekosistem ekonomi di Apexsions (`ApexsionsEconomy`) menggunakan arsitektur **Dua
 
 ### Saldo Awal Pemain Baru
 Setiap warga perintis yang baru pertama kali bergabung secara otomatis menerima:
-- **Rp 10.000 (Rupiah)** sebagai modal awal membeli perkakas dan bibit pertanian.
+- **Rp 1.000 (Rupiah)** sebagai modal awal membeli perkakas dan bibit pertanian.
 - Saldo dapat dicek kapan saja dengan perintah `/money` atau `/balance`.
 MARKDOWN
         ,

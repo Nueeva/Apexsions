@@ -88,7 +88,7 @@ const APX_I18N = {
         solterra_desc: 'Dibentuk oleh para pesulap tempur agung (arcanists) serta prajurit garis depan terkuat bekas legiun Sions yang bermigrasi ke wilayah selatan. Memadukan kedahsyatan sihir elemen api dengan kekuatan fisik brutal tanpa ampun untuk menaklukkan alam yang mematikan.',
         solterra_spec1: 'Cadas Vulkanik, Kawah Lahar & Ignis Bastion',
         solterra_spec2: 'Penempaan Senjata Berat & Nilai Jual Ore Tinggi',
-        solterra_buffs: '<span class="text-success fw-semibold">[Battle Momentum] +15% Total Damage</span>, <span class="text-success fw-semibold">+10% Critical Damage</span>, <span class="text-success fw-semibold">+10% Mining Speed</span>, <span class="text-success fw-semibold">Rasio Jual Ore Tinggi (65%)</span>.',
+        solterra_buffs: '<span class="text-success fw-semibold">[Battle Momentum] +15% Total Damage</span>, <span class="text-success fw-semibold">+10% Critical Damage</span>, <span class="text-success fw-semibold">+10% Mining Speed</span>, <span class="text-success fw-semibold">Rasio Jual Ore Tinggi (30%)</span>.',
         solterra_debuffs: '<span class="text-danger fw-semibold">-2 HP Maksimal (9 Hati)</span>, <span class="text-danger fw-semibold">+8% Damage Masuk</span>, <span class="text-danger fw-semibold">+7% Cepat Lapar</span>, lahan pertanian cepat kering di tanah cadas.',
         solterra_link: 'Arsip Solterra',
 
@@ -914,7 +914,7 @@ const APX_I18N = {
         solterra_desc: 'Founded by supreme battle arcanists and the mightiest front-line veterans of the former Sions legions who migrated south. Blending explosive fire-element sorcery with brutal physical prowess to master a deadly volcanic frontier.',
         solterra_spec1: 'Volcanic Crags, Magma Calderas & Ignis Bastion',
         solterra_spec2: 'Heavy Weapon Forging & High Ore Sell Ratios',
-        solterra_buffs: '<span class="text-success fw-semibold">[Battle Momentum] +15% Total Damage</span>, <span class="text-success fw-semibold">+10% Critical Damage</span>, <span class="text-success fw-semibold">+10% Mining Speed</span>, <span class="text-success fw-semibold">High Ore Sell Ratio (65%)</span>.',
+        solterra_buffs: '<span class="text-success fw-semibold">[Battle Momentum] +15% Total Damage</span>, <span class="text-success fw-semibold">+10% Critical Damage</span>, <span class="text-success fw-semibold">+10% Mining Speed</span>, <span class="text-success fw-semibold">High Ore Sell Ratio (30%)</span>.',
         solterra_debuffs: '<span class="text-danger fw-semibold">-2 Max HP (9 Hearts)</span>, <span class="text-danger fw-semibold">+8% Incoming Damage</span>, <span class="text-danger fw-semibold">+7% Faster Hunger</span>, farmland dries rapidly on arid stone.',
         solterra_link: 'Solterra Archives',
 
@@ -2299,7 +2299,7 @@ const WIKI_DATA = {
 <p>In Apexsions, your power multiplies upon joining one of the Three Sovereign Kingdoms. Type <code>/k</code> to open the selection interface:</p>
 <ul>
 <li>☀️ <strong>Zenithar (Celestial Horizon):</strong> Realm of nobility and royal cavalry. Grants <code>+8%</code> Speed, <code>+15%</code> Luck, <code>+6%</code> Damage, and <code>20%</code> Royal Aegis Damage Reduction.</li>
-<li>🔥 <strong>Solterra (Crimson Flames &amp; Sands):</strong> Tailored for aggressive combat and conquerors. Grants <code>+15%</code> Damage, <code>+10%</code> Crit Damage, <code>+10%</code> Mining Speed, and 65% Ore Sell Ratio.</li>
+<li>🔥 <strong>Solterra (Crimson Flames &amp; Sands):</strong> Tailored for aggressive combat and conquerors. Grants <code>+15%</code> Damage, <code>+10%</code> Crit Damage, <code>+10%</code> Mining Speed, and 30% Ore Sell Ratio.</li>
 <li>🌿 <strong>Sylvamoor (Living Canopy &amp; Oceans):</strong> Perfect for agrarians and deep canopy rangers. Grants <code>+2</code> Max HP (11 Hearts), <code>+12%</code> Luck, <code>+15%</code> Forest Defense, and Eternal Soil Hydration.</li>
 </ul>
 <p><em>Choose the realm that best aligns with your playstyle!</em></p>
@@ -2477,7 +2477,7 @@ const WIKI_DATA = {
 <thead><tr><th>Kingdom</th><th>Direction</th><th>Capital</th><th>Tax</th><th>Primary Attribute Buffs</th></tr></thead>
 <tbody>
 <tr><td><strong class="text-warning">Zenithar</strong></td><td>East</td><td>Solarium Spire Citadel</td><td>18%</td><td>+8% Speed, +15% Luck, +6% Damage, Royal Aegis (20% DMG Red.)</td></tr>
-<tr><td><strong class="text-danger">Solterra</strong></td><td>South</td><td>Ignis Bastion Fortress</td><td>20%</td><td>+15% All Damage, +10% Crit Damage, +10% Mining Speed, 65% Ore Sell Ratio</td></tr>
+<tr><td><strong class="text-danger">Solterra</strong></td><td>South</td><td>Ignis Bastion Fortress</td><td>20%</td><td>+15% All Damage, +10% Crit Damage, +10% Mining Speed, 30% Ore Sell Ratio</td></tr>
 <tr><td><strong class="text-success">Sylvamoor</strong></td><td>West</td><td>Eldergrove Sanctuary</td><td>15%</td><td>+2 Max HP (11 Hearts), +12% Luck, +7% Mob Drops, +15% Forest Defense</td></tr>
 </tbody>
 </table></div>
@@ -2494,7 +2494,7 @@ const WIKI_DATA = {
 <ul>
 <li><strong>Founders:</strong> Master combat arcanists &amp; front-line military veterans.</li>
 <li><strong>Capital:</strong> Ignis Bastion Fortress <code>world (-5843, 65, 889)</code></li>
-<li><strong>Official Buffs:</strong> [Battle Momentum] +15% Total Damage, +10% Crit Damage, +2% Defense, +10% Mining Speed, High Ore Selling Ratio (65%).</li>
+<li><strong>Official Buffs:</strong> [Battle Momentum] +15% Total Damage, +10% Crit Damage, +2% Defense, +10% Mining Speed, High Ore Selling Ratio (30%).</li>
 <li><strong>Debuffs:</strong> -2 Max HP (9 Hearts total), +8% Incoming Damage, +7% Faster Hunger depletion, Farmland dries rapidly on arid terrain.</li>
 </ul>
 <hr>
@@ -2562,7 +2562,7 @@ const WIKI_DATA = {
 <ul>
 <li><strong>Heavy Influx (Over-supply):</strong> If citizens flood the market with one item (e.g., cobblestone or iron), its buy/sell value gradually dips.</li>
 <li><strong>Scarcity (High Demand):</strong> As supply drops, purchasing prices and selling rewards automatically appreciate.</li>
-<li><strong>Regional Selling Buff:</strong> Solterra citizens enjoy a permanent 65% minimum ore sale value due to their industrial heritage.</li>
+<li><strong>Regional Selling Buff:</strong> Solterra citizens enjoy a permanent 30% ore sale value on minerals (above the 20% standard baseline) due to their industrial heritage.</li>
 </ul>`,
 
         '11': `<h1>Auction House (/ah) &amp; Barter Escrow (/trade)</h1>

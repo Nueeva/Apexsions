@@ -13,7 +13,7 @@ import java.util.List;
 
 /**
  * Interactive Admin GUI for inspecting and previewing all 3 Kingdom Shops
- * (Zenithar 18% tax + 15% block discount, Solterra 20% tax + 65% ore sell ratio, Sylvamoor 15% tax).
+ * (Zenithar 18% tax + 15% block discount, Solterra 20% tax + 30% ore sell ratio, Sylvamoor 15% tax).
  */
 public class AdminKingdomShopSelectorGUI extends ShopGui {
 
@@ -50,7 +50,7 @@ public class AdminKingdomShopSelectorGUI extends ShopGui {
                         "",
                         "<gray>Pajak Kerajaan:</gray> <gold><bold>20.0%</bold></gold>",
                         "<gray>Tren Pasar:</gray> <green><bold>Harga Ore Stabil & Tinggi</bold></green>",
-                        "<gray>Keunggulan:</gray> <aqua>Rasio Jual Ore 65% dari Harga Beli!</aqua>",
+                        "<gray>Keunggulan:</gray> <aqua>Rasio Jual Ore 30% dari Harga Beli!</aqua>",
                         "",
                         "<yellow>▶ Klik untuk Inspeksi / Buka Toko Solterra</yellow>"
                 ))

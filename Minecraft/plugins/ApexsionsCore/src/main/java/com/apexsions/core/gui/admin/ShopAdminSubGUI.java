@@ -75,7 +75,7 @@ public class ShopAdminSubGUI implements InventoryHolder {
         inventory.setItem(19, createActionItem(Material.GOLDEN_HELMET, "<gradient:#f39c12:#d35400><bold>👑 INSPEKSI TOKO 3 KERAJAAN</bold></gradient>",
                 List.of("<gray>Lihat katalog toko & harga unik tiap kerajaan:</gray>",
                         "<dark_gray>•</dark_gray> <gold>Zenithar</gold> <gray>(Pajak 18%, Diskon Blok Istana 15%)</gray>",
-                        "<dark_gray>•</dark_gray> <yellow>Solterra</yellow> <gray>(Pajak 20%, Ore Stabil & 65% Sell)</gray>",
+                        "<dark_gray>•</dark_gray> <yellow>Solterra</yellow> <gray>(Pajak 20%, Ore Stabil & 30% Sell)</gray>",
                         "<dark_gray>•</dark_gray> <green>Sylvamoor</green> <gray>(Pajak 15%, Diskon Agrikultur)</gray>",
                         "",
                         "<yellow>▶ Klik untuk membuka /shopadmin</yellow>")));

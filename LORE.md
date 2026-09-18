@@ -290,7 +290,7 @@ Menghindari inflasi stat ekstrem yang merusak meta PvP, setiap kerajaan dirancan
 │ • +15% Luck (Loot Box)  │ • +10% Crit Damage      │ • +12% Luck / Mob Drop  │
 │ • +6% All Damage        │ • +10% Mining Speed     │ • +2 HP (Total 11 Hati) │
 │ • Diskon 30% Pajak Lelang│ • +5% Ore Sell Value   │ • +15% Total Defense    │
-│ • Bunga Bank Pasif +25% │   (Rasio Jual Ore 65%)  │ • Racun Cap di 3 Hati   │
+│ • Bunga Bank Pasif +25% │   (Rasio Jual Ore 30%)  │ • Racun Cap di 3 Hati   │
 │ • Diskon 15% Blok Toko  │                         │ • Lahan Tani Anti-Kering│
 │                         │                         │                         │
 │ Unique Passive:         │ Unique Passive:         │ Unique Passive:         │
@@ -546,11 +546,11 @@ Setiap kali pergantian Season 4 Bulanan (120 Hari) tiba, server melakukan **Rese
 | **Identitas & Koordinat Kerajaan** | `Minecraft/plugins/ApexsionsCore/src/main/resources/kingdoms/kingdoms.yml` | Nama display, icon, koordinat ibukota, bioma khas, raja, pajak wilayah, buff, nerf, dan titles. |
 | **Modifikasi Atribut Fisik (Paper)** | `com.apexsions.core.kingdom.KingdomBuffManager` | Injeksi atribut Paper: `MAX_HEALTH`, `MOVEMENT_SPEED`, `LUCK`, `BLOCK_BREAK_SPEED`, heartbeat task altitude sickness `Y > 110`. |
 | **Kalkulasi Tempur & Pertanian** | `com.apexsions.core.kingdom.KingdomBuffListener` | `EntityPotionEffectEvent` (racun), `EntityDamageEvent` (api/defense), `EntityDamageByEntityEvent` (damage/crit), `MoistureChangeEvent` (farmland), `FoodLevelChangeEvent` (lapar), `PlayerItemConsumeEvent` (santapan higienis). |
-| **RPG Stat Scaling & Diminishing Curves** | `com.apexsions.core.level.stat.PlayerStatCalculator` & `PlayerAttributeService` | Pertumbuhan fisik berkala per level: Max HP (maks +12.0 HP $\rightarrow$ 32 HP / 16 hati), Attack (maks +1.90), Pengali PvE (+26.5%), dan Resistensi monster (10%). |
+| **RPG Stat Scaling & Diminishing Curves** | `com.apexsions.core.level.stat.PlayerStatCalculator` & `PlayerAttributeService` | Pertumbuhan fisik berkala per level: Max HP (maks +12.0 HP $\rightarrow$ 32 HP / 16 hati), Attack (maks +1.90), Pengali PvE (+50.0%), dan Resistensi monster (10%). |
 | **Smart Combat Normalizer (PvP)** | `com.apexsions.core.combat.SmartCombatNormalizer` & `PlayerCombatProgressionListener` | Normalisasi adil perang antar-kerajaan: pemotongan excess attack > +0.80 dan penskalaan damage masuk defender ber-HP tinggi ke rasio 24 HP tanpa double survivability. |
-| **Ekosistem Monster 6-Tier** | `plugins/MythicMobs/mobs/` & `randomspawns/` | Distribusi ancaman monster berjenjang: Tier 1 Kerajaan (1-5), Tier 2 Wilderness (5-20), Tier 3 Dangerous Wilds (20-40), Tier 4 Outpost (40-65), Tier 5 Terra Interdicta Sions (65-90), dan Tier 6 World Raid Boss Valerius (100). |
+| **Ekosistem Monster 6-Tier** | `plugins/MythicMobs/mobs/` & `randomspawns/` | Distribusi ancaman monster berjenjang: Tier 1 Kerajaan (1-5), Tier 2 Wilderness (5-20), Tier 3 Dangerous Wilds (20-40), Tier 4 Nether (35-75), Tier 5 The End & Sions (65-95+), dan Tier 6 World Raid Boss Valerius & Void Sovereign (100). |
 | **Progresi 1-100 & Gelar Kerajaan** | `Minecraft/plugins/ApexsionsCore/src/main/resources/progression/titles.yml` | Gelar level per 10 tier berdasarkan kerajaan (Solaris Archon, Dune Warlord, Druidic Lord, dsb.) serta gelar kasta tertinggi. |
-| **Pajak Toko & Pasar Dinamis** | `Minecraft/plugins/ApexsionsShop/src/main/resources/markets/markets.yml` | Pajak toko (`SOLTERRA: 20%`, `ZENITHAR: 25%`, `SYLVAMOOR: 15%`), rasio jual ore 65% di Solterra, volatilitas 1.25x di Zenithar, diskon bahan pertanian di Sylvamoor. |
+| **Pajak Toko & Pasar Dinamis** | `Minecraft/plugins/ApexsionsShop/src/main/resources/markets/markets.yml` | Pajak toko (`SOLTERRA: 20%`, `ZENITHAR: 25%`, `SYLVAMOOR: 15%`), rasio jual ore 30% di Solterra, volatilitas 1.25x di Zenithar, diskon bahan pertanian di Sylvamoor. |
 | **Pajak Transfer Antar-Pemain (`/pay`)** | `com.apexsions.economy.service.PayService` | Pajak transaksi instan: `ZENITHAR 10%`, `SOLTERRA 8%`, `SYLVAMOOR 6%`, `Default 5%`. |
 | **Pajak Lelang & Kas Kerajaan** | `com.apexsions.economy.service.AuctionService` | Pajak lelang flat 5% yang otomatis disetorkan ke kas kerajaan penjual di tabel `economy_kingdom_treasury`. Batas listing lelang berdasarkan rank. |
 | **Penyimpanan Kas SQL** | `com.apexsions.economy.database.EconomyRepository` | Query `INSERT/UPDATE economy_kingdom_treasury` untuk saldo kas mata uang `rupiah` dan `diamond`. |

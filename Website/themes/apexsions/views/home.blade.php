@@ -146,7 +146,7 @@
                     </ul>
                     <div class="small fw-bold text-uppercase mb-1 apx-buff-label"><i class="bi bi-shield-plus me-1"></i> <span data-i18n="label_buffs">Buff Kondisi Sejarah</span></div>
                     <div class="small text-muted mb-2" style="font-size: 0.8rem; line-height: 1.5;" data-i18n-html="solterra_buffs">
-                        <span class="text-success fw-semibold">[Battle Momentum] +15% Total Damage</span>, <span class="text-success fw-semibold">+10% Critical Damage</span>, <span class="text-success fw-semibold">+10% Mining Speed</span>, <span class="text-success fw-semibold">Rasio Jual Ore Tinggi (65%)</span>.
+                        <span class="text-success fw-semibold">[Battle Momentum] +15% Total Damage</span>, <span class="text-success fw-semibold">+10% Critical Damage</span>, <span class="text-success fw-semibold">+10% Mining Speed</span>, <span class="text-success fw-semibold">Rasio Jual Ore Tinggi (30%)</span>.
                     </div>
                     <div class="small fw-bold text-uppercase mb-1 apx-debuff-label"><i class="bi bi-shield-minus me-1"></i> <span data-i18n="label_debuffs">Debuff Kondisi Fisik</span></div>
                     <div class="small text-muted" style="font-size: 0.8rem; line-height: 1.5;" data-i18n-html="solterra_debuffs">

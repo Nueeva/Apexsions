@@ -157,7 +157,7 @@ Struktur modul berada di folder `Minecraft/plugins/`:
    - 3 Kerajaan: **Zenithar** (Timur / Dinasti), **Solterra** (Selatan / Magician), **Sylvamoor** (Barat / Rimba).
    - Auto-respawn ibukota terintegrasi BlueMap (`world.conf`).
    - Progresi Level 1-100 dengan 13 sumber XP.
-   - **RPG Stat Scaling (Diminishing Curves):** Injeksi atribut native Paper (`Attribute.MAX_HEALTH` maks +12 HP, `Attribute.ATTACK_DAMAGE` maks +1.90), bonus PvE damage khusus monster (maks +26.5%), dan mitigasi resistensi monster (maks 10%).
+   - **RPG Stat Scaling (Diminishing Curves):** Injeksi atribut native Paper (`Attribute.MAX_HEALTH` maks +12 HP, `Attribute.ATTACK_DAMAGE` maks +1.90), bonus PvE damage khusus monster (skalabilitas hingga maks +50.0% pada Lv 100), dan mitigasi resistensi monster (maks 10%).
    - **Unified Combat Engine & Smart PvP Normalizer:** Pipeline terisolasi dengan prioritas event (`NORMAL` -> `HIGH` -> `HIGHEST`), pemotongan excess attack > +0.80 di PvP, dan normalisasi proporsional defender ber-HP tinggi ke skala 24 HP tanpa bug heart-flicker.
    - **Sovereign Land Claiming & Upkeep Economy (`/claim`):** Brankas deposit mandiri per wilayah (`Claim Bank`), Pajak Harian Progresif ($100 \times (1 + (\text{Total Chunks} - 1) \times 0.15)$), 50% setoran otomatis ke Kas Kerajaan (`KingdomTreasury`), Masa Tenggang 72 Jam (*Grace Period*) dengan auto-unclaim saat penunggakan berlanjut.
    - **Kedaulatan Upper Dimension Conclave:** Kuota klaim **Tanpa Batas (`∞`)** dan **Bebas Pajak Upkeep (`Rp 0.0/hari`)** bagi entitas Conclave (Weight $\ge 80$: `ancestor`, `architect`, `overseer`, `warden`, `herald`) sesuai kanon `LORE.md`.
@@ -650,7 +650,7 @@ Spesifikasi atribut, persentase pajak wilayah, dan kondisi fisik ketiga kerajaan
   - `+10% Critical Damage` (Daya rusak serangan kritikal).
   - `+2% Defense` (Ketahanan tubuh terlatih perang).
   - `+10% Kecepatan Menambang` (Eksploitasi cadas vulkanik).
-  - Rasio Jual Ore Tinggi (65% dari harga beli pasar).
+  - Rasio Jual Ore Tinggi (30% dari harga beli pasar, di atas standar 20%).
 - **Debuff Kanonikal:**
   - `-2 HP Maksimal (9 Hati)` (Tubuh rapuh terpapar panas ekstrem kawah).
   - `+8% Kerentanan Damage Masuk` (Gaya bertarung mengorbankan pertahanan diri).

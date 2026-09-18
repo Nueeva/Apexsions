@@ -6,7 +6,7 @@ package com.apexsions.core.level.stat;
  * @param level               The player's progression level (1-100).
  * @param healthBonus         Bonus max health (HP) added via attribute modifier (diminishing curve, max 12.0 HP).
  * @param attackBonus         Bonus raw attack damage added via attribute modifier (diminishing curve, max 1.90 Attack).
- * @param pveDamageMultiplier Additional percentage damage dealt against monster entities (diminishing curve, max +26.5%).
+ * @param pveDamageMultiplier Additional percentage damage dealt against monster entities (diminishing curve, max +50.0%).
  * @param pveResistance       Percentage damage reduction against incoming attacks from monster entities (max 10.0%).
  */
 public record PlayerProgressionStats(

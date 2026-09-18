@@ -49,7 +49,7 @@ public class KingdomMarketService {
     }
 
     /**
-     * Checks if this kingdom overrides the base sell-to-buy ratio (e.g. Solterra 65% on ORES).
+     * Checks if this kingdom overrides the base sell-to-buy ratio (e.g. Solterra 30% on ORES).
      * Returns -1.0 if standard 20% base sell ratio applies.
      */
     public double getCustomSellRatio(ShopItem item, Player player, String kingdomOverride) {

@@ -82,7 +82,7 @@ regions:
       - "<green>+10% Serangan Critical (Critical Damage Boost)</green>"
       - "<green>+2% Pertahanan Diri (Defense Reduction)</green>"
       - "<green>+10% Kecepatan Menambang (Mining Speed Boost)</green>"
-      - "<green>Harga Ore Cenderung Stabil & Tinggi (Rasio Jual Ore 65% Harga Beli)</green>"
+      - "<green>Harga Ore Cenderung Stabil & Tinggi (Rasio Jual Ore 30% Harga Beli)</green>"
     nerfs:
       - "<red>+7% Laju Pengurangan Hunger Bar (Exhaustion Rate)</red>"
       - "<red>-2 HP Maksimal Darah (Total 9 Hati)</red>"
@@ -100,7 +100,7 @@ regions:
       - "<green><b>Kondisi Sejarah (Buff):</b></green>"
       - "<gray> • <green>[Battle Momentum] +15% Damage & +10% Crit</green>"
       - "<gray> • <green>+10% Mining Speed</green> & <green>+2% Defense</green>"
-      - "<gray> • <green>Rasio Jual Ore Tinggi (65%)</green>"
+      - "<gray> • <green>Rasio Jual Ore Tinggi (30%)</green>"
       - ""
       - "<red><b>Kondisi Fisik (Debuff):</b></red>"
       - "<gray> • <red>-2 HP Max Health (Total 9 Hati)</red>"
