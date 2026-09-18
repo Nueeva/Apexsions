@@ -22,6 +22,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 public class PlayerCombatProgressionListener implements Listener {
 
     private final ApexsionsCorePlugin plugin;
+    private final java.util.Map<java.util.UUID, Long> lastActionBarSent = new java.util.concurrent.ConcurrentHashMap<>();
 
     public PlayerCombatProgressionListener(ApexsionsCorePlugin plugin) {
         this.plugin = plugin;
@@ -49,6 +50,16 @@ public class PlayerCombatProgressionListener implements Listener {
                     double pveBonus = stats.pveDamageMultiplier();
                     if (pveBonus > 0.0) {
                         event.setDamage(event.getDamage() * (1.0 + pveBonus));
+
+                        long now = System.currentTimeMillis();
+                        Long last = lastActionBarSent.get(attacker.getUniqueId());
+                        if (last == null || now - last >= 1500) {
+                            lastActionBarSent.put(attacker.getUniqueId(), now);
+                            double pct = pveBonus * 100.0;
+                            attacker.sendActionBar(net.kyori.adventure.text.minimessage.MiniMessage.miniMessage().deserialize(
+                                    "<#C9A45C>⚔ Serangan Terinfusi: <#2ecc71>+" + String.format(java.util.Locale.US, "%.1f", pct) + "% PvE</#2ecc71> <gray>(Lv." + attackerLevel + ")</gray>"
+                            ));
+                        }
                     }
                 }
             } else {

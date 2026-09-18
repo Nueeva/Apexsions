@@ -1,0 +1,77 @@
+# ============================================================
+# APEXSIONS: THE END LEVELED MONSTERS (Tier 5: Lv. 65 - 95+)
+# Celestial, Astral & Void threats matching Celestial & Void Lore
+# ============================================================
+
+VoidWarpedWatcher:
+  Type: ENDERMAN
+  Display: '<#8e44ad>[Lv.<mob.level>] <#9b59b6>Void Warped Watcher</#9b59b6>'
+  Health: 160
+  Damage: 18
+  Armor: 10
+  LevelModifiers:
+    Health: 6.0
+    Damage: 0.7
+    Armor: 0.35
+  Options:
+    MovementSpeed: 0.32
+    FollowRange: 35
+    KnockbackResistance: 0.4
+  Drops:
+    - exp 90 1.0
+    - ENDER_PEARL 1-3 1.0
+    - CHORUS_FRUIT 2-4 0.75
+
+VoidShulkerSentinel:
+  Type: SHULKER
+  Display: '<#9b59b6>[Lv.<mob.level>] <#e056fd>Astral Shulker Sentinel</#e056fd>'
+  Health: 140
+  Damage: 16
+  Armor: 20
+  LevelModifiers:
+    Health: 5.5
+    Damage: 0.6
+    Armor: 0.2
+  Options:
+    FollowRange: 30
+  Drops:
+    - exp 120 1.0
+    - SHULKER_SHELL 1-2 0.8
+    - DIAMOND 1 0.15
+
+VoidAstralPhantom:
+  Type: PHANTOM
+  Display: '<#34495e>[Lv.<mob.level>] <#686de0>Astral Void Phantom</#686de0>'
+  Health: 120
+  Damage: 17
+  Armor: 8
+  LevelModifiers:
+    Health: 4.5
+    Damage: 0.65
+    Armor: 0.25
+  Options:
+    MovementSpeed: 0.35
+    FollowRange: 40
+  Drops:
+    - exp 85 1.0
+    - PHANTOM_MEMBRANE 1-3 0.95
+    - END_STONE 2-5 0.8
+
+VoidCorruptedDrake:
+  Type: ENDER_DRAGON
+  Display: '<#4834d4>[Lv.<mob.level>] <#be2edd>Corrupted Void Sovereign Drake</#be2edd>'
+  Health: 1200
+  Damage: 32
+  Armor: 30
+  LevelModifiers:
+    Health: 25.0
+    Damage: 1.5
+    Armor: 0.5
+  Options:
+    AlwaysShowName: true
+    MaxCombatDistance: 64
+  Drops:
+    - exp 2500 1.0
+    - DRAGON_BREATH 4-8 1.0
+    - NETHER_STAR 1 0.5
+    - ELYTRA 1 0.25

@@ -249,10 +249,11 @@ Dihitung secara matematis murni di `com.apexsions.core.level.stat.PlayerStatCalc
    - *Injeksi:* Paper Native `Attribute.ATTACK_DAMAGE` (`apex_level_attack`).
 
 3. **PvE Damage Multiplier ($PvE_{mult}$ - Khusus Monster):**
-   - **Lv 1–20:** $+0.50\%$ / level ($+10.0\%$ di Lv 20).
-   - **Lv 21–50:** $+0.30\%$ / level ($+9.0\%$ di Lv 50 $\rightarrow$ Total $+19.0\%$).
-   - **Lv 51–75:** $+0.20\%$ / level ($+5.0\%$ di Lv 75 $\rightarrow$ Total $+24.0\%$).
-   - **Lv 76–100:** $+0.10\%$ / level ($+2.5\%$ di Lv 100 $\rightarrow$ Total **$+26.5\%$ Maksimal**).
+   - **Lv 1–25:** $+0.80\%$ / level ($+20.0\%$ di Lv 25).
+   - **Lv 26–50:** $+0.60\%$ / level ($+15.0\%$ di Lv 50 $\rightarrow$ Total $+35.0\%$).
+   - **Lv 51–75:** $+0.40\%$ / level ($+10.0\%$ di Lv 75 $\rightarrow$ Total $+45.0\%$).
+   - **Lv 76–100:** $+0.20\%$ / level ($+5.0\%$ di Lv 100 $\rightarrow$ Total **$+50.0\%$ Maksimal**).
+   - *Combat Feedback:* Action Bar visualisasi `⚔ Serangan Terinfusi: +X% PvE Dmg (Lv.Y)` setiap kali menyerang monster (rate-limit 1.5s).
 
 4. **PvE Resistance ($RES_{pve}$ - Mitigasi Serangan Monster):**
    - **Lv 1–24:** $0\%$
@@ -268,7 +269,7 @@ Kalkulasi tempur terbagi dalam 3 tahap terisolasi untuk mencegah *multiplicative
 
 ```text
 [Priority: NORMAL]  PlayerCombatProgressionListener
-   ├── PvE Outgoing: Damage × (1 + PvE_mult)
+   ├── PvE Outgoing: Damage × (1 + PvE_mult) + Action Bar Feedback
    ├── PvE Incoming: Damage × (1 - RES_pve)
    └── PvP Outgoing: Pemangkasan Excess Attack > +0.80 dari base damage
            ↓
@@ -283,21 +284,21 @@ Kalkulasi tempur terbagi dalam 3 tahap terisolasi untuk mencegah *multiplicative
 #### Keunggulan Desain Smart Normalizer:
 * **Anti Double-Survivability:** Karena Bukkit `event.setDamage()` memodifikasi pre-armor damage, faktor $\text{ActualMaxHP}$ di pembilang dan penyebut saling menghilangkan. Pemain Level 100 dengan armor Netherite tetap kehilangan persentase bar darah yang setara dengan kolam $24.0\text{ HP}$ (+4 HP cap).
 * **Bebas Glitch:** Tidak mengubah atau memotong bar hati visual pemain saat bertarung di PvP (tidak ada *heart-flickering*).
-* **Isolasi Total:** Bonus PvE ($+26.5\%$) dan resistensi monster ($10\%$) mati total ($0\%$) dalam PvP.
+* **Isolasi Total:** Bonus PvE ($+50.0\%$) dan resistensi monster ($10\%$) mati total ($0\%$) dalam PvP.
 
 ---
 
 ### C. Ekosistem 6-Tier Monster Progression & Dynamic Spawning
 Menghilangkan jurang kekosongan konten (Lv 16–74) dengan pembagian zona bertingkat dan *weighted random levels* di MythicMobs:
 
-| Tier | Wilayah / Zona | Rentang Level | Bobot Spawning & Karakteristik | Peran Gameplay |
+| Tier | Wilayah / Dimensi | Rentang Level | Bobot Spawning & Karakteristik | Peran Gameplay |
 | :---: | :--- | :---: | :--- | :--- |
 | **Tier 1** | **Wilayah Kerajaan** *(Capital & Claims)* | **Lv. 1 – 5** | • 60% Lv 1–2<br>• 30% Lv 3–4<br>• 10% Lv 5 | Zona aman, adaptasi pemula, farming bahan pokok. |
 | **Tier 2** | **Alam Liar (*Wilderness*)** | **Lv. 5 – 20** | • 45% Lv 5–9 (*Forest Stalker*)<br>• 35% Lv 8–16 (*Dune Marauder*)<br>• 20% Lv 12–20 (*Canyon Marksman*) | Eksplorasi malam survival, perburuan bahan standar. |
 | **Tier 3** | **Lembah Berbahaya (*Dangerous Wilds*)** | **Lv. 20 – 40** | • Weighted random Lv 20–40<br>• Troll, Spider Matriarch, Dark Cultist | Mid-game barrier, eksplorasi gua & hutan tua. |
-| **Tier 4** | **Zona Korupsi & Outpost Bandit** | **Lv. 40 – 65** | • Weighted random Lv 40–65<br>• Drop fragmen relic & custom enchant tier 1-2 | Dungeon bawah tanah, perburuan tim kecil. |
-| **Tier 5** | **Reruntuhan Kuno Sions (*Terra Interdicta*)** | **Lv. 65 – 90** | • Lv 65–78: *Sions Fallen Legionnaire*<br>• Lv 65–75: *Sions Void Crawler*<br>• Lv 75–85: *Sions Void Assassin* & *Channeler*<br>• Lv 80–90: *Sions Ruin Sentinel* & *Void Knight* | Endgame grinding, farming Kunci Elit & Dark Core. |
-| **Tier 6** | **World Raid Lair** | **Lv. 90 – 100** | • Mini-Boss: *Voran, The Ruined Commander* (**Lv. 90**)<br>• World Raid Boss: *Kaisar Valerius* (**Lv. 100**) | Puncak tantangan server, multi-phase raid boss. |
+| **Tier 4** | **Dimensi Nether (*world_nether*) & Outpost** | **Lv. 35 – 75** | • Lv 40–60: *Ash Crawler* & *Molten Core Titan*<br>• Lv 45–65: *Inferno Wraith (Ghast)*<br>• Lv 50–70: *Crimson Behemoth (Hoglin)*<br>• Lv 65–75: *Bastion Warmaster (Brute)* | Infernal survival, farming netherite scrap & rare drops. |
+| **Tier 5** | **Dimensi The End (*world_the_end*) & Reruntuhan Kuno Sions** | **Lv. 65 – 95+** | • Lv 65–80: *Void Warped Watcher (Enderman)*<br>• Lv 70–85: *Astral Void Phantom*<br>• Lv 75–90: *Astral Shulker Sentinel*<br>• Lv 65–90: *Sions Fallen Legionnaire & Minions* | Endgame grinding, Shulker shells, Void relic fragments. |
+| **Tier 6** | **World Raid Lair & Sovereign Bosses** | **Lv. 95 – 100** | • Boss The End: *Corrupted Void Sovereign Drake* (**Lv. 100**)<br>• World Raid Boss: *Kaisar Valerius* (**Lv. 100**) | Puncak tantangan server, multi-phase raid boss. |
 
 ---
 
@@ -306,7 +307,7 @@ Setiap pemain dapat melihat profil status fisiknya secara transparan di Slot 13 
 ```text
 ❤ Max Health : 32.0 HP (+12.0 dari Level)
 🗡 Base Attack: +1.90 (Bonus Fisik)
-🏹 PvE Mastery: +26.5% Dmg • 10.0% Resis
+🏹 PvE Mastery: +50.0% Dmg • 10.0% Resis
 ⚖ PvP Profile: Fair-Play Normalized (Cap +4 HP / +0.8 Atk)
 ```
 

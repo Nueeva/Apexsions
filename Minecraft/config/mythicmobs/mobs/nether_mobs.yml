@@ -1,0 +1,99 @@
+# ============================================================
+# APEXSIONS: NETHER LEVELED MONSTERS (Tier 4: Lv. 35 - 75)
+# Infernal & Volcanic threats matching Solterra & Umbra Lore
+# ============================================================
+
+NetherAshCrawler:
+  Type: WITHER_SKELETON
+  Display: '<#c0392b>[Lv.<mob.level>] <red>Ash Crawler</red>'
+  Health: 110
+  Damage: 12
+  Armor: 8
+  LevelModifiers:
+    Health: 4.0
+    Damage: 0.45
+    Armor: 0.3
+  Options:
+    MovementSpeed: 0.28
+    FollowRange: 28
+    KnockbackResistance: 0.2
+  Equipment:
+    - STONE_SWORD HAND
+    - IRON_HELMET HEAD
+  Drops:
+    - exp 45 1.0
+    - COAL 1-3 0.8
+    - BONE 1-2 0.7
+    - WITHER_SKELETON_SKULL 1 0.04
+
+NetherInfernoGhast:
+  Type: GHAST
+  Display: '<#e67e22>[Lv.<mob.level>] <gold>Inferno Wraith</gold>'
+  Health: 85
+  Damage: 14
+  Armor: 6
+  LevelModifiers:
+    Health: 3.5
+    Damage: 0.55
+    Armor: 0.2
+  Options:
+    FollowRange: 40
+  Drops:
+    - exp 60 1.0
+    - GUNPOWDER 2-5 0.9
+    - GHAST_TEAR 1 0.35
+
+NetherCrimsonBehemoth:
+  Type: HOGLIN
+  Display: '<#d35400>[Lv.<mob.level>] <#e74c3c>Crimson Behemoth</#e74c3c>'
+  Health: 150
+  Damage: 16
+  Armor: 12
+  LevelModifiers:
+    Health: 5.5
+    Damage: 0.65
+    Armor: 0.4
+  Options:
+    MovementSpeed: 0.32
+    KnockbackResistance: 0.6
+  Drops:
+    - exp 75 1.0
+    - COOKED_PORKCHOP 3-6 1.0
+    - LEATHER 2-4 0.9
+
+NetherBastionWarmaster:
+  Type: PIGLIN_BRUTE
+  Display: '<#e74c3c>[Lv.<mob.level>] <#f39c12>Bastion Warmaster</#f39c12>'
+  Health: 190
+  Damage: 20
+  Armor: 15
+  LevelModifiers:
+    Health: 6.0
+    Damage: 0.8
+    Armor: 0.45
+  Options:
+    MovementSpeed: 0.30
+    KnockbackResistance: 0.4
+  Equipment:
+    - GOLDEN_AXE HAND
+    - NETHERITE_HELMET HEAD
+  Drops:
+    - exp 100 1.0
+    - GOLD_INGOT 2-5 1.0
+    - NETHERITE_SCRAP 1 0.08
+
+NetherMagmaTitan:
+  Type: MAGMA_CUBE
+  Display: '<#b03a2e>[Lv.<mob.level>] <#e67e22>Molten Core Titan</#e67e22>'
+  Health: 95
+  Damage: 11
+  Armor: 8
+  LevelModifiers:
+    Health: 3.8
+    Damage: 0.45
+    Armor: 0.25
+  Options:
+    MovementSpeed: 0.26
+  Drops:
+    - exp 35 1.0
+    - MAGMA_CREAM 1-3 0.85

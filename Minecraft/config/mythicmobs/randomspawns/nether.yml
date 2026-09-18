@@ -1,0 +1,49 @@
+# ============================================================
+# APEXSIONS: NETHER LEVELED MONSTERS RANDOM SPAWNS (Lv. 35 - 75)
+# Replaces vanilla Nether spawns in world_nether
+# ============================================================
+
+NetherAshCrawlerSpawn:
+  MobType: NetherAshCrawler
+  Worlds: world_nether
+  Level: 40to60
+  Chance: 0.22
+  Priority: 2
+  Action: REPLACE
+  UseWorldScaling: false
+
+NetherInfernoGhastSpawn:
+  MobType: NetherInfernoGhast
+  Worlds: world_nether
+  Level: 45to65
+  Chance: 0.15
+  Priority: 2
+  Action: REPLACE
+  UseWorldScaling: false
+
+NetherCrimsonBehemothSpawn:
+  MobType: NetherCrimsonBehemoth
+  Worlds: world_nether
+  Level: 50to70
+  Chance: 0.18
+  Priority: 2
+  Action: REPLACE
+  UseWorldScaling: false
+
+NetherBastionWarmasterSpawn:
+  MobType: NetherBastionWarmaster
+  Worlds: world_nether
+  Level: 65to75
+  Chance: 0.10
+  Priority: 3
+  Action: REPLACE
+  UseWorldScaling: false
+
+NetherMagmaTitanSpawn:
+  MobType: NetherMagmaTitan
+  Worlds: world_nether
+  Level: 40to65
+  Chance: 0.20
+  Priority: 2
+  Action: REPLACE
+  UseWorldScaling: false

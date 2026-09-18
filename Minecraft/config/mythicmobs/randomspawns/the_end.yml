@@ -1,0 +1,31 @@
+# ============================================================
+# APEXSIONS: THE END LEVELED MONSTERS RANDOM SPAWNS (Lv. 65 - 90)
+# Replaces vanilla End spawns in world_the_end
+# ============================================================
+
+VoidWarpedWatcherSpawn:
+  MobType: VoidWarpedWatcher
+  Worlds: world_the_end
+  Level: 65to80
+  Chance: 0.30
+  Priority: 2
+  Action: REPLACE
+  UseWorldScaling: false
+
+VoidShulkerSentinelSpawn:
+  MobType: VoidShulkerSentinel
+  Worlds: world_the_end
+  Level: 75to90
+  Chance: 0.15
+  Priority: 2
+  Action: REPLACE
+  UseWorldScaling: false
+
+VoidAstralPhantomSpawn:
+  MobType: VoidAstralPhantom
+  Worlds: world_the_end
+  Level: 70to85
+  Chance: 0.18
+  Priority: 2
+  Action: REPLACE
+  UseWorldScaling: false

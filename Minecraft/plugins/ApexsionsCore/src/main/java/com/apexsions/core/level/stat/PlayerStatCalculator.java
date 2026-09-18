@@ -71,22 +71,22 @@ public final class PlayerStatCalculator {
     /**
      * Calculates bonus damage percentage against monsters (PvE only).
      * <p>
-     * - Lv 1-20:  +0.50%/lv (+10.0% at Lv 20)<br>
-     * - Lv 21-50: +0.30%/lv (+9.0% at Lv 50 -> total 19.0%)<br>
-     * - Lv 51-75: +0.20%/lv (+5.0% at Lv 75 -> total 24.0%)<br>
-     * - Lv 76-100: +0.10%/lv (+2.5% at Lv 100 -> total 26.5%)
+     * - Lv 1-25:  +0.80%/lv (+20.0% at Lv 25)<br>
+     * - Lv 26-50: +0.60%/lv (+15.0% at Lv 50 -> total 35.0%)<br>
+     * - Lv 51-75: +0.40%/lv (+10.0% at Lv 75 -> total 45.0%)<br>
+     * - Lv 76-100: +0.20%/lv (+5.0% at Lv 100 -> total 50.0%)
      */
     public static double calculatePveDamageMultiplier(int level) {
         if (level <= 0) return 0.0;
-        if (level <= 20) {
-            return roundFourDecimals(level * 0.005);
+        if (level <= 25) {
+            return roundFourDecimals(level * 0.008);
         } else if (level <= 50) {
-            return roundFourDecimals(0.10 + (level - 20) * 0.003);
+            return roundFourDecimals(0.20 + (level - 25) * 0.006);
         } else if (level <= 75) {
-            return roundFourDecimals(0.19 + (level - 50) * 0.002);
+            return roundFourDecimals(0.35 + (level - 50) * 0.004);
         } else {
-            double bonus = 0.24 + (Math.min(level, 100) - 75) * 0.001;
-            return roundFourDecimals(Math.min(0.265, bonus));
+            double bonus = 0.45 + (Math.min(level, 100) - 75) * 0.002;
+            return roundFourDecimals(Math.min(0.50, bonus));
         }
     }
 
