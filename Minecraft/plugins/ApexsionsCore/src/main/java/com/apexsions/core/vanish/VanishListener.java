@@ -57,6 +57,17 @@ public class VanishListener implements Listener {
         }
     }
 
+    /**
+     * Suppress advancement broadcast when player is vanished so surveillance/inspection is not blown.
+     */
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onAdvancement(org.bukkit.event.player.PlayerAdvancementDoneEvent event) {
+        Player player = event.getPlayer();
+        if (vanishManager.isVanished(player)) {
+            event.message(null);
+        }
+    }
+
     @EventHandler(priority = EventPriority.MONITOR)
     public void onWorldChange(PlayerChangedWorldEvent event) {
         vanishManager.handleWorldChange(event.getPlayer());

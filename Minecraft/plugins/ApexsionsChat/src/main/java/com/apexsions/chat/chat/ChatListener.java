@@ -46,6 +46,20 @@ public class ChatListener implements Listener {
             return;
         }
 
+        // Vanish Protection: prevent vanished staff from accidentally leaking messages in public chat
+        if (plugin.getApexsionsCoreHook() != null && plugin.getApexsionsCoreHook().isPlayerVanished(player.getUniqueId())) {
+            if (!channel.getId().equalsIgnoreCase("staff")) {
+                player.sendMessage(miniMessage.deserialize(
+                        "<dark_gray>[<gradient:#f1c40f:#e67e22><bold>Apexsions</bold></gradient>]</dark_gray> " +
+                        "<red>⚠️ Kamu sedang dalam mode <bold>VANISH</bold>! Pesan di chat publik diblokir agar tidak membongkar penyamaranmu.</red>\n" +
+                        "<gray>• Gunakan <yellow>/staffchat <pesan></yellow> (atau <yellow>/sc</yellow>) untuk mengobrol dengan staf.\n" +
+                        "• Ketik <yellow>/vanish</yellow> jika ingin kembali terlihat sebelum berbicara di chat publik.</gray>"
+                ));
+                event.setCancelled(true);
+                return;
+            }
+        }
+
         // 3. Moderation Pipeline (Spam, Ads, Profanity, Hate Speech)
         ModerationResult modResult = plugin.getModerationEngine().process(player, rawMessage, channel.getId());
         if (modResult.isBlocked()) {

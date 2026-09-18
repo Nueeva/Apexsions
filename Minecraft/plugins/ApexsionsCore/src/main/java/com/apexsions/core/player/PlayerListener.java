@@ -56,15 +56,24 @@ public class PlayerListener implements Listener {
             plugin.getLuckPermsHook().getRankProvisioner().handlePlayerJoin(player);
         }
 
-        // 3. Reconcile Level progression in case player has accumulated XP
-        plugin.getPlayerDataService().getCached(player.getUniqueId()).ifPresent(data -> {
+        // 3. Reconcile Level progression (ensure data is loaded in cache even if reconnect bypassed pre-login)
+        PlayerData playerData = plugin.getPlayerDataService().getCached(player.getUniqueId()).orElseGet(() -> {
+            try {
+                return plugin.getPlayerDataService().loadOrCreate(player.getUniqueId(), player.getName()).join();
+            } catch (Exception e) {
+                plugin.getLogger().warning("Failed fallback load on join for " + player.getName() + ": " + e.getMessage());
+                return null;
+            }
+        });
+
+        if (playerData != null) {
             if (plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isConclaveStaff(player)) {
-                if (data.hasRegion()) {
+                if (playerData.hasRegion()) {
                     plugin.getPlayerDataService().updateRegion(player.getUniqueId(), null);
                 }
             }
-            plugin.getLevelManager().reconcileLevel(data, player);
-        });
+            plugin.getLevelManager().reconcileLevel(playerData, player);
+        }
 
         // 4. Synchronize rank nametag and scoreboard team immediately and after async rank provisioning
         if (plugin.getRankAnimationManager() != null) {

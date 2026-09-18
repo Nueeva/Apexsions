@@ -18,7 +18,7 @@ kingdoms:
   SOLTERRA:
     tax-percent: 20.0
     ores-buy-multiplier: 1.15      # Harga ore cenderung stabil dan tinggi
-    ores-sell-ratio: 0.65          # Rasio harga jual ore melonjak menjadi 65% dari harga beli
+    ores-sell-ratio: 0.30          # Rasio harga jual ore seimbang 30% dari harga beli (unggul di atas baseline 20%)
     ores-stability: true           # Kebal terhadap volatilitas pasar
     food-buy-multiplier: 0.90      # Makanan murah 10%
     farming-buy-multiplier: 0.90   # Pertanian murah 10%

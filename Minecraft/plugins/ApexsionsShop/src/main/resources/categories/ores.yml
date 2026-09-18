@@ -7,53 +7,67 @@ description: "Bijih logam murni, permata, dan mineral berharga dari perut bumi."
 items:
   coal:
     material: "COAL"
-    buy-price: 50.0
+    buy-price: 15.0
+    sell-price: 3.0
     display-name: "<dark_gray>Coal</dark_gray>"
   raw_copper:
     material: "RAW_COPPER"
-    buy-price: 35.0
+    buy-price: 20.0
+    sell-price: 4.0
     display-name: "<gold>Raw Copper</gold>"
   copper_ingot:
     material: "COPPER_INGOT"
-    buy-price: 45.0
+    buy-price: 30.0
+    sell-price: 6.0
     display-name: "<gold>Copper Ingot</gold>"
   raw_iron:
     material: "RAW_IRON"
-    buy-price: 70.0
+    buy-price: 50.0
+    sell-price: 10.0
     display-name: "<white>Raw Iron</white>"
   iron_ingot:
     material: "IRON_INGOT"
-    buy-price: 85.0
+    buy-price: 75.0
+    sell-price: 15.0
     display-name: "<white>Iron Ingot</white>"
   raw_gold:
     material: "RAW_GOLD"
-    buy-price: 115.0
+    buy-price: 80.0
+    sell-price: 16.0
     display-name: "<gold>Raw Gold</gold>"
   gold_ingot:
     material: "GOLD_INGOT"
-    buy-price: 140.0
+    buy-price: 120.0
+    sell-price: 24.0
     display-name: "<gold>Gold Ingot</gold>"
   redstone:
     material: "REDSTONE"
-    buy-price: 60.0
+    buy-price: 25.0
+    sell-price: 5.0
     display-name: "<red>Redstone Dust</red>"
   lapis_lazuli:
     material: "LAPIS_LAZULI"
-    buy-price: 70.0
+    buy-price: 30.0
+    sell-price: 6.0
     display-name: "<blue>Lapis Lazuli</blue>"
   amethyst_shard:
     material: "AMETHYST_SHARD"
-    buy-price: 65.0
+    buy-price: 35.0
+    sell-price: 7.0
     display-name: "<light_purple>Amethyst Shard</light_purple>"
   nether_quartz:
     material: "QUARTZ"
-    buy-price: 60.0
+    buy-price: 40.0
+    sell-price: 8.0
     display-name: "<white>Nether Quartz</white>"
   emerald:
     material: "EMERALD"
-    buy-price: 280.0
+    buy-price: 350.0
+    sell-price: 70.0
     display-name: "<green><bold>Emerald</bold></green>"
   diamond:
     material: "DIAMOND"
-    buy-price: 450.0
+    buy-enabled: false
+    buy-price: 5000.0
+    sell-price: 250.0
     display-name: "<aqua><bold>Diamond</bold></aqua>"

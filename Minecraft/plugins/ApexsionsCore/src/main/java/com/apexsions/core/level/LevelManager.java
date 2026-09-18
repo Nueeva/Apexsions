@@ -33,20 +33,35 @@ public class LevelManager {
         this.titleResolver = titleResolver;
     }
 
+    private Optional<PlayerData> resolvePlayerData(UUID uuid) {
+        if (uuid == null) return Optional.empty();
+        Optional<PlayerData> cached = plugin.getPlayerDataService().getCached(uuid);
+        if (cached.isPresent()) return cached;
+
+        Player p = Bukkit.getPlayer(uuid);
+        if (p != null && p.isOnline()) {
+            try {
+                PlayerData loaded = plugin.getPlayerDataService().loadOrCreate(uuid, p.getName()).join();
+                return Optional.ofNullable(loaded);
+            } catch (Exception ignored) {}
+        }
+        return Optional.empty();
+    }
+
     public int getLevel(UUID uuid) {
-        return plugin.getPlayerDataService().getCached(uuid)
+        return resolvePlayerData(uuid)
                 .map(PlayerData::getLevel)
                 .orElse(1);
     }
 
     public long getXp(UUID uuid) {
-        return plugin.getPlayerDataService().getCached(uuid)
+        return resolvePlayerData(uuid)
                 .map(PlayerData::getXp)
                 .orElse(0L);
     }
 
     public String getLevelTitle(UUID uuid) {
-        Optional<PlayerData> dataOpt = plugin.getPlayerDataService().getCached(uuid);
+        Optional<PlayerData> dataOpt = resolvePlayerData(uuid);
         if (dataOpt.isEmpty()) {
             return "Citizen";
         }

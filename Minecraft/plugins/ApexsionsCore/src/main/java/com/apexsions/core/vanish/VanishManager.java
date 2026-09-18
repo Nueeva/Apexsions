@@ -85,6 +85,7 @@ public class VanishManager {
             player.setMetadata("vanished", new FixedMetadataValue(plugin, true));
             player.setMetadata("vanish", new FixedMetadataValue(plugin, true));
             notifyTabVanish(player, true);
+            syncEssentialsVanish(player, true);
 
             // Hide from normal players, ensure visible to staff
             for (Player viewer : Bukkit.getOnlinePlayers()) {
@@ -132,6 +133,7 @@ public class VanishManager {
             player.removeMetadata("vanished", plugin);
             player.removeMetadata("vanish", plugin);
             notifyTabVanish(player, false);
+            syncEssentialsVanish(player, false);
 
             // Re-show to all players
             for (Player viewer : Bukkit.getOnlinePlayers()) {
@@ -211,6 +213,7 @@ public class VanishManager {
             joiner.setMetadata("vanished", new FixedMetadataValue(plugin, true));
             joiner.setMetadata("vanish", new FixedMetadataValue(plugin, true));
             notifyTabVanish(joiner, true);
+            syncEssentialsVanish(joiner, true);
 
             // Hide the vanished joiner from everyone except staff
             for (Player viewer : Bukkit.getOnlinePlayers()) {
@@ -322,6 +325,21 @@ public class VanishManager {
             }
         } catch (Throwable ignored) {
             // TAB plugin not loaded or differing version; Bukkit metadata handles vanish automatically
+        }
+    }
+
+    private void syncEssentialsVanish(Player player, boolean vanish) {
+        if (player == null) return;
+        try {
+            org.bukkit.plugin.Plugin ess = Bukkit.getPluginManager().getPlugin("Essentials");
+            if (ess != null && ess.isEnabled()) {
+                Object user = ess.getClass().getMethod("getUser", Player.class).invoke(ess, player);
+                if (user != null) {
+                    user.getClass().getMethod("setVanished", boolean.class).invoke(user, vanish);
+                }
+            }
+        } catch (Throwable ignored) {
+            // Essentials not installed or reflection failed gracefully
         }
     }
 

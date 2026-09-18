@@ -8,39 +8,48 @@ items:
   # --- Bebatuan Dasar (Stones) ---
   cobblestone:
     material: "COBBLESTONE"
-    buy-price: 15.0
+    buy-price: 4.0
+    sell-price: 0.8
     display-name: "<gray>Cobblestone</gray>"
   stone:
     material: "STONE"
-    buy-price: 18.0
+    buy-price: 5.0
+    sell-price: 1.0
     display-name: "<gray>Stone</gray>"
   smooth_stone:
     material: "SMOOTH_STONE"
-    buy-price: 22.0
+    buy-price: 6.0
+    sell-price: 1.2
     display-name: "<gray>Smooth Stone</gray>"
   cobbled_deepslate:
     material: "COBBLED_DEEPSLATE"
-    buy-price: 18.0
+    buy-price: 5.0
+    sell-price: 1.0
     display-name: "<dark_gray>Cobbled Deepslate</dark_gray>"
   deepslate:
     material: "DEEPSLATE"
-    buy-price: 20.0
+    buy-price: 6.0
+    sell-price: 1.2
     display-name: "<dark_gray>Deepslate</dark_gray>"
   granite:
     material: "GRANITE"
-    buy-price: 20.0
+    buy-price: 5.0
+    sell-price: 1.0
     display-name: "<gold>Granite</gold>"
   diorite:
     material: "DIORITE"
-    buy-price: 20.0
+    buy-price: 5.0
+    sell-price: 1.0
     display-name: "<white>Diorite</white>"
   andesite:
     material: "ANDESITE"
-    buy-price: 20.0
+    buy-price: 5.0
+    sell-price: 1.0
     display-name: "<gray>Andesite</gray>"
   tuff:
     material: "TUFF"
-    buy-price: 20.0
+    buy-price: 5.0
+    sell-price: 1.0
     display-name: "<dark_gray>Tuff</dark_gray>"
   calcite:
     material: "CALCITE"
@@ -188,51 +197,63 @@ items:
   # --- Tanah, Pasir & Lumpur (Earth & Sands) ---
   dirt:
     material: "DIRT"
-    buy-price: 12.0
+    buy-price: 3.0
+    sell-price: 0.6
     display-name: "<gold>Dirt</gold>"
   coarse_dirt:
     material: "COARSE_DIRT"
-    buy-price: 15.0
+    buy-price: 4.0
+    sell-price: 0.8
     display-name: "<gold>Coarse Dirt</gold>"
   grass_block:
     material: "GRASS_BLOCK"
-    buy-price: 35.0
+    buy-price: 15.0
+    sell-price: 3.0
     display-name: "<green>Grass Block</green>"
   podzol:
     material: "PODZOL"
-    buy-price: 30.0
+    buy-price: 15.0
+    sell-price: 3.0
     display-name: "<gold>Podzol</gold>"
   mycelium:
     material: "MYCELIUM"
-    buy-price: 40.0
+    buy-price: 25.0
+    sell-price: 5.0
     display-name: "<light_purple>Mycelium</light_purple>"
   mud:
     material: "MUD"
-    buy-price: 15.0
+    buy-price: 4.0
+    sell-price: 0.8
     display-name: "<dark_gray>Mud</dark_gray>"
   clay:
     material: "CLAY"
-    buy-price: 25.0
+    buy-price: 12.0
+    sell-price: 2.5
     display-name: "<gray>Clay Block</gray>"
   sand:
     material: "SAND"
-    buy-price: 18.0
+    buy-price: 4.0
+    sell-price: 0.8
     display-name: "<yellow>Sand</yellow>"
   red_sand:
     material: "RED_SAND"
-    buy-price: 20.0
+    buy-price: 5.0
+    sell-price: 1.0
     display-name: "<gold>Red Sand</gold>"
   sandstone:
     material: "SANDSTONE"
-    buy-price: 22.0
+    buy-price: 6.0
+    sell-price: 1.2
     display-name: "<yellow>Sandstone</yellow>"
   red_sandstone:
     material: "RED_SANDSTONE"
-    buy-price: 24.0
+    buy-price: 7.0
+    sell-price: 1.4
     display-name: "<gold>Red Sandstone</gold>"
   gravel:
     material: "GRAVEL"
-    buy-price: 18.0
+    buy-price: 4.0
+    sell-price: 0.8
     display-name: "<gray>Gravel</gray>"
   soul_sand:
     material: "SOUL_SAND"

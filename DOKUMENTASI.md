@@ -370,6 +370,32 @@ Kekaisaran Sions bukan lagi kerajaan aktif atau faksi yang dapat dihuni, melaink
 
 ---
 
+### E. Pengerasan Sistem Vanish & Integritas Cache Pemain
+1. **Pencegahan Drop Level saat Timeout / Reconnect Cepat:**
+   - `PlayerListener.onJoin()` dilengkapi *Synchronous Fallback Loader*: jika cache RAM kosong akibat timeout mendadak sebelum handshake selesai, sistem langsung memuat ulang profil dari database SQLite/PostgreSQL (`loadOrCreate().join()`).
+   - `LevelManager` menyertakan `resolvePlayerData(uuid)` yang secara proaktif me-load data pemain online jika cache mengalami *miss*, menjamin level dan gelar tidak pernah lagi jatuh ke `Lv. 1 Citizen`.
+2. **Supresi Broadcast Advancement Staf Vanish:**
+   - `VanishListener` mengintersepsi `PlayerAdvancementDoneEvent` (Priority `HIGHEST`). Ketika staf sedang dalam mode `/vanish`, `event.message(null)` dipanggil sehingga pengumuman advancement (misal `[Rescue Mission]`) tidak bocor ke publik.
+3. **Proteksi Chat Publik Staf Vanish (`ApexsionsChat`):**
+   - Staf yang sedang aktif dalam mode vanish otomatis diblokir saat mengirim pesan ke channel publik (`Global` atau `Kingdom`), disertai pesan panduan privat untuk menggunakan `/staffchat` (`/sc`) atau mematikan `/vanish`.
+4. **Sinkronisasi Terpadu EssentialsX & TAB:**
+   - `VanishManager` menyinkronkan status pemain secara reflektif ke `Essentials.getUser().setVanished(boolean)` sehingga perintah `/seen`, `/list`, serta TAB placeholder `%essentials_vanished%` dan tablist mendeteksi status vanish secara presisi.
+
+---
+
+### F. Audit & Arsitektur Keseimbangan Ekonomi Pasar (/shop & /sell)
+1. **Starter Balance Survival (ApexsionsEconomy):**
+   - Saldo awal pemain baru diturunkan dari Rp 10.000 menjadi **Rp 1.000** untuk menjaga nilai mata uang sejak hari pertama.
+2. **Penghapusan Pembelian Diamond di Toko (`buy-enabled: false`):**
+   - Diamond diubah menjadi komoditas *Sell-Only* (hanya bisa dijual seharga Rp 250/butir). Pemain diwajibkan menambang di kedalaman `Y < -40` atau bertransaksi antar-pemain via lelang (`/ah` / `/trade`) untuk mendapatkan Diamond.
+3. **Penyesuaian Rasio Jual Bijih Solterra:**
+   - `ores-sell-ratio` Solterra diturunkan dari 65% menjadi **30%** (tetap unggul di atas standar kerajaan lain sebesar 20%, namun tidak memicu inflasi masif).
+4. **Rebalance Harga Bebatuan Dasar & Hasil Tani:**
+   - Harga jual bebatuan dasar (Cobblestone, Dirt, Sand) disesuaikan ke Rp 0.6 – 1.2 per blok (1 stack = Rp ~40–70).
+   - Harga jual hasil tani massal (Sugar Cane, Wheat, Carrot) distandarkan di rentang Rp 1.5 – 2.0 per unit (1 stack = Rp ~100–130).
+
+---
+
 ## 🏆 12. Kebijakan Papan Peringkat (Leaderboard Exemption Policy) & Struktur Leaderboard
 
 Untuk menjaga asas integritas kompetisi, keadilan bermain (*fair-play*), dan keselarasan kanon kosmologi (staf adalah entitas transenden The Conclave, bukan warga fana yang bersaing di papan peringkat), seluruh leaderboard baik di platform web maupun in-game menerapkan kebijakan pengecualian terstandarisasi.

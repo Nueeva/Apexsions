@@ -20,7 +20,7 @@ currencies:
     display-name: "Rupiah"
     symbol: "Rp."
     color: "&a"
-    starting-balance: 10000.0
+    starting-balance: 1000.0
     decimals: 0
   diamond:
     id: "diamond"
