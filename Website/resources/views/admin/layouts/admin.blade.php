@@ -58,6 +58,12 @@
                             <span>{{ trans('admin.nav.dashboard') }}</span>
                         </a>
                     </li>
+                    <li class="sidebar-item {{ add_active('apexsions-bridge.admin.kingdoms.*') }}">
+                        <a class="sidebar-link" href="{{ route('apexsions-bridge.admin.kingdoms.index') }}">
+                            <i class="bi bi-shield-shaded text-warning"></i>
+                            <span class="text-warning fw-semibold">Kingdoms & Territory War</span>
+                        </a>
+                    </li>
 
                     <!-- SECTION 2: MANAGEMENT -->
                     <li class="sidebar-header" style="color: #9E7B3E; font-size: 0.68rem; letter-spacing: 1.5px; font-weight: 700; text-transform: uppercase;">
@@ -73,6 +79,18 @@
                         <a class="sidebar-link" href="{{ route('apexsions-bridge.admin.ranks.index') }}">
                             <i class="bi bi-trophy-fill"></i>
                             <span>Rank Management</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item {{ add_active('apexsions-bridge.admin.battlepass.*') }}">
+                        <a class="sidebar-link" href="{{ route('apexsions-bridge.admin.battlepass.index') }}">
+                            <i class="bi bi-ticket-perforated-fill"></i>
+                            <span>BattlePass Season Desk</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item {{ add_active('apexsions-bridge.admin.crates.*') }}">
+                        <a class="sidebar-link" href="{{ route('apexsions-bridge.admin.crates.index') }}">
+                            <i class="bi bi-box2-fill"></i>
+                            <span>Crates & Key Dispenser</span>
                         </a>
                     </li>
                     <li class="sidebar-item {{ add_active('apexsions-bridge.admin.moderation.*') }}">
@@ -143,6 +161,12 @@
                         <a class="sidebar-link" href="{{ route('apexsions-bridge.admin.server.index') }}">
                             <i class="bi bi-hdd-network-fill"></i>
                             <span>Server Operations</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item {{ add_active('apexsions-bridge.admin.broadcast.*') }}">
+                        <a class="sidebar-link" href="{{ route('apexsions-bridge.admin.broadcast.index') }}">
+                            <i class="bi bi-broadcast-pin text-danger"></i>
+                            <span class="text-danger fw-semibold">Live Broadcast & Lockdown</span>
                         </a>
                     </li>
                     <li class="sidebar-item {{ add_active('apexsions-bridge.admin.plugins.*') }}">

@@ -4,9 +4,13 @@ use Azuriom\Plugin\ApexsionsBridge\Controllers\AccountLinkController;
 use Azuriom\Plugin\ApexsionsBridge\Controllers\Admin\GlobalSearchController;
 use Azuriom\Plugin\ApexsionsBridge\Controllers\Admin\AuditLogController;
 use Azuriom\Plugin\ApexsionsBridge\Controllers\Admin\AuctionAdminController;
+use Azuriom\Plugin\ApexsionsBridge\Controllers\Admin\BattlepassAdminController;
+use Azuriom\Plugin\ApexsionsBridge\Controllers\Admin\BroadcastAdminController;
+use Azuriom\Plugin\ApexsionsBridge\Controllers\Admin\CrateAdminController;
 use Azuriom\Plugin\ApexsionsBridge\Controllers\Admin\EconomyAdminController;
 use Azuriom\Plugin\ApexsionsBridge\Controllers\Admin\AutomationAdminController;
 use Azuriom\Plugin\ApexsionsBridge\Controllers\Admin\IncidentAdminController;
+use Azuriom\Plugin\ApexsionsBridge\Controllers\Admin\KingdomAdminController;
 use Azuriom\Plugin\ApexsionsBridge\Controllers\Admin\MarketAdminController;
 use Azuriom\Plugin\ApexsionsBridge\Controllers\Admin\IntelligenceAdminController;
 use Azuriom\Plugin\ApexsionsBridge\Controllers\Admin\ModerationAdminController;
@@ -205,5 +209,37 @@ Route::middleware(['web', 'admin-access'])->prefix('admin')->name('admin.')->gro
         Route::post('/poll', [VoteAdminController::class, 'triggerPoll'])->name('poll');
         Route::post('/sites/{id}/toggle', [VoteAdminController::class, 'toggleSite'])->name('sites.toggle');
         Route::post('/sites/{id}/update', [VoteAdminController::class, 'updateSite'])->name('sites.update');
+    });
+
+    // Kingdoms & Territory War Operations
+    Route::prefix('kingdoms')->name('kingdoms.')->middleware('can:admin.users')->group(function () {
+        Route::get('/', [KingdomAdminController::class, 'index'])->name('index');
+        Route::post('/war/start', [KingdomAdminController::class, 'startWar'])->name('start-war');
+        Route::post('/war/stop', [KingdomAdminController::class, 'stopWar'])->name('stop-war');
+        Route::post('/monarch/set', [KingdomAdminController::class, 'setKing'])->name('set-king');
+        Route::post('/monarch/unset', [KingdomAdminController::class, 'unsetKing'])->name('unset-king');
+        Route::post('/treasury', [KingdomAdminController::class, 'adjustTreasury'])->name('adjust-treasury');
+    });
+
+    // BattlePass Season & Pass Desk
+    Route::prefix('battlepass')->name('battlepass.')->middleware('can:admin.users')->group(function () {
+        Route::get('/', [BattlepassAdminController::class, 'index'])->name('index');
+        Route::post('/give-pass', [BattlepassAdminController::class, 'givePass'])->name('give-pass');
+        Route::post('/adjust', [BattlepassAdminController::class, 'adjustProgress'])->name('adjust-progress');
+        Route::post('/reload', [BattlepassAdminController::class, 'reload'])->name('reload');
+    });
+
+    // Crates & Key Dispenser
+    Route::prefix('crates')->name('crates.')->middleware('can:admin.users')->group(function () {
+        Route::get('/', [CrateAdminController::class, 'index'])->name('index');
+        Route::post('/manage-key', [CrateAdminController::class, 'manageKey'])->name('manage-key');
+        Route::post('/reload', [CrateAdminController::class, 'reload'])->name('reload');
+    });
+
+    // Live Server Broadcast & Lockdown Hub
+    Route::prefix('broadcast')->name('broadcast.')->middleware('can:admin.users')->group(function () {
+        Route::get('/', [BroadcastAdminController::class, 'index'])->name('index');
+        Route::post('/send', [BroadcastAdminController::class, 'dispatchBroadcast'])->name('send');
+        Route::post('/lockdown', [BroadcastAdminController::class, 'toggleLockdown'])->name('toggle-lockdown');
     });
 });

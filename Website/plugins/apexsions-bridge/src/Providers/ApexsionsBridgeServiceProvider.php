@@ -244,6 +244,30 @@ class ApexsionsBridgeServiceProvider extends BasePluginServiceProvider
                 'route' => 'apexsions-bridge.admin.automation.index',
                 'permission' => 'admin.users',
             ],
+            'apexsions-kingdoms' => [
+                'name' => 'Kingdoms & Territory War',
+                'icon' => 'bi bi-shield-shaded',
+                'route' => 'apexsions-bridge.admin.kingdoms.index',
+                'permission' => 'admin.users',
+            ],
+            'apexsions-battlepass' => [
+                'name' => 'BattlePass Season Desk',
+                'icon' => 'bi bi-ticket-perforated-fill',
+                'route' => 'apexsions-bridge.admin.battlepass.index',
+                'permission' => 'admin.users',
+            ],
+            'apexsions-crates' => [
+                'name' => 'Crates & Key Dispenser',
+                'icon' => 'bi bi-box2-fill',
+                'route' => 'apexsions-bridge.admin.crates.index',
+                'permission' => 'admin.users',
+            ],
+            'apexsions-broadcast' => [
+                'name' => 'Live Broadcast & Lockdown',
+                'icon' => 'bi bi-broadcast-pin',
+                'route' => 'apexsions-bridge.admin.broadcast.index',
+                'permission' => 'admin.users',
+            ],
         ];
     }
 }
