@@ -44,7 +44,7 @@ Apexsions/
 | **`ApexsionsChat`** | `1.0.0` | ![Active](https://img.shields.io/badge/Status-Active-brightgreen) | `com.apexsions.chat.*` | Komunikasi Kyori MiniMessage, Channel (*Global*, *Kingdom*, *Staff*), Chat Settings GUI (`/channel settings`), Pamer Item (`/showitem`), Surat Offline (`/mail`), Chat Games, dan Moderasi Lapis Tiga dengan Staff Reports GUI. |
 | **`ApexsionsEconomy`** | `1.0.0` | ![Active](https://img.shields.io/badge/Status-Active-brightgreen) | `com.apexsions.economy.*` | Multi-Currency (`Rupiah`, `Diamond`), Transfer Cepat (`/pay`), Pasar Lelang (`/ah`) dengan Escrow Claim, dan Barter/Trade 12-Slot dengan Pajak Transportasi Antar-Kerajaan. |
 | **`ApexsionsBattlepass`** | `1.0.0` | ![Active](https://img.shields.io/badge/Status-Active-brightgreen) | `com.apexsions.battlepass.*` | 200 Level BattlePass, Season Management, Quests (Daily, Weekly, Monthly), Tingkatan Pass (`FREE`, `PREMIUM`, `PREMIUM+`, `ULTIMATE`), dan Visual Admin GUI Editor 54-Slot (`/abp`). |
-| **`ApexsionsShop`** | `1.0.0` | ![Active](https://img.shields.io/badge/Status-Active-brightgreen) | `com.apexsions.shop.*` | Pasar Dinamis 6 Kategori, Rasio Jual **20%**, Formula Dinamis Multiplier Cuaca & Bioma Kerajaan, Price Clamping (50%-200%), Siaran Tren Pasar Berkelanjutan, Pajak Wilayah 10%, UI Ramah Sentuh/Bedrock, dan GUI Jual Cepat 45-Slot (`/sell`). |
+| **`ApexsionsShop`** | `1.0.0` | ![Active](https://img.shields.io/badge/Status-Active-brightgreen) | `com.apexsions.shop.*` | Pasar Dinamis 6 Kategori, Rasio Jual Dasar **20%** (Solterra 30%), Diamond Sell-Only (Rp 250), Formula Dinamis Cuaca & Bioma Kerajaan, Price Clamping (50%-200%), Siaran Tren Pasar Berkelanjutan, Pajak Wilayah 10%, UI Ramah Sentuh/Bedrock, dan GUI Jual Cepat 45-Slot (`/sell`). |
 | **`ApexsionsMedia`** | `1.0.0` | ![Active](https://img.shields.io/badge/Status-Active-brightgreen) | `com.apexsions.media.*` | Render Banner/Logo Gambar Multi-Tile Asinkron (PNG/JPG/URL) dengan deteksi ukuran otomatis, Raytrace Line-of-Sight Hover Glowing, Actionbar Tooltips, Replikasi/Pindah Banner (`/media place`, `/media copy`), dan Interaksi Tautan Konfirmasi Web (`[Buka URL]` & `[Salin Clipboard]`). |
 | **`ApexsionsCustomEnchants`** | `1.0.0` | ![Active](https://img.shields.io/badge/Status-Active-brightgreen) | `com.apexsions.customenchants.*` | Sistem Custom Enchantment Mewah: Enchanter Gacha Dual-Currency (`/ce`), Toko Buku Spesifik 3x Harga, Mystery & Magic Dust Booster, White & Black Scrolls, Admin Hub (`/ace`), Replika Katalog `/ae admin` (`/ace enchants`), Interactive Item & Armor Set Builder (`/ace create`), dan Tinkerer Coming Soon. |
 | **`ApexsionsCrates`** | `1.0.0` | ![Active](https://img.shields.io/badge/Status-Active-brightgreen) | `com.apexsions.crates.*` | Sistem Peti Hadiah Mewah & Kunci Crate: Toko Pembelian Kunci (`/crateshop`), Milestone Progression, Animasi Pembukaan Mewah, dan Integrasi Hadiah Ekonomi / Kit. |
@@ -58,7 +58,10 @@ Apexsions/
 - **✦ The Aetherial Conclave (Dimensi Atas Aetherion)**:
   - Staf dan pengawas tertinggi (*Ancestor, Architect, Overseer, Warden, Herald*) diakui sebagai entitas kosmik dari dimensi atas yang mengawasi tatanan semesta.
   - Dilindungi secara sistemik dari keterikatan faksi fana (Zenithar/Solterra/Sylvamoor) pada `/kingdom choose`, GUI Sumpah Setia, `/ac setregion`, dan Player Inspector.
+  - **The Aetherial Conclave Realm Portal (`ConclaveNavigationGUI`)**: Mengetik `/k`, `/kingdom`, atau `/region` oleh staf Conclave otomatis membuka antarmuka portal kosmik 27-slot bergaya cyan-electric untuk teleportasi instan ke Lobby, Ibukota ketiga kerajaan, Terra Interdicta, Targeted RTP, serta Master Admin Hub.
+  - **Mortal Incarnation Engine (`MortalEmulationManager`)**: Fitur avatar penyamaran fana staf (`/ac emulate <ZENITHAR|SOLTERRA|SYLVAMOOR|OFF>`) untuk menguji toko kerajaan, buff/debuff, dan perizinan dari sudut pandang warga biasa tanpa merusak data permanen di database.
   - Tampilan profil khusus `✦ Aetherion (Conclave) ✦` dan PlaceholderAPI `%apexsions_kingdom%` -> `AETHERION`.
+  - Hak kedaulatan tanah tak terbatas (`∞`), bebas pajak upkeep ($Rp 0/hari$), bypass combat tag saat teleportasi darurat, dan bypass pembatasan TPA Essentials.
 - **3 Kerajaan Berdaulat Pasca-Runtuhnya Kekaisaran Sions**:
   - **Zenithar** (Arah Timur / Zenith): Penerus Dinasti & Keluarga Kerajaan Sions yang bertahan bersama kavaleri kehormatan di puncak cakrawala (*Buff: Speed +8%, Luck +15%, [Royal Discipline] Damage +6%, [Royal Aegis] 20% Reduksi Damage Masuk, Diskon 30% Pajak Lelang, Bunga Bank +25%, Diskon 15% Blok Toko; Debuff: Kerentanan Racun & Wither +15%, +12% Cepat Lapar, -10% Kecepatan Menambang, Biaya Tempa Anvil +1 EXP*).
   - **Solterra** (Arah Selatan): Persekutuan Pesulap Tempur (Magician) & Prajurit Garis Depan tangguh di kawah vulkanik cadas (*Buff: High Damage, Critical, Mining Speed; Debuff: -2 HP Darah, Vulnerability, Cepat Lapar*).
@@ -100,16 +103,22 @@ Apexsions/
     - `MOVEMENT_SPEED_BOOST`: Peningkatan kecepatan lari/gerak atribut
 - **RPG Progresi Stat Karakter (Diminishing Curves)**:
   - Injeksi atribut native Paper (`Attribute.MAX_HEALTH` maks +12 HP $\rightarrow$ total 32 HP / 16 hati pada Lv 100, `Attribute.ATTACK_DAMAGE` maks +1.90 pukulan fisik).
-  - Bonus pengali damage monster PvE khusus (maks +26.5%) dan ketahanan alami terhadap serangan monster (maks 10.0%).
+  - Bonus pengali damage monster PvE khusus (skalabilitas hingga maks **+50.0%** pada Lv 100) dan ketahanan alami terhadap serangan monster (maks 10.0%).
 - **Unified Combat Pipeline & Smart PvP Normalizer**:
   - Tiga lapis prioritas event (`NORMAL` $\rightarrow$ `HIGH` $\rightarrow$ `HIGHEST`).
   - Pemotongan otomatis kelebihan attack level di atas cap $+0.80$ di sesi PvP.
   - Normalisasi damage masuk defender ber-HP tinggi ke skala $24.0\text{ HP}$ (+4 HP cap) tanpa bug heart-flicker dan bebas risiko double-survivability dengan armor.
-  - Bonus PvE ($+26.5\%$) otomatis dinonaktifkan ($0\%$) saat duel sesama pemain / Kingdom War.
-- **Ekosistem 6-Tier Monster Progression**:
-  - Tier 1 (Kerajaan Lv 1–5), Tier 2 (Wilderness Lv 5–20 weighted), Tier 3 (Dangerous Wilds Lv 20–40), Tier 4 (High-Risk Outposts Lv 40–65), Tier 5 (Terra Interdicta / Sions Lv 65–90), dan Tier 6 (Raid Mini-Boss Voran Lv 90 & World Boss Kaisar Valerius Lv 100).
+  - Bonus PvE ($+50.0\%$) otomatis dinonaktifkan ($0\%$) saat duel sesama pemain / Kingdom War demi menjaga keadilan kompetitif.
+- **Ekosistem 6-Tier Monster Progression & Dimensi Penuh**:
+  - Tier 1 (Kerajaan Lv 1–5), Tier 2 (Wilderness Lv 5–20 weighted), Tier 3 (Dangerous Wilds Lv 20–40), Tier 4 (Nether Infernal Lv 35–75: Ash Crawler, Molten Titan, Inferno Wraith, Bastion Warmaster), Tier 5 (The End & Sions Lv 65–95+: Void Warped Watcher, Astral Shulker, Sions Legionnaire), dan Tier 6 (Sovereign World Bosses Lv 100: Corrupted Void Sovereign Drake & Emperor Valerius).
+- **Pengerasan Privasi Mode Vanish & Integritas Staf**:
+  - Supresi otomatis pengumuman achievement/advancement publik saat vanish via `PlayerAdvancementDoneEvent` (Priority `HIGHEST`).
+  - Pencegahan pengiriman chat ke channel publik (Global/Kingdom) saat vanish dengan notifikasi privat untuk memakai `/staffchat` (`/sc`).
+  - Sinkronisasi status reflektif ke EssentialsX `User.setVanished(boolean)` dan TAB list.
+- **Resiliensi Cache Profil Pemain (Zero Level Drop)**:
+  - *Synchronous Fallback Loader* `loadOrCreate(uuid, name).join()` di `PlayerListener.onJoin()` dan resolusi proaktif `resolvePlayerData(uuid)` di `LevelManager` menjamin level dan gelar tidak pernah anjlok ke `Lv. 1 Citizen` saat pemain mengalami disconnect dan reconnect kilat.
 - **Profil Tempur Real-Time (`/k info` & `/k profile`)**:
-  - Lore skull pemain di slot 13 menampilkan ringkasan live Max HP, Base Attack, PvE Mastery, dan Fair-Play PvP Profile.
+  - Lore skull pemain di slot 13 menampilkan ringkasan live Max HP, Base Attack, PvE Mastery (+50.0% Dmg / 10% Resis), dan Fair-Play PvP Profile.
 - **Kedaulatan Wilayah Tanah (Sovereign Land Claims) & Upkeep Progresif (`/claim`)**:
   - `/claim`: Klaim wilayah chunk tanah berdaulat yang dinaungi panji kerajaan pemain.
   - `/claim gui`: Antarmuka visual 45-slot untuk mengelola brankas klaim, toggle flag wilayah, dan hierarki peran anggota.
@@ -141,6 +150,7 @@ Apexsions/
 
 ### 💰 ApexsionsEconomy
 - **Dual Currency Engine**: `Rupiah` (Rp) dan `Diamond` (♦) dengan pemformatan otomatis (`K`, `Jt`, `M`, `T`).
+- **Starter Balance Terkalibrasi**: Saldo awal pemain baru diatur stabil sebesar **Rp 1.000** (Rupiah) dan 0 ♦ (Diamond) untuk menjaga daya beli sejak hari pertama.
 - **Pasar Lelang (`/ah`)**: Jual-beli item bebas antar-pemain dengan sistem brankas klaim (*Escrow Claim*) untuk mencegah kehilangan item saat inventaris penuh.
 - **Barter & Trade Terintegrasi Kerajaan (`/trade`)**:
   - Filter pemain sesama kerajaan secara otomatis.
@@ -155,6 +165,9 @@ Apexsions/
 
 ### 🛒 ApexsionsShop
 - **6 Kategori Lengkap**: `blocks.yml`, `farming.yml`, `food.yml`, `ores.yml`, `mob_drops.yml`, `dyes.yml`.
+- **Eksklusivitas Diamond (Sell-Only)**: Pembelian Diamond ditiadakan dari toko (`buy-enabled: false`, hanya bisa dijual seharga Rp 250/butir) demi mewajibkan penambangan di kedalaman `Y < -40` dan perdagangan lelang bebas antar-pemain.
+- **Penyesuaian Rasio Jual Bijih Solterra**: `SOLTERRA.ores-sell-ratio` diturunkan dari 65% menjadi **30%** untuk menekan laju inflasi pencetakan uang massal.
+- **Stabilisasi Harga Komoditas**: Bebatuan dasar (Cobblestone, Stone, Dirt, Sand) distandarkan ke Rp 0.6 – 1.2/blok dan hasil tani massal (Sugar Cane, Carrot, Wheat) ke Rp 1.5 – 2.0/butir.
 - **Harga Dinamis Cuaca & Kerajaan**: Harga berfluktuasi cerdas sesuai hujan/badai dan keunggulan komoditas kerajaan pembeli.
 - **Badge Visual Tren Pasar & Dashboard (`/shop trends`)**: Indikator visual langsung pada lore item (`[PASOKAN MELIMPAH]`, `[LANGKA / PERMINTAAN TINGGI]`, `[EFEK CUACA]`, `[DISKON KERAJAAN]`) dan menu tren ekonomi khusus.
 - **Price Clamping & Siaran Tren Pasar**: Batas pengaman harga (50% - 200%) dan siaran berkala komoditas BOOM/DIP.

@@ -30,7 +30,7 @@ Panduan teknis dan operasional lengkap untuk modul **`ApexsionsShop`** (Sistem T
 1. **`blocks.yml`**: Blok bangunan, batu alam, kayu, terraform, tanah liat, dan kaca.
 2. **`farming.yml`**: Bibit, gandum, wortel, tebu, bambu, dan hasil perkebunan.
 3. **`food.yml`**: Daging matang, roti, kue, sup, dan makanan olahan.
-4. **`ores.yml`**: Bijih mineral, batubara, besi, emas, diamond, netherite, dan ingot.
+4. **`ores.yml`**: Bijih mineral, batubara, besi, emas, diamond, netherite, dan ingot. Diamond dikunci sebagai komoditas *Sell-Only* (`buy-enabled: false`, harga jual Rp 250/butir).
 5. **`mob_drops.yml`**: Drop monster (*Bones, Gunpowder, Ender Pearl, Blaze Rod, Leather*).
 6. **`dyes.yml`**: 16 varian warna pewarna dekoratif.
 
@@ -40,7 +40,7 @@ Panduan teknis dan operasional lengkap untuk modul **`ApexsionsShop`** (Sistem T
 
 $$\text{Harga Final} = \text{Clamp}_{50\%}^{200\%}(\text{Harga Dasar} \times M_{\text{Cuaca}} \times M_{\text{Kerajaan}} \times M_{\text{Pasokan}}) \pm \text{Pajak}$$
 
-- **Rasio Jual Bawaan**: **20%** dari harga beli dasar (mencegah eksploitasi perputaran uang instan).
+- **Rasio Jual Bawaan**: **20%** dari harga beli dasar (Solterra mendapatkan keunggulan rasio jual bijih **30%** terkalibrasi).
 - **Price Clamping (Batas Pengaman)**: Harga satuan efektif dijamin tidak akan pernah jatuh di bawah **50%** atau melambung melampaui **200%** dari harga dasar.
 - **Siaran Tren Pasar Otomatis (`MarketBroadcastService`)**: Pengumuman berkala MiniMessage mengenai komoditas yang sedang 'BOOM' (harga naik) atau 'DIP' (harga anjlok).
 - **Multiplier Cuaca ($M_{\text{Cuaca}}$)**: Hujan lebat meningkatkan permintaan hasil pertanian (+15%), badai petir meningkatkan harga ore langka (+25%).

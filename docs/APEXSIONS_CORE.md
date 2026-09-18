@@ -213,3 +213,49 @@ Modul `ApexsionsCore` bertindak sebagai agen penerima antrean WebBridge untuk ko
 2. **Sinkronisasi Karakter Pemain Otomatis (`sync-player`)**:
    - Statistik in-game (Level, XP, Saldo Rupiah/Diamond, Kerajaan, Rank, dan Gelar) dikirimkan secara berkala saat event login, logout, level up, dan mutasi saldo.
    - Portal web Azuriom menyimpan profil karakter pemain in-game bahkan sebelum pemain mendaftarkan atau menautkan akun web (`user_id = null`), memastikan seluruh pemain aktif memiliki laman profil publik yang valid di `/player/{uuid}`.
+
+---
+
+## 🏛️ 11. The Aetherial Conclave, Portal Kosmik & Mode Emulasi Mortal
+
+Sistem ini didesain khusus untuk staf Upper Realm (*The Aetherial Conclave* / Bobot Rank $\ge 80$):
+
+1. **The Aetherial Conclave Realm Portal (`ConclaveNavigationGUI`)**:
+   - Mengetik `/k`, `/kingdom`, atau `/region` oleh staf Conclave otomatis membuka antarmuka 27-slot bergaya cyan-electric (`#00f2fe` ke `#4facfe`).
+   - Tombol navigasi:
+     - **Slot 4**: Teleportasi ke Lobby / The Aether Citadel.
+     - **Slot 10, 12, 14**: Ibukota Zenithar, Solterra, dan Sylvamoor dengan aksi ganda ([Klik Kiri] = Teleportasi Spawn Ibukota, [Klik Kanan] = Targeted RTP di teritori kerajaan terkait).
+     - **Slot 16**: Teleportasi ke Terra Interdicta (Reruntuhan Kuno Sions).
+     - **Slot 19**: Smart Kingdom RTP Dispatcher.
+     - **Slot 22**: Simulasi Warga Fana (Mortal Incarnation Mode).
+     - **Slot 25**: Jalan pintas ke Master Admin Hub (`/admin`).
+2. **Mortal Incarnation Engine (`MortalEmulationManager`)**:
+   - Memungkinkan staf mengaktifkan mode penyamaran fana (`/ac emulate <ZENITHAR|SOLTERRA|SYLVAMOOR>`) untuk menguji toko dynamic market, buff/debuff kerajaan, chat faksi, dan izin wilayah dari sudut pandang warga biasa tanpa mengubah data permanen di database (`ranks.yml` dan profil pemain tetap murni Aetherion).
+   - `/ac emulate off` mengakhiri penyamaran dan memulihkan status Aetherion.
+   - Status penyamaran otomatis dihapus saat staf logout (`PlayerQuitEvent`).
+3. **Bypass Hak Khusus Conclave**:
+   - Kebal pembatasan Combat Tag 15 detik saat melakukan teleportasi darurat.
+   - Bypass pengecekan kesamaan faksi pada EssentialsX TPA dua arah.
+   - Klaim tanah staf dicatat sebagai kedutaan `AETHERION` ($Rp 0$ upkeep) dengan bypass izin interaksi dan pembangunan di seluruh teritori mortal.
+
+---
+
+## 🕵️ 12. Pengerasan Privasi Mode Vanish (`VanishListener` & `VanishManager`)
+
+1. **Supresi Siaran Advancement (`PlayerAdvancementDoneEvent`)**:
+   - Dipasang listener berprioritas `HIGHEST`.
+   - Ketika staf berstatus vanish meraih achievement/advancement (misal `[Rescue Mission]`), `event.message(null)` dipanggil untuk mencegah kebocoran status keberadaan staf ke chat publik server.
+2. **Blokir Chat Publik Saat Vanish (`ApexsionsChat/ChatListener`)**:
+   - Membatalkan pengiriman pesan ke channel publik (`Global`, `Kingdom`) jika pemain berstatus vanish, disertai panduan privat untuk memakai `/staffchat` (`/sc`) atau mematikan `/vanish`.
+3. **Sinkronisasi Reflektif EssentialsX & TAB**:
+   - Metode `syncEssentialsVanish` menyinkronkan status pemain secara reflektif ke `User.setVanished(boolean)` EssentialsX saat vanish/unvanish/join, menjamin konsistensi `/seen`, `/list`, tablist, dan placeholder `%essentials_vanished%`.
+
+---
+
+## 🛡️ 13. Resiliensi Cache Data Pemain & Pencegahan Penurunan Level
+
+1. **Synchronous Fallback Loader (`PlayerListener.onJoin`)**:
+   - Menangani kasus disconnect dan reconnect cepat (di mana `flush()` telah membersihkan cache RAM sebelum handshake koneksi baru selesai).
+   - Memanggil `loadOrCreate(uuid, name).join()` secara sinkron jika cache memori kosong.
+2. **Resolusi Mandiri Proaktif (`LevelManager.resolvePlayerData`)**:
+   - Jika cache mengalami *cache miss* saat `getLevel()` atau `getLevelTitle()` dipanggil untuk pemain yang sedang online, sistem secara proaktif memuat ulang data dari database, menjamin level dan gelar tidak pernah anjlok ke default `Lv. 1 Citizen`.

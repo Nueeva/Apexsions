@@ -30,9 +30,11 @@ Panduan teknis dan operasional lengkap untuk modul **`ApexsionsEconomy`** (Siste
 1. **Rupiah (`rupiah`)**:
    - Mata uang utama sirkulasi server untuk jual-beli pasar, ongkos transportasi, dan lelang.
    - Simbol: `Rp` (Format: `Rp 50.000`, `Rp 1,5 Jt`, `Rp 2,5 M`, `Rp 1,0 T`).
+   - **Starter Balance**: **Rp 1.000** (Dikalibrasi stabil dari sebelumnya Rp 10.000 untuk mencegah inflasi instan hari pertama).
 2. **Diamond (`diamond`)**:
    - Mata uang premium berbasis diamond/gem untuk transaksi komoditas berharga dan toko eksklusif.
    - Simbol: `♦` (Format: `100 ♦`).
+   - **Starter Balance**: **0 ♦**.
 
 ---
 

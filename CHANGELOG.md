@@ -36,6 +36,38 @@ Bagi AI Agent atau developer yang melanjutkan pekerjaan di repositori ini, perha
 
 ---
 
+## ⚔️ Living PvE Scaling, Nether & The End Leveled Ecosystem, Vanish Privacy Hardening, Player Cache Resilience & Economy Rebalance Milestone [v1.3.6]
+> **Periode Pengembangan:** 18 September 2026 | **Status:** Implemented, Tested, Live Deployed to Server & Verified
+
+### 📋 Ikhtisar Peningkatan PvE, Pengerasan Keamanan, & Stabilitas Ekonomi
+Menjawab kebutuhan gameplay survival jangka panjang, mengisi konten monster berlevel di seluruh dimensi, mencegah kebocoran status staf saat beroperasi dalam senyap, memperkuat resistensi cache data pemain, serta merekalibrasi pasar dan saldo awal agar ekonomi server sehat dan kompetitif:
+
+1. **Skalabilitas Damage PvE Berbasis Level Pemain (+50.0% Cap) (`ApexsionsCore`):**
+   - Mengalibrasi formula damage PvE pada `CombatListener.java` / `PlayerDamageBonus` dari kurva sebelumnya menjadi `0.50 * (level / 100.0)`.
+   - Pada Level 100, pemain mendapatkan peningkatan pukulan fisik hingga **+50.0%** terhadap monster lingkungan (PvE), memberikan *power fantasy* sepadan atas jerih payah leveling tanpa merusak asas fair-play duel antar-pemain (PvP dinormalisasi tetap pada cap $+0.80$ dan $0\%$ PvE bonus).
+2. **Ekosistem Monster Berlevel Nether & The End (MythicMobs / LevelledMobs):**
+   - Menghubungkan ekosistem monster bertingkat ke dimensi Neraka (*Nether*) dan Dimensi Akhir (*The End*):
+     - **Tier 4 (Nether • Lv 35–75):** *Ash Crawler*, *Molten Core Titan*, *Inferno Wraith* (Ghast pembawa bola api berdaya hancur tinggi), *Crimson Behemoth* (Hoglin bertanduk), dan *Bastion Warmaster* (Piglin Brute tangguh).
+     - **Tier 5 (The End & Terra Interdicta • Lv 65–95+):** *Void Warped Watcher* (Enderman mutasi kehampaan), *Astral Void Phantom*, *Astral Shulker Sentinel*, serta *Sions Fallen Legionnaire*.
+     - **Tier 6 (Sovereign World Bosses • Lv 100):** *Corrupted Void Sovereign Drake* (Ender Dragon mutasi fase ganda di The End) dan *Emperor Valerius* (Raid Boss 4 jam di Terra Interdicta).
+3. **Pengerasan Privasi & Kesenyapan Mode Vanish (`ApexsionsCore` & `ApexsionsChat`):**
+   - **Supresi Siaran Advancement (`VanishListener.java`):** Mengintersepsi `PlayerAdvancementDoneEvent` dengan prioritas `HIGHEST`. Ketika pemain berstatus vanish meraih achievement/advancement (seperti `[Rescue Mission]`), siaran chat publik otomatis ditiadakan (`event.message(null)`).
+   - **Blokir Chat Publik Staf Vanish (`ChatListener.java`):** Mencegah staf dalam mode vanish mengirim pesan ke channel publik (`Global` dan `Kingdom`). Pesan dibatalkan dan staf menerima notifikasi privat untuk memakai `/staffchat` (`/sc`) atau mematikan `/vanish`.
+   - **Refleksi Sinkronisasi EssentialsX & TAB (`VanishManager.java`):** Menyinkronkan status vanish secara langsung ke objek internal EssentialsX (`User.setVanished(boolean)`), memastikan `/seen`, `/list`, tablist, dan placeholder `%essentials_vanished%` sepenuhnya konsisten.
+4. **Resiliensi Cache Profil Pemain (`PlayerListener.java` & `LevelManager.java`):**
+   - Mengatasi potensi *cache miss* saat pemain mengalami disconnect dan reconnect secara kilat (di mana `flush()` telah membersihkan cache RAM sebelum koneksi baru terjalin).
+   - `PlayerListener.onJoin()` menyertakan *synchronous fallback loader* `loadOrCreate(uuid, name).join()` jika data memori kosong.
+   - `LevelManager` menyertakan metode pertahanan `resolvePlayerData(uuid)` yang proaktif memuat ulang data dari database jika cache miss, memastikan level pemain dan gelar tidak pernah anjlok ke `Lv. 1 Citizen`.
+5. **Audit Menyeluruh & Rekalibrasi Keseimbangan Ekonomi Pasar (`ApexsionsEconomy` & `ApexsionsShop`):**
+   - **Saldo Awal Survival (`ApexsionsEconomy`):** Diturunkan dari Rp 10.000 menjadi **Rp 1.000** untuk menjaga nilai mata uang sejak fase awal permainan.
+   - **Eksklusivitas Diamond di Toko (`ores.yml`):** Pembelian Diamond ditiadakan (`buy-enabled: false`, harga jual Rp 250/butir). Pemain diwajibkan menambang di kedalaman `Y < -40` atau berdagang via `/ah` / `/trade`.
+   - **Penyesuaian Rasio Jual Bijih Solterra (`markets.yml`):** `SOLTERRA.ores-sell-ratio` diturunkan dari 65% menjadi **30%** untuk menekan laju inflasi pencetakan uang.
+   - **Stabilisasi Bebatuan & Hasil Panen (`blocks.yml`, `farming.yml`):** Harga jual bebatuan dasar (Cobblestone, Stone, Dirt, Sand) distandarkan ke Rp 0.6 – 1.2 per blok, dan hasil panen massal (Sugar Cane, Wheat, Carrot) ke Rp 1.5 – 2.0 per unit.
+6. **Validasi & Deployment Live SFTP:**
+   - Seluruh 4 JAR (`ApexsionsCore`, `ApexsionsChat`, `ApexsionsEconomy`, `ApexsionsShop`) serta 5 berkas konfigurasi telah dikompilasi sukses dan diunggah langsung ke game server live (`falcon04.jagoanhosting.id:2022`).
+
+---
+
 ## 🏛️ Upper Realm Cosmic Portal, Smart RTP, Capital Navigation & Mortal Emulation Milestone [v1.3.5]
 > **Periode Pengembangan:** 18 September 2026 | **Status:** Implemented, Tested, & Verified Locally
 
