@@ -81,10 +81,22 @@
                             <span>Moderation Desk</span>
                         </a>
                     </li>
+                    <li class="sidebar-item {{ add_active('apexsions-bridge.admin.claims.*') }}">
+                        <a class="sidebar-link" href="{{ route('apexsions-bridge.admin.claims.index') }}">
+                            <i class="bi bi-geo-alt-fill"></i>
+                            <span>Land Claims & Anti-Grief</span>
+                        </a>
+                    </li>
                     <li class="sidebar-item {{ add_active('apexsions-bridge.admin.reports.*') }}">
                         <a class="sidebar-link" href="{{ route('apexsions-bridge.admin.reports.index') }}">
                             <i class="bi bi-flag-fill"></i>
                             <span>Reports Center</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item {{ add_active('apexsions-bridge.admin.webstore.*') }}">
+                        <a class="sidebar-link" href="{{ route('apexsions-bridge.admin.webstore.index') }}">
+                            <i class="bi bi-shop-window"></i>
+                            <span>Webstore Manager</span>
                         </a>
                     </li>
                     <li class="sidebar-item {{ add_active('apexsions-bridge.admin.votes.*') }}">
@@ -93,15 +105,21 @@
                             <span>Vote Management</span>
                         </a>
                     </li>
-                    <li class="sidebar-item {{ add_active('apexsions-bridge.admin.economy.*') }}">
-                        <a class="sidebar-link {{ Route::is('apexsions-bridge.admin.economy.*') ? '' : 'collapsed'}}" href="#" data-bs-toggle="collapse" data-bs-target="#collapseEconomy" aria-expanded="{{ Route::is('apexsions-bridge.admin.economy.*') ? 'true' : 'false' }}" aria-controls="collapseEconomy">
+                    <li class="sidebar-item {{ add_active('apexsions-bridge.admin.economy.*', 'apexsions-bridge.admin.market.*') }}">
+                        <a class="sidebar-link {{ Route::is('apexsions-bridge.admin.economy.*', 'apexsions-bridge.admin.market.*') ? '' : 'collapsed'}}" href="#" data-bs-toggle="collapse" data-bs-target="#collapseEconomy" aria-expanded="{{ Route::is('apexsions-bridge.admin.economy.*', 'apexsions-bridge.admin.market.*') ? 'true' : 'false' }}" aria-controls="collapseEconomy">
                             <i class="bi bi-cash-stack"></i>
                             <span>Economy & Markets</span>
                         </a>
-                        <ul id="collapseEconomy" class="sidebar-dropdown list-unstyled collapse {{ Route::is('apexsions-bridge.admin.economy.*') ? 'show' : ''}}" data-parent="#accordionSidebar">
+                        <ul id="collapseEconomy" class="sidebar-dropdown list-unstyled collapse {{ Route::is('apexsions-bridge.admin.economy.*', 'apexsions-bridge.admin.market.*') ? 'show' : ''}}" data-parent="#accordionSidebar">
                             <li class="sidebar-item {{ add_active('apexsions-bridge.admin.economy.index') }}">
                                 <a class="sidebar-link" href="{{ route('apexsions-bridge.admin.economy.index') }}">
                                     <span>Economy Overview</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-item {{ add_active('apexsions-bridge.admin.market.*') }}">
+                                <a class="sidebar-link" href="{{ route('apexsions-bridge.admin.market.index') }}">
+                                    <i class="bi bi-shop me-1 text-warning"></i>
+                                    <span class="text-warning fw-semibold">Kingdom Market & Shop</span>
                                 </a>
                             </li>
                             <li class="sidebar-item {{ add_active('apexsions-bridge.admin.economy.transactions.*') }}">
