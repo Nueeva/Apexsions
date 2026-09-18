@@ -176,7 +176,10 @@ public class ApexsionsCoreAPIImpl implements ApexsionsCoreAPI {
 
         String kingdomKey = "NONE";
         String kingdomDisplay = "Belum Memilih";
-        if (isConclave) {
+        if (plugin.getMortalEmulationManager() != null && plugin.getMortalEmulationManager().isEmulating(uuid)) {
+            kingdomKey = plugin.getMortalEmulationManager().getEmulatedKingdom(uuid).orElse("ZENITHAR");
+            kingdomDisplay = plugin.getRegionManager().getRegion(kingdomKey).map(Region::getDisplayName).orElse(kingdomKey);
+        } else if (isConclave) {
             kingdomKey = "AETHERION";
             kingdomDisplay = "<gradient:#00f2fe:#4facfe><bold>✦ Aetherion (The Conclave) ✦</bold></gradient>";
         } else if (data != null && data.getRegionId() != null) {

@@ -144,6 +144,9 @@ public class PlaceholderApiHook extends PlaceholderExpansion {
 
             case "region":
             case "kingdom":
+                if (plugin.getMortalEmulationManager() != null && plugin.getMortalEmulationManager().isEmulating(data.getUuid())) {
+                    return plugin.getMortalEmulationManager().getEmulatedKingdom(data.getUuid()).orElse("ZENITHAR");
+                }
                 if (data.getRegionId() != null) {
                     Optional<Region> regionOpt = plugin.getRegionManager().getRegion(data.getRegionId());
                     if (regionOpt.isPresent()) {
@@ -159,6 +162,10 @@ public class PlaceholderApiHook extends PlaceholderExpansion {
             case "region_name":
             case "kingdom_name":
             case "kingdom_formatted":
+                if (plugin.getMortalEmulationManager() != null && plugin.getMortalEmulationManager().isEmulating(data.getUuid())) {
+                    String emu = plugin.getMortalEmulationManager().getEmulatedKingdom(data.getUuid()).orElse("ZENITHAR");
+                    return plugin.getRegionManager().getRegion(emu).map(Region::getDisplayName).orElse(emu);
+                }
                 if (data.getRegionId() != null) {
                     Optional<Region> regionOpt = plugin.getRegionManager().getRegion(data.getRegionId());
                     if (regionOpt.isPresent()) {
@@ -316,6 +323,15 @@ public class PlaceholderApiHook extends PlaceholderExpansion {
                 return "<gradient:#f1c40f:#e67e22><bold>[Lv." + data.getLevel() + "]</bold></gradient>";
 
             case "kingdom_badge":
+                if (plugin.getMortalEmulationManager() != null && plugin.getMortalEmulationManager().isEmulating(data.getUuid())) {
+                    String emu = plugin.getMortalEmulationManager().getEmulatedKingdom(data.getUuid()).orElse("ZENITHAR");
+                    return switch (emu.toUpperCase()) {
+                        case "ZENITHAR" -> "<gradient:#ffd700:#ffa502><bold>[ZENITHAR]</bold></gradient>";
+                        case "SOLTERRA" -> "<gradient:#ff4757:#ff6b81><bold>[SOLTERRA]</bold></gradient>";
+                        case "SYLVAMOOR" -> "<gradient:#2ed573:#1e90ff><bold>[SYLVAMOOR]</bold></gradient>";
+                        default -> "<gradient:#70a1ff:#1e90ff><bold>[" + emu + "]</bold></gradient>";
+                    };
+                }
                 if (data.getRegionId() != null) {
                     Optional<Region> regOpt = plugin.getRegionManager().getRegion(data.getRegionId());
                     if (regOpt.isPresent()) {
@@ -349,9 +365,17 @@ public class PlaceholderApiHook extends PlaceholderExpansion {
                 return "Wilderness";
 
             case "in_own_territory":
-                if (offlinePlayer.isOnline() && offlinePlayer.getPlayer() != null && data.getRegionId() != null) {
-                    Optional<Region> reg = plugin.getRegionManager().getRegion(data.getRegionId());
-                    return reg.map(r -> String.valueOf(r.containsLocation(offlinePlayer.getPlayer().getLocation()))).orElse("false");
+                if (offlinePlayer.isOnline() && offlinePlayer.getPlayer() != null) {
+                    org.bukkit.entity.Player p = offlinePlayer.getPlayer();
+                    if (plugin.getMortalEmulationManager() != null && plugin.getMortalEmulationManager().isEmulating(data.getUuid())) {
+                        String emu = plugin.getMortalEmulationManager().getEmulatedKingdom(data.getUuid()).orElse("ZENITHAR");
+                        Optional<Region> reg = plugin.getRegionManager().getRegion(emu);
+                        return reg.isPresent() && reg.get().containsLocation(p.getLocation()) ? "true" : "false";
+                    }
+                    if (data.getRegionId() != null) {
+                        Optional<Region> reg = plugin.getRegionManager().getRegion(data.getRegionId());
+                        return reg.isPresent() && reg.get().containsLocation(p.getLocation()) ? "true" : "false";
+                    }
                 }
                 return "false";
 

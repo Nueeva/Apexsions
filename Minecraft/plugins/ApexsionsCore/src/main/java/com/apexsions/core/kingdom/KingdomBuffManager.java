@@ -189,6 +189,9 @@ public class KingdomBuffManager {
 
     public String getPlayerKingdomKey(UUID uuid) {
         if (uuid == null) return "NONE";
+        if (plugin.getMortalEmulationManager() != null && plugin.getMortalEmulationManager().isEmulating(uuid)) {
+            return plugin.getMortalEmulationManager().getEmulatedKingdom(uuid).orElse("NONE").toUpperCase(Locale.ROOT);
+        }
         Optional<PlayerData> dataOpt = plugin.getPlayerDataService().getCached(uuid);
         if (dataOpt.isPresent() && dataOpt.get().hasRegion()) {
             return plugin.getRegionManager().getRegion(dataOpt.get().getRegionId())

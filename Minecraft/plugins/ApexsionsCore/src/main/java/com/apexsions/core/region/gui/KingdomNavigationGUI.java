@@ -191,19 +191,29 @@ public class KingdomNavigationGUI implements Listener {
 
         int slot = event.getSlot();
 
-        Optional<PlayerData> dataOpt = plugin.getPlayerDataService().getCached(player.getUniqueId());
-        if (dataOpt.isEmpty() || !dataOpt.get().hasRegion()) {
-            player.closeInventory();
-            return;
+        Region region = null;
+        if (plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isConclaveStaff(player)) {
+            if (plugin.getMortalEmulationManager() != null && plugin.getMortalEmulationManager().isEmulating(player.getUniqueId())) {
+                String emulated = plugin.getMortalEmulationManager().getEmulatedKingdom(player.getUniqueId()).orElse("ZENITHAR");
+                region = plugin.getRegionManager().getRegion(emulated).orElse(null);
+            }
         }
 
-        Optional<Region> regionOpt = plugin.getRegionManager().getRegion(dataOpt.get().getRegionId());
-        if (regionOpt.isEmpty()) {
-            player.closeInventory();
-            return;
-        }
+        if (region == null) {
+            Optional<PlayerData> dataOpt = plugin.getPlayerDataService().getCached(player.getUniqueId());
+            if (dataOpt.isEmpty() || !dataOpt.get().hasRegion()) {
+                player.closeInventory();
+                return;
+            }
 
-        Region region = regionOpt.get();
+            Optional<Region> regionOpt = plugin.getRegionManager().getRegion(dataOpt.get().getRegionId());
+            if (regionOpt.isEmpty()) {
+                player.closeInventory();
+                return;
+            }
+
+            region = regionOpt.get();
+        }
 
         if (slot == 11) { // Balik ke Ibukota Kerajaan
             player.closeInventory();

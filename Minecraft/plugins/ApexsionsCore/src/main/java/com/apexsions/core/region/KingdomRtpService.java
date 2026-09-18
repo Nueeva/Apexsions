@@ -151,7 +151,11 @@ public class KingdomRtpService {
         }
 
         Region region = regionOpt.get();
-        player.sendMessage(miniMessage.deserialize("<gradient:#00f2fe:#4facfe><bold>✦ CELESTIAL RTP ✦</bold></gradient> <gray>Mencari lokasi acak di teritori <gold>" + region.getDisplayName() + "</gold>...</gray>"));
+        if (plugin.getMortalEmulationManager() != null && plugin.getMortalEmulationManager().isEmulating(player.getUniqueId())) {
+            player.sendMessage(miniMessage.deserialize("<gold>🔍 Mencari lokasi acak yang aman di wilayah kerajaan <yellow>" + region.getDisplayName() + "</yellow>...</gold>"));
+        } else {
+            player.sendMessage(miniMessage.deserialize("<gradient:#00f2fe:#4facfe><bold>✦ CELESTIAL RTP ✦</bold></gradient> <gray>Mencari lokasi acak di teritori <gold>" + region.getDisplayName() + "</gold>...</gray>"));
+        }
         findAndTeleport(player, region, 0, 30, 0L);
     }
 

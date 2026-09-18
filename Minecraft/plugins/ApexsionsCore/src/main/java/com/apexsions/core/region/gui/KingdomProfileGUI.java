@@ -74,6 +74,11 @@ public class KingdomProfileGUI implements Listener {
 
         Optional<Region> regionOpt = data.getRegionId() != null ? plugin.getRegionManager().getRegion(data.getRegionId()) : Optional.empty();
         boolean isStaff = plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isConclaveStaff(player);
+        if (plugin.getMortalEmulationManager() != null && plugin.getMortalEmulationManager().isEmulating(player.getUniqueId())) {
+            String emu = plugin.getMortalEmulationManager().getEmulatedKingdom(player.getUniqueId()).orElse("ZENITHAR");
+            regionOpt = plugin.getRegionManager().getRegion(emu);
+            isStaff = false;
+        }
         String kingdomDisplay = regionOpt.map(Region::getDisplayName).orElse(
                 isStaff ? "<gradient:#00f2fe:#4facfe><bold>✦ Aetherion (Conclave) ✦</bold></gradient>" : "<gray>Belum Memilih</gray>"
         );
@@ -253,6 +258,11 @@ public class KingdomProfileGUI implements Listener {
 
         // Teleport to Kingdom Capital (Slot 24)
         if (slot == 24) {
+            if (plugin.getMortalEmulationManager() != null && plugin.getMortalEmulationManager().isEmulating(player.getUniqueId())) {
+                player.closeInventory();
+                plugin.getRegionTeleportService().teleportToRegion(player);
+                return;
+            }
             Optional<PlayerData> dataOpt = plugin.getPlayerDataService().getCached(player.getUniqueId());
             if (dataOpt.isPresent() && dataOpt.get().hasRegion()) {
                 player.closeInventory();

@@ -59,6 +59,11 @@ public class MortalEmulationManager {
             plugin.getKingdomBuffManager().applyBuffs(player);
         }
 
+        // Refresh nametag and display
+        if (plugin.getRankAnimationManager() != null) {
+            plugin.getRankAnimationManager().updatePlayerNameplate(player);
+        }
+
         return true;
     }
 
@@ -79,6 +84,11 @@ public class MortalEmulationManager {
             // Re-normalize buffs (remove kingdom buffs)
             if (plugin.getKingdomBuffManager() != null) {
                 plugin.getKingdomBuffManager().applyBuffs(player);
+            }
+
+            // Refresh nametag and display
+            if (plugin.getRankAnimationManager() != null) {
+                plugin.getRankAnimationManager().updatePlayerNameplate(player);
             }
         } else {
             player.sendMessage(mm.deserialize("<yellow>Anda saat ini tidak sedang dalam mode simulasi warga fana.</yellow>"));

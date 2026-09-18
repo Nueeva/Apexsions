@@ -66,7 +66,13 @@ public class LevelManager {
             return "Citizen";
         }
         PlayerData data = dataOpt.get();
-        Region region = data.getRegionId() != null ? plugin.getRegionManager().getRegion(data.getRegionId()).orElse(null) : null;
+        Region region = null;
+        if (plugin.getMortalEmulationManager() != null && plugin.getMortalEmulationManager().isEmulating(uuid)) {
+            String emu = plugin.getMortalEmulationManager().getEmulatedKingdom(uuid).orElse("ZENITHAR");
+            region = plugin.getRegionManager().getRegion(emu).orElse(null);
+        } else if (data.getRegionId() != null) {
+            region = plugin.getRegionManager().getRegion(data.getRegionId()).orElse(null);
+        }
         return titleResolver.resolveTitle(region, data.getLevel());
     }
 
@@ -152,7 +158,14 @@ public class LevelManager {
     }
 
     private void handleLevelUp(PlayerData data, Player player, int oldLevel, int newLevel) {
-        Region region = data.getRegionId() != null ? plugin.getRegionManager().getRegion(data.getRegionId()).orElse(null) : null;
+        Region region = null;
+        if (plugin.getMortalEmulationManager() != null && plugin.getMortalEmulationManager().isEmulating(data.getUuid())) {
+            String emu = plugin.getMortalEmulationManager().getEmulatedKingdom(data.getUuid()).orElse("ZENITHAR");
+            region = plugin.getRegionManager().getRegion(emu).orElse(null);
+        } else if (data.getRegionId() != null) {
+            region = plugin.getRegionManager().getRegion(data.getRegionId()).orElse(null);
+        }
+        final Region finalRegion = region;
         String oldTitle = titleResolver.resolveTitle(region, oldLevel);
         String newTitle = titleResolver.resolveTitle(region, newLevel);
 
@@ -168,18 +181,12 @@ public class LevelManager {
 
             // Particle Halo & Burst
             org.bukkit.Location pLoc = player.getLocation().clone();
-            pLoc.getWorld().spawnParticle(org.bukkit.Particle.TOTEM_OF_UNDYING, pLoc.clone().add(0, 1.2, 0), 40, 0.5, 0.8, 0.5, 0.3);
-            pLoc.getWorld().spawnParticle(org.bukkit.Particle.END_ROD, pLoc.clone().add(0, 2.0, 0), 20, 0.4, 0.2, 0.4, 0.05);
-            pLoc.getWorld().spawnParticle(org.bukkit.Particle.PORTAL, pLoc.clone().add(0, 1.0, 0), 30, 0.6, 0.6, 0.6, 0.1);
+            pLoc.getWorld().spawnParticle(org.bukkit.Particle.TOTEM_OF_UNDYING, pLoc.add(0, 1, 0), 60, 0.6, 0.8, 0.6, 0.15);
+            pLoc.getWorld().spawnParticle(org.bukkit.Particle.FIREWORK, pLoc, 35, 0.5, 0.5, 0.5, 0.1);
 
-            Component titleText = miniMessage.deserialize("<gradient:#f1c40f:#e67e22><bold>✦ LEVEL UP! ✦</bold></gradient>");
-            Component subtitleText = miniMessage.deserialize("<yellow>Level <white>" + newLevel + "</white> <gray>•</gray> <gold>" + newTitle + "</gold></yellow>");
-
-            Title title = Title.title(titleText, subtitleText, Title.Times.times(Duration.ofMillis(300), Duration.ofMillis(2500), Duration.ofMillis(800)));
-            player.showTitle(title);
-
+            // Chat Announcement
             player.sendMessage(miniMessage.deserialize("<gradient:#ffe900:#f39c12><bold>════════════════ [ LEVEL UP! ] ════════════════</bold></gradient>"));
-            player.sendMessage(miniMessage.deserialize("<gray>Selamat! Kamu telah naik dari <gold>Level " + oldLevel + "</gold> ke <gold><bold>Level " + newLevel + "</bold></gold>!</gray>"));
+            player.sendMessage(miniMessage.deserialize("<yellow>Selamat! Level progresi Anda telah meningkat ke: <gold><bold>Level " + newLevel + "</bold></gold></yellow>"));
             player.sendMessage(miniMessage.deserialize("<gray>Gelar Tingkat: <yellow><bold>" + newTitle + "</bold></yellow></gray>"));
             player.sendMessage(miniMessage.deserialize("<gray>Hadiah Level: <green><bold><click:run_command:'/kingdom rewards'><hover:show_text:'<yellow>Klik untuk membuka Menu Hadiah</yellow>'><u>[KLIK DI SINI UNTUK KLAIM REWARD]</u></click></bold></green></gray>"));
             player.sendMessage(miniMessage.deserialize("<gradient:#ffe900:#f39c12><bold>═══════════════════════════════════════════════</bold></gradient>"));
@@ -197,7 +204,7 @@ public class LevelManager {
         if (plugin.getRewardManager() != null) {
             plugin.getRewardManager().getReward(newLevel).ifPresent(reward -> {
                 if (reward.isMilestone() && reward.getBroadcast() != null && !reward.getBroadcast().isEmpty() && player != null) {
-                    String kName = region != null ? region.getDisplayName() : "Apexsions";
+                    String kName = finalRegion != null ? finalRegion.getDisplayName() : "Apexsions";
                     String msg = reward.getBroadcast()
                             .replace("%player%", player.getName())
                             .replace("%level%", String.valueOf(newLevel))

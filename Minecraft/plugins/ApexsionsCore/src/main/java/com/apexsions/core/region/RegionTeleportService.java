@@ -45,6 +45,13 @@ public class RegionTeleportService {
     }
 
     public boolean teleportToRegion(Player player) {
+        if (plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isConclaveStaff(player)) {
+            if (plugin.getMortalEmulationManager() != null && plugin.getMortalEmulationManager().isEmulating(player.getUniqueId())) {
+                String emulated = plugin.getMortalEmulationManager().getEmulatedKingdom(player.getUniqueId()).orElse("ZENITHAR");
+                Optional<Region> emuReg = plugin.getRegionManager().getRegion(emulated);
+                return emuReg.filter(region -> teleport(player, region)).isPresent();
+            }
+        }
         Optional<com.apexsions.core.player.PlayerData> dataOpt = plugin.getPlayerDataService().getCached(player.getUniqueId());
         if (dataOpt.isEmpty() || !dataOpt.get().hasRegion()) {
             return false;
