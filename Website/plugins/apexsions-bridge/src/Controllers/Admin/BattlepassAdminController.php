@@ -27,13 +27,13 @@ class BattlepassAdminController extends Controller
             ->count();
         $freePassCount = max(0, $totalPlayers - ($exsioPassCount + $sioPassCount));
 
-        $activeParticipants = MinecraftAccount::where('battlepass_level', '>', 0)
+        $activeParticipants = MinecraftAccount::where('battlepass_tier', '>', 0)
             ->orWhere('battlepass_xp', '>', 0)
             ->count();
 
         // 2. Top Level Players
-        $topPlayers = MinecraftAccount::where('battlepass_level', '>', 0)
-            ->orderBy('battlepass_level', 'desc')
+        $topPlayers = MinecraftAccount::where('battlepass_tier', '>', 0)
+            ->orderBy('battlepass_tier', 'desc')
             ->orderBy('battlepass_xp', 'desc')
             ->take(10)
             ->get();
@@ -161,13 +161,13 @@ class BattlepassAdminController extends Controller
 
         if ($action === 'setlevel') {
             $command = "abp setlevel {$player} {$val}";
-            if ($account) $account->update(['battlepass_level' => $val]);
+            if ($account) $account->update(['battlepass_tier' => $val]);
         } elseif ($action === 'addxp') {
             $command = "abp addxp {$player} {$val}";
             if ($account) $account->increment('battlepass_xp', $val);
         } else {
             $command = "abp reset {$player}";
-            if ($account) $account->update(['battlepass_level' => 0, 'battlepass_xp' => 0, 'battlepass_has_premium' => false, 'battlepass_pass_name' => null]);
+            if ($account) $account->update(['battlepass_tier' => 0, 'battlepass_xp' => 0, 'battlepass_has_premium' => false, 'battlepass_pass_name' => null]);
         }
 
         $delivery = Delivery::create([

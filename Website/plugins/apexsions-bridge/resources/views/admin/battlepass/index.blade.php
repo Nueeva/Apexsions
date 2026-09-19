@@ -152,7 +152,7 @@
                                                 <span class="badge bg-secondary">Citizen</span>
                                             @endif
                                         </td>
-                                        <td><span class="fw-bold text-warning">Lv. {{ $player->battlepass_level ?? 0 }}</span></td>
+                                        <td><span class="fw-bold text-warning">Lv. {{ $player->battlepass_tier ?? 0 }}</span></td>
                                         <td class="pe-3 text-end text-white-50 small">{{ number_format($player->battlepass_xp ?? 0) }} XP</td>
                                     </tr>
                                 @empty

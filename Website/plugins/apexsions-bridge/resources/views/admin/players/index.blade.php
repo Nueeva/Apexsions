@@ -30,7 +30,7 @@
                 <select name="rank" class="form-select form-select-sm">
                     <option value="all">-- Semua Rank --</option>
                     @foreach($availableRanks as $rk)
-                        <option value="{{ $rk }}" @selected(strtolower($selectedRank) === strtolower($rk))>{{ ucfirst($rk) }}</option>
+                        <option value="{{ $rk }}" @selected(strtolower($selectedRank ?? '') === strtolower($rk))>{{ ucfirst($rk) }}</option>
                     @endforeach
                 </select>
             </div>
@@ -39,7 +39,7 @@
                 <select name="kingdom" class="form-select form-select-sm">
                     <option value="all">-- Semua Kerajaan / Faksi --</option>
                     @foreach($availableKingdoms as $kd)
-                        <option value="{{ $kd }}" @selected(strtoupper($selectedKingdom) === strtoupper($kd))>
+                        <option value="{{ $kd }}" @selected(strtoupper($selectedKingdom ?? '') === strtoupper($kd))>
                             @if($kd === 'AETHERION')
                                 ✦ Aetherion (The Conclave)
                             @elseif($kd === 'NONE')
