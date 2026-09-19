@@ -124,7 +124,7 @@ Dokumentasi resmi yang merangkum arsitektur menyeluruh, interaksi antar-plugin, 
 | `/ac setkingdom <player> <kingdom>`| `/kc setk` | Memindahkan kerajaan pemain seketika | `apexsionscore.admin` | `op` |
 | `/ac setlobby` | `/kc setlobby` | Menetapkan koordinat lobby/spawn di lokasi berdiri | `apexsionscore.admin` | `op` |
 | `/ac info <player>` | `/kc info` | Memeriksa rincian level, XP, kerajaan, dan klaim reward pemain | `apexsionscore.admin` | `op` |
-| `/link [pin]` | `/tautkan` | Menautkan akun in-game dengan portal web Azuriom | `apexsionscore.link` | `true` |
+| `/link [pin]` | `/tautkan` | Menautkan akun in-game dengan portal web Azuriom | `apexsionscore.command.link` | `true` |
 | `/deathcoords` | `/lastdeath`, `/kor`, `/cor` | Menampilkan koordinat kematian terakhir & kompas navigasi | `apexsions.core.deathcoords` | `true` |
 | `/deathcoords compass` | - | Mengarahkan jarum kompas held-item ke titik kematian | `apexsions.core.deathcoords` | `true` |
 | `/deathcoords <player>`| - | Memeriksa koordinat kematian pemain lain (Staf/Admin) | `apexsions.core.deathcoords.others` | `op` |

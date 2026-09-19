@@ -276,9 +276,9 @@ Apexsions/
 | `/ac setkingdom <p> <k>`| `/kc setk` | Memindahkan kerajaan pemain seketika (Admin) | `apexsionscore.admin` | `op` |
 | `/ac setlobby` | `/kc setlobby` | Mengatur titik spawn lobi saat ini (Multiverse-ready) | `apexsionscore.admin` | `op` |
 | `/ac info <p>` | `/kc info` | Memeriksa data progresi & kerajaan pemain (Admin) | `apexsionscore.admin` | `op` |
-| `/link [pin]` | `/tautkan` | Menautkan akun in-game dengan portal web Azuriom | `apexsionscore.link` | `true` |
-| `/kits` | `/kit` | Membuka antarmuka kit kerajaan (Preview & Klaim) | `apexsionscore.kits` | `true` |
-| `/kits preview <id>` | - | Melihat isi item & armor set bonus suatu kit | `apexsionscore.kits` | `true` |
+| `/link [pin]` | `/tautkan` | Menautkan akun in-game dengan portal web Azuriom | `apexsionscore.command.link` | `true` |
+| `/kits` | `/kit` | Membuka antarmuka kit kerajaan (Preview & Klaim) | `apexsionscore.command.kits` | `true` |
+| `/kits preview <id>` | - | Melihat isi item & armor set bonus suatu kit | `apexsionscore.command.kits` | `true` |
 | `/kits create <id>` | - | Membuka GUI Pembuat Kit Admin (Validasi 1 full set armor) | `apexsionscore.admin` | `op` |
 | `/kits delete <id>` | - | Menghapus kit kerajaan dari sistem | `apexsionscore.admin` | `op` |
 | `/kits list` | - | Menampilkan daftar seluruh kit aktif | `apexsionscore.admin` | `op` |
@@ -382,17 +382,17 @@ Apexsions/
 ### ⚡ Modul ApexsionsCustomEnchants
 | Perintah | Alias | Deskripsi | Hak Akses (Permission) | Default |
 | :--- | :--- | :--- | :--- | :--- |
-| `/ce` | `/customenchants`, `/enchanter` | Membuka Enchanter Gacha Utama (Rupiah/Diamond) | `apexsions.ce.user` | `true` |
-| `/ce shop` | `/ce books` | Membuka Toko Buku Sihir Spesifik (3x harga, 50% sukses) | `apexsions.ce.user` | `true` |
-| `/ce tinkerer` | `/ce tinker` | Membuka antarmuka Tinkerer Kerajaan (Coming Soon) | `apexsions.ce.user` | `true` |
-| `/ce info <sihir>` | `/ce detail` | Menampilkan deskripsi, tier, target, & level maks sihir | `apexsions.ce.user` | `true` |
-| `/ace` | `/ace admin`, `/acehub` | Membuka Central Admin GUI Hub (Dashboard Terpusat) | `apexsions.admin` | `op` |
-| `/ace enchants [p/filter]` | `/ace catalog`, `/ace ae` | Membuka Katalog Replika `/ae admin` (45 enchant/page) | `apexsions.admin` | `op` |
-| `/ace create` | `/ace creator` | Interactive Item, Custom Enchant, & Armor Set Bonus Builder | `apexsions.admin` | `op` |
-| `/ace pricing` | `/ace prices` | Atur harga gacha tier, mata uang, multiplier toko, & odds | `apexsions.admin` | `op` |
+| `/ce` | `/customenchants`, `/enchanter` | Membuka Enchanter Gacha Utama (Rupiah/Diamond) | `apexsions.customenchants.use` | `true` |
+| `/ce shop` | `/ce toko` | Membuka Toko Buku Sihir Spesifik (3x harga, 50% sukses) | `apexsions.customenchants.use` | `true` |
+| `/ce tinkerer` | - | Membuka antarmuka Tinkerer Kerajaan (Coming Soon) | `apexsions.customenchants.use` | `true` |
+| `/ace` | `/apexsionscustomenchants`, `/aceadmin` | Membuka Central Admin GUI Hub (Dashboard Terpusat) | `apexsions.admin` | `op` |
+| `/ace enchants` | - | Membuka Katalog interaktif custom enchant (45 enchant/page) | `apexsions.admin` | `op` |
+| `/ace create` | - | Interactive Item, Custom Enchant, & Armor Set Bonus Builder | `apexsions.admin` | `op` |
+| `/ace pricing` | - | Atur harga gacha tier, mata uang, multiplier toko, & odds | `apexsions.admin` | `op` |
 | `/ace givebook <p> <enchant> <lvl>` | - | Memberikan buku custom enchant ke pemain | `apexsions.admin` | `op` |
 | `/ace givedust <p> <type> [rate]` | - | Memberikan Mystery Dust atau Magic Dust ke pemain | `apexsions.admin` | `op` |
 | `/ace givescroll <p> <type>` | - | Memberikan White Scroll atau Black Scroll ke pemain | `apexsions.admin` | `op` |
+| `/presets` | `/preset`, `/acepresets` | Membuka menu preset armor & tool set tersimpan | `apexsions.admin` | `op` |
 | `/ace reload` | - | Memuat ulang seluruh konfigurasi custom enchants | `apexsions.admin` | `op` |
 
 ### 🎁 Modul ApexsionsCrates
