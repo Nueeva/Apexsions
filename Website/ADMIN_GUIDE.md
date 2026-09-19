@@ -47,7 +47,7 @@ Dashboard ini ditujukan khusus untuk operasional staf dan administrator:
    - Tindakan pemeliharaan aman dengan konfirmasi admin dan perekaman audit.
 
 6. **Custom Plugin Registry & Control (`/admin/apexsions-bridge/plugins`):**
-   - Pendaftaran dan status kesehatan 6 suite plugin Apexsions.
+   - Pendaftaran dan status kesehatan 9 suite plugin Apexsions.
    - Matriks kapabilitas dan eksekusi aksi aman (*Safe Actions*) berbasis whitelist.
 
 7. **Intelligence & Incident Center (`/admin/apexsions-bridge/incidents`):**
@@ -241,7 +241,7 @@ Lakukan pencadangan rutin harian:
 Pusat kendali kasta (Rank), penetapan harga dinamis, hierarki benefit server, serta audit transaksi terpadu:
 1. **Rank Configurations & Pricing (`/admin/ranks` & `/admin/ranks/{rank_key}/edit`):**
    - Mengatur nama display, badge, gambar crest, status keaktifan, dan bobot (`weight`) hierarki.
-   - Mengatur harga Trial 30 Hari, Trial 90 Hari, Permanent, dan Override Harga Upgrade.
+   - Mengatur harga Trial 30 Hari, Trial 120 Hari, Permanent, dan Override Harga Upgrade.
    - Mengatur batas benefit in-game: Max Homes (2–10), Max Auction Listings (3–20), Max Custom Enchants (4–15), RTP Cooldown (50s–150s), Shop Sell Bonus (+3% s.d. +17%), EXP Gain Bonus (+5% s.d. +20%), dan Pengali Bunga Deposito Bank (1.0x s.d. 3.0x).
 2. **Permanent Rank Upgrade Engine:**
    - Memungkinkan pemain pemegang rank Permanent untuk meningkatkan status kastanya ke tingkat yang lebih tinggi dengan membayar selisih harga secara otomatis ($Target - Current$) atau tarif khusus admin.
@@ -256,10 +256,10 @@ Pusat kendali kasta (Rank), penetapan harga dinamis, hierarki benefit server, se
 6. **Webstore Storefront Architecture & Multi-Axis Interactive Filter Engine:**
    - **Dual-Axis Interactive Filtering (Kasta & Durasi):**
      - **Baris 1 — Kategori Kasta (`data-rank-filter`):** `[Semua Kasta]`, `[Ascendant]` (Hijau Emerald), `[Archon]` (Cyan), `[Sovereign]` (Biru Royal), `[Emperor]` (Merah Crimson), dan `[✦ SIONS ✦]` (Emas-Ungu Pinnacle). Dilengkapi tombol pintas loncat ke Matriks Benefit (`#matrix`).
-     - **Baris 2 — Durasi Aktif (`data-duration-filter`):** `[Semua Durasi]`, `[Permanen]`, `[Trial 90 Hari]`, dan `[Trial 30 Hari]`.
+      - **Baris 2 — Durasi Aktif (`data-duration-filter`):** `[Semua Durasi]`, `[Permanen]`, `[Trial 120 Hari]`, dan `[Trial 30 Hari]`.
      - **Real-Time Dynamic Matching:** Logika filter di sisi klien mengevaluasi kedua sumbu secara bersamaan ($Kasta \land Durasi$), memperbarui status `.active` seketika, dan memperbarui counter paket aktif (`Menampilkan X paket`).
    - **Subcategory Filters for Other Categories:**
-     - **Pundi Koin & Booster:** Filter instan `[Semua Paket]`, `[Apex Coins 💎]`, dan `[Booster Server ⚡]`.
+      - **Pundi Koin & Booster:** Filter instan `[Semua Paket]`, `[💎 Diamond]`, dan `[Booster Server ⚡]`.
      - **Battlepass Musiman:** Filter instan `[Semua Pass]`, `[Sio Pass 🏆]`, dan `[Exsio Pass 👑]`.
    - **Top Store Navigation Bar (`.apx-store-nav-bar`):**
      - Menyediakan tombol *Beranda Toko* (`shop.home`) beserta seluruh kategori aktif lengkap dengan ikon Bootstrap dan badge jumlah paket (`packages_count`), mempertahankan status aktif (`.active`) secara dinamis.
@@ -267,7 +267,7 @@ Pusat kendali kasta (Rank), penetapan harga dinamis, hierarki benefit server, se
      - Jika kombinasi kasta dan durasi tidak memiliki paket yang sesuai, antarmuka otomatis menampilkan card informatif dengan tombol **"Reset Semua Filter"** yang mengembalikan status filter ke default (`all`) dalam satu klik.
    - **Robust Script Stack Lifecycle Architecture:**
      - Mengintegrasikan `@push('scripts')` dengan fallback `@stack('footer-scripts')` pada layout master (`layouts/app.blade.php`), memastikan seluruh event listener (filter, expand perks, modal axios `[data-package-url]`) terpasang secara handal baik pada `DOMContentLoaded` maupun saat DOM telah selesai dimuat (*immediate execution*).
-   - **Zero-Collision Flexbox Header (`.apx-package-top-bar`):** Lambang crest kasta dan teks tier ditempatkan pada sisi kiri dan label badge durasi ringkas (`PERMANEN`, `TRIAL 90H`, `TRIAL 30H`, `UPGRADE`, `DIMILIKI`) di sisi kanan dalam baris terpisah dengan `justify-content-between`, menjamin tidak ada tumpang tindih elemen visual pada seluruh resolusi desktop maupun layar seluler.
+    - **Zero-Collision Flexbox Header (`.apx-package-top-bar`):** Lambang crest kasta dan teks tier ditempatkan pada sisi kiri dan label badge durasi ringkas (`PERMANEN`, `TRIAL 120H`, `TRIAL 30H`, `UPGRADE`, `DIMILIKI`) di sisi kanan dalam baris terpisah dengan `justify-content-between`, menjamin tidak ada tumpang tindih elemen visual pada seluruh resolusi desktop maupun layar seluler.
    - **2x2 Core Spec Micro-Grid (`.apx-spec-grid`):** Menyajikan batas operasional utama (/sethome, slot /ah lelang, custom enchants, dan cooldown /rtp) dalam micro-pills 2x2 yang padat dan terstruktur rapi.
    - **Clean Action Footer:** Mereduksi redundansi tombol kontak founder di dalam setiap card menjadi 1 CTA utama (`Pesan via WhatsApp` / `Upgrade via WA` / `Sudah Dimiliki`) dengan efek glow emas dan 1 tombol rincian modal (`Rincian & Benefit Lengkap`), menghilangkan tumpukan tombol bertumpuk yang sebelumnya memicu tabrakan visual vertikal.
 

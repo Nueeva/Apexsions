@@ -9,17 +9,17 @@ Panduan teknis dan operasional lengkap untuk modul **`ApexsionsBattlepass`** (Si
 `ApexsionsBattlepass` adalah sistem retensi dan gamifikasi pemain dengan 200 level hadiah, misi terintegrasi aktivitas gameplay, serta editor GUI visual 54-slot untuk mempermudah konfigurasi admin tanpa menyentuh file YAML secara manual.
 
 ```
-                          ┌────────────────────────┐
-                          │  ApexsionsBattlepass   │
-                          │   (Season & Quests)    │
-                          └───────────┬────────────┘
-                                      │
-        ┌─────────────────────────────┼─────────────────────────────┐
-        ▼                             ▼                             ▼
+                           ┌────────────────────────┐
+                           │  ApexsionsBattlepass   │
+                           │   (Season & Quests)    │
+                           └───────────┬────────────┘
+                                       │
+         ┌─────────────────────────────┼─────────────────────────────┐
+         ▼                             ▼                             ▼
 ┌──────────────────┐        ┌───────────────────┐         ┌───────────────────┐
 │ 200 Level Tiers  │        │ Comprehensive Qst │         │  Admin GUI Editor │
-│Free / Premium /  │        │Daily, Weekly, Mon │         │/abp 54-Slot Visual│
-│Premium+ / Ultimate│       │Dynamic Shop & Exp │         │In-game Reward Mgt │
+│Citizen / Sio /   │        │Daily, Weekly, Mon │         │/abp 54-Slot Visual│
+│Exsio             │        │Dynamic Shop & Exp │         │In-game Reward Mgt │
 └──────────────────┘        └───────────────────┘         └───────────────────┘
 ```
 
@@ -29,9 +29,9 @@ Panduan teknis dan operasional lengkap untuk modul **`ApexsionsBattlepass`** (Si
 
 Terdapat tingkatan pass dengan hak klaim bertingkat:
 
-1. **`FREE` Pass**: Terbuka untuk seluruh pemain secara default (`apexsionsbattlepass.pass.free`).
-2. **`PREMIUM` Pass**: Membuka jalur reward premium tambahan (`apexsionsbattlepass.pass.premium`).
-3. **`ULTIMATE` / `VIP` Pass**: Membuka seluruh reward premium + bonus booster XP + mewarisi hak klaim seluruh tier di bawahnya (`ULTIMATE` $\supset$ `PREMIUM+` $\supset$ `PREMIUM` $\supset$ `FREE`, permission `apexsionsbattlepass.pass.vip`).
+1. **`CITIZEN` Pass**: Terbuka untuk seluruh pemain secara default (`apexsionsbattlepass.pass.citizen`).
+2. **`SIO` Pass**: Membuka jalur reward premium tambahan serta mewarisi hak klaim Citizen (`apexsionsbattlepass.pass.sio`).
+3. **`EXSIO` Pass**: Membuka seluruh reward premium + bonus booster XP + mewarisi hak klaim seluruh tier di bawahnya (`EXSIO` $\supset$ `SIO` $\supset$ `CITIZEN`, permission `apexsionsbattlepass.pass.exsio`).
 
 ---
 
@@ -59,19 +59,19 @@ Admin dapat mengelola seluruh aspek BattlePass langsung dari dalam game:
 | Perintah | Alias | Deskripsi | Permission | Default |
 | :--- | :--- | :--- | :--- | :--- | :---: |
 | `/bp` | `/battlepass` | Membuka menu utama 200 level BattlePass | `apexsionsbattlepass.use` | `true` |
-| `/bp quests` | `/bp misi` | Membuka daftar misi harian, mingguan, bulanan | `apexsionsbattlepass.use` | `true` |
-| `/bp shop` | `/bp toko` | Membuka toko rotasi berbasis poin BP-XP | `apexsionsbattlepass.use` | `true` |
-| `/bp pass` | - | Membuka menu peningkatan tier pass | `apexsionsbattlepass.use` | `true` |
+| `/bp info` | `/bp stats`, `/bp status`, `/bp level`, `/bp progress` | Menampilkan level, tier pass, dan progress XP saat ini | `apexsionsbattlepass.use` | `true` |
+| `/bp quests` | `/bp quest` | Membuka daftar misi harian, mingguan, bulanan | `apexsionsbattlepass.use` | `true` |
+| `/bp rewards` | `/bp reward`, `/bp pass`, `/bp passes` | Membuka menu klaim hadiah & tingkatan pass | `apexsionsbattlepass.use` | `true` |
+| `/bp shop` | `/bp store` | Membuka toko rotasi berbasis poin BP-XP | `apexsionsbattlepass.use` | `true` |
 | `/bp season` | - | Memeriksa status, waktu tersisa, dan periode season | `apexsionsbattlepass.use` | `true` |
-| `/bp claim [level]` | - | Mengklaim hadiah level yang telah tercapai | `apexsionsbattlepass.use` | `true` |
-| `/bp level` | - | Menampilkan level dan sisa XP BattlePass saat ini | `apexsionsbattlepass.use` | `true` |
 | `/abp` | `/bpadmin`, `/adminbp`, `/apexsionsbattlepass` | Membuka panel kontrol visual editor 54-slot | `apexsionsbattlepass.admin` | `op` |
 | `/abp reload` | - | Memuat ulang seluruh konfigurasi season & quest | `apexsionsbattlepass.reload` | `op` |
-| `/abp givepass <p> <tier>`| `/abp setpass` | Memberikan tier pass ke pemain | `apexsionsbattlepass.admin` | `op` |
+| `/abp givepass <p> <pass>`| `/abp setpass` | Memberikan pass (`citizen`/`sio`/`exsio`) ke pemain | `apexsionsbattlepass.admin` | `op` |
 | `/abp setlevel <p> <lvl>`| - | Mengatur level BattlePass pemain secara manual | `apexsionsbattlepass.admin` | `op` |
 | `/abp addxp <p> <amt>` | - | Memberikan poin BP-XP ke pemain | `apexsionsbattlepass.admin` | `op` |
+| `/abp currency <p> <add\|set\|take> <amt>` | `/abp resetrefresh` | Mengelola Battle Coins & refresh kuota toko pemain | `apexsionsbattlepass.admin` | `op` |
 | `/abp reset <p>` | - | Mereset total seluruh data progresi pemain | `apexsionsbattlepass.admin` | `op` |
-| `/abp editor` | - | Membuka visual editor hadiah & toko | `apexsionsbattlepass.admin` | `op` |
+| `/abp season <...>` | - | Mengelola status & periode season aktif | `apexsionsbattlepass.admin` | `op` |
 
 ---
 

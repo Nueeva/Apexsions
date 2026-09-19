@@ -146,6 +146,9 @@ public class ApexsionsCorePlugin extends JavaPlugin {
     private com.apexsions.core.moderation.BanRepository banRepository;
     private com.apexsions.core.moderation.BanManager banManager;
 
+    // Death Coordinates Subsystem
+    private com.apexsions.core.player.DeathCoordinateManager deathCoordinateManager;
+
     @Override
     public void onLoad() {
         applyDisableChannelLimit();
@@ -265,6 +268,9 @@ public class ApexsionsCorePlugin extends JavaPlugin {
             this.cosmeticsManager.start();
             Bukkit.getPluginManager().registerEvents(this.cosmeticsManager, this);
             Bukkit.getPluginManager().registerEvents(new com.apexsions.core.cosmetics.gui.CosmeticsGUIListener(), this);
+
+            // Death Coordinates Subsystem
+            this.deathCoordinateManager = new com.apexsions.core.player.DeathCoordinateManager(this);
 
             // 8. Listeners
             Bukkit.getPluginManager().registerEvents(new PlayerListener(this), this);
@@ -695,10 +701,19 @@ public class ApexsionsCorePlugin extends JavaPlugin {
                 pCmd.setTabCompleter(banCommandHandler);
             }
         }
+
+        // Death Coordinates Command (/deathcoords, /lastdeath, /kor, /cor)
+        com.apexsions.core.command.DeathCoordsCommand deathCoordsHandler = new com.apexsions.core.command.DeathCoordsCommand(this);
+        PluginCommand deathCoordsCmd = getCommand("deathcoords");
+        if (deathCoordsCmd != null) {
+            deathCoordsCmd.setExecutor(deathCoordsHandler);
+            deathCoordsCmd.setTabCompleter(deathCoordsHandler);
+        }
     }
 
     public static ApexsionsCorePlugin getInstance() { return instance; }
 
+    public com.apexsions.core.player.DeathCoordinateManager getDeathCoordinateManager() { return deathCoordinateManager; }
     public ConfigManager getConfigManager() { return configManager; }
     public DatabaseManager getDatabaseManager() { return databaseManager; }
     public com.apexsions.core.moderation.BanManager getBanManager() { return banManager; }

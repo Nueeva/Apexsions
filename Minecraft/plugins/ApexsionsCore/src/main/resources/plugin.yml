@@ -20,6 +20,14 @@ softdepend:
 
 
 commands:
+  deathcoords:
+    aliases:
+      - lastdeath
+      - kor
+      - cor
+    description: Lihat koordinat lokasi kematian terakhir dan panduan navigasi kompas.
+    permission: apexsions.core.deathcoords
+    usage: /deathcoords [compass|<player>|tp <player>]
   vanish:
     aliases:
       - v
@@ -371,4 +379,13 @@ permissions:
     default: op
   apexsions.vanish.others:
     description: Allows toggling vanish for other players.
+    default: op
+  apexsions.core.deathcoords:
+    description: Allows viewing own death coordinates.
+    default: true
+  apexsions.core.deathcoords.others:
+    description: Allows staff to view other players' death coordinates.
+    default: op
+  apexsions.core.deathcoords.tp:
+    description: Allows staff to teleport to death coordinates.
     default: op

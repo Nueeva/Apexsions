@@ -15,7 +15,7 @@ Plugin **ApexsionsCustomEnchants** menyediakan sistem sihir tingkat lanjut (*cus
    - **Unique / Rare:** Peningkatan statistik pertarungan dan pertambangan.
    - **Elite / Epic:** Sihir tingkat lanjut dengan efek area (*AoE*) dan manipulasi status.
    - **Ultimate / Legendary:** Kemampuan tempur puncak (misal: *Lifesteal*, *Overload*, *Rage*).
-   - **Mastery / Mythic:** Sihir legendaris peradaban dengan efek visual partikel dan buff kerajaan.
+   - **Fabled / Heroic:** Sihir legendaris peradaban dengan efek visual partikel dan buff kerajaan (tier `HEROIC` saat ini berstatus *Coming Soon*).
 2. **Item Khusus:**
    - **Scrolls:** *White Scroll* (Mencegah item hancur), *Black Scroll* (Mencabut sihir).
    - **Dust:** *Success Dust* (Menaikkan persentase keberhasilan pemasangan buku sihir).

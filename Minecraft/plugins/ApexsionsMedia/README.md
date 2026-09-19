@@ -1,4 +1,4 @@
-# ApexsionsMedia — Minecraft 1.21.4 (Paper 26.2)
+# ApexsionsMedia — Paper 26.2 (Minecraft 26.2)
 
 Plugin render banner, logo, dan visual media interaktif multi-tile in-game berkinerja tinggi dengan line-of-sight raytrace hover glow, actionbar tooltips, replikasi template fleksibel, dan aksi tautan web terkonfirmasi untuk server **Apexsions**.
 

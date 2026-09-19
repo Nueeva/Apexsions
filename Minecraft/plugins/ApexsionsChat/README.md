@@ -1,4 +1,4 @@
-# ApexsionsChat — Minecraft 1.21.4 (Paper 26.2)
+# ApexsionsChat — Paper 26.2 (Minecraft 26.2)
 
 Plugin komunikasi, obrolan interaktif, pamer item, permainan obrolan, dan sistem moderasi keamanan (*AdvancedChat style*) untuk server **Apexsions**.
 

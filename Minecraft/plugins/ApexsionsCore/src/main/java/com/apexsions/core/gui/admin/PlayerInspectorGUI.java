@@ -161,6 +161,27 @@ public class PlayerInspectorGUI implements InventoryHolder {
                         "<aqua>▶ Shift + Klik:</aqua> <gray>Naikkan +1 Tier BP</gray>"
                 )));
 
+        // Slot 39: Last Death Coordinates & Teleport
+        com.apexsions.core.player.DeathRecord deathRec = plugin.getDeathCoordinateManager() != null
+                ? plugin.getDeathCoordinateManager().getLatestDeathRecord(target.getUniqueId())
+                : null;
+        List<String> deathLore = new java.util.ArrayList<>();
+        if (deathRec != null) {
+            double dist = deathRec.getDistance(admin.getLocation());
+            String dStr = dist >= 0 ? String.format(java.util.Locale.ROOT, "%,.1f", dist) + " blok" : "Dimensi Berbeda (" + deathRec.getDimensionDisplay() + ")";
+            deathLore.add("<gray>Dimensi: <yellow>" + deathRec.getDimensionDisplay() + "</yellow></gray>");
+            deathLore.add("<gray>Koordinat: <gold><bold>X: " + (int) deathRec.x() + ", Y: " + (int) deathRec.y() + ", Z: " + (int) deathRec.z() + "</bold></gold></gray>");
+            deathLore.add("<gray>Jarak: <aqua>" + dStr + "</aqua></gray>");
+            deathLore.add("<gray>Waktu: <white>" + deathRec.getTimeAgoFormatted() + "</white></gray>");
+            deathLore.add("<gray>Penyebab: <red>" + (deathRec.deathCause() != null ? deathRec.deathCause() : "Tidak diketahui") + "</red></gray>");
+            deathLore.add("<dark_gray>--------------------------------</dark_gray>");
+            deathLore.add("<green>▶ Klik Kiri:</green> <gray>Cetak info lengkap ke chat</gray>");
+            deathLore.add("<red>▶ Klik Kanan / Shift:</red> <gray>Teleport admin ke lokasi kematian</gray>");
+        } else {
+            deathLore.add("<gray>Pemain ini belum memiliki catatan kematian.</gray>");
+        }
+        inventory.setItem(39, createActionItem(Material.RECOVERY_COMPASS, "<gradient:#e74c3c:#c0392b><bold>☠ TITIK KEMATIAN TERAKHIR</bold></gradient>", deathLore));
+
         // Bottom Navigation (Slots 40, 49)
         ItemStack backList = createActionItem(Material.ARROW, "<yellow><bold>◀ KEMBALI KE DAFTAR PEMAIN</bold></yellow>",
                 List.of("<gray>Kembali ke daftar seluruh pemain online.</gray>"));
@@ -432,6 +453,18 @@ public class PlayerInspectorGUI implements InventoryHolder {
                 admin.playSound(admin.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 0.8f, 1.3f);
             }
             buildGUI();
+            return;
+        }
+
+        // Slot 39: Death Coordinates & Admin Teleport
+        if (slot == 39) {
+            admin.playSound(admin.getLocation(), Sound.UI_BUTTON_CLICK, 0.7f, 1.0f);
+            admin.closeInventory();
+            if (event.isRightClick() || event.isShiftClick()) {
+                admin.performCommand("deathcoords tp " + target.getName());
+            } else {
+                admin.performCommand("deathcoords " + target.getName());
+            }
             return;
         }
 

@@ -169,4 +169,14 @@ public class NoOpApexsionsCoreAPI implements ApexsionsCoreAPI {
         org.bukkit.OfflinePlayer op = org.bukkit.Bukkit.getOfflinePlayer(uuid);
         return op != null && op.isOp();
     }
+
+    @Override
+    public @org.jetbrains.annotations.Nullable org.bukkit.Location getLastDeathLocation(@NotNull UUID uuid) {
+        return null;
+    }
+
+    @Override
+    public @org.jetbrains.annotations.Nullable com.apexsions.core.player.DeathRecord getLatestDeathRecord(@NotNull UUID uuid) {
+        return null;
+    }
 }

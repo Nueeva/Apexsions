@@ -2,8 +2,8 @@
 
 > **Server / Network:** Apexsions  
 > **Tagline:** *The Peak Civilizations*  
-> **Target Runtime:** Minecraft 1.21.4 (Paper)  
-> **Framework:** PlaceholderAPI (PAPI) v2.11.x  
+> **Target Runtime:** Paper 26.2 (Minecraft 26.2, Java 21 LTS)  
+> **Framework:** PlaceholderAPI (PAPI) v2.12.x  
 
 Selamat datang di direktori dokumentasi resmi **PlaceholderAPI (PAPI)** untuk seluruh modul plugin dalam ekosistem **Apexsions**. Direktori ini menyajikan daftar placeholder terlengkap, format nilai, contoh output di dalam server, dan contoh integrasi pada TAB, Scoreboard, Hologram, Actionbar, serta Menu GUI.
 
@@ -17,7 +17,7 @@ Klik tautan berkas di bawah untuk membuka dokumentasi mendalam masing-masing plu
 | :--- | :--- | :--- | :--- |
 | [ApexsionsCore.md](./ApexsionsCore.md) | **ApexsionsCore** | `%apexsions_*%`<br>`%apexsionscore_*%` | Level, XP, Progress Bar, Kerajaan (Kingdom/Region), Rank LuckPerms beranimasi, Custom Title, Territory, Combat Tag, Status Perang, Online per Kingdom, Staff Online, dan Kosmetik. |
 | [ApexsionsEconomy.md](./ApexsionsEconomy.md) | **ApexsionsEconomy** | `%apexsionseconomy_*%` | Multi-Currency (`rupiah` = `Rp.`, `diamond` = `💎`), saldo mentah, saldo terformat, dan total lelang aktif di Auction House. |
-| [ApexsionsBattlepass.md](./ApexsionsBattlepass.md) | **ApexsionsBattlepass** | `%apexsionsbattlepass_*%` | Level Battlepass, XP, Required XP, Battle Coins mentah & terformat (`🪙`), Persentase Progres, Progress Bar visual, Tipe Pass (`FREE`/`PREMIUM`), Season aktif, dan sisa waktu season. |
+| [ApexsionsBattlepass.md](./ApexsionsBattlepass.md) | **ApexsionsBattlepass** | `%apexsionsbattlepass_*%` | Level Battlepass, XP, Required XP, Battle Coins mentah & terformat (`🪙`), Persentase Progres, Progress Bar visual, Tipe Pass (`CITIZEN`/`SIO`/`EXSIO`), Season aktif, dan sisa waktu season. |
 | [ApexsionsChat.md](./ApexsionsChat.md) | **ApexsionsChat** | `%apexsionschat_*%` | Channel obrolan aktif pemain (`Global`, `Staff`, `Kingdom`), jumlah surat/mail belum terbaca di kotak pos, dan jumlah laporan (`open_reports`) staf. |
 | [ApexsionsCrates.md](./ApexsionsCrates.md) | **ApexsionsCrates** | `%apexsionscrates_*%` | Kunci crate per ID, pembukaan tersedia, total openings, sisa cooldown pembukaan, milestone crate berikutnya, hadiah milestone, pembuka terakhir, hadiah terakhir rolled, serta placeholder internal konfigurasi. |
 | [ApexsionsShop.md](./ApexsionsShop.md) | **ApexsionsShop** | `%apexsionsshop_*%` | Tarif pajak pasar kerajaan (`tax_rate`), pajak murni, total item terdaftar, jumlah kategori toko, serta kondisi cuaca dinamis pengubah harga pasar. |

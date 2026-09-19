@@ -156,4 +156,16 @@ public interface ApexsionsCoreAPI {
      * Checks if a player is exempted from public leaderboards (e.g. Server Admins, Staff, OPs).
      */
     boolean isLeaderboardExempt(@NotNull UUID uuid);
+
+    /**
+     * Gets the last known death location of a player (including retroactive vanilla NBT records).
+     */
+    @Nullable
+    org.bukkit.Location getLastDeathLocation(@NotNull UUID uuid);
+
+    /**
+     * Gets the latest death record containing coordinates, cause, and timestamp.
+     */
+    @Nullable
+    com.apexsions.core.player.DeathRecord getLatestDeathRecord(@NotNull UUID uuid);
 }

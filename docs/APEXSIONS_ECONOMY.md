@@ -29,12 +29,12 @@ Panduan teknis dan operasional lengkap untuk modul **`ApexsionsEconomy`** (Siste
 
 1. **Rupiah (`rupiah`)**:
    - Mata uang utama sirkulasi server untuk jual-beli pasar, ongkos transportasi, dan lelang.
-   - Simbol: `Rp` (Format: `Rp 50.000`, `Rp 1,5 Jt`, `Rp 2,5 M`, `Rp 1,0 T`).
-   - **Starter Balance**: **Rp 1.000** (Dikalibrasi stabil dari sebelumnya Rp 10.000 untuk mencegah inflasi instan hari pertama).
+   - Simbol: `Rp.` (Format: `Rp. 50.000`, `Rp. 1,5 Jt`, `Rp. 2,5 M`, `Rp. 1,0 T`).
+   - **Starter Balance**: **Rp. 1.000** (Dikalibrasi stabil dari sebelumnya Rp. 10.000 untuk mencegah inflasi instan hari pertama).
 2. **Diamond (`diamond`)**:
    - Mata uang premium berbasis diamond/gem untuk transaksi komoditas berharga dan toko eksklusif.
-   - Simbol: `♦` (Format: `100 ♦`).
-   - **Starter Balance**: **0 ♦**.
+   - Simbol: `💎` (Format: `100 💎`).
+   - **Starter Balance**: **0 💎**.
 
 ---
 
@@ -65,7 +65,7 @@ Menu barter 12-slot interaktif dengan keamanan tinggi:
 | Perintah | Alias | Deskripsi | Permission | Default |
 | :--- | :--- | :--- | :--- | :---: |
 | `/economy` | `/eco`, `/uang`, `/bal` | Membuka menu utama saldo dan statistik keuangan | `apexsionseconomy.use` | `true` |
-| `/baltop` | `/topbal` | Menampilkan leaderboard 10 pemain terkaya server | `apexsionseconomy.use` | `true` |
+| `/economy top` | `/bal top`, `/eco leaderboard`, `/economy baltop` | Menampilkan leaderboard 10 pemain terkaya server | `apexsionseconomy.use` | `true` |
 | `/pay <p> <amt> [curr]` | `/transfer`, `/kirimuang` | Mentransfer uang ke pemain lain secara instan | `apexsionseconomy.pay` | `true` |
 | `/ah` | `/lelang`, `/auction` | Membuka antarmuka pasar lelang & brankas klaim | `apexsionseconomy.ah` | `true` |
 | `/trade [pemain]` | `/barter`, `/tukar` | Membuka menu barter item dan mata uang | `apexsionseconomy.trade` | `true` |

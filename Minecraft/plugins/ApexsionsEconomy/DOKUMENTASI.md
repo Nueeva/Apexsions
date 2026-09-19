@@ -19,7 +19,7 @@ plugins/ApexsionsEconomy/
 | Perintah | Alias | Deskripsi | Permission | Default |
 | :--- | :--- | :--- | :--- | :---: |
 | `/economy` | `/eco`, `/uang`, `/bal` | Membuka menu utama saldo dan statistik keuangan | `apexsionseconomy.use` | `true` |
-| `/baltop` | `/topbal` | Menampilkan leaderboard kekayaan pemain server | `apexsionseconomy.use` | `true` |
+| `/economy top` | `/bal top`, `/eco leaderboard`, `/economy baltop` | Menampilkan leaderboard kekayaan pemain server | `apexsionseconomy.use` | `true` |
 | `/pay <p> <amt> [curr]` | `/transfer`, `/kirimuang` | Mentransfer uang ke pemain lain secara instan | `apexsionseconomy.pay` | `true` |
 | `/ah` | `/lelang`, `/auction` | Membuka antarmuka pasar lelang & brankas klaim | `apexsionseconomy.ah` | `true` |
 | `/trade [pemain]` | `/barter`, `/tukar` | Membuka menu barter item dan saldo multi-currency | `apexsionseconomy.trade` | `true` |
@@ -35,10 +35,10 @@ plugins/ApexsionsEconomy/
 
 1. **Rupiah (`rupiah`)**:
    - Mata uang sirkulasi utama server untuk pasar, lelang, dan perdagangan.
-   - Simbol: `Rp` (Format cerdas: `Rp 50.000`, `Rp 1,5 Jt`, `Rp 2,5 M`, `Rp 1,0 T`).
+   - Simbol: `Rp.` (Format cerdas: `Rp. 50.000`, `Rp. 1,5 Jt`, `Rp. 2,5 M`, `Rp. 1,0 T`).
 2. **Diamond (`diamond`)**:
    - Mata uang komoditas premium berbasis diamond/gem.
-   - Simbol: `♦` (Format: `100 ♦`).
+   - Simbol: `💎` (Format: `100 💎`).
 
 ---
 

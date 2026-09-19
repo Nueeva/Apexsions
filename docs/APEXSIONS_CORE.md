@@ -17,7 +17,7 @@ Panduan teknis dan operasional lengkap untuk modul **`ApexsionsCore`** (Otoritas
               ┌─────────────────────────────┼─────────────────────────────┐
               ▼                             ▼                             ▼
     ┌───────────────────┐         ┌───────────────────┐         ┌───────────────────┐
-    │  3 Kingdom Realms │         │ 13 XP Engine Core │         │  Warp & War Locks │
+    │  3 Kingdom Realms │         │ 16 XP Engine Core │         │  Warp & War Locks │
     │Zenithar / Solterra│         │Leveling, Titles,  │         │Warp GUI & AdminGUI│
     │    Sylvamoor      │         │   Rewards GUI     │         │Territory PvP Lock │
     └───────────────────┘         └───────────────────┘         └───────────────────┘
@@ -98,7 +98,7 @@ Sistem navigasi teleportasi publik server dengan antarmuka grafis modern dan man
 
 ---
 
-## 📈 6. Formula Leveling & 13 Sumber XP
+## 📈 6. Formula Leveling & 16 Sumber XP
 
 $$\text{XP Dibutuhkan}(L) = \lfloor 100 \times L^{1.5} + (L \times 50) \rfloor$$
 
@@ -124,7 +124,7 @@ $$\text{XP Dibutuhkan}(L) = \lfloor 100 \times L^{1.5} + (L \times 50) \rfloor$$
 | `/kingdom setking <k> <p>`| - | Menobatkan Raja Tertinggi kerajaan (Admin) | `apexsionscore.admin` | `op` |
 | `/kingdom unsetking <k>`| `/kingdom removeking` | Mencabut gelar Raja dari kerajaan (Admin) | `apexsionscore.admin` | `op` |
 | `/level` | `/lvl`, `/profile`, `/rewards`, `/exp` | Membuka GUI progress bar level (1-100) dan reward | `apexsionscore.command.level` | `true` |
-| `/xpguide` | - | Panduan detail 13 sumber perolehan XP | `apexsionscore.command.level` | `true` |
+| `/xpguide` | - | Panduan detail 16 sumber perolehan XP | `apexsionscore.command.level` | `true` |
 | `/titles` | `/tags`, `/title`, `/tag` | Membuka Title Vault GUI untuk memasang gelar & badge | `apexsionscore.command.titles` | `true` |
 | `/cosmetics` | `/aura`, `/auras`, `/trail`, `/trails` | Membuka Particle Cosmetics GUI (Auras, Trails, Kill FX) | `apexsionscore.command.cosmetics` | `true` |
 | `/rtp` | `/wild`, `/wilderness`, `/krtp` | Teleportasi acak di teritori kerajaan sendiri | `apexsionscore.command.rtp` | `true` |

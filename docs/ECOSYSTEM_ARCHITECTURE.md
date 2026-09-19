@@ -4,27 +4,34 @@ Dokumentasi arsitektur terpadu yang merangkum interaksi antar-plugin, kontrak Se
 
 ---
 
-## 🏛️ 1. Diagram Keterhubungan 6 Plugin Suite
+## 🏛️ 1. Diagram Keterhubungan 9 Plugin Suite
 
 ```
-                            ┌────────────────────────┐
-                            │     ApexsionsCore      │
-                            │  (Kingdom & Leveling)  │
-                            └───────────┬────────────┘
-                                        │
-         ┌──────────────────────────────┼──────────────────────────────┐
-         ▼                              ▼                              ▼
+                             ┌────────────────────────┐
+                             │     ApexsionsCore      │
+                             │  (Kingdom & Leveling)  │
+                             └───────────┬────────────┘
+                                         │
+          ┌──────────────────────────────┼──────────────────────────────┐
+          ▼                              ▼                              ▼
 ┌──────────────────┐          ┌───────────────────┐          ┌───────────────────┐
 │  ApexsionsChat   │          │ ApexsionsEconomy  │          │ApexsionsBattlepass│
 │ (Chat & Mod Sec) │          │ (AH, Trade, Pay)  │          │ (Quests & Passes) │
 └──────────────────┘          └─────────┬─────────┘          └───────────────────┘
                                         │
-                    ┌───────────────────┴───────────────────┐
-                    ▼                                       ▼
-          ┌───────────────────┐                   ┌───────────────────┐
-          │  ApexsionsShop    │                   │  ApexsionsMedia   │
-          │ (Dynamic Markets) │                   │(Interactive Visual│
-          └───────────────────┘                   └───────────────────┘
+            ┌───────────────────────────┼───────────────────────────┐
+            ▼                           ▼                           ▼
+  ┌───────────────────┐       ┌───────────────────┐       ┌───────────────────┐
+  │  ApexsionsShop    │       │  ApexsionsMedia   │       │ApexsionsCustomEnc │
+  │ (Dynamic Markets) │       │(Interactive Visual│       │ (Enchanter Engine)│
+  └───────────────────┘       └───────────────────┘       └───────────────────┘
+                                        │
+                     ┌──────────────────┴──────────────────┐
+                     ▼                                     ▼
+           ┌───────────────────┐                   ┌───────────────────┐
+           │  ApexsionsCrates  │                   │ ApexsionsFishing  │
+           │ (Crates & Keys)   │                   │ (Fishing & Vault) │
+           └───────────────────┘                   └───────────────────┘
 ```
 
 ---
@@ -69,7 +76,7 @@ Setiap plugin mengekspos public API melalui pattern singleton provider yang aman
 - `getPlayerPoints(UUID uuid)`, `addPlayerPoints(UUID uuid, int points)`, `removePlayerPoints(UUID uuid, int points)`: Manajemen koin/poin BattlePass.
 
 ### 5. `ApexsionsShopProvider.get()` $\to$ `ApexsionsShopAPI`
-- `calculateBuyPrice(ShopItem item, Player player, int quantity)`: Kalkulasi harga beli dinamis setelah multiplier cuaca, spesialisasi kerajaan, kurva pasokan, dan batas clamping (50%-200%).
+- `calculateBuyPrice(ShopItem item, Player player, int quantity)`: Kalkulasi harga beli dinamis setelah multiplier cuaca, spesialisasi kerajaan, kurva pasokan, dan batas clamping (85%-120%).
 - `calculateSellPrice(ShopItem item, Player player, int quantity)`: Kalkulasi harga jual dinamis (rasio dasar 20%).
 - `getPlayerKingdomTaxPercent(Player player)`: Mengambil tarif pajak kerajaan pembeli.
 - `openShop(Player player)`, `openCategory(Player player, ShopCategory category)`, `openSellGui(Player player)`: Navigasi GUI pasar.
@@ -83,7 +90,7 @@ Setiap plugin mengekspos public API melalui pattern singleton provider yang aman
 
 ## 🗄️ 3. Arsitektur Basis Data HikariCP & Multi-Engine
 
-Seluruh 6 plugin mendukung sistem penyimpanan ganda (*Dual Database Engine*):
+Seluruh 9 plugin mendukung sistem penyimpanan ganda (*Dual Database Engine*):
 - **SQLite (Development / Standalone)**: File database `.db` lokal cepat dan tanpa overhead jaringan.
 - **PostgreSQL (Production Enterprise)**: Mendukung multi-server / network berskala besar dengan connection pooling HikariCP 6.2.1 dan driver PostgreSQL 42.7.5.
 
@@ -143,11 +150,11 @@ Seluruh arsitektur plugin di Apexsions dibangun di atas pondasi narasi kanonik *
 Reruntuhan Kekaisaran Sions di tengah Wilderness terintegrasi secara modular dengan sistem ekonomi dan leveling Apexsions:
 
 1. **Level-Scaled Wilderness PVE**:
-   - Monster alam liar berlevel (Level 10-30) memberikan drop exp yang terhubung dengan **13 XP Sources** `ApexsionsCore` (sumber `MOB_KILL`).
+   - Monster alam liar berlevel (Level 10-30) memberikan drop exp yang terhubung dengan **16 XP Sources** `ApexsionsCore` (sumber `MOB_KILL`).
 2. **Dungeon Boss Encounters (The Forbidden Sanctum)**:
    - Area tahta reruntuhan dihuni oleh World Boss multi-fase (*Emperor Valerius, The Void-Touched* Lv. 100) dan penjaga elit (*Sions Void Assassin*, *Ruin Sentinel*).
 3. **Loop Sirkulasi Relik Kuno**:
-   $$\text{PVE Boss Kill} \longrightarrow \text{Drop Pecahan Relik Sions / Void Core} \longrightarrow \text{Pasar Lelang / Toko Dinamis} \longrightarrow \text{Apex Coins / Hadiah Level}$$
+   $$\text{PVE Boss Kill} \longrightarrow \text{Drop Pecahan Relik Sions / Void Core} \longrightarrow \text{Pasar Lelang / Toko Dinamis} \longrightarrow \text{Diamond / Hadiah Level}$$
 
 ---
 
@@ -157,13 +164,13 @@ Arsitektur sistem Apexsions dirancang untuk bertumbuh melalui 4 fase evolusi ber
 
 ```
 [FASE 1: Fondasi Kerajaan] ──► [FASE 2: Raid & Relik Sions] ──► [FASE 3: Pengepungan Benteng] ──► [FASE 4: Web Live Sync]
-  • 6 Modul Inti Aktif          • World Boss MythicMobs          • Kingdom Castle Siege          • WebBridge v2 Real-time
+  • 9 Modul Inti Aktif          • World Boss MythicMobs          • Kingdom Castle Siege          • WebBridge v2 Real-time
   • Proteksi Teritorial PvP     • Loop Relik & Toko Kuno        • Perebutan Outpost Wilayah     • Dynamic Web Territory Map
   • Auto-Respawn Ibukota        • Event Bencana Void             • Pajak Wilayah Taklukan        • Webstore Instant Gateway
 ```
 
 ### Rincian Fase:
-- **Fase 1 (Fondasi & Kedaulatan Teritorial — Selesai/Aktif)**: Stabilitas 7 plugin, sinkronisasi poligon BlueMap, formula 13 XP leveling (1-100), proteksi friendly-fire, dual-currency atomic engine, dan auto-respawn ibukota terikat BlueMap.
+- **Fase 1 (Fondasi & Kedaulatan Teritorial — Selesai/Aktif)**: Stabilitas 9 plugin, sinkronisasi poligon BlueMap, formula 13 XP leveling (1-100), proteksi friendly-fire, dual-currency atomic engine, dan auto-respawn ibukota terikat BlueMap.
 - **Fase 2 (The Sions Cataclysm & World Raids — Saat Ini/Aktif)**: Integrasi MythicMobs di Reruntuhan Sions, mekanik serangan telegraphed, drop item legendaris (*Valerius Voidblade*, *Crown of Sions*), serta sirkulasi relik di pasar lelang (`/ah`).
 - **Fase 3 (Pengepungan Benteng & Perluasan Wilayah — Rencana Menengah)**: Fitur *Kingdom Outpost Siege* di mana kerajaan dapat memperebutkan benteng perbatasan di Wilderness untuk memperluas batas klaim teritorial dan memungut pajak jalur dagang.
 - **Fase 4 (Sinkronisasi Web & Jaringan Terpadu — Rencana Jangka Panjang)**: Peluncuran WebBridge v2 dengan web-socket real-time untuk menampilkan kontrol wilayah di portal web, live battle ranking di situs web, dan integrasi payment gateway otomatis saat perizinan legal selesai.

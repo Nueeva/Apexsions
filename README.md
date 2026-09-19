@@ -40,15 +40,15 @@ Apexsions/
 
 | Plugin | Versi | Status | Package Root Java | Deskripsi & Fokus Utama |
 | :--- | :---: | :---: | :--- | :--- |
-| **`ApexsionsCore`** | `1.0.0` | ![Active](https://img.shields.io/badge/Status-Active-brightgreen) | `com.apexsions.core.*` | Otoritas Wilayah Kerajaan (*Zenithar*, *Solterra*, *Sylvamoor*), Kedaulatan Wilayah Tanah (`/claim`) dengan Pajak Upkeep Progresif & Brankas Klaim, Hak Istimewa Upper Dimension Conclave, Anti-Griefing, Anti-Xray Monitor, Redstone Watchdog, Sistem Moderasi Terpusat (`/ban`), Sistem Warp Navigasi GUI & Admin Editor GUI, Perlindungan PvP Teritorial Kerajaan, Progresi Leveling (13 XP Sources), BlueMap Polygons, Leaderboard GUI (`/kingdom top`), Kingdom War Manager, PvP Combat Tag (15s), Kingdom-Bounded `/rtp`, Enforcer TPA EssentialsX, dan Sistem Kit Kerajaan Terintegrasi (`/kits`) dengan Armor Set Bonus Berbasis Stat. |
+| **`ApexsionsCore`** | `1.0.0` | ![Active](https://img.shields.io/badge/Status-Active-brightgreen) | `com.apexsions.core.*` | Otoritas Wilayah Kerajaan (*Zenithar*, *Solterra*, *Sylvamoor*), Kedaulatan Wilayah Tanah (`/claim`) dengan Pajak Upkeep Progresif & Brankas Klaim, Hak Istimewa Upper Dimension Conclave, Anti-Griefing, Anti-Xray Monitor, Redstone Watchdog, Sistem Moderasi Terpusat (`/ban`), Sistem Warp Navigasi GUI & Admin Editor GUI, Perlindungan PvP Teritorial Kerajaan, Progresi Leveling (16 XP Sources), BlueMap Polygons, Leaderboard GUI (`/kingdom top`), Kingdom War Manager, PvP Combat Tag (15s), Kingdom-Bounded `/rtp`, Enforcer TPA EssentialsX, dan Sistem Kit Kerajaan Terintegrasi (`/kits`) dengan Armor Set Bonus Berbasis Stat. |
 | **`ApexsionsChat`** | `1.0.0` | ![Active](https://img.shields.io/badge/Status-Active-brightgreen) | `com.apexsions.chat.*` | Komunikasi Kyori MiniMessage, Channel (*Global*, *Kingdom*, *Staff*), Chat Settings GUI (`/channel settings`), Pamer Item (`/showitem`), Surat Offline (`/mail`), Chat Games, dan Moderasi Lapis Tiga dengan Staff Reports GUI. |
 | **`ApexsionsEconomy`** | `1.0.0` | ![Active](https://img.shields.io/badge/Status-Active-brightgreen) | `com.apexsions.economy.*` | Multi-Currency (`Rupiah`, `Diamond`), Transfer Cepat (`/pay`), Pasar Lelang (`/ah`) dengan Escrow Claim, dan Barter/Trade 12-Slot dengan Pajak Transportasi Antar-Kerajaan. |
-| **`ApexsionsBattlepass`** | `1.0.0` | ![Active](https://img.shields.io/badge/Status-Active-brightgreen) | `com.apexsions.battlepass.*` | 200 Level BattlePass, Season Management, Quests (Daily, Weekly, Monthly), Tingkatan Pass (`FREE`, `PREMIUM`, `PREMIUM+`, `ULTIMATE`), dan Visual Admin GUI Editor 54-Slot (`/abp`). |
-| **`ApexsionsShop`** | `1.0.0` | ![Active](https://img.shields.io/badge/Status-Active-brightgreen) | `com.apexsions.shop.*` | Pasar Dinamis 6 Kategori, Rasio Jual Dasar **20%** (Solterra 30%), Diamond Sell-Only (Rp 250), Formula Dinamis Cuaca & Bioma Kerajaan, Price Clamping (50%-200%), Siaran Tren Pasar Berkelanjutan, Pajak Wilayah 10%, UI Ramah Sentuh/Bedrock, dan GUI Jual Cepat 45-Slot (`/sell`). |
+| **`ApexsionsBattlepass`** | `1.0.0` | ![Active](https://img.shields.io/badge/Status-Active-brightgreen) | `com.apexsions.battlepass.*` | 200 Level BattlePass, Season Management, Quests (Daily, Weekly, Monthly), Tingkatan Pass (`CITIZEN`, `SIO`, `EXSIO`), dan Visual Admin GUI Editor 54-Slot (`/abp`). |
+| **`ApexsionsShop`** | `1.0.0` | ![Active](https://img.shields.io/badge/Status-Active-brightgreen) | `com.apexsions.shop.*` | Pasar Dinamis 6 Kategori, Rasio Jual Dasar **20%** (Solterra 30%), Diamond Sell-Only (Rp 250), Formula Dinamis Cuaca & Bioma Kerajaan, Price Clamping (85%-120%), Siaran Tren Pasar Berkelanjutan, Pajak Wilayah Per-Kerajaan (Zenithar 18% / Solterra 20% / Sylvamoor 15%), UI Ramah Sentuh/Bedrock, dan GUI Jual Cepat 45-Slot (`/sell`). |
 | **`ApexsionsMedia`** | `1.0.0` | ![Active](https://img.shields.io/badge/Status-Active-brightgreen) | `com.apexsions.media.*` | Render Banner/Logo Gambar Multi-Tile Asinkron (PNG/JPG/URL) dengan deteksi ukuran otomatis, Raytrace Line-of-Sight Hover Glowing, Actionbar Tooltips, Replikasi/Pindah Banner (`/media place`, `/media copy`), dan Interaksi Tautan Konfirmasi Web (`[Buka URL]` & `[Salin Clipboard]`). |
 | **`ApexsionsCustomEnchants`** | `1.0.0` | ![Active](https://img.shields.io/badge/Status-Active-brightgreen) | `com.apexsions.customenchants.*` | Sistem Custom Enchantment Mewah: Enchanter Gacha Dual-Currency (`/ce`), Toko Buku Spesifik 3x Harga, Mystery & Magic Dust Booster, White & Black Scrolls, Admin Hub (`/ace`), Replika Katalog `/ae admin` (`/ace enchants`), Interactive Item & Armor Set Builder (`/ace create`), dan Tinkerer Coming Soon. |
 | **`ApexsionsCrates`** | `1.0.0` | ![Active](https://img.shields.io/badge/Status-Active-brightgreen) | `com.apexsions.crates.*` | Sistem Peti Hadiah Mewah & Kunci Crate: Toko Pembelian Kunci (`/crateshop`), Milestone Progression, Animasi Pembukaan Mewah, dan Integrasi Hadiah Ekonomi / Kit. |
-| **`ApexsionsFishing`** | `1.0.0` | ![Active](https://img.shields.io/badge/Status-Active-brightgreen) | `com.apexsions.fishing.*` | Sistem AFK & Active Reel Fishing interaktif, Rarity & Weight Engine 6-Tier (`COMMON` hingga `MYTHIC`), Virtual Bait Quota System (`/fish bait`), Native Dialog Admin Rod Creator GUI (`AdminRodCreatorGUI`), Fishing Vault Storage 54-Slot (`/vault`), Pasar Ikan & Pengiriman Instan (`/fish sell`), serta Joran Khusus Auto-Catch (`/fish rods`). |
+| **`ApexsionsFishing`** | `1.0.0` | ![Active](https://img.shields.io/badge/Status-Active-brightgreen) | `com.apexsions.fishing.*` | Sistem AFK & Active Reel Fishing interaktif, Rarity & Weight Engine 6-Tier (`COMMON` hingga `MYTHIC`), Virtual Bait Quota System (`/fish bait`), Native Dialog Admin Rod Creator GUI (`/fish creator`), Fishing Vault Storage 54-Slot (`/vault`), Pasar Ikan & Pengiriman Instan (`/fish sell`), serta Joran Khusus Auto-Catch (`/fish shop`). |
 
 ---
 
@@ -83,7 +83,7 @@ Apexsions/
 - **Perlindungan Teritorial PvP Sesama Kerajaan**:
   - Otomatis membatalkan 100% serangan (Melee, Panah/Trident, Splash Potion, Pet) antar sesama anggota kerajaan saat berada **di dalam wilayah kerajaan sendiri**.
   - Bebas bertarung sesama anggota jika berada di luar wilayah claim (Wilderness / Warzone / Wilayah Musuh).
-- **Formula Leveling & 13 Sumber XP**: Mining, Mob Kill, Woodcutting, Fishing, Farming, Crafting, Enchanting, Smelting, Player Kill, Golden Apple, Potion Use, Exploration, Structure Discovery.
+- **Formula Leveling & 16 Sumber XP**: Mining, Woodcutting, Fishing, Mob Kill, Player Kill, Farming, Anvil, Enchanting, Cooking, Golden Apple, Brewing, Potion Use, Exploration, Chat Game.
 - **Hall of Fame & Leaderboard GUI (`/kingdom top`)**: Antarmuka visual 54-slot klasemen peringkat kerajaan dan pemain level tertinggi.
 - **Kingdom War Manager (`/ac war`)**: Mode perang resmi antar-kerajaan dengan proteksi penguncian teleportasi di zona perang aktif.
 - **PvP Combat Tagging (15 Detik)**: Mencegah combat log dan membatalkan segala bentuk teleportasi (`/tpa`, `/rtp`, `/warp`, `/spawn`, `/lobby`, `/home`) saat sedang bertarung.
@@ -170,8 +170,8 @@ Apexsions/
 - **Stabilisasi Harga Komoditas**: Bebatuan dasar (Cobblestone, Stone, Dirt, Sand) distandarkan ke Rp 0.6 – 1.2/blok dan hasil tani massal (Sugar Cane, Carrot, Wheat) ke Rp 1.5 – 2.0/butir.
 - **Harga Dinamis Cuaca & Kerajaan**: Harga berfluktuasi cerdas sesuai hujan/badai dan keunggulan komoditas kerajaan pembeli.
 - **Badge Visual Tren Pasar & Dashboard (`/shop trends`)**: Indikator visual langsung pada lore item (`[PASOKAN MELIMPAH]`, `[LANGKA / PERMINTAAN TINGGI]`, `[EFEK CUACA]`, `[DISKON KERAJAAN]`) dan menu tren ekonomi khusus.
-- **Price Clamping & Siaran Tren Pasar**: Batas pengaman harga (50% - 200%) dan siaran berkala komoditas BOOM/DIP.
-- **Pajak Kerajaan 10%**: Otomatis disalurkan ke kas perbendaharaan kerajaan pemain.
+- **Price Clamping & Siaran Tren Pasar**: Batas pengaman harga (85% - 120%) dan siaran berkala komoditas BOOM/DIP.
+- **Pajak Kerajaan**: Otomatis mengambil tarif pajak wilayah dari `ApexsionsCore` (Zenithar 18%, Solterra 20%, Sylvamoor 15%; fallback 10% jika tidak tersedia) dan disalurkan ke kas perbendaharaan kerajaan pemain.
 - **UI Ramah Sentuh & Bedrock**: Kontrol navigasi di baris terbawah inventaris.
 - **GUI Jual Cepat 45-Slot (`/sell` & `/sellgui`)**: Drag-and-drop banyak item sekaligus untuk langsung dijual.
 
@@ -193,7 +193,7 @@ Apexsions/
 - **Toko Buku Sihir Spesifik 54-Slot (`/ce shop`)**:
   - Pembelian langsung buku sihir yang diinginkan dengan harga 3x lipat dari gacha acak tier tersebut.
   - Peluang sukses terkalibrasi tetap **50%** di semua tier untuk menjaga stabilitas gameplay.
-- **28 Custom Enchantments Berkekuatan Tinggi**:
+- **182 Custom Enchantments Lintas 7 Tier**:
   - Efek tempur & utilitas: Bleed, Lifesteal, Vampire, Cleave, Rage, Blind, Paralyze, Disarm, Cactus, Enlightened, Inquisitive, Obsidianshield, Overload, Phoenix, AutoSmelt, Telepathy, MultiArrow, Sniper, Unbreakable, dll.
 - **Magic Dust & Protection Scrolls**:
   - **Mystery Dust**: Klik kanan untuk mengungkap Magic Dust atau Failed Secret Dust.
@@ -262,7 +262,7 @@ Apexsions/
 | `/kingdom setking <k> <p>`| - | Menobatkan Raja Tertinggi kerajaan (Admin) | `apexsionscore.admin` | `op` |
 | `/kingdom unsetking <k>`| `/kingdom removeking` | Mencabut gelar Raja kerajaan (Admin) | `apexsionscore.admin` | `op` |
 | `/level` | `/lvl`, `/profile`, `/exp`, `/rewards` | Membuka GUI progress bar level & hadiah | `apexsionscore.command.level` | `true` |
-| `/xpguide` | - | Panduan detail 13 sumber perolehan XP | `apexsionscore.command.level` | `true` |
+| `/xpguide` | - | Panduan detail 16 sumber perolehan XP | `apexsionscore.command.level` | `true` |
 | `/titles` | `/tags`, `/title`, `/tag` | Membuka Title Vault GUI untuk memasang gelar & badge | `apexsionscore.command.titles` | `true` |
 | `/cosmetics` | `/auras`, `/trails`, `/aura`, `/trail` | Membuka Particle Cosmetics GUI (Head Auras, Trails, Kill FX) | `apexsionscore.command.cosmetics` | `true` |
 | `/rtp` | `/wild`, `/wilderness`, `/krtp` | Teleportasi acak aman di wilayah kerajaan sendiri | `apexsionscore.command.rtp` | `true` |
@@ -326,7 +326,7 @@ Apexsions/
 | Perintah | Alias | Deskripsi | Hak Akses (Permission) | Default |
 | :--- | :--- | :--- | :--- | :---: |
 | `/economy` | `/eco`, `/bal`, `/uang` | Membuka menu saldo. Mendukung `/eco <give\|take\|set>` (Console & Player) | `apexsionseconomy.use` | `true` |
-| `/baltop` | `/topbal` | Menampilkan papan peringkat kekayaan server | `apexsionseconomy.use` | `true` |
+| `/economy top` | `/bal top`, `/eco leaderboard` | Menampilkan papan peringkat kekayaan server | `apexsionseconomy.use` | `true` |
 | `/pay <p> <amt> [curr]` | `/transfer`, `/kirimuang` | Mentransfer uang ke pemain lain | `apexsionseconomy.pay` | `true` |
 | `/ah` | `/lelang`, `/auction` | Membuka pasar lelang & brankas escrow | `apexsionseconomy.ah` | `true` |
 | `/trade [pemain]` | `/barter`, `/tukar` | Membuka menu barter item & saldo | `apexsionseconomy.trade` | `true` |
@@ -404,13 +404,15 @@ Apexsions/
 ### 🎣 Modul ApexsionsFishing
 | Perintah | Alias | Deskripsi | Hak Akses (Permission) | Default |
 | :--- | :--- | :--- | :--- | :---: |
-| `/fish` | `/mancing` | Membuka menu utama perikanan Apexsions | `apexsionsfishing.use` | `true` |
-| `/fish bait` | `/bait`, `/umpan` | Membuka Toko Kuota Umpan Virtual (`BaitShopGUI`) | `apexsionsfishing.use` | `true` |
-| `/fish rods` | `/rods`, `/joran` | Membuka katalog & peningkatan joran kustom | `apexsionsfishing.use` | `true` |
-| `/fish sell` | `/fish market` | Menjual hasil tangkapan ikan secara instan | `apexsionsfishing.use` | `true` |
-| `/vault` | `/fishvault` | Membuka Brankas Penyimpanan Ikan 54-slot | `apexsionsfishing.use` | `true` |
-| `/fish admin rod` | `/adminrod` | Membuka Dialog Native Admin Rod Creator GUI | `apexsionsfishing.admin` | `op` |
-| `/fish reload` | - | Memuat ulang seluruh konfigurasi perikanan | `apexsionsfishing.admin` | `op` |
+| `/fish` | `/fishing`, `/mancing` | Membuka menu utama perikanan Apexsions | `apexsions.fishing.use` | `true` |
+| `/fish bait` | `/fish umpan` | Membuka Toko Kuota Umpan Virtual (`BaitShopGUI`) | `apexsions.fishing.use` | `true` |
+| `/fish shop` | `/fish toko` | Membuka katalog & peningkatan joran kustom (`RodShopGUI`) | `apexsions.fishing.use` | `true` |
+| `/fish sell` | `/fish jual` | Menjual hasil tangkapan ikan secara instan | `apexsions.fishing.use` | `true` |
+| `/fish top` | `/fish leaderboard`, `/fish peringkat` | Papan peringkat nelayan terbaik | `apexsions.fishing.use` | `true` |
+| `/vault` | `/fishvault`, `/fvault` | Membuka Brankas Penyimpanan Ikan | `apexsions.fishing.vault` | `true` |
+| `/fish creator` | `/fish create` | Membuka Native Dialog Admin Rod Creator GUI | `apexsions.fishing.admin` | `op` |
+| `/fish admin` | - | Membuka Admin Hub GUI perikanan | `apexsions.fishing.admin` | `op` |
+| `/fish reload` | - | Memuat ulang seluruh konfigurasi perikanan | `apexsions.fishing.admin` | `op` |
 
 ### 🔐 Modul Autentikasi Lintas Platform (FastLogin + Floodgate + AuthMe)
 | Perintah | Alias | Deskripsi | Hak Akses (Permission) | Default |
@@ -526,9 +528,9 @@ Perjalanan pengembangan Apexsions dirancang secara terstruktur melalui 4 fase ev
 │                           APEXSIONS MASTER ROADMAP                               │
 └──────────────────────────────────────────────────────────────────────────────────┘
   [Fase 1: Kedaulatan Teritorial] (STATUS: SELESAI / STABIL)
-    ├── 7 Plugin Suite Modular Paper 26.2 / Java 21 LTS
+    ├── 9 Plugin Suite Modular Paper 26.2 / Java 21 LTS
     ├── Batas Wilayah Poligon BlueMap & Proteksi Teritorial PvP
-    ├── Progresi Karakter 1-100 & 13 Sumber XP
+    ├── Progresi Karakter 1-100 & 16 Sumber XP
     ├── Ekonomi Multi-Mata Uang Atomic (Rupiah & Diamond) & Pasar Lelang Escrow
     └── Auto-Respawn Ibukota Kerajaan & Integrasi In-Game Spawn Manager
 

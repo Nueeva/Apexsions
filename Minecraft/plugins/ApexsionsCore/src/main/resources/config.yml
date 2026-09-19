@@ -66,6 +66,16 @@ bluemap:
   # Display title/actionbar when player walks into kingdom territory
   territory-actionbar: true
 
+# Sistem Pelacakan Koordinat Kematian (/deathcoords, /lastdeath, /kor)
+death-coords:
+  enabled: true
+  # Kirim kartu koordinat kematian otomatis ke chat setelah respawn
+  notify-on-respawn: true
+  # Jeda pengiriman pesan setelah respawn dalam tick (20 ticks = 1 detik)
+  notify-delay-ticks: 20
+  # URL dasar satelit BlueMap untuk tombol [Buka Peta 3D]
+  bluemap-base-url: "http://apexsions.my.id:32076/"
+
 rtp:
   # Cooldown between /rtp uses in seconds (bypass permission: apexsionscore.rtp.bypass)
   cooldown-seconds: 60

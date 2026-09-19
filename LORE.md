@@ -154,7 +154,7 @@ Ketiga kerajaan berdaulat memiliki struktur politik yang berbeda dan saling memb
 ║ • Sektor Ekonomi     : Luxury Goods, Banking, Technology & Trade          ║
 ║ • Skema Pajak Toko   : 18.0% (Kas Pertahanan Solarium Spire)               ║
 ║ • Pajak Transfer Pay : 6.0% (Kliring Cepat Perbankan Kerajaan)            ║
-║ • Keistimewaan Khusus: Diskon 50% Pajak Lelang & Bunga Bank +35%          ║
+║ • Keistimewaan Khusus: Diskon 30% Pajak Lelang & Bunga Bank +25%          ║
 ╚════════════════════════════════════════════════════════════════════════════╝
 ```
 
@@ -162,7 +162,7 @@ Ketiga kerajaan berdaulat memiliki struktur politik yang berbeda dan saling memb
 * **Rantai Pasok Ekonomi:**
   * **Ekspor Utama:** Emas Murni Pegunungan, Lapis Lazuli Mutu Tinggi, Buku Sihir Penempaan Langka, Instrumen Presisi, dan Perhiasan Kristal.
   * **Kebutuhan Impor:** Pasokan Pangan Pokok (gandum/daging dari Sylvamoor) dan Logam Mentah Berat (besi dari Solterra).
-* **Monopoli Finansial & Perlindungan Istana:** Warga Zenithar memegang kendali sistem finansial benua: diskon 50% pajak lelang (`/ah`), bunga deposito bank pasif **+35%** (`/bank`), diskon 15% pembelian blok bangunan megah di `/shop`, serta perisai nexus istana yang terlindungi secara maksimal.
+* **Monopoli Finansial & Perlindungan Istana:** Warga Zenithar memegang kendali sistem finansial benua: diskon 30% pajak lelang (`/ah`), bunga deposito bank pasif **+25%** (`/bank`), diskon 15% pembelian blok bangunan megah di `/shop`, serta perisai nexus istana yang terlindungi secara maksimal.
 
 ---
 
@@ -192,7 +192,7 @@ Ketiga kerajaan berdaulat memiliki struktur politik yang berbeda dan saling memb
 * **Rantai Pasok Ekonomi:**
   * **Ekspor Utama:** Besi Hitam Tempa, Mesiu, Redstone Berkekuatan Tinggi, Tembaga Keras, Serpihan Netherite, dan Senjata Berat.
   * **Kebutuhan Impor:** Air Bersih, Kayu Gelondongan, Tanaman Obat Herbal, dan Makanan Segar (semua didatangkan dari Sylvamoor).
-* **Justifikasi Pajak 20%:** Pajak disalurkan untuk subsidi bahan bakar peleburan, pengadaan amunisi pertahanan, dan rasio jual hasil tambang yang sangat menguntungkan (`ores-sell-ratio: 0.65`).
+* **Justifikasi Pajak 20%:** Pajak disalurkan untuk subsidi bahan bakar peleburan, pengadaan amunisi pertahanan, dan rasio jual hasil tambang yang sangat menguntungkan (`ores-sell-ratio: 0.30`).
 
 ---
 
@@ -550,8 +550,8 @@ Setiap kali pergantian Season 4 Bulanan (120 Hari) tiba, server melakukan **Rese
 | **Smart Combat Normalizer (PvP)** | `com.apexsions.core.combat.SmartCombatNormalizer` & `PlayerCombatProgressionListener` | Normalisasi adil perang antar-kerajaan: pemotongan excess attack > +0.80 dan penskalaan damage masuk defender ber-HP tinggi ke rasio 24 HP tanpa double survivability. |
 | **Ekosistem Monster 6-Tier** | `plugins/MythicMobs/mobs/` & `randomspawns/` | Distribusi ancaman monster berjenjang: Tier 1 Kerajaan (1-5), Tier 2 Wilderness (5-20), Tier 3 Dangerous Wilds (20-40), Tier 4 Nether (35-75), Tier 5 The End & Sions (65-95+), dan Tier 6 World Raid Boss Valerius & Void Sovereign (100). |
 | **Progresi 1-100 & Gelar Kerajaan** | `Minecraft/plugins/ApexsionsCore/src/main/resources/progression/titles.yml` | Gelar level per 10 tier berdasarkan kerajaan (Solaris Archon, Dune Warlord, Druidic Lord, dsb.) serta gelar kasta tertinggi. |
-| **Pajak Toko & Pasar Dinamis** | `Minecraft/plugins/ApexsionsShop/src/main/resources/markets/markets.yml` | Pajak toko (`SOLTERRA: 20%`, `ZENITHAR: 25%`, `SYLVAMOOR: 15%`), rasio jual ore 30% di Solterra, volatilitas 1.25x di Zenithar, diskon bahan pertanian di Sylvamoor. |
-| **Pajak Transfer Antar-Pemain (`/pay`)** | `com.apexsions.economy.service.PayService` | Pajak transaksi instan: `ZENITHAR 10%`, `SOLTERRA 8%`, `SYLVAMOOR 6%`, `Default 5%`. |
+| **Pajak Toko & Pasar Dinamis** | `Minecraft/plugins/ApexsionsShop/src/main/resources/markets/markets.yml` | Pajak toko (`SOLTERRA: 20%`, `ZENITHAR: 18%`, `SYLVAMOOR: 15%`), rasio jual ore 30% di Solterra, volatilitas 1.25x di Zenithar, diskon bahan pertanian di Sylvamoor. |
+| **Pajak Transfer Antar-Pemain (`/pay`)** | `com.apexsions.economy.service.PayService` | Pajak transaksi instan: `ZENITHAR 6%`, `SOLTERRA 8%`, `SYLVAMOOR 6%`, `Default 5%`. |
 | **Pajak Lelang & Kas Kerajaan** | `com.apexsions.economy.service.AuctionService` | Pajak lelang flat 5% yang otomatis disetorkan ke kas kerajaan penjual di tabel `economy_kingdom_treasury`. Batas listing lelang berdasarkan rank. |
 | **Penyimpanan Kas SQL** | `com.apexsions.economy.database.EconomyRepository` | Query `INSERT/UPDATE economy_kingdom_treasury` untuk saldo kas mata uang `rupiah` dan `diamond`. |
 | **Saluran Chat Kerajaan (`/k`)** | `Minecraft/plugins/ApexsionsChat/src/main/resources/channels/channels.yml` | Channel `kingdom` dengan `kingdom-filtering: true` (hanya sesama warga satu kerajaan yang dapat membaca pesan) dan tag chat berwarna. |

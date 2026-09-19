@@ -1,6 +1,6 @@
-# ApexsionsCore — Minecraft 1.21.4 (Paper 26.2)
+# ApexsionsCore — Paper 26.2 (Minecraft 26.2)
 
-Plugin fondasi utama server **Apexsions** yang mengelola sistem 3 Kerajaan (*Zenithar*, *Solterra*, *Sylvamoor*), progresi level pemain & 13 sumber XP, sistem navigasi Warp GUI & Admin Editor, Master Admin Hub (`/admingui`), Title Vault, Particle Cosmetics, perlindungan PvP teritorial kerajaan, Kingdom War, Combat Tagging (15s), dan integrasi BlueMap.
+Plugin fondasi utama server **Apexsions** yang mengelola sistem 3 Kerajaan (*Zenithar*, *Solterra*, *Sylvamoor*), progresi level pemain & 16 sumber XP, sistem navigasi Warp GUI & Admin Editor, Master Admin Hub (`/admingui`), Title Vault, Particle Cosmetics, perlindungan PvP teritorial kerajaan, Kingdom War, Combat Tagging (15s), dan integrasi BlueMap.
 
 ---
 
@@ -15,7 +15,7 @@ Plugin fondasi utama server **Apexsions** yang mengelola sistem 3 Kerajaan (*Zen
 - **Perlindungan PvP Sesama Kerajaan**: Membatalkan 100% serangan (Melee, Panah/Trident, Splash Potion, Pet) antar sesama anggota kerajaan saat berada **di dalam wilayah kerajaan sendiri**.
 - **PvP Combat Tagging (15 Detik)**: Mencegah combat logging dan membatalkan segala bentuk teleportasi saat sedang bertarung.
 - **Kingdom War Manager (`/ac war`)**: Mode perang resmi antar-kerajaan dengan proteksi penguncian teleportasi di zona perang aktif.
-- **Formula Progresi & 13 Sumber XP**: Sistem level non-linear dengan 13 sumber perolehan XP (Mining, Mob Kill, Woodcutting, Fishing, Farming, Crafting, Enchanting, Smelting, Player Kill, Golden Apple, Potion Use, Exploration, Structure Discovery).
+- **Formula Progresi & 16 Sumber XP**: Sistem level non-linear dengan 16 sumber perolehan XP (Mining, Woodcutting, Fishing, Mob Kill, Player Kill, Farming, Anvil, Enchanting, Cooking, Golden Apple, Brewing, Potion Use, Exploration, Chat Game).
 - **Title Vault (`/titles`) & Particle Cosmetics (`/cosmetics`)**: GUI untuk melengkapi gelar kehormatan dan efek partikel kosmetik (Head Auras, Footstep Trails, Kill Effects).
 - **Kingdom-Bounded `/rtp`**: Teleportasi acak aman yang mewajibkan pemain berada di teritori kerajaannya sendiri.
 - **Enforcer TPA EssentialsX**: Membatasi `/tpa` hanya ke sesama anggota kerajaan dan wajib berada di dalam area wilayah teritorial kerajaan.

@@ -332,4 +332,21 @@ public class ApexsionsCoreAPIImpl implements ApexsionsCoreAPI {
 
         return false;
     }
+
+    @Override
+    public @org.jetbrains.annotations.Nullable org.bukkit.Location getLastDeathLocation(@NotNull UUID uuid) {
+        if (plugin.getDeathCoordinateManager() != null) {
+            return plugin.getDeathCoordinateManager().getDeathLocation(uuid);
+        }
+        org.bukkit.OfflinePlayer op = org.bukkit.Bukkit.getOfflinePlayer(uuid);
+        return op.getLastDeathLocation();
+    }
+
+    @Override
+    public @org.jetbrains.annotations.Nullable com.apexsions.core.player.DeathRecord getLatestDeathRecord(@NotNull UUID uuid) {
+        if (plugin.getDeathCoordinateManager() != null) {
+            return plugin.getDeathCoordinateManager().getLatestDeathRecord(uuid);
+        }
+        return null;
+    }
 }

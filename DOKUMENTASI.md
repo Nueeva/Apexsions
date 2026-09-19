@@ -156,7 +156,7 @@ Struktur modul berada di folder `Minecraft/plugins/`:
 1. **`ApexsionsCore`** (`com.apexsions.core.*`):
    - 3 Kerajaan: **Zenithar** (Timur / Dinasti), **Solterra** (Selatan / Magician), **Sylvamoor** (Barat / Rimba).
    - Auto-respawn ibukota terintegrasi BlueMap (`world.conf`).
-   - Progresi Level 1-100 dengan 13 sumber XP.
+   - Progresi Level 1-100 dengan 16 sumber XP.
    - **RPG Stat Scaling (Diminishing Curves):** Injeksi atribut native Paper (`Attribute.MAX_HEALTH` maks +12 HP, `Attribute.ATTACK_DAMAGE` maks +1.90), bonus PvE damage khusus monster (skalabilitas hingga maks +50.0% pada Lv 100), dan mitigasi resistensi monster (maks 10%).
    - **Unified Combat Engine & Smart PvP Normalizer:** Pipeline terisolasi dengan prioritas event (`NORMAL` -> `HIGH` -> `HIGHEST`), pemotongan excess attack > +0.80 di PvP, dan normalisasi proporsional defender ber-HP tinggi ke skala 24 HP tanpa bug heart-flicker.
    - **Sovereign Land Claiming & Upkeep Economy (`/claim`):** Brankas deposit mandiri per wilayah (`Claim Bank`), Pajak Harian Progresif ($100 \times (1 + (\text{Total Chunks} - 1) \times 0.15)$), 50% setoran otomatis ke Kas Kerajaan (`KingdomTreasury`), Masa Tenggang 72 Jam (*Grace Period*) dengan auto-unclaim saat penunggakan berlanjut.
@@ -177,25 +177,25 @@ Struktur modul berada di folder `Minecraft/plugins/`:
    - Auction House (`/ah`) dengan sistem Escrow Claim terisolasi.
    - Barter/Trade 12-Slot terikat pajak teritorial antar-kerajaan.
 4. **`ApexsionsBattlepass`** (`com.apexsions.battlepass.*`):
-   - 200 Level BattlePass, Daily/Weekly/Monthly Quests (Siklus 4 Bulan / 120 Hari per Era), 4 Tier Pass.
+   - 200 Level BattlePass, Daily/Weekly/Monthly Quests (Siklus 4 Bulan / 120 Hari per Era), 3 Tier Pass (`Citizen`, `Sio`, `Exsio`).
    - Visual GUI Editor 54-Slot (`/abp`).
 5. **`ApexsionsShop`** (`com.apexsions.shop.*`):
    - Dynamic Market 6 kategori, Rasio Jual dasar **20%**, Formula Dinamis Multiplier Cuaca & Bioma Kerajaan.
-   - Price Clamping (50%-200%), Siaran tren pasar, GUI Jual Cepat 45-Slot (`/sell`).
+   - Price Clamping (85%-120%), Siaran tren pasar, GUI Jual Cepat 45-Slot (`/sell`).
 6. **`ApexsionsMedia`** (`com.apexsions.media.*`):
    - Render multi-tile banner/logo asinkron, Raytrace line-of-sight hover glow, aksi interaksi URL terkonfirmasi.
 7. **`ApexsionsCustomEnchants`** (`com.apexsions.customenchants.*`):
-   - Dual-Currency Enchanter GUI (`/ce`), Toko Buku Sihir 54-Slot (`/ce shop`), 28 Custom Enchants, Admin Hub (`/ace`).
+   - Dual-Currency Enchanter GUI (`/ce`), Toko Buku Sihir 54-Slot (`/ce shop`), 182 Custom Enchants lintas 7 tier, Admin Hub (`/ace`).
 8. **`ApexsionsCrates`** (`com.apexsions.crates.*`):
    - Toko Kunci (`/crateshop`), Animasi pembukaan berbasis paket, milestone rewards.
 9. **`ApexsionsFishing`** (`com.apexsions.fishing.*`):
    - Sistem **AFK Fishing** dan **Active Reel Engine** dengan mekanik tangkapan interaktif.
-   - **Rarity & Weight Engine 6-Tier:** `COMMON`, `UNCOMMON`, `RARE`, `EPIC`, `LEGENDARY`, `MYTHIC` dengan bobot berat gram realistis dan nilai jual dinamis.
+   - **Rarity & Weight Engine 6-Tier:** `COMMON`, `UNCOMMON`, `RARE`, `EPIC`, `LEGENDARY`, `SECRET` dengan bobot berat gram realistis dan nilai jual dinamis.
    - **Virtual Bait Quota System (`/fish bait` / `BaitShopGUI`):** Kuota umpan virtual tersimpan di database (`baits.yml`) dengan peluang gigitan dan bonus bobot ikan langka.
    - **Native Dialog Admin Rod Creator GUI (`AdminRodCreatorGUI`):** Pembuatan dan konfigurasi joran khusus admin via `NativeDialogAdapter` & `FishingInputGUI` tanpa resiko crash anvil.
-   - **Fishing Vault Storage 54-Slot (`/vault`):** Brankas penyimpanan tangkapan ikan eksklusif per pemain dengan fitur upgrade kapasitas (`VaultShopGUI`).
+   - **Fishing Vault Storage (`/vault`):** Brankas penyimpanan tangkapan ikan eksklusif per pemain dengan fitur upgrade kapasitas (`VaultShopGUI`).
    - **Fish Market & Instant Delivery (`/fish sell`):** Pasar penjualan ikan terintegrasi `ApexsionsEconomy` (Rupiah/Diamond) dengan bonus pengiriman.
-   - **Auto-Catch Rods & Upgrade Engine (`/fish rods`):** Joran pancing khusus dengan durabilitas, kecepatan gigitan, dan auto-reel chance.
+   - **Auto-Catch Rods & Upgrade Engine (`/fish shop` / `RodShopGUI`):** Joran pancing khusus dengan durabilitas, kecepatan gigitan, dan auto-reel chance.
    - **Top Angler Leaderboard:** Terintegrasi dengan kebijakan pengecualian staf, OP, dan dimensi atas Aetherion.
 
 #### Build Command Plugin
@@ -428,9 +428,9 @@ Halaman papan peringkat web (`https://web.apexsions.my.id/leaderboard`) secara k
 ### C. Sinkronisasi Leaderboard In-Game (Cross-Plugin Enforcement)
 Di lingkungan Minecraft server, filter pengecualian dieksekusi secara asinkron sebelum rendering GUI:
 - **`ApexsionsCore` (`KingdomTopGUI` & `/kingdom top`):** Menyaring akun yang memenuhi `ApexsionsCoreAPI.isLeaderboardExempt(uuid)` dari daftar peringkat level tertinggi kerajaan dan server.
-- **`ApexsionsEconomy` (`EconomyLeaderboardService` & `/baltop`):** Menyaring akun staf dan OP dari daftar pemain terkaya.
+- **`ApexsionsEconomy` (`EconomyLeaderboardService` & `/economy top`):** Menyaring akun staf dan OP dari daftar pemain terkaya.
 - **`ApexsionsBattlepass` (`BattlePassLeaderboardService` & `/abp top`):** Menyaring akun staf dari daftar progres tier pass tertinggi.
-- **`ApexsionsFishing` (`VaultStorageManager` & `/vault top`):** Menyaring akun staf dari daftar tangkapan ikan terbanyak dan ikan terberat (*Top Anglers*).
+- **`ApexsionsFishing` (`VaultStorageManager` & `/fish top`):** Menyaring akun staf dari daftar tangkapan ikan terbanyak dan ikan terberat (*Top Anglers*).
 
 ---
 

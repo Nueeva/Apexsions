@@ -49,6 +49,34 @@ public class SocialProfileGUI extends BaseChatGUI {
                 "<gradient:#f1c40f:#e67e22><bold>💬 KIRIM BISIKAN (/msg)</bold></gradient>",
                 List.of("<gray>Kirim pesan pribadi rahasia ke " + target.getName() + ".</gray>", "<yellow>▶ Klik untuk memulai bisikan</yellow>")));
 
+        // Slot 11: Last Death Coordinates (Visible to self or staff)
+        boolean isSelf = viewer.getUniqueId().equals(target.getUniqueId());
+        boolean isStaff = viewer.hasPermission("apexsions.staff") || viewer.hasPermission("apexsions.admin") || viewer.isOp();
+        if (isSelf || isStaff) {
+            org.bukkit.Location deathLoc = null;
+            if (plugin.getApexsionsCoreHook() != null && plugin.getApexsionsCoreHook().isAvailable()) {
+                deathLoc = plugin.getApexsionsCoreHook().getLastDeathLocation(target.getUniqueId());
+            } else {
+                deathLoc = target.getLastDeathLocation();
+            }
+
+            List<String> deathLore = new ArrayList<>();
+            if (deathLoc != null && deathLoc.getWorld() != null) {
+                double dist = viewer.getWorld().getName().equalsIgnoreCase(deathLoc.getWorld().getName())
+                        ? viewer.getLocation().distance(deathLoc)
+                        : -1;
+                String dStr = dist >= 0 ? String.format(java.util.Locale.ROOT, "%,.1f", dist) + " blok" : "Dimensi Berbeda (" + deathLoc.getWorld().getName() + ")";
+                deathLore.add("<gray>Dimensi: <yellow>" + deathLoc.getWorld().getName() + "</yellow></gray>");
+                deathLore.add("<gray>Koordinat: <gold><bold>X: " + deathLoc.getBlockX() + ", Y: " + deathLoc.getBlockY() + ", Z: " + deathLoc.getBlockZ() + "</bold></gold></gray>");
+                deathLore.add("<gray>Jarak: <aqua>" + dStr + "</aqua></gray>");
+                deathLore.add("<dark_gray>--------------------------------</dark_gray>");
+                deathLore.add("<yellow>▶ Klik untuk buka info detail & kompas</yellow>");
+            } else {
+                deathLore.add("<gray>Belum ada catatan lokasi kematian.</gray>");
+            }
+            inventory.setItem(11, createActionItem(Material.RECOVERY_COMPASS, "<gradient:#e74c3c:#c0392b><bold>☠ TITIK KEMATIAN TERAKHIR</bold></gradient>", deathLore));
+        }
+
         // Slot 12: Barter / Trade Request
         inventory.setItem(12, createActionItem(Material.GOLD_INGOT,
                 "<gradient:#2ecc71:#27ae60><bold>🤝 AJAK BARTER (/trade)</bold></gradient>",
@@ -133,6 +161,17 @@ public class SocialProfileGUI extends BaseChatGUI {
                     },
                     () -> viewer.openInventory(inventory)
             );
+            viewer.playSound(viewer.getLocation(), Sound.UI_BUTTON_CLICK, 0.8f, 1.2f);
+            return;
+        }
+
+        if (slot == 11) { // Death Coords
+            viewer.closeInventory();
+            if (viewer.getUniqueId().equals(target.getUniqueId())) {
+                viewer.performCommand("deathcoords");
+            } else {
+                viewer.performCommand("deathcoords " + target.getName());
+            }
             viewer.playSound(viewer.getLocation(), Sound.UI_BUTTON_CLICK, 0.8f, 1.2f);
             return;
         }

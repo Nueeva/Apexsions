@@ -136,6 +136,16 @@ public class ApexsionsCoreHook {
         }
     }
 
+    public org.bukkit.Location getLastDeathLocation(UUID uuid) {
+        if (!isAvailable() || uuid == null) return null;
+        try {
+            ApexsionsCoreAPI api = CoreBridge.getApi();
+            return api != null ? api.getLastDeathLocation(uuid) : null;
+        } catch (Throwable t) {
+            return null;
+        }
+    }
+
     /**
      * Isolated helper class to ensure classloader does not attempt to resolve
      * ApexsionsCoreProvider unless ApexsionsCore plugin is confirmed enabled in Bukkit.

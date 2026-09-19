@@ -135,6 +135,11 @@ public class PlayerListener implements Listener {
             player.displayName(net.kyori.adventure.text.Component.text(player.getName()));
             player.customName(net.kyori.adventure.text.Component.text(player.getName()));
         });
+
+        // Record death coordinates into DeathCoordinateManager
+        if (plugin.getDeathCoordinateManager() != null) {
+            plugin.getDeathCoordinateManager().recordDeath(player, event);
+        }
     }
 
     @EventHandler(priority = EventPriority.HIGH)
@@ -150,6 +155,16 @@ public class PlayerListener implements Listener {
                 plugin.getRankAnimationManager().updatePlayerNameplate(player);
             }
         }, 2L);
+
+        // 2. Delayed interactive death coordinate card notification
+        if (plugin.getDeathCoordinateManager() != null && plugin.getDeathCoordinateManager().isNotifyOnRespawn()) {
+            long delay = plugin.getDeathCoordinateManager().getNotifyDelayTicks();
+            Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                if (player.isOnline()) {
+                    plugin.getDeathCoordinateManager().sendSelfDeathNotification(player);
+                }
+            }, delay);
+        }
 
         if (!plugin.getConfigManager().isRespawnAtKingdom()) {
             return;

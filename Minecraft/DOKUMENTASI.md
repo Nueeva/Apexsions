@@ -37,15 +37,15 @@ Dokumentasi resmi yang merangkum arsitektur menyeluruh, interaksi antar-plugin, 
                                                     └───────────────────────┘
 ```
 
-1. **`ApexsionsCore`** (`com.apexsions.core.*`): Otoritas wilayah 3 Kerajaan (`Zenithar`, `Solterra`, `Sylvamoor`), progresi level (1-100) & 13 sumber XP, BlueMap polygon rendering, sistem `/rtp` terikat kerajaan, Kingdom War Manager, PvP Combat Tag (15s), proteksi PvP teritorial kerajaan, Title Vault GUI, Particle Cosmetics GUI, sistem Warp GUI & Admin Warp Manager, Player Inspector GUI, kit kerajaan terintegrasi (`/kits`), WebBridge asynchronous delivery queue (Online & Offline), dan NightCore Native Dialog Input GUI (`CustomInputTextGUI`) untuk Paper 26.2.
+1. **`ApexsionsCore`** (`com.apexsions.core.*`): Otoritas wilayah 3 Kerajaan (`Zenithar`, `Solterra`, `Sylvamoor`), progresi level (1-100) & 16 sumber XP, BlueMap polygon rendering, sistem `/rtp` terikat kerajaan, Kingdom War Manager, PvP Combat Tag (15s), proteksi PvP teritorial kerajaan, Title Vault GUI, Particle Cosmetics GUI, sistem Warp GUI & Admin Warp Manager, Player Inspector GUI, kit kerajaan terintegrasi (`/kits`), WebBridge asynchronous delivery queue (Online & Offline), dan NightCore Native Dialog Input GUI (`CustomInputTextGUI`) untuk Paper 26.2.
 2. **`ApexsionsChat`** (`com.apexsions.chat.*`): Sistem komunikasi Adventure/MiniMessage dengan channel (`Global`, `Kingdom`, `Staff`), preferensi obrolan GUI (`/channel settings`), ID-Card sosial (`/channel profile <p>`), pamer item (`/showitem`), surat offline (`/mail`), chat games, pengumuman otomatis, sistem nickname kustom & token rename (`/nick`, `/realname`), dan sistem moderasi lapis tiga dengan Staff Reports Investigation Desk 54-slot (`/reports`).
 3. **`ApexsionsEconomy`** (`com.apexsions.economy.*`): Multi-Currency atomic (`Rupiah`, `Diamond`), Transfer (`/pay`), Pasar Lelang (`/ah`) dengan Escrow Claim, Sistem Barter/Trade 12-Slot terintegrasi kerajaan & pajak transportasi lintas-kerajaan, serta dukungan penuh console / web delivery (`/eco give/take/set/reload`).
-4. **`ApexsionsBattlepass`** (`com.apexsions.battlepass.*`): Season battlepass 200 level, Quests (Daily, Weekly, Monthly), Tingkatan Pass (`FREE`, `PREMIUM`, `PREMIUM+`, `ULTIMATE`), Toko Rotasi (*Dynamic Shop*), dan Editor Admin GUI 54-Slot (`/abp`).
-5. **`ApexsionsShop`** (`com.apexsions.shop.*`): Pasar & toko dinamis 6 kategori (`blocks`, `farming`, `food`, `ores`, `mob_drops`, `dyes`), rasio jual dasar **20%**, formula multiplier cuaca & bioma kerajaan, price clamping (50%-200%), siaran tren pasar berkala, dashboard tren `/shop trends`, pajak wilayah 10%, UI ramah sentuh/Bedrock, dan GUI jual cepat 45-slot (`/sell`).
+4. **`ApexsionsBattlepass`** (`com.apexsions.battlepass.*`): Season battlepass 200 level, Quests (Daily, Weekly, Monthly), Tingkatan Pass (`Citizen`, `Sio`, `Exsio`), Toko Rotasi (*Dynamic Shop*), dan Editor Admin GUI 54-Slot (`/abp`).
+5. **`ApexsionsShop`** (`com.apexsions.shop.*`): Pasar & toko dinamis 6 kategori (`blocks`, `farming`, `food`, `ores`, `mob_drops`, `dyes`), rasio jual dasar **20%**, formula multiplier cuaca & bioma kerajaan, price clamping (85%-120%), siaran tren pasar berkala, dashboard tren `/shop trends`, pajak wilayah per-kerajaan (18%/20%/15%), UI ramah sentuh/Bedrock, dan GUI jual cepat 45-slot (`/sell`).
 6. **`ApexsionsMedia`** (`com.apexsions.media.*`): Sistem render banner/logo gambar multi-tile asinkron (PNG/JPG/URL), raytrace line-of-sight hover glowing & actionbar tooltip, serta aksi interaksi tautan URL web/salin clipboard terkonfirmasi (100% vanilla & Bedrock compatible).
-7. **`ApexsionsCustomEnchants`** (`com.apexsions.customenchants.*`): Dual-Currency Enchanter Gacha GUI (`/ce`), Toko Buku Sihir Spesifik 54-Slot (`/ce shop`), 28 Custom Enchantments berkekuatan tinggi, Mystery & Magic Dust, White & Black Scrolls, Central Admin Hub (`/ace`), Katalog `/ace enchants`, dan Interactive Armor Set Builder (`/ace create`) dengan sinkronisasi ID otomatis.
+7. **`ApexsionsCustomEnchants`** (`com.apexsions.customenchants.*`): Dual-Currency Enchanter Gacha GUI (`/ce`), Toko Buku Sihir Spesifik 54-Slot (`/ce shop`), 182 Custom Enchantments lintas 7 tier kekuatan, Mystery & Magic Dust, White & Black Scrolls, Central Admin Hub (`/ace`), Katalog `/ace enchants`, dan Interactive Armor Set Builder (`/ace create`) dengan sinkronisasi ID otomatis.
 8. **`ApexsionsCrates`** (`com.apexsions.crates.*`): Toko Kunci Crate (`/crateshop`), sistem animasi pembukaan berbasis paket (PacketEvents/ProtocolLib), milestone progression, unified tiered effective weight chance formula, dan integrasi hadiah ekonomi / kit.
-9. **`ApexsionsFishing`** (`com.apexsions.fishing.*`): Sistem AFK Fishing interaktif & Active Reel Engine, Rarity & Weight Engine 6-tier (`COMMON`, `UNCOMMON`, `RARE`, `EPIC`, `LEGENDARY`, `MYTHIC`), Fishing Vault brankas penyimpanan 54-slot (`/vault`), Toko Penjualan Ikan & Delivery Market (`/fish sell`), Auto-Catch Rods Creator & Upgrade Engine (`/fish rods`), dan Leaderboard Top Angler terintegrasi kebijakan pengecualian staf.
+9. **`ApexsionsFishing`** (`com.apexsions.fishing.*`): Sistem AFK Fishing interaktif & Active Reel Engine, Rarity & Weight Engine 6-tier (`COMMON`, `UNCOMMON`, `RARE`, `EPIC`, `LEGENDARY`, `SECRET`), Fishing Vault brankas penyimpanan (`/vault`), Toko Penjualan Ikan & Delivery Market (`/fish sell`), Auto-Catch Rods Creator & Upgrade Engine (`/fish shop`), dan Leaderboard Top Angler (`/fish top`) terintegrasi kebijakan pengecualian staf.
 
 ---
 
@@ -79,7 +79,7 @@ Dokumentasi resmi yang merangkum arsitektur menyeluruh, interaksi antar-plugin, 
 
 ### F. Ekosistem Pemancingan & Integrasi Ekonomi/Core (`ApexsionsFishing` ↔ `ApexsionsEconomy`, `ApexsionsCore`, & `ApexsionsCustomEnchants`)
 - **Dual-Currency Fish Market:** Penjualan tangkapan ikan (`/fish sell`) langsung mentransfer saldo Rupiah atau Diamond ke akun pemain secara atomic via `ApexsionsEconomyAPI`.
-- **Top Angler Leaderboard Exemption:** Papan peringkat nelayan terbaik (`/vault top`) menyaring akun staf, OP, dan entitas Aetherion menggunakan `ApexsionsCoreAPI.isLeaderboardExempt(uuid)` guna memastikan supremasi kompetisi dipegang oleh warga fana.
+- **Top Angler Leaderboard Exemption:** Papan peringkat nelayan terbaik (`/fish top`) menyaring akun staf, OP, dan entitas Aetherion menggunakan `ApexsionsCoreAPI.isLeaderboardExempt(uuid)` guna memastikan supremasi kompetisi dipegang oleh warga fana.
 - **Custom Rods & Enchantment Compatibility:** Pancingan dari `AutoCatchRodManager` terintegrasi harmonis dengan enchantments dari `ApexsionsCustomEnchants` serta progression hooks.
 
 ---
@@ -110,7 +110,7 @@ Dokumentasi resmi yang merangkum arsitektur menyeluruh, interaksi antar-plugin, 
 | `/kingdom setking <k> <p>` | - | Mengangkat pemain menjadi Raja kerajaan | `apexsionscore.admin` | `op` |
 | `/kingdom unsetking <k>` | `/kingdom removeking` | Mencabut gelar Raja dari kerajaan | `apexsionscore.admin` | `op` |
 | `/level` | `/lvl`, `/profile`, `/exp`, `/rewards` | Membuka GUI progress bar level (1-100) & hadiah | `apexsionscore.command.level` | `true` |
-| `/xpguide` | - | Panduan detail 13 sumber perolehan XP | `apexsionscore.command.level` | `true` |
+| `/xpguide` | - | Panduan detail 16 sumber perolehan XP | `apexsionscore.command.level` | `true` |
 | `/titles` | `/tags`, `/title`, `/tag` | Membuka Title Vault GUI untuk memasang gelar & badge prestise | `apexsionscore.command.titles` | `true` |
 | `/cosmetics` | `/auras`, `/trails`, `/aura`, `/trail` | Membuka Particle Cosmetics GUI (Head Auras, Trails, Kill Effects)| `apexsionscore.command.cosmetics` | `true` |
 | `/rtp` | `/wild`, `/wilderness`, `/krtp` | Teleportasi acak aman di dalam wilayah kerajaan sendiri | `apexsionscore.command.rtp` | `true` |
@@ -125,6 +125,10 @@ Dokumentasi resmi yang merangkum arsitektur menyeluruh, interaksi antar-plugin, 
 | `/ac setlobby` | `/kc setlobby` | Menetapkan koordinat lobby/spawn di lokasi berdiri | `apexsionscore.admin` | `op` |
 | `/ac info <player>` | `/kc info` | Memeriksa rincian level, XP, kerajaan, dan klaim reward pemain | `apexsionscore.admin` | `op` |
 | `/link [pin]` | `/tautkan` | Menautkan akun in-game dengan portal web Azuriom | `apexsionscore.link` | `true` |
+| `/deathcoords` | `/lastdeath`, `/kor`, `/cor` | Menampilkan koordinat kematian terakhir & kompas navigasi | `apexsions.core.deathcoords` | `true` |
+| `/deathcoords compass` | - | Mengarahkan jarum kompas held-item ke titik kematian | `apexsions.core.deathcoords` | `true` |
+| `/deathcoords <player>`| - | Memeriksa koordinat kematian pemain lain (Staf/Admin) | `apexsions.core.deathcoords.others` | `op` |
+| `/deathcoords tp <p>` | - | Teleportasi cepat staf ke koordinat kematian pemain | `apexsions.core.deathcoords.tp` | `op` |
 
 ---
 
@@ -157,7 +161,7 @@ Dokumentasi resmi yang merangkum arsitektur menyeluruh, interaksi antar-plugin, 
 | Perintah | Alias | Deskripsi | Hak Akses | Default |
 | :--- | :--- | :--- | :--- | :---: |
 | `/economy` | `/eco`, `/uang`, `/bal` | Membuka menu saldo. Mendukung `/eco <give\|take\|set>` via Player & Console | `apexsionseconomy.use` | `true` |
-| `/baltop` | `/topbal` | Menampilkan peringkat kekayaan server | `apexsionseconomy.use` | `true` |
+| `/economy top` | `/bal top`, `/eco leaderboard` | Menampilkan peringkat kekayaan server | `apexsionseconomy.use` | `true` |
 | `/pay <p> <amt> [curr]` | `/transfer`, `/kirimuang` | Mentransfer uang ke pemain lain | `apexsionseconomy.pay` | `true` |
 | `/ah` | `/lelang`, `/auction` | Membuka pasar lelang & brankas klaim escrow | `apexsionseconomy.ah` | `true` |
 | `/trade [pemain]` | `/barter`, `/tukar` | Membuka menu barter item & saldo | `apexsionseconomy.trade` | `true` |
@@ -256,10 +260,14 @@ Dokumentasi resmi yang merangkum arsitektur menyeluruh, interaksi antar-plugin, 
 | :--- | :--- | :--- | :--- | :---: |
 | `/fish` | `/fishing`, `/mancing` | Membuka Menu Utama Peradaban Memancing Apexsions | `apexsions.fishing.use` | `true` |
 | `/vault` | `/fishvault`, `/fvault` | Membuka Fishing Vault brankas penyimpanan hasil pancingan 54-slot | `apexsions.fishing.vault` | `true` |
-| `/fish shop` | `/fish market` | Membuka Toko Perlengkapan & Peningkatan Kapasitas Brankas Ikan | `apexsions.fishing.use` | `true` |
-| `/fish sell` | - | Membuka Antarmuka Penjualan Ikan & Delivery Market (Dual-Currency) | `apexsions.fishing.use` | `true` |
-| `/fish rods` | - | Membuka Toko Joran Pancing Spesial & Auto-Catch Rods | `apexsions.fishing.use` | `true` |
-| `/fish admin` | `/fishadm` | Panel Administrasi Nelayan & Rod Creator Editor (Admin) | `apexsions.fishing.admin` | `op` |
+| `/fish shop` | `/fish toko` | Membuka Toko Joran Spesial & Auto-Catch Rods (`RodShopGUI`) | `apexsions.fishing.use` | `true` |
+| `/fish vaultshop` | `/fish belibrankas` | Membuka Toko Peningkatan Kapasitas Brankas Ikan (`VaultShopGUI`) | `apexsions.fishing.use` | `true` |
+| `/fish sell` | `/fish jual` | Membuka Antarmuka Penjualan Ikan & Delivery Market (Dual-Currency) | `apexsions.fishing.use` | `true` |
+| `/fish top` | `/fish leaderboard`, `/fish peringkat` | Papan peringkat Top Angler | `apexsions.fishing.use` | `true` |
+| `/fish journal` | `/fish pedia`, `/fish jurnal` | Ensiklopedia spesies ikan & hasil tangkapan | `apexsions.fishing.use` | `true` |
+| `/fish bait` | `/fish umpan` | Membuka Toko Kuota Umpan Virtual (`BaitShopGUI`) | `apexsions.fishing.use` | `true` |
+| `/fish admin` | - | Panel Administrasi Nelayan (Admin Hub GUI) | `apexsions.fishing.admin` | `op` |
+| `/fish creator` | `/fish create` | Native Dialog Admin Rod Creator GUI | `apexsions.fishing.admin` | `op` |
 | `/fish reload`| - | Memuat ulang konfigurasi ikan, rarity, bioma, dan bobot tangkapan | `apexsions.fishing.admin` | `op` |
 
 ---
@@ -340,9 +348,9 @@ Di titik pusat alam liar (Wilderness) di antara ketiga kerajaan, berdiri **Rerun
 │                           APEXSIONS MASTER ROADMAP                               │
 └──────────────────────────────────────────────────────────────────────────────────┘
   [Fase 1: Kedaulatan Teritorial] (SELESAI / AKTIF)
-    ├── 7 Plugin Suite Utama Modular & Terintegrasi
+    ├── 9 Plugin Suite Utama Modular & Terintegrasi
     ├── Sistem 3 Kerajaan (Zenithar, Solterra, Sylvamoor) & Poligon BlueMap
-    ├── Progresi Karakter 1-100 & 13 Sumber XP
+    ├── Progresi Karakter 1-100 & 16 Sumber XP
     ├── Ekonomi Multi-Mata Uang Atomic & Pasar Lelang Escrow
     └── Auto-Respawn Ibukota Kerajaan & Integrasi In-Game Spawn Manager
 
@@ -427,7 +435,7 @@ Ekosistem Apexsions mengintegrasikan server Minecraft (Paper 26.2) dengan portal
    - **Moderation Desk (`/admin/moderation`)**: Penindakan sanksi (Ban, Mute, Warn, Kick) dan pelacakan status penyelesaian laporan pemain.
    - **Economy Operations (`/admin/economy`)**: Ledger transaksi atomic (Rupiah & Diamonds), audit pasar lelang (`/ah`), dan saldo perbendaharaan Kingdom.
    - **Server Operations (`/admin/server`)**: Telemetri runtime real-time, Safe Server Actions, dan pengelolaan Maintenance Mode.
-   - **Custom Plugin Suite (`/admin/custom-plugins`)**: Registry 6 plugin custom Apexsions, monitoring health status, dan eksekusi aksi aman (*Safe Actions*).
+   - **Custom Plugin Suite (`/admin/custom-plugins`)**: Registry 9 plugin custom Apexsions, monitoring health status, dan eksekusi aksi aman (*Safe Actions*).
    - **Intelligence & Incident Center (`/admin/incidents`)**: Deteksi anomali berbasis aturan (Rule-based), korelasi event otomatis, dan berkas investigasi staf.
    - **Notifications Hub (`/admin/notifications`)**: Pengiriman alert insiden kritis dengan proteksi deduplikasi anti-spam dan cooldown.
    - **Safe Automation Hub (`/admin/automation`)**: Orkestrasi kebijakan otomatis dengan *Approval Gate* wajib untuk tindakan sensitif (reload, dsb.).
@@ -449,7 +457,7 @@ Ekosistem Apexsions mengintegrasikan server Minecraft (Paper 26.2) dengan portal
    - `Emperor` (Tier 4, Weight 60)
    - `Sions` (Tier 5, Weight 70)
 2. **Pemisahan Ketat Trial vs. Permanent**:
-   - **Trial (30 Hari / 90 Hari)**: Mendapatkan seluruh benefit batas limit & command, tetapi tanpa bonus uang server permanent. Expire otomatis dan mengembalikan pemain ke rank permanent sebelumnya (*Rank Retention*).
+   - **Trial (30 Hari / 120 Hari)**: Mendapatkan seluruh benefit batas limit & command, tetapi tanpa bonus uang server permanent. Expire otomatis dan mengembalikan pemain ke rank permanent sebelumnya (*Rank Retention*).
    - **Permanent**: Berlaku selamanya, mendapat hadiah satu kali server money ledger, dan memiliki hak upgrade rank.
    - **Isolasi Reward Uang Tunai Permanen**: Bersifat ketat non-kumulatif (Sions menerima Rp 300.000, Emperor Rp 180.000, tanpa penambahan kumulatif rank di bawahnya). Anti-duplikasi dijamin melalui constraint tabel `apexsions_rank_rewards_claimed`.
 3. **Rank Upgrade Engine**:
@@ -477,7 +485,7 @@ Ekosistem Apexsions mengintegrasikan server Minecraft (Paper 26.2) dengan portal
      - **Azuriom Web Administrator**: `role->is_admin == true`.
      - **Blacklist Akun Staf/Founder**: `nueeva`, `nuevaid`, `rifqi`, `friell`, `favian`, `fanerf`, `kazrienvall`.
 2. **Cakupan Penyaringan In-Game & Web**:
-   - In-Game: `/kingdom top` (`ApexsionsCore`), `/baltop` (`ApexsionsEconomy`), `/abp top` (`ApexsionsBattlepass`), `/vault top` (`ApexsionsFishing`).
+   - In-Game: `/kingdom top` (`ApexsionsCore`), `/economy top` (`ApexsionsEconomy`), `/abp top` (`ApexsionsBattlepass`), `/fish top` (`ApexsionsFishing`).
    - Web Platform (`https://web.apexsions.my.id/leaderboard`): Menampilkan secara ketat **2 Tabel Utama** (Level & Saldo Rupiah). Leaderboard BattlePass ditiadakan dari portal web (eksklusif in-game) demi menjaga kesederhanaan, performa, dan fokus antarmuka web.
 
 ---

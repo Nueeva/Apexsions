@@ -1,4 +1,4 @@
-# ApexsionsEconomy — Minecraft 1.21.4 (Paper 26.2)
+# ApexsionsEconomy — Paper 26.2 (Minecraft 26.2)
 
 Plugin ekonomi multi-currency, transfer aman, pasar lelang (*Auction House*) dengan sistem penampungan (*Escrow*), dan sistem barter/trade terintegrasi kerajaan untuk server **Apexsions**.
 

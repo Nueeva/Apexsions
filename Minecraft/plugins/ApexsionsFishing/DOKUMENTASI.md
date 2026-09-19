@@ -22,11 +22,15 @@ plugins/ApexsionsFishing/
 | Perintah | Alias | Deskripsi | Permission | Default |
 | :--- | :--- | :--- | :--- | :--- | :---: |
 | `/fish` | `/fishing`, `/mancing` | Membuka Menu Utama Peradaban Memancing Apexsions | `apexsions.fishing.use` | `true` |
-| `/vault` | `/fishvault`, `/fvault` | Membuka Fishing Vault brankas penyimpanan hasil tangkapan 54-slot | `apexsions.fishing.vault` | `true` |
-| `/fish shop` | `/fish market` | Membuka Toko Perlengkapan Mancing & Upgrade Kapasitas Brankas | `apexsions.fishing.use` | `true` |
-| `/fish sell` | - | Membuka Antarmuka Penjualan Ikan & Delivery Market (Dual-Currency) | `apexsions.fishing.use` | `true` |
-| `/fish rods` | - | Membuka Toko Joran Pancing Spesial & Auto-Catch Rods | `apexsions.fishing.use` | `true` |
-| `/fish admin` | `/fishadm` | Panel Administrasi Nelayan & Rod Creator Editor (Admin) | `apexsions.fishing.admin` | `op` |
+| `/vault` | `/fishvault`, `/fvault` | Membuka Fishing Vault brankas penyimpanan hasil tangkapan | `apexsions.fishing.vault` | `true` |
+| `/fish shop` | `/fish toko` | Membuka Toko Joran Spesial & Auto-Catch Rods (`RodShopGUI`) | `apexsions.fishing.use` | `true` |
+| `/fish vaultshop` | `/fish belibrankas` | Membuka Toko Peningkatan Kapasitas Brankas (`VaultShopGUI`) | `apexsions.fishing.use` | `true` |
+| `/fish sell` | `/fish jual` | Membuka Antarmuka Penjualan Ikan & Delivery Market (Dual-Currency) | `apexsions.fishing.use` | `true` |
+| `/fish top` | `/fish leaderboard`, `/fish peringkat` | Papan peringkat Top Angler | `apexsions.fishing.use` | `true` |
+| `/fish journal` | `/fish pedia`, `/fish jurnal` | Ensiklopedia spesies ikan & hasil tangkapan | `apexsions.fishing.use` | `true` |
+| `/fish bait` | `/fish umpan` | Membuka Toko Kuota Umpan Virtual (`BaitShopGUI`) | `apexsions.fishing.use` | `true` |
+| `/fish admin` | - | Panel Administrasi Nelayan (Admin Hub GUI) | `apexsions.fishing.admin` | `op` |
+| `/fish creator` | `/fish create` | Native Dialog Admin Rod Creator GUI | `apexsions.fishing.admin` | `op` |
 | `/fish reload`| - | Memuat ulang konfigurasi ikan, rarity, bioma, dan bobot tangkapan | `apexsions.fishing.admin` | `op` |
 
 ---
@@ -35,14 +39,14 @@ plugins/ApexsionsFishing/
 
 Setiap tangkapan ikan dikalkulasi secara dinamis berdasarkan parameter unik:
 
-| Tier Kelangkaan | Peluang Relatif | Karakteristik & Visual | Contoh Tangkapan |
+| Tier Kelangkaan | Peluang Relatif (chance-weight) | Karakteristik & Visual | Contoh Tangkapan |
 | :---: | :---: | :--- | :--- |
-| **COMMON** | 50% | Ikan konsumsi harian, bobot ringan (0.5 – 3.0 kg) | Lele Rawa, Mujair Kolam, Ikan Mas |
-| **UNCOMMON** | 25% | Ikan sungai & muara, bobot sedang (2.0 – 8.0 kg) | Kakap Merah, Bandeng Laut, Salmon Liar |
-| **RARE** | 15% | Ikan laut dalam, bobot tinggi (5.0 – 25.0 kg) | Tuna Sirip Biru, Kerapu Raksasa |
-| **EPIC** | 7% | Ikan predator langka berharga tinggi (20.0 – 80.0 kg) | Pari Emas, Marlin Biru, Barakuda |
-| **LEGENDARY** | 2.5% | Makhluk mitos pesisir kerajaan (75.0 – 250.0 kg) | Kraken Muda, Megalodon Bayi, Naga Danau |
-| **MYTHIC** | 0.5% | Anomali kuno laut primordial (150.0 – 500.0 kg) | Leviathan Purbakala, Abyssal Monarch |
+| **COMMON** | 35.0 / 25.0 / 20.0 | Ikan konsumsi harian, bobot ringan (0.5 – 6.5 kg) | Lele Rawa, Mujair Kolam, Ikan Mas |
+| **UNCOMMON** | 15.0 / 12.0 / 10.0 / 8.0 | Ikan sungai & muara, bobot sedang (2.0 – 9.0 kg) | Kakap Merah, Bandeng Laut, Salmon Liar |
+| **RARE** | 4.5 / 3.5 | Ikan laut dalam, bobot tinggi | Tuna Sirip Biru, Kerapu Raksasa |
+| **EPIC** | 1.8 / 1.2 | Ikan predator langka berharga tinggi (40.0 – 220.0 kg) | Pari Emas, Marlin Biru, Barakuda |
+| **LEGENDARY** | 0.4 / 0.25 | Makhluk mitos pesisir kerajaan (150.0 – 800.0 kg) | Kraken Muda, Megalodon Bayi, Naga Danau |
+| **SECRET** | 0.05 / 0.03 | Anomali kuno laut primordial (500.0 – 2000.0 kg) | Leviathan Purbakala, Abyssal Monarch |
 
 ### Formula Harga Jual Dinamis:
 $$\text{Harga Jual Final} = \text{Base Price} \times \left(1 + \frac{\text{Weight} - \text{Min Weight}}{\text{Max Weight} - \text{Min Weight}} \times 0.5\right) \times M_{\text{Rod Bonus}}$$

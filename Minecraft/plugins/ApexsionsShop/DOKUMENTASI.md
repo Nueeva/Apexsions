@@ -39,15 +39,16 @@ plugins/ApexsionsShop/
 
 ## 📈 Formula Pasar Dinamis & Batas Pengaman Anti-Inflasi
 
-$$\text{Harga Final} = \text{Clamp}_{50\%}^{200\%}(\text{Harga Dasar} \times M_{\text{Cuaca}} \times M_{\text{Kerajaan}} \times M_{\text{Pasokan}}) \pm \text{Pajak}$$
+$$\text{Harga Final} = \text{Clamp}_{85\%}^{120\%}(\text{Harga Dasar} \times M_{\text{Cuaca}} \times M_{\text{Kerajaan}} \times M_{\text{Pasokan}}) \pm \text{Pajak}$$
 
 1. **Rasio Jual Bawaan**: **20%** dari harga beli dasar.
-2. **Price Clamping (50% - 200%)**: Harga satuan efektif tidak akan pernah jatuh di bawah 50% atau melambung melampaui 200% dari harga dasar, melindungi stabilitas ekonomi jangka panjang.
+2. **Price Clamping (85% - 120%)**: Harga beli efektif tidak akan pernah jatuh di bawah 85% atau melambung melampaui 120% dari harga dasar (`clamping.min-buy-ratio: 0.85` / `max-buy-ratio: 1.20`), melindungi stabilitas ekonomi jangka panjang.
 3. **Multiplier Cuaca ($M_{\text{Cuaca}}$)**:
-   - Hujan lebat meningkatkan permintaan hasil panen pertanian (+15%).
-   - Badai petir meningkatkan kelangkaan komoditas mineral ore (+25%).
+   - Cuaca cerah meningkatkan permintaan hasil panen pertanian (farming-sell-multiplier 1.10).
+   - Hujan menurunkan harga beli pertanian (0.98) namun menaikkan mob drops (1.05).
+   - Badai petir menurunkan pertanian (0.95) dan memaksimalkan mob drops (1.15).
 4. **Spesialisasi Kerajaan ($M_{\text{Kerajaan}}$)**: Diskon komoditas khusus untuk warga kerajaan pemilik bioma terkait (Zenithar, Solterra, Sylvamoor via `ApexsionsCoreAPI`).
-5. **Pajak Kerajaan 10%**: Otomatis disalurkan ke kas perbendaharaan kerajaan pemain.
+5. **Pajak Kerajaan**: Otomatis mengambil tarif dari `ApexsionsCore` (Zenithar 18%, Solterra 20%, Sylvamoor 15%; fallback 10%) dan disalurkan ke kas perbendaharaan kerajaan pemain.
 6. **Siaran Tren Pasar (`MarketBroadcastService`)**: Pengumuman berkala MiniMessage mengenai komoditas yang sedang naik (*BOOM*) atau turun (*DIP*).
 
 ---

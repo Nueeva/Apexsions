@@ -1,6 +1,6 @@
 # ApexsionsShop — Comprehensive Technical Manual
 
-Panduan teknis dan operasional lengkap untuk modul **`ApexsionsShop`** (Sistem Toko 6 Kategori, Pasar Dinamis Cuaca & Pasokan, Price Clamping 50%-200%, Siaran Tren Pasar, Pajak Kerajaan 10%, GUI Ramah Bedrock/Touchscreen, dan GUI Jual Cepat 45-Slot `/sell`).
+Panduan teknis dan operasional lengkap untuk modul **`ApexsionsShop`** (Sistem Toko 6 Kategori, Pasar Dinamis Cuaca & Pasokan, Price Clamping 85%-120%, Siaran Tren Pasar, Pajak Kerajaan Per-Wilayah, GUI Ramah Bedrock/Touchscreen, dan GUI Jual Cepat 45-Slot `/sell`).
 
 ---
 
@@ -14,12 +14,12 @@ Panduan teknis dan operasional lengkap untuk modul **`ApexsionsShop`** (Sistem T
                            │   (Dynamic Markets)    │
                            └───────────┬────────────┘
                                        │
-         ┌─────────────────────────────┼─────────────────────────────┐
-         ▼                             ▼                             ▼
+          ┌─────────────────────────────┼─────────────────────────────┐
+          ▼                             ▼                             ▼
 ┌──────────────────┐         ┌───────────────────┐         ┌───────────────────┐
 │ 6 Shop Categories│         │  Dynamic Pricing  │         │  Bedrock GUI Hub  │
-│Blocks/Farming/Ore│         │Price Clamping 50% │         │Bottom Bar Nav,    │
-│Food/Drops/Dyes   │         │- 200%, Market Bcst│         │45-Slot Quick Sell │
+│Blocks/Farming/Ore│         │Clamping 85%-120%, │         │Bottom Bar Nav,    │
+│Food/Drops/Dyes   │         │Market Broadcast   │         │45-Slot Quick Sell │
 └──────────────────┘         └───────────────────┘         └───────────────────┘
 ```
 
@@ -38,14 +38,14 @@ Panduan teknis dan operasional lengkap untuk modul **`ApexsionsShop`** (Sistem T
 
 ## 📈 3. Formula Harga Dinamis & Ekonomi Berkelanjutan
 
-$$\text{Harga Final} = \text{Clamp}_{50\%}^{200\%}(\text{Harga Dasar} \times M_{\text{Cuaca}} \times M_{\text{Kerajaan}} \times M_{\text{Pasokan}}) \pm \text{Pajak}$$
+$$\text{Harga Final} = \text{Clamp}_{85\%}^{120\%}(\text{Harga Dasar} \times M_{\text{Cuaca}} \times M_{\text{Kerajaan}} \times M_{\text{Pasokan}}) \pm \text{Pajak}$$
 
 - **Rasio Jual Bawaan**: **20%** dari harga beli dasar (Solterra mendapatkan keunggulan rasio jual bijih **30%** terkalibrasi).
-- **Price Clamping (Batas Pengaman)**: Harga satuan efektif dijamin tidak akan pernah jatuh di bawah **50%** atau melambung melampaui **200%** dari harga dasar.
+- **Price Clamping (Batas Pengaman)**: Harga beli efektif dijamin tidak akan pernah jatuh di bawah **85%** atau melambung melampaui **120%** dari harga dasar (`markets.yml`: `min-buy-ratio: 0.85`, `max-buy-ratio: 1.20`).
 - **Siaran Tren Pasar Otomatis (`MarketBroadcastService`)**: Pengumuman berkala MiniMessage mengenai komoditas yang sedang 'BOOM' (harga naik) atau 'DIP' (harga anjlok).
-- **Multiplier Cuaca ($M_{\text{Cuaca}}$)**: Hujan lebat meningkatkan permintaan hasil pertanian (+15%), badai petir meningkatkan harga ore langka (+25%).
+- **Multiplier Cuaca ($M_{\text{Cuaca}}$)**: Cuaca cerah meningkatkan harga jual pertanian (1.10); hujan menurunkan pertanian (0.98) namun menaikkan mob drops (1.05); badai petir memaksimalkan mob drops (1.15) dan menurunkan pertanian (0.95).
 - **Spesialisasi Kerajaan ($M_{\text{Kerajaan}}$)**: Diskon komoditas khusus untuk warga kerajaan pemilik bioma (Zenithar, Solterra, Sylvamoor).
-- **Pajak Kerajaan (10%)**: Pajak 10% dipotong dari setiap transaksi dan secara otomatis disalurkan ke kas kerajaan pembeli.
+- **Pajak Kerajaan**: Diambil dari `ApexsionsCore` per wilayah (Zenithar 18%, Solterra 20%, Sylvamoor 15%; fallback default 10%) dan secara otomatis disalurkan ke kas kerajaan pembeli.
 
 ---
 

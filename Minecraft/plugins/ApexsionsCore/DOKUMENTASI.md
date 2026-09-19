@@ -31,7 +31,7 @@ plugins/ApexsionsCore/
 | `/kingdom choose` | `/k select` | Membuka antarmuka pemilihan 3 kerajaan | `apexsionscore.command.region` | `true` |
 | `/kingdom top` | `/k leaderboard` | Membuka Hall of Fame & Leaderboard GUI | `apexsionscore.command.level` | `true` |
 | `/level` | `/lvl`, `/profile`, `/rewards`, `/exp` | Membuka GUI progress bar level (1-100) & klaim hadiah | `apexsionscore.command.level` | `true` |
-| `/xpguide` | - | Panduan mendalam 13 sumber perolehan XP | `apexsionscore.command.level` | `true` |
+| `/xpguide` | - | Panduan mendalam 16 sumber perolehan XP | `apexsionscore.command.level` | `true` |
 | `/rtp` | `/wild`, `/wilderness`, `/krtp` | Teleportasi acak aman di dalam wilayah kerajaan sendiri | `apexsionscore.command.rtp` | `true` |
 | `/warp [nama]` | `/warps` | Membuka GUI navigasi warp 54-slot atau teleport langsung | `apexsionscore.command.warp` | `true` |
 | `/warpmgr` | `/warpadmin`, `/warp admin` | Membuka Interactive Admin Warp Management GUI | `apexsionscore.warp.admin` | `op` |
@@ -65,6 +65,10 @@ plugins/ApexsionsCore/
 | `/claim list` | - | Menampilkan daftar seluruh koordinat tanah milik pemain | `apexsions.claim.use` | `true` |
 | `/unclaim` | - | Melepas klaim chunk tanah lokasi saat ini | `apexsions.claim.use` | `true` |
 | `/claim unclaimall` | - | Melepas seluruh klaim tanah milik pemain | `apexsions.claim.use` | `true` |
+| `/deathcoords` | `/lastdeath`, `/kor`, `/cor` | Menampilkan kartu koordinat kematian terakhir & tombol navigasi kompas | `apexsions.core.deathcoords` | `true` |
+| `/deathcoords compass` | - | Mengarahkan jarum kompas held-item ke titik kematian terakhir | `apexsions.core.deathcoords` | `true` |
+| `/deathcoords <player>`| - | Menampilkan kartu koordinat kematian pemain target (Staf) | `apexsions.core.deathcoords.others` | `op` |
+| `/deathcoords tp <p>` | - | Teleportasi langsung staf ke lokasi kematian target | `apexsions.core.deathcoords.tp` | `op` |
 
 ---
 
