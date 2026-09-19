@@ -86,5 +86,5 @@ $$\text{Harga Jual Final} = \text{Base Price} \times \left(1 + \frac{\text{Weigh
 2. **Integrasi Progresi & Syarat Level (`ApexsionsCore`):**
    - Beberapa joran pancing kelas atas memerlukan batas level progresi tertentu (misal Minimal Level 25 atau Level 50) yang divalidasi via `ApexsionsCoreAPI`.
 3. **Penyaringan Papan Peringkat Nelayan (*Top Angler Exemption*):**
-   - Mengikuti **Kebijakan Pengecualian 6-Lapis** Apexsions. Seluruh akun staf (rank weight $\ge 80$), operator (OP), entitas transenden Aetherion, dan founder disaring keluar dari papan peringkat `/vault top`.
+   - Mengikuti **Kebijakan Pengecualian 6-Lapis** Apexsions. Seluruh akun staf (rank weight $\ge 80$), operator (OP), entitas transenden Aetherion, dan founder disaring keluar dari papan peringkat `/fish top`.
    - Menjamin trofi nelayan terhebat server murni diperebutkan oleh warga fana peradaban.

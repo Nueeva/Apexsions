@@ -149,6 +149,9 @@ public class ApexsionsCorePlugin extends JavaPlugin {
     // Death Coordinates Subsystem
     private com.apexsions.core.player.DeathCoordinateManager deathCoordinateManager;
 
+    // Pose & Emotes Subsystem
+    private com.apexsions.core.pose.PoseManager poseManager;
+
     @Override
     public void onLoad() {
         applyDisableChannelLimit();
@@ -271,6 +274,10 @@ public class ApexsionsCorePlugin extends JavaPlugin {
 
             // Death Coordinates Subsystem
             this.deathCoordinateManager = new com.apexsions.core.player.DeathCoordinateManager(this);
+
+            // Pose & Emotes Subsystem (/sit, /lay, /crawl, /spin, chairs)
+            this.poseManager = new com.apexsions.core.pose.PoseManager(this);
+            Bukkit.getPluginManager().registerEvents(new com.apexsions.core.pose.PoseListener(this, this.poseManager), this);
 
             // 8. Listeners
             Bukkit.getPluginManager().registerEvents(new PlayerListener(this), this);
@@ -425,6 +432,11 @@ public class ApexsionsCorePlugin extends JavaPlugin {
         }
         if (kitManager != null) {
             kitManager.saveCooldownsAsync();
+        }
+
+        // Cleanup active seats & reset poses
+        if (poseManager != null) {
+            poseManager.cleanupAll();
         }
 
         // Flush all cached player profiles safely to database
@@ -709,10 +721,42 @@ public class ApexsionsCorePlugin extends JavaPlugin {
             deathCoordsCmd.setExecutor(deathCoordsHandler);
             deathCoordsCmd.setTabCompleter(deathCoordsHandler);
         }
+
+        // Pose Commands (/sit, /lay, /crawl, /pose)
+        if (poseManager != null) {
+            com.apexsions.core.command.SitCommand sitHandler = new com.apexsions.core.command.SitCommand(this, poseManager);
+            PluginCommand sitCmd = getCommand("sit");
+            if (sitCmd != null) {
+                sitCmd.setExecutor(sitHandler);
+                sitCmd.setTabCompleter(sitHandler);
+            }
+
+            com.apexsions.core.command.LayCommand layHandler = new com.apexsions.core.command.LayCommand(this, poseManager);
+            PluginCommand layCmd = getCommand("lay");
+            if (layCmd != null) {
+                layCmd.setExecutor(layHandler);
+                layCmd.setTabCompleter(layHandler);
+            }
+
+            com.apexsions.core.command.CrawlCommand crawlHandler = new com.apexsions.core.command.CrawlCommand(this, poseManager);
+            PluginCommand crawlCmd = getCommand("crawl");
+            if (crawlCmd != null) {
+                crawlCmd.setExecutor(crawlHandler);
+                crawlCmd.setTabCompleter(crawlHandler);
+            }
+
+            com.apexsions.core.command.PoseCommand poseHandler = new com.apexsions.core.command.PoseCommand(this, poseManager);
+            PluginCommand poseCmd = getCommand("pose");
+            if (poseCmd != null) {
+                poseCmd.setExecutor(poseHandler);
+                poseCmd.setTabCompleter(poseHandler);
+            }
+        }
     }
 
     public static ApexsionsCorePlugin getInstance() { return instance; }
 
+    public com.apexsions.core.pose.PoseManager getPoseManager() { return poseManager; }
     public com.apexsions.core.player.DeathCoordinateManager getDeathCoordinateManager() { return deathCoordinateManager; }
     public ConfigManager getConfigManager() { return configManager; }
     public DatabaseManager getDatabaseManager() { return databaseManager; }

@@ -69,6 +69,11 @@ plugins/ApexsionsCore/
 | `/deathcoords compass` | - | Mengarahkan jarum kompas held-item ke titik kematian terakhir | `apexsions.core.deathcoords` | `true` |
 | `/deathcoords <player>`| - | Menampilkan kartu koordinat kematian pemain target (Staf) | `apexsions.core.deathcoords.others` | `op` |
 | `/deathcoords tp <p>` | - | Teleportasi langsung staf ke lokasi kematian target | `apexsions.core.deathcoords.tp` | `op` |
+| `/sit` | `/duduk`, `/chair` | Duduk santai di lantai atau klik kanan tangga/slab untuk duduk | `apexsions.pose.sit` | `true` |
+| `/lay` | `/lie`, `/tidur`, `/rebahan` | Berbaring / tiduran di lantai tanpa perlu ranjang | `apexsions.pose.lay` | `true` |
+| `/crawl` | `/merangkak`, `/tiarap` | Merangkak dengan hitbox 0.6 blok untuk menembus lorong 1 blok | `apexsions.pose.crawl` | `true` |
+| `/pose` | - | Menu dan eksekusi pose (sit, lay, crawl, bellyflop, spin, stand) | `apexsions.pose.*` | `true` |
+| `/pose stand` | - | Membatalkan seluruh pose dan kembali berdiri | `apexsions.pose.*` | `true` |
 
 ---
 

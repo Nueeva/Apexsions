@@ -182,6 +182,22 @@ public class PlayerInspectorGUI implements InventoryHolder {
         }
         inventory.setItem(39, createActionItem(Material.RECOVERY_COMPASS, "<gradient:#e74c3c:#c0392b><bold>☠ TITIK KEMATIAN TERAKHIR</bold></gradient>", deathLore));
 
+        // Slot 41: Player Pose & Emotes Control
+        String currentPose = plugin.getPoseManager() != null
+                ? plugin.getPoseManager().getActivePose(target).getDisplayName()
+                : "Berdiri";
+        boolean isSitting = plugin.getPoseManager() != null && plugin.getPoseManager().isSitting(target);
+        inventory.setItem(41, createActionItem(Material.OAK_STAIRS, "<gradient:#f39c12:#d35400><bold>🎭 KONTROL POSE & EMOTE</bold></gradient>",
+                List.of(
+                        "<gray>Pose Saat Ini: <yellow>" + currentPose + "</yellow></gray>",
+                        "<gray>Status Duduk: <white>" + (isSitting ? "<green>Sedang Duduk</green>" : "<gray>Tidak</gray>") + "</white></gray>",
+                        "<dark_gray>--------------------------------</dark_gray>",
+                        "<green>▶ Klik Kiri:</green> <gray>Dudukkan / berdirikan target (/sit)</gray>",
+                        "<aqua>▶ Klik Kanan:</aqua> <gray>Buat target merangkak (/crawl)</gray>",
+                        "<light_purple>▶ Shift + Klik Kiri:</light_purple> <gray>Buat target tiduran (/lay)</gray>",
+                        "<red>▶ Shift + Klik Kanan:</red> <gray>Paksa berdiri / batalkan pose (/pose stand)</gray>"
+                )));
+
         // Bottom Navigation (Slots 40, 49)
         ItemStack backList = createActionItem(Material.ARROW, "<yellow><bold>◀ KEMBALI KE DAFTAR PEMAIN</bold></yellow>",
                 List.of("<gray>Kembali ke daftar seluruh pemain online.</gray>"));
@@ -465,6 +481,22 @@ public class PlayerInspectorGUI implements InventoryHolder {
             } else {
                 admin.performCommand("deathcoords " + target.getName());
             }
+            return;
+        }
+
+        // Slot 41: Pose & Emotes Control
+        if (slot == 41) {
+            admin.playSound(admin.getLocation(), Sound.UI_BUTTON_CLICK, 0.7f, 1.0f);
+            if (event.isShiftClick() && event.isRightClick()) {
+                admin.performCommand("pose stand " + target.getName());
+            } else if (event.isShiftClick()) {
+                admin.performCommand("pose lay " + target.getName());
+            } else if (event.isRightClick()) {
+                admin.performCommand("pose crawl " + target.getName());
+            } else {
+                admin.performCommand("sit " + target.getName());
+            }
+            buildGUI();
             return;
         }
 

@@ -177,19 +177,19 @@ Dokumentasi resmi yang merangkum arsitektur menyeluruh, interaksi antar-plugin, 
 | Perintah | Alias | Deskripsi | Hak Akses | Default |
 | :--- | :--- | :--- | :--- | :---: |
 | `/bp` | `/battlepass` | Membuka antarmuka utama 200 level Season BattlePass | `apexsionsbattlepass.use` | `true` |
-| `/bp quests` | `/bp misi` | Membuka daftar misi harian/mingguan/bulanan | `apexsionsbattlepass.use` | `true` |
-| `/bp shop` | `/bp toko` | Membuka toko rotasi penukaran BP-XP | `apexsionsbattlepass.use` | `true` |
-| `/bp pass` | - | Membuka menu pembelian/peningkatan tier pass | `apexsionsbattlepass.use` | `true` |
+| `/bp info` | `/bp stats`, `/bp level`, `/bp progress`, `/bp status` | Menampilkan level, pass tertinggi, dan progress XP | `apexsionsbattlepass.use` | `true` |
+| `/bp quests` | `/bp quest` | Membuka daftar misi harian/mingguan/bulanan | `apexsionsbattlepass.use` | `true` |
+| `/bp rewards` | `/bp pass`, `/bp passes` | Membuka menu klaim hadiah & tingkatan pass | `apexsionsbattlepass.use` | `true` |
+| `/bp shop` | `/bp store` | Membuka toko rotasi penukaran BP-XP | `apexsionsbattlepass.use` | `true` |
 | `/bp season` | - | Memeriksa status, waktu tersisa, dan periode season | `apexsionsbattlepass.use` | `true` |
-| `/bp claim [level]` | - | Mengklaim hadiah level BattlePass yang telah tercapai | `apexsionsbattlepass.use` | `true` |
-| `/bp level` | - | Menampilkan level dan sisa XP BattlePass saat ini | `apexsionsbattlepass.use` | `true` |
-| `/abp` | `/bpadmin` | Membuka panel kontrol visual editor 54-slot | `apexsionsbattlepass.admin` | `op` |
+| `/abp` | `/bpadmin`, `/adminbp` | Membuka panel kontrol visual editor 54-slot | `apexsionsbattlepass.admin` | `op` |
 | `/abp reload` | - | Reload seluruh konfigurasi pass, quests, rewards, & season | `apexsionsbattlepass.admin` | `op` |
-| `/abp givepass <p> <tier>` | - | Memberikan tier pass (`free`, `premium`, `premium_plus`, `ultimate`)| `apexsionsbattlepass.admin` | `op` |
+| `/abp givepass <p> <pass>` | - | Memberikan pass (`citizen`, `sio`, `exsio`)| `apexsionsbattlepass.admin` | `op` |
 | `/abp setlevel <p> <lvl>`| - | Menyetel level BattlePass pemain | `apexsionsbattlepass.admin` | `op` |
 | `/abp addxp <p> <amount>`| - | Menambahkan XP BattlePass pemain | `apexsionsbattlepass.admin` | `op` |
+| `/abp currency <p> <add\|set\|take> <amt>` | `/abp resetrefresh` | Mengelola Battle Coins & refresh kuota toko | `apexsionsbattlepass.admin` | `op` |
+| `/abp season <...>` | - | Mengelola status & periode season aktif | `apexsionsbattlepass.admin` | `op` |
 | `/abp reset <p>` | - | Mereset total seluruh data progresi BattlePass pemain | `apexsionsbattlepass.admin` | `op` |
-| `/abp editor` | - | Membuka GUI visual editor hadiah & toko | `apexsionsbattlepass.admin` | `op` |
 
 ---
 
@@ -232,26 +232,29 @@ Dokumentasi resmi yang merangkum arsitektur menyeluruh, interaksi antar-plugin, 
 ### ⚡ ApexsionsCustomEnchants
 | Perintah | Alias | Deskripsi | Hak Akses | Default |
 | :--- | :--- | :--- | :--- | :---: |
-| `/ce` | `/enchanter`, `/customenchants` | Membuka Enchanter Gacha Dual-Currency GUI | `apexsionscustomenchants.use` | `true` |
-| `/ce shop` | `/ceshop` | Membuka Toko Buku Sihir Spesifik 54-Slot | `apexsionscustomenchants.use` | `true` |
-| `/ce tinkerer` | `/tinkerer` | Membuka antarmuka Tinkerer Kerajaan (Coming Soon) | `apexsionscustomenchants.use` | `true` |
-| `/ace` | `/customenchantsadmin` | Central Admin Hub GUI (45-Slot) | `apexsionscustomenchants.admin` | `op` |
-| `/ace enchants` | `/ae admin` | Katalog interaktif replika AdvancedEnchantments | `apexsionscustomenchants.admin` | `op` |
-| `/ace create` | - | Interactive Item & Armor Set Builder dengan sinkronisasi ID | `apexsionscustomenchants.admin` | `op` |
-| `/ace pricing` | - | Konfigurasi harga gacha, rate, dan multiplier | `apexsionscustomenchants.admin` | `op` |
-| `/ace reload` | - | Reload konfigurasi custom enchants, tiers, dan sets | `apexsionscustomenchants.admin` | `op` |
+| `/ce` | `/enchanter`, `/customenchants` | Membuka Enchanter Gacha Dual-Currency GUI | `apexsions.customenchants.use` | `true` |
+| `/ce shop` | `/ce toko` | Membuka Toko Buku Sihir Spesifik 54-Slot | `apexsions.customenchants.use` | `true` |
+| `/ce tinkerer` | - | Membuka antarmuka Tinkerer Kerajaan (Coming Soon) | `apexsions.customenchants.use` | `true` |
+| `/ace` | `/apexsionscustomenchants`, `/aceadmin` | Central Admin Hub GUI (45-Slot) | `apexsions.admin` | `op` |
+| `/ace enchants` | - | Katalog interaktif replika AdvancedEnchantments | `apexsions.admin` | `op` |
+| `/ace create` | - | Interactive Item & Armor Set Builder dengan sinkronisasi ID | `apexsions.admin` | `op` |
+| `/ace pricing` | - | Konfigurasi harga gacha, rate, dan multiplier | `apexsions.admin` | `op` |
+| `/ace reload` | - | Reload konfigurasi custom enchants, tiers, dan sets | `apexsions.admin` | `op` |
+| `/presets` | `/preset`, `/acepresets` | Membuka menu preset armor & tool set tersimpan | `apexsions.admin` | `op` |
 
 ---
 
 ### 🎁 ApexsionsCrates
 | Perintah | Alias | Deskripsi | Hak Akses | Default |
 | :--- | :--- | :--- | :--- | :--- | :---: |
-| `/crateshop` | `/crate shop`, `/keyshop` | Membuka Toko Pembelian Kunci Peti Dual-Currency GUI | `apexsionscrates.shop` | `true` |
-| `/crate` | `/crates` | Menampilkan antarmuka daftar peti hadiah dan milestone | `apexsionscrates.use` | `true` |
-| `/crate key <give\|take\|set> <p> <crate> <amt>` | - | Mengelola jumlah kunci peti pemain (Admin) | `apexsionscrates.admin` | `op` |
-| `/crate create <id>` | - | Membuat peti hadiah baru dengan pengaturan visual (Admin) | `apexsionscrates.admin` | `op` |
-| `/crate edit <id>` | - | Editor interaktif hadiah peti dan milestone progresi (Admin) | `apexsionscrates.admin` | `op` |
-| `/crate reload` | `/crates reload` | Memuat ulang seluruh konfigurasi peti dan probabilitas | `apexsionscrates.admin` | `op` |
+| `/crateshop` | `/keyshop`, `/cratekeyshop` | Membuka Toko Pembelian Kunci Peti Dual-Currency GUI | `apexsionscrates.command.menu` | `true` |
+| `/crate` | `/crates` | Menampilkan antarmuka daftar peti hadiah dan milestone | `apexsionscrates.command.menu` | `true` |
+| `/crate open <id>` | - | Membuka peti hadiah tertentu | `apexsionscrates.command.open` | `true` |
+| `/crate preview <id>` | - | Pratinjau daftar hadiah peti | `apexsionscrates.command.preview` | `true` |
+| `/crate key <give\|take\|set\|show> <p> <crate> <amt>` | - | Mengelola jumlah kunci peti pemain (Admin) | `apexsionscrates.command.key` | `op` |
+| `/crate give <p> <crate> [amt]` | - | Memberikan item/kunci peti kepada pemain (Admin) | `apexsionscrates.command.give` | `op` |
+| `/crate editor` | - | Editor interaktif peti, hadiah, dan milestone (Admin) | `apexsionscrates.command.editor` | `op` |
+| `/crate reload` | - | Memuat ulang seluruh konfigurasi peti dan probabilitas | `apexsionscrates.command.reload` | `op` |
 
 ---
 

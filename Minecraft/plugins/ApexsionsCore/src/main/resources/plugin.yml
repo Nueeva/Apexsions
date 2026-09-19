@@ -20,6 +20,31 @@ softdepend:
 
 
 commands:
+  sit:
+    aliases:
+      - duduk
+      - chair
+    description: Duduk santai di lantai atau kursi.
+    permission: apexsions.pose.sit
+    usage: /sit [player]
+  lay:
+    aliases:
+      - lie
+      - tidur
+      - rebahan
+    description: Berbaring / tiduran di lantai.
+    permission: apexsions.pose.lay
+    usage: /lay [player]
+  crawl:
+    aliases:
+      - merangkak
+      - tiarap
+    description: Merangkak menembus lubang 1 blok.
+    permission: apexsions.pose.crawl
+    usage: /crawl [player]
+  pose:
+    description: Kelola pose dan emote karakter (sit, lay, crawl, bellyflop, spin, stand).
+    usage: /pose <sit|lay|crawl|bellyflop|spin|stand> [player]
   deathcoords:
     aliases:
       - lastdeath
@@ -388,4 +413,22 @@ permissions:
     default: op
   apexsions.core.deathcoords.tp:
     description: Allows staff to teleport to death coordinates.
+    default: op
+  apexsions.pose.sit:
+    description: Allows sitting on ground or chairs.
+    default: true
+  apexsions.pose.lay:
+    description: Allows laying down.
+    default: true
+  apexsions.pose.crawl:
+    description: Allows crawling through 1-block spaces.
+    default: true
+  apexsions.pose.bellyflop:
+    description: Allows belly flop pose.
+    default: true
+  apexsions.pose.spin:
+    description: Allows spinning pose.
+    default: true
+  apexsions.pose.admin:
+    description: Allows forcing or toggling poses for other players.
     default: op

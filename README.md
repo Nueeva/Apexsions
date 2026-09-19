@@ -340,19 +340,19 @@ Apexsions/
 | Perintah | Alias | Deskripsi | Hak Akses (Permission) | Default |
 | :--- | :--- | :--- | :--- | :---: |
 | `/bp` | `/battlepass` | Membuka antarmuka 200 level BattlePass | `apexsionsbattlepass.use` | `true` |
-| `/bp quests` | `/bp misi` | Membuka daftar misi harian/mingguan/bulanan | `apexsionsbattlepass.use` | `true` |
-| `/bp shop` | `/bp toko` | Membuka toko rotasi BattlePass | `apexsionsbattlepass.use` | `true` |
-| `/bp pass` | - | Membuka menu pembelian/peningkatan tier pass | `apexsionsbattlepass.use` | `true` |
+| `/bp info` | `/bp stats`, `/bp level`, `/bp progress` | Menampilkan level, pass tertinggi, dan progress XP | `apexsionsbattlepass.use` | `true` |
+| `/bp quests` | `/bp quest` | Membuka daftar misi harian/mingguan/bulanan | `apexsionsbattlepass.use` | `true` |
+| `/bp rewards` | `/bp pass`, `/bp passes` | Membuka menu klaim hadiah & tingkatan pass | `apexsionsbattlepass.use` | `true` |
+| `/bp shop` | `/bp store` | Membuka toko rotasi BattlePass | `apexsionsbattlepass.use` | `true` |
 | `/bp season` | - | Memeriksa status & sisa waktu season aktif | `apexsionsbattlepass.use` | `true` |
-| `/bp claim [level]` | - | Mengklaim reward level BattlePass | `apexsionsbattlepass.use` | `true` |
-| `/bp level` | - | Menampilkan level dan progress XP BP saat ini | `apexsionsbattlepass.use` | `true` |
-| `/abp` | `/bpadmin` | Membuka panel kontrol visual editor 54-slot | `apexsionsbattlepass.admin` | `op` |
+| `/abp` | `/bpadmin`, `/adminbp` | Membuka panel kontrol visual editor 54-slot | `apexsionsbattlepass.admin` | `op` |
 | `/abp reload` | - | Memuat ulang seluruh file konfigurasi BP (Admin) | `apexsionsbattlepass.admin` | `op` |
-| `/abp givepass <p> <tier>`| - | Memberikan tier pass ke pemain (Admin) | `apexsionsbattlepass.admin` | `op` |
+| `/abp givepass <p> <pass>`| - | Memberikan pass (`citizen`/`sio`/`exsio`) ke pemain (Admin) | `apexsionsbattlepass.admin` | `op` |
 | `/abp setlevel <p> <lvl>`| - | Mengatur level BattlePass pemain (Admin) | `apexsionsbattlepass.admin` | `op` |
 | `/abp addxp <p> <amt>` | - | Memberikan poin BP-XP ke pemain (Admin) | `apexsionsbattlepass.admin` | `op` |
+| `/abp currency <p> <add\|set\|take> <amt>` | `/abp resetrefresh` | Mengelola Battle Coins & refresh kuota toko (Admin) | `apexsionsbattlepass.admin` | `op` |
+| `/abp season <...>` | - | Mengelola status & periode season aktif (Admin) | `apexsionsbattlepass.admin` | `op` |
 | `/abp reset <p>` | - | Mereset total progresi BattlePass pemain (Admin) | `apexsionsbattlepass.admin` | `op` |
-| `/abp editor` | - | Membuka visual editor hadiah & toko (Admin) | `apexsionsbattlepass.admin` | `op` |
 
 ### 🛒 Modul ApexsionsShop
 | Perintah | Alias | Deskripsi | Hak Akses (Permission) | Default |
@@ -398,8 +398,9 @@ Apexsions/
 ### 🎁 Modul ApexsionsCrates
 | Perintah | Alias | Deskripsi | Hak Akses (Permission) | Default |
 | :--- | :--- | :--- | :--- | :--- |
-| `/crateshop` | `/keyshop`, `/cratekeyshop` | Membuka Toko Pembelian Crate Keys Resmi Apexsions | `apexsionscrates.user` | `true` |
-| `/crateshop reload` | - | Memuat ulang konfigurasi peti hadiah dan harga kunci | `apexsionscrates.admin` | `op` |
+| `/crateshop` | `/keyshop`, `/cratekeyshop` | Membuka Toko Pembelian Crate Keys Resmi Apexsions | `apexsionscrates.command.menu` | `true` |
+| `/crateshop admin` | `/crateshop manage` | Membuka GUI admin toko kunci peti | `apexsions.crates.admin` | `op` |
+| `/crateshop reload` | - | Memuat ulang konfigurasi toko kunci peti | `apexsions.crates.admin` | `op` |
 
 ### 🎣 Modul ApexsionsFishing
 | Perintah | Alias | Deskripsi | Hak Akses (Permission) | Default |

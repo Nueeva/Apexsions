@@ -76,6 +76,20 @@ death-coords:
   # URL dasar satelit BlueMap untuk tombol [Buka Peta 3D]
   bluemap-base-url: "http://apexsions.my.id:32076/"
 
+# ==============================================================================
+# Sistem Pose, Emote & Kursi Interaktif (/sit, /lay, /crawl, /spin)
+# ==============================================================================
+pose:
+  # Notifikasi status pada Action Bar (contoh: "Tekan SHIFT untuk berdiri")
+  actionbar-notification: true
+  # Interaksi klik kanan kursi (tangga & slab)
+  chairs:
+    enabled: true
+    # Jarak maksimal blok untuk menduduki kursi (blok)
+    distance-limit: 3.5
+    allow-stairs: true
+    allow-slabs: true
+
 rtp:
   # Cooldown between /rtp uses in seconds (bypass permission: apexsionscore.rtp.bypass)
   cooldown-seconds: 60
