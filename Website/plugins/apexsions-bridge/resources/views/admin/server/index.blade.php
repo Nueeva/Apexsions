@@ -334,7 +334,7 @@
                             <input type="url" name="map_url" id="map_url" class="form-control bg-black border-secondary text-white font-monospace" value="{{ $mapUrl }}" required>
                         </div>
                         <div class="form-text text-white-50" style="font-size: 0.75rem;">
-                            Default: <code>http://apexsions.my.id:32076/</code>. Dapat diarahkan ke subdomain reverse proxy (misal <code>https://map.apexsions.my.id</code>) jika telah dikonfigurasi.
+                            Default: <code>http://apexsions.my.id:32076/</code>
                         </div>
                     </div>
                     <div class="col-lg-6">

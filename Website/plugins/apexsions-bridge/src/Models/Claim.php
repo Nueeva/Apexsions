@@ -3,6 +3,7 @@
 namespace Azuriom\Plugin\ApexsionsBridge\Models;
 
 use Azuriom\Models\Traits\HasTablePrefix;
+use Azuriom\Plugin\ApexsionsBridge\Services\ServerMapService;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
@@ -151,6 +152,11 @@ class Claim extends Model
     {
         $x = $this->getBlockCenterX();
         $z = $this->getBlockCenterZ();
-        return "http://map.apexsions.my.id/#{$this->world}:{$x}:100:{$z}:500:0:0:0:0:perspective";
+        $base = rtrim(ServerMapService::getMapUrl(), '/');
+        if (str_contains($base, '#')) {
+            $base = explode('#', $base)[0];
+            $base = rtrim($base, '/');
+        }
+        return "{$base}/#{$this->world}:{$x}:100:{$z}:500:0:0:0:0:perspective";
     }
 }
