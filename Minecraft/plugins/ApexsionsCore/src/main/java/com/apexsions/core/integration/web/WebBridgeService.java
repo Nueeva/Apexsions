@@ -628,6 +628,28 @@ public class WebBridgeService {
         String edition = isBedrock ? "BEDROCK" : "JAVA";
         String authMode = isBedrock ? "BEDROCK_FLOODGATE" : "JAVA_ONLINE";
 
+        // 5. Resolve Last Death Location
+        String deathJson = "null";
+        if (plugin.getDeathCoordinateManager() != null) {
+            com.apexsions.core.player.DeathRecord deathRecord = plugin.getDeathCoordinateManager().getLatestDeathRecord(uuid);
+            if (deathRecord != null) {
+                String timestampStr = deathRecord.timestamp() > 0
+                        ? java.time.Instant.ofEpochMilli(deathRecord.timestamp()).toString()
+                        : java.time.Instant.now().toString();
+                deathJson = String.format(
+                        Locale.ROOT,
+                        "{\"world\":\"%s\",\"x\":%d,\"y\":%d,\"z\":%d,\"death_cause\":\"%s\",\"death_time\":\"%s\",\"bluemap_url\":\"%s\"}",
+                        escapeJson(deathRecord.worldName()),
+                        (int) deathRecord.x(),
+                        (int) deathRecord.y(),
+                        (int) deathRecord.z(),
+                        escapeJson(deathRecord.deathCause() != null ? deathRecord.deathCause() : "Unknown"),
+                        escapeJson(timestampStr),
+                        escapeJson(plugin.getDeathCoordinateManager().generateBlueMapUrl(deathRecord))
+                );
+            }
+        }
+
         String jsonPayload = String.format(
                 Locale.ROOT,
                 "{\"player_uuid\":\"%s\",\"player_username\":\"%s\",\"rank\":\"%s\",\"rank_display\":\"%s\"," +
@@ -635,7 +657,7 @@ public class WebBridgeService {
                 "\"level_title\":\"%s\",\"active_title\":\"%s\",\"balance_rupiah\":%.2f,\"balance_diamond\":%.2f," +
                 "\"battlepass_tier\":%d,\"battlepass_xp\":%d,\"battlepass_required_xp\":%d,\"battlepass_has_premium\":%b,\"battlepass_pass_name\":\"%s\",\"apex_coins\":%d," +
                 "\"is_bedrock\":%b,\"edition\":\"%s\",\"auth_mode\":\"%s\"," +
-                "\"unlocked_titles\":%s}",
+                "\"unlocked_titles\":%s,\"last_death_location\":%s}",
                 escapeJson(uuid.toString()),
                 escapeJson(username),
                 escapeJson(rankKey),
@@ -658,7 +680,8 @@ public class WebBridgeService {
                 isBedrock,
                 edition,
                 authMode,
-                titlesJson.toString()
+                titlesJson.toString(),
+                deathJson
         );
 
         HttpRequest request = HttpRequest.newBuilder()
@@ -825,6 +848,10 @@ public class WebBridgeService {
         } catch (Throwable t) {
             return text.replaceAll("<[^>]*>", "").trim();
         }
+    }
+
+    public boolean isEnabled() {
+        return enabled;
     }
 
     public record LinkResult(boolean success, String message) {}

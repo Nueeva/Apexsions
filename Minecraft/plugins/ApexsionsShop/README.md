@@ -7,7 +7,7 @@ Plugin Pasar & Toko Dinamis Terintegrasi Kerajaan untuk Apexsions Plugin Suite.
 - **Anti-Inflation Balance:** Rasio harga jual **20% dari harga beli** dengan kurva kenaikan harga yang landai (gap harga mineral langka tetap terjangkau di kisaran ratusan Rupiah).
 - **Pasar Dinamis Cuaca:** Pengali harga komoditas berdasarkan cuaca (Cerah, Hujan, Badai Petir).
 - **Pasar Regional Kerajaan & Bioma:** Spesialisasi harga masing-masing kerajaan (`Solterra`, `Zenithar`, `Sylvamoor`).
-- **Pajak Kerajaan:** Default 10% per transaksi yang disinkronkan dengan `ApexsionsCore`.
+- **Pajak Kerajaan:** Otomatis mengambil tarif pajak wilayah dari `ApexsionsCore` (Zenithar 18%, Solterra 20%, Sylvamoor 15%; fallback default 10% per transaksi).
 - **GUI Interaktif & Auto-Fill:** Mendukung beli/jual satuan, stack, custom jumlah, drag-and-drop `/sell`, dan auto-fill slot kosong.
 
 ## ⌨️ Perintah

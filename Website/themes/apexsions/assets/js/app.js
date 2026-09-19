@@ -763,6 +763,14 @@ const APX_I18N = {
         kingdom_sylvamoor_name: 'Sylvamoor',
         kingdom_aetherion_name: 'Aetherion (The Conclave)',
         kingdom_none_name: 'Tanpa Kerajaan',
+        profile_death_title: 'Titik Kematian Terakhir (Privat)',
+        profile_death_sub: 'Hanya dapat dilihat oleh pemilik akun & staf',
+        profile_death_private_badge: 'Khusus Pemilik Akun',
+        profile_death_dim: 'Dimensi',
+        profile_death_coords: 'Koordinat Terakhir',
+        profile_death_cause: 'Penyebab Kematian',
+        profile_death_time: 'Waktu Kejadian',
+        profile_death_bluemap_btn: 'Buka di Peta 3D BlueMap',
 
         // Profile & BattlePass
         profile_title: 'Profil Pengguna',
@@ -1604,6 +1612,14 @@ const APX_I18N = {
         kingdom_sylvamoor_name: 'Sylvamoor',
         kingdom_aetherion_name: 'Aetherion (The Conclave)',
         kingdom_none_name: 'No Kingdom',
+        profile_death_title: 'Last Death Coordinates (Private)',
+        profile_death_sub: 'Only visible to account owner & staff',
+        profile_death_private_badge: 'Account Owner Only',
+        profile_death_dim: 'Dimension',
+        profile_death_coords: 'Last Coordinates',
+        profile_death_cause: 'Death Cause',
+        profile_death_time: 'Incident Time',
+        profile_death_bluemap_btn: 'Open in BlueMap 3D',
 
         // Profile & BattlePass
         profile_title: 'User Profile',

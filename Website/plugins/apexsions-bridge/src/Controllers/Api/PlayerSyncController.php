@@ -53,6 +53,7 @@ class PlayerSyncController extends Controller
             'battlepass_pass_name' => ['nullable', 'string', 'max:64'],
             'apex_coins' => ['nullable', 'numeric', 'min:0'],
             'unlocked_titles' => ['nullable', 'array'],
+            'last_death_location' => ['nullable', 'array'],
             'is_bedrock' => ['nullable', 'boolean'],
             'edition' => ['nullable', 'string', 'max:16'],
             'auth_mode' => ['nullable', 'string', 'max:32'],
@@ -169,6 +170,10 @@ class PlayerSyncController extends Controller
 
         if (isset($validated['unlocked_titles'])) {
             $updateData['unlocked_titles'] = $validated['unlocked_titles'];
+        }
+
+        if ($request->has('last_death_location') && is_array($request->input('last_death_location'))) {
+            $updateData['last_death_location'] = $request->input('last_death_location');
         }
 
         $account->fill($updateData)->save();

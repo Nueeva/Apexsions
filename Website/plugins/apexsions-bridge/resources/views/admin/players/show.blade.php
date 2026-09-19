@@ -192,6 +192,81 @@
                                 </div>
                             </div>
                         </div>
+
+                        <!-- Lokasi Kematian Terakhir (Death Coordinates) -->
+                        <div class="card bg-dark border border-secondary p-3 mt-4">
+                            <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
+                                <div class="d-flex align-items-center gap-2">
+                                    <div class="p-2 rounded bg-danger bg-opacity-10 border border-danger border-opacity-25 text-danger">
+                                        <i class="bi bi-compass-fill fs-5"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="fw-bold text-white mb-0">Titik Kematian Terakhir (Death Coordinates)</h6>
+                                        <small class="text-muted">Pelacakan posisi jatuhnya pemain untuk investigasi & bantuan staf</small>
+                                    </div>
+                                </div>
+                                @if(!empty($account->last_death_location) && is_array($account->last_death_location))
+                                    <span class="badge bg-danger bg-opacity-25 text-danger border border-danger border-opacity-50 px-2 py-1">
+                                        <i class="bi bi-geo-alt-fill me-1"></i> Terdata
+                                    </span>
+                                @else
+                                    <span class="badge bg-secondary bg-opacity-25 text-muted border border-secondary border-opacity-50 px-2 py-1">
+                                        Belum Ada Catatan
+                                    </span>
+                                @endif
+                            </div>
+
+                            @if(!empty($account->last_death_location) && is_array($account->last_death_location))
+                                @php
+                                    $death = $account->last_death_location;
+                                    $dWorld = $death['world'] ?? 'world';
+                                    $dX = (int) ($death['x'] ?? 0);
+                                    $dY = (int) ($death['y'] ?? 64);
+                                    $dZ = (int) ($death['z'] ?? 0);
+                                    $dCause = $death['death_cause'] ?? 'Tidak diketahui';
+                                    $dTime = $death['death_time'] ?? null;
+                                    $blueMapBase = config('apexsions-bridge.map_url', 'http://apexsions.my.id:32076/');
+                                    $blueMapBase = rtrim($blueMapBase, '/');
+                                    $blueMapUrl = "{$blueMapBase}/#{$dWorld}:{$dX}:{$dY}:{$dZ}:500:0:0:0:0:perspective";
+                                @endphp
+                                <div class="row g-3">
+                                    <div class="col-sm-4">
+                                        <div class="p-2 rounded bg-black bg-opacity-40 border border-secondary border-opacity-50">
+                                            <small class="text-muted d-block text-uppercase fw-bold" style="font-size: 0.7rem;">Dimensi / Dunia</small>
+                                            <span class="fw-bold text-warning font-monospace">{{ $dWorld }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-8">
+                                        <div class="p-2 rounded bg-black bg-opacity-40 border border-secondary border-opacity-50">
+                                            <small class="text-muted d-block text-uppercase fw-bold" style="font-size: 0.7rem;">Koordinat Presisi (X, Y, Z)</small>
+                                            <span class="fw-bold text-white font-monospace">X: {{ $dX }} &bull; Y: {{ $dY }} &bull; Z: {{ $dZ }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="p-2 rounded bg-black bg-opacity-40 border border-secondary border-opacity-50">
+                                            <small class="text-muted d-block text-uppercase fw-bold" style="font-size: 0.7rem;">Penyebab Kematian</small>
+                                            <span class="text-danger fw-bold">{{ $dCause }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="p-2 rounded bg-black bg-opacity-40 border border-secondary border-opacity-50">
+                                            <small class="text-muted d-block text-uppercase fw-bold" style="font-size: 0.7rem;">Waktu Kejadian</small>
+                                            <span class="text-light">{{ $dTime ? \Carbon\Carbon::parse($dTime)->diffForHumans() . ' (' . \Carbon\Carbon::parse($dTime)->format('d M Y H:i') . ')' : 'Sesi Terakhir' }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="d-flex flex-wrap gap-2 mt-3 pt-2 border-top border-secondary border-opacity-25">
+                                    <a href="{{ $blueMapUrl }}" target="_blank" class="btn btn-sm btn-outline-info fw-bold">
+                                        <i class="bi bi-map-fill me-1"></i> Buka Titik Kematian di BlueMap 3D
+                                    </a>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="navigator.clipboard.writeText('/tp {{ $dX }} {{ $dY }} {{ $dZ }}'); alert('Perintah disalin: /tp {{ $dX }} {{ $dY }} {{ $dZ }}');">
+                                        <i class="bi bi-clipboard me-1"></i> Salin /tp Koordinat
+                                    </button>
+                                </div>
+                            @else
+                                <p class="text-muted small mb-0">Pemain ini belum memiliki catatan kematian terdata pada server.</p>
+                            @endif
+                        </div>
                     </div>
 
                     <!-- 2. RANK & PRIVILEGE TAB (NEW) -->

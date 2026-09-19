@@ -7,7 +7,7 @@ Plugin fondasi utama server **Apexsions** yang mengelola sistem 3 Kerajaan (*Zen
 ## 🌟 Fitur Utama
 
 - **Sistem 3 Kerajaan (*Zenithar*, *Solterra*, *Sylvamoor*)**: Manajemen batas wilayah, BlueMap polygon rendering, NPC spawn teleportasi, dan penentuan gelar kustom per level.
-- **Master Admin Hub Terpusat (`/admingui`)**: Dashboard 54-slot untuk memantau server (RAM, TPS, database pool) dan pintasan modul administrasi 6 plugin suite secara terpadu.
+- **Master Admin Hub Terpusat (`/admingui`)**: Dashboard 54-slot untuk memantau server (RAM, TPS, database pool) dan pintasan modul administrasi 9 plugin suite secara terpadu.
 - **Deep Player Inspector**: Inspeksi langsung level, saldo, kerajaan, status monarch, live inventory, enderchest, heal, feed, dan gamemode pemain via GUI.
 - **Sistem Warp GUI & Admin Editor**:
   - `/warp` & `/warps`: GUI navigasi 54-slot dengan filter tab kategori (`SERVER`, `RESOURCE`, `EVENT`, `KINGDOM`, `PVP`, `GENERAL`).

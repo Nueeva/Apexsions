@@ -20,8 +20,8 @@ Aturan ini wajib ditaati oleh AI Agent untuk workspace Apexsions:
 
 4. **Integritas Kode & Arsitektur**:
    - Mematuhi seluruh standar di `GEMINI.md` dan `AGENTS.md`.
-   - Menjaga modularitas 6 plugin di dalam folder `plugins/` (`ApexsionsCore`, `ApexsionsChat`, `ApexsionsEconomy`, `ApexsionsBattlepass`, `ApexsionsShop`, `ApexsionsMedia`).
-   - Menggunakan Kyori Adventure + MiniMessage, Paper 1.21.4 API, Java 21, dan HikariCP async.
+   - Menjaga modularitas 9 plugin di dalam folder `plugins/` (`ApexsionsCore`, `ApexsionsChat`, `ApexsionsEconomy`, `ApexsionsBattlepass`, `ApexsionsShop`, `ApexsionsMedia`, `ApexsionsCrates`, `ApexsionsCustomEnchants`, `ApexsionsFishing`).
+   - Menggunakan Kyori Adventure + MiniMessage, Paper 26.2 API, Java 21, dan HikariCP async.
    - Mengikuti **Targeted Build Rule** (`powershell -ExecutionPolicy Bypass -File .\build.ps1 <PluginName>`).
 
 5. **Validasi Lokal Terlebih Dahulu Sebelum Deploy ke VPS (Local-First Testing Before Remote Deployment)**:

@@ -50,6 +50,7 @@ class MinecraftAccount extends Model
         'verified_at',
         'last_seen_at',
         'last_daily_reward_at',
+        'last_death_location',
     ];
 
     /**
@@ -67,6 +68,7 @@ class MinecraftAccount extends Model
         'battlepass_has_premium' => 'boolean',
         'apex_coins' => 'integer',
         'unlocked_titles' => 'array',
+        'last_death_location' => 'array',
         'rank_expires_at' => 'datetime',
         'verification_expires_at' => 'datetime',
         'verified_at' => 'datetime',

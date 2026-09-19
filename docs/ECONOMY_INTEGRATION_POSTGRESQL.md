@@ -146,52 +146,28 @@ LIMIT 50;
 
 ---
 
-## 3. Integrasi Backend Website (Node.js / Express Example)
+## 3. Integrasi Backend Website (Azuriom / Laravel + WebBridge)
 
-```typescript
-import { Pool } from 'pg';
+Platform web Apexsions berjalan di atas **Azuriom (Laravel-based CMS)**, bukan Node.js/Express. Integrasi ekonomi game↔web dilakukan melalui plugin `apexsions-bridge`:
 
-const pool = new Pool({
-  connectionString: process.env.POSTGRES_URL,
-});
+1. **Game → Web (Sync)**: Plugin game mengirim snapshot saldo via HTTP `POST http://web.apexsions.my.id/api/apexsions-bridge` (dengan header API key `apexsions_bridge_key_live_2026`). Data dicatat ke tabel `minecraft_accounts` dan ledger `apexsions_transactions`.
+2. **Web → Game (Perintah)**: Aksi admin web (mis. top-up saldo) ditulis ke tabel `deliveries` dengan status `PENDING`. Plugin game melakukan polling/consume antrean tersebut saat pemain online, lalu menandainya `COMPLETED`.
+3. **Sumber Kebenaran Saldo**: Saldo operasional tetap dipegang oleh DB plugin game (`economy_balances`). Web tidak pernah menulis langsung ke DB game; seluruh perubahan mengalir melalui delivery queue agar tetap atomic dan auditable.
 
-// GET /api/economy/balances/:uuid
-export async function getPlayerBalances(uuid: string) {
-  const result = await pool.query(
-    'SELECT currency_id, balance FROM economy_balances WHERE uuid = $1',
-    [uuid]
-  );
-  return result.rows;
-}
+Contoh konsumsi antrean di sisi Laravel (`Azuriom\Plugin\ApexsionsBridge`):
 
-// POST /api/payment/webhook (Payment Gateway Callback)
-export async function handleTopupWebhook(orderId: string, playerUuid: string, currency: string, amount: number) {
-  const client = await pool.connect();
-  try {
-    await client.query('BEGIN');
+```php
+use Azuriom\Plugin\ApexsionsBridge\Models\Delivery;
 
-    // 1. Update Saldo Pemain
-    await client.query(`
-      INSERT INTO economy_balances (uuid, currency_id, balance, updated_at)
-      VALUES ($1, $2, $3, CURRENT_TIMESTAMP)
-      ON CONFLICT (uuid, currency_id)
-      DO UPDATE SET balance = economy_balances.balance + $3, updated_at = CURRENT_TIMESTAMP;
-    `, [playerUuid, currency, amount]);
+// Ambil perintah yang menunggu dieksekusi untuk pemain tertentu
+$pending = Delivery::where('player_username', $username)
+    ->where('status', 'PENDING')
+    ->orderBy('id')
+    ->get();
 
-    // 2. Catat Log Audit Transaksi
-    await client.query(`
-      INSERT INTO economy_transactions (timestamp, sender_uuid, receiver_uuid, currency_id, amount, type, details)
-      VALUES ($1, 'WEB_GATEWAY', $2, $3, $4, 'WEB_TOPUP', $5);
-    `, [Date.now(), playerUuid, currency, amount, `Payment Completed for ${orderId}`]);
-
-    await client.query('COMMIT');
-    return { success: true };
-  } catch (error) {
-    await client.query('ROLLBACK');
-    throw error;
-  } finally {
-    client.release();
-  }
+foreach ($pending as $delivery) {
+    // $delivery->command berisi perintah aman (mis. "ecoadmin give <player> 5000 rupiah")
+    // Eksekusi ditangani oleh plugin game saat polling; web hanya menyimpan antrean.
 }
 ```
 

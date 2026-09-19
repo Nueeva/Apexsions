@@ -139,6 +139,9 @@ public class PlayerListener implements Listener {
         // Record death coordinates into DeathCoordinateManager
         if (plugin.getDeathCoordinateManager() != null) {
             plugin.getDeathCoordinateManager().recordDeath(player, event);
+            if (plugin.getWebBridgeService() != null && plugin.getWebBridgeService().isEnabled()) {
+                plugin.getWebBridgeService().syncPlayerAsync(player);
+            }
         }
     }
 

@@ -48,7 +48,7 @@ Apexsions/
 | **`ApexsionsMedia`** | `1.0.0` | ![Active](https://img.shields.io/badge/Status-Active-brightgreen) | `com.apexsions.media.*` | Render Banner/Logo Gambar Multi-Tile Asinkron (PNG/JPG/URL) dengan deteksi ukuran otomatis, Raytrace Line-of-Sight Hover Glowing, Actionbar Tooltips, Replikasi/Pindah Banner (`/media place`, `/media copy`), dan Interaksi Tautan Konfirmasi Web (`[Buka URL]` & `[Salin Clipboard]`). |
 | **`ApexsionsCustomEnchants`** | `1.0.0` | ![Active](https://img.shields.io/badge/Status-Active-brightgreen) | `com.apexsions.customenchants.*` | Sistem Custom Enchantment Mewah: Enchanter Gacha Dual-Currency (`/ce`), Toko Buku Spesifik 3x Harga, Mystery & Magic Dust Booster, White & Black Scrolls, Admin Hub (`/ace`), Replika Katalog `/ae admin` (`/ace enchants`), Interactive Item & Armor Set Builder (`/ace create`), dan Tinkerer Coming Soon. |
 | **`ApexsionsCrates`** | `1.0.0` | ![Active](https://img.shields.io/badge/Status-Active-brightgreen) | `com.apexsions.crates.*` | Sistem Peti Hadiah Mewah & Kunci Crate: Toko Pembelian Kunci (`/crateshop`), Milestone Progression, Animasi Pembukaan Mewah, dan Integrasi Hadiah Ekonomi / Kit. |
-| **`ApexsionsFishing`** | `1.0.0` | ![Active](https://img.shields.io/badge/Status-Active-brightgreen) | `com.apexsions.fishing.*` | Sistem AFK & Active Reel Fishing interaktif, Rarity & Weight Engine 6-Tier (`COMMON` hingga `MYTHIC`), Virtual Bait Quota System (`/fish bait`), Native Dialog Admin Rod Creator GUI (`/fish creator`), Fishing Vault Storage 54-Slot (`/vault`), Pasar Ikan & Pengiriman Instan (`/fish sell`), serta Joran Khusus Auto-Catch (`/fish shop`). |
+| **`ApexsionsFishing`** | `1.0.0` | ![Active](https://img.shields.io/badge/Status-Active-brightgreen) | `com.apexsions.fishing.*` | Sistem AFK & Active Reel Fishing interaktif, Rarity & Weight Engine 6-Tier (`COMMON` hingga `SECRET`), Virtual Bait Quota System (`/fish bait`), Native Dialog Admin Rod Creator GUI (`/fish creator`), Fishing Vault Storage (`/vault`), Pasar Ikan & Pengiriman Instan (`/fish sell`), serta Joran Khusus Auto-Catch (`/fish shop`). |
 
 ---
 
@@ -221,7 +221,7 @@ Apexsions/
 - **AFK Fishing & Active Reel Engine**:
   - Mode santai AFK fishing dan mekanik tarikan interaktif (*Active Reel*) yang menantang kecepatan reaksi pemain.
 - **Rarity & Weight Engine 6-Tier**:
-  - Klasifikasi tangkapan: `COMMON`, `UNCOMMON`, `RARE`, `EPIC`, `LEGENDARY`, `MYTHIC`.
+  - Klasifikasi tangkapan: `COMMON`, `UNCOMMON`, `RARE`, `EPIC`, `LEGENDARY`, `SECRET`.
   - Bobot gram realistis per spesies yang mempengaruhi nilai jual pasar secara proporsional.
 - **Virtual Bait Quota System (`/fish bait` / `BaitShopGUI`)**:
   - Kuota umpan virtual tersimpan aman di database tanpa memakan ruang tas inventaris.
@@ -232,7 +232,7 @@ Apexsions/
   - Brankas penyimpanan tangkapan ikan eksklusif per pemain yang dapat ditingkatkan kapasitasnya (`VaultShopGUI`).
 - **Fish Market & Instant Delivery (`/fish sell`)**:
   - Penjualan langsung seluruh isi brankas atau inventaris ke pasar ikan terintegrasi `ApexsionsEconomy` (Rupiah/Diamond).
-- **Auto-Catch Rods & Upgrade Engine (`/fish rods`)**:
+- **Auto-Catch Rods & Upgrade Engine (`/fish shop`)**:
   - Joran khusus bertingkat dengan durabilitas kustom, percepatan waktu gigitan, dan peluang auto-reel.
 
 ---

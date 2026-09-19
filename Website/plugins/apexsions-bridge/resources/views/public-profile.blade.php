@@ -158,5 +158,69 @@
             </div>
         </div>
     </div>
+
+    @if(auth()->check() && (auth()->id() === $account->user_id || (auth()->user()->role && auth()->user()->role->power >= 80)) && !empty($account->last_death_location) && is_array($account->last_death_location))
+        @php
+            $death = $account->last_death_location;
+            $dWorld = $death['world'] ?? 'world';
+            $dX = (int) ($death['x'] ?? 0);
+            $dY = (int) ($death['y'] ?? 64);
+            $dZ = (int) ($death['z'] ?? 0);
+            $dCause = $death['death_cause'] ?? 'Tidak diketahui';
+            $dTime = $death['death_time'] ?? null;
+            $blueMapBase = config('apexsions-bridge.map_url', 'http://apexsions.my.id:32076/');
+            $blueMapBase = rtrim($blueMapBase, '/');
+            $blueMapUrl = "{$blueMapBase}/#{$dWorld}:{$dX}:{$dY}:{$dZ}:500:0:0:0:0:perspective";
+        @endphp
+        <div class="card bg-dark border border-danger border-opacity-50 shadow-lg mt-4" style="background: linear-gradient(135deg, rgba(220, 38, 38, 0.1), rgba(18, 22, 34, 0.95)) !important;">
+            <div class="card-body p-4">
+                <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
+                    <div class="d-flex align-items-center gap-2">
+                        <div class="p-2 rounded bg-danger bg-opacity-20 text-danger border border-danger border-opacity-30">
+                            <i class="bi bi-compass-fill fs-5"></i>
+                        </div>
+                        <div>
+                            <h5 class="fw-bold text-white mb-0" data-i18n="profile_death_title">Titik Kematian Terakhir (Privat)</h5>
+                            <small class="text-muted" data-i18n="profile_death_sub">Hanya dapat dilihat oleh pemilik akun & staf</small>
+                        </div>
+                    </div>
+                    <span class="badge bg-danger text-white px-3 py-2">
+                        <i class="bi bi-lock-fill me-1"></i> <span data-i18n="profile_death_private_badge">Khusus Pemilik Akun</span>
+                    </span>
+                </div>
+                <div class="row g-3">
+                    <div class="col-sm-4">
+                        <div class="p-3 rounded bg-black bg-opacity-40 border border-secondary border-opacity-25">
+                            <small class="text-muted d-block text-uppercase fw-bold" style="font-size: 0.72rem;" data-i18n="profile_death_dim">Dimensi</small>
+                            <span class="text-warning fw-bold font-monospace">{{ $dWorld }}</span>
+                        </div>
+                    </div>
+                    <div class="col-sm-8">
+                        <div class="p-3 rounded bg-black bg-opacity-40 border border-secondary border-opacity-25">
+                            <small class="text-muted d-block text-uppercase fw-bold" style="font-size: 0.72rem;" data-i18n="profile_death_coords">Koordinat Terakhir</small>
+                            <span class="text-white fw-bold font-monospace">X: {{ $dX }} &bull; Y: {{ $dY }} &bull; Z: {{ $dZ }}</span>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="p-3 rounded bg-black bg-opacity-40 border border-secondary border-opacity-25">
+                            <small class="text-muted d-block text-uppercase fw-bold" style="font-size: 0.72rem;" data-i18n="profile_death_cause">Penyebab Kematian</small>
+                            <span class="text-danger fw-bold">{{ $dCause }}</span>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="p-3 rounded bg-black bg-opacity-40 border border-secondary border-opacity-25">
+                            <small class="text-muted d-block text-uppercase fw-bold" style="font-size: 0.72rem;" data-i18n="profile_death_time">Waktu Kejadian</small>
+                            <span class="text-light">{{ $dTime ? \Carbon\Carbon::parse($dTime)->diffForHumans() . ' (' . \Carbon\Carbon::parse($dTime)->format('d M Y H:i') . ')' : 'Sesi Terakhir' }}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex flex-wrap gap-2 mt-3 pt-2 border-top border-secondary border-opacity-25">
+                    <a href="{{ $blueMapUrl }}" target="_blank" class="btn btn-sm btn-outline-info fw-bold">
+                        <i class="bi bi-map-fill me-1"></i> <span data-i18n="profile_death_bluemap_btn">Buka di Peta 3D BlueMap</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    @endif
 </div>
 @endsection

@@ -1,6 +1,6 @@
 # Dokumentasi Lengkap ApexsionsShop
 
-Panduan teknis resmi modul **`ApexsionsShop`** untuk sistem pasar dinamis 6 kategori, formula harga berbasis cuaca & bioma kerajaan, batas anti-inflasi (*Price Clamping*), siaran tren pasar, pajak teritorial 10%, dan antarmuka GUI sentuh/Bedrock.
+Panduan teknis resmi modul **`ApexsionsShop`** untuk sistem pasar dinamis 6 kategori, formula harga berbasis cuaca & bioma kerajaan, batas anti-inflasi (*Price Clamping*), siaran tren pasar, pajak teritorial per-kerajaan, dan antarmuka GUI sentuh/Bedrock.
 
 ---
 
@@ -8,7 +8,7 @@ Panduan teknis resmi modul **`ApexsionsShop`** untuk sistem pasar dinamis 6 kate
 
 ```
 plugins/ApexsionsShop/
-├── config.yml            <-- Opsi global, rasio jual (20%), pajak (10%), dan fallback economy
+├── config.yml            <-- Opsi global, rasio jual (20%), pajak default (10%, fallback bila Core absen), dan fallback economy
 ├── gui.yml               <-- Tata letak GUI dan dekorasi tombol ramah sentuh
 ├── markets.yml           <-- Multiplier spesialisasi wilayah kerajaan dan cuaca
 ├── messages.yml          <-- Kumpulan template pesan visual MiniMessage

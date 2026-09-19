@@ -10,7 +10,7 @@ Panduan teknis resmi modul **`ApexsionsCore`** untuk arsitektur kerajaan, sistem
 plugins/ApexsionsCore/
 ├── config.yml            <-- Pengaturan database (SQLite/PostgreSQL), cache, dan opsi umum
 ├── kingdoms.yml          <-- Definisi 3 kerajaan (Zenithar, Solterra, Sylvamoor), spawn, bioma, dan warna
-├── xp.yml                <-- Formula perolehan XP untuk 13 kategori gameplay
+├── xp.yml                <-- Formula perolehan XP untuk 16 kategori gameplay
 ├── ranks.yml             <-- Hierarki pangkat LuckPerms & bobot weight (Ancestor s/d Wanderer)
 ├── titles.yml            <-- Daftar gelar prestise dan badge kerajaan per level
 ├── rewards.yml           <-- Konfigurasi hadiah level (Item, Command, Permission)

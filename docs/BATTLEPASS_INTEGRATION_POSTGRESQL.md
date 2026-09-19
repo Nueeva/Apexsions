@@ -128,74 +128,49 @@ WHERE uuid = 'player-uuid-here' AND season_id = 1;
 
 ---
 
-## 3. Integrasi Backend Website (Node.js / TypeScript Example)
+## 3. Integrasi Backend Website (Azuriom / Laravel + WebBridge)
 
-```typescript
-// Contoh implementasi REST API / Server Action di Next.js / Express
-import { Pool } from 'pg';
+Platform web Apexsions berjalan di atas **Azuriom (Laravel-based CMS)**, bukan Next.js/Express. Integrasi BattlePass game↔web dilakukan melalui plugin `apexsions-bridge`:
 
-const pool = new Pool({
-  connectionString: process.env.POSTGRES_URL,
-});
+1. **Game → Web (Sync)**: Plugin game mengirim progres level/XP/koin/pass pemain ke endpoint `POST http://web.apexsions.my.id/api/apexsions-bridge` (header API key `apexsions_bridge_key_live_2026`), lalu tersimpan di tabel `minecraft_accounts` (kolom `battlepass_level`, `battlepass_xp`, `battlepass_pass_name`, `apex_coins`).
+2. **Web → Game (Perintah)**: Aksi admin web ditulis ke tabel `deliveries` (status `PENDING`); plugin game mengonsumsinya saat pemain online dan menandainya `COMPLETED`.
+3. **Leaderboard BattlePass bersifat eksklusif in-game** (`/abp top`); portal web hanya menampilkan tabel Level & Saldo Rupiah (lihat kebijakan leaderboard).
 
-// GET /api/battlepass/leaderboard?season=1&page=1
-export async function getLeaderboard(seasonId: number = 1, page: number = 1, limit: number = 10) {
-  const offset = (page - 1) * limit;
-  const query = `
-    SELECT 
-      uuid,
-      level,
-      xp,
-      currency,
-      passes,
-      ROW_NUMBER() OVER (ORDER BY level DESC, xp DESC, currency DESC) AS rank
-    FROM abp_player_data
-    WHERE season_id = $1
-    ORDER BY level DESC, xp DESC, currency DESC
-    LIMIT $2 OFFSET $3;
-  `;
-  const result = await pool.query(query, [seasonId, limit, offset]);
-  return result.rows;
-}
+Contoh pembacaan data melalui Laravel (`Azuriom\Plugin\ApexsionsBridge`):
 
-// POST /api/webstore/reward-coins (Webhook payment gateway)
-export async function addCoinsAfterPayment(uuid: string, seasonId: number, coins: number) {
-  const query = `
-    UPDATE abp_player_data
-    SET currency = currency + $1,
-        updated_at = CURRENT_TIMESTAMP
-    WHERE uuid = $2 AND season_id = $3
-    RETURNING currency;
-  `;
-  const result = await pool.query(query, [coins, uuid, seasonId]);
-  return result.rows[0];
-}
+```php
+use Azuriom\Plugin\ApexsionsBridge\Models\MinecraftAccount;
+
+// Ambil akun Minecraft pemain terhubung beserta data BattlePass tersinkron
+$account = MinecraftAccount::where('user_id', $userId)->first();
+$level   = $account?->battlepass_level;
+$passName = $account?->battlepass_pass_name; // citizen, sio, atau exsio
 ```
 
 ---
 
 ## 4. Java Plugin API (Untuk Integrasi Antar-Plugin Minecraft)
 
-Tambahkan dependensi `ApexsionsBattlepass` di `pom.xml` atau `build.gradle`:
+Akses API publik melalui provider singleton `ApexsionsBattlepassProvider.get()` yang mengembalikan `ApexsionsBattlepassAPI`:
 
 ```java
-import com.apexsions.battlepass.ApexsionsBattlepass;
-import com.apexsions.battlepass.player.PlayerData;
+import com.apexsions.battlepass.api.ApexsionsBattlepassAPI;
+import com.apexsions.battlepass.api.ApexsionsBattlepassProvider;
 
 public class MyPluginIntegration {
 
-    public void giveRewardToPlayer(Player player, int exp, int coins) {
-        ApexsionsBattlepass bp = ApexsionsBattlepass.getInstance();
-        
-        // 1. Tambah XP
-        bp.getPlayerManager().addXp(player, exp);
-        
-        // 2. Tambah Battle Coins
-        bp.getCurrencyService().addCurrency(player.getUniqueId(), coins);
-        
-        // 3. Cek Pass Pemain
-        PlayerData data = bp.getPlayerManager().getPlayerData(player);
-        boolean isPremium = data.hasPass("PREMIUM");
+    public void giveRewardToPlayer(Player player, int xp, int points) {
+        ApexsionsBattlepassAPI bp = ApexsionsBattlepassProvider.get();
+
+        // 1. Tambah XP (menggunakan UUID)
+        bp.addPlayerXp(player.getUniqueId(), xp);
+
+        // 2. Tambah Battle Coins / Poin
+        bp.addPlayerPoints(player.getUniqueId(), points);
+
+        // 3. Cek kepemilikan Pass (id: "citizen", "sio", "exsio")
+        boolean hasSio = bp.hasPass(player.getUniqueId(), "sio");
+        String highestPass = bp.getPlayerHighestPassId(player.getUniqueId());
     }
 }
 ```
