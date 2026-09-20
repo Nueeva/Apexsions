@@ -59,6 +59,7 @@ const APX_I18N = {
         hero_headline: 'Peradaban Berdaulat yang Dibangun di Atas Tatanan Hierarki.',
         hero_subtext: 'Sebelas kasta sosial, tiga wilayah kerajaan, dan satu dunia yang dibentuk seutuhnya oleh sejarah warganya.',
         hero_btn_explore: 'JELAJAHI PERADABAN',
+        hero_btn_guide: 'PANDUAN MASUK',
         hero_ip_label: 'SERVER IP',
         hero_status_online: 'SERVER ONLINE',
         hero_status_offline: 'SERVER OFFLINE',
@@ -97,6 +98,7 @@ const APX_I18N = {
         label_buffs: 'Buff Kondisi Sejarah',
         label_debuffs: 'Debuff Kondisi Fisik',
         zenithar_type: 'TERITORI TIMUR • DINASTI KERAJAAN',
+        zenithar_badge: 'TIMUR',
         zenithar_desc: 'Dipimpin oleh keluarga dinasti dan pengawal elit Kekaisaran Sions yang berhasil mempertahankan diri dari malapetaka, mengungsi ke timur menuju puncak cakrawala (Zenith). Menjunjung tinggi kemurnian tata krama istana, kavaleri suci, dan kubah menara langit.',
         zenithar_spec1: 'Puncak Cakrawala & Solarium Spire Citadel',
         zenithar_spec2: 'Penambangan Emas Murni & Arsitektur Megah',
@@ -105,6 +107,7 @@ const APX_I18N = {
         zenithar_link: 'Arsip Zenithar',
 
         solterra_type: 'TERITORI SELATAN • MAGICIAN & VETERAN',
+        solterra_badge: 'SELATAN',
         solterra_desc: 'Dibentuk oleh para pesulap tempur agung (arcanists) serta prajurit garis depan terkuat bekas legiun Sions yang bermigrasi ke wilayah selatan. Memadukan kedahsyatan sihir elemen api dengan kekuatan fisik brutal tanpa ampun untuk menaklukkan alam yang mematikan.',
         solterra_spec1: 'Cadas Vulkanik, Kawah Lahar & Ignis Bastion',
         solterra_spec2: 'Penempaan Senjata Berat & Nilai Jual Ore Tinggi',
@@ -113,6 +116,7 @@ const APX_I18N = {
         solterra_link: 'Arsip Solterra',
 
         sylvamoor_type: 'TERITORI BARAT • PEKERJA & PEJUANG RIMBA',
+        sylvamoor_badge: 'BARAT',
         sylvamoor_desc: 'Dibangun oleh kaum pekerja, pembangun, petani lumbung, serta prajurit garda rakyat (pengguna sihir alam dasar dan prajurit non-sihir) yang mengungsi ke belantara rimba barat. Mengisolasi diri dari ambisi kekuasaan dan hidup selaras menjaga kelestarian Pohon Dunia.',
         sylvamoor_spec1: 'Rimba Kanopi Purba, Samudra Kristal & Eldergrove',
         sylvamoor_spec2: 'Lumbung Agrikultur, Alkemis Herbal & Pangan',
@@ -148,6 +152,14 @@ const APX_I18N = {
         caste_filter_staff: 'ADMINISTRASI & STAF (2)',
         caste_filter_nobles: 'ORDO BANGSAWAN (5)',
         caste_filter_pioneers: 'WARGA PERINTIS (1)',
+        caste_tab_authority: 'Tahta & Otoritas (3)',
+        caste_tab_nobles: 'Ordo Bangsawan (5)',
+        caste_tab_staff: 'Administrasi & Staf (2)',
+        caste_tab_foundation: 'Fondasi Warga (1)',
+        dock_civ: 'Kerajaan',
+        dock_map: 'Peta 3D',
+        dock_ranks: 'Kasta',
+        dock_join: 'Cara Masuk',
 
         // Onboarding
         step_kicker: 'GERBANG INISIASI',
@@ -911,6 +923,7 @@ const APX_I18N = {
         hero_headline: 'A Sovereign Civilization Built Upon Hierarchical Order.',
         hero_subtext: 'Eleven social castes, three sovereign kingdoms, and a world shaped entirely by its citizens\' history.',
         hero_btn_explore: 'EXPLORE CIVILIZATION',
+        hero_btn_guide: 'HOW TO JOIN',
         hero_ip_label: 'SERVER IP',
         hero_status_online: 'SERVER ONLINE',
         hero_status_offline: 'SERVER OFFLINE',
@@ -951,6 +964,7 @@ const APX_I18N = {
         label_buffs: 'Historical Lore Buffs',
         label_debuffs: 'Physical Debuffs',
         zenithar_type: 'EASTERN TERRITORY • ROYAL DYNASTY',
+        zenithar_badge: 'EAST',
         zenithar_desc: 'Led by the royal dynasty and elite imperial guards of the Sions Empire who survived the catastrophe, fleeing eastward toward the celestial zenith. Upholding palace etiquette, sacred cavalry, and skyward spire citadels.',
         zenithar_spec1: 'Celestial Horizon & Solarium Spire Citadel',
         zenithar_spec2: 'Pure Gold Extraction & Grand Architectural Marvels',
@@ -959,6 +973,7 @@ const APX_I18N = {
         zenithar_link: 'Zenithar Archives',
 
         solterra_type: 'SOUTHERN TERRITORY • MAGICIANS & VETERANS',
+        solterra_badge: 'SOUTH',
         solterra_desc: 'Founded by supreme battle arcanists and the mightiest front-line veterans of the former Sions legions who migrated south. Blending explosive fire-element sorcery with brutal physical prowess to master a deadly volcanic frontier.',
         solterra_spec1: 'Volcanic Crags, Magma Calderas & Ignis Bastion',
         solterra_spec2: 'Heavy Weapon Forging & High Ore Sell Ratios',
@@ -967,6 +982,7 @@ const APX_I18N = {
         solterra_link: 'Solterra Archives',
 
         sylvamoor_type: 'WESTERN TERRITORY • WORKERS & WILDWOOD RANGERS',
+        sylvamoor_badge: 'WEST',
         sylvamoor_desc: 'Constructed by laborers, master builders, agrarian farmers, and populist rangers who retreated into the deep western canopy. Isolating themselves from imperial power struggles to live in balance with the Great World Tree.',
         sylvamoor_spec1: 'Ancient Canopy Wildwoods, Crystal Seas & Eldergrove',
         sylvamoor_spec2: 'Agrarian Granaries, Herbal Alchemy & Sustainable Food',
@@ -1002,6 +1018,14 @@ const APX_I18N = {
         caste_filter_staff: 'ADMINISTRATION & STAFF (2)',
         caste_filter_nobles: 'ORDER OF NOBLES (5)',
         caste_filter_pioneers: 'PIONEERS (1)',
+        caste_tab_authority: 'Throne & Authority (3)',
+        caste_tab_nobles: 'Noble Orders (5)',
+        caste_tab_staff: 'Administration & Staff (2)',
+        caste_tab_foundation: 'Pioneer Foundation (1)',
+        dock_civ: 'Kingdoms',
+        dock_map: '3D Atlas',
+        dock_ranks: 'Castes',
+        dock_join: 'How to Join',
 
         // Onboarding
         step_kicker: 'RITE OF PASSAGE',
@@ -2206,28 +2230,141 @@ document.addEventListener('DOMContentLoaded', () => {
     fetchServerStatus();
     setInterval(fetchServerStatus, 30000);
 
-    // 3. Interactive Rank Hierarchy Filter
-    const rankPills = document.querySelectorAll('[data-rank-filter]');
-    const rankCards = document.querySelectorAll('[data-rank-category]');
-    rankPills.forEach(pill => {
-        pill.addEventListener('click', () => {
-            rankPills.forEach(p => {
-                p.classList.remove('active');
-                p.setAttribute('aria-selected', 'false');
-            });
-            pill.classList.add('active');
-            pill.setAttribute('aria-selected', 'true');
+    // 3. Interactive Sovereign Altar (Tabbed Kingdom Realm Switcher)
+    const initAltarTabs = () => {
+        const altarTabs = document.querySelectorAll('[data-altar-target]');
+        const altarPanels = document.querySelectorAll('[data-altar-panel]');
+        if (!altarTabs.length || !altarPanels.length) return;
 
-            const filter = pill.getAttribute('data-rank-filter');
-            rankCards.forEach(card => {
-                if (filter === 'all' || card.getAttribute('data-rank-category') === filter) {
-                    card.style.display = '';
-                } else {
-                    card.style.display = 'none';
-                }
+        altarTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const target = tab.getAttribute('data-altar-target');
+                altarTabs.forEach(t => {
+                    t.classList.remove('active');
+                    t.setAttribute('aria-selected', 'false');
+                });
+                tab.classList.add('active');
+                tab.setAttribute('aria-selected', 'true');
+
+                altarPanels.forEach(panel => {
+                    if (panel.getAttribute('data-altar-panel') === target) {
+                        panel.classList.add('active');
+                    } else {
+                        panel.classList.remove('active');
+                    }
+                });
             });
         });
-    });
+    };
+    initAltarTabs();
+
+    // 4. Compact Tabbed Caste Matrix
+    const initCasteMatrix = () => {
+        const casteTabs = document.querySelectorAll('[data-caste-target]');
+        const castePanels = document.querySelectorAll('[data-caste-panel]');
+        if (!casteTabs.length || !castePanels.length) return;
+
+        casteTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const target = tab.getAttribute('data-caste-target');
+                casteTabs.forEach(t => {
+                    t.classList.remove('active');
+                    t.setAttribute('aria-selected', 'false');
+                });
+                tab.classList.add('active');
+                tab.setAttribute('aria-selected', 'true');
+
+                castePanels.forEach(panel => {
+                    if (panel.getAttribute('data-caste-panel') === target) {
+                        panel.classList.add('active');
+                    } else {
+                        panel.classList.remove('active');
+                    }
+                });
+            });
+        });
+    };
+    initCasteMatrix();
+
+    // 5. Sticky Horizon Quick-Dock (Zero-Lag Scroll Navigation)
+    const initHorizonDock = () => {
+        const dockEl = document.getElementById('apxHorizonDock');
+        if (!dockEl) return;
+
+        const dockLinks = dockEl.querySelectorAll('[data-dock-target]');
+        const sections = [
+            document.getElementById('civilizations'),
+            document.getElementById('server-map'),
+            document.getElementById('ranks'),
+            document.getElementById('getting-started')
+        ].filter(Boolean);
+
+        let ticking = false;
+        const onScroll = () => {
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    const scrollY = window.scrollY || window.pageYOffset;
+                    if (scrollY > 350) {
+                        dockEl.classList.add('is-visible');
+                    } else {
+                        dockEl.classList.remove('is-visible');
+                    }
+
+                    // Spy active section
+                    let currentSectionId = '';
+                    const scrollMiddle = scrollY + window.innerHeight * 0.4;
+                    for (let i = 0; i < sections.length; i++) {
+                        const sec = sections[i];
+                        const top = sec.offsetTop;
+                        const height = sec.offsetHeight;
+                        if (scrollMiddle >= top && scrollMiddle < top + height) {
+                            currentSectionId = sec.id;
+                            break;
+                        }
+                    }
+
+                    if (currentSectionId) {
+                        dockLinks.forEach(link => {
+                            const isTarget = link.getAttribute('data-dock-target') === currentSectionId;
+                            link.classList.toggle('active', isTarget);
+                        });
+                    }
+
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        };
+
+        window.addEventListener('scroll', onScroll, { passive: true });
+        onScroll();
+    };
+    initHorizonDock();
+
+    // 6. Interactive Rank Hierarchy Filter Fallback
+    const rankPills = document.querySelectorAll('[data-rank-filter]');
+    const rankCards = document.querySelectorAll('[data-rank-category]');
+    if (rankPills.length > 0 && rankCards.length > 0) {
+        rankPills.forEach(pill => {
+            pill.addEventListener('click', () => {
+                rankPills.forEach(p => {
+                    p.classList.remove('active');
+                    p.setAttribute('aria-selected', 'false');
+                });
+                pill.classList.add('active');
+                pill.setAttribute('aria-selected', 'true');
+
+                const filter = pill.getAttribute('data-rank-filter');
+                rankCards.forEach(card => {
+                    if (filter === 'all' || card.getAttribute('data-rank-category') === filter) {
+                        card.style.display = '';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+    }
 
     // 5. Cinematic Scroll Reveal Animations
     const initScrollAnimations = () => {
