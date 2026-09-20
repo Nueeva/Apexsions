@@ -252,6 +252,7 @@ public class ClaimCommand implements CommandExecutor, TabCompleter {
             player.sendMessage(mm.deserialize("<green>✔ Status Pembayaran: <b>LUNAS & AKTIF</b></green>"));
         }
         player.sendMessage(mm.deserialize("<gray>Setor saldo: <yellow>/claim deposit <nominal></yellow> • Tarik: <yellow>/claim withdraw <nominal></yellow></gray>"));
+        player.sendMessage(mm.deserialize("<dark_gray><i>💡 Auto-Debet Aktif: Jika saldo brankas kosong, biaya sewa otomatis dipotong dari dompet pribadi (/bal).</i></dark_gray>"));
     }
 
     private void handleAdminSubcommand(CommandSender sender, String[] args) {

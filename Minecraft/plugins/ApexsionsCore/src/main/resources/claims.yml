@@ -28,6 +28,8 @@ tax:
   kingdom-treasury-split: 0.50
   unclaim-on-grace-expire: true
   exempt-upper-dimension: true
+  # Auto-debet dari dompet utama (/bal) jika saldo brankas klaim Rp0 / tidak cukup
+  fallback-wallet-autodebit: true
 
 # Siege War Mechanics during Kingdom War
 siege-war:

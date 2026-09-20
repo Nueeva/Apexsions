@@ -123,6 +123,7 @@ public class ClaimGUI implements Listener {
                 "<gray>Pajak Harian: </gray><red>Rp" + String.format("%,.0f", dailyTax) + "/hari</red>",
                 "<gray>Estimasi Aktif: </gray><aqua>" + String.format("%.1f", daysLeft) + " hari</aqua>",
                 "<gray>Status: </gray>" + (inGrace ? "<red><b>MENUNGGAK PAJAK (72 JAM)</b></red>" : "<green>Lunas & Aman</green>"),
+                "<dark_gray>💡 Auto-Debet: Otomatis potong dari /bal jika brankas Rp0</dark_gray>",
                 "",
                 "<yellow>» Klik untuk Setor Rp1.000 «</yellow>"));
 

@@ -52,6 +52,7 @@ public class ClaimManager {
     private double kingdomTreasurySplit = 0.50;
     private boolean unclaimOnGraceExpire = true;
     private boolean exemptUpperDimension = true;
+    private boolean fallbackWalletAutoDebit = true;
 
     // Siege War Configuration
     private boolean siegeWarEnabled = true;
@@ -102,6 +103,7 @@ public class ClaimManager {
         kingdomTreasurySplit = config.getDouble("tax.kingdom-treasury-split", 0.50);
         unclaimOnGraceExpire = config.getBoolean("tax.unclaim-on-grace-expire", true);
         exemptUpperDimension = config.getBoolean("tax.exempt-upper-dimension", true);
+        fallbackWalletAutoDebit = config.getBoolean("tax.fallback-wallet-autodebit", true);
 
         // Siege War settings
         siegeWarEnabled = config.getBoolean("siege-war.enabled", true);
@@ -226,6 +228,10 @@ public class ClaimManager {
         return op != null && op.isOp();
     }
 
+    public boolean isFallbackWalletAutoDebit() {
+        return fallbackWalletAutoDebit;
+    }
+
     // --- Progressive Tax & Upkeep Calculation ---
 
     public double calculateChunkDailyTax(UUID ownerId) {
@@ -272,14 +278,46 @@ public class ClaimManager {
             for (ClaimChunk claim : chunks) {
                 claim.setDailyUpkeep(chunkRate);
 
-                // Check if tax collection interval is due
-                if (now - claim.getLastTaxCollectedAt() >= periodMs) {
+                boolean isDue = (now - claim.getLastTaxCollectedAt() >= periodMs);
+                boolean isGrace = (claim.getStatus() == ClaimStatus.GRACE_PERIOD);
+
+                // Check if tax collection interval is due, OR if claim is in grace period and can be cured
+                if (isDue || isGrace) {
+                    boolean paid = false;
+                    boolean autoDebited = false;
+
+                    // 1. Try deducting from claim's bank balance first
                     if (claim.deduct(chunkRate)) {
+                        paid = true;
+                    } else if (fallbackWalletAutoDebit && plugin.getVaultHook() != null && plugin.getVaultHook().hasEconomy()) {
+                        // 2. Fallback: Auto-debit from owner's personal wallet (Vault /bal)
+                        OfflinePlayer ownerOffline = Bukkit.getOfflinePlayer(ownerId);
+                        double inBank = claim.getBankBalance();
+                        double neededFromWallet = chunkRate - inBank;
+                        if (neededFromWallet <= 0) neededFromWallet = chunkRate;
+
+                        if (plugin.getVaultHook().has(ownerOffline, neededFromWallet)) {
+                            if (plugin.getVaultHook().withdraw(ownerOffline, neededFromWallet)) {
+                                claim.setBankBalance(0.0);
+                                paid = true;
+                                autoDebited = true;
+                            }
+                        }
+                    }
+
+                    if (paid) {
                         // Successfully collected
                         claim.setStatus(ClaimStatus.ACTIVE);
-                        claim.setGracePeriodUntil(0);
+                        claim.setGracePeriodUntil(0L);
                         claim.setLastTaxCollectedAt(now);
                         repository.updateClaimFinancials(claim);
+
+                        if (autoDebited) {
+                            Player owner = Bukkit.getPlayer(ownerId);
+                            if (owner != null && owner.isOnline()) {
+                                owner.sendMessage(mm.deserialize("<gray><i>[Pajak Wilayah]</i> Saldo brankas chunk <gold>[" + claim.getChunkX() + ", " + claim.getChunkZ() + "]</gold> habis. Pajak harian <yellow>Rp" + String.format("%,.0f", chunkRate) + "</yellow> otomatis dipotong dari dompet pribadi Anda.</gray>"));
+                            }
+                        }
 
                         // Split with Kingdom Treasury
                         if (claim.getKingdomId() != null && !claim.getKingdomId().isBlank() && kingdomTreasurySplit > 0) {
@@ -296,7 +334,7 @@ public class ClaimManager {
                             // Notify online owner
                             Player owner = Bukkit.getPlayer(ownerId);
                             if (owner != null && owner.isOnline()) {
-                                owner.sendMessage(mm.deserialize("<red><b>⚠ [PAJAK WILAYAH]</b> Saldo brankas klaim Anda di <gold>[" + claim.getChunkX() + ", " + claim.getChunkZ() + "]</gold> habis! Masa tenggang <b>72 jam</b> dimulai sebelum tanah disita.</red>"));
+                                owner.sendMessage(mm.deserialize("<red><b>⚠ [PAJAK WILAYAH]</b> Saldo brankas dan dompet Anda tidak cukup untuk membayar sewa di <gold>[" + claim.getChunkX() + ", " + claim.getChunkZ() + "]</gold>! Masa tenggang <b>72 jam</b> dimulai sebelum tanah disita.</red>"));
                                 owner.playSound(owner.getLocation(), Sound.BLOCK_NOTE_BLOCK_DIDGERIDOO, 1.0f, 0.6f);
                             }
                         } else if (claim.isGracePeriodExpired()) {
