@@ -28,7 +28,7 @@
 @section('content')
 <div class="container py-5">
     <!-- Header Title -->
-    <div class="text-center mb-5">
+    <div class="text-center mb-5 apx-scroll-reveal">
         <div class="apx-badge-chiseled apx-badge-chiseled-warning mb-3">
             <i class="bi bi-trophy-fill"></i> <span data-i18n="leaderboard_kicker">DEWAN KEHORMATAN APEXSIONS</span>
         </div>
@@ -41,8 +41,8 @@
     <!-- ==================== THREE KINGDOMS DOMINANCE ==================== -->
     <div class="row g-4 mb-5">
         @foreach($kingdoms as $kKey => $kData)
-            <div class="col-md-4">
-                <div class="card apx-tilt-card bg-dark border-secondary border-opacity-25 h-100 shadow overflow-hidden position-relative" style="background: radial-gradient(circle at top, {{ $kData['color'] }}15, rgba(18,22,34,0.98) 75%) !important;">
+            <div class="col-md-4 apx-scroll-reveal apx-reveal-stagger-{{ $loop->iteration }}">
+                <div class="card apx-tilt-card bg-dark border-secondary border-opacity-25 h-100 shadow overflow-hidden position-relative" style="background: radial-gradient(circle at top, {{ $kData['color'] }}15, rgba(18,22,34,0.98) 75%) !important; border: 1px solid var(--apx-gold-border-subtle) !important;">
                     <div class="card-body p-4 text-center">
                         <div class="mb-3">
                             <span class="d-inline-flex p-3 rounded-circle shadow" style="background: {{ $kData['color'] }}20; color: {{ $kData['color'] }}; font-size: 2rem;">
@@ -71,13 +71,13 @@
     <!-- ==================== TOP PROGRESSION & ECONOMY TABLES ==================== -->
     <div class="row g-4">
         <!-- 1. Top Level Progression -->
-        <div class="col-lg-6">
-            <div class="card bg-dark border-secondary border-opacity-25 h-100 shadow">
+        <div class="col-lg-6 apx-scroll-reveal apx-reveal-stagger-1">
+            <div class="card bg-dark border-secondary border-opacity-25 h-100 shadow" style="border: 1px solid var(--apx-gold-border-subtle) !important;">
                 <div class="card-header bg-black bg-opacity-30 border-secondary border-opacity-25 p-3 d-flex align-items-center justify-content-between">
                     <h2 class="h5 fw-bold text-gold font-cinzel mb-0">
                         <i class="bi bi-star-fill text-warning me-2"></i> <span data-i18n="leaderboard_top_level_title">Top 10 Level &amp; Pengalaman (EXP)</span>
                     </h2>
-                    <span class="badge bg-warning bg-opacity-20 text-warning" data-i18n="leaderboard_badge_progression">Progresi</span>
+                    <span class="apx-badge-chiseled apx-badge-chiseled-warning" data-i18n="leaderboard_badge_progression">Progresi</span>
                 </div>
                 <div class="card-body p-0">
                     <div class="table-responsive">
@@ -138,13 +138,13 @@
         </div>
 
         <!-- 2. Top Economy Balance -->
-        <div class="col-lg-6">
-            <div class="card bg-dark border-secondary border-opacity-25 h-100 shadow">
+        <div class="col-lg-6 apx-scroll-reveal apx-reveal-stagger-2">
+            <div class="card bg-dark border-secondary border-opacity-25 h-100 shadow" style="border: 1px solid var(--apx-gold-border-subtle) !important;">
                 <div class="card-header bg-black bg-opacity-30 border-secondary border-opacity-25 p-3 d-flex align-items-center justify-content-between">
                     <h2 class="h5 fw-bold text-gold font-cinzel mb-0">
                         <i class="bi bi-cash-coin text-success me-2"></i> <span data-i18n="leaderboard_top_balance_title">Top 10 Konglomerat Realm (Saldo)</span>
                     </h2>
-                    <span class="badge bg-success bg-opacity-20 text-success" data-i18n="leaderboard_badge_economy">Ekonomi</span>
+                    <span class="apx-badge-chiseled apx-badge-chiseled-success" data-i18n="leaderboard_badge_economy">Ekonomi</span>
                 </div>
                 <div class="card-body p-0">
                     <div class="table-responsive">

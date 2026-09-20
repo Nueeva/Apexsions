@@ -4,7 +4,7 @@
 
 @section('content')
 <div class="container py-5">
-    <div class="text-center mb-5">
+    <div class="text-center mb-5 apx-scroll-reveal">
         <div class="apx-badge-chiseled apx-badge-chiseled-danger mb-3">
             <i class="bi bi-crosshair"></i> <span data-i18n="bounty_kicker">HADIAH KEPALA REALM</span>
         </div>
@@ -15,14 +15,14 @@
     </div>
 
     <div class="row g-3 mb-4">
-        <div class="col-md-6">
-            <div class="p-3 rounded-3 border border-secondary border-opacity-25 h-100" style="background: rgba(0,0,0,0.25);">
+        <div class="col-md-6 apx-scroll-reveal apx-reveal-stagger-1">
+            <div class="p-3 rounded-3 h-100" style="background: rgba(14, 19, 30, 0.75); border: 1px solid var(--apx-gold-border-subtle);">
                 <small class="text-muted d-block text-uppercase" style="font-size: 0.7rem; letter-spacing: 0.08em;" data-i18n="bounty_total_pool">Total Hadiah Beredar</small>
                 <strong class="text-gold fs-4">Rp {{ number_format($totalPool, 0, ',', '.') }}</strong>
             </div>
         </div>
-        <div class="col-md-6">
-            <div class="p-3 rounded-3 border border-secondary border-opacity-25 h-100" style="background: rgba(0,0,0,0.25);">
+        <div class="col-md-6 apx-scroll-reveal apx-reveal-stagger-2">
+            <div class="p-3 rounded-3 h-100" style="background: rgba(14, 19, 30, 0.75); border: 1px solid var(--apx-gold-border-subtle);">
                 <small class="text-muted d-block text-uppercase" style="font-size: 0.7rem; letter-spacing: 0.08em;" data-i18n="bounty_active_targets">Target Aktif</small>
                 <strong class="text-white fs-4">{{ $bounties->count() }}</strong>
                 @if($lastSyncedAt)
@@ -32,7 +32,7 @@
         </div>
     </div>
 
-    <div class="card bg-black bg-opacity-25 border border-secondary border-opacity-25">
+    <div class="card bg-dark apx-scroll-reveal apx-reveal-stagger-3" style="background: rgba(14, 19, 30, 0.85) !important; border: 1px solid var(--apx-gold-border-subtle);">
         <div class="card-body p-0">
             @forelse($bounties as $index => $bounty)
                 <div class="d-flex align-items-center gap-3 px-4 py-3 border-bottom border-secondary border-opacity-10">

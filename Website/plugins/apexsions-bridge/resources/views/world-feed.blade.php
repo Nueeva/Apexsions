@@ -4,7 +4,7 @@
 
 @section('content')
 <div class="container py-5">
-    <div class="text-center mb-5">
+    <div class="text-center mb-5 apx-scroll-reveal">
         <div class="apx-badge-chiseled apx-badge-chiseled-danger mb-3">
             <i class="bi bi-broadcast"></i> <span data-i18n="chronicles_kicker">KRONIK PERADABAN</span>
         </div>
@@ -14,7 +14,7 @@
         </p>
     </div>
 
-    <div class="card bg-black bg-opacity-25 border border-secondary border-opacity-25">
+    <div class="card bg-black bg-opacity-25 border border-secondary border-opacity-25 apx-scroll-reveal apx-reveal-stagger-1">
         <div class="card-body p-0">
             @forelse($events as $event)
                 @php
@@ -23,9 +23,15 @@
                         'PLAYER_KILL' => '⚔',
                         'BOUNTY_CLAIMED' => '☠',
                         'KINGDOM_WAR' => '🏰',
-                        'BOSS_KILL' => '',
+                        'BOSS_KILL' => '🐲',
                         'WONDER_COMPLETED' => '🏛',
                         default => '✦',
+                    };
+                    $chiseledBadge = match ($event->severity) {
+                        'CRITICAL' => 'apx-badge-chiseled-danger',
+                        'HIGH' => 'apx-badge-chiseled-warning',
+                        'MEDIUM', 'LOW' => 'apx-badge-chiseled-success',
+                        default => 'apx-badge-chiseled',
                     };
                 @endphp
                 <div class="d-flex align-items-start gap-3 px-4 py-3 border-bottom border-secondary border-opacity-10">
@@ -36,7 +42,7 @@
                             {{ $event->occurred_at?->diffForHumans() ?? 'baru saja' }}
                         </div>
                     </div>
-                    <span class="badge {{ $event->severity_badge }}">{{ $event->event_type }}</span>
+                    <span class="apx-badge-chiseled {{ $chiseledBadge }}">{{ $event->event_type }}</span>
                 </div>
             @empty
                 <div class="text-center text-muted py-5" data-i18n="chronicles_empty">
@@ -47,7 +53,7 @@
         </div>
     </div>
 
-    <div class="text-center mt-4">
+    <div class="text-center mt-4 apx-scroll-reveal apx-reveal-stagger-2">
         <a href="{{ route('apexsions-bridge.leaderboard') }}" class="btn btn-outline-warning btn-sm">
             <i class="bi bi-trophy me-1"></i> <span data-i18n="chronicles_to_leaderboard">Lihat Papan Peringkat</span>
         </a>

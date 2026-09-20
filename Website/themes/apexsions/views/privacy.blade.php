@@ -16,14 +16,14 @@
         </nav>
 
         <!-- Page Header -->
-        <div class="apx-section-header text-center mb-5">
+        <div class="apx-section-header text-center mb-5 apx-scroll-reveal">
             <div class="apx-section-kicker mb-2" data-i18n="privacy_kicker">KEBIJAKAN PRIVASI &amp; PERLINDUNGAN DATA</div>
             <h1 class="apx-section-title display-5 mb-3" data-i18n="privacy_title">Privasi &amp; Keamanan Data Warga</h1>
             <p class="text-muted mx-auto" style="max-width: 760px; font-size: 1.05rem; line-height: 1.8;" data-i18n="privacy_desc">
                 Apexsions memegang teguh integritas kedaulatan data warganya. Kami hanya menghimpun data yang esensial untuk sinkronisasi permainan, pengiriman paket webstore, dan perlindungan keamanan server dari ancaman siber.
             </p>
             <div class="d-flex align-items-center justify-content-center gap-3 mt-3">
-                <span class="badge bg-gold-subtle text-gold border border-gold-subtle font-monospace" data-i18n="privacy_doc_version">VERSI DOKUMEN: 2026.2</span>
+                <span class="apx-badge-chiseled apx-badge-chiseled-warning font-monospace" data-i18n="privacy_doc_version">VERSI DOKUMEN: 2026.2</span>
                 <span class="text-dim small">&bull;</span>
                 <span class="text-dim small" data-i18n="privacy_doc_updated">DIPERBARUI: 6 SEPTEMBER 2026</span>
             </div>
@@ -32,7 +32,7 @@
         <div class="row g-4 justify-content-center">
             <div class="col-lg-10">
                 <!-- Pasal 1 -->
-                <div class="apx-legal-card p-4 p-lg-5 mb-4 rounded" style="background: var(--apx-bg-deep); border: 1px solid var(--apx-border);">
+                <div class="apx-legal-card p-4 p-lg-5 mb-4 rounded apx-scroll-reveal" style="background: var(--apx-bg-deep); border: 1px solid var(--apx-border);">
                     <div class="d-flex align-items-center gap-3 mb-3">
                         <div class="text-center" style="min-width: 50px;">
                         <span class="d-block text-gold font-monospace fw-bold" style="font-size: 0.65rem; letter-spacing: 0.12em;" data-i18n="legal_article_word">PASAL</span>
@@ -54,7 +54,7 @@
                 </div>
 
                 <!-- Pasal 2 -->
-                <div class="apx-legal-card p-4 p-lg-5 mb-4 rounded" style="background: var(--apx-bg-deep); border: 1px solid var(--apx-border);">
+                <div class="apx-legal-card p-4 p-lg-5 mb-4 rounded apx-scroll-reveal" style="background: var(--apx-bg-deep); border: 1px solid var(--apx-border);">
                     <div class="d-flex align-items-center gap-3 mb-3">
                         <div class="text-center" style="min-width: 50px;">
                         <span class="d-block text-gold font-monospace fw-bold" style="font-size: 0.65rem; letter-spacing: 0.12em;" data-i18n="legal_article_word">PASAL</span>
@@ -76,7 +76,7 @@
                 </div>
 
                 <!-- Pasal 3 -->
-                <div class="apx-legal-card p-4 p-lg-5 mb-4 rounded" style="background: var(--apx-bg-deep); border: 1px solid var(--apx-border);">
+                <div class="apx-legal-card p-4 p-lg-5 mb-4 rounded apx-scroll-reveal" style="background: var(--apx-bg-deep); border: 1px solid var(--apx-border);">
                     <div class="d-flex align-items-center gap-3 mb-3">
                         <div class="text-center" style="min-width: 50px;">
                         <span class="d-block text-gold font-monospace fw-bold" style="font-size: 0.65rem; letter-spacing: 0.12em;" data-i18n="legal_article_word">PASAL</span>
@@ -93,7 +93,7 @@
                 </div>
 
                 <!-- Pasal 4 -->
-                <div class="apx-legal-card p-4 p-lg-5 mb-4 rounded" style="background: var(--apx-bg-deep); border: 1px solid var(--apx-border);">
+                <div class="apx-legal-card p-4 p-lg-5 mb-4 rounded apx-scroll-reveal" style="background: var(--apx-bg-deep); border: 1px solid var(--apx-border);">
                     <div class="d-flex align-items-center gap-3 mb-3">
                         <div class="text-center" style="min-width: 50px;">
                         <span class="d-block text-gold font-monospace fw-bold" style="font-size: 0.65rem; letter-spacing: 0.12em;" data-i18n="legal_article_word">PASAL</span>
@@ -110,7 +110,7 @@
                 </div>
 
                 <!-- Pasal 5 -->
-                <div class="apx-legal-card p-4 p-lg-5 mb-4 rounded" style="background: var(--apx-bg-deep); border: 1px solid var(--apx-border);">
+                <div class="apx-legal-card p-4 p-lg-5 mb-4 rounded apx-scroll-reveal" style="background: var(--apx-bg-deep); border: 1px solid var(--apx-border);">
                     <div class="d-flex align-items-center gap-3 mb-3">
                         <div class="text-center" style="min-width: 50px;">
                         <span class="d-block text-gold font-monospace fw-bold" style="font-size: 0.65rem; letter-spacing: 0.12em;" data-i18n="legal_article_word">PASAL</span>

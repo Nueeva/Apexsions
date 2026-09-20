@@ -27,29 +27,29 @@
         </nav>
 
         <!-- Page Header Hero -->
-        <div class="apx-section-header text-center mb-5">
+        <div class="apx-section-header text-center mb-5 apx-scroll-reveal">
             <div class="apx-section-kicker mb-2" data-i18n="vote_kicker">DUKUNGAN REALM &amp; AUTO-REWARD RESMI</div>
             <h1 class="apx-section-title display-5 mb-3" data-i18n="vote_title">Suarakan Kedaulatan Apexsions</h1>
-            <p class="text-muted mx-auto" style="max-width: 780px; font-size: 1.05rem; line-height: 1.8;" data-i18n="vote_desc">
-                Setiap suara sah yang Anda berikan mengumandangkan kemakmuran peradaban Apexsions ke kancah dunia. Cukup klik tombol platform di bawah dan berikan suara Anda di situs tersebut. Sistem akan mendeteksi suara Anda secara otomatis dan menghadiahkan <strong class="text-warning">3x Vote Keys</strong> serta <strong class="text-success">Rp 1.000</strong> langsung ke inventaris Anda!
+            <p class="text-muted mx-auto" style="max-width: 720px; font-size: 1.05rem; line-height: 1.7;" data-i18n="vote_desc">
+                Dukung peradaban Apexsions di platform voting resmi. Sistem otomatis mendeteksi suara Anda dan langsung menghadiahkan <strong class="text-warning">3x Vote Keys</strong> serta <strong class="text-success">Rp 1.000</strong> ke inventaris Anda!
             </p>
-            <div class="apx-badge-chiseled apx-badge-chiseled-warning mt-2">
-                <span class="badge bg-warning text-dark fw-bold">⚡ AUTO REWARD</span>
-                <span class="text-white small fw-bold">Tidak perlu lagi verifikasi manual atau kembali untuk klik claim!</span>
+            <div class="d-inline-flex align-items-center gap-2 apx-badge-chiseled apx-badge-chiseled-warning mt-2 px-3 py-1.5">
+                <i class="bi bi-lightning-charge-fill text-gold"></i>
+                <span class="text-white small fw-semibold">Auto-Reward Aktif &bull; Tanpa verifikasi manual atau klaim ulang</span>
             </div>
         </div>
 
         <!-- Player Identity & Statistics Dashboard -->
-        <div class="apx-player-identity-card p-3 p-md-4 mb-5 rounded" style="background: linear-gradient(135deg, rgba(24, 27, 36, 0.95) 0%, rgba(17, 19, 25, 0.95) 100%); border: 1px solid var(--apx-gold-border); box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+        <div class="apx-player-identity-card apx-scroll-reveal apx-reveal-stagger-1 p-3 p-md-4 mb-5 rounded" style="background: linear-gradient(135deg, rgba(24, 27, 36, 0.95) 0%, rgba(17, 19, 25, 0.95) 100%); border: 1px solid var(--apx-gold-border); box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
             <div class="row align-items-center g-3 mb-3">
                 <div class="col-md-auto text-center text-md-start">
                     <img id="voterAvatar" src="https://mc-heads.net/avatar/{{ $activeUsername ?: 'steve' }}/56" class="rounded shadow-sm border border-secondary" width="56" height="56" alt="Avatar">
                 </div>
                 <div class="col-md">
-                    <div class="d-flex align-items-center gap-2 mb-1">
-                        <span class="badge bg-gold-subtle text-gold border border-gold-subtle text-uppercase" style="font-size: 0.68rem; letter-spacing: 0.08em;" data-i18n="vote_recipient">Target Penerima Imbalan</span>
+                    <div class="d-flex align-items-center gap-2 mb-1 flex-wrap">
+                        <span class="apx-badge-chiseled" data-i18n="vote_recipient">Target Penerima Imbalan</span>
                         @if($linkedAccount)
-                            <span class="badge bg-success text-white" style="font-size: 0.68rem;"><i class="bi bi-shield-check me-1"></i> Akun Tertaut Resmi</span>
+                            <span class="apx-badge-chiseled apx-badge-chiseled-success"><i class="bi bi-shield-check me-1"></i> Akun Tertaut Resmi</span>
                         @endif
                     </div>
                     <div class="input-group input-group-sm" style="max-width: 420px;">
@@ -144,14 +144,14 @@
                 $isReady = $cdData['ready'];
                 $num = str_pad($index + 1, 2, '0', STR_PAD_LEFT);
             @endphp
-            <div class="{{ count($sites) === 1 ? 'col-lg-6 col-md-8' : (count($sites) === 2 ? 'col-lg-6' : 'col-lg-4 col-md-6') }}">
-                <div class="apx-vote-card h-100 d-flex flex-column" id="card-{{ $site->slug }}" style="background: linear-gradient(135deg, rgba(20, 24, 33, 0.95) 0%, rgba(14, 16, 22, 0.95) 100%); border: 1px solid var(--apx-gold-border); border-radius: 12px; padding: 1.5rem;">
+            <div class="{{ count($sites) === 1 ? 'col-lg-6 col-md-8' : (count($sites) === 2 ? 'col-lg-6' : 'col-lg-4 col-md-6') }} apx-scroll-reveal apx-reveal-stagger-{{ ($index % 3) + 1 }}">
+                <div class="apx-vote-card h-100 d-flex flex-column" id="card-{{ $site->slug }}" style="background: linear-gradient(135deg, rgba(20, 24, 33, 0.95) 0%, rgba(14, 16, 22, 0.95) 100%); border: 1px solid var(--apx-gold-border-subtle); border-radius: 12px; padding: 1.5rem;">
                     <div class="apx-vote-card-header d-flex align-items-center justify-content-between mb-3">
                         <span class="apx-vote-number font-monospace text-gold fw-bold" style="font-size: 1.25rem;">{{ $num }}</span>
                         @if($isReady)
-                            <span class="badge bg-success"><i class="bi bi-check-circle me-1"></i> Siap Diberikan</span>
+                            <span class="apx-badge-chiseled apx-badge-chiseled-success"><i class="bi bi-check-circle me-1"></i> Siap Diberikan</span>
                         @else
-                            <span class="badge bg-secondary text-white"><i class="bi bi-clock-history me-1"></i> Estimasi Cooldown: {{ $cdData['human_time'] }}</span>
+                            <span class="apx-badge-chiseled"><i class="bi bi-clock-history me-1"></i> Cooldown: {{ $cdData['human_time'] }}</span>
                         @endif
                     </div>
                     <div class="d-flex align-items-center gap-3 mb-3">
@@ -238,7 +238,7 @@
                         <h3 class="h5 text-white font-cinzel mb-0">
                             <i class="bi bi-journal-bookmark me-2 text-gold"></i> Riwayat Suara Saya
                         </h3>
-                        <span class="badge bg-dark border border-secondary text-warning" id="historyUsernameBadge">
+                        <span class="apx-badge-chiseled" id="historyUsernameBadge">
                             {{ $activeUsername ?: 'Belum Mengisi Username' }}
                         </span>
                     </div>
@@ -258,18 +258,18 @@
                             <tbody id="personalHistoryTable">
                                 @forelse($personalHistory as $vote)
                                 <tr>
-                                    <td><span class="badge bg-dark border text-warning">{{ $vote->site ? $vote->site->name : $vote->site_slug }}</span></td>
+                                    <td><span class="apx-badge-chiseled">{{ $vote->site ? $vote->site->name : $vote->site_slug }}</span></td>
                                     <td>{{ $vote->voted_at->format('d M H:i') }}</td>
                                     <td><span class="text-warning">3 Keys</span> + <span class="text-success">Rp 1k</span></td>
                                     <td>
                                         @if($vote->reward_status === 'REWARDED')
-                                            <span class="badge bg-success text-white"><i class="bi bi-check-circle me-1"></i> DITERIMA</span>
+                                            <span class="apx-badge-chiseled apx-badge-chiseled-success"><i class="bi bi-check-circle me-1"></i> DITERIMA</span>
                                         @elseif($vote->reward_status === 'FAILED')
-                                            <span class="badge bg-danger text-white"><i class="bi bi-x-circle me-1"></i> GAGAL</span>
+                                            <span class="apx-badge-chiseled apx-badge-chiseled-danger"><i class="bi bi-x-circle me-1"></i> GAGAL</span>
                                         @elseif($vote->reward_status === 'PARTIAL')
-                                            <span class="badge bg-warning text-dark"><i class="bi bi-exclamation-circle me-1"></i> SEBAGIAN</span>
+                                            <span class="apx-badge-chiseled apx-badge-chiseled-warning"><i class="bi bi-exclamation-circle me-1"></i> SEBAGIAN</span>
                                         @else
-                                            <span class="badge bg-info text-dark"><i class="bi bi-hourglass-split me-1"></i> MEMPROSES</span>
+                                            <span class="apx-badge-chiseled"><i class="bi bi-hourglass-split me-1"></i> MEMPROSES</span>
                                         @endif
                                     </td>
                                 </tr>
@@ -293,7 +293,7 @@
                         <h3 class="h5 text-white font-cinzel mb-0">
                             <i class="bi bi-broadcast me-2 text-info"></i> Suara Warga Realm Terbaru
                         </h3>
-                        <span class="badge bg-success"><span class="apx-pulse-dot me-1"></span> Live Feed</span>
+                        <span class="apx-badge-chiseled apx-badge-chiseled-success"><span class="apx-pulse-dot apx-beacon-live me-1" style="width: 6px; height: 6px;"></span> Live Feed</span>
                     </div>
                     <div class="d-flex align-items-center gap-3 mb-3 p-2 rounded" style="background: rgba(0,0,0,0.25);">
                         <span class="small text-muted">Total Suara Server: <strong class="text-gold">{{ number_format($serverTotalVotes) }}</strong></span>
@@ -321,9 +321,9 @@
                                             <span class="fw-bold text-white">{{ $v->player_username }}</span>
                                         </div>
                                     </td>
-                                    <td><span class="badge bg-dark border text-info">{{ $v->site ? $v->site->name : $v->site_slug }}</span></td>
+                                    <td><span class="apx-badge-chiseled">{{ $v->site ? $v->site->name : $v->site_slug }}</span></td>
                                     <td>{{ $v->voted_at->diffForHumans() }}</td>
-                                    <td><span class="badge bg-success text-white">3 Keys + Rp 1k</span></td>
+                                    <td><span class="apx-badge-chiseled apx-badge-chiseled-success">3 Keys + Rp 1k</span></td>
                                 </tr>
                                 @empty
                                 <tr>

@@ -92,7 +92,7 @@
     </div>
 
     <!-- ==================== APEXSIONS IN-GAME CHARACTER HERO CARD ==================== -->
-    <div class="card bg-dark border-gold mb-4 overflow-hidden shadow-lg position-relative" style="background: radial-gradient(circle at top right, rgba(243, 156, 18, 0.12), rgba(18, 22, 34, 0.95) 70%) !important;">
+    <div class="card bg-dark border-gold mb-4 overflow-hidden shadow-lg position-relative apx-scroll-reveal" style="background: radial-gradient(circle at top right, rgba(243, 156, 18, 0.12), rgba(18, 22, 34, 0.95) 70%) !important;">
         <div class="card-body p-4 p-md-5">
             @if($linkedAccount)
                 <div class="row align-items-center g-4">
@@ -116,9 +116,9 @@
                     <div class="col-lg-6 col-md-8">
                         <div class="d-flex flex-wrap align-items-center gap-2 mb-2">
                             <h2 class="h1 fw-bold text-white mb-0 font-cinzel">{{ $linkedAccount->minecraft_username }}</h2>
-                            <span class="badge bg-secondary text-uppercase">{{ $linkedAccount->edition }}</span>
+                            <span class="apx-badge-chiseled text-uppercase">{{ $linkedAccount->edition }}</span>
                             @if($linkedAccount->active_title)
-                                <span class="badge bg-warning text-dark fw-bold"><i class="bi bi-award"></i> {{ strip_tags($linkedAccount->active_title) }}</span>
+                                <span class="apx-badge-chiseled apx-badge-chiseled-warning fw-bold"><i class="bi bi-award"></i> {{ strip_tags($linkedAccount->active_title) }}</span>
                             @endif
                         </div>
 
@@ -223,10 +223,10 @@
                             @if($canClaimReward)
                                 <div class="card bg-black bg-opacity-50 border border-warning border-opacity-40 p-3 rounded text-center mb-1 shadow-sm">
                                     <div class="d-flex align-items-center justify-content-between mb-2">
-                                        <span class="badge bg-warning text-dark fw-bold">
+                                        <span class="apx-badge-chiseled apx-badge-chiseled-warning">
                                             <i class="bi bi-stars"></i> <span data-i18n="profile_reward_daily">Bonus Harian</span>
                                         </span>
-                                        <span class="badge bg-success bg-opacity-25 text-success border border-success border-opacity-25">
+                                        <span class="apx-badge-chiseled apx-badge-chiseled-success">
                                             <i class="bi bi-check-circle"></i> <span data-i18n="profile_reward_ready">Siap Diklaim</span>
                                         </span>
                                     </div>
@@ -243,10 +243,10 @@
                             @else
                                 <div class="card bg-black bg-opacity-50 border border-secondary border-opacity-25 p-3 rounded text-center mb-1 shadow-sm">
                                     <div class="d-flex align-items-center justify-content-between mb-2">
-                                        <span class="badge bg-secondary bg-opacity-50 text-light">
+                                        <span class="apx-badge-chiseled">
                                             <i class="bi bi-gift"></i> <span data-i18n="profile_reward_daily">Hadiah Harian</span>
                                         </span>
-                                        <span class="badge bg-success bg-opacity-25 text-success border border-success border-opacity-25">
+                                        <span class="apx-badge-chiseled apx-badge-chiseled-success">
                                             <i class="bi bi-check2-circle"></i> <span data-i18n="profile_reward_claimed">Sudah Diklaim</span>
                                         </span>
                                     </div>
@@ -300,7 +300,7 @@
     <div class="row g-4">
         <!-- Profile Details Card -->
         <div class="col-lg-4">
-            <div class="card bg-dark border-secondary border-opacity-25 h-100 shadow-sm">
+            <div class="card bg-dark border-secondary border-opacity-25 h-100 shadow-sm apx-scroll-reveal apx-reveal-stagger-1">
                 <div class="card-body text-center p-4">
                     <img src="{{ $user->getAvatar(130) }}" class="rounded-circle mb-3 img-fluid border border-warning border-2 p-1" alt="{{ $user->name }}">
                     <h3 class="h4 fw-bold text-white mb-1">{{ $user->name }}</h3>
@@ -345,7 +345,7 @@
                 @if(! oauth_login())
                     <!-- Change Email Address -->
                     <div class="col-md-6">
-                        <div class="card bg-dark border-secondary border-opacity-25 h-100 shadow-sm">
+                        <div class="card bg-dark border-secondary border-opacity-25 h-100 shadow-sm apx-scroll-reveal apx-reveal-stagger-2">
                             <div class="card-body p-4">
                                 <h3 class="h5 fw-bold text-white mb-3">
                                     <i class="bi bi-envelope-at me-2 text-warning"></i> <span data-i18n="profile_title_change_email">Ganti Alamat Email</span>
@@ -376,7 +376,7 @@
 
                     <!-- Change Website Password -->
                     <div class="col-md-6">
-                        <div class="card bg-dark border-secondary border-opacity-25 h-100 shadow-sm">
+                        <div class="card bg-dark border-secondary border-opacity-25 h-100 shadow-sm apx-scroll-reveal apx-reveal-stagger-3">
                             <div class="card-body p-4">
                                 <h3 class="h5 fw-bold text-white mb-3">
                                     <i class="bi bi-lock me-2 text-warning"></i> <span data-i18n="profile_title_change_pass">Ganti Password Web</span>

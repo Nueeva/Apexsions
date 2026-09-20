@@ -15,7 +15,7 @@
         </nav>
 
         <!-- Page Header -->
-        <div class="apx-section-header text-center mb-5">
+        <div class="apx-section-header text-center mb-5 apx-scroll-reveal">
             <div class="apx-section-kicker mb-2" data-i18n="rules_header_kicker">TATANAN HUKUM &amp; KEDAULATAN</div>
             <h1 class="apx-section-title display-5 mb-3" data-i18n="rules_header_title">Peraturan Resmi Peradaban Apexsions</h1>
             <p class="text-muted mx-auto" style="max-width: 760px; font-size: 1.05rem; line-height: 1.8;" data-i18n-html="rules_header_desc">
@@ -24,7 +24,7 @@
         </div>
 
         <!-- Pillar Navigation Bar (Quick Jump) -->
-        <div class="d-flex justify-content-center flex-wrap gap-2 mb-5">
+        <div class="d-flex justify-content-center flex-wrap gap-2 mb-5 apx-scroll-reveal apx-reveal-stagger-1">
             <a href="#pillar-chat" class="btn btn-apx-outline btn-sm py-2 px-3">
                 <i class="bi bi-chat-quote-fill me-1 text-gold"></i> <span data-i18n="rules_nav_chat">I. Chat &amp; Sosial</span>
             </a>
@@ -48,7 +48,7 @@
                 <!-- ===================================================================
                      PILLAR I: CHAT & KOMUNIKASI
                      =================================================================== -->
-                <div class="apx-rule-card mb-5" id="pillar-chat">
+                <div class="apx-rule-card mb-5 apx-scroll-reveal" id="pillar-chat">
                     <div class="apx-rule-card-header">
                         <div class="d-flex align-items-center gap-3">
                             <div class="apx-rule-icon-box">
@@ -65,7 +65,7 @@
                         <div class="apx-rule-item">
                             <div class="d-flex justify-content-between align-items-start mb-2">
                                 <h3 class="apx-rule-item-title" data-i18n="rules_r1_1_title">1. Spam, Flood &amp; Huruf Kapital Berlebihan</h3>
-                                <span class="badge bg-warning-subtle text-warning border border-warning-subtle" data-i18n="rules_s_mute">Sanksi: Mute</span>
+                                <span class="apx-badge-chiseled apx-badge-chiseled-warning" data-i18n="rules_s_mute">Sanksi: Mute</span>
                             </div>
                             <p class="apx-rule-item-desc" data-i18n="rules_r1_1_desc">
                                 Dilarang keras mengirim pesan berulang-ulang dalam tempo cepat, membombardir kolom obrolan dengan simbol atau spasi kosong, serta menggunakan huruf kapital (Caps-Lock) melebihi batas wajar yang mengganggu kenyamanan membaca pemain lain.
@@ -84,7 +84,7 @@
                         <div class="apx-rule-item">
                             <div class="d-flex justify-content-between align-items-start mb-2">
                                 <h3 class="apx-rule-item-title" data-i18n="rules_r1_2_title">2. Bahasa Kasar, Provokasi &amp; Konten Tidak Pantas</h3>
-                                <span class="badge bg-warning-subtle text-warning border border-warning-subtle" data-i18n="rules_s_warn_mute">Sanksi: Peringatan / Mute</span>
+                                <span class="apx-badge-chiseled apx-badge-chiseled-warning" data-i18n="rules_s_warn_mute">Sanksi: Peringatan / Mute</span>
                             </div>
                             <p class="apx-rule-item-desc" data-i18n="rules_r1_2_desc">
                                 Dilarang menggunakan makian vulgar, kata-kata kotor, percakapan bermuatan seksual eksplisit, maupun provokasi toksik yang berniat memancing amarah antarpemain baik pada saluran chat global, saluran kerajaan, maupun pesan pribadi (whisper/tell).
@@ -103,7 +103,7 @@
                         <div class="apx-rule-item">
                             <div class="d-flex justify-content-between align-items-start mb-2">
                                 <h3 class="apx-rule-item-title" data-i18n="rules_r1_3_title">3. Bullying, Perilaku Toksik &amp; Pelecehan Personal</h3>
-                                <span class="badge bg-danger-subtle text-danger border border-danger-subtle" data-i18n-html="rules_s_mute_tempban">Sanksi: Mute &bull; Temp Ban</span>
+                                <span class="apx-badge-chiseled apx-badge-chiseled-danger" data-i18n-html="rules_s_mute_tempban">Sanksi: Mute &bull; Temp Ban</span>
                             </div>
                             <p class="apx-rule-item-desc" data-i18n="rules_r1_3_desc">
                                 Dilarang merendahkan martabat, mempermalukan, mengintimidasi, atau melakukan perundungan siber secara terus-menerus kepada warga tertentu. Persaingan kasta atau perang kerajaan harus tetap berlangsung dalam koridor sportivitas bermain peran (roleplay), bukan permusuhan pribadi.
@@ -122,7 +122,7 @@
                         <div class="apx-rule-item mb-0">
                             <div class="d-flex justify-content-between align-items-start mb-2">
                                 <h3 class="apx-rule-item-title" data-i18n="rules_r1_4_title">4. Ujaran Kebencian &amp; Pelecehan SARA / Negara / Keluarga</h3>
-                                <span class="badge bg-danger text-white" data-i18n="rules_s_perm_ban">Sanksi: Permanent Ban</span>
+                                <span class="apx-badge-chiseled apx-badge-chiseled-danger" data-i18n="rules_s_perm_ban">Sanksi: Permanent Ban</span>
                             </div>
                             <p class="apx-rule-item-desc" data-i18n="rules_r1_4_desc">
                                 Dilarang tanpa pengecualian melontarkan ujaran kebencian berlatar belakang Suku, Agama, Ras, Antargolongan (SARA), menistakan simbol kenegaraan, maupun menghina anggota keluarga pemain lain secara tersurat maupun tersirat.
@@ -142,7 +142,7 @@
                 <!-- ===================================================================
                      PILLAR II: GAMEPLAY, INTEGRITAS & FAIR PLAY
                      =================================================================== -->
-                <div class="apx-rule-card mb-5" id="pillar-gameplay">
+                <div class="apx-rule-card mb-5 apx-scroll-reveal" id="pillar-gameplay">
                     <div class="apx-rule-card-header">
                         <div class="d-flex align-items-center gap-3">
                             <div class="apx-rule-icon-box">
@@ -159,7 +159,7 @@
                         <div class="apx-rule-item">
                             <div class="d-flex justify-content-between align-items-start mb-2">
                                 <h3 class="apx-rule-item-title" data-i18n="rules_r2_1_title">1. Penggunaan Cheat, Hack Client &amp; Modifikasi Ilegal</h3>
-                                <span class="badge bg-danger text-white" data-i18n="rules_s_perm_ban">Sanksi: Permanent Ban</span>
+                                <span class="apx-badge-chiseled apx-badge-chiseled-danger" data-i18n="rules_s_perm_ban">Sanksi: Permanent Ban</span>
                             </div>
                             <p class="apx-rule-item-desc" data-i18n="rules_r2_1_desc">
                                 Dilarang keras memakai software/mod pihak ketiga yang memberikan keunggulan tidak adil, termasuk namun tidak terbatas pada X-Ray (resource pack tembus pandang atau mod), Baritone, Litematica Printer otomatis, Auto-Clicker, Killaura, Fly, Speed, Jesus, dan free-cam tak resmi.
@@ -178,7 +178,7 @@
                         <div class="apx-rule-item">
                             <div class="d-flex justify-content-between align-items-start mb-2">
                                 <h3 class="apx-rule-item-title" data-i18n="rules_r2_2_title">2. Eksploitasi Bug, Glitch &amp; Duplikasi Sumber Daya</h3>
-                                <span class="badge bg-danger text-white" data-i18n-html="rules_s_rollback_permban">Sanksi: Rollback Data &bull; Permanent Ban</span>
+                                <span class="apx-badge-chiseled apx-badge-chiseled-danger" data-i18n-html="rules_s_rollback_permban">Sanksi: Rollback Data &bull; Permanent Ban</span>
                             </div>
                             <p class="apx-rule-item-desc" data-i18n="rules_r2_2_desc">
                                 Dilarang memanfaatkan kelemahan kode Minecraft, celah game, atau bug plugin untuk menggandakan item, memperbanyak saldo Rupiah, atau menerobos batasan sistem. Segala temuan bug wajib dilaporkan kepada pengelola server demi integritas bersama.
@@ -197,7 +197,7 @@
                         <div class="apx-rule-item">
                             <div class="d-flex justify-content-between align-items-start mb-2">
                                 <h3 class="apx-rule-item-title" data-i18n="rules_r2_3_title">3. Griefing &amp; Pencurian di Luar Mekanisme Perang Resmi</h3>
-                                <span class="badge bg-danger-subtle text-danger border border-danger-subtle" data-i18n-html="rules_s_rollback_tempban">Sanksi: Rollback Wilayah &bull; Temp Ban</span>
+                                <span class="apx-badge-chiseled apx-badge-chiseled-danger" data-i18n-html="rules_s_rollback_tempban">Sanksi: Rollback Wilayah &bull; Temp Ban</span>
                             </div>
                             <p class="apx-rule-item-desc" data-i18n="rules_r2_3_desc">
                                 Dilarang merusak, membongkar paksa, atau mencuri harta di dalam wilayah kerajaan berdaulat dan rumah warga lain tanpa izin pemilik, kecuali saat peristiwa resmi Kingdom War dideklarasikan sesuai protokol perang.
@@ -216,7 +216,7 @@
                         <div class="apx-rule-item">
                             <div class="d-flex justify-content-between align-items-start mb-2">
                                 <h3 class="apx-rule-item-title" data-i18n="rules_r2_4_title">4. Eksploitasi Redstone &amp; Mesin Perontok Server (Lag Machine)</h3>
-                                <span class="badge bg-warning-subtle text-warning border border-warning-subtle" data-i18n-html="rules_s_confiscate_tempban">Sanksi: Sita Mesin &bull; Temp Ban</span>
+                                <span class="apx-badge-chiseled apx-badge-chiseled-warning" data-i18n-html="rules_s_confiscate_tempban">Sanksi: Sita Mesin &bull; Temp Ban</span>
                             </div>
                             <p class="apx-rule-item-desc" data-i18n="rules_r2_4_desc">
                                 Dilarang membuat clock loop redstone tanpa tombol pemutus, mesin pelempar item berlebihan, instalasi piston masif tanpa peredam, atau mekanisme yang sengaja dirancang untuk menurunkan TPS (Ticks Per Second) server.
@@ -235,7 +235,7 @@
                         <div class="apx-rule-item mb-0">
                             <div class="d-flex justify-content-between align-items-start mb-2">
                                 <h3 class="apx-rule-item-title" data-i18n="rules_r2_5_title">5. Combat Logging (Kabur Saat Bertarung)</h3>
-                                <span class="badge bg-warning-subtle text-warning border border-warning-subtle" data-i18n-html="rules_s_death_drop">Sanksi: Kematian Otomatis &bull; Drop Item</span>
+                                <span class="apx-badge-chiseled apx-badge-chiseled-warning" data-i18n-html="rules_s_death_drop">Sanksi: Kematian Otomatis &bull; Drop Item</span>
                             </div>
                             <p class="apx-rule-item-desc" data-i18n="rules_r2_5_desc">
                                 Dilarang keluar dari server secara sengaja (disconnect/alt+F4) saat sedang berada dalam pertempuran aktif melawan pemain lain guna menghindari kematian atau kehilangan perlengkapan.
@@ -255,7 +255,7 @@
                 <!-- ===================================================================
                      PILLAR III: ETIKA, INTEGRITAS & AKUN
                      =================================================================== -->
-                <div class="apx-rule-card mb-5" id="pillar-ethics">
+                <div class="apx-rule-card mb-5 apx-scroll-reveal" id="pillar-ethics">
                     <div class="apx-rule-card-header">
                         <div class="d-flex align-items-center gap-3">
                             <div class="apx-rule-icon-box">
@@ -272,7 +272,7 @@
                         <div class="apx-rule-item">
                             <div class="d-flex justify-content-between align-items-start mb-2">
                                 <h3 class="apx-rule-item-title" data-i18n="rules_r3_1_title">1. Berbohong kepada Staf &amp; Penghindaran Sanksi (Ban Evasion)</h3>
-                                <span class="badge bg-danger text-white" data-i18n="rules_s_blacklist">Sanksi: Blacklist Permanen</span>
+                                <span class="apx-badge-chiseled apx-badge-chiseled-danger" data-i18n="rules_s_blacklist">Sanksi: Blacklist Permanen</span>
                             </div>
                             <p class="apx-rule-item-desc" data-i18n="rules_r3_1_desc">
                                 Dilarang memberikan keterangan palsu dalam proses investigasi staf, memalsukan bukti laporan, atau membuat akun baru/alternatif untuk bermain kembali saat akun utama sedang menjalani masa hukuman sanksi.
@@ -291,7 +291,7 @@
                         <div class="apx-rule-item">
                             <div class="d-flex justify-content-between align-items-start mb-2">
                                 <h3 class="apx-rule-item-title" data-i18n="rules_r3_2_title">2. Batasan Multi-Akun (Alt Accounts)</h3>
-                                <span class="badge bg-warning-subtle text-warning border border-warning-subtle" data-i18n="rules_s_freeze_alt">Sanksi: Pembekuan Akun Alt</span>
+                                <span class="apx-badge-chiseled apx-badge-chiseled-warning" data-i18n="rules_s_freeze_alt">Sanksi: Pembekuan Akun Alt</span>
                             </div>
                             <p class="apx-rule-item-desc" data-i18n="rules_r3_2_desc">
                                 Setiap pemain hanya diperkenankan memiliki maksimal 2 (dua) akun Minecraft pribadi. Dilarang menggunakan akun alternatif untuk menimbun starter kit, menduduki kasta ganda di kerajaan berlawanan, atau memanipulasi voting dan pasar lelang.
@@ -310,7 +310,7 @@
                         <div class="apx-rule-item mb-0">
                             <div class="d-flex justify-content-between align-items-start mb-2">
                                 <h3 class="apx-rule-item-title" data-i18n="rules_r3_3_title">3. Penyamaran Identitas &amp; Penghormatan Staf</h3>
-                                <span class="badge bg-danger-subtle text-danger border border-danger-subtle" data-i18n-html="rules_s_mute_tempban">Sanksi: Mute &bull; Temp Ban</span>
+                                <span class="apx-badge-chiseled apx-badge-chiseled-danger" data-i18n-html="rules_s_mute_tempban">Sanksi: Mute &bull; Temp Ban</span>
                             </div>
                             <p class="apx-rule-item-desc" data-i18n="rules_r3_3_desc">
                                 Dilarang meniru nama, prefix, gelar, atau berpura-pura menjadi anggota staf Apexsions (Warden, Herald, Overseer, Architect, Ancestor) untuk memeras atau memperdaya warga. Kritik terhadap keputusan staf disampaikan secara beradab melalui tiket resmi.
@@ -330,7 +330,7 @@
                 <!-- ===================================================================
                      PILLAR IV: KEAMANAN, IKLAN & KEPATUHAN HUKUM
                      =================================================================== -->
-                <div class="apx-rule-card mb-5" id="pillar-security">
+                <div class="apx-rule-card mb-5 apx-scroll-reveal" id="pillar-security">
                     <div class="apx-rule-card-header">
                         <div class="d-flex align-items-center gap-3">
                             <div class="apx-rule-icon-box">
@@ -347,7 +347,7 @@
                         <div class="apx-rule-item">
                             <div class="d-flex justify-content-between align-items-start mb-2">
                                 <h3 class="apx-rule-item-title" data-i18n="rules_r4_1_title">1. Promosi &amp; Iklan Server Luar Tanpa Izin</h3>
-                                <span class="badge bg-danger text-white" data-i18n-html="rules_s_perm_mute_ban">Sanksi: Mute Permanen &bull; Banned</span>
+                                <span class="apx-badge-chiseled apx-badge-chiseled-danger" data-i18n-html="rules_s_perm_mute_ban">Sanksi: Mute Permanen &bull; Banned</span>
                             </div>
                             <p class="apx-rule-item-desc" data-i18n="rules_r4_1_desc">
                                 Dilarang menyebarkan alamat IP server Minecraft lain, link komunitas Discord luar, atau tautan promosi komersial tanpa persetujuan resmi dari pihak pengelola Apexsions.
@@ -366,7 +366,7 @@
                         <div class="apx-rule-item">
                             <div class="d-flex justify-content-between align-items-start mb-2">
                                 <h3 class="apx-rule-item-title" data-i18n="rules_r4_2_title">2. Doxxing, Pembocoran Data Pribadi &amp; Ancaman Serangan Cyber</h3>
-                                <span class="badge bg-danger text-white" data-i18n-html="rules_s_perm_ban_legal">Sanksi: Permanent Ban &bull; Hukum Pidana</span>
+                                <span class="apx-badge-chiseled apx-badge-chiseled-danger" data-i18n-html="rules_s_perm_ban_legal">Sanksi: Permanent Ban &bull; Hukum Pidana</span>
                             </div>
                             <p class="apx-rule-item-desc" data-i18n="rules_r4_2_desc">
                                 Dilarang keras mempublikasikan informasi data pribadi orang lain (nama asli, alamat rumah, nomor kontak, media sosial privat) tanpa izin, serta dilarang melontarkan ancaman serangan DDoS atau eksploitasi jaringan.
@@ -385,7 +385,7 @@
                         <div class="apx-rule-item mb-0">
                             <div class="d-flex justify-content-between align-items-start mb-2">
                                 <h3 class="apx-rule-item-title" data-i18n="rules_r4_3_title">3. Penipuan Transaksi Riil &amp; Pelanggaran UU ITE</h3>
-                                <span class="badge bg-danger text-white" data-i18n="rules_s_perm_ban">Sanksi: Permanent Ban</span>
+                                <span class="apx-badge-chiseled apx-badge-chiseled-danger" data-i18n="rules_s_perm_ban">Sanksi: Permanent Ban</span>
                             </div>
                             <p class="apx-rule-item-desc" data-i18n="rules_r4_3_desc">
                                 Segala bentuk penipuan finansial uang riil (Rupiah), jual beli akun curian, transaksi pasar gelap di luar Webstore resmi, atau aktivitas yang melanggar Undang-Undang Informasi dan Transaksi Elektronik (UU ITE) Republik Indonesia dilarang mutlak.
@@ -405,7 +405,7 @@
                 <!-- ===================================================================
                      SANCTIONS MATRIX TABLE
                      =================================================================== -->
-                <div class="apx-rule-card mb-5" id="pillar-sanctions">
+                <div class="apx-rule-card mb-5 apx-scroll-reveal" id="pillar-sanctions">
                     <div class="apx-rule-card-header">
                         <div class="d-flex align-items-center gap-3">
                             <div class="apx-rule-icon-box">
@@ -429,22 +429,22 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td><span class="badge bg-info-subtle text-info border border-info-subtle" data-i18n="rules_t1_badge">Tingkat I</span></td>
+                                        <td><span class="apx-badge-chiseled" data-i18n="rules_t1_badge">Tingkat I</span></td>
                                         <td data-i18n="rules_t1_type">Spam ringan, Caps-Lock berlebihan, pelanggaran format chat.</td>
                                         <td data-i18n="rules_t1_action">Peringatan tertulis (Warning) &bull; Mute otomatis 15–60 detik oleh sistem.</td>
                                     </tr>
                                     <tr>
-                                        <td><span class="badge bg-warning-subtle text-warning border border-warning-subtle" data-i18n="rules_t2_badge">Tingkat II</span></td>
+                                        <td><span class="apx-badge-chiseled apx-badge-chiseled-warning" data-i18n="rules_t2_badge">Tingkat II</span></td>
                                         <td data-i18n="rules_t2_type">Toksisitas berulang, provokasi vulgar, AFK farming tanpa batas, redstone lag ringan.</td>
                                         <td data-i18n="rules_t2_action">Mute obrolan 1 hingga 24 jam &bull; Kick dari server &bull; Pembersihan mesin lag.</td>
                                     </tr>
                                     <tr>
-                                        <td><span class="badge bg-danger-subtle text-danger border border-danger-subtle" data-i18n="rules_t3_badge">Tingkat III</span></td>
+                                        <td><span class="apx-badge-chiseled apx-badge-chiseled-danger" data-i18n="rules_t3_badge">Tingkat III</span></td>
                                         <td data-i18n="rules_t3_type">Griefing wilayah, pelecehan personal berat, combat logging berulang, promosi server lain.</td>
                                         <td data-i18n="rules_t3_action">Temporary Banned 3 hingga 14 hari &bull; Rollback data kerusakan wilayah.</td>
                                     </tr>
                                     <tr>
-                                        <td><span class="badge bg-danger text-white" data-i18n="rules_t4_badge">Tingkat IV</span></td>
+                                        <td><span class="apx-badge-chiseled apx-badge-chiseled-danger" data-i18n="rules_t4_badge">Tingkat IV</span></td>
                                         <td data-i18n="rules_t4_type">Cheat/Hack client, duplikasi item, doxxing, SARA ekstrem, penipuan finansial, ban evasion.</td>
                                         <td data-i18n="rules_t4_action">Permanent Banned &bull; IP/UUID Blacklist &bull; Penyitaan total aset in-game.</td>
                                     </tr>
@@ -455,10 +455,10 @@
                 </div>
 
                 <!-- Callout: Cara Mengajukan Banding Sanksi -->
-                <div class="p-4 rounded position-relative overflow-hidden" style="background: linear-gradient(135deg, rgba(212, 163, 89, 0.1) 0%, rgba(13, 18, 30, 0.85) 100%); border: 1px solid var(--apx-gold-border); border-radius: var(--apx-radius-md);">
+                <div class="p-4 rounded position-relative overflow-hidden apx-scroll-reveal" style="background: linear-gradient(135deg, rgba(212, 163, 89, 0.1) 0%, rgba(13, 18, 30, 0.85) 100%); border: 1px solid var(--apx-gold-border); border-radius: var(--apx-radius-md);">
                     <div class="row align-items-center">
                         <div class="col-lg-8 text-lg-start mb-3 mb-lg-0">
-                            <span class="badge mb-2" style="background: rgba(212, 163, 89, 0.2); color: var(--apx-gold-light); border: 1px solid var(--apx-gold-border); font-size: 0.72rem; letter-spacing: 0.08em;">
+                            <span class="apx-badge-chiseled apx-badge-chiseled-warning mb-2">
                                 <i class="bi bi-envelope-paper-heart-fill me-1"></i> <span data-i18n="rules_appeal_tag">MEKANISME BANDING</span>
                             </span>
                             <h3 class="mb-1 text-white" style="font-family: 'Cinzel', Georgia, serif; font-size: 1.35rem;" data-i18n="rules_appeal_title">
