@@ -458,12 +458,20 @@ public class CaravanManager {
     }
 
     public boolean isActive() {
-        return activeLocation != null;
+        return getActiveLocation() != null;
     }
 
     @Nullable
     public Location getActiveLocation() {
-        return activeLocation;
+        if (activeLocation != null) {
+            return activeLocation;
+        }
+        org.bukkit.entity.Entity existing = findExisting();
+        if (existing != null) {
+            activeLocation = existing.getLocation();
+            return activeLocation;
+        }
+        return null;
     }
 
     @Nullable

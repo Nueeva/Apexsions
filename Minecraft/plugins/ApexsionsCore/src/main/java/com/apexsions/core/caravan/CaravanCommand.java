@@ -57,6 +57,7 @@ public class CaravanCommand implements CommandExecutor, TabCompleter {
                 }
                 new CaravanGUI(manager, player).open(player);
             }
+            case "tp", "teleport" -> handleAdmin(player, new String[]{"admin", "tp"});
             case "admin" -> handleAdmin(player, args);
             default -> sendStatus(player);
         }
@@ -70,8 +71,12 @@ public class CaravanCommand implements CommandExecutor, TabCompleter {
             Location loc = manager.getActiveLocation();
             player.sendMessage(mm.deserialize("<gray>Status: <green>AKTIF</green></gray>"));
             if (loc != null) {
+                boolean isAdmin = player.hasPermission("apexsions.caravan.admin") || player.hasPermission("apexsions.admin") || player.isOp();
+                String tpButton = isAdmin
+                        ? " <click:run_command:'/caravan admin tp'><hover:show_text:'<aqua>⚡ Klik untuk langsung teleportasi ke posisi kafilah</aqua>'><gradient:#00f2fe:#4facfe><bold>[⚡ KLIK TELEPORT]</bold></gradient></hover></click>"
+                        : "";
                 player.sendMessage(mm.deserialize("<gray>Lokasi: <gold>X: " + (int) loc.getX() + ", Y: " + (int) loc.getY()
-                        + ", Z: " + (int) loc.getZ() + "</gold> <dark_gray>|</dark_gray> <yellow>" + loc.getWorld().getName() + "</yellow></gray>"));
+                        + ", Z: " + (int) loc.getZ() + "</gold> <dark_gray>|</dark_gray> <yellow>" + loc.getWorld().getName() + "</yellow>" + tpButton + "</gray>"));
             }
             player.sendMessage(mm.deserialize("<gray>Sisa waktu: <aqua>" + manager.describeWindow() + "</aqua></gray>"));
         } else {
@@ -104,13 +109,15 @@ public class CaravanCommand implements CommandExecutor, TabCompleter {
                 manager.spawnRandomWilderness(player);
             }
             case "tp", "teleport" -> {
-                if (!manager.isActive() || manager.getActiveLocation() == null) {
+                Location loc = manager.getActiveLocation();
+                if (loc == null) {
                     player.sendMessage(mm.deserialize("<red>Kafilah sedang tidak aktif atau belum memiliki lokasi.</red>"));
                     return;
                 }
-                player.teleportAsync(manager.getActiveLocation().clone().add(0, 0.5, 0)).thenAccept(success -> {
+                player.teleportAsync(loc.clone().add(0, 0.5, 0)).thenAccept(success -> {
                     if (success) {
-                        player.sendMessage(mm.deserialize("<green>Teleportasi ke kafilah pasar gelap berhasil.</green>"));
+                        player.sendMessage(mm.deserialize("<green>Teleportasi ke kafilah pasar gelap berhasil: <gold>X: "
+                                + (int) loc.getX() + ", Y: " + (int) loc.getY() + ", Z: " + (int) loc.getZ() + "</gold></green>"));
                     } else {
                         player.sendMessage(mm.deserialize("<red>Gagal melakukan teleportasi ke kafilah.</red>"));
                     }
@@ -140,6 +147,7 @@ public class CaravanCommand implements CommandExecutor, TabCompleter {
             completions.add("status");
             completions.add("open");
             if (isAdmin) {
+                completions.add("tp");
                 completions.add("admin");
             }
             return filterPrefix(completions, args[0]);
