@@ -4,12 +4,12 @@
 
 # Maximum claimed chunks allowed per player based on rank weight / name (-1 = Unlimited)
 claim-limits:
-  wanderer: 4
-  ascendant: 8
-  archon: 12
-  sovereign: 16
-  emperor: 24
-  sions: 32
+  wanderer: 9
+  ascendant: 16
+  archon: 25
+  sovereign: 36
+  emperor: 49
+  sions: 64
   # Upper Dimension (The Aetherial Conclave): Tanpa Batas (Unlimited per LORE.md)
   herald: -1
   warden: -1

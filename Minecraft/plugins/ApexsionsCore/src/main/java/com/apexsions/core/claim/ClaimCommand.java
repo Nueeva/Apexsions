@@ -222,11 +222,30 @@ public class ClaimCommand implements CommandExecutor, TabCompleter {
             }
             case "name", "rename", "setname" -> handleSetName(player, args);
             case "radius" -> handleRadius(player, args);
+            case "outpost" -> handleOutpost(player, args);
             case "list" -> handleList(player);
             default -> sendHelp(player);
         }
 
         return true;
+    }
+
+    private void handleOutpost(Player player, String[] args) {
+        if (args.length < 2) {
+            player.sendMessage(mm.deserialize("<yellow>Penggunaan: /claim outpost <set|remove></yellow> <gray>(Tetapkan petak saat ini sebagai Pos Depan / Diskon Pajak 50%)</gray>"));
+            return;
+        }
+
+        String sub = args[1].toLowerCase();
+        if (sub.equals("set") || sub.equals("enable") || sub.equals("add")) {
+            var res = getClaimManager().setOutpostCurrentChunk(player, true);
+            player.sendMessage(mm.deserialize(res.message()));
+        } else if (sub.equals("remove") || sub.equals("disable") || sub.equals("unset") || sub.equals("clear")) {
+            var res = getClaimManager().setOutpostCurrentChunk(player, false);
+            player.sendMessage(mm.deserialize(res.message()));
+        } else {
+            player.sendMessage(mm.deserialize("<yellow>Penggunaan: /claim outpost <set|remove></yellow>"));
+        }
     }
 
     private void handleSetName(Player player, String[] args) {
@@ -515,6 +534,7 @@ public class ClaimCommand implements CommandExecutor, TabCompleter {
         player.sendMessage(mm.deserialize("<yellow>/claim list</yellow> <gray>- Buka menu sentralisasi & daftar petak Anda</gray>"));
         player.sendMessage(mm.deserialize("<yellow>/claim name <nama></yellow> <gray>- Beri label/nama khusus pada petak tanah ini</gray>"));
         player.sendMessage(mm.deserialize("<yellow>/claim radius <1|2></yellow> <gray>- Klaim cepat 3x3 atau 5x5 petak di sekeliling Anda</gray>"));
+        player.sendMessage(mm.deserialize("<yellow>/claim outpost <set|remove></yellow> <gray>- Tetapkan petak sebagai Pos Depan (Diskon Pajak 50%)</gray>"));
         player.sendMessage(mm.deserialize("<yellow>/claim unclaim [chunkX] [chunkZ]</yellow> <gray>- Melepas klaim (bisa dari jarak jauh)</gray>"));
         player.sendMessage(mm.deserialize("<yellow>/claim unclaimall</yellow> <gray>- Melepas seluruh klaim tanah Anda</gray>"));
         player.sendMessage(mm.deserialize("<yellow>/claim bank</yellow> <gray>- Info saldo brankas, pajak progresif, & masa tenggang</gray>"));
@@ -532,13 +552,20 @@ public class ClaimCommand implements CommandExecutor, TabCompleter {
 
         List<String> completions = new ArrayList<>();
         if (args.length == 1) {
-            List<String> subs = new ArrayList<>(List.of("gui", "home", "tp", "name", "rename", "radius", "info", "bank", "deposit", "withdraw", "flag", "role", "trust", "untrust", "list", "unclaim", "unclaimall"));
+            List<String> subs = new ArrayList<>(List.of("gui", "home", "tp", "name", "rename", "radius", "outpost", "info", "bank", "deposit", "withdraw", "flag", "role", "trust", "untrust", "list", "unclaim", "unclaimall"));
             if (sender.hasPermission("apexsions.admin") || sender.isOp()) {
                 subs.add("admin");
                 subs.add("reload");
             }
             for (String s : subs) {
                 if (s.startsWith(args[0].toLowerCase())) completions.add(s);
+            }
+            return completions;
+        }
+
+        if (args.length == 2 && args[0].equalsIgnoreCase("outpost")) {
+            for (String o : List.of("set", "remove")) {
+                if (o.startsWith(args[1].toLowerCase())) completions.add(o);
             }
             return completions;
         }

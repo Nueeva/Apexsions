@@ -240,9 +240,10 @@ public class ClaimGUI implements Listener {
             int blockX = (c.getChunkX() << 4) + 8;
             int blockZ = (c.getChunkZ() << 4) + 8;
 
+            String outpostTag = c.isOutpost() ? " <gradient:#ffd700:#ff8c00><b>[OUTPOST]</b></gradient>" : "";
             String label = (c.getName() != null && !c.getName().isBlank())
-                    ? "<gold><bold>\"" + c.getName() + "\"</bold></gold> <yellow>[" + c.getChunkX() + ", " + c.getChunkZ() + "]</yellow>"
-                    : "<gold><bold>Petak #" + (i + 1) + "</bold></gold> <yellow>[" + c.getChunkX() + ", " + c.getChunkZ() + "]</yellow>";
+                    ? "<gold><bold>\"" + c.getName() + "\"</bold></gold>" + outpostTag + " <yellow>[" + c.getChunkX() + ", " + c.getChunkZ() + "]</yellow>"
+                    : "<gold><bold>Petak #" + (i + 1) + "</bold></gold>" + outpostTag + " <yellow>[" + c.getChunkX() + ", " + c.getChunkZ() + "]</yellow>";
 
             inv.setItem(slot, createItem(mat,
                     label,
@@ -288,11 +289,13 @@ public class ClaimGUI implements Listener {
         int blockX = (claim.getChunkX() << 4) + 8;
         int blockZ = (claim.getChunkZ() << 4) + 8;
         String nameLabel = (claim.getName() != null && !claim.getName().isBlank()) ? claim.getName() : "<italic>Belum Dinamai</italic>";
+        String outpostStatus = claim.isOutpost() ? "<gold><b>[POS DEPAN / OUTPOST]</b> (Diskon 50%)</gold>" : "<white>Markas Pribadi (Standar)</white>";
 
         // Slot 4: Info Card
         inv.setItem(4, createItem(Material.FILLED_MAP,
                 "<gold><bold>Petak Wilayah [" + claim.getChunkX() + ", " + claim.getChunkZ() + "]</bold></gold>",
                 "<gray>Nama Label: </gray><yellow>" + nameLabel + "</yellow>",
+                "<gray>Tipe Teritori: </gray>" + outpostStatus,
                 "<gray>Dunia: </gray><aqua>" + claim.getWorld() + "</aqua>",
                 "<gray>Koordinat Blok: </gray><white>~ X: " + blockX + ", Z: " + blockZ + "</white>",
                 "<gray>Status: </gray>" + (claim.isInGracePeriod() ? "<red>Menunggak Pajak</red>" : "<green>Lunas & Aktif</green>"),
@@ -323,6 +326,16 @@ public class ClaimGUI implements Listener {
                 "<gray>petak tanah ini.</gray>",
                 "",
                 "<yellow>» Sentuh / Klik untuk Setor «</yellow>"));
+
+        // Slot 14: Outpost Toggle Button
+        inv.setItem(14, createItem(claim.isOutpost() ? Material.BEACON : Material.CAMPFIRE,
+                claim.isOutpost() ? "<gold><bold>Cabut Status Outpost</bold></gold>" : "<gradient:#ffd700:#ff8c00><bold>Jadikan Pos Depan (Outpost)</bold></gradient>",
+                "<gray>Status: </gray>" + (claim.isOutpost() ? "<green>Aktif (Diskon Pajak 50%)</green>" : "<gray>Standar</gray>"),
+                "",
+                "<gray>Pos Depan mendapat diskon perawatan 50%</gray>",
+                "<gray>dan berfungsi sebagai pangkalan ekspedisi.</gray>",
+                "",
+                "<yellow>» Sentuh / Klik untuk Beralih «</yellow>"));
 
         // Slot 15: Remote Unclaim Button (Safe single tap with confirmation notice)
         inv.setItem(15, createItem(Material.REDSTONE_BLOCK,
@@ -469,6 +482,12 @@ public class ClaimGUI implements Listener {
                 plugin.getClaimRepository().updateClaimFinancials(claim);
                 player.sendMessage(mm.deserialize("<green>✔ Berhasil menyetor <gold>Rp1.000</gold> ke brankas petak [" + claim.getChunkX() + ", " + claim.getChunkZ() + "].</green>"));
                 player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 0.7f, 1.4f);
+                openTerritoryAction(player, claim);
+            } else if (slot == 14) {
+                // Outpost toggle
+                boolean currentOutpost = claim.isOutpost();
+                var res = claimManager.setOutpost(player, claim.getWorld(), claim.getChunkX(), claim.getChunkZ(), !currentOutpost);
+                player.sendMessage(mm.deserialize(res.message()));
                 openTerritoryAction(player, claim);
             } else if (slot == 15) {
                 // Remote Unclaim

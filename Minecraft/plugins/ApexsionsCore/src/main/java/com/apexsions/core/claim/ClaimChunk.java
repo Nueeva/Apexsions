@@ -292,6 +292,18 @@ public class ClaimChunk {
         }
     }
 
+    public boolean isOutpost() {
+        return getBooleanFlag("is_outpost", false);
+    }
+
+    public void setOutpost(boolean outpost) {
+        if (outpost) {
+            setFlag("is_outpost", "true");
+        } else {
+            setFlag("is_outpost", null);
+        }
+    }
+
     // --- Serialization Helpers ---
 
     public String getTrustedPlayersSerialized() {

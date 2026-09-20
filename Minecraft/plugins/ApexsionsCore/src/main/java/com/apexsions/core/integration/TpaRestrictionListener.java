@@ -117,6 +117,41 @@ public class TpaRestrictionListener implements Listener {
                 }
             }
         }
+
+        // 4. Intercept /sethome (Anti-Infiltration Protection)
+        else if (cmd.equals("sethome")) {
+            boolean hasBypass = sender.isOp() ||
+                    sender.hasPermission("apexsions.admin") ||
+                    sender.hasPermission("apexsionscore.admin.bypass.claim") ||
+                    (plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isConclaveStaff(sender));
+
+            if (!hasBypass && plugin.getClaimManager() != null) {
+                var claimOpt = plugin.getClaimManager().getClaimAt(sender.getLocation());
+                if (claimOpt.isPresent()) {
+                    var claim = claimOpt.get();
+                    if (!claim.isOwner(sender.getUniqueId()) && !claim.getRole(sender.getUniqueId()).isAtLeast(com.apexsions.core.claim.ClaimRole.BUILDER)) {
+                        event.setCancelled(true);
+                        sender.sendMessage(miniMessage.deserialize("<red>✖ Ditolak! Anda tidak dapat memasang <yellow>/sethome</yellow> di dalam wilayah terproteksi milik <gold>" + claim.getOwnerName() + "</gold> tanpa izin Builder!</red>"));
+                        sender.playSound(sender.getLocation(), org.bukkit.Sound.BLOCK_CHEST_LOCKED, 0.6f, 1.2f);
+                        return;
+                    }
+                }
+
+                if (plugin.getRegionManager() != null) {
+                    var curRegionOpt = plugin.getRegionManager().getRegionAt(sender.getLocation());
+                    if (curRegionOpt.isPresent() && curRegionOpt.get().isPlayable()) {
+                        var pData = plugin.getPlayerDataService().getCached(sender.getUniqueId());
+                        UUID playerKingdom = pData.map(com.apexsions.core.player.PlayerData::getRegionId).orElse(null);
+                        if (playerKingdom != null && !playerKingdom.equals(curRegionOpt.get().getId())) {
+                            event.setCancelled(true);
+                            sender.sendMessage(miniMessage.deserialize("<red>✖ Ditolak! Anda tidak dapat memasang <yellow>/sethome</yellow> di dalam teritori kedaulatan kerajaan asing (<gold>" + curRegionOpt.get().getDisplayName() + "</gold>)!</red>"));
+                            sender.playSound(sender.getLocation(), org.bukkit.Sound.BLOCK_CHEST_LOCKED, 0.6f, 1.2f);
+                            return;
+                        }
+                    }
+                }
+            }
+        }
     }
 
     private boolean isTeleportCommand(String cmd, String[] parts) {

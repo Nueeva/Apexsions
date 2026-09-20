@@ -212,7 +212,7 @@ public class ClaimManager {
             return highestPermLimit;
         }
 
-        int def = claimLimits.getOrDefault("wanderer", 4);
+        int def = claimLimits.getOrDefault("wanderer", 9);
         return def <= -1 ? Integer.MAX_VALUE : def;
     }
 
@@ -276,7 +276,8 @@ public class ClaimManager {
             double chunkRate = calculateChunkDailyTax(ownerId);
 
             for (ClaimChunk claim : chunks) {
-                claim.setDailyUpkeep(chunkRate);
+                double effectiveRate = claim.isOutpost() ? (chunkRate * 0.5) : chunkRate;
+                claim.setDailyUpkeep(effectiveRate);
 
                 boolean isDue = (now - claim.getLastTaxCollectedAt() >= periodMs);
                 boolean isGrace = (claim.getStatus() == ClaimStatus.GRACE_PERIOD);
@@ -287,14 +288,14 @@ public class ClaimManager {
                     boolean autoDebited = false;
 
                     // 1. Try deducting from claim's bank balance first
-                    if (claim.deduct(chunkRate)) {
+                    if (claim.deduct(effectiveRate)) {
                         paid = true;
                     } else if (fallbackWalletAutoDebit && plugin.getVaultHook() != null && plugin.getVaultHook().hasEconomy()) {
                         // 2. Fallback: Auto-debit from owner's personal wallet (Vault /bal)
                         OfflinePlayer ownerOffline = Bukkit.getOfflinePlayer(ownerId);
                         double inBank = claim.getBankBalance();
-                        double neededFromWallet = chunkRate - inBank;
-                        if (neededFromWallet <= 0) neededFromWallet = chunkRate;
+                        double neededFromWallet = effectiveRate - inBank;
+                        if (neededFromWallet <= 0) neededFromWallet = effectiveRate;
 
                         if (plugin.getVaultHook().has(ownerOffline, neededFromWallet)) {
                             if (plugin.getVaultHook().withdraw(ownerOffline, neededFromWallet)) {
@@ -315,13 +316,13 @@ public class ClaimManager {
                         if (autoDebited) {
                             Player owner = Bukkit.getPlayer(ownerId);
                             if (owner != null && owner.isOnline()) {
-                                owner.sendMessage(mm.deserialize("<gray><i>[Pajak Wilayah]</i> Saldo brankas chunk <gold>[" + claim.getChunkX() + ", " + claim.getChunkZ() + "]</gold> habis. Pajak harian <yellow>Rp" + String.format("%,.0f", chunkRate) + "</yellow> otomatis dipotong dari dompet pribadi Anda.</gray>"));
+                                owner.sendMessage(mm.deserialize("<gray><i>[Pajak Wilayah]</i> Saldo brankas chunk <gold>[" + claim.getChunkX() + ", " + claim.getChunkZ() + "]</gold> habis. Pajak harian <yellow>Rp" + String.format("%,.0f", effectiveRate) + "</yellow> otomatis dipotong dari dompet pribadi Anda.</gray>"));
                             }
                         }
 
                         // Split with Kingdom Treasury
                         if (claim.getKingdomId() != null && !claim.getKingdomId().isBlank() && kingdomTreasurySplit > 0) {
-                            double treasuryShare = chunkRate * kingdomTreasurySplit;
+                            double treasuryShare = effectiveRate * kingdomTreasurySplit;
                             depositKingdomTreasury(claim.getKingdomId(), treasuryShare);
                         }
                     } else {
@@ -637,9 +638,10 @@ public class ClaimManager {
     private void sendTerritoryGreeting(Player player, ClaimChunk claim) {
         String greeting = claim.getFlag("greeting", null);
         String statusNote = claim.isInGracePeriod() ? " <red>[MENUNGGAK PAJAK]</red>" : "";
+        String outpostBadge = claim.isOutpost() ? " <gradient:#ffd700:#ff8c00><b>[OUTPOST]</b></gradient>" : "";
 
         if (greeting != null && !greeting.isBlank()) {
-            player.sendActionBar(mm.deserialize(greeting + statusNote));
+            player.sendActionBar(mm.deserialize(greeting + outpostBadge + statusNote));
         } else {
             String nameDisplay = (claim.getName() != null && !claim.getName().isBlank())
                     ? " <white>\"" + claim.getName() + "\"</white>"
@@ -647,7 +649,7 @@ public class ClaimManager {
             String ownerDisplay = claim.isOwner(player.getUniqueId())
                     ? "<green>Wilayah Anda" + nameDisplay + "</green>"
                     : "<gold>Wilayah " + claim.getOwnerName() + nameDisplay + "</gold>";
-            player.sendActionBar(mm.deserialize("<gray>Memasuki</gray> " + ownerDisplay + statusNote));
+            player.sendActionBar(mm.deserialize("<gray>Memasuki</gray> " + ownerDisplay + outpostBadge + statusNote));
         }
 
         // Elegant chime sound effect upon crossing into claimed territory
@@ -818,6 +820,37 @@ public class ClaimManager {
     public ClaimResult setClaimNameCurrentChunk(Player player, String newName) {
         Chunk chunk = player.getLocation().getChunk();
         return setClaimName(player, chunk.getWorld().getName(), chunk.getX(), chunk.getZ(), newName);
+    }
+
+    public ClaimResult setOutpost(Player player, String worldName, int chunkX, int chunkZ, boolean outpost) {
+        String key = ClaimChunk.buildChunkKey(worldName, chunkX, chunkZ);
+        ClaimChunk claim = claims.get(key);
+        if (claim == null) {
+            return new ClaimResult(false, "<yellow>⚠ Wilayah pada chunk [" + chunkX + ", " + chunkZ + "] tidak diklaim.</yellow>");
+        }
+
+        if (!claim.isOwner(player.getUniqueId()) && !player.isOp() && !player.hasPermission("apexsions.admin")) {
+            return new ClaimResult(false, "<red>✖ Anda bukan pemilik tanah ini!</red>");
+        }
+
+        claim.setOutpost(outpost);
+        repository.updateClaimFlags(claim);
+        if (plugin.getWebBridgeService() != null) {
+            plugin.getWebBridgeService().syncClaimsAsync(getAllClaims());
+        }
+
+        if (outpost) {
+            player.playSound(player.getLocation(), Sound.BLOCK_BEACON_ACTIVATE, 0.7f, 1.2f);
+            return new ClaimResult(true, "<green>✔ Berhasil menetapkan petak <gold>[" + chunkX + ", " + chunkZ + "]</gold> sebagai <b><gradient:#ffd700:#ff8c00>[POS DEPAN / OUTPOST]</gradient></b>! Pajak harian mendapat diskon 50%.</green>");
+        } else {
+            player.playSound(player.getLocation(), Sound.BLOCK_BEACON_DEACTIVATE, 0.6f, 1.0f);
+            return new ClaimResult(true, "<gold>✔ Berhasil mencabut status Outpost dari petak [" + chunkX + ", " + chunkZ + "].</gold>");
+        }
+    }
+
+    public ClaimResult setOutpostCurrentChunk(Player player, boolean outpost) {
+        Chunk chunk = player.getLocation().getChunk();
+        return setOutpost(player, chunk.getWorld().getName(), chunk.getX(), chunk.getZ(), outpost);
     }
 
     public ClaimResult claimRadius(Player player, int radius) {
