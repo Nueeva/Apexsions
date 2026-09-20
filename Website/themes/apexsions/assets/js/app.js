@@ -1952,7 +1952,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initLanguageSwitcher();
 
     // ==========================================================================
-    // 1.1 Apexsions Dual-Theme Engine (Dark Obsidian & Sovereign Ivory)
+    // 1.1 Apexsions Dual-Theme Engine (Solar & Lunar Radial Wave Transition)
     // ==========================================================================
     const initThemeSwitcher = () => {
         const themeToggles = document.querySelectorAll('.apx-theme-toggle');
@@ -1979,13 +1979,81 @@ document.addEventListener('DOMContentLoaded', () => {
             } catch (e) {}
         };
 
-        themeToggles.forEach(btn => {
-            btn.addEventListener('click', (e) => {
+        const toggleThemeWithAnimation = (e) => {
+            if (e) {
                 e.preventDefault();
-                const current = document.documentElement.getAttribute('data-bs-theme') || 'dark';
-                const target = current === 'dark' ? 'light' : 'dark';
+            }
+            const current = document.documentElement.getAttribute('data-bs-theme') || 'dark';
+            const target = current === 'dark' ? 'light' : 'dark';
+
+            // 1. Micro-Interaction: Button Icon Spin & Spring Scale
+            const btn = e ? e.currentTarget : null;
+            if (btn) {
+                btn.classList.add('apx-theme-spinning');
+                setTimeout(() => btn.classList.remove('apx-theme-spinning'), 500);
+            }
+
+            // 2. Respect Accessibility: Reduced Motion Check
+            const isReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+            // 3. Fallback for browsers without View Transitions API or when motion is reduced
+            if (!document.startViewTransition || isReducedMotion) {
+                if (document.body && !isReducedMotion) {
+                    document.body.classList.add('apx-theme-transitioning');
+                    applyTheme(target);
+                    setTimeout(() => document.body.classList.remove('apx-theme-transitioning'), 400);
+                } else {
+                    applyTheme(target);
+                }
+                return;
+            }
+
+            // 4. View Transitions API: Radial Wave Originating from Click/Button Center
+            const rect = btn ? btn.getBoundingClientRect() : { left: window.innerWidth / 2, top: 0, width: 0, height: 0 };
+            const x = (e && typeof e.clientX === 'number' && e.clientX > 0) ? e.clientX : (rect.left + rect.width / 2);
+            const y = (e && typeof e.clientY === 'number' && e.clientY > 0) ? e.clientY : (rect.top + rect.height / 2);
+
+            const endRadius = Math.hypot(
+                Math.max(x, window.innerWidth - x),
+                Math.max(y, window.innerHeight - y)
+            );
+
+            document.documentElement.style.setProperty('--apx-theme-x', `${x}px`);
+            document.documentElement.style.setProperty('--apx-theme-y', `${y}px`);
+            document.documentElement.style.setProperty('--apx-theme-radius', `${endRadius}px`);
+            document.documentElement.setAttribute('data-theme-transition', 'active');
+
+            const transition = document.startViewTransition(() => {
                 applyTheme(target);
             });
+
+            transition.ready.then(() => {
+                try {
+                    document.documentElement.animate(
+                        {
+                            clipPath: [
+                                `circle(0px at ${x}px ${y}px)`,
+                                `circle(${endRadius}px at ${x}px ${y}px)`
+                            ]
+                        },
+                        {
+                            duration: 460,
+                            easing: 'cubic-bezier(0.16, 1, 0.3, 1)',
+                            pseudoElement: '::view-transition-new(root)'
+                        }
+                    );
+                } catch (animErr) {
+                    // CSS @keyframes fallback will run automatically if pseudoElement animate fails
+                }
+            }).catch(() => {});
+
+            transition.finished.finally(() => {
+                document.documentElement.removeAttribute('data-theme-transition');
+            });
+        };
+
+        themeToggles.forEach(btn => {
+            btn.addEventListener('click', toggleThemeWithAnimation);
         });
 
         let currentTheme = 'dark';
