@@ -173,6 +173,8 @@ public class CaravanManager {
             }
             if (nextAnnounceAt != null && System.currentTimeMillis() >= nextAnnounceAt) {
                 announceLocation();
+                // Advance the schedule, otherwise this fires on every tick.
+                nextAnnounceAt = System.currentTimeMillis() + getAnnounceIntervalMinutes() * 60_000L;
             }
             return;
         }

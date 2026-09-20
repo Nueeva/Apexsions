@@ -34,7 +34,12 @@ public class BountyCommand implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (!(sender instanceof Player player)) {
-            sender.sendMessage("Hanya pemain dalam game yang dapat menggunakan perintah bounty.");
+            // Console (WebBridge delivery queue) may only run the admin subcommands.
+            if (args.length >= 2 && args[0].equalsIgnoreCase("admin")) {
+                handleConsoleAdmin(sender, args);
+            } else {
+                sender.sendMessage("Perintah bounty hanya untuk pemain; console hanya dapat memakai '/bounty admin ...'.");
+            }
             return true;
         }
 
@@ -86,6 +91,40 @@ public class BountyCommand implements CommandExecutor, TabCompleter {
             default -> sendList(player);
         }
         return true;
+    }
+
+    /**
+     * Admin subcommands executed from console / WebBridge delivery queue.
+     */
+    private void handleConsoleAdmin(CommandSender sender, String[] args) {
+        if (args.length >= 3 && args[1].equalsIgnoreCase("clear")) {
+            OfflinePlayer target = resolve(args[2]);
+            if (target == null) {
+                sender.sendMessage("Pemain " + args[2] + " tidak ditemukan.");
+                return;
+            }
+            boolean cleared = manager.clearBounty(target.getUniqueId());
+            sender.sendMessage(cleared
+                    ? "Bounty untuk " + args[2] + " dibersihkan; seluruh kontribusi dikembalikan."
+                    : "Tidak ada bounty aktif untuk " + args[2] + ".");
+            return;
+        }
+        if (args.length >= 4 && args[1].equalsIgnoreCase("set")) {
+            OfflinePlayer target = resolve(args[2]);
+            Double amount = parseAmount(args[3]);
+            if (target == null) {
+                sender.sendMessage("Pemain " + args[2] + " tidak ditemukan.");
+                return;
+            }
+            if (amount == null || amount <= 0) {
+                sender.sendMessage("Jumlah bounty tidak valid.");
+                return;
+            }
+            manager.setAdminBounty(target, amount);
+            sender.sendMessage("Bounty admin untuk " + args[2] + " ditambah " + manager.format(amount) + ".");
+            return;
+        }
+        sender.sendMessage("Gunakan: /bounty admin clear <pemain> atau /bounty admin set <pemain> <jumlah>");
     }
 
     private void handleAdmin(Player player, String[] args) {

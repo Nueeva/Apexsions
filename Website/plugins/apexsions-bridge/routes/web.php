@@ -30,6 +30,8 @@ use Azuriom\Plugin\ApexsionsBridge\Controllers\PublicProfileController;
 use Azuriom\Plugin\ApexsionsBridge\Controllers\ServerMapController;
 use Azuriom\Plugin\ApexsionsBridge\Controllers\VoteController;
 use Azuriom\Plugin\ApexsionsBridge\Controllers\WorldFeedController;
+use Azuriom\Plugin\ApexsionsBridge\Controllers\BountyController;
+use Azuriom\Plugin\ApexsionsBridge\Controllers\Admin\BountyAdminController;
 use Illuminate\Support\Facades\Route;
 
 // Public Routes
@@ -37,6 +39,7 @@ Route::get('/leaderboard', [LeaderboardController::class, 'index'])->name('leade
 Route::get('/player/{identifier}', [PublicProfileController::class, 'show'])->name('player.show');
 Route::get('/server-map', [ServerMapController::class, 'index'])->name('server-map');
 Route::get('/feed', [WorldFeedController::class, 'index'])->name('feed');
+Route::get('/bounties', [BountyController::class, 'index'])->name('bounties');
 Route::get('/vote', [VoteController::class, 'index'])->name('vote');
 Route::post('/vote/check-status', [VoteController::class, 'checkStatus'])->name('vote.check-status');
 Route::post('/vote/verify/{siteSlug}', [VoteController::class, 'checkStatus'])->name('vote.verify');
@@ -211,6 +214,12 @@ Route::middleware(['web', 'admin-access'])->prefix('admin')->name('admin.')->gro
         Route::post('/poll', [VoteAdminController::class, 'triggerPoll'])->name('poll');
         Route::post('/sites/{id}/toggle', [VoteAdminController::class, 'toggleSite'])->name('sites.toggle');
         Route::post('/sites/{id}/update', [VoteAdminController::class, 'updateSite'])->name('sites.update');
+    });
+
+    // Bounty Oversight & Moderation
+    Route::prefix('bounties')->name('bounties.')->middleware('can:admin.users')->group(function () {
+        Route::get('/', [BountyAdminController::class, 'index'])->name('index');
+        Route::post('/clear', [BountyAdminController::class, 'clear'])->name('clear');
     });
 
     // Kingdoms & Territory War Operations

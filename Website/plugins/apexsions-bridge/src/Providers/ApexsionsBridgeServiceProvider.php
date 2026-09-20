@@ -250,6 +250,12 @@ class ApexsionsBridgeServiceProvider extends BasePluginServiceProvider
                 'route' => 'apexsions-bridge.admin.kingdoms.index',
                 'permission' => 'admin.users',
             ],
+            'apexsions-bounties' => [
+                'name' => 'Bounty Oversight',
+                'icon' => 'bi bi-crosshair',
+                'route' => 'apexsions-bridge.admin.bounties.index',
+                'permission' => 'admin.users',
+            ],
             'apexsions-battlepass' => [
                 'name' => 'BattlePass Season Desk',
                 'icon' => 'bi bi-ticket-perforated-fill',

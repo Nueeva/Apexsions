@@ -30,13 +30,34 @@
                     </li>
                 @endif
 
-                <!-- 3. Leaderboard -->
-                <li class="nav-item">
-                    <a class="nav-link apx-nav-link @if(request()->is('leaderboard*')) active @endif" href="{{ url('/leaderboard') }}" data-i18n="nav_leaderboard">
-                        Leaderboard
+                <!-- 3. Realm dropdown (Leaderboard, Feed, Bounties) -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link apx-nav-link dropdown-toggle @if(request()->is('leaderboard*') || request()->is('feed*') || request()->is('bounties*')) active @endif"
+                       href="#" id="apxRealmDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" data-i18n="nav_realm">
+                        Realm
                     </a>
+                    <ul class="dropdown-menu shadow-lg apx-nav-dropdown" aria-labelledby="apxRealmDropdown">
+                        <li>
+                            <a class="dropdown-item py-2" href="{{ url('/leaderboard') }}">
+                                <i class="bi bi-trophy me-2 text-warning"></i> <span data-i18n="nav_leaderboard">Papan Peringkat</span>
+                            </a>
+                        </li>
+                        @if(Route::has('apexsions-bridge.feed'))
+                            <li>
+                                <a class="dropdown-item py-2" href="{{ route('apexsions-bridge.feed') }}">
+                                    <i class="bi bi-broadcast me-2 text-danger"></i> <span data-i18n="nav_feed">Kronik Realm</span>
+                                </a>
+                            </li>
+                        @endif
+                        @if(Route::has('apexsions-bridge.bounties'))
+                            <li>
+                                <a class="dropdown-item py-2" href="{{ route('apexsions-bridge.bounties') }}">
+                                    <i class="bi bi-crosshair me-2 text-gold"></i> <span data-i18n="nav_bounties">Papan Buronan</span>
+                                </a>
+                            </li>
+                        @endif
+                    </ul>
                 </li>
-
 
                 <!-- 5. Wiki -->
                 @if(plugins()->isEnabled('wiki'))
@@ -99,6 +120,12 @@
                         </li>
                     </ul>
                 </div>
+
+                @if(plugins()->isEnabled('apexsions-bridge') && \Azuriom\Plugin\ApexsionsBridge\Services\ServerMapService::isMapEnabled() && \Azuriom\Plugin\ApexsionsBridge\Services\ServerMapService::isNavigationVisible())
+                    <a href="{{ route('apexsions-bridge.server-map') }}" class="btn apx-theme-btn" title="Atlas 3D Realm (Server Map)" aria-label="Buka Server Map" target="_blank" rel="noopener noreferrer">
+                        <i class="bi bi-map text-gold" style="font-size: 1.05rem;"></i>
+                    </a>
+                @endif
 
                 <!-- Dedicated Discord Community CTA Button -->
                 <a href="https://discord.gg/apexsions" target="_blank" rel="noopener noreferrer" class="btn btn-apx-discord d-inline-flex align-items-center gap-2" title="Gabung Komunitas Discord">
@@ -244,6 +271,32 @@
                     </a>
                 </li>
 
+                @if(Route::has('apexsions-bridge.feed'))
+                    <li class="nav-item">
+                        <a class="apx-drawer-link @if(request()->is('feed*')) active @endif" href="{{ route('apexsions-bridge.feed') }}">
+                            <i class="bi bi-broadcast text-warning"></i>
+                            <span data-i18n="nav_feed">Kronik Realm</span>
+                        </a>
+                    </li>
+                @endif
+
+                @if(Route::has('apexsions-bridge.bounties'))
+                    <li class="nav-item">
+                        <a class="apx-drawer-link @if(request()->is('bounties*')) active @endif" href="{{ route('apexsions-bridge.bounties') }}">
+                            <i class="bi bi-crosshair text-warning"></i>
+                            <span data-i18n="nav_bounties">Papan Buronan</span>
+                        </a>
+                    </li>
+                @endif
+
+                @if(plugins()->isEnabled('apexsions-bridge') && \Azuriom\Plugin\ApexsionsBridge\Services\ServerMapService::isMapEnabled() && \Azuriom\Plugin\ApexsionsBridge\Services\ServerMapService::isNavigationVisible())
+                    <li class="nav-item">
+                        <a class="apx-drawer-link" href="{{ route('apexsions-bridge.server-map') }}">
+                            <i class="bi bi-map text-warning"></i>
+                            <span data-i18n="nav_map">Atlas Realm</span>
+                        </a>
+                    </li>
+                @endif
 
                 @if(plugins()->isEnabled('wiki'))
                     <li class="nav-item">

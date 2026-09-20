@@ -627,6 +627,58 @@ class LinkVerificationController extends Controller
     }
 
     /**
+     * Ingest an entire active-bounty snapshot from the in-game BountyManager.
+     *
+     * The game only pushes when the bounty set actually changes, so an empty
+     * payload is meaningful here (all bounties claimed/cleared) and the web
+     * snapshot is pruned to match.
+     */
+    public function syncBounties(Request $request): JsonResponse
+    {
+        if (!$this->authenticateServer($request)) {
+            return response()->json(['error' => 'Unauthorized server request.'], 401);
+        }
+
+        $validated = $request->validate([
+            'bounties' => ['required', 'array'],
+            'bounties.*.target_uuid' => ['required', 'string', 'max:64'],
+            'bounties.*.target_name' => ['required', 'string', 'max:64'],
+            'bounties.*.total_amount' => ['required', 'numeric', 'min:0'],
+            'bounties.*.contributor_count' => ['nullable', 'integer', 'min:0'],
+            'bounties.*.top_contributors' => ['nullable', 'array'],
+        ]);
+
+        $incoming = $validated['bounties'];
+        $syncedUuids = [];
+
+        foreach ($incoming as $item) {
+            $syncedUuids[] = $item['target_uuid'];
+
+            \Azuriom\Plugin\ApexsionsBridge\Models\Bounty::updateOrCreate(
+                ['target_uuid' => $item['target_uuid']],
+                [
+                    'target_name' => $item['target_name'],
+                    'total_amount' => (float) $item['total_amount'],
+                    'contributor_count' => (int) ($item['contributor_count'] ?? 0),
+                    'top_contributors' => $item['top_contributors'] ?? null,
+                    'last_synced_at' => now(),
+                ]
+            );
+        }
+
+        // Prune bounties no longer active in-game (claimed, expired, or cleared).
+        \Azuriom\Plugin\ApexsionsBridge\Models\Bounty::when(
+            !empty($syncedUuids),
+            fn ($query) => $query->whereNotIn('target_uuid', $syncedUuids)
+        )->delete();
+
+        return response()->json([
+            'status' => 'success',
+            'synced_count' => count($incoming),
+        ]);
+    }
+
+    /**
      * Ingest an entire land claims snapshot from in-game ClaimManager.
      */
     public function syncClaims(Request $request): JsonResponse

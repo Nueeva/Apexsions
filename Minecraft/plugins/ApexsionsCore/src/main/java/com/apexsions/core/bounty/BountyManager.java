@@ -103,6 +103,20 @@ public class BountyManager {
         sessionStart.put(player.getUniqueId(), System.currentTimeMillis());
     }
 
+    /**
+     * Pushes the current active-bounty snapshot to the web platform (public
+     * /bounties page + admin oversight). Fire-and-forget, async.
+     *
+     * Only called on deliberate mutations, never on startup, so an empty
+     * snapshot here genuinely means "no active bounties".
+     */
+    public void syncSnapshotToWeb() {
+        if (plugin.getWebBridgeService() == null) {
+            return;
+        }
+        plugin.getWebBridgeService().syncBountiesAsync(new ArrayList<>(active.values()));
+    }
+
     public void onQuit(@NotNull Player player) {
         sessionStart.remove(player.getUniqueId());
     }
@@ -163,6 +177,7 @@ public class BountyManager {
 
         placer.sendMessage(mm.deserialize("<gradient:#f1c40f:#e67e22><bold>BOUNTY DIPASANG!</bold></gradient> <gray>Anda memasang <gold>"
                 + format(amount) + "</gold> untuk <yellow>" + targetName + "</yellow>. Total bounty: <gold>" + format(tb.total()) + "</gold>.</gray>"));
+        syncSnapshotToWeb();
         return true;
     }
 
@@ -179,6 +194,7 @@ public class BountyManager {
                 k -> new TargetBounty(target.getUniqueId(), targetName));
         tb.setTargetName(targetName);
         tb.add(ADMIN_UUID, "ADMIN", amount);
+        syncSnapshotToWeb();
     }
 
     // --- Claims ---
@@ -218,6 +234,7 @@ public class BountyManager {
         repository.deactivateTarget(victim.getUniqueId(), killer.getUniqueId());
         repository.addHunterClaim(killer.getUniqueId(), killer.getName(), net);
         active.remove(victim.getUniqueId());
+        syncSnapshotToWeb();
 
         killer.sendMessage(mm.deserialize("<gradient:#2ecc71:#27ae60><bold>BOUNTY DIKLAIM!</bold></gradient> <gray>Anda mendapat <gold>"
                 + format(net) + "</gold> dari bounty <yellow>" + tb.getTargetName() + "</yellow>.</gray>"));
@@ -246,6 +263,7 @@ public class BountyManager {
             }
         }
         repository.deactivateTarget(targetUuid, null);
+        syncSnapshotToWeb();
         return true;
     }
 

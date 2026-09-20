@@ -539,6 +539,63 @@ public class WebBridgeService {
     }
 
     /**
+     * Synchronize the active player-bounty snapshot to the web platform
+     * (public /bounties page + admin oversight panel).
+     */
+    public CompletableFuture<Boolean> syncBountiesAsync(Collection<com.apexsions.core.bounty.TargetBounty> bounties) {
+        if (!enabled || bounties == null) return CompletableFuture.completedFuture(false);
+        try {
+            StringBuilder sb = new StringBuilder();
+            sb.append("{\"bounties\":[");
+            boolean first = true;
+            for (var b : bounties) {
+                if (!first) sb.append(",");
+                first = false;
+
+                StringBuilder contribs = new StringBuilder("[");
+                java.util.List<com.apexsions.core.bounty.TargetBounty.Contributor> contributors = b.contributors();
+                for (int i = 0; i < contributors.size(); i++) {
+                    var c = contributors.get(i);
+                    if (i > 0) contribs.append(",");
+                    contribs.append(String.format(java.util.Locale.US,
+                            "{\"uuid\":\"%s\",\"name\":\"%s\",\"amount\":%.2f}",
+                            escapeJson(c.uuid().toString()), escapeJson(c.name()), c.amount()));
+                }
+                contribs.append("]");
+
+                sb.append(String.format(java.util.Locale.US,
+                        "{\"target_uuid\":\"%s\",\"target_name\":\"%s\",\"total_amount\":%.2f,\"contributor_count\":%d,\"top_contributors\":%s}",
+                        escapeJson(b.getTargetUuid().toString()),
+                        escapeJson(b.getTargetName()),
+                        b.total(),
+                        contributors.size(),
+                        contribs.toString()
+                ));
+            }
+            sb.append("]}");
+
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(apiUrl + "/bounties/sync-all"))
+                    .timeout(Duration.ofSeconds(10))
+                    .header("Content-Type", "application/json")
+                    .header("Accept", "application/json")
+                    .header("X-Apexsions-Key", apiKey)
+                    .POST(HttpRequest.BodyPublishers.ofString(sb.toString()))
+                    .build();
+
+            return httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString())
+                    .thenApply(res -> res.statusCode() == 200 || res.statusCode() == 201)
+                    .exceptionally(ex -> {
+                        plugin.getLogger().log(Level.FINE, "[WebBridge] Failed to sync bounty snapshot to web: " + ex.getMessage());
+                        return false;
+                    });
+        } catch (Exception e) {
+            plugin.getLogger().log(Level.FINE, "[WebBridge] syncBountiesAsync error: " + e.getMessage());
+            return CompletableFuture.completedFuture(false);
+        }
+    }
+
+    /**
      * Synchronize entire active land claims snapshot to the web platform for Admin Dashboard inspection.
      */
     public CompletableFuture<Boolean> syncClaimsAsync(Collection<com.apexsions.core.claim.ClaimChunk> claimsList) {
