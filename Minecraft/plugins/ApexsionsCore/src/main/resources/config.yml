@@ -77,6 +77,197 @@ death-coords:
   bluemap-base-url: "http://apexsions.my.id:32076/"
 
 # ==============================================================================
+# Player Grave / Tombstone (/grave, /tombstone, /nisan)
+# ==============================================================================
+grave:
+  enabled: true
+  # Lama nisan bertahan sebelum item dilepas (detik). Default 30 menit.
+  duration-seconds: 1800
+  # Jarak maksimal (blok) untuk membuka nisan lewat /grave atau tap Interaction
+  interact-distance: 3.5
+  # Izinkan anggota kerajaan yang sama ikut membuka nisan
+  allow-kingdom-members: false
+  # Arahkan kompas otomatis ke nisan saat respawn
+  auto-compass-on-respawn: true
+
+# ==============================================================================
+# Player Bounty System (/bounty, /buronan)
+# ==============================================================================
+bounty:
+  enabled: true
+  # Jumlah minimum untuk memasang bounty (rupiah)
+  min-amount: 1000.0
+  # Pajak / server fee saat bounty diklaim (persen, 0 = tanpa pajak)
+  tax-percent: 5.0
+  # Blokir bounty jika target & pembunuh berada di kerajaan yang sama
+  block-same-kingdom: true
+  # Blokir klaim jika target & pembunuh terdeteksi dari IP yang sama (anti-abuse)
+  block-same-ip: true
+  # Minimal waktu online sesi pembunuh (detik) sebelum boleh mengklaim bounty
+  min-online-time-seconds: 300
+  # Broadcast pengumuman ke seluruh server saat bounty diklaim
+  broadcast-claim: true
+  # Maksimum bounty yang tampil di /bounty list
+  list-limit: 10
+
+# ==============================================================================
+# Smart Mob Stacking Engine (Optimasi TPS & FPS pemain Bedrock)
+# Menggabungkan gerombolan mob identik menjadi satu entitas berlabel [xN].
+# Killing satu unit mengurangi counter; sisa unit di-spawn ulang sehingga
+# drop loot & XP tetap setara vanilla.
+# ==============================================================================
+mob-stacking:
+  enabled: true
+  # Radius penggabungan mob identik (blok)
+  merge-radius: 6.0
+  # Ukuran stack maksimum per entitas
+  max-stack-size: 50
+  # Gabungkan mob segera setelah spawn (spawner/farm)
+  merge-on-spawn: true
+  # Jangan gabungkan mob dengan custom name (mis. pet bernama)
+  respect-custom-names: true
+  # Interval sapuan penggabungan mob lama (tick, 20 tick = 1 detik)
+  scan-interval-ticks: 100
+  # Batas jumlah entitas diproses per sapuan (proteksi lag)
+  scan-entities-per-pass: 4000
+  # Dunia yang diaktifkan (kosong = semua dunia)
+  worlds: []
+  # Tipe entitas yang tidak pernah digabung
+  ignored-types:
+    - VILLAGER
+    - WANDERING_TRADER
+    - IRON_GOLEM
+    - SNOW_GOLEM
+    - ALLAY
+    - AXOLOTL
+    - BEE
+    - PARROT
+    - WOLF
+    - CAT
+    - HORSE
+    - DONKEY
+    - MULE
+    - LLAMA
+    - CAMEL
+    - SNIFFER
+    - FROG
+    - TADPOLE
+    - ARMOR_STAND
+  # Alasan spawn yang tidak digabung
+  ignored-spawn-reasons:
+    - BEEHIVE
+    - BUILD_IRONGOLEM
+    - BUILD_SNOWMAN
+    - BREEDING
+    - EGG
+    - CURED
+    - VILLAGE_DEFENSE
+    - VILLAGE_INVASION
+    - RAID
+    - COMMAND
+    - CUSTOM
+    - SPAWNER_EGG
+    - DISPENSE_EGG
+  display:
+    name-format: "<gray>%type% <yellow>[x%count%]</yellow>"
+
+# ==============================================================================
+# Container Sort & Quick Deposit (/sort, /deposit)
+# Dirancang ramah Bedrock: cukup perintah chat, tanpa middle-click / keybind.
+# ==============================================================================
+container:
+  enabled: true
+  sort:
+    enabled: true
+    # Gabungkan tumpukan item sejenis saat merapikan
+    merge-stacks: true
+  quick-deposit:
+    enabled: true
+    # Jangan setor item dari slot yang sedang dipegang
+    skip-held-slot: true
+    # Hanya setor item yang jenisnya sudah ada di dalam peti (mode aman)
+    only-existing-types: true
+    # Sneak + klik kiri peti untuk setor cepat
+    sneak-interact: true
+
+# ==============================================================================
+# Wandering Black Market Caravan (/caravan, /kafilah)
+# NPC kafilah keliling yang muncul di koordinat rahasia dunia liar selama
+# jendela waktu tertentu. Berfungsi sebagai money sink anti-inflasi.
+# ==============================================================================
+caravan:
+  enabled: true
+  # Dunia tempat kafilah berkelana
+  world: "world"
+  # Hari kemunculan (kosong = setiap hari)
+  active-days:
+    - SATURDAY
+    - SUNDAY
+  # Lama kafilah bertahan per kemunculan (menit)
+  duration-minutes: 120
+  # Jarak minimum antar kemunculan (menit)
+  gap-minutes: 15
+  # Radius acak koordinat spawn dari titik 0,0 (blok)
+  zone-radius: 3000
+  # Interval siaran petunjuk koordinat (menit)
+  announce-interval-minutes: 15
+  # Siarkan pengumuman ke seluruh server
+  broadcast-announcements: true
+  # Interval pemeriksaan jadwal (tick)
+  check-interval-ticks: 200
+  display-name: "<gradient:#9b59b6:#e74c3c><bold>Kafilah Pasar Gelap</bold></gradient>"
+  # Penawaran: pakai material+amount ATAU command dengan %player%
+  offers:
+    enchanted_golden_apple:
+      icon: GOLDEN_APPLE
+      display-name: "Apel Emas Terlarang"
+      material: ENCHANTED_GOLDEN_APPLE
+      amount: 8
+      price-currency: "rupiah"
+      price: 250000.0
+    netherite_scrap:
+      icon: NETHERITE_SCRAP
+      display-name: "Serpihan Netherite Selundupan"
+      material: NETHERITE_SCRAP
+      amount: 4
+      price-currency: "rupiah"
+      price: 400000.0
+    mystery_enchant:
+      icon: ENCHANTED_BOOK
+      display-name: "Kitab Enchant Misterius"
+      material: ENCHANTED_BOOK
+      amount: 1
+      price-currency: "rupiah"
+      price: 300000.0
+    exclusive_title:
+      icon: NAME_TAG
+      display-name: "Gelar Eksklusif: Penjelajah Bayangan"
+      price-currency: "rupiah"
+      price: 750000.0
+      command: "lp user %player% permission settemp apexsions.title.shadow true 30d"
+    ancient_key:
+      icon: TRIPWIRE_HOOK
+      display-name: "Kunci Kuno Sions"
+      material: TRIPWIRE_HOOK
+      amount: 3
+      price-currency: "rupiah"
+      price: 150000.0
+    dragon_breath:
+      icon: DRAGON_BREATH
+      display-name: "Nafas Naga Murni"
+      material: DRAGON_BREATH
+      amount: 16
+      price-currency: "rupiah"
+      price: 200000.0
+    totem:
+      icon: TOTEM_OF_UNDYING
+      display-name: "Totem Keabadian"
+      material: TOTEM_OF_UNDYING
+      amount: 1
+      price-currency: "rupiah"
+      price: 500000.0
+
+# ==============================================================================
 # Sistem Pose, Emote & Kursi Interaktif (/sit, /lay, /crawl, /spin)
 # ==============================================================================
 pose:

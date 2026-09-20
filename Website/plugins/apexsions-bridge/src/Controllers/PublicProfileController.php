@@ -90,6 +90,63 @@ class PublicProfileController extends Controller
 
         return view('apexsions-bridge::public-profile', [
             'account' => $account,
+            'avatarBody' => $this->resolveAvatarBody($account),
         ]);
+    }
+
+    /**
+     * Resolves the body-render image URL for the profile.
+     *
+     * Java Edition uses mc-heads by UUID/name. Bedrock Edition players have no
+     * Mojang profile, so the real skin texture is resolved through the Geyser
+     * skin API using the stored XUID, then rendered from the Mojang texture CDN.
+     * The resolved texture is cached to avoid hammering the external API.
+     */
+    private function resolveAvatarBody(MinecraftAccount $account): string
+    {
+        $isBedrock = strtoupper($account->edition ?? '') === 'BEDROCK';
+
+        if (!$isBedrock) {
+            $id = $account->minecraft_uuid ?: $account->minecraft_username;
+            return "https://mc-heads.net/body/{$id}/right";
+        }
+
+        $xuid = $account->xuid;
+        if (!$xuid) {
+            return 'https://mc-heads.net/body/MHF_Steve/right';
+        }
+
+        $texture = cache()->remember("apexsions.bedrock.skin.{$xuid}", now()->addHours(6), function () use ($xuid) {
+            return $this->fetchGeyserTexture($xuid);
+        });
+
+        if (!$texture) {
+            return 'https://mc-heads.net/body/MHF_Steve/right';
+        }
+
+        // mc-heads accepts a texture hash as the identifier and renders the body.
+        return "https://mc-heads.net/body/{$texture}/right";
+    }
+
+    /**
+     * Calls the Geyser skin API and returns the skin texture hash, or null.
+     */
+    private function fetchGeyserTexture(string $xuid): ?string
+    {
+        try {
+            $response = \Illuminate\Support\Facades\Http::timeout(5)
+                ->acceptJson()
+                ->get("https://api.geysermc.org/v2/skin/{$xuid}");
+
+            if (!$response->successful()) {
+                return null;
+            }
+
+            $data = $response->json();
+            return $data['texture_id'] ?? $data['texture'] ?? null;
+        } catch (\Throwable $e) {
+            report($e);
+            return null;
+        }
     }
 }

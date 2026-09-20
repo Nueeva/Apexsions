@@ -58,7 +58,7 @@
                 <div class="col-md-4 text-center">
                     <div class="position-relative d-inline-block">
                         <div class="position-absolute top-50 start-50 translate-middle w-100 h-100 rounded-circle" style="background: radial-gradient(circle, rgba(243,156,18,0.25) 0%, transparent 70%); filter: blur(25px); z-index: 0;"></div>
-                        <img src="https://mc-heads.net/body/{{ $account->minecraft_uuid ?: $account->minecraft_username }}/right" 
+                        <img src="{{ $avatarBody ?? ('https://mc-heads.net/body/'.($account->minecraft_uuid ?: $account->minecraft_username).'/right') }}" 
                              alt="{{ $account->minecraft_username }}" 
                              class="img-fluid position-relative" 
                              style="max-height: 280px; filter: drop-shadow(0 12px 20px rgba(0,0,0,0.7)); z-index: 1;">
@@ -69,7 +69,11 @@
                 <div class="col-md-8">
                     <div class="d-flex flex-wrap align-items-center gap-2 mb-2">
                         <h1 class="display-6 fw-bold text-white font-cinzel mb-0">{{ $account->minecraft_username }}</h1>
-                        <span class="badge bg-secondary">{{ $account->edition }}</span>
+                        @if(strtoupper($account->edition ?? 'JAVA') === 'BEDROCK')
+                            <span class="badge" style="background: #1e88e5; color: #fff;"><i class="bi bi-phone me-1"></i>Bedrock Edition</span>
+                        @else
+                            <span class="badge" style="background: #43a047; color: #fff;"><i class="bi bi-pc-display me-1"></i>Java Edition</span>
+                        @endif
                     </div>
 
                     <div class="mb-3 d-flex flex-wrap gap-2 align-items-center">

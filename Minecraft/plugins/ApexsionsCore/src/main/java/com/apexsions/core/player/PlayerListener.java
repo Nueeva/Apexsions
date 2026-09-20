@@ -143,6 +143,15 @@ public class PlayerListener implements Listener {
                 plugin.getWebBridgeService().syncPlayerAsync(player);
             }
         }
+
+        // Publish PvP kill to the web Chronicles live feed
+        if (plugin.getWebBridgeService() != null) {
+            Player killer = player.getKiller();
+            if (killer != null && !killer.equals(player)) {
+                plugin.getWebBridgeService().publishEventAsync("PLAYER_KILL", killer.getName(), player.getName(),
+                        killer.getName() + " mengalahkan " + player.getName() + " di medan perang");
+            }
+        }
     }
 
     @EventHandler(priority = EventPriority.HIGH)

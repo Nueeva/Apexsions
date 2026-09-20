@@ -59,6 +59,29 @@ public class BedrockFormAdapter {
     }
 
     /**
+     * Resolves the Bedrock XUID for a player via the Floodgate API, used by the
+     * web platform to render the real Bedrock skin (Geyser skin API).
+     * Returns null for Java players or when Floodgate is unavailable.
+     */
+    public static String getBedrockXuid(Player player) {
+        if (player == null || !isFloodgatePresent()) {
+            return null;
+        }
+        try {
+            Class<?> apiClass = Class.forName("org.geysermc.floodgate.api.FloodgateApi");
+            Object api = apiClass.getMethod("getInstance").invoke(null);
+            Object floodgatePlayer = apiClass.getMethod("getPlayer", UUID.class).invoke(api, player.getUniqueId());
+            if (floodgatePlayer == null) {
+                return null;
+            }
+            Object xuid = floodgatePlayer.getClass().getMethod("getXuid").invoke(floodgatePlayer);
+            return xuid != null ? xuid.toString() : null;
+        } catch (Throwable ignored) {
+            return null;
+        }
+    }
+
+    /**
      * Opens a Bedrock native CustomForm modal with a text input box.
      */
     public static boolean openInputForm(Plugin plugin, Player player, String title, String prompt, String defaultText, Consumer<String> onInput, Runnable onCancel) {

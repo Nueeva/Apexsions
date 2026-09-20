@@ -149,6 +149,24 @@ public class ApexsionsCorePlugin extends JavaPlugin {
     // Death Coordinates Subsystem
     private com.apexsions.core.player.DeathCoordinateManager deathCoordinateManager;
 
+    // Player Grave / Tombstone Subsystem
+    private com.apexsions.core.grave.GraveRepository graveRepository;
+    private com.apexsions.core.grave.GraveManager graveManager;
+
+    // Player Bounty Subsystem
+    private com.apexsions.core.bounty.BountyRepository bountyRepository;
+    private com.apexsions.core.bounty.BountyManager bountyManager;
+
+    // Smart Mob Stacking Engine
+    private com.apexsions.core.stack.MobStackManager mobStackManager;
+
+    // Container Sort & Quick Deposit
+    private com.apexsions.core.container.ContainerSortManager containerSortManager;
+
+    // Shared Economy Bridge & Wandering Black Market Caravan
+    private com.apexsions.core.integration.EconomyBridge economyBridge;
+    private com.apexsions.core.caravan.CaravanManager caravanManager;
+
     // Pose & Emotes Subsystem
     private com.apexsions.core.pose.PoseManager poseManager;
 
@@ -274,6 +292,33 @@ public class ApexsionsCorePlugin extends JavaPlugin {
 
             // Death Coordinates Subsystem
             this.deathCoordinateManager = new com.apexsions.core.player.DeathCoordinateManager(this);
+
+            // Player Grave / Tombstone Subsystem
+            this.graveRepository = new com.apexsions.core.grave.GraveRepository(databaseManager, getLogger());
+            this.graveManager = new com.apexsions.core.grave.GraveManager(this, graveRepository);
+            this.graveManager.start();
+            Bukkit.getPluginManager().registerEvents(new com.apexsions.core.grave.GraveListener(this, graveManager), this);
+
+            // Player Bounty Subsystem
+            this.bountyRepository = new com.apexsions.core.bounty.BountyRepository(databaseManager, getLogger());
+            this.bountyManager = new com.apexsions.core.bounty.BountyManager(this, bountyRepository);
+            this.bountyManager.start();
+            Bukkit.getPluginManager().registerEvents(new com.apexsions.core.bounty.BountyListener(bountyManager), this);
+
+            // Smart Mob Stacking Engine (TPS stability + Bedrock FPS)
+            this.mobStackManager = new com.apexsions.core.stack.MobStackManager(this);
+            this.mobStackManager.start();
+            Bukkit.getPluginManager().registerEvents(new com.apexsions.core.stack.MobStackListener(mobStackManager), this);
+
+            // Container Sort & Quick Deposit (/sort, /deposit, sneak-punch)
+            this.containerSortManager = new com.apexsions.core.container.ContainerSortManager(this);
+            Bukkit.getPluginManager().registerEvents(new com.apexsions.core.container.ContainerListener(containerSortManager), this);
+
+            // Wandering Black Market Caravan (weekend money sink)
+            this.economyBridge = new com.apexsions.core.integration.EconomyBridge(this);
+            this.caravanManager = new com.apexsions.core.caravan.CaravanManager(this, economyBridge);
+            this.caravanManager.start();
+            Bukkit.getPluginManager().registerEvents(new com.apexsions.core.caravan.CaravanListener(caravanManager), this);
 
             // Pose & Emotes Subsystem (/sit, /lay, /crawl, /spin, chairs)
             this.poseManager = new com.apexsions.core.pose.PoseManager(this);
@@ -442,6 +487,21 @@ public class ApexsionsCorePlugin extends JavaPlugin {
         // Flush all cached player profiles safely to database
         if (playerDataService != null) {
             playerDataService.flushAll();
+        }
+
+        // Persist active graves so no stored items are lost across restarts
+        if (graveManager != null) {
+            graveManager.shutdown();
+        }
+
+        // Stop mob stacking sweep
+        if (mobStackManager != null) {
+            mobStackManager.stop();
+        }
+
+        // Remove transient caravan NPC
+        if (caravanManager != null) {
+            caravanManager.stop();
         }
 
         // Shutdown database connection pool
@@ -722,6 +782,51 @@ public class ApexsionsCorePlugin extends JavaPlugin {
             deathCoordsCmd.setTabCompleter(deathCoordsHandler);
         }
 
+        // Grave / Tombstone Command (/grave, /tombstone, /nisan)
+        if (graveManager != null) {
+            com.apexsions.core.grave.GraveCommand graveHandler = new com.apexsions.core.grave.GraveCommand(this, graveManager);
+            PluginCommand graveCmd = getCommand("grave");
+            if (graveCmd != null) {
+                graveCmd.setExecutor(graveHandler);
+                graveCmd.setTabCompleter(graveHandler);
+            }
+        }
+
+        // Bounty Command (/bounty, /bounties, /buronan, /headhunt)
+        if (bountyManager != null) {
+            com.apexsions.core.bounty.BountyCommand bountyHandler = new com.apexsions.core.bounty.BountyCommand(bountyManager);
+            PluginCommand bountyCmd = getCommand("bounty");
+            if (bountyCmd != null) {
+                bountyCmd.setExecutor(bountyHandler);
+                bountyCmd.setTabCompleter(bountyHandler);
+            }
+        }
+
+        // Caravan Command (/caravan, /kafilah, /blackmarket)
+        if (caravanManager != null) {
+            com.apexsions.core.caravan.CaravanCommand caravanHandler = new com.apexsions.core.caravan.CaravanCommand(caravanManager);
+            String[] caravanCmds = {"caravan", "kafilah", "blackmarket"};
+            for (String cvCmd : caravanCmds) {
+                PluginCommand pCmd = getCommand(cvCmd);
+                if (pCmd != null) {
+                    pCmd.setExecutor(caravanHandler);
+                    pCmd.setTabCompleter(caravanHandler);
+                }
+            }
+        }
+
+        // Container Commands (/sort, /chestsort, /deposit, /quickdeposit)
+        if (containerSortManager != null) {
+            com.apexsions.core.container.ContainerCommand containerHandler = new com.apexsions.core.container.ContainerCommand(containerSortManager);
+            String[] containerCmds = {"sort", "chestsort", "deposit", "quickdeposit"};
+            for (String cCmd : containerCmds) {
+                PluginCommand pCmd = getCommand(cCmd);
+                if (pCmd != null) {
+                    pCmd.setExecutor(containerHandler);
+                }
+            }
+        }
+
         // Pose Commands (/sit, /lay, /crawl, /pose)
         if (poseManager != null) {
             com.apexsions.core.command.SitCommand sitHandler = new com.apexsions.core.command.SitCommand(this, poseManager);
@@ -758,6 +863,14 @@ public class ApexsionsCorePlugin extends JavaPlugin {
 
     public com.apexsions.core.pose.PoseManager getPoseManager() { return poseManager; }
     public com.apexsions.core.player.DeathCoordinateManager getDeathCoordinateManager() { return deathCoordinateManager; }
+    public com.apexsions.core.grave.GraveManager getGraveManager() { return graveManager; }
+    public com.apexsions.core.grave.GraveRepository getGraveRepository() { return graveRepository; }
+    public com.apexsions.core.bounty.BountyManager getBountyManager() { return bountyManager; }
+    public com.apexsions.core.bounty.BountyRepository getBountyRepository() { return bountyRepository; }
+    public com.apexsions.core.stack.MobStackManager getMobStackManager() { return mobStackManager; }
+    public com.apexsions.core.container.ContainerSortManager getContainerSortManager() { return containerSortManager; }
+    public com.apexsions.core.integration.EconomyBridge getEconomyBridge() { return economyBridge; }
+    public com.apexsions.core.caravan.CaravanManager getCaravanManager() { return caravanManager; }
     public ConfigManager getConfigManager() { return configManager; }
     public DatabaseManager getDatabaseManager() { return databaseManager; }
     public com.apexsions.core.moderation.BanManager getBanManager() { return banManager; }

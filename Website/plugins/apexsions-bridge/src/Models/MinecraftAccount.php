@@ -45,6 +45,7 @@ class MinecraftAccount extends Model
         'apex_coins',
         'unlocked_titles',
         'floodgate_uuid',
+        'xuid',
         'verification_code',
         'verification_expires_at',
         'verified_at',

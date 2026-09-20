@@ -29,12 +29,14 @@ use Azuriom\Plugin\ApexsionsBridge\Controllers\ProfileManagementController;
 use Azuriom\Plugin\ApexsionsBridge\Controllers\PublicProfileController;
 use Azuriom\Plugin\ApexsionsBridge\Controllers\ServerMapController;
 use Azuriom\Plugin\ApexsionsBridge\Controllers\VoteController;
+use Azuriom\Plugin\ApexsionsBridge\Controllers\WorldFeedController;
 use Illuminate\Support\Facades\Route;
 
 // Public Routes
 Route::get('/leaderboard', [LeaderboardController::class, 'index'])->name('leaderboard');
 Route::get('/player/{identifier}', [PublicProfileController::class, 'show'])->name('player.show');
 Route::get('/server-map', [ServerMapController::class, 'index'])->name('server-map');
+Route::get('/feed', [WorldFeedController::class, 'index'])->name('feed');
 Route::get('/vote', [VoteController::class, 'index'])->name('vote');
 Route::post('/vote/check-status', [VoteController::class, 'checkStatus'])->name('vote.check-status');
 Route::post('/vote/verify/{siteSlug}', [VoteController::class, 'checkStatus'])->name('vote.verify');

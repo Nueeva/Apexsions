@@ -454,6 +454,50 @@ public class WebBridgeService {
     }
 
     /**
+     * Publish a player-facing world event (kill, bounty claim, caravan, etc.) to
+     * the web "Chronicles of Apexsions" live feed. Fire-and-forget and async.
+     */
+    public void publishEventAsync(String eventType, String actorName, String targetName, String message) {
+        if (!enabled) {
+            return;
+        }
+        try {
+            String eventId = UUID.randomUUID().toString();
+            String jsonPayload = String.format(
+                    Locale.ROOT,
+                    "{\"event_id\":\"%s\",\"event_type\":\"%s\",\"source\":\"MINECRAFT\",\"entity_type\":\"PLAYER\"," +
+                    "\"entity_id\":\"%s\",\"actor_type\":\"PLAYER\",\"actor_name\":\"%s\"," +
+                    "\"target_type\":\"PLAYER\",\"target_name\":\"%s\",\"severity\":\"LOW\"," +
+                    "\"metadata\":{\"message\":\"%s\"},\"occurred_at\":\"%s\"}",
+                    escapeJson(eventId),
+                    escapeJson(eventType),
+                    escapeJson(actorName != null ? actorName : "SYSTEM"),
+                    escapeJson(actorName != null ? actorName : "SYSTEM"),
+                    escapeJson(targetName != null ? targetName : ""),
+                    escapeJson(message != null ? message : ""),
+                    java.time.Instant.now().toString()
+            );
+
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(apiUrl + "/events/sync"))
+                    .timeout(Duration.ofSeconds(5))
+                    .header("Content-Type", "application/json")
+                    .header("Accept", "application/json")
+                    .header("X-Apexsions-Key", apiKey)
+                    .POST(HttpRequest.BodyPublishers.ofString(jsonPayload))
+                    .build();
+
+            httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString())
+                    .exceptionally(ex -> {
+                        plugin.getLogger().log(Level.FINE, "[WebBridge] Failed to publish world event: " + ex.getMessage());
+                        return null;
+                    });
+        } catch (Exception ex) {
+            plugin.getLogger().log(Level.FINE, "[WebBridge] publishEventAsync error: " + ex.getMessage());
+        }
+    }
+
+    /**
      * Report an in-game moderation punishment (e.g. BAN) to the Web Moderation Center.
      */
     public CompletableFuture<Boolean> syncPunishmentAsync(String playerUuid, String playerName, String type,
@@ -627,6 +671,7 @@ public class WebBridgeService {
         boolean isBedrock = com.apexsions.core.gui.input.BedrockFormAdapter.isBedrockPlayer(player);
         String edition = isBedrock ? "BEDROCK" : "JAVA";
         String authMode = isBedrock ? "BEDROCK_FLOODGATE" : "JAVA_ONLINE";
+        String bedrockXuid = isBedrock ? com.apexsions.core.gui.input.BedrockFormAdapter.getBedrockXuid(player) : null;
 
         // 5. Resolve Last Death Location
         String deathJson = "null";
@@ -656,7 +701,7 @@ public class WebBridgeService {
                 "\"kingdom\":\"%s\",\"kingdom_display\":\"%s\",\"level\":%d,\"xp\":%d,\"required_xp\":%d," +
                 "\"level_title\":\"%s\",\"active_title\":\"%s\",\"balance_rupiah\":%.2f,\"balance_diamond\":%.2f," +
                 "\"battlepass_tier\":%d,\"battlepass_xp\":%d,\"battlepass_required_xp\":%d,\"battlepass_has_premium\":%b,\"battlepass_pass_name\":\"%s\",\"apex_coins\":%d," +
-                "\"is_bedrock\":%b,\"edition\":\"%s\",\"auth_mode\":\"%s\"," +
+                "\"is_bedrock\":%b,\"edition\":\"%s\",\"auth_mode\":\"%s\",\"xuid\":%s," +
                 "\"unlocked_titles\":%s,\"last_death_location\":%s}",
                 escapeJson(uuid.toString()),
                 escapeJson(username),
@@ -680,6 +725,7 @@ public class WebBridgeService {
                 isBedrock,
                 edition,
                 authMode,
+                bedrockXuid != null ? "\"" + escapeJson(bedrockXuid) + "\"" : "null",
                 titlesJson.toString(),
                 deathJson
         );

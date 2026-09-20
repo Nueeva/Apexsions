@@ -57,6 +57,7 @@ class PlayerSyncController extends Controller
             'is_bedrock' => ['nullable', 'boolean'],
             'edition' => ['nullable', 'string', 'max:16'],
             'auth_mode' => ['nullable', 'string', 'max:32'],
+            'xuid' => ['nullable', 'string', 'max:32'],
         ]);
 
         $uuid = $validated['player_uuid'];
@@ -145,6 +146,7 @@ class PlayerSyncController extends Controller
             'edition' => $edition,
             'auth_mode' => $authMode,
             'floodgate_uuid' => $isBedrock ? $uuid : ($account->floodgate_uuid ?? null),
+            'xuid' => $isBedrock ? ($validated['xuid'] ?? $account->xuid) : null,
             'rank' => $finalRank,
             'rank_display' => $finalRankDisplay,
             'kingdom' => $syncedKingdom,

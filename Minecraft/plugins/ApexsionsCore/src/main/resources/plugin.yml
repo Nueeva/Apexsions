@@ -53,6 +53,41 @@ commands:
     description: Lihat koordinat lokasi kematian terakhir dan panduan navigasi kompas.
     permission: apexsions.core.deathcoords
     usage: /deathcoords [compass|<player>|tp <player>]
+  grave:
+    aliases:
+      - tombstone
+      - nisan
+    description: Ambil kembali item & XP dari nisan kematian Anda.
+    permission: apexsions.grave.use
+    usage: /grave [open|list|compass|admin remove <player>]
+  bounty:
+    aliases:
+      - bounties
+      - buronan
+      - headhunt
+    description: Sistem hadiah kepala (bounty) antar pemain dan papan buronan.
+    permission: apexsions.bounty.use
+    usage: /bounty [list|add <player> <amount>|check <player>|top|hunters|admin]
+  sort:
+    aliases:
+      - chestsort
+    description: Rapikan & gabungkan isi peti/tong yang sedang dibuka.
+    permission: apexsions.container.use
+    usage: /sort
+  deposit:
+    aliases:
+      - quickdeposit
+      - quickdepo
+    description: Setor cepat item inventory yang cocok ke peti yang sedang dibuka.
+    permission: apexsions.container.use
+    usage: /deposit
+  caravan:
+    aliases:
+      - kafilah
+      - blackmarket
+    description: Buka pasar gelap kafilah keliling dan lihat status kemunculannya.
+    permission: apexsions.caravan.use
+    usage: /caravan [status|open|admin spawn|despawn|reload]
   vanish:
     aliases:
       - v
@@ -413,6 +448,27 @@ permissions:
     default: op
   apexsions.core.deathcoords.tp:
     description: Allows staff to teleport to death coordinates.
+    default: op
+  apexsions.grave.use:
+    description: Allows using the grave / tombstone system.
+    default: true
+  apexsions.grave.admin:
+    description: Allows inspecting and force-releasing other players' graves.
+    default: op
+  apexsions.bounty.use:
+    description: Allows placing and viewing player bounties.
+    default: true
+  apexsions.bounty.admin:
+    description: Allows clearing and admin-setting player bounties.
+    default: op
+  apexsions.container.use:
+    description: Allows sorting open containers and quick-depositing items.
+    default: true
+  apexsions.caravan.use:
+    description: Allows opening the Black Market Caravan shop.
+    default: true
+  apexsions.caravan.admin:
+    description: Allows spawning, despawning and reloading the caravan.
     default: op
   apexsions.pose.sit:
     description: Allows sitting on ground or chairs.
