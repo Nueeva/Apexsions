@@ -182,10 +182,23 @@ public class ClaimManager {
         return count;
     }
 
+    public int getLevelBonusClaims(Player player) {
+        if (player == null || plugin.getPlayerDataService() == null) return 0;
+        var pData = plugin.getPlayerDataService().getCached(player.getUniqueId());
+        if (pData.isPresent()) {
+            int level = pData.get().getLevel();
+            // Every 5 levels grants +2 claims, max +16 bonus claims (F2P Progression)
+            return Math.min(16, (level / 5) * 2);
+        }
+        return 0;
+    }
+
     public int getMaxClaims(Player player) {
         if (player.isOp() || player.hasPermission("apexsions.admin.claim.unlimited") || player.hasPermission("apexsions.claim.unlimited") || player.hasPermission("apexsions.admin")) {
             return Integer.MAX_VALUE;
         }
+
+        int levelBonus = getLevelBonusClaims(player);
 
         if (plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isAvailable()) {
             if (plugin.getLuckPermsHook().isStaffOrAdmin(player.getUniqueId())) {
@@ -194,7 +207,7 @@ public class ClaimManager {
             String rankKey = plugin.getLuckPermsHook().getPlayerRankKey(player);
             if (rankKey != null && claimLimits.containsKey(rankKey.toLowerCase())) {
                 int limit = claimLimits.get(rankKey.toLowerCase());
-                return limit <= -1 ? Integer.MAX_VALUE : limit;
+                return limit <= -1 ? Integer.MAX_VALUE : (limit + levelBonus);
             }
         }
 
@@ -209,11 +222,11 @@ public class ClaimManager {
             }
         }
         if (highestPermLimit > 0) {
-            return highestPermLimit;
+            return highestPermLimit + levelBonus;
         }
 
         int def = claimLimits.getOrDefault("wanderer", 9);
-        return def <= -1 ? Integer.MAX_VALUE : def;
+        return def <= -1 ? Integer.MAX_VALUE : (def + levelBonus);
     }
 
     /**
@@ -1063,14 +1076,16 @@ public class ClaimManager {
     public void showChunkBoundary(Player player, Chunk chunk) {
         if (!visualizerEnabled || player == null || !player.isOnline()) return;
 
-        World world = chunk.getWorld();
         int minX = chunk.getX() << 4;
         int minZ = chunk.getZ() << 4;
         int maxX = minX + 16;
         int maxZ = minZ + 16;
         double playerY = player.getLocation().getY();
 
-        Particle.DustOptions dust = new Particle.DustOptions(boundaryColor, 1.2f);
+        Particle.DustOptions goldDust = new Particle.DustOptions(boundaryColor, 1.3f);
+        Particle.DustOptions cyanDust = new Particle.DustOptions(Color.fromRGB(0, 240, 255), 1.1f);
+
+        player.playSound(player.getLocation(), Sound.BLOCK_BEACON_POWER_SELECT, 0.7f, 1.4f);
 
         BukkitTask task = Bukkit.getScheduler().runTaskTimer(plugin, new Runnable() {
             int ticksLeft = visualizerDurationSeconds * 2;
@@ -1082,17 +1097,29 @@ public class ClaimManager {
                 }
                 ticksLeft--;
 
-                for (int x = minX; x <= maxX; x += 2) {
-                    player.spawnParticle(Particle.DUST, x, playerY + 0.5, minZ, 1, 0, 0, 0, 0, dust);
-                    player.spawnParticle(Particle.DUST, x, playerY + 0.5, maxZ, 1, 0, 0, 0, 0, dust);
-                    player.spawnParticle(Particle.DUST, x, playerY + 1.5, minZ, 1, 0, 0, 0, 0, dust);
-                    player.spawnParticle(Particle.DUST, x, playerY + 1.5, maxZ, 1, 0, 0, 0, 0, dust);
+                // 1. Four Glowing Corner Pillars (End Rod Beams visible from afar)
+                int[][] corners = {{minX, minZ}, {maxX, minZ}, {minX, maxZ}, {maxX, maxZ}};
+                for (int[] corner : corners) {
+                    double cx = corner[0] + 0.5;
+                    double cz = corner[1] + 0.5;
+                    for (double y = playerY - 1.0; y <= playerY + 8.0; y += 1.5) {
+                        player.spawnParticle(Particle.END_ROD, cx, y, cz, 1, 0, 0, 0, 0);
+                        player.spawnParticle(Particle.DUST, cx, y, cz, 1, 0, 0, 0, 0, goldDust);
+                    }
                 }
-                for (int z = minZ; z <= maxZ; z += 2) {
-                    player.spawnParticle(Particle.DUST, minX, playerY + 0.5, z, 1, 0, 0, 0, 0, dust);
-                    player.spawnParticle(Particle.DUST, maxX, playerY + 0.5, z, 1, 0, 0, 0, 0, dust);
-                    player.spawnParticle(Particle.DUST, minX, playerY + 1.5, z, 1, 0, 0, 0, 0, dust);
-                    player.spawnParticle(Particle.DUST, maxX, playerY + 1.5, z, 1, 0, 0, 0, 0, dust);
+
+                // 2. Horizontal Luminous Forcefield Edges
+                for (int x = minX; x <= maxX; x += 1) {
+                    player.spawnParticle(Particle.DUST, x + 0.5, playerY + 0.2, minZ + 0.5, 1, 0, 0, 0, 0, goldDust);
+                    player.spawnParticle(Particle.DUST, x + 0.5, playerY + 0.2, maxZ + 0.5, 1, 0, 0, 0, 0, goldDust);
+                    player.spawnParticle(Particle.DUST, x + 0.5, playerY + 1.2, minZ + 0.5, 1, 0, 0, 0, 0, cyanDust);
+                    player.spawnParticle(Particle.DUST, x + 0.5, playerY + 1.2, maxZ + 0.5, 1, 0, 0, 0, 0, cyanDust);
+                }
+                for (int z = minZ; z <= maxZ; z += 1) {
+                    player.spawnParticle(Particle.DUST, minX + 0.5, playerY + 0.2, z + 0.5, 1, 0, 0, 0, 0, goldDust);
+                    player.spawnParticle(Particle.DUST, maxX + 0.5, playerY + 0.2, z + 0.5, 1, 0, 0, 0, 0, goldDust);
+                    player.spawnParticle(Particle.DUST, minX + 0.5, playerY + 1.2, z + 0.5, 1, 0, 0, 0, 0, cyanDust);
+                    player.spawnParticle(Particle.DUST, maxX + 0.5, playerY + 1.2, z + 0.5, 1, 0, 0, 0, 0, cyanDust);
                 }
             }
         }, 0L, 10L);

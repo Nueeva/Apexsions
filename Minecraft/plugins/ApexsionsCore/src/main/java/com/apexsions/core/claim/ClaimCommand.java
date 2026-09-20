@@ -223,11 +223,17 @@ public class ClaimCommand implements CommandExecutor, TabCompleter {
             case "name", "rename", "setname" -> handleSetName(player, args);
             case "radius" -> handleRadius(player, args);
             case "outpost" -> handleOutpost(player, args);
+            case "border", "visualizer", "view" -> handleBorder(player);
             case "list" -> handleList(player);
             default -> sendHelp(player);
         }
 
         return true;
+    }
+
+    private void handleBorder(Player player) {
+        getClaimManager().showChunkBoundary(player, player.getLocation().getChunk());
+        player.sendMessage(mm.deserialize("<gold>✨ <b>[BATAS WILAYAH]</b> Memancarkan 4 tiang suar sudut dan dinding energi 16x16 di sekeliling Anda!</gold>"));
     }
 
     private void handleOutpost(Player player, String[] args) {
@@ -542,6 +548,7 @@ public class ClaimCommand implements CommandExecutor, TabCompleter {
         player.sendMessage(mm.deserialize("<yellow>/claim withdraw <jumlah></yellow> <gray>- Tarik koin dari brankas wilayah</gray>"));
         player.sendMessage(mm.deserialize("<yellow>/claim role <pemain> <peran></yellow> <gray>- Atur peran (manager, builder, visitor)</gray>"));
         player.sendMessage(mm.deserialize("<yellow>/claim flag <flag> <nilai></yellow> <gray>- Atur flag (pvp, mob_spawn, fire_spread)</gray>"));
+        player.sendMessage(mm.deserialize("<yellow>/claim border</yellow> <gray>- Nyalakan 4 tiang suar sudut & dinding energi batas chunk</gray>"));
         player.sendMessage(mm.deserialize("<yellow>/claim info</yellow> <gray>- Cek status kepemilikan dan flag chunk saat ini</gray>"));
     }
 
@@ -552,7 +559,7 @@ public class ClaimCommand implements CommandExecutor, TabCompleter {
 
         List<String> completions = new ArrayList<>();
         if (args.length == 1) {
-            List<String> subs = new ArrayList<>(List.of("gui", "home", "tp", "name", "rename", "radius", "outpost", "info", "bank", "deposit", "withdraw", "flag", "role", "trust", "untrust", "list", "unclaim", "unclaimall"));
+            List<String> subs = new ArrayList<>(List.of("gui", "home", "tp", "border", "name", "rename", "radius", "outpost", "info", "bank", "deposit", "withdraw", "flag", "role", "trust", "untrust", "list", "unclaim", "unclaimall"));
             if (sender.hasPermission("apexsions.admin") || sender.isOp()) {
                 subs.add("admin");
                 subs.add("reload");

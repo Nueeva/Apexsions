@@ -77,8 +77,12 @@ public class ClaimGUI implements Listener {
             skullMeta.setOwningPlayer(player);
             skullMeta.displayName(mm.deserialize("<gold><bold>" + player.getName() + "</bold></gold> <gray>• Status Teritori</gray>"));
             List<Component> lore = new ArrayList<>();
+            int levelBonus = claimManager.getLevelBonusClaims(player);
             String maxLabel = max == Integer.MAX_VALUE ? "∞ (Tak Terbatas)" : String.valueOf(max);
             lore.add(mm.deserialize("<gray>Total Kepemilikan: </gray><gold>" + owned + "</gold><gray>/</gray><yellow>" + maxLabel + "</yellow> <gray>chunks</gray>"));
+            if (levelBonus > 0 && max != Integer.MAX_VALUE) {
+                lore.add(mm.deserialize("<gray>Bonus Level Progression: </gray><green>+" + levelBonus + " Chunks (Leveling)</green>"));
+            }
             if (max == Integer.MAX_VALUE) {
                 lore.add(mm.deserialize("<gray>Penggunaan Kuota: </gray><aqua>Tanpa Batas (Upper Dimension)</aqua>"));
             } else {
@@ -176,13 +180,13 @@ public class ClaimGUI implements Listener {
                     "<aqua>» Sentuh / Klik untuk Toggle PvP «</aqua>"));
         }
 
-        // Slot 31: Visualize Chunk Boundary
+        // Slot 31: Visualize Chunk Boundary (/claim border)
         inv.setItem(31, createItem(Material.GLOWSTONE_DUST,
-                "<yellow><bold>Lihat Batas Chunk (/claim info)</bold></yellow>",
-                "<gray>Memancarkan partikel debu emas di sekeliling</gray>",
-                "<gray>4 sisi batas tanah chunk 16x16 ini.</gray>",
+                "<yellow><bold>Nyalakan Batas Wilayah (/claim border)</bold></yellow>",
+                "<gray>Memancarkan 4 tiang suar sudut dan dinding</gray>",
+                "<gray>energi bercahaya di sepanjang batas 16x16 ini.</gray>",
                 "",
-                "<gold>» Klik untuk Memunculkan Partikel «</gold>"));
+                "<gold>» Sentuh / Klik untuk Memancarkan Batas «</gold>"));
 
         // Slot 33: Pulang ke Wilayah (/claim home)
         inv.setItem(33, createItem(Material.ENDER_PEARL,
@@ -396,7 +400,7 @@ public class ClaimGUI implements Listener {
                 }
             } else if (slot == 31) {
                 claimManager.showChunkBoundary(player, player.getLocation().getChunk());
-                player.sendMessage(mm.deserialize("<gold>✨ Partikel batas chunk telah dimunculkan selama 8 detik!</gold>"));
+                player.sendMessage(mm.deserialize("<gold>✨ <b>[BATAS WILAYAH]</b> Memancarkan 4 tiang suar sudut dan dinding energi 16x16 di sekeliling Anda!</gold>"));
                 player.closeInventory();
             } else if (slot == 33) {
                 // Pulang ke claim home
