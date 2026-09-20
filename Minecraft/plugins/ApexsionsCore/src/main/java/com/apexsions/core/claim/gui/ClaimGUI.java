@@ -35,8 +35,26 @@ public class ClaimGUI implements Listener {
         this.claimManager = claimManager;
     }
 
+    public static class MainHolder implements org.bukkit.inventory.InventoryHolder {
+        @Override public Inventory getInventory() { return null; }
+    }
+
+    public static class ListHolder implements org.bukkit.inventory.InventoryHolder {
+        private final int page;
+        public ListHolder(int page) { this.page = page; }
+        public int getPage() { return page; }
+        @Override public Inventory getInventory() { return null; }
+    }
+
+    public static class ActionHolder implements org.bukkit.inventory.InventoryHolder {
+        private final ClaimChunk claim;
+        public ActionHolder(ClaimChunk claim) { this.claim = claim; }
+        public ClaimChunk getClaim() { return claim; }
+        @Override public Inventory getInventory() { return null; }
+    }
+
     public void open(Player player) {
-        Inventory inv = Bukkit.createInventory(null, 45, mm.deserialize("<gradient:#d4af37:#f39c12><bold>⚑ KEDAULATAN TANAH</bold></gradient>"));
+        Inventory inv = Bukkit.createInventory(new MainHolder(), 45, mm.deserialize("<gradient:#d4af37:#f39c12><bold>⚑ KEDAULATAN TANAH</bold></gradient>"));
 
         // Fill background border with tinted glass
         ItemStack border = createItem(Material.GRAY_STAINED_GLASS_PANE, " ");
@@ -84,26 +102,27 @@ public class ClaimGUI implements Listener {
         }
         inv.setItem(4, profile);
 
-        // Slot 19: Claim or Unclaim Action
+        // Slot 19: Claim or Unclaim Action (Dedicated to current location)
         if (chunkClaim.isEmpty()) {
+            double rate = claimManager.calculateChunkDailyTax(playerId);
             inv.setItem(19, createItem(Material.GOLDEN_HOE,
-                    "<green><bold>Klaim Chunk Ini</bold></green>",
-                    "<gray>Klik untuk mengklaim 16x16 blok</gray>",
-                    "<gray>di mana Anda sedang berdiri saat ini.</gray>",
+                    "<green><bold>Klaim Chunk Saat Ini</bold></green>",
+                    "<gray>Klaim petak 16x16 blok di koordinat ini:</gray>",
+                    "<yellow>[" + currentChunk.getX() + ", " + currentChunk.getZ() + "]</yellow> <gray>(" + currentChunk.getWorld().getName() + ")</gray>",
                     "",
-                    "<yellow>Biaya Kuota: 1 Chunk</yellow>",
-                    "<gold>» Klik untuk Mengklaim «</gold>"));
+                    "<gray>Pajak Upkeep: </gray><gold>Rp" + String.format("%,.0f", rate) + "/hari</gold>",
+                    "<gold>» Sentuh / Klik untuk Mengklaim «</gold>"));
         } else if (chunkClaim.get().isOwner(playerId)) {
             inv.setItem(19, createItem(Material.BARRIER,
                     "<red><bold>Lepas Klaim Chunk Ini (/unclaim)</bold></red>",
-                    "<gray>Klik untuk membebaskan chunk ini</gray>",
-                    "<gray>kembali ke wilayah publik/bebas.</gray>",
+                    "<gray>Lepas klaim petak yang Anda injak saat ini:</gray>",
+                    "<yellow>[" + currentChunk.getX() + ", " + currentChunk.getZ() + "]</yellow>",
                     "",
-                    "<red>» Klik untuk Melepas «</red>"));
+                    "<red>» Sentuh / Klik untuk Melepas «</red>"));
         } else {
             inv.setItem(19, createItem(Material.IRON_BARS,
                     "<gray><bold>Chunk Tidak Tersedia</bold></gray>",
-                    "<red>Sudah dimiliki oleh " + chunkClaim.get().getOwnerName() + "</red>"));
+                    "<red>Sudah dimiliki oleh: " + chunkClaim.get().getOwnerName() + "</red>"));
         }
 
         // Slot 21: Bank & Tax Status
@@ -135,28 +154,26 @@ public class ClaimGUI implements Listener {
                 "",
                 "<gold>» Klik untuk Setor Rp10.000 «</gold>"));
 
-        // Slot 25: Flags & Policy Toggle
+        // Slot 25: Sentral Wilayah: Navigasi & Kelola (Dedicated List & Management Button)
+        inv.setItem(25, createItem(Material.COMPASS,
+                "<gradient:#00c6ff:#0072ff><bold>Sentral Wilayah: Navigasi & Kelola</bold></gradient>",
+                "<gray>Buka daftar seluruh petak tanah milik Anda.</gray>",
+                "<gray>• Teleportasi pulang ke tanah klaim</gray>",
+                "<gray>• Lepas klaim dari jarak jauh (Remote Unclaim)</gray>",
+                "<gray>• Cek status brankas & koordinat petak</gray>",
+                "",
+                "<dark_gray>Total: " + owned + " petak terdaftar</dark_gray>",
+                "<aqua>» Sentuh / Klik untuk Buka Daftar «</aqua>"));
+
+        // Slot 29: Flags & Policy Toggle (if standing on own claim)
         if (chunkClaim.isPresent() && (chunkClaim.get().isOwner(playerId) || player.isOp())) {
             ClaimChunk c = chunkClaim.get();
             boolean pvp = c.getBooleanFlag("pvp", false);
-            boolean mob = c.getBooleanFlag("mob_spawn", false);
-            boolean fire = c.getBooleanFlag("fire_spread", false);
-
-            inv.setItem(25, createItem(Material.COMPARATOR,
-                    "<gradient:#00c6ff:#0072ff><bold>Pengaturan Flag Wilayah</bold></gradient>",
+            inv.setItem(29, createItem(Material.COMPARATOR,
+                    "<gradient:#ff5e62:#ff9966><bold>Pengaturan Flag Wilayah</bold></gradient>",
                     "<gray>PvP: </gray>" + (pvp ? "<green>Aktif</green>" : "<red>Mati</red>"),
-                    "<gray>Spawn Mob Hostile: </gray>" + (mob ? "<green>Aktif</green>" : "<red>Mati</red>"),
-                    "<gray>Penyebaran Api: </gray>" + (fire ? "<green>Aktif</green>" : "<red>Mati</red>"),
                     "",
-                    "<aqua>» Klik untuk Toggle PvP Wilayah Ini «</aqua>"));
-        } else {
-            inv.setItem(25, createItem(Material.FILLED_MAP,
-                    "<aqua><bold>Daftar Seluruh Tanah Anda</bold></aqua>",
-                    "<gray>Melihat seluruh koordinat chunk</gray>",
-                    "<gray>yang telah berhasil Anda kuasai.</gray>",
-                    "",
-                    "<dark_gray>Total: " + owned + " wilayah terdaftar</dark_gray>",
-                    "<aqua>» Klik untuk Melihat di Chat «</aqua>"));
+                    "<aqua>» Sentuh / Klik untuk Toggle PvP «</aqua>"));
         }
 
         // Slot 31: Visualize Chunk Boundary
@@ -167,8 +184,141 @@ public class ClaimGUI implements Listener {
                 "",
                 "<gold>» Klik untuk Memunculkan Partikel «</gold>"));
 
+        // Slot 33: Pulang ke Wilayah (/claim home)
+        inv.setItem(33, createItem(Material.ENDER_PEARL,
+                "<gradient:#a8ff78:#78ffd6><bold>Pulang ke Wilayah (/claim home)</bold></gradient>",
+                "<gray>Teleportasi instan pulang ke tanah</gray>",
+                "<gray>klaim pertama Anda dengan selamat.</gray>",
+                "",
+                "<green>» Sentuh / Klik untuk Teleport «</green>"));
+
         // Slot 40: Close
         inv.setItem(40, createItem(Material.ARROW, "<red><bold>Tutup Menu</bold></red>"));
+
+        player.openInventory(inv);
+        player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.5f, 1.2f);
+    }
+
+    /**
+     * Centralized interactive territory list for Bedrock & Java.
+     */
+    public void openTerritoryList(Player player, int page) {
+        List<ClaimChunk> claims = claimManager.getClaimsByOwner(player.getUniqueId());
+        Inventory inv = Bukkit.createInventory(new ListHolder(page), 54, mm.deserialize("<gradient:#d4af37:#f39c12><bold>⚑ DAFTAR WILAYAH ANDA</bold></gradient>"));
+
+        // Border
+        ItemStack border = createItem(Material.GRAY_STAINED_GLASS_PANE, " ");
+        for (int i = 0; i < 54; i++) {
+            if (i < 9 || i >= 45 || i % 9 == 0 || i % 9 == 8) {
+                inv.setItem(i, border);
+            }
+        }
+
+        // Header slot 4: Summary
+        inv.setItem(4, createItem(Material.BOOK,
+                "<gold><bold>Sentralisasi Wilayah</bold></gold>",
+                "<gray>Total: </gray><yellow>" + claims.size() + " petak tanah</yellow>",
+                "",
+                "<aqua>Sentuh / klik petak tanah di bawah</aqua>",
+                "<aqua>untuk Teleportasi atau Lepas Klaim.</aqua>"));
+
+        int perPage = 21;
+        int startIndex = page * perPage;
+        int endIndex = Math.min(startIndex + perPage, claims.size());
+
+        int[] slots = {
+                10, 11, 12, 13, 14, 15, 16,
+                19, 20, 21, 22, 23, 24, 25,
+                28, 29, 30, 31, 32, 33, 34
+        };
+
+        for (int i = startIndex; i < endIndex; i++) {
+            ClaimChunk c = claims.get(i);
+            int slot = slots[i - startIndex];
+            boolean grace = c.isInGracePeriod();
+            Material mat = grace ? Material.REDSTONE_BLOCK : Material.GRASS_BLOCK;
+            int blockX = (c.getChunkX() << 4) + 8;
+            int blockZ = (c.getChunkZ() << 4) + 8;
+
+            inv.setItem(slot, createItem(mat,
+                    "<gold><bold>Petak #" + (i + 1) + "</bold></gold> <yellow>[" + c.getChunkX() + ", " + c.getChunkZ() + "]</yellow>",
+                    "<gray>Dunia: </gray><aqua>" + c.getWorld() + "</aqua>",
+                    "<gray>Koordinat: </gray><white>~ X: " + blockX + ", Z: " + blockZ + "</white>",
+                    "<gray>Status: </gray>" + (grace ? "<red><b>MENUNGGAK PAJAK</b></red>" : "<green>Lunas & Aktif</green>"),
+                    "<gray>Saldo Brankas: </gray><green>Rp" + String.format("%,.0f", c.getBankBalance()) + "</green>",
+                    "",
+                    "<yellow>» Sentuh / Klik untuk Kelola Petak Ini «</yellow>"));
+        }
+
+        if (claims.isEmpty()) {
+            inv.setItem(22, createItem(Material.BARRIER,
+                    "<red><bold>Belum Ada Wilayah</bold></red>",
+                    "<gray>Anda belum mengklaim tanah apapun.</gray>",
+                    "<gray>Klaim chunk tempat Anda berdiri dengan </gray><yellow>/claim</yellow>."));
+        }
+
+        // Navigation controls
+        if (page > 0) {
+            inv.setItem(45, createItem(Material.ARROW, "<yellow>« Halaman Sebelumnya</yellow>"));
+        }
+        inv.setItem(49, createItem(Material.OAK_DOOR, "<red><bold>Kembali ke Menu Utama</bold></red>"));
+        if (endIndex < claims.size()) {
+            inv.setItem(53, createItem(Material.ARROW, "<yellow>Halaman Berikutnya »</yellow>"));
+        }
+
+        player.openInventory(inv);
+        player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.5f, 1.2f);
+    }
+
+    /**
+     * Bedrock touch-friendly Action Menu for a single claimed territory.
+     */
+    public void openTerritoryAction(Player player, ClaimChunk claim) {
+        Inventory inv = Bukkit.createInventory(new ActionHolder(claim), 27, mm.deserialize("<gradient:#d4af37:#f39c12><bold>⚑ KELOLA PETAK [" + claim.getChunkX() + ", " + claim.getChunkZ() + "]</bold></gradient>"));
+
+        ItemStack border = createItem(Material.GRAY_STAINED_GLASS_PANE, " ");
+        for (int i = 0; i < 27; i++) {
+            inv.setItem(i, border);
+        }
+
+        int blockX = (claim.getChunkX() << 4) + 8;
+        int blockZ = (claim.getChunkZ() << 4) + 8;
+
+        // Slot 4: Info Card
+        inv.setItem(4, createItem(Material.FILLED_MAP,
+                "<gold><bold>Petak Wilayah [" + claim.getChunkX() + ", " + claim.getChunkZ() + "]</bold></gold>",
+                "<gray>Dunia: </gray><aqua>" + claim.getWorld() + "</aqua>",
+                "<gray>Koordinat Blok: </gray><white>~ X: " + blockX + ", Z: " + blockZ + "</white>",
+                "<gray>Status: </gray>" + (claim.isInGracePeriod() ? "<red>Menunggak Pajak</red>" : "<green>Lunas & Aktif</green>"),
+                "<gray>Saldo Brankas: </gray><green>Rp" + String.format("%,.0f", claim.getBankBalance()) + "</green>"));
+
+        // Slot 11: Teleportation Button (Single tap for Bedrock)
+        inv.setItem(11, createItem(Material.ENDER_PEARL,
+                "<green><bold>Teleportasi ke Wilayah Ini</bold></green>",
+                "<gray>Teleportasi instan dan aman ke tengah</gray>",
+                "<gray>petak tanah ini untuk memindahkan barang.</gray>",
+                "",
+                "<green>» Sentuh / Klik untuk Teleport «</green>"));
+
+        // Slot 13: Quick Deposit Rp1,000 to this chunk
+        inv.setItem(13, createItem(Material.GOLD_INGOT,
+                "<yellow><bold>Suntik Saldo Rp1.000</bold></yellow>",
+                "<gray>Setor Rp1.000 langsung ke brankas</gray>",
+                "<gray>petak tanah ini.</gray>",
+                "",
+                "<yellow>» Sentuh / Klik untuk Setor «</yellow>"));
+
+        // Slot 15: Remote Unclaim Button (Safe single tap with confirmation notice)
+        inv.setItem(15, createItem(Material.REDSTONE_BLOCK,
+                "<red><bold>Lepas Klaim (Remote Unclaim)</bold></red>",
+                "<red>PERINGATAN: TINDAKAN PERMANEN</red>",
+                "<gray>Lepas klaim petak ini secara permanen</gray>",
+                "<gray>dari jarak jauh tanpa harus ke lokasinya.</gray>",
+                "",
+                "<dark_red>» Sentuh / Klik untuk Melepas «</dark_red>"));
+
+        // Slot 22: Back to list
+        inv.setItem(22, createItem(Material.ARROW, "<yellow>« Kembali ke Daftar Wilayah</yellow>"));
 
         player.openInventory(inv);
         player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.5f, 1.2f);
@@ -177,10 +327,12 @@ public class ClaimGUI implements Listener {
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
         if (!(event.getWhoClicked() instanceof Player player)) return;
-        if (event.getView().title().equals(mm.deserialize("<gradient:#d4af37:#f39c12><bold>⚑ KEDAULATAN TANAH</bold></gradient>"))) {
-            event.setCancelled(true);
-            int slot = event.getRawSlot();
+        Inventory inv = event.getInventory();
+        int slot = event.getRawSlot();
 
+        // 1. Main Menu Handler
+        if (inv.getHolder() instanceof MainHolder) {
+            event.setCancelled(true);
             if (slot == 19) {
                 Optional<ClaimChunk> chunkClaim = claimManager.getClaimAt(player.getLocation());
                 if (chunkClaim.isEmpty()) {
@@ -193,16 +345,17 @@ public class ClaimGUI implements Listener {
                     player.closeInventory();
                 }
             } else if (slot == 21) {
-                // Deposit 1,000
                 var res = claimManager.depositBank(player, 1000.0);
                 player.sendMessage(mm.deserialize(res.message()));
                 open(player);
             } else if (slot == 23) {
-                // Deposit 10,000
                 var res = claimManager.depositBank(player, 10000.0);
                 player.sendMessage(mm.deserialize(res.message()));
                 open(player);
             } else if (slot == 25) {
+                // Open Centralized Territory List
+                openTerritoryList(player, 0);
+            } else if (slot == 29) {
                 Optional<ClaimChunk> chunkClaim = claimManager.getClaimAt(player.getLocation());
                 if (chunkClaim.isPresent() && (chunkClaim.get().isOwner(player.getUniqueId()) || player.isOp())) {
                     ClaimChunk c = chunkClaim.get();
@@ -211,16 +364,96 @@ public class ClaimGUI implements Listener {
                     plugin.getClaimRepository().updateClaimFlags(c);
                     player.sendMessage(mm.deserialize("<green>✔ Flag PvP wilayah ini sekarang: <yellow>" + (!curPvp ? "AKTIF" : "NONAKTIF") + "</yellow>.</green>"));
                     open(player);
-                } else {
-                    player.closeInventory();
-                    player.performCommand("claim list");
                 }
             } else if (slot == 31) {
                 claimManager.showChunkBoundary(player, player.getLocation().getChunk());
                 player.sendMessage(mm.deserialize("<gold>✨ Partikel batas chunk telah dimunculkan selama 8 detik!</gold>"));
                 player.closeInventory();
+            } else if (slot == 33) {
+                // Pulang ke claim home
+                player.closeInventory();
+                List<ClaimChunk> claims = claimManager.getClaimsByOwner(player.getUniqueId());
+                if (claims.isEmpty()) {
+                    player.sendMessage(mm.deserialize("<yellow>⚠ Anda belum memiliki klaim tanah.</yellow>"));
+                } else {
+                    claimManager.teleportToClaim(player, claims.get(0));
+                }
             } else if (slot == 40) {
                 player.closeInventory();
+            }
+            return;
+        }
+
+        // 2. Territory List Handler
+        if (inv.getHolder() instanceof ListHolder holder) {
+            event.setCancelled(true);
+            int page = holder.getPage();
+            List<ClaimChunk> claims = claimManager.getClaimsByOwner(player.getUniqueId());
+
+            if (slot == 45 && page > 0) {
+                openTerritoryList(player, page - 1);
+                return;
+            }
+            if (slot == 49) {
+                open(player);
+                return;
+            }
+            if (slot == 53 && (page + 1) * 21 < claims.size()) {
+                openTerritoryList(player, page + 1);
+                return;
+            }
+
+            int[] slots = {
+                    10, 11, 12, 13, 14, 15, 16,
+                    19, 20, 21, 22, 23, 24, 25,
+                    28, 29, 30, 31, 32, 33, 34
+            };
+
+            for (int i = 0; i < slots.length; i++) {
+                if (slots[i] == slot) {
+                    int claimIndex = (page * 21) + i;
+                    if (claimIndex < claims.size()) {
+                        ClaimChunk target = claims.get(claimIndex);
+                        openTerritoryAction(player, target);
+                    }
+                    return;
+                }
+            }
+            return;
+        }
+
+        // 3. Territory Action Handler
+        if (inv.getHolder() instanceof ActionHolder holder) {
+            event.setCancelled(true);
+            ClaimChunk claim = holder.getClaim();
+
+            if (slot == 11) {
+                // Teleportation
+                player.closeInventory();
+                claimManager.teleportToClaim(player, claim);
+            } else if (slot == 13) {
+                // Deposit Rp1,000 to this chunk
+                if (plugin.getVaultHook() != null && plugin.getVaultHook().hasEconomy()) {
+                    double bal = plugin.getVaultHook().getBalance(player);
+                    if (bal < 1000.0) {
+                        player.sendMessage(mm.deserialize("<red>✖ Saldo dompet Anda tidak cukup! Memiliki: Rp" + String.format("%,.0f", bal) + ".</red>"));
+                        return;
+                    }
+                    plugin.getVaultHook().withdraw(player, 1000.0);
+                }
+                claim.deposit(1000.0);
+                plugin.getClaimRepository().updateClaimFinancials(claim);
+                player.sendMessage(mm.deserialize("<green>✔ Berhasil menyetor <gold>Rp1.000</gold> ke brankas petak [" + claim.getChunkX() + ", " + claim.getChunkZ() + "].</green>"));
+                player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 0.7f, 1.4f);
+                openTerritoryAction(player, claim);
+            } else if (slot == 15) {
+                // Remote Unclaim
+                var res = claimManager.unclaimChunk(player, claim.getWorld(), claim.getChunkX(), claim.getChunkZ());
+                player.sendMessage(mm.deserialize(res.message()));
+                openTerritoryList(player, 0);
+            } else if (slot == 22) {
+                // Back to list
+                openTerritoryList(player, 0);
             }
         }
     }

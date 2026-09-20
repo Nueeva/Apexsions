@@ -57,7 +57,17 @@ public class ClaimCommand implements CommandExecutor, TabCompleter {
                 sender.sendMessage("Hanya pemain yang dapat mengeksekusi perintah ini.");
                 return true;
             }
-            var res = claimManager.unclaimCurrentChunk(player);
+            if (args.length >= 2) {
+                try {
+                    int cx = Integer.parseInt(args[0]);
+                    int cz = Integer.parseInt(args[1]);
+                    String worldName = (args.length >= 3) ? args[2] : player.getWorld().getName();
+                    var res = getClaimManager().unclaimChunk(player, worldName, cx, cz);
+                    player.sendMessage(mm.deserialize(res.message()));
+                    return true;
+                } catch (NumberFormatException ignored) {}
+            }
+            var res = getClaimManager().unclaimCurrentChunk(player);
             player.sendMessage(mm.deserialize(res.message()));
             return true;
         }
@@ -131,14 +141,25 @@ public class ClaimCommand implements CommandExecutor, TabCompleter {
 
         String sub = args[0].toLowerCase();
         switch (sub) {
-            case "gui", "menu" -> claimGUI.open(player);
+            case "gui", "menu" -> getClaimGUI().open(player);
             case "info" -> handleInfo(player);
+            case "home", "tp" -> handleHome(player, args);
             case "unclaim" -> {
-                var res = claimManager.unclaimCurrentChunk(player);
+                if (args.length >= 3) {
+                    try {
+                        int cx = Integer.parseInt(args[1]);
+                        int cz = Integer.parseInt(args[2]);
+                        String worldName = (args.length >= 4) ? args[3] : player.getWorld().getName();
+                        var res = getClaimManager().unclaimChunk(player, worldName, cx, cz);
+                        player.sendMessage(mm.deserialize(res.message()));
+                        return true;
+                    } catch (NumberFormatException ignored) {}
+                }
+                var res = getClaimManager().unclaimCurrentChunk(player);
                 player.sendMessage(mm.deserialize(res.message()));
             }
             case "unclaimall" -> {
-                var res = claimManager.unclaimAll(player);
+                var res = getClaimManager().unclaimAll(player);
                 player.sendMessage(mm.deserialize(res.message()));
             }
             case "deposit" -> {
@@ -368,21 +389,69 @@ public class ClaimCommand implements CommandExecutor, TabCompleter {
         }
     }
 
+    private void handleHome(Player player, String[] args) {
+        List<ClaimChunk> claims = getClaimManager().getClaimsByOwner(player.getUniqueId());
+        if (claims.isEmpty()) {
+            player.sendMessage(mm.deserialize("<yellow>⚠ Anda belum memiliki wilayah klaim tanah. Ketik <gold>/claim</gold> di tempat yang ingin Anda amankan.</yellow>"));
+            return;
+        }
+
+        // /claim tp <chunkX> <chunkZ>
+        if (args.length >= 3) {
+            try {
+                int cx = Integer.parseInt(args[1]);
+                int cz = Integer.parseInt(args[2]);
+                Optional<ClaimChunk> target = claims.stream().filter(c -> c.getChunkX() == cx && c.getChunkZ() == cz).findFirst();
+                if (target.isPresent()) {
+                    getClaimManager().teleportToClaim(player, target.get());
+                    return;
+                } else {
+                    player.sendMessage(mm.deserialize("<red>✖ Anda tidak memiliki klaim pada chunk [" + cx + ", " + cz + "].</red>"));
+                    return;
+                }
+            } catch (NumberFormatException ignored) {}
+        }
+
+        // /claim home <nomor>
+        int index = 0;
+        if (args.length >= 2) {
+            try {
+                int requested = Integer.parseInt(args[1]);
+                if (requested >= 1 && requested <= claims.size()) {
+                    index = requested - 1;
+                } else {
+                    player.sendMessage(mm.deserialize("<yellow>Pilihan petak tidak valid. Masukkan nomor antara 1 sampai " + claims.size() + ".</yellow>"));
+                    return;
+                }
+            } catch (NumberFormatException ignored) {}
+        }
+
+        ClaimChunk target = claims.get(index);
+        getClaimManager().teleportToClaim(player, target);
+    }
+
     private void handleList(Player player) {
         List<ClaimChunk> list = getClaimManager().getClaimsByOwner(player.getUniqueId());
         int max = getClaimManager().getMaxClaims(player);
         String maxStr = max == Integer.MAX_VALUE ? "∞" : String.valueOf(max);
 
-        player.sendMessage(mm.deserialize("<gradient:#ffd700:#ffa500><bold>Daftar Wilayah Tanah Anda (" + list.size() + "/" + maxStr + "):</bold></gradient>"));
+        // Open visual Bedrock touch-friendly territory list
+        getClaimGUI().openTerritoryList(player, 0);
+
+        player.sendMessage(mm.deserialize("<gradient:#ffd700:#ffa500><bold>━━━━━━━━ [ SENTRAL WILAYAH ANDA (" + list.size() + "/" + maxStr + ") ] ━━━━━━━━</bold></gradient>"));
         if (list.isEmpty()) {
-            player.sendMessage(mm.deserialize("<gray>Anda belum mengklaim petak tanah satupun. Berdirilah di chunk pilihan Anda dan ketik <yellow>/claim</yellow>.</gray>"));
+            player.sendMessage(mm.deserialize("<gray>Anda belum memiliki petak tanah satupun. Berdirilah di tempat pilihan Anda dan ketik <yellow>/claim</yellow>.</gray>"));
             return;
         }
 
-        for (ClaimChunk c : list) {
+        for (int i = 0; i < list.size(); i++) {
+            ClaimChunk c = list.get(i);
             String status = c.isInGracePeriod() ? "<red>[MENUNGGAK]</red>" : "<green>[AMAN]</green>";
-            player.sendMessage(mm.deserialize("<gray>• </gray><gold>" + c.getWorld() + "</gold> <yellow>[" + c.getChunkX() + ", " + c.getChunkZ() + "]</yellow> " + status + " <gray>(Saldo: Rp" + String.format("%,.0f", c.getBankBalance()) + ")</gray>"));
+            player.sendMessage(mm.deserialize("<gold>#" + (i + 1) + " </gold><yellow>[" + c.getChunkX() + ", " + c.getChunkZ() + "]</yellow> <gray>(" + c.getWorld() + ")</gray> " + status + " <gray>Rp" + String.format("%,.0f", c.getBankBalance()) + "</gray> " +
+                    "<click:run_command:'/claim home " + (i + 1) + "'><hover:show_text:'<green>Klik untuk Teleport ke sini</green>'><aqua><u>[Teleport]</u></aqua></hover></click> " +
+                    "<click:run_command:'/claim unclaim " + c.getChunkX() + " " + c.getChunkZ() + " " + c.getWorld() + "'><hover:show_text:'<red>Klik untuk Melepas Klaim ini</red>'><red><u>[Lepas]</u></red></hover></click>"));
         }
+        player.sendMessage(mm.deserialize("<dark_gray><i>💡 Tips Bedrock: Menu visual layar sentuh telah dibuka otomatis. Anda juga bisa ketik /claim home untuk langsung pulang.</i></dark_gray>"));
     }
 
     private void handleTrust(Player player, String targetName) {
@@ -400,16 +469,18 @@ public class ClaimCommand implements CommandExecutor, TabCompleter {
     private void sendHelp(Player player) {
         player.sendMessage(mm.deserialize("<gradient:#ffd700:#ffa500><bold>Bantuan Kedaulatan Wilayah (Land Claim):</bold></gradient>"));
         player.sendMessage(mm.deserialize("<yellow>/claim</yellow> <gray>- Klaim chunk 16x16 tempat Anda berdiri saat ini</gray>"));
+        player.sendMessage(mm.deserialize("<yellow>/claim home [nomor]</yellow> <gray>- Pulang ke tanah klaim Anda (Bedrock friendly)</gray>"));
+        player.sendMessage(mm.deserialize("<yellow>/claim tp <chunkX> <chunkZ></yellow> <gray>- Teleportasi ke koordinat petak tertentu</gray>"));
         player.sendMessage(mm.deserialize("<yellow>/claim gui</yellow> <gray>- Buka menu antarmuka visual manajemen klaim</gray>"));
+        player.sendMessage(mm.deserialize("<yellow>/claim list</yellow> <gray>- Buka menu sentralisasi & daftar petak Anda</gray>"));
+        player.sendMessage(mm.deserialize("<yellow>/claim unclaim [chunkX] [chunkZ]</yellow> <gray>- Melepas klaim (bisa dari jarak jauh)</gray>"));
+        player.sendMessage(mm.deserialize("<yellow>/claim unclaimall</yellow> <gray>- Melepas seluruh klaim tanah Anda</gray>"));
         player.sendMessage(mm.deserialize("<yellow>/claim bank</yellow> <gray>- Info saldo brankas, pajak progresif, & masa tenggang</gray>"));
         player.sendMessage(mm.deserialize("<yellow>/claim deposit <jumlah></yellow> <gray>- Setor koin ke brankas pajak wilayah</gray>"));
         player.sendMessage(mm.deserialize("<yellow>/claim withdraw <jumlah></yellow> <gray>- Tarik koin dari brankas wilayah</gray>"));
         player.sendMessage(mm.deserialize("<yellow>/claim role <pemain> <peran></yellow> <gray>- Atur peran (manager, builder, visitor)</gray>"));
         player.sendMessage(mm.deserialize("<yellow>/claim flag <flag> <nilai></yellow> <gray>- Atur flag (pvp, mob_spawn, fire_spread)</gray>"));
         player.sendMessage(mm.deserialize("<yellow>/claim info</yellow> <gray>- Cek status kepemilikan dan flag chunk saat ini</gray>"));
-        player.sendMessage(mm.deserialize("<yellow>/claim list</yellow> <gray>- Lihat daftar seluruh petak tanah milik Anda</gray>"));
-        player.sendMessage(mm.deserialize("<yellow>/claim unclaim</yellow> <gray>- Melepas klaim chunk tempat Anda berdiri</gray>"));
-        player.sendMessage(mm.deserialize("<yellow>/claim unclaimall</yellow> <gray>- Melepas seluruh klaim tanah Anda</gray>"));
     }
 
     @Override
@@ -419,7 +490,7 @@ public class ClaimCommand implements CommandExecutor, TabCompleter {
 
         List<String> completions = new ArrayList<>();
         if (args.length == 1) {
-            List<String> subs = new ArrayList<>(List.of("gui", "info", "bank", "deposit", "withdraw", "flag", "role", "trust", "untrust", "list", "unclaim", "unclaimall"));
+            List<String> subs = new ArrayList<>(List.of("gui", "home", "tp", "info", "bank", "deposit", "withdraw", "flag", "role", "trust", "untrust", "list", "unclaim", "unclaimall"));
             if (sender.hasPermission("apexsions.admin") || sender.isOp()) {
                 subs.add("admin");
                 subs.add("reload");

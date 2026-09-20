@@ -745,6 +745,51 @@ public class ClaimManager {
         return new ClaimResult(true, "<gold>✔ Berhasil melepas klaim tanah pada chunk [" + chunk.getX() + ", " + chunk.getZ() + "].</gold>");
     }
 
+    public ClaimResult unclaimChunk(Player player, String worldName, int chunkX, int chunkZ) {
+        String key = ClaimChunk.buildChunkKey(worldName, chunkX, chunkZ);
+        ClaimChunk claim = claims.get(key);
+        if (claim == null) {
+            return new ClaimResult(false, "<yellow>⚠ Wilayah pada chunk [" + chunkX + ", " + chunkZ + "] tidak diklaim oleh siapapun.</yellow>");
+        }
+
+        if (!claim.isOwner(player.getUniqueId()) && !player.isOp() && !player.hasPermission("apexsions.admin")) {
+            return new ClaimResult(false, "<red>✖ Anda bukan pemilik tanah ini! Dimiliki oleh <gold>" + claim.getOwnerName() + "</gold>.</red>");
+        }
+
+        claims.remove(key);
+        repository.deleteClaim(worldName, chunkX, chunkZ);
+        if (plugin.getWebBridgeService() != null) {
+            plugin.getWebBridgeService().syncClaimsAsync(getAllClaims());
+        }
+
+        player.playSound(player.getLocation(), Sound.BLOCK_BEACON_DEACTIVATE, 0.6f, 1.0f);
+        return new ClaimResult(true, "<gold>✔ Berhasil melepas klaim tanah pada chunk [" + chunkX + ", " + chunkZ + "] di dunia " + worldName + ".</gold>");
+    }
+
+    public boolean teleportToClaim(Player player, ClaimChunk claim) {
+        if (player == null || claim == null) return false;
+        World world = Bukkit.getWorld(claim.getWorld());
+        if (world == null) {
+            player.sendMessage(mm.deserialize("<red>✖ Dunia " + claim.getWorld() + " tidak ditemukan atau sedang offline.</red>"));
+            return false;
+        }
+
+        int blockX = (claim.getChunkX() << 4) + 8;
+        int blockZ = (claim.getChunkZ() << 4) + 8;
+        int highestY = world.getHighestBlockYAt(blockX, blockZ);
+        if (highestY <= world.getMinHeight()) {
+            highestY = 64;
+        }
+        Location target = new Location(world, blockX + 0.5, highestY + 1.0, blockZ + 0.5);
+        player.teleportAsync(target).thenAccept(success -> {
+            if (success) {
+                player.sendMessage(mm.deserialize("<green>✨ Berhasil teleportasi ke wilayah tanah Anda di <gold>[" + claim.getChunkX() + ", " + claim.getChunkZ() + "]</gold> (" + claim.getWorld() + ")!</green>"));
+                player.playSound(player.getLocation(), Sound.ITEM_CHORUS_FRUIT_TELEPORT, 0.8f, 1.2f);
+            }
+        });
+        return true;
+    }
+
     public ClaimResult unclaimAll(Player player) {
         List<ClaimChunk> list = getClaimsByOwner(player.getUniqueId());
         if (list.isEmpty()) {
