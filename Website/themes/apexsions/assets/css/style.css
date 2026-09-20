@@ -979,6 +979,107 @@ a:hover {
     color: #ffffff;
 }
 
+/* Sovereign Server Gateway Card & Address Chips */
+.apx-gateway-card {
+    background: rgba(14, 18, 26, 0.85);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--apx-gold-border);
+    border-radius: var(--apx-radius-sm);
+    padding: 0.85rem 1.15rem;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.65);
+    max-width: 580px;
+}
+
+.apx-gateway-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+    padding: 0.55rem 0.85rem;
+    background: rgba(22, 28, 40, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--apx-radius-xs);
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    user-select: none;
+    text-decoration: none;
+}
+
+.apx-gateway-chip:hover {
+    background: rgba(30, 38, 54, 1);
+    border-color: var(--apx-gold-border);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba(201, 164, 92, 0.15);
+}
+
+.apx-gateway-chip:active {
+    transform: translateY(0);
+}
+
+.apx-chip-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.18rem 0.45rem;
+    border-radius: 3px;
+    font-size: 0.65rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.apx-pill-java {
+    background: rgba(201, 164, 92, 0.2);
+    color: var(--apx-gold-light);
+    border: 1px solid var(--apx-gold-border);
+}
+
+.apx-pill-bedrock {
+    background: rgba(59, 130, 246, 0.2);
+    color: #93c5fd;
+    border: 1px solid rgba(59, 130, 246, 0.35);
+}
+
+.apx-chip-text {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #f1f5f9;
+}
+
+.apx-chip-copy-icon {
+    font-size: 0.78rem;
+    color: var(--apx-text-dim);
+    transition: color 0.2s ease;
+}
+
+.apx-gateway-chip:hover .apx-chip-copy-icon {
+    color: var(--apx-gold-light);
+}
+
+/* Light Theme Support for Gateway Card */
+[data-bs-theme="light"] .apx-gateway-card {
+    background: rgba(255, 255, 255, 0.95);
+    border-color: rgba(201, 164, 92, 0.4);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+[data-bs-theme="light"] .apx-gateway-chip {
+    background: #f8fafc;
+    border-color: rgba(0, 0, 0, 0.1);
+}
+
+[data-bs-theme="light"] .apx-gateway-chip:hover {
+    background: #ffffff;
+    border-color: var(--apx-gold);
+}
+
+[data-bs-theme="light"] .apx-chip-text {
+    color: #1e293b;
+}
+
+[data-bs-theme="light"] .apx-gateway-players {
+    color: #334155 !important;
+}
+
 .btn-apx-monolith {
     background: var(--apx-gold);
     color: #06080d !important;
@@ -4523,36 +4624,37 @@ code:not(pre code) {
     }
 
     .apx-hero-action-group {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.5rem !important;
+        width: 100%;
+        margin-bottom: 0.85rem !important;
+    }
+
+    .btn-apx-sovereign,
+    .btn-apx-outline {
+        width: 100%;
+        justify-content: center;
+        padding: 0.65rem 0.5rem !important;
+        font-size: 0.76rem !important;
+        white-space: nowrap;
+        text-align: center;
+    }
+
+    .apx-gateway-card {
+        padding: 0.75rem 0.85rem;
+        margin-top: 0.5rem;
+    }
+
+    .apx-gateway-chips {
         flex-direction: column;
         align-items: stretch !important;
-        width: 100%;
-        gap: 0.75rem !important;
+        gap: 0.4rem !important;
     }
 
-    .btn-apx-sovereign {
+    .apx-gateway-chip {
         width: 100%;
-        justify-content: center;
-        padding: 0.75rem 1rem !important;
-        font-size: 0.9rem;
-    }
-
-    .apx-hero-ip-block {
-        width: 100%;
-        justify-content: center;
-        padding: 0.7rem 1rem !important;
-    }
-
-    .apx-hero-infrastructure {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 0.5rem;
-        margin-top: 1.5rem;
-    }
-
-    .apx-infra-item {
-        width: 100%;
-        justify-content: flex-start;
-        padding: 0.55rem 0.85rem;
+        padding: 0.5rem 0.75rem;
     }
 
     /* Kingdoms Triptych on Small Mobile */

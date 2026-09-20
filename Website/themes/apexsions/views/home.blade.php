@@ -8,9 +8,9 @@
 <section class="apx-hero-panoramic">
     <div class="apx-hero-panoramic-bg"></div>
 
-    <div class="container position-relative d-flex flex-column justify-content-between h-100 py-3" style="z-index: 2; flex: 1;">
+    <div class="container position-relative d-flex flex-column justify-content-center h-100 py-4" style="z-index: 2; flex: 1;">
         <!-- Top Sovereign Identity Mark & Hierarchy Axis -->
-        <div class="pt-2 mb-2">
+        <div class="mb-2">
             <div class="apx-hero-brand-mark mb-2">
                 <span data-i18n="hero_brand_mark">APEXSIONS &bull; THE PEAK CIVILIZATIONS</span>
             </div>
@@ -27,9 +27,9 @@
             </div>
         </div>
 
-        <!-- Main Civilization Statement & Narrative (Asymmetric Left-Aligned Column) -->
-        <div class="row my-auto py-3">
-            <div class="col-xl-6 col-lg-7">
+        <!-- Main Civilization Statement & Narrative -->
+        <div class="row py-2">
+            <div class="col-xl-7 col-lg-8">
                 <h1 class="apx-hero-headline" data-i18n="hero_headline">
                     Peradaban Berdaulat yang Dibangun di Atas Tatanan Hierarki.
                 </h1>
@@ -38,44 +38,53 @@
                     Sebelas kasta sosial, tiga wilayah kerajaan, dan satu dunia yang dibentuk seutuhnya oleh sejarah warganya.
                 </p>
 
-                <!-- Primary Sovereign Action & Separate Technical Infrastructure -->
-                <div class="apx-hero-action-group d-flex align-items-center gap-3 flex-wrap">
+                <!-- Action CTAs: Two Clear Primary Paths -->
+                <div class="apx-hero-action-group d-flex align-items-center gap-2 mb-3 flex-wrap">
                     <a href="#civilizations" class="btn btn-apx-sovereign apx-sheen-periodic">
-                        <span data-i18n="hero_btn_explore">JELAJAHI PERADABAN</span> <i class="bi bi-arrow-down ms-2"></i>
+                        <span data-i18n="hero_btn_explore">JELAJAHI PERADABAN</span> <i class="bi bi-arrow-down ms-1"></i>
                     </a>
                     <a href="#getting-started" class="btn btn-apx-outline">
-                        <i class="bi bi-compass me-2"></i><span data-i18n="hero_btn_guide">PANDUAN MASUK</span>
+                        <i class="bi bi-compass me-1"></i><span data-i18n="hero_btn_guide">PANDUAN MASUK</span>
                     </a>
-                    <div class="apx-hero-ip-block apx-copyable" data-apx-copy="apexsions.my.id:32348" role="button" tabindex="0" title="Klik atau tekan Enter untuk menyalin IP Java" aria-label="Salin Alamat IP Server Java">
-                        <span class="apx-ip-label" data-i18n="hero_ip_label">SERVER IP</span>
-                        <span class="apx-ip-address font-monospace">apexsions.my.id:32348</span>
-                        <i class="bi bi-clipboard apx-ip-icon ms-1"></i>
+                </div>
+
+                <!-- Unified Sovereign Server Gateway Card (Zero Duplicate Clutter) -->
+                <div class="apx-gateway-card">
+                    <!-- Status & Online Players Counter -->
+                    <div class="apx-gateway-header d-flex align-items-center justify-content-between flex-wrap gap-2 pb-2 mb-2 border-bottom border-secondary border-opacity-20">
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="apx-pulse-dot apx-beacon-live" id="apxLiveDot" aria-hidden="true"></span>
+                            <span class="apx-gateway-status text-emerald fw-bold small" id="apxLiveBadge" data-i18n="hero_status_online">SERVER ONLINE</span>
+                            <span class="text-secondary opacity-30">/</span>
+                            <span class="apx-gateway-players text-sub small" id="apxPlayerCountContainer">
+                                <span id="apxPlayerStatusText" data-i18n="hero_status_ready">Gerbang Terbuka &bull; Siap Menjelajah</span>
+                                <span id="apxPlayerNumbers" class="d-none">
+                                    <span class="text-gold fw-bold" id="apxOnlinePlayers">0</span> / <span id="apxMaxPlayers">200</span> <span data-i18n="hero_citizens">Warga</span>
+                                </span>
+                            </span>
+                        </div>
+                        <div class="apx-gateway-version small text-muted font-monospace">
+                            v<span id="apxVersion">26.2</span>
+                        </div>
+                    </div>
+
+                    <!-- Clean Tactile Copy Chips for Java & Bedrock -->
+                    <div class="apx-gateway-chips d-flex align-items-center gap-2 flex-wrap">
+                        <!-- Java Chip -->
+                        <div class="apx-gateway-chip apx-copyable flex-grow-1" data-apx-copy="apexsions.my.id:32348" role="button" tabindex="0" title="Klik untuk menyalin IP Java" aria-label="Salin Alamat IP Server Java">
+                            <span class="apx-chip-pill apx-pill-java">JAVA</span>
+                            <span class="apx-chip-text font-monospace">apexsions.my.id:32348</span>
+                            <i class="bi bi-clipboard apx-chip-copy-icon ms-auto"></i>
+                        </div>
+
+                        <!-- Bedrock Chip -->
+                        <div class="apx-gateway-chip apx-copyable flex-grow-1" data-apx-copy="IP: apexsions.my.id | Port: 32348" role="button" tabindex="0" title="Klik untuk menyalin IP dan Port Bedrock" aria-label="Salin IP dan Port Server Bedrock">
+                            <span class="apx-chip-pill apx-pill-bedrock">BEDROCK</span>
+                            <span class="apx-chip-text font-monospace">apexsions.my.id <span class="text-gold opacity-60">&bull;</span> 32348</span>
+                            <i class="bi bi-clipboard apx-chip-copy-icon ms-auto"></i>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
-
-        <!-- Restrained Architectural Infrastructure Metadata (Demoted Telemetry) -->
-        <div class="apx-hero-infrastructure">
-            <!-- 1. Live Signal & Player Count -->
-            <div class="apx-infra-item">
-                <span class="apx-pulse-dot apx-beacon-live" id="apxLiveDot" aria-hidden="true"></span>
-                <span class="apx-infra-status" id="apxLiveBadge" data-i18n="hero_status_online">SERVER ONLINE</span>
-                <span class="apx-infra-divider">/</span>
-                <span class="apx-infra-val" id="apxPlayerCountContainer"><span id="apxPlayerStatusText" data-i18n="hero_status_ready">Gerbang Terbuka &bull; Siap Menjelajah</span><span id="apxPlayerNumbers" class="d-none"><span id="apxOnlinePlayers">0</span> / <span id="apxMaxPlayers">200</span> <span data-i18n="hero_citizens">Warga</span></span></span>
-            </div>
-
-            <!-- 2. Java Server IP (Click to copy) -->
-            <div class="apx-infra-item apx-copyable" data-apx-copy="apexsions.my.id:32348" role="button" tabindex="0" title="Klik atau tekan Enter untuk menyalin IP Java" aria-label="Salin Alamat IP Server Java">
-                <span class="apx-infra-label">JAVA</span>
-                <span class="apx-infra-val font-monospace">apexsions.my.id:32348</span>
-            </div>
-
-            <!-- 3. Bedrock IP, Port & Version (Click to copy) -->
-            <div class="apx-infra-item apx-copyable" data-apx-copy="IP: apexsions.my.id | Port: 32348" role="button" tabindex="0" title="Klik atau tekan Enter untuk menyalin IP dan Port Bedrock" aria-label="Salin IP dan Port Server Bedrock">
-                <span class="apx-infra-label">BEDROCK</span>
-                <span class="apx-infra-val font-monospace">IP: apexsions.my.id &bull; Port: 32348</span>
-                <span class="apx-infra-meta">&bull; v<span id="apxVersion">26.2</span></span>
             </div>
         </div>
     </div>
@@ -272,21 +281,21 @@
             <div class="row align-items-center g-4 g-lg-5">
                 <!-- Left Column: Cartographic Intel & Sovereign Navigation -->
                 <div class="col-lg-7">
-                    <!-- Clean Telemetry Strip (Anti-slop: zero capsule badge clutter) -->
-                    <div class="d-flex align-items-center gap-3 mb-3 flex-wrap apx-map-telemetry-strip">
+                    <!-- Clean Telemetry Badges (Anti-slop: zero raw debug slash box) -->
+                    <div class="d-flex align-items-center gap-2 mb-3 flex-wrap">
                         <span class="apx-section-kicker mb-0" data-i18n="map_kicker">KARTOGRAFI REALM</span>
-                        <div class="apx-telemetry-badge-cluster d-inline-flex align-items-center gap-2 font-monospace">
-                            <span class="apx-telemetry-status d-inline-flex align-items-center gap-1.5 {{ $serverMapOnline ? 'is-online' : 'is-standby' }}">
-                                <span class="apx-telemetry-beacon"></span>
-                                <span class="apx-telemetry-status-text" data-i18n="{{ $serverMapOnline ? 'map_status_online' : 'map_status_standby' }}">
-                                    {{ $serverMapOnline ? 'ATLAS ONLINE' : 'ATLAS STANDBY' }}
-                                </span>
+                        <span class="apx-badge-chiseled apx-badge-chiseled-success">
+                            <span class="apx-pulse-dot-sm apx-beacon-live me-1"></span>
+                            <span data-i18n="{{ $serverMapOnline ? 'map_status_online' : 'map_status_standby' }}">
+                                {{ $serverMapOnline ? 'ATLAS ONLINE' : 'ATLAS STANDBY' }}
                             </span>
-                            <span class="apx-telemetry-divider opacity-30">/</span>
-                            <span class="apx-telemetry-engine">BLUEMAP 3D</span>
-                            <span class="apx-telemetry-divider opacity-30">/</span>
-                            <span class="apx-telemetry-coords text-gold opacity-90" data-i18n="map_telemetry_center">PUSAT TIGA KERAJAAN</span>
-                        </div>
+                        </span>
+                        <span class="apx-badge-chiseled">
+                            <i class="bi bi-layers-half text-gold me-1"></i> BLUEMAP 3D
+                        </span>
+                        <span class="apx-badge-chiseled text-gold">
+                            <i class="bi bi-geo-alt text-gold me-1"></i> <span data-i18n="map_telemetry_center">PUSAT TIGA KERAJAAN</span>
+                        </span>
                     </div>
 
                     <h2 class="apx-world-title mb-3" data-i18n="map_title">
