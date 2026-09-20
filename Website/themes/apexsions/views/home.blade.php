@@ -9,81 +9,54 @@
     <div class="apx-hero-panoramic-bg"></div>
 
     <div class="container position-relative d-flex flex-column justify-content-center h-100 py-4" style="z-index: 2; flex: 1;">
-        <!-- Top Sovereign Identity Mark & Hierarchy Axis -->
-        <div class="mb-2">
-            <div class="apx-hero-brand-mark mb-2">
-                <span data-i18n="hero_brand_mark">APEXSIONS &bull; THE PEAK CIVILIZATIONS</span>
-            </div>
-            <div class="apx-hero-hierarchy-axis" aria-label="Tingkatan Hierarki Peradaban" role="list">
-                <span class="apx-axis-step" role="listitem" data-i18n="hero_axis_foundation">FONDASI</span>
-                <span class="apx-axis-arrow" aria-hidden="true">→</span>
-                <span class="apx-axis-step" role="listitem" data-i18n="hero_axis_nobles">BANGSAWAN</span>
-                <span class="apx-axis-arrow" aria-hidden="true">→</span>
-                <span class="apx-axis-step" role="listitem" data-i18n="hero_axis_admin">ADMINISTRASI</span>
-                <span class="apx-axis-arrow" aria-hidden="true">→</span>
-                <span class="apx-axis-step" role="listitem" data-i18n="hero_axis_authority">OTORITAS</span>
-                <span class="apx-axis-arrow" aria-hidden="true">→</span>
-                <span class="apx-axis-step apx-axis-apex" role="listitem" data-i18n="hero_axis_apex">PUNCAK</span>
-            </div>
-        </div>
-
-        <!-- Main Civilization Statement & Narrative -->
         <div class="row py-2">
-            <div class="col-xl-7 col-lg-8">
+            <div class="col-xl-8 col-lg-9">
+                <!-- Stately Sovereign Identity Kicker -->
+                <div class="apx-hero-brand-mark mb-2">
+                    <span data-i18n="hero_brand_mark">APEXSIONS &bull; THE PEAK CIVILIZATIONS</span>
+                </div>
+
+                <!-- Epic Civilization Headline -->
                 <h1 class="apx-hero-headline" data-i18n="hero_headline">
                     Peradaban Berdaulat yang Dibangun di Atas Tatanan Hierarki.
                 </h1>
 
-                <p class="apx-hero-subtext" data-i18n="hero_subtext">
+                <!-- Atmospheric, Concise Narrative Subtext -->
+                <p class="apx-hero-subtext mb-4" data-i18n="hero_subtext">
                     Sebelas kasta sosial, tiga wilayah kerajaan, dan satu dunia yang dibentuk seutuhnya oleh sejarah warganya.
                 </p>
 
-                <!-- Action CTAs: Two Clear Primary Paths -->
-                <div class="apx-hero-action-group d-flex align-items-center gap-2 mb-3 flex-wrap">
+                <!-- Action Group: Two Clear Sovereign Paths (Explore or Copy Server IP) -->
+                <div class="apx-hero-action-group d-flex align-items-center gap-3 mb-3 flex-wrap">
                     <a href="#civilizations" class="btn btn-apx-sovereign apx-sheen-periodic">
                         <span data-i18n="hero_btn_explore">JELAJAHI PERADABAN</span> <i class="bi bi-arrow-down ms-1"></i>
                     </a>
-                    <a href="#getting-started" class="btn btn-apx-outline">
-                        <i class="bi bi-compass me-1"></i><span data-i18n="hero_btn_guide">PANDUAN MASUK</span>
-                    </a>
+
+                    <!-- Direct Tactile Server IP Button (Noble Glass Pill) -->
+                    <div class="apx-hero-ip-block apx-copyable" data-apx-copy="apexsions.my.id:32348" role="button" tabindex="0" title="Klik untuk menyalin alamat server" aria-label="Salin Alamat Server apexsions.my.id:32348">
+                        <i class="bi bi-controller text-gold me-1"></i>
+                        <span class="apx-ip-address font-monospace">apexsions.my.id:32348</span>
+                        <span class="badge-copy apx-ip-copy-tag ms-2">
+                            <i class="bi bi-clipboard me-1"></i><span class="apx-copy-label" data-i18n="hero_btn_copy">Salin</span>
+                        </span>
+                    </div>
                 </div>
 
-                <!-- Unified Sovereign Server Gateway Card (Zero Duplicate Clutter) -->
-                <div class="apx-gateway-card">
-                    <!-- Status & Online Players Counter -->
-                    <div class="apx-gateway-header d-flex align-items-center justify-content-between flex-wrap gap-2 pb-2 mb-2 border-bottom border-secondary border-opacity-20">
-                        <div class="d-flex align-items-center gap-2">
-                            <span class="apx-pulse-dot apx-beacon-live" id="apxLiveDot" aria-hidden="true"></span>
-                            <span class="apx-gateway-status text-emerald fw-bold small" id="apxLiveBadge" data-i18n="hero_status_online">SERVER ONLINE</span>
-                            <span class="text-secondary opacity-30">/</span>
-                            <span class="apx-gateway-players text-sub small" id="apxPlayerCountContainer">
-                                <span id="apxPlayerStatusText" data-i18n="hero_status_ready">Gerbang Terbuka &bull; Siap Menjelajah</span>
-                                <span id="apxPlayerNumbers" class="d-none">
-                                    <span class="text-gold fw-bold" id="apxOnlinePlayers">0</span> / <span id="apxMaxPlayers">200</span> <span data-i18n="hero_citizens">Warga</span>
-                                </span>
-                            </span>
-                        </div>
-                        <div class="apx-gateway-version small text-muted font-monospace">
-                            v<span id="apxVersion">26.2</span>
-                        </div>
-                    </div>
-
-                    <!-- Clean Tactile Copy Chips for Java & Bedrock -->
-                    <div class="apx-gateway-chips d-flex align-items-center gap-2 flex-wrap">
-                        <!-- Java Chip -->
-                        <div class="apx-gateway-chip apx-copyable flex-grow-1" data-apx-copy="apexsions.my.id:32348" role="button" tabindex="0" title="Klik untuk menyalin IP Java" aria-label="Salin Alamat IP Server Java">
-                            <span class="apx-chip-pill apx-pill-java">JAVA</span>
-                            <span class="apx-chip-text font-monospace">apexsions.my.id:32348</span>
-                            <i class="bi bi-clipboard apx-chip-copy-icon ms-auto"></i>
-                        </div>
-
-                        <!-- Bedrock Chip -->
-                        <div class="apx-gateway-chip apx-copyable flex-grow-1" data-apx-copy="IP: apexsions.my.id | Port: 32348" role="button" tabindex="0" title="Klik untuk menyalin IP dan Port Bedrock" aria-label="Salin IP dan Port Server Bedrock">
-                            <span class="apx-chip-pill apx-pill-bedrock">BEDROCK</span>
-                            <span class="apx-chip-text font-monospace">apexsions.my.id <span class="text-gold opacity-60">&bull;</span> 32348</span>
-                            <i class="bi bi-clipboard apx-chip-copy-icon ms-auto"></i>
-                        </div>
-                    </div>
+                <!-- Organic Live Server Telemetry (Unboxed, Atmospheric Text Line) -->
+                <div class="apx-hero-telemetry d-flex align-items-center gap-2 flex-wrap">
+                    <span class="apx-pulse-dot apx-beacon-live" id="apxLiveDot" aria-hidden="true"></span>
+                    <span class="apx-telemetry-status text-emerald fw-bold small" id="apxLiveBadge" data-i18n="hero_status_online">SERVER ONLINE</span>
+                    <span class="text-secondary opacity-30">&bull;</span>
+                    <span class="apx-telemetry-players small" id="apxPlayerCountContainer">
+                        <span id="apxPlayerStatusText" data-i18n="hero_status_ready">Gerbang Terbuka &bull; Siap Menjelajah</span>
+                        <span id="apxPlayerNumbers" class="d-none">
+                            <span class="text-gold fw-bold" id="apxOnlinePlayers">0</span> / <span id="apxMaxPlayers">200</span> <span data-i18n="hero_citizens">Warga Online</span>
+                        </span>
+                    </span>
+                    <span class="text-secondary opacity-30">&bull;</span>
+                    <span class="apx-telemetry-editions small text-muted font-monospace">
+                        Java &amp; Bedrock v<span id="apxVersion">26.2</span>
+                    </span>
                 </div>
             </div>
         </div>

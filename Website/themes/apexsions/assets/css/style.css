@@ -860,43 +860,6 @@ a:hover {
     text-transform: uppercase;
 }
 
-.apx-hero-hierarchy-axis {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.65rem;
-    padding: 0.35rem 0.85rem;
-    background: rgba(14, 19, 30, 0.6);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: var(--apx-radius-xs);
-}
-
-.apx-axis-step {
-    font-size: 0.65rem;
-    font-weight: 700;
-    letter-spacing: 0.18em;
-    color: var(--apx-text-dim);
-    text-transform: uppercase;
-}
-
-.apx-axis-arrow {
-    font-size: 0.65rem;
-    color: rgba(255, 255, 255, 0.22);
-}
-
-.apx-axis-apex {
-    color: var(--apx-gold);
-    font-weight: 800;
-}
-
-.apx-hero-crest-mark {
-    font-family: 'Cinzel', serif;
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.28em;
-    color: var(--apx-text-dim);
-    text-transform: uppercase;
-}
-
 .apx-hero-headline {
     font-family: 'Cinzel', Georgia, serif;
     font-size: clamp(1.9rem, 3.3vw, 2.85rem);
@@ -915,7 +878,7 @@ a:hover {
     margin-bottom: 1.75rem;
 }
 
-/* Primary Sovereign Action & Separate IP Block */
+/* Primary Sovereign Action & Tactile Server IP Pill */
 .btn-apx-sovereign {
     background: var(--apx-gold);
     color: #05070a !important;
@@ -928,156 +891,105 @@ a:hover {
     border: 1px solid var(--apx-gold-light);
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     text-decoration: none;
     cursor: pointer;
     transition: var(--apx-transition);
+    box-shadow: 0 4px 18px rgba(201, 164, 92, 0.25);
 }
 
 .btn-apx-sovereign:hover {
     background: var(--apx-gold-light);
     color: #05070a !important;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 24px rgba(201, 164, 92, 0.38);
 }
 
 .apx-hero-ip-block {
-    background: rgba(18, 24, 38, 0.75);
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(14, 19, 30, 0.75);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(201, 164, 92, 0.35);
     border-radius: var(--apx-radius-sm);
-    padding: 0.65rem 1rem;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.75rem;
-    cursor: pointer;
-    transition: var(--apx-transition);
-    text-decoration: none;
-}
-
-.apx-hero-ip-block:hover {
-    border-color: rgba(255, 255, 255, 0.28);
-    background: rgba(24, 32, 50, 0.9);
-}
-
-.apx-ip-label {
-    font-size: 0.68rem;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    color: #64748b;
-}
-
-.apx-ip-address {
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: #f1f5f9;
-}
-
-.apx-ip-icon {
-    font-size: 0.8rem;
-    color: #64748b;
-    transition: var(--apx-transition);
-}
-
-.apx-hero-ip-block:hover .apx-ip-icon {
-    color: #ffffff;
-}
-
-/* Sovereign Server Gateway Card & Address Chips */
-.apx-gateway-card {
-    background: rgba(14, 18, 26, 0.85);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid var(--apx-gold-border);
-    border-radius: var(--apx-radius-sm);
-    padding: 0.85rem 1.15rem;
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.65);
-    max-width: 580px;
-}
-
-.apx-gateway-chip {
+    padding: 0.75rem 1.25rem;
     display: inline-flex;
     align-items: center;
     gap: 0.65rem;
-    padding: 0.55rem 0.85rem;
-    background: rgba(22, 28, 40, 0.9);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: var(--apx-radius-xs);
     cursor: pointer;
-    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
     user-select: none;
     text-decoration: none;
 }
 
-.apx-gateway-chip:hover {
-    background: rgba(30, 38, 54, 1);
-    border-color: var(--apx-gold-border);
+.apx-hero-ip-block:hover {
+    background: rgba(22, 30, 48, 0.9);
+    border-color: var(--apx-gold-light);
     transform: translateY(-1px);
-    box-shadow: 0 4px 14px rgba(201, 164, 92, 0.15);
+    box-shadow: 0 4px 20px rgba(201, 164, 92, 0.2);
 }
 
-.apx-gateway-chip:active {
+.apx-hero-ip-block:active {
     transform: translateY(0);
 }
 
-.apx-chip-pill {
-    display: inline-flex;
-    align-items: center;
-    padding: 0.18rem 0.45rem;
-    border-radius: 3px;
-    font-size: 0.65rem;
-    font-weight: 800;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-}
-
-.apx-pill-java {
-    background: rgba(201, 164, 92, 0.2);
-    color: var(--apx-gold-light);
-    border: 1px solid var(--apx-gold-border);
-}
-
-.apx-pill-bedrock {
-    background: rgba(59, 130, 246, 0.2);
-    color: #93c5fd;
-    border: 1px solid rgba(59, 130, 246, 0.35);
-}
-
-.apx-chip-text {
-    font-size: 0.8rem;
+.apx-ip-address {
+    font-size: 0.88rem;
     font-weight: 600;
     color: #f1f5f9;
+    letter-spacing: 0.04em;
 }
 
-.apx-chip-copy-icon {
-    font-size: 0.78rem;
-    color: var(--apx-text-dim);
-    transition: color 0.2s ease;
-}
-
-.apx-gateway-chip:hover .apx-chip-copy-icon {
+.apx-ip-copy-tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.2rem 0.55rem;
+    background: rgba(201, 164, 92, 0.15);
+    border: 1px solid rgba(201, 164, 92, 0.3);
+    border-radius: 4px;
+    font-size: 0.72rem;
+    font-weight: 700;
     color: var(--apx-gold-light);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    transition: all 0.2s ease;
 }
 
-/* Light Theme Support for Gateway Card */
-[data-bs-theme="light"] .apx-gateway-card {
-    background: rgba(255, 255, 255, 0.95);
-    border-color: rgba(201, 164, 92, 0.4);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+.apx-hero-ip-block:hover .apx-ip-copy-tag {
+    background: rgba(201, 164, 92, 0.25);
+    border-color: var(--apx-gold);
+    color: #ffffff;
 }
 
-[data-bs-theme="light"] .apx-gateway-chip {
-    background: #f8fafc;
-    border-color: rgba(0, 0, 0, 0.1);
+/* Organic Unboxed Live Telemetry */
+.apx-hero-telemetry {
+    font-size: 0.84rem;
+    color: #94a3b8;
+    letter-spacing: 0.03em;
 }
 
-[data-bs-theme="light"] .apx-gateway-chip:hover {
+.apx-hero-telemetry .apx-pulse-dot {
+    width: 7px;
+    height: 7px;
+}
+
+/* Light Theme Support for Hero Elements */
+[data-bs-theme="light"] .apx-hero-ip-block {
+    background: rgba(255, 255, 255, 0.85);
+    border-color: rgba(201, 164, 92, 0.5);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+}
+
+[data-bs-theme="light"] .apx-hero-ip-block:hover {
     background: #ffffff;
     border-color: var(--apx-gold);
 }
 
-[data-bs-theme="light"] .apx-chip-text {
-    color: #1e293b;
+[data-bs-theme="light"] .apx-ip-address {
+    color: #0f172a;
 }
 
-[data-bs-theme="light"] .apx-gateway-players {
-    color: #334155 !important;
+[data-bs-theme="light"] .apx-hero-telemetry {
+    color: #475569;
 }
 
 .btn-apx-monolith {
@@ -4624,37 +4536,31 @@ code:not(pre code) {
     }
 
     .apx-hero-action-group {
-        display: grid !important;
-        grid-template-columns: 1fr 1fr;
-        gap: 0.5rem !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 0.65rem !important;
         width: 100%;
-        margin-bottom: 0.85rem !important;
+        margin-bottom: 1rem !important;
     }
 
-    .btn-apx-sovereign,
-    .btn-apx-outline {
+    .btn-apx-sovereign {
         width: 100%;
         justify-content: center;
-        padding: 0.65rem 0.5rem !important;
-        font-size: 0.76rem !important;
-        white-space: nowrap;
+        padding: 0.85rem 1rem !important;
+        font-size: 0.84rem !important;
         text-align: center;
     }
 
-    .apx-gateway-card {
-        padding: 0.75rem 0.85rem;
-        margin-top: 0.5rem;
-    }
-
-    .apx-gateway-chips {
-        flex-direction: column;
-        align-items: stretch !important;
-        gap: 0.4rem !important;
-    }
-
-    .apx-gateway-chip {
+    .apx-hero-ip-block {
         width: 100%;
-        padding: 0.5rem 0.75rem;
+        justify-content: center;
+        padding: 0.75rem 1rem !important;
+    }
+
+    .apx-hero-telemetry {
+        font-size: 0.78rem;
+        gap: 0.35rem 0.5rem !important;
     }
 
     /* Kingdoms Triptych on Small Mobile */
