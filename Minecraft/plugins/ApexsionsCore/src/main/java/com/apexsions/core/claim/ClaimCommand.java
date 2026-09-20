@@ -220,11 +220,51 @@ public class ClaimCommand implements CommandExecutor, TabCompleter {
                 }
                 handleUntrust(player, args[1]);
             }
+            case "name", "rename", "setname" -> handleSetName(player, args);
+            case "radius" -> handleRadius(player, args);
             case "list" -> handleList(player);
             default -> sendHelp(player);
         }
 
         return true;
+    }
+
+    private void handleSetName(Player player, String[] args) {
+        if (args.length < 2) {
+            player.sendMessage(mm.deserialize("<yellow>Penggunaan: /claim name <Nama Baru></yellow> <gray>(atau: /claim name <chunkX> <chunkZ> <Nama>)</gray>"));
+            return;
+        }
+
+        // Format: /claim name <chunkX> <chunkZ> <Nama...>
+        if (args.length >= 4) {
+            try {
+                int cx = Integer.parseInt(args[1]);
+                int cz = Integer.parseInt(args[2]);
+                String name = String.join(" ", Arrays.copyOfRange(args, 3, args.length));
+                var res = getClaimManager().setClaimName(player, player.getWorld().getName(), cx, cz, name);
+                player.sendMessage(mm.deserialize(res.message()));
+                return;
+            } catch (NumberFormatException ignored) {}
+        }
+
+        // Format: /claim name <Nama Baru...> on current standing chunk
+        String name = String.join(" ", Arrays.copyOfRange(args, 1, args.length));
+        var res = getClaimManager().setClaimNameCurrentChunk(player, name);
+        player.sendMessage(mm.deserialize(res.message()));
+    }
+
+    private void handleRadius(Player player, String[] args) {
+        if (args.length < 2) {
+            player.sendMessage(mm.deserialize("<yellow>Penggunaan: /claim radius <1|2></yellow> <gray>(1 = 3x3 petak, 2 = 5x5 petak)</gray>"));
+            return;
+        }
+        try {
+            int radius = Integer.parseInt(args[1]);
+            var res = getClaimManager().claimRadius(player, radius);
+            player.sendMessage(mm.deserialize(res.message()));
+        } catch (NumberFormatException e) {
+            player.sendMessage(mm.deserialize("<red>Radius harus berupa angka 1 atau 2!</red>"));
+        }
     }
 
     private void handleRole(Player player, String targetName, String roleStr) {
@@ -473,6 +513,8 @@ public class ClaimCommand implements CommandExecutor, TabCompleter {
         player.sendMessage(mm.deserialize("<yellow>/claim tp <chunkX> <chunkZ></yellow> <gray>- Teleportasi ke koordinat petak tertentu</gray>"));
         player.sendMessage(mm.deserialize("<yellow>/claim gui</yellow> <gray>- Buka menu antarmuka visual manajemen klaim</gray>"));
         player.sendMessage(mm.deserialize("<yellow>/claim list</yellow> <gray>- Buka menu sentralisasi & daftar petak Anda</gray>"));
+        player.sendMessage(mm.deserialize("<yellow>/claim name <nama></yellow> <gray>- Beri label/nama khusus pada petak tanah ini</gray>"));
+        player.sendMessage(mm.deserialize("<yellow>/claim radius <1|2></yellow> <gray>- Klaim cepat 3x3 atau 5x5 petak di sekeliling Anda</gray>"));
         player.sendMessage(mm.deserialize("<yellow>/claim unclaim [chunkX] [chunkZ]</yellow> <gray>- Melepas klaim (bisa dari jarak jauh)</gray>"));
         player.sendMessage(mm.deserialize("<yellow>/claim unclaimall</yellow> <gray>- Melepas seluruh klaim tanah Anda</gray>"));
         player.sendMessage(mm.deserialize("<yellow>/claim bank</yellow> <gray>- Info saldo brankas, pajak progresif, & masa tenggang</gray>"));
@@ -490,13 +532,27 @@ public class ClaimCommand implements CommandExecutor, TabCompleter {
 
         List<String> completions = new ArrayList<>();
         if (args.length == 1) {
-            List<String> subs = new ArrayList<>(List.of("gui", "home", "tp", "info", "bank", "deposit", "withdraw", "flag", "role", "trust", "untrust", "list", "unclaim", "unclaimall"));
+            List<String> subs = new ArrayList<>(List.of("gui", "home", "tp", "name", "rename", "radius", "info", "bank", "deposit", "withdraw", "flag", "role", "trust", "untrust", "list", "unclaim", "unclaimall"));
             if (sender.hasPermission("apexsions.admin") || sender.isOp()) {
                 subs.add("admin");
                 subs.add("reload");
             }
             for (String s : subs) {
                 if (s.startsWith(args[0].toLowerCase())) completions.add(s);
+            }
+            return completions;
+        }
+
+        if (args.length == 2 && (args[0].equalsIgnoreCase("name") || args[0].equalsIgnoreCase("rename") || args[0].equalsIgnoreCase("setname"))) {
+            for (String n : List.of("clear", "reset")) {
+                if (n.startsWith(args[1].toLowerCase())) completions.add(n);
+            }
+            return completions;
+        }
+
+        if (args.length == 2 && args[0].equalsIgnoreCase("radius")) {
+            for (String r : List.of("1", "2")) {
+                if (r.startsWith(args[1].toLowerCase())) completions.add(r);
             }
             return completions;
         }

@@ -280,6 +280,18 @@ public class ClaimChunk {
         }
     }
 
+    public String getName() {
+        return flags.get("name");
+    }
+
+    public void setName(String name) {
+        if (name == null || name.isBlank()) {
+            flags.remove("name");
+        } else {
+            flags.put("name", name.trim());
+        }
+    }
+
     // --- Serialization Helpers ---
 
     public String getTrustedPlayersSerialized() {

@@ -641,9 +641,17 @@ public class ClaimManager {
         if (greeting != null && !greeting.isBlank()) {
             player.sendActionBar(mm.deserialize(greeting + statusNote));
         } else {
-            String ownerDisplay = claim.isOwner(player.getUniqueId()) ? "<green>Wilayah Anda Sendiri</green>" : "<gold>Wilayah " + claim.getOwnerName() + "</gold>";
+            String nameDisplay = (claim.getName() != null && !claim.getName().isBlank())
+                    ? " <white>\"" + claim.getName() + "\"</white>"
+                    : "";
+            String ownerDisplay = claim.isOwner(player.getUniqueId())
+                    ? "<green>Wilayah Anda" + nameDisplay + "</green>"
+                    : "<gold>Wilayah " + claim.getOwnerName() + nameDisplay + "</gold>";
             player.sendActionBar(mm.deserialize("<gray>Memasuki</gray> " + ownerDisplay + statusNote));
         }
+
+        // Elegant chime sound effect upon crossing into claimed territory
+        player.playSound(player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_CHIME, 0.45f, 1.25f);
 
         // Warn owner if their own claim is delinquent
         if (claim.isOwner(player.getUniqueId()) && claim.isInGracePeriod()) {
@@ -656,8 +664,13 @@ public class ClaimManager {
         if (farewell != null && !farewell.isBlank()) {
             player.sendActionBar(mm.deserialize(farewell));
         } else {
-            player.sendActionBar(mm.deserialize("<gray>Meninggalkan wilayah <gold>" + claim.getOwnerName() + "</gold> ➔ <green>Alam Liar</green></gray>"));
+            String nameDisplay = (claim.getName() != null && !claim.getName().isBlank())
+                    ? " <white>\"" + claim.getName() + "\"</white>"
+                    : "";
+            player.sendActionBar(mm.deserialize("<gray>Meninggalkan wilayah <gold>" + claim.getOwnerName() + nameDisplay + "</gold> ➔ <green>Alam Liar</green></gray>"));
         }
+        // Subtle click sound on wilderness return
+        player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_HAT, 0.35f, 1.0f);
     }
 
     // --- Claim & Unclaim Core ---
@@ -764,6 +777,130 @@ public class ClaimManager {
 
         player.playSound(player.getLocation(), Sound.BLOCK_BEACON_DEACTIVATE, 0.6f, 1.0f);
         return new ClaimResult(true, "<gold>✔ Berhasil melepas klaim tanah pada chunk [" + chunkX + ", " + chunkZ + "] di dunia " + worldName + ".</gold>");
+    }
+
+    public ClaimResult setClaimName(Player player, String worldName, int chunkX, int chunkZ, String newName) {
+        String key = ClaimChunk.buildChunkKey(worldName, chunkX, chunkZ);
+        ClaimChunk claim = claims.get(key);
+        if (claim == null) {
+            return new ClaimResult(false, "<yellow>⚠ Wilayah pada chunk [" + chunkX + ", " + chunkZ + "] tidak diklaim.</yellow>");
+        }
+
+        if (!claim.isOwner(player.getUniqueId()) && !player.isOp() && !player.hasPermission("apexsions.admin")) {
+            return new ClaimResult(false, "<red>✖ Anda bukan pemilik tanah ini!</red>");
+        }
+
+        if (newName == null || newName.isBlank() || newName.equalsIgnoreCase("clear") || newName.equalsIgnoreCase("reset")) {
+            claim.setName(null);
+            repository.updateClaimFlags(claim);
+            if (plugin.getWebBridgeService() != null) {
+                plugin.getWebBridgeService().syncClaimsAsync(getAllClaims());
+            }
+            return new ClaimResult(true, "<green>✔ Berhasil menghapus nama label petak [" + chunkX + ", " + chunkZ + "].</green>");
+        }
+
+        String cleaned = newName.trim();
+        cleaned = cleaned.replace("<", "").replace(">", "").replace("\"", "").replace("'", "");
+        if (cleaned.length() < 2 || cleaned.length() > 24) {
+            return new ClaimResult(false, "<red>✖ Nama petak harus berukuran antara 2 hingga 24 karakter!</red>");
+        }
+
+        claim.setName(cleaned);
+        repository.updateClaimFlags(claim);
+        if (plugin.getWebBridgeService() != null) {
+            plugin.getWebBridgeService().syncClaimsAsync(getAllClaims());
+        }
+
+        player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, 0.6f, 1.3f);
+        return new ClaimResult(true, "<green>✔ Berhasil menamai petak [" + chunkX + ", " + chunkZ + "] menjadi: <gold>\"" + cleaned + "\"</gold>!</green>");
+    }
+
+    public ClaimResult setClaimNameCurrentChunk(Player player, String newName) {
+        Chunk chunk = player.getLocation().getChunk();
+        return setClaimName(player, chunk.getWorld().getName(), chunk.getX(), chunk.getZ(), newName);
+    }
+
+    public ClaimResult claimRadius(Player player, int radius) {
+        if (radius < 1 || radius > 2) {
+            return new ClaimResult(false, "<yellow>Penggunaan: /claim radius <1|2> (Radius 1 = 3x3 petak, Radius 2 = 5x5 petak)</yellow>");
+        }
+
+        Chunk center = player.getLocation().getChunk();
+        String worldName = center.getWorld().getName();
+        if (disabledWorlds.contains(worldName.toLowerCase())) {
+            return new ClaimResult(false, "<red>✖ Wilayah dunia ini dilindungi dan tidak dapat diklaim!</red>");
+        }
+
+        int currentClaims = getClaimCount(player.getUniqueId());
+        int maxClaims = getMaxClaims(player);
+        int quotaLeft = (maxClaims == Integer.MAX_VALUE) ? Integer.MAX_VALUE : (maxClaims - currentClaims);
+
+        if (quotaLeft <= 0) {
+            return new ClaimResult(false, "<red>✖ Kuota klaim Anda sudah penuh (<gold>" + currentClaims + "/" + (maxClaims == Integer.MAX_VALUE ? "∞" : maxClaims) + "</gold> chunks)!</red>");
+        }
+
+        // Determine player's Kingdom
+        String kingdomKey = null;
+        if (plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isConclaveStaff(player)) {
+            kingdomKey = "AETHERION";
+        } else if (plugin.getRegionManager() != null) {
+            Optional<PlayerData> pData = plugin.getPlayerDataService().getCached(player.getUniqueId());
+            if (pData.isPresent() && pData.get().getRegionId() != null) {
+                Optional<Region> reg = plugin.getRegionManager().getRegionById(pData.get().getRegionId());
+                if (reg.isPresent()) {
+                    kingdomKey = reg.get().getKey();
+                }
+            }
+        }
+
+        double initialRate = calculateChunkDailyTax(player.getUniqueId());
+        int claimedCount = 0;
+        int skippedCount = 0;
+        List<ClaimChunk> newClaimsList = new ArrayList<>();
+
+        for (int dx = -radius; dx <= radius; dx++) {
+            for (int dz = -radius; dz <= radius; dz++) {
+                int cx = center.getX() + dx;
+                int cz = center.getZ() + dz;
+                String key = ClaimChunk.buildChunkKey(worldName, cx, cz);
+
+                if (claims.containsKey(key)) {
+                    skippedCount++;
+                    continue;
+                }
+
+                if (newClaimsList.size() >= quotaLeft) {
+                    break;
+                }
+
+                ClaimChunk newClaim = new ClaimChunk(UUID.randomUUID(), player.getUniqueId(), player.getName(),
+                        worldName, cx, cz, null, null, null,
+                        0.0, initialRate, ClaimStatus.ACTIVE, 0L, System.currentTimeMillis(), kingdomKey, System.currentTimeMillis());
+
+                claims.put(key, newClaim);
+                repository.saveClaim(newClaim);
+                newClaimsList.add(newClaim);
+                claimedCount++;
+            }
+            if (newClaimsList.size() >= quotaLeft) {
+                break;
+            }
+        }
+
+        if (claimedCount == 0) {
+            return new ClaimResult(false, "<yellow>⚠ Tidak ada petak baru yang dapat diklaim di radius ini (semua sudah diklaim atau kuota penuh).</yellow>");
+        }
+
+        if (plugin.getWebBridgeService() != null) {
+            plugin.getWebBridgeService().syncClaimsAsync(getAllClaims());
+        }
+
+        showChunkBoundary(player, center);
+        player.playSound(player.getLocation(), Sound.BLOCK_RESPAWN_ANCHOR_SET_SPAWN, 0.8f, 1.2f);
+
+        String maxStr = maxClaims == Integer.MAX_VALUE ? "∞" : String.valueOf(maxClaims);
+        int newTotal = currentClaims + claimedCount;
+        return new ClaimResult(true, "<green>✔ Berhasil mengklaim <gold>" + claimedCount + " petak tanah</gold> sekaligus dalam radius " + radius + "! (" + skippedCount + " dilewati). Total teritori Anda: <gold>" + newTotal + "/" + maxStr + "</gold>.</green>");
     }
 
     public boolean teleportToClaim(Player player, ClaimChunk claim) {

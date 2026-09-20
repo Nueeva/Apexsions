@@ -240,8 +240,12 @@ public class ClaimGUI implements Listener {
             int blockX = (c.getChunkX() << 4) + 8;
             int blockZ = (c.getChunkZ() << 4) + 8;
 
+            String label = (c.getName() != null && !c.getName().isBlank())
+                    ? "<gold><bold>\"" + c.getName() + "\"</bold></gold> <yellow>[" + c.getChunkX() + ", " + c.getChunkZ() + "]</yellow>"
+                    : "<gold><bold>Petak #" + (i + 1) + "</bold></gold> <yellow>[" + c.getChunkX() + ", " + c.getChunkZ() + "]</yellow>";
+
             inv.setItem(slot, createItem(mat,
-                    "<gold><bold>Petak #" + (i + 1) + "</bold></gold> <yellow>[" + c.getChunkX() + ", " + c.getChunkZ() + "]</yellow>",
+                    label,
                     "<gray>Dunia: </gray><aqua>" + c.getWorld() + "</aqua>",
                     "<gray>Koordinat: </gray><white>~ X: " + blockX + ", Z: " + blockZ + "</white>",
                     "<gray>Status: </gray>" + (grace ? "<red><b>MENUNGGAK PAJAK</b></red>" : "<green>Lunas & Aktif</green>"),
@@ -283,10 +287,12 @@ public class ClaimGUI implements Listener {
 
         int blockX = (claim.getChunkX() << 4) + 8;
         int blockZ = (claim.getChunkZ() << 4) + 8;
+        String nameLabel = (claim.getName() != null && !claim.getName().isBlank()) ? claim.getName() : "<italic>Belum Dinamai</italic>";
 
         // Slot 4: Info Card
         inv.setItem(4, createItem(Material.FILLED_MAP,
                 "<gold><bold>Petak Wilayah [" + claim.getChunkX() + ", " + claim.getChunkZ() + "]</bold></gold>",
+                "<gray>Nama Label: </gray><yellow>" + nameLabel + "</yellow>",
                 "<gray>Dunia: </gray><aqua>" + claim.getWorld() + "</aqua>",
                 "<gray>Koordinat Blok: </gray><white>~ X: " + blockX + ", Z: " + blockZ + "</white>",
                 "<gray>Status: </gray>" + (claim.isInGracePeriod() ? "<red>Menunggak Pajak</red>" : "<green>Lunas & Aktif</green>"),
@@ -299,6 +305,16 @@ public class ClaimGUI implements Listener {
                 "<gray>petak tanah ini untuk memindahkan barang.</gray>",
                 "",
                 "<green>» Sentuh / Klik untuk Teleport «</green>"));
+
+        // Slot 12: Rename Button (Bedrock & Java interactive)
+        inv.setItem(12, createItem(Material.NAME_TAG,
+                "<gradient:#ffd700:#ffae19><bold>Beri / Ganti Nama Petak</bold></gradient>",
+                "<gray>Label saat ini: </gray><yellow>" + nameLabel + "</yellow>",
+                "",
+                "<gray>Memberi nama khusus agar mudah dikenali</gray>",
+                "<gray>di daftar wilayah & notifikasi batas.</gray>",
+                "",
+                "<gold>» Sentuh / Klik untuk Instruksi Nama «</gold>"));
 
         // Slot 13: Quick Deposit Rp1,000 to this chunk
         inv.setItem(13, createItem(Material.GOLD_INGOT,
@@ -431,6 +447,14 @@ public class ClaimGUI implements Listener {
                 // Teleportation
                 player.closeInventory();
                 claimManager.teleportToClaim(player, claim);
+            } else if (slot == 12) {
+                // Rename instruction
+                player.closeInventory();
+                player.sendMessage(mm.deserialize("<gold>✎ <b>[PENAMAAN PETAK]</b> Beri nama/label khusus untuk petak ini:</gold>"));
+                player.sendMessage(mm.deserialize("<yellow>/claim name " + claim.getChunkX() + " " + claim.getChunkZ() + " &lt;NamaPetak&gt;</yellow>"));
+                player.sendMessage(mm.deserialize("<gray>Contoh: <white>/claim name " + claim.getChunkX() + " " + claim.getChunkZ() + " Markas Utama</white></gray>"));
+                player.sendMessage(mm.deserialize("<gray>Atau cukup berdiri di petak ini lalu ketik: <white>/claim name &lt;NamaPetak&gt;</white></gray>"));
+                player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.6f, 1.2f);
             } else if (slot == 13) {
                 // Deposit Rp1,000 to this chunk
                 if (plugin.getVaultHook() != null && plugin.getVaultHook().hasEconomy()) {
