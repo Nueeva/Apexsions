@@ -2081,7 +2081,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     initPerkExpanders();
 
-    // 1. One-Click Copy for Server Address & Port with Visual Feedback
+    // 1. One-Click Copy for Server Address & Port with Visual Ripple Feedback
     const copyElements = document.querySelectorAll('[data-apx-copy]');
     copyElements.forEach(el => {
         const handleCopy = (e) => {
@@ -2089,6 +2089,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 e.preventDefault();
                 e.stopPropagation();
             }
+
+            // Tactile Gold Ripple Micro-Interaction
+            if (e && typeof e.clientX === 'number' && typeof e.clientY === 'number') {
+                const rect = el.getBoundingClientRect();
+                const ripple = document.createElement('span');
+                ripple.className = 'apx-ripple-effect';
+                const size = Math.max(rect.width, rect.height);
+                ripple.style.width = ripple.style.height = `${size}px`;
+                ripple.style.left = `${e.clientX - rect.left - size / 2}px`;
+                ripple.style.top = `${e.clientY - rect.top - size / 2}px`;
+                el.appendChild(ripple);
+                setTimeout(() => ripple.remove(), 600);
+            }
+
             const textToCopy = el.getAttribute('data-apx-copy') || 'apexsions.my.id';
             navigator.clipboard.writeText(textToCopy).then(() => {
                 const isEn = document.documentElement.lang === 'en';
@@ -2125,6 +2139,36 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // 2. High-Performance Number Counter Ticker (Odometer Roll)
+    const animateCounter = (el, target, duration = 1200) => {
+        if (!el) return;
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            el.textContent = target;
+            return;
+        }
+        const rawText = el.textContent.replace(/[^0-9]/g, '');
+        const start = parseInt(rawText, 10) || 0;
+        if (start === target) {
+            el.textContent = target;
+            return;
+        }
+        const startTime = performance.now();
+        const step = (currentTime) => {
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            // easeOutCubic curve
+            const ease = 1 - Math.pow(1 - progress, 3);
+            const current = Math.round(start + (target - start) * ease);
+            el.textContent = current;
+            if (progress < 1) {
+                requestAnimationFrame(step);
+            } else {
+                el.textContent = target;
+            }
+        };
+        requestAnimationFrame(step);
+    };
+
     // 3. Live Minecraft Server Bridge Integration (Hoisted Function)
     function fetchServerStatus() {
         const playersEl = document.getElementById('apxOnlinePlayers');
@@ -2145,10 +2189,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const count = parseInt(players, 10) || 0;
             const isEn = document.documentElement.lang === 'en';
 
-            if (playersEl) playersEl.textContent = count;
-            if (footerPlayersEl) footerPlayersEl.textContent = count;
-            if (maxPlayersEl) maxPlayersEl.textContent = maxPlayers ?? 200;
-            if (footerMaxPlayersEl) footerMaxPlayersEl.textContent = maxPlayers ?? 200;
+            if (playersEl) animateCounter(playersEl, count, 1200);
+            if (footerPlayersEl) animateCounter(footerPlayersEl, count, 1200);
+            if (maxPlayersEl) animateCounter(maxPlayersEl, maxPlayers ?? 200, 1000);
+            if (footerMaxPlayersEl) animateCounter(footerMaxPlayersEl, maxPlayers ?? 200, 1000);
             if (versionEl && version) versionEl.textContent = version;
             if (footerVersionEl && version) footerVersionEl.textContent = version;
 
@@ -2374,6 +2418,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const autoTargets = [
             '.apx-section-header',
+            '.apx-section-intro',
+            '.apx-altar-wrapper',
+            '.apx-altar-panel',
+            '.apx-caste-matrix-stage',
+            '.apx-caste-mini-card',
             '.apx-pillar-monolith',
             '.apx-caste-card',
             '.apx-caste-banner',
@@ -2383,6 +2432,8 @@ document.addEventListener('DOMContentLoaded', () => {
             '.apx-rule-item',
             '.apx-wiki-category-card',
             '.apx-wiki-article-item',
+            '.apx-player-identity-card',
+            '.apx-bluemap-container',
             '.card',
             '.apx-scroll-reveal'
         ];
@@ -2416,9 +2467,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 el.classList.add('apx-scroll-reveal');
 
                 const parent = el.parentElement;
-                if (parent && (parent.classList.contains('row') || parent.classList.contains('apx-stepper-grid') || parent.classList.contains('apx-pillar-grid'))) {
+                if (parent && (parent.classList.contains('row') || parent.classList.contains('apx-stepper-grid') || parent.classList.contains('apx-pillar-grid') || parent.classList.contains('apx-caste-matrix-row') || parent.classList.contains('d-flex'))) {
                     const childIndex = Array.from(parent.children).indexOf(el);
-                    if (childIndex >= 0 && childIndex < 4) {
+                    if (childIndex >= 0 && childIndex < 6) {
                         el.classList.add(`apx-reveal-stagger-${childIndex + 1}`);
                     }
                 }
@@ -2429,6 +2480,89 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     initScrollAnimations();
+
+    // 6. 3D Perspective Tilt Micro-Interaction (Desktop Pointer Only)
+    const initCardTilt = () => {
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+
+        const tiltCards = document.querySelectorAll('.apx-tilt-card, .apx-caste-mini-card, .apx-altar-panel, .apx-step-monolith');
+        if (!tiltCards.length) return;
+
+        tiltCards.forEach(card => {
+            if (!card.querySelector('.apx-card-glare')) {
+                const glare = document.createElement('div');
+                glare.className = 'apx-card-glare';
+                card.appendChild(glare);
+            }
+            card.classList.add('apx-tilt-card');
+
+            let bounds;
+            let isHovered = false;
+
+            const onMouseEnter = () => {
+                bounds = card.getBoundingClientRect();
+                isHovered = true;
+                card.style.transition = 'none';
+            };
+
+            const onMouseMove = (e) => {
+                if (!isHovered || !bounds) return;
+                const mouseX = e.clientX - bounds.left;
+                const mouseY = e.clientY - bounds.top;
+                const xPct = mouseX / bounds.width;
+                const yPct = mouseY / bounds.height;
+
+                const xDeg = (yPct - 0.5) * -7; // subtle max 3.5 deg
+                const yDeg = (xPct - 0.5) * 7;
+
+                card.style.transform = `perspective(1000px) rotateX(${xDeg.toFixed(2)}deg) rotateY(${yDeg.toFixed(2)}deg) translateY(-2px)`;
+                card.style.setProperty('--glare-x', `${(xPct * 100).toFixed(1)}%`);
+                card.style.setProperty('--glare-y', `${(yPct * 100).toFixed(1)}%`);
+            };
+
+            const onMouseLeave = () => {
+                isHovered = false;
+                card.style.transition = 'transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1)';
+                card.style.transform = '';
+            };
+
+            card.addEventListener('mouseenter', onMouseEnter, { passive: true });
+            card.addEventListener('mousemove', onMouseMove, { passive: true });
+            card.addEventListener('mouseleave', onMouseLeave, { passive: true });
+        });
+    };
+
+    initCardTilt();
+
+    // 7. Live Number Ticker for Viewport Counters
+    const initNumberTicker = () => {
+        const counterElements = document.querySelectorAll('[data-counter-target]');
+        if (!counterElements.length) return;
+
+        const rollCounter = (el) => {
+            const target = parseInt(el.getAttribute('data-counter-target'), 10) || 0;
+            animateCounter(el, target, 1400);
+        };
+
+        if (!('IntersectionObserver' in window)) {
+            counterElements.forEach(rollCounter);
+            return;
+        }
+
+        const observer = new IntersectionObserver((entries, obs) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    rollCounter(entry.target);
+                    obs.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+
+        counterElements.forEach(el => observer.observe(el));
+    };
+
+    initNumberTicker();
 });
 
 

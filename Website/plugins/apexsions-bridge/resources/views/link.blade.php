@@ -12,7 +12,7 @@
                         <h4 class="mb-1 fw-bold text-white"><i class="bi bi-controller text-info me-2"></i> <span data-i18n="link_header_title">Tautkan Akun Minecraft</span></h4>
                         <p class="text-muted small mb-0" data-i18n="link_header_sub">Hubungkan akun Java Edition atau Bedrock Edition Anda ke portal web Apexsions</p>
                     </div>
-                    <span class="badge bg-primary px-3 py-2 rounded-pill"><i class="bi bi-shield-check me-1"></i> Identity Model v2.2</span>
+                    <span class="apx-badge-chiseled"><i class="bi bi-shield-check me-1"></i> Identity Model v2.2</span>
                 </div>
 
                 <div class="card-body p-4">

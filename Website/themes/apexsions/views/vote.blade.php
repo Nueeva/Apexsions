@@ -33,7 +33,7 @@
             <p class="text-muted mx-auto" style="max-width: 780px; font-size: 1.05rem; line-height: 1.8;" data-i18n="vote_desc">
                 Setiap suara sah yang Anda berikan mengumandangkan kemakmuran peradaban Apexsions ke kancah dunia. Cukup klik tombol platform di bawah dan berikan suara Anda di situs tersebut. Sistem akan mendeteksi suara Anda secara otomatis dan menghadiahkan <strong class="text-warning">3x Vote Keys</strong> serta <strong class="text-success">Rp 1.000</strong> langsung ke inventaris Anda!
             </p>
-            <div class="d-inline-flex align-items-center gap-2 px-3 py-2 rounded-pill mt-2" style="background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.3);">
+            <div class="apx-badge-chiseled apx-badge-chiseled-warning mt-2">
                 <span class="badge bg-warning text-dark fw-bold">⚡ AUTO REWARD</span>
                 <span class="text-white small fw-bold">Tidak perlu lagi verifikasi manual atau kembali untuk klik claim!</span>
             </div>
@@ -207,7 +207,7 @@
                 <div class="col-md-6">
                     <div class="p-3 rounded h-100" style="background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05);">
                         <div class="d-flex align-items-center gap-2 mb-2">
-                            <span class="badge rounded-pill bg-warning text-dark font-monospace fw-bold">1</span>
+                            <span class="badge bg-warning text-dark font-monospace fw-bold" style="border-radius: var(--apx-radius-xs);">1</span>
                             <h3 class="h6 text-white mb-0">Klik Tombol &amp; Beri Suara</h3>
                         </div>
                         <p class="text-muted small mb-0">
@@ -218,7 +218,7 @@
                 <div class="col-md-6">
                     <div class="p-3 rounded h-100" style="background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05);">
                         <div class="d-flex align-items-center gap-2 mb-2">
-                            <span class="badge rounded-pill bg-success text-white font-monospace fw-bold">2</span>
+                            <span class="badge bg-success text-white font-monospace fw-bold" style="border-radius: var(--apx-radius-xs);">2</span>
                             <h3 class="h6 text-white mb-0">Hadiah Masuk Otomatis</h3>
                         </div>
                         <p class="text-muted small mb-0">

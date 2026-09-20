@@ -6093,3 +6093,223 @@ code:not(pre code) {
     color: #72552a;
     border-color: #c9a45c;
 }
+
+/* ==========================================================================
+   Phase 2: Living Monolith Motion Engine & Micro-Interactions (Anti-Slop)
+   ========================================================================== */
+
+/* 1. Keyframes: Sheen, Breathing Aura, Beacon Pulse, Ripple */
+@keyframes apx-sheen-sweep {
+    0% {
+        transform: translateX(-150%) skewX(-20deg);
+    }
+    100% {
+        transform: translateX(250%) skewX(-20deg);
+    }
+}
+
+@keyframes apx-crest-breathe {
+    0%, 100% {
+        filter: drop-shadow(0 0 10px rgba(201, 164, 92, 0.25));
+    }
+    50% {
+        filter: drop-shadow(0 0 24px rgba(241, 213, 138, 0.55));
+    }
+}
+
+@keyframes apx-beacon-pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.6);
+    }
+    70% {
+        box-shadow: 0 0 0 8px rgba(16, 185, 129, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+    }
+}
+
+@keyframes apx-ripple {
+    0% {
+        transform: scale(0);
+        opacity: 0.75;
+    }
+    100% {
+        transform: scale(3.5);
+        opacity: 0;
+    }
+}
+
+/* 2. Sheen Sweep on Sovereign & Gold Buttons */
+.btn-apx-sovereign,
+.btn-apx-gold,
+.apx-sheen-target {
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-apx-sovereign::after,
+.btn-apx-gold::after,
+.apx-sheen-target::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+        105deg,
+        transparent 35%,
+        rgba(255, 255, 255, 0.25) 48%,
+        rgba(255, 255, 255, 0.45) 50%,
+        rgba(255, 255, 255, 0.25) 52%,
+        transparent 65%
+    );
+    transform: translateX(-150%) skewX(-20deg);
+    pointer-events: none;
+    z-index: 2;
+}
+
+.btn-apx-sovereign:hover::after,
+.btn-apx-gold:hover::after,
+.apx-sheen-target:hover::after {
+    animation: apx-sheen-sweep 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Ambient periodic sheen for key landing CTAs */
+.btn-apx-sovereign.apx-sheen-periodic::after,
+.apx-sheen-periodic::after {
+    animation: apx-sheen-sweep 6s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+}
+
+/* 3. Ambient Breathing Aura */
+.apx-crest-breathe,
+.apx-hero-brand-mark,
+.apx-brand-crest {
+    animation: apx-crest-breathe 6s ease-in-out infinite;
+    will-change: filter;
+}
+
+.apx-beacon-live {
+    animation: apx-beacon-pulse 2.2s infinite;
+}
+
+/* 4. Scroll Reveal & Staggered Cascades */
+.apx-scroll-reveal {
+    opacity: 0;
+    transform: translateY(22px);
+    transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, transform;
+}
+
+.apx-scroll-reveal.is-revealed {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.apx-reveal-stagger-1 { transition-delay: 60ms; }
+.apx-reveal-stagger-2 { transition-delay: 120ms; }
+.apx-reveal-stagger-3 { transition-delay: 180ms; }
+.apx-reveal-stagger-4 { transition-delay: 240ms; }
+.apx-reveal-stagger-5 { transition-delay: 300ms; }
+.apx-reveal-stagger-6 { transition-delay: 360ms; }
+
+/* 5. 3D Perspective Tilt & Cursor Glare */
+.apx-tilt-wrapper {
+    perspective: 1000px;
+}
+
+.apx-tilt-card {
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.15s ease-out, box-shadow 0.25s ease;
+    will-change: transform;
+}
+
+.apx-tilt-card:hover {
+    box-shadow: 0 16px 36px -6px rgba(0, 0, 0, 0.85), 0 0 20px rgba(201, 164, 92, 0.12);
+}
+
+.apx-tilt-card .apx-card-glare {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    border-radius: inherit;
+    background: radial-gradient(circle 180px at var(--glare-x, 50%) var(--glare-y, 50%), rgba(255, 255, 255, 0.12), transparent 70%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 5;
+}
+
+.apx-tilt-card:hover .apx-card-glare {
+    opacity: 1;
+}
+
+/* 6. Chiseled Monolithic Badges (Anti-Pill Architecture) */
+.apx-badge-chiseled {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.32rem 0.75rem;
+    border-radius: var(--apx-radius-xs);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    background: rgba(201, 164, 92, 0.12);
+    border: 1px solid var(--apx-gold-border);
+    color: var(--apx-gold-light);
+}
+
+.apx-badge-chiseled-success {
+    background: rgba(16, 185, 129, 0.12);
+    border-color: rgba(16, 185, 129, 0.3);
+    color: #34d399;
+}
+
+.apx-badge-chiseled-danger {
+    background: rgba(239, 68, 68, 0.12);
+    border-color: rgba(239, 68, 68, 0.3);
+    color: #f87171;
+}
+
+.apx-badge-chiseled-warning {
+    background: rgba(245, 158, 11, 0.12);
+    border-color: rgba(245, 158, 11, 0.3);
+    color: #fbbf24;
+}
+
+/* 7. Tactile Copy Ripple */
+.apx-copyable,
+.apx-btn-copy {
+    position: relative;
+    overflow: hidden;
+}
+
+.apx-ripple-effect {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(241, 213, 138, 0.45);
+    pointer-events: none;
+    animation: apx-ripple 0.6s ease-out forwards;
+    z-index: 10;
+}
+
+/* 8. WCAG AAA Strict Reduced Motion Override */
+@media (prefers-reduced-motion: reduce) {
+    .apx-scroll-reveal,
+    .apx-scroll-reveal.is-revealed,
+    .btn-apx-sovereign::after,
+    .btn-apx-gold::after,
+    .apx-sheen-target::after,
+    .apx-crest-breathe,
+    .apx-beacon-live,
+    .apx-tilt-card,
+    .apx-card-glare,
+    .apx-ripple-effect {
+        animation: none !important;
+        transition: none !important;
+        transform: none !important;
+        opacity: 1 !important;
+    }
+}

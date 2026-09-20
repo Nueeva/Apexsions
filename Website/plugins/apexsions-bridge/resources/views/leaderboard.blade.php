@@ -29,7 +29,7 @@
 <div class="container py-5">
     <!-- Header Title -->
     <div class="text-center mb-5">
-        <div class="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill bg-warning bg-opacity-10 border border-warning border-opacity-25 text-warning small mb-3">
+        <div class="apx-badge-chiseled apx-badge-chiseled-warning mb-3">
             <i class="bi bi-trophy-fill"></i> <span data-i18n="leaderboard_kicker">DEWAN KEHORMATAN APEXSIONS</span>
         </div>
         <h1 class="display-5 fw-bold font-cinzel text-gold mb-2" data-i18n="leaderboard_title">Papan Peringkat Peradaban</h1>
@@ -42,7 +42,7 @@
     <div class="row g-4 mb-5">
         @foreach($kingdoms as $kKey => $kData)
             <div class="col-md-4">
-                <div class="card bg-dark border-secondary border-opacity-25 h-100 shadow overflow-hidden position-relative" style="background: radial-gradient(circle at top, {{ $kData['color'] }}15, rgba(18,22,34,0.98) 75%) !important;">
+                <div class="card apx-tilt-card bg-dark border-secondary border-opacity-25 h-100 shadow overflow-hidden position-relative" style="background: radial-gradient(circle at top, {{ $kData['color'] }}15, rgba(18,22,34,0.98) 75%) !important;">
                     <div class="card-body p-4 text-center">
                         <div class="mb-3">
                             <span class="d-inline-flex p-3 rounded-circle shadow" style="background: {{ $kData['color'] }}20; color: {{ $kData['color'] }}; font-size: 2rem;">

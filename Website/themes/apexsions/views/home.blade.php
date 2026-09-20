@@ -40,7 +40,7 @@
 
                 <!-- Primary Sovereign Action & Separate Technical Infrastructure -->
                 <div class="apx-hero-action-group d-flex align-items-center gap-3 flex-wrap">
-                    <a href="#civilizations" class="btn btn-apx-sovereign">
+                    <a href="#civilizations" class="btn btn-apx-sovereign apx-sheen-periodic">
                         <span data-i18n="hero_btn_explore">JELAJAHI PERADABAN</span> <i class="bi bi-arrow-down ms-2"></i>
                     </a>
                     <a href="#getting-started" class="btn btn-apx-outline">
@@ -59,7 +59,7 @@
         <div class="apx-hero-infrastructure">
             <!-- 1. Live Signal & Player Count -->
             <div class="apx-infra-item">
-                <span class="apx-pulse-dot" id="apxLiveDot" aria-hidden="true"></span>
+                <span class="apx-pulse-dot apx-beacon-live" id="apxLiveDot" aria-hidden="true"></span>
                 <span class="apx-infra-status" id="apxLiveBadge" data-i18n="hero_status_online">SERVER ONLINE</span>
                 <span class="apx-infra-divider">/</span>
                 <span class="apx-infra-val" id="apxPlayerCountContainer"><span id="apxPlayerStatusText" data-i18n="hero_status_ready">Gerbang Terbuka &bull; Siap Menjelajah</span><span id="apxPlayerNumbers" class="d-none"><span id="apxOnlinePlayers">0</span> / <span id="apxMaxPlayers">200</span> <span data-i18n="hero_citizens">Warga</span></span></span>

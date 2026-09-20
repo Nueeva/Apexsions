@@ -5,7 +5,7 @@
 @section('content')
 <div class="container py-5">
     <div class="text-center mb-5">
-        <div class="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill bg-danger bg-opacity-10 border border-danger border-opacity-25 text-danger small mb-3">
+        <div class="apx-badge-chiseled apx-badge-chiseled-danger mb-3">
             <i class="bi bi-crosshair"></i> <span data-i18n="bounty_kicker">HADIAH KEPALA REALM</span>
         </div>
         <h1 class="display-5 fw-bold font-cinzel text-gold mb-2" data-i18n="bounty_title">Papan Buronan</h1>
