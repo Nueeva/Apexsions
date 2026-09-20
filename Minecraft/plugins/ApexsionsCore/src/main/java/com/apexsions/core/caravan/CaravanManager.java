@@ -4,9 +4,12 @@ import com.apexsions.core.ApexsionsCorePlugin;
 import com.apexsions.core.integration.EconomyBridge;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
+import org.bukkit.HeightMap;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.block.Biome;
+import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
@@ -23,6 +26,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
+import java.util.Set;
+import java.util.function.Consumer;
 import java.util.logging.Level;
 
 /**
@@ -35,6 +40,16 @@ import java.util.logging.Level;
  */
 public class CaravanManager {
 
+    private static final Set<Material> UNSAFE_GROUND = Set.of(
+            Material.WATER, Material.LAVA, Material.BUBBLE_COLUMN,
+            Material.MAGMA_BLOCK, Material.CAMPFIRE, Material.SOUL_CAMPFIRE,
+            Material.CACTUS, Material.SWEET_BERRY_BUSH, Material.POWDER_SNOW,
+            Material.FIRE, Material.SOUL_FIRE, Material.COBWEB,
+            Material.SEAGRASS, Material.TALL_SEAGRASS, Material.KELP, Material.KELP_PLANT,
+            Material.ICE, Material.PACKED_ICE, Material.FROSTED_ICE, Material.BLUE_ICE,
+            Material.POINTED_DRIPSTONE, Material.LILY_PAD, Material.BARRIER
+    );
+
     private final ApexsionsCorePlugin plugin;
     private final EconomyBridge economy;
     private final MiniMessage mm = MiniMessage.miniMessage();
@@ -43,6 +58,7 @@ public class CaravanManager {
     private final List<CaravanOffer> offers = new ArrayList<>();
 
     private BukkitTask schedulerTask;
+    private boolean isSpawning = false;
     @Nullable
     private Location activeLocation;
     @Nullable
@@ -185,28 +201,158 @@ public class CaravanManager {
         if (!isActiveDay()) {
             return;
         }
-        if (findExisting() != null) {
-            return; // admin-placed caravan still standing
+        if (findExisting() != null || activeLocation != null || isSpawning) {
+            return; // admin-placed caravan still standing or search already running
         }
+        spawnRandomWilderness(null);
+    }
 
+    /**
+     * Finds a safe wilderness land location and spawns the caravan NPC.
+     */
+    public void spawnRandomWilderness(@Nullable Player adminNotifier) {
+        if (isSpawning) {
+            if (adminNotifier != null) {
+                adminNotifier.sendMessage(mm.deserialize("<yellow>Pencarian lokasi kafilah sedang berlangsung...</yellow>"));
+            }
+            return;
+        }
         String worldName = plugin.getConfig().getString("caravan.world", "world");
         World world = Bukkit.getWorld(worldName);
         if (world == null) {
+            if (adminNotifier != null) {
+                adminNotifier.sendMessage(mm.deserialize("<red>Dunia '" + worldName + "' belum dimuat di server.</red>"));
+            }
+            plugin.getLogger().warning("Caravan world '" + worldName + "' not loaded.");
             return;
         }
-        int radius = getZoneRadius();
-        double x = random.nextInt(radius * 2) - radius;
-        double z = random.nextInt(radius * 2) - radius;
-        int y = world.getHighestBlockYAt((int) x, (int) z) + 1;
 
-        Location loc = new Location(world, x + 0.5, y, z + 0.5);
-        if (!spawn(loc)) {
+        isSpawning = true;
+        findSafeLocationAsync(world, 0, 50, loc -> {
+            isSpawning = false;
+            if (loc == null) {
+                plugin.getLogger().warning("Kafilah Pasar Gelap: Gagal menemukan daratan aman setelah 50 percobaan.");
+                if (adminNotifier != null) {
+                    adminNotifier.sendMessage(mm.deserialize("<red>Gagal menemukan daratan aman untuk kafilah setelah 50 percobaan.</red>"));
+                }
+                return;
+            }
+
+            if (!spawn(loc)) {
+                if (adminNotifier != null) {
+                    adminNotifier.sendMessage(mm.deserialize("<red>Gagal memunculkan entity kafilah di lokasi tujuan.</red>"));
+                }
+                return;
+            }
+
+            activeUntil = System.currentTimeMillis() + getDurationMinutes() * 60_000L;
+            nextAnnounceAt = System.currentTimeMillis() + getAnnounceIntervalMinutes() * 60_000L;
+            announce("<gradient:#9b59b6:#e74c3c><bold>KAFILAH PASAR GELAP MUNCUL!</bold></gradient> <gray>Pedagang misterius berkelana di dunia liar dengan barang langka.</gray>");
+            announceLocation();
+            if (adminNotifier != null) {
+                adminNotifier.sendMessage(mm.deserialize("<gradient:#2ecc71:#27ae60><bold>KAFILAH BERHASIL DIPINDAHKAN!</bold></gradient> <gray>Lokasi daratan baru: <gold>X: "
+                        + (int) loc.getX() + ", Y: " + (int) loc.getY() + ", Z: " + (int) loc.getZ() + "</gold></gray>"));
+            }
+        });
+    }
+
+    private void findSafeLocationAsync(@NotNull World world, int attempt, int maxAttempts, @NotNull Consumer<Location> callback) {
+        if (attempt >= maxAttempts) {
+            callback.accept(null);
             return;
         }
-        activeUntil = System.currentTimeMillis() + getDurationMinutes() * 60_000L;
-        nextAnnounceAt = System.currentTimeMillis() + getAnnounceIntervalMinutes() * 60_000L;
-        announce("<gradient:#9b59b6:#e74c3c><bold>KAFILAH PASAR GELAP MUNCUL!</bold></gradient> <gray>Pedagang misterius berkelana di dunia liar dengan barang langka.</gray>");
-        announceLocation();
+
+        int radius = getZoneRadius();
+        int x = random.nextInt(radius * 2) - radius;
+        int z = random.nextInt(radius * 2) - radius;
+
+        // Hindari area spawn utama
+        if (Math.hypot(x, z) < 150) {
+            findSafeLocationAsync(world, attempt + 1, maxAttempts, callback);
+            return;
+        }
+
+        int chunkX = x >> 4;
+        int chunkZ = z >> 4;
+
+        world.getChunkAtAsync(chunkX, chunkZ).thenAccept(chunk -> Bukkit.getScheduler().runTask(plugin, () -> {
+            // 1. Cek Bioma: Dilarang keras bioma laut, sungai, dan void
+            Biome biome = world.getBiome(x, 64, z);
+            String biomeName = biome.name().toUpperCase(Locale.ROOT);
+            if (biomeName.contains("OCEAN") || biomeName.contains("RIVER") || biomeName.contains("VOID")) {
+                findSafeLocationAsync(world, attempt + 1, maxAttempts, callback);
+                return;
+            }
+
+            // 2. Ketinggian permukaan
+            int highestY = world.getHighestBlockYAt(x, z, HeightMap.MOTION_BLOCKING_NO_LEAVES);
+            if (highestY < world.getMinHeight() + 5 || highestY > world.getMaxHeight() - 5) {
+                findSafeLocationAsync(world, attempt + 1, maxAttempts, callback);
+                return;
+            }
+
+            Block ground = world.getBlockAt(x, highestY, z);
+            Block feet = world.getBlockAt(x, highestY + 1, z);
+            Block head = world.getBlockAt(x, highestY + 2, z);
+
+            // 3. Validasi blok daratan kokoh & aman (bukan air, lava, daun, api, es terapung)
+            if (!isSafeGround(ground) || !isSafePassThrough(feet) || !isSafePassThrough(head)) {
+                findSafeLocationAsync(world, attempt + 1, maxAttempts, callback);
+                return;
+            }
+
+            // 4. Cek blok sekeliling untuk memastikan daratan luas & bukan tepian tebing cairan
+            if (!isSurroundingSafe(world, x, highestY, z)) {
+                findSafeLocationAsync(world, attempt + 1, maxAttempts, callback);
+                return;
+            }
+
+            callback.accept(new Location(world, x + 0.5, highestY + 1.0, z + 0.5));
+        })).exceptionally(ex -> {
+            Bukkit.getScheduler().runTask(plugin, () -> findSafeLocationAsync(world, attempt + 1, maxAttempts, callback));
+            return null;
+        });
+    }
+
+    private boolean isSafeGround(@Nullable Block block) {
+        if (block == null || block.isEmpty() || block.isLiquid()) {
+            return false;
+        }
+        Material mat = block.getType();
+        if (UNSAFE_GROUND.contains(mat)) {
+            return false;
+        }
+        if (mat.name().contains("LEAVES") || mat.name().contains("WATER") || mat.name().contains("LAVA")) {
+            return false;
+        }
+        return mat.isSolid();
+    }
+
+    private boolean isSafePassThrough(@Nullable Block block) {
+        if (block == null) {
+            return false;
+        }
+        if (block.isLiquid() || block.getType() == Material.WATER || block.getType() == Material.LAVA) {
+            return false;
+        }
+        Material mat = block.getType();
+        if (mat == Material.FIRE || mat == Material.SOUL_FIRE || mat == Material.CAMPFIRE
+                || mat == Material.SOUL_CAMPFIRE || mat == Material.SWEET_BERRY_BUSH
+                || mat == Material.CACTUS || mat == Material.POWDER_SNOW) {
+            return false;
+        }
+        return block.isEmpty() || block.isPassable();
+    }
+
+    private boolean isSurroundingSafe(@NotNull World world, int cx, int y, int cz) {
+        int[][] deltas = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+        for (int[] d : deltas) {
+            Block adjGround = world.getBlockAt(cx + d[0], y, cz + d[1]);
+            if (adjGround.isLiquid() || adjGround.getType() == Material.WATER || adjGround.getType() == Material.LAVA) {
+                return false;
+            }
+        }
+        return true;
     }
 
     private boolean isActiveDay() {
@@ -267,10 +413,22 @@ public class CaravanManager {
         org.bukkit.entity.Entity existing = findExisting();
         if (existing != null) {
             existing.remove();
+        } else if (activeLocation != null && activeLocation.getWorld() != null) {
+            World w = activeLocation.getWorld();
+            int cx = activeLocation.getBlockX() >> 4;
+            int cz = activeLocation.getBlockZ() >> 4;
+            if (w.isChunkLoaded(cx, cz)) {
+                for (org.bukkit.entity.Entity e : w.getChunkAt(cx, cz).getEntities()) {
+                    if (isCaravanNpc(e)) {
+                        e.remove();
+                    }
+                }
+            }
         }
         activeLocation = null;
         activeUntil = null;
         nextAnnounceAt = null;
+        isSpawning = false;
     }
 
     @Nullable

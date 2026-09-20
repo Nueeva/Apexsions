@@ -87,7 +87,7 @@ commands:
       - blackmarket
     description: Buka pasar gelap kafilah keliling dan lihat status kemunculannya.
     permission: apexsions.caravan.use
-    usage: /caravan [status|open|admin spawn|despawn|reload]
+    usage: /caravan [status|open|admin spawn|reroll|tp|despawn|reload]
   vanish:
     aliases:
       - v

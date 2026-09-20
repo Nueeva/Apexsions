@@ -88,7 +88,7 @@ public class CaravanCommand implements CommandExecutor, TabCompleter {
             return;
         }
         if (args.length < 2) {
-            player.sendMessage(mm.deserialize("<gray>Gunakan: <yellow>/caravan admin spawn|despawn|reload</yellow></gray>"));
+            player.sendMessage(mm.deserialize("<gray>Gunakan: <yellow>/caravan admin spawn|reroll|tp|despawn|reload</yellow></gray>"));
             return;
         }
         switch (args[1].toLowerCase()) {
@@ -99,6 +99,23 @@ public class CaravanCommand implements CommandExecutor, TabCompleter {
                     player.sendMessage(mm.deserialize("<red>Gagal memunculkan kafilah.</red>"));
                 }
             }
+            case "reroll", "respawn" -> {
+                player.sendMessage(mm.deserialize("<yellow>Mencari daratan liar yang aman untuk kafilah...</yellow>"));
+                manager.spawnRandomWilderness(player);
+            }
+            case "tp", "teleport" -> {
+                if (!manager.isActive() || manager.getActiveLocation() == null) {
+                    player.sendMessage(mm.deserialize("<red>Kafilah sedang tidak aktif atau belum memiliki lokasi.</red>"));
+                    return;
+                }
+                player.teleportAsync(manager.getActiveLocation().clone().add(0, 0.5, 0)).thenAccept(success -> {
+                    if (success) {
+                        player.sendMessage(mm.deserialize("<green>Teleportasi ke kafilah pasar gelap berhasil.</green>"));
+                    } else {
+                        player.sendMessage(mm.deserialize("<red>Gagal melakukan teleportasi ke kafilah.</red>"));
+                    }
+                });
+            }
             case "despawn" -> {
                 manager.despawn();
                 player.sendMessage(mm.deserialize("<yellow>Kafilah telah dihilangkan.</yellow>"));
@@ -107,7 +124,7 @@ public class CaravanCommand implements CommandExecutor, TabCompleter {
                 manager.reload();
                 player.sendMessage(mm.deserialize("<green>Konfigurasi kafilah dimuat ulang.</green>"));
             }
-            default -> player.sendMessage(mm.deserialize("<gray>Gunakan: <yellow>/caravan admin spawn|despawn|reload</yellow></gray>"));
+            default -> player.sendMessage(mm.deserialize("<gray>Gunakan: <yellow>/caravan admin spawn|reroll|tp|despawn|reload</yellow></gray>"));
         }
     }
 
@@ -129,6 +146,8 @@ public class CaravanCommand implements CommandExecutor, TabCompleter {
         }
         if (args.length == 2 && isAdmin && args[0].equalsIgnoreCase("admin")) {
             completions.add("spawn");
+            completions.add("reroll");
+            completions.add("tp");
             completions.add("despawn");
             completions.add("reload");
             return filterPrefix(completions, args[1]);
