@@ -72,17 +72,19 @@
                     <li><a href="https://x.com/apexsions" target="_blank" rel="noopener noreferrer"><i class="bi bi-twitter-x me-2"></i> X (Twitter)</a></li>
                 </ul>
 
-                <!-- Telemetry Line in Footer (Architectural Box, Click to copy) -->
-                <div class="d-flex flex-wrap gap-2">
-                    <div class="apx-footer-quick-copy apx-copyable d-inline-flex align-items-center gap-2 px-3 py-2" data-apx-copy="apexsions.my.id:32348" role="button" tabindex="0" title="Klik atau tekan Enter untuk menyalin IP Java" aria-label="Salin Alamat IP Server Java">
-                        <span class="apx-pulse-dot" style="width: 6px; height: 6px;" aria-hidden="true"></span>
-                        <span class="small font-monospace apx-footer-ip-text">JAVA: apexsions.my.id:32348</span>
-                        <i class="bi bi-clipboard text-dim small ms-1"></i>
+                <!-- Unified Sovereign Server Quick Copy Card -->
+                <div class="apx-footer-quick-copy apx-copyable" data-apx-copy="apexsions.my.id:32348" role="button" tabindex="0" title="Klik untuk menyalin alamat server" aria-label="Salin Alamat Server apexsions.my.id:32348">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div class="d-flex align-items-center gap-2 min-w-0">
+                            <span class="apx-pulse-dot apx-beacon-live flex-shrink-0" style="width: 6px; height: 6px;" aria-hidden="true"></span>
+                            <span class="small font-monospace apx-footer-ip-text text-light fw-semibold text-truncate">apexsions.my.id:32348</span>
+                        </div>
+                        <span class="badge-copy text-gold small ms-2 flex-shrink-0">
+                            <i class="bi bi-clipboard"></i>
+                        </span>
                     </div>
-                    <div class="apx-footer-quick-copy apx-copyable d-inline-flex align-items-center gap-2 px-3 py-2" data-apx-copy="IP: apexsions.my.id | Port: 32348" role="button" tabindex="0" title="Klik atau tekan Enter untuk menyalin IP dan Port Bedrock" aria-label="Salin IP dan Port Server Bedrock">
-                        <span class="badge bg-secondary" style="font-size: 0.65rem; padding: 2px 5px;">BEDROCK</span>
-                        <span class="small font-monospace apx-footer-ip-text">IP: apexsions.my.id | Port: 32348</span>
-                        <i class="bi bi-clipboard text-dim small ms-1"></i>
+                    <div class="apx-footer-copy-meta text-muted" style="font-size: 0.72rem; margin-top: 3px;">
+                        Java &amp; Bedrock &bull; Port: <span class="font-monospace text-gold">32348</span>
                     </div>
                 </div>
             </div>

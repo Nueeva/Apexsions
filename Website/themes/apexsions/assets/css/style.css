@@ -3395,16 +3395,34 @@ code:not(pre code) {
 }
 
 .apx-footer-quick-copy {
-    background: rgba(14, 19, 31, 0.85);
-    border: 1px solid rgba(245, 158, 11, 0.22);
+    background: rgba(14, 19, 31, 0.75);
+    border: 1px solid rgba(201, 164, 92, 0.28);
     border-radius: var(--apx-radius-sm);
-    transition: var(--apx-transition);
+    padding: 0.65rem 0.95rem;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
     cursor: pointer;
+    user-select: none;
+    width: 100%;
+    max-width: 290px;
 }
 
 .apx-footer-quick-copy:hover {
-    background: rgba(245, 158, 11, 0.12);
+    background: rgba(22, 30, 48, 0.95);
     border-color: var(--apx-gold);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(201, 164, 92, 0.18);
+}
+
+.apx-footer-quick-copy:active {
+    transform: translateY(0);
+}
+
+.apx-footer-quick-copy:hover .apx-footer-ip-text {
+    color: #ffffff !important;
+}
+
+.apx-footer-quick-copy:hover .badge-copy {
+    color: var(--apx-gold-light) !important;
 }
 
 .apx-emblem-line {
