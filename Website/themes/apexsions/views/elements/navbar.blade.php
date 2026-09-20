@@ -103,7 +103,7 @@
                         <li>
                             <button type="button" class="dropdown-item py-2 d-flex align-items-center justify-content-between apx-lang-choice active" data-apx-lang="id">
                                 <span class="d-flex align-items-center gap-2">
-                                    <span class="apx-flag-emoji">🇮🇩</span>
+                                    <span class="apx-lang-code-pill font-monospace">ID</span>
                                     <span class="apx-lang-name">Bahasa Indonesia</span>
                                 </span>
                                 <i class="bi bi-check2 text-gold apx-lang-active-check" data-lang-check="id"></i>
@@ -112,7 +112,7 @@
                         <li>
                             <button type="button" class="dropdown-item py-2 d-flex align-items-center justify-content-between apx-lang-choice" data-apx-lang="en">
                                 <span class="d-flex align-items-center gap-2">
-                                    <span class="apx-flag-emoji">🇬🇧</span>
+                                    <span class="apx-lang-code-pill font-monospace">EN</span>
                                     <span class="apx-lang-name">English</span>
                                 </span>
                                 <i class="bi bi-check2 text-gold apx-lang-active-check d-none" data-lang-check="en"></i>
@@ -371,9 +371,9 @@
                 <span class="small text-muted d-flex align-items-center gap-2">
                     <i class="bi bi-translate text-gold"></i> Bahasa
                 </span>
-                <div class="btn-group btn-group-sm" role="group" aria-label="Pilih Bahasa">
-                    <button type="button" class="btn btn-apx-outline apx-lang-choice active px-2" data-apx-lang="id">🇮🇩 ID</button>
-                    <button type="button" class="btn btn-apx-outline apx-lang-choice px-2" data-apx-lang="en">🇬🇧 EN</button>
+                <div class="btn-group btn-group-sm font-monospace" role="group" aria-label="Pilih Bahasa">
+                    <button type="button" class="btn btn-apx-outline apx-lang-choice active px-3 fw-bold" data-apx-lang="id">ID</button>
+                    <button type="button" class="btn btn-apx-outline apx-lang-choice px-3 fw-bold" data-apx-lang="en">EN</button>
                 </div>
             </div>
 

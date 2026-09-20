@@ -5512,9 +5512,29 @@ code:not(pre code) {
     color: var(--apx-text-main);
 }
 
-.apx-flag-emoji {
-    font-size: 1.15rem;
+.apx-lang-code-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 26px;
+    height: 19px;
+    padding: 0 5px;
+    font-size: 0.70rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: var(--apx-gold-light);
+    background: rgba(201, 164, 92, 0.12);
+    border: 1px solid var(--apx-gold-border);
+    border-radius: 4px;
     line-height: 1;
+    transition: all 0.2s ease;
+}
+
+.apx-lang-choice:hover .apx-lang-code-pill,
+.apx-lang-choice.active .apx-lang-code-pill {
+    background: rgba(201, 164, 92, 0.25);
+    border-color: var(--apx-gold);
+    color: #fff;
 }
 
 .apx-lang-current-label {
