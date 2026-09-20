@@ -640,7 +640,7 @@ class LinkVerificationController extends Controller
         }
 
         $validated = $request->validate([
-            'bounties' => ['required', 'array'],
+            'bounties' => ['present', 'array'],
             'bounties.*.target_uuid' => ['required', 'string', 'max:64'],
             'bounties.*.target_name' => ['required', 'string', 'max:64'],
             'bounties.*.total_amount' => ['required', 'numeric', 'min:0'],
@@ -688,7 +688,7 @@ class LinkVerificationController extends Controller
         }
 
         $validated = $request->validate([
-            'claims' => ['required', 'array'],
+            'claims' => ['present', 'array'],
             'claims.*.id' => ['required', 'string'],
             'claims.*.owner_uuid' => ['required', 'string'],
             'claims.*.owner_name' => ['required', 'string'],

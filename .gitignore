@@ -49,3 +49,6 @@ scratch/
 
 # Graphify knowledge graph outputs
 graphify-out/
+
+# Agent/IDE worktrees and plans
+.kilo/
