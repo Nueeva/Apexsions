@@ -93,6 +93,12 @@
                             <span>Crates & Key Dispenser</span>
                         </a>
                     </li>
+                    <li class="sidebar-item {{ add_active('apexsions-bridge.admin.bounties.*') }}">
+                        <a class="sidebar-link" href="{{ route('apexsions-bridge.admin.bounties.index') }}">
+                            <i class="bi bi-crosshair"></i>
+                            <span>Bounty Oversight</span>
+                        </a>
+                    </li>
                     <li class="sidebar-item {{ add_active('apexsions-bridge.admin.moderation.*') }}">
                         <a class="sidebar-link" href="{{ route('apexsions-bridge.admin.moderation.index') }}">
                             <i class="bi bi-shield-shaded"></i>

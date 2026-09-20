@@ -48,7 +48,7 @@ class BountyAdminController extends Controller
         Delivery::create([
             'action_id' => (string) Str::uuid(),
             'idempotency_key' => 'BOUNTY_CLEAR_' . $targetName . '_' . time(),
-            'player_uuid' => $bounty->target_uuid ?? '00000000-0000-0000-0000-000000000000',
+            'player_uuid' => $bounty?->target_uuid ?? '00000000-0000-0000-0000-000000000000',
             'player_username' => $targetName,
             'command' => "bounty admin clear {$targetName}",
             'status' => 'PENDING',
