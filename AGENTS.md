@@ -111,6 +111,38 @@ Before modifying code:
 
 Never implement a feature in isolation without checking whether equivalent functionality already exists.
 
+## 03.1. File Discovery — Semantic Search First (MANDATORY)
+
+This applies to the whole repository — both the Minecraft plugins (`Minecraft/`,
+Java/Paper) and the web platform (`Website/`, PHP/Azuriom). The Knowledge Graph
+indexes both.
+
+When looking for an existing file, class, function, command, config key, or
+feature, **use semantic search / the Knowledge Graph first**. Do not start by
+glob-listing the whole tree or reading files blindly.
+
+Preferred order:
+
+```text
+1. Knowledge Graph semantic search  → graphify query "<concept>" / graphify path "<A>" "<B>"
+2. Content search                   → grep/ripgrep with include + path filters
+3. Filename search                  → glob with a specific pattern
+4. Read (targeted, 20–60 line window) via offset/limit
+```
+
+Rules:
+
+- Before manually reading a file, ask the graph/search where the symbol lives.
+- Search by concept (e.g. "grave item storage", "bounty payout", "mob stacking"),
+  not only by exact identifier — the codebase may name things differently.
+- Prefer one semantic/grep query over many glob+read cycles.
+- After code changes, keep the graph fresh with `graphify update .`.
+- Only fall back to broad recursive listing when semantic search returns nothing,
+  and state clearly in the task summary that no graph/match was found.
+
+Rationale: semantic search finds the real implementation and its callers in one
+step, avoids duplicate implementations, and protects the token budget.
+
 ---
 
 # 04. Repository & Workspace Safety

@@ -2513,3 +2513,26 @@ Sebelum membaca berkas mentah secara acak atau melakukan grep luas yang memboros
 4. **Git Hygiene & Storage Boundaries:**
    - Direktori `graphify-out/` wajib selalu diabaikan oleh Git via `.gitignore` untuk mencegah pembengkakan riwayat commit akibat artefak graf JSON (28+ MB) dan cache SHA-256.
 
+## 58.2. Semantic Search First — MANDATORY
+
+Saat mencari **berkas, kelas, fungsi, command, config key, atau fitur yang sudah ada** (baik plugin Java di `Minecraft/` maupun plugin PHP di `Website/`), **WAJIB gunakan semantic search / Knowledge Graph terlebih dahulu**. Dilarang memulai dengan glob seluruh tree atau membaca berkas mentah secara membabi buta.
+
+Urutan pencarian yang benar:
+
+```text
+1. Knowledge Graph semantic search  → graphify query "<konsep>" / graphify path "<A>" "<B>"
+2. Content search                   → grep/ripgrep dengan include + path filter
+3. Filename search                  → glob dengan pola spesifik
+4. Read (jendela 20–60 baris)       → offset/limit
+```
+
+Aturan:
+
+- Sebelum membaca berkas manual, tanyakan dulu ke graph/search di mana simbol berada.
+- Cari berdasarkan **konsep** (mis. "grave item storage", "bounty payout", "mob stacking", "whatsapp order template"), bukan hanya identifier persis — kode bisa menamai sesuatu berbeda.
+- Utamakan satu query semantic/grep daripada banyak siklus glob+read.
+- Setelah perubahan kode, sinkronkan graf dengan `graphify update .` (§58.1 poin 3).
+- Fallback ke listing rekursif luas **hanya** jika semantic search tidak menemukan apa pun, dan nyatakan secara eksplisit di ringkasan tugas bahwa graph/match tidak ditemukan.
+
+Alasan: semantic search menemukan implementasi nyata beserta pemanggilnya dalam satu langkah, mencegah implementasi duplikat, dan menghemat kuota token. Aturan lengkap untuk agen generik ada di `AGENTS.md` §03.1.
+
