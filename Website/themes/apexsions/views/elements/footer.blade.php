@@ -39,7 +39,7 @@
                     @if(plugins()->isEnabled('shop'))
                         <li><a href="{{ route('shop.home') }}"><i class="bi bi-cart3 me-2"></i> <span data-i18n="nav_shop">Webstore</span></a></li>
                     @endif
-                    <li><a href="{{ route('home') }}#features"><i class="bi bi-shield-shaded me-2"></i> <span data-i18n="footer_three_kingdoms">Tiga Kerajaan</span></a></li>
+                    <li><a href="{{ route('home') }}#civilizations"><i class="bi bi-shield-shaded me-2"></i> <span data-i18n="footer_three_kingdoms">Tiga Kerajaan</span></a></li>
                     <li><a href="{{ route('home') }}#ranks"><i class="bi bi-crown me-2"></i> <span data-i18n="footer_caste_hierarchy">Hierarki Kasta</span></a></li>
                     @if(plugins()->isEnabled('wiki'))
                         <li><a href="{{ route('wiki.index') }}"><i class="bi bi-journal-text me-2"></i> <span data-i18n="footer_wiki_archive">Arsip Wiki</span></a></li>

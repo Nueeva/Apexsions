@@ -84,11 +84,13 @@ const APX_I18N = {
         map_viewport_tag: 'REALM OBSERVER // LIVE',
         map_viewport_title: 'Atlas Tiga Kerajaan',
         map_viewport_prompt: 'JELAJAHI PETA LAYAR PENUH',
+        map_telemetry_center: 'PUSAT TIGA KERAJAAN',
+        map_hud_scope: 'CAKUPAN REALM AKTIF',
 
         // World & Lore
         world_kicker: 'LORE & TATANAN WILAYAH',
         world_title: 'Runtuhnya Kekaisaran Sions & Eksodus Tiga Kerajaan',
-        world_lead: 'Dahulu kala, satu peradaban tunggal yang mahaluas—<strong>Kekaisaran Sions</strong>—menaungi seluruh benua Apexsions dalam kemakmuran tanpa pernah menyentuh ilmu hitam. Namun kehancuran tak terelakkan tiba ketika ambisi kaisar terakhir memaksakan pembukaan portal ke <strong>Dimensi Kegelapan Umbra</strong> demi meraih keabadian. Kekuatan gelap yang meluap meremukkan ibukota agung kekaisaran dan memicu <em>Eksodus Akbar</em> ke tiga penjuru: dinasti kerajaan melarikan diri ke timur (<strong>Zenithar</strong>), kaum pekerja dan penjaga rimba ke barat (<strong>Sylvamoor</strong>), serta para pesulap agung dan prajurit tempur terkuat ke cadas selatan (<strong>Solterra</strong>).',
+        world_lead: 'Dahulu kala, satu peradaban tunggal yang mahaluas, <strong>Kekaisaran Sions</strong>, menaungi seluruh benua Apexsions dalam kemakmuran tanpa pernah menyentuh ilmu hitam. Namun kehancuran tak terelakkan tiba ketika ambisi kaisar terakhir memaksakan pembukaan portal ke <strong>Dimensi Kegelapan Umbra</strong> demi meraih keabadian. Kekuatan gelap yang meluap meremukkan ibukota agung kekaisaran dan memicu <em>Eksodus Akbar</em> ke tiga penjuru: dinasti kerajaan melarikan diri ke timur (<strong>Zenithar</strong>), kaum pekerja dan penjaga rimba ke barat (<strong>Sylvamoor</strong>), serta para pesulap agung dan prajurit tempur terkuat ke cadas selatan (<strong>Solterra</strong>).',
 
         // Kingdoms
         label_characteristics: 'Karakteristik Wilayah',
@@ -99,7 +101,7 @@ const APX_I18N = {
         zenithar_spec1: 'Puncak Cakrawala & Solarium Spire Citadel',
         zenithar_spec2: 'Penambangan Emas Murni & Arsitektur Megah',
         zenithar_buffs: '<span class="text-success fw-semibold">+8% Speed</span>, <span class="text-success fw-semibold">+15% Luck</span>, <span class="text-success fw-semibold">[Royal Discipline] +6% All Damage</span>, <span class="text-success fw-semibold">[Royal Aegis] 20% Reduksi Damage Masuk</span>, <span class="text-success fw-semibold">Diskon 30% Pajak Lelang &amp; Bunga Bank +25%</span>.',
-        zenithar_debuffs: '<span class="text-danger fw-semibold">+15% Kerentanan Racun &amp; Wither</span>, <span class="text-danger fw-semibold">+12% Cepat Lapar</span>, <span class="text-danger fw-semibold">-10% Kecepatan Menambang</span>, biaya tempa anvil sedikit lebih mahal (+1 Level EXP).',
+        zenithar_debuffs: '<span class="apx-debuff-text fw-semibold">+15% Kerentanan Racun &amp; Wither</span>, <span class="apx-debuff-text fw-semibold">+12% Cepat Lapar</span>, <span class="apx-debuff-text fw-semibold">-10% Kecepatan Menambang</span>, biaya tempa anvil sedikit lebih mahal (+1 Level EXP).',
         zenithar_link: 'Arsip Zenithar',
 
         solterra_type: 'TERITORI SELATAN • MAGICIAN & VETERAN',
@@ -107,7 +109,7 @@ const APX_I18N = {
         solterra_spec1: 'Cadas Vulkanik, Kawah Lahar & Ignis Bastion',
         solterra_spec2: 'Penempaan Senjata Berat & Nilai Jual Ore Tinggi',
         solterra_buffs: '<span class="text-success fw-semibold">[Battle Momentum] +15% Total Damage</span>, <span class="text-success fw-semibold">+10% Critical Damage</span>, <span class="text-success fw-semibold">+10% Mining Speed</span>, <span class="text-success fw-semibold">Rasio Jual Ore Tinggi (30%)</span>.',
-        solterra_debuffs: '<span class="text-danger fw-semibold">-2 HP Maksimal (9 Hati)</span>, <span class="text-danger fw-semibold">+8% Damage Masuk</span>, <span class="text-danger fw-semibold">+7% Cepat Lapar</span>, lahan pertanian cepat kering di tanah cadas.',
+        solterra_debuffs: '<span class="apx-debuff-text fw-semibold">-2 HP Maksimal (9 Hati)</span>, <span class="apx-debuff-text fw-semibold">+8% Damage Masuk</span>, <span class="apx-debuff-text fw-semibold">+7% Cepat Lapar</span>, lahan pertanian cepat kering di tanah cadas.',
         solterra_link: 'Arsip Solterra',
 
         sylvamoor_type: 'TERITORI BARAT • PEKERJA & PEJUANG RIMBA',
@@ -115,7 +117,7 @@ const APX_I18N = {
         sylvamoor_spec1: 'Rimba Kanopi Purba, Samudra Kristal & Eldergrove',
         sylvamoor_spec2: 'Lumbung Agrikultur, Alkemis Herbal & Pangan',
         sylvamoor_buffs: '<span class="text-success fw-semibold">[Nature\'s Blessing] +2 HP Maksimal (11 Hati)</span>, <span class="text-success fw-semibold">+12% Luck</span>, <span class="text-success fw-semibold">+7% Extra Mob Drop</span>, <span class="text-success fw-semibold">Defense Rimba (+15%)</span>, <span class="text-success fw-semibold">Racun Berhenti di 3 Hati</span>, <span class="text-success fw-semibold">Kelembapan Lahan Abadi</span>.',
-        sylvamoor_debuffs: '<span class="text-danger fw-semibold">Mabuk Ketinggian di Y > 110</span> (Hunger/Weakness), <span class="text-danger fw-semibold">+15% Damage Terbakar Api</span>, <span class="text-danger fw-semibold">-10% Serangan PvP & Mining</span>.',
+        sylvamoor_debuffs: '<span class="apx-debuff-text fw-semibold">Mabuk Ketinggian di Y > 110</span> (Hunger/Weakness), <span class="apx-debuff-text fw-semibold">+15% Damage Terbakar Api</span>, <span class="apx-debuff-text fw-semibold">-10% Serangan PvP & Mining</span>.',
         sylvamoor_link: 'Arsip Sylvamoor',
 
         // Ledger
@@ -936,11 +938,13 @@ const APX_I18N = {
         map_viewport_tag: 'REALM OBSERVER // LIVE',
         map_viewport_title: 'Atlas of the Three Kingdoms',
         map_viewport_prompt: 'EXPLORE FULLSCREEN MAP',
+        map_telemetry_center: 'REALM CORE CONFLUENCE',
+        map_hud_scope: 'ACTIVE REALM SCOPE',
 
         // World & Lore
         world_kicker: 'LORE & TERRITORIAL ORDER',
         world_title: 'Fall of the Sions Empire & Exodus of the Three Kingdoms',
-        world_lead: 'Long ago, a single vast civilization—the <strong>Sions Empire</strong>—ruled over the entire continent of Apexsions in prosperity without ever touching dark arts. Yet inevitable doom struck when the final emperor\'s ambition forced the opening of a portal to the <strong>Umbra Dark Dimension</strong> to attain immortality. The surging chaotic darkness shattered the imperial capital and triggered the <em>Great Exodus</em> in three directions: the royal dynasty fled eastward (<strong>Zenithar</strong>), the laborers and wildwood guardians westward (<strong>Sylvamoor</strong>), and supreme battle arcanists and veteran warriors to the southern crags (<strong>Solterra</strong>).',
+        world_lead: 'Long ago, a single vast civilization, the <strong>Sions Empire</strong>, ruled over the entire continent of Apexsions in prosperity without ever touching dark arts. Yet inevitable doom struck when the final emperor\'s ambition forced the opening of a portal to the <strong>Umbra Dark Dimension</strong> to attain immortality. The surging chaotic darkness shattered the imperial capital and triggered the <em>Great Exodus</em> in three directions: the royal dynasty fled eastward (<strong>Zenithar</strong>), the laborers and wildwood guardians westward (<strong>Sylvamoor</strong>), and supreme battle arcanists and veteran warriors to the southern crags (<strong>Solterra</strong>).',
 
         // Kingdoms
         label_characteristics: 'Territory Characteristics',
@@ -951,7 +955,7 @@ const APX_I18N = {
         zenithar_spec1: 'Celestial Horizon & Solarium Spire Citadel',
         zenithar_spec2: 'Pure Gold Extraction & Grand Architectural Marvels',
         zenithar_buffs: '<span class="text-success fw-semibold">+8% Speed</span>, <span class="text-success fw-semibold">+15% Luck</span>, <span class="text-success fw-semibold">[Royal Discipline] +6% All Damage</span>, <span class="text-success fw-semibold">[Royal Aegis] 20% Damage Reduction</span>, <span class="text-success fw-semibold">30% Auction Tax Discount &amp; +25% Bank Yield</span>.',
-        zenithar_debuffs: '<span class="text-danger fw-semibold">+15% Poison &amp; Wither Vulnerability</span>, <span class="text-danger fw-semibold">+12% Hunger Exhaustion</span>, <span class="text-danger fw-semibold">-10% Mining Speed</span>, anvil repairing costs slightly more (+1 Level EXP).',
+        zenithar_debuffs: '<span class="apx-debuff-text fw-semibold">+15% Poison &amp; Wither Vulnerability</span>, <span class="apx-debuff-text fw-semibold">+12% Hunger Exhaustion</span>, <span class="apx-debuff-text fw-semibold">-10% Mining Speed</span>, anvil repairing costs slightly more (+1 Level EXP).',
         zenithar_link: 'Zenithar Archives',
 
         solterra_type: 'SOUTHERN TERRITORY • MAGICIANS & VETERANS',
@@ -959,7 +963,7 @@ const APX_I18N = {
         solterra_spec1: 'Volcanic Crags, Magma Calderas & Ignis Bastion',
         solterra_spec2: 'Heavy Weapon Forging & High Ore Sell Ratios',
         solterra_buffs: '<span class="text-success fw-semibold">[Battle Momentum] +15% Total Damage</span>, <span class="text-success fw-semibold">+10% Critical Damage</span>, <span class="text-success fw-semibold">+10% Mining Speed</span>, <span class="text-success fw-semibold">High Ore Sell Ratio (30%)</span>.',
-        solterra_debuffs: '<span class="text-danger fw-semibold">-2 Max HP (9 Hearts)</span>, <span class="text-danger fw-semibold">+8% Incoming Damage</span>, <span class="text-danger fw-semibold">+7% Faster Hunger</span>, farmland dries rapidly on arid stone.',
+        solterra_debuffs: '<span class="apx-debuff-text fw-semibold">-2 Max HP (9 Hearts)</span>, <span class="apx-debuff-text fw-semibold">+8% Incoming Damage</span>, <span class="apx-debuff-text fw-semibold">+7% Faster Hunger</span>, farmland dries rapidly on arid stone.',
         solterra_link: 'Solterra Archives',
 
         sylvamoor_type: 'WESTERN TERRITORY • WORKERS & WILDWOOD RANGERS',
@@ -967,7 +971,7 @@ const APX_I18N = {
         sylvamoor_spec1: 'Ancient Canopy Wildwoods, Crystal Seas & Eldergrove',
         sylvamoor_spec2: 'Agrarian Granaries, Herbal Alchemy & Sustainable Food',
         sylvamoor_buffs: '<span class="text-success fw-semibold">[Nature\'s Blessing] +2 Max HP (11 Hearts)</span>, <span class="text-success fw-semibold">+12% Luck</span>, <span class="text-success fw-semibold">+7% Extra Mob Drops</span>, <span class="text-success fw-semibold">Forest Defense (+15%)</span>, <span class="text-success fw-semibold">Poison Threshold at 3 Hearts</span>, <span class="text-success fw-semibold">Eternal Soil Hydration</span>.',
-        sylvamoor_debuffs: '<span class="text-danger fw-semibold">Altitude Sickness at Y > 110</span> (Hunger/Weakness), <span class="text-danger fw-semibold">+15% Burn Damage</span>, <span class="text-danger fw-semibold">-10% PvP Damage & Mining Speed</span>.',
+        sylvamoor_debuffs: '<span class="apx-debuff-text fw-semibold">Altitude Sickness at Y > 110</span> (Hunger/Weakness), <span class="apx-debuff-text fw-semibold">+15% Burn Damage</span>, <span class="apx-debuff-text fw-semibold">-10% PvP Damage & Mining Speed</span>.',
         sylvamoor_link: 'Sylvamoor Archives',
 
         // Ledger

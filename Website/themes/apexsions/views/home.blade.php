@@ -40,7 +40,7 @@
 
                 <!-- Primary Sovereign Action & Separate Technical Infrastructure -->
                 <div class="apx-hero-action-group d-flex align-items-center gap-3 flex-wrap">
-                    <a href="#features" class="btn btn-apx-sovereign">
+                    <a href="#civilizations" class="btn btn-apx-sovereign">
                         <span data-i18n="hero_btn_explore">JELAJAHI PERADABAN</span> <i class="bi bi-arrow-down ms-2"></i>
                     </a>
                     <div class="apx-hero-ip-block apx-copyable" data-apx-copy="apexsions.my.id:32348" role="button" tabindex="0" title="Klik atau tekan Enter untuk menyalin IP Java" aria-label="Salin Alamat IP Server Java">
@@ -80,8 +80,6 @@
 
 <!-- Section: A WORLD BUILT BY PLAYERS (2-Column Asymmetric Showcase) -->
 <section class="apx-section apx-world-section position-relative overflow-hidden" id="civilizations">
-    <span id="features" style="position: absolute; top: -80px;"></span>
-
     <div class="container position-relative" style="z-index: 2;">
         <!-- Header / Intro -->
         <div class="apx-section-intro mb-5">
@@ -92,7 +90,7 @@
                 Runtuhnya Kekaisaran Sions &amp; Eksodus Tiga Kerajaan
             </h2>
             <p class="apx-world-lead text-muted" style="max-width: 820px; font-size: 1.05rem; line-height: 1.75;" data-i18n-html="world_lead">
-                Dahulu kala, satu peradaban tunggal yang mahaluas—<strong>Kekaisaran Sions</strong>—menaungi seluruh benua Apexsions dalam kemakmuran tanpa pernah menyentuh ilmu hitam. Namun kehancuran tak terelakkan tiba ketika ambisi kaisar terakhir memaksakan pembukaan portal ke <strong>Dimensi Kegelapan Umbra</strong> demi meraih keabadian. Kekuatan gelap yang meluap meremukkan ibukota agung kekaisaran dan memicu <em>Eksodus Akbar</em> ke tiga penjuru: dinasti kerajaan melarikan diri ke timur (<strong>Zenithar</strong>), kaum pekerja dan penjaga rimba ke barat (<strong>Sylvamoor</strong>), serta para pesulap agung dan prajurit tempur terkuat ke cadas selatan (<strong>Solterra</strong>).
+                Dahulu kala, satu peradaban tunggal yang mahaluas, <strong>Kekaisaran Sions</strong>, menaungi seluruh benua Apexsions dalam kemakmuran tanpa pernah menyentuh ilmu hitam. Namun kehancuran tak terelakkan tiba ketika ambisi kaisar terakhir memaksakan pembukaan portal ke <strong>Dimensi Kegelapan Umbra</strong> demi meraih keabadian. Kekuatan gelap yang meluap meremukkan ibukota agung kekaisaran dan memicu <em>Eksodus Akbar</em> ke tiga penjuru: dinasti kerajaan melarikan diri ke timur (<strong>Zenithar</strong>), kaum pekerja dan penjaga rimba ke barat (<strong>Sylvamoor</strong>), serta para pesulap agung dan prajurit tempur terkuat ke cadas selatan (<strong>Solterra</strong>).
             </p>
         </div>
 
@@ -119,7 +117,7 @@
                     </div>
                     <div class="small fw-bold text-uppercase mb-1 apx-debuff-label"><i class="bi bi-shield-minus me-1"></i> <span data-i18n="label_debuffs">Debuff Kondisi Fisik</span></div>
                     <div class="small text-muted" style="font-size: 0.8rem; line-height: 1.5;" data-i18n-html="zenithar_debuffs">
-                        <span class="text-danger fw-semibold">+15% Kerentanan Racun &amp; Wither</span>, <span class="text-danger fw-semibold">+12% Cepat Lapar</span>, <span class="text-danger fw-semibold">-10% Kecepatan Menambang</span>, biaya tempa anvil sedikit lebih mahal (+1 Level EXP).
+                        <span class="apx-debuff-text fw-semibold">+15% Kerentanan Racun &amp; Wither</span>, <span class="apx-debuff-text fw-semibold">+12% Cepat Lapar</span>, <span class="apx-debuff-text fw-semibold">-10% Kecepatan Menambang</span>, biaya tempa anvil sedikit lebih mahal (+1 Level EXP).
                     </div>
                 </div>
                 @if(plugins()->isEnabled('wiki'))
@@ -150,7 +148,7 @@
                     </div>
                     <div class="small fw-bold text-uppercase mb-1 apx-debuff-label"><i class="bi bi-shield-minus me-1"></i> <span data-i18n="label_debuffs">Debuff Kondisi Fisik</span></div>
                     <div class="small text-muted" style="font-size: 0.8rem; line-height: 1.5;" data-i18n-html="solterra_debuffs">
-                        <span class="text-danger fw-semibold">-2 HP Maksimal (9 Hati)</span>, <span class="text-danger fw-semibold">+8% Damage Masuk</span>, <span class="text-danger fw-semibold">+7% Cepat Lapar</span>, lahan pertanian cepat kering di tanah cadas.
+                        <span class="apx-debuff-text fw-semibold">-2 HP Maksimal (9 Hati)</span>, <span class="apx-debuff-text fw-semibold">+8% Damage Masuk</span>, <span class="apx-debuff-text fw-semibold">+7% Cepat Lapar</span>, lahan pertanian cepat kering di tanah cadas.
                     </div>
                 </div>
                 @if(plugins()->isEnabled('wiki'))
@@ -181,7 +179,7 @@
                     </div>
                     <div class="small fw-bold text-uppercase mb-1 apx-debuff-label"><i class="bi bi-shield-minus me-1"></i> <span data-i18n="label_debuffs">Debuff Kondisi Fisik</span></div>
                     <div class="small text-muted" style="font-size: 0.8rem; line-height: 1.5;" data-i18n-html="sylvamoor_debuffs">
-                        <span class="text-danger fw-semibold">Mabuk Ketinggian di Y &gt; 110</span> (Hunger/Weakness), <span class="text-danger fw-semibold">+15% Damage Terbakar Api</span>, <span class="text-danger fw-semibold">-10% Serangan PvP &amp; Mining</span>.
+                        <span class="apx-debuff-text fw-semibold">Mabuk Ketinggian di Y &gt; 110</span> (Hunger/Weakness), <span class="apx-debuff-text fw-semibold">+15% Damage Terbakar Api</span>, <span class="apx-debuff-text fw-semibold">-10% Serangan PvP &amp; Mining</span>.
                     </div>
                 </div>
                 @if(plugins()->isEnabled('wiki'))
@@ -303,7 +301,7 @@
                             <span class="apx-telemetry-divider opacity-30">/</span>
                             <span class="apx-telemetry-engine">BLUEMAP 3D</span>
                             <span class="apx-telemetry-divider opacity-30">/</span>
-                            <span class="apx-telemetry-coords text-gold opacity-90">X: -6500, Z: -3500</span>
+                            <span class="apx-telemetry-coords text-gold opacity-90" data-i18n="map_telemetry_center">PUSAT TIGA KERAJAAN</span>
                         </div>
                     </div>
 
@@ -348,7 +346,7 @@
 
                     <!-- Actions Bar -->
                     <div class="d-flex flex-wrap align-items-center gap-3">
-                        <a href="{{ $serverMapUrl }}" target="_blank" rel="noopener noreferrer" class="btn btn-apx-gold px-4 py-2.5 fw-bold d-inline-flex align-items-center gap-2 apx-btn-glow">
+                        <a href="{{ $serverMapUrl }}" target="_blank" rel="noopener noreferrer" class="btn btn-apx-gold px-4 py-2.5 fw-bold d-inline-flex align-items-center gap-2">
                             <i class="bi bi-compass"></i>
                             <span data-i18n="map_btn_open">Buka Atlas Satelit 3D</span>
                             <i class="bi bi-box-arrow-up-right small ms-1"></i>
@@ -383,7 +381,7 @@
                                     <span class="apx-hud-indicator {{ $serverMapOnline ? 'is-live' : 'is-idle' }}"></span>
                                     <span class="apx-hud-title font-monospace" data-i18n="map_viewport_tag">REALM OBSERVER // LIVE</span>
                                 </div>
-                                <span class="apx-hud-coords font-monospace">X: -6500 / Z: -3500</span>
+                                <span class="apx-hud-coords font-monospace" data-i18n="map_hud_scope">CAKUPAN REALM AKTIF</span>
                             </div>
 
                             <!-- HUD Center: Tactical Reticle & Territory Scope -->
@@ -869,10 +867,10 @@
                     Buka menu Multiplayer dan masukkan alamat server <code>apexsions.my.id:32348</code>. Untuk pemain Bedrock, masukkan IP <code>apexsions.my.id</code> dengan Port <code>32348</code>.
                 </p>
                 <div class="apx-step-action mt-auto d-flex flex-column gap-2">
-                    <button type="button" class="btn btn-apx-outline btn-sm w-100 py-2" data-apx-copy="apexsions.my.id:32348" aria-label="Salin Alamat Server Java">
+                    <button type="button" class="btn btn-apx-outline apx-btn-copy w-100" data-apx-copy="apexsions.my.id:32348" aria-label="Salin Alamat Server Java">
                         <i class="bi bi-laptop me-1"></i> <span data-i18n="step2_copy_java">Salin Java &bull; apexsions.my.id:32348</span>
                     </button>
-                    <button type="button" class="btn btn-apx-outline btn-sm w-100 py-2" data-apx-copy="IP: apexsions.my.id | Port: 32348" aria-label="Salin IP dan Port Bedrock">
+                    <button type="button" class="btn btn-apx-outline apx-btn-copy w-100" data-apx-copy="IP: apexsions.my.id | Port: 32348" aria-label="Salin IP dan Port Bedrock">
                         <i class="bi bi-phone me-1"></i> <span data-i18n="step2_copy_bedrock">Salin Bedrock &bull; IP: apexsions.my.id | Port: 32348</span>
                     </button>
                 </div>
@@ -888,14 +886,14 @@
                 <div class="apx-step-action mt-auto">
                     @auth
                         @if(plugins()->isEnabled('apexsions-bridge'))
-                            <a href="{{ route('apexsions-bridge.link.index') }}" class="btn btn-apx-outline btn-sm w-100 py-2">
+                            <a href="{{ route('apexsions-bridge.link.index') }}" class="btn btn-apx-outline apx-btn-copy w-100">
                                 <i class="bi bi-controller me-1"></i> <span data-i18n="step3_btn_link">Buka Portal Tautkan</span>
                             </a>
                         @else
                             <span class="text-dim small" data-i18n="step3_registered">Akun Anda Terdaftar</span>
                         @endif
                     @else
-                        <a href="{{ route('register') }}" class="btn btn-apx-outline btn-sm w-100 py-2">
+                        <a href="{{ route('register') }}" class="btn btn-apx-outline apx-btn-copy w-100">
                             <i class="bi bi-person-plus me-1"></i> <span data-i18n="step3_btn_register">Daftar Akun Peradaban</span>
                         </a>
                     @endauth
