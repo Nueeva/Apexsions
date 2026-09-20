@@ -78,6 +78,12 @@ public class BountyManager {
     // --- Lifecycle ---
 
     public void start() {
+        // Seed session timers for players already online at enable time so the
+        // anti-abuse online-time guard applies to them too.
+        for (Player online : Bukkit.getOnlinePlayers()) {
+            sessionStart.putIfAbsent(online.getUniqueId(), System.currentTimeMillis());
+        }
+
         repository.loadActiveBounties().thenAccept(rows -> {
             // Merge into the live map so bounties placed during the async load survive.
             for (Bounty b : rows) {
