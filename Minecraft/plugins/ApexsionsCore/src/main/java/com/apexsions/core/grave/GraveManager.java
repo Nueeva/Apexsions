@@ -82,8 +82,11 @@ public class GraveManager {
         repository.loadActive().thenAccept(loaded -> Bukkit.getScheduler().runTask(plugin, () -> {
             for (GraveRecord grave : loaded) {
                 if (grave.isExpired()) {
-                    releaseGrave(grave, true);
-                    repository.markCollected(grave.getId());
+                    // Only mark collected when the items were actually handed out
+                    // or dropped; otherwise the row must stay recoverable.
+                    if (releaseGrave(grave, true)) {
+                        repository.markCollected(grave.getId());
+                    }
                 } else {
                     activeGraves.put(grave.getId(), grave);
                     ownerIndex.put(grave.getOwnerUuid(), grave.getId());
@@ -103,8 +106,12 @@ public class GraveManager {
         expiryTask = Bukkit.getScheduler().runTaskTimer(plugin, () -> {
             for (GraveRecord grave : new ArrayList<>(activeGraves.values())) {
                 if (grave.isExpired()) {
-                    releaseGrave(grave, true);
-                    repository.markCollected(grave.getId());
+                    if (releaseGrave(grave, true)) {
+                        repository.markCollected(grave.getId());
+                    } else {
+                        // Could not release (world unavailable): retry next sweep.
+                        updateHologram(grave);
+                    }
                 } else {
                     updateHologram(grave);
                 }
@@ -332,8 +339,11 @@ public class GraveManager {
     /**
      * Releases a grave without a collector: gives to owner if online, otherwise
      * drops the items at the grave location. Never silently discards items.
+     *
+     * @return true when the items were handed out or dropped; false when the
+     *         world is unavailable and the grave must remain recoverable.
      */
-    public void releaseGrave(@NotNull GraveRecord grave, boolean removeEntities) {
+    public boolean releaseGrave(@NotNull GraveRecord grave, boolean removeEntities) {
         Player owner = Bukkit.getPlayer(grave.getOwnerUuid());
         List<ItemStack> items = grave.getItems();
         if (owner != null && owner.isOnline()) {
@@ -354,7 +364,7 @@ public class GraveManager {
             } else {
                 plugin.getLogger().warning("Grave " + grave.getId() + " world '" + grave.getWorldName()
                         + "' unavailable; items cannot be released and remain in database.");
-                return;
+                return false;
             }
         }
         grave.setItems(new ArrayList<>());
@@ -365,13 +375,19 @@ public class GraveManager {
             ownerIndex.remove(grave.getOwnerUuid(), grave.getId());
             removeMarkers(grave.getId());
         }
+        return true;
     }
 
     private void releaseOwnedGraveSilently(UUID owner) {
         GraveRecord old = getActiveGrave(owner);
         if (old != null) {
-            releaseGrave(old, true);
-            repository.markCollected(old.getId());
+            if (releaseGrave(old, true)) {
+                repository.markCollected(old.getId());
+            } else {
+                // Keep the old row recoverable: detach it from the owner index so
+                // the new grave can own the slot without orphaning stored items.
+                ownerIndex.remove(owner, old.getId());
+            }
         }
     }
 
@@ -383,9 +399,11 @@ public class GraveManager {
         if (grave == null) {
             return false;
         }
-        releaseGrave(grave, true);
-        repository.markCollected(grave.getId());
-        return true;
+        boolean released = releaseGrave(grave, true);
+        if (released) {
+            repository.markCollected(grave.getId());
+        }
+        return released;
     }
 
     /**
