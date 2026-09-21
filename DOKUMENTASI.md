@@ -592,6 +592,59 @@ ApexsionsCore dilengkapi sistem proteksi keamanan dan integritas server berlapis
    - Memunculkan partikel asap (`Particle.SMOKE`) dan suara pemadaman (`Sound.BLOCK_FIRE_EXTINGUISH`) di titik sumber clock.
    - Mengirim notifikasi actionbar ke seluruh pemain dalam radius 15 blok: *"⚠ Sirkuit redstone cepat dibekukan sementara demi menjaga kestabilan 20 TPS server."*
 
+### D. Movement Security Engine & Mitigasi Fly Hack (`MovementSecurityListener`)
+1. **Pencegahan Fly Hack, AirWalk & Creative Flight (CurseForge Mod Mitigations):**
+   - Memvalidasi pergerakan vertikal dan status melayang di udara pemain mode Survival/Adventure yang tidak memiliki izin terbang (`allowFlight == false`).
+   - Menganalisis kondisi sekitar: mengecualikan pemain yang sedang memakai Elytra (`isGliding`), menaiki kendaraan/kuda, terkena efek Levitation/Slow Falling, berada di tangga, sulur (vines), perancah (scaffolding), jaring laba-laba (cobweb), atau di dalam air/lahar.
+   - Jika pemain bergerak ke atas ($\Delta y > 0$) di udara tanpa loncatan sah, atau melayang tanpa penurunan gravitasi wajar ($\Delta y \ge -0.03$) selama $> 6$ tick berturut-turut:
+     - **Aksi Rubberband:** Posisi pemain dikembalikan seketika ke lokasi aman terakhir di atas tanah (`lastSafeGround`).
+     - **Peringatan & Sanksi:** Mengirimkan peringatan action bar *"⚠ Gerakan tidak wajar (Fly Hack) terdeteksi! Posisi disesuaikan kembali."* Akumulasi $\ge 6$ pelanggaran otomatis menyiarkan alert diagnostik ke staf online (`apexsions.staff`).
+2. **Jesus / WaterWalk Guard:**
+   - Mendeteksi pemain yang berlari di atas permukaan air atau lahar dengan status `onGround = true` tanpa memakai sepatu *Frost Walker* atau menaiki perahu.
+   - Tindakan ilegal dibatalkan seketika dan pemain ditenggelamkan ke dalam air.
+3. **Pencegahan Horizontal Speed Hack:**
+   - Menghitung kuadrat jarak horizontal $(\Delta x^2 + \Delta z^2)$. Batas kecepatan disesuaikan secara dinamis jika pemain memiliki efek ramuan Speed atau sedang meluncur di es.
+   - Laju tidak wajar ($> 0.8\text{ blok/tick}$ tanpa knockback) otomatis dibatalkan.
+4. **True Server-Side NoFall:**
+   - Server melacak jarak jatuh aktual di udara secara independen dari paket klien.
+   - Saat menyentuh tanah, server menerapkan damage jatuh riil meskipun klien cheat memanipulasi paket `onGround = true` atau `fallDistance = 0`.
+
+### E. Auth Security Gatekeeper & Staff Account Shield (`AuthSecurityGateKeeper`)
+1. **Pre-Login Absolute Lockdown (`EventPriority.LOWEST`):**
+   - Mengunci total seluruh aktivitas pemain sebelum proses otentikasi AuthMe tuntas:
+     - **Command Firewall:** Memblokir seluruh perintah non-auth, termasuk alias namespace (`/minecraft:me`, dll). Hanya perintah sah (`/login`, `/l`, `/register`, `/reg`, `/2fa`, `/totp`) yang diizinkan.
+     - **Event Interception:** Membatalkan pembukaan peti/wadah (`InventoryOpenEvent`), klik GUI (`InventoryClickEvent`), membuang item (`PlayerDropItemEvent`), memungut item (`EntityPickupItemEvent`), interaksi blok/pintu/tombol (`PlayerInteractEvent`), dan penyerangan entitas (`EntityDamageByEntityEvent`).
+     - **Movement Freeze:** Membekukan koordinat horizontal pemain di titik spawn belum login.
+2. **Staff Account Shield & Proteksi Brute-Force:**
+   - Akun jajaran Staf (`ancestor`, `architect`, `overseer`, `warden`, `herald`) dipantau secara ekstra ketat.
+   - **Zero-Tolerance Brute Force:** Jika terjadi kesalahan kata sandi $\ge 3$ kali berturut-turut pada akun staf, pemain seketika ditendang (*kicked*), alamat IP diblokir sementara selama 10 menit, dan peringatan darurat disiarkan ke konsol serta seluruh staf online.
+3. **Hardening Konfigurasi AuthMe (`config/authme/config.yml`):**
+   - `sessions.enabled: false`: Menghilangkan risiko eksploitasi *Session Hijacking* pada jaringan IP bersama (WiFi publik, kampus, warnet, tethering CGNAT).
+   - `teleportUnAuthedToSpawn: true`: Mengamankan koordinat logout dan base rahasia pemain agar tidak termuat sebelum login.
+
+### F. Combat Guard Engine (`CombatSecurityListener`)
+1. **KillAura Angle Check:**
+   - Menghitung sudut vektor antara arah mata penyerang (`eyeLocation.getDirection()`) dan posisi pusat hitbox korban.
+   - Jika sudut $> 95^\circ$ (penyerang memukul ke samping atau ke belakang tanpa menatap korban), serangan dibatalkan seketika.
+2. **Wall-Hit (Phase Strike) Raycast:**
+   - Memeriksa lintasan tembus pandang (*Line of Sight*) dari mata penyerang ke target.
+   - Jika terdapat blok padat kedap (*occluding block*) di antara penyerang dan korban, serangan dibatalkan.
+3. **Combat Reach Limiter:**
+   - Membatasi jangkauan pukulan maksimal di mode Survival pada jarak **4.2 meter** (memperhitungkan kompensasi latency jaringan dan radius bounding box entitas).
+4. **Auto-Clicker CPS Throttle:**
+   - Melacak frekuensi serangan dalam sliding window 1 detik. Serangan berkecepatan di atas **20 CPS** otomatis diredam.
+
+### G. Packet Sanitizer & World Exploit Protection (`PacketExploitListener`)
+1. **BadPackets Pitch Sanitizer:**
+   - Memvalidasi nilai `pitch` agar selalu berada dalam rentang fisik normal $[-90.0^\circ, +90.0^\circ]$.
+   - Memperbaiki rotasi kamera abnormal yang biasa digunakan klien cheat untuk merusak kalkulasi raytrace atau mengeksploitasi orientasi model.
+2. **Filter Koordinat Malformed (Crash Exploit):**
+   - Menolak paket pergerakan yang mengandung nilai `NaN` (*Not-a-Number*) atau `Infinity` dan otomatis menendang pemain yang bersangkutan demi menjaga kestabilan thread server.
+3. **Scaffold & FastPlace Limiter:**
+   - Membatasi kecepatan penempatan blok maksimal **14 blok per detik** di mode Survival.
+4. **ChestStealer Container Limiter:**
+   - Membatasi pengambilan item dari peti/kontainer maksimal **12 klik per detik** untuk mencegah otomatisasi loot instan.
+
 ---
 
 ## 📱 17. Integrasi UI Lintas Platform (Bedrock Mobile & Java Custom Font Friendly)

@@ -21,6 +21,7 @@ Plugin fondasi utama server **Apexsions** yang mengelola sistem 3 Kerajaan (*Zen
 - **Enforcer TPA EssentialsX**: Membatasi `/tpa` hanya ke sesama anggota kerajaan dan wajib berada di dalam area wilayah teritorial kerajaan.
 - **Custom Enchantment Engine (`/enchant`)**: Mendukung level enchant hingga 4x batas vanilla (Sharpness 20, Protection 12, Mending 4) secara aman via command tanpa merusak anvil/meja sihir survival biasa.
 - **Anvil Enhancement Engine**: Menghilangkan batasan "Too Expensive!" (level 40) pada anvil, mendukung biaya level tanpa batas (`cost-cap: 0`), dan menjaga custom enchant dari reset/downgrade.
+- **Apexsions Security & Anti-Cheat Suite**: Proteksi native terintegrasi terhadap Fly Hack (rubberband), Speed, Jesus, NoFall, Auth Bypass (pre-login isolation), Staff Account Shield (anti-brute-force), Combat Guard (KillAura angle, wall-hit, reach limiter, auto-clicker), BadPackets (pitch $[-90^\circ, +90^\circ]$ & crash packets), Scaffold, dan ChestStealer.
 
 ---
 

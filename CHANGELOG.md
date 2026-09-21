@@ -36,6 +36,38 @@ Bagi AI Agent atau developer yang melanjutkan pekerjaan di repositori ini, perha
 
 ---
 
+## 🛡️ Apexsions Security & Anti-Cheat Suite (Fly Hack, Auth Bypass, Combat Guard & Packet Exploits) Milestone [v1.3.7]
+> **Periode Pengembangan:** 21 September 2026 | **Status:** Implemented, Tested, Live Verified & Documented
+
+### 📋 Ikhtisar Implementasi Sistem Anti-Cheat & Mitigasi Exploit
+Berdasarkan investigasi terhadap mod seperti Fly Hack CurseForge dan berbagai cheat client modern (Meteor, Wurst, LiquidBounce, Aristois), ekosistem server dilengkapi sistem deteksi dan mitigasi komprehensif di `ApexsionsCore` (`com.apexsions.core.security.*`) serta pengerasan autentikasi:
+
+1. **Movement Security Engine (`MovementSecurityListener.java`):**
+   - **Fly Hack & AirWalk / Creative Fly Mitigation:** Mencegah pergerakan vertikal di udara tanpa izin terbang yang sah. Menghukum pergerakan naik ($\Delta y \ge 0$) atau melayang di udara tanpa pijakan selama $> 6$ tick berturut-turut dengan *Rubberbanding* ke lokasi tanah aman terakhir (`lastSafeGround`) serta siaran alert staf jika berulang.
+   - **Horizontal Speed Hack:** Membatasi laju $(\Delta x^2 + \Delta z^2)$ dengan kompensasi ramuan Speed, Soul Speed, dan knockback tempur.
+   - **Jesus / WaterWalk Guard:** Menolak status `onGround = true` pada permukaan cairan (air/lahar) tanpa sepatu Frost Walker.
+   - **True Server-Side NoFall:** Server melacak jarak jatuh nyata di udara secara independen dan menerapkan damage jatuh saat mendarat, mengabaikan manipulasi paket klien.
+2. **Auth Security Gatekeeper & Staff Shield (`AuthSecurityGateKeeper.java`):**
+   - **Pre-Login Absolute Lockdown (`LOWEST` Priority):** Memblokir seluruh perintah non-auth (`/login`, `/l`, `/register`, `/reg`, `/2fa` diizinkan), interaksi kontainer/GUI, melempar/mengambil item di spawn, dan penyerangan sebelum pemain terotentikasi.
+   - **Eliminasi Session Hijacking:** Menonaktifkan `sessions.enabled` di `config/authme/config.yml` guna menutup celah auto-login pemain pada jaringan IP bersama (WiFi publik/warnet/CGNAT).
+   - **Staff Account Shield & Anti-Brute-Force:** Khusus akun jajaran Staf (`ancestor`, `architect`, `overseer`, `warden`, `herald`), 3x kesalahan kata sandi otomatis memutus koneksi (kick), memblokir IP 10 menit, dan menyiarkan peringatan darurat ke staf online & konsol.
+   - **Teleportasi Pra-Login:** Mengaktifkan `teleportUnAuthedToSpawn: true` agar lokasi logout/base rahasia pemain tidak termuat sebelum login.
+3. **Combat Guard Engine (`CombatSecurityListener.java`):**
+   - **KillAura Angle Check:** Membatalkan serangan dengan sudut $> 95^\circ$ antara arah pandang mata penyerang dan posisi target (menolak pukulan ke belakang/samping).
+   - **Wall-Hit (Phase Strike) Raycast:** Memastikan tidak ada blok padat oklusif di antara penyerang dan korban (mencegah pukulan tembus dinding/pintu).
+   - **Combat Reach Hack:** Membatasi jangkauan serangan maksimal $4.2$ blok di mode Survival.
+   - **Auto-Clicker Throttle:** Membatasi frekuensi serangan maksimal 20 CPS per detik.
+4. **Packet & World Exploits (`PacketExploitListener.java`):**
+   - **BadPackets Pitch Sanitizer:** Mengoreksi pitch abnormal di luar rentang fisik $[-90.0^\circ, +90.0^\circ]$.
+   - **Crash Exploit Filter:** Mendeteksi dan menendang klien yang mengirim koordinat `NaN` atau `Infinity`.
+   - **Scaffold / FastPlace Guard:** Membatasi penempatan blok maksimal 14 blok/detik di survival.
+   - **ChestStealer Limiter:** Membatasi pemindahan item kontainer maksimal 12 klik/detik.
+5. **Unit Tests & Konfigurasi Modular:**
+   - 4 Unit tests algoritma anti-cheat (`AntiCheatTest.java`) lulus 100%.
+   - Bagian konfigurasi `security:` ditambahkan ke `config.yml` dengan toggle granular per modul.
+
+---
+
 ## ⚔️ Living PvE Scaling, Nether & The End Leveled Ecosystem, Vanish Privacy Hardening, Player Cache Resilience & Economy Rebalance Milestone [v1.3.6]
 > **Periode Pengembangan:** 18 September 2026 | **Status:** Implemented, Tested, Live Deployed to Server & Verified
 

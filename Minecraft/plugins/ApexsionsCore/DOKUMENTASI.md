@@ -280,3 +280,40 @@ Modul `ApexsionsCore` terhubung langsung dengan sistem antrean pengiriman asinkr
 5. **Ingestion Unified Audit Log (`/api/apexsions-bridge/audit/log`)**:
    - Aksi staf via in-game `PlayerInspectorGUI` secara otomatis di-push ke endpoint REST API web untuk tercatat di buku besar audit terpusat.
 
+---
+
+## 🛡️ Apexsions Security & Anti-Cheat Suite (Pencegahan Cheat Komprehensif)
+
+Modul `ApexsionsCore` mengintegrasikan sistem keamanan dan anti-cheat lapis pertama yang ringan, berkinerja tinggi, dan native Paper 26.2 untuk melindungi gameplay dari klien cheat (seperti mod Fly Hack CurseForge, Meteor, Wurst, LiquidBounce, Aristois) serta celah bypass otentikasi.
+
+### A. Sub-Sistem Proteksi Internal
+1. **Movement Security (`MovementSecurityListener`)**:
+   - **Fly Hack & AirWalk / Hovering**: Memvalidasi pergerakan vertikal di udara tanpa status flight sah. Jika $\Delta y \ge 0$ atau melayang tanpa gravitasi wajar $> 6$ tick berturut-turut di udara bebas, aksi dibatalkan dan pemain di-*rubberband* ke lokasi aman terakhir di tanah (`lastSafeGround`).
+   - **Horizontal Speed Hack**: Memantau $(\Delta x^2 + \Delta z^2)$ dengan memperhitungkan efek ramuan Speed, Soul Speed, dan knockback tempur.
+   - **Jesus / WaterWalk**: Menolak paket `onGround = true` saat pemain melangkah di atas permukaan air/lahar tanpa sepatu *Frost Walker*.
+   - **True Server-Side NoFall**: Server menghitung jarak jatuh nyata di udara secara independen dan menerapkan damage jatuh saat mendarat, mengabaikan manipulasi paket klien.
+2. **Auth Security Gatekeeper (`AuthSecurityGateKeeper`)**:
+   - **Pre-Login Lockdown (`LOWEST` Priority)**: Memblokir seluruh perintah non-auth (`/login`, `/l`, `/register`, `/reg`, `/2fa`, `/totp` diizinkan), interaksi kontainer/GUI, melempar/mengambil item di spawn, dan penyerangan sebelum pemain terotentikasi.
+   - **Staff Account Shield & Anti-Brute-Force**: Khusus akun jajaran Staf (`ancestor`, `architect`, `overseer`, `warden`, `herald`), 3x kesalahan kata sandi otomatis memutus koneksi (kick), memblokir IP 10 menit, dan menyiarkan peringatan darurat ke staf online & konsol.
+3. **Combat Guard (`CombatSecurityListener`)**:
+   - **KillAura Angle Check**: Membatalkan serangan dengan sudut $> 95^\circ$ antara arah pandang mata penyerang dan posisi target (menolak pukulan ke belakang/samping).
+   - **Wall-Hit (Phase Strike) Raycast**: Memastikan tidak ada blok padat oklusif di antara penyerang dan korban (mencegah pukulan tembus dinding/pintu).
+   - **Combat Reach Hack**: Membatasi jangkauan serangan maksimal $4.2$ blok di mode Survival.
+   - **Auto-Clicker Throttle**: Membatasi frekuensi serangan maksimal 20 CPS per detik.
+4. **Packet & World Exploits (`PacketExploitListener`)**:
+   - **BadPackets Pitch Sanitizer**: Mengoreksi pitch abnormal di luar rentang fisik $[-90.0^\circ, +90.0^\circ]$.
+   - **Crash Exploit Filter**: Mendeteksi dan menendang klien yang mengirim koordinat `NaN` atau `Infinity`.
+   - **Scaffold / FastPlace Guard**: Membatasi penempatan blok maksimal 14 blok/detik di survival.
+   - **ChestStealer Limiter**: Membatasi pemindahan item kontainer maksimal 12 klik/detik.
+5. **Anti-XRay & Redstone Watchdog**:
+   - `AntiXrayListener`: Memantau lonjakan penambangan bijih langka (Diamond, Debris, Emerald) dalam rentang 60 detik serta membatasi jangkauan break block maksimal 5.2 blok.
+   - `RedstoneWatchdogListener`: Mencegah mesin lag dengan membekukan sinyal redstone yang berosilasi $> 25$ pulsa per 2 detik.
+
+### B. Matriks Hak Izin Bypass Anti-Cheat
+| Permission Node | Penerima Default | Deskripsi |
+|---|---|---|
+| `apexsions.bypass.movement` | Admin / OP | Bebas dari pemeriksaan Fly Hack, Speed, dan Jesus (misal saat investigasi noclip). |
+| `apexsions.bypass.combat` | Admin / OP | Bebas dari batasan jangkauan Reach dan KillAura Angle. |
+| `apexsions.bypass.scaffold` | Admin / OP | Bebas dari batasan kecepatan penempatan blok. |
+| `apexsions.bypass.cheststealer` | Admin / OP | Bebas dari batasan kecepatan pemindahan item peti. |
+
