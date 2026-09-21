@@ -13,23 +13,23 @@
             <div class="col-xl-8 col-lg-9">
                 <!-- Stately Sovereign Identity Kicker -->
                 <div class="apx-hero-brand-mark mb-2">
-                    <span data-i18n="hero_brand_mark">APEXSIONS &bull; THE PEAK CIVILIZATIONS</span>
+                    <span data-i18n="hero_brand_mark">APEXSIONS &bull; SERVER MINECRAFT INDONESIA</span>
                 </div>
 
-                <!-- Epic Civilization Headline -->
+                <!-- Official Tagline Headline -->
                 <h1 class="apx-hero-headline" data-i18n="hero_headline">
-                    Peradaban Berdaulat yang Dibangun di Atas Tatanan Hierarki.
+                    The Peak Civilizations
                 </h1>
 
                 <!-- Atmospheric, Concise Narrative Subtext -->
                 <p class="apx-hero-subtext mb-4" data-i18n="hero_subtext">
-                    Sebelas kasta sosial, tiga wilayah kerajaan, dan satu dunia yang dibentuk seutuhnya oleh sejarah warganya.
+                    Sebelas kasta sosial, tiga pilihan kerajaan, dan dunia survival yang dibangun langsung oleh para pemain.
                 </p>
 
                 <!-- Action Group: Two Clear Sovereign Paths (Explore or Copy Server IP) -->
                 <div class="apx-hero-action-group d-flex align-items-center gap-3 mb-3 flex-wrap">
                     <a href="#civilizations" class="btn btn-apx-sovereign apx-sheen-periodic">
-                        <span data-i18n="hero_btn_explore">JELAJAHI PERADABAN</span> <i class="bi bi-arrow-down ms-1"></i>
+                        <span data-i18n="hero_btn_explore">JELAJAHI KERAJAAN</span> <i class="bi bi-arrow-down ms-1"></i>
                     </a>
 
                     <!-- Direct Tactile Server IP Button (Noble Glass Pill) -->
@@ -69,7 +69,7 @@
         <!-- Header / Intro -->
         <div class="apx-section-intro mb-5">
             <div class="d-flex align-items-center gap-3 mb-2">
-                <span class="apx-section-kicker" data-i18n="world_kicker">LORE &amp; TATANAN WILAYAH</span>
+                <span class="apx-section-kicker" data-i18n="world_kicker">LORE &amp; TIGA KERAJAAN</span>
             </div>
             <h2 class="apx-world-title mb-3" data-i18n="world_title">
                 Runtuhnya Kekaisaran Sions &amp; Eksodus Tiga Kerajaan
@@ -136,7 +136,7 @@
                         <div class="col-lg-5 text-lg-end">
                             @if(plugins()->isEnabled('wiki'))
                                 <a href="{{ route('wiki.show', 'tiga-kerajaan') }}" class="btn btn-apx-gold px-4 py-2">
-                                    <i class="bi bi-journal-bookmark me-2"></i><span data-i18n="zenithar_link">Buka Arsip Doktrin Zenithar</span>
+                                    <i class="bi bi-journal-bookmark me-2"></i><span data-i18n="zenithar_link">Pelajari Kerajaan Zenithar</span>
                                 </a>
                             @endif
                         </div>
@@ -180,7 +180,7 @@
                         <div class="col-lg-5 text-lg-end">
                             @if(plugins()->isEnabled('wiki'))
                                 <a href="{{ route('wiki.show', 'tiga-kerajaan') }}" class="btn btn-apx-gold px-4 py-2">
-                                    <i class="bi bi-journal-bookmark me-2"></i><span data-i18n="solterra_link">Buka Arsip Doktrin Solterra</span>
+                                    <i class="bi bi-journal-bookmark me-2"></i><span data-i18n="solterra_link">Pelajari Kerajaan Solterra</span>
                                 </a>
                             @endif
                         </div>
@@ -224,7 +224,7 @@
                         <div class="col-lg-5 text-lg-end">
                             @if(plugins()->isEnabled('wiki'))
                                 <a href="{{ route('wiki.show', 'tiga-kerajaan') }}" class="btn btn-apx-gold px-4 py-2">
-                                    <i class="bi bi-journal-bookmark me-2"></i><span data-i18n="sylvamoor_link">Buka Arsip Doktrin Sylvamoor</span>
+                                    <i class="bi bi-journal-bookmark me-2"></i><span data-i18n="sylvamoor_link">Pelajari Kerajaan Sylvamoor</span>
                                 </a>
                             @endif
                         </div>
@@ -235,7 +235,7 @@
 
         <!-- Section Footnote Accents -->
         <div class="d-flex justify-content-between align-items-center mt-5 pt-4 border-top border-secondary border-opacity-15 text-uppercase small flex-wrap gap-2" style="letter-spacing: 0.16em; color: var(--apx-text-dim);">
-            <div>CIVILIZATIONS RISE BY DECREE &bull; FORGED BY CITIZENS</div>
+            <div>PILIH KERAJAANMU &bull; TENTUKAN JALANMU</div>
             <div>THE PEAK CIVILIZATIONS</div>
         </div>
     </div>
@@ -256,7 +256,7 @@
                 <div class="col-lg-7">
                     <!-- Clean Telemetry Badges (Anti-slop: zero raw debug slash box) -->
                     <div class="d-flex align-items-center gap-2 mb-3 flex-wrap">
-                        <span class="apx-section-kicker mb-0" data-i18n="map_kicker">KARTOGRAFI REALM</span>
+                        <span class="apx-section-kicker mb-0" data-i18n="map_kicker">PETA 3D LIVE</span>
                         <span class="apx-badge-chiseled apx-badge-chiseled-success">
                             <span class="apx-pulse-dot-sm apx-beacon-live me-1"></span>
                             <span data-i18n="{{ $serverMapOnline ? 'map_status_online' : 'map_status_standby' }}">
@@ -272,11 +272,11 @@
                     </div>
 
                     <h2 class="apx-world-title mb-3" data-i18n="map_title">
-                        Eksplorasi Bentang Alam Apexsions
+                        Jelajahi Dunia Apexsions dalam 3D
                     </h2>
 
                     <p class="apx-world-lead text-sub mb-4" data-i18n="map_lead">
-                        Jelajahi peradaban Apexsions secara langsung melalui visualisasi 3D interaktif beresolusi tinggi. Pantau benteng kerajaan, persebaran warga, serta batas wilayah kedaulatan dari sudut pandang bebas tanpa batas.
+                        Lihat seluruh dunia Apexsions secara real-time lewat BlueMap 3D. Pantau wilayah kerajaan, pemukiman warga, dan aktivitas pemain langsung dari browser.
                     </p>
 
                     <!-- Cartographic Capabilities (Architectural Pillars, anti-slop) -->
@@ -285,27 +285,27 @@
                             <div class="apx-carto-spec-card h-100">
                                 <div class="d-flex align-items-center gap-2 mb-1.5">
                                     <i class="bi bi-compass text-gold"></i>
-                                    <span class="apx-spec-title fw-semibold text-main" data-i18n="map_feat_persp_title">Perspektif 3D Bebas</span>
+                                    <span class="apx-spec-title fw-semibold text-main" data-i18n="map_feat_persp_title">Navigasi Bebas 360°</span>
                                 </div>
-                                <div class="apx-spec-desc text-dim" data-i18n="map_feat_persp_desc">Rotasi orbital 360°, sudut isometrik, dan inspeksi topografi kontur dunia.</div>
+                                <div class="apx-spec-desc text-dim" data-i18n="map_feat_persp_desc">Rotasi bebas, sudut isometrik, dan inspeksi detail kontur dunia.</div>
                             </div>
                         </div>
                         <div class="col-md-4 col-sm-6">
                             <div class="apx-carto-spec-card h-100">
                                 <div class="d-flex align-items-center gap-2 mb-1.5">
                                     <i class="bi bi-geo-alt text-gold"></i>
-                                    <span class="apx-spec-title fw-semibold text-main" data-i18n="map_feat_track_title">Pelacakan Warga</span>
+                                    <span class="apx-spec-title fw-semibold text-main" data-i18n="map_feat_track_title">Posisi Pemain Live</span>
                                 </div>
-                                <div class="apx-spec-desc text-dim" data-i18n="map_feat_track_desc">Pantau koordinat pergerakan pemain dan pemukiman secara real-time.</div>
+                                <div class="apx-spec-desc text-dim" data-i18n="map_feat_track_desc">Pantau koordinat dan posisi pemain yang sedang online secara real-time.</div>
                             </div>
                         </div>
                         <div class="col-md-4 col-sm-12">
                             <div class="apx-carto-spec-card h-100">
                                 <div class="d-flex align-items-center gap-2 mb-1.5">
                                     <i class="bi bi-shield text-gold"></i>
-                                    <span class="apx-spec-title fw-semibold text-main" data-i18n="map_feat_bounds_title">Teritorial 3 Kerajaan</span>
+                                    <span class="apx-spec-title fw-semibold text-main" data-i18n="map_feat_bounds_title">Wilayah 3 Kerajaan</span>
                                 </div>
-                                <div class="apx-spec-desc text-dim" data-i18n="map_feat_bounds_desc">Visualisasi batas kedaulatan Zenithar, Solterra, dan Sylvamoor.</div>
+                                <div class="apx-spec-desc text-dim" data-i18n="map_feat_bounds_desc">Visualisasi batas wilayah Zenithar, Solterra, dan Sylvamoor.</div>
                             </div>
                         </div>
                     </div>
@@ -314,12 +314,12 @@
                     <div class="d-flex flex-wrap align-items-center gap-3">
                         <a href="{{ $serverMapUrl }}" target="_blank" rel="noopener noreferrer" class="btn btn-apx-gold px-4 py-2.5 fw-bold d-inline-flex align-items-center gap-2">
                             <i class="bi bi-compass"></i>
-                            <span data-i18n="map_btn_open">Buka Atlas Satelit 3D</span>
+                            <span data-i18n="map_btn_open">Buka Peta 3D BlueMap</span>
                             <i class="bi bi-box-arrow-up-right small ms-1"></i>
                         </a>
                         <span class="text-dim small font-monospace d-inline-flex align-items-center gap-2">
                             <i class="bi bi-globe2 text-gold opacity-75"></i>
-                            <span data-i18n="map_tab_note">Satelit BlueMap Resolusi Penuh</span>
+                            <span data-i18n="map_tab_note">Buka BlueMap Full Screen di Tab Baru</span>
                         </span>
                     </div>
                 </div>
@@ -345,9 +345,9 @@
                             <div class="apx-carto-hud-top d-flex justify-content-between align-items-center">
                                 <div class="d-flex align-items-center gap-2">
                                     <span class="apx-hud-indicator {{ $serverMapOnline ? 'is-live' : 'is-idle' }}"></span>
-                                    <span class="apx-hud-title font-monospace" data-i18n="map_viewport_tag">REALM OBSERVER // LIVE</span>
+                                    <span class="apx-hud-title font-monospace" data-i18n="map_viewport_tag">BLUEMAP 3D // LIVE</span>
                                 </div>
-                                <span class="apx-hud-coords font-monospace" data-i18n="map_hud_scope">CAKUPAN REALM AKTIF</span>
+                                <span class="apx-hud-coords font-monospace" data-i18n="map_hud_scope">STATUS MAP: AKTIF</span>
                             </div>
 
                             <!-- HUD Center: Tactical Reticle & Territory Scope -->
@@ -356,7 +356,7 @@
                                     <i class="bi bi-crosshair2"></i>
                                 </div>
                                 <h4 class="font-cinzel apx-carto-realm-title mb-1.5" data-i18n="map_viewport_title">
-                                    Atlas Tiga Kerajaan
+                                    Peta 3D Tiga Kerajaan
                                 </h4>
                                 <div class="apx-carto-kingdoms d-flex justify-content-center align-items-center gap-2 font-monospace">
                                     <span class="apx-kingdom-tag tag-zenithar">ZENITHAR</span>
@@ -371,7 +371,7 @@
                             <div class="apx-carto-hud-bottom d-flex justify-content-between align-items-center">
                                 <span class="apx-hud-lens font-monospace">FOV 3D &bull; 60 FPS</span>
                                 <span class="apx-hud-action-cta d-inline-flex align-items-center gap-1.5 font-monospace">
-                                    <span data-i18n="map_viewport_prompt">JELAJAHI PETA LAYAR PENUH</span>
+                                    <span data-i18n="map_viewport_prompt">BUKA PETA LAYAR PENUH</span>
                                     <i class="bi bi-arrow-up-right small"></i>
                                 </span>
                             </div>
@@ -389,28 +389,28 @@
     <div class="container">
         <!-- Section Header -->
         <div class="text-center mb-5">
-            <div class="apx-section-kicker mb-2" data-i18n="caste_kicker">TATANAN SOSIAL</div>
+            <div class="apx-section-kicker mb-2" data-i18n="caste_kicker">SISTEM RANK &amp; KASTA</div>
             <h2 class="apx-world-title mb-2" data-i18n="caste_title">
-                Tatanan Sebelas Kasta Sosial
+                Hierarki 11 Kasta Apexsions
             </h2>
             <p class="text-muted mx-auto" style="max-width: 680px; font-size: 1rem; line-height: 1.7;" data-i18n="caste_lead">
-                Dari pijakan awal warga perintis hingga tahta tertinggi sang leluhur pendiri kerajaan, setiap kasta memikul bobot kedaulatan, hak wilayah, dan kehormatan yang terukur.
+                Dari pemain baru (Wanderer) hingga jajaran founder, setiap rank memiliki weight, batas klaim wilayah, dan hak istimewa tersendiri di server.
             </p>
         </div>
 
         <!-- Compact Tabbed Caste Matrix Navigation -->
         <div class="apx-caste-matrix-nav mb-4" role="tablist" aria-label="Navigasi Hierarki Kasta">
             <button type="button" class="apx-caste-matrix-tab active" data-caste-target="authority" role="tab" aria-selected="true">
-                <i class="bi bi-crown text-gold me-2"></i><span data-i18n="caste_tab_authority">Tahta &amp; Otoritas (3)</span>
+                <i class="bi bi-crown text-gold me-2"></i><span data-i18n="caste_tab_authority">Founder &amp; Otoritas (3)</span>
             </button>
             <button type="button" class="apx-caste-matrix-tab" data-caste-target="nobles" role="tab" aria-selected="false">
-                <i class="bi bi-star-fill text-gold me-2"></i><span data-i18n="caste_tab_nobles">Ordo Bangsawan (5)</span>
+                <i class="bi bi-star-fill text-gold me-2"></i><span data-i18n="caste_tab_nobles">Rank Donatur (5)</span>
             </button>
             <button type="button" class="apx-caste-matrix-tab" data-caste-target="staff" role="tab" aria-selected="false">
-                <i class="bi bi-shield-shaded text-blue me-2"></i><span data-i18n="caste_tab_staff">Administrasi &amp; Staf (2)</span>
+                <i class="bi bi-shield-shaded text-blue me-2"></i><span data-i18n="caste_tab_staff">Staf &amp; Moderator (2)</span>
             </button>
             <button type="button" class="apx-caste-matrix-tab" data-caste-target="foundation" role="tab" aria-selected="false">
-                <i class="bi bi-compass text-dim me-2"></i><span data-i18n="caste_tab_foundation">Fondasi Warga (1)</span>
+                <i class="bi bi-compass text-dim me-2"></i><span data-i18n="caste_tab_foundation">Warga Baru (1)</span>
             </button>
         </div>
 
@@ -770,10 +770,10 @@
 <section class="apx-section apx-onboarding-section py-5" id="getting-started">
     <div class="container py-3">
         <div class="apx-section-header text-center mb-5">
-            <div class="apx-section-kicker mb-2" data-i18n="step_kicker">GERBANG INISIASI</div>
-            <h2 class="apx-section-title" data-i18n="step_title">Tata Cara Masuk ke Peradaban</h2>
+            <div class="apx-section-kicker mb-2" data-i18n="step_kicker">PANDUAN PEMULA</div>
+            <h2 class="apx-section-title" data-i18n="step_title">Cara Masuk ke Server Apexsions</h2>
             <p class="text-muted mx-auto" style="max-width: 620px; font-size: 1rem; line-height: 1.7;" data-i18n="step_lead">
-                Tiga langkah sederhana untuk menghubungkan klien Minecraft dan mencatatkan namamu dalam sejarah warga berdaulat.
+                Tiga langkah mudah untuk mulai bermain di Java Edition maupun Bedrock Edition.
             </p>
         </div>
 
@@ -781,7 +781,7 @@
         <div class="apx-stepper-grid">
             <!-- Step 1: Pasang Klien -->
             <div class="apx-step-monolith">
-                <div class="apx-step-phase-label mb-3" data-i18n="step1_phase">TAHAP PERTAMA</div>
+                <div class="apx-step-phase-label mb-3" data-i18n="step1_phase">LANGKAH 1</div>
                 <h3 class="apx-step-title" data-i18n="step1_title">Klien Minecraft 26.2</h3>
                 <p class="apx-step-desc" data-i18n-html="step1_desc">
                     Gunakan Minecraft versi resmi atau launcher pilihanmu pada versi <strong>26.2</strong>. Mendukung penuh koneksi <strong>Java Edition &amp; Bedrock Edition</strong>.
@@ -793,7 +793,7 @@
 
             <!-- Step 2: Tembus Gerbang (Salin IP) -->
             <div class="apx-step-monolith">
-                <div class="apx-step-phase-label mb-3" data-i18n="step2_phase">TAHAP KEDUA</div>
+                <div class="apx-step-phase-label mb-3" data-i18n="step2_phase">LANGKAH 2</div>
                 <h3 class="apx-step-title" data-i18n="step2_title">Alamat Server &amp; Port</h3>
                 <p class="apx-step-desc" data-i18n-html="step2_desc">
                     Buka menu Multiplayer dan masukkan alamat server <code>apexsions.my.id:32348</code>. Untuk pemain Bedrock, masukkan IP <code>apexsions.my.id</code> dengan Port <code>32348</code>.
@@ -810,10 +810,10 @@
 
             <!-- Step 3: Ikrar Peradaban -->
             <div class="apx-step-monolith">
-                <div class="apx-step-phase-label mb-3" data-i18n="step3_phase">TAHAP KETIGA</div>
-                <h3 class="apx-step-title" data-i18n="step3_title">Autentikasi Akun (/link)</h3>
+                <div class="apx-step-phase-label mb-3" data-i18n="step3_phase">LANGKAH 3</div>
+                <h3 class="apx-step-title" data-i18n="step3_title">Tautkan Akun (/link)</h3>
                 <p class="apx-step-desc" data-i18n-html="step3_desc">
-                    Setelah berada di lobi server, ketik perintah <code>/link</code> untuk menerima kode autentikasi rahasia guna menautkan akun dengan portal web.
+                    Setelah berada di lobi server, ketik perintah <code>/link</code> untuk menerima kode verifikasi guna menautkan akun dengan portal web.
                 </p>
                 <div class="apx-step-action mt-auto">
                     @auth
@@ -826,7 +826,7 @@
                         @endif
                     @else
                         <a href="{{ route('register') }}" class="btn btn-apx-outline apx-btn-copy w-100">
-                            <i class="bi bi-person-plus me-1"></i> <span data-i18n="step3_btn_register">Daftar Akun Peradaban</span>
+                            <i class="bi bi-person-plus me-1"></i> <span data-i18n="step3_btn_register">Daftar Akun Web</span>
                         </a>
                     @endauth
                 </div>
@@ -838,13 +838,13 @@
             <div class="row align-items-center">
                 <div class="col-lg-8 text-lg-start mb-3 mb-lg-0">
                     <span class="badge mb-2 apx-guide-callout-badge" data-i18n="guide_callout_badge">
-                        <i class="bi bi-compass-fill me-1"></i> PANDUAN KILAT WARGA BARU
+                        <i class="bi bi-compass-fill me-1"></i> PANDUAN KILAT PEMAIN BARU
                     </span>
                     <h3 class="mb-1 apx-guide-callout-title" data-i18n="guide_callout_title">
-                        Bingung Harus Melakukan Apa Setelah Mendarat di Spawn?
+                        Baru Pertama Kali Masuk ke Server?
                     </h3>
                     <p class="apx-guide-callout-desc small mb-0" data-i18n="guide_callout_desc">
-                        Pelajari peta jalan 15 menit dari mengambil starter kit, memilih kerajaan, menandai rumah, hingga menghasilkan pundi Rupiah pertama.
+                        Pelajari panduan 15 menit pertama: cara mengambil starter kit, memilih kerajaan, klaim lahan rumah, hingga mencari uang Rupiah pertama.
                     </p>
                 </div>
                 <div class="col-lg-4 text-lg-end">
