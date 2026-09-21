@@ -11,6 +11,7 @@ plugins/ApexsionsFishing/
 ├── config.yml            <-- Pengaturan global AFK fishing, jeda reel, kedalaman air, dan batas halaman vault
 ├── loot.yml              <-- Definisi ikan, 6 tier rarity, rentang berat (kg), harga jual, dan bioma tangkapan
 ├── rods.yml              <-- Konfigurasi joran pancing khusus, bonus auto-reel, durabilitas, dan syarat level
+├── baits.yml             <-- Definisi jenis umpan virtual, tier, pengganda peluang rarity & harga kuota
 ├── vault-prices.yml      <-- Skema harga unlock halaman Fishing Vault (Rupiah & Diamond)
 └── plugin.yml            <-- Deklarasi commands, permissions, dan metadata plugin
 ```

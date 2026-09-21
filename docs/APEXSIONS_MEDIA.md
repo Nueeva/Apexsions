@@ -108,3 +108,38 @@ Arahkan crosshair ke dinding tempat baru, lalu ketik:
 # Untuk membuat duplikat banner di tempat baru:
 /media copy discord discord_spawn2
 ```
+
+---
+
+## 🎥 7. Content Creator Suite (`/creator`, `/kreator`)
+
+`ApexsionsMedia` mengintegrasikan sistem verifikasi dan apresiasi kreator konten terotomasi untuk platform **YouTube** dan **TikTok**:
+
+### A. Alur Penautan Channel & Verifikasi Kepemilikan
+1. **Penautan Channel (`/creator link <youtube|tiktok> <ID/@Handle>`)**:
+   - Sistem menghasilkan kode token unik berbatas waktu (default 10 menit).
+2. **Verifikasi Bio/Deskripsi (`/creator verify <youtube|tiktok>`)**:
+   - Pemain meletakkan token verifikasi pada bio TikTok atau deskripsi channel/video YouTube.
+   - Layanan asinkron `YouTubeService` (Google Cloud YouTube Data API v3) atau `TikTokService` memvalidasi keberadaan token secara instan dan mengunci kepemilikan channel ke UUID pemain.
+
+### B. Validasi Pengajuan Video & Klaim Hadiah (`/creator submit`)
+- **Pemeriksaan Syarat Otomatis**:
+  - Umur video maksimal 14 hari sejak diunggah (`video-max-age-days: 14`).
+  - Wajib memuat salah satu tagar resmi di judul atau deskripsi (`#apexsions`, `#apexsionsmc`, `#apexsionssmp`).
+  - Mencegah klaim berulang pada video ID yang sama (`creator_claims` table).
+- **Tingkatan Kreator & Hadiah (Tiers & Perks)**:
+  - **Bronze Creator**: Minimum 200 views & 20 likes $\to$ Hadiah Rp 25.000, 500 EXP, dan Pangkat Media Sementara (14 Hari).
+  - **Silver Creator**: Minimum 1.000 views & 100 likes $\to$ Hadiah Rp 100.000, 2.000 EXP, Pangkat Media (30 Hari), dan Badge Silver.
+  - **Gold Creator**: Minimum 5.000 views & 500 likes $\to$ Hadiah Rp 500.000, Pangkat Media Permanen, dan Badge Gold.
+
+### C. Matriks Perintah Creator Suite
+| Perintah | Alias | Deskripsi | Permission | Default |
+| :--- | :--- | :--- | :--- | :---: |
+| `/creator` | `/kreator`, `/mediacreator` | Membuka Creator Hub GUI | `apexsionsmedia.creator` | `true` |
+| `/creator submit` | - | Mengajukan tautan video untuk klaim hadiah | `apexsionsmedia.creator` | `true` |
+| `/creator link <plat> <id>` | - | Memulai penautan channel YouTube/TikTok | `apexsionsmedia.creator` | `true` |
+| `/creator verify <plat>` | - | Memverifikasi token bio channel | `apexsionsmedia.creator` | `true` |
+| `/creator unlink <plat>` | - | Melepaskan tautan channel media sosial | `apexsionsmedia.creator` | `true` |
+| `/creator tiers` | - | Membuka antarmuka Creator Tiers & Perks GUI | `apexsionsmedia.creator` | `true` |
+| `/creator admin` | - | Panel kontrol admin kreator & reset klaim | `apexsionsmedia.creator.admin` | `op` |
+

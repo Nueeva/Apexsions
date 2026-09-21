@@ -392,8 +392,8 @@ Ekosistem Apexsions mengintegrasikan server Minecraft (Paper 26.2) dengan portal
    - Menyimpan `minecraft_uuid`, `minecraft_username`, `edition` (JAVA / BEDROCK), `level`, `xp`, `rank`, `kingdom`, `balance_rupiah`, `balance_diamond`, `unlocked_titles`, `active_title`, `verified_at`, dan `last_daily_reward_at`.
    - Kolom `user_id` bersifat nullable sehingga setiap pemain in-game langsung tercatat profil statistiknya di database web meskipun belum membuat/menautkan akun website.
 3. **Penautan Akun Mandiri (`/link`)**:
-   - Pemain menjalankan `/link` di Minecraft untuk mendapatkan 6-digit PIN acak berbatas waktu (15 menit).
-   - Memasukkan PIN pada form web `/link` memverifikasi kepemilikan akun Minecraft secara aman dan menautkannya dengan akun web pengguna.
+   - Pemain membuka portal web Apexsions (`https://web.apexsions.my.id/link`) untuk mendapatkan 6-digit PIN acak berbatas waktu (15 menit).
+   - Pemain kemudian menjalankan perintah `/link <PIN>` di dalam game Minecraft untuk memverifikasi kepemilikan akun secara aman dan menautkannya dengan akun web pengguna.
 4. **Siaran Pengumuman Global In-Game (`broadcast` / `bc`)**:
    - Admin dapat mengirimkan siaran langsung ke server Minecraft melalui Web Dashboard (`POST /admin/apexsions/broadcast`).
    - Dispatched melalui antrean `deliveries` dengan target `GLOBAL` / `ALL_PLAYERS` (kolom UUID nullable).
@@ -493,7 +493,7 @@ Ekosistem Apexsions mengintegrasikan server Minecraft (Paper 26.2) dengan portal
 
 ---
 
-## 🔐 11. Integrasi Autentikasi Lintas Platform: FastLogin, Floodgate & AuthMeReloaded
+## 🔐 9. Integrasi Autentikasi Lintas Platform: FastLogin, Floodgate & AuthMeReloaded
 
 Mengintegrasikan ekosistem autentikasi aman tanpa hambatan (*zero-friction*) bagi pemain Java Original dan Bedrock, sekaligus memproteksi akun pemain crack dari pembajakan nama:
 
@@ -533,7 +533,7 @@ lp group overseer permission set fastlogin.bukkit.command.cracked true
 
 ---
 
-## 🛠️ 19. Perkakas Pengembang & Knowledge Graph Plugin Suite (`graphify`)
+## 🛠️ 10. Perkakas Pengembang & Knowledge Graph Plugin Suite (`graphify`)
 
 Untuk memudahkan penelusuran arsitektur 9 plugin dan ratusan kelas internal Paper API, repositori telah dilengkapi dengan database **Knowledge Graph Graphify** (`graphify-out/`):
 
@@ -562,7 +562,7 @@ Untuk memudahkan penelusuran arsitektur 9 plugin dan ratusan kelas internal Pape
 
 ---
 
-## 🛡️ 20. Apexsions Security & Anti-Cheat Suite (Mitigasi Fly Hack, Auth Bypass, Combat & Exploits)
+## 🛡️ 11. Apexsions Security & Anti-Cheat Suite (Mitigasi Fly Hack, Auth Bypass, Combat & Exploits)
 
 Sistem keamanan terpusat di `ApexsionsCore` (`com.apexsions.core.security.*`) yang dirancang khusus untuk memitigasi cheat client modern (seperti mod Fly Hack CurseForge, Meteor, Wurst, LiquidBounce, Aristois) serta celah eksploitasi otentikasi.
 

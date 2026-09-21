@@ -86,6 +86,25 @@ Setiap plugin mengekspos public API melalui pattern singleton provider yang aman
 - `createBanner(String id, Location location, BlockFace facing, int width, int height, String source, String linkUrl, ClickMode mode)`: Membuat instance banner gambar baru.
 - `deleteBanner(String id)`: Menghapus banner dan membersihkan entity map frame terkait.
 
+### 7. `ApexsionsCustomEnchantsPlugin.getInstance()`
+- `getEnchantmentRegistry()`: Registri 182 custom enchantments lintas 7 kelompok tier kekuatan.
+- `getGroupRegistry()`: Manajemen kelompok kekuatan sihir (`Simple` s/d `Master`).
+- `getEnchantBookManager()`: Pembuatan, validasi *Success/Destroy Rate*, dan serialisasi buku sihir kustom (`createBook`).
+- `getMagicDustManager()` & `getScrollManager()`: Logika utilitas peningkat *Success Rate* (Magic Dust) dan perlindungan item (White/Black Scroll).
+- `getPresetManager()`: Penyimpanan dan penerapan preset armor set dengan full-set bonus.
+
+### 8. `ApexsionsCratesPlugin.getInstance()`
+- `getKeyShopManager()`: Manajemen pembelian kunci peti dual-currency (`Rupiah` & `Diamond`).
+- `getCrateManager()`: Pengambilan data peti, animasi roulette berbasis paket, dan pratinjau hadiah.
+- `getKeyManager()`: Pengelolaan kunci peti fisik dan virtual pemain (`giveKeys`, `takeKeys`, `hasKeys`).
+- `getUserManager()`: Pelacakan statistik pembukaan peti, pencatat pity progression, dan jaminan milestone.
+
+### 9. `ApexsionsFishing.getInstance()`
+- `getAfkFishingService()`: Layanan automasi jeda strike dan deteksi auto-reel.
+- `getLootGenerator()`: Generator tangkapan ikan dinamis berbasis distribusi Gaussian bobot spesimen, 6 tier rarity, dan formula harga jual.
+- `getVaultStorageManager()`: Akses brankas penyimpanan ikan persisten multi-halaman (hingga 30 halaman).
+- `getRodManager()`: Pengelolaan atribut joran kustom Auto-Catch, durabilitas, dan syarat level pemain.
+
 ---
 
 ## 🗄️ 3. Arsitektur Basis Data HikariCP & Multi-Engine

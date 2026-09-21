@@ -45,7 +45,7 @@ Accessed via desktop and mobile web browsers by players before launching Minecra
 
 - Core server rank hierarchy defined in [`ranks.yml`](file:///c:/Users/Friel/Documents/Rifqi%20Ariansyah/Apexsions/ranks.yml).
 - Active customized theme codebase in [`Website/themes/apexsions/`](file:///c:/Users/Friel/Documents/Rifqi%20Ariansyah/Apexsions/Website/themes/apexsions/).
-- Complete database seeders reflecting all six core Minecraft plugins in [`Website/database/seed_minecraft_systems.php`](file:///c:/Users/Friel/Documents/Rifqi%20Ariansyah/Apexsions/Website/database/seed_minecraft_systems.php).
+- Complete database seeders reflecting all 9 plugins in the Apexsions suite in [`Website/database/seed_minecraft_systems.php`](file:///c:/Users/Friel/Documents/Rifqi%20Ariansyah/Apexsions/Website/database/seed_minecraft_systems.php).
 - Live server deployment running at `http://89.144.53.100/` and local development server at `http://127.0.0.1:8000/`.
 
 ## Product Principles

@@ -1,9 +1,9 @@
 # 🌟 Panduan Lengkap PlaceholderAPI — Apexsions Plugin Suite
 
-> **Server / Network:** Apexsions  
+> **Server:** Apexsions  
 > **Tagline:** *The Peak Civilizations*  
 > **Target Runtime:** Paper 26.2 (Minecraft 26.2, Java 21 LTS)  
-> **Framework:** PlaceholderAPI (PAPI) v2.12.x  
+> **Framework:** PlaceholderAPI (PAPI) v2.11.x  
 
 Selamat datang di direktori dokumentasi resmi **PlaceholderAPI (PAPI)** untuk seluruh modul plugin dalam ekosistem **Apexsions**. Direktori ini menyajikan daftar placeholder terlengkap, format nilai, contoh output di dalam server, dan contoh integrasi pada TAB, Scoreboard, Hologram, Actionbar, serta Menu GUI.
 
@@ -23,6 +23,7 @@ Klik tautan berkas di bawah untuk membuka dokumentasi mendalam masing-masing plu
 | [ApexsionsShop.md](./ApexsionsShop.md) | **ApexsionsShop** | `%apexsionsshop_*%` | Tarif pajak pasar kerajaan (`tax_rate`), pajak murni, total item terdaftar, jumlah kategori toko, serta kondisi cuaca dinamis pengubah harga pasar. |
 | [ApexsionsMedia.md](./ApexsionsMedia.md) | **ApexsionsMedia** | Status & Integrasi | Integrasi banner interaktif, raytrace hover glow, URL action links, serta konsumsi placeholder PAPI dalam metadata banner. |
 | [ApexsionsCustomEnchants.md](./ApexsionsCustomEnchants.md) | **ApexsionsCustomEnchants** | Status & Integrasi | Status integrasi placeholder untuk sistem custom enchantment, trigger set perlengkapan, dan lore item. |
+| [ApexsionsFishing.md](./ApexsionsFishing.md) | **ApexsionsFishing** | `%apexsionsfishing_*%` | Statistik tangkapan ikan, jumlah jenis ikan ditemukan di jurnal, kapasitas & halaman Fishing Vault, kuota umpan virtual, dan rank Top Angler. |
 
 ---
 

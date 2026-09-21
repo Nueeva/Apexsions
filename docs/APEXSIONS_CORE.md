@@ -259,3 +259,57 @@ Sistem ini didesain khusus untuk staf Upper Realm (*The Aetherial Conclave* / Bo
    - Memanggil `loadOrCreate(uuid, name).join()` secara sinkron jika cache memori kosong.
 2. **Resolusi Mandiri Proaktif (`LevelManager.resolvePlayerData`)**:
    - Jika cache mengalami *cache miss* saat `getLevel()` atau `getLevelTitle()` dipanggil untuk pemain yang sedang online, sistem secara proaktif memuat ulang data dari database, menjamin level dan gelar tidak pernah anjlok ke default `Lv. 1 Citizen`.
+
+---
+
+## 🏰 14. Sistem Kedaulatan Wilayah (Sovereign Land Claiming), Upkeep Progresif & Hak Istimewa Conclave
+
+Sistem proteksi tanah dan chunk kedaulatan (`com.apexsions.core.claim.*`) berbasis `claims.yml`:
+
+1. **Mekanik Dasar Klaim Chunk 16x16 (`/claim`, `/land`)**:
+   - Pemain mengklaim teritori dalam satuan chunk penuh ($16 \times 16$ blok dari $Y = -64$ hingga $Y = 320$).
+   - Dilengkapi visualisasi partikel batas chunk emas (`/claim info`) dan GUI manajemen interaktif (`/claim gui`).
+2. **Kuota Batas Chunk Berdasarkan Hierarki Pangkat (Ranks)**:
+   - `wanderer` (Tier I): 4 Chunk
+   - `ascendant` (Tier II-1): 8 Chunk
+   - `archon` (Tier II-2): 14 Chunk
+   - `sovereign` (Tier II-3): 22 Chunk
+   - `emperor` (Tier II-4): 32 Chunk
+   - `sions` (Tier II-Apex): 50 Chunk
+   - `herald` s/d `ancestor` (Tier III - V Staf & Conclave): **Unlimited (999 Chunk)**
+3. **Biaya Klaim Awal & Pendanaan Kas Kerajaan**:
+   - Pembelian klaim tanah awal dikenakan biaya Rupiah yang secara otomatis dipotong dan disetorkan ke kas perbendaharaan kerajaan pemain via `ApexsionsEconomyAPI.depositKingdomTreasury(...)`.
+4. **Upkeep Progresif & Hak Khusus Upper Dimension**:
+   - Upkeep ditarik berkala dari saldo pemilik tanah. Jika saldo tidak mencukupi, tanah dilepaskan otomatis secara aman.
+   - Entitas *The Aetherial Conclave* (Staf & Admin) dibebaskan dari biaya upkeep ($Rp 0$), tanah dicatat sebagai kedutaan `AETHERION`, dan memiliki izin interaksi (`canInteract`) serta pembangunan (`canBuild`) di seluruh wilayah mortal.
+5. **Sistem Kepercayaan (Trust System)**:
+   - `/claim trust <player>`: Memberikan akses bangun, buka wadah, dan interaksi pada pemain rekan.
+   - `/claim untrust <player>`: Mencabut izin rekan dari seluruh klaim tanah pemain.
+
+---
+
+## 🛡️ 15. Apexsions Security & Anti-Cheat Suite
+
+Sistem keamanan internal terpusat di `ApexsionsCore` (`com.apexsions.core.security.*`) untuk mendeteksi dan memitigasi cheat client modern:
+
+1. **Movement Security Engine (`MovementSecurityListener`)**:
+   - **Fly Hack & AirWalk**: Memantau pergerakan vertikal $\Delta y \ge 0$ di udara $> 6$ tick tanpa izin terbang atau status gliding yang sah. Aksi: *Rubberband* instan ke tanah + log peringatan.
+   - **Speed Hack & Timer**: Validasi pergeseran horizontal $(\Delta x^2 + \Delta z^2)$ dengan kompensasi ramuan Speed, Soul Speed, dan knockback.
+   - **Jesus / WaterWalk**: Mendeteksi gerakan berjalan di atas cairan dengan `onGround = true` tanpa sepatu Frost Walker.
+   - **NoFall Spoof**: Server melacak jarak jatuh nyata dan menerapkan damage jatuh independen saat mendarat.
+2. **Auth Gatekeeper (`AuthSecurityGateKeeper`)**:
+   - Berjalan pada prioritas `LOWEST`: membatalkan seluruh perintah non-auth, pergerakan, buka peti, lempar/ambil item, dan interaksi entitas sebelum pemain terotentikasi di AuthMe.
+   - **Staff Brute-Force Protection**: Percobaan login kata sandi salah $\ge 3$ kali pada akun staf (`ancestor` s/d `herald`) memicu pemutusan koneksi instan (*kick*), pemblokiran IP 10 menit, dan siaran darurat ke konsol.
+3. **Combat Guard (`CombatSecurityListener`)**:
+   - **KillAura Angle Check**: Serangan dengan sudut $> 95^\circ$ antara arah pandang penyerang dan target dibatalkan.
+   - **Wall-Hit (Phase Strike)**: Raycast oklusi memblokir pukulan menembus dinding padat.
+   - **Reach Limit**: Membatasi jangkauan serangan maksimal $4.2$ blok di mode Survival.
+   - **Auto-Clicker Cap**: Membatasi frekuensi serangan maksimal 20 CPS per detik.
+4. **Packet Exploit Sanitizer (`PacketExploitListener`)**:
+   - Memvalidasi rentang rotasi pitch $[-90.0^\circ, +90.0^\circ]$, menolak paket koordinat `NaN` / `Infinity`.
+   - Menolak *Scaffold* (penempatan blok $> 14$ blok/detik) dan *ChestStealer* ($> 12$ klik inventaris/detik).
+5. **Matriks Hak Izin Bypass Admin**:
+   - `apexsions.bypass.movement`: Pengecualian pemeriksaan Fly/Speed/Jesus.
+   - `apexsions.bypass.combat`: Pengecualian batas jangkauan dan sudut serang.
+   - `apexsions.bypass.scaffold`: Pengecualian batas penempatan blok.
+   - `apexsions.bypass.cheststealer`: Pengecualian batas klik inventaris.

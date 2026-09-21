@@ -64,8 +64,8 @@ plugins/ApexsionsEconomy/
 ## 🧩 Akses Public API (`ApexsionsEconomyAPI`)
 
 ```java
-ApexsionsEconomyAPI eco = ApexsionsEconomy.getEconomyAPI();
-if (eco != null) {
+if (ApexsionsEconomyProvider.isAvailable()) {
+    ApexsionsEconomyAPI eco = ApexsionsEconomyProvider.get();
     boolean hasMoney = eco.has(playerUuid, "rupiah", 10000);
     eco.deposit(playerUuid, "rupiah", 50000);
     eco.withdraw(playerUuid, "diamond", 10);

@@ -1,4 +1,4 @@
-﻿# ApexsionsBattlepass — PostgreSQL & Web Integration Guide
+# ApexsionsBattlepass — PostgreSQL & Web Integration Guide
 
 Dokumentasi resmi arsitektur basis data, REST/Web integration, dan schema **PostgreSQL** untuk **ApexsionsBattlepass**.
 
@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS abp_player_data (
     level INTEGER NOT NULL DEFAULT 1,
     xp INTEGER NOT NULL DEFAULT 0,
     currency INTEGER NOT NULL DEFAULT 0,
-    passes TEXT NOT NULL DEFAULT 'FREE', -- Format CSV / JSON array (e.g. 'FREE,PREMIUM,ULTIMATE')
+    passes TEXT NOT NULL DEFAULT 'CITIZEN', -- Format CSV / JSON array (e.g. 'CITIZEN,SIO,EXSIO')
     claimed_rewards TEXT NOT NULL DEFAULT '', -- Format CSV / JSON list level yang sudah diklaim
     last_daily_reset BIGINT NOT NULL DEFAULT 0,
     last_weekly_reset BIGINT NOT NULL DEFAULT 0,
@@ -114,12 +114,12 @@ SET currency = currency + 500,
 WHERE uuid = 'player-uuid-here' AND season_id = 1;
 ```
 
-### D. Webstore: Upgrade Pass Pemain (Misal Pembelian Pass Premium di Web)
+### D. Webstore: Upgrade Pass Pemain (Misal Pembelian Pass Sio / Exsio di Web)
 ```sql
 UPDATE abp_player_data
 SET passes = CASE 
-    WHEN passes = 'FREE' THEN 'FREE,PREMIUM'
-    WHEN passes NOT LIKE '%PREMIUM%' THEN passes || ',PREMIUM'
+    WHEN passes = 'CITIZEN' THEN 'CITIZEN,SIO'
+    WHEN passes NOT LIKE '%SIO%' THEN passes || ',SIO'
     ELSE passes
 END,
 updated_at = CURRENT_TIMESTAMP

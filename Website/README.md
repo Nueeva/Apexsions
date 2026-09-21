@@ -1,6 +1,6 @@
 # Apexsions Web Platform
 
-Official web portal, store integration, and player identity bridge for the Apexsions Minecraft Server Network.
+Official web portal, store integration, and player identity bridge for the Apexsions Minecraft Server.
 
 Built on **Azuriom (Laravel-based CMS)** according to [`Minecraft_Network_PRD_Technical_Blueprint_v2.2_AUTH_MODEL.md`](./Minecraft_Network_PRD_Technical_Blueprint_v2.2_AUTH_MODEL.md).
 
@@ -33,7 +33,7 @@ Website/
 │       ├── routes/                                               # web.php & api.php
 │       └── resources/views/link.blade.php                        # Player linking dashboard
 └── themes/
-    └── apexsions/                                                # Custom dark theme with neon accents
+    └── apexsions/                                                # Custom theme (Monolithic Obsidian & Celestial Ivory)
         ├── theme.json
         ├── assets/css/style.css                                  # Glassmorphism & responsive styles
         ├── assets/js/app.js                                      # Clipboard copy & live server ping
@@ -65,7 +65,7 @@ Website/
   - **Pills Navigasi Sinkron**: Bar navigasi atas (`.apx-store-nav-bar`) mengintegrasikan tombol *Beranda Toko* dan seluruh kategori dengan badge jumlah paket aktif.
   - **Empty-State Cerdas**: Fallback notifikasi elegan dengan tombol *"Reset Semua Filter"* jika kombinasi filter tidak menghasilkan paket.
   - **Script Stack Lifecycle**: Integrasi ganda `@push('scripts')` dan `@stack('footer-scripts')` pada `layouts/app.blade.php`, menjamin event listener modal dan filter selalu terpasang sempurna.
-- **Webstore WhatsApp Checkout (2 Founders)**: Automated direct order via WhatsApp (`wa.me`) supporting 2 Founders (`Rifqi`, `Friell`) with auto-filled order templates (package name, price, category, player IGN, and email) selagi gateway Midtrans dalam proses pengajuan.
+- **Webstore WhatsApp Checkout (3 Admins)**: Automated direct order via WhatsApp (`wa.me`) supporting 3 Admins (Rifqi `6281212994597`, Friell `6285883161047`, Favian `6287729112281`) with auto-filled order templates (package name, price, category, player IGN, and email) selagi gateway Midtrans dalam proses pengajuan.
 - **Fandom Gamepedia Wiki Portal**: Ensiklopedia peradaban interaktif dengan Fandom Infoboxes (3 Kerajaan, 11 Kasta, 182 Custom Enchants & Set Bonuses), tabel perbandingan responsif, dan tombol one-click copy command.
 - Direct integration with official Azuriom Wiki and Shop plugins.
 
@@ -85,7 +85,7 @@ Website/
 To provision and tune the production VPS:
 
 ```bash
-cd /var/www/apexsions/Website/deploy
+cd /var/www/azuriom
 sudo bash setup-vps.sh
 ```
 

@@ -9,14 +9,19 @@ Panduan teknis resmi modul **`ApexsionsCore`** untuk arsitektur kerajaan, sistem
 ```
 plugins/ApexsionsCore/
 ├── config.yml            <-- Pengaturan database (SQLite/PostgreSQL), cache, dan opsi umum
-├── kingdoms.yml          <-- Definisi 3 kerajaan (Zenithar, Solterra, Sylvamoor), spawn, bioma, dan warna
-├── xp.yml                <-- Formula perolehan XP untuk 16 kategori gameplay
-├── ranks.yml             <-- Hierarki pangkat LuckPerms & bobot weight (Ancestor s/d Wanderer)
-├── titles.yml            <-- Daftar gelar prestise dan badge kerajaan per level
-├── rewards.yml           <-- Konfigurasi hadiah level (Item, Command, Permission)
-├── motd.yml              <-- Kustomisasi MOTD server list ping (MiniMessage gradient, random lines, player slot)
+├── claims.yml            <-- Konfigurasi batas chunk per rank, biaya klaim, upkeep harian & flags
 ├── gui.yml               <-- Tata letak visual GUI (Profile, Top, Rewards, Warp, Admin Hub)
-└── messages.yml          <-- Kumpulan pesan feedback visual MiniMessage
+├── messages.yml          <-- Kumpulan pesan feedback visual MiniMessage
+├── motd.yml              <-- Kustomisasi MOTD server list ping (MiniMessage gradient, random lines, player slot)
+├── kingdoms/
+│   └── kingdoms.yml      <-- Definisi 3 kerajaan (Zenithar, Solterra, Sylvamoor), spawn, bioma, dan warna
+├── kits/
+│   └── kits.yml          <-- Konfigurasi Starter Kits, Daily Kits & Donator Kits
+└── progression/
+    ├── ranks.yml         <-- Hierarki pangkat LuckPerms & bobot weight (Ancestor s/d Wanderer)
+    ├── rewards.yml       <-- Konfigurasi hadiah level (Item, Command, Permission)
+    ├── titles.yml        <-- Daftar gelar prestise dan badge kerajaan per level
+    └── xp.yml            <-- Formula perolehan XP untuk 16 kategori gameplay
 ```
 
 ---

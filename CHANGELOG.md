@@ -4,10 +4,10 @@
 > **Repository:** `Nueeva/Apexsions`  
 > **Brand Name:** `Apexsions` (DILARANG menambahkan kata Network/SMP/Kingdom)  
 > **Tagline:** `The Peak Civilizations`  
-> **Standar Riwayat:** Commit-Based Reverse-Chronological Changelog (336 Commits)  
+> **Standar Riwayat:** Commit-Based Reverse-Chronological Changelog (153 Commits)  
 > **Format:** Berdasarkan standar [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
-Dokumen ini mendokumentasikan **seluruh 336 riwayat commit** repositori secara lengkap, mendalam, dan terstruktur ke dalam 7 milestone pengembangan dari awal mula inisiasi proyek (27 Agustus 2026) hingga kondisi stabil terkini (17 September 2026). Dokumen ini dirancang sebagai referensi tunggal bagi developer dan AI Coding Agent untuk memahami riwayat arsitektur, modul yang tersentuh, serta evolusi fitur.
+Dokumen ini mendokumentasikan **seluruh 153 riwayat commit** repositori secara lengkap, mendalam, dan terstruktur ke dalam 7 milestone pengembangan dari awal mula inisiasi proyek (27 Agustus 2026) hingga kondisi stabil terkini (17 September 2026). Dokumen ini dirancang sebagai referensi tunggal bagi developer dan AI Coding Agent untuk memahami riwayat arsitektur, modul yang tersentuh, serta evolusi fitur.
 
 ---
 
