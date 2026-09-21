@@ -31,15 +31,31 @@ public class AntiXrayListener implements Listener {
             Material.DEEPSLATE_DIAMOND_ORE,
             Material.ANCIENT_DEBRIS,
             Material.EMERALD_ORE,
-            Material.DEEPSLATE_EMERALD_ORE
+            Material.DEEPSLATE_EMERALD_ORE,
+            Material.GOLD_ORE,
+            Material.DEEPSLATE_GOLD_ORE,
+            Material.NETHER_GOLD_ORE,
+            Material.RAW_IRON_BLOCK,
+            Material.RAW_COPPER_BLOCK,
+            Material.RAW_GOLD_BLOCK
     );
 
     private static final int WINDOW_MILLIS = 60_000;
-    private static final int SPIKE_THRESHOLD = 8;
-    private static final double MAX_REACH_DISTANCE = 5.8;
+    private static final double MAX_REACH_DISTANCE = 5.2;
 
     public AntiXrayListener(ApexsionsCorePlugin plugin) {
         this.plugin = plugin;
+    }
+
+    private int getSpikeThreshold(Material mat) {
+        if (mat == Material.ANCIENT_DEBRIS) {
+            return 3;
+        }
+        if (mat == Material.DIAMOND_ORE || mat == Material.DEEPSLATE_DIAMOND_ORE ||
+            mat == Material.EMERALD_ORE || mat == Material.DEEPSLATE_EMERALD_ORE) {
+            return 6;
+        }
+        return 12;
     }
 
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
@@ -69,7 +85,8 @@ public class AntiXrayListener implements Listener {
             // Clean old entries
             timestamps.removeIf(ts -> now - ts > WINDOW_MILLIS);
 
-            if (timestamps.size() >= SPIKE_THRESHOLD) {
+            int threshold = getSpikeThreshold(mat);
+            if (timestamps.size() >= threshold) {
                 Long lastAlertTime = lastStaffAlert.get(playerId);
                 if (lastAlertTime == null || now - lastAlertTime > 45_000) {
                     lastStaffAlert.put(playerId, now);

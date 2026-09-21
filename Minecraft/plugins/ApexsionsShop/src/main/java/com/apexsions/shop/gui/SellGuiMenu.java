@@ -177,6 +177,13 @@ public class SellGuiMenu extends ShopGui {
 
         if (totalItemsSold > 0) {
             plugin.getEconomyHook().deposit(player, totalPayout);
+
+            String kingdomKey = plugin.getKingdomCoreHook().getPlayerKingdom(player);
+            if (totalTax > 0 && kingdomKey != null && !kingdomKey.equalsIgnoreCase("NONE")) {
+                plugin.getEconomyHook().depositKingdomTreasury(kingdomKey, totalTax);
+                org.bukkit.Bukkit.getPluginManager().callEvent(new com.apexsions.shop.api.event.KingdomTaxCollectEvent(player, kingdomKey, totalTax));
+            }
+
             player.sendMessage(MM.deserialize(plugin.getConfigManager().getMessage("sell-success", "<green>Berhasil menjual item!</green>")
                     .replace("%amount%", String.valueOf(totalItemsSold))
                     .replace("%item%", "Item")

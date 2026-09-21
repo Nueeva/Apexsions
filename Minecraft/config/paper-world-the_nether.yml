@@ -1,0 +1,31 @@
+# This is a world configuration file for Paper.
+# World: minecraft:the_nether
+
+_version: 31
+anticheat:
+  anti-xray:
+    enabled: true
+    engine-mode: 2
+    hidden-blocks:
+    - ancient_debris
+    - nether_gold_ore
+    - nether_quartz_ore
+    - chest
+    - trapped_chest
+    - barrel
+    - spawner
+    - respawn_anchor
+    - lodestone
+    - gilded_blackstone
+    lava-obscures: true
+    max-block-height: 128
+    replacement-blocks:
+    - netherrack
+    - basalt
+    - blackstone
+    - magma_block
+    - soul_sand
+    - soul_soil
+    - gravel
+    update-radius: 2
+    use-permission: false
