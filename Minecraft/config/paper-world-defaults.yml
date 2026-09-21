@@ -43,6 +43,10 @@ anticheat:
     - barrel
     - spawner
     - ender_chest
+    - budding_amethyst
+    - amethyst_block
+    - trial_spawner
+    - vault
     lava-obscures: true
     max-block-height: 160
     replacement-blocks:
@@ -56,6 +60,17 @@ anticheat:
     - gravel
     - dirt
     - smooth_basalt
+    - dripstone_block
+    - pointed_dripstone
+    - clay
+    - sandstone
+    - red_sandstone
+    - moss_block
+    - mud
+    - packed_mud
+    - mud_bricks
+    - coarse_dirt
+    - rooted_dirt
     update-radius: 2
     use-permission: false
 chunks:

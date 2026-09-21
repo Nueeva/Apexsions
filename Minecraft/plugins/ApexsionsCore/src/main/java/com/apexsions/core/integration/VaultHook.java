@@ -116,8 +116,8 @@ public class VaultHook {
         return false;
     }
 
-    public void withdraw(Player player, double amount) {
-        withdraw((OfflinePlayer) player, amount);
+    public boolean withdraw(Player player, double amount) {
+        return withdraw((OfflinePlayer) player, amount);
     }
 
     public Permission getPermissions() {

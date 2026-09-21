@@ -42,6 +42,12 @@ public class ClaimManager {
     private int visualizerDurationSeconds = 8;
     private Color boundaryColor = Color.fromRGB(212, 175, 55); // Gold
 
+    // Upfront Chunk Acquisition / Purchase Configuration
+    private boolean purchaseEnabled = true;
+    private double purchaseCostPerChunk = 1000.0;
+    private double purchaseKingdomTreasurySplit = 1.00;
+    private boolean purchaseExemptUpperDimension = true;
+
     // Progressive Tax Configuration
     private boolean taxEnabled = true;
     private double baseTaxPerChunk = 100.0;
@@ -92,6 +98,12 @@ public class ClaimManager {
         for (String w : config.getStringList("disabled-worlds")) {
             disabledWorlds.add(w.toLowerCase());
         }
+
+        // Purchase settings
+        purchaseEnabled = config.getBoolean("purchase.enabled", true);
+        purchaseCostPerChunk = config.getDouble("purchase.cost-per-chunk", 1000.0);
+        purchaseKingdomTreasurySplit = config.getDouble("purchase.kingdom-treasury-split", 1.00);
+        purchaseExemptUpperDimension = config.getBoolean("purchase.exempt-upper-dimension", true);
 
         // Tax settings
         taxEnabled = config.getBoolean("tax.enabled", true);
@@ -243,6 +255,23 @@ public class ClaimManager {
 
     public boolean isFallbackWalletAutoDebit() {
         return fallbackWalletAutoDebit;
+    }
+
+    public boolean isPurchaseExempt(UUID ownerId) {
+        if (!purchaseExemptUpperDimension || ownerId == null) return false;
+        if (plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isStaffOrAdmin(ownerId)) {
+            return true;
+        }
+        OfflinePlayer op = Bukkit.getOfflinePlayer(ownerId);
+        return op != null && op.isOp();
+    }
+
+    public boolean isPurchaseEnabled() {
+        return purchaseEnabled;
+    }
+
+    public double getPurchaseCostPerChunk() {
+        return purchaseCostPerChunk;
     }
 
     // --- Progressive Tax & Upkeep Calculation ---
@@ -726,6 +755,36 @@ public class ClaimManager {
                     kingdomKey = reg.get().getKey();
                 }
             }
+            if (kingdomKey == null) {
+                // Fallback: check territory region at chunk center
+                Optional<Region> locReg = plugin.getRegionManager().getRegionAt(chunk.getBlock(8, 64, 8).getLocation());
+                if (locReg.isPresent()) {
+                    kingdomKey = locReg.get().getKey();
+                }
+            }
+        }
+
+        // Upfront Claim Purchase Cost (Funds Kingdom Treasury)
+        boolean charged = false;
+        double costToPay = 0.0;
+        if (purchaseEnabled && purchaseCostPerChunk > 0 && !isPurchaseExempt(player.getUniqueId())) {
+            costToPay = purchaseCostPerChunk;
+            if (plugin.getVaultHook() != null && plugin.getVaultHook().hasEconomy()) {
+                double balance = plugin.getVaultHook().getBalance(player);
+                if (balance < costToPay) {
+                    return new ClaimResult(false, "<red>✖ Saldo dompet Anda tidak cukup untuk mengklaim wilayah ini! Biaya klaim: <gold>Rp" + String.format("%,.0f", costToPay) + "</gold> (Saldo Anda: <yellow>Rp" + String.format("%,.0f", balance) + "</yellow>).</red>");
+                }
+                if (!plugin.getVaultHook().withdraw(player, costToPay)) {
+                    return new ClaimResult(false, "<red>✖ Gagal memproses transaksi biaya klaim dari dompet Anda.</red>");
+                }
+                charged = true;
+
+                // Deposit directly into Kingdom Treasury (Kas Kerajaan)
+                if (kingdomKey != null && !kingdomKey.isBlank() && purchaseKingdomTreasurySplit > 0) {
+                    double treasuryShare = costToPay * purchaseKingdomTreasurySplit;
+                    depositKingdomTreasury(kingdomKey, treasuryShare);
+                }
+            }
         }
 
         double initialRate = calculateChunkDailyTax(player.getUniqueId());
@@ -743,11 +802,14 @@ public class ClaimManager {
         player.playSound(player.getLocation(), Sound.BLOCK_RESPAWN_ANCHOR_SET_SPAWN, 0.7f, 1.2f);
 
         String maxStr = maxClaims == Integer.MAX_VALUE ? "∞" : String.valueOf(maxClaims);
+        String purchaseNotice = charged
+                ? "<gray>Biaya klaim <gold>Rp" + String.format("%,.0f", costToPay) + "</gold> disetor ke Kas Kerajaan <yellow>" + (kingdomKey != null ? kingdomKey : "-") + "</yellow>.</gray> "
+                : "";
         String taxNotice = initialRate > 0
-                ? "Pajak harian: <gold>Rp" + String.format("%,.0f", initialRate) + "/hari</gold>. Setor saldo via <yellow>/claim deposit</yellow>."
-                : "<aqua>Wilayah Dewan Aetherion (Upper Dimension — Bebas Pajak Upkeep).</aqua>";
+                ? "Pajak upkeep: <gold>Rp" + String.format("%,.0f", initialRate) + "/hari</gold>. Setor cadangan via <yellow>/claim deposit</yellow>."
+                : "<aqua>Wilayah Dewan Aetherion (Upper Dimension — Bebas Biaya Upkeep).</aqua>";
 
-        return new ClaimResult(true, "<green>✔ Berhasil mengklaim tanah di chunk <gold>[" + chunk.getX() + ", " + chunk.getZ() + "]</gold>! Kuota terpakai: <gold>" + (currentClaims + 1) + "/" + maxStr + "</gold>. " + taxNotice + "</green>");
+        return new ClaimResult(true, "<green>✔ Berhasil mengklaim tanah di chunk <gold>[" + chunk.getX() + ", " + chunk.getZ() + "]</gold>! " + purchaseNotice + "Kuota terpakai: <gold>" + (currentClaims + 1) + "/" + maxStr + "</gold>. " + taxNotice + "</green>");
     }
 
     public ClaimResult unclaimCurrentChunk(Player player) {

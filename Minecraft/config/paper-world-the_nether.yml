@@ -27,5 +27,7 @@ anticheat:
     - soul_sand
     - soul_soil
     - gravel
+    - bone_block
+    - crying_obsidian
     update-radius: 2
     use-permission: false

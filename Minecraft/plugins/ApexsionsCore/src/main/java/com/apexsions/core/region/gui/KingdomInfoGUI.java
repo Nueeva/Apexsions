@@ -197,7 +197,8 @@ public class KingdomInfoGUI implements Listener {
                     mm.deserialize("<gray>Pajak Transaksi Pasar: <gold><bold>" + String.format("%.1f", taxRate) + "%</bold></gold></gray>"),
                     mm.deserialize("<gray>Kas Perbendaharaan: <yellow>Memuat data...</yellow></gray>"),
                     Component.empty(),
-                    mm.deserialize("<gray>Pajak belanja (/shop) & lelang (/ah)</gray>"),
+                    mm.deserialize("<gray>Pajak belanja (/shop), jual (/sell),</gray>"),
+                    mm.deserialize("<gray>klaim wilayah (/claim) & lelang (/ah)</gray>"),
                     mm.deserialize("<gray>otomatis memperkaya kas kerajaan ini!</gray>")
             ));
             taxItem.setItemMeta(taxMeta);
@@ -219,7 +220,8 @@ public class KingdomInfoGUI implements Listener {
                                         mm.deserialize("<gray>Pajak Transaksi Pasar: <gold><bold>" + String.format("%.1f", taxRate) + "%</bold></gold></gray>"),
                                         mm.deserialize("<gray>Kas Perbendaharaan: <green><bold>Rp " + String.format("%,.0f", balance).replace(',', '.') + "</bold></green></gray>"),
                                         Component.empty(),
-                                        mm.deserialize("<gray>Pajak belanja (/shop) & lelang (/ah)</gray>"),
+                                        mm.deserialize("<gray>Pajak belanja (/shop), jual (/sell),</gray>"),
+                                        mm.deserialize("<gray>klaim wilayah (/claim) & lelang (/ah)</gray>"),
                                         mm.deserialize("<gray>otomatis memperkaya kas kerajaan ini!</gray>")
                                 ));
                                 updated.setItemMeta(m);

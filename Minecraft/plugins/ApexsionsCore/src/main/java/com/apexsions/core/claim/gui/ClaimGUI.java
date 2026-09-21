@@ -109,12 +109,20 @@ public class ClaimGUI implements Listener {
         // Slot 19: Claim or Unclaim Action (Dedicated to current location)
         if (chunkClaim.isEmpty()) {
             double rate = claimManager.calculateChunkDailyTax(playerId);
+            boolean exempt = claimManager.isPurchaseExempt(playerId);
+            double purchaseCost = claimManager.getPurchaseCostPerChunk();
+            String purchaseCostStr = (!claimManager.isPurchaseEnabled() || purchaseCost <= 0)
+                    ? "<aqua>Gratis</aqua>"
+                    : (exempt ? "<aqua>Gratis (Upper Dimension)</aqua>" : "<gold>Rp" + String.format("%,.0f", purchaseCost) + "</gold> <dark_gray>(➔ Kas Kerajaan)</dark_gray>");
+
             inv.setItem(19, createItem(Material.GOLDEN_HOE,
                     "<green><bold>Klaim Chunk Saat Ini</bold></green>",
                     "<gray>Klaim petak 16x16 blok di koordinat ini:</gray>",
                     "<yellow>[" + currentChunk.getX() + ", " + currentChunk.getZ() + "]</yellow> <gray>(" + currentChunk.getWorld().getName() + ")</gray>",
                     "",
+                    "<gray>Biaya Pembelian: </gray>" + purchaseCostStr,
                     "<gray>Pajak Upkeep: </gray><gold>Rp" + String.format("%,.0f", rate) + "/hari</gold>",
+                    "",
                     "<gold>» Sentuh / Klik untuk Mengklaim «</gold>"));
         } else if (chunkClaim.get().isOwner(playerId)) {
             inv.setItem(19, createItem(Material.BARRIER,

@@ -17,6 +17,13 @@ claim-limits:
   architect: -1
   ancestor: -1
 
+# Upfront Chunk Acquisition / Purchase (Setoran Kas Kerajaan Saat Klaim Baru)
+purchase:
+  enabled: true
+  cost-per-chunk: 1000.0
+  kingdom-treasury-split: 1.00 # 100% biaya pembelian klaim disetorkan langsung ke Kas Kerajaan
+  exempt-upper-dimension: true
+
 # Progressive Tax & Upkeep Economy
 tax:
   enabled: true
