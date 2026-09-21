@@ -402,3 +402,32 @@ sions-temporal:
           - "<yellow>Tingkat:</yellow> <light_purple><bold>Kaisar (Raid Boss Tier)</bold></light_purple>"
           - "<yellow>Kegunaan:</yellow> <gray>Membuka Peti Shulker Pusaka Tahta Kaisar</gray>"
 
+# ==============================================================================
+# Apexsions Security & Anti-Cheat Suite
+# Mitigates Fly Hack, Speed, Jesus, NoFall, Auth Bypass, KillAura, Reach, & BadPackets
+# ==============================================================================
+security:
+  enabled: true
+  movement:
+    enabled: true
+    fly-hack-detection: true
+    speed-detection: true
+    jesus-waterwalk: true
+    nofall-verification: true
+    max-violations-before-staff-alert: 6
+  auth-gatekeeper:
+    enabled: true
+    staff-shield: true
+    max-failed-attempts: 3
+    temp-block-minutes: 10
+  combat:
+    enabled: true
+    killaura-check: true
+    max-reach: 4.2
+    max-killaura-angle: 95.0
+    max-cps: 20
+  packet-exploits:
+    enabled: true
+    bad-packets-pitch: true
+    fast-place-scaffold: true
+    chest-stealer-limiter: true

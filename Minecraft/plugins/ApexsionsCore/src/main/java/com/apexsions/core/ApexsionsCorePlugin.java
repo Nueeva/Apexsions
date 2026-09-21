@@ -141,6 +141,10 @@ public class ApexsionsCorePlugin extends JavaPlugin {
     // Security & Anti-Abuse Subsystem
     private com.apexsions.core.security.AntiXrayListener antiXrayListener;
     private com.apexsions.core.security.RedstoneWatchdogListener redstoneWatchdogListener;
+    private com.apexsions.core.security.MovementSecurityListener movementSecurityListener;
+    private com.apexsions.core.security.AuthSecurityGateKeeper authSecurityGateKeeper;
+    private com.apexsions.core.security.CombatSecurityListener combatSecurityListener;
+    private com.apexsions.core.security.PacketExploitListener packetExploitListener;
 
     // Unified Moderation & Ban Subsystem
     private com.apexsions.core.moderation.BanRepository banRepository;
@@ -412,11 +416,19 @@ public class ApexsionsCorePlugin extends JavaPlugin {
             this.claimProtectionListener = new com.apexsions.core.claim.ClaimProtectionListener(this, claimManager);
             Bukkit.getPluginManager().registerEvents(claimProtectionListener, this);
 
-            // 16. Security Subsystems (Anti-XRay & Redstone Watchdog)
+            // 16. Security Subsystems (Anti-XRay, Redstone Watchdog, Movement/Fly Hack, Auth Gatekeeper, Combat, Packet Exploits)
             this.antiXrayListener = new com.apexsions.core.security.AntiXrayListener(this);
             Bukkit.getPluginManager().registerEvents(antiXrayListener, this);
             this.redstoneWatchdogListener = new com.apexsions.core.security.RedstoneWatchdogListener(this);
             Bukkit.getPluginManager().registerEvents(redstoneWatchdogListener, this);
+            this.movementSecurityListener = new com.apexsions.core.security.MovementSecurityListener(this);
+            Bukkit.getPluginManager().registerEvents(movementSecurityListener, this);
+            this.authSecurityGateKeeper = new com.apexsions.core.security.AuthSecurityGateKeeper(this);
+            Bukkit.getPluginManager().registerEvents(authSecurityGateKeeper, this);
+            this.combatSecurityListener = new com.apexsions.core.security.CombatSecurityListener(this);
+            Bukkit.getPluginManager().registerEvents(combatSecurityListener, this);
+            this.packetExploitListener = new com.apexsions.core.security.PacketExploitListener(this);
+            Bukkit.getPluginManager().registerEvents(packetExploitListener, this);
 
             // 17. Unified Moderation & Ban Engine (Inter-plugin centralized ban/unban)
             this.banRepository = new com.apexsions.core.moderation.BanRepository(this, databaseManager);
@@ -932,6 +944,10 @@ public class ApexsionsCorePlugin extends JavaPlugin {
     public com.apexsions.core.sions.SionsTemporalService getSionsTemporalService() { return sionsTemporalService; }
     public com.apexsions.core.vanish.VanishManager getVanishManager() { return vanishManager; }
     public com.apexsions.core.level.stat.PlayerAttributeService getPlayerAttributeService() { return playerAttributeService; }
+    public com.apexsions.core.security.MovementSecurityListener getMovementSecurityListener() { return movementSecurityListener; }
+    public com.apexsions.core.security.AuthSecurityGateKeeper getAuthSecurityGateKeeper() { return authSecurityGateKeeper; }
+    public com.apexsions.core.security.CombatSecurityListener getCombatSecurityListener() { return combatSecurityListener; }
+    public com.apexsions.core.security.PacketExploitListener getPacketExploitListener() { return packetExploitListener; }
     public ApexsionsCoreAPI getApi() { return api; }
 
     private void registerBattlePassEventListener() {

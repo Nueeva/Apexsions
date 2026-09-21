@@ -83,9 +83,8 @@ ExternalBoardOptions:
     wordpressTablePrefix: wp_
 settings:
     sessions:
-        # Mengaktifkan sesi login singkat (10 menit):
-        # Jika pemain disconnect karena lag/relog cepat, pemain tidak perlu login ulang selama IP tetap sama.
-        enabled: true
+        # Dinonaktifkan demi keamanan (mencegah Session Hijacking pada IP bersama / WiFi publik / CGNAT)
+        enabled: false
         timeout: 10
     # Bahasa pesan utama (dapat disesuaikan id / en)
     messagesLanguage: id
@@ -126,7 +125,8 @@ settings:
         banUnsafedIP: false
         kickNonRegistered: false
         kickOnWrongPassword: true
-        teleportUnAuthedToSpawn: false
+        # Amankan lokasi pemain: teleportasi sementara ke spawn sebelum login agar tidak mengekspos base/chunk
+        teleportUnAuthedToSpawn: true
         allowMovement: false
         # Timeout 60 detik lebih ramah bagi pemain mobile / Bedrock yang mengetik di touchscreen
         loginTimeout: 60

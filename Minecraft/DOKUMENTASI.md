@@ -560,3 +560,35 @@ Untuk memudahkan penelusuran arsitektur 9 plugin dan ratusan kelas internal Pape
 3. **Visualisasi Arsitektur Interaktif:**
    - Buka `graphify-out/graph.html` di browser untuk melihat peta klaster relasi 9 plugin secara visual.
 
+---
+
+## 🛡️ 20. Apexsions Security & Anti-Cheat Suite (Mitigasi Fly Hack, Auth Bypass, Combat & Exploits)
+
+Sistem keamanan terpusat di `ApexsionsCore` (`com.apexsions.core.security.*`) yang dirancang khusus untuk memitigasi cheat client modern (seperti mod Fly Hack CurseForge, Meteor, Wurst, LiquidBounce, Aristois) serta celah eksploitasi otentikasi.
+
+### A. Sub-Sistem Keamanan & Mitigasi Cheat
+| Komponen | Kelas Sumber | Tipe Ancaman / Cheat | Metode Mitigasi & Aksi |
+|---|---|---|---|
+| **Movement Security** | `MovementSecurityListener` | **Fly Hack**, AirWalk, Hovering, Glide, Creative-Fly | Deteksi pergerakan vertikal $\Delta y \ge 0$ di udara $> 6$ tick tanpa status flight yang sah. Aksi: *Rubberband* ke lokasi aman di tanah + notifikasi staf jika berulang. |
+| | | **Horizontal Speed Hack**, Timer | Memantau $(\Delta x^2 + \Delta z^2)$ dengan memperhitungkan efek ramuan Speed, Soul Speed, dan knockback combat. |
+| | | **Jesus / WaterWalk** | Mendeteksi pemain yang berjalan di atas permukaan air/lava dengan `onGround = true` tanpa sepatu Frost Walker. |
+| | | **NoFall (Spoofed Packets)** | Server melacak jarak jatuh nyata; memberikan damage jatuh independen saat mendarat meskipun paket klien memalsukan `fallDistance = 0`. |
+| **Auth Gatekeeper** | `AuthSecurityGateKeeper` | **Auth Bypass** (Command & Event Glitch) | Berjalan pada `LOWEST` priority: memblokir seluruh perintah non-auth, interaksi inventaris, buka peti, lempar/ambil item, dan serangan entitas sebelum pemain terotentikasi. |
+| | | **Session Hijacking** (IP Bersama) | Penonaktifan `sessions.enabled` di AuthMe untuk menghapus celah auto-login pada WiFi publik/CGNAT. |
+| | | **Staff Brute-Force & Takeover** | Mengunci akun jajaran Staf (`ancestor`, `architect`, `overseer`, `warden`, `herald`). Percobaan login salah $\ge 3$ kali memutus koneksi, memblokir IP 10 menit, dan menyiarkan peringatan darurat ke staf & konsol. |
+| **Combat Guard** | `CombatSecurityListener` | **KillAura (Angle Check)** | Menghitung sudut vektor antara arah mata penyerang dan korban. Serangan dengan sudut $> 95^\circ$ (memukul ke samping/belakang) otomatis dibatalkan. |
+| | | **Wall-Hit (Phase Strike)** | Raycast oklusi blok padat di antara mata penyerang dan hitbox korban. Mencegah memukul menembus dinding/pintu. |
+| | | **Combat Reach Hack** | Membatasi jarak jangkauan serangan maksimal $4.2$ blok di mode Survival (dengan kompensasi latency & bounding box). |
+| | | **Auto-Clicker** | Membatasi frekuensi serangan maksimal 20 CPS per detik. |
+| **Packet Sanitizer** | `PacketExploitListener` | **BadPackets (Crash Exploits)** | Menolak dan mengoreksi nilai pitch di luar rentang fisik $[-90.0^\circ, +90.0^\circ]$. Menendang pemain yang mengirim koordinat `NaN` atau `Infinity`. |
+| | | **Scaffold / FastPlace** | Membatasi penempatan blok maksimal 14 blok/detik di mode Survival. |
+| | | **ChestStealer** | Membatasi interaksi pemindahan item dari wadah/peti maksimal 12 klik/detik. |
+
+### B. Matriks Hak Izin Bypass Anti-Cheat (Khusus Pengujian / Admin)
+| Permission Node | Penerima Default | Deskripsi |
+|---|---|---|
+| `apexsions.bypass.movement` | Admin / OP | Mengecualikan staf dari pemeriksaan Fly Hack, Speed, dan Jesus (misal saat moderasi noclip). |
+| `apexsions.bypass.combat` | Admin / OP | Mengecualikan staf dari batas Reach dan KillAura Angle. |
+| `apexsions.bypass.scaffold` | Admin / OP | Mengecualikan dari batas kecepatan penempatan blok. |
+| `apexsions.bypass.cheststealer` | Admin / OP | Mengecualikan dari batas kecepatan klik kontainer. |
+
