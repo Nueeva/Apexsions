@@ -816,5 +816,14 @@ Sistem ini didesain khusus untuk menyelesaikan tantangan operasional staf dan pe
    - `[Klik Kiri]`: Teleportasi langsung ke ibukota kerajaan.
    - `[Shift + Klik Kanan]`: Menetapkan ulang titik spawn ibukota kerajaan pada koordinat admin saat ini.
 
+---
 
-
+## ⚙️ 10. Infrastruktur CI/CD, DevSecOps & Dual-Push Mirroring
+- **Pusat Repositori Utama (SSOT):** GitHub (`https://github.com/Nueeva/Apexsions`).
+- **DevSecOps & Cloud Pipeline:** GitLab Ultimate (`https://gitlab.com/nueva-group2/apexsions`, Project ID `86719404`).
+- **Arsitektur Dual-Push:** Perintah `git push origin main` secara atomik mendorong pembaruan kode ke GitHub dan GitLab sekaligus.
+- **Fitur Otomasi Cloud (`.gitlab-ci.yml`):**
+  1. **DevSecOps Scanners:** SAST (Semgrep/SpotBugs), Secret Detection, dan Dependency Scanning (Gemnasium) aktif di setiap commit.
+  2. **Cloud Maven Compiler:** Kompilasi 9 plugin resmi via container Java 21 LTS dengan caching dependensi dan penyimpanan artefak JAR 30 hari.
+  3. **Continuous Deployment (SFTP):** Pengunggahan JAR otomatis ke game server Jagoanhosting (`falcon04.jagoanhosting.id:2022`).
+- **Strategi Siklus Hidup Lisensi:** Panduan operasional masa trial (hingga 12 Oktober 2026) dan transisi fallback tanpa dampak operasional terdokumentasi lengkap pada [`docs/GITLAB_ULTIMATE_INTEGRATION.md`](docs/GITLAB_ULTIMATE_INTEGRATION.md).

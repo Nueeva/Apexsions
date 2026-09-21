@@ -1,69 +1,85 @@
-# Panduan Pemanfaatan GitLab Ultimate — Apexsions
+# Panduan Pemanfaatan & Strategi Siklus Hidup GitLab Ultimate — Apexsions
 
-Dokumen ini menjelaskan langkah demi langkah cara memanfaatkan lisensi **GitLab Ultimate** untuk ekosistem **Apexsions** melalui arsitektur **Hybrid Mirroring** (tetap memakai GitHub sebagai pusat kerja sehari-hari, dan GitLab Ultimate sebagai mesin DevSecOps & CI/CD otomatis).
-
----
-
-## 1. Menghubungkan Repositori GitHub ke GitLab (Mirroring)
-
-Agar Anda tidak perlu repot melakukan push dua kali (ke GitHub dan GitLab secara manual):
-1. Buat proyek baru di akun GitLab Ultimate Anda:
-   * Nama Proyek: `Apexsions`
-   * Visibility: `Private` atau `Public` sesuai kebutuhan.
-2. Masuk ke **Settings** > **Repository** di GitLab.
-3. Buka bagian **Mirroring repositories**:
-   * **Git repository URL**: `https://github.com/Nueeva/Apexsions.git`
-   * **Mirror direction**: `Pull` (GitLab akan otomatis menarik setiap commit yang masuk ke GitHub `main`).
-   * **Authentication method**: `Username and Personal Access Token` (Gunakan GitHub Username dan PAT GitHub Anda).
-   * Centang **Trigger pipelines for mirror updates**.
-   * Klik **Mirror repository**.
-
-> [!TIP]
-> Setiap kali agen atau Anda melakukan `git push origin main` ke GitHub, GitLab akan menyalin commit secara otomatis dalam beberapa detik dan langsung menjalankan pipeline CI/CD.
+> **Status Lisensi:** GitLab Ultimate Trial (Aktif s/d **12 Oktober 2026**)  
+> **Target Proyek:** [`nueva-group2/apexsions`](https://gitlab.com/nueva-group2/apexsions) (Project ID: `86719404`)  
+> **Arsitektur:** **Dual-Push Hybrid Mirroring** (GitHub sebagai *Single Source of Truth* utama, GitLab Ultimate sebagai *DevSecOps & CI/CD Engine*).
 
 ---
 
-## 2. Fitur GitLab Ultimate yang Otomatis Aktif via `.gitlab-ci.yml`
+## 1. Arsitektur Sinkronisasi (Dual-Push Hybrid)
 
-Berkas [`.gitlab-ci.yml`](../.gitlab-ci.yml) yang telah dipasang di root repositori mencakup:
+Untuk menjaga workflow tetap ringkas dan tidak membebani developer:
+* **GitHub (`Nueeva/Apexsions`)** adalah pusat repositori utama (**Single Source of Truth**). Seluruh commit, branch, dan PR tetap berpusat di GitHub.
+* Git lokal telah dikonfigurasi menggunakan **Dual-Push**:
+  ```powershell
+  # Sekali eksekusi "git push origin main", commit otomatis terkirim ke GitHub DAN GitLab sekaligus
+  git push origin main
+  ```
+* **GitLab (`nueva-group2/apexsions`)** menerima commit secara instan dan langsung mengeksekusi pipeline otomatis di cloud runner.
 
-### A. DevSecOps (Security & Compliance)
-1. **SAST (Static Application Security Testing)**:
-   * Menggunakan analyzer Semgrep & SpotBugs untuk memindai kode Java 21 (`Minecraft/plugins/`) dan PHP 8.2 (`Website/themes/` & `Website/plugins/`).
-   * Mendeteksi otomatis: potensi exploit duplikasi, SQL Injection, buffer overflow, perizinan tidak aman, dan deserialisasi berbahaya.
-2. **Secret Detection**:
-   * Memastikan tidak ada token bot, private key, atau password infrastruktur yang tidak sengaja ter-commit.
-3. **Dependency Scanning**:
-   * Memeriksa seluruh dependensi `pom.xml` terhadap database kelemahan CVE dunia (Supply-Chain Security).
+---
 
-### B. Otomasi Build Maven (Java 21 LTS)
-* Menjalankan container `maven:3.9-eclipse-temurin-21` di cloud GitLab Runner.
-* Mengompilasi ke-9 plugin resmi Apexsions secara otomatis.
-* Mengumpulkan file `.jar` ke folder `build/libs/` dan menyimpannya sebagai **Downloadable Artifacts** (tersedia untuk diunduh langsung dari GitLab selama 30 hari).
+## 2. Rencana Aksi Selama Masa Trial (21 September – 12 Oktober 2026)
+
+Masa trial 30 hari menyediakan akses penuh ke fitur enterprise GitLab Ultimate senilai \$99/user/bln. Berikut cara memanfaatkannya secara maksimal:
+
+### A. Remediasi Keamanan Kode (Vulnerability Report)
+* GitLab Ultimate telah memindai seluruh kode Java 21 dan PHP 8.2 secara otomatis.
+* Buka **Security** > [**Vulnerability report**](https://gitlab.com/nueva-group2/apexsions/-/security/vulnerabilities):
+  1. **SAST (Static Application Security Testing):** Memeriksa potensi SQL Injection, deserialisasi Java tidak aman, dan logika izin di 9 plugin Minecraft serta Azuriom.
+  2. **Dependency Scanning (Gemnasium):** Memeriksa seluruh library di `pom.xml` dan `composer.json` terhadap database CVE dunia (misalnya advisory pada `league/commonmark`).
+  3. **Secret Detection:** Menjamin tidak ada API key, token bot, atau kredensial server yang lolos ke commit publik.
+* **Target:** Bersihkan dan remedi seluruh temuan berkategori *High* dan *Medium* sebelum tanggal 12 Oktober agar basis kode Apexsions bersih dan tahan audit.
+
+### B. Otomasi Build Maven Multi-Plugin di Cloud
+* Menghemat daya dan baterai laptop lokal: Runner cloud `maven:3.9-eclipse-temurin-21` mengompilasi ke-9 plugin resmi Apexsions secara otomatis setiap ada push ke `main`.
+* **Unduh Artefak:** File `.jar` yang berhasil dikompilasi tersimpan rapi di tab **Build > Artifacts** dan dapat diunduh langsung kapan saja selama 30 hari.
 
 ### C. Continuous Deployment (CD via SFTP)
-* Pekerjaan `deploy:game-server` memungkinkan pengunggahan otomatis seluruh JAR hasil kompilasi ke game server (`falcon04.jagoanhosting.id:2022`).
-* Secara default diatur `when: manual` sehingga Anda bisa mengeklik tombol **Play (▶)** di GitLab saat siap rilis.
+* Pekerjaan `deploy:game-server` di [`.gitlab-ci.yml`](../.gitlab-ci.yml) siap mengunggah hasil build langsung ke server game Jagoanhosting (`falcon04.jagoanhosting.id:2022`).
+* Secara default diatur `when: manual` sehingga Anda cukup mengeklik tombol **Play (▶)** di halaman pipeline GitLab saat server siap diperbarui.
 
 ---
 
-## 3. Konfigurasi Rahasia (CI/CD Variables) di GitLab
+## 3. Strategi Transisi Pasca-Trial (Setelah 12 Oktober 2026)
 
-Untuk mengaktifkan fitur deployment otomatis tanpa mengekspos kredensial di kode:
-1. Masuk ke menu **Settings** > **CI/CD** di proyek GitLab Anda.
-2. Buka bagian **Variables** lalu klik **Add variable**:
-   * **Key**: `SFTP_PASS`
-   * **Value**: Masukkan password SFTP game server (`NuevaStore123#`).
-   * Centang **Mask variable** (agar tidak muncul di log runner).
-   * Centang **Protect variable** (jika pipeline hanya berjalan di branch `main`).
-   * Klik **Save variable**.
+> [!IMPORTANT]
+> **Zero Operational Impact (100% Aman):**
+> Berakhirnya masa trial GitLab Ultimate **TIDAK AKAN MENGGANGGU** operasional server game Minecraft, VPS web Azuriom, database, ataupun kelancaran development di GitHub.
+
+Setelah 12 Oktober 2026, akun GitLab Anda akan otomatis beralih ke **GitLab Free Tier**. Anda memiliki 2 pilihan strategis:
+
+### Opsi 1: Tetap Menggunakan GitLab Free (Direkomendasikan)
+* **Keuntungan:** Anda tetap mendapatkan **400 menit/bulan kuota gratis GitLab Runner**.
+* **Fitur yang Tetap Berfungsi:**
+  - Build otomatis 9 plugin Maven Java 21 (`build:plugins`).
+  - Linter validasi sintaks PHP (`lint:php`).
+  - Unggah otomatis ke game server via SFTP (`deploy:game-server`).
+  - Laporan scan SAST & Secret Detection dasar (dalam format file artefak JSON).
+* **Fitur yang Berhenti:** Visual grafik interaktif pada dashboard *Vulnerability Report* berbayar akan dikunci oleh GitLab, namun pipeline CI/CD inti tetap 100% berjalan normal.
+
+### Opsi 2: Melepaskan GitLab & Kembali Murni ke GitHub
+Jika setelah 12 Oktober Anda memutuskan untuk tidak lagi menggunakan GitLab sama sekali, cukup putuskan remote GitLab dari Git lokal dengan 2 perintah berikut:
+
+```powershell
+# 1. Hapus endpoint push GitLab dari remote origin
+git remote set-url --delete --push origin "https://oauth2:glpat-RXtf8_oQg0oUKnvmM5qRUmM6MQpvOjEKdTpwOHZ0eQ8.01.17068ksk0@gitlab.com/nueva-group2/apexsions.git"
+
+# 2. Hapus remote sekunder gitlab
+git remote remove gitlab
+```
+
+Setelah perintah di atas dijalankan:
+* `git push origin main` akan kembali murni mengirim ke GitHub saja.
+* Seluruh file konfigurasi di laptop lokal dan GitHub tetap utuh tanpa kendala.
 
 ---
 
-## 4. Melihat Dashboard Keamanan (Security Dashboard)
+## 4. Rincian Konfigurasi CI/CD Variabel
 
-Begitu pipeline pertama selesai berjalan:
-1. Buka menu **Security** di sidebar kiri GitLab:
-   * **Vulnerability Report**: Menampilkan daftar celah keamanan terdeteksi lengkap dengan tingkat keparahan (*Critical*, *High*, *Medium*, *Low*).
-   * **Dependency List**: Menampilkan Software Bill of Materials (SBOM) seluruh library yang digunakan server Apexsions.
-2. Anda dapat mengeklik setiap kerentanan untuk melihat baris kode penyebabnya serta rekomendasi perbaikannya.
+| Variabel | Fungsi | Nilai Default | Keterangan |
+| :--- | :--- | :--- | :--- |
+| `SFTP_HOST` | Host SFTP Game Server | `falcon04.jagoanhosting.id` | Otomatis terkonfigurasi di `.gitlab-ci.yml` |
+| `SFTP_PORT` | Port SFTP Game Server | `2022` | Port game server Jagoanhosting |
+| `SFTP_USER` | Username Akun SFTP | `rifqiariansyah123jt3.27e4a2f6` | Akun game server |
+| `SFTP_PASS` | Password Akun SFTP | *(Diset di GitLab Settings)* | Pasang di *Settings > CI/CD > Variables* (Masked & Protected) |
