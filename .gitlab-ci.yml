@@ -1,0 +1,142 @@
+# ==============================================================================
+#             APEXSIONS — GITLAB ULTIMATE CI/CD & DEVSECOPS PIPELINE
+# ==============================================================================
+# Architecture: Multi-Plugin Minecraft Suite (Java 21) & Web Platform (PHP 8.2)
+# Features    : SAST, Secret Detection, Dependency Scanning, Auto-Build, Auto-Deploy
+# ==============================================================================
+
+stages:
+  - test
+  - security
+  - build
+  - deploy
+
+variables:
+  GIT_DEPTH: "50"
+  MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=WARN"
+  # Security Exclusions (Ignore vendor, node_modules, generated graphs)
+  SAST_EXCLUDED_PATHS: "Website/node_modules, Website/vendor, graphify-out, scratch, build, **/*.min.js"
+  SECRET_DETECTION_EXCLUDED_PATHS: "Website/node_modules, Website/vendor, graphify-out, scratch, build"
+
+# ------------------------------------------------------------------------------
+# 1. GitLab Ultimate Security Scanners (Out-of-the-Box DevSecOps)
+# ------------------------------------------------------------------------------
+include:
+  - template: Security/SAST.gitlab-ci.yml
+  - template: Security/Secret-Detection.gitlab-ci.yml
+  - template: Security/Dependency-Scanning.gitlab-ci.yml
+
+sast:
+  stage: security
+
+secret_detection:
+  stage: security
+
+# ------------------------------------------------------------------------------
+# 2. Quality & Linter Stage (PHP & Web Platform)
+# ------------------------------------------------------------------------------
+lint:php:
+  stage: test
+  image: php:8.2-cli-alpine
+  script:
+    - echo "=== Validating PHP Syntax for Themes & Bridge ==="
+    - find Website/themes/apexsions -name "*.php" -exec php -l {} \;
+    - find Website/plugins/apexsions-bridge -name "*.php" -exec php -l {} \;
+  rules:
+    - changes:
+        - "Website/**/*.php"
+    - if: '$CI_COMMIT_BRANCH == "main"'
+
+# ------------------------------------------------------------------------------
+# 3. Minecraft Multi-Plugin Build Stage (Java 21 LTS + Maven)
+# ------------------------------------------------------------------------------
+build:plugins:
+  stage: build
+  image: maven:3.9-eclipse-temurin-21
+  cache:
+    key: "maven-dependencies-${CI_COMMIT_REF_SLUG}"
+    paths:
+      - .m2/repository/
+  before_script:
+    - java -version
+    - mvn -version
+    - mkdir -p build/libs
+  script:
+    - echo "=== Building Apexsions Modular Plugin Suite (9 Plugins) ==="
+    - |
+      PLUGINS=(
+        "ApexsionsCore"
+        "ApexsionsChat"
+        "ApexsionsEconomy"
+        "ApexsionsBattlepass"
+        "ApexsionsShop"
+        "ApexsionsMedia"
+        "ApexsionsCustomEnchants"
+        "ApexsionsCrates"
+        "ApexsionsFishing"
+      )
+      
+      for p in "${PLUGINS[@]}"; do
+        echo "--------------------------------------------------------"
+        echo "Building $p..."
+        cd "Minecraft/plugins/$p"
+        mvn clean package -DskipTests --batch-mode --errors -q
+        
+        # Collect built jar to centralized build/libs
+        if [ -f "target/$p-1.0.0.jar" ]; then
+          cp "target/$p-1.0.0.jar" "../../../build/libs/"
+          echo "✔ $p compiled successfully -> build/libs/$p-1.0.0.jar"
+        else
+          echo "✖ $p build failed or target JAR not found!"
+          exit 1
+        fi
+        cd ../../..
+      done
+    - echo "All 9 plugins built successfully!"
+    - ls -lh build/libs/
+  artifacts:
+    name: "Apexsions-Plugins-${CI_COMMIT_SHORT_SHA}"
+    when: on_success
+    expire_in: 30 days
+    paths:
+      - build/libs/*.jar
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - changes:
+        - "Minecraft/**/*"
+
+# ------------------------------------------------------------------------------
+# 4. Continuous Deployment (CD) Stage — Optional / Automated SFTP Upload
+# ------------------------------------------------------------------------------
+deploy:game-server:
+  stage: deploy
+  image: alpine:latest
+  needs:
+    - job: build:plugins
+      artifacts: true
+  before_script:
+    - apk add --no-cache openssh-client lftp sshpass
+  script:
+    - echo "=== Deploying Built JARs to Minecraft Game Server via SFTP ==="
+    - |
+      SFTP_TARGET_HOST="${SFTP_HOST:-falcon04.jagoanhosting.id}"
+      SFTP_TARGET_PORT="${SFTP_PORT:-2022}"
+      SFTP_TARGET_USER="${SFTP_USER:-rifqiariansyah123jt3.27e4a2f6}"
+      
+      if [ -z "$SFTP_PASS" ]; then
+        echo "⚠ Variabel SFTP_PASS belum diset di GitLab CI/CD Variables."
+        echo "Silakan atur SFTP_PASS di Settings > CI/CD > Variables untuk auto-deploy."
+        exit 0
+      fi
+      
+      echo "Connecting to $SFTP_TARGET_HOST:$SFTP_TARGET_PORT..."
+      sshpass -p "$SFTP_PASS" sftp -o StrictHostKeyChecking=no -P "$SFTP_TARGET_PORT" "$SFTP_TARGET_USER@$SFTP_TARGET_HOST" <<EOF
+      cd plugins
+      mput build/libs/*.jar
+      bye
+      EOF
+      echo "✔ All JARs uploaded to game server successfully!"
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      when: manual
