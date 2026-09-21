@@ -42,14 +42,12 @@ public class PayService {
 
         // Calculate Kingdom Transaction Tax
         double taxPercent = 5.0; // Default 5% transaction tax
-        String kingdomName = "Umum";
-        String kingdomKey = "zenithar";
+        String kingdomKey = null;
 
         if (com.apexsions.core.api.ApexsionsCoreProvider.isAvailable()) {
             var coreApi = com.apexsions.core.api.ApexsionsCoreProvider.get();
             var region = coreApi.getRegion(sender.getUniqueId());
             if (region != null) {
-                kingdomName = region.getDisplayName();
                 kingdomKey = region.getKey().toLowerCase();
                 String rKey = region.getKey().toUpperCase();
                 taxPercent = switch (rKey) {

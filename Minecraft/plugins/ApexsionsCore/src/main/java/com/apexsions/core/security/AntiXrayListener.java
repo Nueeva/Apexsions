@@ -21,24 +21,27 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class AntiXrayListener implements Listener {
 
+    public enum OreTier {
+        ANCIENT_DEBRIS(3, "ancient debris"),
+        DIAMOND_EMERALD(6, "diamond / emerald"),
+        STANDARD_ORE(15, "rare ore / mineral");
+
+        private final int threshold;
+        private final String label;
+
+        OreTier(int threshold, String label) {
+            this.threshold = threshold;
+            this.label = label;
+        }
+
+        public int getThreshold() { return threshold; }
+        public String getLabel() { return label; }
+    }
+
     private final ApexsionsCorePlugin plugin;
     private final MiniMessage mm = MiniMessage.miniMessage();
-    private final Map<UUID, List<Long>> oreHistory = new ConcurrentHashMap<>();
-    private final Map<UUID, Long> lastStaffAlert = new ConcurrentHashMap<>();
-
-    private final Set<Material> monitoredOres = Set.of(
-            Material.DIAMOND_ORE,
-            Material.DEEPSLATE_DIAMOND_ORE,
-            Material.ANCIENT_DEBRIS,
-            Material.EMERALD_ORE,
-            Material.DEEPSLATE_EMERALD_ORE,
-            Material.GOLD_ORE,
-            Material.DEEPSLATE_GOLD_ORE,
-            Material.NETHER_GOLD_ORE,
-            Material.RAW_IRON_BLOCK,
-            Material.RAW_COPPER_BLOCK,
-            Material.RAW_GOLD_BLOCK
-    );
+    private final Map<UUID, Map<OreTier, List<Long>>> oreHistory = new ConcurrentHashMap<>();
+    private final Map<String, Long> lastStaffAlert = new ConcurrentHashMap<>();
 
     private static final int WINDOW_MILLIS = 60_000;
     private static final double MAX_REACH_DISTANCE = 5.2;
@@ -47,15 +50,20 @@ public class AntiXrayListener implements Listener {
         this.plugin = plugin;
     }
 
-    private int getSpikeThreshold(Material mat) {
+    private OreTier getOreTier(Material mat) {
         if (mat == Material.ANCIENT_DEBRIS) {
-            return 3;
+            return OreTier.ANCIENT_DEBRIS;
         }
         if (mat == Material.DIAMOND_ORE || mat == Material.DEEPSLATE_DIAMOND_ORE ||
             mat == Material.EMERALD_ORE || mat == Material.DEEPSLATE_EMERALD_ORE) {
-            return 6;
+            return OreTier.DIAMOND_EMERALD;
         }
-        return 12;
+        if (mat == Material.GOLD_ORE || mat == Material.DEEPSLATE_GOLD_ORE ||
+            mat == Material.NETHER_GOLD_ORE || mat == Material.RAW_IRON_BLOCK ||
+            mat == Material.RAW_COPPER_BLOCK || mat == Material.RAW_GOLD_BLOCK) {
+            return OreTier.STANDARD_ORE;
+        }
+        return null;
     }
 
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
@@ -73,24 +81,26 @@ public class AntiXrayListener implements Listener {
             }
         }
 
-        // 2. Anti-XRay Ore Mining Spike Tracker
+        // 2. Anti-XRay Ore Mining Spike Tracker (Segregated by Tier)
         Material mat = block.getType();
-        if (monitoredOres.contains(mat)) {
+        OreTier tier = getOreTier(mat);
+        if (tier != null) {
             UUID playerId = player.getUniqueId();
             long now = System.currentTimeMillis();
 
-            List<Long> timestamps = oreHistory.computeIfAbsent(playerId, k -> Collections.synchronizedList(new ArrayList<>()));
+            Map<OreTier, List<Long>> playerHistory = oreHistory.computeIfAbsent(playerId, k -> new ConcurrentHashMap<>());
+            List<Long> timestamps = playerHistory.computeIfAbsent(tier, k -> Collections.synchronizedList(new ArrayList<>()));
             timestamps.add(now);
 
             // Clean old entries
             timestamps.removeIf(ts -> now - ts > WINDOW_MILLIS);
 
-            int threshold = getSpikeThreshold(mat);
-            if (timestamps.size() >= threshold) {
-                Long lastAlertTime = lastStaffAlert.get(playerId);
+            int count = timestamps.size();
+            if (count >= tier.getThreshold()) {
+                String alertKey = playerId + ":" + tier.name();
+                Long lastAlertTime = lastStaffAlert.get(alertKey);
                 if (lastAlertTime == null || now - lastAlertTime > 45_000) {
-                    lastStaffAlert.put(playerId, now);
-                    int count = timestamps.size();
+                    lastStaffAlert.put(alertKey, now);
                     String oreName = mat.name().replace("_", " ").toLowerCase();
                     int x = block.getX();
                     int y = block.getY();
@@ -112,5 +122,12 @@ public class AntiXrayListener implements Listener {
                 }
             }
         }
+    }
+
+    @EventHandler
+    public void onPlayerQuit(org.bukkit.event.player.PlayerQuitEvent event) {
+        UUID playerId = event.getPlayer().getUniqueId();
+        oreHistory.remove(playerId);
+        lastStaffAlert.keySet().removeIf(k -> k.startsWith(playerId.toString()));
     }
 }

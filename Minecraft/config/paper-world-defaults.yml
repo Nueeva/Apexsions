@@ -38,16 +38,11 @@ anticheat:
     - deepslate_redstone_ore
     - emerald_ore
     - deepslate_emerald_ore
-    - nether_gold_ore
-    - nether_quartz_ore
-    - ancient_debris
     - chest
     - trapped_chest
     - barrel
     - spawner
     - ender_chest
-    - obsidian
-    - mossy_cobblestone
     lava-obscures: true
     max-block-height: 160
     replacement-blocks:
@@ -60,11 +55,6 @@ anticheat:
     - calcite
     - gravel
     - dirt
-    - netherrack
-    - basalt
-    - blackstone
-    - magma_block
-    - oak_planks
     - smooth_basalt
     update-radius: 2
     use-permission: false

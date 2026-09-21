@@ -1,0 +1,19 @@
+# This is a world configuration file for Paper.
+# World: minecraft:the_end
+
+_version: 31
+anticheat:
+  anti-xray:
+    enabled: true
+    engine-mode: 2
+    hidden-blocks:
+    - chest
+    - trapped_chest
+    - barrel
+    - shulker_box
+    lava-obscures: true
+    max-block-height: 256
+    replacement-blocks:
+    - end_stone
+    update-radius: 2
+    use-permission: false
