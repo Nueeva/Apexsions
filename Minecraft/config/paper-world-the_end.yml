@@ -16,4 +16,4 @@ anticheat:
     replacement-blocks:
     - end_stone
     update-radius: 2
-    use-permission: false
+    use-permission: true

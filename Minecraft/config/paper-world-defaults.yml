@@ -72,7 +72,7 @@ anticheat:
     - coarse_dirt
     - rooted_dirt
     update-radius: 2
-    use-permission: false
+    use-permission: true
 chunks:
   auto-save-interval: default
   delay-chunk-unloads-by: 10s

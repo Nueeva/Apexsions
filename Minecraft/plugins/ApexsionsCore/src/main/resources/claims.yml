@@ -56,8 +56,11 @@ protection:
   protect-doors-gates: true
   protect-redstone-levers: true
   protect-passive-entities: true
+  # Menetralkan ledakan TNT dan Creeper di petak wilayah klaim pemain (Anti-Grief)
   prevent-explosions: true
   prevent-fluid-placing: true
+  # Mengizinkan ledakan TNT dan Creeper di Alam Liar (Wilderness / gua tambang)
+  allow-wilderness-explosions: true
 
 # Chunk Visualizer
 visualizer:

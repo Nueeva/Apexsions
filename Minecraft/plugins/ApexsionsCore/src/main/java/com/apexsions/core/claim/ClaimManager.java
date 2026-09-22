@@ -37,6 +37,7 @@ public class ClaimManager {
     private boolean protectRedstone = true;
     private boolean protectPassiveEntities = true;
     private boolean preventExplosions = true;
+    private boolean allowWildernessExplosions = true;
     private boolean preventFluidPlacing = true;
     private boolean visualizerEnabled = true;
     private int visualizerDurationSeconds = 8;
@@ -129,6 +130,7 @@ public class ClaimManager {
         protectPassiveEntities = config.getBoolean("protection.protect-passive-entities", true);
         preventExplosions = config.getBoolean("protection.prevent-explosions", true);
         preventFluidPlacing = config.getBoolean("protection.prevent-fluid-placing", true);
+        allowWildernessExplosions = config.getBoolean("protection.allow-wilderness-explosions", true);
 
         visualizerEnabled = config.getBoolean("visualizer.enabled", true);
         visualizerDurationSeconds = config.getInt("visualizer.duration-seconds", 8);
@@ -612,9 +614,9 @@ public class ClaimManager {
         Optional<ClaimChunk> claimOpt = getClaimAt(loc);
         if (claimOpt.isPresent()) {
             ClaimChunk claim = claimOpt.get();
-            return claim.getBooleanFlag("explosions", false);
+            return claim.getBooleanFlag("explosions", !preventExplosions);
         }
-        return !preventExplosions;
+        return allowWildernessExplosions;
     }
 
     private boolean isSiegeRaidAllowed(Player attacker, ClaimChunk claim) {
@@ -1216,6 +1218,7 @@ public class ClaimManager {
     public boolean isProtectRedstone() { return protectRedstone; }
     public boolean isProtectPassiveEntities() { return protectPassiveEntities; }
     public boolean isPreventExplosions() { return preventExplosions; }
+    public boolean isAllowWildernessExplosions() { return allowWildernessExplosions; }
     public boolean isPreventFluidPlacing() { return preventFluidPlacing; }
 
     public record ClaimResult(boolean success, String message) {}

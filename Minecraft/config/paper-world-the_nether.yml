@@ -30,4 +30,4 @@ anticheat:
     - bone_block
     - crying_obsidian
     update-radius: 2
-    use-permission: false
+    use-permission: true
