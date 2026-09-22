@@ -7,6 +7,7 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.data.Waterlogged;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -15,6 +16,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.event.player.PlayerVelocityEvent;
 import org.bukkit.potion.PotionEffectType;
 
 import java.util.Map;
@@ -22,7 +24,9 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * High-performance movement security listener preventing Fly Hack, Speed, Jesus, NoFall, and Step exploits.
+ * High-performance movement security listener preventing Fly Hack, Speed, Jesus, NoFall, and Step exploits,
+ * with complete immunity to false positives from water climbing/swimming, bubble columns, ladders,
+ * and Geyser/Floodgate Bedrock client physics.
  */
 public class MovementSecurityListener implements Listener {
 
@@ -34,11 +38,17 @@ public class MovementSecurityListener implements Listener {
     private final Map<UUID, Integer> airborneTicks = new ConcurrentHashMap<>();
     private final Map<UUID, Double> serverFallDistance = new ConcurrentHashMap<>();
     private final Map<UUID, Long> lastKnockbackTime = new ConcurrentHashMap<>();
+    private final Map<UUID, Long> lastVelocityTime = new ConcurrentHashMap<>();
+    private final Map<UUID, Long> lastLiquidTime = new ConcurrentHashMap<>();
+    private final Map<UUID, Long> lastClimbableTime = new ConcurrentHashMap<>();
     private final Map<UUID, Integer> violationCount = new ConcurrentHashMap<>();
     private final Map<UUID, Long> lastAlertTime = new ConcurrentHashMap<>();
 
-    private static final int MAX_VIOLATIONS_BEFORE_STAFF_ALERT = 6;
+    private static final int MAX_VIOLATIONS_BEFORE_STAFF_ALERT = 8;
     private static final long ALERT_COOLDOWN_MS = 5000L;
+    private static final long LIQUID_EXIT_GRACE_MS = 2500L;
+    private static final long CLIMBABLE_EXIT_GRACE_MS = 2000L;
+    private static final long VELOCITY_GRACE_MS = 2000L;
 
     public MovementSecurityListener(ApexsionsCorePlugin plugin) {
         this.plugin = plugin;
@@ -47,17 +57,24 @@ public class MovementSecurityListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onEntityDamage(EntityDamageEvent event) {
         if (event.getEntity() instanceof Player player) {
-            // Record damage / knockback event to avoid false-positives on explosion / combat velocity
             lastKnockbackTime.put(player.getUniqueId(), System.currentTimeMillis());
         }
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onPlayerVelocity(PlayerVelocityEvent event) {
+        lastVelocityTime.put(event.getPlayer().getUniqueId(), System.currentTimeMillis());
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerTeleport(PlayerTeleportEvent event) {
         Player player = event.getPlayer();
-        lastSafeGround.put(player.getUniqueId(), event.getTo());
-        airborneTicks.put(player.getUniqueId(), 0);
-        serverFallDistance.put(player.getUniqueId(), 0.0);
+        UUID uuid = player.getUniqueId();
+        lastSafeGround.put(uuid, event.getTo());
+        airborneTicks.put(uuid, 0);
+        serverFallDistance.put(uuid, 0.0);
+        lastLiquidTime.put(uuid, 0L);
+        lastClimbableTime.put(uuid, 0L);
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
@@ -67,6 +84,9 @@ public class MovementSecurityListener implements Listener {
         airborneTicks.remove(uuid);
         serverFallDistance.remove(uuid);
         lastKnockbackTime.remove(uuid);
+        lastVelocityTime.remove(uuid);
+        lastLiquidTime.remove(uuid);
+        lastClimbableTime.remove(uuid);
         violationCount.remove(uuid);
         lastAlertTime.remove(uuid);
     }
@@ -75,11 +95,11 @@ public class MovementSecurityListener implements Listener {
     public void onPlayerMove(PlayerMoveEvent event) {
         Player player = event.getPlayer();
 
-        // 1. Check exemptions (Creative, Spectator, Flying permitted, Gliding with Elytra, Vehicle riding, Staff bypass)
+        // 1. Exemptions: Creative, Spectator, Flying permitted, Elytra gliding, Vehicle riding, Trident Riptiding, Staff bypass
         if (player.getGameMode() == GameMode.CREATIVE || player.getGameMode() == GameMode.SPECTATOR) {
             return;
         }
-        if (player.getAllowFlight() || player.isGliding() || player.isInsideVehicle()) {
+        if (player.getAllowFlight() || player.isGliding() || player.isInsideVehicle() || player.isRiptiding()) {
             return;
         }
         if (player.hasPermission("apexsions.bypass.movement")) {
@@ -89,7 +109,7 @@ public class MovementSecurityListener implements Listener {
         Location from = event.getFrom();
         Location to = event.getTo();
 
-        // If no coordinate displacement (only head rotation / pitch / yaw), skip check
+        // If no coordinate displacement (only camera look / pitch / yaw), skip check
         if (from.getX() == to.getX() && from.getY() == to.getY() && from.getZ() == to.getZ()) {
             return;
         }
@@ -100,27 +120,63 @@ public class MovementSecurityListener implements Listener {
         double deltaZ = to.getZ() - from.getZ();
         double horizontalDistSq = (deltaX * deltaX) + (deltaZ * deltaZ);
 
-        // Surrounding environment checks
-        boolean nearClimbable = isNearClimbable(player.getLocation());
-        boolean inLiquid = player.isInWater() || player.isInLava() || isLiquid(player.getLocation().getBlock().getType());
+        long now = System.currentTimeMillis();
+        boolean isBedrock = player.getName().startsWith(".");
+
+        // Comprehensive environment checks
+        boolean inLiquid = isPhysicallyInOrNearLiquid(player, from, to);
+        boolean nearClimbable = isNearClimbable(player.getLocation()) || isNearClimbable(to);
         boolean hasLevitation = player.hasPotionEffect(PotionEffectType.LEVITATION);
         boolean hasSlowFalling = player.hasPotionEffect(PotionEffectType.SLOW_FALLING);
+        boolean hasJumpBoost = player.hasPotionEffect(PotionEffectType.JUMP_BOOST);
         boolean isGrounded = isPhysicallyOnGround(player);
 
         // ---------------------------------------------------------------------
-        // A. Fly Hack & Hover / AirWalk Check
+        // 2. Liquid & Water State Management (Fix for swimming/waterfall climbing)
+        // ---------------------------------------------------------------------
+        if (inLiquid) {
+            lastLiquidTime.put(uuid, now);
+            airborneTicks.put(uuid, 0);
+            serverFallDistance.put(uuid, 0.0);
+            lastSafeGround.put(uuid, to.clone());
+            return; // In water/lava/bubble-column: player is 100% legitimately moving in a fluid medium
+        }
+
+        if (nearClimbable) {
+            lastClimbableTime.put(uuid, now);
+            airborneTicks.put(uuid, 0);
+            serverFallDistance.put(uuid, 0.0);
+            lastSafeGround.put(uuid, to.clone());
+            return; // On ladders/vines/scaffolding: vertical climbing is completely legitimate
+        }
+
+        // Grace period checks (exiting liquid, exiting climbables, recent knockback, or velocity boost)
+        boolean recentLiquid = (now - lastLiquidTime.getOrDefault(uuid, 0L)) < LIQUID_EXIT_GRACE_MS;
+        boolean recentClimbable = (now - lastClimbableTime.getOrDefault(uuid, 0L)) < CLIMBABLE_EXIT_GRACE_MS;
+        boolean recentKnockback = (now - lastKnockbackTime.getOrDefault(uuid, 0L)) < 2000L;
+        boolean recentVelocity = (now - lastVelocityTime.getOrDefault(uuid, 0L)) < VELOCITY_GRACE_MS;
+
+        if (recentLiquid || recentClimbable) {
+            // Player just surfaced or hopped out of water/ladder (dolphin leap, waterfall breach)
+            airborneTicks.put(uuid, 0);
+            serverFallDistance.put(uuid, 0.0);
+            lastSafeGround.put(uuid, to.clone());
+            return;
+        }
+
+        // ---------------------------------------------------------------------
+        // 3. Ground State & True Server-Side NoFall
         // ---------------------------------------------------------------------
         if (isGrounded) {
             lastSafeGround.put(uuid, to.clone());
             airborneTicks.put(uuid, 0);
 
-            // True Server-Side NoFall verification:
-            // If client fell a substantial distance server-side, verify fall damage
+            // Server-Side NoFall verification:
+            // Apply fall damage only if player was actually falling in mid-air
             Double trackedFall = serverFallDistance.getOrDefault(uuid, 0.0);
-            if (trackedFall > 3.5 && !hasSlowFalling && !inLiquid && !isDamageAbsorbing(to.getBlock())) {
+            if (trackedFall > 3.6 && !hasSlowFalling && !recentLiquid && !isDamageAbsorbing(to.getBlock())) {
                 double expectedDamage = Math.max(1.0, trackedFall - 3.0);
                 if (player.getFallDistance() < 0.5f) {
-                    // Client spoofed onGround packet to bypass fall damage (NoFall hack)
                     player.damage(expectedDamage);
                 }
             }
@@ -135,16 +191,17 @@ public class MovementSecurityListener implements Listener {
                 serverFallDistance.put(uuid, currentFall + Math.abs(deltaY));
             }
 
-            // Fly Hack detection logic:
-            // If airborne for > 5 ticks, without climbable, liquid, levitation, slow falling, or recent knockback:
-            // Suspicious if ascending (deltaY > 0) without jump-momentum or hovering (deltaY == 0 or falling slower than gravity allows)
-            long lastKb = lastKnockbackTime.getOrDefault(uuid, 0L);
-            boolean recentKnockback = (System.currentTimeMillis() - lastKb) < 1500L;
+            // ---------------------------------------------------------------------
+            // 4. Fly Hack & AirWalk / Hovering Check
+            // ---------------------------------------------------------------------
+            // Bedrock players require more airborne ticks due to Geyser packet batching
+            int requiredAirTicks = isBedrock ? 25 : 15;
 
-            if (airTicks > 6 && !nearClimbable && !inLiquid && !hasLevitation && !recentKnockback) {
-                // If ascending in midair or hovering stationary in air (deltaY >= -0.03 while high up)
-                if (deltaY > 0.05 || (deltaY >= -0.03 && airTicks > 12)) {
-                    // Unauthorized flight detected!
+            if (airTicks > requiredAirTicks && !hasLevitation && !hasSlowFalling &&
+                !hasJumpBoost && !recentKnockback && !recentVelocity) {
+
+                // Flag if ascending persistently in open air or hovering stationary without gravity
+                if (deltaY > 0.08 || (deltaY >= -0.01 && airTicks > (requiredAirTicks + 10))) {
                     handleMovementViolation(player, "Fly Hack / AirWalk", event);
                     return;
                 }
@@ -152,29 +209,26 @@ public class MovementSecurityListener implements Listener {
         }
 
         // ---------------------------------------------------------------------
-        // B. Jesus / WaterWalk Check
+        // 5. Jesus / WaterWalk Check
         // ---------------------------------------------------------------------
-        if (!isGrounded && inLiquid) {
-            Block blockBelow = to.clone().subtract(0, 0.1, 0).getBlock();
-            if (isLiquid(blockBelow.getType()) && player.isOnGround() && !player.isSwimming()) {
-                // Walking on liquid surface as if it was a solid surface
+        if (!isGrounded && player.isOnGround()) {
+            Block blockBelow = to.clone().subtract(0, 0.5, 0).getBlock();
+            if (isLiquidMaterial(blockBelow.getType()) && !player.isSwimming() && !isNearbySolid(to, 1.2)) {
+                // Client claims onGround while standing on open deep water without solid blocks
                 handleMovementViolation(player, "Jesus / WaterWalk", event);
                 return;
             }
         }
 
         // ---------------------------------------------------------------------
-        // C. Horizontal Speed Hack Check
+        // 6. Horizontal Speed Hack Check
         // ---------------------------------------------------------------------
-        double maxSpeedSq = 0.65; // ~0.8 blocks/tick normal threshold
+        double maxSpeedSq = isBedrock ? 0.95 : 0.70; // Bedrock Geyser translation tolerance
         if (player.hasPotionEffect(PotionEffectType.SPEED)) {
-            maxSpeedSq = 1.10;
+            maxSpeedSq += 0.45;
         }
 
-        long lastKb = lastKnockbackTime.getOrDefault(uuid, 0L);
-        boolean recentKnockback = (System.currentTimeMillis() - lastKb) < 1500L;
-
-        if (horizontalDistSq > maxSpeedSq && !recentKnockback && !player.isGliding()) {
+        if (horizontalDistSq > maxSpeedSq && !recentKnockback && !recentVelocity && !player.isGliding()) {
             handleMovementViolation(player, "Speed Hack", event);
         }
     }
@@ -184,9 +238,14 @@ public class MovementSecurityListener implements Listener {
         int currentViolations = violationCount.getOrDefault(uuid, 0) + 1;
         violationCount.put(uuid, currentViolations);
 
-        // Rubberband to last safe ground position or cancel movement
+        // Reset server fall distance to prevent lethal damage upon correction
+        serverFallDistance.put(uuid, 0.0);
+        player.setFallDistance(0f);
+
+        // Safe rubberband: prefer lastSafeGround, fallback to event.getFrom()
         Location safeLoc = lastSafeGround.get(uuid);
-        if (safeLoc != null && safeLoc.getWorld().equals(player.getWorld())) {
+        if (safeLoc != null && safeLoc.getWorld().equals(player.getWorld()) &&
+            safeLoc.distanceSquared(event.getFrom()) < 225.0) { // within 15 blocks
             event.setTo(safeLoc.clone());
         } else {
             event.setTo(event.getFrom());
@@ -203,8 +262,8 @@ public class MovementSecurityListener implements Listener {
                 lastAlertTime.put(uuid, now);
 
                 String staffAlert = "<gold>[<red>Apexsions AntiCheat</red>]</gold> <yellow>" + player.getName() +
-                        "</yellow> <gray>terdeteksi menggunakan</gray> <red>" + cheatType +
-                        "</red> <gray>(Violations: " + currentViolations + ", Ping: " + player.getPing() + "ms)</gray>";
+                        "</yellow> <gray>terdeteksi</gray> <red>" + cheatType +
+                        "</red> <gray>(VL: " + currentViolations + ", Ping: " + player.getPing() + "ms)</gray>";
 
                 Bukkit.getOnlinePlayers().stream()
                         .filter(p -> p.hasPermission("apexsions.staff") || p.hasPermission("apexsions.admin"))
@@ -215,6 +274,57 @@ public class MovementSecurityListener implements Listener {
         }
     }
 
+    /**
+     * Checks if the player is submerged in or contacting any liquid, bubble column, or waterlogged block.
+     */
+    private boolean isPhysicallyInOrNearLiquid(Player player, Location from, Location to) {
+        if (player.isInWater() || player.isInLava() || player.isInBubbleColumn() || player.isSwimming()) {
+            return true;
+        }
+
+        // Check feet, waist, and head positions for both 'from' and 'to'
+        Location[] testLocs = new Location[]{
+                from,
+                to,
+                from.clone().add(0, 0.9, 0),
+                to.clone().add(0, 0.9, 0),
+                from.clone().add(0, 1.8, 0),
+                to.clone().add(0, 1.8, 0),
+                from.clone().subtract(0, 0.3, 0),
+                to.clone().subtract(0, 0.3, 0)
+        };
+
+        for (Location loc : testLocs) {
+            Block block = loc.getBlock();
+            if (isLiquidMaterial(block.getType()) || isWaterloggedBlock(block)) {
+                return true;
+            }
+        }
+
+        // Check horizontal perimeter for 1x1 water streams
+        double[] offsets = new double[]{-0.35, 0.35};
+        for (double ox : offsets) {
+            for (double oz : offsets) {
+                Block b = to.clone().add(ox, 0.5, oz).getBlock();
+                if (isLiquidMaterial(b.getType()) || isWaterloggedBlock(b)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private boolean isLiquidMaterial(Material mat) {
+        return mat == Material.WATER || mat == Material.LAVA || mat == Material.BUBBLE_COLUMN ||
+               mat == Material.KELP || mat == Material.KELP_PLANT ||
+               mat == Material.SEAGRASS || mat == Material.TALL_SEAGRASS;
+    }
+
+    private boolean isWaterloggedBlock(Block block) {
+        return block.getBlockData() instanceof Waterlogged wl && wl.isWaterlogged();
+    }
+
     private boolean isPhysicallyOnGround(Player player) {
         if (player.isOnGround()) return true;
 
@@ -222,23 +332,45 @@ public class MovementSecurityListener implements Listener {
         Block feet = loc.getBlock();
         Block below = loc.clone().subtract(0, 0.45, 0).getBlock();
 
-        return feet.getType().isSolid() || below.getType().isSolid();
+        if (feet.getType().isSolid() || below.getType().isSolid()) return true;
+
+        // Check 4 horizontal corners around feet
+        double offset = 0.3;
+        return loc.clone().add(offset, -0.2, 0).getBlock().getType().isSolid() ||
+               loc.clone().add(-offset, -0.2, 0).getBlock().getType().isSolid() ||
+               loc.clone().add(0, -0.2, offset).getBlock().getType().isSolid() ||
+               loc.clone().add(0, -0.2, -offset).getBlock().getType().isSolid();
     }
 
     private boolean isNearClimbable(Location loc) {
-        Block block = loc.getBlock();
-        Material mat = block.getType();
-        if (mat == Material.LADDER || mat == Material.VINE || mat == Material.SCAFFOLDING ||
-            mat == Material.WEEPING_VINES || mat == Material.TWISTING_VINES || mat == Material.COBWEB) {
-            return true;
-        }
-        Block below = loc.clone().subtract(0, 1, 0).getBlock();
-        Material belowMat = below.getType();
-        return belowMat == Material.LADDER || belowMat == Material.VINE || belowMat == Material.SCAFFOLDING;
+        Block feet = loc.getBlock();
+        Block below = loc.clone().subtract(0, 0.8, 0).getBlock();
+        Block head = loc.clone().add(0, 1.2, 0).getBlock();
+
+        return isClimbableMaterial(feet.getType()) ||
+               isClimbableMaterial(below.getType()) ||
+               isClimbableMaterial(head.getType());
     }
 
-    private boolean isLiquid(Material mat) {
-        return mat == Material.WATER || mat == Material.LAVA;
+    private boolean isClimbableMaterial(Material mat) {
+        return mat == Material.LADDER || mat == Material.VINE || mat == Material.SCAFFOLDING ||
+               mat == Material.WEEPING_VINES || mat == Material.WEEPING_VINES_PLANT ||
+               mat == Material.TWISTING_VINES || mat == Material.TWISTING_VINES_PLANT ||
+               mat == Material.COBWEB || mat == Material.CHAIN;
+    }
+
+    private boolean isNearbySolid(Location loc, double radius) {
+        int r = (int) Math.ceil(radius);
+        for (int x = -r; x <= r; x++) {
+            for (int y = -r; y <= r; y++) {
+                for (int z = -r; z <= r; z++) {
+                    if (loc.clone().add(x, y, z).getBlock().getType().isSolid()) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     private boolean isDamageAbsorbing(Block block) {

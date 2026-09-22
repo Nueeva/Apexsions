@@ -83,6 +83,29 @@ public class AntiCheatTest {
         assertTrue(isMalformedCoordinate(0.0, 0.0, Double.NEGATIVE_INFINITY));
     }
 
+    @Test
+    public void testWaterSwimmingGracePeriod() {
+        long now = System.currentTimeMillis();
+        long lastLiquidTime = now - 800L; // 0.8 seconds ago (surfacing from water)
+
+        boolean recentLiquid = (now - lastLiquidTime) < 2500L;
+        assertTrue(recentLiquid, "Player who exited water 800ms ago must be within the grace period");
+
+        // Within grace period, ascending motion (deltaY > 0) is legitimate water leaping
+        double deltaY = 0.35;
+        boolean isAirWalkFlagged = !recentLiquid && deltaY > 0.08;
+        assertFalse(isAirWalkFlagged, "Upward movement within water exit grace period must NOT flag AirWalk");
+
+        // Expired grace period (e.g. 5 seconds after leaving water, hovering in pure air)
+        long expiredLiquidTime = now - 5000L;
+        boolean expiredRecentLiquid = (now - expiredLiquidTime) < 2500L;
+        assertFalse(expiredRecentLiquid);
+
+        int airTicks = 30;
+        boolean flagFlyHack = !expiredRecentLiquid && airTicks > 15 && deltaY > 0.08;
+        assertTrue(flagFlyHack, "Ascending in pure air without liquid or climbable for 30 ticks must be flagged as Fly Hack");
+    }
+
     private boolean isInvalidPitch(float pitch) {
         return pitch > 90.01f || pitch < -90.01f || Float.isNaN(pitch) || Float.isInfinite(pitch);
     }
