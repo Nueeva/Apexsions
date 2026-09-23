@@ -47,8 +47,17 @@ anticheat:
     - amethyst_block
     - trial_spawner
     - vault
+    - ancient_debris
+    - diamond_block
+    - gold_block
+    - iron_block
+    - emerald_block
+    - netherite_block
+    - crafter
+    - chiseled_bookshelf
+    - decorated_pot
     lava-obscures: true
-    max-block-height: 160
+    max-block-height: 320
     replacement-blocks:
     - stone
     - deepslate
