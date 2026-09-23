@@ -153,13 +153,18 @@ def main():
         "port": port,
         "username": username,
         "timeout": 15,
-        "allow_agent": True,
-        "look_for_keys": True,
     }
-    if password and password != "YOUR_SFTP_PASSWORD_HERE":
-        connect_kwargs["password"] = password
     if key_file and os.path.exists(key_file):
         connect_kwargs["key_filename"] = key_file
+        connect_kwargs["look_for_keys"] = False
+        connect_kwargs["allow_agent"] = False
+    elif password and password != "YOUR_SFTP_PASSWORD_HERE":
+        connect_kwargs["password"] = password
+        connect_kwargs["look_for_keys"] = False
+        connect_kwargs["allow_agent"] = False
+    else:
+        connect_kwargs["look_for_keys"] = True
+        connect_kwargs["allow_agent"] = True
 
     try:
         ssh.connect(**connect_kwargs)
