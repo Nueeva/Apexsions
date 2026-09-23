@@ -364,6 +364,13 @@ Tetap terapkan protokol Pre-Push Safety:
 
 Target branch harus diverifikasi sebelum push (`main`).
 
+**Autonomous Hosting SFTP Deploy Mandate:**
+Setiap kali perubahan kode, fitur, atau perbaikan bug pada plugin selesai dilakukan:
+1. Lakukan audit dan verifikasi menyeluruh untuk memastikan **TIDAK ADA error/warning fatal**.
+2. Jalankan targeted build (`powershell -ExecutionPolicy Bypass -File .\Minecraft\build.ps1 <Plugin>`) dan pastikan kompilasi sukses 100%.
+3. Setelah build tervalidasi bebas error, **WAJIB langsung upload update plugin ke panel hosting server** via SFTP (`.\deploy.cmd <Plugin>`).
+4. Sinkronisasikan commit dan push ke GitHub `origin/main` sesuai protokol Git multi-developer.
+
 ---
 
 # 07. Brand Rules

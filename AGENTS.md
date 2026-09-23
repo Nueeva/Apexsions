@@ -215,6 +215,13 @@ Before pushing, fetch again and check for newly arrived remote commits.
 ### Automatic Push Rule
 Per repository mandate, once changes are validated and committed, automatically push commits to `origin/main` using safe push practices (fetch, rebase if needed, verify diff, and push without `--force`).
 
+### Automatic Hosting SFTP Deploy Mandate
+Whenever code or configuration for any plugin is modified, fixed, or updated:
+1. Conduct thorough pre-build validation (syntax check, logic verification, zero errors/warnings).
+2. Run targeted compilation (`powershell -ExecutionPolicy Bypass -File .\Minecraft\build.ps1 <Plugin>`) and confirm 100% build success.
+3. Automatically deploy/upload the updated JAR directly to the hosting panel via SFTP (`.\deploy.cmd <Plugin>`).
+4. Commit and push the verified changes to `origin/main`.
+
 ---
 
 # 06. Existing Architecture First
