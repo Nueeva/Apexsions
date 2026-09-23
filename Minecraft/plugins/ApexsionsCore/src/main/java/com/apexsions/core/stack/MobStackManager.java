@@ -8,14 +8,35 @@ import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.World;
 import org.bukkit.entity.Ageable;
+import org.bukkit.entity.Axolotl;
 import org.bukkit.entity.Boss;
+import org.bukkit.entity.Cat;
+import org.bukkit.entity.Creeper;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.ExperienceOrb;
+import org.bukkit.entity.Fox;
+import org.bukkit.entity.Frog;
+import org.bukkit.entity.Horse;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Llama;
 import org.bukkit.entity.Mob;
+import org.bukkit.entity.MushroomCow;
+import org.bukkit.entity.Parrot;
+import org.bukkit.entity.Piglin;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Rabbit;
+import org.bukkit.entity.Sheep;
+import org.bukkit.entity.Slime;
 import org.bukkit.entity.Tameable;
+import org.bukkit.entity.Villager;
+import org.bukkit.entity.Wolf;
+import org.bukkit.entity.Zombie;
+import org.bukkit.entity.ZombieVillager;
 import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.scheduler.BukkitTask;
@@ -37,8 +58,8 @@ import java.util.logging.Level;
  * stack counter in its PersistentDataContainer. Fewer rendered entities keeps
  * server TPS stable and helps low-end Bedrock clients hold their FPS.
  *
- * Merge is purely cosmetic for gameplay: killing a stacked mob removes one unit
- * from the stack and spawns the remaining units, so loot rates are unchanged.
+ * Preserves vanilla drops, XP rates, mob traits, variants, baby statuses, and
+ * prevents cross-elevation or chunk sweep elevation anomalies.
  */
 public class MobStackManager {
 
@@ -54,6 +75,10 @@ public class MobStackManager {
     public MobStackManager(@NotNull ApexsionsCorePlugin plugin) {
         this.plugin = plugin;
         this.countKey = new NamespacedKey(plugin, "stack_count");
+    }
+
+    public ApexsionsCorePlugin getPlugin() {
+        return plugin;
     }
 
     // --- Configuration ---
@@ -76,6 +101,18 @@ public class MobStackManager {
 
     public boolean respectCustomNames() {
         return plugin.getConfig().getBoolean("mob-stacking.respect-custom-names", true);
+    }
+
+    public boolean isKillAllOnSneak() {
+        return plugin.getConfig().getBoolean("mob-stacking.kill-all-on-sneak", true);
+    }
+
+    public boolean isKillStackOnFall() {
+        return plugin.getConfig().getBoolean("mob-stacking.kill-stack-on-fall", true);
+    }
+
+    public boolean isInstantKillOnVoid() {
+        return plugin.getConfig().getBoolean("mob-stacking.instant-kill-on-void", true);
     }
 
     public long getScanIntervalTicks() {
@@ -181,28 +218,36 @@ public class MobStackManager {
         }
     }
 
+    public String formatTypeName(@NotNull EntityType type) {
+        String pretty = type.name().toLowerCase(Locale.ROOT).replace('_', ' ');
+        if (!pretty.isEmpty()) {
+            return Character.toUpperCase(pretty.charAt(0)) + pretty.substring(1);
+        }
+        return pretty;
+    }
+
     private Component buildName(@NotNull EntityType type, int count) {
         String raw = plugin.getConfig().getString("mob-stacking.display.name-format",
                 "<gray>%type% <yellow>[x%count%]</yellow>");
         if (raw == null) {
             raw = "<gray>%type% <yellow>[x%count%]</yellow>";
         }
-        String pretty = type.name().toLowerCase(Locale.ROOT).replace('_', ' ');
-        if (!pretty.isEmpty()) {
-            pretty = Character.toUpperCase(pretty.charAt(0)) + pretty.substring(1);
-        }
+        String pretty = formatTypeName(type);
         String text = raw.replace("%type%", pretty).replace("%count%", String.valueOf(count));
         return mm.deserialize(text);
     }
 
     public boolean isStackable(@NotNull Entity entity) {
+        if (!entity.isValid() || entity.isDead()) {
+            return false;
+        }
         if (!(entity instanceof Mob mob) || entity instanceof Boss) {
             return false;
         }
-        if (entity instanceof Player || entity instanceof Tameable tameable && tameable.isTamed()) {
+        if (entity instanceof Player || (entity instanceof Tameable tameable && tameable.isTamed())) {
             return false;
         }
-        if (!mob.getPassengers().isEmpty()) {
+        if (!mob.getPassengers().isEmpty() || mob.isInsideVehicle()) {
             return false;
         }
         if (mob.getEquipment() != null) {
@@ -212,6 +257,9 @@ public class MobStackManager {
                 }
             }
             if (mob.getEquipment().getItemInMainHand() != null && !mob.getEquipment().getItemInMainHand().getType().isAir()) {
+                return false;
+            }
+            if (mob.getEquipment().getItemInOffHand() != null && !mob.getEquipment().getItemInOffHand().getType().isAir()) {
                 return false;
             }
         }
@@ -224,14 +272,180 @@ public class MobStackManager {
         return isWorldEnabled(mob.getWorld()) && !isIgnoredType(mob.getType());
     }
 
-    private boolean sameStackGroup(@NotNull Entity a, @NotNull Entity b) {
+    public boolean sameStackGroup(@NotNull Entity a, @NotNull Entity b) {
+        if (!a.isValid() || a.isDead() || !b.isValid() || b.isDead()) {
+            return false;
+        }
         if (a.getType() != b.getType()) {
             return false;
         }
-        if (a instanceof Ageable aa && b instanceof Ageable bb && aa.isAdult() != bb.isAdult()) {
+        if (!isStackable(a) || !isStackable(b)) {
             return false;
         }
-        return isStackable(b);
+        if (a instanceof Ageable aa && b instanceof Ageable bb) {
+            if (aa.isAdult() != bb.isAdult()) {
+                return false;
+            }
+        }
+        if (a instanceof Zombie za && b instanceof Zombie zb) {
+            if (za.isBaby() != zb.isBaby()) {
+                return false;
+            }
+        }
+        if (a instanceof Piglin pa && b instanceof Piglin pb) {
+            if (pa.isBaby() != pb.isBaby()) {
+                return false;
+            }
+        }
+        if (a instanceof Slime sa && b instanceof Slime sb) {
+            if (sa.getSize() != sb.getSize()) {
+                return false;
+            }
+        }
+        if (a instanceof Sheep sa && b instanceof Sheep sb) {
+            if (sa.getColor() != sb.getColor() || sa.isSheared() != sb.isSheared()) {
+                return false;
+            }
+        }
+        if (a instanceof MushroomCow ma && b instanceof MushroomCow mb) {
+            if (ma.getVariant() != mb.getVariant()) {
+                return false;
+            }
+        }
+        if (a instanceof Creeper ca && b instanceof Creeper cb) {
+            if (ca.isPowered() != cb.isPowered()) {
+                return false;
+            }
+        }
+        if (a instanceof Villager va && b instanceof Villager vb) {
+            if (va.getVillagerType() != vb.getVillagerType() || va.getProfession() != vb.getProfession() || va.getVillagerLevel() != vb.getVillagerLevel()) {
+                return false;
+            }
+        }
+        if (a instanceof ZombieVillager zva && b instanceof ZombieVillager zvb) {
+            if (zva.getVillagerType() != zvb.getVillagerType() || zva.getVillagerProfession() != zvb.getVillagerProfession()) {
+                return false;
+            }
+        }
+        if (a instanceof Parrot pa && b instanceof Parrot pb) {
+            if (pa.getVariant() != pb.getVariant()) {
+                return false;
+            }
+        }
+        if (a instanceof Cat ca && b instanceof Cat cb) {
+            if (ca.getCatType() != cb.getCatType() || ca.getCollarColor() != cb.getCollarColor()) {
+                return false;
+            }
+        }
+        if (a instanceof Wolf wa && b instanceof Wolf wb) {
+            if (wa.getCollarColor() != wb.getCollarColor() || wa.getVariant() != wb.getVariant()) {
+                return false;
+            }
+        }
+        if (a instanceof Horse ha && b instanceof Horse hb) {
+            if (ha.getColor() != hb.getColor() || ha.getStyle() != hb.getStyle()) {
+                return false;
+            }
+        }
+        if (a instanceof Llama la && b instanceof Llama lb) {
+            if (la.getColor() != lb.getColor()) {
+                return false;
+            }
+        }
+        if (a instanceof Fox fa && b instanceof Fox fb) {
+            if (fa.getFoxType() != fb.getFoxType()) {
+                return false;
+            }
+        }
+        if (a instanceof Frog fa && b instanceof Frog fb) {
+            if (fa.getVariant() != fb.getVariant()) {
+                return false;
+            }
+        }
+        if (a instanceof Axolotl aa && b instanceof Axolotl ab) {
+            if (aa.getVariant() != ab.getVariant()) {
+                return false;
+            }
+        }
+        if (a instanceof Rabbit ra && b instanceof Rabbit rb) {
+            if (ra.getRabbitType() != rb.getRabbitType()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Replicates all attributes, color, baby status, and size from a deceased or split mob
+     * onto its newly spawned replacement entity.
+     */
+    public void copyEntityState(@NotNull LivingEntity source, @NotNull LivingEntity target) {
+        if (source instanceof Ageable sa && target instanceof Ageable ta) {
+            if (sa.isAdult()) {
+                ta.setAdult();
+            } else {
+                ta.setBaby();
+            }
+            ta.setAgeLock(sa.getAgeLock());
+        }
+        if (source instanceof Zombie sz && target instanceof Zombie tz) {
+            tz.setBaby(sz.isBaby());
+        }
+        if (source instanceof Piglin sp && target instanceof Piglin tp) {
+            tp.setBaby(sp.isBaby());
+        }
+        if (source instanceof Slime ss && target instanceof Slime ts) {
+            ts.setSize(ss.getSize());
+        }
+        if (source instanceof Sheep ss && target instanceof Sheep ts) {
+            ts.setColor(ss.getColor());
+            ts.setSheared(ss.isSheared());
+        }
+        if (source instanceof MushroomCow sm && target instanceof MushroomCow tm) {
+            tm.setVariant(sm.getVariant());
+        }
+        if (source instanceof Creeper sc && target instanceof Creeper tc) {
+            tc.setPowered(sc.isPowered());
+        }
+        if (source instanceof Villager sv && target instanceof Villager tv) {
+            tv.setVillagerType(sv.getVillagerType());
+            tv.setProfession(sv.getProfession());
+            tv.setVillagerLevel(sv.getVillagerLevel());
+        }
+        if (source instanceof ZombieVillager szv && target instanceof ZombieVillager tzv) {
+            tzv.setVillagerType(szv.getVillagerType());
+            tzv.setVillagerProfession(szv.getVillagerProfession());
+        }
+        if (source instanceof Parrot sp && target instanceof Parrot tp) {
+            tp.setVariant(sp.getVariant());
+        }
+        if (source instanceof Cat sc && target instanceof Cat tc) {
+            tc.setCatType(sc.getCatType());
+            tc.setCollarColor(sc.getCollarColor());
+        }
+        if (source instanceof Wolf sw && target instanceof Wolf tw) {
+            tw.setCollarColor(sw.getCollarColor());
+            tw.setVariant(sw.getVariant());
+        }
+        if (source instanceof Horse sh && target instanceof Horse th) {
+            th.setColor(sh.getColor());
+            th.setStyle(sh.getStyle());
+        }
+        if (source instanceof Llama sl && target instanceof Llama tl) {
+            tl.setColor(sl.getColor());
+        }
+        if (source instanceof Fox sf && target instanceof Fox tf) {
+            tf.setFoxType(sf.getFoxType());
+        }
+        if (source instanceof Frog sf && target instanceof Frog tf) {
+            tf.setVariant(sf.getVariant());
+        }
+        if (source instanceof Axolotl sa && target instanceof Axolotl ta) {
+            ta.setVariant(sa.getVariant());
+        }
+        if (source instanceof Rabbit sr && target instanceof Rabbit tr) {
+            tr.setRabbitType(sr.getRabbitType());
+        }
     }
 
     // --- Merge operations ---
@@ -244,6 +458,9 @@ public class MobStackManager {
             return;
         }
         if (!mergeableReason(reason) || !(spawned instanceof Mob)) {
+            return;
+        }
+        if (!spawned.isValid() || spawned.isDead()) {
             return;
         }
         if (getStackCount(spawned) > 1) {
@@ -275,6 +492,51 @@ public class MobStackManager {
         }
     }
 
+    public boolean isVoidDeath(@NotNull LivingEntity entity) {
+        Location loc = entity.getLocation();
+        World world = loc.getWorld();
+        if (world != null && loc.getY() < world.getMinHeight()) {
+            return true;
+        }
+        EntityDamageEvent lastDamage = entity.getLastDamageCause();
+        return lastDamage != null && lastDamage.getCause() == EntityDamageEvent.DamageCause.VOID;
+    }
+
+    /**
+     * Scales loot drops and experience for the entire remaining stack when bulk-slain.
+     */
+    public void dropRemainingLootAndExp(@NotNull LivingEntity dead, int remainingUnits, @NotNull EntityDeathEvent event) {
+        if (remainingUnits <= 0) {
+            return;
+        }
+        // Scale dropped XP
+        int baseExp = event.getDroppedExp();
+        if (baseExp > 0) {
+            event.setDroppedExp(baseExp * (remainingUnits + 1));
+        }
+
+        // Scale drops
+        List<ItemStack> drops = event.getDrops();
+        if (!drops.isEmpty()) {
+            List<ItemStack> extraDrops = new ArrayList<>();
+            for (ItemStack drop : drops) {
+                if (drop == null || drop.getType().isAir()) {
+                    continue;
+                }
+                int totalToAdd = drop.getAmount() * remainingUnits;
+                int maxStack = drop.getMaxStackSize();
+                while (totalToAdd > 0) {
+                    int batch = Math.min(totalToAdd, maxStack);
+                    ItemStack clone = drop.clone();
+                    clone.setAmount(batch);
+                    extraDrops.add(clone);
+                    totalToAdd -= batch;
+                }
+            }
+            drops.addAll(extraDrops);
+        }
+    }
+
     /**
      * Called from EntityDeathEvent. When a stacked mob dies, removes one unit and
      * re-spawns the remainder so loot/XP rates stay vanilla-equivalent.
@@ -293,19 +555,28 @@ public class MobStackManager {
         if (world == null) {
             return;
         }
+        if (isInstantKillOnVoid() && isVoidDeath(dead)) {
+            return;
+        }
+
         Bukkit.getScheduler().runTask(plugin, () -> {
             if (!world.isChunkLoaded(loc.getBlockX() >> 4, loc.getBlockZ() >> 4)) {
-                return;
+                world.getChunkAt(loc);
             }
             try {
-                Entity replacement = world.spawnEntity(loc, dead.getType());
-                if (replacement instanceof LivingEntity) {
-                    setStackCount(replacement, remaining);
+                Class<? extends Entity> entityClass = dead.getType().getEntityClass();
+                if (entityClass != null && Mob.class.isAssignableFrom(entityClass)) {
+                    @SuppressWarnings("unchecked")
+                    Class<? extends Mob> mobClass = (Class<? extends Mob>) entityClass;
+                    // Consumer executes BEFORE CreatureSpawnEvent, ensuring PDC count and state are set.
+                    world.spawn(loc, mobClass, CreatureSpawnEvent.SpawnReason.CUSTOM, rep -> {
+                        setStackCount(rep, remaining);
+                        copyEntityState(dead, rep);
+                    });
                 }
             } catch (Throwable t) {
                 plugin.getLogger().log(Level.WARNING, "Failed spawning mob stack replacement for " + dead.getType(), t);
-                // Do not lose the remainder silently: drop experience to offset the lost units.
-                world.spawn(loc, org.bukkit.entity.ExperienceOrb.class, orb -> orb.setExperience(remaining));
+                world.spawn(loc, ExperienceOrb.class, orb -> orb.setExperience(remaining));
             }
         });
     }
@@ -314,7 +585,7 @@ public class MobStackManager {
 
     /**
      * Batched, capped sweep that merges already-existing mob crowds (large farms
-     * that predate the feature). Groups entities per chunk to stay near O(n).
+     * that predate the feature). Groups entities per chunk with strict radius checks.
      */
     private void runSweep() {
         if (!isEnabled()) {
@@ -322,19 +593,18 @@ public class MobStackManager {
         }
         int budget = getScanEntitiesPerPass();
         int processed = 0;
+        double radius = getMergeRadius();
 
         for (World world : Bukkit.getWorlds()) {
             if (!isWorldEnabled(world)) {
                 continue;
             }
             List<LivingEntity> candidates = new ArrayList<>();
-            for (Entity entity : world.getEntities()) {
-                if (!(entity instanceof LivingEntity living) || entity instanceof Player) {
+            for (LivingEntity living : world.getLivingEntities()) {
+                if (living instanceof Player || !living.isValid() || living.isDead()) {
                     continue;
                 }
                 candidates.add(living);
-                // Budget is checked while scanning so we never materialize a huge
-                // candidate list on entity-dense worlds.
                 processed++;
                 if (processed >= budget) {
                     break;
@@ -352,7 +622,7 @@ public class MobStackManager {
             }
 
             for (List<LivingEntity> group : byChunk.values()) {
-                mergeGroup(group);
+                mergeGroup(group, radius);
             }
 
             if (processed >= budget) {
@@ -361,7 +631,7 @@ public class MobStackManager {
         }
     }
 
-    private void mergeGroup(@NotNull List<LivingEntity> group) {
+    private void mergeGroup(@NotNull List<LivingEntity> group, double radius) {
         if (group.size() < 2) {
             return;
         }
@@ -380,37 +650,65 @@ public class MobStackManager {
             for (LivingEntity living : sameType) {
                 if (living instanceof Ageable ageable && !ageable.isAdult()) {
                     babies.add(living);
+                } else if (living instanceof Zombie zombie && zombie.isBaby()) {
+                    babies.add(living);
+                } else if (living instanceof Piglin piglin && piglin.isBaby()) {
+                    babies.add(living);
                 } else {
                     adults.add(living);
                 }
             }
-            mergeList(adults);
-            mergeList(babies);
+            mergeList(adults, radius);
+            mergeList(babies, radius);
         }
     }
 
-    private void mergeList(@NotNull List<LivingEntity> list) {
+    private void mergeList(@NotNull List<LivingEntity> list, double radius) {
         if (list.size() < 2) {
             return;
         }
-        LivingEntity base = list.get(0);
-        int count = getStackCount(base);
-        for (int i = 1; i < list.size(); i++) {
-            LivingEntity other = list.get(i);
-            if (!sameStackGroup(base, other)) {
+        double radiusSq = radius * radius;
+        int maxStack = getMaxStackSize();
+
+        for (int i = 0; i < list.size(); i++) {
+            LivingEntity base = list.get(i);
+            if (!base.isValid() || base.isDead()) {
                 continue;
             }
-            if (count >= getMaxStackSize()) {
-                break;
-            }
-            int add = getStackCount(other);
-            if (count + add > getMaxStackSize()) {
+            int count = getStackCount(base);
+            if (count >= maxStack) {
                 continue;
             }
-            count += add;
-            other.remove();
+
+            for (int j = i + 1; j < list.size(); j++) {
+                LivingEntity other = list.get(j);
+                if (!other.isValid() || other.isDead()) {
+                    continue;
+                }
+                // Strict Euclidean distance check prevents cross-elevation or cross-room merging
+                if (base.getLocation().distanceSquared(other.getLocation()) > radiusSq) {
+                    continue;
+                }
+                if (!sameStackGroup(base, other)) {
+                    continue;
+                }
+                int otherCount = getStackCount(other);
+                int space = maxStack - count;
+                if (space <= 0) {
+                    break;
+                }
+
+                if (otherCount <= space) {
+                    count += otherCount;
+                    other.remove();
+                } else {
+                    count += space;
+                    setStackCount(other, otherCount - space);
+                    break;
+                }
+            }
+            setStackCount(base, count);
         }
-        setStackCount(base, count);
     }
 
 }

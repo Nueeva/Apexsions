@@ -168,6 +168,12 @@ mob-stacking:
     - CUSTOM
     - SPAWNER_EGG
     - DISPENSE_EGG
+  # Membunuh seluruh sisa stack saat pemain berjongkok (sneak/shift) memberi pukulan maut
+  kill-all-on-sneak: true
+  # Mob grinder: jika mob mati karena jatuh (fall damage), seluruh sisa stack mati & drop loot/XP
+  kill-stack-on-fall: true
+  # Hentikan loop spawn pengganti jika mob mati jatuh ke void
+  instant-kill-on-void: true
   display:
     name-format: "<gray>%type% <yellow>[x%count%]</yellow>"
 
