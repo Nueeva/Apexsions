@@ -443,9 +443,11 @@ Ekosistem Apexsions mengintegrasikan server Minecraft (Paper 26.2) dengan portal
    - **Notifications Hub (`/admin/notifications`)**: Pengiriman alert insiden kritis dengan proteksi deduplikasi anti-spam dan cooldown.
    - **Safe Automation Hub (`/admin/automation`)**: Orkestrasi kebijakan otomatis dengan *Approval Gate* wajib untuk tindakan sensitif (reload, dsb.).
    - **Unified Audit Log (`/admin/audit-logs`)**: Rekam jejak immutable dari seluruh aksi administratif web maupun in-game.
-2. **Arsitektur Antrean Terpercaya (Bridge Action Reliability)**:
+2. **Arsitektur Antrean Terpercaya & Queue Reliability**:
    - Setiap aksi dari dashboard diterbitkan dengan `action_id` unik server-generated.
    - Whitelisted command templates (bukan raw terminal arbitrary) mencegah injeksi perintah berbahaya.
+   - **Concurrency Locking & Lease Time**: Transaksi antrean diamankan via `DB::transaction()` dengan pessimistic lock (`lockForUpdate()`) dan batas waktu *in-flight lease* 60 detik untuk mencegah duplikasi eksekusi pada setup multi-server atau multi-worker.
+   - **Dead-Lettering Queue Protection**: Antrean yang macet/gagal lebih dari 7 hari atau melebihi batas retry otomatis dialihkan ke status `FAILED` (*Dead-Lettered*) agar tidak menghambat aliran antrean (*head-of-line starvation*).
    - **Multi-Command Execution Engine**: Antrean mendukung compound commands (seperti penetapan rank LuckPerms dan permission flags) dengan splitting regex `[;\n]+`. Setiap baris perintah dieksekusi secara sekuensial di Bukkit main-thread, menghilangkan kegagalan konsol Minecraft akibat karakter titik koma (`;`).
    - **Native Tellraw & Alert Interceptor**: Mengintersepsi perintah `tellraw <player> <json>` dan `minecraft:tellraw <player> <json>` via Kyori Adventure `GsonComponentSerializer`. Untuk pemain online, pesan dikirimkan ke chat dengan efek suara `BLOCK_NOTE_BLOCK_CHIME`. Untuk pemain offline, delivery ditandai `DELIVERED` secara anggun tanpa menimbulkan deadlock antrean.
    - Daemon `WebBridgeService` in-game mem-poll antrean `/api/apexsions-bridge/deliveries/pending` dan melaporkan status keberhasilan eksekusi (`DELIVERED` / `FAILED`) secara asinkron.

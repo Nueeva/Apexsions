@@ -36,6 +36,34 @@ Bagi AI Agent atau developer yang melanjutkan pekerjaan di repositori ini, perha
 
 ---
 
+## 🌐 Apexsions Web Platform & WebBridge Reliability Milestone [v1.3.8]
+> **Periode Pengembangan:** 23 September 2026 | **Status:** Implemented, Tested, Live Verified & Documented
+
+### 📋 Ikhtisar Audit, Mitigasi Kerentanan & Pengerasan Logika WebBridge
+Berdasarkan audit komprehensif terhadap seluruh arsitektur web platform (`Website/plugins/apexsions-bridge`), dilakukan serangkaian perbaikan logika penting dan pengerasan integritas data:
+
+1. **Mitigasi DoS & Database Flooding via Profile Inspection (`PublicProfileController.php`):**
+   - Mengeliminasi pembuatan baris akun otomatis (`MinecraftAccount::create`) dari permintaan HTTP GET publik dengan format UUID acak.
+   - Route `/player/{identifier}` kini strictly read-only. Jika identitas tidak ditemukan pada database maupun live cache telemetri server aktif, request langsung mengembalikan HTTP 404 tanpa menyentuh penulisan database.
+   - Menambahkan penjagaan `is_numeric($identifier)` sebelum query `orWhere('id', ...)` guna mencegah type coercion error pada database engine.
+
+2. **Eliminasi Race Condition & Head-of-Line Starvation Antrean (`LinkVerificationController.php`):**
+   - Membungkus endpoint `getPendingDeliveries()` ke dalam `DB::transaction()` dengan klausa `lockForUpdate()` untuk mencegah pembacaan dan eksekusi antrean yang sama oleh worker/poller konkuren.
+   - Menambahkan mekanisme auto-fail (dead-lettering) untuk antrean berstatus `PENDING` atau `PROCESSING` yang telah tertahan lebih dari 7 hari (`created_at < now() - 7 days`), mencegah deadlock antrean aktif.
+   - Memperbaiki logika snapshot pruning pada `syncClaims()` dan `syncBounties()` sehingga snapshot kosong (`[]`) secara eksplisit membersihkan seluruh data usang dari database.
+
+3. **Throttling Sinkronisasi Pemain & Stabilisasi Idempotensi (`PlayerSyncController.php`):**
+   - Menerapkan cache throttle 60 detik (`apexsions.trials_swept_at`) untuk pembersihan rank trial kedaluwarsa (`RankService::checkAndExpireTrials()`), memangkas beban query berulang saat traffic pemain padat.
+   - Menghapus komponen `time()` pada `idempotency_key` sinkronisasi rank otomatis dan menambahkan cooldown 5 menit untuk mencegah command redelivery spam.
+
+4. **Pengamanan Webhook Callback Voting (`VoteController.php`):**
+   - Menambahkan verifikasi API key/token platform terhadap kunci situs voting atau kunci master server bridge pada route `/api/apexsions-bridge/vote/callback/{siteSlug}` untuk mencegah pemalsuan vote.
+
+5. **Sinkronisasi Status Audit Tindakan Administratif (`ServerOpsService.php`):**
+   - Memastikan status audit log untuk aksi server operasional bertransisi menjadi `SUCCESS` saat delivery berhasil dimasukkan ke antrean.
+
+---
+
 ## 🛡️ Apexsions Security & Anti-Cheat Suite (Fly Hack, Auth Bypass, Combat Guard & Packet Exploits) Milestone [v1.3.7]
 > **Periode Pengembangan:** 21 September 2026 | **Status:** Implemented, Tested, Live Verified & Documented
 

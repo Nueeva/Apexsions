@@ -52,10 +52,13 @@ systemctl reload nginx
 - **Protokol:** SFTP (`sftp://falcon04.jagoanhosting.id:2022`)
 - **Runtime:** Paper API (Minecraft 26.2), Java 21 LTS.
 
-### C. WebBridge API & Security Token
+### C. WebBridge API, Security Token & Queue Reliability
 - **Endpoint:** `http://web.apexsions.my.id/api/apexsions-bridge`
 - **Secret Key:** `apexsions_bridge_key_live_2026`
-- **Player Sync API:** `POST /api/apexsions-bridge/sync-player`
+- **Player Sync API:** `POST /api/apexsions-bridge/sync-player` (Authoritative gateway pendaftaran & pembaruan statistik akun Minecraft, dilengkapi cache throttle 60s untuk pembersihan trial dan cooldown 5 menit untuk pengiriman perintah sinkronisasi rank).
+- **Delivery Queue Lease & Concurrency Lock:** Endpoint `/api/apexsions-bridge/deliveries/pending` dibungkus dalam `DB::transaction()` dengan `lockForUpdate()` guna menjamin worker konkuren tidak membaca atau mengeksekusi batch instruksi yang sama.
+- **Dead-Lettering Policy:** Antrean berstatus `PENDING` atau `PROCESSING` yang tertahan lebih dari 7 hari otomatis ditandai `FAILED` agar tidak memblokir antrean aktif (mencegah head-of-line starvation).
+- **Public Profile Security:** Route `/player/{identifier}` strictly read-only. Permintaan HTTP GET dengan UUID acak tidak lagi menyisipkan record akun baru ke database guna memitigasi serangan DoS / database flooding.
 - **Konfigurasi Lokal Minecraft:** `Minecraft/plugins/ApexsionsCore/src/main/resources/config.yml` (`web-bridge`)
 
 ### D. BlueMap 3D Interactive Server Map
