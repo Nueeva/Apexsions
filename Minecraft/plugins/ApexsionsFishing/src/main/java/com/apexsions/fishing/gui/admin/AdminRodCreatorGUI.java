@@ -128,7 +128,9 @@ public class AdminRodCreatorGUI implements InventoryHolder {
                 List.of(
                         "<gray>Nilai Saat Ini: <yellow><bold>+" + (int) Math.round(luckBonus * 100) + "%</bold></yellow></gray>",
                         "",
-                        "<yellow>▶ Klik untuk buka Dialog Input Angka (0% - 500%)</yellow>"
+                        "<yellow>● Klik Kiri:</yellow> <white>Buka Dialog Native GUI (0% - 500%)</white>",
+                        "<yellow>● Klik Kanan:</yellow> <white>Tambah Cepat (+10%)</white>",
+                        "<yellow>● Shift + Kanan:</yellow> <white>Kurang Cepat (-10%)</white>"
                 )));
 
         // 4. Weight Bonus Slot 12
@@ -137,7 +139,9 @@ public class AdminRodCreatorGUI implements InventoryHolder {
                 List.of(
                         "<gray>Nilai Saat Ini: <gold><bold>+" + (int) Math.round(weightBonus * 100) + "%</bold></gold></gray>",
                         "",
-                        "<yellow>▶ Klik untuk buka Dialog Input Angka (0% - 500%)</yellow>"
+                        "<yellow>● Klik Kiri:</yellow> <white>Buka Dialog Native GUI (0% - 500%)</white>",
+                        "<yellow>● Klik Kanan:</yellow> <white>Tambah Cepat (+10%)</white>",
+                        "<yellow>● Shift + Kanan:</yellow> <white>Kurang Cepat (-10%)</white>"
                 )));
 
         // 5. Catch Speed Slot 14
@@ -146,7 +150,9 @@ public class AdminRodCreatorGUI implements InventoryHolder {
                 List.of(
                         "<gray>Waktu Sambaran: <aqua><bold>" + catchSpeedSeconds + " Detik</bold></aqua></gray>",
                         "",
-                        "<yellow>▶ Klik untuk buka Dialog Input Durasi (3 - 120 Detik)</yellow>"
+                        "<yellow>● Klik Kiri:</yellow> <white>Buka Dialog Native GUI (3 - 120s)</white>",
+                        "<yellow>● Klik Kanan:</yellow> <white>Lebih Cepat (-1 Detik)</white>",
+                        "<yellow>● Shift + Kanan:</yellow> <white>Lebih Lambat (+5 Detik)</white>"
                 )));
 
         // 6. Syarat Minimal Level Slot 15
@@ -155,7 +161,9 @@ public class AdminRodCreatorGUI implements InventoryHolder {
                 List.of(
                         "<gray>Syarat Level: <gold><bold>Level " + (minLevel > 0 ? minLevel + "+" : "Bebas (0)") + "</bold></gold></gray>",
                         "",
-                        "<yellow>▶ Klik untuk buka Dialog Input Level (0 = Bebas)</yellow>"
+                        "<yellow>● Klik Kiri:</yellow> <white>Buka Dialog Native GUI (0 = Bebas)</white>",
+                        "<yellow>● Klik Kanan:</yellow> <white>Tambah Level (+5)</white>",
+                        "<yellow>● Shift + Kanan:</yellow> <white>Kurang Level (-5)</white>"
                 )));
 
         // 7. Unbreakable Toggle Slot 16
@@ -173,7 +181,9 @@ public class AdminRodCreatorGUI implements InventoryHolder {
                 List.of(
                         "<gray>Model Data ID: <yellow><bold>" + customModelData + "</bold></yellow></gray>",
                         "",
-                        "<yellow>▶ Klik untuk buka Dialog Input Custom Model Data</yellow>"
+                        "<yellow>● Klik Kiri:</yellow> <white>Buka Dialog Native GUI</white>",
+                        "<yellow>● Klik Kanan:</yellow> <white>Tambah (+1)</white>",
+                        "<yellow>● Shift + Kanan:</yellow> <white>Reset ke 0</white>"
                 )));
 
         // 9. Enchants Slot 29
@@ -271,80 +281,112 @@ public class AdminRodCreatorGUI implements InventoryHolder {
                 render();
             }
             case SLOT_LUCK -> {
-                player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1.0f, 1.0f);
-                FishingInputGUI.openNumeric(
-                        plugin,
-                        player,
-                        "Pengali Keberuntungan (Luck)",
-                        "Masukkan bonus persentase keberuntungan pancingan:",
-                        (int) Math.round(luckBonus * 100),
-                        0,
-                        500,
-                        val -> {
-                            luckBonus = val / 100.0;
-                            player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.4f);
-                            player.sendMessage(mm.deserialize("<green>✓ Luck bonus berhasil diatur ke <yellow>+" + val + "%</yellow>!</green>"));
-                            open();
-                        },
-                        this::open
-                );
+                if (click.isRightClick()) {
+                    int delta = click.isShiftClick() ? -10 : 10;
+                    int cur = (int) Math.round(luckBonus * 100);
+                    int nxt = Math.clamp(cur + delta, 0, 500);
+                    luckBonus = nxt / 100.0;
+                    player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1.0f, delta > 0 ? 1.4f : 0.8f);
+                    render();
+                } else {
+                    player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1.0f, 1.0f);
+                    FishingInputGUI.openNumeric(
+                            plugin,
+                            player,
+                            "Pengali Keberuntungan (Luck)",
+                            "Masukkan bonus persentase keberuntungan pancingan:",
+                            (int) Math.round(luckBonus * 100),
+                            0,
+                            500,
+                            val -> {
+                                luckBonus = val / 100.0;
+                                player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.4f);
+                                player.sendMessage(mm.deserialize("<green>✓ Luck bonus berhasil diatur ke <yellow>+" + val + "%</yellow>!</green>"));
+                                open();
+                            },
+                            this::open
+                    );
+                }
             }
             case SLOT_WEIGHT -> {
-                player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1.0f, 1.0f);
-                FishingInputGUI.openNumeric(
-                        plugin,
-                        player,
-                        "Pengali Bobot Ikan (Weight)",
-                        "Masukkan bonus persentase bobot ikan yang ditangkap:",
-                        (int) Math.round(weightBonus * 100),
-                        0,
-                        500,
-                        val -> {
-                            weightBonus = val / 100.0;
-                            player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.4f);
-                            player.sendMessage(mm.deserialize("<green>✓ Weight bonus berhasil diatur ke <gold>+" + val + "%</gold>!</green>"));
-                            open();
-                        },
-                        this::open
-                );
+                if (click.isRightClick()) {
+                    int delta = click.isShiftClick() ? -10 : 10;
+                    int cur = (int) Math.round(weightBonus * 100);
+                    int nxt = Math.clamp(cur + delta, 0, 500);
+                    weightBonus = nxt / 100.0;
+                    player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1.0f, delta > 0 ? 1.4f : 0.8f);
+                    render();
+                } else {
+                    player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1.0f, 1.0f);
+                    FishingInputGUI.openNumeric(
+                            plugin,
+                            player,
+                            "Pengali Bobot Ikan (Weight)",
+                            "Masukkan bonus persentase bobot ikan yang ditangkap:",
+                            (int) Math.round(weightBonus * 100),
+                            0,
+                            500,
+                            val -> {
+                                weightBonus = val / 100.0;
+                                player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.4f);
+                                player.sendMessage(mm.deserialize("<green>✓ Weight bonus berhasil diatur ke <gold>+" + val + "%</gold>!</green>"));
+                                open();
+                            },
+                            this::open
+                    );
+                }
             }
             case SLOT_SPEED -> {
-                player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1.0f, 1.0f);
-                FishingInputGUI.openNumeric(
-                        plugin,
-                        player,
-                        "Kecepatan Sambaran Kail (Strike Speed)",
-                        "Masukkan durasi sambaran dalam satuan detik (3 s/d 120):",
-                        catchSpeedSeconds,
-                        3,
-                        120,
-                        val -> {
-                            catchSpeedSeconds = val;
-                            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_HAT, 1.0f, 1.4f);
-                            player.sendMessage(mm.deserialize("<green>✓ Kecepatan sambaran berhasil diatur ke <aqua>" + val + " Detik</aqua>!</green>"));
-                            open();
-                        },
-                        this::open
-                );
+                if (click.isRightClick()) {
+                    int delta = click.isShiftClick() ? 5 : -1;
+                    catchSpeedSeconds = Math.clamp(catchSpeedSeconds + delta, 3, 120);
+                    player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_HAT, 1.0f, delta < 0 ? 1.4f : 0.8f);
+                    render();
+                } else {
+                    player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1.0f, 1.0f);
+                    FishingInputGUI.openNumeric(
+                            plugin,
+                            player,
+                            "Kecepatan Sambaran Kail (Strike Speed)",
+                            "Masukkan durasi sambaran dalam satuan detik (3 s/d 120):",
+                            catchSpeedSeconds,
+                            3,
+                            120,
+                            val -> {
+                                catchSpeedSeconds = val;
+                                player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_HAT, 1.0f, 1.4f);
+                                player.sendMessage(mm.deserialize("<green>✓ Kecepatan sambaran berhasil diatur ke <aqua>" + val + " Detik</aqua>!</green>"));
+                                open();
+                            },
+                            this::open
+                    );
+                }
             }
             case SLOT_MIN_LEVEL -> {
-                player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1.0f, 1.0f);
-                FishingInputGUI.openNumeric(
-                        plugin,
-                        player,
-                        "Syarat Minimal Level Pemain",
-                        "Masukkan batas minimal level untuk memakai pancingan ini (0 = Bebas):",
-                        minLevel,
-                        0,
-                        100,
-                        val -> {
-                            minLevel = val;
-                            player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.4f);
-                            player.sendMessage(mm.deserialize("<green>✓ Syarat level berhasil diatur ke <yellow>" + (val > 0 ? "Level " + val : "Bebas Digunakan") + "</yellow>!</green>"));
-                            open();
-                        },
-                        this::open
-                );
+                if (click.isRightClick()) {
+                    int delta = click.isShiftClick() ? -5 : 5;
+                    minLevel = Math.clamp(minLevel + delta, 0, 100);
+                    player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, delta > 0 ? 1.4f : 0.8f);
+                    render();
+                } else {
+                    player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1.0f, 1.0f);
+                    FishingInputGUI.openNumeric(
+                            plugin,
+                            player,
+                            "Syarat Minimal Level Pemain",
+                            "Masukkan batas minimal level untuk memakai pancingan ini (0 = Bebas):",
+                            minLevel,
+                            0,
+                            100,
+                            val -> {
+                                minLevel = val;
+                                player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.4f);
+                                player.sendMessage(mm.deserialize("<green>✓ Syarat level berhasil diatur ke <yellow>" + (val > 0 ? "Level " + val : "Bebas Digunakan") + "</yellow>!</green>"));
+                                open();
+                            },
+                            this::open
+                    );
+                }
             }
             case SLOT_UNBREAKABLE -> {
                 unbreakable = !unbreakable;
@@ -352,23 +394,33 @@ public class AdminRodCreatorGUI implements InventoryHolder {
                 render();
             }
             case SLOT_CMD -> {
-                player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1.0f, 1.0f);
-                FishingInputGUI.openNumeric(
-                        plugin,
-                        player,
-                        "Custom Model Data ID",
-                        "Masukkan angka Custom Model Data untuk custom resource pack (0 = Default):",
-                        customModelData,
-                        0,
-                        999999,
-                        val -> {
-                            customModelData = val;
-                            player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1.0f, 1.2f);
-                            player.sendMessage(mm.deserialize("<green>✓ Custom Model Data berhasil diatur ke <yellow>" + val + "</yellow>!</green>"));
-                            open();
-                        },
-                        this::open
-                );
+                if (click.isRightClick()) {
+                    if (click.isShiftClick()) {
+                        customModelData = 0;
+                    } else {
+                        customModelData++;
+                    }
+                    player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1.0f, 1.2f);
+                    render();
+                } else {
+                    player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1.0f, 1.0f);
+                    FishingInputGUI.openNumeric(
+                            plugin,
+                            player,
+                            "Custom Model Data ID",
+                            "Masukkan angka Custom Model Data untuk custom resource pack (0 = Default):",
+                            customModelData,
+                            0,
+                            999999,
+                            val -> {
+                                customModelData = val;
+                                player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1.0f, 1.2f);
+                                player.sendMessage(mm.deserialize("<green>✓ Custom Model Data berhasil diatur ke <yellow>" + val + "</yellow>!</green>"));
+                                open();
+                            },
+                            this::open
+                    );
+                }
             }
             case SLOT_ENCHANTS -> {
                 cycleEnchants();

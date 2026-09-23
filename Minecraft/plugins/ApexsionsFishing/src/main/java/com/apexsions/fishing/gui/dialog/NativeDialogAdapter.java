@@ -7,14 +7,19 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.util.List;
 import java.util.function.Consumer;
 
 /**
- * Native Dialog Adapter for ApexsionsFishing.
- * Supports NightCore Dialog API, Paper Dialog API, Bungee/Spigot, and Geyser/Floodgate Bedrock Forms.
+ * Adapter to interact with Minecraft 1.21.4+ / 26.2 Native Dialog API for ApexsionsFishing.
+ * Supports:
+ * 1. NightCore UI Dialog API (su.nightexpress.nightcore.ui.dialog.Dialogs) - Exact engine used by ExcellentCrates & ApexsionsCrates
+ * 2. Paper Dialog API (io.papermc.paper.dialog.Dialog)
+ * 3. Spigot/Bungee Dialog API (net.md_5.bungee.api.dialog.Dialog)
  */
 public class NativeDialogAdapter {
 
@@ -40,7 +45,7 @@ public class NativeDialogAdapter {
             try {
                 return Class.forName(name);
             } catch (Throwable ignored) {}
-            for (String pName : new String[]{"nightcore", "NightCore", "ExcellentCrates", "excellentcrates"}) {
+            for (String pName : new String[]{"nightcore", "NightCore", "ExcellentCrates", "excellentcrates", "ApexsionsCrates"}) {
                 try {
                     Plugin p = Bukkit.getPluginManager().getPlugin(pName);
                     if (p != null) {
@@ -81,7 +86,7 @@ public class NativeDialogAdapter {
                                     Consumer<String> onInput, Runnable onCancel) {
         if (!isSupported()) return false;
 
-        // 1. Prioritize NightCore Dialogs
+        // 1. Prioritize NightCore Dialogs (exact mechanism used by ExcellentCrates & ApexsionsCrates)
         if (isNightCoreSupported()) {
             boolean shown = showNightCoreInput(plugin, player, title, prompt, defaultText, onInput, onCancel);
             if (shown) return true;
@@ -101,6 +106,9 @@ public class NativeDialogAdapter {
         return false;
     }
 
+    // ==========================================
+    // 1. NIGHTCORE DIALOG IMPLEMENTATION
+    // ==========================================
     private static boolean showNightCoreInput(Plugin plugin, Player player, String title, String prompt, String defaultText,
                                               Consumer<String> onInput, Runnable onCancel) {
         try {
@@ -110,6 +118,7 @@ public class NativeDialogAdapter {
             Class<?> dialogInputsClass = findClass("su.nightexpress.nightcore.ui.dialog.build.DialogInputs");
             Class<?> dialogButtonsClass = findClass("su.nightexpress.nightcore.ui.dialog.build.DialogButtons");
             Class<?> dialogTypesClass = findClass("su.nightexpress.nightcore.ui.dialog.build.DialogTypes");
+            Class<?> dialogActionsClass = findClass("su.nightexpress.nightcore.ui.dialog.build.DialogActions");
             Class<?> dialogResponseHandlerClass = findClass("su.nightexpress.nightcore.bridge.dialog.response.DialogResponseHandler");
             Class<?> wrappedDialogBuilderClass = findClass("su.nightexpress.nightcore.bridge.dialog.wrap.WrappedDialog$Builder", "su.nightexpress.nightcore.bridge.dialog.wrap.WrappedDialog.Builder");
 
@@ -122,121 +131,372 @@ public class NativeDialogAdapter {
             String cleanPrompt = (prompt != null && !prompt.isBlank()) ? prompt : "Silakan masukkan teks:";
             String initialText = (defaultText != null) ? defaultText.trim() : "";
 
-            Method baseBuilderM = dialogBasesClass.getMethod("builder", String.class);
-            Object baseBuilder = baseBuilderM.invoke(null, cleanTitle);
-
-            Method plainBodyM = dialogBodiesClass.getMethod("plainMessage", String.class);
-            Object plainBody = plainBodyM.invoke(null, cleanPrompt);
-            for (Method m : baseBuilder.getClass().getMethods()) {
-                if (m.getName().equals("body") && m.getParameterCount() == 1) {
-                    m.invoke(baseBuilder, plainBody);
-                    break;
-                }
-            }
-
-            Method textInputM = dialogInputsClass.getMethod("text", String.class, String.class);
-            Object textInput = textInputM.invoke(null, "user_input", initialText);
-            for (Method m : baseBuilder.getClass().getMethods()) {
-                if (m.getName().equals("input") && m.getParameterCount() == 1) {
-                    m.invoke(baseBuilder, textInput);
-                    break;
-                }
-            }
-
-            Object okBtn = null;
+            // 1. Base Builder
+            Method baseBuilderM = null;
             try {
-                Method okM = dialogButtonsClass.getMethod("ok");
-                okBtn = okM.invoke(null);
-            } catch (Throwable t) {
-                for (Method m : dialogButtonsClass.getMethods()) {
-                    if (m.getParameterCount() == 1 && m.getParameterTypes()[0] == String.class) {
-                        okBtn = m.invoke(null, "SELESAI");
+                baseBuilderM = dialogBasesClass.getMethod("builder", String.class);
+            } catch (Throwable ignored) {
+                for (Method m : dialogBasesClass.getMethods()) {
+                    if (m.getName().equals("builder") && m.getParameterCount() == 1) {
+                        baseBuilderM = m;
                         break;
                     }
                 }
             }
-            if (okBtn != null) {
+            if (baseBuilderM == null) return false;
+            Object baseBuilder = baseBuilderM.invoke(null, cleanTitle);
+
+            // 2. Body: DialogBodies.plainMessage(cleanPrompt)
+            Method plainBodyM = null;
+            for (Method m : dialogBodiesClass.getMethods()) {
+                if (m.getName().equals("plainMessage") && m.getParameterCount() == 1) {
+                    plainBodyM = m;
+                    break;
+                }
+            }
+            if (plainBodyM != null) {
+                Object plainBody = plainBodyM.invoke(null, cleanPrompt);
                 for (Method m : baseBuilder.getClass().getMethods()) {
-                    if (m.getName().equals("addButton") || m.getName().equals("button")) {
-                        if (m.getParameterCount() == 1) {
-                            m.invoke(baseBuilder, okBtn);
+                    if (m.getName().equals("body")) {
+                        if (m.getParameterCount() == 1 && List.class.isAssignableFrom(m.getParameterTypes()[0])) {
+                            m.invoke(baseBuilder, List.of(plainBody));
+                            break;
+                        } else if (m.getParameterCount() == 1 && m.getParameterTypes()[0].isArray()) {
+                            Object arr = java.lang.reflect.Array.newInstance(m.getParameterTypes()[0].getComponentType(), 1);
+                            java.lang.reflect.Array.set(arr, 0, plainBody);
+                            m.invoke(baseBuilder, arr);
                             break;
                         }
                     }
                 }
             }
 
-            Method createWrappedM = dialogsClass.getMethod("create", String.class, Consumer.class);
-            InvocationHandler handler = (proxy, method, args) -> {
-                if (method.getName().equals("handle") || method.getName().equals("accept") || method.getName().equals("onResponse")) {
-                    Object response = (args != null && args.length > 0) ? args[0] : null;
-                    if (response != null) {
+            // 3. TextInput: DialogInputs.text("input_key", "").labelVisible(false).build()
+            Object textBuilder = null;
+            for (Method m : dialogInputsClass.getMethods()) {
+                if (m.getName().equals("text") && m.getParameterCount() == 2) {
+                    try {
+                        textBuilder = m.invoke(null, "input_key", cleanPrompt);
+                        break;
+                    } catch (Throwable ignored) {}
+                }
+            }
+            if (textBuilder == null) {
+                for (Method m : dialogInputsClass.getMethods()) {
+                    if (m.getName().equals("text") && m.getParameterCount() == 1) {
                         try {
-                            Method getTextM = response.getClass().getMethod("getText", String.class);
-                            String res = (String) getTextM.invoke(response, "user_input");
-                            Bukkit.getScheduler().runTask(plugin, () -> onInput.accept(res != null ? res : ""));
-                            return null;
+                            textBuilder = m.invoke(null, "input_key");
+                            break;
                         } catch (Throwable ignored) {}
                     }
-                    if (onCancel != null) {
-                        Bukkit.getScheduler().runTask(plugin, onCancel);
+                }
+            }
+
+            if (textBuilder != null) {
+                if (!initialText.isEmpty()) {
+                    for (Method m : textBuilder.getClass().getMethods()) {
+                        if (m.getName().equals("initial") && m.getParameterCount() == 1 && m.getParameterTypes()[0] == String.class) {
+                            m.invoke(textBuilder, initialText);
+                            break;
+                        }
                     }
-                    return null;
+                }
+                for (Method m : textBuilder.getClass().getMethods()) {
+                    if (m.getName().equals("labelVisible") && m.getParameterCount() == 1 && m.getParameterTypes()[0] == boolean.class) {
+                        m.invoke(textBuilder, false);
+                        break;
+                    }
+                }
+                for (Method m : textBuilder.getClass().getMethods()) {
+                    if (m.getName().equals("maxLength") && m.getParameterCount() == 1) {
+                        m.invoke(textBuilder, 300);
+                        break;
+                    }
+                }
+                Object textInput = textBuilder.getClass().getMethod("build").invoke(textBuilder);
+
+                for (Method m : baseBuilder.getClass().getMethods()) {
+                    if (m.getName().equals("inputs")) {
+                        if (m.getParameterCount() == 1 && List.class.isAssignableFrom(m.getParameterTypes()[0])) {
+                            m.invoke(baseBuilder, List.of(textInput));
+                            break;
+                        } else if (m.getParameterCount() == 1 && m.getParameterTypes()[0].isArray()) {
+                            Object arr = java.lang.reflect.Array.newInstance(m.getParameterTypes()[0].getComponentType(), 1);
+                            java.lang.reflect.Array.set(arr, 0, textInput);
+                            m.invoke(baseBuilder, arr);
+                            break;
+                        }
+                    }
+                }
+            }
+
+            Object base = baseBuilder.getClass().getMethod("build").invoke(baseBuilder);
+
+            // 4. Buttons: DialogButtons.ok(), DialogButtons.back()
+            Method okButtonM = dialogButtonsClass.getMethod("ok");
+            Object okButton = okButtonM.invoke(null);
+
+            Method backButtonM = dialogButtonsClass.getMethod("back");
+            Object backButton = backButtonM.invoke(null);
+
+            // 5. Type: DialogTypes.multiAction(okButton).exitAction(backButton).build()
+            Object multiActionBuilder = null;
+            for (Method m : dialogTypesClass.getMethods()) {
+                if (m.getName().equals("multiAction")) {
+                    if (m.getParameterTypes()[0].isArray()) {
+                        Object arr = java.lang.reflect.Array.newInstance(m.getParameterTypes()[0].getComponentType(), 1);
+                        java.lang.reflect.Array.set(arr, 0, okButton);
+                        multiActionBuilder = m.invoke(null, arr);
+                        break;
+                    } else if (List.class.isAssignableFrom(m.getParameterTypes()[0])) {
+                        multiActionBuilder = m.invoke(null, List.of(okButton));
+                        break;
+                    }
+                }
+            }
+
+            if (multiActionBuilder == null) return false;
+
+            for (Method m : multiActionBuilder.getClass().getMethods()) {
+                if (m.getName().equals("exitAction") && m.getParameterCount() == 1) {
+                    m.invoke(multiActionBuilder, backButton);
+                    break;
+                }
+            }
+
+            Object dialogType = multiActionBuilder.getClass().getMethod("build").invoke(multiActionBuilder);
+
+            // 6. Build WrappedDialog
+            Object dialogBuilder = wrappedDialogBuilderClass.getDeclaredConstructor().newInstance();
+            for (Method m : dialogBuilder.getClass().getMethods()) {
+                if (m.getName().equals("base") && m.getParameterCount() == 1) {
+                    m.invoke(dialogBuilder, base);
+                    break;
+                }
+            }
+            for (Method m : dialogBuilder.getClass().getMethods()) {
+                if (m.getName().equals("type") && m.getParameterCount() == 1) {
+                    m.invoke(dialogBuilder, dialogType);
+                    break;
+                }
+            }
+
+            // 7. Response Handler for "ok" and "back"
+            InvocationHandler okHandler = (proxy, method, args) -> {
+                if (method.getName().equals("handle") || method.getName().equals("accept") || method.getName().equals("onResponse")) {
+                    Object nbtHolder = (args != null && args.length > 2) ? args[2] : null;
+                    if (nbtHolder == null && args != null && args.length > 0) {
+                        nbtHolder = args[args.length - 1];
+                    }
+                    String extracted = extractNightCoreText(nbtHolder, "input_key");
+                    final String res = (extracted != null) ? extracted.trim() : "";
+                    Bukkit.getScheduler().runTask(plugin, () -> {
+                        try {
+                            onInput.accept(res);
+                        } catch (Throwable ex) {
+                            player.sendMessage("§cError: " + ex.getMessage());
+                        }
+                    });
                 }
                 return null;
             };
 
-            Object responseHandlerProxy = Proxy.newProxyInstance(
-                    dialogResponseHandlerClass.getClassLoader(),
-                    new Class<?>[]{dialogResponseHandlerClass},
-                    handler
-            );
+            Object okProxy = Proxy.newProxyInstance(dialogResponseHandlerClass.getClassLoader(), new Class<?>[]{dialogResponseHandlerClass}, okHandler);
 
-            Consumer<Object> builderConsumer = builderObj -> {
-                try {
-                    for (Method m : builderObj.getClass().getMethods()) {
-                        if (m.getName().equals("base") && m.getParameterCount() == 1) {
-                            Method buildBaseM = baseBuilder.getClass().getMethod("build");
-                            Object baseObj = buildBaseM.invoke(baseBuilder);
-                            m.invoke(builderObj, baseObj);
-                        } else if (m.getName().equals("handler") && m.getParameterCount() == 1) {
-                            m.invoke(builderObj, responseHandlerProxy);
+            // Register ok handler for string and DialogActions.OK
+            for (Method m : dialogBuilder.getClass().getMethods()) {
+                if (m.getName().equals("handleResponse") && m.getParameterCount() == 2) {
+                    Class<?> p0 = m.getParameterTypes()[0];
+                    if (p0 == String.class) {
+                        try { m.invoke(dialogBuilder, "ok", okProxy); } catch (Throwable ignored) {}
+                        try { m.invoke(dialogBuilder, "confirm", okProxy); } catch (Throwable ignored) {}
+                        try { m.invoke(dialogBuilder, "apply", okProxy); } catch (Throwable ignored) {}
+                    } else if (dialogActionsClass != null) {
+                        try {
+                            Field okF = dialogActionsClass.getField("OK");
+                            m.invoke(dialogBuilder, okF.get(null), okProxy);
+                        } catch (Throwable ignored) {}
+                    }
+                }
+            }
+
+            if (onCancel != null) {
+                InvocationHandler backHandler = (proxy, method, args) -> {
+                    if (method.getName().equals("handle") || method.getName().equals("accept") || method.getName().equals("onResponse")) {
+                        Bukkit.getScheduler().runTask(plugin, onCancel);
+                    }
+                    return null;
+                };
+                Object backProxy = Proxy.newProxyInstance(dialogResponseHandlerClass.getClassLoader(), new Class<?>[]{dialogResponseHandlerClass}, backHandler);
+
+                for (Method m : dialogBuilder.getClass().getMethods()) {
+                    if (m.getName().equals("handleResponse") && m.getParameterCount() == 2) {
+                        Class<?> p0 = m.getParameterTypes()[0];
+                        if (p0 == String.class) {
+                            try { m.invoke(dialogBuilder, "back", backProxy); } catch (Throwable ignored) {}
+                            try { m.invoke(dialogBuilder, "cancel", backProxy); } catch (Throwable ignored) {}
+                        } else if (dialogActionsClass != null) {
+                            try {
+                                Field backF = dialogActionsClass.getField("BACK");
+                                m.invoke(dialogBuilder, backF.get(null), backProxy);
+                            } catch (Throwable ignored) {}
                         }
                     }
-                } catch (Throwable ignored) {}
-            };
-
-            Object wrappedDialog = createWrappedM.invoke(null, "fishing_input_" + System.currentTimeMillis(), builderConsumer);
-            if (wrappedDialog != null) {
-                Method showM = dialogsClass.getMethod("show", Player.class, wrappedDialog.getClass());
-                showM.invoke(null, player, wrappedDialog);
-                return true;
+                }
             }
-        } catch (Throwable ignored) {}
-        return false;
+
+            Object wrappedDialog = dialogBuilder.getClass().getMethod("build").invoke(dialogBuilder);
+
+            // 8. Dialogs.showDialog(player, wrappedDialog, onCancel)
+            Method showDialogM = null;
+            for (Method m : dialogsClass.getMethods()) {
+                if (m.getName().equals("showDialog") && m.getParameterCount() == 3) {
+                    showDialogM = m;
+                    break;
+                }
+            }
+            if (showDialogM != null) {
+                showDialogM.invoke(null, player, wrappedDialog, onCancel);
+            } else {
+                for (Method m : dialogsClass.getMethods()) {
+                    if (m.getName().equals("showDialog") && m.getParameterCount() == 2) {
+                        m.invoke(null, player, wrappedDialog);
+                        break;
+                    }
+                }
+            }
+
+            return true;
+        } catch (Throwable t) {
+            plugin.getLogger().warning("[NativeDialogAdapter] NightCore dialog unavailable or error: " + t.getMessage());
+            return false;
+        }
     }
 
+    private static String extractNightCoreText(Object nbtHolder, String key) {
+        if (nbtHolder == null) return "";
+
+        // 1. Try getText(key, def)
+        try {
+            Method getText2 = nbtHolder.getClass().getMethod("getText", String.class, String.class);
+            Object res = getText2.invoke(nbtHolder, key, "");
+            if (res instanceof String s && !s.isEmpty()) {
+                return s;
+            }
+        } catch (Throwable ignored) {}
+
+        // 2. Try getText(key) returning Optional<String> or String
+        try {
+            Method getText1 = nbtHolder.getClass().getMethod("getText", String.class);
+            Object opt = getText1.invoke(nbtHolder, key);
+            if (opt instanceof java.util.Optional<?> o && o.isPresent()) {
+                return (String) o.get();
+            }
+            if (opt instanceof String s && !s.isEmpty()) {
+                return s;
+            }
+        } catch (Throwable ignored) {}
+
+        // 3. Try getText("id")
+        try {
+            Method getText1 = nbtHolder.getClass().getMethod("getText", String.class);
+            Object opt = getText1.invoke(nbtHolder, "id");
+            if (opt instanceof java.util.Optional<?> o && o.isPresent()) {
+                return (String) o.get();
+            }
+            if (opt instanceof String s && !s.isEmpty()) {
+                return s;
+            }
+        } catch (Throwable ignored) {}
+
+        // 4. Try JSON payload
+        try {
+            Method payloadM = nbtHolder.getClass().getMethod("payload");
+            Object payload = payloadM.invoke(nbtHolder);
+            if (payload instanceof com.google.gson.JsonObject json) {
+                if (json.has(key)) {
+                    return json.get(key).getAsString();
+                } else if (json.has("id")) {
+                    return json.get("id").getAsString();
+                } else if (!json.entrySet().isEmpty()) {
+                    return json.entrySet().iterator().next().getValue().getAsString();
+                }
+            }
+        } catch (Throwable ignored) {}
+
+        return "";
+    }
+
+    // ==========================================
+    // 2. PAPER NATIVE DIALOG IMPLEMENTATION
+    // ==========================================
     private static boolean showPaperInput(Plugin plugin, Player player, String title, String prompt, String defaultText,
                                           Consumer<String> onInput, Runnable onCancel) {
         try {
             Class<?> dialogClass = findClass("io.papermc.paper.dialog.Dialog");
-            if (dialogClass == null) return false;
-            Method builderM = dialogClass.getMethod("create");
-            Object builder = builderM.invoke(null);
-            if (builder != null) {
-                for (Method m : builder.getClass().getMethods()) {
-                    if (m.getName().equals("title") && m.getParameterCount() == 1 && m.getParameterTypes()[0] == Component.class) {
-                        m.invoke(builder, mm.deserialize(title));
-                    }
-                }
-                Method showM = builder.getClass().getMethod("show", Player.class);
-                showM.invoke(builder, player);
-                return true;
+            Class<?> dialogBaseClass = findClass("io.papermc.paper.registry.data.dialog.DialogBase", "io.papermc.paper.dialog.DialogBase");
+            Class<?> dialogBodyClass = findClass("io.papermc.paper.registry.data.dialog.body.DialogBody", "io.papermc.paper.dialog.DialogBody");
+            Class<?> dialogInputClass = findClass("io.papermc.paper.registry.data.dialog.input.DialogInput", "io.papermc.paper.dialog.DialogInput");
+            Class<?> textDialogInputClass = findClass("io.papermc.paper.registry.data.dialog.input.TextDialogInput", "io.papermc.paper.dialog.input.TextDialogInput");
+
+            if (dialogClass == null || dialogBaseClass == null || dialogBodyClass == null || dialogInputClass == null) {
+                return false;
             }
-        } catch (Throwable ignored) {}
-        return false;
+
+            Component titleComp = (title != null && !title.isBlank())
+                    ? (title.contains("<") || title.contains("&") ? mm.deserialize(title) : Component.text(title))
+                    : mm.deserialize("<gold><b>INPUT</b></gold>");
+
+            Component promptComp = (prompt != null && !prompt.isBlank())
+                    ? (prompt.contains("<") || prompt.contains("&") ? mm.deserialize(prompt) : Component.text(prompt))
+                    : mm.deserialize("<yellow>Masukkan teks:</yellow>");
+
+            Method baseBuilderMethod = dialogBaseClass.getMethod("builder", Component.class);
+            Object baseBuilder = baseBuilderMethod.invoke(null, titleComp);
+
+            Method plainMessageMethod = dialogBodyClass.getMethod("plainMessage", Component.class);
+            Object bodyItem = plainMessageMethod.invoke(null, promptComp);
+            baseBuilder.getClass().getMethod("body", List.class).invoke(baseBuilder, List.of(bodyItem));
+
+            Object textInput = createTextInput(dialogInputClass, textDialogInputClass, "input_key", Component.text("Input"), defaultText);
+            if (textInput != null) {
+                baseBuilder.getClass().getMethod("inputs", List.class).invoke(baseBuilder, List.of(textInput));
+            }
+
+            Object dialogBase = baseBuilder.getClass().getMethod("build").invoke(baseBuilder);
+
+            Method createDialogMethod = dialogClass.getMethod("create", dialogBaseClass);
+            Object dialogInstance = createDialogMethod.invoke(null, dialogBase);
+
+            Method showMethod = dialogClass.getMethod("show", Player.class);
+            showMethod.invoke(dialogInstance, player);
+            return true;
+        } catch (Throwable ignored) {
+            return false;
+        }
     }
 
+    private static Object createTextInput(Class<?> inputClass, Class<?> textInputClass, String key, Component label, String initial) {
+        try {
+            if (textInputClass != null) {
+                Method builderM = textInputClass.getMethod("builder", String.class, Component.class);
+                Object b = builderM.invoke(null, key, label);
+                if (initial != null && !initial.isBlank()) {
+                    b.getClass().getMethod("initial", String.class).invoke(b, initial);
+                }
+                return b.getClass().getMethod("build").invoke(b);
+            }
+            if (inputClass != null) {
+                Method textM = inputClass.getMethod("text", String.class, Component.class);
+                return textM.invoke(null, key, label);
+            }
+        } catch (Throwable ignored) {}
+        return null;
+    }
+
+    // ==========================================
+    // 3. BUNGEE / SPIGOT DIALOG IMPLEMENTATION
+    // ==========================================
     private static boolean showBungeeInput(Plugin plugin, Player player, String title, String prompt, String defaultText,
                                            Consumer<String> onInput, Runnable onCancel) {
         try {

@@ -1,124 +1,166 @@
 package com.apexsions.fishing.gui.dialog;
 
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.plugin.Plugin;
 
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 
 /**
- * Universal Input GUI for ApexsionsFishing.
- * Integrates Native Dialog GUI (NightCore / Paper / Bungee) with a seamless, clean chat prompt fallback.
+ * Universal Native Dialog Input GUI for ApexsionsFishing.
+ * Uses 100% Native Dialogs (NightCore UI Dialog API / Paper Dialog API / Floodgate Bedrock Forms)
+ * with a seamless in-game Native GUI fallback (NumericAdjusterGUI).
+ *
+ * Strictly NEVER uses chat prompts or AsyncPlayerChatEvent.
  */
 public class FishingInputGUI {
 
     private static final MiniMessage mm = MiniMessage.miniMessage();
-    private static final ConcurrentHashMap<UUID, ChatFallbackSession> pendingChatSessions = new ConcurrentHashMap<>();
-    private static volatile boolean listenerRegistered = false;
 
+    /**
+     * Opens a Native Dialog Text Input for the player.
+     * 1. Prioritizes Bedrock Form for Bedrock players.
+     * 2. Uses Native Dialog GUI (NightCore / Paper / Bungee) for Java players.
+     * 3. Fallback: Safely invokes onCancel if modal dialog is completely unsupported on client.
+     */
     public static void open(Plugin plugin, Player player, String title, String prompt, String defaultText,
                             Consumer<String> onInput, Runnable onCancel) {
         if (player == null || !player.isOnline()) return;
 
-        // Try Native Dialog GUI first
+        // 1. Bedrock Edition (Geyser / Floodgate Modal Form)
+        if (BedrockFormAdapter.isBedrockPlayer(player)) {
+            if (BedrockFormAdapter.openInputForm(plugin, player, title, prompt, defaultText, onInput, onCancel)) {
+                return;
+            }
+        }
+
+        // 2. Java Edition Native Dialog GUI (NightCore Dialogs / Paper Dialogs / Bungee)
         if (NativeDialogAdapter.isSupported()) {
             if (NativeDialogAdapter.showInput(plugin, player, title, prompt, defaultText, onInput, onCancel)) {
                 return;
             }
         }
 
-        // Fallback to chat prompt
-        openChatFallback(plugin, player, title, prompt, defaultText, onInput, onCancel);
+        // If client/server does not support modal dialogs, safely return to creator GUI
+        player.sendMessage(mm.deserialize("<red>Native Dialog GUI tidak dapat dibuka pada sesi Anda.</red>"));
+        if (onCancel != null) {
+            Bukkit.getScheduler().runTask(plugin, onCancel);
+        }
     }
 
+    /**
+     * Opens a Native Dialog Numeric Input for the player.
+     * 1. Prioritizes Bedrock Form for Bedrock players.
+     * 2. Uses Native Dialog GUI (NightCore / Paper / Bungee) for Java players.
+     * 3. Fallback: Opens Native in-game Chest GUI Adjuster (NumericAdjusterGUI) - NEVER CHAT!
+     */
     public static void openNumeric(Plugin plugin, Player player, String title, String prompt, int defaultValue,
                                    int min, int max, Consumer<Integer> onNumber, Runnable onCancel) {
-        open(plugin, player, title, prompt + " <gray>(" + min + " - " + max + ")</gray>", String.valueOf(defaultValue), input -> {
-            try {
-                int val = Integer.parseInt(input.trim());
-                if (val < min || val > max) {
-                    player.sendMessage(mm.deserialize("<red>Nilai angka harus berada di antara " + min + " dan " + max + "!</red>"));
+        if (player == null || !player.isOnline()) return;
+
+        String formattedPrompt = prompt + " (" + min + " - " + max + ")";
+
+        // 1. Bedrock Edition (Geyser / Floodgate Modal Form)
+        if (BedrockFormAdapter.isBedrockPlayer(player)) {
+            boolean shown = BedrockFormAdapter.openInputForm(plugin, player, title, formattedPrompt, String.valueOf(defaultValue), input -> {
+                try {
+                    int val = Integer.parseInt(input.trim());
+                    if (val < min || val > max) {
+                        player.sendMessage(mm.deserialize("<red>Nilai angka harus berada di antara " + min + " dan " + max + "!</red>"));
+                        if (onCancel != null) onCancel.run();
+                        return;
+                    }
+                    onNumber.accept(val);
+                } catch (NumberFormatException e) {
+                    player.sendMessage(mm.deserialize("<red>Input '" + input + "' bukan angka bilangan bulat yang valid!</red>"));
                     if (onCancel != null) onCancel.run();
-                    return;
                 }
-                onNumber.accept(val);
-            } catch (NumberFormatException e) {
-                player.sendMessage(mm.deserialize("<red>Input '" + input + "' bukan angka bilangan bulat yang valid!</red>"));
-                if (onCancel != null) onCancel.run();
-            }
-        }, onCancel);
+            }, onCancel);
+            if (shown) return;
+        }
+
+        // 2. Java Edition Native Dialog GUI (NightCore Dialogs / Paper Dialogs)
+        if (NativeDialogAdapter.isSupported()) {
+            boolean shown = NativeDialogAdapter.showInput(plugin, player, title, formattedPrompt, String.valueOf(defaultValue), input -> {
+                try {
+                    int val = Integer.parseInt(input.trim());
+                    if (val < min || val > max) {
+                        player.sendMessage(mm.deserialize("<red>Nilai angka harus berada di antara " + min + " dan " + max + "!</red>"));
+                        if (onCancel != null) onCancel.run();
+                        return;
+                    }
+                    onNumber.accept(val);
+                } catch (NumberFormatException e) {
+                    player.sendMessage(mm.deserialize("<red>Input '" + input + "' bukan angka bilangan bulat yang valid!</red>"));
+                    if (onCancel != null) onCancel.run();
+                }
+            }, onCancel);
+            if (shown) return;
+        }
+
+        // 3. 100% Native GUI Fallback: Open in-game NumericAdjusterGUI (NEVER CHAT)
+        new NumericAdjusterGUI(plugin, player, title, prompt, defaultValue, min, max, onNumber, onCancel).open();
     }
 
+    /**
+     * Opens a Native Dialog Double/Decimal Input for the player.
+     * 1. Prioritizes Bedrock Form for Bedrock players.
+     * 2. Uses Native Dialog GUI (NightCore / Paper / Bungee) for Java players.
+     * 3. Fallback: Opens Native in-game Chest GUI Adjuster (NumericAdjusterGUI) - NEVER CHAT!
+     */
     public static void openDouble(Plugin plugin, Player player, String title, String prompt, double defaultValue,
                                   double min, double max, Consumer<Double> onNumber, Runnable onCancel) {
-        open(plugin, player, title, prompt + " <gray>(" + min + " - " + max + ")</gray>", String.valueOf(defaultValue), input -> {
-            try {
-                String sanitized = input.trim().replace(",", ".");
-                double val = Double.parseDouble(sanitized);
-                if (val < min || val > max) {
-                    player.sendMessage(mm.deserialize("<red>Nilai desimal harus berada di antara " + min + " dan " + max + "!</red>"));
-                    if (onCancel != null) onCancel.run();
-                    return;
-                }
-                onNumber.accept(val);
-            } catch (NumberFormatException e) {
-                player.sendMessage(mm.deserialize("<red>Input '" + input + "' bukan angka desimal yang valid!</red>"));
-                if (onCancel != null) onCancel.run();
-            }
-        }, onCancel);
-    }
+        if (player == null || !player.isOnline()) return;
 
-    private static void openChatFallback(Plugin plugin, Player player, String title, String prompt, String defaultText,
-                                         Consumer<String> onInput, Runnable onCancel) {
-        ensureListener(plugin);
-        pendingChatSessions.put(player.getUniqueId(), new ChatFallbackSession(player.getUniqueId(), onInput, onCancel));
-        player.closeInventory();
+        String formattedPrompt = prompt + " (" + min + " - " + max + ")";
 
-        player.sendMessage(Component.empty());
-        player.sendMessage(mm.deserialize("<gradient:#00c6ff:#0072ff><bold>════════════════════════════════════════</bold></gradient>"));
-        player.sendMessage(mm.deserialize(" <yellow><bold>" + title + "</bold></yellow>"));
-        player.sendMessage(mm.deserialize(" <gray>" + prompt + "</gray>"));
-        if (defaultText != null && !defaultText.isBlank()) {
-            player.sendMessage(mm.deserialize(" <dark_gray>Nilai saat ini: " + defaultText + "</dark_gray>"));
-        }
-        player.sendMessage(Component.empty());
-        player.sendMessage(mm.deserialize(" <white>Ketik jawaban Anda di chat.</white> <gray>Atau ketik <red><bold>cancel</bold></red> untuk membatalkan.</gray>"));
-        player.sendMessage(mm.deserialize("<gradient:#00c6ff:#0072ff><bold>════════════════════════════════════════</bold></gradient>"));
-        player.sendMessage(Component.empty());
-    }
-
-    private static synchronized void ensureListener(Plugin plugin) {
-        if (listenerRegistered) return;
-        Bukkit.getPluginManager().registerEvents(new Listener() {
-            @EventHandler(priority = EventPriority.LOWEST)
-            public void onChat(AsyncPlayerChatEvent event) {
-                Player p = event.getPlayer();
-                ChatFallbackSession session = pendingChatSessions.remove(p.getUniqueId());
-                if (session != null) {
-                    event.setCancelled(true);
-                    String msg = event.getMessage().trim();
-                    if (msg.equalsIgnoreCase("cancel") || msg.equalsIgnoreCase("batal")) {
-                        p.sendMessage(mm.deserialize("<gray>Aksi pengubahan nilai dibatalkan.</gray>"));
-                        if (session.onCancel != null) {
-                            Bukkit.getScheduler().runTask(plugin, session.onCancel);
-                        }
-                    } else {
-                        Bukkit.getScheduler().runTask(plugin, () -> session.onInput.accept(msg));
+        // 1. Bedrock Edition (Geyser / Floodgate Modal Form)
+        if (BedrockFormAdapter.isBedrockPlayer(player)) {
+            boolean shown = BedrockFormAdapter.openInputForm(plugin, player, title, formattedPrompt, String.valueOf(defaultValue), input -> {
+                try {
+                    String sanitized = input.trim().replace(",", ".");
+                    double val = Double.parseDouble(sanitized);
+                    if (val < min || val > max) {
+                        player.sendMessage(mm.deserialize("<red>Nilai desimal harus berada di antara " + min + " dan " + max + "!</red>"));
+                        if (onCancel != null) onCancel.run();
+                        return;
                     }
+                    onNumber.accept(val);
+                } catch (NumberFormatException e) {
+                    player.sendMessage(mm.deserialize("<red>Input '" + input + "' bukan angka desimal yang valid!</red>"));
+                    if (onCancel != null) onCancel.run();
                 }
-            }
-        }, plugin);
-        listenerRegistered = true;
-    }
+            }, onCancel);
+            if (shown) return;
+        }
 
-    private record ChatFallbackSession(UUID uuid, Consumer<String> onInput, Runnable onCancel) {}
+        // 2. Java Edition Native Dialog GUI (NightCore Dialogs / Paper Dialogs)
+        if (NativeDialogAdapter.isSupported()) {
+            boolean shown = NativeDialogAdapter.showInput(plugin, player, title, formattedPrompt, String.valueOf(defaultValue), input -> {
+                try {
+                    String sanitized = input.trim().replace(",", ".");
+                    double val = Double.parseDouble(sanitized);
+                    if (val < min || val > max) {
+                        player.sendMessage(mm.deserialize("<red>Nilai desimal harus berada di antara " + min + " dan " + max + "!</red>"));
+                        if (onCancel != null) onCancel.run();
+                        return;
+                    }
+                    onNumber.accept(val);
+                } catch (NumberFormatException e) {
+                    player.sendMessage(mm.deserialize("<red>Input '" + input + "' bukan angka desimal yang valid!</red>"));
+                    if (onCancel != null) onCancel.run();
+                }
+            }, onCancel);
+            if (shown) return;
+        }
+
+        // 3. 100% Native GUI Fallback: Open in-game NumericAdjusterGUI scaled to percentage (NEVER CHAT)
+        int defaultInt = (int) Math.round(defaultValue * 100);
+        int minInt = (int) Math.round(min * 100);
+        int maxInt = (int) Math.round(max * 100);
+        new NumericAdjusterGUI(plugin, player, title, prompt + " (Persentase %)", defaultInt, minInt, maxInt,
+                val -> onNumber.accept(val / 100.0), onCancel).open();
+    }
 }

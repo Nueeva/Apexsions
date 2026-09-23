@@ -42,6 +42,8 @@ public class FishingGUIListener implements Listener {
             gui.handleClick(event);
         } else if (holder instanceof BaitShopGUI gui) {
             gui.handleClick(event);
+        } else if (holder instanceof com.apexsions.fishing.gui.dialog.NumericAdjusterGUI gui) {
+            gui.handleClick(event);
         }
     }
 
