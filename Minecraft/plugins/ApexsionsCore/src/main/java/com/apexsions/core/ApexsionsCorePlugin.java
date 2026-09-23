@@ -164,6 +164,9 @@ public class ApexsionsCorePlugin extends JavaPlugin {
     // Smart Mob Stacking Engine
     private com.apexsions.core.stack.MobStackManager mobStackManager;
 
+    // Dropped Item Stacking & Hologram Engine
+    private com.apexsions.core.stack.ItemStackManager itemStackManager;
+
     // Container Sort & Quick Deposit
     private com.apexsions.core.container.ContainerSortManager containerSortManager;
 
@@ -313,6 +316,11 @@ public class ApexsionsCorePlugin extends JavaPlugin {
             this.mobStackManager = new com.apexsions.core.stack.MobStackManager(this);
             this.mobStackManager.start();
             Bukkit.getPluginManager().registerEvents(new com.apexsions.core.stack.MobStackListener(mobStackManager), this);
+
+            // Dropped Item Stacking & Hologram Engine (TPS stability + uncapped 64+ stacking)
+            this.itemStackManager = new com.apexsions.core.stack.ItemStackManager(this);
+            this.itemStackManager.start();
+            Bukkit.getPluginManager().registerEvents(new com.apexsions.core.stack.ItemStackListener(itemStackManager), this);
 
             // Container Sort & Quick Deposit (/sort, /deposit, sneak-punch)
             this.containerSortManager = new com.apexsions.core.container.ContainerSortManager(this);
@@ -509,6 +517,11 @@ public class ApexsionsCorePlugin extends JavaPlugin {
         // Stop mob stacking sweep
         if (mobStackManager != null) {
             mobStackManager.stop();
+        }
+
+        // Stop item stacking sweep
+        if (itemStackManager != null) {
+            itemStackManager.stop();
         }
 
         // Remove transient caravan NPC
@@ -880,6 +893,7 @@ public class ApexsionsCorePlugin extends JavaPlugin {
     public com.apexsions.core.bounty.BountyManager getBountyManager() { return bountyManager; }
     public com.apexsions.core.bounty.BountyRepository getBountyRepository() { return bountyRepository; }
     public com.apexsions.core.stack.MobStackManager getMobStackManager() { return mobStackManager; }
+    public com.apexsions.core.stack.ItemStackManager getItemStackManager() { return itemStackManager; }
     public com.apexsions.core.container.ContainerSortManager getContainerSortManager() { return containerSortManager; }
     public com.apexsions.core.integration.EconomyBridge getEconomyBridge() { return economyBridge; }
     public com.apexsions.core.caravan.CaravanManager getCaravanManager() { return caravanManager; }

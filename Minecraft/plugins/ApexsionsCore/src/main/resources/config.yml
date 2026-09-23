@@ -172,6 +172,39 @@ mob-stacking:
     name-format: "<gray>%type% <yellow>[x%count%]</yellow>"
 
 # ==============================================================================
+# Dropped Item Stacking & Hologram System
+# ==============================================================================
+# Menggabungkan item drop identik menjadi 1 entitas dengan hologram nama & jumlah,
+# mendukung penumpukan melebihi batas 64 vanilla (misal 2 stack cobblestone -> x128).
+# Menghemat entitas server TPS dan menjaga kelancaran FPS klien.
+# ==============================================================================
+item-stacking:
+  enabled: true
+  # Radius penggabungan item drop terdekat (blok)
+  merge-radius: 3.5
+  # Batas maksimum jumlah tumpukan per entitas di tanah
+  max-stack-size: 10000
+  # Gabungkan item otomatis begitu di-drop atau di-mine
+  merge-on-spawn: true
+  # Tampilkan hologram pada item tunggal (x1)
+  show-single: true
+  # Hanya gabungkan item yang dasarnya dapat di-stack (maxStackSize > 1)
+  stack-only-stackables: true
+  # Interval sapuan penggabungan item di dunia aktif (tick, 20 tick = 1 detik)
+  scan-interval-ticks: 40
+  # Batas entitas item diproses per sapuan (proteksi performa)
+  scan-entities-per-pass: 2000
+  # Format hologram tampilan melayang (MiniMessage Kyori Adventure)
+  display:
+    name-format: "<gold>%name%</gold> <yellow>x%count%</yellow>"
+    single-format: "<gold>%name%</gold>"
+    show-count-on-single: true
+  # Dunia yang diaktifkan (kosong = seluruh dunia)
+  worlds: []
+  # Material yang diabaikan (tidak pernah digabung/diberi nama kustom)
+  ignored-materials: []
+
+# ==============================================================================
 # Container Sort & Quick Deposit (/sort, /deposit)
 # Dirancang ramah Bedrock: cukup perintah chat, tanpa middle-click / keybind.
 # ==============================================================================
