@@ -29,6 +29,20 @@ ROOT_DIR = Path(__file__).resolve().parent.parent
 CONFIG_PATH = ROOT_DIR / "sftp-config.json"
 DEFAULT_LIBS_DIR = ROOT_DIR / "Minecraft" / "build" / "libs"
 
+def resolve_plugin_jar(canonical: str):
+    candidates = [
+        DEFAULT_LIBS_DIR / f"{canonical}-1.0.0.jar",
+        ROOT_DIR / "Minecraft" / "plugins" / canonical / f"{canonical}-1.0.0.jar",
+        ROOT_DIR / "Minecraft" / "plugins" / canonical / "target" / f"{canonical}-1.0.0.jar",
+        ROOT_DIR / "build" / "libs" / f"{canonical}-1.0.0.jar",
+    ]
+    existing = [p for p in candidates if p.exists()]
+    if not existing:
+        return None
+    # Pick the one with the newest modification time
+    existing.sort(key=lambda p: p.stat().st_mtime, reverse=True)
+    return existing[0]
+
 PLUGIN_MAP = {
     "core": "ApexsionsCore",
     "apexsionscore": "ApexsionsCore",
@@ -198,20 +212,20 @@ def main():
             files_to_upload.append(target_path)
         elif args.all or args.target.lower() == "all":
             for canonical in sorted(set(PLUGIN_MAP.values())):
-                jar_path = DEFAULT_LIBS_DIR / f"{canonical}-1.0.0.jar"
-                if jar_path.exists():
+                jar_path = resolve_plugin_jar(canonical)
+                if jar_path:
                     files_to_upload.append(jar_path)
                 else:
-                    print(f"⚠️ Warning: {jar_path.name} not found in {DEFAULT_LIBS_DIR}. Build it first!")
+                    print(f"⚠️ Warning: {canonical}-1.0.0.jar not found. Build it first!")
         elif args.target:
             target_norm = args.target.lower().strip()
             canonical = PLUGIN_MAP.get(target_norm)
             if not canonical:
                 print(f"❌ Unknown plugin target '{args.target}'. Valid targets: {', '.join(sorted(set(PLUGIN_MAP.values())))} or 'all'.")
                 sys.exit(1)
-            jar_path = DEFAULT_LIBS_DIR / f"{canonical}-1.0.0.jar"
-            if not jar_path.exists():
-                print(f"❌ JAR file not found: {jar_path}")
+            jar_path = resolve_plugin_jar(canonical)
+            if not jar_path:
+                print(f"❌ JAR file not found for {canonical}.")
                 print(f"💡 Run build first: powershell -ExecutionPolicy Bypass -File .\\Minecraft\\build.ps1 {canonical}")
                 sys.exit(1)
             files_to_upload.append(jar_path)
