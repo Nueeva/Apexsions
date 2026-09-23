@@ -17,16 +17,17 @@ class PublicProfileController extends Controller
     {
         $account = MinecraftAccount::where(function ($query) use ($identifier) {
                 $query->where('minecraft_uuid', $identifier)
-                      ->orWhere('id', $identifier)
                       ->orWhere('minecraft_username', $identifier);
+                if (is_numeric($identifier)) {
+                    $query->orWhere('id', (int) $identifier);
+                }
             })
             ->first();
 
-        // If not found in database, check if player is online in live telemetry cache or has valid UUID
+        // If not found in database, check if player is currently online in live telemetry cache
         if (!$account) {
             $cacheData = cache()->get('apexsions.server_status');
             $foundPlayer = null;
-            $isUuid = preg_match('/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i', $identifier);
 
             if ($cacheData && !empty($cacheData['player_list'])) {
                 foreach ($cacheData['player_list'] as $p) {
@@ -43,9 +44,9 @@ class PublicProfileController extends Controller
                 }
             }
 
-            if ($foundPlayer || $isUuid) {
-                $pName = $foundPlayer['name'] ?? ($isUuid ? 'Player' : $identifier);
-                $pUuid = $foundPlayer['uuid'] ?? ($isUuid ? $identifier : null);
+            if ($foundPlayer) {
+                $pName = $foundPlayer['name'] ?? $identifier;
+                $pUuid = $foundPlayer['uuid'] ?? null;
 
                 $isBedrock = str_starts_with($pName, '.')
                     || str_starts_with($pName, '*')

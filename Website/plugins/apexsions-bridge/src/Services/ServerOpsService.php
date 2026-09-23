@@ -453,12 +453,15 @@ class ServerOpsService
             'player_username' => 'CONSOLE',
         ]);
 
-        // 4. Associate Delivery ID with Audit Log (retains PENDING status until in-game execution reports back)
+        // 4. Associate Delivery ID with Audit Log and mark action dispatch as SUCCESS
         if ($audit) {
             $meta = is_array($audit->metadata) ? $audit->metadata : json_decode($audit->metadata ?? '[]', true);
             $meta['delivery_id'] = $delivery->id;
             $meta['action_id'] = $actionId;
-            $audit->update(['metadata' => $meta]);
+            $audit->update([
+                'status' => 'SUCCESS',
+                'metadata' => $meta,
+            ]);
         }
 
         return [

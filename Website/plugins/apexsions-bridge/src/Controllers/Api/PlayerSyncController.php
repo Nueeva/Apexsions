@@ -86,8 +86,11 @@ class PlayerSyncController extends Controller
             $account->verified_at = null;
         }
 
-        // Auto-check expired trials
-        \Azuriom\Plugin\ApexsionsBridge\Services\RankService::checkAndExpireTrials();
+        // Throttled check for expired trials (at most once every 60 seconds across sync requests)
+        if (!\Illuminate\Support\Facades\Cache::has('apexsions.trials_swept_at')) {
+            \Illuminate\Support\Facades\Cache::put('apexsions.trials_swept_at', true, now()->addSeconds(60));
+            \Azuriom\Plugin\ApexsionsBridge\Services\RankService::checkAndExpireTrials();
+        }
 
         $inGameRank = strtolower($validated['rank'] ?? 'wanderer');
         $inGameRankMeta = \Azuriom\Plugin\ApexsionsBridge\Services\RankService::getRank($inGameRank);
@@ -103,16 +106,19 @@ class PlayerSyncController extends Controller
             $finalRank = $currentWebRank;
             $finalRankDisplay = $currentWebMeta['display_name'] ?? ucfirst($currentWebRank);
 
-            // Re-deliver command if no pending/processing delivery exists
+            // Re-deliver command if no pending/processing or recent delivery exists (5 min cooldown)
             $hasPending = \Azuriom\Plugin\ApexsionsBridge\Models\Delivery::where('player_uuid', $uuid)
-                ->whereIn('status', ['PENDING', 'PROCESSING'])
+                ->where(function ($q) {
+                    $q->whereIn('status', ['PENDING', 'PROCESSING'])
+                      ->orWhere('created_at', '>=', Carbon::now()->subMinutes(5));
+                })
                 ->where('command', 'LIKE', "%parent set {$finalRank}%")
                 ->exists();
 
             if (!$hasPending) {
                 \Azuriom\Plugin\ApexsionsBridge\Models\Delivery::create([
                     'action_id' => (string) \Illuminate\Support\Str::uuid(),
-                    'idempotency_key' => 'AUTOSYNC_' . $uuid . '_' . $finalRank . '_' . time(),
+                    'idempotency_key' => 'AUTOSYNC_' . $uuid . '_' . $finalRank,
                     'player_uuid' => $uuid,
                     'player_username' => $username,
                     'command' => "lp user {$username} parent set {$finalRank}",

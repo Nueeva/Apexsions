@@ -132,28 +132,42 @@ class LinkVerificationController extends Controller
         // Fetch PENDING deliveries or expired PROCESSING deliveries (lease timeout: 60s)
         $expiredThreshold = Carbon::now()->subSeconds(60);
 
-        $deliveries = Delivery::where(function ($query) use ($expiredThreshold) {
-                $query->where('status', 'PENDING')
-                      ->orWhere(function ($q) use ($expiredThreshold) {
-                          $q->where('status', 'PROCESSING')
-                            ->where('locked_at', '<', $expiredThreshold);
-                      });
-            })
-            ->orderBy('id', 'asc')
-            ->limit(50)
-            ->get();
-
-        if ($deliveries->isNotEmpty()) {
-            try {
-                // Atomically lock delivery batch
-                Delivery::whereIn('id', $deliveries->pluck('id'))
+        try {
+            $deliveries = \Illuminate\Support\Facades\DB::transaction(function () use ($expiredThreshold) {
+                // Auto dead-letter deliveries that are stuck in PENDING/PROCESSING for > 7 days
+                Delivery::whereIn('status', ['PENDING', 'PROCESSING'])
+                    ->where('created_at', '<', Carbon::now()->subDays(7))
                     ->update([
-                        'status' => 'PROCESSING',
-                        'locked_at' => Carbon::now(),
+                        'status' => 'FAILED',
+                        'error_message' => 'Delivery expired: stuck in queue for > 7 days.',
+                        'locked_at' => null,
                     ]);
-            } catch (\Throwable $e) {
-                Log::error('[Apexsions Bridge] Error lease-locking deliveries: ' . $e->getMessage());
-            }
+
+                $batch = Delivery::where(function ($query) use ($expiredThreshold) {
+                        $query->where('status', 'PENDING')
+                              ->orWhere(function ($q) use ($expiredThreshold) {
+                                  $q->where('status', 'PROCESSING')
+                                    ->where('locked_at', '<', $expiredThreshold);
+                              });
+                    })
+                    ->orderBy('id', 'asc')
+                    ->limit(50)
+                    ->lockForUpdate()
+                    ->get();
+
+                if ($batch->isNotEmpty()) {
+                    Delivery::whereIn('id', $batch->pluck('id'))
+                        ->update([
+                            'status' => 'PROCESSING',
+                            'locked_at' => Carbon::now(),
+                        ]);
+                }
+
+                return $batch;
+            });
+        } catch (\Throwable $e) {
+            Log::error('[Apexsions Bridge] Error lease-locking deliveries: ' . $e->getMessage());
+            $deliveries = collect();
         }
 
         return response()->json([
@@ -667,10 +681,11 @@ class LinkVerificationController extends Controller
         }
 
         // Prune bounties no longer active in-game (claimed, expired, or cleared).
-        \Azuriom\Plugin\ApexsionsBridge\Models\Bounty::when(
-            !empty($syncedUuids),
-            fn ($query) => $query->whereNotIn('target_uuid', $syncedUuids)
-        )->delete();
+        if (!empty($syncedUuids)) {
+            \Azuriom\Plugin\ApexsionsBridge\Models\Bounty::whereNotIn('target_uuid', $syncedUuids)->delete();
+        } else {
+            \Azuriom\Plugin\ApexsionsBridge\Models\Bounty::query()->delete();
+        }
 
         return response()->json([
             'status' => 'success',
@@ -756,6 +771,8 @@ class LinkVerificationController extends Controller
         // Cleanup claims that no longer exist in the snapshot
         if (!empty($syncedIds)) {
             \Azuriom\Plugin\ApexsionsBridge\Models\Claim::whereNotIn('claim_id', $syncedIds)->delete();
+        } else {
+            \Azuriom\Plugin\ApexsionsBridge\Models\Claim::query()->delete();
         }
 
         return response()->json([

@@ -121,6 +121,22 @@ class VoteController extends Controller
             }
         }
 
+        // If site has an API key configured, verify caller token / signature to prevent forgery
+        if (!empty($site->api_key)) {
+            $token = $request->input('key')
+                ?: $request->input('token')
+                ?: $request->input('secret')
+                ?: $request->header('X-Vote-Key')
+                ?: $request->header('X-Apexsions-Key');
+
+            $serverKey = setting('apexsions.server_api_key', 'apexsions_bridge_key_live_2026');
+            $isValid = ($token && (hash_equals($site->api_key, (string) $token) || hash_equals($serverKey, (string) $token)));
+
+            if (!$isValid) {
+                return response()->json(['error' => 'Invalid or missing platform webhook signature.'], 401);
+            }
+        }
+
         // Extract username from query or body (supports various platforms: username, user, nick, player)
         $username = $request->input('username') ?: $request->input('user') ?: $request->input('nick') ?: $request->input('player');
         if (!$username) {
