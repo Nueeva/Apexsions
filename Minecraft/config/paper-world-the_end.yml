@@ -11,6 +11,7 @@ anticheat:
     - trapped_chest
     - barrel
     - shulker_box
+    - ender_chest
     lava-obscures: true
     max-block-height: 256
     replacement-blocks:

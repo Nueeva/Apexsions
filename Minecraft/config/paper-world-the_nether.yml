@@ -17,6 +17,12 @@ anticheat:
     - respawn_anchor
     - lodestone
     - gilded_blackstone
+    - gold_block
+    - netherite_block
+    - shulker_box
+    - crafter
+    - chiseled_bookshelf
+    - decorated_pot
     lava-obscures: true
     max-block-height: 128
     replacement-blocks:
