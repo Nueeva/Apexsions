@@ -1375,7 +1375,12 @@ README.md
 DOKUMENTASI.md
 GEMINI.md
 AGENTS.md
+docs/placeholders/
 ```
+
+### Sinkronisasi Dokumentasi PlaceholderAPI (Wajib)
+Folder `docs/placeholders/` memuat dokumentasi resmi seluruh PlaceholderAPI per modul plugin (`ApexsionsCore.md`, `ApexsionsEconomy.md`, `ApexsionsBattlepass.md`, dll.) beserta direktori indeks `docs/placeholders/README.md`.
+Setiap kali ada penambahan, perubahan, atau penghapusan placeholder pada plugin apa pun, agent **WAJIB memperbarui file dokumentasi placeholder terkait** di folder `docs/placeholders/` agar daftar placeholder, contoh output, dan panduan integrasinya selalu sinkron 100% dengan implementasi kode sumber.
 
 Tidak semua file harus berubah untuk setiap commit.
 

@@ -609,11 +609,15 @@ DOKUMENTASI.md
 GEMINI.md
 AGENTS.md
 docs/
+docs/placeholders/
 architecture/
 examples/
 CHANGELOG
 CONTRIBUTING
 ```
+
+### PlaceholderAPI Documentation Synchronization
+The `docs/placeholders/` directory contains per-plugin PlaceholderAPI reference documents (`ApexsionsCore.md`, `ApexsionsEconomy.md`, `ApexsionsFishing.md`, etc.) and `docs/placeholders/README.md`. Whenever placeholders are added, modified, or removed, always update the corresponding file in `docs/placeholders/` so that placeholder names, types, outputs, and integration guides match code implementation 100%.
 
 Only update documentation that is actually affected.
 

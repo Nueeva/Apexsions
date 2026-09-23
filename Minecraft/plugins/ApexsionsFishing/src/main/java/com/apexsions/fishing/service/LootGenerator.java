@@ -331,5 +331,9 @@ public class LootGenerator {
         PersistentDataContainer pdc = meta.getPersistentDataContainer();
         return pdc.getOrDefault(keyFishWeight, PersistentDataType.DOUBLE, 0.0);
     }
+
+    public List<FishingLootItem> getFishTable() {
+        return Collections.unmodifiableList(fishTable);
+    }
 }
 

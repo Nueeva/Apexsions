@@ -75,6 +75,12 @@ public class ApexsionsFishing extends JavaPlugin {
             Objects.requireNonNull(getCommand("vault")).setTabCompleter(fishCmd);
         }
 
+        // Register PlaceholderAPI Expansion
+        if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
+            new com.apexsions.fishing.integration.FishingPlaceholderExpansion(this).register();
+            getLogger().info("PlaceholderAPI terdeteksi: %apexsionsfishing_*% berhasil didaftarkan!");
+        }
+
         getLogger().info("=========================================");
         getLogger().info(" ApexsionsFishing v" + getDescription().getVersion() + " telah aktif!");
         getLogger().info(" The Peak Civilizations — Fishing Module ");
