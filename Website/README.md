@@ -49,12 +49,15 @@ Website/
 - Admin configuration for Client Key, Server Key, Merchant ID, and Sandbox/Production toggle.
 - Standardized Snap payload generation and SHA-512 webhook signature verification stub.
 
-### 2. Minecraft Identity, WebBridge & Rank Sync (`plugins/apexsions-bridge`)
+### 2. Minecraft Identity, WebBridge & Reliability Architecture (`plugins/apexsions-bridge`)
 - Supports **Java Online**, **Java Offline**, and **Bedrock Floodgate** identity classes (§16 & §70).
 - Users request a 6-digit PIN on the web portal (valid for 5 minutes).
 - In-game command `/link <code>` calls `/api/apexsions-bridge/verify` to securely link UUID and username.
 - **11-Tier Official Rank Synchronization**: Bidirectional rank syncing from in-game LuckPerms to Azuriom Web roles (`Ancestor` [100], `Architect` [95], `Overseer` [95], `Warden` [90], `Herald` [80], `Sions` [70], `Emperor` [60], `Sovereign` [50], `Archon` [40], `Ascendant` [30], `Wanderer` [10]) with official branding colors and power levels.
-- **Decoupled Asynchronous Deliveries**: The `deliveries` table enables queued command dispatching via Console, safely rewarding players whether they are currently online or offline (`/eco give/take/set`, `/ac addxp`, `/ac setlevel`).
+- **Decoupled Asynchronous Deliveries with Concurrency Locking**: The `deliveries` table enables queued command dispatching via Console, safely rewarding players whether online or offline (`/eco give/take/set`, `/ac addxp`, `/ac setlevel`).
+- **High-Reliability Queue Engine**: Protected by `DB::transaction()` with pessimistic `lockForUpdate()`, a 60-second in-flight lease time, and automatic 7-day dead-lettering for stalled deliveries.
+- **Public Profile Read-Only Security**: Endpoint `/player/{identifier}` is strictly read-only and will never insert accounts on GET requests, eliminating database flooding / DoS vulnerabilities.
+- **Operations & Administration Hub**: Full suite covering Player Dossiers (`/admin/players`), Claims (`/admin/claims`), Bounties (`/admin/bounties`), Reports & Moderation (`/admin/reports`, `/admin/moderation`), Server Telemetry (`/admin/server`), Dynamic Market Config (`/admin/market`), Incidents (`/admin/incidents`), and Notifications & Automation (`/admin/notifications`, `/admin/automation`).
 
 ### 3. Apexsions Brand Theme (`themes/apexsions`)
 - Modern dark aesthetic tailored for the Apexsions ecosystem with glassmorphism cards and noble gold accents.

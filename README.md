@@ -36,6 +36,46 @@ Apexsions/
 
 ---
 
+---
+
+## ⚡ Panduan Cepat (Quick-Start from Scratch)
+
+### 1. Build Suite Plugin Minecraft (`Minecraft/`)
+- **Prasyarat:** JDK 21 LTS, Apache Maven 3.9+, PowerShell.
+- **Kompilasi Plugin Tunggal:**
+  ```powershell
+  powershell -ExecutionPolicy Bypass -File .\Minecraft\build.ps1 Core
+  powershell -ExecutionPolicy Bypass -File .\Minecraft\build.ps1 Economy
+  ```
+- **Kompilasi Seluruh Suite (9 Plugin):**
+  ```powershell
+  powershell -ExecutionPolicy Bypass -File .\Minecraft\build.ps1 -All
+  ```
+  *Output JAR tersimpan otomatis di `Minecraft/build/libs/` dan `build/libs/`.*
+
+### 2. Menjalankan Portal Web Azuriom (`Website/`)
+- **Prasyarat:** PHP 8.2 / 8.3 LTS (`pdo_sqlite`, `pdo_mysql`, `curl`, `mbstring`, `bcmath`), Composer 2, Node.js 20+.
+- **Setup Lingkungan Lokal:**
+  ```bash
+  cd Website
+  composer setup
+  npm run build
+  ```
+- **Menjalankan Server Dev:**
+  ```bash
+  composer dev
+  # Atau jalankan standalone:
+  php artisan serve
+  ```
+- **Menjalankan Automated Test Suite:**
+  ```bash
+  composer test
+  # Atau spesifik WebBridge tests:
+  php artisan test plugins/apexsions-bridge/tests
+  ```
+
+---
+
 ## 📦 1. Daftar 9 Plugin Suite Utama (di `Minecraft/plugins/`)
 
 | Plugin | Versi | Status | Package Root Java | Deskripsi & Fokus Utama |
@@ -632,6 +672,10 @@ Portal web resmi Apexsions dibangun di atas platform **Azuriom** dengan tema khu
   - Hierarki BattlePass: `Exsio Pass` berkedudukan lebih tinggi dari `Sio Pass` (pemilik Exsio Pass tidak dapat diturunkan ke Sio Pass dan otomatis mendapatkan diskon bila memiliki pass sebelumnya).
   - Isolasi reward uang rank permanen: Uang bonus rank hanya diberikan satu kali saat pertama kali upgrade dan tidak berlipat ganda saat renewal.
   - Pengalihan pemesanan via WhatsApp resmi Founder/Admin dengan format pesan pre-filled otomatis.
+- **Keandalan Antrean & Dead-Lettering**:
+  - Endpoint antrean diamankan via `DB::transaction()` dengan pessimistic `lockForUpdate()` dan batas sewa (*lease*) 60 detik untuk mencegah race condition / double execution multi-server.
+  - Antrean yang tertahan > 7 hari otomatis berstatus `FAILED` (*dead-lettered*) untuk mencegah *head-of-line starvation*.
+  - Route `/player/{identifier}` strictly read-only, memitigasi serangan DoS pembuatan akun otomatis via HTTP GET request.
 - **Master Automated Test Suite**:
   - 14 skenario pengujian end-to-end terverifikasi lulus 100% (`master_functional_test.js`) mencakup seluruh layer publik, admin panel, database, WebBridge sync, dan responsivitas UI/UX mobile.
 
@@ -667,7 +711,7 @@ Portal web resmi Apexsions dibangun di atas platform **Azuriom** dengan tema khu
 
 ## 🧠 5. Navigasi Arsitektur Berbasis Knowledge Graph (`graphify`)
 
-Monorepo Apexsions mengintegrasikan **Graphify Knowledge Graph** (`graphify-out/`) yang memetakan seluruh kelas, service, event listener, dan antarmuka web (11.805+ nodes, 38.282+ edges, 524 komunitas modul).
+Monorepo Apexsions mengintegrasikan **Graphify Knowledge Graph** (`graphify-out/`) yang memetakan seluruh kelas, service, event listener, dan antarmuka web (14.095+ nodes, 42.998+ edges, 629 komunitas modul).
 
 ### Perintah Cepat Pengembang:
 - **Visualisasi Interaktif:** `Start-Process "graphify-out/graph.html"` (Buka di browser).

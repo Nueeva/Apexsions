@@ -25,55 +25,67 @@ Dashboard ini ditujukan khusus untuk operasional staf dan administrator:
 ## 2. Admin Dashboard Features
 
 ### A. Core Operations
-1. **Executive Dashboard (`/admin/dashboard` & `/admin/apexsions-bridge/dashboard`):**
+1. **Executive Dashboard (`/admin/dashboard`):**
    - Ringkasan pemain online, TPS saat ini, antrean bridge, dan insiden terbuka.
    - Shortcut investigasi dan status operasional real-time.
 
-2. **Player Management 360 (`/admin/apexsions-bridge/players`):**
+2. **Player Management 360 (`/admin/players`):**
    - Pencarian pemain berdasarkan UUID, username, atau kingdom.
    - Halaman detail komprehensif: level, kingdom, saldo ganda, status verifikasi, riwayat sanksi, riwayat transaksi, dan aksi administratif yang aman.
 
-3. **Moderation Center (`/admin/apexsions-bridge/moderation`):**
+3. **Moderation Center (`/admin/moderation` & `/admin/reports`):**
    - Manajemen laporan pemain dengan bukti terlampir.
    - Manajemen hukuman aktif (Ban, Mute, Warn, Kick) dengan rekam jejak staf penindak.
 
-4. **Economy Operations & Market Control (`/admin/apexsions-bridge/economy`):**
+4. **Economy Operations & Market Control (`/admin/economy` & `/admin/market`):**
    - Ledger transaksi transparan dengan filter sender, receiver, tipe, dan mata uang.
    - Pemantau lelang (Auction House) dan saldo perbendaharaan Kingdom.
    - Penyesuaian saldo terotorisasi via template command bridge.
 
-5. **Server Operations (`/admin/apexsions-bridge/server`):**
+5. **Server Operations (`/admin/server`):**
    - Telemetri real-time: TPS, penggunaan RAM, CPU, dan status pemeliharaan (Maintenance Mode).
    - Tindakan pemeliharaan aman dengan konfirmasi admin dan perekaman audit.
 
-6. **Custom Plugin Registry & Control (`/admin/apexsions-bridge/plugins`):**
+6. **Custom Plugin Registry & Control (`/admin/custom-plugins`):**
    - Pendaftaran dan status kesehatan 9 suite plugin Apexsions.
    - Matriks kapabilitas dan eksekusi aksi aman (*Safe Actions*) berbasis whitelist.
 
-7. **Intelligence & Incident Center (`/admin/apexsions-bridge/incidents`):**
+7. **Intelligence & Incident Center (`/admin/incidents` & `/admin/intelligence`):**
    - Deteksi anomali berbasis aturan (Rule-based detection) tanpa AI palsu.
    - Korelasi event dan timeline investigasi staf.
 
-8. **Notification & Automation Hub (`/admin/apexsions-bridge/notifications` & `/automation`):**
+8. **Notification & Automation Hub (`/admin/notifications` & `/admin/automation`):**
    - Penanganan notifikasi insiden dengan deduplikasi dan cooldown anti-spam.
    - Approval Gate untuk instruksi otomatis berisiko (misal: reload modul degradasi).
 
-9. **Unified Audit Log (`/admin/apexsions-bridge/audit`):**
+9. **Unified Audit Log (`/admin/audit-logs`):**
    - Rekam jejak seluruh mutasi dan aksi staf, tidak dapat diubah (immutable trail).
 
-10. **User Management Center (`/admin/users`):**
-   - **Executive KPI Summary Cards**: Agregasi metrik real-time mencakup total akun terdaftar, akun terverifikasi, akun tertunda (unverified), pengguna dengan 2FA aktif, akun dalam penangguhan/ban, dan jumlah akun administrator.
-   - **Live Search & Granular Filter**: Pencarian cepat berbasis username dan email, penyaringan berdasarkan status akun (`all`, `verified`, `unverified`, `2fa`, `banned`, `admin`), web role, dan pengurutan multi-kolom (`newest`, `oldest`, `name`, `last_login`).
-   - **Integrasi Identitas Minecraft**: Eager loading relasi `minecraftAccount` (`minecraft_accounts` table) langsung pada daftar pengguna, menampilkan IGN in-game, rank in-game, dan copyable UUID.
-   - **5-Section User Dossier (`/admin/users/{id}/edit`)**:
-     1. *Identity*: Avatar, User ID, Username, Email, Tanggal Registrasi, dan UUID in-game.
-     2. *Account Status & Roles*: Pengaturan Web Role, status verifikasi email, dan status sanksi (Ban/Suspension).
-     3. *Security & Credentials*: Trigger reset kata sandi, status autentikasi dua faktor (2FA), dan riwayat aktivitas terakhir.
-     4. *Minecraft Server Integration*: Panel data pemain terkait (IGN, in-game rank, Level & XP, serta tautan cepat ke `/admin/players/{uuid}`).
-     5. *Administrative Audit History*: Catatan riwayat aksi staf dan riwayat sanksi akun.
-   - **Administrator Self-Protection**: Kebijakan proteksi mutlak yang mencegah administrator menghapus akunnya sendiri atau mendemosi/menghapus akun administrator terakhir yang tersisa (mengembalikan respon 403 Forbidden aman).
+10. **Territory Claims & Bounties (`/admin/claims` & `/admin/bounties`):**
+    - Administrasi klaim tanah kerajaan (`/claim`), unclaim darurat, setoran upkeep, dan pemungutan pajak wilayah.
+    - Pengawasan kontrak buronan aktif (`/bounty`) dengan kemampuan pembatalan admin.
 
-11. **Webstore Product & Banner Manager (`/admin/webstore`):**
+11. **Kingdom Wars & BattlePass (`/admin/kingdoms` & `/admin/battlepass`):**
+    - Manajemen deklarasi perang kerajaan, penobatan Raja Kerajaan (Monarch), dan perbendaharaan.
+    - Pengelolaan season BattlePass, penyerahan pass, dan penyesuaian level/progress.
+
+12. **Crates & Broadcast Hub (`/admin/crates` & `/admin/broadcast`):**
+    - Manajemen kunci peti hadiah (Key Dispenser) dan reload konfigurasi crates.
+    - Siaran darurat server real-time (Actionbar, Title, BossBar) dan toggle mode Lockdown.
+
+13. **User Management Center (`/admin/users`):**
+    - **Executive KPI Summary Cards**: Agregasi metrik real-time mencakup total akun terdaftar, akun terverifikasi, akun tertunda (unverified), pengguna dengan 2FA aktif, akun dalam penangguhan/ban, dan jumlah akun administrator.
+    - **Live Search & Granular Filter**: Pencarian cepat berbasis username dan email, penyaringan berdasarkan status akun (`all`, `verified`, `unverified`, `2fa`, `banned`, `admin`), web role, dan pengurutan multi-kolom (`newest`, `oldest`, `name`, `last_login`).
+    - **Integrasi Identitas Minecraft**: Eager loading relasi `minecraftAccount` (`minecraft_accounts` table) langsung pada daftar pengguna, menampilkan IGN in-game, rank in-game, dan copyable UUID.
+    - **5-Section User Dossier (`/admin/users/{id}/edit`)**:
+      1. *Identity*: Avatar, User ID, Username, Email, Tanggal Registrasi, dan UUID in-game.
+      2. *Account Status & Roles*: Pengaturan Web Role, status verifikasi email, dan status sanksi (Ban/Suspension).
+      3. *Security & Credentials*: Trigger reset kata sandi, status autentikasi dua faktor (2FA), dan riwayat aktivitas terakhir.
+      4. *Minecraft Server Integration*: Panel data pemain terkait (IGN, in-game rank, Level & XP, serta tautan cepat ke `/admin/players/{uuid}`).
+      5. *Administrative Audit History*: Catatan riwayat aksi staf dan riwayat sanksi akun.
+    - **Administrator Self-Protection**: Kebijakan proteksi mutlak yang mencegah administrator menghapus akunnya sendiri atau mendemosi/menghapus akun administrator terakhir yang tersisa (mengembalikan respon 403 Forbidden aman).
+
+14. **Webstore Product & Banner Manager (`/admin/webstore`):**
     - **Pusat Manajemen Produk Terpadu**: Mengelola seluruh paket di semua kategori (Rank Kasta Donatur, Battlepass Musiman, Pundi Koin & Booster) dalam satu antarmuka terpusat.
     - **Manajemen Visual & Banner (16:9)**: Unggah file banner kustom langsung ke storage publik dengan live preview, atau pilih langsung dari galeri preset grafis resmi server (`package-sions.jpg`, `package-emperor.jpg`, `package-exsio-pass.jpg`, dll.).
     - **Tag Tampilan & Promo Kustom**: Atur pita badge khusus (e.g. "HOT DEAL", "BEST VALUE", "POPULER") dan toggle sorotan beranda ("Featured on Store Home").
@@ -95,6 +107,9 @@ Setiap plugin custom Apexsions terhubung melalui antrean WebBridge:
 | **ApexsionsBattlepass** | Quests, passes, rotating shops | Pass tier, active pass, quest stats | `bp.reload`, `bp.season_sync` |
 | **ApexsionsShop** | Dynamic markets, sell GUI, kingdom shop | Market prices, taxes, categories | `shop.reload`, `shop.rebalance_markets` |
 | **ApexsionsMedia** | Interactive banner, raytrace glow, logo | Media displays, interactive banners | `media.reload` |
+| **ApexsionsCustomEnchants** | Dual-currency enchanter, armor sets, scrolls | Custom enchants, armor stat sets | `enchants.reload` |
+| **ApexsionsCrates** | Key shop, opening animation, milestone rewards | Crate keys, pity progression | `crates.reload` |
+| **ApexsionsFishing** | AFK & active reel engine, vault, fish markets | Fishing catches, vault storage, bait | `fishing.reload` |
 
 ---
 
