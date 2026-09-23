@@ -58,6 +58,12 @@ public class CombatSecurityListener implements Listener {
             return;
         }
 
+        // 0. Configuration Master Toggles
+        if (!plugin.getConfig().getBoolean("security.enabled", true) ||
+            !plugin.getConfig().getBoolean("security.combat.enabled", true)) {
+            return;
+        }
+
         // Exempt Creative/Spectator or staff bypass
         if (attacker.getGameMode() == GameMode.CREATIVE || attacker.getGameMode() == GameMode.SPECTATOR) {
             return;
@@ -76,21 +82,26 @@ public class CombatSecurityListener implements Listener {
         double distance = eyeLoc.distance(targetCenter);
 
         // 1. Combat Reach Check
-        if (distance > MAX_SURVIVAL_REACH) {
+        double maxReach = plugin.getConfig().getDouble("security.combat.max-reach", MAX_SURVIVAL_REACH);
+        if (distance > maxReach) {
             event.setCancelled(true);
             handleViolation(attacker, "Reach Hack (" + String.format("%.2f", distance) + "m)");
             return;
         }
 
         // 2. KillAura Angle Check
-        Vector eyeDir = eyeLoc.getDirection().normalize();
         Vector toTarget = targetCenter.toVector().subtract(eyeLoc.toVector()).normalize();
-        double angle = Math.toDegrees(eyeDir.angle(toTarget));
+        boolean killauraCheck = plugin.getConfig().getBoolean("security.combat.killaura-check", true);
+        if (killauraCheck) {
+            Vector eyeDir = eyeLoc.getDirection().normalize();
+            double angle = Math.toDegrees(eyeDir.angle(toTarget));
+            double maxAngle = plugin.getConfig().getDouble("security.combat.max-killaura-angle", MAX_KILLAURA_ANGLE);
 
-        if (angle > MAX_KILLAURA_ANGLE) {
-            event.setCancelled(true);
-            handleViolation(attacker, "KillAura Angle (" + String.format("%.1f", angle) + "°)");
-            return;
+            if (angle > maxAngle) {
+                event.setCancelled(true);
+                handleViolation(attacker, "KillAura Angle (" + String.format("%.1f", angle) + "°)");
+                return;
+            }
         }
 
         // 3. Wall-Hit (Line of Sight Raycast) Check

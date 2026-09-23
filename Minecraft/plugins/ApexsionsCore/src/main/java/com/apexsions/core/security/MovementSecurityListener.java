@@ -44,11 +44,10 @@ public class MovementSecurityListener implements Listener {
     private final Map<UUID, Integer> violationCount = new ConcurrentHashMap<>();
     private final Map<UUID, Long> lastAlertTime = new ConcurrentHashMap<>();
 
-    private static final int MAX_VIOLATIONS_BEFORE_STAFF_ALERT = 8;
     private static final long ALERT_COOLDOWN_MS = 5000L;
-    private static final long LIQUID_EXIT_GRACE_MS = 2500L;
-    private static final long CLIMBABLE_EXIT_GRACE_MS = 2000L;
-    private static final long VELOCITY_GRACE_MS = 2000L;
+    private static final long LIQUID_EXIT_GRACE_MS = 4000L;
+    private static final long CLIMBABLE_EXIT_GRACE_MS = 3000L;
+    private static final long VELOCITY_GRACE_MS = 2500L;
 
     public MovementSecurityListener(ApexsionsCorePlugin plugin) {
         this.plugin = plugin;
@@ -95,6 +94,12 @@ public class MovementSecurityListener implements Listener {
     public void onPlayerMove(PlayerMoveEvent event) {
         Player player = event.getPlayer();
 
+        // 0. Configuration Master Toggles
+        if (!plugin.getConfig().getBoolean("security.enabled", true) ||
+            !plugin.getConfig().getBoolean("security.movement.enabled", true)) {
+            return;
+        }
+
         // 1. Exemptions: Creative, Spectator, Flying permitted, Elytra gliding, Vehicle riding, Trident Riptiding, Staff bypass
         if (player.getGameMode() == GameMode.CREATIVE || player.getGameMode() == GameMode.SPECTATOR) {
             return;
@@ -129,10 +134,12 @@ public class MovementSecurityListener implements Listener {
         boolean hasLevitation = player.hasPotionEffect(PotionEffectType.LEVITATION);
         boolean hasSlowFalling = player.hasPotionEffect(PotionEffectType.SLOW_FALLING);
         boolean hasJumpBoost = player.hasPotionEffect(PotionEffectType.JUMP_BOOST);
+        boolean hasDolphinsGrace = player.hasPotionEffect(PotionEffectType.DOLPHINS_GRACE);
+        boolean hasConduitPower = player.hasPotionEffect(PotionEffectType.CONDUIT_POWER);
         boolean isGrounded = isPhysicallyOnGround(player);
 
         // ---------------------------------------------------------------------
-        // 2. Liquid & Water State Management (Fix for swimming/waterfall climbing)
+        // 2. Liquid & Water State Management (Complete immunity for water ascending)
         // ---------------------------------------------------------------------
         if (inLiquid) {
             lastLiquidTime.put(uuid, now);
@@ -157,7 +164,7 @@ public class MovementSecurityListener implements Listener {
         boolean recentVelocity = (now - lastVelocityTime.getOrDefault(uuid, 0L)) < VELOCITY_GRACE_MS;
 
         if (recentLiquid || recentClimbable) {
-            // Player just surfaced or hopped out of water/ladder (dolphin leap, waterfall breach)
+            // Player just surfaced or hopped out of water/ladder (dolphin leap, waterfall breach, bubble elevator)
             airborneTicks.put(uuid, 0);
             serverFallDistance.put(uuid, 0.0);
             lastSafeGround.put(uuid, to.clone());
@@ -172,12 +179,14 @@ public class MovementSecurityListener implements Listener {
             airborneTicks.put(uuid, 0);
 
             // Server-Side NoFall verification:
-            // Apply fall damage only if player was actually falling in mid-air
-            Double trackedFall = serverFallDistance.getOrDefault(uuid, 0.0);
-            if (trackedFall > 3.6 && !hasSlowFalling && !recentLiquid && !isDamageAbsorbing(to.getBlock())) {
-                double expectedDamage = Math.max(1.0, trackedFall - 3.0);
-                if (player.getFallDistance() < 0.5f) {
-                    player.damage(expectedDamage);
+            boolean nofallEnabled = plugin.getConfig().getBoolean("security.movement.nofall-verification", true);
+            if (nofallEnabled) {
+                Double trackedFall = serverFallDistance.getOrDefault(uuid, 0.0);
+                if (trackedFall > 3.6 && !hasSlowFalling && !recentLiquid && !isDamageAbsorbing(to.getBlock())) {
+                    double expectedDamage = Math.max(1.0, trackedFall - 3.0);
+                    if (player.getFallDistance() < 0.5f) {
+                        player.damage(expectedDamage);
+                    }
                 }
             }
             serverFallDistance.put(uuid, 0.0);
@@ -194,16 +203,19 @@ public class MovementSecurityListener implements Listener {
             // ---------------------------------------------------------------------
             // 4. Fly Hack & AirWalk / Hovering Check
             // ---------------------------------------------------------------------
-            // Bedrock players require more airborne ticks due to Geyser packet batching
-            int requiredAirTicks = isBedrock ? 25 : 15;
+            boolean flyHackEnabled = plugin.getConfig().getBoolean("security.movement.fly-hack-detection", true);
+            if (flyHackEnabled) {
+                // Bedrock Geyser translation requires higher tolerance due to batching & jitter
+                int requiredAirTicks = isBedrock ? 35 : 20;
 
-            if (airTicks > requiredAirTicks && !hasLevitation && !hasSlowFalling &&
-                !hasJumpBoost && !recentKnockback && !recentVelocity) {
+                if (airTicks > requiredAirTicks && !hasLevitation && !hasSlowFalling &&
+                    !hasJumpBoost && !recentKnockback && !recentVelocity) {
 
-                // Flag if ascending persistently in open air or hovering stationary without gravity
-                if (deltaY > 0.08 || (deltaY >= -0.01 && airTicks > (requiredAirTicks + 10))) {
-                    handleMovementViolation(player, "Fly Hack / AirWalk", event);
-                    return;
+                    // Flag if ascending persistently in open air or hovering stationary without gravity
+                    if (deltaY > 0.08 || (deltaY >= -0.01 && airTicks > (requiredAirTicks + 15))) {
+                        handleMovementViolation(player, "Fly Hack / AirWalk", event);
+                        return;
+                    }
                 }
             }
         }
@@ -211,7 +223,8 @@ public class MovementSecurityListener implements Listener {
         // ---------------------------------------------------------------------
         // 5. Jesus / WaterWalk Check
         // ---------------------------------------------------------------------
-        if (!isGrounded && player.isOnGround()) {
+        boolean jesusEnabled = plugin.getConfig().getBoolean("security.movement.jesus-waterwalk", true);
+        if (jesusEnabled && !isGrounded && player.isOnGround()) {
             Block blockBelow = to.clone().subtract(0, 0.5, 0).getBlock();
             if (isLiquidMaterial(blockBelow.getType()) && !player.isSwimming() && !isNearbySolid(to, 1.2)) {
                 // Client claims onGround while standing on open deep water without solid blocks
@@ -223,13 +236,19 @@ public class MovementSecurityListener implements Listener {
         // ---------------------------------------------------------------------
         // 6. Horizontal Speed Hack Check
         // ---------------------------------------------------------------------
-        double maxSpeedSq = isBedrock ? 0.95 : 0.70; // Bedrock Geyser translation tolerance
-        if (player.hasPotionEffect(PotionEffectType.SPEED)) {
-            maxSpeedSq += 0.45;
-        }
+        boolean speedEnabled = plugin.getConfig().getBoolean("security.movement.speed-detection", true);
+        if (speedEnabled) {
+            double maxSpeedSq = isBedrock ? 1.20 : 0.75; // Bedrock Geyser translation tolerance
+            if (player.hasPotionEffect(PotionEffectType.SPEED)) {
+                maxSpeedSq += 0.50;
+            }
+            if (hasDolphinsGrace || hasConduitPower) {
+                maxSpeedSq += 0.60;
+            }
 
-        if (horizontalDistSq > maxSpeedSq && !recentKnockback && !recentVelocity && !player.isGliding()) {
-            handleMovementViolation(player, "Speed Hack", event);
+            if (horizontalDistSq > maxSpeedSq && !recentKnockback && !recentVelocity && !player.isGliding() && !recentLiquid) {
+                handleMovementViolation(player, "Speed Hack", event);
+            }
         }
     }
 
@@ -255,7 +274,8 @@ public class MovementSecurityListener implements Listener {
         player.sendActionBar(mm.deserialize("<red>⚠ Gerakan tidak wajar (" + cheatType + ") terdeteksi! Posisi disesuaikan kembali.</red>"));
 
         // Alert online staff if violations accumulate
-        if (currentViolations >= MAX_VIOLATIONS_BEFORE_STAFF_ALERT) {
+        int maxViolations = plugin.getConfig().getInt("security.movement.max-violations-before-staff-alert", 8);
+        if (currentViolations >= maxViolations) {
             long now = System.currentTimeMillis();
             Long lastAlert = lastAlertTime.get(uuid);
             if (lastAlert == null || (now - lastAlert) > ALERT_COOLDOWN_MS) {
@@ -276,42 +296,40 @@ public class MovementSecurityListener implements Listener {
 
     /**
      * Checks if the player is submerged in or contacting any liquid, bubble column, or waterlogged block.
+     * Includes exhaustive 3x3 horizontal and vertical neighborhood scanning.
      */
     private boolean isPhysicallyInOrNearLiquid(Player player, Location from, Location to) {
         if (player.isInWater() || player.isInLava() || player.isInBubbleColumn() || player.isSwimming()) {
             return true;
         }
 
-        // Check feet, waist, and head positions for both 'from' and 'to'
-        Location[] testLocs = new Location[]{
-                from,
-                to,
-                from.clone().add(0, 0.9, 0),
-                to.clone().add(0, 0.9, 0),
-                from.clone().add(0, 1.8, 0),
-                to.clone().add(0, 1.8, 0),
-                from.clone().subtract(0, 0.3, 0),
-                to.clone().subtract(0, 0.3, 0)
-        };
+        // Fast neighborhood checks on 'from' and 'to'
+        return isNearLiquidBlock(from) || isNearLiquidBlock(to);
+    }
 
-        for (Location loc : testLocs) {
-            Block block = loc.getBlock();
-            if (isLiquidMaterial(block.getType()) || isWaterloggedBlock(block)) {
-                return true;
-            }
+    private boolean isNearLiquidBlock(Location loc) {
+        if (loc.getWorld() == null) return false;
+        Block center = loc.getBlock();
+        if (isLiquidMaterial(center.getType()) || isWaterloggedBlock(center)) {
+            return true;
         }
+        int bx = loc.getBlockX();
+        int by = loc.getBlockY();
+        int bz = loc.getBlockZ();
+        org.bukkit.World w = loc.getWorld();
 
-        // Check horizontal perimeter for 1x1 water streams
-        double[] offsets = new double[]{-0.35, 0.35};
-        for (double ox : offsets) {
-            for (double oz : offsets) {
-                Block b = to.clone().add(ox, 0.5, oz).getBlock();
-                if (isLiquidMaterial(b.getType()) || isWaterloggedBlock(b)) {
-                    return true;
+        // Check horizontal 3x3 radius and vertical range -1 (beneath feet) to +2 (above head)
+        for (int y = -1; y <= 2; y++) {
+            for (int x = -1; x <= 1; x++) {
+                for (int z = -1; z <= 1; z++) {
+                    if (x == 0 && y == 0 && z == 0) continue;
+                    Block b = w.getBlockAt(bx + x, by + y, bz + z);
+                    if (isLiquidMaterial(b.getType()) || isWaterloggedBlock(b)) {
+                        return true;
+                    }
                 }
             }
         }
-
         return false;
     }
 

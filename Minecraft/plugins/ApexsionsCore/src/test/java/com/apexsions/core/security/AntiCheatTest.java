@@ -86,10 +86,10 @@ public class AntiCheatTest {
     @Test
     public void testWaterSwimmingGracePeriod() {
         long now = System.currentTimeMillis();
-        long lastLiquidTime = now - 800L; // 0.8 seconds ago (surfacing from water)
+        long lastLiquidTime = now - 1500L; // 1.5 seconds ago (surfacing from water)
 
-        boolean recentLiquid = (now - lastLiquidTime) < 2500L;
-        assertTrue(recentLiquid, "Player who exited water 800ms ago must be within the grace period");
+        boolean recentLiquid = (now - lastLiquidTime) < 4000L;
+        assertTrue(recentLiquid, "Player who exited water 1.5s ago must be within the 4000ms grace period");
 
         // Within grace period, ascending motion (deltaY > 0) is legitimate water leaping
         double deltaY = 0.35;
@@ -98,12 +98,19 @@ public class AntiCheatTest {
 
         // Expired grace period (e.g. 5 seconds after leaving water, hovering in pure air)
         long expiredLiquidTime = now - 5000L;
-        boolean expiredRecentLiquid = (now - expiredLiquidTime) < 2500L;
+        boolean expiredRecentLiquid = (now - expiredLiquidTime) < 4000L;
         assertFalse(expiredRecentLiquid);
 
-        int airTicks = 30;
-        boolean flagFlyHack = !expiredRecentLiquid && airTicks > 15 && deltaY > 0.08;
-        assertTrue(flagFlyHack, "Ascending in pure air without liquid or climbable for 30 ticks must be flagged as Fly Hack");
+        // Bedrock client has 35 air ticks tolerance
+        int bedrockAirTicks = 25;
+        int requiredBedrockAirTicks = 35;
+        boolean bedrockFlag = !expiredRecentLiquid && bedrockAirTicks > requiredBedrockAirTicks && deltaY > 0.08;
+        assertFalse(bedrockFlag, "Bedrock player with 25 air ticks should not be flagged due to Geyser tolerance");
+
+        // True hacker: 40 air ticks in open air
+        int hackerAirTicks = 40;
+        boolean hackerFlag = !expiredRecentLiquid && hackerAirTicks > requiredBedrockAirTicks && deltaY > 0.08;
+        assertTrue(hackerFlag, "Ascending in pure air without liquid or climbable for 40 ticks must be flagged as Fly Hack");
     }
 
     private boolean isInvalidPitch(float pitch) {
