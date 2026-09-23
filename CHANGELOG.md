@@ -30,9 +30,49 @@ Bagi AI Agent atau developer yang melanjutkan pekerjaan di repositori ini, perha
    - **Game Server (SFTP):** `falcon04.jagoanhosting.id:2022` (SFTP via `ssh2`).
    - **Web Server VPS (Azuriom):** `89.144.53.100:22` (SSH via `ssh2`).
    - **WebBridge Deliveries:** Perintah in-game dari web atau script dijalankan via antrean tabel database `deliveries` (`action_id`, `command`, `status: PENDING`).
-5. **Kebijakan Git & Autonomous Push:**
+5. **Kebijakan Git & Git Safety Mandate:**
    - Selalu lakukan validasi lokal sebelum commit.
-   - Begitu build berhasil dan di-commit, **otomatis push ke `origin/main`** tanpa menunggu instruksi manual.
+   - **DILARANG push langsung ke branch main/master.** Mandate lama auto-push dicabut dan diganti. Seluruh pekerjaan wajib menggunakan branch baru (`audit/YYYY-MM-roundN`, `feat/...`, `fix/...`) dan diajukan lewat Pull Request (PR). Pengecualian satu-satunya adalah apabila user secara eksplisit memberikan instruksi tertulis "push ke main" di pesan pada saat itu.
+
+---
+
+## ⚖️ Self-Governance Agent Protocols & Full Documentation Alignment Milestone [v1.3.9]
+> **Periode Pengembangan:** 23 September 2026 | **Status:** Implemented, Tested, Live Verified & Documented
+
+### 📋 Ikhtisar Pembaruan Aturan Tata Kelola Agent & Penyelarasan Dokumentasi Monorepo
+Berdasarkan evaluasi tata kelola kerja AI coding agent dan audit keselarasan dokumentasi terhadap kondisi aktual kode dan sistem:
+
+#### Added
+- **Aturan Self-Governance Agent Universal:**
+  - `[GIT SAFETY]`: Larangan keras push langsung ke branch `main`/`master`. Mandate lama auto-push resmi dicabut dan diganti dengan alur branch terisolasi (`audit/YYYY-MM-roundN`, `feat/...`, `fix/...`) serta Pull Request.
+  - `[EVIDENCE PER CLAIM]`: Kewajiban menyertakan bukti konkret (commit hash, output test verbatim, path file + baris, atau log riil) untuk setiap status "VERIFIED". Klaim tanpa bukti empiris otomatis berstatus "UNVERIFIED".
+  - `[TEST INTEGRITY]`: Larangan mengubah atau melemahkan file test semata-mata untuk meloloskan test yang gagal. Perubahan test sah wajib disertai justifikasi per baris dan laporan `git diff tests/`.
+  - `[COVERAGE HONESTY]`: Larangan klaim "100% PASS" tanpa mencantumkan jumlah test, cakupan per package, dan test yang belum ada.
+  - `[BEHAVIOR TEST, BUKAN LIBRARY TEST]`: Pengujian wajib memvalidasi perilaku end-to-end melalui siklus hidup aplikasi penuh, bukan hanya memanggil unit wrapper pustaka pihak ketiga.
+  - `[ITERATION LOG]`: Kewajiban mencatat siklus lengkap `OBSERVE` → `ANALYZE` → `HYPOTHESIZE` → `FIX` → `VERIFY` → `CHECK` → Hasil → Pelajaran pada laporan akhir.
+  - `[SELF-AUDIT LOOP]`: Kewajiban menjalankan Round-2 "Audit balik laporan sendiri" setelah setiap audit tanpa melakukan push.
+  - `[HONESTY OVER OPTIMISM]`: Penggunaan label "UNVERIFIED" atau "PARTIAL" secara transparan apabila data pengujian belum lengkap atau terbatas lingkungan.
+- **Spesifikasi API Lengkap (`docs/API.md`):**
+  - Dokumentasi resmi 20 endpoint WebBridge (REST API game server ↔ portal web) dengan contoh payload nyata, format respon sukses/gagal, kode status HTTP, dan header autentikasi.
+- **Variabel Lingkungan Lengkap (`Website/.env.example`):**
+  - Variabel `APEXSIONS_BRIDGE_KEY`, `DISCORD_WEBHOOK_URL`, `APEXSIONS_MAP_URL`, dan `APEXSIONS_OWNER_UUID` dengan komentar konfigurasi default.
+- **Panduan Cepat Mulai (`README.md`):**
+  - Panduan langkah-demi-langkah (Quick-Start) dari nol untuk kompilasi 9 plugin Minecraft dan setup/testing portal web Azuriom.
+
+#### Changed
+- **Penyelarasan URL Rute Admin Dashboard (`Website/ADMIN_GUIDE.md`):**
+  - Memperbaiki drift path rute admin dari `/admin/apexsions-bridge/*` menjadi path aktual `/admin/*` (`/admin/players`, `/admin/moderation`, `/admin/server`, `/admin/custom-plugins`, dll.).
+  - Melengkapi matriks 9 plugin resmi di panduan admin (menambahkan `ApexsionsCustomEnchants`, `ApexsionsCrates`, dan `ApexsionsFishing`).
+- **Pembaruan Metrik Knowledge Graph (`README.md`, `GEMINI.md`):**
+  - Menyelaraskan metrik graf aktual menjadi 14.095+ nodes, 42.998+ edges, dan 629 komunitas modul pasca-ekstraksi AST.
+- **Arsitektur Antrean & Keandalan WebBridge (`Website/README.md`):**
+  - Memperbarui dokumentasi fitur WebBridge mencakup claims territory, bounties, incidents, notifications, concurrency locking, dan dead-lettering 7 hari.
+
+#### Security
+- **Strict Read-Only Public Profile Inspection:**
+  - Mendokumentasikan pengamanan route `/player/{identifier}` yang menolak pembuatan baris akun otomatis via HTTP GET request acak guna memitigasi serangan DoS dan database flooding.
+- **Queue Lease & Concurrency Locking:**
+  - Dokumentasi transaksi `DB::transaction()` + `lockForUpdate()` dengan lease time 60 detik guna mencegah race condition pada lingkungan multi-server.
 
 ---
 
