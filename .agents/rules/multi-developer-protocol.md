@@ -15,8 +15,12 @@ Aturan ini wajib ditaati oleh AI Agent untuk workspace Apexsions:
    - DILARANG KERAS mengakses, memodifikasi, atau menyalin file ke direktori mana pun di luar repository/project root.
    - Seluruh source code, config, dan file binary JAR (`build/libs/`, `plugins/`) hanya dikelola di dalam workspace repository root.
 
-3. **Periksa Ulang Sebelum Push (*Pre-Push Safety*)**:
-   - Sebelum melakukan commit atau push, periksa kembali apakah ada commit baru yang masuk dari developer lain selama proses pengerjaan (`git fetch origin`) untuk mencegah race condition.
+3. **Git Safety & Pull Request Mandate (Pencabutan Auto-Push ke Main)**:
+   - **DILARANG KERAS push langsung ke branch `main` atau `master`.**
+   - Setiap tugas wajib dikerjakan pada branch khusus (`audit/YYYY-MM-roundN`, `feat/...`, `fix/...`) dan diserahkan melalui Pull Request (PR).
+   - Seluruh mandate lama yang menyuruh auto-push ke branch main **RESMI DICABUT dan DIGANTI**.
+   - Pengecualian hanya jika user secara eksplisit memberikan instruksi tertulis "push ke main" di pesan pada sesi saat itu.
+   - Sebelum mengajukan PR atau commit, periksa kembali apakah ada commit baru yang masuk dari developer lain selama proses pengerjaan (`git fetch origin`) untuk mencegah konflik.
 
 4. **Integritas Kode & Arsitektur**:
    - Mematuhi seluruh standar di `GEMINI.md` dan `AGENTS.md`.

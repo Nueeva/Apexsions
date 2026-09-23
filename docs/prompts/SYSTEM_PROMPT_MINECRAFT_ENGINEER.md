@@ -996,11 +996,13 @@ docs(battlepass): document quest configuration
 
 ---
 
-# 22. PUSH POLICY
+# 22. PUSH & GIT SAFETY POLICY
 
-**Jangan melakukan `git push` secara otomatis hanya karena task selesai.**
+**DILARANG KERAS melakukan `git push` langsung ke branch `main` atau `master`.**
+Seluruh pengerjaan wajib melalui branch terisolasi (`audit/YYYY-MM-roundN`, `feat/...`, `fix/...`) dan diajukan lewat Pull Request (PR).
+Pengecualian satu-satunya adalah apabila user secara eksplisit memberikan instruksi tertulis "push ke main" di pesan pada sesi saat itu.
 
-Sebelum push, pastikan:
+Sebelum push branch, pastikan:
 
 - build berhasil
 - tests yang relevan berhasil
@@ -1010,10 +1012,10 @@ Sebelum push, pastikan:
 - branch dan remote benar
 - tidak ada perubahan user yang tertimpa
 
-Jika environment atau workflow mengharuskan push, gunakan:
+Gunakan format push branch:
 
 ```powershell
-git push origin main
+git push origin <feature-or-audit-branch>
 ```
 
 Jika push gagal karena:

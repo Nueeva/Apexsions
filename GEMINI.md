@@ -347,29 +347,70 @@ docs: update plugin architecture
 
 ---
 
-## Push Policy
+## Push Policy & Git Safety Mandate
 
-Commit dan push adalah dua tindakan berbeda.
+Commit dan push adalah dua tindakan yang sepenuhnya terpisah.
 
-Agent boleh membuat commit setelah validation berhasil.
+Agent HANYA boleh membuat commit setelah seluruh tahapan pengujian dan validasi berhasil, dengan mematuhi aturan pemisahan kategori commit.
 
-**Autonomous Push Mandate:**
-Setiap kali perubahan kode, konfigurasi, perbaikan bug, atau penambahan fitur telah selesai divalidasi secara lokal (build/lint sukses) dan di-commit, agent **WAJIB langsung melakukan push ke GitHub (`origin/main`)** tanpa harus menunggu konfirmasi atau perintah manual terpisah dari user ("selalu push ke github kalau ada perubahan").
+### [GIT SAFETY] — Pencabutan Mandate Auto-Push
+> [!CAUTION]
+> **MANDATE LAMA AUTO-PUSH KE MAIN RESMI DICABUT DAN DIBATALKAN.**
+> - **DILARANG KERAS push langsung ke branch `main` atau `master`.**
+> - Seluruh perubahan wajib dikerjakan pada branch terisolasi (`audit/YYYY-MM-roundN`, `feat/...`, `fix/...`) dan diajukan lewat Pull Request (PR).
+> - Pengecualian satu-satunya adalah apabila user secara eksplisit dan tertulis memberikan instruksi "push ke main" di dalam pesan obrolan saat itu.
 
-Tetap terapkan protokol Pre-Push Safety:
-1. Jalankan `git fetch origin`
-2. Pastikan tidak ada konflik dengan remote (lakukan rebase aman jika terdapat remote commit baru)
-3. Pastikan targeted build/validasi lokal lulus 100%
-4. Push ke `origin/main` (DILARANG force push ke shared branch).
+### [EVIDENCE PER CLAIM]
+- Setiap klaim "VERIFIED" wajib disertai salah satu bukti konkret:
+  * Commit hash (jika menyentuh repo).
+  * Output test verbatim (bukan rangkuman teks buatan).
+  * Path file + nomor baris yang diverifikasi.
+  * Screenshot atau log command riil.
+- Klaim tanpa bukti empiris **otomatis berstatus UNVERIFIED**, bukan VERIFIED.
 
-Target branch harus diverifikasi sebelum push (`main`).
+### [TEST INTEGRITY]
+- **DILARANG mengubah atau melemahkan file test** semata-mata untuk meloloskan test yang gagal.
+- Jika file test memang sah harus diubah:
+  * Wajib sertakan justifikasi per baris.
+  * Tunjukkan diff test secara transparan.
+  * Konfirmasi bahwa perubahan tidak melemahkan assertion.
+- Jalankan `git diff <base>..<head> -- tests/` dan laporkan hasilnya (harus kosong atau dijelaskan).
 
-**Autonomous Hosting SFTP Deploy Mandate:**
-Setiap kali perubahan kode, fitur, atau perbaikan bug pada plugin selesai dilakukan:
-1. Lakukan audit dan verifikasi menyeluruh untuk memastikan **TIDAK ADA error/warning fatal**.
-2. Jalankan targeted build (`powershell -ExecutionPolicy Bypass -File .\Minecraft\build.ps1 <Plugin>`) dan pastikan kompilasi sukses 100%.
-3. Setelah build tervalidasi bebas error, **WAJIB langsung upload update plugin ke panel hosting server** via SFTP (`.\deploy.cmd <Plugin>`).
-4. Sinkronisasikan commit dan push ke GitHub `origin/main` sesuai protokol Git multi-developer.
+### [COVERAGE HONESTY]
+- Dilarang mengklaim "100% PASS" tanpa menyebutkan:
+  * Jumlah total test yang dieksekusi.
+  * Cakupan (coverage) per package / file.
+  * Test yang **TIDAK ADA** untuk fitur atau path yang dimodifikasi.
+  * Menjalankan tool coverage resmi: Go (`go test -cover ./...`), JS/TS (Vitest/Jest coverage), PHP (`phpunit --coverage-text`).
+
+### [BEHAVIOR TEST, BUKAN LIBRARY TEST]
+- Untuk setiap perbaikan (fix), test yang dibuat wajib menguji **PERILAKU END-TO-END**, bukan hanya memanggil wrapper/library yang dipakai.
+- *Contoh Benar:* POST payload berbahaya $\rightarrow$ GET data tersimpan $\rightarrow$ assert output tersanitasi bersih di database & respons.
+- *Contoh Salah:* assert `Sanitize()` mengembalikan string bersih (hanya menguji library, bukan wiring/lifecycle).
+
+### [ITERATION LOG]
+- Wajib mencatat dan menyimpan log per iterasi: Nomor iterasi, `OBSERVE` $\rightarrow$ `ANALYZE` $\rightarrow$ `HYPOTHESIZE` $\rightarrow$ `FIX` $\rightarrow$ `VERIFY` $\rightarrow$ `CHECK` $\rightarrow$ Hasil $\rightarrow$ Pelajaran didapat.
+- Log iterasi ini wajib dilampirkan lengkap di laporan akhir, bukan diringkas atau dihilangkan.
+
+### [SELF-AUDIT LOOP]
+- Setelah setiap siklus audit selesai, **WAJIB menjalankan Round-2: "Audit balik laporanmu sendiri"**.
+- Round-2 mencari:
+  * Klaim tanpa bukti empiris.
+  * Test yang dijinakkan / dilemahkan assertion-nya.
+  * Perubahan file yang tidak di-commit.
+  * Gap antara daftar temuan dan perbaikan nyata.
+  * File yang di-commit tetapi tidak tercantum pada tabel temuan.
+  * Area coverage yang masih rendah.
+- Round-2 **DILARANG KERAS melakukan push apa pun**.
+
+### [HONESTY OVER OPTIMISM]
+- Jika ragu atau data pengujian belum lengkap, beri label **UNVERIFIED** atau **PARTIAL**, jangan pernah "VERIFIED".
+- Sebutkan batasan lingkungan secara eksplisit (contoh: verifikasi hanya berlaku di SQLite lokal dan belum teruji di MySQL production).
+- Jangan pernah menutupi kegagalan; kegagalan yang dilaporkan secara transparan jauh lebih berharga daripada keberhasilan fiktif.
+
+### Hosting SFTP Deploy Policy
+- Deployment SFTP (`.\deploy.cmd <Plugin>`) hanya dieksekusi jika diminta eksplisit oleh user atau setelah PR/branch disetujui.
+- Dilarang mendepak artifact tanpa validasi 100% bebas error dan persetujuan user.
 
 ---
 

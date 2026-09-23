@@ -212,15 +212,56 @@ git diff
 
 Before pushing, fetch again and check for newly arrived remote commits.
 
-### Automatic Push Rule
-Per repository mandate, once changes are validated and committed, automatically push commits to `origin/main` using safe push practices (fetch, rebase if needed, verify diff, and push without `--force`).
+### [GIT SAFETY] — Revocation of Automatic Push Mandate
+> [!CAUTION]
+> **ANY PRIOR MANDATE REQUIRING AUTO-PUSH TO MAIN IS FORMALLY REVOKED AND VOID.**
+> - **NEVER push directly to `main` or `master`.**
+> - All work must be conducted on isolated feature/audit branches (`audit/YYYY-MM-roundN`, `feat/...`, `fix/...`) and submitted via Pull Request.
+> - The ONLY exception is when the user explicitly types "push ke main" in the current prompt message.
 
-### Automatic Hosting SFTP Deploy Mandate
-Whenever code or configuration for any plugin is modified, fixed, or updated:
-1. Conduct thorough pre-build validation (syntax check, logic verification, zero errors/warnings).
-2. Run targeted compilation (`powershell -ExecutionPolicy Bypass -File .\Minecraft\build.ps1 <Plugin>`) and confirm 100% build success.
-3. Automatically deploy/upload the updated JAR directly to the hosting panel via SFTP (`.\deploy.cmd <Plugin>`).
-4. Commit and push the verified changes to `origin/main`.
+### [EVIDENCE PER CLAIM]
+- Every "VERIFIED" claim must be backed by concrete proof:
+  * Commit SHA (if code changed).
+  * Verbatim test output (not artificial summaries).
+  * File path + exact line numbers verified.
+  * Command logs or screenshots.
+- Any claim lacking empirical proof automatically defaults to **UNVERIFIED**.
+
+### [TEST INTEGRITY]
+- **NEVER alter or weaken test files** simply to make failing tests pass.
+- If a test file must legitimately be changed:
+  * Provide line-by-line justification.
+  * Show the test diff transparently.
+  * Confirm that assertions were not weakened or neutralized.
+- Run `git diff <base>..<head> -- tests/` and report the diff (must be empty or justified).
+
+### [COVERAGE HONESTY]
+- Never claim "100% PASS" without stating:
+  * Total test count executed.
+  * Coverage per package/file.
+  * Missing tests for modified code paths.
+  * Official coverage reports: Go (`go test -cover ./...`), JS/TS (Vitest/Jest coverage), PHP (`phpunit --coverage-text`).
+
+### [BEHAVIOR TEST, BUKAN LIBRARY TEST]
+- Tests must verify end-to-end behavior through application lifecycles, not merely unit wrappers around third-party libraries.
+
+### [ITERATION LOG]
+- Always track and preserve iterative progress: `OBSERVE` → `ANALYZE` → `HYPOTHESIZE` → `FIX` → `VERIFY` → `CHECK` → Result → Takeaways.
+- Attach the complete iteration log in final reports rather than omitting it.
+
+### [SELF-AUDIT LOOP]
+- After every audit cycle, **MANDATORY Round-2: "Audit your own report"**.
+- Round-2 searches for: unevidenced claims, tampered tests, uncommitted files, gap between findings and fixes, unlisted committed files, and weak coverage.
+- Round-2 **MUST NEVER push anything**.
+
+### [HONESTY OVER OPTIMISM]
+- If uncertain, classify as **UNVERIFIED** or **PARTIAL**, never "VERIFIED".
+- Explicitly state environment boundaries (e.g. SQLite local vs MySQL production).
+- Transparently report failures; an honest failure is infinitely more valuable than an unverified success.
+
+### Hosting SFTP Deploy Policy
+- SFTP deployment (`.\deploy.cmd <Plugin>`) is only executed upon explicit user request or after branch PR approval.
+- Never deploy unvalidated code to remote hosting panels.
 
 ---
 
