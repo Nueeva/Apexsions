@@ -145,6 +145,7 @@ public class ApexsionsCorePlugin extends JavaPlugin {
     private com.apexsions.core.security.AuthSecurityGateKeeper authSecurityGateKeeper;
     private com.apexsions.core.security.CombatSecurityListener combatSecurityListener;
     private com.apexsions.core.security.PacketExploitListener packetExploitListener;
+    private com.apexsions.core.security.PluginSecurityListener pluginSecurityListener;
 
     // Unified Moderation & Ban Subsystem
     private com.apexsions.core.moderation.BanRepository banRepository;
@@ -437,6 +438,8 @@ public class ApexsionsCorePlugin extends JavaPlugin {
             Bukkit.getPluginManager().registerEvents(combatSecurityListener, this);
             this.packetExploitListener = new com.apexsions.core.security.PacketExploitListener(this);
             Bukkit.getPluginManager().registerEvents(packetExploitListener, this);
+            this.pluginSecurityListener = new com.apexsions.core.security.PluginSecurityListener(this);
+            Bukkit.getPluginManager().registerEvents(pluginSecurityListener, this);
 
             // 17. Unified Moderation & Ban Engine (Inter-plugin centralized ban/unban)
             this.banRepository = new com.apexsions.core.moderation.BanRepository(this, databaseManager);
@@ -962,6 +965,7 @@ public class ApexsionsCorePlugin extends JavaPlugin {
     public com.apexsions.core.security.AuthSecurityGateKeeper getAuthSecurityGateKeeper() { return authSecurityGateKeeper; }
     public com.apexsions.core.security.CombatSecurityListener getCombatSecurityListener() { return combatSecurityListener; }
     public com.apexsions.core.security.PacketExploitListener getPacketExploitListener() { return packetExploitListener; }
+    public com.apexsions.core.security.PluginSecurityListener getPluginSecurityListener() { return pluginSecurityListener; }
     public ApexsionsCoreAPI getApi() { return api; }
 
     private void registerBattlePassEventListener() {

@@ -169,6 +169,7 @@ Struktur modul berada di folder `Minecraft/plugins/`:
    - Proteksi PvP sesama kerajaan di wilayah teritorial sendiri.
    - NightCore Native Dialog Input GUI (`CustomInputTextGUI`) tanpa anvil/sign crash.
    - **Smart Stacking Engine (Mob & Dropped Items Uncapped 64+):** Penggabungan cerdas mob serta item drop di tanah dengan hologram nama & kuantitas native (menembus batas stack 64 vanilla, misal 2 stack cobblestone -> 1 entitas x128), zero-overhead entitas untuk stabilitas TPS, dan proteksi integritas pickup pemain/hopper.
+   - **Plugin Spoofing & Security (`/pl`, `/plugins`, `/ver`):** Intersepsi cerdas untuk pemain biasa menampilkan spoofing **38 Provinsi di Indonesia** lengkap dengan hover info, sementara staf/admin (`apexsions.admin` / OP) tetap dapat melihat daftar plugin aktual server.
 2. **`ApexsionsChat`** (`com.apexsions.chat.*`):
    - Kyori MiniMessage formatting, Chat Channels (`Global`, `Kingdom`, `Staff`).
    - Settings GUI (`/channel settings`), Profile Hub (`/channel profile`), Show Item (`/showitem`), Offline Mail (`/mail`).

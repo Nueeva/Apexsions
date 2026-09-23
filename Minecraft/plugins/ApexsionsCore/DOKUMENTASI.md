@@ -96,6 +96,7 @@ plugins/ApexsionsCore/
 3. **Keamanan Anti-XRay & Redstone Watchdog (`com.apexsions.core.security`)**:
    - `AntiXrayListener`: Memantau lonjakan penambangan bijih berharga (Diamond, Debris, Emerald) dan menyiarkan alert koordinat real-time ke staf jika terdeteksi anomali spike ($>8$ bijih dalam 60s), serta membatasi jangkauan raytrace blok ($>5.8$m).
    - `RedstoneWatchdogListener`: Mendeteksi sirkuit loop berkecepatan tinggi ($>25$ pulsa dalam 2s) dan otomatis memutus sinyal daya untuk menjaga 20 TPS server.
+   - `PluginSecurityListener`: Mengamankan informasi plugin server dari player biasa (`/pl`, `/plugins`, `/plugin`, `/ver`, `/version`). Player biasa akan melihat list plugin spoofing berisi **38 Nama Provinsi di Indonesia** lengkap dengan hover teks interaktif, sedangkan Admin/OP tetap dapat melihat daftar plugin asli server.
 
 ---
 
