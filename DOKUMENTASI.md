@@ -212,6 +212,19 @@ powershell -ExecutionPolicy Bypass -File .\Minecraft\build.ps1 Crates
 powershell -ExecutionPolicy Bypass -File .\Minecraft\build.ps1 Fishing
 # Atau full suite:
 powershell -ExecutionPolicy Bypass -File .\Minecraft\build.ps1 -all
+
+#### SFTP Deployment Hosting (Auto-Upload)
+Konfigurasi file `sftp-config.json` di root repositori (sudah terlindungi `.gitignore`).
+```powershell
+# Build dan langsung upload otomatis ke hosting:
+powershell -ExecutionPolicy Bypass -File .\Minecraft\build.ps1 Core -Deploy
+powershell -ExecutionPolicy Bypass -File .\Minecraft\build.ps1 -all -Deploy
+
+# Atau upload file JAR yang sudah ada:
+.\deploy.ps1 Core
+.\deploy.ps1 -All
+.\deploy.ps1 -Test
+```
 ```
 
 ---

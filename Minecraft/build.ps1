@@ -12,7 +12,10 @@ param(
     [switch]$Clean = $false,
 
     [Parameter()]
-    [switch]$Offline = $false
+    [switch]$Offline = $false,
+
+    [Parameter()]
+    [switch]$Deploy = $false
 )
 
 $ErrorActionPreference = 'Stop'
@@ -282,5 +285,24 @@ foreach ($p in $targetPlugins) {
     if (Test-Path $destJar) {
         $kb = [math]::Round((Get-Item $destJar).Length / 1024, 2)
         Write-Host ('  [OK] {0}-1.0.0.jar ({1} KB)' -f $pName, $kb) -ForegroundColor Cyan
+    }
+}
+
+if ($Deploy) {
+    Write-Host ''
+    Write-Host '==========================================================' -ForegroundColor Magenta
+    Write-Host '          🚀 INITIATING AUTOMATIC SFTP DEPLOYMENT         ' -ForegroundColor Magenta
+    Write-Host '==========================================================' -ForegroundColor Magenta
+    $deployPy = Join-Path (Split-Path -Parent $scriptDir) 'scripts\deploy_sftp.py'
+    if (Test-Path $deployPy) {
+        if ($All) {
+            python $deployPy --all
+        } elseif ($Plugin) {
+            python $deployPy $Plugin
+        } else {
+            python $deployPy --all
+        }
+    } else {
+        Write-Host "⚠️ Deploy script not found: $deployPy" -ForegroundColor Yellow
     }
 }

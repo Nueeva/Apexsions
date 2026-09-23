@@ -52,3 +52,9 @@ graphify-out/
 
 # Agent/IDE worktrees and plans
 .kilo/
+
+# SFTP and Deployment secrets
+sftp-config.json
+*.secrets.json
+.env.sftp
+deploy-config.json
