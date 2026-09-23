@@ -130,8 +130,9 @@ def main():
     password = config.get("password")
     remote_path = config.get("remote_path", "plugins")
 
-    if not host or not username or not password or password == "YOUR_SFTP_PASSWORD_HERE":
-        print("❌ Error: SFTP host, username, or password is not properly configured in 'sftp-config.json'.")
+    key_file = config.get("key_file")
+    if not host or not username:
+        print("❌ Error: SFTP host or username is not properly configured in 'sftp-config.json'.")
         sys.exit(1)
 
     print("==================================================")
@@ -147,16 +148,21 @@ def main():
     ssh = paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 
+    connect_kwargs = {
+        "hostname": host,
+        "port": port,
+        "username": username,
+        "timeout": 15,
+        "allow_agent": True,
+        "look_for_keys": True,
+    }
+    if password and password != "YOUR_SFTP_PASSWORD_HERE":
+        connect_kwargs["password"] = password
+    if key_file and os.path.exists(key_file):
+        connect_kwargs["key_filename"] = key_file
+
     try:
-        ssh.connect(
-            hostname=host,
-            port=port,
-            username=username,
-            password=password,
-            timeout=15,
-            look_for_keys=False,
-            allow_agent=False
-        )
+        ssh.connect(**connect_kwargs)
         sftp = ssh.open_sftp()
         print("✅ SFTP Connected successfully!\n")
     except Exception as e:
