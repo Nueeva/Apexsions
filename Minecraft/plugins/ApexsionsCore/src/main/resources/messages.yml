@@ -37,3 +37,8 @@ errors:
   player-only: "<red>This command can only be executed by players.</red>"
   no-permission: "<red>You do not have permission to execute this command.</red>"
   profile-loading: "<red>Your profile is still loading, please wait a moment.</red>"
+
+sleep:
+  broadcast-sleeping: "<gold><bold>Apexsions</bold> <dark_gray>»</dark_gray> <yellow>%player%</yellow> <gray>sedang tidur di kasur. Malam akan segera dilewati...</gray>"
+  broadcast-morning: "<gold><bold>Apexsions</bold> <dark_gray>»</dark_gray> <yellow>Matahari telah terbit! Selamat berpetualang kembali di peradaban.</yellow>"
+

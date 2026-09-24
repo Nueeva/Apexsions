@@ -357,6 +357,41 @@ public class ConfigManager {
         return mainConfig != null && mainConfig.getBoolean("anvil.bypass-enchant-limits", true);
     }
 
+    // Single Player Sleep Config
+    public boolean isSleepEnabled() {
+        return mainConfig == null || mainConfig.getBoolean("sleep.enabled", true);
+    }
+
+    public boolean isSinglePlayerSleep() {
+        return mainConfig == null || mainConfig.getBoolean("sleep.single-player-sleep", true);
+    }
+
+    public boolean isSleepBroadcast() {
+        return mainConfig == null || mainConfig.getBoolean("sleep.broadcast-sleep", true);
+    }
+
+    public boolean isSleepMorningBroadcast() {
+        return mainConfig == null || mainConfig.getBoolean("sleep.broadcast-morning", true);
+    }
+
+    public boolean isSleepClearWeather() {
+        return mainConfig == null || mainConfig.getBoolean("sleep.clear-weather-on-morning", true);
+    }
+
+    public String getSleepBroadcastMessage() {
+        if (messagesConfig != null && messagesConfig.contains("sleep.broadcast-sleeping")) {
+            return messagesConfig.getString("sleep.broadcast-sleeping");
+        }
+        return "<gold><bold>Apexsions</bold> <dark_gray>»</dark_gray> <yellow>%player%</yellow> <gray>sedang tidur di kasur. Malam akan segera dilewati...</gray>";
+    }
+
+    public String getSleepMorningMessage() {
+        if (messagesConfig != null && messagesConfig.contains("sleep.broadcast-morning")) {
+            return messagesConfig.getString("sleep.broadcast-morning");
+        }
+        return "<gold><bold>Apexsions</bold> <dark_gray>»</dark_gray> <yellow>Matahari telah terbit! Selamat berpetualang kembali di peradaban.</yellow>";
+    }
+
 
 
     private String getEnvOrDefault(String key, String def) {

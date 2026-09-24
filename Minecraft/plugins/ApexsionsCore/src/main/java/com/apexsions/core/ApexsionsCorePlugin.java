@@ -178,6 +178,9 @@ public class ApexsionsCorePlugin extends JavaPlugin {
     // Pose & Emotes Subsystem
     private com.apexsions.core.pose.PoseManager poseManager;
 
+    // Single-Player Sleep Subsystem
+    private com.apexsions.core.sleep.SleepManager sleepManager;
+
     @Override
     public void onLoad() {
         applyDisableChannelLimit();
@@ -446,7 +449,12 @@ public class ApexsionsCorePlugin extends JavaPlugin {
             this.banManager = new com.apexsions.core.moderation.BanManager(this, banRepository);
             Bukkit.getPluginManager().registerEvents(new com.apexsions.core.moderation.BanGateListener(this, banManager), this);
 
-            // 18. Command Registration (All subsystems and managers are fully active)
+            // 18. Single-Player Sleep Subsystem
+            this.sleepManager = new com.apexsions.core.sleep.SleepManager(this);
+            this.sleepManager.initialize();
+            Bukkit.getPluginManager().registerEvents(new com.apexsions.core.sleep.SleepListener(this, sleepManager), this);
+
+            // 19. Command Registration (All subsystems and managers are fully active)
             registerCommands();
 
             // Neutralize and override conflicting Essentials moderation commands
@@ -898,6 +906,7 @@ public class ApexsionsCorePlugin extends JavaPlugin {
     public com.apexsions.core.stack.MobStackManager getMobStackManager() { return mobStackManager; }
     public com.apexsions.core.stack.ItemStackManager getItemStackManager() { return itemStackManager; }
     public com.apexsions.core.container.ContainerSortManager getContainerSortManager() { return containerSortManager; }
+    public com.apexsions.core.sleep.SleepManager getSleepManager() { return sleepManager; }
     public com.apexsions.core.integration.EconomyBridge getEconomyBridge() { return economyBridge; }
     public com.apexsions.core.caravan.CaravanManager getCaravanManager() { return caravanManager; }
     public ConfigManager getConfigManager() { return configManager; }

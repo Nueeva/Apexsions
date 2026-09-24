@@ -470,3 +470,15 @@ security:
     bad-packets-pitch: true
     fast-place-scaffold: true
     chest-stealer-limiter: true
+
+# ==============================================================================
+# Single-Player Sleep Subsystem
+# Cukup 1 pemain tidur di kasur untuk melewati malam (PLAYERS_SLEEPING_PERCENTAGE = 0)
+# ==============================================================================
+sleep:
+  enabled: true
+  single-player-sleep: true
+  broadcast-sleep: true
+  broadcast-morning: true
+  clear-weather-on-morning: true
+
