@@ -333,7 +333,7 @@ public class ItemStackManager {
         // Fully absorb source into target
         setStackCount(target, total);
         target.setPickupDelay(Math.max(target.getPickupDelay(), source.getPickupDelay()));
-        target.setTicksLived(Math.min(target.getTicksLived(), source.getTicksLived()));
+        target.setTicksLived(Math.max(1, Math.min(target.getTicksLived(), source.getTicksLived())));
         source.remove();
     }
 
