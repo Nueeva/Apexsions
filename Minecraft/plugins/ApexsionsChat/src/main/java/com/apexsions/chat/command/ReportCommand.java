@@ -2,6 +2,7 @@ package com.apexsions.chat.command;
 
 import com.apexsions.chat.ApexsionsChatPlugin;
 import com.apexsions.chat.model.Report;
+import com.apexsions.chat.util.PlayerResolver;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
@@ -49,7 +50,7 @@ public class ReportCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
-        Player target = Bukkit.getPlayerExact(targetName);
+        Player target = PlayerResolver.resolveOnline(targetName);
         UUID targetUuid;
         String finalTargetName;
 
@@ -57,8 +58,8 @@ public class ReportCommand implements CommandExecutor, TabCompleter {
             targetUuid = target.getUniqueId();
             finalTargetName = target.getName();
         } else {
-            OfflinePlayer offline = Bukkit.getOfflinePlayer(targetName);
-            if (offline.hasPlayedBefore() || offline.isOnline()) {
+            OfflinePlayer offline = PlayerResolver.resolveOffline(targetName, false);
+            if (offline != null && (offline.hasPlayedBefore() || offline.isOnline())) {
                 targetUuid = offline.getUniqueId();
                 finalTargetName = offline.getName() != null ? offline.getName() : targetName;
             } else {
@@ -127,13 +128,10 @@ public class ReportCommand implements CommandExecutor, TabCompleter {
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
         if (args.length == 1) {
-            List<String> list = new ArrayList<>();
-            for (Player p : Bukkit.getOnlinePlayers()) {
-                if (!p.getName().equalsIgnoreCase(sender.getName()) && p.getName().toLowerCase().startsWith(args[0].toLowerCase())) {
-                    list.add(p.getName());
-                }
-            }
-            return list;
+            List<String> completions = PlayerResolver.completePlayerNames(sender, args[0]);
+            completions.remove(sender.getName());
+            completions.remove(PlayerResolver.stripBedrockPrefix(sender.getName()));
+            return completions;
         }
         if (args.length == 2) {
             List<String> reasons = plugin.getConfigManager().getReportsConfig().getStringList("reports.standard-reasons");

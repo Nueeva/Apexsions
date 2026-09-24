@@ -3,6 +3,7 @@ package com.apexsions.battlepass.command;
 import com.apexsions.battlepass.ApexsionsBattlepass;
 import com.apexsions.battlepass.admin.gui.AdminMainMenu;
 import com.apexsions.battlepass.player.PlayerData;
+import com.apexsions.battlepass.util.PlayerResolver;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -63,7 +64,7 @@ public class ABPCommand implements CommandExecutor, TabCompleter {
                     sender.sendMessage("§cPenggunaan: /abp givepass <player> <tier>");
                     return true;
                 }
-                Player target = Bukkit.getPlayer(args[1]);
+                Player target = PlayerResolver.resolveOnline(args[1]);
                 if (target == null) {
                     sender.sendMessage(plugin.getMessage("player-not-found").replace("%player%", args[1]));
                     return true;
@@ -84,7 +85,7 @@ public class ABPCommand implements CommandExecutor, TabCompleter {
                     sender.sendMessage("§cPenggunaan: /abp setlevel <player> <level>");
                     return true;
                 }
-                Player target = Bukkit.getPlayer(args[1]);
+                Player target = PlayerResolver.resolveOnline(args[1]);
                 if (target == null) {
                     sender.sendMessage(plugin.getMessage("player-not-found").replace("%player%", args[1]));
                     return true;
@@ -109,7 +110,7 @@ public class ABPCommand implements CommandExecutor, TabCompleter {
                     sender.sendMessage("§cPenggunaan: /abp addxp <player> <amount>");
                     return true;
                 }
-                Player target = Bukkit.getPlayer(args[1]);
+                Player target = PlayerResolver.resolveOnline(args[1]);
                 if (target == null) {
                     sender.sendMessage(plugin.getMessage("player-not-found").replace("%player%", args[1]));
                     return true;
@@ -129,7 +130,7 @@ public class ABPCommand implements CommandExecutor, TabCompleter {
                     return true;
                 }
                 String action = args[1].toLowerCase();
-                Player target = Bukkit.getPlayer(args[2]);
+                Player target = PlayerResolver.resolveOnline(args[2]);
                 if (target == null) {
                     sender.sendMessage(plugin.getMessage("player-not-found").replace("%player%", args[2]));
                     return true;
@@ -157,7 +158,7 @@ public class ABPCommand implements CommandExecutor, TabCompleter {
                     sender.sendMessage("§cPenggunaan: /abp reset <player>");
                     return true;
                 }
-                Player target = Bukkit.getPlayer(args[1]);
+                Player target = PlayerResolver.resolveOnline(args[1]);
                 if (target == null) {
                     sender.sendMessage(plugin.getMessage("player-not-found").replace("%player%", args[1]));
                     return true;
@@ -172,7 +173,7 @@ public class ABPCommand implements CommandExecutor, TabCompleter {
             }
             case "resetrefresh" -> {
                 if (args.length > 1 && !args[1].equalsIgnoreCase("all")) {
-                    Player target = Bukkit.getPlayer(args[1]);
+                    Player target = PlayerResolver.resolveOnline(args[1]);
                     if (target == null) {
                         sender.sendMessage(plugin.getMessage("player-not-found").replace("%player%", args[1]));
                         return true;
@@ -234,21 +235,15 @@ public class ABPCommand implements CommandExecutor, TabCompleter {
                 completions.add("set");
             } else if (args[0].equalsIgnoreCase("resetrefresh")) {
                 completions.add("all");
-                for (Player p : Bukkit.getOnlinePlayers()) {
-                    completions.add(p.getName());
-                }
+                completions.addAll(PlayerResolver.completePlayerNames(sender, args[1]));
             } else if (List.of("givepass", "setlevel", "addxp", "reset").contains(args[0].toLowerCase())) {
-                for (Player p : Bukkit.getOnlinePlayers()) {
-                    completions.add(p.getName());
-                }
+                completions.addAll(PlayerResolver.completePlayerNames(sender, args[1]));
             }
         } else if (args.length == 3) {
             if (args[0].equalsIgnoreCase("givepass")) {
                 completions.addAll(plugin.getPassManager().getPasses().keySet());
             } else if (args[0].equalsIgnoreCase("currency")) {
-                for (Player p : Bukkit.getOnlinePlayers()) {
-                    completions.add(p.getName());
-                }
+                completions.addAll(PlayerResolver.completePlayerNames(sender, args[2]));
             }
         }
         return completions;

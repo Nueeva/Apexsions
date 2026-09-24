@@ -2,6 +2,7 @@ package com.apexsions.chat.command;
 
 import com.apexsions.chat.ApexsionsChatPlugin;
 import com.apexsions.chat.channel.ChatChannel;
+import com.apexsions.chat.util.PlayerResolver;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -52,7 +53,7 @@ public class ChannelCommand implements CommandExecutor, TabCompleter {
         }
 
         if (args[0].equalsIgnoreCase("profile") && args.length > 1) {
-            Player target = Bukkit.getPlayer(args[1]);
+            Player target = PlayerResolver.resolveOnline(args[1]);
             if (target != null) {
                 player.openInventory(new com.apexsions.chat.gui.SocialProfileGUI(plugin, player, target).getInventory());
             } else {
@@ -109,7 +110,14 @@ public class ChannelCommand implements CommandExecutor, TabCompleter {
                     }
                 }
             }
+            if (sender.hasPermission("apexsions.chat.admin") || sender.isOp()) {
+                list.add("profile");
+                list.add("settings");
+            }
             return list;
+        }
+        if (args.length == 2 && args[0].equalsIgnoreCase("profile")) {
+            return PlayerResolver.completePlayerNames(sender, args[1]);
         }
         return Collections.emptyList();
     }

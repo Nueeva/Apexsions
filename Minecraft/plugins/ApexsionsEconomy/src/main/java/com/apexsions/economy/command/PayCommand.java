@@ -4,6 +4,7 @@ import com.apexsions.economy.ApexsionsEconomy;
 import com.apexsions.economy.currency.Currency;
 import com.apexsions.economy.gui.PayMenu;
 import com.apexsions.economy.util.NumberFormatUtil;
+import com.apexsions.economy.util.PlayerResolver;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -40,7 +41,7 @@ public class PayCommand implements CommandExecutor, TabCompleter {
         }
 
         String targetName = args[0];
-        Player target = Bukkit.getPlayer(targetName);
+        Player target = PlayerResolver.resolveOnline(targetName);
         if (target == null || (!player.canSee(target) && !player.hasPermission("apexsions.vanish.see"))) {
             player.sendMessage("§cPemain " + targetName + " tidak ditemukan atau sedang offline!");
             return true;
@@ -68,16 +69,10 @@ public class PayCommand implements CommandExecutor, TabCompleter {
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         if (args.length == 1) {
-            List<String> list = new ArrayList<>();
-            boolean canSeeVanish = !(sender instanceof Player) || sender.hasPermission("apexsions.vanish.see");
-            for (Player p : Bukkit.getOnlinePlayers()) {
-                if (!p.getName().equalsIgnoreCase(sender.getName())) {
-                    if (canSeeVanish || (sender instanceof Player sp && sp.canSee(p) && !p.hasMetadata("vanished") && !p.hasMetadata("vanish"))) {
-                        list.add(p.getName());
-                    }
-                }
-            }
-            return list;
+            List<String> completions = PlayerResolver.completePlayerNames(sender, args[0]);
+            completions.remove(sender.getName());
+            completions.remove(PlayerResolver.stripBedrockPrefix(sender.getName()));
+            return completions;
         }
         if (args.length == 2) {
             return List.of("1000", "5000", "10k", "50k", "100k", "1jt");

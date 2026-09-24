@@ -1,6 +1,7 @@
 package com.apexsions.chat.chat;
 
 import com.apexsions.chat.ApexsionsChatPlugin;
+import com.apexsions.chat.util.PlayerResolver;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
@@ -43,10 +44,10 @@ public class MentionParser {
         if (word.startsWith("@") && word.length() > 1) {
             String targetName = word.substring(1);
             // Handle trailing punctuation if any (e.g. @Player!)
-            String cleanName = targetName.replaceAll("[^a-zA-Z0-9_]", "");
+            String cleanName = targetName.replaceAll("[^a-zA-Z0-9_.*]", "");
             String punctuation = targetName.substring(cleanName.length());
 
-            Player target = Bukkit.getPlayerExact(cleanName);
+            Player target = PlayerResolver.resolveOnline(cleanName);
             boolean canSeeVanish = sender.hasPermission("apexsions.vanish.see");
             boolean visible = target != null && (canSeeVanish || (sender.canSee(target) && !target.hasMetadata("vanished") && !target.hasMetadata("vanish")));
             if (target != null && target.isOnline() && !target.equals(sender) && visible) {

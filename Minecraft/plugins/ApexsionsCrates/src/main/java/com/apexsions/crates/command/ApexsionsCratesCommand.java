@@ -268,6 +268,9 @@ public class ApexsionsCratesCommand extends HubCommand {
         List<String> list = new ArrayList<>();
         for (Player p : Bukkit.getOnlinePlayers()) {
             list.add(p.getName());
+            if (p.getName().startsWith(".")) {
+                list.add(p.getName().substring(1));
+            }
         }
         return list;
     }

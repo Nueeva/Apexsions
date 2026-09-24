@@ -3,6 +3,7 @@ package com.apexsions.chat.command;
 import com.apexsions.chat.ApexsionsChatPlugin;
 import com.apexsions.chat.nick.NicknameData;
 import com.apexsions.chat.nick.NicknameService;
+import com.apexsions.chat.util.PlayerResolver;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -117,7 +118,7 @@ public class NickCommand implements CommandExecutor, TabCompleter {
                 player.sendMessage(miniMessage.deserialize("<red>Penggunaan: <yellow>/nick setother <player> <nama></yellow></red>"));
                 return true;
             }
-            Player target = Bukkit.getPlayer(args[1]);
+            Player target = PlayerResolver.resolveOnline(args[1]);
             if (target == null || !target.isOnline()) {
                 player.sendMessage(miniMessage.deserialize("<red>Pemain <yellow>" + args[1] + "</yellow> tidak sedang online!</red>"));
                 return true;
@@ -138,7 +139,7 @@ public class NickCommand implements CommandExecutor, TabCompleter {
                 player.sendMessage(miniMessage.deserialize("<red>Penggunaan: <yellow>/nick resetother <player></yellow></red>"));
                 return true;
             }
-            Player target = Bukkit.getPlayer(args[1]);
+            Player target = PlayerResolver.resolveOnline(args[1]);
             if (target == null || !target.isOnline()) {
                 player.sendMessage(miniMessage.deserialize("<red>Pemain <yellow>" + args[1] + "</yellow> tidak sedang online!</red>"));
                 return true;
@@ -176,7 +177,7 @@ public class NickCommand implements CommandExecutor, TabCompleter {
             return;
         }
 
-        Player target = Bukkit.getPlayer(targetName);
+        Player target = PlayerResolver.resolveOnline(targetName);
         if (target != null && target.isOnline()) {
             plugin.getNicknameService().addTokens(target.getUniqueId(), target.getName(), amount);
             sender.sendMessage(miniMessage.deserialize("<green>✓ Berhasil memberikan <yellow>" + amount + " Token Ganti Nama</yellow> kepada <white>" + target.getName() + "</white>!</green>"));
@@ -186,8 +187,8 @@ public class NickCommand implements CommandExecutor, TabCompleter {
             ));
         } else {
             // Offline player support
-            org.bukkit.OfflinePlayer op = Bukkit.getOfflinePlayer(targetName);
-            if (op.hasPlayedBefore() || op.isOnline()) {
+            org.bukkit.OfflinePlayer op = PlayerResolver.resolveOffline(targetName, false);
+            if (op != null && (op.hasPlayedBefore() || op.isOnline())) {
                 plugin.getNicknameService().addTokens(op.getUniqueId(), op.getName(), amount);
                 sender.sendMessage(miniMessage.deserialize("<green>✓ Berhasil memberikan <yellow>" + amount + " Token Ganti Nama</yellow> kepada pemain offline <white>" + op.getName() + "</white>!</green>"));
             } else {
@@ -206,7 +207,7 @@ public class NickCommand implements CommandExecutor, TabCompleter {
             return;
         }
 
-        Player target = Bukkit.getPlayer(targetName);
+        Player target = PlayerResolver.resolveOnline(targetName);
         if (target == null || !target.isOnline()) {
             sender.sendMessage(miniMessage.deserialize("<red>Pemain <yellow>" + targetName + "</yellow> harus sedang online untuk menerima voucher item!</red>"));
             return;
@@ -253,7 +254,7 @@ public class NickCommand implements CommandExecutor, TabCompleter {
         }
 
         if (args.length == 3 && args[0].equalsIgnoreCase("token") && (args[1].equalsIgnoreCase("give") || args[1].equalsIgnoreCase("item"))) {
-            return null; // suggest player names
+            return PlayerResolver.completePlayerNames(sender, args[2]);
         }
 
         if (args.length == 4 && args[0].equalsIgnoreCase("token")) {
@@ -261,7 +262,7 @@ public class NickCommand implements CommandExecutor, TabCompleter {
         }
 
         if (args.length == 2 && (args[0].equalsIgnoreCase("setother") || args[0].equalsIgnoreCase("resetother"))) {
-            return null; // suggest player names
+            return PlayerResolver.completePlayerNames(sender, args[1]);
         }
 
         return completions;

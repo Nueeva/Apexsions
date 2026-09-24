@@ -3,6 +3,7 @@ package com.apexsions.economy.command;
 import com.apexsions.economy.ApexsionsEconomy;
 import com.apexsions.economy.currency.Currency;
 import com.apexsions.economy.util.NumberFormatUtil;
+import com.apexsions.economy.util.PlayerResolver;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
@@ -41,11 +42,12 @@ public class AdminEconomyCommand implements CommandExecutor, TabCompleter {
 
         String action = args[0].toLowerCase();
         String targetName = args[1];
-        OfflinePlayer target = Bukkit.getOfflinePlayer(targetName);
-        if (target.getUniqueId() == null) {
+        OfflinePlayer target = PlayerResolver.resolveOffline(targetName);
+        if (target == null || target.getUniqueId() == null) {
             sender.sendMessage("§cPemain " + targetName + " tidak valid.");
             return true;
         }
+        targetName = target.getName() != null ? target.getName() : targetName;
 
         double amount;
         String currId = "rupiah";
@@ -108,9 +110,7 @@ public class AdminEconomyCommand implements CommandExecutor, TabCompleter {
             return List.of("give", "take", "set", "reload");
         }
         if (args.length == 2 && !args[0].equalsIgnoreCase("reload")) {
-            List<String> list = new ArrayList<>();
-            for (var p : Bukkit.getOnlinePlayers()) list.add(p.getName());
-            return list;
+            return PlayerResolver.completePlayerNames(sender, args[1]);
         }
         if (args.length == 3 && !args[0].equalsIgnoreCase("reload")) {
             return List.of("1000", "10k", "100k", "1jt", "10jt", "1m");

@@ -1,6 +1,7 @@
 package com.apexsions.core.moderation;
 
 import com.apexsions.core.ApexsionsCorePlugin;
+import com.apexsions.core.util.PlayerResolver;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
@@ -100,7 +101,7 @@ public class BanCommand implements CommandExecutor, TabCompleter {
             reason = "Melanggar Regulasi & Ketertiban Apexsions.";
         }
 
-        Player onlineTarget = Bukkit.getPlayerExact(targetName);
+        Player onlineTarget = PlayerResolver.resolveOnline(targetName);
         UUID targetUuid;
         String ipAddress = null;
 
@@ -111,7 +112,11 @@ public class BanCommand implements CommandExecutor, TabCompleter {
                 ipAddress = onlineTarget.getAddress().getAddress().getHostAddress();
             }
         } else {
-            OfflinePlayer offlineTarget = Bukkit.getOfflinePlayer(targetName);
+            OfflinePlayer offlineTarget = PlayerResolver.resolveOffline(targetName);
+            if (offlineTarget == null || offlineTarget.getUniqueId() == null) {
+                sender.sendMessage(mm.deserialize("<red>Pemain '" + targetName + "' tidak ditemukan.</red>"));
+                return;
+            }
             targetUuid = offlineTarget.getUniqueId();
             targetName = offlineTarget.getName() != null ? offlineTarget.getName() : targetName;
         }
@@ -220,7 +225,11 @@ public class BanCommand implements CommandExecutor, TabCompleter {
         }
 
         String target = args[0];
-        OfflinePlayer offline = Bukkit.getOfflinePlayer(target);
+        OfflinePlayer offline = PlayerResolver.resolveOffline(target);
+        if (offline == null || offline.getUniqueId() == null) {
+            sender.sendMessage(mm.deserialize("<red>[Apexsions] Pemain <yellow>" + target + "</yellow> tidak ditemukan.</red>"));
+            return;
+        }
         BanRecord ban = banManager.getActiveBan(offline.getUniqueId());
 
         if (ban == null) {
@@ -287,14 +296,10 @@ public class BanCommand implements CommandExecutor, TabCompleter {
                         list.add(b.getPlayerName());
                     }
                 }
+                return list;
             } else {
-                for (Player p : Bukkit.getOnlinePlayers()) {
-                    if (p.getName().toLowerCase().startsWith(args[0].toLowerCase())) {
-                        list.add(p.getName());
-                    }
-                }
+                return PlayerResolver.completePlayerNames(sender, args[0]);
             }
-            return list;
         }
         if (args.length == 2 && (cmd.equals("ban") || cmd.equals("tempban") || cmd.equals("banip"))) {
             return List.of("1h", "12h", "1d", "3d", "7d", "30d", "1y");

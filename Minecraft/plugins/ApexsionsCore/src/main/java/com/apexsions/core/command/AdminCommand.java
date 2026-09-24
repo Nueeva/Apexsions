@@ -4,6 +4,7 @@ import com.apexsions.core.ApexsionsCorePlugin;
 import com.apexsions.core.level.xp.XpSource;
 import com.apexsions.core.player.PlayerData;
 import com.apexsions.core.region.Region;
+import com.apexsions.core.util.PlayerResolver;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
@@ -264,7 +265,7 @@ public class AdminCommand implements CommandExecutor, TabCompleter {
             return;
         }
 
-        Player target = Bukkit.getPlayer(playerName);
+        Player target = PlayerResolver.resolveOnline(playerName);
         if (target != null) {
             plugin.getPlayerDataService().getCached(target.getUniqueId()).ifPresent(data -> {
                 data.setLevel(newLevel);
@@ -278,8 +279,8 @@ public class AdminCommand implements CommandExecutor, TabCompleter {
         }
 
         // Support offline player via asynchronous persistence
-        org.bukkit.OfflinePlayer offline = Bukkit.getOfflinePlayer(playerName);
-        if (offline.getUniqueId() == null) {
+        org.bukkit.OfflinePlayer offline = PlayerResolver.resolveOffline(playerName);
+        if (offline == null || offline.getUniqueId() == null) {
             sender.sendMessage(miniMessage.deserialize("<red>Player '" + playerName + "' not found.</red>"));
             return;
         }
@@ -310,7 +311,7 @@ public class AdminCommand implements CommandExecutor, TabCompleter {
             return;
         }
 
-        Player target = Bukkit.getPlayer(playerName);
+        Player target = PlayerResolver.resolveOnline(playerName);
         if (target != null) {
             plugin.getXpService().awardXp(target.getUniqueId(), amount, XpSource.ADMIN);
             sender.sendMessage(miniMessage.deserialize("<green>Added " + amount + " XP to " + target.getName() + ".</green>"));
@@ -318,8 +319,8 @@ public class AdminCommand implements CommandExecutor, TabCompleter {
         }
 
         // Support offline player via asynchronous persistence
-        org.bukkit.OfflinePlayer offline = Bukkit.getOfflinePlayer(playerName);
-        if (offline.getUniqueId() == null) {
+        org.bukkit.OfflinePlayer offline = PlayerResolver.resolveOffline(playerName);
+        if (offline == null || offline.getUniqueId() == null) {
             sender.sendMessage(miniMessage.deserialize("<red>Player '" + playerName + "' not found.</red>"));
             return;
         }
@@ -338,7 +339,7 @@ public class AdminCommand implements CommandExecutor, TabCompleter {
     }
 
     private void handleSetRegion(CommandSender sender, String playerName, String regionKey) {
-        Player target = Bukkit.getPlayer(playerName);
+        Player target = PlayerResolver.resolveOnline(playerName);
         if (target == null) {
             sender.sendMessage(miniMessage.deserialize("<red>Player not found or offline.</red>"));
             return;
@@ -373,7 +374,7 @@ public class AdminCommand implements CommandExecutor, TabCompleter {
     }
 
     private void handleResetRegion(CommandSender sender, String playerName) {
-        Player target = Bukkit.getPlayer(playerName);
+        Player target = PlayerResolver.resolveOnline(playerName);
         if (target == null) {
             sender.sendMessage(miniMessage.deserialize("<red>Player not found or offline.</red>"));
             return;
@@ -391,7 +392,7 @@ public class AdminCommand implements CommandExecutor, TabCompleter {
     }
 
     private void handleInfo(CommandSender sender, String playerName) {
-        Player target = Bukkit.getPlayer(playerName);
+        Player target = PlayerResolver.resolveOnline(playerName);
         if (target == null) {
             sender.sendMessage(miniMessage.deserialize("<red>Player not found or offline.</red>"));
             return;
@@ -566,7 +567,7 @@ public class AdminCommand implements CommandExecutor, TabCompleter {
             return filter(Arrays.asList("ZENITHAR", "SOLTERRA", "SYLVAMOOR", "OFF"), args[1]);
         }
         if (args.length == 2 && (args[0].equalsIgnoreCase("setlevel") || args[0].equalsIgnoreCase("addxp") || args[0].equalsIgnoreCase("setkingdom") || args[0].equalsIgnoreCase("resetkingdom") || args[0].equalsIgnoreCase("info") || args[0].equalsIgnoreCase("sync"))) {
-            return null; // Player names
+            return PlayerResolver.completePlayerNames(sender, args[1]);
         }
         if (args.length == 3 && args[0].equalsIgnoreCase("war") && args[1].equalsIgnoreCase("start")) {
             return filter(plugin.getRegionManager().getPlayableKingdomKeys(), args[2]);

@@ -1,6 +1,7 @@
 package com.apexsions.core.grave;
 
 import com.apexsions.core.ApexsionsCorePlugin;
+import com.apexsions.core.util.PlayerResolver;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
@@ -87,7 +88,11 @@ public class GraveCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
-        OfflinePlayer target = Bukkit.getOfflinePlayer(args[0]);
+        OfflinePlayer target = PlayerResolver.resolveOffline(args[0]);
+        if (target == null || target.getUniqueId() == null) {
+            player.sendMessage(mm.deserialize("<red>❌ Pemain <yellow>" + args[0] + "</yellow> tidak ditemukan.</red>"));
+            return true;
+        }
         sendList(player, target);
         return true;
     }
@@ -98,16 +103,24 @@ public class GraveCommand implements CommandExecutor, TabCompleter {
             return;
         }
         if (args.length >= 3 && args[1].equalsIgnoreCase("remove")) {
-            OfflinePlayer target = Bukkit.getOfflinePlayer(args[2]);
+            OfflinePlayer target = PlayerResolver.resolveOffline(args[2]);
+            if (target == null || target.getUniqueId() == null) {
+                player.sendMessage(mm.deserialize("<red>❌ Pemain <yellow>" + args[2] + "</yellow> tidak ditemukan.</red>"));
+                return;
+            }
             if (manager.forceRelease(target.getUniqueId())) {
-                player.sendMessage(mm.deserialize("<gradient:#2ecc71:#27ae60><bold>✔ NISAN DILEPAS!</bold></gradient> <gray>Nisan milik <yellow>" + args[2] + "</yellow> telah dibuka paksa.</gray>"));
+                player.sendMessage(mm.deserialize("<gradient:#2ecc71:#27ae60><bold>✔ NISAN DILEPAS!</bold></gradient> <gray>Nisan milik <yellow>" + (target.getName() != null ? target.getName() : args[2]) + "</yellow> telah dibuka paksa.</gray>"));
             } else {
                 player.sendMessage(mm.deserialize("<red>❌ Tidak ada nisan aktif untuk <yellow>" + args[2] + "</yellow>.</red>"));
             }
             return;
         }
         if (args.length >= 2) {
-            OfflinePlayer target = Bukkit.getOfflinePlayer(args[1]);
+            OfflinePlayer target = PlayerResolver.resolveOffline(args[1]);
+            if (target == null || target.getUniqueId() == null) {
+                player.sendMessage(mm.deserialize("<red>❌ Pemain <yellow>" + args[1] + "</yellow> tidak ditemukan.</red>"));
+                return;
+            }
             sendList(player, target);
             return;
         }
@@ -168,26 +181,19 @@ public class GraveCommand implements CommandExecutor, TabCompleter {
             completions.add("compass");
             if (isAdmin) {
                 completions.add("admin");
-                for (Player online : Bukkit.getOnlinePlayers()) {
-                    completions.add(online.getName());
-                }
+                completions.addAll(PlayerResolver.completePlayerNames(player, args[0]));
             }
             return filterPrefix(completions, args[0]);
         }
 
         if (args.length == 2 && isAdmin && args[0].equalsIgnoreCase("admin")) {
             completions.add("remove");
-            for (Player online : Bukkit.getOnlinePlayers()) {
-                completions.add(online.getName());
-            }
+            completions.addAll(PlayerResolver.completePlayerNames(player, args[1]));
             return filterPrefix(completions, args[1]);
         }
 
         if (args.length == 3 && isAdmin && args[0].equalsIgnoreCase("admin") && args[1].equalsIgnoreCase("remove")) {
-            for (Player online : Bukkit.getOnlinePlayers()) {
-                completions.add(online.getName());
-            }
-            return filterPrefix(completions, args[2]);
+            return PlayerResolver.completePlayerNames(player, args[2]);
         }
 
         return Collections.emptyList();

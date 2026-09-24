@@ -4,6 +4,7 @@ import com.apexsions.media.ApexsionsMediaPlugin;
 import com.apexsions.media.creator.gui.CreatorHubGUI;
 import com.apexsions.media.creator.gui.CreatorTiersGUI;
 import com.apexsions.media.creator.model.Platform;
+import com.apexsions.media.util.PlayerResolver;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -162,9 +163,13 @@ public class CreatorCommand implements CommandExecutor, TabCompleter {
                 }
 
                 if (adminSub.equals("info") && args.length >= 3) {
-                    OfflinePlayer target = Bukkit.getOfflinePlayer(args[2]);
+                    OfflinePlayer target = PlayerResolver.resolveOffline(args[2]);
+                    if (target == null) {
+                        sender.sendMessage(mm.deserialize("<red>Pemain '</red><yellow>" + args[2] + "</yellow><red>' tidak ditemukan!</red>"));
+                        return true;
+                    }
                     plugin.getCreatorManager().getProfile(target.getUniqueId(), target.getName() != null ? target.getName() : args[2]).thenAccept(prof -> {
-                        sender.sendMessage(mm.deserialize("\n<gradient:#f39c12:#f1c40f><b>✦ INFO KREATOR: " + args[2] + " ✦</b></gradient>"));
+                        sender.sendMessage(mm.deserialize("\n<gradient:#f39c12:#f1c40f><b>✦ INFO KREATOR: " + (target.getName() != null ? target.getName() : args[2]) + " ✦</b></gradient>"));
                         sender.sendMessage(mm.deserialize("<gray>YouTube: " + (prof.isYouTubeLinked() ? "<green>" + prof.getYoutubeChannelId() + "</green>" : "<red>None</red>")));
                         sender.sendMessage(mm.deserialize("<gray>TikTok: " + (prof.isTikTokLinked() ? "<green>@" + prof.getTiktokUsername() + "</green>" : "<red>None</red>")));
                     });
@@ -172,13 +177,17 @@ public class CreatorCommand implements CommandExecutor, TabCompleter {
                 }
 
                 if (adminSub.equals("reset") && args.length >= 3) {
-                    OfflinePlayer target = Bukkit.getOfflinePlayer(args[2]);
+                    OfflinePlayer target = PlayerResolver.resolveOffline(args[2]);
+                    if (target == null) {
+                        sender.sendMessage(mm.deserialize("<red>Pemain '</red><yellow>" + args[2] + "</yellow><red>' tidak ditemukan!</red>"));
+                        return true;
+                    }
                     plugin.getCreatorManager().getProfile(target.getUniqueId(), target.getName() != null ? target.getName() : args[2]).thenAccept(prof -> {
                         prof.setYoutubeChannelId(null);
                         prof.setYoutubeHandle(null);
                         prof.setTiktokUsername(null);
                         plugin.getCreatorManager().getRepository().saveProfile(prof).thenRun(() -> {
-                            sender.sendMessage(mm.deserialize("<green><b>[Creator Admin]</b> Berhasil me-reset data penautan kreator untuk " + args[2] + "!</green>"));
+                            sender.sendMessage(mm.deserialize("<green><b>[Creator Admin]</b> Berhasil me-reset data penautan kreator untuk " + (target.getName() != null ? target.getName() : args[2]) + "!</green>"));
                         });
                     });
                     return true;
@@ -225,7 +234,7 @@ public class CreatorCommand implements CommandExecutor, TabCompleter {
 
         if (args.length == 3) {
             if (args[0].equalsIgnoreCase("admin") && (args[1].equalsIgnoreCase("info") || args[1].equalsIgnoreCase("reset"))) {
-                return null; // suggest player names
+                return PlayerResolver.completePlayerNames(sender, args[2]);
             }
         }
 

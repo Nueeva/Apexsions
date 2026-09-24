@@ -3,6 +3,7 @@ package com.apexsions.chat.command;
 import com.apexsions.chat.ApexsionsChatPlugin;
 import com.apexsions.chat.gui.MailListGUI;
 import com.apexsions.chat.model.Mail;
+import com.apexsions.chat.util.PlayerResolver;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -56,7 +57,7 @@ public class MailCommand implements CommandExecutor, TabCompleter {
             }
 
             String targetName = args[1];
-            Player target = Bukkit.getPlayerExact(targetName);
+            Player target = PlayerResolver.resolveOnline(targetName);
             UUID targetUuid;
             String finalTargetName;
 
@@ -64,8 +65,8 @@ public class MailCommand implements CommandExecutor, TabCompleter {
                 targetUuid = target.getUniqueId();
                 finalTargetName = target.getName();
             } else {
-                OfflinePlayer offline = Bukkit.getOfflinePlayer(targetName);
-                if (offline.hasPlayedBefore() || offline.isOnline()) {
+                OfflinePlayer offline = PlayerResolver.resolveOffline(targetName, false);
+                if (offline != null && (offline.hasPlayedBefore() || offline.isOnline())) {
                     targetUuid = offline.getUniqueId();
                     finalTargetName = offline.getName() != null ? offline.getName() : targetName;
                 } else {
@@ -130,13 +131,10 @@ public class MailCommand implements CommandExecutor, TabCompleter {
             return Arrays.asList("read", "send");
         }
         if (args.length == 2 && args[0].equalsIgnoreCase("send")) {
-            List<String> list = new ArrayList<>();
-            for (Player p : Bukkit.getOnlinePlayers()) {
-                if (!p.getName().equalsIgnoreCase(sender.getName()) && p.getName().toLowerCase().startsWith(args[1].toLowerCase())) {
-                    list.add(p.getName());
-                }
-            }
-            return list;
+            List<String> completions = PlayerResolver.completePlayerNames(sender, args[1]);
+            completions.remove(sender.getName());
+            completions.remove(PlayerResolver.stripBedrockPrefix(sender.getName()));
+            return completions;
         }
         return Collections.emptyList();
     }

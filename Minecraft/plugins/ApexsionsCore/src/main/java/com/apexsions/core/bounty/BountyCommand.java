@@ -1,5 +1,6 @@
 package com.apexsions.core.bounty;
 
+import com.apexsions.core.util.PlayerResolver;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
@@ -216,15 +217,9 @@ public class BountyCommand implements CommandExecutor, TabCompleter {
 
     @Nullable
     private OfflinePlayer resolve(String name) {
-        Player online = Bukkit.getPlayerExact(name);
-        if (online != null) {
-            return online;
-        }
-        OfflinePlayer offline = Bukkit.getOfflinePlayer(name);
-        if (offline.hasPlayedBefore() || offline.isOnline()) {
-            return offline;
-        }
-        return null;
+        OfflinePlayer op = PlayerResolver.resolveOffline(name, false);
+        if (op != null) return op;
+        return PlayerResolver.resolveOffline(name, true);
     }
 
     @Nullable
@@ -258,10 +253,7 @@ public class BountyCommand implements CommandExecutor, TabCompleter {
         }
 
         if (args.length == 2 && (args[0].equalsIgnoreCase("add") || args[0].equalsIgnoreCase("check"))) {
-            for (Player online : Bukkit.getOnlinePlayers()) {
-                completions.add(online.getName());
-            }
-            return filterPrefix(completions, args[1]);
+            return PlayerResolver.completePlayerNames(player, args[1]);
         }
 
         if (args.length == 2 && isAdmin && args[0].equalsIgnoreCase("admin")) {
@@ -271,10 +263,7 @@ public class BountyCommand implements CommandExecutor, TabCompleter {
         }
 
         if (args.length == 3 && isAdmin && args[0].equalsIgnoreCase("admin")) {
-            for (Player online : Bukkit.getOnlinePlayers()) {
-                completions.add(online.getName());
-            }
-            return filterPrefix(completions, args[2]);
+            return PlayerResolver.completePlayerNames(player, args[2]);
         }
 
         return Collections.emptyList();

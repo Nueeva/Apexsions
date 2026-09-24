@@ -4,6 +4,7 @@ import com.apexsions.economy.ApexsionsEconomy;
 import com.apexsions.economy.currency.Currency;
 import com.apexsions.economy.gui.EconomyMainMenu;
 import com.apexsions.economy.util.NumberFormatUtil;
+import com.apexsions.economy.util.PlayerResolver;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -46,11 +47,12 @@ public class EconomyCommand implements CommandExecutor, TabCompleter {
                 }
 
                 String targetName = args[1];
-                org.bukkit.OfflinePlayer target = Bukkit.getOfflinePlayer(targetName);
-                if (target.getUniqueId() == null) {
+                org.bukkit.OfflinePlayer target = PlayerResolver.resolveOffline(targetName);
+                if (target == null || target.getUniqueId() == null) {
                     sender.sendMessage("§cPemain " + targetName + " tidak valid.");
                     return true;
                 }
+                targetName = target.getName() != null ? target.getName() : targetName;
 
                 double amount;
                 String currId = "rupiah";
@@ -153,7 +155,7 @@ public class EconomyCommand implements CommandExecutor, TabCompleter {
             return list.stream().filter(s -> s.startsWith(args[0].toLowerCase())).toList();
         }
         if (args.length == 2 && List.of("give", "take", "set", "add", "remove").contains(args[0].toLowerCase())) {
-            return null; // Bukkit handles online player list
+            return PlayerResolver.completePlayerNames(sender, args[1]);
         }
         if (args.length == 4 && List.of("give", "take", "set", "add", "remove").contains(args[0].toLowerCase())) {
             return plugin.getCurrencyRegistry().getAll().stream().map(Currency::getId).filter(id -> id.startsWith(args[3].toLowerCase())).toList();

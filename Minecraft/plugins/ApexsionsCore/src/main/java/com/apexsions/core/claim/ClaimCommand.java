@@ -2,6 +2,7 @@ package com.apexsions.core.claim;
 
 import com.apexsions.core.ApexsionsCorePlugin;
 import com.apexsions.core.claim.gui.ClaimGUI;
+import com.apexsions.core.util.PlayerResolver;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
@@ -293,9 +294,14 @@ public class ClaimCommand implements CommandExecutor, TabCompleter {
     }
 
     private void handleRole(Player player, String targetName, String roleStr) {
-        OfflinePlayer target = Bukkit.getOfflinePlayer(targetName);
+        OfflinePlayer target = PlayerResolver.resolveOffline(targetName);
+        if (target == null || target.getUniqueId() == null) {
+            player.sendMessage(mm.deserialize("<red>Pemain '" + targetName + "' tidak ditemukan!</red>"));
+            return;
+        }
+        String resolvedName = target.getName() != null ? target.getName() : targetName;
         ClaimRole role = roleStr.equalsIgnoreCase("remove") ? ClaimRole.VISITOR : ClaimRole.fromString(roleStr);
-        var res = claimManager.setRole(player, target.getUniqueId(), targetName, role);
+        var res = claimManager.setRole(player, target.getUniqueId(), resolvedName, role);
         player.sendMessage(mm.deserialize(res.message()));
     }
 
@@ -520,14 +526,24 @@ public class ClaimCommand implements CommandExecutor, TabCompleter {
     }
 
     private void handleTrust(Player player, String targetName) {
-        OfflinePlayer target = Bukkit.getOfflinePlayer(targetName);
-        var res = claimManager.trustPlayer(player, target.getUniqueId(), targetName);
+        OfflinePlayer target = PlayerResolver.resolveOffline(targetName);
+        if (target == null || target.getUniqueId() == null) {
+            player.sendMessage(mm.deserialize("<red>Pemain '" + targetName + "' tidak ditemukan!</red>"));
+            return;
+        }
+        String resolvedName = target.getName() != null ? target.getName() : targetName;
+        var res = claimManager.trustPlayer(player, target.getUniqueId(), resolvedName);
         player.sendMessage(mm.deserialize(res.message()));
     }
 
     private void handleUntrust(Player player, String targetName) {
-        OfflinePlayer target = Bukkit.getOfflinePlayer(targetName);
-        var res = claimManager.untrustPlayer(player, target.getUniqueId(), targetName);
+        OfflinePlayer target = PlayerResolver.resolveOffline(targetName);
+        if (target == null || target.getUniqueId() == null) {
+            player.sendMessage(mm.deserialize("<red>Pemain '" + targetName + "' tidak ditemukan!</red>"));
+            return;
+        }
+        String resolvedName = target.getName() != null ? target.getName() : targetName;
+        var res = claimManager.untrustPlayer(player, target.getUniqueId(), resolvedName);
         player.sendMessage(mm.deserialize(res.message()));
     }
 
@@ -557,6 +573,14 @@ public class ClaimCommand implements CommandExecutor, TabCompleter {
         if (this.claimManager == null && plugin != null) this.claimManager = plugin.getClaimManager();
         if (this.claimGUI == null && plugin != null) this.claimGUI = plugin.getClaimGUI();
 
+        String cmd = command.getName().toLowerCase();
+        if (cmd.equals("trust") || cmd.equals("untrust")) {
+            if (args.length == 1) {
+                return PlayerResolver.completePlayerNames(sender, args[0]);
+            }
+            return Collections.emptyList();
+        }
+
         List<String> completions = new ArrayList<>();
         if (args.length == 1) {
             List<String> subs = new ArrayList<>(List.of("gui", "home", "tp", "border", "name", "rename", "radius", "outpost", "info", "bank", "deposit", "withdraw", "flag", "role", "trust", "untrust", "list", "unclaim", "unclaimall"));
@@ -568,6 +592,10 @@ public class ClaimCommand implements CommandExecutor, TabCompleter {
                 if (s.startsWith(args[0].toLowerCase())) completions.add(s);
             }
             return completions;
+        }
+
+        if (args.length == 2 && (args[0].equalsIgnoreCase("trust") || args[0].equalsIgnoreCase("untrust") || args[0].equalsIgnoreCase("role"))) {
+            return PlayerResolver.completePlayerNames(sender, args[1]);
         }
 
         if (args.length == 2 && args[0].equalsIgnoreCase("outpost")) {

@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import com.apexsions.crates.CratesPlugin;
 import com.apexsions.crates.Placeholders;
+import com.apexsions.crates.util.PlayerResolver;
 import com.apexsions.crates.config.Lang;
 import com.apexsions.crates.config.Perms;
 import com.apexsions.crates.crate.cost.Cost;
@@ -118,7 +119,7 @@ public class BaseCommands {
             .description(Lang.COMMAND_GIVE_DESC)
             .permission(Perms.COMMAND_GIVE)
             .withArguments(
-                Arguments.player(CommandArguments.PLAYER),
+                Arguments.playerName(CommandArguments.PLAYER),
                 CommandArguments.forCrate(plugin),
                 Arguments.integer(CommandArguments.AMOUNT, 1).localized(CoreLang.COMMAND_ARGUMENT_NAME_AMOUNT).suggestions((reader, context) -> Lists.newList("1", "5", "10")).optional()
             )
@@ -138,7 +139,7 @@ public class BaseCommands {
             .description(Lang.COMMAND_OPEN_FOR_DESC)
             .permission(Perms.COMMAND_OPEN_FOR)
             .withArguments(
-                Arguments.player(CommandArguments.PLAYER),
+                Arguments.playerName(CommandArguments.PLAYER),
                 CommandArguments.forCrate(plugin)
             )
             .withFlags(CommandFlags.SILENT, CommandFlags.FORCE, CommandFlags.MASS)
@@ -228,7 +229,11 @@ public class BaseCommands {
     }
 
     private boolean giveCrate(@NotNull CommandContext context, @NotNull ParsedArguments arguments) {
-        Player player = arguments.getPlayer(CommandArguments.PLAYER);
+        Player player = PlayerResolver.resolveOnline(arguments.getString(CommandArguments.PLAYER));
+        if (player == null) {
+            context.errorBadPlayer();
+            return false;
+        }
         Crate crate = arguments.get(CommandArguments.CRATE, Crate.class);
         int amount = arguments.getInt(CommandArguments.AMOUNT, 1);
 
@@ -258,7 +263,11 @@ public class BaseCommands {
     }
 
     private boolean openCrateFor(@NotNull CommandContext context, @NotNull ParsedArguments arguments) {
-        Player player = arguments.getPlayer(CommandArguments.PLAYER);
+        Player player = PlayerResolver.resolveOnline(arguments.getString(CommandArguments.PLAYER));
+        if (player == null) {
+            context.errorBadPlayer();
+            return false;
+        }
         Crate crate = arguments.get(CommandArguments.CRATE, Crate.class);
 
         if (!context.hasFlag(CommandFlags.SILENT)) {
@@ -289,7 +298,7 @@ public class BaseCommands {
 
     private boolean previewCrate(@NotNull CommandContext context, @NotNull ParsedArguments arguments) {
         Crate crate = arguments.get(CommandArguments.CRATE, Crate.class);
-        Player player = plugin.getServer().getPlayer(arguments.getString(CommandArguments.PLAYER, context.getSender().getName()));
+        Player player = PlayerResolver.resolveOnline(arguments.getString(CommandArguments.PLAYER, context.getSender().getName()));
         if (player == null) {
             context.errorBadPlayer();
             return false;
@@ -307,7 +316,10 @@ public class BaseCommands {
     }
 
     private boolean resetCrateCooldown(@NotNull CommandContext context, @NotNull ParsedArguments arguments) {
-        plugin.getUserManager().manageUser(arguments.getString(CommandArguments.PLAYER), user -> {
+        String pArg = arguments.getString(CommandArguments.PLAYER);
+        Player resolved = PlayerResolver.resolveOnline(pArg);
+        String finalName = (resolved != null) ? resolved.getName() : pArg;
+        plugin.getUserManager().manageUser(finalName, user -> {
             if (user == null) {
                 context.errorBadPlayer();
                 return;
@@ -376,7 +388,10 @@ public class BaseCommands {
     }
 
     private boolean inspectKeys(@NotNull CommandContext context, @NotNull ParsedArguments arguments) {
-        plugin.getUserManager().manageUser(arguments.getString(CommandArguments.PLAYER, context.getSender().getName()), user -> {
+        String pArg = arguments.getString(CommandArguments.PLAYER, context.getSender().getName());
+        Player resolved = PlayerResolver.resolveOnline(pArg);
+        String finalName = (resolved != null) ? resolved.getName() : pArg;
+        plugin.getUserManager().manageUser(finalName, user -> {
             if (user == null) {
                 context.errorBadPlayer();
                 return;
@@ -404,7 +419,11 @@ public class BaseCommands {
         int amount = arguments.getInt(CommandArguments.AMOUNT, 1);
         if (amount <= 0) return false;
 
-        plugin.getUserManager().manageUser(arguments.getString(CommandArguments.PLAYER), user -> {
+        String pArg = arguments.getString(CommandArguments.PLAYER);
+        Player resolved = PlayerResolver.resolveOnline(pArg);
+        String finalName = (resolved != null) ? resolved.getName() : pArg;
+
+        plugin.getUserManager().manageUser(finalName, user -> {
             if (user == null) {
                 context.errorBadPlayer();
                 return;
@@ -437,7 +456,11 @@ public class BaseCommands {
         int amount = arguments.getInt(CommandArguments.AMOUNT, 1);
         if (amount <= 0) return false;
 
-        plugin.getUserManager().manageUser(arguments.getString(CommandArguments.PLAYER), user -> {
+        String pArg = arguments.getString(CommandArguments.PLAYER);
+        Player resolved = PlayerResolver.resolveOnline(pArg);
+        String finalName = (resolved != null) ? resolved.getName() : pArg;
+
+        plugin.getUserManager().manageUser(finalName, user -> {
             if (user == null) {
                 context.errorBadPlayer();
                 return;
@@ -470,7 +493,11 @@ public class BaseCommands {
         int amount = arguments.getInt(CommandArguments.AMOUNT, 1);
         if (amount <= 0) return false;
 
-        plugin.getUserManager().manageUser(arguments.getString(CommandArguments.PLAYER), user -> {
+        String pArg = arguments.getString(CommandArguments.PLAYER);
+        Player resolved = PlayerResolver.resolveOnline(pArg);
+        String finalName = (resolved != null) ? resolved.getName() : pArg;
+
+        plugin.getUserManager().manageUser(finalName, user -> {
             if (user == null) {
                 context.errorBadPlayer();
                 return;

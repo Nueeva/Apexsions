@@ -2,6 +2,7 @@ package com.apexsions.economy.command;
 
 import com.apexsions.economy.ApexsionsEconomy;
 import com.apexsions.economy.trade.gui.TradePlayerSelectMenu;
+import com.apexsions.economy.util.PlayerResolver;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -82,7 +83,7 @@ public class TradeCommand implements CommandExecutor, TabCompleter {
 
         // Direct request to player: /trade <playerName>
         String targetName = args[0];
-        Player target = Bukkit.getPlayer(targetName);
+        Player target = PlayerResolver.resolveOnline(targetName);
         if (target == null || !target.isOnline() || (!player.canSee(target) && !player.hasPermission("apexsions.vanish.see"))) {
             player.sendMessage("§cPemain §e" + targetName + " §ctidak ditemukan atau sedang offline!");
             return true;
@@ -95,29 +96,25 @@ public class TradeCommand implements CommandExecutor, TabCompleter {
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         List<String> completions = new ArrayList<>();
-        boolean canSeeVanish = !(sender instanceof Player) || sender.hasPermission("apexsions.vanish.see");
         if (args.length == 1) {
             String query = args[0].toLowerCase();
             List<String> subs = List.of("accept", "deny", "toggle", "on", "off", "cancel");
             for (String sub : subs) {
                 if (sub.startsWith(query)) completions.add(sub);
             }
-            for (Player p : Bukkit.getOnlinePlayers()) {
-                if (sender instanceof Player self) {
-                    if (p.getUniqueId().equals(self.getUniqueId())) continue;
-                    if (!canSeeVanish && (!self.canSee(p) || p.hasMetadata("vanished") || p.hasMetadata("vanish"))) continue;
-                }
-                if (p.getName().toLowerCase().startsWith(query)) completions.add(p.getName());
+            List<String> playerCompletions = PlayerResolver.completePlayerNames(sender, args[0]);
+            if (sender instanceof Player self) {
+                playerCompletions.remove(self.getName());
+                playerCompletions.remove(PlayerResolver.stripBedrockPrefix(self.getName()));
             }
+            completions.addAll(playerCompletions);
         } else if (args.length == 2 && (args[0].equalsIgnoreCase("accept") || args[0].equalsIgnoreCase("deny"))) {
-            String query = args[1].toLowerCase();
-            for (Player p : Bukkit.getOnlinePlayers()) {
-                if (sender instanceof Player self) {
-                    if (p.getUniqueId().equals(self.getUniqueId())) continue;
-                    if (!canSeeVanish && (!self.canSee(p) || p.hasMetadata("vanished") || p.hasMetadata("vanish"))) continue;
-                }
-                if (p.getName().toLowerCase().startsWith(query)) completions.add(p.getName());
+            List<String> playerCompletions = PlayerResolver.completePlayerNames(sender, args[1]);
+            if (sender instanceof Player self) {
+                playerCompletions.remove(self.getName());
+                playerCompletions.remove(PlayerResolver.stripBedrockPrefix(self.getName()));
             }
+            completions.addAll(playerCompletions);
         }
         return completions;
     }

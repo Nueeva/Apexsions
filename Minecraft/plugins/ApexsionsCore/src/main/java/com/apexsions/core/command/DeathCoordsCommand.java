@@ -3,6 +3,7 @@ package com.apexsions.core.command;
 import com.apexsions.core.ApexsionsCorePlugin;
 import com.apexsions.core.player.DeathCoordinateManager;
 import com.apexsions.core.player.DeathRecord;
+import com.apexsions.core.util.PlayerResolver;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -62,7 +63,11 @@ public class DeathCoordsCommand implements CommandExecutor, TabCompleter {
                 return true;
             }
 
-            OfflinePlayer target = Bukkit.getOfflinePlayer(args[1]);
+            OfflinePlayer target = PlayerResolver.resolveOffline(args[1]);
+            if (target == null || target.getUniqueId() == null) {
+                player.sendMessage(mm.deserialize("<red>❌ Pemain <yellow>" + args[1] + "</yellow> tidak ditemukan.</red>"));
+                return true;
+            }
             DeathRecord record = manager.getLatestDeathRecord(target.getUniqueId());
             if (record == null) {
                 player.sendMessage(mm.deserialize("<red>❌ Tidak ada data kematian yang terekam untuk pemain <yellow>" + args[1] + "</yellow>.</red>"));
@@ -85,7 +90,11 @@ public class DeathCoordsCommand implements CommandExecutor, TabCompleter {
                 return true;
             }
 
-            OfflinePlayer target = Bukkit.getOfflinePlayer(args[1]);
+            OfflinePlayer target = PlayerResolver.resolveOffline(args[1]);
+            if (target == null || target.getUniqueId() == null) {
+                player.sendMessage(mm.deserialize("<red>❌ Pemain <yellow>" + args[1] + "</yellow> tidak ditemukan.</red>"));
+                return true;
+            }
             DeathRecord record = manager.getLatestDeathRecord(target.getUniqueId());
             if (record == null) {
                 player.sendMessage(mm.deserialize("<red>❌ Tidak ada data kematian yang terekam untuk pemain <yellow>" + args[1] + "</yellow>.</red>"));
@@ -114,7 +123,11 @@ public class DeathCoordsCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
-        OfflinePlayer target = Bukkit.getOfflinePlayer(args[0]);
+        OfflinePlayer target = PlayerResolver.resolveOffline(args[0]);
+        if (target == null || target.getUniqueId() == null) {
+            player.sendMessage(mm.deserialize("<red>❌ Pemain <yellow>" + args[0] + "</yellow> tidak ditemukan.</red>"));
+            return true;
+        }
         manager.sendAdminDeathNotification(player, target);
         return true;
     }
@@ -139,18 +152,13 @@ public class DeathCoordsCommand implements CommandExecutor, TabCompleter {
             completions.add("compass");
             if (isStaff) {
                 completions.add("tp");
-                for (Player online : Bukkit.getOnlinePlayers()) {
-                    completions.add(online.getName());
-                }
+                completions.addAll(PlayerResolver.completePlayerNames(player, args[0]));
             }
             return filterPrefix(completions, args[0]);
         }
 
         if (args.length == 2 && isStaff && (args[0].equalsIgnoreCase("compass") || args[0].equalsIgnoreCase("tp"))) {
-            for (Player online : Bukkit.getOnlinePlayers()) {
-                completions.add(online.getName());
-            }
-            return filterPrefix(completions, args[1]);
+            return PlayerResolver.completePlayerNames(player, args[1]);
         }
 
         return Collections.emptyList();

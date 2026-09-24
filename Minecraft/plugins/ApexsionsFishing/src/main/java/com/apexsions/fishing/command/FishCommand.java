@@ -11,6 +11,7 @@ import com.apexsions.fishing.gui.profile.FishingJournalGUI;
 import com.apexsions.fishing.gui.profile.FishingLeaderboardGUI;
 import com.apexsions.fishing.gui.profile.FishingProfileGUI;
 import com.apexsions.fishing.model.FishingRodData;
+import com.apexsions.fishing.util.PlayerResolver;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
@@ -73,7 +74,7 @@ public class FishCommand implements CommandExecutor, TabCompleter {
             }
             case "vault", "brankas" -> {
                 if (args.length >= 2 && player.hasPermission("apexsions.fishing.admin")) {
-                    Player target = Bukkit.getPlayer(args[1]);
+                    Player target = PlayerResolver.resolveOnline(args[1]);
                     if (target != null) {
                         int page = 1;
                         if (args.length >= 3) {
@@ -137,7 +138,7 @@ public class FishCommand implements CommandExecutor, TabCompleter {
                         player.sendMessage(mm.deserialize("<red>Penggunaan: /fish bait <give|set|take> <pemain> <jumlah></red>"));
                         return true;
                     }
-                    Player target = Bukkit.getPlayer(args[2]);
+                    Player target = PlayerResolver.resolveOnline(args[2]);
                     if (target == null) {
                         player.sendMessage(mm.deserialize("<red>Pemain " + args[2] + " tidak ditemukan atau sedang offline.</red>"));
                         return true;
@@ -177,7 +178,7 @@ public class FishCommand implements CommandExecutor, TabCompleter {
                     player.sendMessage(mm.deserialize("<red>Penggunaan: /fish give <pemain> <rod_id></red>"));
                     return true;
                 }
-                Player target = Bukkit.getPlayer(args[1]);
+                Player target = PlayerResolver.resolveOnline(args[1]);
                 if (target == null) {
                     player.sendMessage(mm.deserialize("<red>Pemain " + args[1] + " tidak ditemukan atau sedang offline.</red>"));
                     return true;
@@ -230,18 +231,20 @@ public class FishCommand implements CommandExecutor, TabCompleter {
             return list.stream().filter(s -> s.toLowerCase().startsWith(args[0].toLowerCase())).toList();
         }
 
+        if (args.length == 2 && (args[0].equalsIgnoreCase("vault") || args[0].equalsIgnoreCase("brankas")) && sender.hasPermission("apexsions.fishing.admin")) {
+            return PlayerResolver.completePlayerNames(sender, args[1]);
+        }
+
         if (args.length == 2 && (args[0].equalsIgnoreCase("bait") || args[0].equalsIgnoreCase("umpan")) && sender.hasPermission("apexsions.fishing.admin")) {
             return List.of("give", "set", "take").stream().filter(s -> s.startsWith(args[1].toLowerCase())).toList();
         }
 
         if (args.length == 3 && (args[0].equalsIgnoreCase("bait") || args[0].equalsIgnoreCase("umpan")) && sender.hasPermission("apexsions.fishing.admin")) {
-            return Bukkit.getOnlinePlayers().stream().map(Player::getName)
-                    .filter(n -> n.toLowerCase().startsWith(args[2].toLowerCase())).toList();
+            return PlayerResolver.completePlayerNames(sender, args[2]);
         }
 
         if (args.length == 2 && args[0].equalsIgnoreCase("give") && sender.hasPermission("apexsions.fishing.admin")) {
-            return Bukkit.getOnlinePlayers().stream().map(Player::getName)
-                    .filter(n -> n.toLowerCase().startsWith(args[1].toLowerCase())).toList();
+            return PlayerResolver.completePlayerNames(sender, args[1]);
         }
 
         if (args.length == 3 && args[0].equalsIgnoreCase("give") && sender.hasPermission("apexsions.fishing.admin")) {

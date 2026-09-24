@@ -6,6 +6,7 @@ import com.apexsions.customenchants.gui.AceAdminHubGUI;
 import com.apexsions.customenchants.gui.AceEnchantsCatalogGUI;
 import com.apexsions.customenchants.gui.AdminItemCreatorGUI;
 import com.apexsions.customenchants.gui.AdminTierPricingGUI;
+import com.apexsions.customenchants.util.PlayerResolver;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -107,7 +108,7 @@ public class AceAdminCommand implements CommandExecutor, TabCompleter {
                     sender.sendMessage(mm.deserialize("<red>Gunakan: /" + label + " givebook <player> <enchant> <level> [success] [destroy]</red>"));
                     return true;
                 }
-                Player target = Bukkit.getPlayer(args[1]);
+                Player target = PlayerResolver.resolveOnline(args[1]);
                 if (target == null) {
                     sender.sendMessage(mm.deserialize("<red>Pemain '</red><yellow>" + args[1] + "</yellow><red>' tidak online!</red>"));
                     return true;
@@ -138,7 +139,7 @@ public class AceAdminCommand implements CommandExecutor, TabCompleter {
                     sender.sendMessage(mm.deserialize("<red>Gunakan: /" + label + " givedust <player> <mystery|magic> [rate%]</red>"));
                     return true;
                 }
-                Player target = Bukkit.getPlayer(args[1]);
+                Player target = PlayerResolver.resolveOnline(args[1]);
                 if (target == null) {
                     sender.sendMessage(mm.deserialize("<red>Pemain '</red><yellow>" + args[1] + "</yellow><red>' tidak online!</red>"));
                     return true;
@@ -168,7 +169,7 @@ public class AceAdminCommand implements CommandExecutor, TabCompleter {
                     sender.sendMessage(mm.deserialize("<red>Gunakan: /" + label + " givescroll <player> <white|black></red>"));
                     return true;
                 }
-                Player target = Bukkit.getPlayer(args[1]);
+                Player target = PlayerResolver.resolveOnline(args[1]);
                 if (target == null) {
                     sender.sendMessage(mm.deserialize("<red>Pemain '</red><yellow>" + args[1] + "</yellow><red>' tidak online!</red>"));
                     return true;
@@ -230,11 +231,7 @@ public class AceAdminCommand implements CommandExecutor, TabCompleter {
         } else if (args.length == 2) {
             String sub = args[0].toLowerCase(Locale.ROOT);
             if (sub.equals("givebook") || sub.equals("givedust") || sub.equals("givescroll")) {
-                for (Player p : Bukkit.getOnlinePlayers()) {
-                    if (p.getName().toLowerCase().startsWith(args[1].toLowerCase())) {
-                        completions.add(p.getName());
-                    }
-                }
+                completions.addAll(PlayerResolver.completePlayerNames(sender, args[1]));
             } else if (sub.equals("enchants")) {
                 for (String id : plugin.getEnchantmentRegistry().getAllIds()) {
                     if (id.toLowerCase().startsWith(args[1].toLowerCase())) {
