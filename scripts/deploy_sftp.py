@@ -182,6 +182,9 @@ def main():
 
     try:
         ssh.connect(**connect_kwargs)
+        transport = ssh.get_transport()
+        if transport:
+            transport.set_keepalive(5)
         sftp = ssh.open_sftp()
         print("✅ SFTP Connected successfully!\n")
     except Exception as e:
@@ -255,8 +258,14 @@ def main():
         print("==================================================")
 
     finally:
-        sftp.close()
-        ssh.close()
+        try:
+            sftp.close()
+        except Exception:
+            pass
+        try:
+            ssh.close()
+        except Exception:
+            pass
         print("🔒 SFTP Connection closed.")
 
 if __name__ == "__main__":

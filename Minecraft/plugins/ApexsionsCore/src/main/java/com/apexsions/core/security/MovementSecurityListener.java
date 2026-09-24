@@ -41,12 +41,14 @@ public class MovementSecurityListener implements Listener {
     private final Map<UUID, Long> lastVelocityTime = new ConcurrentHashMap<>();
     private final Map<UUID, Long> lastLiquidTime = new ConcurrentHashMap<>();
     private final Map<UUID, Long> lastClimbableTime = new ConcurrentHashMap<>();
+    private final Map<UUID, Long> lastBounceTime = new ConcurrentHashMap<>();
     private final Map<UUID, Integer> violationCount = new ConcurrentHashMap<>();
     private final Map<UUID, Long> lastAlertTime = new ConcurrentHashMap<>();
 
     private static final long ALERT_COOLDOWN_MS = 5000L;
     private static final long LIQUID_EXIT_GRACE_MS = 4000L;
     private static final long CLIMBABLE_EXIT_GRACE_MS = 3000L;
+    private static final long BOUNCE_GRACE_MS = 3500L;
     private static final long VELOCITY_GRACE_MS = 2500L;
 
     public MovementSecurityListener(ApexsionsCorePlugin plugin) {
@@ -74,6 +76,7 @@ public class MovementSecurityListener implements Listener {
         serverFallDistance.put(uuid, 0.0);
         lastLiquidTime.put(uuid, 0L);
         lastClimbableTime.put(uuid, 0L);
+        lastBounceTime.put(uuid, 0L);
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
@@ -86,6 +89,7 @@ public class MovementSecurityListener implements Listener {
         lastVelocityTime.remove(uuid);
         lastLiquidTime.remove(uuid);
         lastClimbableTime.remove(uuid);
+        lastBounceTime.remove(uuid);
         violationCount.remove(uuid);
         lastAlertTime.remove(uuid);
     }
@@ -130,7 +134,8 @@ public class MovementSecurityListener implements Listener {
 
         // Comprehensive environment checks
         boolean inLiquid = isPhysicallyInOrNearLiquid(player, from, to);
-        boolean nearClimbable = isNearClimbable(player.getLocation()) || isNearClimbable(to);
+        boolean nearClimbable = isNearClimbable(player.getLocation()) || isNearClimbable(to) || isNearClimbable(from);
+        boolean nearBounce = isNearBounceBlock(player.getLocation()) || isNearBounceBlock(to) || isNearBounceBlock(from);
         boolean hasLevitation = player.hasPotionEffect(PotionEffectType.LEVITATION);
         boolean hasSlowFalling = player.hasPotionEffect(PotionEffectType.SLOW_FALLING);
         boolean hasJumpBoost = player.hasPotionEffect(PotionEffectType.JUMP_BOOST);
@@ -139,7 +144,7 @@ public class MovementSecurityListener implements Listener {
         boolean isGrounded = isPhysicallyOnGround(player);
 
         // ---------------------------------------------------------------------
-        // 2. Liquid & Water State Management (Complete immunity for water ascending)
+        // 2. Liquid, Climbable & Bounce State Management (Complete immunity)
         // ---------------------------------------------------------------------
         if (inLiquid) {
             lastLiquidTime.put(uuid, now);
@@ -157,14 +162,23 @@ public class MovementSecurityListener implements Listener {
             return; // On ladders/vines/scaffolding: vertical climbing is completely legitimate
         }
 
-        // Grace period checks (exiting liquid, exiting climbables, recent knockback, or velocity boost)
+        if (nearBounce) {
+            lastBounceTime.put(uuid, now);
+            airborneTicks.put(uuid, 0);
+            serverFallDistance.put(uuid, 0.0);
+            lastSafeGround.put(uuid, to.clone());
+            return; // Bouncing on bed or slime block: jumping & bouncing is legitimate mechanics
+        }
+
+        // Grace period checks (exiting liquid, exiting climbables, recent bounce, recent knockback, or velocity boost)
         boolean recentLiquid = (now - lastLiquidTime.getOrDefault(uuid, 0L)) < LIQUID_EXIT_GRACE_MS;
         boolean recentClimbable = (now - lastClimbableTime.getOrDefault(uuid, 0L)) < CLIMBABLE_EXIT_GRACE_MS;
+        boolean recentBounce = (now - lastBounceTime.getOrDefault(uuid, 0L)) < BOUNCE_GRACE_MS;
         boolean recentKnockback = (now - lastKnockbackTime.getOrDefault(uuid, 0L)) < 2000L;
         boolean recentVelocity = (now - lastVelocityTime.getOrDefault(uuid, 0L)) < VELOCITY_GRACE_MS;
 
-        if (recentLiquid || recentClimbable) {
-            // Player just surfaced or hopped out of water/ladder (dolphin leap, waterfall breach, bubble elevator)
+        if (recentLiquid || recentClimbable || recentBounce) {
+            // Player just surfaced, hopped off ladder, or bounced on bed/slime block
             airborneTicks.put(uuid, 0);
             serverFallDistance.put(uuid, 0.0);
             lastSafeGround.put(uuid, to.clone());
@@ -182,7 +196,7 @@ public class MovementSecurityListener implements Listener {
             boolean nofallEnabled = plugin.getConfig().getBoolean("security.movement.nofall-verification", true);
             if (nofallEnabled) {
                 Double trackedFall = serverFallDistance.getOrDefault(uuid, 0.0);
-                if (trackedFall > 3.6 && !hasSlowFalling && !recentLiquid && !isDamageAbsorbing(to.getBlock())) {
+                if (trackedFall > 3.6 && !hasSlowFalling && !recentLiquid && !recentBounce && !isDamageAbsorbing(to.getBlock())) {
                     double expectedDamage = Math.max(1.0, trackedFall - 3.0);
                     if (player.getFallDistance() < 0.5f) {
                         player.damage(expectedDamage);
@@ -246,7 +260,7 @@ public class MovementSecurityListener implements Listener {
                 maxSpeedSq += 0.60;
             }
 
-            if (horizontalDistSq > maxSpeedSq && !recentKnockback && !recentVelocity && !player.isGliding() && !recentLiquid) {
+            if (horizontalDistSq > maxSpeedSq && !recentKnockback && !recentVelocity && !player.isGliding() && !recentLiquid && !recentBounce) {
                 handleMovementViolation(player, "Speed Hack", event);
             }
         }
@@ -350,7 +364,7 @@ public class MovementSecurityListener implements Listener {
         Block feet = loc.getBlock();
         Block below = loc.clone().subtract(0, 0.45, 0).getBlock();
 
-        if (feet.getType().isSolid() || below.getType().isSolid()) return true;
+        if (feet.getType().isSolid() || below.getType().isSolid() || isBounceBlock(feet.getType()) || isBounceBlock(below.getType())) return true;
 
         // Check 4 horizontal corners around feet
         double offset = 0.3;
@@ -361,20 +375,67 @@ public class MovementSecurityListener implements Listener {
     }
 
     private boolean isNearClimbable(Location loc) {
-        Block feet = loc.getBlock();
-        Block below = loc.clone().subtract(0, 0.8, 0).getBlock();
-        Block head = loc.clone().add(0, 1.2, 0).getBlock();
+        if (loc.getWorld() == null) return false;
+        Block center = loc.getBlock();
+        if (isClimbableMaterial(center.getType())) {
+            return true;
+        }
+        int bx = loc.getBlockX();
+        int by = loc.getBlockY();
+        int bz = loc.getBlockZ();
+        org.bukkit.World w = loc.getWorld();
 
-        return isClimbableMaterial(feet.getType()) ||
-               isClimbableMaterial(below.getType()) ||
-               isClimbableMaterial(head.getType());
+        // Check horizontal 3x3 surrounding blocks and vertical range from y-1 (below feet) to y+2 (above head)
+        for (int y = -1; y <= 2; y++) {
+            for (int x = -1; x <= 1; x++) {
+                for (int z = -1; z <= 1; z++) {
+                    if (x == 0 && y == 0 && z == 0) continue;
+                    Block b = w.getBlockAt(bx + x, by + y, bz + z);
+                    if (isClimbableMaterial(b.getType())) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     private boolean isClimbableMaterial(Material mat) {
         return mat == Material.LADDER || mat == Material.VINE || mat == Material.SCAFFOLDING ||
                mat == Material.WEEPING_VINES || mat == Material.WEEPING_VINES_PLANT ||
                mat == Material.TWISTING_VINES || mat == Material.TWISTING_VINES_PLANT ||
+               mat == Material.CAVE_VINES || mat == Material.CAVE_VINES_PLANT ||
                mat == Material.COBWEB || mat == Material.CHAIN;
+    }
+
+    private boolean isBounceBlock(Material mat) {
+        return mat == Material.SLIME_BLOCK || mat.name().endsWith("_BED");
+    }
+
+    private boolean isNearBounceBlock(Location loc) {
+        if (loc.getWorld() == null) return false;
+        Block center = loc.getBlock();
+        if (isBounceBlock(center.getType())) {
+            return true;
+        }
+        int bx = loc.getBlockX();
+        int by = loc.getBlockY();
+        int bz = loc.getBlockZ();
+        org.bukkit.World w = loc.getWorld();
+
+        // Check horizontal 3x3 surrounding blocks and vertical range from y-2 (below feet) to y+1
+        for (int y = -2; y <= 1; y++) {
+            for (int x = -1; x <= 1; x++) {
+                for (int z = -1; z <= 1; z++) {
+                    if (x == 0 && y == 0 && z == 0) continue;
+                    Block b = w.getBlockAt(bx + x, by + y, bz + z);
+                    if (isBounceBlock(b.getType())) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     private boolean isNearbySolid(Location loc, double radius) {
@@ -394,6 +455,6 @@ public class MovementSecurityListener implements Listener {
     private boolean isDamageAbsorbing(Block block) {
         Material mat = block.getType();
         return mat == Material.HAY_BLOCK || mat == Material.SLIME_BLOCK || mat == Material.HONEY_BLOCK ||
-               mat == Material.WATER || mat == Material.COBWEB;
+               mat == Material.WATER || mat == Material.COBWEB || isBounceBlock(mat);
     }
 }

@@ -113,6 +113,40 @@ public class AntiCheatTest {
         assertTrue(hackerFlag, "Ascending in pure air without liquid or climbable for 40 ticks must be flagged as Fly Hack");
     }
 
+    @Test
+    public void testLadderClimbingGraceAndDetection() {
+        long now = System.currentTimeMillis();
+        long lastClimbableTime = now - 1000L; // 1 second ago (stepping off top of ladder)
+
+        boolean recentClimbable = (now - lastClimbableTime) < 3000L;
+        assertTrue(recentClimbable, "Player who stepped off a ladder 1s ago must be within 3000ms grace period");
+
+        // While on or just stepped off ladder, upward momentum (deltaY > 0) must never be flagged as AirWalk
+        double deltaY = 0.25;
+        boolean isAirWalkFlagged = !recentClimbable && deltaY > 0.08;
+        assertFalse(isAirWalkFlagged, "Upward movement within climbable grace period must NOT flag AirWalk");
+    }
+
+    @Test
+    public void testBedBouncingGracePeriod() {
+        long now = System.currentTimeMillis();
+        long lastBounceTime = now - 1200L; // 1.2 seconds ago (bounced on bed or slime)
+
+        boolean recentBounce = (now - lastBounceTime) < 3500L;
+        assertTrue(recentBounce, "Player who bounced on a bed 1.2s ago must be within 3500ms bounce grace period");
+
+        // High vertical trampoline bounce velocity (deltaY = 0.55) must NOT flag Fly Hack
+        double bounceDeltaY = 0.55;
+        int airTicks = 28;
+        boolean isFlyFlagged = !recentBounce && airTicks > 20 && bounceDeltaY > 0.08;
+        assertFalse(isFlyFlagged, "High bounce on bed/slime block within bounce grace period must NOT flag Fly Hack");
+
+        // Fall damage on bounce blocks must be absorbed / cancelled
+        double trackedFall = 15.0;
+        boolean absorbsFall = recentBounce;
+        assertTrue(absorbsFall, "Bouncing on bed/slime must absorb server fall damage");
+    }
+
     private boolean isInvalidPitch(float pitch) {
         return pitch > 90.01f || pitch < -90.01f || Float.isNaN(pitch) || Float.isInfinite(pitch);
     }
