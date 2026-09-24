@@ -173,6 +173,8 @@ Struktur modul berada di folder `Minecraft/plugins/`:
    - NightCore Native Dialog Input GUI (`CustomInputTextGUI`) tanpa anvil/sign crash.
    - **Smart Stacking Engine (Mob & Dropped Items Uncapped 64+):** Penggabungan cerdas mob serta item drop di tanah dengan hologram nama & kuantitas native (menembus batas stack 64 vanilla, misal 2 stack cobblestone -> 1 entitas x128), zero-overhead entitas untuk stabilitas TPS, dan proteksi integritas pickup pemain/hopper.
    - **Plugin Spoofing & Security (`/pl`, `/plugins`, `/ver`):** Intersepsi cerdas untuk pemain biasa menampilkan spoofing **38 Provinsi di Indonesia** lengkap dengan hover info, sementara staf/admin (`apexsions.admin` / OP) tetap dapat melihat daftar plugin aktual server.
+   - **Single-Player Sleep Subsystem (`com.apexsions.core.sleep.*`):** Mekanisme tidur cukup 1 pemain di kasur untuk mempercepat malam (`PLAYERS_SLEEPING_PERCENTAGE = 0`), menjaga animasi tidur vanilla (~5 detik), sinkronisasi kamera Bedrock/Geyser, reset phantom timer, siaran MiniMessage dinamis dengan debounce cooldown per world (10s), pembersihan badai petir otomatis saat fajar, dan kompatibilitas vanish.
+   - **Universal Essentials-Style PlayerResolver (`com.apexsions.core.util.PlayerResolver`):** Resolusi nama pemain serba guna untuk seluruh perintah suite (misal `/claim trust <player>`, `/ac inspect <player>`, `/pay <player>`, dll) dengan pembersihan awalan titik Bedrock (`.Player`), pencocokan parsial/fuzzy (misal `king` -> `Kingambit`), lookup offline aman, dan dual tab-completion.
 2. **`ApexsionsChat`** (`com.apexsions.chat.*`):
    - Kyori MiniMessage formatting, Chat Channels (`Global`, `Kingdom`, `Staff`).
    - Settings GUI (`/channel settings`), Profile Hub (`/channel profile`), Show Item (`/showitem`), Offline Mail (`/mail`).
@@ -898,3 +900,52 @@ Sistem ini didesain khusus untuk menyelesaikan tantangan operasional staf dan pe
   2. **Cloud Maven Compiler:** Kompilasi 9 plugin resmi via container Java 21 LTS dengan caching dependensi dan penyimpanan artefak JAR 30 hari.
   3. **Continuous Deployment (SFTP):** Pengunggahan JAR otomatis ke game server Jagoanhosting (`falcon04.jagoanhosting.id:2022`).
 - **Strategi Siklus Hidup Lisensi:** Panduan operasional masa trial (hingga 12 Oktober 2026) dan transisi fallback tanpa dampak operasional terdokumentasi lengkap pada [`docs/GITLAB_ULTIMATE_INTEGRATION.md`](docs/GITLAB_ULTIMATE_INTEGRATION.md).
+
+---
+
+## 🛌 23. Subkultur Siklus Tidur (Single-Player Sleep Engine) & Universal Essentials-Style PlayerResolver
+
+### A. Subkultur Siklus Tidur (Single-Player Sleep Engine)
+Modul `ApexsionsCore` mengintegrasikan sistem tidur lelap terpadu (`com.apexsions.core.sleep.*`) yang dirancang untuk mengatasi friksi multiplayer di server Survival/SMP di mana pemain di malam hari kesulitan melewati malam akibat syarat tidur 100% pemain vanilla:
+1. **GameRule Native Enforcement (`PLAYERS_SLEEPING_PERCENTAGE = 0`)**:
+   - Diterapkan secara otomatis ke seluruh dunia bertipe *NORMAL / Overworld* pada saat inisialisasi server (`onEnable`) dan secara reaktif saat dunia baru dimuat (`WorldLoadEvent`).
+   - Berbeda dengan percepatan waktu artifisial (`world.setTime()`) yang memutus animasi tidur, pendekatan native Paper ini memelihara animasi berbaring di ranjang selama ~5 detik, menjaga sinkronisasi orientasi kamera Geyser/Bedrock Edition, dan mereset timer insomnisasi *Phantom* vanilla secara natural.
+2. **Event Pipeline & Debounce Cooldown (`SleepListener`)**:
+   - Mendeteksi `PlayerBedEnterEvent` dengan status `BedEnterResult.OK`.
+   - **Vanish Guard**: Pemain berstatus vanish (`isVanished` melalui metadata/plugin Core/LuckPerms/Essentials) diabaikan sehingga tidak memicu notifikasi publik.
+   - **World Debounce (10 Detik)**: Membatasi frekuensi siaran tidur per dunia agar tidak terjadi spam pesan chat saat pemain berulang kali masuk-keluar kasur.
+3. **Pembersihan Cuaca & Siaran Fajar Otomatis**:
+   - Mendengarkan `TimeSkipEvent` dengan alasan `SkipReason.NIGHT_SKIP`.
+   - Menghapus badai hujan dan petir secara instan saat malam berganti pagi (`world.setStorm(false)`, `world.setThundering(false)`).
+   - Menyiarkan pengumuman fajar yang menyejukkan hati ke seluruh pemain di dunia terkait menggunakan format Kyori MiniMessage.
+4. **Konfigurasi Mandiri (`config.yml` & `messages.yml`)**:
+   - Kontrol status aktif (`sleep.enabled`, `sleep.single-player-sleep`, `sleep.broadcast-sleep`, `sleep.broadcast-morning`, `sleep.clear-weather-on-morning`, `sleep.cooldown-seconds`).
+   - Format pesan MiniMessage bilingual-ready di `messages.yml` (`sleep.broadcast-sleeping`, `sleep.broadcast-morning`).
+
+### B. Universal Essentials-Style PlayerResolver (Lintas 8 Plugin Suite)
+Untuk mengatasi kendala ketidaknyamanan pemain dalam mengetik nama rekan bermain—terutama pemain Geyser/Floodgate (Bedrock Edition) yang secara otomatis memiliki prefiks titik (`.Kingambit`) atau pemain dengan username panjang—diterapkan engine resolusi nama pemain universal (`PlayerResolver`) di seluruh 8 plugin suite:
+1. **Pembersihan Prefiks Titik Bedrock (Dot-Stripping Engine)**:
+   - Menormalisasi input pengguna dengan membuang awalan `.` secara cerdas jika ada (misal `.Kingambit` -> `Kingambit`).
+   - Mendukung pencarian dua arah: pemain Java dapat mengetik `king` untuk merujuk pada `.Kingambit`, dan pemain Bedrock dapat mengetik tanpa harus menyertakan titik.
+2. **Hierarki Resolusi 4-Lapis (Multi-Tier Resolution)**:
+   - **Tier 1 (Exact Match)**: Pencocokan nama daring persis peka huruf besar/kecil (`exact match`).
+   - **Tier 2 (Case-Insensitive & Dot-Stripped Exact Match)**: Pencocokan nama daring persis tanpa memedulikan kapitalisasi dan awalan titik.
+   - **Tier 3 (Prefix Match)**: Pencocokan pemain daring yang namanya diawali oleh string input (misal input `Fri` mencocokkan `Friell`).
+   - **Tier 4 (Fuzzy Substring Match)**: Pencocokan pemain daring yang namanya mengandung potongan string input (misal input `ambit` mencocokkan `.Kingambit`).
+3. **Resolusi Pemain Luring Aman (Safe Offline Player Resolver)**:
+   - Mengatasi kebutuhan perintah klaim, ekonomi, mail, dan admin yang merujuk pemain luring (`resolveOffline`).
+   - Mendukung input berupa UUID persis, nama luring persis, maupun nama luring tanpa titik.
+   - Menggunakan cache `Bukkit.getOfflinePlayers()` terfilter untuk mencegah freeze I/O pada thread server.
+4. **Dual Tab-Completion Otomatis**:
+   - Metode `completePlayerNames(input)` menyediakan saran autokomplit pintar pada argumen `<player>` di semua perintah.
+   - Untuk setiap pemain Bedrock online (misal `.Kingambit`), sistem secara otomatis menyuntikkan **dua saran**: nama asli dengan titik (`.Kingambit`) dan nama bersih tanpa titik (`Kingambit`), sehingga keyboard mobile Bedrock maupun keyboard PC Java dapat menyelesaikannya dalam satu sentuhan/Tab.
+5. **Cakupan Implementasi Seluruh Perintah**:
+   - **ApexsionsCore**: `/claim trust <player>`, `/claim untrust <player>`, `/ac inspect <player>`, `/ac setlevel <player>`, dll.
+   - **ApexsionsEconomy**: `/pay <player> <amount>`, `/bal <player>`, `/economy give/take/set <player>`, dll.
+   - **ApexsionsChat**: `/channel msg <player>`, `/channel ignore <player>`, `/mail send <player>`, `/reports`, dll.
+   - **ApexsionsShop**: `/shop admin give <player>`, dll.
+   - **ApexsionsBattlepass**: `/abp givepass <player>`, `/abp reset <player>`, dll.
+   - **ApexsionsCustomEnchants**: `/ace givebook <player>`, `/ace givedust <player>`, dll.
+   - **ApexsionsCrates**: `/crates givekey <player>`, dll.
+   - **ApexsionsFishing**: `/fish givebait <player>`, `/fish giverod <player>`, `/vault <player>`, dll.
+

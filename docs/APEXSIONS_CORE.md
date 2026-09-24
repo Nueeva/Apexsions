@@ -313,3 +313,43 @@ Sistem keamanan internal terpusat di `ApexsionsCore` (`com.apexsions.core.securi
    - `apexsions.bypass.combat`: Pengecualian batas jangkauan dan sudut serang.
    - `apexsions.bypass.scaffold`: Pengecualian batas penempatan blok.
    - `apexsions.bypass.cheststealer`: Pengecualian batas klik inventaris.
+
+---
+
+## 🛌 16. Subkultur Siklus Tidur (Single-Player Sleep Subsystem)
+
+Sistem tidur lelap terpadu (`com.apexsions.core.sleep.*`) yang dirancang khusus untuk memfasilitasi gameplay multiplayer yang lancar tanpa memaksakan semua pemain online untuk tidur:
+
+1. **Penerapan Native GameRule (`PLAYERS_SLEEPING_PERCENTAGE = 0`)**:
+   - Diterapkan secara otomatis ke seluruh dunia bertipe Overworld saat plugin aktif (`onEnable`) dan saat dunia baru dimuat (`WorldLoadEvent`).
+   - Pendekatan native Paper ini mempertahankan animasi tidur vanilla (~5 detik berbaring di kasur), sinkronisasi kamera pemain Geyser/Bedrock Edition, dan reset timer insomnisasi *Phantom* secara natural.
+2. **Debounce Cooldown & Filter Vanish (`SleepListener`)**:
+   - Mendeteksi `PlayerBedEnterEvent` dengan hasil `BedEnterResult.OK`.
+   - Mengabaikan pemain yang berstatus vanish (`isVanished`) agar privasi staf tetap terjaga.
+   - Menerapkan per-world cooldown debounce (10 detik) untuk mencegah spam siaran chat saat pemain masuk-keluar kasur berulang kali.
+3. **Pembersihan Cuaca & Siaran Fajar**:
+   - Mendengarkan `TimeSkipEvent` dengan alasan `SkipReason.NIGHT_SKIP`.
+   - Menghentikan badai hujan dan petir secara instan saat pagi tiba (`world.setStorm(false)`, `world.setThundering(false)`).
+   - Menyiarkan pesan fajar MiniMessage yang menyejukkan hati ke seluruh pemain di dunia terkait.
+4. **Konfigurasi Mandiri**:
+   - Pengaturan lengkap di `config.yml` (`sleep.*`) dan `messages.yml` (`sleep.broadcast-sleeping`, `sleep.broadcast-morning`).
+
+---
+
+## 🔍 17. Universal Essentials-Style PlayerResolver Engine
+
+Engine utilitas resolusi nama pemain serbaguna (`com.apexsions.core.util.PlayerResolver`) untuk mempermudah pengetikan target pemain di seluruh perintah:
+
+1. **Normalisasi & Pembersihan Titik Bedrock (Dot-Stripping)**:
+   - Menghapus awalan `.` secara cerdas dari username pemain Bedrock/Geyser (`.Kingambit` -> `Kingambit`).
+   - Memungkinkan pemain Java mengetik `king` untuk merujuk pada `.Kingambit`.
+2. **Pencocokan Multi-Tier**:
+   - Prioritas 1: Exact Match (peka kapitalisasi).
+   - Prioritas 2: Exact Match (tidak peka kapitalisasi & tanpa awalan titik).
+   - Prioritas 3: Prefix Match (nama diawali input).
+   - Prioritas 4: Fuzzy Substring Match (nama mengandung potongan input).
+3. **Pemain Luring Aman (`resolveOffline`)**:
+   - Resolusi UUID persis, nama luring persis, atau nama luring tanpa titik dengan lookup teroptimasi dari cache server.
+4. **Dual Tab-Completion**:
+   - Menyuntikkan dua varian nama bagi pemain Bedrock (`.Player` dan `Player`) pada argumen `<player>` agar pemain mobile maupun PC dapat melakukan autokomplit secara mulus.
+
