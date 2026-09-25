@@ -1,6 +1,7 @@
 # Build & Target Directories
 **/target/
 **/build/
+**/_internal/
 **/.gradle/
 **/bin/
 

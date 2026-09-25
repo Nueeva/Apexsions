@@ -4,3 +4,5 @@ if exist "%~dp0ApexsionsPanel.exe" (
 ) else (
     start "" pythonw "%~dp0scripts\panel_lite.py"
 )
+exit
+

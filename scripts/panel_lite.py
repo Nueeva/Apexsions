@@ -315,6 +315,24 @@ class PanelLiteApp:
         self.start_websocket()
         self.start_stats_polling()
         self.process_queue()
+        self.root.after(1500, self.trim_memory)
+
+    def trim_memory(self):
+        """Actively trims unused working set memory on Windows to keep RAM footprint ultra-low."""
+        if not self.is_running:
+            return
+        if sys.platform == "win32":
+            try:
+                import gc
+                gc.collect()
+                h = ctypes.windll.kernel32.OpenProcess(0x0410, False, os.getpid())
+                if h:
+                    ctypes.windll.psapi.EmptyWorkingSet(h)
+                    ctypes.windll.kernel32.CloseHandle(h)
+            except Exception:
+                pass
+        if self.is_running:
+            self.root.after(45000, self.trim_memory)
 
     def safe_after(self, fn):
         """Safely schedule a callback on the Tkinter main thread via queue."""
