@@ -43,9 +43,26 @@ except ImportError:
     print("❌ Error: websocket-client is required. Run 'pip install websocket-client'")
     sys.exit(1)
 
-ROOT_DIR = Path(__file__).resolve().parent.parent
+if getattr(sys, "frozen", False):
+    exe_dir = Path(sys.executable).resolve().parent
+    if (exe_dir / "panel-config.json").exists():
+        ROOT_DIR = exe_dir
+    elif (exe_dir.parent / "panel-config.json").exists():
+        ROOT_DIR = exe_dir.parent
+    else:
+        ROOT_DIR = exe_dir
+else:
+    ROOT_DIR = Path(__file__).resolve().parent.parent
+
 CONFIG_PATH = ROOT_DIR / "panel-config.json"
 SFTP_CONFIG_PATH = ROOT_DIR / "sftp-config.json"
+
+if sys.platform == "win32":
+    try:
+        import ctypes
+        ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID("Apexsions.ServerPanel.1.0")
+    except Exception:
+        pass
 
 # Regex for stripping ANSI escape codes
 ANSI_REGEX = re.compile(r'\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])')
