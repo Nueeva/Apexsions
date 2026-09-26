@@ -267,11 +267,11 @@ Berdasarkan hasil audit komprehensif pada pengujian live staging server, seluruh
    - **Akar Masalah:** MythicMobs `MobLeveling.WorldScaling` aktif dengan parameter `ScaleVanillaMobs: true` dan `PerBlocksFromSpawn: 250`. Akibatnya, monster biasa di wilayah ibukota Sylvamoor (`-9666, -4812` / jarak ~10.800 blok dari spawn) otomatis diskalakan menjadi Level 58. Ditambah lagi, berkas default `ExampleRandomSpawns.yml` menggantikan monster biasa dengan `SkeletalKnight` dan `SkeletonKing` secara global.
    - **Solusi:** Menonaktifkan `WorldScaling` global dan `ScaleVanillaMobs` pada `config-mobs.yml`. Menghapus spawn contoh `ExampleRandomSpawns.yml`. Menambahkan kondisi `notinregion zenithar,solterra,sylvamoor` pada seluruh random spawns `wilderness.yml` agar monster berlevel liar tidak pernah memasuki teritori kerajaan.
 2. **Standardisasi IP Server Game & Web Platform:**
-   - IP server game Minecraft resmi di seluruh papan skor, pengumuman, dan konfigurasi TAB ditetapkan murni ke **`apexsions.my.id`** (tanpa subdomain play).
-   - Domain platform web resmi ditetapkan ke **`web.apexsions.my.id`**.
+   - IP server game Minecraft resmi di seluruh papan skor, pengumuman, dan konfigurasi TAB ditetapkan murni ke **`apexsions.com`** (tanpa subdomain play).
+   - Domain platform web resmi ditetapkan ke **`web.apexsions.com`**.
 3. **Harmonisasi Papan Skor (Scoreboard) Bedrock & Java:**
    - Menghapus pemangkasan berlebihan pada Bedrock scoreboard di TAB config.
-   - Papan skor Bedrock kini 100% identik dengan Java: memuat bagian PROFIL (Rank, Kerajaan), EKONOMI (Rupiah, Diamond, Coins Battlepass), PROGRESI (Level & Batang Kemajuan EXP), serta footer ganda `apexsions.my.id` dan `web.apexsions.my.id`.
+   - Papan skor Bedrock kini 100% identik dengan Java: memuat bagian PROFIL (Rank, Kerajaan), EKONOMI (Rupiah, Diamond, Coins Battlepass), PROGRESI (Level & Batang Kemajuan EXP), serta footer ganda `apexsions.com` dan `web.apexsions.com`.
 4. **Zero-Friction Bedrock Join (Bebas Register/Login):**
    - Mengaktifkan `autoRegisterFloodgate: 'true'` dan `autoLoginFloodgate: 'true'` di FastLogin.
    - Pemain Bedrock via Floodgate (`.PlayerName`) kini langsung terdaftar secara otomatis dengan hash aman di AuthMe dan terautentikasi instan saat pertama kali masuk tanpa pernah melihat prompt `/register`.
@@ -287,7 +287,7 @@ Berdasarkan hasil audit komprehensif pada pengujian live staging server, seluruh
 8. **Sapu Bersih Lingkungan Server & Hardening Proteksi Dunia:**
    - **Hardening Lobi Multiverse:** Mengonfigurasi `minecraft:lobby` dengan `spawning.monster.spawn: false`, `pvp: false`, `hunger: false`, dan `auto-heal: true` agar area penyambutan 100% aman dan damai.
    - **WorldGuard Lobi:** Menambahkan flag `mob-spawning: deny` pada region cuboid `lobby`.
-   - **Branded MOTD:** Mengonfigurasi MOTD `server.properties` dengan palet warna emas dan mencantumkan IP `apexsions.my.id` serta situs `web.apexsions.my.id`.
+   - **Branded MOTD:** Mengonfigurasi MOTD `server.properties` dengan palet warna emas dan mencantumkan IP `apexsions.com` serta situs `web.apexsions.com`.
    - **Pembersihan Domain Repositori:** Memperbaiki seluruh rujukan lawas domain di `PRODUCT.md`.
    - **Preservasi Boss & Upper Realm:** Seluruh monster dungeon/raid resmi Sions Ruins (`EmperorValerius` Lv.100, `SionsVoidKnight` Lv.50) tetap terjaga sebagai Out-of-Scope lore, dan izin kedaulatan staf dimensi atas (*The Aetherial Conclave*) tetap utuh tak tersentuh.
 
