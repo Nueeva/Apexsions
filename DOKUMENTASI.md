@@ -1,11 +1,11 @@
 # DOKUMENTASI.md — Master Technical Documentation & Ecosystem State
 # Apexsions — The Peak Civilizations
 
-> **Repository:** `Nueeva/Apexsions`  
-> **Primary Branch:** `main`  
-> **Brand Name:** `Apexsions` (DILARANG menambahkan kata Network/SMP/Kingdom).  
-> **Tagline:** `The Peak Civilizations`  
-> **Dokumentasi Terakhir:** September 2026 (Sinkronisasi Penuh Pasca-Audit & Reset Memori)  
+> **Repository:** `Nueeva/Apexsions`
+> **Primary Branch:** `main`
+> **Brand Name:** `Apexsions` (DILARANG menambahkan kata Network/SMP/Kingdom).
+> **Tagline:** `The Peak Civilizations`
+> **Dokumentasi Terakhir:** September 2026 (Sinkronisasi Penuh Pasca-Audit & Reset Memori)
 > **Riwayat Perubahan & Handoff AI:** Lihat [CHANGELOG.md](file:///c:/Users/Friel/Documents/Rifqi%20Ariansyah/Apexsions/CHANGELOG.md) untuk detail kronologis pembaruan.
 
 Dokumen ini adalah **Single Source of Truth** untuk seluruh pengembang dan AI Coding Agent. Dokumen ini merangkum arsitektur, konfigurasi server, kredensial produksi, standar keamanan, sistem webstore, BlueMap, dual-theme, serta 9 plugin Minecraft secara komprehensif.
@@ -45,6 +45,8 @@ systemctl reload nginx
 ```
 
 ### B. Game Server Minecraft (Jagoanhosting Pterodactyl SFTP)
+- **Domain Server Game:** `apexsions.com` (Port Server: **32348** untuk Java Edition & Bedrock Edition — `apexsions.com:32348`)
+- **Domain Platform Web:** `https://web.apexsions.com`
 - **Host / Server:** `falcon04.jagoanhosting.id`
 - **Port SFTP:** `2022`
 - **Username:** `rifqiariansyah123jt3.27e4a2f6`
@@ -950,4 +952,3 @@ Untuk mengatasi kendala ketidaknyamanan pemain dalam mengetik nama rekan bermain
    - **ApexsionsCustomEnchants**: `/ace givebook <player>`, `/ace givedust <player>`, dll.
    - **ApexsionsCrates**: `/crates givekey <player>`, dll.
    - **ApexsionsFishing**: `/fish givebait <player>`, `/fish giverod <player>`, `/vault <player>`, dll.
-

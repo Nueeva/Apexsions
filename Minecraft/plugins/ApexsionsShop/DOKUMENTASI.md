@@ -2,6 +2,9 @@
 
 Panduan teknis resmi modul **`ApexsionsShop`** untuk sistem pasar dinamis 6 kategori, formula harga berbasis cuaca & bioma kerajaan, batas anti-inflasi (*Price Clamping*), siaran tren pasar, pajak teritorial per-kerajaan, dan antarmuka GUI sentuh/Bedrock.
 
+> **Game Server Domain:** `apexsions.com:32348` (Java & Bedrock)
+> **Web Platform Domain:** `https://web.apexsions.com`
+
 ---
 
 ## 📂 Struktur Konfigurasi YAML Modular

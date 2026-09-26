@@ -1,8 +1,10 @@
 # ApexsionsCustomEnchants ✨
 
-> **Plugin Suite:** Apexsions  
-> **Brand:** `Apexsions`  
-> **Tagline:** `The Peak Civilizations`  
+> **Plugin Suite:** Apexsions
+> **Brand:** `Apexsions`
+> **Tagline:** `The Peak Civilizations`
+> **Game Server Domain:** `apexsions.com:32348` (Java & Bedrock)
+> **Web Platform Domain:** `https://web.apexsions.com`
 > **Target Runtime:** Paper 26.2 (Minecraft 26.2, Java 21 LTS)
 
 Modul sihir khusus dan kustomisasi perlengkapan resmi untuk peradaban **Apexsions — The Peak Civilizations**. Menghadirkan 182 custom enchantments lintas 7 tingkatan tier kekuatan, sistem gacha Enchanter dual-currency, toko buku sihir spesifik 54-slot, item utilitas magis (Magic Dust, Scrolls), serta builder set armor terintegrasi.

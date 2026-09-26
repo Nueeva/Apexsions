@@ -2,6 +2,9 @@
 
 Panduan teknis resmi modul **`ApexsionsMedia`** untuk sistem render banner/logo gambar multi-tile, mesin palet peta async, raytrace hover glow, interaksi tautan URL web, serta **Unified Content Creator Verification & Reward Suite (YouTube & TikTok)**.
 
+> **Game Server Domain:** `apexsions.com:32348` (Java & Bedrock)
+> **Web Platform Domain:** `https://web.apexsions.com`
+
 ---
 
 ## 📂 Struktur Direktori & Konfigurasi YAML

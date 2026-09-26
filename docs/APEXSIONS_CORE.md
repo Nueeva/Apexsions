@@ -2,6 +2,10 @@
 
 Panduan teknis dan operasional lengkap untuk modul **`ApexsionsCore`** (Otoritas Wilayah Kerajaan, Sistem Warp GUI & Admin GUI, Master Admin Hub, Title Vault, Particle Cosmetics, Perlindungan PvP Teritorial, Progresi Karakter, XP Engine, Navigasi BlueMap, Kingdom War, Combat Tag, dan Enforcer TPA EssentialsX).
 
+> **Game Server Domain:** `apexsions.com:32348` (Java & Bedrock)
+> **Web Platform Domain:** `https://web.apexsions.com`
+> **WebBridge Endpoint:** `https://web.apexsions.com/api/apexsions-bridge`
+
 ---
 
 ## 🏛️ 1. Ikhtisar Modul & Arsitektur
@@ -352,4 +356,3 @@ Engine utilitas resolusi nama pemain serbaguna (`com.apexsions.core.util.PlayerR
    - Resolusi UUID persis, nama luring persis, atau nama luring tanpa titik dengan lookup teroptimasi dari cache server.
 4. **Dual Tab-Completion**:
    - Menyuntikkan dua varian nama bagi pemain Bedrock (`.Player` dan `Player`) pada argumen `<player>` agar pemain mobile maupun PC dapat melakukan autokomplit secara mulus.
-

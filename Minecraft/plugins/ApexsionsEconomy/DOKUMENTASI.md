@@ -2,6 +2,9 @@
 
 Panduan teknis resmi modul **`ApexsionsEconomy`** untuk pengelolaan multi-currency, transfer aman, pasar lelang (*Auction House*) dengan *Escrow Claim*, dan sistem barter terintegrasi kerajaan.
 
+> **Game Server Domain:** `apexsions.com:32348` (Java & Bedrock)
+> **Web Platform Domain:** `https://web.apexsions.com`
+
 ---
 
 ## 📂 Struktur Konfigurasi YAML Modular

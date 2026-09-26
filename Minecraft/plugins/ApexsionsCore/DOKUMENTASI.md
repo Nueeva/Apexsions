@@ -2,6 +2,10 @@
 
 Panduan teknis resmi modul **`ApexsionsCore`** untuk arsitektur kerajaan, sistem progresi & XP, navigasi warp, master admin hub, perlindungan PvP teritorial, dan integrasi gameplay.
 
+> **Game Server Domain:** `apexsions.com:32348` (Java & Bedrock)
+> **Web Platform Domain:** `https://web.apexsions.com`
+> **WebBridge Endpoint:** `https://web.apexsions.com/api/apexsions-bridge`
+
 ---
 
 ## 📂 Struktur Konfigurasi YAML Modular
@@ -322,4 +326,3 @@ Modul `ApexsionsCore` mengintegrasikan sistem keamanan dan anti-cheat lapis pert
 | `apexsions.bypass.combat` | Admin / OP | Bebas dari batasan jangkauan Reach dan KillAura Angle. |
 | `apexsions.bypass.scaffold` | Admin / OP | Bebas dari batasan kecepatan penempatan blok. |
 | `apexsions.bypass.cheststealer` | Admin / OP | Bebas dari batasan kecepatan pemindahan item peti. |
-

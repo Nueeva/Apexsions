@@ -2,6 +2,9 @@
 
 Plugin render banner, logo, dan visual media interaktif multi-tile in-game berkinerja tinggi dengan line-of-sight raytrace hover glow, actionbar tooltips, replikasi template fleksibel, dan aksi tautan web terkonfirmasi untuk server **Apexsions**.
 
+> **Game Server Domain:** `apexsions.com:32348` (Java & Bedrock)
+> **Web Platform Domain:** `https://web.apexsions.com`
+
 ---
 
 ## 🌟 Fitur Utama

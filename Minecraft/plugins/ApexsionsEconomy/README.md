@@ -2,6 +2,9 @@
 
 Plugin ekonomi multi-currency, transfer aman, pasar lelang (*Auction House*) dengan sistem penampungan (*Escrow*), dan sistem barter/trade terintegrasi kerajaan untuk server **Apexsions**.
 
+> **Game Server Domain:** `apexsions.com:32348` (Java & Bedrock)
+> **Web Platform Domain:** `https://web.apexsions.com`
+
 ---
 
 ## 🌟 Fitur Utama

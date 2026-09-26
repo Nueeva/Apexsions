@@ -2,6 +2,9 @@
 
 Plugin fondasi utama server **Apexsions** yang mengelola sistem 3 Kerajaan (*Zenithar*, *Solterra*, *Sylvamoor*), progresi level pemain & 16 sumber XP, sistem navigasi Warp GUI & Admin Editor, Master Admin Hub (`/admingui`), Title Vault, Particle Cosmetics, perlindungan PvP teritorial kerajaan, Kingdom War, Combat Tagging (15s), dan integrasi BlueMap.
 
+> **Game Server Domain:** `apexsions.com:32348` (Java & Bedrock)
+> **Web Platform Domain:** `https://web.apexsions.com`
+
 ---
 
 ## 🌟 Fitur Utama

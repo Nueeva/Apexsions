@@ -2,6 +2,9 @@
 
 Panduan teknis resmi modul **`ApexsionsFishing`** untuk ekosistem peradaban memancing **Apexsions — The Peak Civilizations**. Modul ini mencakup sistem AFK Fishing, Active Reel Engine, Rarity & Weight Engine 6-tier, Fishing Vault Storage 54-slot, pasar penjualan ikan dual-currency, custom rods creator, dan integrasi papan peringkat nelayan terbaik (*Top Angler*).
 
+> **Game Server Domain:** `apexsions.com:32348` (Java & Bedrock)
+> **Web Platform Domain:** `https://web.apexsions.com`
+
 ---
 
 ## 📂 Struktur Direktori & Konfigurasi YAML Modular

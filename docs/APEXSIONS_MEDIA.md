@@ -2,6 +2,9 @@
 
 Panduan teknis dan operasional lengkap untuk modul **`ApexsionsMedia`** (Sistem Render Banner & Logo Gambar Multi-Tile Async, Raytrace Line-of-Sight Hover Glowing, Penempatan Fleksibel, dan Konfirmasi Aksi Tautan Web / Salin Clipboard).
 
+> **Game Server Domain:** `apexsions.com:32348` (Java & Bedrock)
+> **Web Platform Domain:** `https://web.apexsions.com`
+
 ---
 
 ## 🖼️ 1. Ikhtisar Modul & Arsitektur
@@ -142,4 +145,3 @@ Arahkan crosshair ke dinding tempat baru, lalu ketik:
 | `/creator unlink <plat>` | - | Melepaskan tautan channel media sosial | `apexsionsmedia.creator` | `true` |
 | `/creator tiers` | - | Membuka antarmuka Creator Tiers & Perks GUI | `apexsionsmedia.creator` | `true` |
 | `/creator admin` | - | Panel kontrol admin kreator & reset klaim | `apexsionsmedia.creator.admin` | `op` |
-

@@ -1,8 +1,10 @@
 # ApexsionsCrates 📦
 
-> **Plugin Suite:** Apexsions  
-> **Brand:** `Apexsions`  
-> **Tagline:** `The Peak Civilizations`  
+> **Plugin Suite:** Apexsions
+> **Brand:** `Apexsions`
+> **Tagline:** `The Peak Civilizations`
+> **Game Server Domain:** `apexsions.com:32348` (Java & Bedrock)
+> **Web Platform Domain:** `https://web.apexsions.com`
 > **Target Runtime:** Paper 26.2 (Minecraft 26.2, Java 21 LTS)
 
 Modul peti hadiah dan kunci resmi untuk ekosistem **Apexsions — The Peak Civilizations**. Modul ini menghadirkan sistem gacha hadiah berbasis probabilitas berbobot, animasi pembukaan paket virtual tanpa lag, toko pembelian kunci (*Crate Key Shop*) dual-currency, sistem progresi milestone/pity, dan integrasi penuh dengan Master Admin Hub ApexsionsCore.

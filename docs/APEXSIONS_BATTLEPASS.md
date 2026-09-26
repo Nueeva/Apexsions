@@ -2,6 +2,9 @@
 
 Panduan teknis dan operasional lengkap untuk modul **`ApexsionsBattlepass`** (Sistem Musim / Season 200 Level, Quest Pools Harian/Mingguan/Bulanan, Pass Tiers Inheritance, Toko Rotasi, Exp-Shop, dan Visual Admin Editor `/abp`).
 
+> **Game Server Domain:** `apexsions.com:32348` (Java & Bedrock)
+> **Web Platform Domain:** `https://web.apexsions.com`
+
 ---
 
 ## 🎫 1. Ikhtisar Modul & Arsitektur

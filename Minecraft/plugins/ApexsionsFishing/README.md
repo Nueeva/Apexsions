@@ -1,8 +1,10 @@
 # ApexsionsFishing 🎣
 
-> **Plugin Suite:** Apexsions  
-> **Brand:** `Apexsions`  
-> **Tagline:** `The Peak Civilizations`  
+> **Plugin Suite:** Apexsions
+> **Brand:** `Apexsions`
+> **Tagline:** `The Peak Civilizations`
+> **Game Server Domain:** `apexsions.com:32348` (Java & Bedrock)
+> **Web Platform Domain:** `https://web.apexsions.com`
 > **Target Runtime:** Paper 26.2 (Minecraft 26.2, Java 21 LTS)
 
 Modul ekosistem peradaban memancing resmi untuk **Apexsions — The Peak Civilizations**. Menghadirkan sistem AFK Fishing interaktif, Active Reel Engine, Rarity & Weight Engine 6-tier, Fishing Vault multi-halaman, pasar penjualan ikan dinamis dual-currency, sistem umpan virtual, custom auto-catch rods, ensiklopedia ikan (*Fish-o-pedia*), dan papan peringkat Top Angler terintegrasi kebijakan pengecualian staf.

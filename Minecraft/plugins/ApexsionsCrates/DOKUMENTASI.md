@@ -2,6 +2,9 @@
 
 Panduan teknis resmi modul **`ApexsionsCrates`** untuk ekosistem peti hadiah, kunci dual-currency, animasi berbasis paket (ProtocolLib / PacketEvents), milestone pity progression, dan integrasi Master Admin Hub **Apexsions — The Peak Civilizations**.
 
+> **Game Server Domain:** `apexsions.com:32348` (Java & Bedrock)
+> **Web Platform Domain:** `https://web.apexsions.com`
+
 ---
 
 ## 📂 Struktur Direktori & Konfigurasi YAML Modular

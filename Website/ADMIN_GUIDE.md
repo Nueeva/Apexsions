@@ -1,9 +1,9 @@
 # Apexsions Admin Dashboard — Official Admin & Operations Guide
 
-> **Platform:** Apexsions Minecraft Server (Paper 26.2 / Java 21 LTS)  
-> **Web Platform:** Azuriom (PHP 8.2 / Laravel 12)  
-> **Brand:** `Apexsions`  
-> **Tagline:** *The Peak Civilizations*  
+> **Platform:** Apexsions Minecraft Server (Paper 26.2 / Java 21 LTS)
+> **Web Platform:** Azuriom (PHP 8.2 / Laravel 12)
+> **Brand:** `Apexsions`
+> **Tagline:** *The Peak Civilizations*
 
 ---
 
@@ -170,6 +170,8 @@ Sistem autentikasi dan keamanan pengguna dibangun di atas prinsip ketat:
 
 ## 6. Deployment Requirements
 
+- **Domain Web Platform:** `https://web.apexsions.com` (VPS `89.144.53.100`)
+- **Domain Server Game:** `apexsions.com:32348` (Java & Bedrock)
 - **PHP Version:** PHP 8.2 atau 8.3 LTS (dengan ekstensi `pdo_sqlite`, `pdo_mysql`, `curl`, `mbstring`, `xml`, `bcmath`).
 - **Web Server:** Nginx dengan PHP-FPM (`php8.2-fpm`).
 - **Framework:** Azuriom v1.1+ (Laravel 12).
@@ -334,7 +336,7 @@ Panduan operasional bagi jajaran staf (Warden, Overseer, Architect, Ancestor) un
 
 ### B. SOP Penanganan Tiket: Pemain Crack Terkunci Akibat Salah Ketik `/premium`
 * **Gejala / Laporan Pemain:**
-  Pemain crack melaporkan gagal masuk ke server dengan pesan kick:  
+  Pemain crack melaporkan gagal masuk ke server dengan pesan kick:
   `[Apexsions] Sesi tidak valid (gagal verifikasi Mojang). Jika kamu memakai launcher crack, akunmu terkunci. Hubungi staf Discord untuk pemulihan.`
 * **Penyebab:**
   Pemain launcher crack mengabaikan peringatan dan mengetik `/premium` sebanyak dua kali. FastLogin kemudian mencoba memvalidasi sesi enkripsi ke Mojang dan menolak koneksi karena akun bukan Minecraft berbayar resmi.
@@ -351,4 +353,3 @@ Panduan operasional bagi jajaran staf (Warden, Overseer, Architect, Ancestor) un
 ### C. Matriks Izin Staf untuk FastLogin
 - `fastlogin.bukkit.command.cracked`: Diberikan otomatis ke grup `warden`, `overseer`, `architect`, dan `ancestor` untuk memulihkan akun anggota komunitas.
 - Pemain Bedrock dicegah menjalankan perintah `/premium` melalui negasi izin LuckPerms `context[origin=bedrock]`.
-

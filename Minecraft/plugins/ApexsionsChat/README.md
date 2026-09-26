@@ -2,6 +2,9 @@
 
 Plugin komunikasi, obrolan interaktif, pamer item, permainan obrolan, dan sistem moderasi keamanan (*AdvancedChat style*) untuk server **Apexsions**.
 
+> **Game Server Domain:** `apexsions.com:32348` (Java & Bedrock)
+> **Web Platform Domain:** `https://web.apexsions.com`
+
 ---
 
 ## 🌟 Fitur Utama

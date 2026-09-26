@@ -2,6 +2,9 @@
 
 Panduan teknis dan operasional lengkap untuk modul **`ApexsionsEconomy`** (Sistem Multi-Currency Rupiah & Diamond, Transfer Cepat `/pay`, Pasar Lelang `/ah` dengan Escrow Claim, serta Barter/Trade Kerajaan).
 
+> **Game Server Domain:** `apexsions.com:32348` (Java & Bedrock)
+> **Web Platform Domain:** `https://web.apexsions.com`
+
 ---
 
 ## 💰 1. Ikhtisar Modul & Arsitektur

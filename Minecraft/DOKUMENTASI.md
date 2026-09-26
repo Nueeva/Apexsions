@@ -501,6 +501,8 @@ Mengintegrasikan ekosistem autentikasi aman tanpa hambatan (*zero-friction*) bag
 
 ### A. Matriks Kompatibilitas Runtime
 - **Server Engine:** Paper version 26.2-92-main (Minecraft 26.2, Java 21 LTS).
+- **Domain Server Game:** `apexsions.com` (Port Server: **32348** untuk Java & Bedrock — `apexsions.com:32348`).
+- **Domain Platform Web:** `https://web.apexsions.com`.
 - **Packet Interceptor:** ProtocolLib v5.4.0.
 - **Cross-Platform Bridge:** Geyser-Spigot v2.11.3 + Floodgate v2.2.5 (Prefix: `.`).
 - **Auth Core:** AuthMeReloaded v6.0.1-b2770 (`plugins/AuthMe/authme.db`).
@@ -593,4 +595,3 @@ Sistem keamanan terpusat di `ApexsionsCore` (`com.apexsions.core.security.*`) ya
 | `apexsions.bypass.combat` | Admin / OP | Mengecualikan staf dari batas Reach dan KillAura Angle. |
 | `apexsions.bypass.scaffold` | Admin / OP | Mengecualikan dari batas kecepatan penempatan blok. |
 | `apexsions.bypass.cheststealer` | Admin / OP | Mengecualikan dari batas kecepatan klik kontainer. |
-

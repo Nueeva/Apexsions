@@ -2,6 +2,9 @@
 
 Panduan teknis dan operasional lengkap untuk modul **`ApexsionsChat`** (Sistem Komunikasi Terpadu, Channel MiniMessage, ID-Card Profil Sosial, Showcase Item, Offline Mail, Chat Games, Pengumuman, Chat Settings GUI, dan Moderasi Lapis Tiga).
 
+> **Game Server Domain:** `apexsions.com:32348` (Java & Bedrock)
+> **Web Platform Domain:** `https://web.apexsions.com`
+
 ---
 
 ## 💬 1. Ikhtisar Modul & Arsitektur
@@ -125,4 +128,3 @@ Menggantikan pesan kematian bawaan vanilla dan EssentialsX dengan format MiniMes
    - Mencakup: `pvp`, `pvp-projectile`, `mob`, `mob-projectile`, `void`, `fall`, `drowning`, `lava`, `fire`, `explosion`, `lightning`, `suffocation`, `starvation`, `magic`, `wither`, dan `generic`.
 5. **Audio Feedback**:
    - Memainkan sound feedback `ENTITY_EXPERIENCE_ORB_PICKUP` (pitch 0.5) saat kematian terjadi.
-

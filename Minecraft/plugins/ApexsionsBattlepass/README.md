@@ -2,6 +2,9 @@
 
 Plugin BattlePass modern dengan sistem Season, Daily/Weekly/Monthly Quests, tingkatan Pass (`Citizen`, `Sio`, `Exsio`), Toko Rotasi (*Dynamic Shop*), dan Editor GUI Admin 54-Slot (`/abp`) untuk server **Apexsions**.
 
+> **Game Server Domain:** `apexsions.com:32348` (Java & Bedrock)
+> **Web Platform Domain:** `https://web.apexsions.com`
+
 ---
 
 ## 🌟 Fitur Utama

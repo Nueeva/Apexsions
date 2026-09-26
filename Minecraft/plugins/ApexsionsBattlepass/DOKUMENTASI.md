@@ -2,6 +2,9 @@
 
 Panduan teknis resmi modul **`ApexsionsBattlepass`** untuk pengelolaan Season 200 level, pool questing (Daily, Weekly, Monthly), tingkatan Pass, Toko Rotasi, Exp-Shop, dan Visual Admin GUI Editor.
 
+> **Game Server Domain:** `apexsions.com:32348` (Java & Bedrock)
+> **Web Platform Domain:** `https://web.apexsions.com`
+
 ---
 
 ## 📂 Struktur Direktori YAML Modular

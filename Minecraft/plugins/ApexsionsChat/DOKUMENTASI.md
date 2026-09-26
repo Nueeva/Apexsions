@@ -2,6 +2,9 @@
 
 Panduan teknis modul `ApexsionsChat` untuk pengaturan channel, moderasi keamanan, dan sistem laporan.
 
+> **Game Server Domain:** `apexsions.com:32348` (Java & Bedrock)
+> **Web Platform Domain:** `https://web.apexsions.com`
+
 ---
 
 ## 📂 Struktur File YAML

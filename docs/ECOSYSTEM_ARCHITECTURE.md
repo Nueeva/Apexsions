@@ -2,6 +2,9 @@
 
 Dokumentasi arsitektur terpadu yang merangkum interaksi antar-plugin, kontrak Service Provider Interface (SPI), alur event data, arsitektur database HikariCP, dan matriks integrasi ekosistem **Apexsions**.
 
+> **Game Server Domain:** `apexsions.com:32348` (Java & Bedrock)
+> **Web Platform Domain:** `https://web.apexsions.com`
+
 ---
 
 ## 🏛️ 1. Diagram Keterhubungan 9 Plugin Suite
@@ -193,4 +196,3 @@ Arsitektur sistem Apexsions dirancang untuk bertumbuh melalui 4 fase evolusi ber
 - **Fase 2 (The Sions Cataclysm & World Raids — Saat Ini/Aktif)**: Integrasi MythicMobs di Reruntuhan Sions, mekanik serangan telegraphed, drop item legendaris (*Valerius Voidblade*, *Crown of Sions*), serta sirkulasi relik di pasar lelang (`/ah`).
 - **Fase 3 (Pengepungan Benteng & Perluasan Wilayah — Rencana Menengah)**: Fitur *Kingdom Outpost Siege* di mana kerajaan dapat memperebutkan benteng perbatasan di Wilderness untuk memperluas batas klaim teritorial dan memungut pajak jalur dagang.
 - **Fase 4 (Sinkronisasi Web & Jaringan Terpadu — Rencana Jangka Panjang)**: Peluncuran WebBridge v2 dengan web-socket real-time untuk menampilkan kontrol wilayah di portal web, live battle ranking di situs web, dan integrasi payment gateway otomatis saat perizinan legal selesai.
-

@@ -2,6 +2,9 @@
 
 Panduan teknis resmi modul **`ApexsionsCustomEnchants`** untuk sistem sihir perlengkapan kustom, 182 custom enchantments lintas 7 tier, Enchanter Gacha dual-currency, Toko Buku Sihir spesifik, item utilitas magis (Scrolls & Dust), serta Interactive Armor Set Builder di **Apexsions — The Peak Civilizations**.
 
+> **Game Server Domain:** `apexsions.com:32348` (Java & Bedrock)
+> **Web Platform Domain:** `https://web.apexsions.com`
+
 ---
 
 ## 📂 Struktur Direktori & Konfigurasi YAML Modular

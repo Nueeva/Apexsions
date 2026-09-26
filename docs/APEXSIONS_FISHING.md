@@ -2,6 +2,9 @@
 
 Panduan teknis dan operasional lengkap untuk modul **`ApexsionsFishing`** (Sistem Memancing Interaktif & AFK Fishing, Rarity & Weight Engine 6-Tier, Fishing Vault Brankas 54-Slot Multi-Halaman, Toko Joran Spesial, Pasar Penjualan Ikan Dinamis, dan Papan Peringkat Top Angler).
 
+> **Game Server Domain:** `apexsions.com:32348` (Java & Bedrock)
+> **Web Platform Domain:** `https://web.apexsions.com`
+
 ---
 
 ## 🎣 1. Ikhtisar Modul & Arsitektur

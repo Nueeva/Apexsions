@@ -2,6 +2,9 @@
 
 Panduan teknis dan operasional lengkap untuk modul **`ApexsionsCustomEnchants`** (182 Custom Enchantments lintas 7 Tier, Enchanter Gacha Dual-Currency, Toko Buku Sihir Spesifik 54-Slot, Item Utilitas Magis, dan Interactive Armor Set Builder).
 
+> **Game Server Domain:** `apexsions.com:32348` (Java & Bedrock)
+> **Web Platform Domain:** `https://web.apexsions.com`
+
 ---
 
 ## 🔮 1. Ikhtisar Modul & Arsitektur

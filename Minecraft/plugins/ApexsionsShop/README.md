@@ -2,6 +2,9 @@
 
 Plugin Pasar & Toko Dinamis Terintegrasi Kerajaan untuk Apexsions Plugin Suite.
 
+> **Game Server Domain:** `apexsions.com:32348` (Java & Bedrock)
+> **Web Platform Domain:** `https://web.apexsions.com`
+
 ## 🌟 Fitur Utama
 - **6 Kategori Lengkap:** `Blocks`, `Makanan`, `Pertanian`, `Ore`, `Mob Drops`, dan `Dyes`.
 - **Anti-Inflation Balance:** Rasio harga jual **20% dari harga beli** dengan kurva kenaikan harga yang landai (gap harga mineral langka tetap terjangkau di kisaran ratusan Rupiah).

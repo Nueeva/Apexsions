@@ -2,6 +2,9 @@
 
 Panduan teknis dan operasional lengkap untuk modul **`ApexsionsCrates`** (Sistem Peti Hadiah, Animasi Berbasis Paket ProtocolLib/PacketEvents, Toko Kunci Dual-Currency `/crateshop`, Progresi Pity & Milestone, serta Integrasi Master Admin Hub).
 
+> **Game Server Domain:** `apexsions.com:32348` (Java & Bedrock)
+> **Web Platform Domain:** `https://web.apexsions.com`
+
 ---
 
 ## 📦 1. Ikhtisar Modul & Arsitektur
