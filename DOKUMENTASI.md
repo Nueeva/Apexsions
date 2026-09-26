@@ -29,7 +29,7 @@ Dokumen ini adalah **Single Source of Truth** untuk seluruh pengembang dan AI Co
 - **SSH Port:** `22`
 - **Username:** `root`
 - **Password:** `9tEMjeqysCYYqhRhxBvH`
-- **Domain Resmi:** `http://web.apexsions.my.id` (Akses langsung IP: `http://89.144.53.100`)
+- **Domain Resmi:** `https://web.apexsions.com` (Akses langsung IP: `http://89.144.53.100`)
 - **Web Root:** `/var/www/azuriom`
 - **Custom Theme Path:** `/var/www/azuriom/themes/apexsions`
 - **Public Theme Assets:** `/var/www/azuriom/public/assets/themes/apexsions`
@@ -53,7 +53,7 @@ systemctl reload nginx
 - **Runtime:** Paper API (Minecraft 26.2), Java 21 LTS.
 
 ### C. WebBridge API, Security Token & Queue Reliability
-- **Endpoint:** `http://web.apexsions.my.id/api/apexsions-bridge`
+- **Endpoint:** `https://web.apexsions.com/api/apexsions-bridge`
 - **Secret Key:** `apexsions_bridge_key_live_2026`
 - **Player Sync API:** `POST /api/apexsions-bridge/sync-player` (Authoritative gateway pendaftaran & pembaruan statistik akun Minecraft, dilengkapi cache throttle 60s untuk pembersihan trial dan cooldown 5 menit untuk pengiriman perintah sinkronisasi rank).
 - **Delivery Queue Lease & Concurrency Lock:** Endpoint `/api/apexsions-bridge/deliveries/pending` dibungkus dalam `DB::transaction()` dengan `lockForUpdate()` guna menjamin worker konkuren tidak membaca atau mengeksekusi batch instruksi yang sama.
@@ -64,7 +64,7 @@ systemctl reload nginx
 ### D. BlueMap 3D Interactive Server Map
 - **Port BlueMap Live:** `32076`
 - **URL Direct VPS:** `http://89.144.53.100:32076`
-- **URL Internal Website:** `http://web.apexsions.my.id/server-map` (Route `apexsions-bridge.server-map`)
+- **URL Internal Website:** `https://web.apexsions.com/server-map` (Route `apexsions-bridge.server-map`)
 - **Status Integrasi:** Terhubung langsung dengan controller `ServerMapController.php`, live health-check probe port, serta fallback standby jika server offline.
 
 ---
@@ -436,7 +436,7 @@ Pemain otomatis **dikecualikan (dieliminasi)** dari seluruh papan peringkat publ
    - `nueeva`, `nuevaid`, `rifqi`, `friell`, `favian`, `fanerf`, `kazrienvall`.
 
 ### B. Struktur Papan Peringkat Web Platform (`/leaderboard`)
-Halaman papan peringkat web (`https://web.apexsions.my.id/leaderboard`) secara ketat menyajikan **2 Tabel Utama**:
+Halaman papan peringkat web (`https://web.apexsions.com/leaderboard`) secara ketat menyajikan **2 Tabel Utama**:
 1. **🏆 Peringkat Level & EXP Warga (*Civilization Level & Mastery*):**
    - Mengurutkan warga berdasarkan akumulasi level (1–100) dan total perolehan XP.
    - Dilengkapi avatar 3D pemain, lencana kasta donatur/warga, serta afiliasi kerajaan mortal (*Zenithar*, *Solterra*, *Sylvamoor*).
@@ -480,7 +480,7 @@ Platform web Apexsions menerapkan arsitektur SEO enterprise dan proteksi integri
 Disuntikkan secara statis di `<head>` master layout `themes/apexsions/views/layouts/app.blade.php`:
 1. **Entitas `@type: Organization` & `@type: WebSite`:**
    - Menetapkan nama resmi entitas: `Apexsions`.
-   - Menetapkan URL canonical resmi: `https://web.apexsions.my.id/`.
+   - Menetapkan URL canonical resmi: `https://web.apexsions.com/`.
    - Menetapkan slogan: `The Peak Civilizations`.
 2. **Disambiguating Description (Pembeda Entitas Google Knowledge Graph):**
    - Menegaskan deskripsi entitas: *"Apexsions adalah server peradaban Minecraft Indonesia independen bertema 3 Kerajaan besar (Zenithar, Solterra, Sylvamoor) dengan ekonomi atomic Rupiah dan RPG progression. Apexsions sama sekali tidak berafiliasi dengan perusahaan software bernama Apexion atau penyedia hosting bernama Apex Hosting."*
@@ -492,16 +492,18 @@ Server VPS (`89.144.53.100`) dikonfigurasi dengan blok `default_server` pada Ngi
 server {
     listen 80 default_server;
     listen [::]:80 default_server;
+    listen 443 ssl default_server;
+    listen [::]:443 ssl default_server;
     server_name _;
-    return 301 https://web.apexsions.my.id$request_uri;
+    return 301 https://web.apexsions.com$request_uri;
 }
 ```
-- **Fungsi Proteksi:** Mengalihkan seluruh traffic dan robot crawler domain liar menggunakan **HTTP 301 Permanent SEO Redirect** ke domain resmi `https://web.apexsions.my.id/`.
+- **Fungsi Proteksi:** Mengalihkan seluruh traffic dan robot crawler domain liar menggunakan **HTTP 301 Permanent SEO Redirect** ke domain resmi `https://web.apexsions.com/`.
 - **Dampak SEO:** Mengonsolidasikan otoritas link (link equity) kembali ke Apexsions dan menghapus asosiasi negatif domain spam dari indeks mesin pencari.
 
 ### D. Status Indeks Google Search Console
 - **Status URL:** Terverifikasi resmi dengan status **"URL ada di Google"** (*URL is on Google*).
-- **Pengindeksan:** Halaman canonical dinyatakan valid (`https://web.apexsions.my.id/`).
+- **Pengindeksan:** Halaman canonical dinyatakan valid (`https://web.apexsions.com/`).
 - **Spider Crawl:** Telah dirayapi oleh *Googlebot untuk Ponsel cerdas* (Smartphone Crawler) dengan kepatuhan penuh terhadap standar keramahan seluler (*mobile-friendly*) dan keterbacaan aset CSS/JS.
 
 ---

@@ -38,8 +38,8 @@
             $metaDesc = $rawDesc;
         }
 
-        // Authoritative Canonical Base URL (Strict HTTPS web.apexsions.my.id)
-        $canonicalBase = 'https://web.apexsions.my.id';
+        // Authoritative Canonical Base URL (Strict HTTPS web.apexsions.com)
+        $canonicalBase = 'https://web.apexsions.com';
         $pathInfo = request()->getPathInfo();
         $canonicalUrl = $canonicalBase . ($pathInfo === '/' ? '' : $pathInfo);
     @endphp

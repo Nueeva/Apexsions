@@ -135,5 +135,5 @@ footer:
   - ""
   - "&fWilayah: &e%apexsions_current_territory_name% &8| &fStatus: &a%apexsions_war_status%"
   - "&fStaf Online: &b%apexsions_staff_online% &8| &fKerajaan Kamu: &6%apexsions_online_kingdom_members% Online"
-  - "&7apexsions.my.id"
+  - "&7apexsions.com"
 ```

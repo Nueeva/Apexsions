@@ -415,10 +415,10 @@ class LinkVerificationController extends Controller
         } catch (\Throwable $ignored) {
         }
 
-        // 2. Direct socket ping to apexsions.my.id:32348 (cached 15s)
+        // 2. Direct socket ping to apexsions.com:32348 (cached 15s)
         $pingData = Cache::remember('apexsions.direct_socket_ping', now()->addSeconds(15), function () {
             try {
-                $ping = new MinecraftPing('apexsions.my.id', 32348);
+                $ping = new MinecraftPing('apexsions.com', 32348);
                 $res = $ping->ping(3);
                 $ping->close();
 

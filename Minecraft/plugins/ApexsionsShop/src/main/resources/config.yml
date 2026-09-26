@@ -25,5 +25,5 @@ dynamic-pricing:
 # ========================================================
 web-bridge:
   enabled: true
-  api-url: "http://web.apexsions.my.id/api/apexsions-bridge"
+  api-url: "https://web.apexsions.com/api/apexsions-bridge"
   api-key: "apexsions_bridge_key_live_2026"

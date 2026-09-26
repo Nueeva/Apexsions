@@ -40,7 +40,7 @@ public class WebMarketSyncService {
 
     public void reloadSettings() {
         this.enabled = plugin.getConfig().getBoolean("web-bridge.enabled", true);
-        this.apiUrl = plugin.getConfig().getString("web-bridge.api-url", "http://web.apexsions.my.id/api/apexsions-bridge");
+        this.apiUrl = plugin.getConfig().getString("web-bridge.api-url", "https://web.apexsions.com/api/apexsions-bridge");
         this.apiKey = plugin.getConfig().getString("web-bridge.api-key", "apexsions_bridge_key_live_2026");
     }
 

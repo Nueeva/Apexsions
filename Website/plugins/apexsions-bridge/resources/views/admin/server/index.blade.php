@@ -334,7 +334,7 @@
                             <input type="url" name="map_url" id="map_url" class="form-control bg-black border-secondary text-white font-monospace" value="{{ $mapUrl }}" required>
                         </div>
                         <div class="form-text text-white-50" style="font-size: 0.75rem;">
-                            Default: <code>http://apexsions.my.id:32076/</code>
+                            Default: <code>http://apexsions.com:32076/</code>
                         </div>
                     </div>
                     <div class="col-lg-6">

@@ -384,7 +384,7 @@ class PanelLiteApp:
         lbl_title = tk.Label(brand_frame, text="APEXSIONS", font=("Segoe UI", 13, "bold"), fg=self.accent_gold, bg=self.card_bg)
         lbl_title.pack(side="left")
 
-        lbl_host = tk.Label(brand_frame, text="apexsions.my.id:32348", font=("Segoe UI", 9), fg=self.text_dim, bg=self.card_bg)
+        lbl_host = tk.Label(brand_frame, text="apexsions.com:32348", font=("Segoe UI", 9), fg=self.text_dim, bg=self.card_bg)
         lbl_host.pack(side="left", padx=(8, 12))
 
         self.lbl_status = tk.Label(brand_frame, text=" ● CONNECTING... ", font=("Segoe UI", 9, "bold"), fg="#ffffff", bg="#64748b", padx=8, pady=2)

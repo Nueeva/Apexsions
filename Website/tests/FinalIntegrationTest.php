@@ -61,7 +61,7 @@ $adminRole = Role::firstOrCreate(['name' => 'ApexsionsAdminRole'], ['is_admin' =
 $adminRole->update(['is_admin' => true]);
 
 $admin = User::firstOrCreate(
-    ['email' => 'founder@apexsions.my.id'],
+    ['email' => 'founder@apexsions.com'],
     [
         'name' => 'ApexsionsFounder',
         'password' => bcrypt('StrongSecurePassword2026!'),

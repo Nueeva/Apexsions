@@ -27,7 +27,7 @@
                     <i class="bi bi-cash-stack me-1"></i> Tagih Pajak Sekarang
                 </button>
             </form>
-            <a href="https://web.apexsions.my.id/rules" target="_blank" class="btn btn-outline-secondary btn-sm">
+            <a href="https://web.apexsions.com/rules" target="_blank" class="btn btn-outline-secondary btn-sm">
                 <i class="bi bi-book me-1"></i> Aturan Wilayah
             </a>
         </div>

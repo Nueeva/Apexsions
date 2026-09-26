@@ -12,7 +12,7 @@ class ServerMapService
      */
     public static function getMapUrl(): string
     {
-        return setting('apexsions.map_url', 'http://apexsions.my.id:32076/');
+        return setting('apexsions.map_url', 'http://apexsions.com:32076/');
     }
 
     /**
@@ -51,7 +51,7 @@ class ServerMapService
         return Cache::remember('apexsions.map_online_status', 60, function () {
             $url = self::getMapUrl();
             $parts = parse_url($url);
-            $host = $parts['host'] ?? 'apexsions.my.id';
+            $host = $parts['host'] ?? 'apexsions.com';
             $port = (int) ($parts['port'] ?? 32076);
 
             $connection = @fsockopen($host, $port, $errno, $errstr, 1.5);
@@ -78,7 +78,7 @@ class ServerMapService
     {
         Setting::updateSettings([
             'apexsions.map_enabled' => !empty($data['map_enabled']),
-            'apexsions.map_url' => $data['map_url'] ?? 'http://apexsions.my.id:32076/',
+            'apexsions.map_url' => $data['map_url'] ?? 'http://apexsions.com:32076/',
             'apexsions.map_health_check' => !empty($data['map_health_check']),
             'apexsions.map_nav_visible' => !empty($data['map_nav_visible']),
         ]);

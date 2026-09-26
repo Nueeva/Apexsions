@@ -33,9 +33,9 @@
                     </a>
 
                     <!-- Direct Tactile Server IP Button (Noble Glass Pill) -->
-                    <div class="apx-hero-ip-block apx-copyable" data-apx-copy="apexsions.my.id:32348" role="button" tabindex="0" title="Klik untuk menyalin alamat server" aria-label="Salin Alamat Server apexsions.my.id:32348">
+                    <div class="apx-hero-ip-block apx-copyable" data-apx-copy="apexsions.com:32348" role="button" tabindex="0" title="Klik untuk menyalin alamat server" aria-label="Salin Alamat Server apexsions.com:32348">
                         <i class="bi bi-controller text-gold me-1"></i>
-                        <span class="apx-ip-address font-monospace">apexsions.my.id:32348</span>
+                        <span class="apx-ip-address font-monospace">apexsions.com:32348</span>
                         <span class="badge-copy apx-ip-copy-tag ms-2">
                             <i class="bi bi-clipboard me-1"></i><span class="apx-copy-label" data-i18n="hero_btn_copy">Salin</span>
                         </span>
@@ -796,14 +796,14 @@
                 <div class="apx-step-phase-label mb-3" data-i18n="step2_phase">LANGKAH 2</div>
                 <h3 class="apx-step-title" data-i18n="step2_title">Alamat Server &amp; Port</h3>
                 <p class="apx-step-desc" data-i18n-html="step2_desc">
-                    Buka menu Multiplayer dan masukkan alamat server <code>apexsions.my.id:32348</code>. Untuk pemain Bedrock, masukkan IP <code>apexsions.my.id</code> dengan Port <code>32348</code>.
+                    Buka menu Multiplayer dan masukkan alamat server <code>apexsions.com:32348</code>. Untuk pemain Bedrock, masukkan IP <code>apexsions.com</code> dengan Port <code>32348</code>.
                 </p>
                 <div class="apx-step-action mt-auto d-flex flex-column gap-2">
-                    <button type="button" class="btn btn-apx-outline apx-btn-copy w-100" data-apx-copy="apexsions.my.id:32348" aria-label="Salin Alamat Server Java">
-                        <i class="bi bi-laptop me-1"></i> <span data-i18n="step2_copy_java">Salin Java &bull; apexsions.my.id:32348</span>
+                    <button type="button" class="btn btn-apx-outline apx-btn-copy w-100" data-apx-copy="apexsions.com:32348" aria-label="Salin Alamat Server Java">
+                        <i class="bi bi-laptop me-1"></i> <span data-i18n="step2_copy_java">Salin Java &bull; apexsions.com:32348</span>
                     </button>
-                    <button type="button" class="btn btn-apx-outline apx-btn-copy w-100" data-apx-copy="IP: apexsions.my.id | Port: 32348" aria-label="Salin IP dan Port Bedrock">
-                        <i class="bi bi-phone me-1"></i> <span data-i18n="step2_copy_bedrock">Salin Bedrock &bull; IP: apexsions.my.id | Port: 32348</span>
+                    <button type="button" class="btn btn-apx-outline apx-btn-copy w-100" data-apx-copy="IP: apexsions.com | Port: 32348" aria-label="Salin IP dan Port Bedrock">
+                        <i class="bi bi-phone me-1"></i> <span data-i18n="step2_copy_bedrock">Salin Bedrock &bull; IP: apexsions.com | Port: 32348</span>
                     </button>
                 </div>
             </div>

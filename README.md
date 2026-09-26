@@ -601,9 +601,9 @@ Perjalanan pengembangan Apexsions dirancang secara terstruktur melalui 4 fase ev
 
 Portal web resmi Apexsions dibangun di atas platform **Azuriom** dengan tema khusus (*Custom Theme Apexsions*) dan plugin jembatan kustom **`apexsions-bridge`** yang menghubungkan dunia Minecraft dengan situs web secara langsung.
 
-### A. Fitur Utama Portal Web (`http://web.apexsions.my.id`):
+### A. Fitur Utama Portal Web (`https://web.apexsions.com`):
 1. **Beranda & Sistem Kasta Interaktif (`/`)**:
-   - Menampilkan Hero visual peradaban, status server Minecraft 26.2, IP server satu-klik salin (`mc.apexsions.my.id`), tab informasi 3 Kerajaan berdaulat (*Zenithar*, *Solterra*, *Sylvamoor*), dan kartu 11 hierarki kasta resmi (*Ancestor* hingga *Wanderer*) lengkap dengan perk & tombol aksi.
+   - Menampilkan Hero visual peradaban, status server Minecraft 26.2, IP server satu-klik salin (`apexsions.com`), tab informasi 3 Kerajaan berdaulat (*Zenithar*, *Solterra*, *Sylvamoor*), dan kartu 11 hierarki kasta resmi (*Ancestor* hingga *Wanderer*) lengkap dengan perk & tombol aksi.
 2. **Papan Peringkat Peradaban (`/leaderboard`)**:
    - **Dominasi Tiga Kerajaan**: Statistik langsung total populasi warga dan akumulasi level kekuatan peradaban tiap kerajaan.
    - **Top 10 Level & Pengalaman (EXP)**: Klasemen 10 pengelana dengan level dan XP tertinggi di server.
@@ -652,7 +652,7 @@ Portal web resmi Apexsions dibangun di atas platform **Azuriom** dengan tema khu
 
 ### C. Kredensial & Server Produksi (Production VPS):
 - **Alamat IP VPS**: `89.144.53.100` (Port SSH: `22`)
-- **Domain Web Live**: `http://web.apexsions.my.id` (atau `http://89.144.53.100`)
+- **Domain Web Live**: `https://web.apexsions.com` (atau `http://89.144.53.100`)
 - **Web Root Directory**: `/var/www/azuriom`
 - **Jalur Tema Kustom**: `/var/www/azuriom/themes/apexsions`
 - **Jalur Plugin Jembatan**: `/var/www/azuriom/plugins/apexsions-bridge`
@@ -692,7 +692,7 @@ Portal web resmi Apexsions dibangun di atas platform **Azuriom** dengan tema khu
    - Eksekusi in-game via `ApexsionsEconomy`: `ecoadmin give {player} {amount} diamond`.
    - Artwork visual kristal Diamond 3D berkualitas tinggi dengan efek radial cyan glow.
 3. **Integrasi Peta Real-Time Server (BlueMap — Server Map)**:
-   - Endpoint backend: `http://apexsions.my.id:32076/` (berjalan independen pada port server Minecraft).
+   - Endpoint backend: `http://apexsions.com:32076/` (berjalan independen pada port server Minecraft).
    - Tautan menu navigasi Desktop & Mobile Drawer: `🗺 Server Map` (`bi-map`).
    - Section beranda: **Explore Apexsions World** dengan indikator status real-time (`🟢 Map Online` ber-cache 60 detik).
    - Halaman landing terdedikasi: `/server-map` dengan panduan sektor 3 kerajaan, preview interaktif, dan tombol aksi pembuka tab baru dengan atribut keamanan `target="_blank" rel="noopener noreferrer"`.

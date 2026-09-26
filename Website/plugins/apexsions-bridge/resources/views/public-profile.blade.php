@@ -172,7 +172,7 @@
             $dZ = (int) ($death['z'] ?? 0);
             $dCause = $death['death_cause'] ?? 'Tidak diketahui';
             $dTime = $death['death_time'] ?? null;
-            $blueMapBase = config('apexsions-bridge.map_url', 'http://apexsions.my.id:32076/');
+            $blueMapBase = config('apexsions-bridge.map_url', 'http://apexsions.com:32076/');
             $blueMapBase = rtrim($blueMapBase, '/');
             $blueMapUrl = "{$blueMapBase}/#{$dWorld}:{$dX}:{$dY}:{$dZ}:500:0:0:0:0:perspective";
         @endphp

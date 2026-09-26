@@ -150,7 +150,7 @@ APP_NAME="Apexsions"
 APP_ENV=production
 APP_KEY=
 APP_DEBUG=false
-APP_URL=https://web.apexsions.my.id
+APP_URL=https://web.apexsions.com
 
 LOG_CHANNEL=stack
 LOG_DEPRECATIONS_CHANNEL=null
@@ -217,8 +217,8 @@ echo " Provisioning & Deployment Completed Successfully!        "
 echo " Database Name : azuriom                                  "
 echo " Database User : azuriom_user                             "
 echo " Database Pass : ${DB_PASS}                               "
-echo " Web Domains   : http://web.apexsions.my.id               "
-echo "                 http://apexsions.my.id                   "
+echo " Web Domains   : https://web.apexsions.com               "
+echo "                 https://apexsions.com                   "
 echo " Direct IP URL : http://89.144.53.100                     "
 echo "=========================================================="
 

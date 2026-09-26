@@ -122,7 +122,7 @@ public class SyncCommand implements CommandExecutor, TabCompleter {
             }
         } catch (Throwable ignored) {}
 
-        sender.sendMessage(miniMessage.deserialize(" <dark_gray>•</dark_gray> <gray>Cek profil web:</gray> <click:open_url:'http://web.apexsions.my.id/player/" + targetUuid + "'><underlined><aqua>web.apexsions.my.id/player/" + targetUuid + "</aqua></underlined></click>"));
+        sender.sendMessage(miniMessage.deserialize(" <dark_gray>•</dark_gray> <gray>Cek profil web:</gray> <click:open_url:'https://web.apexsions.com/player/" + targetUuid + "'><underlined><aqua>web.apexsions.com/player/" + targetUuid + "</aqua></underlined></click>"));
         return true;
     }
 

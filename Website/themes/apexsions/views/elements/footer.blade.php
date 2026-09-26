@@ -73,11 +73,11 @@
                 </ul>
 
                 <!-- Unified Sovereign Server Quick Copy Card -->
-                <div class="apx-footer-quick-copy apx-copyable" data-apx-copy="apexsions.my.id:32348" role="button" tabindex="0" title="Klik untuk menyalin alamat server" aria-label="Salin Alamat Server apexsions.my.id:32348">
+                <div class="apx-footer-quick-copy apx-copyable" data-apx-copy="apexsions.com:32348" role="button" tabindex="0" title="Klik untuk menyalin alamat server" aria-label="Salin Alamat Server apexsions.com:32348">
                     <div class="d-flex align-items-center justify-content-between">
                         <div class="d-flex align-items-center gap-2 min-w-0">
                             <span class="apx-pulse-dot apx-beacon-live flex-shrink-0" style="width: 6px; height: 6px;" aria-hidden="true"></span>
-                            <span class="small font-monospace apx-footer-ip-text text-light fw-semibold text-truncate">apexsions.my.id:32348</span>
+                            <span class="small font-monospace apx-footer-ip-text text-light fw-semibold text-truncate">apexsions.com:32348</span>
                         </div>
                         <span class="badge-copy text-gold small ms-2 flex-shrink-0">
                             <i class="bi bi-clipboard"></i>

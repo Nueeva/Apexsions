@@ -852,8 +852,8 @@ Apexsions adalah server peradaban Minecraft modular berarsitektur tinggi yang me
 
 | Platform | Alamat IP / Host | Port | Versi Minecraft |
 | :--- | :--- | :--- | :--- |
-| **Java Edition** (PC/Mac/Linux) | `apexsions.my.id` | `32348` | **26.2** (Paper API) |
-| **Bedrock Edition** (Android/iOS/Win10/Console) | `apexsions.my.id` | **`32348`** | Versi Terbaru (Bedrock) |
+| **Java Edition** (PC/Mac/Linux) | `apexsions.com` | `32348` | **26.2** (Paper API) |
+| **Bedrock Edition** (Android/iOS/Win10/Console) | `apexsions.com` | **`32348`** | Versi Terbaru (Bedrock) |
 
 ---
 
@@ -863,7 +863,7 @@ Apexsions adalah server peradaban Minecraft modular berarsitektur tinggi yang me
 2. **Pilih Menu Multiplayer:** Klik tombol **Add Server** (Tambah Server).
 3. **Masukkan Data Server:**
    - **Server Name:** Apexsions
-   - **Server Address:** `apexsions.my.id:32348`
+   - **Server Address:** `apexsions.com:32348`
    - *(Khusus Bedrock, pastikan Port diisi `32348`)*
 4. **Masuk ke Dunia:** Klik **Join Server**. Anda akan disambut di lobi utama peradaban.
 5. **Klaim Bekal Awal:** Gunakan perintah `/kit starter` untuk langsung memulai petualangan Anda.
@@ -872,7 +872,7 @@ Apexsions adalah server peradaban Minecraft modular berarsitektur tinggi yang me
 
 ### Integrasi Akun Web & Server
 Untuk keamanan transaksi, riwayat lelang, dan klaim hadiah musiman:
-- Kunjungi portal web resmi: [apexsions.my.id](https://apexsions.my.id).
+- Kunjungi portal web resmi: [web.apexsions.com](https://web.apexsions.com).
 - Gunakan perintah `/link` di dalam server jika diminta untuk menyinkronkan status keamanan profil Anda dengan portal web.
 MARKDOWN
         ,

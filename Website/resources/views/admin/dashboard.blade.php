@@ -65,7 +65,7 @@
                         APEXSIONS REALM TELEMETRY & LIVE MONITOR
                     </h4>
                     <small class="text-muted" style="letter-spacing: 0.5px;">
-                        Pengawasan Performa Server &middot; Runtime Paper 26.2 &middot; IP: <code class="text-warning">apexsions.my.id:32348</code>
+                        Pengawasan Performa Server &middot; Runtime Paper 26.2 &middot; IP: <code class="text-warning">apexsions.com:32348</code>
                     </small>
                 </div>
             </div>

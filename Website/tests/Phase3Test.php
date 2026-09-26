@@ -78,7 +78,7 @@ function assertTest($name, $condition, $detail = '') {
 // -------------------------------------------------------------
 // SETUP FIXTURES
 // -------------------------------------------------------------
-$staff = User::firstOrCreate(['email' => 'overseer_econ@apexsions.my.id'], [
+$staff = User::firstOrCreate(['email' => 'overseer_econ@apexsions.com'], [
     'name' => 'OverseerFinance',
     'password' => bcrypt('SecretEcon123!'),
 ]);

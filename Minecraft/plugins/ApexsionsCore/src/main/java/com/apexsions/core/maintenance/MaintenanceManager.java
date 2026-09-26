@@ -89,7 +89,7 @@ public class MaintenanceManager implements Listener {
                 "<gradient:#e74c3c:#c0392b><bold>✦ APEXSIONS MAINTENANCE ✦</bold></gradient>\n\n" +
                 "<yellow>" + message + "</yellow>\n\n" +
                 "<gray>Alasan: <white>" + reason + "</white></gray>\n" +
-                "<dark_gray>Server sedang dalam pemeliharaan teknis. Pantau info resmi di web.apexsions.my.id</dark_gray>"
+                "<dark_gray>Server sedang dalam pemeliharaan teknis. Pantau info resmi di web.apexsions.com</dark_gray>"
         );
 
         event.disallow(PlayerLoginEvent.Result.KICK_OTHER, kickNotice);

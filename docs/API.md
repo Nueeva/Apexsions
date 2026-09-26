@@ -2,7 +2,7 @@
 
 > **Platform:** Azuriom WebBridge (`Website/plugins/apexsions-bridge`)  
 > **API Version:** 1.3.8 (Paper 26.2 / Java 21 LTS ↔ Azuriom Laravel 12)  
-> **Base URL:** `http://web.apexsions.my.id/api/apexsions-bridge`  
+> **Base URL:** `https://web.apexsions.com/api/apexsions-bridge`  
 > **Authentication:** `X-Apexsions-Key: <APEXSIONS_BRIDGE_KEY>` (Default: `apexsions_bridge_key_live_2026`)
 
 ---

@@ -3,7 +3,7 @@
     "name": "Apexsions Minecraft Bridge & Identity",
     "version": "1.0.0",
     "description": "Multi-identity Minecraft account linking (Java Online, Java Offline, Bedrock Floodgate) and asynchronous delivery queue for Apexsions.",
-    "url": "https://apexsions.my.id",
+    "url": "https://web.apexsions.com",
     "author": "Apexsions Development Team",
     "azuriom_api": "1.2.0",
     "providers": [

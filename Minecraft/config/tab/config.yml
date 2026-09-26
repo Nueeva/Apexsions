@@ -15,7 +15,7 @@ header-footer:
       footer:
       - ''
       - '&7Ping: &b%ping%ms &8| &7TPS: %tps%'
-      - '&eWeb: &fweb.apexsions.my.id &8• &9Discord: &fdiscord.gg/apexsions'
+      - '&eWeb: &fweb.apexsions.com &8• &9Discord: &fdiscord.gg/apexsions'
       - '<#f1c40f>&m                          </#e67e22>'
 
 tablist-name-formatting:
@@ -61,7 +61,7 @@ bossbar:
       style: NOTCHED_10
       color: YELLOW
       progress: '100'
-      text: 'Kunjungi Web kami di &fweb.apexsions.my.id'
+      text: 'Kunjungi Web kami di &fweb.apexsions.com'
 
 scoreboard:
   enabled: true
@@ -89,8 +89,8 @@ scoreboard:
       - '<#00d2d3>&l>> PROGRESI'
       - ' &3⚔ &fLEVEL: &b%apexsions_level% &8(&3%apexsions_xp%&7/&3%apexsions_req_xp%&8)'
       - '&8&m------------------'
-      - '&eapexsions.my.id'
-      - '&7web: &fweb.apexsions.my.id'
+      - '&eapexsions.com'
+      - '&7web: &fweb.apexsions.com'
     scoreboard-1.20.3+:
       title: '<#f1c40f>&l✦ APEXSIONS ✦</#e67e22>'
       display-condition: '%player-version-id%>=765;%bedrock%=false'
@@ -110,8 +110,8 @@ scoreboard:
       - '<#00d2d3>&l>> PROGRESI'
       - ' &3⚔ &fLEVEL: &b%apexsions_level% &8(&3%apexsions_xp%&7/&3%apexsions_req_xp%&8)'
       - '&8&m------------------'
-      - '&eapexsions.my.id'
-      - '&7web: &fweb.apexsions.my.id'
+      - '&eapexsions.com'
+      - '&7web: &fweb.apexsions.com'
     scoreboard:
       title: '<#f1c40f>&l✦ APEXSIONS ✦</#e67e22>'
       lines:
@@ -130,8 +130,8 @@ scoreboard:
       - '<#00d2d3>&l>> PROGRESI'
       - ' &3⚔ &fLEVEL: &b%apexsions_level% &8(&3%apexsions_xp%&7/&3%apexsions_req_xp%&8)'
       - '&8&m------------------'
-      - '&eapexsions.my.id'
-      - '&7web: &fweb.apexsions.my.id'
+      - '&eapexsions.com'
+      - '&7web: &fweb.apexsions.com'
 
 layout:
   enabled: false

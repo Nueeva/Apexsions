@@ -74,7 +74,7 @@ death-coords:
   # Jeda pengiriman pesan setelah respawn dalam tick (20 ticks = 1 detik)
   notify-delay-ticks: 20
   # URL dasar satelit BlueMap untuk tombol [Buka Peta 3D]
-  bluemap-base-url: "http://apexsions.my.id:32076/"
+  bluemap-base-url: "http://apexsions.com:32076/"
 
 # ==============================================================================
 # Player Grave / Tombstone (/grave, /tombstone, /nisan)
@@ -369,11 +369,11 @@ anvil:
   bypass-enchant-limits: true
 
 # ==============================================================================
-# Web Platform Bridge Integration (web.apexsions.my.id)
+# Web Platform Bridge Integration (web.apexsions.com)
 # ==============================================================================
 web-bridge:
   enabled: true
-  api-url: "http://web.apexsions.my.id/api/apexsions-bridge"
+  api-url: "https://web.apexsions.com/api/apexsions-bridge"
   api-key: "apexsions_bridge_key_live_2026"
   link-rewards:
     # Mengaktifkan hadiah otomatis in-game saat pemain berhasil menjalankan /link <pin>

@@ -645,7 +645,7 @@ Gunakan fitur Java 21 secara wajar.
 ```text
 Paper API (Minecraft 26.2)
 Target Runtime: Minecraft 26.2
-Server Address: apexsions.my.id
+Server Address: apexsions.com
 Server Port: 32348 (Java Edition & Bedrock Edition)
 ```
 
@@ -692,7 +692,7 @@ Gunakan `-all` hanya jika seluruh plugin memang terdampak perubahan global.
 PHP 8.2 / 8.3 LTS (Laravel / Azuriom)
 Theme: themes/apexsions (Dark-gold cinematic civilization, Vanilla CSS & JS)
 Bridge Plugin: plugins/apexsions-bridge
-WebBridge Endpoint: http://web.apexsions.my.id/api/apexsions-bridge/sync-player
+WebBridge Endpoint: https://web.apexsions.com/api/apexsions-bridge/sync-player
 Bridge Secret Key: apexsions_bridge_key_live_2026
 ```
 

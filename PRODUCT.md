@@ -23,7 +23,7 @@ Serve as the digital citadel and all-in-one web portal for the Apexsions ecosyst
 ## Operating Context
 
 Accessed via desktop and mobile web browsers by players before launching Minecraft, during active play sessions, or while engaging with community hubs on Discord. Key actions include:
-- One-click server IP copy (`apexsions.my.id`)
+- One-click server IP copy (`apexsions.com`)
 - Real-time online player count and ping status check
 - Exploration of in-game rank caste cards and progression requirements
 - Seamless navigation between the Home Portal, Store, Wiki, and Community Discord

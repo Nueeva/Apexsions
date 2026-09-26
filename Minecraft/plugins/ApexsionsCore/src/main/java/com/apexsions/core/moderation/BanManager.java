@@ -266,7 +266,7 @@ public class BanManager {
                 <gray>Durasi Sanksi:</gray> %s
                 
                 <gray>Pusat Regulasi & Pengajuan Banding Resmi:</gray>
-                <gold><underlined>https://web.apexsions.my.id/rules</underlined></gold>
+                <gold><underlined>https://web.apexsions.com/rules</underlined></gold>
                 <dark_red><bold>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</bold></dark_red>
                 """.formatted(typeLabel, record.getPlayerName(), record.getBannedBy(), record.getReason(), durStr);
 

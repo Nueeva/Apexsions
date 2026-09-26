@@ -28,7 +28,7 @@ public class VoteCommand implements CommandExecutor, TabCompleter {
     private final ApexsionsCorePlugin plugin;
     private final MiniMessage mm = MiniMessage.miniMessage();
     private static final String DIRECT_VOTE_URL = "https://minecraft-mp.com/server/363636/vote/";
-    private static final String WEB_PORTAL_URL = "https://web.apexsions.my.id/vote";
+    private static final String WEB_PORTAL_URL = "https://web.apexsions.com/vote";
 
     public VoteCommand(ApexsionsCorePlugin plugin) {
         this.plugin = plugin;

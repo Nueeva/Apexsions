@@ -591,7 +591,7 @@
                                 <li class="mb-1"><strong class="text-white">Tersedia via REST API:</strong> Daemon plugin in-game dapat mem-fetch konfigurasi JSON lengkap via endpoint resmi.</li>
                             </ol>
                             <div class="p-3 bg-black bg-opacity-50 rounded border border-secondary border-opacity-25 font-monospace text-warning small">
-                                GET http://web.apexsions.my.id/api/apexsions-bridge/shop/config<br>
+                                GET https://web.apexsions.com/api/apexsions-bridge/shop/config<br>
                                 Header: X-Apexsions-Key: apexsions_bridge_key_live_2026
                             </div>
                         </div>

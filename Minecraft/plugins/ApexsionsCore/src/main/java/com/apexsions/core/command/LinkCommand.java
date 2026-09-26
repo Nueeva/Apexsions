@@ -47,7 +47,7 @@ public class LinkCommand implements CommandExecutor, TabCompleter {
         // 2. Argument check
         if (args.length < 1) {
             player.sendMessage(miniMessage.deserialize("<gradient:#c0392b:#8e1b1b><bold>APEXSIONS LINK</bold></gradient> <dark_gray>»</dark_gray> <gray>Buka website portal kami untuk mendapatkan PIN 6 digit:</gray>"));
-            player.sendMessage(miniMessage.deserialize("  <gold><click:open_url:'https://web.apexsions.my.id/link'><u>https://web.apexsions.my.id/link</u></click></gold>"));
+            player.sendMessage(miniMessage.deserialize("  <gold><click:open_url:'https://web.apexsions.com/link'><u>https://web.apexsions.com/link</u></click></gold>"));
             player.sendMessage(miniMessage.deserialize("  <gray>Lalu jalankan: <yellow>/link <PIN_6_DIGIT></yellow></gray>"));
             return true;
         }

@@ -55,10 +55,11 @@ advertising:
   enabled: true
   action: "BLOCK"
   whitelisted-domains:
+    - "apexsions.com"
+    - "web.apexsions.com"
     - "apexsions.my.id"
     - "web.apexsions.my.id"
     - "apexsions.net"
-    - "apexsions.com"
     - "discord.gg/apexsions"
   block-ip-addresses: true
   block-domains: true

@@ -385,14 +385,14 @@ Ekosistem Apexsions mengintegrasikan server Minecraft (Paper 26.2) dengan portal
 
 ### A. Sinkronisasi Data Dua Arah (`ApexsionsCore` $\leftrightarrow$ `apexsions-bridge`):
 1. **Endpoint REST API Terproteksi**:
-   - `POST http://web.apexsions.my.id/api/apexsions-bridge/sync-player`
+   - `POST https://web.apexsions.com/api/apexsions-bridge/sync-player`
    - Diproteksi menggunakan secret key live: `apexsions_bridge_key_live_2026`.
    - Mengirimkan payload JSON asinkron dari `WebBridgeService` di `ApexsionsCore` saat pemain bergabung (*Join*), keluar (*Quit*), naik level (*LevelUp*), ubah kerajaan, ubah saldo Rupiah/Diamond, atau ubah gelar aktif.
 2. **Entitas Model `MinecraftAccount` di Database Web**:
    - Menyimpan `minecraft_uuid`, `minecraft_username`, `edition` (JAVA / BEDROCK), `level`, `xp`, `rank`, `kingdom`, `balance_rupiah`, `balance_diamond`, `unlocked_titles`, `active_title`, `verified_at`, dan `last_daily_reward_at`.
    - Kolom `user_id` bersifat nullable sehingga setiap pemain in-game langsung tercatat profil statistiknya di database web meskipun belum membuat/menautkan akun website.
 3. **Penautan Akun Mandiri (`/link`)**:
-   - Pemain membuka portal web Apexsions (`https://web.apexsions.my.id/link`) untuk mendapatkan 6-digit PIN acak berbatas waktu (15 menit).
+   - Pemain membuka portal web Apexsions (`https://web.apexsions.com/link`) untuk mendapatkan 6-digit PIN acak berbatas waktu (15 menit).
    - Pemain kemudian menjalankan perintah `/link <PIN>` di dalam game Minecraft untuk memverifikasi kepemilikan akun secara aman dan menautkannya dengan akun web pengguna.
 4. **Siaran Pengumuman Global In-Game (`broadcast` / `bc`)**:
    - Admin dapat mengirimkan siaran langsung ke server Minecraft melalui Web Dashboard (`POST /admin/apexsions/broadcast`).
@@ -491,7 +491,7 @@ Ekosistem Apexsions mengintegrasikan server Minecraft (Paper 26.2) dengan portal
      - **Blacklist Akun Staf/Founder**: `nueeva`, `nuevaid`, `rifqi`, `friell`, `favian`, `fanerf`, `kazrienvall`.
 2. **Cakupan Penyaringan In-Game & Web**:
    - In-Game: `/kingdom top` (`ApexsionsCore`), `/economy top` (`ApexsionsEconomy`), `/abp top` (`ApexsionsBattlepass`), `/fish top` (`ApexsionsFishing`).
-   - Web Platform (`https://web.apexsions.my.id/leaderboard`): Menampilkan secara ketat **2 Tabel Utama** (Level & Saldo Rupiah). Leaderboard BattlePass ditiadakan dari portal web (eksklusif in-game) demi menjaga kesederhanaan, performa, dan fokus antarmuka web.
+   - Web Platform (`https://web.apexsions.com/leaderboard`): Menampilkan secara ketat **2 Tabel Utama** (Level & Saldo Rupiah). Leaderboard BattlePass ditiadakan dari portal web (eksklusif in-game) demi menjaga kesederhanaan, performa, dan fokus antarmuka web.
 
 ---
 

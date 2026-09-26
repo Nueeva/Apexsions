@@ -171,9 +171,9 @@ const APX_I18N = {
         step1_meta: 'Java & Bedrock Crossplay',
         step2_phase: 'LANGKAH 2',
         step2_title: 'Alamat Server & Port',
-        step2_desc: 'Buka menu Multiplayer dan masukkan alamat server <code>apexsions.my.id:32348</code>. Untuk pemain Bedrock, masukkan IP <code>apexsions.my.id</code> dengan Port <code>32348</code>.',
-        step2_copy_java: 'Salin Java • apexsions.my.id:32348',
-        step2_copy_bedrock: 'Salin Bedrock • IP: apexsions.my.id | Port: 32348',
+        step2_desc: 'Buka menu Multiplayer dan masukkan alamat server <code>apexsions.com:32348</code>. Untuk pemain Bedrock, masukkan IP <code>apexsions.com</code> dengan Port <code>32348</code>.',
+        step2_copy_java: 'Salin Java • apexsions.com:32348',
+        step2_copy_bedrock: 'Salin Bedrock • IP: apexsions.com | Port: 32348',
         step3_phase: 'LANGKAH 3',
         step3_title: 'Tautkan Akun (/link)',
         step3_desc: 'Setelah berada di lobi server, ketik perintah <code>/link</code> untuk menerima kode verifikasi guna menautkan akun dengan portal web.',
@@ -347,7 +347,7 @@ const APX_I18N = {
         terms_art1_li2: 'Pastikan username Minecraft yang Anda masukkan saat checkout persis sama dengan akun di dalam game. Kesalahan pengetikan nama akun di luar tanggung jawab sistem otomatis.',
         terms_art2_title: 'Kanal Pembayaran Resmi & Verifikasi',
         terms_art2_sub: 'Saluran Transaksi Terverifikasi Manajemen',
-        terms_art2_desc: 'Transaksi resmi hanya dilayani melalui webstore portal web.apexsions.my.id dan konfirmasi langsung ke WhatsApp Founder/Admin resmi Apexsions:',
+        terms_art2_desc: 'Transaksi resmi hanya dilayani melalui webstore portal web.apexsions.com dan konfirmasi langsung ke WhatsApp Founder/Admin resmi Apexsions:',
         terms_art2_warn: 'Manajemen tidak pernah meminta password akun Minecraft Anda dan tidak bertanggung jawab atas transaksi yang dilakukan di luar nomor resmi di atas.',
         terms_art3_title: 'Kebijakan Pengembalian Dana & Anti-Chargeback',
         terms_art3_sub: 'Klausul Final Transaksi & Penegakan Integritas',
@@ -1037,9 +1037,9 @@ const APX_I18N = {
         step1_meta: 'Java & Bedrock Crossplay',
         step2_phase: 'STEP 2',
         step2_title: 'Server Address & Port',
-        step2_desc: 'Navigate to Multiplayer and connect to <code>apexsions.my.id:32348</code>. For Bedrock players, use IP <code>apexsions.my.id</code> with Port <code>32348</code>.',
-        step2_copy_java: 'Copy Java • apexsions.my.id:32348',
-        step2_copy_bedrock: 'Copy Bedrock • IP: apexsions.my.id | Port: 32348',
+        step2_desc: 'Navigate to Multiplayer and connect to <code>apexsions.com:32348</code>. For Bedrock players, use IP <code>apexsions.com</code> with Port <code>32348</code>.',
+        step2_copy_java: 'Copy Java • apexsions.com:32348',
+        step2_copy_bedrock: 'Copy Bedrock • IP: apexsions.com | Port: 32348',
         step3_phase: 'STEP 3',
         step3_title: 'Link Account (/link)',
         step3_desc: 'Once inside the server lobby, type <code>/link</code> to receive your verification code to link your account to the web portal.',
@@ -1214,7 +1214,7 @@ const APX_I18N = {
         terms_art1_li2: 'Ensure your entered Minecraft username exactly matches your in-game identity. Typos are not the responsibility of the automated fulfillment pipeline.',
         terms_art2_title: 'Official Payment Channels & Verification',
         terms_art2_sub: 'Management-Verified Payment Outlets',
-        terms_art2_desc: 'Official transactions are exclusively processed via web.apexsions.my.id and direct verification with official Apexsions Founders on WhatsApp:',
+        terms_art2_desc: 'Official transactions are exclusively processed via web.apexsions.com and direct verification with official Apexsions Founders on WhatsApp:',
         terms_art2_warn: 'Staff will never ask for your Minecraft password and cannot guarantee transactions conducted outside our official numbers.',
         terms_art3_title: 'No-Refund Policy & Anti-Chargeback',
         terms_art3_sub: 'Final Transaction Clause & Integrity Enforcement',
@@ -2171,7 +2171,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 setTimeout(() => ripple.remove(), 600);
             }
 
-            const textToCopy = el.getAttribute('data-apx-copy') || 'apexsions.my.id';
+            const textToCopy = el.getAttribute('data-apx-copy') || 'apexsions.com';
             navigator.clipboard.writeText(textToCopy).then(() => {
                 const isEn = document.documentElement.lang === 'en';
                 const copiedText = isEn ? 'Copied!' : 'Disalin!';
@@ -2324,7 +2324,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             })
             .catch(() => {
-                fetch('https://api.mcstatus.io/v2/status/java/apexsions.my.id:32348')
+                fetch('https://api.mcstatus.io/v2/status/java/apexsions.com:32348')
                     .then(res => res.json())
                     .then(mcData => {
                         if (mcData && mcData.online) {
@@ -2731,8 +2731,8 @@ const WIKI_DATA = {
 <div class="table-responsive mb-4"><table class="table fandom-stat-table">
 <thead><tr><th>Platform</th><th>Host / IP Address</th><th>Port</th><th>Minecraft Version</th></tr></thead>
 <tbody>
-<tr><td><strong>Java Edition</strong> (PC / Mac / Linux)</td><td><code>apexsions.my.id</code></td><td><code>32348</code></td><td><strong>26.2</strong> (Paper API)</td></tr>
-<tr><td><strong>Bedrock Edition</strong> (Mobile / Win10 / Console)</td><td><code>apexsions.my.id</code></td><td><strong><code>32348</code></strong></td><td>Latest Bedrock Version</td></tr>
+<tr><td><strong>Java Edition</strong> (PC / Mac / Linux)</td><td><code>apexsions.com</code></td><td><code>32348</code></td><td><strong>26.2</strong> (Paper API)</td></tr>
+<tr><td><strong>Bedrock Edition</strong> (Mobile / Win10 / Console)</td><td><code>apexsions.com</code></td><td><strong><code>32348</code></strong></td><td>Latest Bedrock Version</td></tr>
 </tbody>
 </table></div>
 <hr>
@@ -2743,7 +2743,7 @@ const WIKI_DATA = {
 <li><strong>Enter Credentials:</strong>
 <ul>
 <li><strong>Server Name:</strong> Apexsions</li>
-<li><strong>Server Address:</strong> <code>apexsions.my.id:32348</code></li>
+<li><strong>Server Address:</strong> <code>apexsions.com:32348</code></li>
 <li><em>(For Bedrock, explicitly set Port to <code>32348</code>)</em></li>
 </ul></li>
 <li><strong>Join Realm:</strong> Click <strong>Join Server</strong>. You will be welcomed at the central civilization plaza.</li>
@@ -2753,7 +2753,7 @@ const WIKI_DATA = {
 <h3>Account Web Integration</h3>
 <p>For transaction security, auction history, and seasonal rewards:</p>
 <ul>
-<li>Visit the official portal: <a href="https://web.apexsions.my.id" class="text-gold">web.apexsions.my.id</a>.</li>
+<li>Visit the official portal: <a href="https://web.apexsions.com" class="text-gold">web.apexsions.com</a>.</li>
 <li>Use the <code>/link</code> command in-game when prompted to synchronize your identity with the web platform.</li>
 </ul>`,
 

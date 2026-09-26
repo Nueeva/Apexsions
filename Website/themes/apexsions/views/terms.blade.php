@@ -65,7 +65,7 @@
                         </div>
                     </div>
                     <p class="text-muted small mb-3" style="line-height: 1.8;" data-i18n="terms_art2_desc">
-                        Transaksi resmi hanya dilayani melalui webstore portal <a href="{{ route('home') }}" class="text-gold text-decoration-none">web.apexsions.my.id</a> dan konfirmasi langsung ke WhatsApp Founder/Admin resmi Apexsions:
+                        Transaksi resmi hanya dilayani melalui webstore portal <a href="{{ route('home') }}" class="text-gold text-decoration-none">web.apexsions.com</a> dan konfirmasi langsung ke WhatsApp Founder/Admin resmi Apexsions:
                     </p>
                     <div class="row g-3 mb-3">
                         <div class="col-md-6">

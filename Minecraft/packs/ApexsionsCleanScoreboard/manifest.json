@@ -1,4 +1,4 @@
-﻿{
+{
   "format_version": 2,
   "header": {
     "name": "pack.name",
@@ -16,6 +16,6 @@
   ],
   "metadata": {
     "authors": ["Apexsions"],
-    "url": "https://web.apexsions.my.id"
+    "url": "https://web.apexsions.com"
   }
 }

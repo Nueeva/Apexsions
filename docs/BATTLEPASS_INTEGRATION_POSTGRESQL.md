@@ -132,7 +132,7 @@ WHERE uuid = 'player-uuid-here' AND season_id = 1;
 
 Platform web Apexsions berjalan di atas **Azuriom (Laravel-based CMS)**, bukan Next.js/Express. Integrasi BattlePass game↔web dilakukan melalui plugin `apexsions-bridge`:
 
-1. **Game → Web (Sync)**: Plugin game mengirim progres level/XP/koin/pass pemain ke endpoint `POST http://web.apexsions.my.id/api/apexsions-bridge` (header API key `apexsions_bridge_key_live_2026`), lalu tersimpan di tabel `minecraft_accounts` (kolom `battlepass_level`, `battlepass_xp`, `battlepass_pass_name`, `apex_coins`).
+1. **Game → Web (Sync)**: Plugin game mengirim progres level/XP/koin/pass pemain ke endpoint `POST https://web.apexsions.com/api/apexsions-bridge` (header API key `apexsions_bridge_key_live_2026`), lalu tersimpan di tabel `minecraft_accounts` (kolom `battlepass_level`, `battlepass_xp`, `battlepass_pass_name`, `apex_coins`).
 2. **Web → Game (Perintah)**: Aksi admin web ditulis ke tabel `deliveries` (status `PENDING`); plugin game mengonsumsinya saat pemain online dan menandainya `COMPLETED`.
 3. **Leaderboard BattlePass bersifat eksklusif in-game** (`/abp top`); portal web hanya menampilkan tabel Level & Saldo Rupiah (lihat kebijakan leaderboard).
 

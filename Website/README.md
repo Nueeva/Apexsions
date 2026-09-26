@@ -61,7 +61,7 @@ Website/
 
 ### 3. Apexsions Brand Theme (`themes/apexsions`)
 - Modern dark aesthetic tailored for the Apexsions ecosystem with glassmorphism cards and noble gold accents.
-- Live server status badge and one-click IP copy widget (`apexsions.my.id:32348`).
+- Live server status badge and one-click IP copy widget (`apexsions.com:32348`).
 - **Webstore Storefront & Multi-Axis Filtering Engine**:
   - **Dual-Axis Dynamic Filter**: Saring 15 varian paket kasta berdasarkan Kategori Kasta (`Semua Kasta`, `Ascendant`, `Archon`, `Sovereign`, `Emperor`, `✦ SIONS ✦`) dan Durasi (`Semua Durasi`, `Permanen`, `Trial 120 Hari`, `Trial 30 Hari`) secara bersamaan tanpa reload halaman, lengkap dengan efek kilau (*glow*) khas peradaban pada tombol aktif.
   - **Subkategori Spesifik**: Filter instan untuk `Pundi Koin & Booster` (`Diamond 💎`, `Booster Server ⚡`) dan `Battlepass` (`Sio Pass 🏆`, `Exsio Pass 👑`).

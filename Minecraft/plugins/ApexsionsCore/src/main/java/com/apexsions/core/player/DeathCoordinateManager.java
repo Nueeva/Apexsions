@@ -246,7 +246,7 @@ public class DeathCoordinateManager {
      */
     @NotNull
     public String generateBlueMapUrl(@NotNull DeathRecord record) {
-        String baseUrl = plugin.getConfig().getString("death-coords.bluemap-base-url", "http://apexsions.my.id:32076/");
+        String baseUrl = plugin.getConfig().getString("death-coords.bluemap-base-url", "http://apexsions.com:32076/");
         baseUrl = baseUrl.endsWith("/") ? baseUrl.substring(0, baseUrl.length() - 1) : baseUrl;
         if (baseUrl.contains("#")) {
             baseUrl = baseUrl.split("#")[0];

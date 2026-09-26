@@ -1,4 +1,4 @@
-﻿# ApexsionsEconomy — PostgreSQL & Web Integration Guide
+# ApexsionsEconomy — PostgreSQL & Web Integration Guide
 
 Dokumentasi resmi arsitektur basis data, Web Marketplace (Auction House), REST API, dan schema **PostgreSQL** untuk **ApexsionsEconomy**.
 
@@ -150,7 +150,7 @@ LIMIT 50;
 
 Platform web Apexsions berjalan di atas **Azuriom (Laravel-based CMS)**, bukan Node.js/Express. Integrasi ekonomi game↔web dilakukan melalui plugin `apexsions-bridge`:
 
-1. **Game → Web (Sync)**: Plugin game mengirim snapshot saldo via HTTP `POST http://web.apexsions.my.id/api/apexsions-bridge` (dengan header API key `apexsions_bridge_key_live_2026`). Data dicatat ke tabel `minecraft_accounts` dan ledger `apexsions_transactions`.
+1. **Game → Web (Sync)**: Plugin game mengirim snapshot saldo via HTTP `POST https://web.apexsions.com/api/apexsions-bridge` (dengan header API key `apexsions_bridge_key_live_2026`). Data dicatat ke tabel `minecraft_accounts` dan ledger `apexsions_transactions`.
 2. **Web → Game (Perintah)**: Aksi admin web (mis. top-up saldo) ditulis ke tabel `deliveries` dengan status `PENDING`. Plugin game melakukan polling/consume antrean tersebut saat pemain online, lalu menandainya `COMPLETED`.
 3. **Sumber Kebenaran Saldo**: Saldo operasional tetap dipegang oleh DB plugin game (`economy_balances`). Web tidak pernah menulis langsung ke DB game; seluruh perubahan mengalir melalui delivery queue agar tetap atomic dan auditable.
 
