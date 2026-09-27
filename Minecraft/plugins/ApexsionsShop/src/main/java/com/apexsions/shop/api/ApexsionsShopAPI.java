@@ -38,4 +38,8 @@ public interface ApexsionsShopAPI {
     void openCategory(@NotNull Player player, @NotNull ShopCategory category);
 
     void openSellGui(@NotNull Player player);
+
+    void openContracts(@NotNull Player player);
+
+    void openTrends(@NotNull Player player);
 }

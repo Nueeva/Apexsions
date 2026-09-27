@@ -72,4 +72,14 @@ public class ApexsionsShopAPIImpl implements ApexsionsShopAPI {
     public void openSellGui(@NotNull Player player) {
         new SellGuiMenu(plugin, player, null).open();
     }
+
+    @Override
+    public void openContracts(@NotNull Player player) {
+        new com.apexsions.shop.gui.TradeContractsMenu(plugin, player, null).open();
+    }
+
+    @Override
+    public void openTrends(@NotNull Player player) {
+        new com.apexsions.shop.gui.MarketTrendsMenu(plugin, player, null).open();
+    }
 }

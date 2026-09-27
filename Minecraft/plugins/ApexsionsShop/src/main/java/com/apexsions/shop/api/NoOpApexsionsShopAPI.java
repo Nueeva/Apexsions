@@ -70,4 +70,14 @@ public class NoOpApexsionsShopAPI implements ApexsionsShopAPI {
     public void openSellGui(@NotNull Player player) {
         // No-Op
     }
+
+    @Override
+    public void openContracts(@NotNull Player player) {
+        // No-Op
+    }
+
+    @Override
+    public void openTrends(@NotNull Player player) {
+        // No-Op
+    }
 }

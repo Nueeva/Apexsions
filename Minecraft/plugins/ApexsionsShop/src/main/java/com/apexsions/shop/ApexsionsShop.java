@@ -21,6 +21,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import com.apexsions.shop.dynamic.event.MarketEventService;
+import com.apexsions.shop.contract.TradeContractService;
+
 import java.util.Collection;
 import java.util.List;
 
@@ -39,6 +42,8 @@ public class ApexsionsShop extends JavaPlugin implements ApexsionsShopAPI {
     private DynamicPriceCalculator dynamicPriceCalculator;
     private MarketBroadcastService marketBroadcastService;
     private com.apexsions.shop.sync.WebMarketSyncService webMarketSyncService;
+    private MarketEventService marketEventService;
+    private TradeContractService tradeContractService;
 
     @Override
     public void onEnable() {
@@ -66,6 +71,12 @@ public class ApexsionsShop extends JavaPlugin implements ApexsionsShopAPI {
         this.dynamicPriceCalculator = new DynamicPriceCalculator(this);
         this.marketBroadcastService = new MarketBroadcastService(this);
         this.marketBroadcastService.start();
+
+        // 2.0. Macroeconomic Event Cycles & Royal Trade Contracts
+        this.marketEventService = new MarketEventService(this);
+        this.marketEventService.start();
+        this.tradeContractService = new TradeContractService(this);
+        this.tradeContractService.start();
 
         // 2.1. Initialize WebMarketSyncService & schedule initial async pull
         this.webMarketSyncService = new com.apexsions.shop.sync.WebMarketSyncService(this);
@@ -115,6 +126,12 @@ public class ApexsionsShop extends JavaPlugin implements ApexsionsShopAPI {
 
     @Override
     public void onDisable() {
+        if (marketEventService != null) {
+            marketEventService.stop();
+        }
+        if (tradeContractService != null) {
+            tradeContractService.stop();
+        }
         if (marketBroadcastService != null) {
             marketBroadcastService.stop();
         }
@@ -185,6 +202,14 @@ public class ApexsionsShop extends JavaPlugin implements ApexsionsShopAPI {
         return dynamicPriceCalculator;
     }
 
+    public MarketEventService getMarketEventService() {
+        return marketEventService;
+    }
+
+    public TradeContractService getTradeContractService() {
+        return tradeContractService;
+    }
+
     // --- API Implementation ---
 
     @Override
@@ -235,5 +260,15 @@ public class ApexsionsShop extends JavaPlugin implements ApexsionsShopAPI {
     @Override
     public void openSellGui(@NotNull Player player) {
         new SellGuiMenu(this, player).open();
+    }
+
+    @Override
+    public void openContracts(@NotNull Player player) {
+        new com.apexsions.shop.gui.TradeContractsMenu(this, player, null).open();
+    }
+
+    @Override
+    public void openTrends(@NotNull Player player) {
+        new com.apexsions.shop.gui.MarketTrendsMenu(this, player, null).open();
     }
 }

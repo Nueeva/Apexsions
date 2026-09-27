@@ -26,13 +26,30 @@ public class DynamicPriceCalculator {
             double weatherMultiplier,
             double kingdomMultiplier,
             double supplyMultiplier,
+            double eventMultiplier,
             double effectiveUnitPrice,
             int quantity,
             double rawTotalPrice,
             double taxPercent,
             double taxAmount,
             double finalTotalPrice
-    ) {}
+    ) {
+        // Backward-compatible constructor for existing 10-parameter callers
+        public PriceResult(
+                double baseUnitPrice,
+                double weatherMultiplier,
+                double kingdomMultiplier,
+                double supplyMultiplier,
+                double effectiveUnitPrice,
+                int quantity,
+                double rawTotalPrice,
+                double taxPercent,
+                double taxAmount,
+                double finalTotalPrice
+        ) {
+            this(baseUnitPrice, weatherMultiplier, kingdomMultiplier, supplyMultiplier, 1.0, effectiveUnitPrice, quantity, rawTotalPrice, taxPercent, taxAmount, finalTotalPrice);
+        }
+    }
 
     public PriceResult calculateBuyPrice(ShopItem item, Player player, int quantity) {
         return calculateBuyPrice(item, player, quantity, null);
@@ -45,14 +62,15 @@ public class DynamicPriceCalculator {
         double weatherMult = player != null ? plugin.getWeatherPriceService().getBuyMultiplier(item, player.getWorld()) : 1.00;
         double kingdomMult = plugin.getKingdomMarketService().getBuyMultiplier(item, player, kingdomOverride);
         double supplyMult = plugin.getSupplyScannerService().getSupplyBuyMultiplier(item);
+        double eventMult = plugin.getMarketEventService() != null ? plugin.getMarketEventService().getEventBuyMultiplier(item) : 1.00;
 
         String activeKingdom = plugin.getKingdomMarketService().resolveKingdom(player, kingdomOverride);
-        // Solterra Ores stability: immune to market supply saturation
+        // Solterra Ores stability: 60% resistance against saturation drop (retains kingdom advantage while preventing infinite dumping)
         if (activeKingdom.equalsIgnoreCase("SOLTERRA") && item.getCategory() == com.apexsions.shop.category.ShopCategory.ORES) {
-            supplyMult = 1.00;
+            supplyMult = 1.00 - ((1.00 - supplyMult) * 0.40);
         }
 
-        double rawUnit = baseUnit * weatherMult * kingdomMult * supplyMult;
+        double rawUnit = baseUnit * weatherMult * kingdomMult * supplyMult * eventMult;
 
         // Configurable Price Clamping (Default: 85% to 120% of base buy price)
         double minClamp = plugin.getConfigManager().getMarketsConfig().getDouble("clamping.min-buy-ratio", 0.85);
@@ -70,6 +88,7 @@ public class DynamicPriceCalculator {
                 weatherMult,
                 kingdomMult,
                 supplyMult,
+                eventMult,
                 effectiveUnit,
                 quantity,
                 rawTotal,
@@ -95,12 +114,14 @@ public class DynamicPriceCalculator {
         double weatherMult = player != null ? plugin.getWeatherPriceService().getSellMultiplier(item, player.getWorld()) : 1.00;
         double kingdomMult = plugin.getKingdomMarketService().getSellMultiplier(item, player, kingdomOverride);
         double supplyMult = plugin.getSupplyScannerService().getSupplySellMultiplier(item, player, quantity);
+        double eventMult = plugin.getMarketEventService() != null ? plugin.getMarketEventService().getEventSellMultiplier(item) : 1.00;
 
         if (activeKingdom.equalsIgnoreCase("SOLTERRA") && item.getCategory() == com.apexsions.shop.category.ShopCategory.ORES) {
-            supplyMult = 1.00; // Stabil tanpa saturasi drop
+            // Solterra Ores Resilience: 60% resistance against saturation drop
+            supplyMult = 1.00 - ((1.00 - supplyMult) * 0.40);
         }
 
-        double rawUnit = baseUnit * weatherMult * kingdomMult * supplyMult;
+        double rawUnit = baseUnit * weatherMult * kingdomMult * supplyMult * eventMult;
 
         // Configurable Price Clamping
         double minClamp = plugin.getConfigManager().getMarketsConfig().getDouble("clamping.min-sell-ratio", 0.85);
@@ -123,6 +144,7 @@ public class DynamicPriceCalculator {
                 weatherMult,
                 kingdomMult,
                 supplyMult,
+                eventMult,
                 effectiveUnit,
                 quantity,
                 rawTotal,

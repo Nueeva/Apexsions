@@ -42,6 +42,9 @@ public class ShopMainMenu extends ShopGui {
                 ? plugin.getWeatherPriceService().getWeatherDescription(player.getWorld())
                 : "<yellow>☀ Normal</yellow>";
         String formattedBalance = plugin.getEconomyHook() != null ? plugin.getEconomyHook().format(balance) : "Rp. 0";
+        String eventName = plugin.getMarketEventService() != null
+                ? "<gradient:" + plugin.getMarketEventService().getActiveEvent().getPrimaryColor() + ":" + plugin.getMarketEventService().getActiveEvent().getSecondaryColor() + "><bold>" + plugin.getMarketEventService().getActiveEvent().getDisplayName() + "</bold></gradient>"
+                : "<yellow>Keseimbangan</yellow>";
 
         setButton(4, new ShopGuiButton(new ShopItemBuilder(Material.PLAYER_HEAD)
                 .skullOwner(player)
@@ -50,7 +53,8 @@ public class ShopMainMenu extends ShopGui {
                         "<gray>Kerajaan: " + kingdomName + "</gray>",
                         "<gray>Saldo Rupiah: <yellow><bold>" + formattedBalance + "</bold></yellow></gray>",
                         "<gray>Pajak Pasar: <red>" + String.format("%.1f", taxPercent) + "%</red></gray>",
-                        "<gray>Kondisi Cuaca: <aqua>" + weatherDesc + "</aqua></gray>"
+                        "<gray>Kondisi Cuaca: <aqua>" + weatherDesc + "</aqua></gray>",
+                        "<gray>Peristiwa Ekonomi: " + eventName + "</gray>"
                 ))
                 .build()));
 
@@ -86,7 +90,7 @@ public class ShopMainMenu extends ShopGui {
                 .name("<gradient:#f1c40f:#e67e22><bold>📈 TREN PASAR & CUACA</bold></gradient>")
                 .lore(List.of(
                         "<gray>Lihat komoditas langka, pasokan melimpah,</gray>",
-                        "<gray>serta pengaruh cuaca terhadap harga jual-beli.</gray>",
+                        "<gray>serta pengaruh cuaca dan event peristiwa pasar.</gray>",
                         " ",
                         "<yellow>Sentuh / Klik untuk Buka Tren Pasar ▶</yellow>"
                 ))
@@ -95,7 +99,22 @@ public class ShopMainMenu extends ShopGui {
             new MarketTrendsMenu(plugin, player, this).open();
         }));
 
-        // 4. Quick Sell GUI Button (Slot 42 - Bottom Row Accent)
+        // 4. Royal Trade Contracts Button (Slot 40 - Center Anchor)
+        setButton(40, new ShopGuiButton(new ShopItemBuilder(Material.WRITABLE_BOOK)
+                .name("<gradient:#f1c40f:#e67e22><bold>📜 KONTRAK EKSPOR KERAJAAN</bold></gradient>")
+                .lore(List.of(
+                        "<gray>Setor komoditas yang diminta penguasa kerajaan</gray>",
+                        "<gray>untuk meraih imbalan Rupiah ekstra & XP Kerajaan.</gray>",
+                        " ",
+                        "<yellow>Sentuh / Klik untuk Buka Dewan Kontrak ▶</yellow>"
+                ))
+                .glow()
+                .build(), event -> {
+            player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.7f, 1.2f);
+            new TradeContractsMenu(plugin, player, this).open();
+        }));
+
+        // 5. Quick Sell GUI Button (Slot 42 - Bottom Row Accent)
         setButton(42, new ShopGuiButton(new ShopItemBuilder(Material.HOPPER)
                 .name("<green><bold>⚡ JUAL CEPAT (SELL GUI)</bold></green>")
                 .lore(List.of(

@@ -43,6 +43,11 @@ public class ShopCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
+        if (args.length > 0 && (args[0].equalsIgnoreCase("contracts") || args[0].equalsIgnoreCase("kontrak"))) {
+            new com.apexsions.shop.gui.TradeContractsMenu(plugin, player, null).open();
+            return true;
+        }
+
         if (args.length > 0 && args[0].equalsIgnoreCase("trends")) {
             new com.apexsions.shop.gui.MarketTrendsMenu(plugin, player, null).open();
             return true;
@@ -99,6 +104,12 @@ public class ShopCommand implements CommandExecutor, TabCompleter {
             }
             if ("trends".startsWith(input)) {
                 completions.add("trends");
+            }
+            if ("contracts".startsWith(input)) {
+                completions.add("contracts");
+            }
+            if ("kontrak".startsWith(input)) {
+                completions.add("kontrak");
             }
             for (ShopCategory cat : ShopCategory.values()) {
                 if (cat.getId().startsWith(input)) {

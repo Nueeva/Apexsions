@@ -12,13 +12,13 @@ items:
     display-name: "<dark_gray>Coal</dark_gray>"
   raw_copper:
     material: "RAW_COPPER"
-    buy-price: 20.0
-    sell-price: 4.0
+    buy-price: 10.0
+    sell-price: 1.2
     display-name: "<gold>Raw Copper</gold>"
   copper_ingot:
     material: "COPPER_INGOT"
-    buy-price: 30.0
-    sell-price: 6.0
+    buy-price: 15.0
+    sell-price: 2.0
     display-name: "<gold>Copper Ingot</gold>"
   raw_iron:
     material: "RAW_IRON"

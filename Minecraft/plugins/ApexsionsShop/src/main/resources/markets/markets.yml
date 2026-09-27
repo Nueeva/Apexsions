@@ -60,10 +60,10 @@ supply-market:
   # Ambang batas volume dasar (dalam butir item) sebelum saturasi pasar mulai bekerja
   # 2304 butir = setara 36 stack (1 inventori penuh)
   base-volume-threshold: 2304
-  # Batas penurunan harga maksimal akibat pasokan melimpah (0.10 = maksimal turun 10%)
-  max-saturation-drop: 0.10
-  # Batas pengali minimum harga jual (0.90 = minimal 90% dari harga normal)
-  min-sell-multiplier: 0.90
+  # Batas penurunan harga maksimal akibat pasokan melimpah (0.35 = maksimal turun 35%)
+  max-saturation-drop: 0.35
+  # Batas pengali minimum harga jual (0.65 = minimal 65% dari harga normal saat pasar jenuh ekstrem)
+  min-sell-multiplier: 0.65
   # Interval pemulihan pasar (menit) untuk mengembalikan harga ke baseline
   recovery-interval-minutes: 10
   # Persentase pemulihan volume pasar setiap interval (25% volume pasar dipulihkan setiap 10 menit)
@@ -73,9 +73,25 @@ supply-market:
 # BATAS PERLINDUNGAN HARGA (PRICE CLAMPING)
 # ========================================================
 clamping:
-  # Batas fluktuasi harga beli (min 85% s/d max 120% dari base price)
-  min-buy-ratio: 0.85
-  max-buy-ratio: 1.20
-  # Batas fluktuasi harga jual (min 85% s/d max 120% dari base sell price)
-  min-sell-ratio: 0.85
-  max-sell-ratio: 1.20
+  # Batas fluktuasi harga beli (min 80% s/d max 130% dari base price)
+  min-buy-ratio: 0.80
+  max-buy-ratio: 1.30
+  # Batas fluktuasi harga jual (min 60% s/d max 140% dari base sell price)
+  min-sell-ratio: 0.60
+  max-sell-ratio: 1.40
+
+# ========================================================
+# PERISTIWA EKONOMI REALM (MACROECONOMIC EVENT CYCLES)
+# ========================================================
+economic-events:
+  enabled: true
+  # Interval rotasi peristiwa makroekonomi dalam satuan menit (240 menit = 4 jam)
+  rotation-interval-minutes: 240
+
+# ========================================================
+# KONTRAK EKSPOR KERAJAAN (ROYAL TRADE ORDERS)
+# ========================================================
+trade-contracts:
+  enabled: true
+  # Interval pembaruan kontrak dagang dalam satuan menit (720 menit = 12 jam)
+  reset-interval-minutes: 720
