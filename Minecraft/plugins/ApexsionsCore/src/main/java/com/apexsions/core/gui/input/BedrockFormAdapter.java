@@ -58,6 +58,26 @@ public class BedrockFormAdapter {
         return false;
     }
 
+    public static boolean isBedrockPlayer(UUID uuid, String username) {
+        if (username != null && username.startsWith(".")) {
+            return true;
+        }
+        if (uuid != null && uuid.getMostSignificantBits() == 0L) {
+            return true;
+        }
+        if (isFloodgatePresent() && uuid != null) {
+            try {
+                Class<?> apiClass = Class.forName("org.geysermc.floodgate.api.FloodgateApi");
+                Object api = apiClass.getMethod("getInstance").invoke(null);
+                Boolean isBedrock = (Boolean) apiClass.getMethod("isFloodgatePlayer", UUID.class).invoke(api, uuid);
+                if (Boolean.TRUE.equals(isBedrock)) {
+                    return true;
+                }
+            } catch (Throwable ignored) {}
+        }
+        return false;
+    }
+
     /**
      * Resolves the Bedrock XUID for a player via the Floodgate API, used by the
      * web platform to render the real Bedrock skin (Geyser skin API).

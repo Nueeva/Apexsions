@@ -260,4 +260,40 @@ public class PlayerRepository {
             return 0;
         });
     }
+
+    public CompletableFuture<java.util.List<PlayerData>> getAllPlayersAsync() {
+        return db.supplyAsync(() -> {
+            java.util.List<PlayerData> list = new java.util.ArrayList<>();
+            String sql = "SELECT uuid, username, level, xp, region_id, claimed_rewards, created_at, updated_at FROM players";
+            try (Connection conn = db.getConnection();
+                 PreparedStatement ps = conn.prepareStatement(sql);
+                 ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Object uuidObj = rs.getObject("uuid");
+                    UUID pUuid = (uuidObj instanceof UUID u) ? u : UUID.fromString(uuidObj.toString());
+                    String username = rs.getString("username");
+                    int level = rs.getInt("level");
+                    long xp = rs.getLong("xp");
+                    Object regObj = rs.getObject("region_id");
+                    UUID rId = (regObj != null && !regObj.toString().trim().isEmpty())
+                            ? ((regObj instanceof UUID u) ? u : UUID.fromString(regObj.toString().trim()))
+                            : null;
+                    String claimed = rs.getString("claimed_rewards");
+                    Timestamp cTs = rs.getTimestamp("created_at");
+                    Timestamp uTs = rs.getTimestamp("updated_at");
+                    PlayerData data = new PlayerData(pUuid, username, level, xp, rId,
+                            cTs != null ? cTs.toInstant() : Instant.now(),
+                            uTs != null ? uTs.toInstant() : Instant.now());
+                    if (claimed != null) {
+                        data.setClaimedRewardsFromString(claimed);
+                    }
+                    list.add(data);
+                }
+            } catch (SQLException e) {
+                plugin.getLogger().log(Level.SEVERE, "Failed fetching all players from repository", e);
+            }
+            return list;
+        });
+    }
 }
+

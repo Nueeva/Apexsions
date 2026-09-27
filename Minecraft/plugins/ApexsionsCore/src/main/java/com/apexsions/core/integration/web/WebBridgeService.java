@@ -36,6 +36,7 @@ public class WebBridgeService {
     private BukkitTask heartbeatTask;
     private BukkitTask deliveryTask;
     private BukkitTask playerSyncTask;
+    private BukkitTask allPlayersSyncTask;
 
     private String apiUrl;
     private String apiKey;
@@ -69,6 +70,9 @@ public class WebBridgeService {
         // Schedule periodic player synchronization for all online players every 30 seconds (600 ticks)
         this.playerSyncTask = Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, this::syncAllOnlinePlayers, 120L, 600L);
 
+        // Schedule startup sync (after 200 ticks / 10s) and full sync of all stored accounts every 10 minutes (12000 ticks)
+        this.allPlayersSyncTask = Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, this::syncAllStoredPlayersAsync, 200L, 12000L);
+
         plugin.getLogger().info("[WebBridge] Web bridge daemon active. Heartbeat & Delivery polling scheduled to: " + apiUrl);
     }
 
@@ -89,6 +93,10 @@ public class WebBridgeService {
         if (playerSyncTask != null && !playerSyncTask.isCancelled()) {
             playerSyncTask.cancel();
             playerSyncTask = null;
+        }
+        if (allPlayersSyncTask != null && !allPlayersSyncTask.isCancelled()) {
+            allPlayersSyncTask.cancel();
+            allPlayersSyncTask = null;
         }
     }
 
@@ -649,35 +657,53 @@ public class WebBridgeService {
     }
 
     /**
-     * Synchronize a player's complete in-game statistics (rank, level, xp, kingdom, titles, balances)
-     * to the Apexsions Web Platform asynchronously.
+     * Synchronize all stored players (including offline citizens) from the database to the web platform.
      */
-    public void syncPlayerAsync(Player player) {
-        if (!enabled || player == null) {
+    public CompletableFuture<Integer> syncAllStoredPlayersAsync() {
+        if (!enabled || plugin.getPlayerDataService() == null) {
+            return CompletableFuture.completedFuture(0);
+        }
+        return plugin.getPlayerDataService().getAllPlayers().thenApply(playerList -> {
+            int synced = 0;
+            for (PlayerData data : playerList) {
+                if (data != null && data.getUuid() != null) {
+                    syncPlayerDataRecord(data, Bukkit.getPlayer(data.getUuid()));
+                    synced++;
+                }
+            }
+            plugin.getLogger().info("[WebBridge] Dispatched full synchronization for " + synced + " stored player records to web portal.");
+            return synced;
+        });
+    }
+
+    /**
+     * Synchronize a specific PlayerData record (online or offline) to the Apexsions Web Platform.
+     */
+    public void syncPlayerDataRecord(PlayerData data, Player player) {
+        if (!enabled || data == null || data.getUuid() == null) {
             return;
         }
 
-        UUID uuid = player.getUniqueId();
-        String username = player.getName();
+        UUID uuid = data.getUuid();
+        String username = data.getUsername() != null ? data.getUsername() : (player != null ? player.getName() : uuid.toString());
 
         // 1. Resolve Rank & Display
         String rankKey = "wanderer";
         String rankDisplay = "Wanderer";
         if (plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isAvailable()) {
-            rankKey = plugin.getLuckPermsHook().getPlayerRankKey(player);
-            rankDisplay = plugin.getLuckPermsHook().getPlayerRankDisplayName(player);
-        } else if (player.isOp()) {
+            rankKey = plugin.getLuckPermsHook().getPlayerRankKey(uuid);
+            rankDisplay = plugin.getLuckPermsHook().getPlayerRankDisplayName(uuid);
+        } else if (player != null && player.isOp()) {
             rankKey = "ancestor";
             rankDisplay = "Ancestor";
         }
 
         // 2. Resolve PlayerData (Level, XP, Titles, Kingdom)
-        PlayerData data = plugin.getPlayerDataService().getCached(uuid).orElse(null);
-        int level = data != null ? data.getLevel() : 1;
-        long xp = data != null ? data.getXp() : 0;
+        int level = data.getLevel();
+        long xp = data.getXp();
         long reqXp = plugin.getLevelManager() != null ? plugin.getLevelManager().getRequiredXpForNextLevel(level) : 100;
         String levelTitle = plugin.getLevelManager() != null ? plugin.getLevelManager().getLevelTitle(uuid) : "Citizen";
-        String activeTitle = (data != null && data.getActiveTitle() != null) ? data.getActiveTitle() : "";
+        String activeTitle = data.getActiveTitle() != null ? data.getActiveTitle() : "";
 
         levelTitle = cleanMiniMessageTags(levelTitle);
         if (levelTitle.isBlank()) {
@@ -687,7 +713,7 @@ public class WebBridgeService {
 
         String kingdomKey = "NONE";
         String kingdomDisplay = "Belum Memilih";
-        if (data != null && data.hasRegion()) {
+        if (data.hasRegion()) {
             Optional<Region> regOpt = plugin.getRegionManager().getRegion(data.getRegionId());
             if (regOpt.isPresent()) {
                 kingdomKey = regOpt.get().getKey();
@@ -702,7 +728,7 @@ public class WebBridgeService {
 
         // 4. Resolve Unlocked Titles Array
         StringBuilder titlesJson = new StringBuilder("[");
-        if (data != null && !data.getUnlockedTitles().isEmpty()) {
+        if (!data.getUnlockedTitles().isEmpty()) {
             List<String> list = new ArrayList<>(data.getUnlockedTitles());
             for (int i = 0; i < list.size(); i++) {
                 titlesJson.append("\"").append(escapeJson(list.get(i))).append("\"");
@@ -713,10 +739,12 @@ public class WebBridgeService {
         }
         titlesJson.append("]");
 
-        boolean isBedrock = com.apexsions.core.gui.input.BedrockFormAdapter.isBedrockPlayer(player);
+        boolean isBedrock = player != null
+                ? com.apexsions.core.gui.input.BedrockFormAdapter.isBedrockPlayer(player)
+                : com.apexsions.core.gui.input.BedrockFormAdapter.isBedrockPlayer(uuid, username);
         String edition = isBedrock ? "BEDROCK" : "JAVA";
         String authMode = isBedrock ? "BEDROCK_FLOODGATE" : "JAVA_ONLINE";
-        String bedrockXuid = isBedrock ? com.apexsions.core.gui.input.BedrockFormAdapter.getBedrockXuid(player) : null;
+        String bedrockXuid = (isBedrock && player != null) ? com.apexsions.core.gui.input.BedrockFormAdapter.getBedrockXuid(player) : null;
 
         // 5. Resolve Last Death Location
         String deathJson = "null";
@@ -793,6 +821,24 @@ public class WebBridgeService {
                     plugin.getLogger().log(Level.FINE, "[WebBridge] Player sync network error: " + ex.getMessage());
                     return null;
                 });
+    }
+
+    /**
+     * Synchronize a player's complete in-game statistics (rank, level, xp, kingdom, titles, balances)
+     * to the Apexsions Web Platform asynchronously.
+     */
+    public void syncPlayerAsync(Player player) {
+        if (!enabled || player == null) {
+            return;
+        }
+
+        UUID uuid = player.getUniqueId();
+        PlayerData data = plugin.getPlayerDataService().getCached(uuid).orElse(null);
+        if (data != null) {
+            syncPlayerDataRecord(data, player);
+        } else {
+            plugin.getPlayerDataService().loadOrCreate(uuid, player.getName()).thenAccept(d -> syncPlayerDataRecord(d, player));
+        }
     }
 
     private double getEconomyBalance(UUID uuid, String currencyId, Player fallbackPlayer) {

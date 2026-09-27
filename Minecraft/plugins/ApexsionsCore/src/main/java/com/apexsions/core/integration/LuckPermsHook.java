@@ -111,7 +111,17 @@ public class LuckPermsHook {
         return player.isOp() ? "ancestor" : "wanderer";
     }
 
+    public String getPlayerRankDisplayName(UUID uuid) {
+        String groupKey = getPlayerRankKey(uuid);
+        var ranksConfig = plugin.getConfigManager().getRanksConfig();
+        if (ranksConfig != null && ranksConfig.contains("ranks." + groupKey + ".display-name")) {
+            return ranksConfig.getString("ranks." + groupKey + ".display-name", capitalize(groupKey));
+        }
+        return capitalize(groupKey);
+    }
+
     public int getRankWeight(String rankKey) {
+
         if (rankKey == null) return 0;
         return switch (rankKey.toLowerCase().trim()) {
             case "ancestor", "owner", "founder" -> 100;

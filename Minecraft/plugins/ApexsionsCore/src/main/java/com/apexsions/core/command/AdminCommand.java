@@ -58,6 +58,7 @@ public class AdminCommand implements CommandExecutor, TabCompleter {
                 }
                 if (plugin.getWebBridgeService() != null) {
                     plugin.getWebBridgeService().reload();
+                    plugin.getWebBridgeService().syncAllStoredPlayersAsync();
                 }
                 sender.sendMessage(miniMessage.deserialize("<green>ApexsionsCore modular configs, WebBridge, LuckPerms ranks, BlueMap markers, and Level Rewards reloaded successfully!</green>"));
                 break;
@@ -113,6 +114,17 @@ public class AdminCommand implements CommandExecutor, TabCompleter {
                 if (plugin.getWebBridgeService() != null) {
                     plugin.getWebBridgeService().syncPlayerAsync(targetToSync);
                     sender.sendMessage(miniMessage.deserialize("<green>Sync request dispatched for <yellow>" + targetToSync.getName() + "</yellow> to web portal.</green>"));
+                } else {
+                    sender.sendMessage(miniMessage.deserialize("<red>WebBridge service is unavailable.</red>"));
+                }
+                break;
+
+            case "syncall":
+                if (plugin.getWebBridgeService() != null) {
+                    sender.sendMessage(miniMessage.deserialize("<gold>[WebBridge] Memulai sinkronisasi seluruh data pemain (online & offline) ke web platform...</gold>"));
+                    plugin.getWebBridgeService().syncAllStoredPlayersAsync().thenAccept(count -> {
+                        sender.sendMessage(miniMessage.deserialize("<green>[WebBridge] Berhasil menyinkronkan <yellow>" + count + "</yellow> pemain ke web portal!</green>"));
+                    });
                 } else {
                     sender.sendMessage(miniMessage.deserialize("<red>WebBridge service is unavailable.</red>"));
                 }
@@ -551,7 +563,7 @@ public class AdminCommand implements CommandExecutor, TabCompleter {
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (args.length == 1) {
-            List<String> list = Arrays.asList("reload", "war", "setlevel", "addxp", "setkingdom", "resetkingdom", "setlobby", "setspawn", "spawn", "rtp", "emulate", "info", "sync");
+            List<String> list = Arrays.asList("reload", "war", "setlevel", "addxp", "setkingdom", "resetkingdom", "setlobby", "setspawn", "spawn", "rtp", "emulate", "info", "sync", "syncall");
             return filter(list, args[0]);
         }
         if (args.length == 2 && args[0].equalsIgnoreCase("war")) {

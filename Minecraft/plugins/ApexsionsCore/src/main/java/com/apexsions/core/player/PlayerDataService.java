@@ -119,4 +119,9 @@ public class PlayerDataService {
     public void flushAll() {
         saveAllCached();
     }
+
+    public CompletableFuture<java.util.List<PlayerData>> getAllPlayers() {
+        return repository.getAllPlayersAsync();
+    }
 }
+
