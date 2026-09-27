@@ -45,6 +45,17 @@ public class FishingListener implements Listener {
                         return;
                     }
                     plugin.getAfkFishingService().registerCast(player, event.getHook(), rod);
+                } else if (event.getHook() != null) {
+                    // Manual fishing zone notification
+                    var zone = plugin.getZoneManager().getZoneAt(event.getHook().getLocation());
+                    if (zone == null) {
+                        zone = plugin.getZoneManager().getZoneAt(player.getLocation());
+                    }
+                    if (zone != null && plugin.getConfig().getBoolean("settings.zones.show-zone-actionbar", true)) {
+                        player.sendActionBar(mm.deserialize("<gradient:#00c6ff:#0072ff>[Zona Memancing]</gradient> ")
+                                .append(mm.deserialize(zone.getDisplayName()))
+                                .append(mm.deserialize(" <dark_gray>•</dark_gray> <yellow>Rate x" + zone.getRateMultiplier() + "</yellow> <dark_gray>•</dark_gray> <gold>Rarity x" + zone.getRarityMultiplier() + "</gold>")));
+                    }
                 }
                 break;
 
@@ -65,8 +76,17 @@ public class FishingListener implements Listener {
                 plugin.getAfkFishingService().cancelCast(player);
                 // If player manually caught something, replace vanilla drop with our Rarity & Weight catch
                 if (event.getCaught() instanceof Item caughtEntity) {
-                    LootGenerator.CatchResult res = plugin.getLootGenerator().generateCatch(player, rod);
+                    var zone = plugin.getZoneManager().getZoneAt(caughtEntity.getLocation());
+                    if (zone == null) {
+                        zone = plugin.getZoneManager().getZoneAt(player.getLocation());
+                    }
+                    LootGenerator.CatchResult res = plugin.getLootGenerator().generateCatch(player, rod, zone);
                     caughtEntity.setItemStack(res.item);
+
+                    if (zone != null && zone.getXpMultiplier() > 1.0) {
+                        int bonusExp = (int) Math.round(5 * (zone.getXpMultiplier() - 1.0));
+                        if (bonusExp > 0) player.giveExp(bonusExp);
+                    }
 
                     if (res.isFish) {
                         plugin.getVaultStorage().getStats(player.getUniqueId()).recordCatch(

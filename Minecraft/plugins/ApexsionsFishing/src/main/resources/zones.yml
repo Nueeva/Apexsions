@@ -1,0 +1,20 @@
+# ==============================================================================
+#           APEXSIONS FISHING — ZONA MEMANCING (zones.yml)
+# ==============================================================================
+# Berkas ini menyimpan area mancing khusus hasil seleksi WorldEdit (//wand).
+# Di dalam zona ini:
+# - Pemain dapat diizinkan melakukan AFK fishing.
+# - Rate sambaran ikan meningkat (catch speed / bite delay lebih cepat).
+# - Peluang mendapatkan ikan langka (Rare, Epic, Legendary, Secret) berlipat ganda.
+# - Bobot ikan (kg) bertambah.
+# - Bonus EXP berlipat ganda.
+#
+# Kelola in-game via:
+# - /fish zone create <nama> [rate_mult] [rarity_mult]
+# - /fish zone delete <nama>
+# - /fish zone list
+# - /fish zone info <nama>
+# - /fish zone set <nama> <rate|rarity|weight|afk> <nilai>
+# ==============================================================================
+
+zones: {}

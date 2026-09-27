@@ -154,13 +154,29 @@ public class LootGenerator {
     }
 
     public CatchResult generateCatch(@NotNull Player player, @Nullable ItemStack rod) {
+        return generateCatch(player, rod, null);
+    }
+
+    public CatchResult generateCatch(@NotNull Player player, @Nullable ItemStack rod, @Nullable com.apexsions.fishing.model.FishingZone zone) {
         double luckBonus = plugin.getRodManager().getLuckBonus(rod);
         double weightBonus = plugin.getRodManager().getWeightBonus(rod);
+
+        // Apply zone rarity boost to luck
+        if (zone != null && zone.getRarityMultiplier() > 1.0) {
+            luckBonus += (zone.getRarityMultiplier() - 1.0) * 0.35;
+        }
 
         // Calculate Category Pool based on configured weights
         double junkWeight = Math.max(5.0, cfgWeightJunk * (1.0 - Math.min(0.75, luckBonus)));
         double treasureWeight = cfgWeightTreasure * (1.0 + luckBonus * 1.5);
         double fishWeight = cfgWeightFish * (1.0 + luckBonus * 0.5);
+
+        // Zone bonuses on category pools
+        if (zone != null) {
+            junkWeight = Math.max(2.0, junkWeight / Math.max(1.0, zone.getRarityMultiplier()));
+            fishWeight *= zone.getRateMultiplier();
+            treasureWeight *= (1.0 + (zone.getRarityMultiplier() - 1.0) * 0.5);
+        }
 
         double totalCatWeight = junkWeight + fishWeight + treasureWeight;
         double roll = ThreadLocalRandom.current().nextDouble() * totalCatWeight;
@@ -195,6 +211,9 @@ public class LootGenerator {
             if (luckBonus > 0 && item.getRarity().getTierOrder() >= 3) {
                 w *= (1.0 + luckBonus * 2.0); // Boost Rare/Epic/Legendary/Secret with luck!
             }
+            if (zone != null && item.getRarity().getTierOrder() >= 3) {
+                w *= zone.getRarityMultiplier(); // Boost high rarity fish in zone!
+            }
             poolTotal += w;
         }
 
@@ -205,6 +224,9 @@ public class LootGenerator {
             double w = item.getChanceWeight();
             if (luckBonus > 0 && item.getRarity().getTierOrder() >= 3) {
                 w *= (1.0 + luckBonus * 2.0);
+            }
+            if (zone != null && item.getRarity().getTierOrder() >= 3) {
+                w *= zone.getRarityMultiplier();
             }
             current += w;
             if (itemRoll <= current) {
@@ -244,6 +266,9 @@ public class LootGenerator {
                 // Apply rod weight multiplier
                 if (weightBonus > 0) {
                     generatedWeight *= (1.0 + weightBonus);
+                }
+                if (zone != null && zone.getWeightMultiplier() > 1.0) {
+                    generatedWeight *= zone.getWeightMultiplier();
                 }
                 finalWeight = Math.round(generatedWeight * 100.0) / 100.0;
                 pdc.set(keyFishWeight, PersistentDataType.DOUBLE, finalWeight);

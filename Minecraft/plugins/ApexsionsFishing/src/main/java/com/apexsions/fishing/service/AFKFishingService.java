@@ -60,10 +60,47 @@ public class AFKFishingService {
             }
         }
 
+        // Zone and AFK permission validation
+        Location checkLoc = hook != null ? hook.getLocation() : player.getLocation();
+        var zone = plugin.getZoneManager().getZoneAt(checkLoc);
+        if (zone == null) {
+            zone = plugin.getZoneManager().getZoneAt(player.getLocation());
+        }
+
+        boolean requireZone = plugin.getConfig().getBoolean("settings.afk-fishing.require-zone", false);
+        if (requireZone && (zone == null || !zone.isAfkAllowed())) {
+            cancelCast(player);
+            if (hook != null && !hook.isDead()) {
+                hook.remove();
+            }
+            player.sendMessage(mm.deserialize("<red><bold>AFK FISHING DILARANG!</bold></red> <gray>AFK Fishing hanya dapat dilakukan di dalam <yellow>Zona Memancing Resmi</yellow>!</gray>"));
+            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 1.0f, 0.8f);
+            return;
+        }
+
+        if (zone != null && !zone.isAfkAllowed()) {
+            cancelCast(player);
+            if (hook != null && !hook.isDead()) {
+                hook.remove();
+            }
+            player.sendMessage(mm.deserialize("<red><bold>AFK FISHING NON-AKTIF!</bold></red> <gray>Zona ini melarang penggunaan auto-catch.</gray>"));
+            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 1.0f, 0.8f);
+            return;
+        }
+
         cancelCast(player);
 
         int delaySeconds = plugin.getRodManager().getCatchSpeed(rod);
+        if (zone != null && zone.getRateMultiplier() > 1.0) {
+            delaySeconds = Math.max(3, (int) Math.round(delaySeconds / zone.getRateMultiplier()));
+        }
         long delayTicks = (long) delaySeconds * 20L;
+
+        if (zone != null && plugin.getConfig().getBoolean("settings.zones.show-zone-actionbar", true)) {
+            player.sendActionBar(mm.deserialize("<gradient:#00c6ff:#0072ff>[Zona Memancing]</gradient> ")
+                    .append(mm.deserialize(zone.getDisplayName()))
+                    .append(mm.deserialize(" <dark_gray>•</dark_gray> <yellow>Rate x" + zone.getRateMultiplier() + "</yellow> <dark_gray>•</dark_gray> <gold>Rarity x" + zone.getRarityMultiplier() + "</gold>")));
+        }
 
         BukkitTask task = Bukkit.getScheduler().runTaskLater(plugin, () -> {
             if (!player.isOnline() || hook.isDead() || !hook.isValid()) {
@@ -167,8 +204,20 @@ public class AFKFishingService {
             return;
         }
 
-        // 4. Generate Catch
-        LootGenerator.CatchResult result = plugin.getLootGenerator().generateCatch(player, currentRod);
+        // 4. Generate Catch (with active FishingZone bonuses)
+        var zone = plugin.getZoneManager().getZoneAt(hookLoc);
+        if (zone == null) {
+            zone = plugin.getZoneManager().getZoneAt(player.getLocation());
+        }
+        LootGenerator.CatchResult result = plugin.getLootGenerator().generateCatch(player, currentRod, zone);
+
+        // Zone XP Bonus
+        if (zone != null && zone.getXpMultiplier() > 1.0) {
+            int bonusExp = (int) Math.round(3 * (zone.getXpMultiplier() - 1.0));
+            if (bonusExp > 0) {
+                player.giveExp(bonusExp);
+            }
+        }
 
         // 5. Update player stats
         if (result.isFish) {

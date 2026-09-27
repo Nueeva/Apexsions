@@ -14,7 +14,7 @@ plugins/ApexsionsFishing/
 ├── config.yml            <-- Pengaturan global AFK fishing, jeda reel, kedalaman air, dan batas halaman vault
 ├── loot.yml              <-- Definisi ikan, 6 tier rarity, rentang berat (kg), harga jual, dan bioma tangkapan
 ├── rods.yml              <-- Konfigurasi joran pancing khusus, bonus auto-reel, durabilitas, dan syarat level
-├── baits.yml             <-- Definisi jenis umpan virtual, tier, pengganda peluang rarity & harga kuota
+├── zones.yml             <-- Definisi zona memancing khusus hasil seleksi WorldEdit (Rate & Rarity booster)
 ├── vault-prices.yml      <-- Skema harga unlock halaman Fishing Vault (Rupiah & Diamond)
 └── plugin.yml            <-- Deklarasi commands, permissions, dan metadata plugin
 ```
@@ -33,6 +33,7 @@ plugins/ApexsionsFishing/
 | `/fish top` | `/fish leaderboard`, `/fish peringkat` | Papan peringkat Top Angler | `apexsions.fishing.use` | `true` |
 | `/fish journal` | `/fish pedia`, `/fish jurnal` | Ensiklopedia spesies ikan & hasil tangkapan | `apexsions.fishing.use` | `true` |
 | `/fish bait` | `/fish umpan` | Membuka Toko Kuota Umpan Virtual (`BaitShopGUI`) | `apexsions.fishing.use` | `true` |
+| `/fish zone` | `/fish area` | Manajemen Zona Mancing WorldEdit (`create`, `delete`, `list`, `info`, `gui`) | `apexsions.fishing.admin` | `op` |
 | `/fish admin` | - | Panel Administrasi Nelayan (Admin Hub GUI) | `apexsions.fishing.admin` | `op` |
 | `/fish creator` | `/fish create` | Native Dialog Admin Rod Creator GUI | `apexsions.fishing.admin` | `op` |
 | `/fish reload`| - | Memuat ulang konfigurasi ikan, rarity, bioma, dan bobot tangkapan | `apexsions.fishing.admin` | `op` |
@@ -92,3 +93,30 @@ $$\text{Harga Jual Final} = \text{Base Price} \times \left(1 + \frac{\text{Weigh
 3. **Penyaringan Papan Peringkat Nelayan (*Top Angler Exemption*):**
    - Mengikuti **Kebijakan Pengecualian 6-Lapis** Apexsions. Seluruh akun staf (rank weight $\ge 80$), operator (OP), entitas transenden Aetherion, dan founder disaring keluar dari papan peringkat `/fish top`.
    - Menjamin trofi nelayan terhebat server murni diperebutkan oleh warga fana peradaban.
+
+---
+
+## 🗺 5. Integrasi WorldEdit & Area Memancing Khusus
+
+Modul `ApexsionsFishing` terintegrasi secara modular (*softdepend*) dengan **WorldEdit (7.x)** untuk memudahkan administrator membuat zona pemancingan berkah (*Fishing Zones*).
+
+### Fitur Zona Memancing:
+1. **AFK Fishing Khusus (`afkAllowed` & `require-zone`):**
+   - Admin dapat menetapkan area mancing tertentu sebagai tempat resmi AFK fishing.
+   - Jika konfigurasi `settings.afk-fishing.require-zone: true`, pemain dilarang auto-catch di luar zona resmi.
+2. **Peningkatan Rate Tangkapan (`rateMultiplier`):**
+   - Jeda sambaran kail auto-catch maupun respon kail dipersingkat secara matematis (misal rate `1.5x` mempercepat tarikan sebesar 50%).
+3. **Peningkatan Kelangkaan Ikan (`rarityMultiplier`):**
+   - Peluang mendapatkan ikan tier tinggi (**Rare**, **Epic**, **Legendary**, dan **Secret**) berlipat ganda, serta frekuensi kemunculan sampah (*junk*) ditekan drastis.
+4. **Peningkatan Bobot Tangkapan (`weightMultiplier`):**
+   - Ikan yang ditarik dari zona memiliki rata-rata bobot (kg) lebih tinggi, meningkatkan harga jual dan peluang memecahkan rekor.
+5. **Bonus Level EXP (`xpMultiplier`):**
+   - Memberikan bonus poin pengalaman tambahan saat berhasil memancing di dalam zona.
+
+### Perintah Pembuatan & Manajemen:
+- `//wand` $\rightarrow$ Tentukan Pos 1 (Klik Kiri) dan Pos 2 (Klik Kanan).
+- `/fish zone create <nama> [rate_mult] [rarity_mult]` $\rightarrow$ Mendaftarkan seleksi menjadi zona resmi.
+- `/fish zone list` $\rightarrow$ Menampilkan daftar koordinat dan multiplier seluruh zona.
+- `/fish zone gui` $\rightarrow$ Membuka panel visual interaktif pengelola zona.
+- `/fish zone delete <nama>` $\rightarrow$ Menghapus zona dari `zones.yml`.
+- `/fish zone set <nama> <rate|rarity|weight|xp|afk> <nilai>` $\rightarrow$ Mengubah konfigurasi langsung tanpa restart.

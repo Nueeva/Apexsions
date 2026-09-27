@@ -37,6 +37,7 @@ public class ApexsionsFishing extends JavaPlugin {
     private LootGenerator lootGenerator;
     private VaultStorageManager vaultStorageManager;
     private AFKFishingService afkFishingService;
+    private com.apexsions.fishing.service.FishingZoneManager zoneManager;
 
     public static ApexsionsFishing getInstance() {
         return instance;
@@ -51,8 +52,10 @@ public class ApexsionsFishing extends JavaPlugin {
         saveResourceIfNotExists("loot.yml");
         saveResourceIfNotExists("rods.yml");
         saveResourceIfNotExists("vault-prices.yml");
+        saveResourceIfNotExists("zones.yml");
 
         // Initialize Services
+        this.zoneManager = new com.apexsions.fishing.service.FishingZoneManager(this);
         this.rodManager = new AutoCatchRodManager(this);
         this.lootGenerator = new LootGenerator(this);
         this.vaultStorageManager = new VaultStorageManager(this);
@@ -116,6 +119,10 @@ public class ApexsionsFishing extends JavaPlugin {
 
     public AFKFishingService getAfkFishingService() {
         return afkFishingService;
+    }
+
+    public com.apexsions.fishing.service.FishingZoneManager getZoneManager() {
+        return zoneManager;
     }
 
     public int getPlayerCoreLevel(Player player) {

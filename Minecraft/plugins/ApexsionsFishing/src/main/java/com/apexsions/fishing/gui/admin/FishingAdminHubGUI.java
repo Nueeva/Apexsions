@@ -33,6 +33,7 @@ public class FishingAdminHubGUI implements InventoryHolder {
     public static final int SLOT_VAULT_PRICES = 14;
     public static final int SLOT_AFK_SETTINGS = 15;
     public static final int SLOT_BAIT_SHOP = 16;
+    public static final int SLOT_FISHING_ZONES = 20;
     public static final int SLOT_RELOAD = 22;
     public static final int SLOT_CLOSE = 31;
 
@@ -126,12 +127,31 @@ public class FishingAdminHubGUI implements InventoryHolder {
                         "<yellow>▶ Klik untuk buka Toko Umpan</yellow>"
                 )));
 
+        // Slot 20: Fishing Zones Manager
+        int totalZones = plugin.getZoneManager().getAllZones().size();
+        boolean weReady = com.apexsions.fishing.integration.WorldEditHook.isAvailable();
+        inventory.setItem(SLOT_FISHING_ZONES, createGuiItem(Material.MAP,
+                "<gradient:#00c6ff:#0072ff><bold>🗺 Manajemen Zona Mancing WorldEdit</bold></gradient>",
+                List.of(
+                        "<gray>Kelola area pemancingan khusus:</gray>",
+                        "<gray>• Total Zona Aktif: <yellow><bold>" + totalZones + " Area</bold></yellow></gray>",
+                        "<gray>• Integrasi WorldEdit: " + (weReady ? "<green>Terhubung</green>" : "<red>Tidak Terpasang</red>") + "</gray>",
+                        "",
+                        "<gray>Setiap zona memiliki pengaturan:</gray>",
+                        "<yellow>● Izin AFK Fishing terisolasi</yellow>",
+                        "<yellow>● Pengganda kecepatan sambaran ikan (Rate)</yellow>",
+                        "<yellow>● Pengganda peluang ikan langka (Rarity)</yellow>",
+                        "<yellow>● Pengganda bobot ikan (kg) & bonus EXP</yellow>",
+                        "",
+                        "<yellow>▶ Klik untuk buka Pengelola Zona</yellow>"
+                )));
+
         // Slot 22: Reload
         inventory.setItem(SLOT_RELOAD, createGuiItem(Material.NETHER_STAR,
                 "<gradient:#ffaa00:#ffd700><bold>🔄 Muat Ulang Konfigurasi (Reload)</bold></gradient>",
                 List.of(
                         "<gray>Muat ulang config.yml, loot.yml,</gray>",
-                        "<gray>rods.yml, dan vault-prices.yml.</gray>",
+                        "<gray>rods.yml, zones.yml, dan vault-prices.yml.</gray>",
                         "",
                         "<yellow>▶ Klik untuk reload sekarang</yellow>"
                 )));
@@ -163,10 +183,15 @@ public class FishingAdminHubGUI implements InventoryHolder {
                 new com.apexsions.fishing.gui.BaitShopGUI(plugin, player).open();
                 player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1.0f, 1.0f);
             }
+            case SLOT_FISHING_ZONES -> {
+                new FishingZoneListGUI(plugin, player).open();
+                player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1.0f, 1.0f);
+            }
             case SLOT_RELOAD -> {
                 plugin.reloadConfig();
                 plugin.getLootGenerator().reload();
                 plugin.getRodManager().reload();
+                plugin.getZoneManager().reload();
                 player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_CHIME, 1.0f, 1.5f);
                 player.sendMessage(mm.deserialize("<green><bold>RELOAD SUKSES!</bold> Seluruh konfigurasi ApexsionsFishing telah diperbarui.</green>"));
                 render();

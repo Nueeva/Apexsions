@@ -83,6 +83,41 @@ public class FishingPlaceholderExpansion extends PlaceholderExpansion {
             case "top_angler_rank":
                 return "Unranked";
 
+            case "in_zone": {
+                if (player.getPlayer() == null) return "false";
+                return plugin.getZoneManager().isInZone(player.getPlayer().getLocation()) ? "true" : "false";
+            }
+
+            case "zone_name": {
+                if (player.getPlayer() == null) return "-";
+                var zone = plugin.getZoneManager().getZoneAt(player.getPlayer().getLocation());
+                return zone != null ? zone.getDisplayName() : "-";
+            }
+
+            case "zone_id": {
+                if (player.getPlayer() == null) return "-";
+                var zone = plugin.getZoneManager().getZoneAt(player.getPlayer().getLocation());
+                return zone != null ? zone.getName() : "-";
+            }
+
+            case "zone_rate": {
+                if (player.getPlayer() == null) return "1.0";
+                var zone = plugin.getZoneManager().getZoneAt(player.getPlayer().getLocation());
+                return zone != null ? String.valueOf(zone.getRateMultiplier()) : "1.0";
+            }
+
+            case "zone_rarity": {
+                if (player.getPlayer() == null) return "1.0";
+                var zone = plugin.getZoneManager().getZoneAt(player.getPlayer().getLocation());
+                return zone != null ? String.valueOf(zone.getRarityMultiplier()) : "1.0";
+            }
+
+            case "zone_afk": {
+                if (player.getPlayer() == null) return "false";
+                var zone = plugin.getZoneManager().getZoneAt(player.getPlayer().getLocation());
+                return zone != null && zone.isAfkAllowed() ? "true" : "false";
+            }
+
             default:
                 return null;
         }

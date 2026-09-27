@@ -15,6 +15,13 @@ settings:
     particle-effects: true
     # Otomatis lempar kembali kail untuk AFK fishing berkelanjutan
     auto-recast: true
+    # Wajib berada di dalam Zona Memancing resmi untuk AFK Fishing (false = bebas di mana saja)
+    require-zone: false
+
+  # Pengaturan Area / Zona Memancing (Integrasi WorldEdit)
+  zones:
+    # Tampilkan notifikasi action bar saat melempar kail di dalam zona
+    show-zone-actionbar: true
 
   # Brankas Penyimpanan Hasil Mancing (Fishing Vault)
   vault:

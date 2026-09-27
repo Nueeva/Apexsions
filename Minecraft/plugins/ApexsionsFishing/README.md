@@ -20,6 +20,7 @@ Modul ekosistem peradaban memancing resmi untuk **Apexsions — The Peak Civiliz
 - **Auto-Catch Rods & Creator (`/fish shop` & `/fish creator`):** Berbagai varian joran dengan bonus auto-catch, syarat level progresi pemain, dan perlindungan penggabungan anvil.
 - **Toko Umpan Virtual (`/fish bait`):** Kuota umpan virtual untuk meningkatkan peluang menangkap ikan langka atau legendaris.
 - **Fish Journal (`/fish journal`):** Ensiklopedia ikan yang mencatat rekor tangkapan terberat pemain dan jenis ikan yang telah berhasil ditemukan.
+- **Zona Memancing WorldEdit (`/fish zone`):** Pembuatan area mancing khusus berbasis seleksi WorldEdit (`//wand`) dengan isolasi AFK fishing, pengganda kecepatan tangkapan (rate), peluang ikan langka (rarity), dan bobot tubuh.
 - **Papan Peringkat Top Angler (`/fish top`):** Kompetisi nelayan terbaik dengan penyaringan otomatis akun staf dan entitas Aetherion.
 
 ---
@@ -36,6 +37,7 @@ Modul ekosistem peradaban memancing resmi untuk **Apexsions — The Peak Civiliz
 | `/fish top` | `/fish leaderboard`, `/fish peringkat` | Papan peringkat Top Angler | `apexsions.fishing.use` | `true` |
 | `/fish journal` | `/fish pedia`, `/fish jurnal` | Ensiklopedia spesies ikan & hasil tangkapan pemain | `apexsions.fishing.use` | `true` |
 | `/fish bait` | `/fish umpan` | Membuka Toko Kuota Umpan Virtual (`BaitShopGUI`) | `apexsions.fishing.use` | `true` |
+| `/fish zone` | `/fish area` | Manajemen Zona Mancing WorldEdit (`create`, `delete`, `list`, `info`, `gui`) | `apexsions.fishing.admin` | `op` |
 | `/fish admin` | - | Panel Administrasi Nelayan (Admin Hub GUI) | `apexsions.fishing.admin` | `op` |
 | `/fish creator` | `/fish create` | Native Dialog Admin Rod Creator GUI | `apexsions.fishing.admin` | `op` |
 | `/fish reload` | - | Memuat ulang konfigurasi ikan, rarity, bioma, dan bobot | `apexsions.fishing.admin` | `op` |
@@ -47,3 +49,4 @@ Modul ekosistem peradaban memancing resmi untuk **Apexsions — The Peak Civiliz
 - **ApexsionsEconomy** (Required / Transaksi penjualan ikan & toko)
 - **ApexsionsCustomEnchants** (Softdepend / Kompatibilitas enchantment joran)
 - **PlaceholderAPI** (Softdepend / Placeholder ekspansi nelayan)
+- **WorldEdit** (Softdepend / Pemilihan area kuboid zona memancing)

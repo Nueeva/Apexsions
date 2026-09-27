@@ -21,6 +21,12 @@ Plugin **ApexsionsFishing** mengelola ekosistem peradaban memancing (*Civilizati
 | `%apexsionsfishing_journal_discovered%` | - | Angka (Integer) | `18` | Jumlah spesies ikan unik yang telah ditemukan pemain di dalam jurnal. |
 | `%apexsionsfishing_journal_total%` | - | Angka (Integer) | `24` | Total seluruh spesies ikan yang terdaftar di ekosistem server. |
 | `%apexsionsfishing_top_angler_rank%` | - | Angka/String | `#3` atau `Unranked` | Peringkat pemain pada papan skor Top Angler (tersaring dari staf/OP). |
+| `%apexsionsfishing_in_zone%` | - | Boolean | `true` atau `false` | Menunjukkan apakah pemain saat ini berada di dalam Zona Memancing resmi. |
+| `%apexsionsfishing_zone_name%` | - | Teks (Formatted) | `Danau Kerajaan` | Nama tampilan Zona Memancing di lokasi pemain saat ini. |
+| `%apexsionsfishing_zone_id%` | - | Teks (ID) | `danau_spawn` | ID teknis Zona Memancing aktif. |
+| `%apexsionsfishing_zone_rate%` | - | Angka (Decimal) | `1.5` | Pengganda kecepatan sambaran ikan (Rate multiplier) di zona saat ini. |
+| `%apexsionsfishing_zone_rarity%` | - | Angka (Decimal) | `1.5` | Pengganda peluang ikan langka (Rarity multiplier) di zona saat ini. |
+| `%apexsionsfishing_zone_afk%` | - | Boolean | `true` atau `false` | Status izin AFK Fishing di dalam zona lokasi pemain. |
 
 ---
 
