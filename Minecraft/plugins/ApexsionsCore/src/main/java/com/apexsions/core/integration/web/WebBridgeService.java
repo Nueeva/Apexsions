@@ -44,13 +44,14 @@ public class WebBridgeService {
     public WebBridgeService(ApexsionsCorePlugin plugin) {
         this.plugin = plugin;
         this.httpClient = HttpClient.newBuilder()
-                .connectTimeout(Duration.ofSeconds(5))
+                .connectTimeout(Duration.ofSeconds(10))
+                .followRedirects(HttpClient.Redirect.NORMAL)
                 .build();
     }
 
     public void start() {
         // Load settings with sensible fallbacks
-        this.apiUrl = plugin.getConfig().getString("web-bridge.api-url", "http://127.0.0.1:8000/api/apexsions-bridge");
+        this.apiUrl = plugin.getConfig().getString("web-bridge.api-url", "https://web.apexsions.com/api/apexsions-bridge");
         this.apiKey = plugin.getConfig().getString("web-bridge.api-key", "apexsions_bridge_key_live_2026");
         this.enabled = plugin.getConfig().getBoolean("web-bridge.enabled", true);
 
@@ -71,6 +72,11 @@ public class WebBridgeService {
         plugin.getLogger().info("[WebBridge] Web bridge daemon active. Heartbeat & Delivery polling scheduled to: " + apiUrl);
     }
 
+    public void reload() {
+        stop();
+        start();
+    }
+
     public void stop() {
         if (heartbeatTask != null && !heartbeatTask.isCancelled()) {
             heartbeatTask.cancel();
@@ -84,6 +90,15 @@ public class WebBridgeService {
             playerSyncTask.cancel();
             playerSyncTask = null;
         }
+    }
+
+    private HttpRequest.Builder createRequestBuilder(String path) {
+        String fullUrl = path.startsWith("http://") || path.startsWith("https://") ? path : apiUrl + path;
+        return HttpRequest.newBuilder()
+                .uri(URI.create(fullUrl))
+                .header("User-Agent", "ApexsionsCore-WebBridge/1.0 (Paper 26.2)")
+                .header("Accept", "application/json")
+                .header("X-Apexsions-Key", apiKey);
     }
 
     private void sendHeartbeat() {
@@ -167,27 +182,24 @@ public class WebBridgeService {
                     loadedChunks, totalEntities, maintenance, pluginsJson.toString()
             );
 
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(apiUrl + "/heartbeat"))
-                    .timeout(Duration.ofSeconds(5))
+            HttpRequest request = createRequestBuilder("/heartbeat")
+                    .timeout(Duration.ofSeconds(10))
                     .header("Content-Type", "application/json")
-                    .header("Accept", "application/json")
-                    .header("X-Apexsions-Key", apiKey)
                     .POST(HttpRequest.BodyPublishers.ofString(jsonPayload))
                     .build();
 
             httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString())
                     .thenAccept(response -> {
                         if (response.statusCode() != 200) {
-                            plugin.getLogger().log(Level.FINE, "[WebBridge] Heartbeat returned status: " + response.statusCode());
+                            plugin.getLogger().warning("[WebBridge] Heartbeat failed (HTTP " + response.statusCode() + "): " + response.body());
                         }
                     })
                     .exceptionally(ex -> {
-                        plugin.getLogger().log(Level.FINE, "[WebBridge] Unable to connect to web platform: " + ex.getMessage());
+                        plugin.getLogger().warning("[WebBridge] Unable to connect to web platform: " + ex.getMessage());
                         return null;
                     });
         } catch (Exception ex) {
-            plugin.getLogger().log(Level.FINE, "[WebBridge] Heartbeat generation error: " + ex.getMessage());
+            plugin.getLogger().warning("[WebBridge] Heartbeat generation error: " + ex.getMessage());
         }
     }
 
@@ -199,11 +211,8 @@ public class WebBridgeService {
         if (!enabled) return;
 
         try {
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(apiUrl + "/deliveries/pending"))
-                    .timeout(Duration.ofSeconds(6))
-                    .header("Accept", "application/json")
-                    .header("X-Apexsions-Key", apiKey)
+            HttpRequest request = createRequestBuilder("/deliveries/pending")
+                    .timeout(Duration.ofSeconds(10))
                     .GET()
                     .build();
 
@@ -343,12 +352,9 @@ public class WebBridgeService {
         String actionIdJson = actionId != null ? "\"" + escapeJson(actionId) + "\"" : "null";
         String payload = String.format("{\"status\":\"%s\",\"error_message\":%s,\"action_id\":%s}", status, errorJson, actionIdJson);
 
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(apiUrl + "/deliveries/" + deliveryId + "/status"))
-                .timeout(Duration.ofSeconds(5))
+        HttpRequest request = createRequestBuilder("/deliveries/" + deliveryId + "/status")
+                .timeout(Duration.ofSeconds(10))
                 .header("Content-Type", "application/json")
-                .header("Accept", "application/json")
-                .header("X-Apexsions-Key", apiKey)
                 .POST(HttpRequest.BodyPublishers.ofString(payload))
                 .build();
 
@@ -367,7 +373,7 @@ public class WebBridgeService {
 
         try {
             String serviceSlug = service != null ? service.toLowerCase().replaceAll("[^a-z0-9_-]", "-") : "votifier";
-            String url = apiUrl + "/vote/callback/" + URLEncoder.encode(serviceSlug, StandardCharsets.UTF_8);
+            String path = "/vote/callback/" + URLEncoder.encode(serviceSlug, StandardCharsets.UTF_8);
 
             JsonObject payload = new JsonObject();
             payload.addProperty("username", username);
@@ -375,12 +381,9 @@ public class WebBridgeService {
             payload.addProperty("address", address != null ? address : "127.0.0.1");
             payload.addProperty("timestamp", timestamp != null ? timestamp : String.valueOf(System.currentTimeMillis()));
 
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(url))
-                    .timeout(Duration.ofSeconds(6))
+            HttpRequest request = createRequestBuilder(path)
+                    .timeout(Duration.ofSeconds(10))
                     .header("Content-Type", "application/json")
-                    .header("Accept", "application/json")
-                    .header("X-Apexsions-Key", apiKey)
                     .POST(HttpRequest.BodyPublishers.ofString(payload.toString()))
                     .build();
 
@@ -432,12 +435,9 @@ public class WebBridgeService {
                     escapeJson(status != null ? status : "SUCCESS")
             );
 
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(apiUrl + "/audit/log"))
-                    .timeout(Duration.ofSeconds(5))
+            HttpRequest request = createRequestBuilder("/audit/log")
+                    .timeout(Duration.ofSeconds(10))
                     .header("Content-Type", "application/json")
-                    .header("Accept", "application/json")
-                    .header("X-Apexsions-Key", apiKey)
                     .POST(HttpRequest.BodyPublishers.ofString(jsonPayload))
                     .build();
 
@@ -478,12 +478,9 @@ public class WebBridgeService {
                     java.time.Instant.now().toString()
             );
 
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(apiUrl + "/events/sync"))
-                    .timeout(Duration.ofSeconds(5))
+            HttpRequest request = createRequestBuilder("/events/sync")
+                    .timeout(Duration.ofSeconds(10))
                     .header("Content-Type", "application/json")
-                    .header("Accept", "application/json")
-                    .header("X-Apexsions-Key", apiKey)
                     .POST(HttpRequest.BodyPublishers.ofString(jsonPayload))
                     .build();
 
@@ -517,12 +514,9 @@ public class WebBridgeService {
                     durationField
             );
 
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(apiUrl + "/punishments/sync"))
-                    .timeout(Duration.ofSeconds(5))
+            HttpRequest request = createRequestBuilder("/punishments/sync")
+                    .timeout(Duration.ofSeconds(10))
                     .header("Content-Type", "application/json")
-                    .header("Accept", "application/json")
-                    .header("X-Apexsions-Key", apiKey)
                     .POST(HttpRequest.BodyPublishers.ofString(jsonPayload))
                     .build();
 
@@ -574,12 +568,9 @@ public class WebBridgeService {
             }
             sb.append("]}");
 
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(apiUrl + "/bounties/sync-all"))
+            HttpRequest request = createRequestBuilder("/bounties/sync-all")
                     .timeout(Duration.ofSeconds(10))
                     .header("Content-Type", "application/json")
-                    .header("Accept", "application/json")
-                    .header("X-Apexsions-Key", apiKey)
                     .POST(HttpRequest.BodyPublishers.ofString(sb.toString()))
                     .build();
 
@@ -627,12 +618,9 @@ public class WebBridgeService {
             }
             sb.append("]}");
 
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(apiUrl + "/claims/sync-all"))
+            HttpRequest request = createRequestBuilder("/claims/sync-all")
                     .timeout(Duration.ofSeconds(10))
                     .header("Content-Type", "application/json")
-                    .header("Accept", "application/json")
-                    .header("X-Apexsions-Key", apiKey)
                     .POST(HttpRequest.BodyPublishers.ofString(sb.toString()))
                     .build();
 
@@ -787,12 +775,9 @@ public class WebBridgeService {
                 deathJson
         );
 
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(apiUrl + "/sync-player"))
-                .timeout(Duration.ofSeconds(6))
+        HttpRequest request = createRequestBuilder("/sync-player")
+                .timeout(Duration.ofSeconds(10))
                 .header("Content-Type", "application/json")
-                .header("Accept", "application/json")
-                .header("X-Apexsions-Key", apiKey)
                 .POST(HttpRequest.BodyPublishers.ofString(jsonPayload))
                 .build();
 
@@ -908,12 +893,9 @@ public class WebBridgeService {
                 escapeJson(pin), escapeJson(uuidStr), escapeJson(username), isBedrock
         );
 
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(apiUrl + "/verify"))
+        HttpRequest request = createRequestBuilder("/verify")
                 .timeout(Duration.ofSeconds(10))
                 .header("Content-Type", "application/json")
-                .header("Accept", "application/json")
-                .header("X-Apexsions-Key", apiKey)
                 .POST(HttpRequest.BodyPublishers.ofString(jsonPayload))
                 .build();
 

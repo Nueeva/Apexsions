@@ -56,7 +56,10 @@ public class AdminCommand implements CommandExecutor, TabCompleter {
                 if (plugin.getBlueMapHook() != null) {
                     plugin.getBlueMapHook().getConfigParser().parseAndApply();
                 }
-                sender.sendMessage(miniMessage.deserialize("<green>ApexsionsCore modular configs, LuckPerms ranks, BlueMap markers, and Level Rewards reloaded successfully!</green>"));
+                if (plugin.getWebBridgeService() != null) {
+                    plugin.getWebBridgeService().reload();
+                }
+                sender.sendMessage(miniMessage.deserialize("<green>ApexsionsCore modular configs, WebBridge, LuckPerms ranks, BlueMap markers, and Level Rewards reloaded successfully!</green>"));
                 break;
 
             case "war":
