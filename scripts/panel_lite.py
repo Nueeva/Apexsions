@@ -33,6 +33,7 @@ import ssl
 import uuid
 from pathlib import Path
 import webbrowser
+import subprocess
 
 # GUI Libraries (Python Built-in)
 import tkinter as tk
@@ -1462,12 +1463,64 @@ class PanelLiteApp:
         self.lbl_web_ssl = make_badge(badges_row, "SSL / TLS", "🔒 HTTPS Active", self.green_col)
         self.lbl_web_bridge = make_badge(badges_row, "WEBBRIDGE API", "🔗 Standby", self.blue_col)
 
+        # Hero Action Bar: In-App Desktop Launcher & Mode Toggle (No Chrome Needed!)
+        hero_bar = tk.Frame(header_card, bg=self.card_inner, bd=0, highlightbackground=self.border_col, highlightthickness=1)
+        hero_bar.pack(fill="x", padx=15, pady=(4, 8), ipady=3)
+
+        btn_hero_inapp = tk.Button(
+            hero_bar,
+            text="🖥️ BUKA IN-APP WEB PORTAL (Aplikasi Desktop Tanpa Chrome)",
+            font=("Segoe UI", 10, "bold"),
+            bg=self.accent_gold,
+            fg="#111317",
+            activebackground=self.accent_gold_hover,
+            activeforeground="#111317",
+            bd=0,
+            relief="flat",
+            padx=16,
+            pady=6,
+            cursor="hand2",
+            command=lambda: self.launch_in_app_portal(self.website_url)
+        )
+        btn_hero_inapp.pack(side="left", padx=10, pady=4)
+
+        self.web_mode_inapp = tk.BooleanVar(value=True)
+        cb_mode = tk.Checkbutton(
+            hero_bar,
+            text="Selalu buka rute di Aplikasi Desktop (Bukan Chrome)",
+            variable=self.web_mode_inapp,
+            bg=self.card_inner,
+            fg=self.text_main,
+            selectcolor=self.card_bg,
+            activebackground=self.card_inner,
+            activeforeground=self.accent_gold,
+            font=("Segoe UI", 9)
+        )
+        cb_mode.pack(side="left", padx=10)
+
+        btn_hero_browser = tk.Button(
+            hero_bar,
+            text="🌐 Buka di Chrome ↗",
+            font=("Segoe UI", 9),
+            bg=self.card_bg,
+            fg=self.text_dim,
+            activebackground=self.border_col,
+            activeforeground="#ffffff",
+            bd=0,
+            relief="flat",
+            padx=12,
+            pady=4,
+            cursor="hand2",
+            command=lambda: self.open_browser(self.website_url)
+        )
+        btn_hero_browser.pack(side="right", padx=10)
+
         # Main Split Content: Left = Quick Launchers, Right = Tools & Console
         content_frame = tk.Frame(tab, bg=self.bg_dark)
         content_frame.pack(fill="both", expand=True)
 
         # Left Column: Quick Admin & Portal Launchers (Cards)
-        left_col = tk.Frame(content_frame, bg=self.card_bg, bd=0, highlightbackground=self.border_col, highlightthickness=1, width=450)
+        left_col = tk.Frame(content_frame, bg=self.card_bg, bd=0, highlightbackground=self.border_col, highlightthickness=1, width=460)
         left_col.pack(side="left", fill="both", padx=(0, 8), pady=0)
         left_col.pack_propagate(False)
 
@@ -1509,8 +1562,43 @@ class PanelLiteApp:
             top_f.pack(fill="x", padx=10, pady=(8, 2))
 
             tk.Label(top_f, text=title, font=("Segoe UI", 9, "bold"), fg=self.text_main, bg=self.card_inner).pack(side="left")
-            btn_open = tk.Button(top_f, text="Open ↗", font=("Segoe UI", 8, "bold"), bg=accent, fg="#111317", activebackground="#ffffff", activeforeground="#111317", bd=0, relief="flat", padx=10, pady=2, cursor="hand2", command=lambda u=full_url: self.open_browser(u))
-            btn_open.pack(side="right")
+
+            btn_box = tk.Frame(top_f, bg=self.card_inner)
+            btn_box.pack(side="right")
+
+            btn_open = tk.Button(
+                btn_box,
+                text="🖥️ In-App",
+                font=("Segoe UI", 8, "bold"),
+                bg=accent,
+                fg="#111317",
+                activebackground="#ffffff",
+                activeforeground="#111317",
+                bd=0,
+                relief="flat",
+                padx=8,
+                pady=2,
+                cursor="hand2",
+                command=lambda u=full_url: self.open_web_route(u, force_browser=False)
+            )
+            btn_open.pack(side="left", padx=(0, 4))
+
+            btn_chrome = tk.Button(
+                btn_box,
+                text="↗ Chrome",
+                font=("Segoe UI", 8),
+                bg=self.card_bg,
+                fg=self.text_dim,
+                activebackground=self.border_col,
+                activeforeground="#ffffff",
+                bd=0,
+                relief="flat",
+                padx=6,
+                pady=2,
+                cursor="hand2",
+                command=lambda u=full_url: self.open_browser(u)
+            )
+            btn_chrome.pack(side="left")
 
             bot_f = tk.Frame(card, bg=self.card_inner)
             bot_f.pack(fill="x", padx=10, pady=(0, 8))
@@ -1528,14 +1616,18 @@ class PanelLiteApp:
 
         tk.Label(tools_bar, text="🛠 Tools & Diagnostics:", font=("Segoe UI", 9, "bold"), fg=self.text_main, bg=self.card_bg).pack(side="left", padx=12, pady=8)
 
-        btn_probe = tk.Button(tools_bar, text="⚡ Test WebBridge Probe", font=("Segoe UI", 9, "bold"), bg=self.blue_col, fg="#ffffff", activebackground="#2563eb", activeforeground="#ffffff", bd=0, relief="flat", padx=12, pady=4, cursor="hand2", command=self.test_webbridge_probe)
-        btn_probe.pack(side="left", padx=6)
+        btn_admin_inapp = tk.Button(tools_bar, text="👑 Launch Admin In-App", font=("Segoe UI", 9, "bold"), bg=self.accent_gold, fg="#111317", activebackground=self.accent_gold_hover, activeforeground="#111317", bd=0, relief="flat", padx=10, pady=4, cursor="hand2", command=lambda: self.launch_in_app_portal(f"{self.website_url.rstrip('/')}/admin"))
+        btn_admin_inapp.pack(side="left", padx=4)
 
-        btn_folder = tk.Button(tools_bar, text="📂 Open Website Folder", font=("Segoe UI", 9, "bold"), bg=self.card_inner, fg=self.text_main, activebackground=self.border_col, activeforeground="#ffffff", bd=0, relief="flat", padx=12, pady=4, cursor="hand2", command=self.open_website_folder)
-        btn_folder.pack(side="left", padx=6)
+        btn_probe = tk.Button(tools_bar, text="⚡ Test WebBridge", font=("Segoe UI", 9, "bold"), bg=self.blue_col, fg="#ffffff", activebackground="#2563eb", activeforeground="#ffffff", bd=0, relief="flat", padx=10, pady=4, cursor="hand2", command=self.test_webbridge_probe)
+        btn_probe.pack(side="left", padx=4)
 
-        btn_copy_admin = tk.Button(tools_bar, text="📋 Copy /admin URL", font=("Segoe UI", 9, "bold"), bg=self.card_inner, fg=self.text_dim, activebackground=self.border_col, activeforeground="#ffffff", bd=0, relief="flat", padx=12, pady=4, cursor="hand2", command=lambda: self.copy_to_clipboard(f"{self.website_url.rstrip('/')}/admin", "Admin URL"))
-        btn_copy_admin.pack(side="left", padx=6)
+        btn_folder = tk.Button(tools_bar, text="📂 Folder", font=("Segoe UI", 9, "bold"), bg=self.card_inner, fg=self.text_main, activebackground=self.border_col, activeforeground="#ffffff", bd=0, relief="flat", padx=10, pady=4, cursor="hand2", command=self.open_website_folder)
+        btn_folder.pack(side="left", padx=4)
+
+        btn_copy_admin = tk.Button(tools_bar, text="📋 Copy URL", font=("Segoe UI", 9, "bold"), bg=self.card_inner, fg=self.text_dim, activebackground=self.border_col, activeforeground="#ffffff", bd=0, relief="flat", padx=10, pady=4, cursor="hand2", command=lambda: self.copy_to_clipboard(f"{self.website_url.rstrip('/')}/admin", "Admin URL"))
+        btn_copy_admin.pack(side="left", padx=4)
+
 
         # Log Text Box
         log_frame = tk.Frame(right_col, bg=self.console_bg, highlightbackground=self.border_col, highlightthickness=1)
@@ -1578,6 +1670,29 @@ class PanelLiteApp:
             self.web_log_write(f"🚀 [BROWSER] Opened: {url}")
         except Exception as e:
             self.web_log_write(f"❌ [BROWSER ERROR] {e}")
+
+    def launch_in_app_portal(self, url: str):
+        self.web_log_write(f"🖥️ [IN-APP PORTAL] Opening native desktop window: {url}")
+        try:
+            if getattr(sys, "frozen", False):
+                cmd = [sys.executable, "--web-portal", url]
+            else:
+                cmd = [sys.executable, str(Path(__file__).resolve()), "--web-portal", url]
+
+            creationflags = 0
+            if sys.platform == "win32":
+                creationflags = subprocess.CREATE_NO_WINDOW
+            subprocess.Popen(cmd, creationflags=creationflags)
+            self.web_log_write("✅ [IN-APP PORTAL] Native desktop window active (No Chrome required)!")
+        except Exception as e:
+            self.web_log_write(f"⚠️ [LAUNCH FALLBACK] Could not launch native window: {e}")
+            self.open_browser(url)
+
+    def open_web_route(self, url: str, force_browser: bool = False):
+        if force_browser or (hasattr(self, "web_mode_inapp") and not self.web_mode_inapp.get()):
+            self.open_browser(url)
+        else:
+            self.launch_in_app_portal(url)
 
     def open_website_folder(self):
         web_dir = ROOT_DIR / "Website"
@@ -1808,7 +1923,52 @@ class PanelLiteApp:
             self.root.after(30, self.process_queue)
 
 
+def run_in_app_web_portal(target_url: str):
+    """
+    Launches an embedded Microsoft Edge WebView2 native desktop window.
+    Completely independent of Google Chrome, using Windows native Edge runtime.
+    Maintains user login session, cookies, and local storage in AppData/Apexsions.
+    """
+    try:
+        import webview
+    except ImportError:
+        import webbrowser
+        webbrowser.open(target_url)
+        return
+
+    # User data directory for persistent cookies, logins, and cache
+    appdata = os.getenv("APPDATA") or str(Path.home() / "AppData" / "Roaming")
+    cache_dir = Path(appdata) / "Apexsions" / "WebPortalData"
+    cache_dir.mkdir(parents=True, exist_ok=True)
+
+    # Set Windows Process App ID so the window has its own taskbar identity
+    if sys.platform == "win32":
+        try:
+            import ctypes
+            ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID("Apexsions.WebPortal.1.0")
+        except Exception:
+            pass
+
+    window = webview.create_window(
+        title="Apexsions Web Portal — The Peak Civilizations",
+        url=target_url,
+        width=1340,
+        height=860,
+        min_size=(960, 600),
+        confirm_close=False,
+        text_select=True,
+        zoomable=True,
+    )
+    # Start webview with persistent session storage (no Chrome needed!)
+    webview.start(private_mode=False, storage_path=str(cache_dir))
+
+
 def main():
+    if len(sys.argv) > 1 and sys.argv[1] == "--web-portal":
+        target = sys.argv[2] if len(sys.argv) > 2 else "https://web.apexsions.com"
+        run_in_app_web_portal(target)
+        sys.exit(0)
+
     root = tk.Tk()
     app = PanelLiteApp(root)
     root.protocol("WM_DELETE_WINDOW", lambda: (setattr(app, "is_running", False), root.destroy(), sys.exit(0)))
