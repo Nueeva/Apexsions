@@ -419,7 +419,7 @@ const APX_I18N = {
         wiki_portal_badge: 'ARSIP RESMI REALM',
         wiki_runtime_ver: '• Versi Runtime Minecraft 26.2',
         wiki_portal_title: 'Pusat Pengetahuan & Sejarah Peradaban Puncak',
-        wiki_portal_desc: 'Selamat datang di ensiklopedia resmi Apexsions. Temukan dokumentasi lengkap tentang 3 Kerajaan berdaulat, 11 hierarki kasta resmi, 28 Custom Enchants beserta efek set bonus armor, panduan pasar dinamis, serta peta jalan dari pengelana menjadi penguasa wilayah.',
+        wiki_portal_desc: 'Selamat datang di ensiklopedia resmi Apexsions. Temukan dokumentasi lengkap tentang 3 Kerajaan berdaulat, 11 hierarki kasta resmi, 182 Custom Enchants beserta efek set bonus armor, sistem undian Crates, ekosistem bahari Fishing, sistem tempur RPG, panduan pasar dinamis, serta peta jalan dari pengelana menjadi penguasa wilayah.',
         wiki_popular_label: 'Topik Populer:',
         wiki_stat_categories: 'Kategori Utama',
         wiki_stat_articles: 'Artikel Terinci',
@@ -1286,7 +1286,7 @@ const APX_I18N = {
         wiki_portal_badge: 'OFFICIAL REALM ARCHIVES',
         wiki_runtime_ver: '• Minecraft 26.2 Runtime Version',
         wiki_portal_title: 'Center of Knowledge & Peak Civilizations Lore',
-        wiki_portal_desc: 'Welcome to the official Apexsions encyclopedia. Explore comprehensive archives on 3 sovereign Kingdoms, 11 official castes, 28 Custom Enchants with armor set bonus effects, dynamic market guides, and the roadmap from wanderer to territorial lord.',
+        wiki_portal_desc: 'Welcome to the official Apexsions encyclopedia. Explore comprehensive archives on 3 sovereign Kingdoms, 11 official castes, 182 Custom Enchants with armor set bonus effects, Crates lottery systems, Marine Fishing ecosystems, RPG combat normalizers, dynamic market guides, and the roadmap from wanderer to territorial lord.',
         wiki_popular_label: 'Popular Topics:',
         wiki_stat_categories: 'Primary Categories',
         wiki_stat_articles: 'Detailed Articles',
@@ -2644,7 +2644,10 @@ const WIKI_DATA = {
         '3': { id: 'Ekonomi & Perdagangan', en: 'Economy & Commerce', desc_id: 'Pelajari seluk-beluk ekonomi & perdagangan, aturan wilayah, dan panduan mekanik server Apexsions.', desc_en: 'Discover atomic currency exchange, dynamic markets, auction houses, and barter escrow mechanics.' },
         '4': { id: 'Custom Enchants & Kits', en: 'Custom Enchants & Kits', desc_id: 'Pelajari seluk-beluk custom enchants & kits, aturan wilayah, dan panduan mekanik server Apexsions.', desc_en: 'Inspect 182 custom enchantments across 7 tiers, magic scrolls, dust, and native class armor set bonuses.' },
         '5': { id: 'Battlepass & Komunikasi', en: 'Battlepass & Communication', desc_id: 'Pelajari seluk-beluk battlepass & komunikasi, aturan wilayah, dan panduan mekanik server Apexsions.', desc_en: 'Understand 100-tier seasonal quest lines, EXP rotating shops, chat channels, and community reporting desk.' },
-        '6': { id: 'Hierarki Kasta Resmi', en: 'Official Caste Hierarchy', desc_id: 'Pelajari seluk-beluk hierarki kasta resmi, aturan wilayah, dan panduan mekanik server Apexsions.', desc_en: 'Learn the 5-tier social structure, 11 official castes, and 10 spiritual sequence pathways.' }
+        '6': { id: 'Hierarki Kasta Resmi', en: 'Official Caste Hierarchy', desc_id: 'Pelajari seluk-beluk hierarki kasta resmi, aturan wilayah, dan panduan mekanik server Apexsions.', desc_en: 'Learn the 5-tier social structure, 11 official castes, and 10 spiritual sequence pathways.' },
+        '7': { id: 'Peti Karun & Undian (Crates)', en: 'Crates & Mystery Lottery', desc_id: 'Pelajari seluk-beluk peti karun & undian (crates), aturan wilayah, dan panduan mekanik server Apexsions.', desc_en: 'Explore zero-lag virtual packet crates, persistent pity systems, dual-currency key shops, and guaranteed milestone rewards.' },
+        '8': { id: 'Ekosistem Bahari & Pemancingan', en: 'Marine Ecosystem & Fishing', desc_id: 'Pelajari seluk-beluk ekosistem bahari & pemancingan, aturan wilayah, dan panduan mekanik server Apexsions.', desc_en: 'Master active reel mechanics, WorldEdit AFK sanctuaries, 6-tier Gaussian weight scaling, fishing vaults, and top angler leaderboards.' },
+        '9': { id: 'Sistem Tempur RPG & Kedaulatan', en: 'RPG Combat & Realm Sovereignty', desc_id: 'Pelajari seluk-beluk sistem tempur RPG & kedaulatan, aturan wilayah, dan panduan mekanik server Apexsions.', desc_en: 'Discover the Smart PvP Normalizer, 6-tier monster scaling, single-player sleep engine, auto-login, and watchdog security architecture.' }
     },
     pages: {
         '1': { id: 'Panduan 15 Menit Pertama Warga Baru (Zero-to-Hero Roadmap)', en: 'First 15 Minutes Guide for New Citizens (Zero-to-Hero Roadmap)' },
@@ -2667,7 +2670,13 @@ const WIKI_DATA = {
         '18': { id: 'Kanal Chat, Kingdom Tags & Layanan Pelaporan', en: 'Chat Channels, Kingdom Tags & Staff Reports Desk' },
         '19': { id: 'Etika Komunitas, Roleplay & Kode Kehormatan Peradaban', en: 'Community Ethics, Roleplay & Civilization Code of Honor' },
         '20': { id: 'Struktur 5 Tingkat & 11 Kasta Resmi Apexsions', en: '5-Tier Structure & 11 Official Castes of Apexsions' },
-        '21': { id: 'Jalur Kenaikan Spiritual: 10 Urutan Kehormatan (Sequence Pathways)', en: 'Spiritual Ascension: 10 Sequence Pathways' }
+        '21': { id: 'Jalur Kenaikan Spiritual: 10 Urutan Kehormatan (Sequence Pathways)', en: 'Spiritual Ascension: 10 Sequence Pathways' },
+        '22': { id: 'Panduan Peti Hadiah (Crates), Animasi Virtual & Pity System', en: 'Crates Guide: Virtual Packet Animations & Pity Protection' },
+        '23': { id: 'Toko Kunci Dual-Currency (/crateshop) & Milestone Rewards', en: 'Dual-Currency Key Shop (/crateshop) & Milestone Rewards' },
+        '24': { id: 'Ekosistem Pemancingan Apexsions: Active Reel, Zona AFK & Formula Bobot Gauss', en: 'Apexsions Fishing: Active Reel, AFK Sanctuaries & Gaussian Weight Formula' },
+        '25': { id: 'Fishing Vault (/vault), Toko Joran Kustom & Bursa Ikan Dinamis', en: 'Fishing Vault (/vault), Custom Rod Shop & Dynamic Fish Delivery' },
+        '26': { id: 'Sistem Tempur RPG: Smart PvP Normalizer & Ekosistem 6-Tier Monster', en: 'RPG Combat System: Smart PvP Normalizer & 6-Tier Monster Ecosystem' },
+        '27': { id: 'Mekanik Kedaulatan: Single-Player Sleep, Autentikasi /premium & Keamanan Anti-Exploit', en: 'Realm Mechanics: Single-Player Sleep, /premium Auth & Anti-Exploit Security' }
     },
     bodies: {
         '1': `<h1>First 15 Minutes Guide: From Wanderer to Sovereign Citizen</h1>
@@ -3094,6 +3103,134 @@ const WIKI_DATA = {
 <li><strong>Sequence 2:</strong> The Archon — Reaching Level 100 with flawless honor.</li>
 <li><strong>Sequence 1:</strong> The Sovereign Vanguard — Holding highest seasonal Battlepass rank.</li>
 <li><strong>Sequence 0:</strong> The Ascended Divinity — The legendary champion of the civilization.</li>
+</ol>`,
+
+        '22': `<h1>Crates Guide: Virtual Packet Animations & Pity Protection</h1>
+<p><strong>ApexsionsCrates</strong> is the official treasure and lottery module within the Apexsions ecosystem. It delivers high-probability rewards, ultra-lightweight packet-based client animations, and persistent bad-luck protection.</p>
+<hr>
+<h3>Zero-Lag Virtual Packet Architecture</h3>
+<ul>
+<li><strong>PacketEvents &amp; ProtocolLib Manipulation:</strong> Entire opening roulette animations and spinning prize displays are transmitted directly as virtual display entities to the client connection.</li>
+<li><strong>Zero Server Load:</strong> These virtual entities are never registered to the server world entity tracker, allowing dozens of simultaneous crate unboxings without affecting server MSPT (maintaining a locked 20.0 TPS).</li>
+<li><strong>Dynamic Holograms:</strong> In-world crate blocks display real-time holographic titles, rarity tiers, and personal key balances.</li>
+<li><strong>Dramatic Audio-Visuals:</strong> Experience authentic roulette tick sound cues decelerating smoothly before locking onto winning loot.</li>
+</ul>
+<hr>
+<h3>Persistent Bad-Luck Protection (Pity System)</h3>
+<ul>
+<li><strong>UUID-Indexed Data:</strong> Every opening is tracked permanently per player UUID in the database.</li>
+<li><strong>Guaranteed Pity Threshold:</strong> Should a citizen not hit a Legendary or Apex reward within a set number of attempts, the system guarantees a top-tier item drop on the subsequent opening!</li>
+<li><strong>Diverse Reward Classes:</strong> Mythic enchanted weapons (ApexsionsCustomEnchants), direct fiat and diamond deposits (ApexsionsEconomyAPI), seasonal pass EXP (ApexsionsBattlepass), and higher-tier crate keys.</li>
+</ul>`,
+
+        '23': `<h1>Dual-Currency Key Shop (/crateshop) & Milestone Rewards</h1>
+<p>To preserve competitive fairness across all player tiers, crate keys can be earned via active gameplay, civilization milestones, or purchased through the integrated dual-currency store.</p>
+<hr>
+<h3>Dual-Currency Key Shop (/crateshop)</h3>
+<ul>
+<li><strong>Access Command:</strong> Open the interactive purchasing menu via:
+<div class="apx-code-block-wrap"><pre><code>/crateshop</code></pre></div></li>
+<li><strong>Two Economic Pathways:</strong>
+  <ul>
+    <li><strong>Standard Keys (Rupiah):</strong> Daily and Adventurer keys are purchasable using currency earned from mining and harvesting (<strong>Rupiah</strong>).</li>
+    <li><strong>Elite &amp; Mystic Keys (Diamond):</strong> High-tier crates (Celestial, Mythic, Ancient) are purchasable using <strong>Diamond (💎)</strong>.</li>
+  </ul>
+</li>
+<li><strong>Atomic Safety:</strong> All transactions are executed through <code>ApexsionsEconomyAPI</code> atomic locks, preventing double-spending and guaranteeing immediate inventory delivery.</li>
+</ul>
+<hr>
+<h3>Cumulative Milestone Rewards</h3>
+<ul>
+<li>Citizens accumulate lifetime opening counts (e.g. 10x, 25x, 50x, 100x crate openings).</li>
+<li>Milestone tiers yield free bonus rewards claimable anytime via <code>/crate</code> without consuming keys!</li>
+</ul>`,
+
+        '24': `<h1>Apexsions Fishing: Active Reel, AFK Sanctuaries & Gaussian Weight Formula</h1>
+<p><strong>ApexsionsFishing</strong> introduces an authentic, immersive angling ecosystem merging active interactive reeling with safe, steady AFK sanctuaries, fish vault storage, and dynamic pricing algorithms.</p>
+<hr>
+<h3>Active Reel vs WorldEdit-Integrated AFK Sanctuaries</h3>
+<ol>
+<li><strong>Active Reel Mechanics:</strong> Players participate in a dynamic line-tension minigame upon a strike. Proper reaction speed yields double EXP and higher chances of landing record-breaking trophy fish.</li>
+<li><strong>AFK Fishing Sanctuaries:</strong> Designated WorldEdit cuboid water reserves where citizens can cast lines safely without mob aggression, accumulating catches directly into their personal inventory or vault.</li>
+</ol>
+<hr>
+<h3>6-Tier Rarity &amp; Gaussian Weight Distribution</h3>
+<p>Each fish caught bears an authentic species identity, catch biome, and realistic weight generated via Gaussian distribution curves:</p>
+<div class="table-responsive mb-4"><table class="table fandom-stat-table">
+<thead><tr><th>Rarity Tier</th><th>Catch Chance</th><th>Weight Range</th><th>Notable Species</th></tr></thead>
+<tbody>
+<tr><td><strong>COMMON</strong></td><td>35% - 20%</td><td>0.5 – 6.5 kg</td><td>Swamp Catfish, Pond Tilapia, Golden Carp</td></tr>
+<tr><td><strong>UNCOMMON</strong></td><td>15% - 8%</td><td>2.0 – 9.0 kg</td><td>Red Snapper, Milkfish, Wild River Salmon</td></tr>
+<tr><td><strong>RARE</strong></td><td>4.5% - 3.5%</td><td>10.0 – 50.0 kg</td><td>Bluefin Tuna, Giant Coral Grouper</td></tr>
+<tr><td><strong>EPIC</strong></td><td>1.8% - 1.2%</td><td>40.0 – 220.0 kg</td><td>Solar Manta Ray, Blue Marlin, Barracuda</td></tr>
+<tr><td><strong>LEGENDARY</strong></td><td>0.4% - 0.25%</td><td>150.0 – 800.0 kg</td><td>Coastal Juvenile Kraken, Baby Megalodon</td></tr>
+<tr><td><strong>SECRET</strong></td><td>0.05% - 0.03%</td><td>500.0 – 2,000.0 kg</td><td>Primordial Sions Leviathan, Abyssal Monarch</td></tr>
+</tbody>
+</table></div>
+<hr>
+<h3>Weight-Appreciation Sell Value</h3>
+<p>Fish valuation scales exponentially with physical size. Specimens approaching the maximum species threshold yield up to <strong>+50% bonus revenue</strong> upon delivery at the fish market!</p>`,
+
+        '25': `<h1>Fishing Vault (/vault), Custom Rod Shop & Dynamic Fish Delivery</h1>
+<p>Master anglers are outfitted with specialized storage infrastructure, magical auto-reeling rods, and dedicated civilization seafood exchanges.</p>
+<hr>
+<h3>Massive Fishing Vault Storage (/vault)</h3>
+<ul>
+<li><strong>30-Page Capacity:</strong> Each page provides 54 slots, offering a combined storage volume of up to <strong>1,620 fish specimens</strong>.</li>
+<li><strong>Strict Validation Filter:</strong> Only accepts authentic Apexsions fish catches to preserve vault integrity and avoid clutter.</li>
+<li><strong>Dual-Currency Page Unlocks (/fish vaultshop):</strong> Pages 2–5 unlocked with Rupiah; Pages 6–30 unlocked with Diamonds.</li>
+</ul>
+<hr>
+<h3>Custom Rods &amp; Virtual Bait Quota</h3>
+<ul>
+<li><strong>Auto-Catch Rods (/fish shop):</strong> Enchanted fishing rods capable of automatically hooking and landing catches without manual clicking.</li>
+<li><strong>Virtual Bait System (/fish bait):</strong> Store specialized baits digitally to multiply high-rarity catch probabilities without filling inventory slots.</li>
+<li><strong>Top Angler Leaderboard (/fish top):</strong> Real-time rankings honoring top fishermen, strictly enforcing the 6-layer staff exemption protocol.</li>
+</ul>`,
+
+        '26': `<h1>RPG Combat System: Smart PvP Normalizer & 6-Tier Monster Ecosystem</h1>
+<p>Apexsions implements a <strong>Unified Combat Engine</strong> featuring a mathematically balanced <strong>Smart PvP Normalizer</strong> and a <strong>6-Tier Dynamic Monster Progression</strong> system.</p>
+<hr>
+<h3>Smart PvP Normalizer (Skill-First Dual Balance)</h3>
+<ul>
+<li><strong>Dynamic Compression Ratio:</strong> During player-versus-player duels, the system compresses extreme damage and defense disparities from high-tier custom enchantments.</li>
+<li><strong>Prevents One-Hit Kills:</strong> Ensures battles are determined by tactical strafing, parrying, weapon cooldown timing, and terrain positioning rather than pure gear imbalance.</li>
+<li><strong>100% Uncompressed PvE:</strong> Against world bosses, wilderness monsters, and Raid Boss Valerius, your armaments operate at full 100% uncompressed power!</li>
+</ul>
+<hr>
+<h3>6-Tier Dynamic Monster Scaling</h3>
+<ul>
+<li><strong>Tier 1: COMMON (1.0x):</strong> Vanilla standard nocturnal mobs.</li>
+<li><strong>Tier 2: UNCOMMON (1.5x):</strong> Ash aura, heightened agility, iron-plated defense.</li>
+<li><strong>Tier 3: RARE (2.5x):</strong> Blue flame aura, venomous strikes, heavy knockback.</li>
+<li><strong>Tier 4: ELITE (4.0x):</strong> Lightning aura, minion summoners, arrow-deflective shielding.</li>
+<li><strong>Tier 5: MYTHIC (7.0x):</strong> Golden aura regional mini-bosses with earthquake shockwaves.</li>
+<li><strong>Tier 6: PRIMORDIAL (15.0x):</strong> Umbra void anomalies executing armor-bypassing true damage.</li>
+</ul>
+<p>Inspect your comprehensive attribute breakdown anytime via <code>/k profile</code>!</p>`,
+
+        '27': `<h1>Realm Mechanics: Single-Player Sleep, /premium Auth & Anti-Exploit Security</h1>
+<p>Server quality of life and rock-solid authoritative security are foundational pillars of the Apexsions ecosystem.</p>
+<hr>
+<h3>Single-Player Sleep Engine</h3>
+<ul>
+<li><strong>One Citizen Sleeps:</strong> Just one player resting in bed initiates a server-wide broadcast and smoothly transitions the world to dawn.</li>
+<li><strong>Weather Normalization:</strong> Active downpours and lightning storms are instantly cleared to radiant daylight.</li>
+</ul>
+<hr>
+<h3>Zero-Friction Auto-Login (/premium)</h3>
+<ul>
+<li>Original Minecraft accounts (Java &amp; Bedrock) can enable instant cryptographic verification via:
+<div class="apx-code-block-wrap"><pre><code>/premium</code></pre></div></li>
+<li>Features a 2-step verification protocol followed by a 1x kick by-design to bind official Mojang/Microsoft UUIDs, completely eliminating password prompts on future logins.</li>
+</ul>
+<hr>
+<h3>Authoritative Server Security Suite</h3>
+<ol>
+<li><strong>ClaimProtectionListener:</strong> Uncompromising anti-griefing and container theft protection across claimed territories.</li>
+<li><strong>Anti-Xray Mining Tracker:</strong> Statistical spike analysis identifying illicit ore-tracking texture packs.</li>
+<li><strong>Redstone Watchdog:</strong> Automatically detects and suspends rapid redstone clock loops before server TPS is impacted.</li>
+<li><strong>Movement &amp; Combat Guard:</strong> Comprehensive mitigation against fly hacks, reach exploitation, killaura, and malicious packet injection.</li>
 </ol>`
     }
 };

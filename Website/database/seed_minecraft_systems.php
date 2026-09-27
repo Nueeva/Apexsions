@@ -749,6 +749,36 @@ $wikiCategories = [
         'created_at' => $now,
         'updated_at' => $now,
     ],
+    [
+        'id' => 7,
+        'icon' => 'bi bi-box2-heart',
+        'name' => 'Peti Karun & Undian (Crates)',
+        'slug' => 'peti-karun-crates',
+        'position' => 7,
+        'is_enabled' => true,
+        'created_at' => $now,
+        'updated_at' => $now,
+    ],
+    [
+        'id' => 8,
+        'icon' => 'bi bi-water',
+        'name' => 'Ekosistem Bahari & Pemancingan',
+        'slug' => 'pemancingan-fishing',
+        'position' => 8,
+        'is_enabled' => true,
+        'created_at' => $now,
+        'updated_at' => $now,
+    ],
+    [
+        'id' => 9,
+        'icon' => 'bi bi-shield-check',
+        'name' => 'Sistem Tempur RPG & Kedaulatan',
+        'slug' => 'tempur-rpg-kedaulatan',
+        'position' => 9,
+        'is_enabled' => true,
+        'created_at' => $now,
+        'updated_at' => $now,
+    ],
 ];
 
 foreach ($wikiCategories as $cat) {
@@ -848,12 +878,12 @@ Apexsions adalah server peradaban Minecraft modular berarsitektur tinggi yang me
 
 ---
 
-### Informasi Alamat Server (Koneksi)
+### Informasi Alamat Server Resmi (Koneksi)
 
-| Platform | Alamat IP / Host | Port | Versi Minecraft |
+| Platform | Alamat Host / Domain | Port Server | Versi Runtime Minecraft |
 | :--- | :--- | :--- | :--- |
-| **Java Edition** (PC/Mac/Linux) | `apexsions.com` | `32348` | **26.2** (Paper API) |
-| **Bedrock Edition** (Android/iOS/Win10/Console) | `apexsions.com` | **`32348`** | Versi Terbaru (Bedrock) |
+| **Java Edition** (PC / Mac / Linux) | `apexsions.com` | `32348` | **26.2** (Paper API / Java 21) |
+| **Bedrock Edition** (Android / iOS / Win10 / Console) | `apexsions.com` | **`32348`** | Versi Bedrock Terbaru |
 
 ---
 
@@ -861,19 +891,31 @@ Apexsions adalah server peradaban Minecraft modular berarsitektur tinggi yang me
 
 1. **Buka Minecraft Client:** Pastikan Anda menggunakan versi Minecraft **26.2** (Java Edition) atau Bedrock versi terbaru.
 2. **Pilih Menu Multiplayer:** Klik tombol **Add Server** (Tambah Server).
-3. **Masukkan Data Server:**
+3. **Masukkan Data Server Resmi:**
    - **Server Name:** Apexsions
    - **Server Address:** `apexsions.com:32348`
-   - *(Khusus Bedrock, pastikan Port diisi `32348`)*
-4. **Masuk ke Dunia:** Klik **Join Server**. Anda akan disambut di lobi utama peradaban.
-5. **Klaim Bekal Awal:** Gunakan perintah `/kit starter` untuk langsung memulai petualangan Anda.
+   - *(Khusus pengguna Bedrock Edition, pastikan kolom Port diisi angka `32348`)*
+4. **Masuk ke Dunia:** Klik **Join Server**. Anda akan disambut di Spawn Nexus peradaban utama.
+5. **Klaim Bekal Awal:** Gunakan perintah `/kit starter` untuk langsung menerima perlengkapan dasar, perkakas perintis, dan buku panduan kerajaan.
 
 ---
 
-### Integrasi Akun Web & Server
-Untuk keamanan transaksi, riwayat lelang, dan klaim hadiah musiman:
-- Kunjungi portal web resmi: [web.apexsions.com](https://web.apexsions.com).
-- Gunakan perintah `/link` di dalam server jika diminta untuk menyinkronkan status keamanan profil Anda dengan portal web.
+### Autentikasi Tanpa Hambatan (/premium)
+Untuk kenyamanan maksimal dan perlindungan identitas akun:
+- **Akun Original Java & Bedrock:** Anda dapat mengaktifkan fitur autentikasi otomatis (*Zero-Friction Auto-Login*) menggunakan perintah `/premium`.
+- Sistem menerapkan alur konfirmasi keamanan dua tahap dengan peringatan resiko, lalu melakukan **1x Kick By-Design** untuk mendaftarkan UUID otentik Anda secara permanen ke server otentikasi resmi Mojang / Microsoft.
+- Setelah login ulang, Anda tidak perlu lagi mengetik kata sandi secara manual setiap kali bergabung ke server!
+
+---
+
+### Tampilan Bersih Khusus Bedrock (Bedrock Clean Scoreboard)
+- Bagi pemain mobile dan console yang terhubung via Geyser-Spigot, server secara otomatis mengaktifkan pack scoreboard adaptif yang bersih dari artefak visual font kustom PC, memberikan kenyamanan antarmuka layar sentuh tanpa gangguan.
+
+---
+
+### Integrasi Web Platform & Profil Publik
+- Akses portal web resmi peradaban di: [https://web.apexsions.com](https://web.apexsions.com).
+- Profil publik pemain terlindungi dan dapat diakses menggunakan ID unik resmi: `https://web.apexsions.com/player/{uuid}`.
 MARKDOWN
         ,
         'created_at' => $now,
@@ -887,54 +929,79 @@ MARKDOWN
         'content' => <<<MARKDOWN
 # Daftar Perintah Resmi Server (Commands Cheat Sheet)
 
-Seluruh perintah resmi terdaftar aktif dan aman di bawah ekosistem plugin Apexsions. Gunakan panduan cepat ini sebagai referensi navigasi Anda:
+Seluruh perintah resmi terdaftar aktif dan aman di bawah 9 plugin modular ekosistem Apexsions. Server dilengkapi **Universal Essentials-Style PlayerResolver**, sehingga seluruh perintah yang membutuhkan target pemain (seperti transfer uang, kirim surat, atau barter) mendukung pencarian nama pemain online maupun offline dengan auto-completion tab cerdas!
 
 ---
 
-### 1. Navigasi & Eksplorasi Dasar
-- `/spawn` — Teleportasi kembali ke titik pusat peradaban utama.
-- `/rtp` — Teleportasi acak ke alam liar yang aman untuk mendirikan pemukiman baru.
-- `/sethome <nama>` — Menandai koordinat markas pribadi Anda.
+### 1. Navigasi, Kenyamanan & Kedaulatan Dasar
+- `/spawn` — Teleportasi kembali ke titik pusat Spawn Nexus peradaban utama.
+- `/rtp` — Teleportasi acak ke alam liar (*Wilderness*) yang aman untuk mendirikan pemukiman baru.
+- `/sethome <nama>` — Menandai koordinat rumah atau markas pribadi Anda.
 - `/home <nama>` — Teleportasi kembali ke titik rumah yang telah ditandai.
 - `/tpa <player>` — Mengirimkan permintaan teleportasi ramah ke pemain lain.
 - `/tpaccept` — Menerima permintaan teleportasi yang masuk.
+- `/sleep` — Melewatkan malam secara instan dengan siklus tidur tunggal (*Single-Player Sleep Engine*). Cukup 1 pemain yang tidur untuk mengubah malam menjadi pagi dan mereset badai!
+- `/premium` — Mengaktifkan mode auto-login instan bagi pemilik akun Minecraft Original.
 
 ---
 
 ### 2. Kerajaan & Kedaulatan Wilayah (`ApexsionsCore`)
 - `/kingdom` atau `/k` — Membuka GUI pemilihan dan status Tiga Kerajaan Berdaulat.
 - `/k info [nama]` — Melihat status ibukota, buff aktif, dan raja kerajaan.
+- `/k profile [player]` — Membuka profil RPG komprehensif, atribut tempur (HP, Defense, Strength, Speed, Crit), dan gelar kehormatan pemain.
 - `/k claim` — Mengklaim chunk wilayah (16x16 blok) atas nama kerajaan Anda.
 - `/k map` — Melihat radar wilayah dan perbatasan kerajaan di sekeliling Anda.
-- `/k deposit <jumlah>` — Menyetorkan Rupiah ke kas perbendaharaan nexus kerajaan.
+- `/k deposit <jumlah>` — Menyetorkan Rupiah ke kas perbendaharaan nexus kerajaan guna membayar pajak pemeliharaan wilayah (*upkeep*).
 
 ---
 
 ### 3. Ekonomi & Perdagangan (`ApexsionsEconomy` & `ApexsionsShop`)
 - `/money` atau `/balance` atau `/bal` — Memeriksa saldo dompet ganda (Rupiah `Rp` & Diamond `💎`).
-- `/pay <player> <jumlah>` — Mentransfer Rupiah secara instan dan aman ke pemain lain.
-- `/trade <player>` — Membuka antarmuka barter dua arah yang dilindungi sistem escrow.
+- `/pay <player> <jumlah>` — Mentransfer Rupiah secara instan dan aman ke pemain lain (mendukung pencarian pemain offline).
+- `/trade <player>` — Membuka antarmuka barter dua arah yang dilindungi sistem escrow anti-scam.
 - `/ah` — Membuka Pasar Lelang (Auction House) 24 jam.
 - `/ah sell <harga>` — Mendaftarkan item yang sedang dipegang ke pasar lelang.
-- `/shop` — Membuka katalog Toko Pasar Dinamis (*Dynamic Market*).
-- `/sell` — Menjual hasil tambang, panen, atau mob drop secara instan.
+- `/shop` — Membuka katalog Toko Pasar Dinamis (*Dynamic Market*) dan Kontrak Dagang Kerajaan (*Royal Trade Contracts*).
+- `/sell` — Menjual hasil tambang, panen, mob drop, atau ikan secara instan dengan harga dinamis.
 
 ---
 
 ### 4. Perlengkapan, Kit & Sihir (`ApexsionsCore` & `ApexsionsCustomEnchants`)
 - `/kits` atau `/kit` — Membuka GUI daftar kit perlengkapan berkala Anda.
-- `/kit preview <nama>` — Melihat pratinjau isi perlengkapan dan set bonus armor.
-- `/enchanter` atau `/ce` — Membuka altar penempaan 182 Custom Enchantments.
+- `/kit preview <nama>` — Melihat pratinjau isi perlengkapan dan efek set bonus armor.
+- `/enchanter` atau `/ce` — Membuka altar penempaan 182 Custom Enchantments (7 tingkatan kasta sihir).
+- `/tinkerer` — Mengorbankan peralatan sihir bekas untuk ditukarkan menjadi serbuk rahasia (*Secret Dust*).
 
 ---
 
-### 5. Battlepass & Komunikasi (`ApexsionsBattlepass` & `ApexsionsChat`)
-- `/abp` — Membuka antarmuka utama progres Battlepass musiman.
+### 5. Peti Karun & Hadiah Undian (`ApexsionsCrates`)
+- `/crateshop` atau `/keyshop` — Membuka Toko Kunci Peti Dual-Currency GUI (Rupiah & Diamond).
+- `/crate` — Melihat daftar peti hadiah, status kunci virtual, dan progresi jaminan *Pity*.
+- `/crate open <id>` — Membuka peti hadiah pilihan secara langsung.
+- `/crate preview <id>` — Memeriksa daftar item hadiah, persentase peluang drop rate, dan tier kelangkaan.
+
+---
+
+### 6. Ekosistem Bahari & Pemancingan (`ApexsionsFishing`)
+- `/fish` atau `/mancing` — Membuka Menu Utama Peradaban Memancing Apexsions.
+- `/vault` atau `/fishvault` — Membuka Fishing Vault (brankas ikan khusus hingga 30 halaman).
+- `/fish shop` — Membuka Toko Joran Kustom & Joran Auto-Catch.
+- `/fish vaultshop` — Membuka Toko Pembelian & Peningkatan Halaman Brankas Ikan.
+- `/fish sell` — Membuka Antarmuka Penjualan Ikan & Fish Delivery Market.
+- `/fish top` — Melihat Papan Peringkat Nelayan Terbaik (*Top Angler Leaderboard*).
+- `/fish journal` — Membuka ensiklopedia spesies ikan dan rekor berat tangkapan Anda.
+- `/fish bait` — Membuka Toko Kuota Umpan Virtual untuk memancing ikan langka.
+
+---
+
+### 7. Battlepass & Komunikasi (`ApexsionsBattlepass` & `ApexsionsChat`)
+- `/abp` — Membuka antarmuka utama progres Battlepass musiman (100 tier hadiah).
 - `/abp quests` — Memeriksa daftar misi harian dan mingguan Anda.
+- `/abp shop` — Membuka Toko EXP Berputar mingguan.
 - `/ch g` — Beralih ke Kanal Chat Global.
 - `/ch k` — Beralih ke Kanal Chat Kerajaan (rahasia internal sesama warga).
 - `/mail send <player> <pesan>` — Mengirimkan surat offline ke pemain lain.
-- `/report <player> <alasan>` — Melaporkan indikasi kecurangan ke meja piket staf.
+- `/report <player> <alasan>` — Melaporkan indikasi kecurangan ke meja piket staf pengawas.
 MARKDOWN
         ,
         'created_at' => $now,
@@ -948,21 +1015,33 @@ MARKDOWN
         'content' => <<<MARKDOWN
 # Sistem Progresi Level 1–100 & Gelar Peradaban
 
-Sistem progresi level di Apexsions (`ApexsionsCore`) dirancang untuk menghargai setiap dedikasi pemain dalam membangun peradaban. Level pemain berjalan dari **Level 1 hingga Level 100**, dilengkapi dengan sistem gelar dinamis yang terikat pada kerajaan yang Anda bela.
+Sistem progresi level di Apexsions (`ApexsionsCore`) dirancang untuk menghargai setiap dedikasi pemain dalam membangun peradaban. Level pemain berjalan dari **Level 1 hingga Level 100**, dilengkapi dengan sistem gelar dinamis yang terikat pada kerajaan yang Anda bela, formula progresi atribut RPG, serta sistem penyeimbang pertempuran pintar (*Smart PvP Normalizer*).
 
 ---
 
 ### Sumber Perolehan Experience (XP)
-1. **Pertambangan (Mining):** Menambang batu bara, emas murni, diamond, dan ancient debris memberikan limpahan XP peradaban.
-2. **Pertempuran (Slaying):** Mengalahkan monster malam, raid pillager, serta boss monster.
+1. **Pertambangan (Mining):** Menambang batu bara, tembaga, besi, emas murni, diamond, dan ancient debris memberikan limpahan XP peradaban.
+2. **Pertempuran (Slaying):** Mengalahkan monster malam, raid pillager, serta boss monster di alam liar.
 3. **Agraris (Farming):** Memanen gandum, wortel, tebu, dan nether wart dalam skala kerajaan.
-4. **Pembangunan & Kedaulatan:** Menyetorkan sumber daya ke nexus kerajaan dan berpartisipasi dalam pertempuran wilayah.
+4. **Ekosistem Bahari (Fishing):** Menangkap aneka ragam spesies ikan dari bioma air dan zona AFK peradaban.
+5. **Pembangunan & Kedaulatan:** Menyetorkan sumber daya ke nexus kerajaan dan memenangkan pertempuran wilayah.
+
+---
+
+### Formula Progresi Atribut RPG & Diminishing Returns
+Setiap kali level Anda naik, atribut tempur karakter Anda akan bertumbuh secara otomatis:
+- **Health (Maksimal HP):** HP = 20.0 + (Level × 0.2). Pada Level 100, pemain mencapai 40 HP (20 bar Hati penuh).
+- **Defense (Ketahanan Zirah):** Mengurangi persentase damage masuk menggunakan formula kurva saturasi non-linear: Reduksi = Defense / (Defense + 100). Mencegah efek kebal mutlak yang merusak sportivitas pertempuran.
+- **Strength (Kekuatan Pukulan Fisik):** Meningkatkan base melee damage sebesar +0.5% per level.
+- **Speed (Kelincahan Manuver):** Speed = 0.10 + (Level × 0.0005), memberikan peningkatan mobilitas tanpa memicu false-positive sistem anti-cheat.
+- **Crit Chance & Crit Damage:** Peluang serangan kritikal ekstra yang dibatasi oleh batas atas aman (*soft cap*).
+- **Prinsip Diminishing Returns:** Pertumbuhan stat tetap stabil namun kurva efisiensi melandai di level tinggi, menjamin pemain baru tetap memiliki peluang kompetitif melawan pemain veteran.
 
 ---
 
 ### Gelar Kehormatan Berdasarkan Kerajaan (Tiap 10 Level)
 
-Setiap mencapai tonggak level baru, gelar kehormatan pada chat prefix Anda akan berubah secara otomatis:
+Setiap mencapai tonggak level baru, gelar kehormatan pada chat prefix Anda akan berevolusi secara otomatis:
 
 | Level Tier | Gelar Zenithar (Solar) | Gelar Solterra (Crimson) | Gelar Sylvamoor (Azure) |
 | :--- | :--- | :--- | :--- |
@@ -984,6 +1063,7 @@ Setiap kelipatan 10 level, Anda dapat mengklaim peti pusaka eksklusif melalui pe
 - Koin Rupiah Server dan Diamond murni.
 - Buku Custom Enchantment tingkat Legendary & Fabled.
 - Crate Keys langka & Voucher potongan pasar lelang.
+- Cek profil atribut lengkap Anda kapan saja melalui perintah `/k profile`!
 MARKDOWN
         ,
         'created_at' => $now,
@@ -1162,31 +1242,45 @@ MARKDOWN
         'content' => <<<MARKDOWN
 # Klaim Wilayah Kerajaan & Proteksi Nexus
 
-Setiap jengkal tanah di Apexsions dilindungi oleh sistem kedaulatan tanah (`ApexsionsCore`). Pemain dapat memperluas wilayah pemukiman mereka dan melindunginya dari kehancuran maupun penjarahan.
+Setiap jengkal tanah di Apexsions dilindungi oleh sistem kedaulatan tanah mutlak (`ApexsionsCore`). Pemain dapat memperluas wilayah pemukiman mereka, membentuk persekutuan megah, dan melindunginya dari kehancuran maupun penjarahan liar.
 
 ---
 
 ### Cara Mengklaim Wilayah Baru
-1. Berdirilah di chunk (area 16x16 blok) yang belum memiliki pemilik.
-2. Gunakan perintah:
+1. Berdirilah di chunk (area 16x16 blok) yang belum dimiliki oleh pemain atau kerajaan lain.
+2. Gunakan perintah resmi:
    ```text
    /k claim
    ```
-3. Pastikan kas pribadi Anda memiliki saldo Rupiah yang mencukupi untuk biaya pemeliharaan awal.
-4. Periksa batas wilayah di sekeliling Anda dengan perintah `/k map`.
+3. Pastikan kas pribadi Anda memiliki saldo Rupiah yang mencukupi untuk biaya klaim awal.
+4. Periksa radar perbatasan wilayah di sekeliling Anda secara visual dengan perintah `/k map`.
 
 ---
 
-### Sistem Proteksi & Otoritas Chunk
+### Sistem Proteksi & Otoritas Chunk Mutlak
 Setelah chunk diklaim atas nama kerajaan Anda:
-- Pemain dari kerajaan lain **tidak dapat** menghancurkan blok, menaruh blok, membuka peti (*chest*), ataupun menggunakan pintu dan tombol.
-- Seluruh ledakan Creeper dan TNT di alam liar tidak akan merusak bangunan di dalam chunk yang terproteksi.
-- Hewan ternak dan tanaman Anda aman dari pencurian.
+- Pemain dari kerajaan lain **dilarang keras** menghancurkan blok (*break*), menaruh blok (*place*), membuka peti (*container*), maupun menggunakan pintu dan tuas redstone.
+- Seluruh ledakan Creeper, TNT liar, dan bola api Ghast otomatis dinetralisir sehingga tidak merusak konstruksi bangunan di dalam chunk yang terproteksi.
+- Hewan ternak, kuda perang, dan tanaman pertanian Anda aman dari pencurian dan injakan.
 
 ---
 
-### Kas Nexus & Pajak Wilayah
-Setiap kerajaan memiliki **Nexus Inti**. Jika kas perbendaharaan kerajaan habis akibat tidak ada warga yang membayar pajak atau menyetor donasi melalui `/k deposit`, proteksi chunk dapat melemah dan masuk ke dalam status *Vulnerable* (Rentan Penaklukan).
+### Brankas Wilayah & Formula Pajak Pemeliharaan (Upkeep Economy)
+Untuk menjaga keseimbangan dunia dan mencegah penimbunan tanah tak terpakai:
+- **Biaya Pemeliharaan Harian (Upkeep):** Setiap chunk yang diklaim membutuhkan biaya pemeliharaan berkala yang ditarik otomatis dari brankas perbendaharaan wilayah kerajaan.
+- **Setor Kas Wilayah:** Seluruh warga dapat menyetor dana ke brankas wilayah menggunakan perintah:
+  ```text
+  /k deposit <jumlah>
+  ```
+- **Masa Tenggang 72 Jam (Grace Period):** Jika kas perbendaharaan wilayah habis, chunk tidak langsung hilang, melainkan memasuki masa tenggang darurat 72 jam. Notifikasi darurat akan disiarkan kepada seluruh pemilik wilayah saat login.
+- **Penyitaan Otomatis (Auto-Unclaim):** Jika dalam waktu 72 jam kas tidak diisi ulang, proteksi chunk akan dilepaskan secara otomatis ke alam liar (*Wilderness*).
+
+---
+
+### Pembagian Peran & Flags Granular
+Pemimpin wilayah dapat mengatur izin akses secara mendalam melalui menu pengaturan wilayah:
+- Menentukan peran anggota: *Leader, Co-Leader, Officer, Member, Recruit*.
+- Mengaktifkan atau menonaktifkan izin spesifik: akses peti bersama, izin bertani, izin memancing, dan interaksi tuas.
 MARKDOWN
         ,
         'created_at' => $now,
@@ -1264,24 +1358,40 @@ MARKDOWN
         'content' => <<<MARKDOWN
 # Pasar Dinamis (Dynamic Market /shop & /sell)
 
-Toko server di Apexsions (`ApexsionsShop`) digerakkan oleh algoritma **Supply and Demand** otomatis. Harga komoditas tidak bersifat statis, melainkan bergerak dinamis sesuai volume transaksi seluruh pemain di server.
+Toko server di Apexsions (`ApexsionsShop`) digerakkan oleh algoritma **Supply and Demand** real-time dengan elastisitas harga terkalibrasi, siklus peristiwa makroekonomi (*Macroeconomic Event Cycles*), serta sistem Kontrak Dagang Kerajaan (*Royal Trade Contracts*).
 
 ---
 
 ### Kategori Komoditas Pasar Dinamis
-1. **Blocks (Bahan Bangunan):** Batu, deepslate, kayu, kaca, terracotta.
-2. **Farming (Hasil Pertanian):** Gandum, kentang, wortel, melon, labu, tebu.
-3. **Mob Drops (Hasil Berburu):** Rotten flesh, tulang, benang, gunpowder, ender pearl.
-4. **Ores (Hasil Tambang):** Batubara, besi, tembaga, emas murni, redstone, lapis lazuli.
-5. **Dyes (Pewarna):** Aneka ragam pewarna alami untuk kerajinan.
-6. **Food (Bahan Pangan):** Roti, daging matang, golden carrot.
+1. **Blocks (Bahan Bangunan):** Batu, deepslate, kayu hutan, kaca, terracotta, prisma laut.
+2. **Farming (Hasil Pertanian):** Gandum, kentang, wortel, melon, labu, tebu, nether wart.
+3. **Mob Drops (Hasil Berburu):** Rotten flesh, tulang, benang, gunpowder, ender pearl, slime ball.
+4. **Ores (Hasil Tambang):** Batubara, tembaga, besi, emas murni, redstone, lapis lazuli, diamond.
+5. **Dyes (Pewarna Alami):** Aneka ragam pewarna alami untuk tekstil dan dekorasi.
+6. **Food (Bahan Pangan):** Roti gandum, steak sapi matang, golden carrot bernutrisi tinggi.
 
 ---
 
-### Mekanisme Fluktuasi Harga
-- Jika banyak pemain menjual satu komoditas secara massal (contoh: puluhan ribu kentang), harga beli server untuk komoditas tersebut akan mengalami depresiasi (turun perlahan).
-- Jika pasar kekurangan stok dan banyak pemain membelinya, harga akan mengalami apresiasi (naik secara wajar).
-- Manfaatkan fluktuasi ini untuk menjadi pedagang peradaban yang jeli!
+### Mekanisme Fluktuasi Harga & Elastisitas Seimbang
+- **Depresiasi Pasokan Berlebih:** Jika banyak pemain menjual satu komoditas secara massal (misalnya puluhan ribu kentang), algoritma pasar secara bertahap menurunkan harga beli server untuk komoditas tersebut.
+- **Apresiasi Kelangkaan:** Jika permintaan tinggi dan stok menipis, harga akan naik secara wajar untuk merangsang produksi komoditas tersebut oleh para petani dan penambang.
+- **Balanced Elasticity:** Elastisitas harga dirancang agar harga komoditas tidak pernah jatuh ke angka nol, sehingga pemula selalu mendapatkan keuntungan yang adil atas kerja keras mereka.
+
+---
+
+### Siklus Peristiwa Makroekonomi (Market Event Cycles)
+Secara berkala, pasar peradaban mengalami peristiwa ekonomi musiman yang diumumkan ke seluruh server:
+- **Demam Emas (Gold Rush):** Nilai jual bijih emas dan tambang melonjak hingga +35%.
+- **Paceklik Panen (Agricultural Drought):** Permintaan hasil pertanian melonjak tinggi dengan harga tebus premium.
+- **Ekspansi Arsitektur (Building Boom):** Potongan harga pembelian material blok bangunan di `/shop`.
+- Pantau tren pasar terkini melalui menu **Tren Pasar** di dalam antarmuka `/shop`!
+
+---
+
+### Kontrak Dagang Kerajaan (Royal Trade Contracts)
+Warga kerajaan yang ambisius dapat mengambil kontrak pasokan berskala besar:
+- Setiap kontrak menetapkan target jumlah komoditas (misal: 10.000 batang tebu atau 2.500 batang besi) dan batas waktu penyelesaian.
+- Menyelesaikan kontrak memberikan pembayaran premi devisa di atas harga pasar reguler serta poin kemakmuran untuk kerajaan Anda!
 MARKDOWN
         ,
         'created_at' => $now,
@@ -1789,6 +1899,341 @@ MARKDOWN
         'created_at' => $now,
         'updated_at' => $now,
     ],
+    // =========================================================================
+    // KATEGORI 7: PETI KARUN & UNDIAN (CRATES) (Cat ID: 7)
+    // =========================================================================
+    [
+        'category_id' => 7,
+        'position' => 1,
+        'title' => 'Panduan Peti Hadiah (Crates), Animasi Virtual & Pity System',
+        'slug' => 'peti-hadiah-crates-dan-pity',
+        'content' => <<<MARKDOWN
+# Panduan Peti Hadiah (Crates), Animasi Virtual & Pity System
+
+<div class="fandom-infobox">
+    <div class="fandom-infobox-header">
+        <h4 class="fandom-infobox-title">PETI HADIAH PERADABAN</h4>
+        <div class="fandom-infobox-subtitle">ApexsionsCrates • Packet Engine</div>
+    </div>
+    <div class="fandom-infobox-image">
+        <img src="/assets/themes/apexsions/img/package-sions.jpg" alt="Peti Hadiah Apexsions">
+    </div>
+    <table class="fandom-infobox-table">
+        <tr><td class="fandom-infobox-label">Modul Resmi</td><td class="fandom-infobox-value">ApexsionsCrates</td></tr>
+        <tr><td class="fandom-infobox-label">Teknologi Animasi</td><td class="fandom-infobox-value">Virtual Display Entities (PacketEvents)</td></tr>
+        <tr><td class="fandom-infobox-label">Dampak Performa</td><td class="fandom-infobox-value">Zero-Lag (Tidak Membebani MSPT Server)</td></tr>
+        <tr><td class="fandom-infobox-label">Perlindungan Nasib</td><td class="fandom-infobox-value">Persistent Pity System (Jaminan Drop)</td></tr>
+        <tr><td class="fandom-infobox-label">Toko Kunci</td><td class="fandom-infobox-value"><code>/crateshop</code> (Rupiah &amp; Diamond)</td></tr>
+        <tr><td class="fandom-infobox-label">Antarmuka Menu</td><td class="fandom-infobox-value"><code>/crate</code> atau <code>/crates</code></td></tr>
+    </table>
+</div>
+
+`ApexsionsCrates` adalah sistem peti hadiah dan undian resmi dalam ekosistem **Apexsions — The Peak Civilizations**. Modul ini menyediakan sistem hadiah berbobot probabilitas tinggi, animasi pembukaan virtual berbasis manipulasi paket klien yang sangat ringan, serta jaminan perlindungan nasib (*Bad-Luck Protection Pity System*).
+
+---
+
+### Teknologi Animasi Virtual Berbasis Paket (Zero-Lag Display)
+- **Manipulasi Paket Klien (PacketEvents & ProtocolLib):** Seluruh animasi pembukaan peti dan roda putar item dikirimkan langsung sebagai entitas display virtual ke koneksi klien pemain.
+- **MSPT Bebas Beban:** Entitas ini sama sekali tidak terdaftar ke dalam pelacak entitas dunia server (*world entity tracker*). Ratusan pemain dapat membuka peti secara bersamaan tanpa menyebabkan lag server atau penurunan TPS (tetap stabil di 20.0 TPS).
+- **Hologram Interaktif:** Setiap blok peti fisik di dunia nyata dihiasi hologram dinamis yang menampilkan nama peti, tier kelangkaan, dan jumlah kunci virtual yang Anda miliki.
+- **Audio-Visual Realistis:** Dilengkapi efek suara roda roulette (*roulette tick*) yang melambat secara dramatis sebelum menetap pada item hadiah kemenangan Anda!
+
+---
+
+### Sistem Pity (Bad-Luck Protection) & Jaminan Hadiah
+Salah satu inovasi terbesar di Apexsions adalah penghapusan frustrasi pemain melalui **Sistem Pity Persisten**:
+- **Pencatatan Akumulatif Database:** Setiap pembukaan peti disimpan secara persisten di database berdasarkan UUID akun pemain.
+- **Ambang Batas Jaminan (Pity Threshold):** Jika pemain belum mendapatkan hadiah kelas *Legendary* atau *Apex* setelah sejumlah pembukaan tertentu, sistem secara otomatis menjamin drop hadiah tingkat tertinggi pada tarikan berikutnya!
+- **Hadiah Multi-Tipe:**
+  - Senjata dewa ber-enchant langka (`ApexsionsCustomEnchants`).
+  - Setoran saldo langsung (Rupiah & Diamond) via `ApexsionsEconomyAPI`.
+  - Poin EXP dan tiket level skip (`ApexsionsBattlepass`).
+  - Kunci peti tingkat lebih tinggi.
+MARKDOWN
+        ,
+        'created_at' => $now,
+        'updated_at' => $now,
+    ],
+    [
+        'category_id' => 7,
+        'position' => 2,
+        'title' => 'Toko Kunci Dual-Currency (/crateshop) & Milestone Rewards',
+        'slug' => 'toko-kunci-dan-milestone',
+        'content' => <<<MARKDOWN
+# Toko Kunci Dual-Currency (/crateshop) & Milestone Rewards
+
+Untuk memberikan akses keadilan bagi seluruh pemain, kunci peti di Apexsions dapat diperoleh melalui gameplay aktif, misi peradaban, maupun dibeli melalui Toko Kunci Dual-Currency terintegrasi.
+
+---
+
+### Toko Kunci Dual-Currency (/crateshop)
+- **Akses Toko:** Ketik perintah:
+  ```text
+  /crateshop
+  ```
+- **Dua Jalur Pembayaran:**
+  - **Kunci Standar (Rupiah):** Kunci peti harian dan peti petualang dapat dibeli menggunakan mata uang hasil panen dan tambang (**Rupiah**).
+  - **Kunci Elit & Mistis (Diamond):** Kunci peti berkasta tinggi (*Celestial, Mythic, Ancient*) dapat dibeli menggunakan **Diamond (💎)**.
+- **Transaksi Atomik Aman:** Seluruh pembelian kunci dieksekusi melalui transaksi atomik perbankan `ApexsionsEconomyAPI`, memastikan saldo tidak pernah terpotong ganda dan kunci selalu masuk ke dompet virtual Anda secara instan.
+
+---
+
+### Sistem Hadiah Pencapaian (Milestone Rewards)
+Di samping hadiah langsung dari dalam peti, pemain yang setia membuka peti akan menerima **Milestone Rewards** tambahan:
+- **Akumulasi Buka Peti:** Setiap kali total pembukaan peti Anda mencapai angka tonggak sejarah (misalnya 10x, 25x, 50x, 100x pembukaan).
+- **Klaim Tanpa Mengurangi Kunci:** Buka menu `/crate` dan klik tab **Milestones** untuk mengklaim hadiah pencapaian Anda secara cuma-cuma!
+- **Hadiah Milestone:** Berisi item kosmetik eksklusif, gelar chat kehormatan langka, dan kunci peti legendaris.
+
+---
+
+### Matriks Perintah Peti Hadiah
+| Perintah | Deskripsi | Hak Akses |
+| :--- | :--- | :---: |
+| `/crateshop` | Membuka Toko Kunci Peti Dual-Currency GUI | Seluruh Pemain |
+| `/crate` | Melihat katalog peti, status kunci, dan tab Milestone | Seluruh Pemain |
+| `/crate open <id>` | Membuka peti hadiah pilihan secara instan | Seluruh Pemain |
+| `/crate preview <id>` | Melihat pratinjau isi hadiah dan persentase drop rate | Seluruh Pemain |
+MARKDOWN
+        ,
+        'created_at' => $now,
+        'updated_at' => $now,
+    ],
+
+    // =========================================================================
+    // KATEGORI 8: EKOSISTEM BAHARI & PEMANCINGAN (FISHING) (Cat ID: 8)
+    // =========================================================================
+    [
+        'category_id' => 8,
+        'position' => 1,
+        'title' => 'Ekosistem Pemancingan Apexsions: Active Reel, Zona AFK & Formula Bobot Gauss',
+        'slug' => 'ekosistem-pemancingan-active-afk',
+        'content' => <<<MARKDOWN
+# Ekosistem Pemancingan Apexsions: Active Reel, Zona AFK & Formula Bobot Gauss
+
+<div class="fandom-infobox">
+    <div class="fandom-infobox-header">
+        <h4 class="fandom-infobox-title">EKOSISTEM BAHARI</h4>
+        <div class="fandom-infobox-subtitle">ApexsionsFishing • Dynamic Weight</div>
+    </div>
+    <div class="fandom-infobox-image">
+        <img src="/assets/themes/apexsions/img/realm-sylvamoor.jpg" alt="Ekosistem Pemancingan Apexsions">
+    </div>
+    <table class="fandom-infobox-table">
+        <tr><td class="fandom-infobox-label">Modul Resmi</td><td class="fandom-infobox-value">ApexsionsFishing</td></tr>
+        <tr><td class="fandom-infobox-label">Tingkatan Rarity</td><td class="fandom-infobox-value">6 Kasta (Common s/d Secret)</td></tr>
+        <tr><td class="fandom-infobox-label">Distribusi Berat</td><td class="fandom-infobox-value">Kurva Gauss (0.5 kg s/d 2.000 kg)</td></tr>
+        <tr><td class="fandom-infobox-label">Mekanik Utama</td><td class="fandom-infobox-value">Active Reel &amp; AFK Fishing Zones</td></tr>
+        <tr><td class="fandom-infobox-label">Brankas Ikan</td><td class="fandom-infobox-value"><code>/vault</code> (Hingga 30 Halaman)</td></tr>
+        <tr><td class="fandom-infobox-label">Perintah Utama</td><td class="fandom-infobox-value"><code>/fish</code> atau <code>/mancing</code></td></tr>
+    </table>
+</div>
+
+`ApexsionsFishing` adalah modul peradaban memancing komprehensif yang dirancang untuk **Apexsions — The Peak Civilizations**. Modul ini memadukan mekanik memancing aktif (*Active Reel*) dengan sistem pemancingan santai (*AFK Fishing Zones*) berpenghasilan terukur, sistem penyimpanan brankas ikan khusus, pasar penjualan dual-currency, serta papan peringkat nelayan terbaik (*Top Angler*).
+
+---
+
+### Active Reel vs Zona AFK Fishing Terintegrasi WorldEdit
+1. **Active Reel Engine (Mancing Aktif):**
+   - Saat pelampung kail disambar ikan, pemain memasuki minigame tarikan senar aktif.
+   - Kecepatan refleks dan ketepatan tarikan memberikan peluang strike lebih cepat, perolehan XP ganda, serta potensi bobot ikan yang lebih besar.
+2. **AFK Fishing Sanctuary (Zona Pemancingan Santai):**
+   - Wilayah khusus perairan peradaban yang diproteksi menggunakan zona kuboid WorldEdit.
+   - Pemain dapat melempar kail dan bersantai tanpa khawatir diserang monster malam. Tangkapan ikan terakumulasi secara aman ke dalam inventaris atau brankas pancing.
+
+---
+
+### 6-Tier Kelangkaan Ikan & Kurva Bobot Gauss (Gaussian Curve)
+Setiap spesimen ikan yang berhasil ditarik memiliki identitas unik berupa nama spesies, bioma penangkapan, dan berat badan spesimen (kg) yang dihitung secara matematis menggunakan kurva distribusi Gauss:
+
+| Tier Kelangkaan | Peluang Relatif | Rentang Bobot Spesimen | Contoh Spesies Ikan Peradaban |
+| :--- | :---: | :---: | :--- |
+| **COMMON** | 35.0% - 20.0% | 0.5 - 6.5 kg | Lele Rawa, Mujair Kolam, Ikan Mas, Nila Kali |
+| **UNCOMMON** | 15.0% - 8.0% | 2.0 - 9.0 kg | Kakap Merah, Bandeng Laut, Salmon Liar Arus Deras |
+| **RARE** | 4.5% - 3.5% | 10.0 - 50.0 kg | Tuna Sirip Biru Samudra, Kerapu Karang Raksasa |
+| **EPIC** | 1.8% - 1.2% | 40.0 - 220.0 kg | Pari Emas Surya, Marlin Biru, Barakuda Pemburu |
+| **LEGENDARY** | 0.4% - 0.25% | 150.0 - 800.0 kg | Kraken Muda Pesisir, Megalodon Bayi, Naga Air Danau |
+| **SECRET** | 0.05% - 0.03% | 500.0 - 2.000.0 kg | Leviathan Purbakala Sions, Abyssal Monarch |
+
+---
+
+### Formula Penjualan Ikan & Apresiasi Bobot Spesimen
+Nilai jual ikan di pasar peradaban sangat bergantung pada bobot fisik spesimen yang Anda tangkap:
+
+`Harga Jual Final = Base Price × [1 + ((Weight - Min Weight) / (Max Weight - Min Weight)) × 0.5] × Rod Bonus`
+
+- **Apresiasi Bobot Hingga +50%:** Ikan dengan berat mendekati rekor maksimal bernilai hingga 50% lebih mahal dibanding spesimen kecil dari spesies yang sama!
+- **Pencairan Atomik:** Hasil penjualan ikan disalurkan langsung ke rekening Rupiah Anda via `ApexsionsEconomyAPI`.
+MARKDOWN
+        ,
+        'created_at' => $now,
+        'updated_at' => $now,
+    ],
+    [
+        'category_id' => 8,
+        'position' => 2,
+        'title' => 'Fishing Vault (/vault), Toko Joran Kustom & Bursa Ikan Dinamis',
+        'slug' => 'fishing-vault-dan-bursa-ikan',
+        'content' => <<<MARKDOWN
+# Fishing Vault (/vault), Toko Joran Kustom & Bursa Ikan Dinamis
+
+Sebagai nelayan profesional di Apexsions, Anda dilengkapi fasilitas penyimpanan masif, toko peralatan memancing canggih, dan bursa penjualan hasil tangkapan.
+
+---
+
+### Fishing Vault Storage Multi-Halaman (/vault)
+- **Kapasitas Masif:** Mendukung hingga **30 Halaman** penyimpanan brankas khusus, di mana setiap halaman berkapasitas 54 slot (total hingga 1.620 slot penyimpanan ikan!).
+- **Filter Validasi Ketat (Fishing-Only Validation):** Untuk menjaga kebersihan data dan mencegah brankas dijadikan gudang perkakas umum, Fishing Vault **hanya menerima item tangkapan ikan resmi** Apexsions. Blok bangunan, senjata, dan armor vanilla otomatis ditolak saat dipindahkan.
+- **Skema Buka Kunci Halaman Dual-Currency (`/fish vaultshop`):**
+  - **Halaman 2 s/d 5:** Dibuka menggunakan koin **Rupiah** (biaya berjenjang Rp 25.000 s/d Rp 200.000).
+  - **Halaman 6 s/d 30:** Dibuka menggunakan **Diamond (💎)** (biaya berjenjang 25 💎 s/d 500 💎).
+
+---
+
+### Toko Joran Kustom & Joran Auto-Catch (/fish shop)
+- Buka katalog joran dengan perintah `/fish shop`.
+- **Auto-Catch Rods:** Joran berteknologi sihir yang mampu menarik kail secara otomatis tanpa perlu klik manual saat ikan memakan umpan. Sangat ideal untuk sesi memancing santai!
+- **Statistik Joran:** Memberikan pengganda harga jual (*Sell Multiplier*), peluang ekstra mendapatkan ikan tier atas, dan durabilitas tahan banting.
+
+---
+
+### Kuota Umpan Virtual (Bait System /fish bait)
+- Simpan umpan Anda secara digital tanpa memenuhi slot tas inventaris!
+- Beli kuota umpan virtual melalui menu `/fish bait`. Setiap lemparan kail dengan umpan aktif melipatgandakan peluang menangkap ikan tier Rare, Epic, Legendary, hingga Secret.
+
+---
+
+### Papan Peringkat Top Angler & Kebijakan Pengecualian Staf
+- Cek nelayan terhebat di server melalui perintah:
+  ```text
+  /fish top
+  ```
+- **Kebijakan Pengecualian 6-Lapis (Leaderboard Exemption):** Sesuai protokol integritas, seluruh akun staf (bobot ≥ 80), operator (OP), dan entitas Conclave otomatis dikecualikan dari papan peringkat, menjamin trofi nelayan sejati murni diraih oleh warga komunitas!
+MARKDOWN
+        ,
+        'created_at' => $now,
+        'updated_at' => $now,
+    ],
+
+    // =========================================================================
+    // KATEGORI 9: SISTEM TEMPUR RPG & KEDAULATAN (Cat ID: 9)
+    // =========================================================================
+    [
+        'category_id' => 9,
+        'position' => 1,
+        'title' => 'Sistem Tempur RPG: Smart PvP Normalizer & Ekosistem 6-Tier Monster',
+        'slug' => 'sistem-tempur-rpg-dan-monster',
+        'content' => <<<MARKDOWN
+# Sistem Tempur RPG: Smart PvP Normalizer & Ekosistem 6-Tier Monster
+
+<div class="fandom-infobox">
+    <div class="fandom-infobox-header">
+        <h4 class="fandom-infobox-title">SISTEM TEMPUR RPG</h4>
+        <div class="fandom-infobox-subtitle">Unified Combat Engine • Smart Normalizer</div>
+    </div>
+    <div class="fandom-infobox-image">
+        <img src="/assets/themes/apexsions/img/package-emperor.jpg" alt="Sistem Tempur RPG Apexsions">
+    </div>
+    <table class="fandom-infobox-table">
+        <tr><td class="fandom-infobox-label">Engine Tempur</td><td class="fandom-infobox-value">Unified Combat Engine (ApexsionsCore)</td></tr>
+        <tr><td class="fandom-infobox-label">Penyeimbang Duel</td><td class="fandom-infobox-value">Smart PvP Normalizer (Dynamic Compression)</td></tr>
+        <tr><td class="fandom-infobox-label">Tingkatan Monster</td><td class="fandom-infobox-value">6 Tier Ekosistem (Common s/d Primordial)</td></tr>
+        <tr><td class="fandom-infobox-label">Atribut Tempur</td><td class="fandom-infobox-value">Health, Defense, Strength, Speed, Crit</td></tr>
+        <tr><td class="fandom-infobox-label">Pemeriksaan Profil</td><td class="fandom-infobox-value"><code>/k profile</code> atau <code>/k info</code></td></tr>
+    </table>
+</div>
+
+Untuk menghadirkan pertempuran peradaban yang seru, mendalam, dan bebas dari fenomena *pay-to-win* yang merusak, Apexsions menerapkan **Unified Combat Engine** dengan sistem **Smart PvP Normalizer** dan **Ekosistem 6-Tier Monster**.
+
+---
+
+### Smart PvP Normalizer (Keadilan Duel Antar-Pemain)
+Banyak server RPG mengalami kegagalan di mana pemain donatur atau pemain lama dapat membunuh pemain lain dalam 1 kali tebasan (*one-hit kill*), membuat pemain baru merasa frustrasi dan meninggalkan pertempuran.
+
+Apexsions mengatasi masalah ini secara elegan:
+1. **Dynamic Compression Ratio:** Saat dua pemain bertarung dalam mode PvP, sistem secara cerdas mengompresi selisih damage dan defense berlebih dari Custom Enchants kasta tinggi.
+2. **Kemenangan Berbasis Skill:** Duel antar-pemain tetap ditentukan oleh kemampuan gerak lincah (*strafing*), ketepatan waktu ayunan pedang (*attack timing*), pemanfaatan medan tempur, serta koordinasi regu.
+3. **Kepuasan PvE Tetap Terjaga:** Kompresi ini **hanya berlaku pada duel antar-pemain (PvP)**. Saat melawan monster, dungeon boss, dan raid boss Valerius di alam liar (PvE), kekuatan penuh zirah dan senjata Anda bekerja 100% tanpa pemotongan!
+
+---
+
+### Ekosistem Monster 6-Tier & Dynamic Scaling
+Monster malam di alam liar dan gua tambang terdalam bukan sekadar zombie biasa. Mereka terbagi ke dalam **6 Tingkatan Kasta Ekosistem**:
+
+| Tier Monster | Penanda Visual / Aura | Skala Kekuatan | Ciri Khas & Perilaku Tempur |
+| :--- | :--- | :---: | :--- |
+| **Tier 1: COMMON** | Tanpa Aura Partikel | 1.0x | Monster standar vanilla dengan pergerakan normal. |
+| **Tier 2: UNCOMMON** | Partikel Percikan Abu | 1.5x | Kecepatan lari meningkat dan memiliki perisai zirah besi. |
+| **Tier 3: RARE** | Partikel Api Biru | 2.5x | Serangan menimbulkan efek racun dan knockback kuat. |
+| **Tier 4: ELITE** | Partikel Petir Ungu | 4.0x | Mampu memanggil anak buah (*minions*) dan kebal panah proyektil. |
+| **Tier 5: MYTHIC** | Partikel Aura Keemasan | 7.0x | Mini-boss wilayah dengan ledakan gempa dan regenerasi nyawa. |
+| **Tier 6: PRIMORDIAL** | Kabut Kegelapan Umbra | 15.0x | Monster anomali purba dengan serangan pengabaian armor (*true damage*). |
+
+---
+
+### Pengecekan Profil RPG Mandiri (/k profile)
+Pemain dapat memeriksa seluruh rincian atribut tempur, bonus kerajaan aktif, status set armor, serta akumulasi level progres peradaban melalui antarmuka grafis modern:
+```text
+/k profile [player]
+```
+MARKDOWN
+        ,
+        'created_at' => $now,
+        'updated_at' => $now,
+    ],
+    [
+        'category_id' => 9,
+        'position' => 2,
+        'title' => 'Mekanik Kedaulatan: Single-Player Sleep, Autentikasi /premium & Keamanan Anti-Exploit',
+        'slug' => 'mekanik-kedaulatan-dan-keamanan',
+        'content' => <<<MARKDOWN
+# Mekanik Kedaulatan: Single-Player Sleep, Autentikasi /premium & Keamanan Anti-Exploit
+
+Kualitas hidup (*Quality of Life*) dan keamanan berintegritas tinggi adalah prioritas fundamental dalam pengembangan ekosistem Apexsions.
+
+---
+
+### Subkultur Siklus Tidur (Single-Player Sleep Engine)
+- **Cukup 1 Pemain Tidur:** Di server publik biasa, seluruh pemain yang sedang online wajib tidur bersamaan agar malam terlewati—hal yang mustahil tercapai pada server berpopulasi aktif.
+- **Transisi Halus Sinematik:** Di Apexsions, saat salah satu warga merebahkan diri di atas ranjang:
+  - Seluruh server menerima siaran pesan sinematik:
+    ```text
+    [Apexsions] PlayerName sedang tidur. Melewati malam menuju fajar...
+    ```
+  - Waktu dunia beralih secara halus ke pagi hari.
+  - Hujan lebat dan badai petir otomatis dihentikan menjadi cuaca cerah benderang!
+
+---
+
+### Autentikasi Cerdas Tanpa Hambatan (/premium)
+Bagi pemain yang menggunakan akun Minecraft Original (baik Java Edition maupun Bedrock Edition via Microsoft):
+- Ketik perintah di lobi:
+  ```text
+  /premium
+  ```
+- **Prosedur Konfirmasi 2-Tahap:** Sistem akan menampilkan peringatan keamanan resmi untuk memastikan nama akun Anda benar-benar terdaftar di Mojang/Microsoft.
+- **1x Kick By-Design:** Server akan memutuskan sambungan Anda sekali saja untuk mendaftarkan enkripsi UUID resmi ke sistem autentikasi FastLogin.
+- **Bebas Password Selamanya:** Pada sesi login berikutnya, koneksi Anda diverifikasi secara kriptografis di latar belakang. Anda tidak perlu lagi repot mengetik `/login`!
+
+---
+
+### Universal Essentials-Style PlayerResolver
+- Seluruh perintah di 9 plugin ekosistem Apexsions (`/pay`, `/trade`, `/mail`, `/report`, `/bounty`, `/k profile`, `/crate key`, dll.) kini ditenagai oleh **Universal PlayerResolver**.
+- Memungkinkan pemain mengetik nama teman secara fleksibel, mendukung auto-completion tab instan untuk pemain online maupun pemain yang sedang offline.
+
+---
+
+### Sistem Keamanan Otoritatif Server (Watchdog & Anti-Exploit)
+Server dilindungi oleh serangkaian penjaga keamanan otomatis tanpa kompromi:
+1. **ClaimProtectionListener:** Perlindungan anti-griefing mutlak atas seluruh teritori berdaulat dan proteksi peti brankas.
+2. **Anti-Xray Ore Mining Spike Tracker:** Menganalisis rasio galian bijih tambang berharga secara statistik untuk mendeteksi penggunaan texture pack X-Ray ilegal.
+3. **Redstone Watchdog Listener:** Mendeteksi dan melumpuhkan osilasi mesin clock redstone cepat (*rapid loop*) yang berpotensi membebani kinerja CPU server.
+4. **Movement & Combat Security Gatekeeper:** Mencegah eksploitasi fly hack, speed hack, reach hacking, killaura, serta packet injection berbahaya.
+MARKDOWN
+        ,
+        'created_at' => $now,
+        'updated_at' => $now,
+    ],
+
 ];
 
 foreach ($wikiPages as $p) {

@@ -20,7 +20,7 @@
                         Pusat Pengetahuan &amp; Sejarah Peradaban Puncak
                     </h2>
                     <p class="text-muted small mb-3" style="line-height: 1.6;" data-i18n="wiki_portal_desc">
-                        Selamat datang di ensiklopedia resmi Apexsions. Temukan dokumentasi lengkap tentang 3 Kerajaan berdaulat, 11 hierarki kasta resmi, 28 Custom Enchants beserta efek set bonus armor, panduan pasar dinamis, serta peta jalan dari pengelana menjadi penguasa wilayah.
+                        Selamat datang di ensiklopedia resmi Apexsions. Temukan dokumentasi lengkap tentang 3 Kerajaan berdaulat, 11 hierarki kasta resmi, 182 Custom Enchants beserta efek set bonus armor, sistem undian Crates, ekosistem bahari Fishing, sistem tempur RPG, panduan pasar dinamis, serta peta jalan dari pengelana menjadi penguasa wilayah.
                     </p>
                     <div class="d-flex flex-wrap gap-2">
                         <span class="text-muted small me-1 align-self-center" data-i18n="wiki_popular_label">Topik Populer:</span>
@@ -29,19 +29,21 @@
                         <a href="{{ route('wiki.search', ['q' => 'kasta']) }}" class="badge text-decoration-none py-2 px-3" style="background: rgba(255, 255, 255, 0.06); color: var(--apx-gold-light); border: 1px solid rgba(255, 255, 255, 0.1);">#11KastaResmi</a>
                         <a href="{{ route('wiki.search', ['q' => 'enchants']) }}" class="badge text-decoration-none py-2 px-3" style="background: rgba(255, 255, 255, 0.06); color: var(--apx-gold-light); border: 1px solid rgba(255, 255, 255, 0.1);">#CustomEnchants</a>
                         <a href="{{ route('wiki.search', ['q' => 'lelang']) }}" class="badge text-decoration-none py-2 px-3" style="background: rgba(255, 255, 255, 0.06); color: var(--apx-gold-light); border: 1px solid rgba(255, 255, 255, 0.1);">#PasarLelang</a>
+                        <a href="{{ route('wiki.search', ['q' => 'crates']) }}" class="badge text-decoration-none py-2 px-3" style="background: rgba(255, 255, 255, 0.06); color: var(--apx-gold-light); border: 1px solid rgba(255, 255, 255, 0.1);">#Crates</a>
+                        <a href="{{ route('wiki.search', ['q' => 'fishing']) }}" class="badge text-decoration-none py-2 px-3" style="background: rgba(255, 255, 255, 0.06); color: var(--apx-gold-light); border: 1px solid rgba(255, 255, 255, 0.1);">#Fishing</a>
                     </div>
                 </div>
                 <div class="col-lg-4 text-lg-end">
                     <div class="row g-2 text-center">
                         <div class="col-6">
                             <div class="p-3 rounded-3" style="background: var(--apx-bg-deep); border: 1px solid var(--apx-border);">
-                                <div class="fs-4 fw-bold text-warning" style="font-family: 'Cinzel', Georgia, serif;">6</div>
+                                <div class="fs-4 fw-bold text-warning" style="font-family: 'Cinzel', Georgia, serif;">9</div>
                                 <div class="text-dim" style="font-size: 0.75rem; text-transform: uppercase;" data-i18n="wiki_stat_categories">Kategori Utama</div>
                             </div>
                         </div>
                         <div class="col-6">
                             <div class="p-3 rounded-3" style="background: var(--apx-bg-deep); border: 1px solid var(--apx-border);">
-                                <div class="fs-4 fw-bold text-white" style="font-family: 'Cinzel', Georgia, serif;">21+</div>
+                                <div class="fs-4 fw-bold text-white" style="font-family: 'Cinzel', Georgia, serif;">27</div>
                                 <div class="text-dim" style="font-size: 0.75rem; text-transform: uppercase;" data-i18n="wiki_stat_articles">Artikel Terinci</div>
                             </div>
                         </div>
@@ -53,7 +55,7 @@
                         </div>
                         <div class="col-6">
                             <div class="p-3 rounded-3" style="background: var(--apx-bg-deep); border: 1px solid var(--apx-border);">
-                                <div class="fs-4 fw-bold text-info" style="font-family: 'Cinzel', Georgia, serif;">28</div>
+                                <div class="fs-4 fw-bold text-info" style="font-family: 'Cinzel', Georgia, serif;">182</div>
                                 <div class="text-dim" style="font-size: 0.75rem; text-transform: uppercase;" data-i18n="wiki_stat_enchants">Custom Enchants</div>
                             </div>
                         </div>
