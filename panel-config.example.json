@@ -1,5 +1,7 @@
 {
   "panel_url": "https://stellar.jagoanhosting.id",
   "api_key": "YOUR_PTERODACTYL_CLIENT_API_KEY_HERE",
-  "server_id": "27e4a2f6"
+  "server_id": "27e4a2f6",
+  "website_url": "https://web.apexsions.com",
+  "bridge_secret": "YOUR_WEBBRIDGE_SECRET_KEY_HERE"
 }

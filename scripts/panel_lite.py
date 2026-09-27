@@ -32,6 +32,7 @@ import threading
 import ssl
 import uuid
 from pathlib import Path
+import webbrowser
 
 # GUI Libraries (Python Built-in)
 import tkinter as tk
@@ -287,6 +288,8 @@ class PanelLiteApp:
         self.panel_url = self.cfg.get("panel_url", "https://stellar.jagoanhosting.id")
         self.api_key = self.cfg.get("api_key", "")
         self.server_id = self.cfg.get("server_id", "27e4a2f6")
+        self.website_url = self.cfg.get("website_url", "https://web.apexsions.com")
+        self.bridge_secret = self.cfg.get("bridge_secret", "apexsions_bridge_key_live_2026")
 
         self.api = PterodactylAPI(self.panel_url, self.api_key, self.server_id)
 
@@ -419,7 +422,8 @@ class PanelLiteApp:
             ("files", "📁 File Manager"),
             ("network", "🌐 Network"),
             ("startup", "⚙️ Startup & Details"),
-            ("deploy", "🚀 SFTP Deploy")
+            ("deploy", "🚀 SFTP Deploy"),
+            ("website", "👑 Web Portal")
         ]
 
         for tab_id, tab_label in tabs:
@@ -452,6 +456,7 @@ class PanelLiteApp:
         self.frames["network"] = self.build_network_tab()
         self.frames["startup"] = self.build_startup_tab()
         self.frames["deploy"] = self.build_deploy_tab()
+        self.frames["website"] = self.build_website_tab()
 
         # Default active tab
         self.current_tab = None
@@ -483,6 +488,8 @@ class PanelLiteApp:
             self.refresh_network_list()
         elif tab_id == "startup":
             self.refresh_startup_details()
+        elif tab_id == "website":
+            self.refresh_website_health()
 
     # =========================================================================
     # TAB 1: CONSOLE
@@ -1417,6 +1424,235 @@ class PanelLiteApp:
                 self.deploy_log.insert("end", f"⚠️ [DEPLOY ERROR] SFTP upload failed. Check credentials or logs.\n")
 
         threading.Thread(target=_worker, daemon=True).start()
+
+    # =========================================================================
+    # TAB 6: WEBSITE OPS & QUICK LAUNCHER
+    # =========================================================================
+    def build_website_tab(self):
+        tab = tk.Frame(self.tab_container, bg=self.bg_dark)
+
+        # Header / Status Card
+        header_card = tk.Frame(tab, bg=self.card_bg, bd=0, highlightbackground=self.border_col, highlightthickness=1)
+        header_card.pack(fill="x", side="top", pady=(0, 10), ipady=4)
+
+        top_row = tk.Frame(header_card, bg=self.card_bg)
+        top_row.pack(fill="x", padx=15, pady=(8, 4))
+
+        tk.Label(top_row, text="👑 APEXSIONS WEB PLATFORM", font=("Segoe UI", 12, "bold"), fg=self.accent_gold, bg=self.card_bg).pack(side="left")
+        self.lbl_web_url = tk.Label(top_row, text=self.website_url, font=("Segoe UI", 10), fg=self.text_dim, bg=self.card_bg)
+        self.lbl_web_url.pack(side="left", padx=12)
+
+        btn_refresh = tk.Button(top_row, text="🔄 Check Health", font=("Segoe UI", 9, "bold"), bg=self.card_inner, fg=self.text_main, activebackground=self.border_col, activeforeground="#ffffff", bd=0, relief="flat", padx=12, pady=4, cursor="hand2", command=self.refresh_website_health)
+        btn_refresh.pack(side="right")
+
+        # Badges Row
+        badges_row = tk.Frame(header_card, bg=self.card_bg)
+        badges_row.pack(fill="x", padx=15, pady=(4, 6))
+
+        def make_badge(parent, label, default_val, default_color):
+            f = tk.Frame(parent, bg=self.card_bg)
+            f.pack(side="left", padx=(0, 24))
+            tk.Label(f, text=label, font=("Segoe UI", 8, "bold"), fg=self.text_dim, bg=self.card_bg).pack(anchor="w")
+            lbl = tk.Label(f, text=default_val, font=("Segoe UI", 9, "bold"), fg=default_color, bg=self.card_bg)
+            lbl.pack(anchor="w")
+            return lbl
+
+        self.lbl_web_status = make_badge(badges_row, "HTTP STATUS", "● Checking...", "#eab308")
+        self.lbl_web_latency = make_badge(badges_row, "RESPONSE LATENCY", "-- ms", self.text_main)
+        self.lbl_web_ssl = make_badge(badges_row, "SSL / TLS", "🔒 HTTPS Active", self.green_col)
+        self.lbl_web_bridge = make_badge(badges_row, "WEBBRIDGE API", "🔗 Standby", self.blue_col)
+
+        # Main Split Content: Left = Quick Launchers, Right = Tools & Console
+        content_frame = tk.Frame(tab, bg=self.bg_dark)
+        content_frame.pack(fill="both", expand=True)
+
+        # Left Column: Quick Admin & Portal Launchers (Cards)
+        left_col = tk.Frame(content_frame, bg=self.card_bg, bd=0, highlightbackground=self.border_col, highlightthickness=1, width=450)
+        left_col.pack(side="left", fill="both", padx=(0, 8), pady=0)
+        left_col.pack_propagate(False)
+
+        left_header = tk.Frame(left_col, bg=self.card_inner, height=36)
+        left_header.pack(fill="x", side="top")
+        tk.Label(left_header, text="🚀 QUICK ADMIN & PORTAL LAUNCHERS", font=("Segoe UI", 9, "bold"), fg=self.accent_gold, bg=self.card_inner).pack(side="left", padx=12, pady=8)
+
+        # Scrollable container for launcher buttons
+        launchers_canvas = tk.Canvas(left_col, bg=self.card_bg, bd=0, highlightthickness=0)
+        launchers_scrollbar = ttk.Scrollbar(left_col, orient="vertical", command=launchers_canvas.yview)
+        launchers_inner = tk.Frame(launchers_canvas, bg=self.card_bg)
+
+        launchers_inner.bind("<Configure>", lambda e: launchers_canvas.configure(scrollregion=launchers_canvas.bbox("all")))
+        canvas_win = launchers_canvas.create_window((0, 0), window=launchers_inner, anchor="nw")
+        launchers_canvas.bind("<Configure>", lambda e: launchers_canvas.itemconfig(canvas_win, width=e.width))
+        launchers_canvas.configure(yscrollcommand=launchers_scrollbar.set)
+
+        launchers_scrollbar.pack(side="right", fill="y")
+        launchers_canvas.pack(side="left", fill="both", expand=True, padx=6, pady=6)
+
+        launcher_items = [
+            ("👑 Executive Dashboard", "/admin/dashboard", "Pusat komando staf, telemetri TPS, RAM & antrean", self.accent_gold),
+            ("👥 Player Management 360", "/admin/players", "Pencarian pemain via UUID, saldo, level & sanksi", self.blue_col),
+            ("🛡 Moderation & Reports", "/admin/moderation", "Laporan pemain in-game & audit hukuman aktif", self.red_col),
+            ("💰 Economy & Ledger", "/admin/economy", "Ledger transaksi Rupiah & Diamond, lelang AH", self.green_col),
+            ("⚙️ Server & Maintenance", "/admin/server", "Kontrol pemeliharaan, whitelist, dan status node", "#a855f7"),
+            ("📦 Custom Plugins Registry", "/admin/custom-plugins", "Status 9 modul plugin & verifikasi safe actions", "#06b6d4"),
+            ("🏆 Leaderboard Hall of Fame", "/leaderboard", "Papan skor Level/EXP & Perbendaharaan publik", self.accent_gold),
+            ("🛍 Official Web Store", "/shop", "Etalase donasi kasta, paket & item peradaban", self.green_col),
+            ("🌐 Website Homepage", "/", "Halaman utama beranda sinematik Apexsions", self.text_main),
+        ]
+
+        for title, path, desc, accent in launcher_items:
+            full_url = f"{self.website_url.rstrip('/')}{path}"
+            card = tk.Frame(launchers_inner, bg=self.card_inner, bd=0, highlightbackground=self.border_col, highlightthickness=1)
+            card.pack(fill="x", pady=4, padx=4)
+
+            top_f = tk.Frame(card, bg=self.card_inner)
+            top_f.pack(fill="x", padx=10, pady=(8, 2))
+
+            tk.Label(top_f, text=title, font=("Segoe UI", 9, "bold"), fg=self.text_main, bg=self.card_inner).pack(side="left")
+            btn_open = tk.Button(top_f, text="Open ↗", font=("Segoe UI", 8, "bold"), bg=accent, fg="#111317", activebackground="#ffffff", activeforeground="#111317", bd=0, relief="flat", padx=10, pady=2, cursor="hand2", command=lambda u=full_url: self.open_browser(u))
+            btn_open.pack(side="right")
+
+            bot_f = tk.Frame(card, bg=self.card_inner)
+            bot_f.pack(fill="x", padx=10, pady=(0, 8))
+
+            tk.Label(bot_f, text=desc, font=("Segoe UI", 8), fg=self.text_dim, bg=self.card_inner).pack(side="left")
+            tk.Label(bot_f, text=path, font=("Consolas", 8), fg=self.accent_gold, bg=self.card_inner).pack(side="right")
+
+        # Right Column: WebBridge Diagnostics & Log Console
+        right_col = tk.Frame(content_frame, bg=self.bg_dark)
+        right_col.pack(side="right", fill="both", expand=True)
+
+        # Action bar on top of console
+        tools_bar = tk.Frame(right_col, bg=self.card_bg, bd=0, highlightbackground=self.border_col, highlightthickness=1)
+        tools_bar.pack(fill="x", side="top", pady=(0, 8))
+
+        tk.Label(tools_bar, text="🛠 Tools & Diagnostics:", font=("Segoe UI", 9, "bold"), fg=self.text_main, bg=self.card_bg).pack(side="left", padx=12, pady=8)
+
+        btn_probe = tk.Button(tools_bar, text="⚡ Test WebBridge Probe", font=("Segoe UI", 9, "bold"), bg=self.blue_col, fg="#ffffff", activebackground="#2563eb", activeforeground="#ffffff", bd=0, relief="flat", padx=12, pady=4, cursor="hand2", command=self.test_webbridge_probe)
+        btn_probe.pack(side="left", padx=6)
+
+        btn_folder = tk.Button(tools_bar, text="📂 Open Website Folder", font=("Segoe UI", 9, "bold"), bg=self.card_inner, fg=self.text_main, activebackground=self.border_col, activeforeground="#ffffff", bd=0, relief="flat", padx=12, pady=4, cursor="hand2", command=self.open_website_folder)
+        btn_folder.pack(side="left", padx=6)
+
+        btn_copy_admin = tk.Button(tools_bar, text="📋 Copy /admin URL", font=("Segoe UI", 9, "bold"), bg=self.card_inner, fg=self.text_dim, activebackground=self.border_col, activeforeground="#ffffff", bd=0, relief="flat", padx=12, pady=4, cursor="hand2", command=lambda: self.copy_to_clipboard(f"{self.website_url.rstrip('/')}/admin", "Admin URL"))
+        btn_copy_admin.pack(side="left", padx=6)
+
+        # Log Text Box
+        log_frame = tk.Frame(right_col, bg=self.console_bg, highlightbackground=self.border_col, highlightthickness=1)
+        log_frame.pack(fill="both", expand=True)
+
+        self.web_log = tk.Text(
+            log_frame,
+            bg=self.console_bg,
+            fg=self.text_main,
+            font=("Consolas", 10),
+            wrap="char",
+            bd=0,
+            padx=12,
+            pady=10,
+            relief="flat"
+        )
+        scroll_y = ttk.Scrollbar(log_frame, orient="vertical", command=self.web_log.yview)
+        self.web_log.configure(yscrollcommand=scroll_y.set)
+
+        scroll_y.pack(side="right", fill="y")
+        self.web_log.pack(side="left", fill="both", expand=True)
+
+        self.web_log_write("==========================================================")
+        self.web_log_write("👑 APEXSIONS WEB PLATFORM MANAGER (Azuriom & WebBridge)")
+        self.web_log_write(f"🌐 Target URL : {self.website_url}")
+        self.web_log_write(f"📁 Local Path : {ROOT_DIR / 'Website'}")
+        self.web_log_write("==========================================================\n")
+
+        return tab
+
+    def web_log_write(self, msg: str):
+        if hasattr(self, "web_log"):
+            t = time.strftime("%H:%M:%S")
+            self.web_log.insert("end", f"[{t}] {msg}\n")
+            self.web_log.see("end")
+
+    def open_browser(self, url: str):
+        try:
+            webbrowser.open(url)
+            self.web_log_write(f"🚀 [BROWSER] Opened: {url}")
+        except Exception as e:
+            self.web_log_write(f"❌ [BROWSER ERROR] {e}")
+
+    def open_website_folder(self):
+        web_dir = ROOT_DIR / "Website"
+        try:
+            if sys.platform == "win32":
+                os.startfile(str(web_dir))
+            else:
+                import subprocess
+                subprocess.Popen(["xdg-open", str(web_dir)])
+            self.web_log_write(f"📂 [EXPLORER] Opened local folder: {web_dir}")
+        except Exception as e:
+            self.web_log_write(f"❌ [FOLDER ERROR] {e}")
+
+    def copy_to_clipboard(self, text: str, label: str):
+        self.root.clipboard_clear()
+        self.root.clipboard_append(text)
+        self.web_log_write(f"📋 [CLIPBOARD] Copied {label}: {text}")
+        messagebox.showinfo("Copied", f"{label} copied to clipboard!\n{text}")
+
+    def refresh_website_health(self):
+        def _check():
+            self.safe_after(lambda: self.lbl_web_status.config(text="● Probing...", fg="#eab308"))
+            t0 = time.time()
+            try:
+                ctx = ssl.create_default_context()
+                ctx.check_hostname = False
+                ctx.verify_mode = ssl.CERT_NONE
+                req = urllib.request.Request(self.website_url, headers={"User-Agent": "ApexsionsPanel/1.0"})
+                with urllib.request.urlopen(req, context=ctx, timeout=8) as resp:
+                    latency = round((time.time() - t0) * 1000, 1)
+                    code = resp.status
+                    self.safe_after(lambda: self.lbl_web_status.config(text=f"● {code} OK", fg=self.green_col))
+                    self.safe_after(lambda: self.lbl_web_latency.config(text=f"⚡ {latency} ms", fg=self.green_col if latency < 500 else "#eab308"))
+                    self.safe_after(lambda: self.web_log_write(f"✅ [HEALTH] {self.website_url} is ONLINE (HTTP {code}, {latency} ms)"))
+            except Exception as e:
+                self.safe_after(lambda: self.lbl_web_status.config(text="● OFFLINE", fg=self.red_col))
+                self.safe_after(lambda: self.lbl_web_latency.config(text="-- ms", fg=self.red_col))
+                self.safe_after(lambda: self.web_log_write(f"❌ [HEALTH ERROR] {e}"))
+
+        threading.Thread(target=_check, daemon=True).start()
+
+    def test_webbridge_probe(self):
+        def _probe():
+            endpoint = f"{self.website_url.rstrip('/')}/api/apexsions-bridge/heartbeat"
+            self.safe_after(lambda: self.web_log_write(f"⚡ [PROBE] Sending WebBridge Heartbeat Probe to: {endpoint}"))
+            t0 = time.time()
+            try:
+                ctx = ssl.create_default_context()
+                ctx.check_hostname = False
+                ctx.verify_mode = ssl.CERT_NONE
+                payload = json.dumps({"probe": True, "source": "ApexsionsPanel"}).encode("utf-8")
+                req = urllib.request.Request(
+                    endpoint,
+                    data=payload,
+                    headers={
+                        "Content-Type": "application/json",
+                        "Accept": "application/json",
+                        "X-Apexsions-Key": self.bridge_secret,
+                        "User-Agent": "ApexsionsPanel/1.0"
+                    }
+                )
+                with urllib.request.urlopen(req, context=ctx, timeout=8) as resp:
+                    latency = round((time.time() - t0) * 1000, 1)
+                    body = resp.read().decode("utf-8")
+                    self.safe_after(lambda: self.lbl_web_bridge.config(text="🔗 Connected (200 OK)", fg=self.green_col))
+                    self.safe_after(lambda: self.web_log_write(f"🎉 [PROBE SUCCESS] Response ({latency} ms): {body}"))
+            except urllib.error.HTTPError as e:
+                err_text = e.read().decode("utf-8", errors="replace")
+                self.safe_after(lambda: self.lbl_web_bridge.config(text=f"⚠️ HTTP {e.code}", fg="#eab308"))
+                self.safe_after(lambda: self.web_log_write(f"⚠️ [PROBE HTTP {e.code}] {err_text}"))
+            except Exception as e:
+                self.safe_after(lambda: self.lbl_web_bridge.config(text="❌ Failed", fg=self.red_col))
+                self.safe_after(lambda: self.web_log_write(f"❌ [PROBE ERROR] {e}"))
+
+        threading.Thread(target=_probe, daemon=True).start()
 
     # =========================================================================
     # WEBSOCKET & BACKGROUND STATS WORKERS
