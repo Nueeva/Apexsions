@@ -332,26 +332,38 @@
 </div>
 @endsection
 
-@push('scripts')
+@push('footer-scripts')
 <script>
     let activeFilePath = '';
-    const editorModal = new bootstrap.Modal(document.getElementById('codeEditorModal'));
-    const editorTextarea = document.getElementById('fileEditorTextarea');
-    const loadingIndicator = document.getElementById('editorLoadingIndicator');
-    const editorContainer = document.getElementById('editorContainer');
-    const pathBadge = document.getElementById('editorPathBadge');
-    const saveStatus = document.getElementById('editorSaveStatus');
-    const btnSave = document.getElementById('btnSaveFile');
+    let editorModalInstance = null;
+
+    function getEditorModal() {
+        if (!editorModalInstance) {
+            const modalEl = document.getElementById('codeEditorModal');
+            if (modalEl && typeof bootstrap !== 'undefined') {
+                editorModalInstance = new bootstrap.Modal(modalEl);
+            }
+        }
+        return editorModalInstance;
+    }
 
     async function openFileEditor(filePath, fileName) {
         activeFilePath = filePath;
-        pathBadge.textContent = filePath;
-        saveStatus.textContent = '';
-        loadingIndicator.style.display = 'block';
-        editorContainer.style.display = 'none';
-        btnSave.disabled = true;
+        const pathBadge = document.getElementById('editorPathBadge');
+        const saveStatus = document.getElementById('editorSaveStatus');
+        const loadingIndicator = document.getElementById('editorLoadingIndicator');
+        const editorContainer = document.getElementById('editorContainer');
+        const editorTextarea = document.getElementById('fileEditorTextarea');
+        const btnSave = document.getElementById('btnSaveFile');
 
-        editorModal.show();
+        if (pathBadge) pathBadge.textContent = filePath;
+        if (saveStatus) saveStatus.textContent = '';
+        if (loadingIndicator) loadingIndicator.style.display = 'block';
+        if (editorContainer) editorContainer.style.display = 'none';
+        if (btnSave) btnSave.disabled = true;
+
+        const modal = getEditorModal();
+        if (modal) modal.show();
 
         try {
             const res = await fetch(`{{ route('apexsions-bridge.admin.server.files.content') }}?file=${encodeURIComponent(filePath)}`);
@@ -361,21 +373,29 @@
                 throw new Error(data.error || 'Gagal memuat isi berkas.');
             }
 
-            editorTextarea.value = data.content;
-            loadingIndicator.style.display = 'none';
-            editorContainer.style.display = 'block';
-            btnSave.disabled = false;
+            if (editorTextarea) editorTextarea.value = data.content;
+            if (loadingIndicator) loadingIndicator.style.display = 'none';
+            if (editorContainer) editorContainer.style.display = 'block';
+            if (btnSave) btnSave.disabled = false;
         } catch (err) {
-            loadingIndicator.innerHTML = `<span class="text-danger"><i class="bi bi-x-circle me-1"></i>${err.message}</span>`;
+            if (loadingIndicator) {
+                loadingIndicator.innerHTML = `<span class="text-danger"><i class="bi bi-x-circle me-1"></i>${err.message}</span>`;
+            }
         }
     }
 
     async function saveFileContent() {
         if (!activeFilePath) return;
 
-        btnSave.disabled = true;
-        saveStatus.className = 'text-warning small font-monospace';
-        saveStatus.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>Menyimpan ke server...';
+        const btnSave = document.getElementById('btnSaveFile');
+        const saveStatus = document.getElementById('editorSaveStatus');
+        const editorTextarea = document.getElementById('fileEditorTextarea');
+
+        if (btnSave) btnSave.disabled = true;
+        if (saveStatus) {
+            saveStatus.className = 'text-warning small font-monospace';
+            saveStatus.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>Menyimpan ke server...';
+        }
 
         try {
             const res = await fetch("{{ route('apexsions-bridge.admin.server.files.save') }}", {
@@ -387,23 +407,27 @@
                 },
                 body: JSON.stringify({
                     file: activeFilePath,
-                    content: editorTextarea.value
+                    content: editorTextarea ? editorTextarea.value : ''
                 })
             });
 
             const data = await res.json();
             if (data.success) {
-                saveStatus.className = 'text-success fw-bold small font-monospace';
-                saveStatus.textContent = '✓ Berhasil disimpan!';
-                setTimeout(() => { saveStatus.textContent = ''; }, 3000);
+                if (saveStatus) {
+                    saveStatus.className = 'text-success fw-bold small font-monospace';
+                    saveStatus.textContent = '✓ Berhasil disimpan!';
+                    setTimeout(() => { saveStatus.textContent = ''; }, 3000);
+                }
             } else {
                 throw new Error(data.error || 'Gagal menyimpan berkas.');
             }
         } catch (err) {
-            saveStatus.className = 'text-danger fw-bold small font-monospace';
-            saveStatus.textContent = `❌ ${err.message}`;
+            if (saveStatus) {
+                saveStatus.className = 'text-danger fw-bold small font-monospace';
+                saveStatus.textContent = `❌ ${err.message}`;
+            }
         } finally {
-            btnSave.disabled = false;
+            if (btnSave) btnSave.disabled = false;
         }
     }
 </script>

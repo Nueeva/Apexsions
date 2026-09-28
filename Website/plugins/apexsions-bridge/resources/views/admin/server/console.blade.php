@@ -281,7 +281,7 @@
 </div>
 @endsection
 
-@push('scripts')
+@push('footer-scripts')
 <script>
     let ws = null;
     let wsToken = null;
@@ -291,15 +291,27 @@
     let historyIndex = -1;
     const maxLogLines = 2000;
 
-    const screen = document.getElementById('consoleOutput');
-    const input = document.getElementById('commandInput');
-    const wsStatusDot = document.getElementById('wsStatusDot');
-    const autoScrollChk = document.getElementById('chkAutoScroll');
-    const badgeState = document.getElementById('badgeServerState');
-    const statCpu = document.getElementById('statCpu');
-    const statRam = document.getElementById('statRam');
-    const statDisk = document.getElementById('statDisk');
-    const statUptime = document.getElementById('statUptime');
+    let screen = null;
+    let input = null;
+    let wsStatusDot = null;
+    let autoScrollChk = null;
+    let badgeState = null;
+    let statCpu = null;
+    let statRam = null;
+    let statDisk = null;
+    let statUptime = null;
+
+    function getDOMElements() {
+        screen = document.getElementById('consoleOutput');
+        input = document.getElementById('commandInput');
+        wsStatusDot = document.getElementById('wsStatusDot');
+        autoScrollChk = document.getElementById('chkAutoScroll');
+        badgeState = document.getElementById('badgeServerState');
+        statCpu = document.getElementById('statCpu');
+        statRam = document.getElementById('statRam');
+        statDisk = document.getElementById('statDisk');
+        statUptime = document.getElementById('statUptime');
+    }
 
     // ANSI Color Code parser to HTML
     function ansiToHtml(text) {
@@ -334,6 +346,9 @@
     }
 
     function appendLog(rawText) {
+        if (!screen) screen = document.getElementById('consoleOutput');
+        if (!screen) return;
+
         const line = document.createElement('div');
         line.innerHTML = ansiToHtml(rawText);
         screen.appendChild(line);
@@ -343,18 +358,20 @@
             screen.removeChild(screen.firstChild);
         }
 
-        if (autoScrollChk.checked) {
+        if (autoScrollChk && autoScrollChk.checked) {
             screen.scrollTop = screen.scrollHeight;
         }
     }
 
     function clearConsole() {
-        screen.innerHTML = '';
+        if (!screen) screen = document.getElementById('consoleOutput');
+        if (screen) screen.innerHTML = '';
         appendLog('\u001b[33m--- Layar konsol telah dibersihkan ---\u001b[0m');
     }
 
     function downloadLogs() {
-        const text = screen.innerText;
+        if (!screen) screen = document.getElementById('consoleOutput');
+        const text = screen ? screen.innerText : '';
         const blob = new Blob([text], { type: 'text/plain' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
@@ -366,32 +383,50 @@
 
     // Connect WebSocket
     async function initWebSocket() {
+        getDOMElements();
+
         @if(!$isConfigured)
             appendLog('\u001b[31m[ERROR] Pterodactyl API Key belum diset. Klik tombol "Pterodactyl Settings" untuk mengonfigurasi.\u001b[0m');
-            wsStatusDot.className = 'badge rounded-pill bg-danger px-2 py-1 small';
-            wsStatusDot.textContent = '● Belum Dikonfigurasi';
+            if (wsStatusDot) {
+                wsStatusDot.className = 'badge rounded-pill bg-danger px-2 py-1 small';
+                wsStatusDot.textContent = '● Belum Dikonfigurasi';
+            }
             return;
         @endif
 
-        wsStatusDot.className = 'badge rounded-pill bg-warning text-dark px-2 py-1 small';
-        wsStatusDot.textContent = '● Meminta Token...';
+        if (wsStatusDot) {
+            wsStatusDot.className = 'badge rounded-pill bg-warning text-dark px-2 py-1 small';
+            wsStatusDot.textContent = '● Meminta Token...';
+        }
 
         try {
+            appendLog('\u001b[90m[SISTEM] Meminta token WebSocket dari server...\u001b[0m');
             const res = await fetch("{{ route('apexsions-bridge.admin.server.console.token') }}");
+            if (!res.ok) {
+                throw new Error(`HTTP error ${res.status}`);
+            }
             const data = await res.json();
+
+            if (!data.success || !data.token) {
+                throw new Error(data.error || 'Token autentikasi tidak valid.');
+            }
 
             wsToken = data.token;
             wsSocketUrl = data.socket;
 
+            appendLog('\u001b[32m[SISTEM] Token autentikasi siap. Menghubungkan ke gateway...\u001b[0m');
+
             // Connect via secure reverse proxy relay on the same origin (bypasses browser CORS & port 8080 blocking)
             const proto = window.location.protocol === 'https:' ? 'wss://' : 'ws://';
-            const relayUrl = proto + window.location.host + '/pterodactyl-ws/';
+            const relayUrl = proto + window.location.host + '/pterodactyl-ws';
 
             connectSocket(relayUrl, wsToken);
         } catch (err) {
             appendLog(`\u001b[31m[ERROR] Gagal mendapatkan WebSocket credentials: ${err.message}\u001b[0m`);
-            wsStatusDot.className = 'badge rounded-pill bg-danger px-2 py-1 small';
-            wsStatusDot.textContent = '● Gagal Terhubung';
+            if (wsStatusDot) {
+                wsStatusDot.className = 'badge rounded-pill bg-danger px-2 py-1 small';
+                wsStatusDot.textContent = '● Gagal Terhubung';
+            }
             setTimeout(initWebSocket, 6000);
         }
     }
@@ -401,13 +436,22 @@
             try { ws.close(); } catch(e){}
         }
 
-        wsStatusDot.textContent = '● Menghubungkan Socket...';
-        ws = new WebSocket(url);
+        if (wsStatusDot) {
+            wsStatusDot.className = 'badge rounded-pill bg-warning text-dark px-2 py-1 small';
+            wsStatusDot.textContent = '● Menghubungkan Socket...';
+        }
+
+        try {
+            ws = new WebSocket(url);
+        } catch (e) {
+            appendLog(`\u001b[31m[ERROR] Tidak dapat membuka WebSocket: ${e.message}\u001b[0m`);
+            return;
+        }
 
         ws.onopen = function() {
+            appendLog('\u001b[36m[WS] Terhubung ke relay Pterodactyl. Mengautentikasi token...\u001b[0m');
             // Send auth
             ws.send(JSON.stringify({ event: 'auth', args: [token] }));
-            appendLog('\u001b[36m[WS] Terhubung ke daemon Pterodactyl. Mengautentikasi...\u001b[0m');
         };
 
         ws.onmessage = function(event) {
@@ -418,9 +462,11 @@
 
                 if (ev === 'auth success') {
                     isConnected = true;
-                    wsStatusDot.className = 'badge rounded-pill bg-success px-2 py-1 small';
-                    wsStatusDot.textContent = '● Live WebSocket';
-                    appendLog('\u001b[32m[WS] Autentikasi berhasil. Live streaming aktif.\u001b[0m');
+                    if (wsStatusDot) {
+                        wsStatusDot.className = 'badge rounded-pill bg-success px-2 py-1 small';
+                        wsStatusDot.textContent = '● Live WebSocket';
+                    }
+                    appendLog('\u001b[32m[WS] Autentikasi berhasil! Live streaming konsol aktif.\u001b[0m');
                     // Request past logs
                     ws.send(JSON.stringify({ event: 'send logs', args: [null] }));
                 } else if (ev === 'console output') {
@@ -435,15 +481,16 @@
                         } catch(e){}
                     }
                 } else if (ev === 'token expiring') {
-                    // Refresh token
+                    appendLog('\u001b[33m[WS] Token akan kedaluwarsa, memperbarui...\u001b[0m');
                     fetch("{{ route('apexsions-bridge.admin.server.console.token') }}")
                         .then(r => r.json())
                         .then(d => {
-                            if (d.success && d.token && ws) {
+                            if (d.success && d.token && ws && ws.readyState === WebSocket.OPEN) {
                                 ws.send(JSON.stringify({ event: 'auth', args: [d.token] }));
                             }
                         });
                 } else if (ev === 'token expired') {
+                    appendLog('\u001b[31m[WS] Token kedaluwarsa. Melakukan re-autentikasi...\u001b[0m');
                     initWebSocket();
                 }
             } catch(e) {
@@ -451,49 +498,56 @@
             }
         };
 
-        ws.onclose = function() {
+        ws.onclose = function(e) {
             isConnected = false;
-            wsStatusDot.className = 'badge rounded-pill bg-secondary px-2 py-1 small';
-            wsStatusDot.textContent = '● Terputus (Reconnecting...)';
-            setTimeout(initWebSocket, 4000);
+            if (wsStatusDot) {
+                wsStatusDot.className = 'badge rounded-pill bg-secondary px-2 py-1 small';
+                wsStatusDot.textContent = '● Terputus (Reconnecting...)';
+            }
+            appendLog(`\u001b[33m[WS] Saluran terputus. Mencoba menghubungkan kembali dalam 5 detik...\u001b[0m`);
+            setTimeout(initWebSocket, 5000);
         };
 
-        ws.onerror = function() {
+        ws.onerror = function(e) {
             isConnected = false;
-            wsStatusDot.className = 'badge rounded-pill bg-danger px-2 py-1 small';
-            wsStatusDot.textContent = '● Error Koneksi';
+            if (wsStatusDot) {
+                wsStatusDot.className = 'badge rounded-pill bg-danger px-2 py-1 small';
+                wsStatusDot.textContent = '● Error Koneksi';
+            }
+            appendLog('\u001b[31m[WS ERROR] Terjadi kegagalan saluran WebSocket.\u001b[0m');
         };
     }
 
     function updateStatus(state) {
+        if (!state) return;
         state = state.toLowerCase();
-        badgeState.textContent = '● ' + state.toUpperCase();
-        if (state === 'running') {
-            badgeState.className = 'badge bg-success px-3 py-2 fw-bold font-monospace';
-        } else if (state === 'starting') {
-            badgeState.className = 'badge bg-warning text-dark px-3 py-2 fw-bold font-monospace';
-        } else if (state === 'stopping') {
-            badgeState.className = 'badge bg-warning text-dark px-3 py-2 fw-bold font-monospace';
-        } else {
-            badgeState.className = 'badge bg-danger px-3 py-2 fw-bold font-monospace';
+        if (badgeState) {
+            badgeState.textContent = '● ' + state.toUpperCase();
+            if (state === 'running') {
+                badgeState.className = 'badge bg-success px-3 py-2 fw-bold font-monospace';
+            } else if (state === 'starting' || state === 'stopping') {
+                badgeState.className = 'badge bg-warning text-dark px-3 py-2 fw-bold font-monospace';
+            } else {
+                badgeState.className = 'badge bg-danger px-3 py-2 fw-bold font-monospace';
+            }
         }
     }
 
     function updateStats(data) {
         if (!data) return;
-        if (data.cpu_absolute !== undefined) {
+        if (statCpu && data.cpu_absolute !== undefined) {
             statCpu.textContent = data.cpu_absolute.toFixed(1) + '%';
         }
-        if (data.memory_bytes !== undefined) {
+        if (statRam && data.memory_bytes !== undefined) {
             const usedGb = (data.memory_bytes / 1073741824).toFixed(2);
             const maxGb = ((data.memory_limit_bytes || 12902400000) / 1073741824).toFixed(1);
             statRam.textContent = `${usedGb} / ${maxGb} GB`;
         }
-        if (data.disk_bytes !== undefined) {
+        if (statDisk && data.disk_bytes !== undefined) {
             const diskGb = (data.disk_bytes / 1073741824).toFixed(1);
             statDisk.textContent = `${diskGb} GB`;
         }
-        if (data.uptime !== undefined) {
+        if (statUptime && data.uptime !== undefined) {
             const sec = Math.floor(data.uptime / 1000);
             const hrs = Math.floor(sec / 3600);
             const mins = Math.floor((sec % 3600) / 60);
@@ -507,12 +561,12 @@
         appendLog(`\u001b[33m❯ ${cmd}\u001b[0m`);
 
         // If WS is connected, send command via WebSocket for instantaneous response!
-        if (ws && isConnected) {
+        if (ws && isConnected && ws.readyState === WebSocket.OPEN) {
             ws.send(JSON.stringify({ event: 'send command', args: [cmd] }));
             return;
         }
 
-        // Fallback: Send via Laravel API
+        // Fallback: Send via Laravel REST API
         try {
             const res = await fetch("{{ route('apexsions-bridge.admin.server.console.command') }}", {
                 method: 'POST',
@@ -534,6 +588,9 @@
 
     function handleCommandSubmit(e) {
         e.preventDefault();
+        if (!input) input = document.getElementById('commandInput');
+        if (!input) return;
+
         const cmd = input.value.trim();
         if (!cmd) return;
 
@@ -544,29 +601,40 @@
         input.value = '';
     }
 
-    // History Navigation (Up / Down)
-    input.addEventListener('keydown', function(e) {
-        if (e.key === 'ArrowUp') {
-            e.preventDefault();
-            if (commandHistory.length > 0 && historyIndex > 0) {
-                historyIndex--;
-                input.value = commandHistory[historyIndex];
-            }
-        } else if (e.key === 'ArrowDown') {
-            e.preventDefault();
-            if (historyIndex < commandHistory.length - 1) {
-                historyIndex++;
-                input.value = commandHistory[historyIndex];
-            } else {
-                historyIndex = commandHistory.length;
-                input.value = '';
-            }
+    function setupEventListeners() {
+        getDOMElements();
+        if (input) {
+            input.addEventListener('keydown', function(e) {
+                if (e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    if (commandHistory.length > 0 && historyIndex > 0) {
+                        historyIndex--;
+                        input.value = commandHistory[historyIndex];
+                    }
+                } else if (e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    if (historyIndex < commandHistory.length - 1) {
+                        historyIndex++;
+                        input.value = commandHistory[historyIndex];
+                    } else {
+                        historyIndex = commandHistory.length;
+                        input.value = '';
+                    }
+                }
+            });
         }
-    });
+    }
 
-    // Start
-    document.addEventListener('DOMContentLoaded', () => {
+    // Auto-start whether loaded synchronously or after DOMContentLoaded
+    function bootConsole() {
+        setupEventListeners();
         initWebSocket();
-    });
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', bootConsole);
+    } else {
+        bootConsole();
+    }
 </script>
 @endpush
