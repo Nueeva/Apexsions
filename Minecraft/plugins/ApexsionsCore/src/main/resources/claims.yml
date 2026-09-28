@@ -24,6 +24,14 @@ purchase:
   kingdom-treasury-split: 1.00 # 100% biaya pembelian klaim disetorkan langsung ke Kas Kerajaan
   exempt-upper-dimension: true
 
+# Freehold Title / Sertifikat Hak Milik Permanen (Bebas Pajak Harian Selamanya)
+freehold:
+  enabled: true
+  cost-per-chunk: 25000.0 # Biaya beli putus per chunk
+  kingdom-treasury-split: 0.50 # 50% disetor ke Kas Kerajaan, 50% serapan deflasi
+  inactivity-timeout-days: 60 # Perlindungan server: sita hanya jika pemilik offline 60 hari berturut-turut
+
+
 # Progressive Tax & Upkeep Economy
 tax:
   enabled: true

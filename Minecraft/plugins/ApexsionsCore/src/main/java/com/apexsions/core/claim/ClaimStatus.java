@@ -6,7 +6,8 @@ package com.apexsions.core.claim;
 public enum ClaimStatus {
     ACTIVE("Aktif", "<green>AKTIF</green>"),
     GRACE_PERIOD("Masa Tenggang", "<gradient:#ff416c:#ff4b2b><b>MENUNGGAK PAJAK</b></gradient>"),
-    EXPIRED("Kedaluwarsa", "<dark_red>KEDALUWARSA</dark_red>");
+    EXPIRED("Kedaluwarsa", "<dark_red>KEDALUWARSA</dark_red>"),
+    FREEHOLD("Hak Milik", "<gradient:#ffe259:#ffa751><b>HAK MILIK (FREEHOLD)</b></gradient>");
 
     private final String displayName;
     private final String badge;

@@ -224,12 +224,24 @@ public class ClaimCommand implements CommandExecutor, TabCompleter {
             case "name", "rename", "setname" -> handleSetName(player, args);
             case "radius" -> handleRadius(player, args);
             case "outpost" -> handleOutpost(player, args);
+            case "freehold", "buypermanent", "shm", "hakmilik" -> handleFreehold(player, args);
             case "border", "visualizer", "view" -> handleBorder(player);
             case "list" -> handleList(player);
             default -> sendHelp(player);
         }
 
         return true;
+    }
+
+    private void handleFreehold(Player player, String[] args) {
+        if (args.length >= 2 && args[1].equalsIgnoreCase("all")) {
+            var res = getClaimManager().purchaseFreeholdAll(player);
+            player.sendMessage(mm.deserialize(res.message()));
+            return;
+        }
+
+        var res = getClaimManager().purchaseFreeholdCurrentChunk(player);
+        player.sendMessage(mm.deserialize(res.message()));
     }
 
     private void handleBorder(Player player) {
@@ -557,6 +569,7 @@ public class ClaimCommand implements CommandExecutor, TabCompleter {
         player.sendMessage(mm.deserialize("<yellow>/claim name <nama></yellow> <gray>- Beri label/nama khusus pada petak tanah ini</gray>"));
         player.sendMessage(mm.deserialize("<yellow>/claim radius <1|2></yellow> <gray>- Klaim cepat 3x3 atau 5x5 petak di sekeliling Anda</gray>"));
         player.sendMessage(mm.deserialize("<yellow>/claim outpost <set|remove></yellow> <gray>- Tetapkan petak sebagai Pos Depan (Diskon Pajak 50%)</gray>"));
+        player.sendMessage(mm.deserialize("<yellow>/claim freehold [all]</yellow> <gray>- Beli Sertifikat Hak Milik Permanen (Bebas Pajak Selamanya)</gray>"));
         player.sendMessage(mm.deserialize("<yellow>/claim unclaim [chunkX] [chunkZ]</yellow> <gray>- Melepas klaim (bisa dari jarak jauh)</gray>"));
         player.sendMessage(mm.deserialize("<yellow>/claim unclaimall</yellow> <gray>- Melepas seluruh klaim tanah Anda</gray>"));
         player.sendMessage(mm.deserialize("<yellow>/claim bank</yellow> <gray>- Info saldo brankas, pajak progresif, & masa tenggang</gray>"));
@@ -583,7 +596,7 @@ public class ClaimCommand implements CommandExecutor, TabCompleter {
 
         List<String> completions = new ArrayList<>();
         if (args.length == 1) {
-            List<String> subs = new ArrayList<>(List.of("gui", "home", "tp", "border", "name", "rename", "radius", "outpost", "info", "bank", "deposit", "withdraw", "flag", "role", "trust", "untrust", "list", "unclaim", "unclaimall"));
+            List<String> subs = new ArrayList<>(List.of("gui", "home", "tp", "border", "name", "rename", "radius", "outpost", "freehold", "info", "bank", "deposit", "withdraw", "flag", "role", "trust", "untrust", "list", "unclaim", "unclaimall"));
             if (sender.hasPermission("apexsions.admin") || sender.isOp()) {
                 subs.add("admin");
                 subs.add("reload");
@@ -591,6 +604,11 @@ public class ClaimCommand implements CommandExecutor, TabCompleter {
             for (String s : subs) {
                 if (s.startsWith(args[0].toLowerCase())) completions.add(s);
             }
+            return completions;
+        }
+
+        if (args.length == 2 && args[0].equalsIgnoreCase("freehold")) {
+            if ("all".startsWith(args[1].toLowerCase())) completions.add("all");
             return completions;
         }
 
