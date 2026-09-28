@@ -161,6 +161,23 @@ Route::middleware(['web', 'admin-access'])->prefix('admin')->name('admin.')->gro
         Route::post('/alerts/{id}/acknowledge', [ServerAdminController::class, 'acknowledgeAlert'])->name('alerts.acknowledge');
         Route::post('/alerts/{id}/resolve', [ServerAdminController::class, 'resolveAlert'])->name('alerts.resolve');
         Route::post('/map-settings', [ServerAdminController::class, 'updateMapSettings'])->name('map.settings');
+
+        // Pterodactyl Live Console & Terminal
+        Route::get('/console', [ServerAdminController::class, 'console'])->name('console');
+        Route::post('/console/command', [ServerAdminController::class, 'sendCommand'])->name('console.command');
+        Route::get('/console/websocket-token', [ServerAdminController::class, 'getWebsocketToken'])->name('console.token');
+        Route::post('/power', [ServerAdminController::class, 'sendPowerSignal'])->name('power');
+
+        // Pterodactyl File Manager & Editor
+        Route::get('/files', [ServerAdminController::class, 'files'])->name('files');
+        Route::get('/files/content', [ServerAdminController::class, 'getFileContent'])->name('files.content');
+        Route::post('/files/save', [ServerAdminController::class, 'saveFileContent'])->name('files.save');
+        Route::post('/files/upload', [ServerAdminController::class, 'uploadFile'])->name('files.upload');
+        Route::post('/files/delete', [ServerAdminController::class, 'deleteFile'])->name('files.delete');
+        Route::post('/files/create-folder', [ServerAdminController::class, 'createFolder'])->name('files.create-folder');
+
+        // Pterodactyl Settings
+        Route::post('/settings/pterodactyl', [ServerAdminController::class, 'updatePterodactylSettings'])->name('settings.pterodactyl');
     });
 
     // Custom Plugin Control & Capability System

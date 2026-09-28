@@ -208,6 +208,18 @@ class ApexsionsBridgeServiceProvider extends BasePluginServiceProvider
                 'route' => 'apexsions-bridge.admin.server.index',
                 'permission' => 'admin.users',
             ],
+            'apexsions-server-console' => [
+                'name' => 'Live Console',
+                'icon' => 'bi bi-terminal-fill',
+                'route' => 'apexsions-bridge.admin.server.console',
+                'permission' => 'admin.users',
+            ],
+            'apexsions-server-files' => [
+                'name' => 'Server File Manager',
+                'icon' => 'bi bi-folder2-open',
+                'route' => 'apexsions-bridge.admin.server.files',
+                'permission' => 'admin.users',
+            ],
             'apexsions-plugins' => [
                 'name' => 'Custom Plugins',
                 'icon' => 'bi bi-cpu-fill',

@@ -12,9 +12,15 @@
             </h2>
             <p class="text-white-50 small mb-0">Pusat pemantauan kesehatan Paper API, eksekusi tindakan server terproteksi, dan manajemen mode pemeliharaan.</p>
         </div>
-        <div class="d-flex gap-2">
+        <div class="d-flex gap-2 flex-wrap">
+            <a href="{{ route('apexsions-bridge.admin.server.console') }}" class="btn btn-warning btn-sm shadow-sm fw-bold text-dark">
+                <i class="bi bi-terminal-fill me-1"></i>Live Console
+            </a>
+            <a href="{{ route('apexsions-bridge.admin.server.files') }}" class="btn btn-outline-warning btn-sm shadow-sm">
+                <i class="bi bi-folder2-open me-1"></i>File Manager
+            </a>
             <a href="{{ route('apexsions-bridge.admin.server.actions') }}" class="btn btn-outline-warning btn-sm shadow-sm">
-                <i class="bi bi-journal-text me-1"></i>Server Action History
+                <i class="bi bi-journal-text me-1"></i>Server Actions
             </a>
             <a href="{{ route('apexsions-bridge.admin.server.plugins') }}" class="btn btn-outline-warning btn-sm shadow-sm">
                 <i class="bi bi-puzzle-fill me-1"></i>Plugin Status
@@ -22,7 +28,7 @@
             <a href="{{ route('apexsions-bridge.admin.server.metrics') }}" class="btn btn-outline-warning btn-sm shadow-sm">
                 <i class="bi bi-graph-up me-1"></i>Historical Metrics
             </a>
-            <button type="button" class="btn btn-warning btn-sm shadow-sm fw-bold text-dark" data-bs-toggle="modal" data-bs-target="#quickActionModal">
+            <button type="button" class="btn btn-outline-light btn-sm shadow-sm" data-bs-toggle="modal" data-bs-target="#quickActionModal">
                 <i class="bi bi-play-circle-fill me-1"></i>Safe Action Desk
             </button>
         </div>
@@ -32,7 +38,7 @@
     <div class="card bg-dark border-secondary border-opacity-25 shadow-sm mb-4">
         <div class="card-body p-4">
             <div class="row align-items-center g-3">
-                <div class="col-lg-8">
+                <div class="col-lg-7">
                     <div class="d-flex align-items-center gap-3 mb-2 flex-wrap">
                         <span class="badge {{ $serverStatus['badge_class'] }} px-3 py-2 fs-6 shadow-sm fw-bold font-monospace">
                             {{ $serverStatus['label'] }}
@@ -53,18 +59,55 @@
                         Sumber Data: <span class="text-warning text-opacity-75">{{ $serverStatus['source'] }}</span>
                     </div>
                 </div>
-                <div class="col-lg-4 text-lg-end d-flex gap-2 justify-content-lg-end align-items-center flex-wrap">
+                <div class="col-lg-5 text-lg-end d-flex gap-2 justify-content-lg-end align-items-center flex-wrap">
+                    <!-- Power Control Dropdown -->
+                    <div class="btn-group btn-group-sm shadow-sm">
+                        <button type="button" class="btn btn-outline-warning dropdown-toggle fw-bold" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-power me-1"></i>Power Actions
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end shadow">
+                            <li><h6 class="dropdown-header text-warning small font-monospace">Pterodactyl Daemon</h6></li>
+                            <li>
+                                <form action="{{ route('apexsions-bridge.admin.server.power') }}" method="POST" onsubmit="return confirm('Mulai jalankan server?');">
+                                    @csrf
+                                    <input type="hidden" name="signal" value="start">
+                                    <button type="submit" class="dropdown-item text-success"><i class="bi bi-play-circle me-2"></i>Start Server</button>
+                                </form>
+                            </li>
+                            <li>
+                                <form action="{{ route('apexsions-bridge.admin.server.power') }}" method="POST" onsubmit="return confirm('Restart server sekarang?');">
+                                    @csrf
+                                    <input type="hidden" name="signal" value="restart">
+                                    <button type="submit" class="dropdown-item text-warning"><i class="bi bi-arrow-repeat me-2"></i>Restart Server</button>
+                                </form>
+                            </li>
+                            <li>
+                                <form action="{{ route('apexsions-bridge.admin.server.power') }}" method="POST" onsubmit="return confirm('Hentikan server secara aman?');">
+                                    @csrf
+                                    <input type="hidden" name="signal" value="stop">
+                                    <button type="submit" class="dropdown-item text-danger"><i class="bi bi-stop-circle me-2"></i>Stop Server</button>
+                                </form>
+                            </li>
+                            <li><hr class="dropdown-divider border-secondary"></li>
+                            <li>
+                                <a class="dropdown-item text-info" href="{{ route('apexsions-bridge.admin.server.console') }}">
+                                    <i class="bi bi-terminal me-2"></i>Buka Live Console
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
                     @if($maintenance->isEnabled())
                         <form action="{{ route('apexsions-bridge.admin.server.maintenance.toggle') }}" method="POST" class="d-inline" onsubmit="return confirm('Apakah Anda yakin ingin menonaktifkan Maintenance Mode dan membuka kembali akses server untuk pemain?');">
                             @csrf
                             <input type="hidden" name="is_enabled" value="0">
                             <button type="submit" class="btn btn-success btn-sm px-3 py-2 fw-bold shadow-sm">
-                                <i class="bi bi-unlock-fill me-1"></i>Buka Server (Matikan Maintenance)
+                                <i class="bi bi-unlock-fill me-1"></i>Buka Server
                             </button>
                         </form>
                     @endif
                     <button type="button" class="btn {{ $maintenance->isEnabled() ? 'btn-outline-danger' : 'btn-outline-warning' }} btn-sm px-3 py-2 fw-medium shadow-sm" data-bs-toggle="modal" data-bs-target="#maintenanceModal">
-                        <i class="bi bi-tools me-1"></i>{{ $maintenance->isEnabled() ? 'Konfigurasi Pemeliharaan' : 'Aktifkan Mode Pemeliharaan' }}
+                        <i class="bi bi-tools me-1"></i>{{ $maintenance->isEnabled() ? 'Konfigurasi Pemeliharaan' : 'Mode Pemeliharaan' }}
                     </button>
                 </div>
             </div>
