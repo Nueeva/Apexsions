@@ -202,6 +202,13 @@ public class JobService {
                     .replace("%job%", def.getName())
                     .replace("%level%", String.valueOf(data.getLevel()));
             player.sendMessage(mm.deserialize(lvlMsg));
+
+            // Reward a tiny amount of Core XP on Job Level Up (5 Core XP)
+            if (ApexsionsCoreProvider.isAvailable()) {
+                try {
+                    ApexsionsCoreProvider.get().addXp(player.getUniqueId(), 5L, com.apexsions.core.level.xp.XpSource.BATTLEPASS_QUEST);
+                } catch (Throwable ignored) {}
+            }
         }
 
         // Save

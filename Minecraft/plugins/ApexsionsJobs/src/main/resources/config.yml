@@ -22,8 +22,8 @@ database:
 anti-abuse:
   placed-blocks-protection: true # Blok yang ditaruh player tidak memberi uang saat ditambang
   spawner-mob-multiplier: 0.1 # Mob dari Spawner hanya memberi 10% gaji/EXP (mencegah AFK farm)
-  daily-base-cap: 150000.0 # Gaji maksimal harian dasar (Lv. 1)
-  daily-cap-per-level: 10000.0 # Tambahan batas gaji harian per kenaikan level job
+  daily-base-cap: 1500.0 # Gaji maksimal harian dasar (Lv. 1) - setara 6 Diamond di shop
+  daily-cap-per-level: 50.0 # Tambahan batas gaji harian per kenaikan level job
 
 # Integrasi Pajak Kerajaan (ApexsionsCore)
 kingdom-tax:
@@ -38,27 +38,27 @@ jobs:
     desc: "Menambang batuan, bijih mineral, dan permata bawah tanah."
     icon: "DIAMOND_PICKAXE"
     max-level: 100
-    base-pay: 15.0
-    base-exp: 5.0
+    base-pay: 0.5
+    base-exp: 0.2
     items:
-      - { target: "STONE", pay: 5.0, exp: 2.0 }
-      - { target: "COBBLESTONE", pay: 3.0, exp: 1.0 }
-      - { target: "DEEPSLATE", pay: 8.0, exp: 3.0 }
-      - { target: "COAL_ORE", pay: 25.0, exp: 10.0 }
-      - { target: "DEEPSLATE_COAL_ORE", pay: 30.0, exp: 12.0 }
-      - { target: "COPPER_ORE", pay: 30.0, exp: 12.0 }
-      - { target: "IRON_ORE", pay: 50.0, exp: 20.0 }
-      - { target: "DEEPSLATE_IRON_ORE", pay: 60.0, exp: 25.0 }
-      - { target: "GOLD_ORE", pay: 80.0, exp: 35.0 }
-      - { target: "DEEPSLATE_GOLD_ORE", pay: 100.0, exp: 40.0 }
-      - { target: "REDSTONE_ORE", pay: 40.0, exp: 15.0 }
-      - { target: "LAPIS_ORE", pay: 45.0, exp: 18.0 }
-      - { target: "DIAMOND_ORE", pay: 250.0, exp: 100.0 }
-      - { target: "DEEPSLATE_DIAMOND_ORE", pay: 300.0, exp: 120.0 }
-      - { target: "EMERALD_ORE", pay: 500.0, exp: 200.0 }
-      - { target: "DEEPSLATE_EMERALD_ORE", pay: 600.0, exp: 250.0 }
-      - { target: "ANCIENT_DEBRIS", pay: 1000.0, exp: 500.0 }
-      - { target: "NETHER_QUARTZ_ORE", pay: 35.0, exp: 15.0 }
+      - { target: "STONE", pay: 0.15, exp: 0.1 }
+      - { target: "COBBLESTONE", pay: 0.10, exp: 0.05 }
+      - { target: "DEEPSLATE", pay: 0.20, exp: 0.15 }
+      - { target: "COAL_ORE", pay: 0.50, exp: 0.4 }
+      - { target: "DEEPSLATE_COAL_ORE", pay: 0.60, exp: 0.5 }
+      - { target: "COPPER_ORE", pay: 0.40, exp: 0.4 }
+      - { target: "IRON_ORE", pay: 1.50, exp: 0.8 }
+      - { target: "DEEPSLATE_IRON_ORE", pay: 1.80, exp: 1.0 }
+      - { target: "GOLD_ORE", pay: 2.50, exp: 1.2 }
+      - { target: "DEEPSLATE_GOLD_ORE", pay: 3.00, exp: 1.5 }
+      - { target: "REDSTONE_ORE", pay: 0.80, exp: 0.5 }
+      - { target: "LAPIS_ORE", pay: 1.00, exp: 0.6 }
+      - { target: "DIAMOND_ORE", pay: 25.0, exp: 5.0 }
+      - { target: "DEEPSLATE_DIAMOND_ORE", pay: 30.0, exp: 6.0 }
+      - { target: "EMERALD_ORE", pay: 15.0, exp: 4.0 }
+      - { target: "DEEPSLATE_EMERALD_ORE", pay: 20.0, exp: 5.0 }
+      - { target: "ANCIENT_DEBRIS", pay: 100.0, exp: 20.0 }
+      - { target: "NETHER_QUARTZ_ORE", pay: 1.00, exp: 0.5 }
 
   lumberjack:
     name: "Lumberjack"
@@ -66,19 +66,19 @@ jobs:
     desc: "Menebang pohon dan memproses kayu gelondongan."
     icon: "DIAMOND_AXE"
     max-level: 100
-    base-pay: 20.0
-    base-exp: 8.0
+    base-pay: 0.8
+    base-exp: 0.3
     items:
-      - { target: "OAK_LOG", pay: 20.0, exp: 8.0 }
-      - { target: "BIRCH_LOG", pay: 20.0, exp: 8.0 }
-      - { target: "SPRUCE_LOG", pay: 22.0, exp: 9.0 }
-      - { target: "DARK_OAK_LOG", pay: 25.0, exp: 10.0 }
-      - { target: "JUNGLE_LOG", pay: 22.0, exp: 9.0 }
-      - { target: "ACACIA_LOG", pay: 22.0, exp: 9.0 }
-      - { target: "MANGROVE_LOG", pay: 28.0, exp: 12.0 }
-      - { target: "CHERRY_LOG", pay: 30.0, exp: 15.0 }
-      - { target: "CRIMSON_STEM", pay: 35.0, exp: 15.0 }
-      - { target: "WARPED_STEM", pay: 35.0, exp: 15.0 }
+      - { target: "OAK_LOG", pay: 0.80, exp: 0.3 }
+      - { target: "BIRCH_LOG", pay: 0.80, exp: 0.3 }
+      - { target: "SPRUCE_LOG", pay: 0.90, exp: 0.3 }
+      - { target: "DARK_OAK_LOG", pay: 1.00, exp: 0.4 }
+      - { target: "JUNGLE_LOG", pay: 0.90, exp: 0.3 }
+      - { target: "ACACIA_LOG", pay: 0.90, exp: 0.3 }
+      - { target: "MANGROVE_LOG", pay: 1.10, exp: 0.4 }
+      - { target: "CHERRY_LOG", pay: 1.20, exp: 0.5 }
+      - { target: "CRIMSON_STEM", pay: 1.50, exp: 0.6 }
+      - { target: "WARPED_STEM", pay: 1.50, exp: 0.6 }
 
   farmer:
     name: "Farmer"
@@ -86,18 +86,18 @@ jobs:
     desc: "Bercocok tanam dan memanen tanaman pangan peradaban."
     icon: "DIAMOND_HOE"
     max-level: 100
-    base-pay: 15.0
-    base-exp: 6.0
+    base-pay: 0.3
+    base-exp: 0.2
     items:
-      - { target: "WHEAT", pay: 20.0, exp: 8.0 }
-      - { target: "CARROTS", pay: 20.0, exp: 8.0 }
-      - { target: "POTATOES", pay: 20.0, exp: 8.0 }
-      - { target: "BEETROOTS", pay: 25.0, exp: 10.0 }
-      - { target: "NETHER_WART", pay: 35.0, exp: 15.0 }
-      - { target: "MELON", pay: 15.0, exp: 5.0 }
-      - { target: "PUMPKIN", pay: 15.0, exp: 5.0 }
-      - { target: "SUGAR_CANE", pay: 10.0, exp: 4.0 }
-      - { target: "CACTUS", pay: 12.0, exp: 5.0 }
+      - { target: "WHEAT", pay: 0.30, exp: 0.2 }
+      - { target: "CARROTS", pay: 0.30, exp: 0.2 }
+      - { target: "POTATOES", pay: 0.30, exp: 0.2 }
+      - { target: "BEETROOTS", pay: 0.35, exp: 0.25 }
+      - { target: "NETHER_WART", pay: 0.80, exp: 0.5 }
+      - { target: "MELON", pay: 0.20, exp: 0.1 }
+      - { target: "PUMPKIN", pay: 0.20, exp: 0.1 }
+      - { target: "SUGAR_CANE", pay: 0.15, exp: 0.1 }
+      - { target: "CACTUS", pay: 0.15, exp: 0.1 }
 
   hunter:
     name: "Hunter"
@@ -105,22 +105,22 @@ jobs:
     desc: "Memburu monster malam dan satwa di alam terbuka."
     icon: "DIAMOND_SWORD"
     max-level: 100
-    base-pay: 30.0
-    base-exp: 12.0
+    base-pay: 1.0
+    base-exp: 0.5
     items:
-      - { target: "ZOMBIE", pay: 35.0, exp: 15.0 }
-      - { target: "SKELETON", pay: 40.0, exp: 18.0 }
-      - { target: "SPIDER", pay: 30.0, exp: 12.0 }
-      - { target: "CREEPER", pay: 60.0, exp: 25.0 }
-      - { target: "ENDERMAN", pay: 120.0, exp: 50.0 }
-      - { target: "WITCH", pay: 150.0, exp: 60.0 }
-      - { target: "BLAZE", pay: 80.0, exp: 35.0 }
-      - { target: "WITHER_SKELETON", pay: 200.0, exp: 80.0 }
-      - { target: "PIGLIN", pay: 50.0, exp: 20.0 }
-      - { target: "COW", pay: 15.0, exp: 5.0 }
-      - { target: "PIG", pay: 15.0, exp: 5.0 }
-      - { target: "SHEEP", pay: 15.0, exp: 5.0 }
-      - { target: "CHICKEN", pay: 10.0, exp: 4.0 }
+      - { target: "ZOMBIE", pay: 1.20, exp: 0.5 }
+      - { target: "SKELETON", pay: 1.50, exp: 0.6 }
+      - { target: "SPIDER", pay: 1.00, exp: 0.4 }
+      - { target: "CREEPER", pay: 2.50, exp: 1.0 }
+      - { target: "ENDERMAN", pay: 6.00, exp: 2.5 }
+      - { target: "WITCH", pay: 8.00, exp: 3.0 }
+      - { target: "BLAZE", pay: 4.00, exp: 1.5 }
+      - { target: "WITHER_SKELETON", pay: 10.00, exp: 4.0 }
+      - { target: "PIGLIN", pay: 2.00, exp: 0.8 }
+      - { target: "COW", pay: 0.40, exp: 0.2 }
+      - { target: "PIG", pay: 0.40, exp: 0.2 }
+      - { target: "SHEEP", pay: 0.40, exp: 0.2 }
+      - { target: "CHICKEN", pay: 0.25, exp: 0.1 }
 
   fisherman:
     name: "Fisherman"
@@ -128,14 +128,14 @@ jobs:
     desc: "Menangkap ikan dan mengangkat harta karun air."
     icon: "FISHING_ROD"
     max-level: 100
-    base-pay: 40.0
-    base-exp: 15.0
+    base-pay: 1.5
+    base-exp: 0.8
     items:
-      - { target: "COD", pay: 40.0, exp: 15.0 }
-      - { target: "SALMON", pay: 50.0, exp: 20.0 }
-      - { target: "PUFFERFISH", pay: 80.0, exp: 35.0 }
-      - { target: "TROPICAL_FISH", pay: 100.0, exp: 40.0 }
-      - { target: "TREASURE", pay: 250.0, exp: 100.0 }
+      - { target: "COD", pay: 1.50, exp: 0.8 }
+      - { target: "SALMON", pay: 2.00, exp: 1.0 }
+      - { target: "PUFFERFISH", pay: 3.50, exp: 1.5 }
+      - { target: "TROPICAL_FISH", pay: 4.00, exp: 1.8 }
+      - { target: "TREASURE", pay: 25.0, exp: 8.0 }
 
   builder:
     name: "Builder"
@@ -143,17 +143,17 @@ jobs:
     desc: "Mendirikan bangunan dan meletakkan material peradaban."
     icon: "BRICKS"
     max-level: 100
-    base-pay: 8.0
-    base-exp: 3.0
+    base-pay: 0.15
+    base-exp: 0.1
     items:
-      - { target: "STONE_BRICKS", pay: 10.0, exp: 4.0 }
-      - { target: "BRICKS", pay: 12.0, exp: 5.0 }
-      - { target: "OAK_PLANKS", pay: 8.0, exp: 3.0 }
-      - { target: "SPRUCE_PLANKS", pay: 8.0, exp: 3.0 }
-      - { target: "GLASS", pay: 10.0, exp: 4.0 }
-      - { target: "WHITE_CONCRETE", pay: 12.0, exp: 5.0 }
-      - { target: "QUARTZ_BLOCK", pay: 15.0, exp: 6.0 }
-      - { target: "TERRACOTTA", pay: 12.0, exp: 5.0 }
+      - { target: "STONE_BRICKS", pay: 0.15, exp: 0.1 }
+      - { target: "BRICKS", pay: 0.20, exp: 0.15 }
+      - { target: "OAK_PLANKS", pay: 0.10, exp: 0.08 }
+      - { target: "SPRUCE_PLANKS", pay: 0.10, exp: 0.08 }
+      - { target: "GLASS", pay: 0.15, exp: 0.1 }
+      - { target: "WHITE_CONCRETE", pay: 0.20, exp: 0.15 }
+      - { target: "QUARTZ_BLOCK", pay: 0.30, exp: 0.2 }
+      - { target: "TERRACOTTA", pay: 0.20, exp: 0.15 }
 
   crafter:
     name: "Crafter"
@@ -161,13 +161,13 @@ jobs:
     desc: "Merakit peralatan, senjata, dan melebur bijih tambang."
     icon: "ANVIL"
     max-level: 100
-    base-pay: 25.0
-    base-exp: 10.0
+    base-pay: 0.5
+    base-exp: 0.3
     items:
-      - { target: "IRON_INGOT", pay: 15.0, exp: 5.0 }
-      - { target: "GOLD_INGOT", pay: 25.0, exp: 10.0 }
-      - { target: "IRON_SWORD", pay: 30.0, exp: 12.0 }
-      - { target: "IRON_PICKAXE", pay: 40.0, exp: 15.0 }
-      - { target: "DIAMOND_SWORD", pay: 100.0, exp: 40.0 }
-      - { target: "DIAMOND_PICKAXE", pay: 120.0, exp: 50.0 }
-      - { target: "NETHERITE_INGOT", pay: 500.0, exp: 200.0 }
+      - { target: "IRON_INGOT", pay: 0.30, exp: 0.2 }
+      - { target: "GOLD_INGOT", pay: 0.60, exp: 0.3 }
+      - { target: "IRON_SWORD", pay: 1.00, exp: 0.5 }
+      - { target: "IRON_PICKAXE", pay: 1.50, exp: 0.7 }
+      - { target: "DIAMOND_SWORD", pay: 10.0, exp: 3.0 }
+      - { target: "DIAMOND_PICKAXE", pay: 15.0, exp: 4.0 }
+      - { target: "NETHERITE_INGOT", pay: 50.0, exp: 15.0 }

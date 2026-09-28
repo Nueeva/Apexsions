@@ -114,7 +114,7 @@ public class CalendarService {
 
         DayReward reward = getReward(today);
         if (reward == null) {
-            reward = new DayReward(today, 10000.0, 50, 50, null, "Hadiah Harian Standar");
+            reward = new DayReward(today, 50.0, 5, 60, null, "Hadiah Harian Standar");
         }
 
         // Mark as claimed
@@ -171,7 +171,7 @@ public class CalendarService {
 
         DayReward reward = getReward(missedDay);
         if (reward == null) {
-            reward = new DayReward(missedDay, 10000.0, 50, 50, null, "Hadiah Harian");
+            reward = new DayReward(missedDay, 50.0, 5, 60, null, "Hadiah Harian");
         }
 
         data.setDayClaimed(missedDay);
