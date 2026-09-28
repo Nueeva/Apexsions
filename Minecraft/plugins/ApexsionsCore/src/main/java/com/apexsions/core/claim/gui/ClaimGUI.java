@@ -140,6 +140,8 @@ public class ClaimGUI implements Listener {
         // Slot 20: Freehold Deed (Hak Milik Permanen Bebas Pajak)
         if (chunkClaim.isPresent() && (chunkClaim.get().isOwner(playerId) || player.isOp())) {
             ClaimChunk c = chunkClaim.get();
+            long ownedFreeholds = claimManager.getFreeholdCount(playerId);
+            double nextCost = claimManager.calculateFreeholdCost(playerId);
             if (c.isFreehold()) {
                 inv.setItem(20, createItem(Material.NETHER_STAR,
                         "<gradient:#ffe259:#ffa751><bold>👑 SERTIFIKAT HAK MILIK AKTIF</bold></gradient>",
@@ -152,9 +154,11 @@ public class ClaimGUI implements Listener {
                         "<gradient:#ffe259:#ffa751><bold>📜 Beli Sertifikat Hak Milik (Freehold)</bold></gradient>",
                         "<gray>Ubah petak tanah ini menjadi <b>Hak Milik Permanen</b>!</gray>",
                         "<dark_gray>────────────────────────</dark_gray>",
-                        "<gray>Biaya Beli Putus: </gray><gold>Rp" + String.format("%,.0f", claimManager.getFreeholdCostPerChunk()) + "</gold>",
+                        "<gray>Milik Anda: </gray><yellow>" + ownedFreeholds + " Petak Freehold</yellow>",
+                        "<gray>Biaya Hak Milik (Petak ke-" + (ownedFreeholds + 1) + "): </gray><gold>Rp" + String.format("%,.0f", nextCost) + "</gold>",
                         "<green>✔ BEBAS PAJAK HARIAN SELAMANYA (Rp 0/hari)</green>",
                         "<gray>✔ Aman dari penyitaan kehabisan uang sewa</gray>",
+                        "<dark_gray>💡 Progresif: Rp" + String.format("%,.0f", claimManager.getFreeholdBaseCost()) + " + (n-1) × Rp" + String.format("%,.0f", claimManager.getFreeholdStepCost()) + "</dark_gray>",
                         "<dark_gray>💡 Batas cuti aktif login: " + claimManager.getFreeholdInactivityTimeoutDays() + " hari</dark_gray>",
                         "",
                         "<gold>» Sentuh / Klik untuk Beli Hak Milik «</gold>"));
@@ -398,12 +402,16 @@ public class ClaimGUI implements Listener {
                     "<gray>✔ Bangunan Anda aman dari penyitaan sewa.</gray>",
                     "<dark_gray>💡 Batas cuti login: " + claimManager.getFreeholdInactivityTimeoutDays() + " hari</dark_gray>"));
         } else {
+            long ownedFreeholds = claimManager.getFreeholdCount(player.getUniqueId());
+            double nextCost = claimManager.calculateFreeholdCost(player.getUniqueId());
             inv.setItem(16, createItem(Material.WRITABLE_BOOK,
                     "<gradient:#ffe259:#ffa751><bold>📜 Beli Sertifikat Hak Milik</bold></gradient>",
-                    "<gray>Beli putus petak ini seharga <gold>Rp" + String.format("%,.0f", claimManager.getFreeholdCostPerChunk()) + "</gold>.</gray>",
+                    "<gray>Biaya Hak Milik (Petak ke-" + (ownedFreeholds + 1) + "): <gold>Rp" + String.format("%,.0f", nextCost) + "</gold>.</gray>",
+                    "<dark_gray>Milik Anda: " + ownedFreeholds + " Petak Hak Milik</dark_gray>",
                     "",
                     "<green>✔ BEBAS PAJAK HARIAN SELAMANYA (Rp 0/hari)</green>",
                     "<gray>✔ Bangunan Anda aman terlindungi dari penyitaan sewa</gray>",
+                    "<dark_gray>💡 Progresif: Rp" + String.format("%,.0f", claimManager.getFreeholdBaseCost()) + " + (n-1) × Rp" + String.format("%,.0f", claimManager.getFreeholdStepCost()) + "</dark_gray>",
                     "<dark_gray>💡 Batas cuti aktif login: " + claimManager.getFreeholdInactivityTimeoutDays() + " hari</dark_gray>",
                     "",
                     "<gold>» Sentuh / Klik untuk Membeli Hak Milik «</gold>"));

@@ -70,4 +70,47 @@ public class FreeholdClaimTest {
         long diffInactive = now - inactive61DaysAgo;
         assertTrue(diffInactive > maxInactiveMs, "Player inactive > 60 days must trigger timeout");
     }
+
+    @Test
+    @DisplayName("Verify progressive freehold pricing formula: base 75k + (n-1)*25k")
+    void testProgressiveFreeholdPricing() {
+        double baseCost = 75000.0;
+        double stepCost = 25000.0;
+
+        // Chunk 1 (n=1, owned=0): 75,000
+        double cost1 = baseCost + (0 * stepCost);
+        assertEquals(75000.0, cost1, 0.001);
+
+        // Chunk 2 (n=2, owned=1): 100,000
+        double cost2 = baseCost + (1 * stepCost);
+        assertEquals(100000.0, cost2, 0.001);
+
+        // Chunk 5 (n=5, owned=4): 175,000
+        double cost5 = baseCost + (4 * stepCost);
+        assertEquals(175000.0, cost5, 0.001);
+
+        // Chunk 10 (n=10, owned=9): 300,000
+        double cost10 = baseCost + (9 * stepCost);
+        assertEquals(300000.0, cost10, 0.001);
+
+        // Chunk 20 (n=20, owned=19): 550,000
+        double cost20 = baseCost + (19 * stepCost);
+        assertEquals(550000.0, cost20, 0.001);
+
+        // Cumulative bulk upgrade test:
+        // Upgrading 3 chunks starting from 0 owned: 75k + 100k + 125k = 300,000
+        double bulkCost3 = 0.0;
+        for (int i = 0; i < 3; i++) {
+            bulkCost3 += baseCost + (i * stepCost);
+        }
+        assertEquals(300000.0, bulkCost3, 0.001);
+
+        // Upgrading 5 chunks starting from 5 already owned:
+        // n=6 (200k) + n=7 (225k) + n=8 (250k) + n=9 (275k) + n=10 (300k) = 1,250,000
+        double bulkCostNext5 = 0.0;
+        for (int i = 0; i < 5; i++) {
+            bulkCostNext5 += baseCost + ((5 + i) * stepCost);
+        }
+        assertEquals(1250000.0, bulkCostNext5, 0.001);
+    }
 }

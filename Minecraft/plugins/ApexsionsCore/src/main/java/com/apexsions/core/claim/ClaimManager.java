@@ -49,9 +49,11 @@ public class ClaimManager {
     private double purchaseKingdomTreasurySplit = 1.00;
     private boolean purchaseExemptUpperDimension = true;
 
-    // Freehold Title Configuration (Sertifikat Hak Milik Bebas Pajak)
+    // Freehold Title Configuration (Sertifikat Hak Milik Bebas Pajak - Opsi 1 Progresif)
     private boolean freeholdEnabled = true;
-    private double freeholdCostPerChunk = 25000.0;
+    private double freeholdBaseCost = 75000.0;
+    private double freeholdStepCost = 25000.0;
+    private double freeholdCostPerChunk = 75000.0;
     private double freeholdKingdomTreasurySplit = 0.50;
     private int freeholdInactivityTimeoutDays = 60;
 
@@ -112,9 +114,11 @@ public class ClaimManager {
         purchaseKingdomTreasurySplit = config.getDouble("purchase.kingdom-treasury-split", 1.00);
         purchaseExemptUpperDimension = config.getBoolean("purchase.exempt-upper-dimension", true);
 
-        // Freehold settings
+        // Freehold settings (Opsi 1 Progresif: base-cost + step-cost)
         freeholdEnabled = config.getBoolean("freehold.enabled", true);
-        freeholdCostPerChunk = config.getDouble("freehold.cost-per-chunk", 25000.0);
+        freeholdBaseCost = config.getDouble("freehold.base-cost", config.getDouble("freehold.cost-per-chunk", 75000.0));
+        freeholdStepCost = config.getDouble("freehold.step-cost", 25000.0);
+        freeholdCostPerChunk = freeholdBaseCost;
         freeholdKingdomTreasurySplit = config.getDouble("freehold.kingdom-treasury-split", 0.50);
         freeholdInactivityTimeoutDays = config.getInt("freehold.inactivity-timeout-days", 60);
 
@@ -968,11 +972,40 @@ public class ClaimManager {
     }
 
     public double getFreeholdCostPerChunk() {
-        return freeholdCostPerChunk;
+        return freeholdBaseCost;
+    }
+
+    public double getFreeholdBaseCost() {
+        return freeholdBaseCost;
+    }
+
+    public double getFreeholdStepCost() {
+        return freeholdStepCost;
     }
 
     public int getFreeholdInactivityTimeoutDays() {
         return freeholdInactivityTimeoutDays;
+    }
+
+    public long getFreeholdCount(UUID ownerId) {
+        if (ownerId == null) return 0;
+        return getClaimsByOwner(ownerId).stream().filter(ClaimChunk::isFreehold).count();
+    }
+
+    public double calculateFreeholdCost(UUID ownerId) {
+        if (ownerId == null || isPurchaseExempt(ownerId)) return 0.0;
+        long owned = getFreeholdCount(ownerId);
+        return Math.max(0.0, freeholdBaseCost + (owned * freeholdStepCost));
+    }
+
+    public double calculateTotalFreeholdCost(UUID ownerId, int countToUpgrade) {
+        if (ownerId == null || isPurchaseExempt(ownerId) || countToUpgrade <= 0) return 0.0;
+        long currentOwned = getFreeholdCount(ownerId);
+        double total = 0.0;
+        for (int i = 0; i < countToUpgrade; i++) {
+            total += Math.max(0.0, freeholdBaseCost + ((currentOwned + i) * freeholdStepCost));
+        }
+        return total;
     }
 
     public ClaimResult purchaseFreeholdCurrentChunk(Player player) {
@@ -999,13 +1032,14 @@ public class ClaimManager {
             return new ClaimResult(false, "<yellow>⚠ Tanah ini sudah berstatus Sertifikat Hak Milik Permanen (Freehold Bebas Pajak)!</yellow>");
         }
 
-        double cost = freeholdCostPerChunk;
+        double cost = calculateFreeholdCost(player.getUniqueId());
+        long freeholdIndex = getFreeholdCount(player.getUniqueId()) + 1;
         boolean charged = false;
         if (cost > 0 && !isPurchaseExempt(player.getUniqueId())) {
             if (plugin.getVaultHook() != null && plugin.getVaultHook().hasEconomy()) {
                 double balance = plugin.getVaultHook().getBalance(player);
                 if (balance < cost) {
-                    return new ClaimResult(false, "<red>✖ Saldo dompet Anda tidak cukup untuk membeli Sertifikat Hak Milik! Biaya: <gold>Rp" + String.format("%,.0f", cost) + "</gold> (Saldo Anda: <yellow>Rp" + String.format("%,.0f", balance) + "</yellow>).</red>");
+                    return new ClaimResult(false, "<red>✖ Saldo dompet Anda tidak cukup untuk membeli Sertifikat Hak Milik (Petak ke-" + freeholdIndex + ")! Biaya: <gold>Rp" + String.format("%,.0f", cost) + "</gold> (Saldo Anda: <yellow>Rp" + String.format("%,.0f", balance) + "</yellow>).</red>");
                 }
                 if (!plugin.getVaultHook().withdraw(player, cost)) {
                     return new ClaimResult(false, "<red>✖ Gagal memproses transaksi pembayaran Sertifikat Hak Milik.</red>");
@@ -1028,9 +1062,9 @@ public class ClaimManager {
         }
 
         player.playSound(player.getLocation(), Sound.UI_TOAST_CHALLENGE_COMPLETE, 0.9f, 1.1f);
-        String feeMsg = charged ? "Investasi Rp" + String.format("%,.0f", cost) + " disetor." : "Gratis (Staff/Upper Dimension).";
+        String feeMsg = charged ? "Investasi Hak Milik ke-" + freeholdIndex + " (Rp" + String.format("%,.0f", cost) + ") disetor." : "Gratis (Staff/Upper Dimension).";
         return new ClaimResult(true, "<gradient:#ffe259:#ffa751><bold>👑 SERTIFIKAT HAK MILIK RESMI DITERBITKAN!</bold></gradient>\n" +
-                "<gray>Chunk <gold>[" + chunkX + ", " + chunkZ + "]</gold> kini sah berstatus <b>Hak Milik Permanen (Freehold)</b> Anda.</gray>\n" +
+                "<gray>Chunk <gold>[" + chunkX + ", " + chunkZ + "]</gold> kini sah berstatus <b>Hak Milik Permanen (Freehold ke-" + freeholdIndex + ")</b> Anda.</gray>\n" +
                 "<green>✔ BEBAS PAJAK HARIAN SELAMANYA (Rp 0/hari).</green>\n" +
                 "<dark_gray>💡 " + feeMsg + " Tanah aman selama Anda aktif login (batas cuti: " + freeholdInactivityTimeoutDays + " hari).</dark_gray>");
     }
@@ -1052,13 +1086,13 @@ public class ClaimManager {
             return new ClaimResult(false, "<yellow>⚠ Seluruh petak tanah Anda sudah berstatus Hak Milik Permanen (Freehold)!</yellow>");
         }
 
-        double totalCost = freeholdCostPerChunk * toUpgrade.size();
+        double totalCost = calculateTotalFreeholdCost(player.getUniqueId(), toUpgrade.size());
         boolean charged = false;
         if (totalCost > 0 && !isPurchaseExempt(player.getUniqueId())) {
             if (plugin.getVaultHook() != null && plugin.getVaultHook().hasEconomy()) {
                 double balance = plugin.getVaultHook().getBalance(player);
                 if (balance < totalCost) {
-                    return new ClaimResult(false, "<red>✖ Saldo dompet Anda tidak cukup untuk upgrade " + toUpgrade.size() + " petak tanah! Biaya: <gold>Rp" + String.format("%,.0f", totalCost) + "</gold> (Saldo Anda: <yellow>Rp" + String.format("%,.0f", balance) + "</yellow>).</red>");
+                    return new ClaimResult(false, "<red>✖ Saldo dompet Anda tidak cukup untuk upgrade " + toUpgrade.size() + " petak tanah! Total Biaya Progresif: <gold>Rp" + String.format("%,.0f", totalCost) + "</gold> (Saldo Anda: <yellow>Rp" + String.format("%,.0f", balance) + "</yellow>).</red>");
                 }
                 if (!plugin.getVaultHook().withdraw(player, totalCost)) {
                     return new ClaimResult(false, "<red>✖ Gagal memproses transaksi upgrade masal.</red>");
@@ -1067,15 +1101,19 @@ public class ClaimManager {
             }
         }
 
+        long initialFreehold = getFreeholdCount(player.getUniqueId());
+        int idx = 0;
         for (ClaimChunk claim : toUpgrade) {
             claim.setFreehold(true);
             repository.updateClaimFinancials(claim);
             repository.updateClaimFlags(claim);
 
             if (charged && claim.getKingdomId() != null && !claim.getKingdomId().isBlank() && freeholdKingdomTreasurySplit > 0) {
-                double share = freeholdCostPerChunk * freeholdKingdomTreasurySplit;
+                double chunkCost = Math.max(0.0, freeholdBaseCost + ((initialFreehold + idx) * freeholdStepCost));
+                double share = chunkCost * freeholdKingdomTreasurySplit;
                 depositKingdomTreasury(claim.getKingdomId(), share);
             }
+            idx++;
         }
 
         if (plugin.getWebBridgeService() != null) {
@@ -1085,7 +1123,7 @@ public class ClaimManager {
         player.playSound(player.getLocation(), Sound.UI_TOAST_CHALLENGE_COMPLETE, 1.0f, 1.0f);
         return new ClaimResult(true, "<gradient:#ffe259:#ffa751><bold>👑 SERTIFIKAT HAK MILIK MASAL RESMI TERBIT!</bold></gradient>\n" +
                 "<green>✔ Sebanyak <gold>" + toUpgrade.size() + " petak tanah</gold> berhasil di-upgrade ke <b>Hak Milik Permanen (Freehold)</b>!</green>\n" +
-                "<gray>Total investasi: <gold>Rp" + String.format("%,.0f", totalCost) + "</gold>. Bebas pajak harian selamanya (Rp 0/hari)!</gray>");
+                "<gray>Total investasi progresif: <gold>Rp" + String.format("%,.0f", totalCost) + "</gold>. Bebas pajak harian selamanya (Rp 0/hari)!</gray>");
     }
 
     public ClaimResult claimRadius(Player player, int radius) {
