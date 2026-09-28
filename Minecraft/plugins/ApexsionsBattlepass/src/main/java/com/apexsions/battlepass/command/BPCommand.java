@@ -43,6 +43,10 @@ public class BPCommand implements CommandExecutor, TabCompleter {
         String sub = args[0].toLowerCase();
         switch (sub) {
             case "quests", "quest" -> {
+                if (org.bukkit.Bukkit.getPluginManager().isPluginEnabled("ApexsionsQuests")) {
+                    player.performCommand("quests");
+                    return true;
+                }
                 new QuestMainMenu(plugin, player, null).open();
                 return true;
             }

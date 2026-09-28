@@ -24,6 +24,8 @@ Klik tautan berkas di bawah untuk membuka dokumentasi mendalam masing-masing plu
 | [ApexsionsMedia.md](./ApexsionsMedia.md) | **ApexsionsMedia** | Status & Integrasi | Integrasi banner interaktif, raytrace hover glow, URL action links, serta konsumsi placeholder PAPI dalam metadata banner. |
 | [ApexsionsCustomEnchants.md](./ApexsionsCustomEnchants.md) | **ApexsionsCustomEnchants** | Status & Integrasi | Status integrasi placeholder untuk sistem custom enchantment, trigger set perlengkapan, dan lore item. |
 | [ApexsionsFishing.md](./ApexsionsFishing.md) | **ApexsionsFishing** | `%apexsionsfishing_*%` | Statistik tangkapan ikan, jumlah jenis ikan ditemukan di jurnal, kapasitas & halaman Fishing Vault, kuota umpan virtual, dan rank Top Angler. |
+| [ApexsionsQuests.md](./ApexsionsQuests.md) | **ApexsionsQuests** | `%apexsionsquests_*%` | Jumlah hari streak aktif, rekor streak tertinggi, token streak freeze, status klaim hari ini, jumlah quest harian selesai, dan passive boost multiplier. |
+| [ApexsionsJobs.md](./ApexsionsJobs.md) | **ApexsionsJobs** | `%apexsionsjobs_*%` | Profesi aktif, level profesi, progres EXP, gaji harian yang telah diperoleh, serta level spesifik per pekerjaan (`%apexsionsjobs_level_<job>%`). |
 
 ---
 

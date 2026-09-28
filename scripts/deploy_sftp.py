@@ -62,6 +62,10 @@ PLUGIN_MAP = {
     "apexsionscrates": "ApexsionsCrates",
     "fishing": "ApexsionsFishing",
     "apexsionsfishing": "ApexsionsFishing",
+    "quests": "ApexsionsQuests",
+    "apexsionsquests": "ApexsionsQuests",
+    "jobs": "ApexsionsJobs",
+    "apexsionsjobs": "ApexsionsJobs",
 }
 
 def load_config():

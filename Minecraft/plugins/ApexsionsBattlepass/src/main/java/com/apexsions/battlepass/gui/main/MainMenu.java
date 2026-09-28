@@ -93,6 +93,11 @@ public class MainMenu extends Gui {
                         "&eKlik untuk membuka Menu Quests >"
                 ))
                 .build(), event -> {
+            if (org.bukkit.Bukkit.getPluginManager().isPluginEnabled("ApexsionsQuests")) {
+                player.closeInventory();
+                player.performCommand("quests");
+                return;
+            }
             new QuestMainMenu(plugin, player, this).open();
         }));
 

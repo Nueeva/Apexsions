@@ -1,0 +1,19 @@
+# ==============================================================================
+#           APEXSIONS JOBS — MESSAGES (MINIMESSAGE FORMAT)
+# ==============================================================================
+
+prefix: "<gold><bold>APEXSIONS JOBS</bold></gold> <dark_gray>»</dark_gray> "
+
+jobs:
+  joined: "<green>Selamat! Anda telah bergabung ke profesi <gold><bold>%job%</bold></gold>!</green>"
+  left: "<yellow>Anda telah keluar dari profesi <gold>%job%</gold>.</yellow>"
+  action-earned: "<gray>[<gold>%job%</gold>] +Rp %money% <dark_gray>|</dark_gray> <aqua>+%exp% Job EXP</aqua></gray>"
+  level-up: "<gold><bold>LEVEL UP PROFESI!</bold></gold> <yellow>Profesi <gold>%job%</gold> Anda naik ke <aqua><bold>Level %level%</bold></aqua>! Gaji per aksi meningkat!</yellow>"
+  daily-cap-reached: "<red>Anda telah mencapai batas gaji harian untuk hari ini (Rp %cap%). Gaji akan kembali aktif besok!</red>"
+  tax-deducted: "<gray>(Pajak Kerajaan 5%: <yellow>Rp %tax%</yellow> disetorkan ke Kas Kerajaan)</gray>"
+  already-in-job: "<red>Anda sudah memiliki profesi ini!</red>"
+
+admin:
+  reload: "<green>Konfigurasi ApexsionsJobs berhasil dimuat ulang.</green>"
+  setlevel: "<green>Level profesi <gold>%job%</gold> pemain <yellow>%player%</yellow> berhasil diatur ke <aqua>Lv. %level%</aqua>.</green>"
+  resetdaily: "<green>Batas gaji harian pemain <yellow>%player%</yellow> berhasil di-reset.</green>"

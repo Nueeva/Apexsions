@@ -1,0 +1,45 @@
+name: ApexsionsQuests
+version: 1.0.0
+main: com.apexsions.quests.ApexsionsQuests
+api-version: '1.21'
+author: Nueeva
+description: Dedicated Daily Login Calendar (4 Weeks + Golden Finale), Streak Milestones & Universal Daily Quests Engine with Native Dialog GUI.
+
+depend:
+  - ApexsionsCore
+  - ApexsionsEconomy
+
+softdepend:
+  - ApexsionsBattlepass
+  - ApexsionsCrates
+  - PlaceholderAPI
+  - floodgate
+  - nightcore
+
+commands:
+  daily:
+    description: Buka menu Daily & Monthly Login Rewards
+    aliases: [login, hadiah]
+    permission: apexsions.daily.use
+    usage: /<command>
+  quests:
+    description: Buka menu Universal Daily Quests Hub
+    aliases: [quest, misi]
+    permission: apexsions.quests.use
+    usage: /<command>
+  questsadmin:
+    description: Perintah administratif untuk ApexsionsQuests
+    aliases: [qadmin, qjadmin]
+    permission: apexsions.admin.quests
+    usage: /<command> [reload|setstreak|givefreeze|resetdaily]
+
+permissions:
+  apexsions.daily.use:
+    description: Akses membuka kalender daily login
+    default: true
+  apexsions.quests.use:
+    description: Akses membuka hub daily quests
+    default: true
+  apexsions.admin.quests:
+    description: Akses penuh administrasi ApexsionsQuests
+    default: op

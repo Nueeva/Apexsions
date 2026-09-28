@@ -1,0 +1,29 @@
+# ==============================================================================
+#           APEXSIONS QUESTS — MESSAGES (MINIMESSAGE FORMAT)
+# ==============================================================================
+
+prefix: "<gold><bold>APEXSIONS QUESTS</bold></gold> <dark_gray>»</dark_gray> "
+
+daily:
+  claimed-success: "<green>Selamat! Anda telah mengklaim hadiah <gold>Hari ke-%day%</gold>: <yellow>%reward%</yellow>!"
+  already-claimed: "<red>Anda sudah mengklaim hadiah harian untuk hari ini. Silakan kembali besok!</red>"
+  streak-info: "<yellow>Streak login berturut-turut Anda: <gold><bold>%streak% Hari</bold></gold>!"
+  streak-lost: "<red>Sayang sekali, streak login Anda terputus karena terlewat lebih dari %hours% jam!</red>"
+  streak-frozen: "<aqua>Streak Anda terlindungi oleh <gold>Streak Freeze Token</gold>! Streak tidak terputus.</aqua>"
+  milestone-claimed: "<gold><bold>STREAK MILESTONE!</bold></gold> <green>Anda berhasil membuka hadiah streak <yellow>%days% Hari</yellow>: %reward%!"
+  catch-up-success: "<green>Berhasil menebus hadiah terlewat untuk <gold>Hari ke-%day%</gold> seharga <yellow>Rp %cost%</yellow>!"
+  catch-up-no-money: "<red>Saldo Anda tidak cukup untuk menebus hari yang terlewat (Butuh Rp %cost%).</red>"
+
+quests:
+  progress: "<gray>[<gold>Quest</gold>] Progres <yellow>%title%</yellow>: <green>%current%/%target%</green></gray>"
+  completed: "<green><bold>QUEST SELESAI!</bold></green> <gray>Anda telah menyelesaikan misi <yellow>%title%</yellow>!</gray>"
+  claimed: "<gold>Reward Quest Diklaim:</gold> <green>+Rp %money%</green> <dark_gray>|</dark_gray> <aqua>+%core_xp% Core XP</aqua> <dark_gray>|</dark_gray> <yellow>+%pass_xp% Pass XP</yellow>!"
+  reroll-success: "<green>Misi berhasil di-roll ulang menjadi misi baru!</green>"
+  reroll-limit: "<red>Anda sudah menggunakan jatah 1x reroll quest harian Anda hari ini.</red>"
+  all-claimed: "<green>Luar biasa! Seluruh misi harian Anda untuk hari ini telah selesai dan diklaim!</green>"
+
+admin:
+  reload: "<green>Konfigurasi ApexsionsQuests berhasil dimuat ulang.</green>"
+  setstreak: "<green>Streak pemain <yellow>%player%</yellow> berhasil diubah menjadi <gold>%days% Hari</gold>.</green>"
+  resetdaily: "<green>Status klaim harian pemain <yellow>%player%</yellow> berhasil di-reset.</green>"
+  givefreeze: "<green>Berhasil memberikan <gold>%amount%x</gold> Streak Freeze ke pemain <yellow>%player%</yellow>.</green>"

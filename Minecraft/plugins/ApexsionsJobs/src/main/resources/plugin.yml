@@ -1,0 +1,36 @@
+name: ApexsionsJobs
+version: 1.0.0
+main: com.apexsions.jobs.ApexsionsJobs
+api-version: '1.21'
+author: Nueeva
+description: Dedicated Civilization Jobs & Profession Progression System with Anti-Exploit Guard & Native Dialog GUI.
+
+depend:
+  - ApexsionsCore
+  - ApexsionsEconomy
+
+softdepend:
+  - ApexsionsQuests
+  - PlaceholderAPI
+  - floodgate
+  - nightcore
+
+commands:
+  jobs:
+    description: Buka menu profesi pekerjaan peradaban
+    aliases: [job, kerja]
+    permission: apexsions.jobs.use
+    usage: /<command>
+  jobsadmin:
+    description: Perintah administratif untuk ApexsionsJobs
+    aliases: [jadmin]
+    permission: apexsions.admin.jobs
+    usage: /<command> [reload|setlevel|resetdaily|setjob]
+
+permissions:
+  apexsions.jobs.use:
+    description: Akses membuka menu profesi pekerjaan
+    default: true
+  apexsions.admin.jobs:
+    description: Akses penuh administrasi ApexsionsJobs
+    default: op
