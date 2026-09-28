@@ -57,6 +57,7 @@ public class ApexsionsQuests extends JavaPlugin {
         // 3. Register Listeners
         Bukkit.getPluginManager().registerEvents(new PlayerJoinListener(this), this);
         Bukkit.getPluginManager().registerEvents(new QuestEventListener(this), this);
+        Bukkit.getPluginManager().registerEvents(new com.apexsions.quests.gui.QuestsGuiListener(), this);
 
         // 4. Register Commands
         if (getCommand("daily") != null) {

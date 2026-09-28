@@ -3,7 +3,7 @@ version: 1.0.0
 main: com.apexsions.quests.ApexsionsQuests
 api-version: '1.21'
 author: Nueeva
-description: Dedicated Daily Login Calendar (4 Weeks + Golden Finale), Streak Milestones & Universal Daily Quests Engine with Native Dialog GUI.
+description: Dedicated Daily Login Calendar (4 Weeks + Golden Finale), Streak Milestones & Universal Daily Quests Engine with Interactive Chest GUI.
 
 depend:
   - ApexsionsCore

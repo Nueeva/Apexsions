@@ -1,7 +1,7 @@
 package com.apexsions.quests.listener;
 
 import com.apexsions.quests.ApexsionsQuests;
-import com.apexsions.quests.gui.dialog.DailyLoginDialog;
+import com.apexsions.quests.gui.DailyCalendarGUI;
 import com.apexsions.quests.model.PlayerStreakData;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -41,7 +41,7 @@ public class PlayerJoinListener implements Listener {
                     // Delay 30 ticks so player screen and client world finish loading
                     Bukkit.getScheduler().runTaskLater(plugin, () -> {
                         if (player.isOnline()) {
-                            DailyLoginDialog.open(plugin, player);
+                            new DailyCalendarGUI(plugin, player).open();
                         }
                     }, 30L);
                 }

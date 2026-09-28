@@ -50,6 +50,10 @@ public class JobDefinition {
         return rewards.get(target.toUpperCase());
     }
 
+    public Map<String, JobRewardItem> getRewards() {
+        return rewards;
+    }
+
     public boolean hasReward(String target) {
         if (target == null) return false;
         return rewards.containsKey(target.toUpperCase());

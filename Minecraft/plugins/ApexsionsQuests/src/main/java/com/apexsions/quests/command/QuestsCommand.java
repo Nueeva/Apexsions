@@ -1,7 +1,7 @@
 package com.apexsions.quests.command;
 
 import com.apexsions.quests.ApexsionsQuests;
-import com.apexsions.quests.gui.dialog.QuestsDialog;
+import com.apexsions.quests.gui.DailyQuestsGUI;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -23,7 +23,7 @@ public class QuestsCommand implements CommandExecutor {
             return true;
         }
 
-        QuestsDialog.open(plugin, player);
+        new DailyQuestsGUI(plugin, player).open();
         return true;
     }
 }

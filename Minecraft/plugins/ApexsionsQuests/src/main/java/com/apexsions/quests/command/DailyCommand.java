@@ -1,7 +1,7 @@
 package com.apexsions.quests.command;
 
 import com.apexsions.quests.ApexsionsQuests;
-import com.apexsions.quests.gui.dialog.DailyLoginDialog;
+import com.apexsions.quests.gui.DailyCalendarGUI;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -23,7 +23,7 @@ public class DailyCommand implements CommandExecutor {
             return true;
         }
 
-        DailyLoginDialog.open(plugin, player);
+        new DailyCalendarGUI(plugin, player).open();
         return true;
     }
 }

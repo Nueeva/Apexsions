@@ -3,7 +3,7 @@ version: 1.0.0
 main: com.apexsions.jobs.ApexsionsJobs
 api-version: '1.21'
 author: Nueeva
-description: Dedicated Civilization Jobs & Profession Progression System with Anti-Exploit Guard & Native Dialog GUI.
+description: Dedicated Civilization Jobs & Profession Progression System with Anti-Exploit Guard & Interactive Chest GUI.
 
 depend:
   - ApexsionsCore

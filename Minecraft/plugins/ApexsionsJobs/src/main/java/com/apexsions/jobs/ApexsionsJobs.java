@@ -54,6 +54,7 @@ public class ApexsionsJobs extends JavaPlugin {
         // 3. Register Listeners
         Bukkit.getPluginManager().registerEvents(new PlayerSessionListener(this), this);
         Bukkit.getPluginManager().registerEvents(new JobActivityListener(this), this);
+        Bukkit.getPluginManager().registerEvents(new com.apexsions.jobs.gui.JobsGuiListener(), this);
 
         // 4. Register Commands
         if (getCommand("jobs") != null) {

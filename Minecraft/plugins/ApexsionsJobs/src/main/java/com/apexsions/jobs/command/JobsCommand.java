@@ -1,7 +1,7 @@
 package com.apexsions.jobs.command;
 
 import com.apexsions.jobs.ApexsionsJobs;
-import com.apexsions.jobs.gui.dialog.JobsDialog;
+import com.apexsions.jobs.gui.JobsMainGUI;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -23,7 +23,7 @@ public class JobsCommand implements CommandExecutor {
             return true;
         }
 
-        JobsDialog.open(plugin, player);
+        new JobsMainGUI(plugin, player).open();
         return true;
     }
 }
