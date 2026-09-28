@@ -11,10 +11,24 @@ import org.bukkit.event.world.TimeSkipEvent;
 import org.bukkit.event.world.WorldLoadEvent;
 import org.jetbrains.annotations.NotNull;
 
+import java.lang.reflect.Method;
+
 /**
  * Listens for bed enter, time skip, and world load events to support single-player sleep.
  */
 public class SleepListener implements Listener {
+
+    private static final Method GET_SKIP_REASON_METHOD;
+
+    static {
+        Method m = null;
+        try {
+            m = TimeSkipEvent.class.getMethod("getSkipReason");
+            m.setAccessible(true);
+        } catch (Exception ignored) {
+        }
+        GET_SKIP_REASON_METHOD = m;
+    }
 
     private final ApexsionsCorePlugin plugin;
     private final SleepManager sleepManager;
@@ -42,9 +56,22 @@ public class SleepListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onTimeSkip(TimeSkipEvent event) {
-        if (event.getSkipReason() == TimeSkipEvent.SkipReason.NIGHT_SKIP) {
+        if (isNightSkip(event)) {
             sleepManager.onNightSkip(event.getWorld());
         }
+    }
+
+    private boolean isNightSkip(@NotNull TimeSkipEvent event) {
+        if (GET_SKIP_REASON_METHOD != null) {
+            try {
+                Object reason = GET_SKIP_REASON_METHOD.invoke(event);
+                if (reason != null) {
+                    return "NIGHT_SKIP".equals(reason.toString());
+                }
+            } catch (Exception ignored) {
+            }
+        }
+        return false;
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
