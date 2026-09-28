@@ -393,7 +393,20 @@ COMMAND_TREE = {
     }
 }
 
-COMMON_COMMANDS = sorted(set(list(COMMAND_TREE.keys()) + [
+# Integrate extended plugin command trees
+try:
+    from new_command_trees import NEW_COMMAND_TREES
+    COMMAND_TREE.update(NEW_COMMAND_TREES)
+except Exception:
+    pass
+
+# Integrate complete server registered commands catalog
+try:
+    from server_commands_data import SERVER_COMMANDS
+except Exception:
+    SERVER_COMMANDS = {}
+
+COMMON_COMMANDS = sorted(set(list(COMMAND_TREE.keys()) + list(SERVER_COMMANDS.keys()) + [
     "help", "version", "plugins", "spark", "timings", "stop", "restart", "reload", "save-all", "save-off", "save-on", "list"
 ]))
 
@@ -1152,8 +1165,15 @@ class PanelLiteApp:
         if not before:
             return [], ""
 
-        has_slash = before.startswith("/")
-        clean = before[1:] if has_slash else before
+        if before.startswith("//"):
+            slash_prefix = "//"
+            clean = before[2:]
+        elif before.startswith("/"):
+            slash_prefix = "/"
+            clean = before[1:]
+        else:
+            slash_prefix = ""
+            clean = before
         
         tokens = clean.split(" ")
         arg_idx = len(tokens) - 1
@@ -1168,11 +1188,13 @@ class PanelLiteApp:
             prefix_matches = []
             contains_matches = []
             for cmd in COMMON_COMMANDS:
-                prefix = "/" if has_slash else ""
+                prefix = slash_prefix
                 desc = ""
                 if cmd in COMMAND_TREE:
                     syn = COMMAND_TREE[cmd].get("syntax", "")
                     desc = syn.replace(f"/{cmd} ", "") if syn.startswith(f"/{cmd} ") else syn
+                elif cmd in SERVER_COMMANDS:
+                    desc = SERVER_COMMANDS[cmd]
                 
                 disp_name = f"{prefix}{cmd}"
                 raw_val = f"{prefix}{cmd}"
@@ -1188,6 +1210,8 @@ class PanelLiteApp:
 
             if tok_lower and tok_lower in COMMAND_TREE:
                 syntax_hint = COMMAND_TREE[tok_lower].get("syntax", "")
+            elif tok_lower and tok_lower in SERVER_COMMANDS:
+                syntax_hint = f"/{tok_lower} — {SERVER_COMMANDS[tok_lower]}"
             
             final_cands = prefix_matches if prefix_matches else contains_matches
             return final_cands, syntax_hint
@@ -1375,7 +1399,7 @@ class PanelLiteApp:
         else:
             base = before
 
-        if base == "/" and replacement.startswith("/"):
+        if base in ("/", "//") and (replacement.startswith("/") or replacement.startswith("//")):
             base = ""
 
         clean_after = after.lstrip(" ")

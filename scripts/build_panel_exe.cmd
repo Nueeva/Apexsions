@@ -8,6 +8,7 @@ if %ERRORLEVEL% EQU 0 (
     echo [COPYING] Moving binary and _internal to project root...
     copy /y "%~dp0..\build\dist\ApexsionsPanel\ApexsionsPanel.exe" "%~dp0..\ApexsionsPanel.exe" >nul
     xcopy /e /i /y "%~dp0..\build\dist\ApexsionsPanel\_internal" "%~dp0..\_internal" >nul
+    copy /y "%~dp0server_commands.json" "%~dp0..\server_commands.json" >nul
     echo.
     echo [SUCCESS] Single-process ApexsionsPanel.exe ready in root folder!
 ) else (
