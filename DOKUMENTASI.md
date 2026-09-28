@@ -164,7 +164,7 @@ Struktur modul berada di folder `Minecraft/plugins/`:
    - Progresi Level 1-100 dengan 16 sumber XP.
    - **RPG Stat Scaling (Diminishing Curves):** Injeksi atribut native Paper (`Attribute.MAX_HEALTH` maks +12 HP, `Attribute.ATTACK_DAMAGE` maks +1.90), bonus PvE damage khusus monster (skalabilitas hingga maks +50.0% pada Lv 100), dan mitigasi resistensi monster (maks 10%).
    - **Unified Combat Engine & Smart PvP Normalizer:** Pipeline terisolasi dengan prioritas event (`NORMAL` -> `HIGH` -> `HIGHEST`), pemotongan excess attack > +0.80 di PvP, dan normalisasi proporsional defender ber-HP tinggi ke skala 24 HP tanpa bug heart-flicker.
-   - **Sovereign Land Claiming & Upkeep Economy (`/claim`):** Brankas deposit mandiri per wilayah (`Claim Bank`), Pajak Harian Progresif ($100 \times (1 + (\text{Total Chunks} - 1) \times 0.15)$), 50% setoran otomatis ke Kas Kerajaan (`KingdomTreasury`), Masa Tenggang 72 Jam (*Grace Period*) dengan auto-unclaim saat penunggakan berlanjut.
+   - **Sovereign Land Claiming & Dual-Tier Ownership (`/claim`):** Model Kepemilikan Ganda (Hak Sewa *Leasehold* & Hak Milik Permanen *Freehold Title* via `/claim freehold [all]`), Brankas deposit mandiri per wilayah (`Claim Bank`), Pajak Harian Progresif ($100 \times (1 + (\text{Total Chunks} - 1) \times 0.15)$), 50% setoran otomatis ke Kas Kerajaan (`KingdomTreasury`), Masa Tenggang 72 Jam (*Grace Period*) dengan auto-unclaim sewa, serta perlindungan *Inactivity Timeout* 60 hari untuk tanah Hak Milik.
    - **Kedaulatan Upper Dimension Conclave:** Kuota klaim **Tanpa Batas (`∞`)** dan **Bebas Pajak Upkeep (`Rp 0.0/hari`)** bagi entitas Conclave (Weight $\ge 80$: `ancestor`, `architect`, `overseer`, `warden`, `herald`) sesuai kanon `LORE.md`.
    - **Flags & Peran Granular:** Pengaturan flags wilayah (`pvp`, `mob_spawn`, `fire_spread`, `explosions`, `greeting`, `farewell`) dan 4 hierarki peran warga (`OWNER`, `MANAGER`, `BUILDER`, `VISITOR`).
    - **Kingdom War Siege Mode:** Perlindungan wilayah musuh terbuka untuk diserbu saat status perang resmi berkobar (jika pemilik online).
@@ -190,7 +190,16 @@ Struktur modul berada di folder `Minecraft/plugins/`:
    - Visual GUI Editor 54-Slot (`/abp`).
 5. **`ApexsionsShop`** (`com.apexsions.shop.*`):
    - Dynamic Market 6 kategori, Rasio Jual dasar **20%**, Formula Dinamis Multiplier Cuaca & Bioma Kerajaan.
-   - Price Clamping (85%-120%), Siaran tren pasar, GUI Jual Cepat 45-Slot (`/sell`).
+   - **Elastisitas Pasar Dua Arah (Bi-Directional Supply & Demand):**
+     * Volume Penjualan (`recordSale`) membanjiri pasar dan menurunkan harga jual hingga -35% (`min-sell-multiplier: 0.65`).
+     * Volume Pembelian (`recordPurchase`) menyerap stok dan memicu kelangkaan, menaikkan harga beli & jual hingga +35% (`max-buy-multiplier: 1.35`, `max-sell-multiplier: 1.35`).
+     * Formula volume gabungan realistis: **70% volume regional kerajaan** + **30% volume global server** dengan *natural decay* 25% setiap 10 menit menuju titik ekuilibrium.
+   - **Pasar Regional & Keunggulan Komparatif Kerajaan (`markets.yml`):**
+     * **Solterra (The Forge & Bastion):** Tambang/mineral melimpah (harga beli bijih 0.85x), kelangkaan bahan pangan (beli makanan 1.25x, jual hasil panen 1.30x) dan kayu (jual kayu 1.20x).
+     * **Sylvamoor (The Verdant Sanctuary):** Alam & pertanian melimpah (beli makanan/tani 0.80x), kelangkaan tambang logam (beli bijih 1.30x, jual bijih 1.35x).
+     * **Zenithar (The Free Spire & Guilds):** Pusat perdagangan bebas (pajak terendah 12%), bahan bangunan murah (beli 0.85x), permintaan ekspansi kota tinggi (jual bahan mentah 1.15x).
+   - **Tren Pasar & Jalur Arbitrase Interaktif (`/trends`):** GUI pemantau inflasi/deflasi dengan filter teropong (*Spyglass Switcher* slot 39) untuk membandingkan harga antar kerajaan secara instan dan membuka peluang rute karavan dagang (*inter-realm arbitrage*).
+   - GUI Jual Cepat 45-Slot (`/sell`).
 6. **`ApexsionsMedia`** (`com.apexsions.media.*`):
    - Render multi-tile banner/logo asinkron, Raytrace line-of-sight hover glow, aksi interaksi URL terkonfirmasi.
 7. **`ApexsionsCustomEnchants`** (`com.apexsions.customenchants.*`):
@@ -530,7 +539,31 @@ Sistem kedaulatan tanah di Apexsions menghubungkan proteksi anti-griefing, ekono
 2. **Peringatan Login & Movement:** Pemilik yang login atau melangkah ke dalam wilayah menunggak menerima audio alert dan notifikasi durasi sisa masa tenggang.
 3. **Penyitaan Wilayah (Auto-Unclaim):** Jika 72 jam habis tanpa setoran saldo baru, sistem melepas klaim tanah secara otomatis dan mengembalikannya menjadi alam liar (*Wilderness*).
 
-### C. Hak Istimewa Kedaulatan Upper Dimension Conclave (Lore-Compliant per `LORE.md`)
+### C. Model Kepemilikan Ganda: Hak Sewa (Leasehold) vs Hak Milik Permanen (Freehold Title)
+Menjawab kebutuhan pemain untuk memiliki aset tanah permanen tanpa terbebani sewa harian terus-menerus:
+1. **Hak Sewa (Leasehold - Default):**
+   - Biaya klaim awal murah (Rp 500/chunk).
+   - Dikenakan tarif sewa harian progresif via Brankas Wilayah (`Claim Bank`).
+   - Cocok untuk wilayah tambang sementara, pos perbatasan, atau base tahap awal.
+2. **Hak Milik Permanen (Freehold Title):**
+   - **Skalabilitas Harga Progresif (Progressive Scaled Cost):**
+     $$\text{Harga Hak Milik ke-}n = \text{Rp } 75.000 + ((n - 1) \times \text{Rp } 25.000)$$
+     * Petak ke-1: **Rp 75.000** (terjangkau untuk rumah tinggal pertama pemain biasa).
+     * Petak ke-5: **Rp 175.000**
+     * Petak ke-10: **Rp 300.000**
+     * Petak ke-20: **Rp 550.000**
+     Mencegah penimbunan lahan (*land hoarding*) oleh pemain kaya secara instan, sekaligus mempertahankan peran sewa harian (*Leasehold*) untuk ekspansi skala besar.
+   - **Bebas Pajak Sewa Selamanya (Zero Daily Upkeep):** Petak berstatus `FREEHOLD` memiliki tarif sewa `Rp 0.0/hari` dan kebal terhadap siklus *grace period* maupun *auto-unclaim* akibat tunggakan brankas.
+   - **Bagi Hasil Kas Kerajaan (Kingdom Treasury Split):** 50% dari biaya beli Freehold per chunk langsung disetorkan ke Kas Kerajaan pemain sebagai penerimaan kas negara, dan 50% sisanya dibakar (*money sink* server).
+   - **Perlindungan Terhadap Ghost Claims (Inactivity Timeout 60 Hari):** Jika pemilik tanah Freehold tidak login ke server selama lebih dari 60 hari berturut-turut (`inactivity-timeout-days: 60`), sistem secara otomatis melepaskan klaim agar tanah strategis tidak terbengkalai selamanya saat pemain pensiun.
+   - **Perintah Operasional:**
+     * `/claim freehold`: Membeli Hak Milik Permanen untuk chunk tempat pemain berdiri.
+     * `/claim freehold all`: Meningkatkan seluruh petak sewa milik pemain menjadi Hak Milik Permanen secara massal.
+   - **Antarmuka Interaktif (`/claim gui`):**
+     * Slot 20 di menu utama: Informasi status kepemilikan petak saat ini & tombol beli Hak Milik.
+     * Slot 16 di menu *Territory Action*: Tombol upgrade instan chunk terpilih.
+
+### D. Hak Istimewa Kedaulatan Upper Dimension Conclave (Lore-Compliant per `LORE.md`)
 Berdasarkan kanon kosmologi `LORE.md` (Bab I & Bab VIII: The Aetherial Conclave):
 1. **Klaim Tanpa Batas (Unlimited Claims):**
    Entitas Upper Dimension (`ancestor` [100], `architect` [95], `overseer` [95], `warden` [90], `herald` [80], serta pemegang izin `apexsions.claim.unlimited`) memiliki kuota tanpa batas (`-1` / `Integer.MAX_VALUE`). Tugas suci mereka merajut realitas dan membangun monumen peradaban tidak dibatasi oleh kuota fana.

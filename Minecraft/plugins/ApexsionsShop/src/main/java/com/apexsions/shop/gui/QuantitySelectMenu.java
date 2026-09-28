@@ -186,6 +186,8 @@ public class QuantitySelectMenu extends ShopGui {
             plugin.getKingdomCoreHook().addXp(player.getUniqueId(), xpEarned);
 
             String kingdomKey = kingdomOverride != null ? kingdomOverride : plugin.getKingdomCoreHook().getPlayerKingdom(player);
+            plugin.getSupplyScannerService().recordPurchase(kingdomKey, shopItem.getMaterial(), quantity);
+
             if (result.taxAmount() > 0 && !kingdomKey.equalsIgnoreCase("NONE")) {
                 plugin.getEconomyHook().depositKingdomTreasury(kingdomKey, result.taxAmount());
                 org.bukkit.Bukkit.getPluginManager().callEvent(new com.apexsions.shop.api.event.KingdomTaxCollectEvent(player, kingdomKey, result.taxAmount()));
@@ -227,12 +229,13 @@ public class QuantitySelectMenu extends ShopGui {
 
         InventoryUtil.removeItems(player, shopItem.getMaterial(), actualQuantity);
         plugin.getEconomyHook().deposit(player, payout);
-        plugin.getSupplyScannerService().recordSale(shopItem.getMaterial(), actualQuantity);
+
+        String kingdomKey = kingdomOverride != null ? kingdomOverride : plugin.getKingdomCoreHook().getPlayerKingdom(player);
+        plugin.getSupplyScannerService().recordSale(kingdomKey, shopItem.getMaterial(), actualQuantity);
 
         long xpEarned = Math.min(20, Math.max(1, (long) (payout / 1000.0)));
         plugin.getKingdomCoreHook().addXp(player.getUniqueId(), xpEarned);
 
-        String kingdomKey = kingdomOverride != null ? kingdomOverride : plugin.getKingdomCoreHook().getPlayerKingdom(player);
         if (result.taxAmount() > 0 && !kingdomKey.equalsIgnoreCase("NONE")) {
             plugin.getEconomyHook().depositKingdomTreasury(kingdomKey, result.taxAmount());
             org.bukkit.Bukkit.getPluginManager().callEvent(new com.apexsions.shop.api.event.KingdomTaxCollectEvent(player, kingdomKey, result.taxAmount()));

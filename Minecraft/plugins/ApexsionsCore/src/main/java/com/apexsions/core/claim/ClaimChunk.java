@@ -304,6 +304,24 @@ public class ClaimChunk {
         }
     }
 
+    public boolean isFreehold() {
+        return status == ClaimStatus.FREEHOLD || getBooleanFlag("is_freehold", false);
+    }
+
+    public void setFreehold(boolean freehold) {
+        if (freehold) {
+            setFlag("is_freehold", "true");
+            setStatus(ClaimStatus.FREEHOLD);
+            setDailyUpkeep(0.0);
+            setGracePeriodUntil(0L);
+        } else {
+            setFlag("is_freehold", null);
+            if (status == ClaimStatus.FREEHOLD) {
+                setStatus(ClaimStatus.ACTIVE);
+            }
+        }
+    }
+
     // --- Serialization Helpers ---
 
     public String getTrustedPlayersSerialized() {

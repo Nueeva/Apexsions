@@ -21,13 +21,24 @@ import java.util.List;
  */
 public class MarketTrendsMenu extends ShopGui {
 
+    private String kingdomFilter;
+
     public MarketTrendsMenu(ApexsionsShop plugin, Player player, ShopGui parent) {
+        this(plugin, player, parent, null);
+    }
+
+    public MarketTrendsMenu(ApexsionsShop plugin, Player player, ShopGui parent, String kingdomFilter) {
         super(plugin, player, "<dark_gray><bold>[ TREN PASAR & EKONOMI ]</bold></dark_gray>", 54, parent);
+        this.kingdomFilter = kingdomFilter;
     }
 
     @Override
     public void initialize() {
         fillBorder();
+
+        String effectiveKingdom = kingdomFilter != null
+                ? kingdomFilter
+                : (plugin.getKingdomMarketService() != null ? plugin.getKingdomMarketService().resolveKingdom(player, null) : "NONE");
 
         // 1. Slot 4: Active Economic Event & Climate Dashboard
         MarketEvent activeEvent = plugin.getMarketEventService() != null
@@ -42,10 +53,10 @@ public class MarketTrendsMenu extends ShopGui {
                 ? plugin.getWeatherPriceService().getWeatherDescription(player.getWorld())
                 : "<yellow>☀ Normal</yellow>";
         String kingdomName = plugin.getKingdomMarketService() != null
-                ? plugin.getKingdomMarketService().getKingdomNameFormatted(player)
+                ? plugin.getKingdomMarketService().getKingdomNameFormatted(effectiveKingdom)
                 : "<gray>Tanpa Kerajaan</gray>";
         double tax = plugin.getTaxService() != null
-                ? plugin.getTaxService().getTaxPercent(player)
+                ? plugin.getTaxService().getTaxPercent(player, effectiveKingdom)
                 : 0.0;
 
         setButton(4, new ShopGuiButton(new ShopItemBuilder(activeEvent.getIcon())
@@ -55,17 +66,17 @@ public class MarketTrendsMenu extends ShopGui {
                         " ",
                         "<dark_gray>────────────────────────</dark_gray>",
                         "<gray>Sisa Waktu Peristiwa:</gray> <yellow><bold>" + timeLeft + "</bold></yellow>",
-                        "<gray>Afiliasi Kerajaan:</gray> " + kingdomName,
+                        "<gray>Pasar Kerajaan Terpantau:</gray> " + kingdomName,
                         "<gray>Kondisi Cuaca:</gray> <aqua>" + weatherDesc + "</aqua>",
-                        "<gray>Tarif Pajak Transaksi:</gray> <red>" + String.format("%.1f", tax) + "%</red>",
+                        "<gray>Tarif Pajak Wilayah:</gray> <red>" + String.format("%.1f", tax) + "%</red>",
                         "<dark_gray>────────────────────────</dark_gray>",
                         " ",
-                        "<yellow>Manfaatkan pergeseran harga untuk memaksimalkan keuntungan dagang!</yellow>"
+                        "<yellow>Manfaatkan disparitas harga antar-wilayah untuk keuntungan dagang!</yellow>"
                 ))
                 .glow()
                 .build()));
 
-        // 2. Scan items with price fluctuations & trending volume
+        // 2. Scan items with price fluctuations & trending volume in effective kingdom
         List<ShopItem> allItems = new ArrayList<>(plugin.getItemRegistry().getAllItems());
         int[] trendSlots = { 20, 21, 22, 23, 24, 29, 31, 33 };
         int slotIdx = 0;
@@ -73,8 +84,8 @@ public class MarketTrendsMenu extends ShopGui {
         for (ShopItem item : allItems) {
             if (slotIdx >= trendSlots.length) break;
 
-            PriceResult buyRes = plugin.getDynamicPriceCalculator().calculateBuyPrice(item, player, 1);
-            PriceResult sellRes = plugin.getDynamicPriceCalculator().calculateSellPrice(item, player, 1);
+            PriceResult buyRes = plugin.getDynamicPriceCalculator().calculateBuyPrice(item, player, 1, effectiveKingdom);
+            PriceResult sellRes = plugin.getDynamicPriceCalculator().calculateSellPrice(item, player, 1, effectiveKingdom);
 
             double baseSell = item.getBaseSellPrice();
             double effectiveSell = sellRes.effectiveUnitPrice();
@@ -112,7 +123,13 @@ public class MarketTrendsMenu extends ShopGui {
                 if (buyRes.supplyMultiplier() < 0.95) {
                     lore.add("<green>🟢 Pasokan Melimpah (Diskon Beli)</green>");
                 } else if (buyRes.supplyMultiplier() > 1.05) {
-                    lore.add("<red>🔴 Komoditas Langka</red>");
+                    lore.add("<red>🔴 Komoditas Langka (Permintaan Tinggi)</red>");
+                }
+
+                if (buyRes.kingdomMultiplier() > 1.05) {
+                    lore.add("<yellow>⭐ Komoditas Impor Bernilai Tinggi</yellow>");
+                } else if (buyRes.kingdomMultiplier() < 0.95) {
+                    lore.add("<aqua>⛏ Komoditas Unggulan Lokal</aqua>");
                 }
 
                 if (buyRes.weatherMultiplier() != 1.0) {
@@ -127,13 +144,35 @@ public class MarketTrendsMenu extends ShopGui {
                         .lore(lore)
                         .hideAttributes()
                         .build(), event -> {
-                    new QuantitySelectMenu(plugin, player, item, this).open();
+                    new QuantitySelectMenu(plugin, player, item, this, effectiveKingdom).open();
                 }));
             }
         }
 
-        // 3. Slot 40: Navigation to Royal Trade Contracts
-        setButton(40, new ShopGuiButton(new ShopItemBuilder(Material.WRITABLE_BOOK)
+        // 3. Slot 39: Cycle Kingdom Market Filter (Arbitrage Intelligence)
+        String nextKingdom = switch (effectiveKingdom.toUpperCase()) {
+            case "SOLTERRA" -> "SYLVAMOOR";
+            case "SYLVAMOOR" -> "ZENITHAR";
+            case "ZENITHAR" -> "SOLTERRA";
+            default -> "SOLTERRA";
+        };
+        setButton(39, new ShopGuiButton(new ShopItemBuilder(Material.SPYGLASS)
+                .name("<gradient:#00c6ff:#0072ff><bold>🔭 INTEL PASAR: " + effectiveKingdom.toUpperCase() + "</bold></gradient>")
+                .lore(List.of(
+                        "<gray>Memantau fluktuasi komoditas di: " + kingdomName + "</gray>",
+                        "<dark_gray>────────────────────────</dark_gray>",
+                        "<gray>Bandingkan harga antar-kerajaan untuk mencari</gray>",
+                        "<gray>jalur dagang arbitrase (beli murah, jual mahal)!</gray>",
+                        " ",
+                        "<yellow>Sentuh / Klik untuk pantau pasar <bold>" + nextKingdom + "</bold> ▶</yellow>"
+                ))
+                .build(), event -> {
+            player.playSound(player.getLocation(), Sound.ITEM_SPYGLASS_USE, 0.8f, 1.2f);
+            new MarketTrendsMenu(plugin, player, parent, nextKingdom).open();
+        }));
+
+        // 4. Slot 41: Navigation to Royal Trade Contracts
+        setButton(41, new ShopGuiButton(new ShopItemBuilder(Material.WRITABLE_BOOK)
                 .name("<gradient:#f1c40f:#e67e22><bold>📜 KONTRAK EKSPOR KERAJAAN</bold></gradient>")
                 .lore(List.of(
                         "<gray>Setor komoditas yang dibutuhkan kerajaan</gray>",
@@ -147,7 +186,7 @@ public class MarketTrendsMenu extends ShopGui {
             new TradeContractsMenu(plugin, player, this).open();
         }));
 
-        // 4. Slot 49: Back Button
+        // 5. Slot 49: Back Button
         setButton(49, new BackButton(this, parent));
     }
 }

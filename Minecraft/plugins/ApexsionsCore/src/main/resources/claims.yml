@@ -24,6 +24,16 @@ purchase:
   kingdom-treasury-split: 1.00 # 100% biaya pembelian klaim disetorkan langsung ke Kas Kerajaan
   exempt-upper-dimension: true
 
+# Freehold Title / Sertifikat Hak Milik Permanen (Bebas Pajak Harian Selamanya)
+freehold:
+  enabled: true
+  base-cost: 75000.0 # Biaya beli petak Hak Milik (Freehold) ke-1
+  step-cost: 25000.0 # Tambahan biaya progresif per petak Freehold yang sudah dimiliki (Harga ke-n = base-cost + (n-1)*step-cost)
+  cost-per-chunk: 75000.0 # Fallback flat jika konfigurasi lama dibaca
+  kingdom-treasury-split: 0.50 # 50% disetor ke Kas Kerajaan, 50% serapan deflasi
+  inactivity-timeout-days: 60 # Perlindungan server: sita hanya jika pemilik offline 60 hari berturut-turut
+
+
 # Progressive Tax & Upkeep Economy
 tax:
   enabled: true

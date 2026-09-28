@@ -137,6 +137,41 @@ public class ClaimGUI implements Listener {
                     "<red>Sudah dimiliki oleh: " + chunkClaim.get().getOwnerName() + "</red>"));
         }
 
+        // Slot 20: Freehold Deed (Hak Milik Permanen Bebas Pajak)
+        if (chunkClaim.isPresent() && (chunkClaim.get().isOwner(playerId) || player.isOp())) {
+            ClaimChunk c = chunkClaim.get();
+            long ownedFreeholds = claimManager.getFreeholdCount(playerId);
+            double nextCost = claimManager.calculateFreeholdCost(playerId);
+            if (c.isFreehold()) {
+                inv.setItem(20, createItem(Material.NETHER_STAR,
+                        "<gradient:#ffe259:#ffa751><bold>👑 SERTIFIKAT HAK MILIK AKTIF</bold></gradient>",
+                        "<gray>Status: </gray><gold><b>Hak Milik Permanen (Freehold)</b></gold>",
+                        "<green>✔ BEBAS PAJAK HARIAN SELAMANYA (Rp 0/hari)</green>",
+                        "<gray>✔ Bangunan Anda aman dari penyitaan sewa.</gray>",
+                        "<dark_gray>💡 Batas cuti login: " + claimManager.getFreeholdInactivityTimeoutDays() + " hari</dark_gray>"));
+            } else {
+                inv.setItem(20, createItem(Material.WRITABLE_BOOK,
+                        "<gradient:#ffe259:#ffa751><bold>📜 Beli Sertifikat Hak Milik (Freehold)</bold></gradient>",
+                        "<gray>Ubah petak tanah ini menjadi <b>Hak Milik Permanen</b>!</gray>",
+                        "<dark_gray>────────────────────────</dark_gray>",
+                        "<gray>Milik Anda: </gray><yellow>" + ownedFreeholds + " Petak Freehold</yellow>",
+                        "<gray>Biaya Hak Milik (Petak ke-" + (ownedFreeholds + 1) + "): </gray><gold>Rp" + String.format("%,.0f", nextCost) + "</gold>",
+                        "<green>✔ BEBAS PAJAK HARIAN SELAMANYA (Rp 0/hari)</green>",
+                        "<gray>✔ Aman dari penyitaan kehabisan uang sewa</gray>",
+                        "<dark_gray>💡 Progresif: Rp" + String.format("%,.0f", claimManager.getFreeholdBaseCost()) + " + (n-1) × Rp" + String.format("%,.0f", claimManager.getFreeholdStepCost()) + "</dark_gray>",
+                        "<dark_gray>💡 Batas cuti aktif login: " + claimManager.getFreeholdInactivityTimeoutDays() + " hari</dark_gray>",
+                        "",
+                        "<gold>» Sentuh / Klik untuk Beli Hak Milik «</gold>"));
+            }
+        } else {
+            inv.setItem(20, createItem(Material.BOOK,
+                    "<gradient:#ffe259:#ffa751><bold>📜 Sertifikat Hak Milik (Freehold)</bold></gradient>",
+                    "<gray>Tingkatkan tanah klaim menjadi Hak Milik Permanen</gray>",
+                    "<gray>agar bebas dari biaya pajak sewa selamanya!</gray>",
+                    "",
+                    "<gray>Gunakan <yellow>/claim freehold</yellow> di tanah milik Anda.</gray>"));
+        }
+
         // Slot 21: Bank & Tax Status
         double totalVaulted = 0.0;
         List<ClaimChunk> playerClaims = claimManager.getClaimsByOwner(playerId);
@@ -358,6 +393,30 @@ public class ClaimGUI implements Listener {
                 "",
                 "<dark_red>» Sentuh / Klik untuk Melepas «</dark_red>"));
 
+        // Slot 16: Freehold Upgrade Button
+        if (claim.isFreehold()) {
+            inv.setItem(16, createItem(Material.NETHER_STAR,
+                    "<gradient:#ffe259:#ffa751><bold>👑 SERTIFIKAT HAK MILIK AKTIF</bold></gradient>",
+                    "<gray>Status: </gray><gold><b>Hak Milik Sah (Freehold)</b></gold>",
+                    "<green>✔ Bebas biaya pajak harian selamanya (Rp 0/hari)</green>",
+                    "<gray>✔ Bangunan Anda aman dari penyitaan sewa.</gray>",
+                    "<dark_gray>💡 Batas cuti login: " + claimManager.getFreeholdInactivityTimeoutDays() + " hari</dark_gray>"));
+        } else {
+            long ownedFreeholds = claimManager.getFreeholdCount(player.getUniqueId());
+            double nextCost = claimManager.calculateFreeholdCost(player.getUniqueId());
+            inv.setItem(16, createItem(Material.WRITABLE_BOOK,
+                    "<gradient:#ffe259:#ffa751><bold>📜 Beli Sertifikat Hak Milik</bold></gradient>",
+                    "<gray>Biaya Hak Milik (Petak ke-" + (ownedFreeholds + 1) + "): <gold>Rp" + String.format("%,.0f", nextCost) + "</gold>.</gray>",
+                    "<dark_gray>Milik Anda: " + ownedFreeholds + " Petak Hak Milik</dark_gray>",
+                    "",
+                    "<green>✔ BEBAS PAJAK HARIAN SELAMANYA (Rp 0/hari)</green>",
+                    "<gray>✔ Bangunan Anda aman terlindungi dari penyitaan sewa</gray>",
+                    "<dark_gray>💡 Progresif: Rp" + String.format("%,.0f", claimManager.getFreeholdBaseCost()) + " + (n-1) × Rp" + String.format("%,.0f", claimManager.getFreeholdStepCost()) + "</dark_gray>",
+                    "<dark_gray>💡 Batas cuti aktif login: " + claimManager.getFreeholdInactivityTimeoutDays() + " hari</dark_gray>",
+                    "",
+                    "<gold>» Sentuh / Klik untuk Membeli Hak Milik «</gold>"));
+        }
+
         // Slot 22: Back to list
         inv.setItem(22, createItem(Material.ARROW, "<yellow>« Kembali ke Daftar Wilayah</yellow>"));
 
@@ -384,6 +443,17 @@ public class ClaimGUI implements Listener {
                     var res = claimManager.unclaimCurrentChunk(player);
                     player.sendMessage(mm.deserialize(res.message()));
                     player.closeInventory();
+                }
+            } else if (slot == 20) {
+                Optional<ClaimChunk> chunkClaim = claimManager.getClaimAt(player.getLocation());
+                if (chunkClaim.isPresent() && (chunkClaim.get().isOwner(player.getUniqueId()) || player.isOp())) {
+                    if (chunkClaim.get().isFreehold()) {
+                        player.sendMessage(mm.deserialize("<yellow>Petak tanah ini sudah berstatus Sertifikat Hak Milik (Freehold Bebas Pajak)!</yellow>"));
+                    } else {
+                        var res = claimManager.purchaseFreeholdCurrentChunk(player);
+                        player.sendMessage(mm.deserialize(res.message()));
+                        open(player);
+                    }
                 }
             } else if (slot == 21) {
                 var res = claimManager.depositBank(player, 1000.0);
@@ -506,6 +576,15 @@ public class ClaimGUI implements Listener {
                 var res = claimManager.unclaimChunk(player, claim.getWorld(), claim.getChunkX(), claim.getChunkZ());
                 player.sendMessage(mm.deserialize(res.message()));
                 openTerritoryList(player, 0);
+            } else if (slot == 16) {
+                // Freehold Upgrade for this specific chunk
+                if (claim.isFreehold()) {
+                    player.sendMessage(mm.deserialize("<yellow>Petak tanah ini sudah berstatus Sertifikat Hak Milik (Freehold Bebas Pajak)!</yellow>"));
+                } else {
+                    var res = claimManager.purchaseFreehold(player, claim.getWorld(), claim.getChunkX(), claim.getChunkZ());
+                    player.sendMessage(mm.deserialize(res.message()));
+                    openTerritoryAction(player, claim);
+                }
             } else if (slot == 22) {
                 // Back to list
                 openTerritoryList(player, 0);
