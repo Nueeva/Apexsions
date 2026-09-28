@@ -546,9 +546,15 @@ Menjawab kebutuhan pemain untuk memiliki aset tanah permanen tanpa terbebani sew
    - Dikenakan tarif sewa harian progresif via Brankas Wilayah (`Claim Bank`).
    - Cocok untuk wilayah tambang sementara, pos perbatasan, atau base tahap awal.
 2. **Hak Milik Permanen (Freehold Title):**
-   - **Biaya Peningkatan (Upgrade Cost):** Rp 25.000 / chunk (`cost-per-chunk: 25000.0`).
+   - **Skalabilitas Harga Progresif (Progressive Scaled Cost):**
+     $$\text{Harga Hak Milik ke-}n = \text{Rp } 75.000 + ((n - 1) \times \text{Rp } 25.000)$$
+     * Petak ke-1: **Rp 75.000** (terjangkau untuk rumah tinggal pertama pemain biasa).
+     * Petak ke-5: **Rp 175.000**
+     * Petak ke-10: **Rp 300.000**
+     * Petak ke-20: **Rp 550.000**
+     Mencegah penimbunan lahan (*land hoarding*) oleh pemain kaya secara instan, sekaligus mempertahankan peran sewa harian (*Leasehold*) untuk ekspansi skala besar.
    - **Bebas Pajak Sewa Selamanya (Zero Daily Upkeep):** Petak berstatus `FREEHOLD` memiliki tarif sewa `Rp 0.0/hari` dan kebal terhadap siklus *grace period* maupun *auto-unclaim* akibat tunggakan brankas.
-   - **Bagi Hasil Kas Kerajaan (Kingdom Treasury Split):** 50% dari biaya beli Freehold (Rp 12.500/chunk) langsung disetorkan ke Kas Kerajaan pemain sebagai penerimaan kas negara, dan 50% sisanya dibakar (*money sink* server).
+   - **Bagi Hasil Kas Kerajaan (Kingdom Treasury Split):** 50% dari biaya beli Freehold per chunk langsung disetorkan ke Kas Kerajaan pemain sebagai penerimaan kas negara, dan 50% sisanya dibakar (*money sink* server).
    - **Perlindungan Terhadap Ghost Claims (Inactivity Timeout 60 Hari):** Jika pemilik tanah Freehold tidak login ke server selama lebih dari 60 hari berturut-turut (`inactivity-timeout-days: 60`), sistem secara otomatis melepaskan klaim agar tanah strategis tidak terbengkalai selamanya saat pemain pensiun.
    - **Perintah Operasional:**
      * `/claim freehold`: Membeli Hak Milik Permanen untuk chunk tempat pemain berdiri.
