@@ -124,6 +124,18 @@
     @endif
 
     <!-- Telemetry & Power Bar -->
+    @php
+        $state = strtolower($resources['current_state'] ?? 'offline');
+        $resData = $resources['resources'] ?? [];
+        $cpu = isset($resData['cpu_absolute']) ? number_format($resData['cpu_absolute'], 1) . '%' : '--%';
+        $ramUsed = isset($resData['memory_bytes']) ? number_format($resData['memory_bytes'] / 1073741824, 2) : '--';
+        $ramMax = isset($resData['memory_limit_bytes']) ? number_format($resData['memory_limit_bytes'] / 1073741824, 1) : '12.0';
+        $disk = isset($resData['disk_bytes']) ? number_format($resData['disk_bytes'] / 1073741824, 1) . ' GB' : '-- GB';
+        $uptime = isset($resData['uptime']) ? floor($resData['uptime'] / 3600000) . 'j ' . floor(($resData['uptime'] % 3600000) / 60000) . 'm' : '--';
+        $stateBadgeClass = 'bg-danger';
+        if ($state === 'running') $stateBadgeClass = 'bg-success';
+        elseif ($state === 'starting' || $state === 'stopping') $stateBadgeClass = 'bg-warning text-dark';
+    @endphp
     <div class="card bg-dark border-secondary border-opacity-25 shadow-sm mb-4">
         <div class="card-body p-3">
             <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
@@ -131,15 +143,15 @@
                 <div class="d-flex align-items-center gap-3 flex-wrap">
                     <div class="d-flex align-items-center gap-2">
                         <span class="text-white-50 small">Status:</span>
-                        <span id="badgeServerState" class="badge bg-secondary px-3 py-2 fw-bold font-monospace">
-                            ● MEMUAT...
+                        <span id="badgeServerState" class="badge {{ $stateBadgeClass }} px-3 py-2 fw-bold font-monospace">
+                            ● {{ strtoupper($state) }}
                         </span>
                     </div>
                     <div class="border-start border-secondary ps-3 d-flex align-items-center gap-3 flex-wrap font-monospace small">
-                        <div><span class="text-white-50">CPU:</span> <span id="statCpu" class="text-warning fw-bold">--%</span></div>
-                        <div><span class="text-white-50">RAM:</span> <span id="statRam" class="text-info fw-bold">-- / -- GB</span></div>
-                        <div><span class="text-white-50">Disk:</span> <span id="statDisk" class="text-white fw-bold">-- GB</span></div>
-                        <div><span class="text-white-50">Uptime:</span> <span id="statUptime" class="text-success fw-bold">--</span></div>
+                        <div><span class="text-white-50">CPU:</span> <span id="statCpu" class="text-warning fw-bold">{{ $cpu }}</span></div>
+                        <div><span class="text-white-50">RAM:</span> <span id="statRam" class="text-info fw-bold">{{ $ramUsed }} / {{ $ramMax }} GB</span></div>
+                        <div><span class="text-white-50">Disk:</span> <span id="statDisk" class="text-white fw-bold">{{ $disk }}</span></div>
+                        <div><span class="text-white-50">Uptime:</span> <span id="statUptime" class="text-success fw-bold">{{ $uptime }}</span></div>
                     </div>
                 </div>
 
@@ -368,14 +380,14 @@
             const res = await fetch("{{ route('apexsions-bridge.admin.server.console.token') }}");
             const data = await res.json();
 
-            if (!data.success || !data.token || !data.socket) {
-                throw new Error(data.error || 'Token atau Socket URL kosong.');
-            }
-
             wsToken = data.token;
             wsSocketUrl = data.socket;
 
-            connectSocket(wsSocketUrl, wsToken);
+            // Connect via secure reverse proxy relay on the same origin (bypasses browser CORS & port 8080 blocking)
+            const proto = window.location.protocol === 'https:' ? 'wss://' : 'ws://';
+            const relayUrl = proto + window.location.host + '/pterodactyl-ws/';
+
+            connectSocket(relayUrl, wsToken);
         } catch (err) {
             appendLog(`\u001b[31m[ERROR] Gagal mendapatkan WebSocket credentials: ${err.message}\u001b[0m`);
             wsStatusDot.className = 'badge rounded-pill bg-danger px-2 py-1 small';
