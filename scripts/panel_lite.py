@@ -69,6 +69,17 @@ if sys.platform == "win32":
 # Regex for stripping ANSI escape codes
 ANSI_REGEX = re.compile(r'\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])')
 
+# Common Minecraft & Apexsions server commands for auto-completion
+COMMON_COMMANDS = [
+    "op", "deop", "whitelist", "ban", "pardon", "kick", "tp", "teleport",
+    "gamemode", "give", "kill", "eco", "money", "balance", "pay",
+    "crates", "shop", "battlepass", "fishing", "media", "chat",
+    "say", "tell", "msg", "w", "r", "reply",
+    "time", "weather", "difficulty", "gamerule",
+    "stop", "restart", "reload", "save-all", "save-off", "save-on",
+    "list", "help", "version", "plugins", "spark", "timings"
+]
+
 def load_config():
     if not CONFIG_PATH.exists():
         example = {
@@ -309,6 +320,13 @@ class PanelLiteApp:
         self.current_dir = "/"
         self.files_cache = []
 
+        # Player Auto-Complete & Tracking State
+        self.online_players = set()
+        self.known_players = self.load_known_players()
+        self.ac_popup = None
+        self.ac_listbox = None
+        self.ac_candidates = []
+
         # Setup ttk styles for Treeview & Combobox
         self.setup_ttk_styles()
 
@@ -464,6 +482,7 @@ class PanelLiteApp:
         self.switch_tab("console")
 
     def switch_tab(self, tab_id: str):
+        self.hide_autocomplete()
         if self.current_tab == tab_id:
             return
         self.current_tab = tab_id
@@ -539,6 +558,24 @@ class PanelLiteApp:
             )
             b.pack(side="left", padx=3)
 
+        # Online players indicator badge
+        self.lbl_online_badge = tk.Button(
+            toolbar,
+            text="👥 0 Online",
+            font=("Segoe UI", 9, "bold"),
+            bg=self.card_bg,
+            fg=self.text_dim,
+            activebackground=self.border_col,
+            activeforeground="#ffffff",
+            bd=0,
+            relief="flat",
+            padx=8,
+            pady=4,
+            cursor="hand2",
+            command=lambda: self.send_command("list")
+        )
+        self.lbl_online_badge.pack(side="left", padx=(8, 3))
+
         # Right tools on toolbar
         self.btn_clear = tk.Button(toolbar, text="🧹 Clear Logs", bg=self.card_bg, fg=self.text_dim, activebackground=self.border_col, activeforeground="#ffffff", command=self.clear_logs, **btn_style)
         self.btn_clear.pack(side="right", padx=(6, 0))
@@ -585,9 +622,13 @@ class PanelLiteApp:
 
         self.cmd_entry = tk.Entry(cmd_bar, font=("Consolas", 11), bg=self.card_bg, fg="#ffffff", insertbackground="#ffffff", bd=0, relief="flat")
         self.cmd_entry.pack(side="left", fill="x", expand=True, padx=6, pady=8)
-        self.cmd_entry.bind("<Return>", lambda e: self.send_command())
-        self.cmd_entry.bind("<Up>", self.history_up)
-        self.cmd_entry.bind("<Down>", self.history_down)
+        self.cmd_entry.bind("<KeyRelease>", self.on_cmd_keyrelease)
+        self.cmd_entry.bind("<Tab>", self.on_cmd_tab)
+        self.cmd_entry.bind("<Return>", self.on_cmd_return)
+        self.cmd_entry.bind("<Up>", self.on_cmd_up)
+        self.cmd_entry.bind("<Down>", self.on_cmd_down)
+        self.cmd_entry.bind("<Escape>", lambda e: self.hide_autocomplete())
+        self.cmd_entry.bind("<FocusOut>", lambda e: self.root.after(150, self.hide_autocomplete))
 
         btn_send = tk.Button(cmd_bar, text="Send ↵", bg=self.accent_gold, fg="#111317", activebackground=self.accent_gold_hover, font=("Segoe UI", 9, "bold"), bd=0, relief="flat", padx=16, pady=4, cursor="hand2", command=self.send_command)
         btn_send.pack(side="right", padx=8, pady=6)
@@ -596,6 +637,7 @@ class PanelLiteApp:
 
     def append_log(self, text: str):
         clean_text = ANSI_REGEX.sub('', text)
+        self.parse_player_events(clean_text)
         tag = None
         lower = clean_text.lower()
         if "warn" in lower:
@@ -632,6 +674,7 @@ class PanelLiteApp:
             self.lbl_status.config(text=f" ● {state.upper()} ", bg="#64748b")
 
     def send_command(self, custom_cmd: str = None):
+        self.hide_autocomplete()
         cmd = (custom_cmd or self.cmd_entry.get()).strip()
         if not cmd:
             return
@@ -676,6 +719,287 @@ class PanelLiteApp:
             self.history_idx = len(self.cmd_history)
             self.cmd_entry.delete(0, "end")
         return "break"
+
+    # =========================================================================
+    # COMMAND AUTOCOMPLETE & PLAYER TRACKING SYSTEM
+    # =========================================================================
+    def load_known_players(self):
+        appdata = os.getenv("APPDATA") or str(Path.home() / "AppData" / "Roaming")
+        f = Path(appdata) / "Apexsions" / "known_players.json"
+        defaults = ["Rafriel", "Nueeva", "Steve", "Alex"]
+        if f.exists():
+            try:
+                with open(f, "r", encoding="utf-8") as fp:
+                    data = json.load(fp)
+                    if isinstance(data, list) and data:
+                        return set(data)
+            except Exception:
+                pass
+        return set(defaults)
+
+    def save_known_players(self):
+        try:
+            appdata = os.getenv("APPDATA") or str(Path.home() / "AppData" / "Roaming")
+            f = Path(appdata) / "Apexsions" / "known_players.json"
+            f.parent.mkdir(parents=True, exist_ok=True)
+            with open(f, "w", encoding="utf-8") as fp:
+                json.dump(sorted(list(self.known_players)), fp, indent=2)
+        except Exception:
+            pass
+
+    def update_online_badge(self):
+        count = len(self.online_players)
+        if hasattr(self, "lbl_online_badge"):
+            self.lbl_online_badge.config(
+                text=f"👥 {count} Online",
+                fg=self.green_col if count > 0 else self.text_dim
+            )
+
+    def parse_player_events(self, text: str):
+        changed = False
+        # 1. Join event: "PlayerName joined the game" or "PlayerName[/IP:port] logged in" or "UUID of player PlayerName is"
+        m_join = re.search(r'(\b[a-zA-Z0-9_]{3,16}\b)(?:\[.*?\])?\s+(?:joined the game|logged in with entity id)', text)
+        if not m_join:
+            m_join = re.search(r'UUID of player (\b[a-zA-Z0-9_]{3,16}\b) is', text)
+        if m_join:
+            p = m_join.group(1)
+            if p not in self.online_players:
+                self.online_players.add(p)
+                changed = True
+            if p not in self.known_players:
+                self.known_players.add(p)
+                self.save_known_players()
+
+        # 2. Leave event: "PlayerName lost connection" or "PlayerName left the game"
+        m_leave = re.search(r'(\b[a-zA-Z0-9_]{3,16}\b)\s+(?:lost connection|left the game)', text)
+        if m_leave:
+            p = m_leave.group(1)
+            if p in self.online_players:
+                self.online_players.discard(p)
+                changed = True
+
+        # 3. List command response: e.g. "There are 2 of a max of 100 players online: PlayerA, PlayerB"
+        m_list = re.search(r'(?:players online:|online players:)\s*([^\n\r]+)', text, re.IGNORECASE)
+        if m_list:
+            raw_names = m_list.group(1).split(",")
+            names = [n.strip() for n in raw_names if re.match(r'^[a-zA-Z0-9_]{3,16}$', n.strip())]
+            self.online_players = set(names)
+            for n in names:
+                self.known_players.add(n)
+            self.save_known_players()
+            changed = True
+
+        if changed:
+            self.safe_after(self.update_online_badge)
+
+    def get_current_word_context(self):
+        cursor_pos = self.cmd_entry.index("insert")
+        full_text = self.cmd_entry.get()
+        before = full_text[:cursor_pos]
+        after = full_text[cursor_pos:]
+
+        m = re.search(r'([a-zA-Z0-9_\-\.\/]+)$', before)
+        word = m.group(1) if m else ""
+        return word, cursor_pos, full_text, before, after
+
+    def get_autocomplete_candidates(self, word: str, before: str):
+        word_lower = word.lower()
+        candidates = []
+        seen = set()
+
+        # 1. Online players first
+        for p in sorted(self.online_players):
+            if not word or word_lower in p.lower():
+                candidates.append((f"🟢 {p}  [Online]", p))
+                seen.add(p.lower())
+
+        # 2. Known / recent players
+        for p in sorted(self.known_players):
+            if p.lower() not in seen:
+                if not word or word_lower in p.lower():
+                    candidates.append((f"⚪ {p}  [Known]", p))
+                    seen.add(p.lower())
+
+        # 3. Common commands if typing at the first argument
+        if " " not in before.strip():
+            for cmd in COMMON_COMMANDS:
+                if not word or cmd.startswith(word_lower):
+                    if cmd not in seen:
+                        candidates.append((f"⚡ {cmd}  [Command]", cmd))
+                        seen.add(cmd)
+
+        return candidates
+
+    def show_autocomplete(self, candidates):
+        if not candidates:
+            self.hide_autocomplete()
+            return
+
+        self.ac_candidates = candidates
+
+        if self.ac_popup is None or not self.ac_popup.winfo_exists():
+            self.ac_popup = tk.Toplevel(self.root)
+            self.ac_popup.wm_overrideredirect(True)
+            self.ac_popup.configure(bg=self.border_col)
+
+            hdr = tk.Frame(self.ac_popup, bg=self.card_inner)
+            hdr.pack(fill="x", padx=1, pady=(1, 0))
+            tk.Label(
+                hdr,
+                text="👑 AUTOCOMPLETE (Tab/Enter: Pilih • ↑↓: Navigasi • Esc: Tutup)",
+                font=("Segoe UI", 8, "bold"),
+                fg=self.accent_gold,
+                bg=self.card_inner
+            ).pack(side="left", padx=8, pady=3)
+
+            body = tk.Frame(self.ac_popup, bg=self.bg_dark)
+            body.pack(fill="both", expand=True, padx=1, pady=(0, 1))
+
+            self.ac_listbox = tk.Listbox(
+                body,
+                bg=self.console_bg,
+                fg=self.text_main,
+                selectbackground=self.accent_gold,
+                selectforeground="#111317",
+                font=("Consolas", 10),
+                bd=0,
+                highlightthickness=0,
+                activestyle="none"
+            )
+            sb = ttk.Scrollbar(body, orient="vertical", command=self.ac_listbox.yview)
+            self.ac_listbox.configure(yscrollcommand=sb.set)
+            sb.pack(side="right", fill="y")
+            self.ac_listbox.pack(side="left", fill="both", expand=True)
+
+            self.ac_listbox.bind("<ButtonRelease-1>", self.on_ac_click)
+
+        self.ac_listbox.delete(0, "end")
+        for disp, val in candidates[:15]:
+            self.ac_listbox.insert("end", f" {disp}")
+
+        self.ac_listbox.selection_clear(0, "end")
+        self.ac_listbox.selection_set(0)
+        self.ac_listbox.see(0)
+
+        self.root.update_idletasks()
+        try:
+            entry_x = self.cmd_entry.winfo_rootx()
+            entry_y = self.cmd_entry.winfo_rooty()
+            entry_w = self.cmd_entry.winfo_width()
+
+            num_items = min(len(candidates), 8)
+            popup_h = 32 + num_items * 22
+            popup_w = max(380, min(entry_w, 520))
+
+            pos_x = entry_x
+            pos_y = entry_y - popup_h - 4
+            if pos_y < 10:
+                pos_y = entry_y + self.cmd_entry.winfo_height() + 4
+
+            self.ac_popup.geometry(f"{popup_w}x{popup_h}+{pos_x}+{pos_y}")
+            self.ac_popup.deiconify()
+            self.ac_popup.lift()
+        except Exception:
+            pass
+
+    def hide_autocomplete(self):
+        if self.ac_popup and self.ac_popup.winfo_exists():
+            self.ac_popup.withdraw()
+        self.ac_candidates = []
+
+    def apply_autocomplete(self, replacement: str):
+        word, cursor_pos, full_text, before, after = self.get_current_word_context()
+        m = re.search(r'([a-zA-Z0-9_\-\.\/]+)$', before)
+        if m:
+            prefix_len = len(m.group(1))
+            base_before = before[:-prefix_len]
+        else:
+            base_before = before
+
+        new_text = base_before + replacement + " " + after
+        new_cursor = len(base_before + replacement + " ")
+
+        self.cmd_entry.delete(0, "end")
+        self.cmd_entry.insert(0, new_text)
+        self.cmd_entry.icursor(new_cursor)
+        self.hide_autocomplete()
+
+    def on_cmd_keyrelease(self, event):
+        if event.keysym in ("Up", "Down", "Return", "Escape", "Tab", "Shift_L", "Shift_R", "Control_L", "Control_R", "Alt_L", "Alt_R", "Left", "Right", "Home", "End"):
+            return
+
+        word, cursor_pos, full_text, before, after = self.get_current_word_context()
+        if not full_text.strip():
+            self.hide_autocomplete()
+            return
+
+        candidates = self.get_autocomplete_candidates(word, before)
+        if candidates:
+            self.show_autocomplete(candidates)
+        else:
+            self.hide_autocomplete()
+
+    def on_cmd_tab(self, event):
+        if self.ac_popup and self.ac_popup.winfo_exists() and self.ac_popup.winfo_ismapped() and self.ac_candidates:
+            sel = self.ac_listbox.curselection()
+            idx = sel[0] if sel else 0
+            if idx < len(self.ac_candidates):
+                disp, val = self.ac_candidates[idx]
+                self.apply_autocomplete(val)
+            return "break"
+
+        word, cursor_pos, full_text, before, after = self.get_current_word_context()
+        candidates = self.get_autocomplete_candidates(word, before)
+        if len(candidates) == 1:
+            self.apply_autocomplete(candidates[0][1])
+        elif len(candidates) > 1:
+            self.show_autocomplete(candidates)
+        return "break"
+
+    def on_cmd_return(self, event):
+        if self.ac_popup and self.ac_popup.winfo_exists() and self.ac_popup.winfo_ismapped() and self.ac_candidates:
+            sel = self.ac_listbox.curselection()
+            if sel:
+                idx = sel[0]
+                if idx < len(self.ac_candidates):
+                    disp, val = self.ac_candidates[idx]
+                    self.apply_autocomplete(val)
+                    return "break"
+
+        self.hide_autocomplete()
+        self.send_command()
+        return "break"
+
+    def on_cmd_up(self, event):
+        if self.ac_popup and self.ac_popup.winfo_exists() and self.ac_popup.winfo_ismapped() and self.ac_candidates:
+            sel = self.ac_listbox.curselection()
+            cur = sel[0] if sel else 0
+            new_idx = max(0, cur - 1)
+            self.ac_listbox.selection_clear(0, "end")
+            self.ac_listbox.selection_set(new_idx)
+            self.ac_listbox.see(new_idx)
+            return "break"
+        return self.history_up(event)
+
+    def on_cmd_down(self, event):
+        if self.ac_popup and self.ac_popup.winfo_exists() and self.ac_popup.winfo_ismapped() and self.ac_candidates:
+            sel = self.ac_listbox.curselection()
+            cur = sel[0] if sel else 0
+            new_idx = min(len(self.ac_candidates) - 1, cur + 1)
+            self.ac_listbox.selection_clear(0, "end")
+            self.ac_listbox.selection_set(new_idx)
+            self.ac_listbox.see(new_idx)
+            return "break"
+        return self.history_down(event)
+
+    def on_ac_click(self, event):
+        sel = self.ac_listbox.curselection()
+        if sel:
+            idx = sel[0]
+            if idx < len(self.ac_candidates):
+                disp, val = self.ac_candidates[idx]
+                self.apply_autocomplete(val)
+        self.cmd_entry.focus_set()
 
     def trigger_power(self, signal: str):
         confirm = True
@@ -1821,6 +2145,8 @@ class PanelLiteApp:
                             self.log_queue.put("🟢 [AUTHENTICATED] Live console ready.")
                             # CRITICAL: Send request for backlog history now that we are authenticated!
                             self.ws_send("send logs", [None])
+                            # Auto-query online player list
+                            threading.Thread(target=lambda: (time.sleep(1), self.ws_send("send command", ["list"])), daemon=True).start()
 
                         elif event == "console output":
                             line = args[0] if args else ""
