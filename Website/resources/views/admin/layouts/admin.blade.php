@@ -163,10 +163,22 @@
                     <li class="sidebar-header" style="color: #9E7B3E; font-size: 0.68rem; letter-spacing: 1.5px; font-weight: 700; text-transform: uppercase;">
                         Minecraft Server
                     </li>
-                    <li class="sidebar-item {{ add_active('apexsions-bridge.admin.server.*') }}">
+                    <li class="sidebar-item {{ add_active('apexsions-bridge.admin.server.index') }}">
                         <a class="sidebar-link" href="{{ route('apexsions-bridge.admin.server.index') }}">
                             <i class="bi bi-hdd-network-fill"></i>
                             <span>Server Operations</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item {{ add_active('apexsions-bridge.admin.server.console') }}">
+                        <a class="sidebar-link" href="{{ route('apexsions-bridge.admin.server.console') }}">
+                            <i class="bi bi-terminal-fill text-warning"></i>
+                            <span class="text-warning fw-semibold">Live Console</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item {{ add_active('apexsions-bridge.admin.server.files*') }}">
+                        <a class="sidebar-link" href="{{ route('apexsions-bridge.admin.server.files') }}">
+                            <i class="bi bi-folder2-open"></i>
+                            <span>Server File Manager</span>
                         </a>
                     </li>
                     <li class="sidebar-item {{ add_active('apexsions-bridge.admin.broadcast.*') }}">
