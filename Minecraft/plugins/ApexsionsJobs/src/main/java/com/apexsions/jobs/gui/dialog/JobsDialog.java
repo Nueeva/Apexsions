@@ -57,7 +57,8 @@ public class JobsDialog {
                 () -> {}
         );
 
-        NativeDialogAdapter.showMultiActionDialog(plugin, player, title, desc.toString(), buttons, exitBtn, 1);
+        org.bukkit.inventory.ItemStack jobsIcon = new org.bukkit.inventory.ItemStack(org.bukkit.Material.GOLDEN_PICKAXE);
+        NativeDialogAdapter.showMultiActionDialog(plugin, player, jobsIcon, title, desc.toString(), buttons, exitBtn, 2);
     }
 
     public static void openJobDetailDialog(ApexsionsJobs plugin, Player player, JobDefinition def, PlayerJobData data) {
@@ -110,6 +111,17 @@ public class JobsDialog {
                 () -> open(plugin, player)
         );
 
-        NativeDialogAdapter.showMultiActionDialog(plugin, player, title, desc.toString(), buttons, backBtn, 1);
+        org.bukkit.Material mat = switch (def.getId().toLowerCase()) {
+            case "miner" -> org.bukkit.Material.DIAMOND_PICKAXE;
+            case "hunter" -> org.bukkit.Material.DIAMOND_SWORD;
+            case "lumberjack" -> org.bukkit.Material.DIAMOND_AXE;
+            case "farmer" -> org.bukkit.Material.DIAMOND_HOE;
+            case "fisherman" -> org.bukkit.Material.FISHING_ROD;
+            case "blacksmith" -> org.bukkit.Material.ANVIL;
+            default -> org.bukkit.Material.IRON_PICKAXE;
+        };
+        org.bukkit.inventory.ItemStack item = new org.bukkit.inventory.ItemStack(mat);
+
+        NativeDialogAdapter.showMultiActionDialog(plugin, player, item, title, desc.toString(), buttons, backBtn, 1);
     }
 }

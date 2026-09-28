@@ -99,7 +99,8 @@ public class DailyLoginDialog {
                 () -> {}
         );
 
-        NativeDialogAdapter.showMultiActionDialog(plugin, player, title, desc.toString(), buttons, exitBtn, 2);
+        org.bukkit.inventory.ItemStack clockIcon = new org.bukkit.inventory.ItemStack(org.bukkit.Material.CLOCK);
+        NativeDialogAdapter.showMultiActionDialog(plugin, player, clockIcon, title, desc.toString(), buttons, exitBtn, 2);
     }
 
     public static void openWeekDialog(ApexsionsQuests plugin, Player player, int weekNum, int startDay, int endDay) {
@@ -148,7 +149,8 @@ public class DailyLoginDialog {
                 () -> open(plugin, player)
         );
 
-        NativeDialogAdapter.showMultiActionDialog(plugin, player, title, desc.toString(), buttons, backBtn, 1);
+        org.bukkit.inventory.ItemStack chestIcon = new org.bukkit.inventory.ItemStack(org.bukkit.Material.CHEST);
+        NativeDialogAdapter.showMultiActionDialog(plugin, player, chestIcon, title, desc.toString(), buttons, backBtn, 2);
     }
 
     public static void openFinaleDialog(ApexsionsQuests plugin, Player player) {
@@ -204,7 +206,8 @@ public class DailyLoginDialog {
                 () -> open(plugin, player)
         );
 
-        NativeDialogAdapter.showMultiActionDialog(plugin, player, title, desc.toString(), buttons, backBtn, 1);
+        org.bukkit.inventory.ItemStack finaleIcon = new org.bukkit.inventory.ItemStack(org.bukkit.Material.NETHER_STAR);
+        NativeDialogAdapter.showMultiActionDialog(plugin, player, finaleIcon, title, desc.toString(), buttons, backBtn, 2);
     }
 
     public static void openCatchUpListDialog(ApexsionsQuests plugin, Player player) {
@@ -249,7 +252,8 @@ public class DailyLoginDialog {
                 () -> openFinaleDialog(plugin, player)
         );
 
-        NativeDialogAdapter.showMultiActionDialog(plugin, player, title, desc, buttons, backBtn, 1);
+        org.bukkit.inventory.ItemStack goldIcon = new org.bukkit.inventory.ItemStack(org.bukkit.Material.GOLD_INGOT);
+        NativeDialogAdapter.showMultiActionDialog(plugin, player, goldIcon, title, desc, buttons, backBtn, 2);
     }
 
     public static void openMilestonesDialog(ApexsionsQuests plugin, Player player) {
@@ -295,6 +299,7 @@ public class DailyLoginDialog {
                 () -> open(plugin, player)
         );
 
-        NativeDialogAdapter.showMultiActionDialog(plugin, player, title, desc, buttons, backBtn, 1);
+        org.bukkit.inventory.ItemStack totemIcon = new org.bukkit.inventory.ItemStack(org.bukkit.Material.TOTEM_OF_UNDYING);
+        NativeDialogAdapter.showMultiActionDialog(plugin, player, totemIcon, title, desc, buttons, backBtn, 2);
     }
 }

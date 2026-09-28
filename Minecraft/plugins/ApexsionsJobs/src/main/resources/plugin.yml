@@ -13,7 +13,10 @@ softdepend:
   - ApexsionsQuests
   - PlaceholderAPI
   - floodgate
+  - Geyser-Spigot
   - nightcore
+  - NightCore
+  - ExcellentCrates
 
 commands:
   jobs:

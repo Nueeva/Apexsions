@@ -43,6 +43,18 @@ public class BedrockFormAdapter {
     public static boolean openMultiActionForm(
             Plugin plugin,
             Player player,
+            org.bukkit.inventory.ItemStack item,
+            String title,
+            String description,
+            List<NativeDialogAdapter.DialogButtonData> buttons,
+            NativeDialogAdapter.DialogButtonData exitButton
+    ) {
+        return openMultiActionForm(plugin, player, title, description, buttons, exitButton);
+    }
+
+    public static boolean openMultiActionForm(
+            Plugin plugin,
+            Player player,
             String title,
             String description,
             List<NativeDialogAdapter.DialogButtonData> buttons,

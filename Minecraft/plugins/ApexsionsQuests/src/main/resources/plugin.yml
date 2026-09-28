@@ -14,7 +14,10 @@ softdepend:
   - ApexsionsCrates
   - PlaceholderAPI
   - floodgate
+  - Geyser-Spigot
   - nightcore
+  - NightCore
+  - ExcellentCrates
 
 commands:
   daily:

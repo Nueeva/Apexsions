@@ -5,21 +5,27 @@ import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
+import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
 
 /**
- * Official Minecraft 1.21.6+ Native Dialog Adapter.
- * Integrates directly with Paper's official Dialog API (io.papermc.paper.dialog.*)
- * and Bedrock Native Forms (Geyser / Cumulus) for mobile players.
+ * Native Dialog Adapter for ApexsionsQuests.
+ * Priority:
+ * 1. Bedrock Native Form (Geyser / Floodgate SimpleForm)
+ * 2. NightCore UI Dialog Engine (su.nightexpress.nightcore.ui.dialog.Dialogs - Custom Screen)
+ * 3. Paper Native Dialog API (io.papermc.paper.dialog.Dialog)
+ * 4. Interactive Chat Fallback
  */
 public class NativeDialogAdapter {
 
-    private static Boolean paper1216Supported = null;
+    private static Boolean nightcoreSupported = null;
+    private static Boolean paperSupported = null;
     private static final MiniMessage mm = MiniMessage.miniMessage();
 
     public static class DialogButtonData {
@@ -61,42 +67,44 @@ public class NativeDialogAdapter {
             try {
                 return Class.forName(name);
             } catch (Throwable ignored) {}
+            for (String pName : new String[]{"nightcore", "NightCore", "ExcellentCrates", "excellentcrates"}) {
+                try {
+                    Plugin p = Bukkit.getPluginManager().getPlugin(pName);
+                    if (p != null) {
+                        return Class.forName(name, true, p.getClass().getClassLoader());
+                    }
+                } catch (Throwable ignored) {}
+            }
+            if (Bukkit.getPluginManager() != null) {
+                for (Plugin p : Bukkit.getPluginManager().getPlugins()) {
+                    if (p == null || !p.isEnabled()) continue;
+                    try {
+                        return Class.forName(name, true, p.getClass().getClassLoader());
+                    } catch (Throwable ignored) {}
+                }
+            }
         }
         return null;
     }
 
-    /**
-     * Checks if the official Paper Minecraft 1.21.6+ Native Dialog API is supported on this server.
-     */
-    public static boolean isPaper1216Supported() {
-        if (paper1216Supported == null) {
-            Class<?> dialogClass = findClass(
-                    "io.papermc.paper.dialog.Dialog",
-                    "io.papermc.paper.registry.data.dialog.Dialog"
-            );
-            boolean hasShowDialog = false;
-            try {
-                for (Method m : Player.class.getMethods()) {
-                    if (m.getName().equals("showDialog") && m.getParameterCount() == 1) {
-                        hasShowDialog = true;
-                        break;
-                    }
-                }
-            } catch (Throwable ignored) {}
-
-            paper1216Supported = dialogClass != null && hasShowDialog;
+    public static boolean isNightCoreSupported() {
+        if (nightcoreSupported == null) {
+            nightcoreSupported = findClass("su.nightexpress.nightcore.ui.dialog.Dialogs") != null;
         }
-        return paper1216Supported;
+        return nightcoreSupported;
+    }
+
+    public static boolean isPaperSupported() {
+        if (paperSupported == null) {
+            paperSupported = findClass("io.papermc.paper.dialog.Dialog", "io.papermc.paper.registry.data.dialog.Dialog") != null;
+        }
+        return paperSupported;
     }
 
     public static boolean isSupported() {
-        return isPaper1216Supported() || BedrockFormAdapter.isFloodgatePresent();
+        return isNightCoreSupported() || isPaperSupported() || BedrockFormAdapter.isFloodgatePresent();
     }
 
-    /**
-     * Opens an official Minecraft 1.21.6+ Multi-Action Native Dialog,
-     * or a Bedrock Native Form if the player is connecting via Geyser/Floodgate.
-     */
     public static boolean showMultiActionDialog(
             Plugin plugin,
             Player player,
@@ -106,45 +114,63 @@ public class NativeDialogAdapter {
             DialogButtonData exitButton,
             int columns
     ) {
+        return showMultiActionDialog(plugin, player, null, title, description, buttons, exitButton, columns);
+    }
+
+    public static boolean showMultiActionDialog(
+            Plugin plugin,
+            Player player,
+            ItemStack item,
+            String title,
+            String description,
+            List<DialogButtonData> buttons,
+            DialogButtonData exitButton,
+            int columns
+    ) {
         if (player == null || !player.isOnline()) return false;
 
-        // Close any active inventory so screen is clear
+        // Close any active chest inventory
         try {
             if (player.getOpenInventory().getTopInventory().getType() != org.bukkit.event.inventory.InventoryType.CRAFTING) {
                 player.closeInventory();
             }
         } catch (Throwable ignored) {}
 
-        // 1. Bedrock Floodgate / Geyser Native Form (SimpleForm)
+        // 1. Bedrock Floodgate / Geyser Form
         if (BedrockFormAdapter.isBedrockPlayer(player)) {
-            if (BedrockFormAdapter.openMultiActionForm(plugin, player, title, description, buttons, exitButton)) {
+            if (BedrockFormAdapter.openMultiActionForm(plugin, player, item, title, description, buttons, exitButton)) {
                 return true;
             }
         }
 
-        // 2. Official Paper Minecraft 1.21.6+ Native Dialog System
-        if (isPaper1216Supported()) {
-            if (showPaper1216Dialog(plugin, player, title, description, buttons, exitButton, columns)) {
+        // 2. NightCore Native Dialog / Custom Screen
+        if (isNightCoreSupported()) {
+            if (showNightCoreMultiActionDialog(plugin, player, item, title, description, buttons, exitButton, columns)) {
                 return true;
             }
         }
 
-        // 3. Bedrock Form fallback if Floodgate is present
-        if (BedrockFormAdapter.isFloodgatePresent() && BedrockFormAdapter.openMultiActionForm(plugin, player, title, description, buttons, exitButton)) {
+        // 3. Official Paper Native Dialog API
+        if (isPaperSupported()) {
+            if (showPaperMultiActionDialog(plugin, player, item, title, description, buttons, exitButton, columns)) {
+                return true;
+            }
+        }
+
+        // 4. Bedrock Form fallback
+        if (BedrockFormAdapter.isFloodgatePresent() && BedrockFormAdapter.openMultiActionForm(plugin, player, item, title, description, buttons, exitButton)) {
             return true;
         }
 
-        // 4. Elegant Interactive Fallback Menu in Chat
+        // 5. Interactive Chat Fallback
         sendInteractiveChatFallback(plugin, player, title, description, buttons, exitButton);
         return true;
     }
 
-    /**
-     * Constructs and sends the official Minecraft 1.21.6+ Native Dialog using Paper's Dialog API.
-     */
-    private static boolean showPaper1216Dialog(
+    private static boolean showNightCoreMultiActionDialog(
             Plugin plugin,
             Player player,
+            ItemStack item,
             String title,
             String description,
             List<DialogButtonData> buttons,
@@ -152,209 +178,322 @@ public class NativeDialogAdapter {
             int columns
     ) {
         try {
-            Class<?> dialogClass = findClass(
-                    "io.papermc.paper.dialog.Dialog",
-                    "io.papermc.paper.registry.data.dialog.Dialog"
-            );
-            Class<?> dialogBaseClass = findClass(
-                    "io.papermc.paper.registry.data.dialog.DialogBase",
-                    "io.papermc.paper.dialog.DialogBase"
-            );
-            Class<?> dialogBodyClass = findClass(
-                    "io.papermc.paper.registry.data.dialog.body.DialogBody",
-                    "io.papermc.paper.dialog.body.DialogBody",
-                    "io.papermc.paper.dialog.DialogBody"
-            );
-            Class<?> actionButtonClass = findClass(
-                    "io.papermc.paper.registry.data.dialog.ActionButton",
-                    "io.papermc.paper.dialog.ActionButton"
-            );
-            Class<?> dialogActionClass = findClass(
-                    "io.papermc.paper.registry.data.dialog.action.DialogAction",
-                    "io.papermc.paper.dialog.action.DialogAction",
-                    "io.papermc.paper.dialog.DialogAction"
-            );
-            Class<?> dialogTypeClass = findClass(
-                    "io.papermc.paper.registry.data.dialog.type.DialogType",
-                    "io.papermc.paper.dialog.type.DialogType",
-                    "io.papermc.paper.dialog.DialogType"
-            );
+            Class<?> dialogsClass = findClass("su.nightexpress.nightcore.ui.dialog.Dialogs");
+            Class<?> dialogBasesClass = findClass("su.nightexpress.nightcore.ui.dialog.build.DialogBases");
+            Class<?> dialogBodiesClass = findClass("su.nightexpress.nightcore.ui.dialog.build.DialogBodies");
+            Class<?> dialogButtonsClass = findClass("su.nightexpress.nightcore.ui.dialog.build.DialogButtons");
+            Class<?> dialogActionsClass = findClass("su.nightexpress.nightcore.ui.dialog.build.DialogActions");
+            Class<?> dialogTypesClass = findClass("su.nightexpress.nightcore.ui.dialog.build.DialogTypes");
+            Class<?> dialogResponseHandlerClass = findClass("su.nightexpress.nightcore.bridge.dialog.response.DialogResponseHandler");
+            Class<?> wrappedDialogBuilderClass = findClass("su.nightexpress.nightcore.bridge.dialog.wrap.WrappedDialog$Builder", "su.nightexpress.nightcore.bridge.dialog.wrap.WrappedDialog.Builder");
 
-            if (dialogClass == null || dialogBaseClass == null || dialogBodyClass == null
-                    || actionButtonClass == null || dialogActionClass == null || dialogTypeClass == null) {
+            if (dialogsClass == null || dialogBasesClass == null || dialogBodiesClass == null || dialogButtonsClass == null
+                    || dialogActionsClass == null || dialogTypesClass == null || dialogResponseHandlerClass == null || wrappedDialogBuilderClass == null) {
                 return false;
             }
 
-            // A. Build DialogBase (Title & Message Body)
-            Component titleComp = mm.deserialize((title != null && !title.isBlank()) ? title : "<gold><bold>APEXSIONS</bold></gold>");
-            Method baseBuilderM = dialogBaseClass.getMethod("builder", Component.class);
-            Object baseBuilder = baseBuilderM.invoke(null, titleComp);
-
-            String cleanDesc = (description != null && !description.isBlank()) ? description : "";
-            Component descComp = mm.deserialize(cleanDesc);
-            Method plainMsgM = dialogBodyClass.getMethod("plainMessage", Component.class);
-            Object bodyObj = plainMsgM.invoke(null, descComp);
-
-            for (Method m : baseBuilder.getClass().getMethods()) {
-                if (m.getName().equals("body") && m.getParameterCount() == 1 && List.class.isAssignableFrom(m.getParameterTypes()[0])) {
-                    m.invoke(baseBuilder, List.of(bodyObj));
+            // 1. Item Dialog Body (item rendered at top center)
+            ItemStack displayItem = (item != null && !item.getType().isAir()) ? item : new ItemStack(org.bukkit.Material.WRITTEN_BOOK);
+            Method itemBodyMethod = null;
+            for (Method m : dialogBodiesClass.getMethods()) {
+                if (m.getName().equals("item") && m.getParameterCount() == 1 && m.getParameterTypes()[0] == ItemStack.class) {
+                    itemBodyMethod = m;
                     break;
                 }
             }
-            Object dialogBase = baseBuilder.getClass().getMethod("build").invoke(baseBuilder);
+            if (itemBodyMethod == null) return false;
 
-            // B. Build ActionButtons
+            Object itemBodyBuilder = itemBodyMethod.invoke(null, displayItem.clone());
+            String cleanDesc = (description != null && !description.isBlank()) ? description : "";
+            Method plainMsgM = dialogBodiesClass.getMethod("plainMessage", String.class);
+            Object plainDesc = plainMsgM.invoke(null, cleanDesc);
+
+            for (Method m : itemBodyBuilder.getClass().getMethods()) {
+                if (m.getName().equals("description") && m.getParameterCount() == 1) {
+                    m.invoke(itemBodyBuilder, plainDesc);
+                    break;
+                }
+            }
+            Object itemBody = itemBodyBuilder.getClass().getMethod("build").invoke(itemBodyBuilder);
+
+            // 2. Base Builder
+            Method baseBuilderM = dialogBasesClass.getMethod("builder", String.class);
+            Object baseBuilder = baseBuilderM.invoke(null, (title != null && !title.isBlank()) ? title : "APEXSIONS");
+            for (Method m : baseBuilder.getClass().getMethods()) {
+                if (m.getName().equals("body")) {
+                    if (m.getParameterCount() == 1 && List.class.isAssignableFrom(m.getParameterTypes()[0])) {
+                        m.invoke(baseBuilder, List.of(itemBody));
+                        break;
+                    } else if (m.getParameterCount() == 1 && m.getParameterTypes()[0].isArray()) {
+                        Object arr = java.lang.reflect.Array.newInstance(m.getParameterTypes()[0].getComponentType(), 1);
+                        java.lang.reflect.Array.set(arr, 0, itemBody);
+                        m.invoke(baseBuilder, arr);
+                        break;
+                    }
+                }
+            }
+            Object base = baseBuilder.getClass().getMethod("build").invoke(baseBuilder);
+
+            // 3. Action Buttons
+            Method btnActionM = dialogButtonsClass.getMethod("action", String.class, String.class);
+            Method customClickM = dialogActionsClass.getMethod("customClick", String.class);
+
             List<Object> buttonList = new ArrayList<>();
             if (buttons != null) {
-                for (DialogButtonData b : buttons) {
-                    Object btn = createPaperActionButton(plugin, actionButtonClass, dialogActionClass, b, 160);
-                    if (btn != null) {
-                        buttonList.add(btn);
-                    }
+                for (int i = 0; i < buttons.size(); i++) {
+                    DialogButtonData b = buttons.get(i);
+                    buttonList.add(createNightCoreButton(btnActionM, customClickM, b.getLabel(), b.getTooltip(), "btn_" + i));
                 }
             }
 
-            Object exitButtonObj = null;
+            // 4. Exit / Back Button
+            Object backBtn = null;
             if (exitButton != null) {
-                exitButtonObj = createPaperActionButton(plugin, actionButtonClass, dialogActionClass, exitButton, 120);
+                backBtn = createNightCoreButton(btnActionM, customClickM, exitButton.getLabel(), exitButton.getTooltip(), "exit_action");
             }
 
-            // C. Build DialogType (multiAction)
-            Object dialogType = null;
-            for (Method m : dialogTypeClass.getMethods()) {
+            // 5. MultiAction Dialog Type
+            Object multiActionBuilder = null;
+            for (Method m : dialogTypesClass.getMethods()) {
                 if (m.getName().equals("multiAction")) {
-                    Class<?>[] pts = m.getParameterTypes();
-                    if (pts.length == 3 && List.class.isAssignableFrom(pts[0]) && pts[1].isAssignableFrom(actionButtonClass) && (pts[2] == int.class || pts[2] == Integer.class)) {
-                        dialogType = m.invoke(null, buttonList, exitButtonObj, Math.max(1, columns));
+                    if (List.class.isAssignableFrom(m.getParameterTypes()[0])) {
+                        multiActionBuilder = m.invoke(null, buttonList);
                         break;
-                    } else if (pts.length == 2 && List.class.isAssignableFrom(pts[0]) && pts[1].isAssignableFrom(actionButtonClass)) {
-                        dialogType = m.invoke(null, buttonList, exitButtonObj);
-                        break;
-                    } else if (pts.length == 2 && List.class.isAssignableFrom(pts[0]) && (pts[1] == int.class || pts[1] == Integer.class)) {
-                        dialogType = m.invoke(null, buttonList, Math.max(1, columns));
-                        break;
-                    } else if (pts.length == 1 && List.class.isAssignableFrom(pts[0])) {
-                        dialogType = m.invoke(null, buttonList);
+                    } else if (m.getParameterTypes()[0].isArray()) {
+                        Object arr = java.lang.reflect.Array.newInstance(m.getParameterTypes()[0].getComponentType(), buttonList.size());
+                        for (int i = 0; i < buttonList.size(); i++) java.lang.reflect.Array.set(arr, i, buttonList.get(i));
+                        multiActionBuilder = m.invoke(null, arr);
                         break;
                     }
                 }
             }
+            if (multiActionBuilder == null) return false;
 
-            if (dialogType == null) {
-                // Fallback to notice if multiAction method wasn't matched
-                for (Method m : dialogTypeClass.getMethods()) {
-                    if (m.getName().equals("notice") && m.getParameterCount() == 1 && m.getParameterTypes()[0].isAssignableFrom(actionButtonClass)) {
-                        Object firstBtn = exitButtonObj != null ? exitButtonObj : (!buttonList.isEmpty() ? buttonList.get(0) : null);
-                        if (firstBtn != null) {
-                            dialogType = m.invoke(null, firstBtn);
-                            break;
-                        }
-                    }
+            for (Method m : multiActionBuilder.getClass().getMethods()) {
+                if (m.getName().equals("exitAction") && m.getParameterCount() == 1 && backBtn != null) {
+                    m.invoke(multiActionBuilder, backBtn);
+                }
+                if (m.getName().equals("columns") && m.getParameterCount() == 1) {
+                    m.invoke(multiActionBuilder, Math.max(1, columns));
+                }
+            }
+            Object dialogType = multiActionBuilder.getClass().getMethod("build").invoke(multiActionBuilder);
+
+            // 6. WrappedDialog Builder & Handlers
+            Object dialogBuilder = wrappedDialogBuilderClass.getDeclaredConstructor().newInstance();
+            for (Method m : dialogBuilder.getClass().getMethods()) {
+                if (m.getName().equals("base") && m.getParameterCount() == 1) {
+                    m.invoke(dialogBuilder, base);
+                }
+                if (m.getName().equals("type") && m.getParameterCount() == 1) {
+                    m.invoke(dialogBuilder, dialogType);
                 }
             }
 
-            if (dialogType == null) return false;
-
-            // D. Construct Dialog via Dialog.create(Consumer<Dialog.Builder>)
-            final Object finalBase = dialogBase;
-            final Object finalType = dialogType;
-
-            Consumer<Object> builderConsumer = builderObj -> {
-                try {
-                    for (Method m : builderObj.getClass().getMethods()) {
-                        if (m.getName().equals("base") && m.getParameterCount() == 1 && m.getParameterTypes()[0].isAssignableFrom(dialogBaseClass)) {
-                            m.invoke(builderObj, finalBase);
-                        } else if (m.getName().equals("type") && m.getParameterCount() == 1 && m.getParameterTypes()[0].isAssignableFrom(dialogTypeClass)) {
-                            m.invoke(builderObj, finalType);
-                        }
-                    }
-                } catch (Throwable t) {
-                    t.printStackTrace();
-                }
-            };
-
-            Method createDialogM = dialogClass.getMethod("create", Consumer.class);
-            Object dialogObj = createDialogM.invoke(null, builderConsumer);
-
-            // E. Show Dialog to Player: player.showDialog(dialogObj)
-            for (Method m : player.getClass().getMethods()) {
-                if (m.getName().equals("showDialog") && m.getParameterCount() == 1) {
-                    m.invoke(player, dialogObj);
-                    return true;
+            Method handleResponseM = dialogBuilder.getClass().getMethod("handleResponse", String.class, dialogResponseHandlerClass);
+            if (buttons != null) {
+                for (int i = 0; i < buttons.size(); i++) {
+                    DialogButtonData b = buttons.get(i);
+                    registerNightCoreHandler(handleResponseM, dialogBuilder, dialogResponseHandlerClass, "btn_" + i, plugin, b.getCallback());
                 }
             }
 
-            return false;
+            Runnable exitRunnable = (exitButton != null && exitButton.getCallback() != null) ? exitButton.getCallback() : () -> {};
+            registerNightCoreHandler(handleResponseM, dialogBuilder, dialogResponseHandlerClass, "exit_action", plugin, exitRunnable);
+            registerNightCoreHandler(handleResponseM, dialogBuilder, dialogResponseHandlerClass, "back", plugin, exitRunnable);
+            registerNightCoreHandler(handleResponseM, dialogBuilder, dialogResponseHandlerClass, "cancel", plugin, exitRunnable);
+
+            // 7. Build and Show
+            Object wrappedDialog = dialogBuilder.getClass().getMethod("build").invoke(dialogBuilder);
+            Method showDialogM = null;
+            for (Method m : dialogsClass.getMethods()) {
+                if (m.getName().equals("showDialog") && m.getParameterCount() == 3) {
+                    showDialogM = m;
+                    break;
+                }
+            }
+            if (showDialogM != null) {
+                showDialogM.invoke(null, player, wrappedDialog, exitRunnable);
+            } else {
+                dialogsClass.getMethod("showDialog", Player.class, wrappedDialog.getClass()).invoke(null, player, wrappedDialog);
+            }
+
+            return true;
         } catch (Throwable t) {
-            // Fail gracefully to chat fallback
+            plugin.getLogger().warning("[NativeDialogAdapter] NightCore multi-action dialog error: " + t.getMessage());
             return false;
         }
     }
 
-    private static Object createPaperActionButton(
+    private static Object createNightCoreButton(Method btnActionM, Method customClickM, String label, String tooltip, String actionId) throws Exception {
+        Object btnBuilder = btnActionM.invoke(null, label, tooltip);
+        Object action = customClickM.invoke(null, actionId);
+        for (Method m : btnBuilder.getClass().getMethods()) {
+            if (m.getName().equals("action") && m.getParameterCount() == 1) {
+                m.invoke(btnBuilder, action);
+                break;
+            }
+        }
+        return btnBuilder.getClass().getMethod("build").invoke(btnBuilder);
+    }
+
+    private static void registerNightCoreHandler(Method handleResponseM, Object dialogBuilder, Class<?> handlerClass,
+                                                 String actionId, Plugin plugin, Runnable callback) throws Exception {
+        if (callback == null) return;
+        InvocationHandler handler = (proxy, method, args) -> {
+            if (method.getDeclaringClass() == Object.class) {
+                if (method.getName().equals("equals")) return proxy == (args != null && args.length > 0 ? args[0] : null);
+                if (method.getName().equals("hashCode")) return System.identityHashCode(proxy);
+                return "DialogResponseHandler@" + Integer.toHexString(System.identityHashCode(proxy));
+            }
+            if (callback != null) {
+                if (Bukkit.isPrimaryThread()) {
+                    try {
+                        callback.run();
+                    } catch (Throwable t) {
+                        plugin.getLogger().warning("[NativeDialogAdapter] NightCore button callback error: " + t.getMessage());
+                    }
+                } else {
+                    Bukkit.getScheduler().runTask(plugin, callback);
+                }
+            }
+            return null;
+        };
+        Object proxy = Proxy.newProxyInstance(handlerClass.getClassLoader(), new Class<?>[]{handlerClass}, handler);
+        handleResponseM.invoke(dialogBuilder, actionId, proxy);
+    }
+
+    private static boolean showPaperMultiActionDialog(
             Plugin plugin,
-            Class<?> actionButtonClass,
-            Class<?> dialogActionClass,
-            DialogButtonData b,
-            int width
+            Player player,
+            ItemStack item,
+            String title,
+            String description,
+            List<DialogButtonData> buttons,
+            DialogButtonData exitButton,
+            int columns
     ) {
         try {
-            Component labelComp = mm.deserialize(b.getLabel());
-            Component tooltipComp = (b.getTooltip() != null && !b.getTooltip().isBlank())
-                    ? mm.deserialize(b.getTooltip())
-                    : Component.empty();
+            Class<?> dialogClass = findClass("io.papermc.paper.dialog.Dialog", "io.papermc.paper.registry.data.dialog.Dialog");
+            Class<?> dialogBaseClass = findClass("io.papermc.paper.registry.data.dialog.DialogBase", "io.papermc.paper.dialog.DialogBase");
+            Class<?> dialogBodyClass = findClass("io.papermc.paper.registry.data.dialog.body.DialogBody", "io.papermc.paper.dialog.body.DialogBody", "io.papermc.paper.dialog.DialogBody");
+            Class<?> dialogTypeClass = findClass("io.papermc.paper.registry.data.dialog.type.DialogType", "io.papermc.paper.dialog.type.DialogType", "io.papermc.paper.dialog.DialogType");
+            Class<?> actionButtonClass = findClass("io.papermc.paper.registry.data.dialog.action.ActionButton", "io.papermc.paper.dialog.action.ActionButton", "io.papermc.paper.dialog.ActionButton");
+            Class<?> dialogActionClass = findClass("io.papermc.paper.registry.data.dialog.action.DialogAction", "io.papermc.paper.dialog.action.DialogAction", "io.papermc.paper.dialog.DialogAction");
+            Class<?> dialogActionCallbackClass = findClass("io.papermc.paper.registry.data.dialog.action.DialogActionCallback", "io.papermc.paper.dialog.action.DialogActionCallback");
 
-            // Create ClickEvent
-            ClickEvent clickEvent;
-            if (b.getCommand() != null && !b.getCommand().isBlank()) {
-                clickEvent = ClickEvent.runCommand(b.getCommand());
-            } else if (b.getCallback() != null) {
-                clickEvent = ClickEvent.callback(audience -> {
-                    Bukkit.getScheduler().runTask(plugin, b.getCallback());
-                });
-            } else {
-                clickEvent = ClickEvent.runCommand("/apexsionsnoop");
+            if (dialogClass == null || dialogBaseClass == null || dialogBodyClass == null || actionButtonClass == null || dialogActionClass == null) {
+                return false;
             }
 
-            // Create DialogAction via staticAction(ClickEvent) or customClick
-            Object actionObj = null;
-            for (Method m : dialogActionClass.getMethods()) {
-                if (m.getName().equals("staticAction") && m.getParameterCount() == 1 && m.getParameterTypes()[0].isAssignableFrom(ClickEvent.class)) {
-                    actionObj = m.invoke(null, clickEvent);
+            Component titleComp = mm.deserialize((title != null && !title.isBlank()) ? title : "APEXSIONS");
+            Method baseBuilderMethod = dialogBaseClass.getMethod("builder", Component.class);
+            Object baseBuilder = baseBuilderMethod.invoke(null, titleComp);
+
+            Component descComp = mm.deserialize((description != null && !description.isBlank()) ? description : "");
+            Method plainDescM = dialogBodyClass.getMethod("plainMessage", Component.class);
+            Object plainDesc = plainDescM.invoke(null, descComp);
+
+            Method itemBodyM = null;
+            for (Method m : dialogBodyClass.getMethods()) {
+                if (m.getName().equals("item")) {
+                    itemBodyM = m;
                     break;
                 }
             }
+            if (item != null && itemBodyM != null) {
+                Object itemBody = null;
+                if (itemBodyM.getParameterCount() == 6) {
+                    itemBody = itemBodyM.invoke(null, item.clone(), plainDesc, true, true, 200, 200);
+                } else if (itemBodyM.getParameterCount() == 2) {
+                    itemBody = itemBodyM.invoke(null, item.clone(), plainDesc);
+                }
+                if (itemBody != null) {
+                    baseBuilder.getClass().getMethod("body", List.class).invoke(baseBuilder, List.of(itemBody));
+                }
+            } else {
+                baseBuilder.getClass().getMethod("body", List.class).invoke(baseBuilder, List.of(plainDesc));
+            }
 
-            if (actionObj == null) {
-                for (Method m : dialogActionClass.getMethods()) {
-                    if (m.getName().equals("commandTemplate") && m.getParameterCount() == 1 && m.getParameterTypes()[0] == String.class) {
-                        String cmd = b.getCommand() != null ? b.getCommand() : "say click";
-                        actionObj = m.invoke(null, cmd);
+            Object dialogBase = baseBuilder.getClass().getMethod("build").invoke(baseBuilder);
+
+            Class<?> callbackInterface = dialogActionCallbackClass != null ? dialogActionCallbackClass : java.util.function.BiConsumer.class;
+            List<Object> paperButtons = new ArrayList<>();
+
+            if (buttons != null) {
+                for (DialogButtonData b : buttons) {
+                    paperButtons.add(createPaperActionButton(actionButtonClass, dialogActionClass, callbackInterface, plugin,
+                            mm.deserialize(b.getLabel()),
+                            mm.deserialize(b.getTooltip()),
+                            b.getCallback()));
+                }
+            }
+
+            Object backButton = null;
+            if (exitButton != null) {
+                backButton = createPaperActionButton(actionButtonClass, dialogActionClass, callbackInterface, plugin,
+                        mm.deserialize(exitButton.getLabel()),
+                        mm.deserialize(exitButton.getTooltip()),
+                        exitButton.getCallback());
+            }
+
+            Object multiActionType = null;
+            for (Method m : dialogTypeClass.getMethods()) {
+                if (m.getName().equals("multiAction")) {
+                    if (m.getParameterCount() == 3) {
+                        multiActionType = m.invoke(null, paperButtons, backButton, Math.max(1, columns));
+                        break;
+                    } else if (m.getParameterCount() == 2) {
+                        multiActionType = m.invoke(null, paperButtons, backButton);
                         break;
                     }
                 }
             }
+            if (multiActionType == null) return false;
 
-            if (actionObj == null) return null;
+            Method createDialogMethod = dialogClass.getMethod("create", dialogBaseClass, dialogTypeClass);
+            Object dialogObj = createDialogMethod.invoke(null, dialogBase, multiActionType);
 
-            // Instantiate ActionButton: ActionButton.create(...)
-            for (Method m : actionButtonClass.getMethods()) {
-                if (m.getName().equals("create")) {
-                    Class<?>[] pts = m.getParameterTypes();
-                    if (pts.length == 4 && pts[0].isAssignableFrom(Component.class) && pts[1].isAssignableFrom(Component.class) && (pts[2] == int.class || pts[2] == Integer.class) && pts[3].isAssignableFrom(dialogActionClass)) {
-                        return m.invoke(null, labelComp, tooltipComp, width, actionObj);
-                    } else if (pts.length == 3 && pts[0].isAssignableFrom(Component.class) && (pts[1] == int.class || pts[1] == Integer.class) && pts[2].isAssignableFrom(dialogActionClass)) {
-                        return m.invoke(null, labelComp, width, actionObj);
-                    } else if (pts.length == 2 && pts[0].isAssignableFrom(Component.class) && pts[1].isAssignableFrom(dialogActionClass)) {
-                        return m.invoke(null, labelComp, actionObj);
+            Method showDialogMethod = player.getClass().getMethod("showDialog", dialogClass);
+            showDialogMethod.invoke(player, dialogObj);
+            return true;
+        } catch (Throwable t) {
+            return false;
+        }
+    }
+
+    private static Object createPaperActionButton(Class<?> actionButtonClass, Class<?> dialogActionClass, Class<?> callbackInterface,
+                                                  Plugin plugin, Component label, Component tooltip, Runnable callback) throws Exception {
+        InvocationHandler clickHandler = (proxy, method, args) -> {
+            if (method.getDeclaringClass() == Object.class) {
+                if (method.getName().equals("equals")) return proxy == (args != null && args.length > 0 ? args[0] : null);
+                if (method.getName().equals("hashCode")) return System.identityHashCode(proxy);
+                return "PaperActionCallback@" + Integer.toHexString(System.identityHashCode(proxy));
+            }
+            if (callback != null) {
+                if (Bukkit.isPrimaryThread()) {
+                    try {
+                        callback.run();
+                    } catch (Throwable t) {
+                        plugin.getLogger().warning("[NativeDialogAdapter] Paper button callback error: " + t.getMessage());
                     }
+                } else {
+                    Bukkit.getScheduler().runTask(plugin, callback);
                 }
             }
-
             return null;
-        } catch (Throwable t) {
-            return null;
+        };
+        Object callbackProxy = Proxy.newProxyInstance(callbackInterface.getClassLoader(), new Class<?>[]{callbackInterface}, clickHandler);
+        Method customActionMethod = null;
+        for (Method m : dialogActionClass.getMethods()) {
+            if (m.getParameterCount() == 1 && m.getParameterTypes()[0].isAssignableFrom(callbackInterface)) {
+                customActionMethod = m;
+                break;
+            }
         }
+        Object action = customActionMethod != null ? customActionMethod.invoke(null, callbackProxy) : null;
+        Method createButtonMethod = actionButtonClass.getMethod("create", Component.class, Component.class, int.class, dialogActionClass);
+        return createButtonMethod.invoke(null, label, tooltip, 150, action);
     }
 
     private static void sendInteractiveChatFallback(

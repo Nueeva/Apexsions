@@ -77,7 +77,8 @@ public class QuestsDialog {
                 () -> {}
         );
 
-        NativeDialogAdapter.showMultiActionDialog(plugin, player, title, desc.toString(), buttons, exitBtn, 1);
+        org.bukkit.inventory.ItemStack questIcon = new org.bukkit.inventory.ItemStack(org.bukkit.Material.WRITTEN_BOOK);
+        NativeDialogAdapter.showMultiActionDialog(plugin, player, questIcon, title, desc.toString(), buttons, exitBtn, 2);
     }
 
     public static void openQuestDetailDialog(ApexsionsQuests plugin, Player player, PlayerQuestProgress progress, Quest quest) {
@@ -110,6 +111,22 @@ public class QuestsDialog {
                 () -> open(plugin, player)
         );
 
-        NativeDialogAdapter.showMultiActionDialog(plugin, player, title, desc.toString(), buttons, backBtn, 1);
+        org.bukkit.Material mat = org.bukkit.Material.BOOK;
+        if (quest.getType() != null) {
+            switch (quest.getType()) {
+                case MINE_BLOCK, BREAK_BLOCK -> mat = org.bukkit.Material.DIAMOND_PICKAXE;
+                case KILL_ENTITY, KILL_PLAYER -> mat = org.bukkit.Material.DIAMOND_SWORD;
+                case HARVEST_CROPS, PLANT_CROPS -> mat = org.bukkit.Material.DIAMOND_HOE;
+                case FISH -> mat = org.bukkit.Material.FISHING_ROD;
+                case CRAFT_ITEM, SMELT_ITEM -> mat = org.bukkit.Material.CRAFTING_TABLE;
+                case BREED_ANIMALS, VILLAGER_TRADE -> mat = org.bukkit.Material.EMERALD;
+                case EXP_GAIN -> mat = org.bukkit.Material.EXPERIENCE_BOTTLE;
+                case TRAVEL_DISTANCE -> mat = org.bukkit.Material.COMPASS;
+                default -> mat = org.bukkit.Material.BOOK;
+            }
+        }
+        org.bukkit.inventory.ItemStack item = new org.bukkit.inventory.ItemStack(mat);
+
+        NativeDialogAdapter.showMultiActionDialog(plugin, player, item, title, desc.toString(), buttons, backBtn, 1);
     }
 }
