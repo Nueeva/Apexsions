@@ -58,13 +58,12 @@ public class DynamicPriceCalculator {
     public PriceResult calculateBuyPrice(ShopItem item, Player player, int quantity, String kingdomOverride) {
         quantity = Math.max(1, quantity);
         double baseUnit = item.getBaseBuyPrice();
-
+        String activeKingdom = plugin.getKingdomMarketService().resolveKingdom(player, kingdomOverride);
         double weatherMult = player != null ? plugin.getWeatherPriceService().getBuyMultiplier(item, player.getWorld()) : 1.00;
         double kingdomMult = plugin.getKingdomMarketService().getBuyMultiplier(item, player, kingdomOverride);
-        double supplyMult = plugin.getSupplyScannerService().getSupplyBuyMultiplier(item);
+        double supplyMult = plugin.getSupplyScannerService().getSupplyBuyMultiplier(item, activeKingdom);
         double eventMult = plugin.getMarketEventService() != null ? plugin.getMarketEventService().getEventBuyMultiplier(item) : 1.00;
 
-        String activeKingdom = plugin.getKingdomMarketService().resolveKingdom(player, kingdomOverride);
         // Solterra Ores stability: 60% resistance against saturation drop (retains kingdom advantage while preventing infinite dumping)
         if (activeKingdom.equalsIgnoreCase("SOLTERRA") && item.getCategory() == com.apexsions.shop.category.ShopCategory.ORES) {
             supplyMult = 1.00 - ((1.00 - supplyMult) * 0.40);
@@ -113,7 +112,7 @@ public class DynamicPriceCalculator {
 
         double weatherMult = player != null ? plugin.getWeatherPriceService().getSellMultiplier(item, player.getWorld()) : 1.00;
         double kingdomMult = plugin.getKingdomMarketService().getSellMultiplier(item, player, kingdomOverride);
-        double supplyMult = plugin.getSupplyScannerService().getSupplySellMultiplier(item, player, quantity);
+        double supplyMult = plugin.getSupplyScannerService().getSupplySellMultiplier(item, activeKingdom);
         double eventMult = plugin.getMarketEventService() != null ? plugin.getMarketEventService().getEventSellMultiplier(item) : 1.00;
 
         if (activeKingdom.equalsIgnoreCase("SOLTERRA") && item.getCategory() == com.apexsions.shop.category.ShopCategory.ORES) {

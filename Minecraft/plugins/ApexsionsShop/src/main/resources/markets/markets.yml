@@ -16,57 +16,80 @@ weather:
 
 kingdoms:
   SOLTERRA:
-    tax-percent: 20.0
-    ores-buy-multiplier: 1.15      # Harga ore cenderung stabil dan tinggi
-    ores-sell-ratio: 0.30          # Rasio harga jual ore seimbang 30% dari harga beli (unggul di atas baseline 20%)
-    ores-stability: true           # Kebal terhadap volatilitas pasar
-    food-buy-multiplier: 0.90      # Makanan murah 10%
-    farming-buy-multiplier: 0.90   # Pertanian murah 10%
-    blocks-buy-multiplier: 1.05
-    dyes-buy-multiplier: 1.00
+    # Realm of Fire, Forge & Deep Mines (Lembah Tambang & Pandai Besi)
+    tax-percent: 18.0
+    # ORES & MINERALS: Sangat melimpah lokal (Murah dibeli, jual stabil)
+    ores-buy-multiplier: 0.85      # Diskon 15% beli logam/mineral lokal
+    ores-sell-ratio: 0.30          # Rasio jual mineral 30% dari harga beli
+    ores-stability: true           # Daya tahan 60% terhadap kejenuhan pasar
+    # KELANGKAAN PANGAN & KAYU: Pegunungan vulkanik tandus sangat haus pangan!
+    food-buy-multiplier: 1.25      # Makanan mahal di Solterra (+25%)
+    food-sell-multiplier: 1.30     # Petani yang ekspor makanan ke Solterra dibayar +30%!
+    farming-buy-multiplier: 1.25   # Hasil tani mahal (+25%)
+    farming-sell-multiplier: 1.30  # Petani yang jual hasil panen ke Solterra dibayar +30%!
+    blocks-buy-multiplier: 1.10
+    blocks-sell-multiplier: 1.20   # Kayu & bahan bangunan dihargai tinggi (+20%)
+    dyes-buy-multiplier: 1.10
     mob_drops-buy-multiplier: 1.00
 
-  ZENITHAR:
-    tax-percent: 18.0
-    volatility-multiplier: 1.05    # Pasar stabil berkat perbankan kuat
-    blocks-buy-multiplier: 0.85    # Diskon 15% blok bangunan & marmer istana megah
-    dyes-buy-multiplier: 0.90
-    ores-buy-multiplier: 1.05
-    ores-sell-multiplier: 1.00
-    food-buy-multiplier: 1.05
-    food-sell-multiplier: 1.00
-    farming-buy-multiplier: 1.05
-    farming-sell-multiplier: 1.00
-    mob_drops-buy-multiplier: 1.05
-    mob_drops-sell-multiplier: 1.00
-
   SYLVAMOOR:
+    # Realm of Verdant Nature & Vast Seas (Lumbung Pangan & Samudera)
     tax-percent: 15.0
-    dyes-buy-multiplier: 0.85      # Pewarna & tanaman liar murah 15%
-    farming-buy-multiplier: 0.90   # Hasil tani terjangkau
-    food-buy-multiplier: 0.95
-    ores-buy-multiplier: 1.10
+    # AGRIKULTUR & KAYU: Sangat melimpah lokal (Lumbung pangan realm)
+    food-buy-multiplier: 0.80      # Makanan murah (Diskon 20%)
+    food-sell-multiplier: 0.90
+    farming-buy-multiplier: 0.80   # Hasil tani sangat terjangkau (Diskon 20%)
+    farming-sell-multiplier: 0.90
+    blocks-buy-multiplier: 0.85    # Kayu & dedaunan rimba murah (Diskon 15%)
+    blocks-sell-multiplier: 0.95
+    dyes-buy-multiplier: 0.80      # Pewarna & bunga alami murah (Diskon 20%)
+    # KELANGKAAN MINERAL: Dataran hijau miskin bijih logam!
+    ores-buy-multiplier: 1.30      # Mineral & logam mahal (+30%)
+    ores-sell-multiplier: 1.35     # Penambang yang bawa bijih besi/emas ke Sylvamoor dibayar +35%!
     mob_drops-buy-multiplier: 0.90
-    blocks-buy-multiplier: 1.00
+    mob_drops-sell-multiplier: 1.05
+
+  ZENITHAR:
+    # Empire of Architecture & High Commerce (Pusat Perdagangan & Arsitektur)
+    tax-percent: 12.0              # Zona Perdagangan Bebas: Pajak paling rendah di realm!
+    volatility-multiplier: 1.05    # Perbankan kuat
+    # BLOK BANGUNAN & KERAJINAN: Keahlian arsitektur istana megah
+    blocks-buy-multiplier: 0.85    # Diskon 15% marmer, kuarsa & batu pualam
+    blocks-sell-multiplier: 0.95
+    dyes-buy-multiplier: 0.85
+    # KONSUMSI METROPOLITAN: Menampung komoditas pangan & mineral untuk proyek kota
+    ores-buy-multiplier: 1.10
+    ores-sell-multiplier: 1.15     # Menampung suplai mineral (+15%)
+    food-buy-multiplier: 1.10
+    food-sell-multiplier: 1.15     # Menampung suplai pangan (+15%)
+    farming-buy-multiplier: 1.10
+    farming-sell-multiplier: 1.15
+    mob_drops-buy-multiplier: 1.00
+    mob_drops-sell-multiplier: 1.05
 
 # ========================================================
 # PASAR DINAMIS GLOBAL & SATURASI PASOKAN (MULTIPLAYER BALANCED)
 # ========================================================
 supply-market:
   enabled: true
-  # Sensitivitas kurva logaritmik penurunan harga ketika pasokan membanjiri pasar
-  # Semakin kecil nilai sensitivity (misal 0.025), semakin halus perubahannya
+  # Sensitivitas kurva logaritmik pergeseran harga (volume pasar)
   sensitivity: 0.025
-  # Ambang batas volume dasar (dalam butir item) sebelum saturasi pasar mulai bekerja
+  # Ambang batas volume dasar (dalam butir item) sebelum elastisitas pasar mulai bekerja
   # 2304 butir = setara 36 stack (1 inventori penuh)
   base-volume-threshold: 2304
   # Batas penurunan harga maksimal akibat pasokan melimpah (0.35 = maksimal turun 35%)
   max-saturation-drop: 0.35
-  # Batas pengali minimum harga jual (0.65 = minimal 65% dari harga normal saat pasar jenuh ekstrem)
+  # Batas pengali minimum harga jual (0.65 = minimal 65% dari harga normal saat pasar jenuh)
   min-sell-multiplier: 0.65
-  # Interval pemulihan pasar (menit) untuk mengembalikan harga ke baseline
+  # Batas kenaikan harga maksimal akibat kelangkaan/permintaan tinggi (0.35 = lonjakan +35%)
+  max-scarcity-surge: 0.35
+  # Batas pengali maksimum harga beli saat stok langka/borongan tinggi
+  max-buy-multiplier: 1.35
+  # Batas pengali maksimum kompensasi jual bagi supplier saat stok langka
+  max-sell-multiplier: 1.35
+  # Interval pemulihan pasar (menit) untuk mengembalikan volume ke titik seimbang
   recovery-interval-minutes: 10
-  # Persentase pemulihan volume pasar setiap interval (25% volume pasar dipulihkan setiap 10 menit)
+  # Persentase pemulihan volume pasar setiap interval (25% volume kembali ke 0 tiap 10 menit)
   recovery-percent-per-interval: 25.0
 
 # ========================================================

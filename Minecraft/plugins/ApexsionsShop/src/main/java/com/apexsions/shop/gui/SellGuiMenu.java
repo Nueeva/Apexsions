@@ -147,6 +147,7 @@ public class SellGuiMenu extends ShopGui {
         int totalItemsSold = 0;
         List<ItemStack> invalidItems = new ArrayList<>();
 
+        String kingdomKey = plugin.getKingdomCoreHook().getPlayerKingdom(player);
         for (int slot : SELL_SLOTS) {
             ItemStack is = inventory.getItem(slot);
             if (is == null || is.getType() == Material.AIR) continue;
@@ -157,7 +158,7 @@ public class SellGuiMenu extends ShopGui {
                 totalPayout += res.finalTotalPrice();
                 totalTax += res.taxAmount();
                 totalItemsSold += is.getAmount();
-                plugin.getSupplyScannerService().recordSale(shopItem.getMaterial(), is.getAmount());
+                plugin.getSupplyScannerService().recordSale(kingdomKey, shopItem.getMaterial(), is.getAmount());
                 inventory.setItem(slot, null);
             } else {
                 invalidItems.add(is);
@@ -178,7 +179,6 @@ public class SellGuiMenu extends ShopGui {
         if (totalItemsSold > 0) {
             plugin.getEconomyHook().deposit(player, totalPayout);
 
-            String kingdomKey = plugin.getKingdomCoreHook().getPlayerKingdom(player);
             if (totalTax > 0 && kingdomKey != null && !kingdomKey.equalsIgnoreCase("NONE")) {
                 plugin.getEconomyHook().depositKingdomTreasury(kingdomKey, totalTax);
                 org.bukkit.Bukkit.getPluginManager().callEvent(new com.apexsions.shop.api.event.KingdomTaxCollectEvent(player, kingdomKey, totalTax));
