@@ -103,7 +103,7 @@ COMMON_ENCHANTS = [
 
 COMMAND_TREE = {
     "gamemode": {
-        "syntax": "/gamemode <creative|survival|adventure|spectator> [player]",
+        "syntax": "/gamemode <creative|survival|adventure|spectator> <player>",
         "args": [
             [("creative", "Creative Mode"), ("survival", "Survival Mode"), ("adventure", "Adventure Mode"), ("spectator", "Spectator Mode")],
             "<player>"
@@ -193,15 +193,15 @@ COMMAND_TREE = {
         ]
     },
     "tp": {
-        "syntax": "/tp <target> [destination]",
+        "syntax": "/tp <target> <destination>",
         "args": ["<player>", "<player>"]
     },
     "teleport": {
-        "syntax": "/teleport <target> [destination]",
+        "syntax": "/teleport <target> <destination>",
         "args": ["<player>", "<player>"]
     },
     "kill": {
-        "syntax": "/kill [player]",
+        "syntax": "/kill <player>",
         "args": ["<player>"]
     },
     "give": {
@@ -213,7 +213,7 @@ COMMAND_TREE = {
         ]
     },
     "clear": {
-        "syntax": "/clear [player] [item]",
+        "syntax": "/clear <player> [item]",
         "args": [
             "<player>",
             [(item, "Clear specific item") for item in COMMON_ITEMS]
@@ -269,26 +269,20 @@ COMMAND_TREE = {
         "args": ["<player>"]
     },
     "spawn": {
-        "syntax": "/spawn [player]",
+        "syntax": "/spawn <player>",
         "args": ["<player>"]
     },
-    # Apexsions Custom Plugins
+    # Apexsions Custom Plugins Console Admin
     "eco": {
-        "syntax": "/eco <give|take|set|balance|pay|reload> [player] [amount]",
+        "syntax": "/eco <give|take|set|balance|reload> <player> [amount]",
         "args": [
-            [("give", "Deposit Rupiah balance"), ("take", "Deduct Rupiah balance"), ("set", "Set exact Rupiah balance"), ("balance", "Check balance"), ("pay", "Transfer currency"), ("reload", "Reload economy config")],
-            {
-                "give": "<player>",
-                "take": "<player>",
-                "set": "<player>",
-                "balance": "<player>",
-                "pay": "<player>"
-            },
+            [("give", "Deposit Rupiah balance"), ("take", "Deduct Rupiah balance"), ("set", "Set exact Rupiah balance"), ("balance", "Check balance"), ("reload", "Reload economy config")],
+            "<player>",
             [("10000", "Rp 10.000"), ("50000", "Rp 50.000"), ("100000", "Rp 100.000"), ("500000", "Rp 500.000"), ("1000000", "Rp 1.000.000")]
         ]
     },
     "economy": {
-        "syntax": "/economy <give|take|set|balance|reload> [player] [amount]",
+        "syntax": "/economy <give|take|set|balance|reload> <player> [amount]",
         "args": [
             [("give", "Deposit Rupiah balance"), ("take", "Deduct Rupiah balance"), ("set", "Set exact Rupiah balance"), ("balance", "Check balance"), ("reload", "Reload config")],
             "<player>",
@@ -296,12 +290,11 @@ COMMAND_TREE = {
         ]
     },
     "crates": {
-        "syntax": "/crates <key|give|menu|reload> [args...]",
+        "syntax": "/crates <key|reload> [args...]",
         "args": [
-            [("key", "Manage crate keys"), ("give", "Give crate reward to player"), ("menu", "Open crates GUI"), ("reload", "Reload crates config")],
+            [("key", "Manage crate keys"), ("reload", "Reload crates config")],
             {
-                "key": [("give", "Give crate key"), ("giveall", "Give key to all players"), ("take", "Take crate key"), ("set", "Set key balance")],
-                "give": "<player>"
+                "key": [("give", "Give crate key"), ("giveall", "Give key to all players"), ("take", "Take crate key"), ("set", "Set key balance")]
             },
             {
                 "give": "<player>",
@@ -314,42 +307,31 @@ COMMAND_TREE = {
         ]
     },
     "battlepass": {
-        "syntax": "/battlepass <setlevel|addxp|reset|quests|menu|reload> [player] [amount]",
+        "syntax": "/battlepass <setlevel|addxp|reset|reload> <player> [amount]",
         "args": [
-            [("setlevel", "Set player pass level"), ("addxp", "Add BattlePass XP"), ("reset", "Reset player progression"), ("quests", "Manage quests"), ("menu", "Open pass menu"), ("reload", "Reload config")],
-            {
-                "setlevel": "<player>",
-                "addxp": "<player>",
-                "reset": "<player>"
-            },
+            [("setlevel", "Set player pass level"), ("addxp", "Add BattlePass XP"), ("reset", "Reset player progression"), ("reload", "Reload config")],
+            "<player>",
             [("1", "Level 1"), ("5", "Level 5"), ("10", "Level 10"), ("20", "Level 20"), ("30", "Level 30"), ("50", "Level 50"), ("100", "Level 100 / Max")]
         ]
     },
     "fishing": {
-        "syntax": "/fishing <setlevel|addxp|vault|market|reload> [player] [amount]",
+        "syntax": "/fishing <setlevel|addxp|reload> <player> [amount]",
         "args": [
-            [("setlevel", "Set angler level"), ("addxp", "Add fishing XP"), ("vault", "Open player fishing vault"), ("market", "Open fish delivery market"), ("reload", "Reload config")],
-            {
-                "setlevel": "<player>",
-                "addxp": "<player>",
-                "vault": "<player>"
-            },
+            [("setlevel", "Set angler level"), ("addxp", "Add fishing XP"), ("reload", "Reload config")],
+            "<player>",
             [("1", "Level 1"), ("5", "Level 5"), ("10", "Level 10"), ("25", "Level 25"), ("50", "Level 50")]
         ]
     },
     "shop": {
-        "syntax": "/shop <open|events|contracts|reload> [player]",
+        "syntax": "/shop reload",
         "args": [
-            [("open", "Open shop for player"), ("events", "Trigger/view dynamic events"), ("contracts", "View royal trade contracts"), ("reload", "Reload shop prices")],
-            {
-                "open": "<player>"
-            }
+            [("reload", "Reload dynamic shop prices & configs")]
         ]
     },
     "chat": {
-        "syntax": "/chat <channel|mute|unmute|clear|reload> [player]",
+        "syntax": "/chat <mute|unmute|clear|reload> [player]",
         "args": [
-            [("channel", "Switch chat channel"), ("mute", "Mute player in chat"), ("unmute", "Unmute player"), ("clear", "Clear chat history"), ("reload", "Reload chat config")],
+            [("mute", "Mute player in chat"), ("unmute", "Unmute player"), ("clear", "Clear chat history"), ("reload", "Reload chat config")],
             {
                 "mute": "<player>",
                 "unmute": "<player>"
@@ -357,20 +339,18 @@ COMMAND_TREE = {
         ]
     },
     "customenchants": {
-        "syntax": "/customenchants <enchanter|tinkerer|give|reload> [player]",
+        "syntax": "/customenchants <give|reload> <player> [enchant]",
         "args": [
-            [("enchanter", "Open dual-currency enchanter"), ("tinkerer", "Open tinkerer scrap GUI"), ("give", "Give custom enchant book"), ("reload", "Reload enchants")],
+            [("give", "Give custom enchant book"), ("reload", "Reload enchants config")],
             {
-                "enchanter": "<player>",
-                "tinkerer": "<player>",
                 "give": "<player>"
             }
         ]
     },
     "media": {
-        "syntax": "/media <banner|logo|reload|status>",
+        "syntax": "/media <reload|status>",
         "args": [
-            [("banner", "Spawn/teleport interactive banner"), ("logo", "Render interactive logo"), ("reload", "Reload media assets"), ("status", "View raytrace status")]
+            [("reload", "Reload media assets"), ("status", "View raytrace status")]
         ]
     },
     "apx": {
@@ -395,8 +375,8 @@ COMMAND_TREE = {
 
 # Integrate extended plugin command trees
 try:
-    from new_command_trees import NEW_COMMAND_TREES
-    COMMAND_TREE.update(NEW_COMMAND_TREES)
+    from new_command_trees import CONSOLE_COMMAND_TREES
+    COMMAND_TREE.update(CONSOLE_COMMAND_TREES)
 except Exception:
     pass
 
@@ -1165,15 +1145,8 @@ class PanelLiteApp:
         if not before:
             return [], ""
 
-        if before.startswith("//"):
-            slash_prefix = "//"
-            clean = before[2:]
-        elif before.startswith("/"):
-            slash_prefix = "/"
-            clean = before[1:]
-        else:
-            slash_prefix = ""
-            clean = before
+        has_slash = before.startswith("/")
+        clean = before[1:] if has_slash else before
         
         tokens = clean.split(" ")
         arg_idx = len(tokens) - 1
@@ -1188,7 +1161,7 @@ class PanelLiteApp:
             prefix_matches = []
             contains_matches = []
             for cmd in COMMON_COMMANDS:
-                prefix = slash_prefix
+                prefix = "/" if has_slash else ""
                 desc = ""
                 if cmd in COMMAND_TREE:
                     syn = COMMAND_TREE[cmd].get("syntax", "")
@@ -1399,7 +1372,7 @@ class PanelLiteApp:
         else:
             base = before
 
-        if base in ("/", "//") and (replacement.startswith("/") or replacement.startswith("//")):
+        if base == "/" and replacement.startswith("/"):
             base = ""
 
         clean_after = after.lstrip(" ")
