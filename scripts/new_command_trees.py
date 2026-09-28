@@ -1,7 +1,11 @@
 #!/usr/bin/env python3
-import sys
+"""
+Console-Safe Command Tree Catalog for Apexsions Panel.
+Excludes WorldEdit and player-only in-game actions (GUI openers, movement, line-of-sight).
+Tailored strictly for Server Console / Terminal execution where target player is required.
+"""
 
-NEW_COMMAND_TREES = {
+CONSOLE_COMMAND_TREES = {
     # --- LuckPerms ---
     "lp": {
         "syntax": "/lp <user|group|editor|sync|reload|info>",
@@ -22,9 +26,9 @@ NEW_COMMAND_TREES = {
     },
     # --- WorldGuard ---
     "rg": {
-        "syntax": "/rg <define|claim|redefine|remove|info|list|flag|addmember|removemember|addowner|removeowner|reload> [args...]",
+        "syntax": "/rg <remove|info|list|flag|addmember|removemember|addowner|removeowner|reload> [args...]",
         "args": [
-            [("define", "Define region from WE selection"), ("claim", "Claim WE selection"), ("redefine", "Update region bounds"), ("remove", "Delete region"), ("info", "Display region info"), ("list", "List all regions"), ("flag", "Set or remove region flag"), ("addmember", "Add member to region"), ("removemember", "Remove member"), ("addowner", "Add owner to region"), ("removeowner", "Remove owner"), ("reload", "Reload WorldGuard")],
+            [("remove", "Delete region"), ("info", "Display region info"), ("list", "List all regions in world"), ("flag", "Set or remove region flag"), ("addmember", "Add member to region"), ("removemember", "Remove member"), ("addowner", "Add owner to region"), ("removeowner", "Remove owner"), ("reload", "Reload WorldGuard")],
             {
                 "remove": [("spawn", "Spawn Region"), ("warzone", "Warzone Region"), ("pvp", "PvP Arena")],
                 "info": [("spawn", "Spawn Region"), ("warzone", "Warzone Region"), ("pvp", "PvP Arena")],
@@ -45,9 +49,9 @@ NEW_COMMAND_TREES = {
         ]
     },
     "region": {
-        "syntax": "/region <define|claim|remove|info|list|flag|addmember|removemember|reload>",
+        "syntax": "/region <remove|info|list|flag|addmember|removemember|reload>",
         "args": [
-            [("define", "Define region"), ("claim", "Claim selection"), ("remove", "Delete region"), ("info", "Region info"), ("list", "List regions"), ("flag", "Set flag"), ("addmember", "Add member"), ("reload", "Reload config")]
+            [("remove", "Delete region"), ("info", "Region info"), ("list", "List regions"), ("flag", "Set flag"), ("addmember", "Add member"), ("reload", "Reload config")]
         ]
     },
     "worldguard": {
@@ -56,7 +60,7 @@ NEW_COMMAND_TREES = {
             [("reload", "Reload WorldGuard"), ("version", "Show version"), ("report", "Generate debug report")]
         ]
     },
-    # --- Multiverse-Core & Portals ---
+    # --- Multiverse ---
     "mv": {
         "syntax": "/mv <list|tp|create|import|remove|delete|clone|setspawn|reload> [args...]",
         "args": [
@@ -74,38 +78,31 @@ NEW_COMMAND_TREES = {
     "multiverse": {
         "syntax": "/multiverse <list|tp|reload>",
         "args": [
-            [("list", "List worlds"), ("tp", "Teleport to world"), ("reload", "Reload config")]
-        ]
-    },
-    "mvp": {
-        "syntax": "/mvp <create|select|link|remove|list|reload> [name]",
-        "args": [
-            [("create", "Create portal from selection"), ("select", "Select portal"), ("link", "Link portal destination"), ("remove", "Delete portal"), ("list", "List all portals"), ("reload", "Reload Portals")]
+            [("list", "List worlds"), ("tp", "Teleport player to world"), ("reload", "Reload config")]
         ]
     },
     # --- DecentHolograms ---
     "dh": {
-        "syntax": "/dh <create|delete|edit|line|move|teleport|list|reload> [args...]",
+        "syntax": "/dh <delete|line|list|reload> [args...]",
         "args": [
-            [("create", "Create new hologram"), ("delete", "Delete hologram"), ("edit", "Interactive editor"), ("line", "Manage hologram lines"), ("move", "Move hologram here"), ("teleport", "Teleport to hologram"), ("list", "List all holograms"), ("reload", "Reload DecentHolograms")],
+            [("delete", "Delete hologram"), ("line", "Manage hologram lines"), ("list", "List all holograms"), ("reload", "Reload DecentHolograms")],
             {
-                "line": [("add", "Append new line"), ("set", "Replace line"), ("remove", "Delete line"), ("insert", "Insert line")],
-                "delete": [("spawn_welcome", "Welcome Hologram"), ("leaderboard_level", "Level Leaderboard"), ("leaderboard_eco", "Balance Leaderboard")],
-                "teleport": [("spawn_welcome", "Welcome Hologram"), ("leaderboard_level", "Level Leaderboard"), ("leaderboard_eco", "Balance Leaderboard")]
+                "line": [("add", "Append new line"), ("set", "Replace line"), ("remove", "Delete line")],
+                "delete": [("spawn_welcome", "Welcome Hologram"), ("leaderboard_level", "Level Leaderboard"), ("leaderboard_eco", "Balance Leaderboard")]
             }
         ]
     },
     "decentholograms": {
-        "syntax": "/decentholograms <create|delete|list|reload>",
+        "syntax": "/decentholograms <delete|list|reload>",
         "args": [
-            [("create", "Create hologram"), ("delete", "Delete hologram"), ("list", "List holograms"), ("reload", "Reload")]
+            [("delete", "Delete hologram"), ("list", "List holograms"), ("reload", "Reload")]
         ]
     },
     # --- Citizens ---
     "npc": {
-        "syntax": "/npc <create|select|remove|list|tp|moveto|path|lookclose|skin|rename|text|equip> [args...]",
+        "syntax": "/npc <create|select|remove|list|skin|rename|reload> [args...]",
         "args": [
-            [("create", "Create NPC at position"), ("select", "Select NPC by ID"), ("remove", "Delete selected NPC"), ("list", "List all NPCs"), ("tp", "Teleport to selected NPC"), ("moveto", "Move NPC to coordinates"), ("path", "Record waypoint path"), ("lookclose", "Toggle player tracking"), ("skin", "Change NPC skin"), ("rename", "Change NPC name"), ("text", "Configure dialogue"), ("equip", "Equip armor/hand items")],
+            [("create", "Create NPC"), ("select", "Select NPC by ID"), ("remove", "Delete selected NPC"), ("list", "List all server NPCs"), ("skin", "Change NPC skin"), ("rename", "Change NPC display name"), ("reload", "Reload Citizens")],
             {
                 "skin": "<player>",
                 "create": [("Steve", "Human NPC"), ("Banker", "Banker NPC"), ("Trader", "Royal Trader NPC"), ("Angler", "Fishing Master NPC")]
@@ -118,12 +115,12 @@ NEW_COMMAND_TREES = {
         "args": [
             [("mobs", "Manage custom Mythic mobs"), ("items", "Manage custom Mythic items"), ("skills", "Test custom skills"), ("reload", "Reload all MythicMobs configs")],
             {
-                "mobs": [("spawn", "Spawn custom mob"), ("kill", "Kill specific mob"), ("killall", "Kill all active Mythic mobs"), ("list", "List mob types"), ("info", "Display mob details")],
-                "items": [("give", "Give custom item to player"), ("get", "Get custom item in hand"), ("list", "List custom items"), ("import", "Import item in hand")]
+                "mobs": [("spawn", "Spawn custom mob at coords"), ("kill", "Kill specific mob"), ("killall", "Kill all active Mythic mobs"), ("list", "List registered mob types"), ("info", "Display mob details")],
+                "items": [("give", "Give custom item to player"), ("list", "List registered custom items")]
             },
             {
-                "spawn": [("1", "Spawn 1 mob"), ("3", "Spawn 3 mobs"), ("5", "Spawn 5 mobs")],
-                "give": "<player>"
+                "give": "<player>",
+                "spawn": [("1", "Spawn 1 mob"), ("3", "Spawn 3 mobs"), ("5", "Spawn 5 mobs")]
             }
         ]
     },
@@ -137,19 +134,20 @@ NEW_COMMAND_TREES = {
     "tab": {
         "syntax": "/tab <player|group|reload|parse> [args...]",
         "args": [
-            [("player", "Configure player TAB display"), ("group", "Configure group TAB display"), ("reload", "Reload TAB configuration"), ("parse", "Test placeholder parsing")],
+            [("player", "Configure player TAB display"), ("group", "Configure group TAB display"), ("reload", "Reload TAB configuration"), ("parse", "Test placeholder parsing for player")],
             {
                 "player": "<player>",
-                "parse": "<player>"
+                "parse": "<player>",
+                "group": [("ancestor", "Owner"), ("warden", "Admin"), ("herald", "Staff"), ("sions", "Donator"), ("wanderer", "Default")]
             },
-            [("tabprefix", "Change tablist prefix"), ("tabsuffix", "Change tablist suffix"), ("tagprefix", "Change nametag prefix"), ("tagsuffix", "Change nametag suffix"), ("customtabname", "Change custom tabname")]
+            [("tabprefix", "Change tablist prefix"), ("tabsuffix", "Change tablist suffix"), ("tagprefix", "Change nametag prefix"), ("tagsuffix", "Change nametag suffix")]
         ]
     },
     # --- Chunky ---
     "chunky": {
         "syntax": "/chunky <start|pause|continue|cancel|radius|world|shape|progress>",
         "args": [
-            [("start", "Start world pre-generation task"), ("pause", "Pause pre-generation"), ("continue", "Resume pre-generation"), ("cancel", "Cancel and abort task"), ("radius", "Set block radius"), ("world", "Set target world"), ("shape", "Set generation shape"), ("progress", "Display progress and ETA")],
+            [("start", "Start world pre-generation task"), ("pause", "Pause running pre-generation"), ("continue", "Resume paused pre-generation"), ("cancel", "Cancel and abort task"), ("radius", "Set block radius"), ("world", "Set target world"), ("shape", "Set generation shape"), ("progress", "Display generation percentage and ETA")],
             {
                 "radius": [("1000", "1.000 blocks"), ("2500", "2.500 blocks"), ("5000", "5.000 blocks"), ("10000", "10.000 blocks")],
                 "world": [("world", "Overworld"), ("world_nether", "Nether Dimension"), ("world_the_end", "The End Dimension")],
@@ -159,60 +157,56 @@ NEW_COMMAND_TREES = {
     },
     # --- SkinsRestorer ---
     "skin": {
-        "syntax": "/skin <set|clear|update|drop> [player] [skin]",
+        "syntax": "/skin <set|clear|update|drop> <player> [skin]",
         "args": [
             [("set", "Set custom skin for player"), ("clear", "Clear custom skin"), ("update", "Force update skin from Mojang"), ("drop", "Drop skin database entries")],
             "<player>"
-        ]
-    },
-    "skins": {
-        "syntax": "/skins <menu|set|clear>",
-        "args": [
-            [("menu", "Open interactive skins GUI"), ("set", "Set skin"), ("clear", "Clear skin")]
         ]
     },
     # --- BlueMap ---
     "bluemap": {
         "syntax": "/bluemap <render|pause|resume|status|freeze|unfreeze|reload> [world]",
         "args": [
-            [("render", "Render map tiles for world"), ("pause", "Pause web map render"), ("resume", "Resume web map render"), ("status", "View render progress"), ("freeze", "Freeze map tiles"), ("unfreeze", "Unfreeze map tiles"), ("reload", "Reload BlueMap config")],
+            [("render", "Render map tiles for world"), ("pause", "Pause web map render"), ("resume", "Resume web map render"), ("status", "View render progress and queue"), ("freeze", "Freeze map tiles"), ("unfreeze", "Unfreeze map tiles"), ("reload", "Reload BlueMap config")],
             [("world", "Overworld"), ("world_nether", "Nether"), ("world_the_end", "The End")]
         ]
     },
     # --- AuthMe ---
     "authme": {
-        "syntax": "/authme <register|unregister|changepassword|reload|purge> [args...]",
+        "syntax": "/authme <register|unregister|changepassword|reload|purge> <player> [password]",
         "args": [
-            [("register", "Manually register player"), ("unregister", "Unregister player account"), ("changepassword", "Change player password"), ("reload", "Reload AuthMe configs"), ("purge", "Purge old inactive accounts")],
+            [("register", "Manually register player account"), ("unregister", "Unregister player account"), ("changepassword", "Change player password"), ("reload", "Reload AuthMe configs"), ("purge", "Purge old inactive accounts")],
             "<player>"
         ]
     },
     # --- FastLogin ---
     "fastlogin": {
-        "syntax": "/fastlogin <auto|premium|crack>",
+        "syntax": "/fastlogin <auto|premium|crack> <player>",
         "args": [
-            [("auto", "Toggle auto login state"), ("premium", "Enable Mojang premium check"), ("crack", "Disable Mojang premium check")]
+            [("auto", "Toggle auto login state"), ("premium", "Enable Mojang premium check"), ("crack", "Disable Mojang premium check")],
+            "<player>"
         ]
     },
     # --- Geyser ---
     "geyser": {
-        "syntax": "/geyser <reload|dump|version|offhand>",
+        "syntax": "/geyser <reload|dump|version>",
         "args": [
-            [("reload", "Reload Geyser Bedrock bridge"), ("dump", "Generate debug dump"), ("version", "Check Geyser build version"), ("offhand", "Toggle offhand swap key for Bedrock")]
+            [("reload", "Reload Geyser Bedrock bridge"), ("dump", "Generate Geyser debug dump"), ("version", "Check Geyser build version")]
         ]
     },
     # --- ViaVersion ---
     "viaversion": {
         "syntax": "/viaversion <list|pps|dontbugme|dump>",
         "args": [
-            [("list", "List online player protocols"), ("pps", "Check packets per second"), ("dontbugme", "Toggle update notifications"), ("dump", "Generate ViaVersion dump")]
+            [("list", "List online players with client protocols"), ("pps", "Check packets per second per player"), ("dontbugme", "Toggle update notifications"), ("dump", "Generate ViaVersion dump")]
         ]
     },
     # --- SimpleVoiceChat ---
     "voicechat": {
-        "syntax": "/voicechat <test|reload>",
+        "syntax": "/voicechat <test|reload> [player]",
         "args": [
-            [("test", "Run voice chat connection test"), ("reload", "Reload voice chat configuration")]
+            [("test", "Run voice chat connection test"), ("reload", "Reload voice chat configuration")],
+            "<player>"
         ]
     },
     # --- ajLeaderboards ---
@@ -222,44 +216,32 @@ NEW_COMMAND_TREES = {
             [("add", "Register new leaderboard board"), ("remove", "Delete registered board"), ("list", "List all registered boards"), ("reload", "Reload ajLeaderboards config")]
         ]
     },
-    # --- ApexsionsCore Extended ---
+    # --- ApexsionsCore Console Admin ---
     "kingdom": {
-        "syntax": "/kingdom <create|invite|join|leave|kick|promote|demote|deposit|withdraw|claim|unclaim|war|info|list|map> [args...]",
+        "syntax": "/kingdom <info|list|war> [args...]",
         "args": [
-            [("create", "Found a new kingdom"), ("invite", "Invite player to kingdom"), ("join", "Accept kingdom invitation"), ("leave", "Leave current kingdom"), ("kick", "Expel member"), ("promote", "Promote member rank"), ("demote", "Demote member rank"), ("deposit", "Deposit funds to kingdom vault"), ("withdraw", "Withdraw funds from vault"), ("claim", "Claim current chunk for kingdom"), ("unclaim", "Unclaim current chunk"), ("war", "Kingdom war operations"), ("info", "View kingdom status"), ("list", "List all civilizations"), ("map", "Open kingdom territorial map")],
+            [("info", "View kingdom status"), ("list", "List all civilizations"), ("war", "View war status")],
             {
-                "invite": "<player>",
-                "kick": "<player>",
-                "promote": "<player>",
-                "demote": "<player>",
-                "deposit": [("10000", "Rp 10.000"), ("50000", "Rp 50.000"), ("100000", "Rp 100.000"), ("500000", "Rp 500.000")],
-                "withdraw": [("10000", "Rp 10.000"), ("50000", "Rp 50.000"), ("100000", "Rp 100.000")],
-                "war": [("declare", "Declare war on kingdom"), ("accept", "Accept war challenge"), ("surrender", "Surrender war"), ("status", "View war status")]
+                "war": [("status", "View active war scores & combat tag")]
             }
         ]
     },
-    "k": {
-        "syntax": "/k <create|invite|join|leave|kick|promote|demote|deposit|withdraw|claim|unclaim|war|info|list|map>",
-        "args": [
-            [("create", "Found kingdom"), ("invite", "Invite player"), ("join", "Join kingdom"), ("leave", "Leave kingdom"), ("kick", "Expel member"), ("promote", "Promote"), ("demote", "Demote"), ("deposit", "Deposit funds"), ("withdraw", "Withdraw funds"), ("claim", "Claim chunk"), ("unclaim", "Unclaim chunk"), ("war", "War operations"), ("info", "Kingdom info"), ("list", "List kingdoms"), ("map", "Territorial map")]
-        ]
-    },
     "war": {
-        "syntax": "/war <declare|accept|deny|surrender|status|truce> [kingdom]",
+        "syntax": "/war status [kingdom]",
         "args": [
-            [("declare", "Declare war against civilization"), ("accept", "Accept war declaration"), ("deny", "Decline war challenge"), ("surrender", "Surrender active war"), ("status", "View current war scores & combat tag"), ("truce", "Propose peace treaty")]
+            [("status", "View active war scores & combat tags")]
         ]
     },
     "rtp": {
-        "syntax": "/rtp [player]",
+        "syntax": "/rtp <player>",
         "args": ["<player>"]
     },
     "wild": {
-        "syntax": "/wild [player]",
+        "syntax": "/wild <player>",
         "args": ["<player>"]
     },
     "level": {
-        "syntax": "/level <set|add|reset|info> [player] [amount]",
+        "syntax": "/level <set|add|reset|info> <player> [amount]",
         "args": [
             [("set", "Set player civilization level"), ("add", "Add civilization level"), ("reset", "Reset progression to Level 1"), ("info", "Check player level and perk stats")],
             "<player>",
@@ -272,90 +254,44 @@ NEW_COMMAND_TREES = {
             [("list", "Display official server rank hierarchy"), ("info", "View perk details for each civilization tier")]
         ]
     },
-    "masteradmin": {
-        "syntax": "/masteradmin [player]",
-        "args": ["<player>"]
-    },
-    "aadmin": {
-        "syntax": "/aadmin [player]",
-        "args": ["<player>"]
-    },
-    "admin": {
-        "syntax": "/admin [player]",
-        "args": ["<player>"]
-    },
     "vanish": {
-        "syntax": "/vanish [player]",
+        "syntax": "/vanish <player>",
         "args": ["<player>"]
     },
-    "v": {
-        "syntax": "/v [player]",
-        "args": ["<player>"]
-    },
-    # --- EssentialsX Admin & Player Commands ---
-    "tpa": {
-        "syntax": "/tpa <player>",
-        "args": ["<player>"]
-    },
-    "tpahere": {
-        "syntax": "/tpahere <player>",
-        "args": ["<player>"]
-    },
-    "tphere": {
-        "syntax": "/tphere <player>",
-        "args": ["<player>"]
-    },
-    "tpall": {
-        "syntax": "/tpall",
-        "args": []
-    },
-    "tpaccept": {
-        "syntax": "/tpaccept",
-        "args": []
-    },
-    "tpdeny": {
-        "syntax": "/tpdeny",
-        "args": []
-    },
+    # --- EssentialsX Console Targeting ---
     "heal": {
-        "syntax": "/heal [player]",
+        "syntax": "/heal <player>",
         "args": ["<player>"]
     },
     "feed": {
-        "syntax": "/feed [player]",
+        "syntax": "/feed <player>",
         "args": ["<player>"]
     },
     "god": {
-        "syntax": "/god [player]",
+        "syntax": "/god <player>",
         "args": ["<player>"]
     },
     "ungod": {
-        "syntax": "/ungod [player]",
+        "syntax": "/ungod <player>",
         "args": ["<player>"]
     },
     "fly": {
-        "syntax": "/fly [player]",
+        "syntax": "/fly <player>",
         "args": ["<player>"]
     },
     "speed": {
-        "syntax": "/speed <1-10> [player]",
+        "syntax": "/speed <1-10> <player>",
         "args": [
             [("1", "Normal Speed (1)"), ("2", "Fast Speed (2)"), ("3", "Turbo Speed (3)"), ("5", "Hyper Speed (5)"), ("10", "Maximum Speed (10)")],
             "<player>"
         ]
     },
-    "hat": {
-        "syntax": "/hat",
-        "args": []
-    },
-    "setwarp": {
-        "syntax": "/setwarp <name>",
-        "args": [
-            [("spawn", "Main Spawn"), ("market", "Kingdom Market"), ("pvp", "Warzone Arena"), ("crates", "Crate Sanctuary"), ("fishing", "Royal Fishing Pond")]
-        ]
+    "spawn": {
+        "syntax": "/spawn <player>",
+        "args": ["<player>"]
     },
     "warp": {
-        "syntax": "/warp <name> [player]",
+        "syntax": "/warp <name> <player>",
         "args": [
             [("spawn", "Main Spawn"), ("market", "Kingdom Market"), ("pvp", "Warzone Arena"), ("crates", "Crate Sanctuary"), ("fishing", "Royal Fishing Pond")],
             "<player>"
@@ -367,32 +303,6 @@ NEW_COMMAND_TREES = {
             [("spawn", "Main Spawn"), ("market", "Kingdom Market"), ("pvp", "Warzone Arena")]
         ]
     },
-    "warps": {
-        "syntax": "/warps",
-        "args": []
-    },
-    "sethome": {
-        "syntax": "/sethome [name]",
-        "args": [
-            [("home", "Default Home"), ("base", "Base Camp"), ("farm", "Resource Farm")]
-        ]
-    },
-    "home": {
-        "syntax": "/home [name]",
-        "args": [
-            [("home", "Default Home"), ("base", "Base Camp"), ("farm", "Resource Farm")]
-        ]
-    },
-    "delhome": {
-        "syntax": "/delhome [name]",
-        "args": [
-            [("home", "Default Home"), ("base", "Base Camp"), ("farm", "Resource Farm")]
-        ]
-    },
-    "homes": {
-        "syntax": "/homes [player]",
-        "args": ["<player>"]
-    },
     "broadcast": {
         "syntax": "/broadcast <message>",
         "args": []
@@ -403,30 +313,6 @@ NEW_COMMAND_TREES = {
     },
     "sudo": {
         "syntax": "/sudo <player> <command>",
-        "args": ["<player>"]
-    },
-    "repair": {
-        "syntax": "/repair <hand|all>",
-        "args": [
-            [("hand", "Repair item in hand"), ("all", "Repair entire inventory and armor")]
-        ]
-    },
-    "fix": {
-        "syntax": "/fix <hand|all>",
-        "args": [
-            [("hand", "Repair item in hand"), ("all", "Repair entire inventory")]
-        ]
-    },
-    "invsee": {
-        "syntax": "/invsee <player>",
-        "args": ["<player>"]
-    },
-    "enderchest": {
-        "syntax": "/enderchest [player]",
-        "args": ["<player>"]
-    },
-    "ec": {
-        "syntax": "/ec [player]",
         "args": ["<player>"]
     },
     "whois": {
@@ -471,73 +357,29 @@ NEW_COMMAND_TREES = {
         "args": ["<player>"]
     },
     "ptime": {
-        "syntax": "/ptime <day|night|reset> [player]",
+        "syntax": "/ptime <day|night|reset> <player>",
         "args": [
-            [("day", "Lock client time to Day"), ("night", "Lock client time to Night"), ("reset", "Sync with server time")],
+            [("day", "Lock player time to Day"), ("night", "Lock player time to Night"), ("reset", "Sync with server time")],
             "<player>"
         ]
     },
     "pweather": {
-        "syntax": "/pweather <clear|rain|reset> [player]",
+        "syntax": "/pweather <clear|rain|reset> <player>",
         "args": [
-            [("clear", "Lock client weather to Clear"), ("rain", "Lock client weather to Rain"), ("reset", "Sync with server weather")],
+            [("clear", "Lock player weather to Clear"), ("rain", "Lock player weather to Rain"), ("reset", "Sync with server weather")],
             "<player>"
         ]
     },
-    # --- ApexsionsEconomy Extended ---
-    "bal": {
-        "syntax": "/bal [player]",
-        "args": ["<player>"]
-    },
+    # --- Apexsions Economy Console ---
     "balance": {
-        "syntax": "/balance [player]",
+        "syntax": "/balance <player>",
         "args": ["<player>"]
     },
-    "pay": {
-        "syntax": "/pay <player> <amount>",
-        "args": [
-            "<player>",
-            [("10000", "Rp 10.000"), ("50000", "Rp 50.000"), ("100000", "Rp 100.000"), ("500000", "Rp 500.000"), ("1000000", "Rp 1.000.000")]
-        ]
-    },
-    "ah": {
-        "syntax": "/ah [search|sell|expired] [price]",
-        "args": [
-            [("search", "Search auction house"), ("sell", "List item in hand on AH"), ("expired", "View expired items collect GUI")]
-        ]
-    },
-    "auction": {
-        "syntax": "/auction [search|sell|expired]",
-        "args": [
-            [("search", "Search auctions"), ("sell", "List item"), ("expired", "Expired items")]
-        ]
-    },
-    "trade": {
-        "syntax": "/trade <player>",
+    "bal": {
+        "syntax": "/bal <player>",
         "args": ["<player>"]
     },
-    "barter": {
-        "syntax": "/barter <player>",
-        "args": ["<player>"]
-    },
-    # --- ApexsionsFishing Extended ---
-    "fish": {
-        "syntax": "/fish <vault|market|stats|menu> [player]",
-        "args": [
-            [("vault", "Open fishing vault"), ("market", "Open fish delivery market"), ("stats", "Show angler stats"), ("menu", "Open fishing hub")]
-        ]
-    },
-    "vault": {
-        "syntax": "/vault [player]",
-        "args": ["<player>"]
-    },
-    # --- ApexsionsCrates Extended ---
-    "crate": {
-        "syntax": "/crate <open|preview|key|reload>",
-        "args": [
-            [("open", "Open crate"), ("preview", "Preview crate loot"), ("key", "Key balance"), ("reload", "Reload")]
-        ]
-    },
+    # --- Apexsions Crates Console ---
     "key": {
         "syntax": "/key <give|take|set> <player> <crate> [amount]",
         "args": [
@@ -547,227 +389,17 @@ NEW_COMMAND_TREES = {
             [("1", "1 Key"), ("3", "3 Keys"), ("5", "5 Keys"), ("10", "10 Keys")]
         ]
     },
-    # --- ApexsionsCustomEnchants Extended ---
-    "ce": {
-        "syntax": "/ce <enchanter|tinkerer|give|reload> [player]",
-        "args": [
-            [("enchanter", "Open enchanter"), ("tinkerer", "Open tinkerer"), ("give", "Give custom book"), ("reload", "Reload")]
-        ]
-    },
-    "enchanter": {
-        "syntax": "/enchanter [player]",
-        "args": ["<player>"]
-    },
-    "tinkerer": {
-        "syntax": "/tinkerer [player]",
-        "args": ["<player>"]
-    },
-    "ace": {
-        "syntax": "/ace <menu|give|tinkerer|reload> [player]",
-        "args": [
-            [("menu", "Open Admin Enchant Hub"), ("give", "Give custom enchant book"), ("tinkerer", "Open Tinkerer GUI"), ("reload", "Reload custom enchants")]
-        ]
-    },
-    # --- ApexsionsBattlepass Extended ---
-    "bp": {
-        "syntax": "/bp <menu|quests|setlevel|addxp|reload> [player] [amount]",
-        "args": [
-            [("menu", "Open pass menu"), ("quests", "View quests"), ("setlevel", "Set level"), ("addxp", "Add XP"), ("reload", "Reload")]
-        ]
-    },
-    "quests": {
-        "syntax": "/quests [player]",
-        "args": ["<player>"]
-    },
-    "abp": {
-        "syntax": "/abp <menu|setlevel|addxp|reset|reload> [player] [amount]",
-        "args": [
-            [("menu", "Admin BattlePass Menu"), ("setlevel", "Set player pass level"), ("addxp", "Add pass XP"), ("reset", "Reset progression"), ("reload", "Reload BattlePass config")]
-        ]
-    },
-    # --- ApexsionsShop Extended ---
-    "sell": {
-        "syntax": "/sell <all|hand|gui>",
-        "args": [
-            [("all", "Sell entire inventory"), ("hand", "Sell item in hand"), ("gui", "Open interactive sell GUI")]
-        ]
-    },
-    "market": {
-        "syntax": "/market [trends|events]",
-        "args": [
-            [("trends", "View market supply/demand trends"), ("events", "View dynamic royal trade events")]
-        ]
-    },
-    # --- ApexsionsChat Extended ---
-    "mail": {
-        "syntax": "/mail <send|read|clear> [player] [message]",
-        "args": [
-            [("send", "Send offline mail to player"), ("read", "Read inbox mail messages"), ("clear", "Clear inbox mail")],
-            "<player>"
-        ]
-    },
-    "report": {
-        "syntax": "/report <player> <reason>",
-        "args": [
-            "<player>",
-            [("Hacking / Cheating", "Cheating report"), ("Griefing / Stealing", "Griefing report"), ("Harassment / Chat Toxicity", "Toxicity report"), ("Bug Abuse / Duplication", "Exploit report")]
-        ]
-    },
-    "reports": {
-        "syntax": "/reports [list|view|clear]",
-        "args": [
-            [("list", "Open Staff Reports Desk"), ("view", "Inspect open reports"), ("clear", "Purge resolved reports")]
-        ]
-    },
-    "profile": {
-        "syntax": "/profile [player]",
-        "args": ["<player>"]
-    },
-    # --- ApexsionsMedia Extended ---
+    # --- Apexsions Media Console ---
     "banner": {
-        "syntax": "/banner <spawn|remove|teleport|reload>",
+        "syntax": "/banner <reload|status>",
         "args": [
-            [("spawn", "Spawn interactive banner"), ("remove", "Remove banner"), ("teleport", "Teleport to banner"), ("reload", "Reload banner")]
+            [("reload", "Reload banner assets"), ("status", "View banner raytrace status")]
         ]
     },
     "logo": {
-        "syntax": "/logo <render|clear|reload>",
+        "syntax": "/logo <reload|status>",
         "args": [
-            [("render", "Render interactive floating logo"), ("clear", "Clear logo"), ("reload", "Reload logo assets")]
-        ]
-    },
-    # --- WorldEdit ---
-    "worldedit": {
-        "syntax": "/worldedit <version|reload|cui>",
-        "args": [
-            [("version", "Show WorldEdit version"), ("reload", "Reload WorldEdit configuration"), ("cui", "Toggle CUI handshake")]
-        ]
-    },
-    "wand": {
-        "syntax": "//wand",
-        "args": []
-    },
-    "set": {
-        "syntax": "//set <block>",
-        "args": [
-            [("stone", "Stone Block"), ("dirt", "Dirt Block"), ("grass_block", "Grass Block"), ("glass", "Glass Block"), ("air", "Air (Clear)"), ("diamond_block", "Diamond Block"), ("iron_block", "Iron Block"), ("gold_block", "Gold Block"), ("netherite_block", "Netherite Block"), ("oak_planks", "Oak Planks")]
-        ]
-    },
-    "replace": {
-        "syntax": "//replace [from_block] <to_block>",
-        "args": [
-            [("air", "Air"), ("stone", "Stone"), ("dirt", "Dirt"), ("water", "Water"), ("lava", "Lava")],
-            [("stone", "Stone"), ("glass", "Glass"), ("air", "Air"), ("dirt", "Dirt")]
-        ]
-    },
-    "copy": {
-        "syntax": "//copy",
-        "args": []
-    },
-    "paste": {
-        "syntax": "//paste [-a] [-o]",
-        "args": [
-            [("-a", "Ignore air blocks"), ("-o", "Paste at original location")]
-        ]
-    },
-    "cut": {
-        "syntax": "//cut",
-        "args": []
-    },
-    "undo": {
-        "syntax": "//undo [steps]",
-        "args": [
-            [("1", "Undo 1 step"), ("2", "Undo 2 steps"), ("5", "Undo 5 steps")]
-        ]
-    },
-    "redo": {
-        "syntax": "//redo [steps]",
-        "args": [
-            [("1", "Redo 1 step"), ("2", "Redo 2 steps"), ("5", "Redo 5 steps")]
-        ]
-    },
-    "clearhistory": {
-        "syntax": "//clearhistory",
-        "args": []
-    },
-    "pos1": {
-        "syntax": "//pos1 [x,y,z]",
-        "args": []
-    },
-    "pos2": {
-        "syntax": "//pos2 [x,y,z]",
-        "args": []
-    },
-    "hpos1": {
-        "syntax": "//hpos1",
-        "args": []
-    },
-    "hpos2": {
-        "syntax": "//hpos2",
-        "args": []
-    },
-    "expand": {
-        "syntax": "//expand <amount> [direction]",
-        "args": [
-            [("5", "5 blocks"), ("10", "10 blocks"), ("20", "20 blocks"), ("50", "50 blocks")],
-            [("up", "Expand Upwards"), ("down", "Expand Downwards"), ("north", "North"), ("south", "South"), ("east", "East"), ("west", "West")]
-        ]
-    },
-    "contract": {
-        "syntax": "//contract <amount> [direction]",
-        "args": [
-            [("5", "5 blocks"), ("10", "10 blocks"), ("20", "20 blocks")],
-            [("up", "Contract Upwards"), ("down", "Contract Downwards"), ("north", "North"), ("south", "South"), ("east", "East"), ("west", "West")]
-        ]
-    },
-    "sphere": {
-        "syntax": "//sphere <block> <radius>",
-        "args": [
-            [("stone", "Stone"), ("glass", "Glass"), ("glowstone", "Glowstone")],
-            [("3", "Radius 3"), ("5", "Radius 5"), ("10", "Radius 10"), ("15", "Radius 15")]
-        ]
-    },
-    "hsphere": {
-        "syntax": "//hsphere <block> <radius>",
-        "args": [
-            [("glass", "Glass"), ("stone", "Stone")],
-            [("3", "Radius 3"), ("5", "Radius 5"), ("10", "Radius 10")]
-        ]
-    },
-    "cyl": {
-        "syntax": "//cyl <block> <radius> [height]",
-        "args": [
-            [("stone", "Stone"), ("glass", "Glass"), ("quartz_block", "Quartz")],
-            [("3", "Radius 3"), ("5", "Radius 5"), ("10", "Radius 10")],
-            [("1", "Height 1"), ("5", "Height 5"), ("10", "Height 10")]
-        ]
-    },
-    "hcyl": {
-        "syntax": "//hcyl <block> <radius> [height]",
-        "args": [
-            [("glass", "Glass"), ("stone", "Stone")],
-            [("3", "Radius 3"), ("5", "Radius 5"), ("10", "Radius 10")]
-        ]
-    },
-    "pyramid": {
-        "syntax": "//pyramid <block> <size>",
-        "args": [
-            [("sandstone", "Sandstone"), ("stone", "Stone"), ("gold_block", "Gold")],
-            [("5", "Size 5"), ("10", "Size 10"), ("20", "Size 20")]
-        ]
-    },
-    "schem": {
-        "syntax": "//schem <load|save|list> [name]",
-        "args": [
-            [("load", "Load schematic from disk"), ("save", "Save clipboard as schematic"), ("list", "List all saved schematics")]
-        ]
-    },
-    "schematic": {
-        "syntax": "//schematic <load|save|list> [name]",
-        "args": [
-            [("load", "Load schematic"), ("save", "Save schematic"), ("list", "List schematics")]
+            [("reload", "Reload logo assets"), ("status", "View logo render status")]
         ]
     }
 }
-
-print(f"Validated {len(NEW_COMMAND_TREES)} new command trees successfully!")
