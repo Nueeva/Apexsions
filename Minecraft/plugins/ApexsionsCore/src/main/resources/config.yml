@@ -220,6 +220,10 @@ container:
     enabled: true
     # Gabungkan tumpukan item sejenis saat merapikan
     merge-stacks: true
+    # Izinkan merapikan tas pemain (/sort inv atau /sort)
+    allow-player-inventory: true
+    # Sneak + klik kanan peti (tangan kosong) untuk merapikan peti langsung tanpa chat
+    sneak-interact: true
   quick-deposit:
     enabled: true
     # Jangan setor item dari slot yang sedang dipegang

@@ -859,6 +859,7 @@ public class ApexsionsCorePlugin extends JavaPlugin {
                 PluginCommand pCmd = getCommand(cCmd);
                 if (pCmd != null) {
                     pCmd.setExecutor(containerHandler);
+                    pCmd.setTabCompleter(containerHandler);
                 }
             }
         }

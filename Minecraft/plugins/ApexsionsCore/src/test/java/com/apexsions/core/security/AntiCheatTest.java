@@ -147,6 +147,55 @@ public class AntiCheatTest {
         assertTrue(absorbsFall, "Bouncing on bed/slime must absorb server fall damage");
     }
 
+    @Test
+    public void testChestStealerContainerExclusions() {
+        // Workstations must NEVER be flagged as lootable containers (fixes Bedrock & Java crafting glitch)
+        assertFalse(PacketExploitListener.isLootableContainerName("WORKBENCH"),
+                "WORKBENCH (crafting table) must never be monitored by ChestStealer");
+        assertFalse(PacketExploitListener.isLootableContainerName("CRAFTING"),
+                "CRAFTING (2x2 grid) must never be monitored by ChestStealer");
+        assertFalse(PacketExploitListener.isLootableContainerName("ANVIL"),
+                "ANVIL must never be monitored by ChestStealer");
+        assertFalse(PacketExploitListener.isLootableContainerName("ENCHANTING"),
+                "ENCHANTING table must never be monitored by ChestStealer");
+        assertFalse(PacketExploitListener.isLootableContainerName("SMITHING"),
+                "SMITHING table must never be monitored by ChestStealer");
+        assertFalse(PacketExploitListener.isLootableContainerName("STONECUTTER"),
+                "STONECUTTER must never be monitored by ChestStealer");
+        assertFalse(PacketExploitListener.isLootableContainerName("GRINDSTONE"),
+                "GRINDSTONE must never be monitored by ChestStealer");
+        assertFalse(PacketExploitListener.isLootableContainerName("LOOM"),
+                "LOOM must never be monitored by ChestStealer");
+        assertFalse(PacketExploitListener.isLootableContainerName("CARTOGRAPHY"),
+                "CARTOGRAPHY table must never be monitored by ChestStealer");
+        assertFalse(PacketExploitListener.isLootableContainerName("MERCHANT"),
+                "MERCHANT/Villager must never be monitored by ChestStealer");
+        assertFalse(PacketExploitListener.isLootableContainerName("BREWING"),
+                "BREWING stand must never be monitored by ChestStealer");
+        assertFalse(PacketExploitListener.isLootableContainerName("PLAYER"),
+                "PLAYER inventory must never be monitored by ChestStealer");
+
+        // Only actual storage containers should be monitored
+        assertTrue(PacketExploitListener.isLootableContainerName("CHEST"));
+        assertTrue(PacketExploitListener.isLootableContainerName("BARREL"));
+        assertTrue(PacketExploitListener.isLootableContainerName("SHULKER_BOX"));
+        assertTrue(PacketExploitListener.isLootableContainerName("ENDER_CHEST"));
+        assertTrue(PacketExploitListener.isLootableContainerName("DISPENSER"));
+        assertTrue(PacketExploitListener.isLootableContainerName("DROPPER"));
+        assertTrue(PacketExploitListener.isLootableContainerName("HOPPER"));
+    }
+
+    @Test
+    public void testBedrockPlayerDetectionLogic() {
+        // Floodgate prefix username check
+        assertTrue(com.apexsions.core.gui.input.BedrockFormAdapter.isBedrockPlayer(java.util.UUID.randomUUID(), ".SteveBedrock"));
+        assertFalse(com.apexsions.core.gui.input.BedrockFormAdapter.isBedrockPlayer(java.util.UUID.randomUUID(), "SteveJava"));
+
+        // Floodgate zero MSB UUID check
+        java.util.UUID bedrockUuid = new java.util.UUID(0L, 123456789L);
+        assertTrue(com.apexsions.core.gui.input.BedrockFormAdapter.isBedrockPlayer(bedrockUuid, "CustomNick"));
+    }
+
     private boolean isInvalidPitch(float pitch) {
         return pitch > 90.01f || pitch < -90.01f || Float.isNaN(pitch) || Float.isInfinite(pitch);
     }

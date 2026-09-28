@@ -71,9 +71,11 @@ commands:
   sort:
     aliases:
       - chestsort
-    description: Rapikan & gabungkan isi peti/tong yang sedang dibuka.
+      - invsort
+      - isort
+    description: Rapikan & gabungkan isi inventory tas atau peti yang sedang dibuka/dilihat.
     permission: apexsions.container.use
-    usage: /sort
+    usage: /sort [inv|chest|all]
   deposit:
     aliases:
       - quickdeposit

@@ -14,11 +14,14 @@ import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import org.bukkit.event.inventory.InventoryOpenEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.inventory.ItemStack;
+
 /**
- * Sneak + punch a container to quick-deposit matching items.
- *
- * Registered at MONITOR with ignoreCancelled so claim protection and other
- * protection plugins keep the final say: a cancelled interaction never deposits.
+ * Sneak + punch a container to quick-deposit matching items,
+ * or Sneak + empty-hand right click to instant-sort the container.
+ * Also tracks active container sessions for Bedrock chat commands.
  */
 public class ContainerListener implements Listener {
 
@@ -57,6 +60,56 @@ public class ContainerListener implements Listener {
             player.playSound(player.getLocation(), Sound.ENTITY_ITEM_PICKUP, 1.0f, 1.2f);
             player.sendMessage(mm.deserialize("<gradient:#2ecc71:#27ae60><bold>SETOR CEPAT!</bold></gradient> <gray>" + moved + " tumpuk dipindahkan.</gray>"));
         }
+    }
+
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = false)
+    public void onSneakSort(@NotNull PlayerInteractEvent event) {
+        if (event.getAction() != Action.RIGHT_CLICK_BLOCK) {
+            return;
+        }
+        if (!manager.sneakSortEnabled()) {
+            return;
+        }
+        Player player = event.getPlayer();
+        if (!player.isSneaking() || !player.hasPermission("apexsions.container.use")) {
+            return;
+        }
+
+        // Only trigger when main hand is empty so players can still sneak-place blocks against chests
+        ItemStack item = event.getItem();
+        if (item != null && !item.getType().isAir()) {
+            return;
+        }
+
+        Block block = event.getClickedBlock();
+        if (block == null) {
+            return;
+        }
+        Inventory container = resolve(block.getState());
+        if (container == null) {
+            return;
+        }
+
+        event.setCancelled(true);
+        int count = manager.sort(container);
+        if (count < 0) {
+            player.sendMessage(mm.deserialize("<gray>Peti sudah kosong.</gray>"));
+            return;
+        }
+        player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_CHIME, 1.0f, 1.5f);
+        player.sendMessage(mm.deserialize("<gradient:#2ecc71:#27ae60><bold>PETI DIRAPIKAN!</bold></gradient> <gray>" + count + " jenis item disusun & digabung.</gray>"));
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onInventoryOpen(@NotNull InventoryOpenEvent event) {
+        if (event.getPlayer() instanceof Player player) {
+            manager.recordContainerOpen(player, event.getInventory());
+        }
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onPlayerQuit(@NotNull PlayerQuitEvent event) {
+        manager.removeContainerSession(event.getPlayer().getUniqueId());
     }
 
     @Nullable

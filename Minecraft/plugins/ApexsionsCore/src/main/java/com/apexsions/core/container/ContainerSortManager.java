@@ -1,10 +1,12 @@
 package com.apexsions.core.container;
 
 import com.apexsions.core.ApexsionsCorePlugin;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Container;
 import org.bukkit.block.DoubleChest;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -20,6 +22,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Bedrock-friendly container management: instant chest sorting and quick deposit.
@@ -82,6 +86,19 @@ public class ContainerSortManager {
             Material.REDSTONE_ORE, Material.DEEPSLATE_REDSTONE_ORE,
             Material.NOTE_BLOCK, Material.SCULK_SENSOR, Material.CALIBRATED_SCULK_SENSOR);
 
+    private static final Set<Material> FOOD = EnumSet.of(
+            Material.APPLE, Material.GOLDEN_APPLE, Material.ENCHANTED_GOLDEN_APPLE,
+            Material.BREAD, Material.COOKED_BEEF, Material.BEEF, Material.COOKED_PORKCHOP,
+            Material.PORKCHOP, Material.COOKED_MUTTON, Material.MUTTON, Material.COOKED_CHICKEN,
+            Material.CHICKEN, Material.COOKED_RABBIT, Material.RABBIT, Material.COOKED_COD,
+            Material.COD, Material.COOKED_SALMON, Material.SALMON, Material.BAKED_POTATO,
+            Material.POTATO, Material.POISONOUS_POTATO, Material.CARROT, Material.GOLDEN_CARROT,
+            Material.COOKIE, Material.MELON_SLICE, Material.DRIED_KELP, Material.SWEET_BERRIES,
+            Material.GLOW_BERRIES, Material.CHORUS_FRUIT, Material.MUSHROOM_STEW,
+            Material.BEETROOT_SOUP, Material.RABBIT_STEW, Material.SUSPICIOUS_STEW,
+            Material.HONEY_BOTTLE, Material.PUMPKIN_PIE, Material.BEETROOT, Material.ROTTEN_FLESH,
+            Material.SPIDER_EYE);
+
     public ContainerSortManager(@NotNull ApexsionsCorePlugin plugin) {
         this.plugin = plugin;
     }
@@ -112,11 +129,81 @@ public class ContainerSortManager {
         return plugin.getConfig().getBoolean("container.quick-deposit.only-existing-types", true);
     }
 
+    public boolean isPlayerSortEnabled() {
+        return isSortEnabled() && plugin.getConfig().getBoolean("container.sort.allow-player-inventory", true);
+    }
+
+    public boolean sneakSortEnabled() {
+        return isSortEnabled() && plugin.getConfig().getBoolean("container.sort.sneak-interact", true);
+    }
+
     public boolean sneakInteractEnabled() {
         return isDepositEnabled() && plugin.getConfig().getBoolean("container.quick-deposit.sneak-interact", true);
     }
 
-    // --- Container resolution ---
+    // --- Container resolution & Bedrock Session Tracking ---
+
+    public record ContainerSession(Inventory inventory, Location location, long timestamp) {}
+
+    private final Map<UUID, ContainerSession> recentContainers = new ConcurrentHashMap<>();
+
+    public void recordContainerOpen(@NotNull Player player, @NotNull Inventory inventory) {
+        Object holder = inventory.getHolder();
+        Location loc = null;
+        if (holder instanceof Container container) {
+            loc = container.getLocation();
+        } else if (holder instanceof DoubleChest doubleChest) {
+            loc = doubleChest.getLocation();
+        }
+        if (loc != null) {
+            recentContainers.put(player.getUniqueId(), new ContainerSession(inventory, loc, System.currentTimeMillis()));
+        }
+    }
+
+    public void removeContainerSession(@NotNull UUID uuid) {
+        recentContainers.remove(uuid);
+    }
+
+    /**
+     * Resolves the target container:
+     * 1. Currently open container
+     * 2. Raytrace targeted container block within 5 blocks
+     * 3. Recently opened container within the last 12 seconds if within 6 blocks
+     *    (specifically assists Bedrock Edition players where opening chat automatically closes the container)
+     */
+    @Nullable
+    public Inventory resolveTargetContainer(@NotNull Player player) {
+        Inventory open = getOpenContainer(player);
+        if (open != null) {
+            return open;
+        }
+
+        try {
+            org.bukkit.block.Block targetBlock = player.getTargetBlockExact(5);
+            if (targetBlock != null) {
+                Inventory targetInv = getContainerAt(targetBlock.getState());
+                if (targetInv != null) {
+                    return targetInv;
+                }
+            }
+        } catch (Throwable ignored) {}
+
+        ContainerSession session = recentContainers.get(player.getUniqueId());
+        if (session != null) {
+            long age = System.currentTimeMillis() - session.timestamp();
+            if (age <= 12000L) {
+                Location loc = session.location();
+                if (loc != null && loc.getWorld() != null && loc.getWorld().equals(player.getWorld())
+                        && loc.distanceSquared(player.getLocation()) <= 36.0) {
+                    return session.inventory();
+                }
+            } else {
+                recentContainers.remove(player.getUniqueId());
+            }
+        }
+
+        return null;
+    }
 
     /**
      * Resolves the container inventory the player currently has open, or null
@@ -173,6 +260,66 @@ public class ContainerSortManager {
             out[i] = items.get(i);
         }
         container.setContents(out);
+
+        // Force inventory sync for all viewing players (essential for Geyser / Bedrock clients)
+        for (HumanEntity viewer : container.getViewers()) {
+            if (viewer instanceof Player p) {
+                p.updateInventory();
+            }
+        }
+
+        return items.size();
+    }
+
+    /**
+     * Sorts the player's personal inventory storage.
+     * When includeHotbar is false, slots 0..8 (hotbar) are left untouched,
+     * sorting only main inventory storage slots 9..35.
+     * Armor (36..39) and offhand (40) are NEVER altered.
+     *
+     * @param player the player whose inventory to sort
+     * @param includeHotbar whether to include hotbar slots 0..8 in the sort
+     * @return count of items sorted, or -1 if empty
+     */
+    public int sortPlayerInventory(@NotNull Player player, boolean includeHotbar) {
+        PlayerInventory inv = player.getInventory();
+        ItemStack[] storage = inv.getStorageContents(); // Length is 36 (0..8 hotbar, 9..35 storage)
+
+        int startSlot = includeHotbar ? 0 : 9;
+        int endSlot = 36;
+
+        List<ItemStack> items = new ArrayList<>();
+        for (int i = startSlot; i < endSlot; i++) {
+            ItemStack stack = storage[i];
+            if (stack != null && !stack.getType().isAir()) {
+                items.add(stack);
+            }
+        }
+        if (items.isEmpty()) {
+            return -1;
+        }
+
+        if (mergeStacks()) {
+            items = merge(items);
+        }
+
+        items.sort(Comparator
+                .comparingInt((ItemStack s) -> categoryOf(s.getType()).ordinal())
+                .thenComparing(s -> s.getType().name())
+                .thenComparing(Comparator.comparingInt(ItemStack::getAmount).reversed()));
+
+        for (int i = startSlot; i < endSlot; i++) {
+            storage[i] = null;
+        }
+
+        for (int i = 0; i < items.size() && (startSlot + i) < endSlot; i++) {
+            storage[startSlot + i] = items.get(i);
+        }
+
+        inv.setStorageContents(storage);
+
+        // CRITICAL FOR BEDROCK / GEYSER: Force client inventory sync to prevent ghost items
+        player.updateInventory();
         return items.size();
     }
 
@@ -210,9 +357,24 @@ public class ContainerSortManager {
         if (TOOLS.contains(material)) return Category.TOOLS;
         if (ARMOR.contains(material)) return Category.ARMOR;
         if (POTIONS.contains(material)) return Category.POTIONS;
-        if (material.isEdible()) return Category.FOOD;
+        if (FOOD.contains(material)) return Category.FOOD;
+        try {
+            if (material.isEdible()) return Category.FOOD;
+        } catch (Throwable ignored) {}
         if (REDSTONE.contains(material)) return Category.REDSTONE;
-        if (material.isBlock()) return Category.BLOCKS;
+        try {
+            if (material.isBlock()) return Category.BLOCKS;
+        } catch (Throwable ignored) {
+            // Headless unit test fallback (Paper 1.21.4 RegistryAccess not initialized outside running server)
+            if (material.name().endsWith("_BLOCK") || material.name().endsWith("_PLANKS")
+                    || material.name().endsWith("_LOG") || material.name().endsWith("_WOOD")
+                    || material.name().endsWith("_STONE") || material.name().equals("STONE")
+                    || material.name().equals("DIRT") || material.name().equals("COBBLESTONE")
+                    || material.name().endsWith("_ORE") || material.name().endsWith("_SLAB")
+                    || material.name().endsWith("_STAIRS") || material.name().endsWith("_WALL")) {
+                return Category.BLOCKS;
+            }
+        }
         return Category.MISC;
     }
 
