@@ -69,16 +69,333 @@ if sys.platform == "win32":
 # Regex for stripping ANSI escape codes
 ANSI_REGEX = re.compile(r'\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])')
 
-# Common Minecraft & Apexsions server commands for auto-completion
-COMMON_COMMANDS = [
-    "op", "deop", "whitelist", "ban", "pardon", "kick", "tp", "teleport",
-    "gamemode", "give", "kill", "eco", "money", "balance", "pay",
-    "crates", "shop", "battlepass", "fishing", "media", "chat",
-    "say", "tell", "msg", "w", "r", "reply",
-    "time", "weather", "difficulty", "gamerule",
-    "stop", "restart", "reload", "save-all", "save-off", "save-on",
-    "list", "help", "version", "plugins", "spark", "timings"
+TARGET_SELECTORS = [
+    ("@a", "All Players"),
+    ("@p", "Nearest Player"),
+    ("@r", "Random Player"),
+    ("@s", "Current Target"),
 ]
+
+COMMON_ITEMS = [
+    "diamond", "diamond_sword", "diamond_pickaxe", "diamond_axe", "diamond_chestplate", "diamond_helmet", "diamond_leggings", "diamond_boots",
+    "netherite_ingot", "netherite_sword", "netherite_pickaxe", "netherite_axe", "netherite_chestplate", "netherite_helmet", "netherite_leggings", "netherite_boots",
+    "iron_ingot", "gold_ingot", "emerald", "coal", "copper_ingot", "lapis_lazuli", "redstone",
+    "golden_apple", "enchanted_golden_apple", "totem_of_undying", "elytra", "experience_bottle",
+    "ender_pearl", "bow", "arrow", "shield", "trident", "shulker_box",
+    "cooked_beef", "bread", "golden_carrot"
+]
+
+COMMON_EFFECTS = [
+    "speed", "slowness", "haste", "mining_fatigue", "strength", "instant_health", "instant_damage",
+    "jump_boost", "nausea", "regeneration", "resistance", "fire_resistance", "water_breathing",
+    "invisibility", "blindness", "night_vision", "hunger", "weakness", "poison", "wither",
+    "health_boost", "absorption", "glowing", "levitation", "luck", "bad_luck", "slow_falling"
+]
+
+COMMON_ENCHANTS = [
+    "protection", "fire_protection", "feather_falling", "blast_protection", "projectile_protection",
+    "respiration", "aqua_affinity", "thorns", "depth_strider", "frost_walker", "soul_speed",
+    "sharpness", "smite", "bane_of_arthropods", "knockback", "fire_aspect", "looting",
+    "efficiency", "silk_touch", "unbreaking", "fortune",
+    "power", "punch", "flame", "infinity",
+    "luck_of_the_sea", "lure", "mending"
+]
+
+COMMAND_TREE = {
+    "gamemode": {
+        "syntax": "/gamemode <creative|survival|adventure|spectator> [player]",
+        "args": [
+            [("creative", "Creative Mode"), ("survival", "Survival Mode"), ("adventure", "Adventure Mode"), ("spectator", "Spectator Mode")],
+            "<player>"
+        ]
+    },
+    "difficulty": {
+        "syntax": "/difficulty <peaceful|easy|normal|hard>",
+        "args": [
+            [("peaceful", "Peaceful"), ("easy", "Easy"), ("normal", "Normal"), ("hard", "Hard")]
+        ]
+    },
+    "weather": {
+        "syntax": "/weather <clear|rain|thunder> [duration]",
+        "args": [
+            [("clear", "Clear Skies"), ("rain", "Rainfall"), ("thunder", "Thunderstorm")],
+            [("60", "1 Minute"), ("300", "5 Minutes"), ("600", "10 Minutes"), ("1200", "20 Minutes")]
+        ]
+    },
+    "time": {
+        "syntax": "/time <set|add|query> <value>",
+        "args": [
+            [("set", "Set Time"), ("add", "Advance Time"), ("query", "Query Time")],
+            {
+                "set": [("day", "Day (1000)"), ("noon", "Noon (6000)"), ("night", "Night (13000)"), ("midnight", "Midnight (18000)"), ("0", "Sunrise (0)")],
+                "add": [("1000", "+1000 Ticks"), ("6000", "+6000 Ticks"), ("12000", "+12000 Ticks")],
+                "query": [("daytime", "Time of Day"), ("gametime", "Total Game Time"), ("day", "Day Count")]
+            }
+        ]
+    },
+    "gamerule": {
+        "syntax": "/gamerule <rule> [true|false]",
+        "args": [
+            [
+                ("keepInventory", "Keep items on death"),
+                ("mobGriefing", "Allow mob destruction"),
+                ("doDaylightCycle", "Sun/moon movement"),
+                ("doWeatherCycle", "Dynamic weather"),
+                ("doMobSpawning", "Natural mob spawns"),
+                ("doFireTick", "Fire spreading"),
+                ("pvp", "Player vs Player damage"),
+                ("naturalRegeneration", "Heal from hunger"),
+                ("showDeathMessages", "Broadcast deaths"),
+                ("commandBlockOutput", "Log command blocks"),
+                ("randomTickSpeed", "Plant growth speed")
+            ],
+            [("true", "Enable"), ("false", "Disable")]
+        ]
+    },
+    "whitelist": {
+        "syntax": "/whitelist <add|remove|list|on|off|reload> [player]",
+        "args": [
+            [("add", "Add player to whitelist"), ("remove", "Remove player from whitelist"), ("list", "List whitelisted players"), ("on", "Enable whitelist"), ("off", "Disable whitelist"), ("reload", "Reload whitelist.json")],
+            {
+                "add": "<player>",
+                "remove": "<player>"
+            }
+        ]
+    },
+    "op": {
+        "syntax": "/op <player>",
+        "args": ["<player>"]
+    },
+    "deop": {
+        "syntax": "/deop <player>",
+        "args": ["<player>"]
+    },
+    "ban": {
+        "syntax": "/ban <player> [reason]",
+        "args": [
+            "<player>",
+            [("Cheating / Hacking", "Ban Reason"), ("Griefing / Stealing", "Ban Reason"), ("Rule Violation", "Ban Reason"), ("Toxicity / Harassment", "Ban Reason")]
+        ]
+    },
+    "pardon": {
+        "syntax": "/pardon <player>",
+        "args": ["<player>"]
+    },
+    "unban": {
+        "syntax": "/unban <player>",
+        "args": ["<player>"]
+    },
+    "kick": {
+        "syntax": "/kick <player> [reason]",
+        "args": [
+            "<player>",
+            [("AFK Timeout", "Kick Reason"), ("Server Restarting", "Kick Reason"), ("Rule Warning", "Kick Reason")]
+        ]
+    },
+    "tp": {
+        "syntax": "/tp <target> [destination]",
+        "args": ["<player>", "<player>"]
+    },
+    "teleport": {
+        "syntax": "/teleport <target> [destination]",
+        "args": ["<player>", "<player>"]
+    },
+    "kill": {
+        "syntax": "/kill [player]",
+        "args": ["<player>"]
+    },
+    "give": {
+        "syntax": "/give <player> <item> [amount]",
+        "args": [
+            "<player>",
+            [(item, "Minecraft Item") for item in COMMON_ITEMS],
+            [("1", "1 item"), ("16", "16 items (1/4 stack)"), ("32", "32 items (1/2 stack)"), ("64", "64 items (1 stack)")]
+        ]
+    },
+    "clear": {
+        "syntax": "/clear [player] [item]",
+        "args": [
+            "<player>",
+            [(item, "Clear specific item") for item in COMMON_ITEMS]
+        ]
+    },
+    "effect": {
+        "syntax": "/effect <give|clear> <player> [effect] [seconds] [amplifier]",
+        "args": [
+            [("give", "Apply potion effect"), ("clear", "Remove potion effect")],
+            {
+                "give": "<player>",
+                "clear": "<player>"
+            },
+            [(eff, "Potion Effect") for eff in COMMON_EFFECTS],
+            [("30", "30 Seconds"), ("60", "1 Minute"), ("300", "5 Minutes"), ("infinite", "Infinite Duration")],
+            [("1", "Level 1"), ("2", "Level 2"), ("3", "Level 3"), ("4", "Level 4"), ("5", "Level 5")]
+        ]
+    },
+    "enchant": {
+        "syntax": "/enchant <player> <enchantment> [level]",
+        "args": [
+            "<player>",
+            [(ench, "Enchantment") for ench in COMMON_ENCHANTS],
+            [("1", "Level 1"), ("2", "Level 2"), ("3", "Level 3"), ("4", "Level 4"), ("5", "Level 5")]
+        ]
+    },
+    "xp": {
+        "syntax": "/xp <add|set|query> <player> [amount]",
+        "args": [
+            [("add", "Add experience"), ("set", "Set experience"), ("query", "Check experience")],
+            "<player>",
+            [("100", "100 XP points"), ("500", "500 XP points"), ("1000", "1000 XP points"), ("10L", "10 Levels"), ("30L", "30 Levels"), ("50L", "50 Levels")]
+        ]
+    },
+    "experience": {
+        "syntax": "/experience <add|set|query> <player> [amount]",
+        "args": [
+            [("add", "Add experience"), ("set", "Set experience"), ("query", "Check experience")],
+            "<player>",
+            [("100", "100 points"), ("500", "500 points"), ("10 levels", "10 Levels"), ("30 levels", "30 Levels")]
+        ]
+    },
+    "msg": {
+        "syntax": "/msg <player> <message>",
+        "args": ["<player>"]
+    },
+    "tell": {
+        "syntax": "/tell <player> <message>",
+        "args": ["<player>"]
+    },
+    "w": {
+        "syntax": "/w <player> <message>",
+        "args": ["<player>"]
+    },
+    "spawn": {
+        "syntax": "/spawn [player]",
+        "args": ["<player>"]
+    },
+    # Apexsions Custom Plugins
+    "eco": {
+        "syntax": "/eco <give|take|set|balance|pay|reload> [player] [amount]",
+        "args": [
+            [("give", "Deposit Rupiah balance"), ("take", "Deduct Rupiah balance"), ("set", "Set exact Rupiah balance"), ("balance", "Check balance"), ("pay", "Transfer currency"), ("reload", "Reload economy config")],
+            {
+                "give": "<player>",
+                "take": "<player>",
+                "set": "<player>",
+                "balance": "<player>",
+                "pay": "<player>"
+            },
+            [("10000", "Rp 10.000"), ("50000", "Rp 50.000"), ("100000", "Rp 100.000"), ("500000", "Rp 500.000"), ("1000000", "Rp 1.000.000")]
+        ]
+    },
+    "economy": {
+        "syntax": "/economy <give|take|set|balance|reload> [player] [amount]",
+        "args": [
+            [("give", "Deposit Rupiah balance"), ("take", "Deduct Rupiah balance"), ("set", "Set exact Rupiah balance"), ("balance", "Check balance"), ("reload", "Reload config")],
+            "<player>",
+            [("10000", "Rp 10.000"), ("50000", "Rp 50.000"), ("100000", "Rp 100.000"), ("500000", "Rp 500.000"), ("1000000", "Rp 1.000.000")]
+        ]
+    },
+    "crates": {
+        "syntax": "/crates <key|give|menu|reload> [args...]",
+        "args": [
+            [("key", "Manage crate keys"), ("give", "Give crate reward to player"), ("menu", "Open crates GUI"), ("reload", "Reload crates config")],
+            {
+                "key": [("give", "Give crate key"), ("giveall", "Give key to all players"), ("take", "Take crate key"), ("set", "Set key balance")],
+                "give": "<player>"
+            },
+            {
+                "give": "<player>",
+                "giveall": [("common", "Common Key"), ("rare", "Rare Key"), ("epic", "Epic Key"), ("legendary", "Legendary Key"), ("mythic", "Mythic Key"), ("ancient", "Ancient Key")],
+                "take": "<player>",
+                "set": "<player>"
+            },
+            [("common", "Common Crate"), ("rare", "Rare Crate"), ("epic", "Epic Crate"), ("legendary", "Legendary Crate"), ("mythic", "Mythic Crate"), ("ancient", "Ancient Crate")],
+            [("1", "1 Key"), ("3", "3 Keys"), ("5", "5 Keys"), ("10", "10 Keys")]
+        ]
+    },
+    "battlepass": {
+        "syntax": "/battlepass <setlevel|addxp|reset|quests|menu|reload> [player] [amount]",
+        "args": [
+            [("setlevel", "Set player pass level"), ("addxp", "Add BattlePass XP"), ("reset", "Reset player progression"), ("quests", "Manage quests"), ("menu", "Open pass menu"), ("reload", "Reload config")],
+            {
+                "setlevel": "<player>",
+                "addxp": "<player>",
+                "reset": "<player>"
+            },
+            [("1", "Level 1"), ("5", "Level 5"), ("10", "Level 10"), ("20", "Level 20"), ("30", "Level 30"), ("50", "Level 50"), ("100", "Level 100 / Max")]
+        ]
+    },
+    "fishing": {
+        "syntax": "/fishing <setlevel|addxp|vault|market|reload> [player] [amount]",
+        "args": [
+            [("setlevel", "Set angler level"), ("addxp", "Add fishing XP"), ("vault", "Open player fishing vault"), ("market", "Open fish delivery market"), ("reload", "Reload config")],
+            {
+                "setlevel": "<player>",
+                "addxp": "<player>",
+                "vault": "<player>"
+            },
+            [("1", "Level 1"), ("5", "Level 5"), ("10", "Level 10"), ("25", "Level 25"), ("50", "Level 50")]
+        ]
+    },
+    "shop": {
+        "syntax": "/shop <open|events|contracts|reload> [player]",
+        "args": [
+            [("open", "Open shop for player"), ("events", "Trigger/view dynamic events"), ("contracts", "View royal trade contracts"), ("reload", "Reload shop prices")],
+            {
+                "open": "<player>"
+            }
+        ]
+    },
+    "chat": {
+        "syntax": "/chat <channel|mute|unmute|clear|reload> [player]",
+        "args": [
+            [("channel", "Switch chat channel"), ("mute", "Mute player in chat"), ("unmute", "Unmute player"), ("clear", "Clear chat history"), ("reload", "Reload chat config")],
+            {
+                "mute": "<player>",
+                "unmute": "<player>"
+            }
+        ]
+    },
+    "customenchants": {
+        "syntax": "/customenchants <enchanter|tinkerer|give|reload> [player]",
+        "args": [
+            [("enchanter", "Open dual-currency enchanter"), ("tinkerer", "Open tinkerer scrap GUI"), ("give", "Give custom enchant book"), ("reload", "Reload enchants")],
+            {
+                "enchanter": "<player>",
+                "tinkerer": "<player>",
+                "give": "<player>"
+            }
+        ]
+    },
+    "media": {
+        "syntax": "/media <banner|logo|reload|status>",
+        "args": [
+            [("banner", "Spawn/teleport interactive banner"), ("logo", "Render interactive logo"), ("reload", "Reload media assets"), ("status", "View raytrace status")]
+        ]
+    },
+    "apx": {
+        "syntax": "/apx <reload|version|inspect|sync|status> [player]",
+        "args": [
+            [("reload", "Reload all Apexsions modules"), ("version", "Show ecosystem version"), ("inspect", "Inspect 360 player data"), ("sync", "Force WebBridge sync"), ("status", "Check system status")],
+            {
+                "inspect": "<player>"
+            }
+        ]
+    },
+    "apexsions": {
+        "syntax": "/apexsions <reload|version|inspect|status> [player]",
+        "args": [
+            [("reload", "Reload all Apexsions modules"), ("version", "Show ecosystem version"), ("inspect", "Inspect 360 player data"), ("status", "Check system status")],
+            {
+                "inspect": "<player>"
+            }
+        ]
+    }
+}
+
+COMMON_COMMANDS = sorted(set(list(COMMAND_TREE.keys()) + [
+    "help", "version", "plugins", "spark", "timings", "stop", "restart", "reload", "save-all", "save-off", "save-on", "list"
+]))
 
 def load_config():
     if not CONFIG_PATH.exists():
@@ -320,12 +637,15 @@ class PanelLiteApp:
         self.current_dir = "/"
         self.files_cache = []
 
-        # Player Auto-Complete & Tracking State
+        # Player & Command Auto-Complete State
         self.online_players = set()
         self.known_players = self.load_known_players()
         self.ac_popup = None
         self.ac_listbox = None
+        self.ac_syntax_lbl = None
         self.ac_candidates = []
+        self._suppress_autocomplete = False
+        self._ac_navigated = False
 
         # Setup ttk styles for Treeview & Combobox
         self.setup_ttk_styles()
@@ -620,7 +940,10 @@ class PanelLiteApp:
         lbl_prompt = tk.Label(cmd_bar, text="❯", font=("Consolas", 12, "bold"), fg=self.accent_gold, bg=self.card_bg)
         lbl_prompt.pack(side="left", padx=(12, 6))
 
-        self.cmd_entry = tk.Entry(cmd_bar, font=("Consolas", 11), bg=self.card_bg, fg="#ffffff", insertbackground="#ffffff", bd=0, relief="flat")
+        self.cmd_var = tk.StringVar(tab)
+        self.cmd_var.trace_add("write", self.on_cmd_var_change)
+
+        self.cmd_entry = tk.Entry(cmd_bar, textvariable=self.cmd_var, font=("Consolas", 11), bg=self.card_bg, fg="#ffffff", insertbackground="#ffffff", bd=0, relief="flat")
         self.cmd_entry.pack(side="left", fill="x", expand=True, padx=6, pady=8)
         self.cmd_entry.bind("<KeyRelease>", self.on_cmd_keyrelease)
         self.cmd_entry.bind("<Tab>", self.on_cmd_tab)
@@ -793,44 +1116,156 @@ class PanelLiteApp:
             self.safe_after(self.update_online_badge)
 
     def get_current_word_context(self):
-        cursor_pos = self.cmd_entry.index("insert")
+        try:
+            cursor_pos = self.cmd_entry.index("insert")
+        except Exception:
+            cursor_pos = len(self.cmd_entry.get())
         full_text = self.cmd_entry.get()
         before = full_text[:cursor_pos]
         after = full_text[cursor_pos:]
 
-        m = re.search(r'([a-zA-Z0-9_\-\.\/]+)$', before)
+        m = re.search(r'([a-zA-Z0-9_\-\.\/@]+)$', before)
         word = m.group(1) if m else ""
         return word, cursor_pos, full_text, before, after
 
-    def get_autocomplete_candidates(self, word: str, before: str):
-        word_lower = word.lower()
+    def on_cmd_var_change(self, *args):
+        if self._suppress_autocomplete:
+            return
+        self._ac_navigated = False
+        self.root.after_idle(self.trigger_autocomplete)
+
+    def trigger_autocomplete(self):
+        if self._suppress_autocomplete:
+            return
+        word, cursor_pos, full_text, before, after = self.get_current_word_context()
+        if not before:
+            self.hide_autocomplete()
+            return
+
+        candidates, syntax_hint = self.get_minecraft_autocomplete(before)
+        if candidates:
+            self.show_autocomplete(candidates, syntax_hint)
+        else:
+            self.hide_autocomplete()
+
+    def get_minecraft_autocomplete(self, before: str):
+        if not before:
+            return [], ""
+
+        has_slash = before.startswith("/")
+        clean = before[1:] if has_slash else before
+        
+        tokens = clean.split(" ")
+        arg_idx = len(tokens) - 1
+        current_tok = tokens[-1]
+        tok_lower = current_tok.lower()
+        
         candidates = []
-        seen = set()
+        syntax_hint = ""
 
-        # 1. Online players first
-        for p in sorted(self.online_players):
-            if not word or word_lower in p.lower():
-                candidates.append((f"🟢 {p}  [Online]", p))
-                seen.add(p.lower())
-
-        # 2. Known / recent players
-        for p in sorted(self.known_players):
-            if p.lower() not in seen:
-                if not word or word_lower in p.lower():
-                    candidates.append((f"⚪ {p}  [Known]", p))
-                    seen.add(p.lower())
-
-        # 3. Common commands if typing at the first argument
-        if " " not in before.strip():
+        # ARG 0: Command names
+        if arg_idx == 0:
+            prefix_matches = []
+            contains_matches = []
             for cmd in COMMON_COMMANDS:
-                if not word or cmd.startswith(word_lower):
-                    if cmd not in seen:
-                        candidates.append((f"⚡ {cmd}  [Command]", cmd))
-                        seen.add(cmd)
+                prefix = "/" if has_slash else ""
+                desc = ""
+                if cmd in COMMAND_TREE:
+                    syn = COMMAND_TREE[cmd].get("syntax", "")
+                    desc = syn.replace(f"/{cmd} ", "") if syn.startswith(f"/{cmd} ") else syn
+                
+                disp_name = f"{prefix}{cmd}"
+                raw_val = f"{prefix}{cmd}"
+                disp_label = f"⚡ {disp_name}  [{desc}]" if desc else f"⚡ {disp_name}"
+                
+                cmd_lower = cmd.lower()
+                if not tok_lower:
+                    prefix_matches.append((disp_label, raw_val))
+                elif cmd_lower.startswith(tok_lower):
+                    prefix_matches.append((disp_label, raw_val))
+                elif tok_lower in cmd_lower:
+                    contains_matches.append((disp_label, raw_val))
 
-        return candidates
+            if tok_lower and tok_lower in COMMAND_TREE:
+                syntax_hint = COMMAND_TREE[tok_lower].get("syntax", "")
+            
+            final_cands = prefix_matches if prefix_matches else contains_matches
+            return final_cands, syntax_hint
 
-    def show_autocomplete(self, candidates):
+        # ARG >= 1: Arguments for a command
+        cmd_name = tokens[0].lower()
+        tree_entry = COMMAND_TREE.get(cmd_name)
+        if tree_entry:
+            syntax_hint = tree_entry.get("syntax", f"/{cmd_name}")
+            args_list = tree_entry.get("args", [])
+            arg_pos = arg_idx - 1
+            
+            spec = None
+            if arg_pos < len(args_list):
+                spec = args_list[arg_pos]
+                if isinstance(spec, dict):
+                    found = None
+                    for prev in reversed(tokens[1:arg_idx]):
+                        p_low = prev.lower()
+                        if p_low in spec:
+                            found = spec[p_low]
+                            break
+                    spec = found
+            else:
+                spec = None
+        else:
+            spec = "<player>"
+
+        raw_candidates = []
+        
+        def _get_player_candidates():
+            res = []
+            for sel, desc in TARGET_SELECTORS:
+                res.append((f"🎯 {sel}  [{desc}]", sel))
+            for p in sorted(self.online_players):
+                res.append((f"🟢 {p}  [Online]", p))
+            online_lower = {p.lower() for p in self.online_players}
+            for p in sorted(self.known_players):
+                if p.lower() not in online_lower:
+                    res.append((f"⚪ {p}  [Known]", p))
+            return res
+
+        if spec == "<player>":
+            raw_candidates = _get_player_candidates()
+        elif spec == "<item>":
+            for item in COMMON_ITEMS:
+                raw_candidates.append((f"📦 {item}", item))
+        elif spec == "<effect>":
+            for eff in COMMON_EFFECTS:
+                raw_candidates.append((f"🧪 {eff}", eff))
+        elif spec == "<enchant>":
+            for ench in COMMON_ENCHANTS:
+                raw_candidates.append((f"✨ {ench}", ench))
+        elif isinstance(spec, list):
+            for item in spec:
+                if isinstance(item, tuple) and len(item) == 2:
+                    val, desc = item
+                    raw_candidates.append((f"⚙️ {val}  [{desc}]", val))
+                elif isinstance(item, str):
+                    raw_candidates.append((f"⚙️ {item}", item))
+        elif spec is None and arg_idx >= 1:
+            raw_candidates = _get_player_candidates()
+
+        prefix_matches = []
+        contains_matches = []
+        for disp, val in raw_candidates:
+            val_lower = val.lower()
+            if not tok_lower:
+                prefix_matches.append((disp, val))
+            elif val_lower.startswith(tok_lower):
+                prefix_matches.append((disp, val))
+            elif tok_lower in val_lower or tok_lower in disp.lower():
+                contains_matches.append((disp, val))
+
+        final_cands = prefix_matches if prefix_matches else contains_matches
+        return final_cands, syntax_hint
+
+    def show_autocomplete(self, candidates, syntax_hint: str = ""):
         if not candidates:
             self.hide_autocomplete()
             return
@@ -844,13 +1279,26 @@ class PanelLiteApp:
 
             hdr = tk.Frame(self.ac_popup, bg=self.card_inner)
             hdr.pack(fill="x", padx=1, pady=(1, 0))
-            tk.Label(
+
+            self.ac_syntax_lbl = tk.Label(
                 hdr,
-                text="👑 AUTOCOMPLETE (Tab/Enter: Pilih • ↑↓: Navigasi • Esc: Tutup)",
-                font=("Segoe UI", 8, "bold"),
+                text="",
+                font=("Consolas", 9, "bold"),
                 fg=self.accent_gold,
-                bg=self.card_inner
-            ).pack(side="left", padx=8, pady=3)
+                bg=self.card_inner,
+                anchor="w"
+            )
+            self.ac_syntax_lbl.pack(fill="x", padx=8, pady=(4, 1))
+
+            self.ac_help_lbl = tk.Label(
+                hdr,
+                text="Tab: Lengkapi • ↑↓: Pilih • Esc: Tutup",
+                font=("Segoe UI", 7),
+                fg=self.text_dim,
+                bg=self.card_inner,
+                anchor="w"
+            )
+            self.ac_help_lbl.pack(fill="x", padx=8, pady=(0, 4))
 
             body = tk.Frame(self.ac_popup, bg=self.bg_dark)
             body.pack(fill="both", expand=True, padx=1, pady=(0, 1))
@@ -873,8 +1321,15 @@ class PanelLiteApp:
 
             self.ac_listbox.bind("<ButtonRelease-1>", self.on_ac_click)
 
+        # Update syntax hint
+        if self.ac_syntax_lbl and self.ac_syntax_lbl.winfo_exists():
+            if syntax_hint:
+                self.ac_syntax_lbl.config(text=f"📖 {syntax_hint}")
+            else:
+                self.ac_syntax_lbl.config(text="⚡ MINECRAFT AUTOCOMPLETE")
+
         self.ac_listbox.delete(0, "end")
-        for disp, val in candidates[:15]:
+        for disp, val in candidates[:20]:
             self.ac_listbox.insert("end", f" {disp}")
 
         self.ac_listbox.selection_clear(0, "end")
@@ -888,8 +1343,8 @@ class PanelLiteApp:
             entry_w = self.cmd_entry.winfo_width()
 
             num_items = min(len(candidates), 8)
-            popup_h = 32 + num_items * 22
-            popup_w = max(380, min(entry_w, 520))
+            popup_h = 48 + num_items * 22
+            popup_w = max(420, min(entry_w, 640))
 
             pos_x = entry_x
             pos_y = entry_y - popup_h - 4
@@ -906,38 +1361,38 @@ class PanelLiteApp:
         if self.ac_popup and self.ac_popup.winfo_exists():
             self.ac_popup.withdraw()
         self.ac_candidates = []
+        self._ac_navigated = False
 
     def apply_autocomplete(self, replacement: str):
         word, cursor_pos, full_text, before, after = self.get_current_word_context()
-        m = re.search(r'([a-zA-Z0-9_\-\.\/]+)$', before)
-        if m:
-            prefix_len = len(m.group(1))
-            base_before = before[:-prefix_len]
+        has_slash = before.startswith("/")
+        clean = before[1:] if has_slash else before
+        tokens = clean.split(" ")
+        current_token = tokens[-1] if tokens else ""
+
+        if current_token:
+            base = before[:-len(current_token)]
         else:
-            base_before = before
+            base = before
 
-        new_text = base_before + replacement + " " + after
-        new_cursor = len(base_before + replacement + " ")
+        if base == "/" and replacement.startswith("/"):
+            base = ""
 
+        clean_after = after.lstrip(" ")
+        new_text = base + replacement + " " + clean_after
+        new_cursor = len(base + replacement + " ")
+
+        self._suppress_autocomplete = True
         self.cmd_entry.delete(0, "end")
         self.cmd_entry.insert(0, new_text)
         self.cmd_entry.icursor(new_cursor)
-        self.hide_autocomplete()
+        self._suppress_autocomplete = False
+
+        self.root.after_idle(self.trigger_autocomplete)
 
     def on_cmd_keyrelease(self, event):
-        if event.keysym in ("Up", "Down", "Return", "Escape", "Tab", "Shift_L", "Shift_R", "Control_L", "Control_R", "Alt_L", "Alt_R", "Left", "Right", "Home", "End"):
-            return
-
-        word, cursor_pos, full_text, before, after = self.get_current_word_context()
-        if not full_text.strip():
-            self.hide_autocomplete()
-            return
-
-        candidates = self.get_autocomplete_candidates(word, before)
-        if candidates:
-            self.show_autocomplete(candidates)
-        else:
-            self.hide_autocomplete()
+        if event.keysym in ("Left", "Right", "Home", "End"):
+            self.root.after_idle(self.trigger_autocomplete)
 
     def on_cmd_tab(self, event):
         if self.ac_popup and self.ac_popup.winfo_exists() and self.ac_popup.winfo_ismapped() and self.ac_candidates:
@@ -949,15 +1404,15 @@ class PanelLiteApp:
             return "break"
 
         word, cursor_pos, full_text, before, after = self.get_current_word_context()
-        candidates = self.get_autocomplete_candidates(word, before)
+        candidates, syntax_hint = self.get_minecraft_autocomplete(before)
         if len(candidates) == 1:
             self.apply_autocomplete(candidates[0][1])
         elif len(candidates) > 1:
-            self.show_autocomplete(candidates)
+            self.show_autocomplete(candidates, syntax_hint)
         return "break"
 
     def on_cmd_return(self, event):
-        if self.ac_popup and self.ac_popup.winfo_exists() and self.ac_popup.winfo_ismapped() and self.ac_candidates:
+        if self.ac_popup and self.ac_popup.winfo_exists() and self.ac_popup.winfo_ismapped() and self.ac_candidates and self._ac_navigated:
             sel = self.ac_listbox.curselection()
             if sel:
                 idx = sel[0]
@@ -972,6 +1427,7 @@ class PanelLiteApp:
 
     def on_cmd_up(self, event):
         if self.ac_popup and self.ac_popup.winfo_exists() and self.ac_popup.winfo_ismapped() and self.ac_candidates:
+            self._ac_navigated = True
             sel = self.ac_listbox.curselection()
             cur = sel[0] if sel else 0
             new_idx = max(0, cur - 1)
@@ -983,6 +1439,7 @@ class PanelLiteApp:
 
     def on_cmd_down(self, event):
         if self.ac_popup and self.ac_popup.winfo_exists() and self.ac_popup.winfo_ismapped() and self.ac_candidates:
+            self._ac_navigated = True
             sel = self.ac_listbox.curselection()
             cur = sel[0] if sel else 0
             new_idx = min(len(self.ac_candidates) - 1, cur + 1)
