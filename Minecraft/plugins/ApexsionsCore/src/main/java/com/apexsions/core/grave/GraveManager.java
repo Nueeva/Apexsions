@@ -131,8 +131,15 @@ public class GraveManager {
             return;
         }
 
-        // Release any pre-existing active grave for this owner first (no data loss).
-        releaseOwnedGraveSilently(player.getUniqueId());
+        // Limit concurrent active graves per player (default max 5). Safely release oldest if exceeded.
+        List<GraveRecord> existing = getGraves(player.getUniqueId());
+        int maxGraves = Math.max(1, plugin.getConfig().getInt("grave.max-per-player", 5));
+        while (existing.size() >= maxGraves) {
+            GraveRecord oldest = existing.remove(existing.size() - 1);
+            if (releaseGrave(oldest, true)) {
+                repository.markCollected(oldest.getId());
+            }
+        }
 
         GraveRecord grave = GraveRecord.create(player.getUniqueId(), player.getName(), loc, items, xp, cause, getDurationMillis());
         activeGraves.put(grave.getId(), grave);
@@ -147,12 +154,13 @@ public class GraveManager {
                 "<gray>Lokasi: <gold>X: " + (int) grave.getX() + ", Y: " + (int) grave.getY() + ", Z: " + (int) grave.getZ()
                         + "</gold> <dark_gray>|</dark_gray> <yellow>Ambil dengan tap nisan atau <click:run_command:'/grave'><white><bold>[AMBIL NISAN]</bold></white></click></yellow></gray>"));
         player.sendMessage(mm.deserialize(
-                "<gray>Nisan bertahan selama <aqua>" + grave.remainingFormatted() + "</aqua>. Gunakan <gold>/grave compass</gold> untuk navigasi.</gray>"));
+                "<gray>Nisan bertahan selama <aqua>" + grave.remainingFormatted() + "</aqua>. Gunakan <gold><click:run_command:'/grave compass'>/grave compass</click></gold> untuk navigasi.</gray>"));
     }
 
-    private void spawnMarker(GraveRecord grave) {
+    public void spawnMarker(GraveRecord grave) {
+        removeMarkers(grave.getId());
         Location loc = grave.toLocation();
-        if (loc == null || loc.getWorld() == null) {
+        if (loc == null || loc.getWorld() == null || !loc.isChunkLoaded()) {
             return;
         }
         World world = loc.getWorld();
@@ -183,6 +191,20 @@ public class GraveManager {
             interactionIds.put(grave.getId(), interaction.getUniqueId());
         } catch (Throwable t) {
             plugin.getLogger().log(Level.FINE, "Interaction entity unavailable; /grave fallback active", t);
+        }
+    }
+
+    public void ensureMarker(@NotNull GraveRecord grave) {
+        Location loc = grave.toLocation();
+        if (loc == null || loc.getWorld() == null || !loc.isChunkLoaded()) {
+            return;
+        }
+        UUID textId = textDisplayIds.get(grave.getId());
+        Entity textEnt = textId != null ? Bukkit.getEntity(textId) : null;
+        if (!(textEnt instanceof TextDisplay td) || !td.isValid()) {
+            spawnMarker(grave);
+        } else {
+            updateHologram(grave);
         }
     }
 
@@ -227,17 +249,42 @@ public class GraveManager {
 
     @Nullable
     public GraveRecord getActiveGrave(@NotNull UUID owner) {
-        String id = ownerIndex.get(owner);
-        return id != null ? activeGraves.get(id) : null;
+        GraveRecord latest = null;
+        for (GraveRecord grave : activeGraves.values()) {
+            if (grave.getOwnerUuid().equals(owner)) {
+                if (latest == null || grave.getCreatedAt() > latest.getCreatedAt()) {
+                    latest = grave;
+                }
+            }
+        }
+        return latest;
+    }
+
+    @Nullable
+    public GraveRecord getNearestGrave(@NotNull Player player) {
+        GraveRecord nearest = null;
+        double bestDist = Double.MAX_VALUE;
+        for (GraveRecord grave : activeGraves.values()) {
+            if (grave.getOwnerUuid().equals(player.getUniqueId())) {
+                double dist = grave.distanceTo(player.getLocation());
+                if (dist >= 0 && dist < bestDist) {
+                    bestDist = dist;
+                    nearest = grave;
+                }
+            }
+        }
+        return nearest != null ? nearest : getActiveGrave(player.getUniqueId());
     }
 
     @NotNull
     public List<GraveRecord> getGraves(@NotNull UUID owner) {
         List<GraveRecord> list = new ArrayList<>();
-        GraveRecord own = getActiveGrave(owner);
-        if (own != null) {
-            list.add(own);
+        for (GraveRecord grave : activeGraves.values()) {
+            if (grave.getOwnerUuid().equals(owner)) {
+                list.add(grave);
+            }
         }
+        list.sort((a, b) -> Long.compare(b.getCreatedAt(), a.getCreatedAt()));
         return list;
     }
 
@@ -346,7 +393,7 @@ public class GraveManager {
     public boolean releaseGrave(@NotNull GraveRecord grave, boolean removeEntities) {
         Player owner = Bukkit.getPlayer(grave.getOwnerUuid());
         List<ItemStack> items = grave.getItems();
-        if (owner != null && owner.isOnline()) {
+        if (owner != null && owner.isOnline() && !owner.isDead()) {
             giveItems(owner, items);
             if (grave.getXp() > 0) {
                 owner.giveExp(grave.getXp());
@@ -378,39 +425,29 @@ public class GraveManager {
         return true;
     }
 
-    private void releaseOwnedGraveSilently(UUID owner) {
-        GraveRecord old = getActiveGrave(owner);
-        if (old != null) {
-            if (releaseGrave(old, true)) {
-                repository.markCollected(old.getId());
-            } else {
-                // Keep the old row recoverable: detach it from the owner index so
-                // the new grave can own the slot without orphaning stored items.
-                ownerIndex.remove(owner, old.getId());
-            }
-        }
-    }
-
     /**
-     * Admin-forced release of a player's active grave.
+     * Admin-forced release of a player's active grave(s).
      */
     public boolean forceRelease(@NotNull UUID owner) {
-        GraveRecord grave = getActiveGrave(owner);
-        if (grave == null) {
+        List<GraveRecord> graves = getGraves(owner);
+        if (graves.isEmpty()) {
             return false;
         }
-        boolean released = releaseGrave(grave, true);
-        if (released) {
-            repository.markCollected(grave.getId());
+        boolean any = false;
+        for (GraveRecord grave : graves) {
+            if (releaseGrave(grave, true)) {
+                repository.markCollected(grave.getId());
+                any = true;
+            }
         }
-        return released;
+        return any;
     }
 
     /**
-     * Points the player's compass to their active grave (or their latest death location).
+     * Points the player's compass to their nearest active grave (or their latest death location).
      */
     public boolean pointCompassToGrave(@NotNull Player player) {
-        GraveRecord grave = getActiveGrave(player.getUniqueId());
+        GraveRecord grave = getNearestGrave(player);
         if (grave != null) {
             return plugin.getDeathCoordinateManager().pointCompassToDeath(player,
                     new DeathRecord(grave.getOwnerUuid(), grave.getWorldName(), grave.getX(), grave.getY(), grave.getZ(),

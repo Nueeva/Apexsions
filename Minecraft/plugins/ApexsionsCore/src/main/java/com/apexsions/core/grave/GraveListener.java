@@ -101,4 +101,21 @@ public class GraveListener implements Listener {
             }
         }, 30L);
     }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onChunkLoad(@NotNull org.bukkit.event.world.ChunkLoadEvent event) {
+        if (!graveManager.isEnabled()) {
+            return;
+        }
+        for (GraveRecord grave : graveManager.getActiveGraves()) {
+            org.bukkit.Location loc = grave.toLocation();
+            if (loc != null && loc.getWorld() != null && loc.getWorld().equals(event.getWorld())) {
+                int cx = loc.getBlockX() >> 4;
+                int cz = loc.getBlockZ() >> 4;
+                if (cx == event.getChunk().getX() && cz == event.getChunk().getZ()) {
+                    graveManager.ensureMarker(grave);
+                }
+            }
+        }
+    }
 }

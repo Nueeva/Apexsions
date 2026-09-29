@@ -83,6 +83,8 @@ grave:
   enabled: true
   # Lama nisan bertahan sebelum item dilepas (detik). Default 30 menit.
   duration-seconds: 1800
+  # Maksimal nisan aktif bersamaan per pemain (mencegah nisan tertimpa/hilang jika mati lagi saat perjalanan kembali)
+  max-per-player: 5
   # Jarak maksimal (blok) untuk membuka nisan lewat /grave atau tap Interaction
   interact-distance: 3.5
   # Izinkan anggota kerajaan yang sama ikut membuka nisan

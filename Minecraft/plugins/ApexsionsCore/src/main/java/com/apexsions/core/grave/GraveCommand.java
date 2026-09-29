@@ -54,9 +54,25 @@ public class GraveCommand implements CommandExecutor, TabCompleter {
         if (args.length == 0 || args[0].equalsIgnoreCase("open")) {
             GraveRecord nearest = manager.findNearest(player, manager.getInteractDistance());
             if (nearest == null) {
-                GraveRecord own = manager.getActiveGrave(player.getUniqueId());
+                GraveRecord own = manager.getNearestGrave(player);
                 if (own != null) {
-                    player.sendMessage(mm.deserialize("<yellow>⚠ Anda tidak berada di dekat nisan Anda. Gunakan <gold>/grave list</gold> untuk melihat lokasinya.</yellow>"));
+                    manager.ensureMarker(own);
+                    double dist = own.distanceTo(player.getLocation());
+                    if (dist >= 0) {
+                        int diffY = (int) Math.round(own.getY() - player.getLocation().getY());
+                        String yHint;
+                        if (diffY <= -3) {
+                            yHint = " (" + Math.abs(diffY) + " blok di bawah Anda - Nisan di Y: " + (int) own.getY() + ", posisi Anda: Y: " + player.getLocation().getBlockY() + " • Gali ke bawah!)";
+                        } else if (diffY >= 3) {
+                            yHint = " (" + diffY + " blok di atas Anda - Nisan di Y: " + (int) own.getY() + ", posisi Anda: Y: " + player.getLocation().getBlockY() + " • Naik ke atas!)";
+                        } else {
+                            yHint = " (Nisan di Y: " + (int) own.getY() + ")";
+                        }
+                        player.sendMessage(mm.deserialize("<yellow>⚠ Anda berjarak <gold>" + String.format(java.util.Locale.US, "%.1f", dist) + " blok</gold> dari nisan Anda" + yHint + ".</yellow>"));
+                        player.sendMessage(mm.deserialize("<gray>Dekati lokasi (radius " + manager.getInteractDistance() + " blok) atau gunakan <gold><click:run_command:'/grave compass'>[NAVIGASI KOMPAS]</click></gold> / <gold><click:run_command:'/grave list'>[DETAIL NISAN]</click></gold>.</gray>"));
+                    } else {
+                        player.sendMessage(mm.deserialize("<yellow>⚠ Anda berada di dunia berbeda dari nisan Anda (" + own.getWorldName() + "). Gunakan <gold>/grave list</gold> untuk melihat lokasinya.</yellow>"));
+                    }
                 } else {
                     player.sendMessage(mm.deserialize("<gray>Tidak ada nisan aktif milik Anda.</gray>"));
                 }
@@ -142,17 +158,28 @@ public class GraveCommand implements CommandExecutor, TabCompleter {
             return;
         }
 
+        int index = 1;
         for (GraveRecord grave : graves) {
-            viewer.sendMessage(mm.deserialize("<gray>Dunia:</gray> <yellow>" + grave.getWorldName() + "</yellow> <dark_gray>|</dark_gray> <gold>X: "
-                    + (int) grave.getX() + ", Y: " + (int) grave.getY() + ", Z: " + (int) grave.getZ() + "</gold>"));
-            viewer.sendMessage(mm.deserialize("<gray>Sisa waktu:</gray> <aqua>" + grave.remainingFormatted() + "</aqua>"));
+            manager.ensureMarker(grave);
+            double dist = grave.distanceTo(viewer.getLocation());
+            String distStr = "";
+            if (dist >= 0) {
+                int diffY = (int) Math.round(grave.getY() - viewer.getLocation().getY());
+                String yHint = diffY <= -3 ? " (" + Math.abs(diffY) + "m di bawah)" : (diffY >= 3 ? " (" + diffY + "m di atas)" : "");
+                distStr = " <dark_gray>|</dark_gray> <aqua>Jarak: " + String.format(java.util.Locale.US, "%.1f", dist) + "m" + yHint + "</aqua>";
+            }
+            viewer.sendMessage(mm.deserialize("<gold>#" + index++ + "</gold> <gray>Dunia:</gray> <yellow>" + grave.getWorldName()
+                    + "</yellow> <dark_gray>|</dark_gray> <gold>X: " + (int) grave.getX() + ", Y: " + (int) grave.getY() + ", Z: " + (int) grave.getZ()
+                    + "</gold>" + distStr));
+            viewer.sendMessage(mm.deserialize("<gray>Sisa waktu:</gray> <aqua>" + grave.remainingFormatted() + "</aqua>"
+                    + (grave.getCause() != null && !grave.getCause().isBlank() ? " <dark_gray>|</dark_gray> <gray>Sebab: <red>" + grave.getCause() + "</red></gray>" : "")));
 
             Component btnTake = mm.deserialize("<green><bold>[AMBIL]</bold></green>")
                     .clickEvent(ClickEvent.runCommand("/grave open"))
-                    .hoverEvent(HoverEvent.showText(mm.deserialize("<green>Klik untuk membuka nisan terdekat (harus berada di dekatnya)</green>")));
+                    .hoverEvent(HoverEvent.showText(mm.deserialize("<green>Klik untuk membuka nisan (harus berada di radius " + manager.getInteractDistance() + " blok)</green>")));
             Component btnCompass = mm.deserialize("<gold><bold>[KOMPAS]</bold></gold>")
                     .clickEvent(ClickEvent.runCommand("/grave compass"))
-                    .hoverEvent(HoverEvent.showText(mm.deserialize("<yellow>Arahkan kompas ke nisan</yellow>")));
+                    .hoverEvent(HoverEvent.showText(mm.deserialize("<yellow>Arahkan kompas navigasi ke nisan ini</yellow>")));
 
             viewer.sendMessage(Component.text(" ").append(btnTake).append(Component.text("   ")).append(btnCompass));
         }
