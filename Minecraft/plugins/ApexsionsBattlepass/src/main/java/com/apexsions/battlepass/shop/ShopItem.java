@@ -1,7 +1,7 @@
 package com.apexsions.battlepass.shop;
 
 import com.apexsions.battlepass.gui.util.ItemBuilder;
-import com.apexsions.battlepass.util.ItemSerializer;
+import com.apexsions.core.util.ItemSerializer;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 

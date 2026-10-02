@@ -4,7 +4,7 @@ import com.apexsions.economy.ApexsionsEconomy;
 import com.apexsions.economy.bank.BankDeposit;
 import com.apexsions.economy.currency.Currency;
 import com.apexsions.economy.gui.core.Gui;
-import com.apexsions.economy.gui.core.GuiButton;
+import com.apexsions.core.gui.core.GuiButton;
 import com.apexsions.economy.gui.navigation.BackButton;
 import com.apexsions.economy.gui.navigation.CloseButton;
 import com.apexsions.economy.gui.util.ItemBuilder;

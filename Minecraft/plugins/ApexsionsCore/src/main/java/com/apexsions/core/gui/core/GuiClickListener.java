@@ -1,4 +1,4 @@
-package com.apexsions.economy.gui.core;
+package com.apexsions.core.gui.core;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -14,7 +14,7 @@ public class GuiClickListener implements Listener {
         InventoryHolder holder = event.getInventory().getHolder();
         if (holder instanceof GuiHolder guiHolder) {
             event.setCancelled(true);
-            Gui gui = guiHolder.getGui();
+            GuiHandler gui = guiHolder.getGui();
             if (gui != null) {
                 gui.onInventoryClick(event);
             }
@@ -25,7 +25,7 @@ public class GuiClickListener implements Listener {
     public void onInventoryDrag(InventoryDragEvent event) {
         InventoryHolder holder = event.getInventory().getHolder();
         if (holder instanceof GuiHolder guiHolder) {
-            Gui gui = guiHolder.getGui();
+            GuiHandler gui = guiHolder.getGui();
             if (gui != null) {
                 gui.onInventoryDrag(event);
             } else {
@@ -38,7 +38,7 @@ public class GuiClickListener implements Listener {
     public void onInventoryClose(org.bukkit.event.inventory.InventoryCloseEvent event) {
         InventoryHolder holder = event.getInventory().getHolder();
         if (holder instanceof GuiHolder guiHolder) {
-            Gui gui = guiHolder.getGui();
+            GuiHandler gui = guiHolder.getGui();
             if (gui != null) {
                 gui.onInventoryClose(event);
             }

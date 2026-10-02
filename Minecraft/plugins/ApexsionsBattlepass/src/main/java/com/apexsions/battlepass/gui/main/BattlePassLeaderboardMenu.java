@@ -2,7 +2,7 @@ package com.apexsions.battlepass.gui.main;
 
 import com.apexsions.battlepass.ApexsionsBattlepass;
 import com.apexsions.battlepass.gui.core.Gui;
-import com.apexsions.battlepass.gui.core.GuiButton;
+import com.apexsions.core.gui.core.GuiButton;
 import com.apexsions.battlepass.gui.navigation.BackButton;
 import com.apexsions.battlepass.gui.navigation.CloseButton;
 import com.apexsions.battlepass.gui.util.ItemBuilder;

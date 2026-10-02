@@ -1,4 +1,4 @@
-package com.apexsions.economy.gui.pagination;
+package com.apexsions.core.gui.pagination;
 
 import java.util.ArrayList;
 import java.util.Collections;

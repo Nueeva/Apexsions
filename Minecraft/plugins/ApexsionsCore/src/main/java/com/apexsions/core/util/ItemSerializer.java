@@ -1,4 +1,4 @@
-package com.apexsions.battlepass.util;
+package com.apexsions.core.util;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;

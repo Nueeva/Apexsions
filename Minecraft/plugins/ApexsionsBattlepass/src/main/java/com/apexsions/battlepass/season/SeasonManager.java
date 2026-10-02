@@ -1,7 +1,7 @@
 package com.apexsions.battlepass.season;
 
 import com.apexsions.battlepass.ApexsionsBattlepass;
-import com.apexsions.battlepass.util.TimeUtil;
+import com.apexsions.core.util.TimeUtil;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 

@@ -1,4 +1,4 @@
-package com.apexsions.economy.util;
+package com.apexsions.core.util;
 
 import java.time.*;
 import java.time.format.DateTimeFormatter;

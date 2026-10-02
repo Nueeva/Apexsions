@@ -1,17 +1,17 @@
-package com.apexsions.economy.gui.core;
+package com.apexsions.core.gui.core;
 
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 
 public class GuiHolder implements InventoryHolder {
 
-    private final Gui gui;
+    private final GuiHandler gui;
 
-    public GuiHolder(Gui gui) {
+    public GuiHolder(GuiHandler gui) {
         this.gui = gui;
     }
 
-    public Gui getGui() {
+    public GuiHandler getGui() {
         return gui;
     }
 

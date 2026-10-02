@@ -7,7 +7,7 @@ import com.apexsions.battlepass.currency.CurrencyService;
 import com.apexsions.battlepass.database.PlayerDataRepository;
 import com.apexsions.battlepass.database.SQLiteRepository;
 import com.apexsions.battlepass.expshop.service.ExpShopService;
-import com.apexsions.battlepass.gui.core.GuiClickListener;
+import com.apexsions.core.gui.core.GuiClickListener;
 import com.apexsions.battlepass.integration.PlaceholderAPIHook;
 import com.apexsions.battlepass.integration.VaultHook;
 import com.apexsions.battlepass.pass.PassManager;

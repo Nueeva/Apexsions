@@ -1,7 +1,7 @@
 package com.apexsions.economy.service;
 
 import com.apexsions.core.api.Permissions;
-import com.apexsions.economy.util.ItemSerializer;
+import com.apexsions.core.util.ItemSerializer;
 import com.apexsions.economy.ApexsionsEconomy;
 import com.apexsions.economy.auction.AuctionListing;
 import com.apexsions.economy.auction.AuctionStatus;

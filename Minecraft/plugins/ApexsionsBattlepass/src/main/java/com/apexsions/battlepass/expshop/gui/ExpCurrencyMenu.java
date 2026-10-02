@@ -5,7 +5,7 @@ import com.apexsions.battlepass.expshop.model.ExpPackage;
 import com.apexsions.battlepass.expshop.model.ExpPurchaseContext;
 import com.apexsions.battlepass.expshop.provider.ExpShopCurrencyProvider;
 import com.apexsions.battlepass.gui.core.Gui;
-import com.apexsions.battlepass.gui.core.GuiButton;
+import com.apexsions.core.gui.core.GuiButton;
 import com.apexsions.battlepass.gui.navigation.BackButton;
 import com.apexsions.battlepass.gui.util.ItemBuilder;
 import org.bukkit.Material;
