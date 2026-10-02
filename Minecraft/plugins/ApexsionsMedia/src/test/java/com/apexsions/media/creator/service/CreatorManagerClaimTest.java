@@ -13,13 +13,16 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitScheduler;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.MockedConstruction;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
+
+import be.seeseemelk.mockbukkit.MockBukkit;
 
 import java.util.List;
 import java.util.Set;
@@ -48,15 +51,24 @@ import static org.mockito.Mockito.when;
  * {@code RegistryAccess} (hanya ada di server Paper asli / MockBukkit).
  * Tanpa itu, {@code Sound.ENTITY_VILLAGER_NO} melempar
  * {@code ExceptionInInitializerError} di JVM unit-test biasa.
- * Aktifkan kembali setelah MockBukkit tersedia di classpath test.
+ * MockBukkit di-boot di {@code @BeforeAll} agar registry tersedia.
  * Verifikasi C-4 tetap tercakup oleh {@code CreatorRepositoryClaimTest}
  * (level repository, berjalan hijau).</p>
  */
-@Disabled("Butuh Paper registry/MockBukkit: org.bukkit.Sound tidak bisa diinisialisasi di unit-test biasa")
 class CreatorManagerClaimTest {
 
     private ApexsionsMediaPlugin plugin;
     private BukkitScheduler scheduler;
+
+    @BeforeAll
+    static void bootMockServer() {
+        MockBukkit.mock();
+    }
+
+    @AfterAll
+    static void shutdownMockServer() {
+        MockBukkit.unmock();
+    }
 
     @BeforeEach
     void setUp() {

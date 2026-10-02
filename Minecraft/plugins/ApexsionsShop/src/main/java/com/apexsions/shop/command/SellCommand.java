@@ -109,6 +109,8 @@ public class SellCommand implements CommandExecutor, TabCompleter {
         String kingdomKey = plugin.getKingdomCoreHook().getPlayerKingdom(player);
 
         ItemStack[] contents = player.getInventory().getStorageContents();
+        ItemStack[] original = contents.clone();
+        List<ItemStack> soldStacks = new ArrayList<>();
         for (int i = 0; i < contents.length; i++) {
             ItemStack is = contents[i];
             if (is == null || is.getType() == Material.AIR) continue;
@@ -119,14 +121,27 @@ public class SellCommand implements CommandExecutor, TabCompleter {
                 totalPayout += res.finalTotalPrice();
                 totalTax += res.taxAmount();
                 totalItemsSold += is.getAmount();
-                plugin.getSupplyScannerService().recordSale(kingdomKey, item.getMaterial(), is.getAmount());
+                soldStacks.add(is);
                 contents[i] = null;
             }
         }
 
         if (totalItemsSold > 0) {
             player.getInventory().setStorageContents(contents);
-            plugin.getEconomyHook().deposit(player, totalPayout);
+            if (!plugin.getEconomyHook().deposit(player, totalPayout)) {
+                // C-3 lanjutan: deposit gagal — kembalikan seluruh item utuh, batalkan penjualan
+                player.getInventory().setStorageContents(original);
+                player.sendMessage(miniMessage.deserialize(plugin.getConfig().getString("messages.prefix", "") +
+                        plugin.getConfig().getString("messages.sell-failed", "<red>Penjualan gagal: pembayaran tidak dapat diproses. Item kamu telah dikembalikan.</red>")));
+                player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
+                return;
+            }
+            for (ItemStack is : soldStacks) {
+                ShopItem item = plugin.getItemRegistry().getItem(is.getType());
+                if (item != null) {
+                    plugin.getSupplyScannerService().recordSale(kingdomKey, item.getMaterial(), is.getAmount());
+                }
+            }
 
             player.sendMessage(miniMessage.deserialize(plugin.getConfig().getString("messages.prefix", "") +
                     plugin.getConfig().getString("messages.sell-success", "<green>Berhasil menjual seluruh item di inventori!</green>")
