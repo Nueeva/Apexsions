@@ -13,16 +13,12 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitScheduler;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.MockedConstruction;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
-
-import be.seeseemelk.mockbukkit.MockBukkit;
 
 import java.util.List;
 import java.util.Set;
@@ -45,13 +41,14 @@ import static org.mockito.Mockito.when;
  * Regression test untuk C-4: reward TIDAK boleh dikirim jika klaim video
  * gagal tersimpan (mis. pelanggaran UNIQUE video_id).
  *
- * <p><b>CATATAN LINGKUNGAN:</b> test di class ini di-{@code Disabled} karena
- * membutuhkan Paper registry — alur {@code processVideoSubmission} menyentuh
- * enum {@code org.bukkit.Sound} yang static-initializer-nya memanggil
- * {@code RegistryAccess} (hanya ada di server Paper asli / MockBukkit).
- * Tanpa itu, {@code Sound.ENTITY_VILLAGER_NO} melempar
- * {@code ExceptionInInitializerError} di JVM unit-test biasa.
- * MockBukkit di-boot di {@code @BeforeAll} agar registry tersedia.
+ * <p><b>CATATAN LINGKUNGAN:</b> test di class ini membutuhkan Paper registry —
+ * alur {@code processVideoSubmission} menyentuh konstanta {@code org.bukkit.Sound}
+ * yang static-initializer-nya memanggil Paper registry (hanya ada di server asli).
+ * Sebagai pengganti, {@code LenientTestRegistryAccess} (terdaftar via
+ * {@code META-INF/services} di test resources) menyediakan registry kosong yang
+ * lenien sehingga konstanta terinisialisasi tanpa exception. MockBukkit TIDAK
+ * dipakai: versi terakhir lini 1.21 (3.133.2) dibangun untuk paper-api 1.21.1
+ * dan gagal bootstrap di paper-api 1.21.4.
  * Verifikasi C-4 tetap tercakup oleh {@code CreatorRepositoryClaimTest}
  * (level repository, berjalan hijau).</p>
  */
@@ -59,16 +56,6 @@ class CreatorManagerClaimTest {
 
     private ApexsionsMediaPlugin plugin;
     private BukkitScheduler scheduler;
-
-    @BeforeAll
-    static void bootMockServer() {
-        MockBukkit.mock();
-    }
-
-    @AfterAll
-    static void shutdownMockServer() {
-        MockBukkit.unmock();
-    }
 
     @BeforeEach
     void setUp() {
