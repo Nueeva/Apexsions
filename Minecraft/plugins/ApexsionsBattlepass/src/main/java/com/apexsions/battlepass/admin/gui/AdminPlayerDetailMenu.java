@@ -35,18 +35,56 @@ public class AdminPlayerDetailMenu extends Gui {
     public void initialize() {
         fillBackground();
 
+        // M-1: the per-player DB lookup must not block the server thread.
+        // Show a loading placeholder immediately; the real content is filled in
+        // on the main thread once the async query completes.
+        setButton(13, new GuiButton(new ItemBuilder(Material.PLAYER_HEAD)
+                .name("&e&lPROFIL: " + targetName)
+                .lore(List.of(
+                        "&7Memuat data pemain...",
+                        " ",
+                        "&7Mohon tunggu."
+                ))
+                .build()));
+
+        // Navigation
+        setButton(36, new BackButton(this, parent));
+        setButton(44, new CloseButton());
+
+        loadAndPopulate();
+    }
+
+    private void loadAndPopulate() {
         int seasonId = plugin.getSeasonManager().getCurrentSeason().getId();
-        PlayerData data = plugin.getPlayerManager().getPlayerDataCache().get(targetUuid);
-        if (data == null) {
-            // Synchronously or block load if not in memory
-            try {
-                data = plugin.getRepository().loadPlayerData(targetUuid, seasonId).get();
-            } catch (Exception e) {
-                player.sendMessage("§cError loading player data: " + e.getMessage());
-                if (parent != null) parent.open();
-                return;
-            }
+        PlayerData cached = plugin.getPlayerManager().getPlayerDataCache().get(targetUuid);
+        if (cached != null) {
+            populate(cached);
+            return;
         }
+        plugin.getRepository().loadPlayerData(targetUuid, seasonId).whenComplete((data, ex) -> {
+            // Bukkit API (inventories, OfflinePlayer) is not thread-safe: continue on the main thread.
+            Bukkit.getScheduler().runTask(plugin, () -> {
+                if (!plugin.isEnabled() || !player.isOnline()) return;
+                if (ex != null || data == null) {
+                    player.sendMessage("§cError loading player data: " + (ex != null ? ex.getMessage() : "not found"));
+                    // Only navigate back if the player is still looking at this (loading) menu.
+                    if (player.getOpenInventory().getTopInventory() == inventory && parent != null) {
+                        parent.open();
+                    }
+                    return;
+                }
+                // Skip stale callbacks: the player closed this menu or opened another one.
+                if (player.getOpenInventory().getTopInventory() != inventory) return;
+                populate(data);
+            });
+        });
+    }
+
+    /**
+     * M-1: builds the menu content on the main thread once the player data is available.
+     * Shows exactly the same data as the previous blocking implementation.
+     */
+    private void populate(PlayerData data) {
 
         final PlayerData finalData = data;
         OfflinePlayer op = Bukkit.getOfflinePlayer(targetUuid);
@@ -206,10 +244,6 @@ public class AdminPlayerDetailMenu extends Gui {
                     this::open
             ).open();
         }));
-
-        // Navigation
-        setButton(36, new BackButton(this, parent));
-        setButton(44, new CloseButton());
     }
 }
 
