@@ -33,8 +33,8 @@ public class ShopCommand implements CommandExecutor, TabCompleter {
                 return true;
             }
             plugin.reloadPluginConfig();
-            sender.sendMessage(miniMessage.deserialize(plugin.getConfig().getString("messages.prefix", "") +
-                    plugin.getConfig().getString("messages.reload-success", "<green>Konfigurasi berhasil dimuat ulang!</green>")));
+            sender.sendMessage(miniMessage.deserialize(plugin.getConfigManager().getMessage("reload-success",
+                    "<green>Konfigurasi berhasil dimuat ulang!</green>")));
             return true;
         }
 

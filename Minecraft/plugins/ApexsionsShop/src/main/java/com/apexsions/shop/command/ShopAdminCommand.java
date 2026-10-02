@@ -42,8 +42,8 @@ public class ShopAdminCommand implements CommandExecutor, TabCompleter {
             if (plugin.getWebMarketSyncService() != null) {
                 plugin.getWebMarketSyncService().syncAsync();
             }
-            sender.sendMessage(miniMessage.deserialize(plugin.getConfig().getString("messages.prefix", "") +
-                    plugin.getConfig().getString("messages.reload-success", "<green>Konfigurasi berhasil dimuat ulang & disinkronkan!</green>")));
+            sender.sendMessage(miniMessage.deserialize(plugin.getConfigManager().getMessage("reload-success",
+                    "<green>Konfigurasi berhasil dimuat ulang & disinkronkan!</green>")));
             return true;
         }
 

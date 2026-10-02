@@ -1,30 +1,31 @@
 package com.apexsions.shop.dynamic;
 
 import com.apexsions.shop.ApexsionsShop;
+import com.apexsions.shop.dynamic.event.MarketEvent;
+import com.apexsions.shop.dynamic.event.MarketEventService;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.scheduler.BukkitTask;
 
-import java.util.Random;
-
 /**
- * Periodically broadcasts market fluctuations, commodity booms, and price trends.
+ * Periodically broadcasts the currently active market event.
  */
 public class MarketBroadcastService {
 
     private final ApexsionsShop plugin;
     private final MiniMessage miniMessage = MiniMessage.miniMessage();
-    private final Random random = new Random();
     private BukkitTask broadcastTask;
 
-    private static final String[] MARKET_TRENDS = {
-            "<gold>📈 <bold>TREN PASAR:</bold> Permintaan hasil tambang di <yellow>Zenithar</yellow> sedang melonjak tinggi! Harga jual ore naik <green>+20%</green>!</gold>",
-            "<aqua>🌧 <bold>PENGARUH CUACA:</bold> Musim hujan memicu kenaikan permintaan bibit pertanian di <yellow>Solterra</yellow>! Segera jual hasil panenmu!</aqua>",
-            "<light_purple>✨ <bold>PASAR MISTIS:</bold> Permintaan mob drops langka di <yellow>Sylvamoor</yellow> meningkat drastis! Manfaatkan kesempatan emas ini!</light_purple>",
-            "<green>🌾 <bold>PASOKAN MELIMPAH:</bold> Panen raya di dataran Solterra membuat harga beli makanan menjadi lebih murah <yellow>-15%</yellow>!</green>",
-            "<red>⚔ <bold>EKONOMI PERANG:</bold> Persediaan ingot dan perlengkapan senjata di seluruh kerajaan sedang diburu para prajurit!</red>"
-    };
+    // M-14 (audit fix): daftar MARKET_TRENDS statis dengan klaim palsu
+    // (mis. "Harga jual ore naik +20%", "harga beli makanan lebih murah -15%") DIHAPUS.
+    // Broadcast lama tidak mengubah multiplier apapun — murni flavor text acak tiap
+    // 20 menit yang bisa disalahpahami pemain sebagai info ekonomi nyata.
+    // Broadcast ini sekarang mengumumkan event pasar AKTIF dari MarketEventService,
+    // yang multiplier-nya benar-benar diterapkan di DynamicPriceCalculator
+    // (calculateBuyPrice/calculateSellPrice), sehingga info yang diterima pemain
+    // selalu nyata dan dapat ditindaklanjuti. Tidak ada sistem multiplier baru
+    // yang dibuat — hanya pemakaian ulang data event yang sudah ada.
 
     public MarketBroadcastService(ApexsionsShop plugin) {
         this.plugin = plugin;
@@ -37,7 +38,7 @@ public class MarketBroadcastService {
 
         // Broadcast every 20 minutes (24000 ticks)
         long intervalTicks = 20 * 60 * 20L;
-        broadcastTask = Bukkit.getScheduler().runTaskTimer(plugin, this::broadcastRandomTrend, intervalTicks, intervalTicks);
+        broadcastTask = Bukkit.getScheduler().runTaskTimer(plugin, this::broadcastActiveEvent, intervalTicks, intervalTicks);
     }
 
     public void stop() {
@@ -47,9 +48,28 @@ public class MarketBroadcastService {
         }
     }
 
-    private void broadcastRandomTrend() {
-        String msg = MARKET_TRENDS[random.nextInt(MARKET_TRENDS.length)];
-        Bukkit.broadcast(miniMessage.deserialize("<dark_gray>[<gradient:#f1c40f:#e67e22><bold>Pasar Kerajaan</bold></gradient>]</dark_gray> " + msg));
+    /**
+     * M-14 (audit fix): announces the REAL currently-active market event from
+     * {@link MarketEventService} — name, description, and remaining time — instead of
+     * the previous random flavor texts with fabricated price claims. The event's
+     * sell multipliers are genuinely applied to prices, so players can act on this.
+     */
+    private void broadcastActiveEvent() {
+        MarketEventService eventService = plugin.getMarketEventService();
+        if (eventService == null) {
+            return;
+        }
+        MarketEvent active = eventService.getActiveEvent();
+        if (active == null) {
+            return;
+        }
+
+        String msg = "<dark_gray>[<gradient:#f1c40f:#e67e22><bold>Pasar Kerajaan</bold></gradient>]</dark_gray> "
+                + "<white>❖ <bold>" + active.getDisplayName() + "</bold></white>\n"
+                + " <gray>" + active.getDescription() + "</gray>\n"
+                + " <dark_gray>Sisa waktu: <yellow>" + eventService.getFormattedRemainingTime()
+                + "</yellow> • Cek rincian di <gold>/shop</gold></dark_gray>";
+        Bukkit.broadcast(miniMessage.deserialize(msg));
         for (var p : Bukkit.getOnlinePlayers()) {
             p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_CHIME, 0.6f, 1.2f);
         }
