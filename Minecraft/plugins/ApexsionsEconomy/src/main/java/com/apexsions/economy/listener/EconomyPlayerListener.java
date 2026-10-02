@@ -16,8 +16,8 @@ public class EconomyPlayerListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerJoin(PlayerJoinEvent event) {
-        // Preload balances and ensure player is saved in database
-        plugin.getCurrencyService().getBalance(event.getPlayer().getUniqueId(), "rupiah");
-        plugin.getCurrencyService().getBalance(event.getPlayer().getUniqueId(), "diamond");
+        // Preload balances asynchronously (M-1): never block the join/main thread.
+        // Cache-only reads self-heal once the preload completes.
+        plugin.getCurrencyService().preloadBalances(event.getPlayer().getUniqueId());
     }
 }
