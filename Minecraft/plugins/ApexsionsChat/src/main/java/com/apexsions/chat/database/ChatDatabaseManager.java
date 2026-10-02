@@ -130,7 +130,7 @@ public class ChatDatabaseManager {
                 );
             """);
         } catch (SQLException e) {
-            plugin.getLogger().severe("Failed to initialize database tables: " + e.getMessage());
+            throw new RuntimeException("Failed to initialize ApexsionsChat database tables", e);
         }
     }
 

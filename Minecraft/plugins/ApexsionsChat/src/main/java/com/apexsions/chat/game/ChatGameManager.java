@@ -130,8 +130,8 @@ public class ChatGameManager {
                 FileConfiguration config = plugin.getConfigManager().getGamesConfig();
                 String gameKey = (game instanceof QuickMathGame) ? "math" : "unscramble";
                 long defaultXp = config.getLong("games.rewards.xp.amount", 150);
-                long rawXp = config.getLong("games." + gameKey + ".reward-xp", defaultXp);
-                final long xp = (rawXp <= 0 || rawXp == 15) ? 150 : rawXp; // Enforce 150 XP for all chat games
+                // Honor the per-game configured reward-xp value as-is.
+                final long xp = config.getLong("games." + gameKey + ".reward-xp", defaultXp);
                 boolean xpEnabled = config.getBoolean("games.rewards.xp.enabled", true) && xp > 0;
 
                 String rewardText = xpEnabled
