@@ -7,6 +7,7 @@ import com.zaxxer.hikari.HikariDataSource;
 import org.flywaydb.core.Flyway;
 
 import java.io.File;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.concurrent.*;
@@ -110,7 +111,7 @@ public class DatabaseManager {
 
             this.dataSource = new HikariDataSource(hikari);
             this.usingFallback = true;
-            runMigrations();
+            runSqliteMigrationsDirect();
             plugin.getLogger().info("Local SQLite database initialized successfully at " + dbFile.getName());
         } catch (Exception e) {
             plugin.getLogger().log(Level.SEVERE, "Failed to initialize SQLite database fallback!", e);
@@ -158,6 +159,70 @@ public class DatabaseManager {
                     "with an unverified schema. Check the migration scripts in db/migration/ and the database " +
                     "connection settings, then restart the server.", e);
             throw new RuntimeException("Database migration failed - aborting startup to prevent schema drift", e);
+        }
+    }
+
+    /**
+     * Runs migration SQL files directly via JDBC for SQLite fallback.
+     * Bypasses Flyway (which may not support the bundled SQLite version).
+     * Only for fallback; production PostgreSQL uses strict Flyway via runMigrations().
+     */
+    private void runSqliteMigrationsDirect() {
+        String[] migrations = {
+            "db/migration/V1__create_players.sql",
+            "db/migration/V2__create_regions.sql",
+            "db/migration/V3__create_indexes.sql",
+            "db/migration/V4__add_claimed_rewards.sql",
+            "db/migration/V5__create_land_claims.sql",
+            "db/migration/V6__create_unified_bans.sql",
+            "db/migration/V7__create_claim_tax_and_flags.sql"
+        };
+        try (Connection conn = dataSource.getConnection()) {
+            for (String path : migrations) {
+                try (InputStream in = getClass().getClassLoader().getResourceAsStream(path)) {
+                    if (in == null) {
+                        plugin.getLogger().warning("Migration not found: " + path + " (skipped)");
+                        continue;
+                    }
+                    String sql = new String(in.readAllBytes(), java.nio.charset.StandardCharsets.UTF_8);
+                    // Convert PostgreSQL syntax to SQLite-compatible
+                    sql = sql.replace("TIMESTAMPTZ", "TEXT");
+                    sql = sql.replace("NOW()", "CURRENT_TIMESTAMP");
+                    sql = sql.replace("ADD COLUMN IF NOT EXISTS", "ADD COLUMN");
+                    // UUID type works in SQLite via type affinity (treated as TEXT), keep it
+                    // Split by semicolon, execute each statement
+                    for (String stmt : sql.split(";")) {
+                        stmt = stmt.trim();
+                        if (stmt.isEmpty()) continue;
+                        // Skip full-line comments
+                        String[] lines = stmt.split("\n");
+                        StringBuilder clean = new StringBuilder();
+                        for (String line : lines) {
+                            String t = line.trim();
+                            if (!t.startsWith("--")) {
+                                clean.append(line).append("\n");
+                            }
+                        }
+                        stmt = clean.toString().trim();
+                        if (stmt.isEmpty()) continue;
+                        try (java.sql.Statement st = conn.createStatement()) {
+                            st.execute(stmt);
+                        } catch (java.sql.SQLException se) {
+                            // Ignore "already exists" errors (idempotent)
+                            String msg = se.getMessage();
+                            if (msg != null && (msg.contains("already exists") || msg.contains("duplicate"))) {
+                                continue;
+                            }
+                            throw se;
+                        }
+                    }
+                    plugin.getLogger().info("Applied migration: " + path);
+                }
+            }
+            plugin.getLogger().info("SQLite direct migrations applied successfully.");
+        } catch (Exception e) {
+            plugin.getLogger().log(Level.WARNING,
+                    "Direct SQLite migrations failed (" + e.getMessage() + "). Continuing with best-effort.", e);
         }
     }
 
