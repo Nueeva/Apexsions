@@ -1,5 +1,6 @@
 package com.apexsions.economy.service;
 
+import com.apexsions.core.api.Permissions;
 import com.apexsions.economy.util.ItemSerializer;
 import com.apexsions.economy.ApexsionsEconomy;
 import com.apexsions.economy.auction.AuctionListing;
@@ -72,13 +73,13 @@ public class AuctionService {
 
     public int getPlayerListingLimit(Player player) {
         if (player == null) return 3;
-        if (player.isOp() || player.hasPermission("apexsions.admin")) return Integer.MAX_VALUE;
+        if (player.isOp() || player.hasPermission(Permissions.ADMIN)) return Integer.MAX_VALUE;
         int limit = 3;
-        if (player.hasPermission("apexsions.auction.limit.sions") || player.hasPermission("apexsions.rank.sions")) limit = 20;
-        else if (player.hasPermission("apexsions.auction.limit.emperor") || player.hasPermission("apexsions.rank.emperor")) limit = 14;
-        else if (player.hasPermission("apexsions.auction.limit.sovereign") || player.hasPermission("apexsions.rank.sovereign")) limit = 10;
-        else if (player.hasPermission("apexsions.auction.limit.archon") || player.hasPermission("apexsions.rank.archon")) limit = 7;
-        else if (player.hasPermission("apexsions.auction.limit.ascendant") || player.hasPermission("apexsions.rank.ascendant")) limit = 4;
+        if (player.hasPermission("apexsions.auction.limit.sions") || player.hasPermission(Permissions.RANK_SIONS)) limit = 20;
+        else if (player.hasPermission("apexsions.auction.limit.emperor") || player.hasPermission(Permissions.RANK_EMPEROR)) limit = 14;
+        else if (player.hasPermission("apexsions.auction.limit.sovereign") || player.hasPermission(Permissions.RANK_SOVEREIGN)) limit = 10;
+        else if (player.hasPermission("apexsions.auction.limit.archon") || player.hasPermission(Permissions.RANK_ARCHON)) limit = 7;
+        else if (player.hasPermission("apexsions.auction.limit.ascendant") || player.hasPermission(Permissions.RANK_ASCENDANT)) limit = 4;
 
         // Zenithar Auction Monopoly: +3 extra listing slots
         if (plugin.getCoreHook() != null) {

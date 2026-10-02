@@ -1,6 +1,7 @@
 package com.apexsions.core.cosmetics;
 
 import com.apexsions.core.ApexsionsCorePlugin;
+import com.apexsions.core.api.Permissions;
 import com.apexsions.core.cosmetics.condition.*;
 import com.apexsions.core.player.PlayerData;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -88,7 +89,7 @@ public class CosmeticsManager implements Listener {
         registerCosmetic(new CosmeticItem("gold_step", CosmeticType.TRAIL,
                 "<gradient:#ffeaa7:#fdcb6e><bold>💰 Jejak Kilau Emas VIP</bold></gradient>",
                 "Partikel debu emas bertaburan mengikuti pergerakanmu.",
-                Material.GOLD_BLOCK, Particle.WAX_ON, new PermissionCondition("apexsions.cosmetics.vip", "Rank VIP / Donatur"), 2));
+                Material.GOLD_BLOCK, Particle.WAX_ON, new PermissionCondition(Permissions.COSMETICS_VIP, "Rank VIP / Donatur"), 2));
 
         // ════════════════ KILL EFFECTS ════════════════
         registerCosmetic(new CosmeticItem("lightning_kill", CosmeticType.KILL_EFFECT,

@@ -1,6 +1,7 @@
 package com.apexsions.core.command;
 
 import com.apexsions.core.ApexsionsCorePlugin;
+import com.apexsions.core.api.Permissions;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -39,7 +40,7 @@ public class EnchantCommand implements CommandExecutor, TabCompleter {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        if (!sender.hasPermission("apexsionscore.command.enchant") && !sender.hasPermission("apexsionscore.admin")) {
+        if (!sender.hasPermission(Permissions.COMMAND_ENCHANT) && !sender.hasPermission(Permissions.ADMIN)) {
             sender.sendMessage(miniMessage.deserialize("<red>Kamu tidak memiliki izin untuk menggunakan perintah ini.</red>"));
             return true;
         }
@@ -155,7 +156,7 @@ public class EnchantCommand implements CommandExecutor, TabCompleter {
         int hardCap = plugin.getConfigManager().getEnchantMaxAbsoluteLevel();
 
         if (level > maxAllowed) {
-            boolean hasBypass = sender.hasPermission("apexsionscore.enchant.bypass") || sender.hasPermission("apexsionscore.admin");
+            boolean hasBypass = sender.hasPermission(Permissions.ENCHANT_BYPASS) || sender.hasPermission(Permissions.ADMIN);
             if (hasBypass) {
                 if (level > hardCap) {
                     sender.sendMessage(miniMessage.deserialize("<red>Level <gold>" + level + "</gold> melebihi batas mutlak server (<gold>" + hardCap + "</gold>)!</red>"));
@@ -260,7 +261,7 @@ public class EnchantCommand implements CommandExecutor, TabCompleter {
 
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        if (!sender.hasPermission("apexsionscore.command.enchant") && !sender.hasPermission("apexsionscore.admin")) {
+        if (!sender.hasPermission(Permissions.COMMAND_ENCHANT) && !sender.hasPermission(Permissions.ADMIN)) {
             return Collections.emptyList();
         }
 

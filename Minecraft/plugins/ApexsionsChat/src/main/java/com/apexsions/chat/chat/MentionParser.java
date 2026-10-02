@@ -2,6 +2,7 @@ package com.apexsions.chat.chat;
 
 import com.apexsions.chat.ApexsionsChatPlugin;
 import com.apexsions.chat.util.PlayerResolver;
+import com.apexsions.core.api.Permissions;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
@@ -48,7 +49,7 @@ public class MentionParser {
             String punctuation = targetName.substring(cleanName.length());
 
             Player target = PlayerResolver.resolveOnline(cleanName);
-            boolean canSeeVanish = sender.hasPermission("apexsions.vanish.see");
+            boolean canSeeVanish = sender.hasPermission(Permissions.VANISH_SEE);
             boolean visible = target != null && (canSeeVanish || (sender.canSee(target) && !target.hasMetadata("vanished") && !target.hasMetadata("vanish")));
             if (target != null && target.isOnline() && !target.equals(sender) && visible) {
                 if (!notifiedPlayers.contains(target.getUniqueId())) {

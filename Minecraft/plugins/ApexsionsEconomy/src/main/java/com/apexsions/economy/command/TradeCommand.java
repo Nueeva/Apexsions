@@ -1,5 +1,6 @@
 package com.apexsions.economy.command;
 
+import com.apexsions.core.api.Permissions;
 import com.apexsions.economy.ApexsionsEconomy;
 import com.apexsions.economy.trade.gui.TradePlayerSelectMenu;
 import com.apexsions.economy.util.PlayerResolver;
@@ -84,7 +85,7 @@ public class TradeCommand implements CommandExecutor, TabCompleter {
         // Direct request to player: /trade <playerName>
         String targetName = args[0];
         Player target = PlayerResolver.resolveOnline(targetName);
-        if (target == null || !target.isOnline() || (!player.canSee(target) && !player.hasPermission("apexsions.vanish.see"))) {
+        if (target == null || !target.isOnline() || (!player.canSee(target) && !player.hasPermission(Permissions.VANISH_SEE))) {
             player.sendMessage("§cPemain §e" + targetName + " §ctidak ditemukan atau sedang offline!");
             return true;
         }

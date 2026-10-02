@@ -1,6 +1,7 @@
 package com.apexsions.core.admin;
 
 import com.apexsions.core.ApexsionsCorePlugin;
+import com.apexsions.core.api.Permissions;
 import com.apexsions.core.gui.admin.*;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -53,7 +54,7 @@ public class AdminHubManager {
             }
 
             @Override
-            public String getPermission() { return "apexsionscore.admin"; }
+            public String getPermission() { return Permissions.ADMIN; }
 
             @Override
             public int getPriority() { return 10; }
@@ -92,7 +93,7 @@ public class AdminHubManager {
             }
 
             @Override
-            public String getPermission() { return "apexsionscore.admin"; }
+            public String getPermission() { return Permissions.ADMIN; }
 
             @Override
             public int getPriority() { return 15; }

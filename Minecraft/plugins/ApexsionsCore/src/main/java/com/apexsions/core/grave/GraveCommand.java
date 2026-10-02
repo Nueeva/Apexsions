@@ -1,6 +1,7 @@
 package com.apexsions.core.grave;
 
 import com.apexsions.core.ApexsionsCorePlugin;
+import com.apexsions.core.api.Permissions;
 import com.apexsions.core.util.PlayerResolver;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
@@ -41,7 +42,7 @@ public class GraveCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
-        if (!player.hasPermission("apexsions.grave.use") && !player.hasPermission("apexsions.grave.admin")) {
+        if (!player.hasPermission(Permissions.GRAVE_USE) && !player.hasPermission(Permissions.GRAVE_ADMIN)) {
             player.sendMessage(mm.deserialize("<red>❌ Anda tidak memiliki izin untuk menggunakan sistem nisan.</red>"));
             return true;
         }
@@ -188,8 +189,8 @@ public class GraveCommand implements CommandExecutor, TabCompleter {
     }
 
     private boolean hasAdmin(Player player) {
-        return player.hasPermission("apexsions.grave.admin")
-                || player.hasPermission("apexsions.admin")
+        return player.hasPermission(Permissions.GRAVE_ADMIN)
+                || player.hasPermission(Permissions.ADMIN)
                 || player.isOp();
     }
 

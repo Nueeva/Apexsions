@@ -1,6 +1,7 @@
 package com.apexsions.core.integration;
 
 import com.apexsions.core.ApexsionsCorePlugin;
+import com.apexsions.core.api.Permissions;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
 import net.luckperms.api.model.user.User;
@@ -175,11 +176,11 @@ public class LuckPermsHook {
         // 3. Online player permissions and OP
         Player onlineP = Bukkit.getPlayer(uuid);
         if (onlineP != null && (onlineP.isOp() 
-                || onlineP.hasPermission("apexsions.admin") 
-                || onlineP.hasPermission("apexsions.staff") 
-                || onlineP.hasPermission("apexsionscore.admin")
-                || onlineP.hasPermission("apexsions.conclave")
-                || onlineP.hasPermission("apexsions.leaderboard.exempt"))) {
+                || onlineP.hasPermission(Permissions.ADMIN)
+                || onlineP.hasPermission(Permissions.STAFF)
+                || onlineP.hasPermission(Permissions.ADMIN)
+                || onlineP.hasPermission(Permissions.CONCLAVE)
+                || onlineP.hasPermission(Permissions.LEADERBOARD_EXEMPT))) {
             return true;
         }
 
@@ -231,18 +232,18 @@ public class LuckPermsHook {
                                 return true;
                             }
                         }
-                        if (key.equals("apexsions.admin") || key.equals("apexsions.staff") 
-                                || key.equals("apexsionscore.admin") || key.equals("apexsions.conclave") 
-                                || key.equals("apexsions.leaderboard.exempt")) {
+                        if (key.equals(Permissions.ADMIN) || key.equals(Permissions.STAFF)
+                                || key.equals(Permissions.CONCLAVE)
+                                || key.equals(Permissions.LEADERBOARD_EXEMPT)) {
                             return true;
                         }
                     }
                     try {
-                        if (user.getCachedData().getPermissionData().checkPermission("apexsions.admin").asBoolean()
-                                || user.getCachedData().getPermissionData().checkPermission("apexsions.staff").asBoolean()
-                                || user.getCachedData().getPermissionData().checkPermission("apexsionscore.admin").asBoolean()
-                                || user.getCachedData().getPermissionData().checkPermission("apexsions.conclave").asBoolean()
-                                || user.getCachedData().getPermissionData().checkPermission("apexsions.leaderboard.exempt").asBoolean()) {
+                        if (user.getCachedData().getPermissionData().checkPermission(Permissions.ADMIN).asBoolean()
+                                || user.getCachedData().getPermissionData().checkPermission(Permissions.STAFF).asBoolean()
+                                || user.getCachedData().getPermissionData().checkPermission(Permissions.ADMIN).asBoolean()
+                                || user.getCachedData().getPermissionData().checkPermission(Permissions.CONCLAVE).asBoolean()
+                                || user.getCachedData().getPermissionData().checkPermission(Permissions.LEADERBOARD_EXEMPT).asBoolean()) {
                             return true;
                         }
                     } catch (Throwable ignored) {}
@@ -261,7 +262,7 @@ public class LuckPermsHook {
     public boolean isConclaveStaff(Player player) {
         if (player == null) return false;
         if (player.isOp()) return true;
-        if (player.hasPermission("apexsions.admin") || player.hasPermission("apexsions.staff") || player.hasPermission("apexsionscore.admin") || player.hasPermission("apexsions.conclave")) {
+        if (player.hasPermission(Permissions.ADMIN) || player.hasPermission(Permissions.STAFF) || player.hasPermission(Permissions.CONCLAVE)) {
             return true;
         }
         String rankKey = getPlayerRankKey(player);

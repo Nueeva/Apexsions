@@ -1,6 +1,7 @@
 package com.apexsions.core.claim;
 
 import com.apexsions.core.ApexsionsCorePlugin;
+import com.apexsions.core.api.Permissions;
 import com.apexsions.core.player.PlayerData;
 import com.apexsions.core.region.Region;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -224,7 +225,7 @@ public class ClaimManager {
     }
 
     public int getMaxClaims(Player player) {
-        if (player.isOp() || player.hasPermission("apexsions.admin.claim.unlimited") || player.hasPermission("apexsions.claim.unlimited") || player.hasPermission("apexsions.admin")) {
+        if (player.isOp() || player.hasPermission(Permissions.ADMIN_CLAIM_UNLIMITED) || player.hasPermission(Permissions.CLAIM_UNLIMITED) || player.hasPermission(Permissions.ADMIN)) {
             return Integer.MAX_VALUE;
         }
 
@@ -244,9 +245,9 @@ public class ClaimManager {
         int highestPermLimit = 0;
         for (var perm : player.getEffectivePermissions()) {
             String pName = perm.getPermission().toLowerCase();
-            if (pName.startsWith("apexsions.claim.limit.")) {
+            if (pName.startsWith(Permissions.CLAIM_LIMIT_PREFIX)) {
                 try {
-                    int val = Integer.parseInt(pName.substring("apexsions.claim.limit.".length()));
+                    int val = Integer.parseInt(pName.substring(Permissions.CLAIM_LIMIT_PREFIX.length()));
                     if (val > highestPermLimit) highestPermLimit = val;
                 } catch (NumberFormatException ignored) {}
             }
@@ -548,7 +549,7 @@ public class ClaimManager {
 
     public boolean canBuild(Player player, Location loc) {
         if (player == null || loc == null) return false;
-        if (player.isOp() || player.hasPermission("apexsions.admin.bypass.claim") || player.hasPermission("apexsions.admin")
+        if (player.isOp() || player.hasPermission(Permissions.ADMIN_BYPASS_CLAIM) || player.hasPermission(Permissions.ADMIN)
                 || (plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isConclaveStaff(player))) {
             return true;
         }
@@ -588,7 +589,7 @@ public class ClaimManager {
 
     public boolean canInteract(Player player, Location loc, Material mat) {
         if (player == null || loc == null) return false;
-        if (player.isOp() || player.hasPermission("apexsions.admin.bypass.claim") || player.hasPermission("apexsions.admin")
+        if (player.isOp() || player.hasPermission(Permissions.ADMIN_BYPASS_CLAIM) || player.hasPermission(Permissions.ADMIN)
                 || (plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isConclaveStaff(player))) {
             return true;
         }
@@ -874,7 +875,7 @@ public class ClaimManager {
             return new ClaimResult(false, "<yellow>⚠ Tanah di chunk ini tidak diklaim oleh siapapun.</yellow>");
         }
 
-        if (!claim.isOwner(player.getUniqueId()) && !player.isOp() && !player.hasPermission("apexsions.admin")) {
+        if (!claim.isOwner(player.getUniqueId()) && !player.isOp() && !player.hasPermission(Permissions.ADMIN)) {
             return new ClaimResult(false, "<red>✖ Anda bukan pemilik tanah ini! Dimiliki oleh <gold>" + claim.getOwnerName() + "</gold>.</red>");
         }
 
@@ -895,7 +896,7 @@ public class ClaimManager {
             return new ClaimResult(false, "<yellow>⚠ Wilayah pada chunk [" + chunkX + ", " + chunkZ + "] tidak diklaim oleh siapapun.</yellow>");
         }
 
-        if (!claim.isOwner(player.getUniqueId()) && !player.isOp() && !player.hasPermission("apexsions.admin")) {
+        if (!claim.isOwner(player.getUniqueId()) && !player.isOp() && !player.hasPermission(Permissions.ADMIN)) {
             return new ClaimResult(false, "<red>✖ Anda bukan pemilik tanah ini! Dimiliki oleh <gold>" + claim.getOwnerName() + "</gold>.</red>");
         }
 
@@ -916,7 +917,7 @@ public class ClaimManager {
             return new ClaimResult(false, "<yellow>⚠ Wilayah pada chunk [" + chunkX + ", " + chunkZ + "] tidak diklaim.</yellow>");
         }
 
-        if (!claim.isOwner(player.getUniqueId()) && !player.isOp() && !player.hasPermission("apexsions.admin")) {
+        if (!claim.isOwner(player.getUniqueId()) && !player.isOp() && !player.hasPermission(Permissions.ADMIN)) {
             return new ClaimResult(false, "<red>✖ Anda bukan pemilik tanah ini!</red>");
         }
 
@@ -957,7 +958,7 @@ public class ClaimManager {
             return new ClaimResult(false, "<yellow>⚠ Wilayah pada chunk [" + chunkX + ", " + chunkZ + "] tidak diklaim.</yellow>");
         }
 
-        if (!claim.isOwner(player.getUniqueId()) && !player.isOp() && !player.hasPermission("apexsions.admin")) {
+        if (!claim.isOwner(player.getUniqueId()) && !player.isOp() && !player.hasPermission(Permissions.ADMIN)) {
             return new ClaimResult(false, "<red>✖ Anda bukan pemilik tanah ini!</red>");
         }
 
@@ -1038,7 +1039,7 @@ public class ClaimManager {
             return new ClaimResult(false, "<yellow>⚠ Wilayah pada chunk [" + chunkX + ", " + chunkZ + "] tidak diklaim oleh siapapun.</yellow>");
         }
 
-        if (!claim.isOwner(player.getUniqueId()) && !player.isOp() && !player.hasPermission("apexsions.admin")) {
+        if (!claim.isOwner(player.getUniqueId()) && !player.isOp() && !player.hasPermission(Permissions.ADMIN)) {
             return new ClaimResult(false, "<red>✖ Anda bukan pemilik tanah ini! Dimiliki oleh <gold>" + claim.getOwnerName() + "</gold>.</red>");
         }
 

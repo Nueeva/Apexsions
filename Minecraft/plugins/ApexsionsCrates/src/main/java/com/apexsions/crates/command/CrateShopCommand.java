@@ -1,5 +1,6 @@
 package com.apexsions.crates.command;
 
+import com.apexsions.core.api.Permissions;
 import com.apexsions.crates.ApexsionsCratesPlugin;
 import com.apexsions.crates.shop.gui.CrateKeyShopAdminGUI;
 import com.apexsions.crates.shop.gui.CrateKeyShopGUI;
@@ -44,7 +45,7 @@ public class CrateShopCommand implements CommandExecutor, TabCompleter {
         if (args.length > 0) {
             String sub = args[0].toLowerCase(Locale.ROOT);
             if (sub.equals("admin") || sub.equals("manage")) {
-                if (!player.hasPermission("apexsions.admin") && !player.hasPermission("apexsions.crates.admin")) {
+                if (!player.hasPermission(Permissions.ADMIN) && !player.hasPermission("apexsions.crates.admin")) {
                     player.sendMessage(mm.deserialize("<red>Kamu tidak memiliki izin untuk mengakses pengaturan admin toko kunci!</red>"));
                     return true;
                 }
@@ -53,7 +54,7 @@ public class CrateShopCommand implements CommandExecutor, TabCompleter {
             }
 
             if (sub.equals("reload")) {
-                if (!player.hasPermission("apexsions.admin") && !player.hasPermission("apexsions.crates.admin")) {
+                if (!player.hasPermission(Permissions.ADMIN) && !player.hasPermission("apexsions.crates.admin")) {
                     player.sendMessage(mm.deserialize("<red>Kamu tidak memiliki izin untuk memuat ulang toko kunci!</red>"));
                     return true;
                 }
@@ -72,7 +73,7 @@ public class CrateShopCommand implements CommandExecutor, TabCompleter {
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (args.length == 1) {
             List<String> completions = new ArrayList<>();
-            if (sender.hasPermission("apexsions.admin") || sender.hasPermission("apexsions.crates.admin")) {
+            if (sender.hasPermission(Permissions.ADMIN) || sender.hasPermission("apexsions.crates.admin")) {
                 completions.add("admin");
                 completions.add("reload");
             }

@@ -1,6 +1,7 @@
 package com.apexsions.core.warp;
 
 import com.apexsions.core.ApexsionsCorePlugin;
+import com.apexsions.core.api.Permissions;
 import com.zaxxer.hikari.HikariDataSource;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
@@ -212,7 +213,7 @@ public class WarpManager {
         cancelPendingTeleport(player.getUniqueId());
 
         int delay = warp.getDelaySeconds();
-        boolean bypassDelay = player.hasPermission("apexsionscore.warp.bypass") || player.hasPermission("kingdomcore.admin");
+        boolean bypassDelay = player.hasPermission(Permissions.WARP_BYPASS) || player.hasPermission(Permissions.ADMIN);
 
         if (delay <= 0 || bypassDelay) {
             executeTeleport(player, warp, target);

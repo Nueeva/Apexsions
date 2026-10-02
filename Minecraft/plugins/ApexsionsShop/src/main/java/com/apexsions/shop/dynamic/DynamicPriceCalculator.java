@@ -1,5 +1,6 @@
 package com.apexsions.shop.dynamic;
 
+import com.apexsions.core.api.Permissions;
 import com.apexsions.shop.ApexsionsShop;
 import com.apexsions.shop.category.ShopItem;
 import org.bukkit.entity.Player;
@@ -155,11 +156,11 @@ public class DynamicPriceCalculator {
 
     public double getRankSellBonusMultiplier(Player player) {
         if (player == null) return 1.0;
-        if (player.hasPermission("apexsions.shop.sellbonus.sions") || player.hasPermission("apexsions.rank.sions")) return 1.17; // +17%
-        if (player.hasPermission("apexsions.shop.sellbonus.emperor") || player.hasPermission("apexsions.rank.emperor")) return 1.12; // +12%
-        if (player.hasPermission("apexsions.shop.sellbonus.sovereign") || player.hasPermission("apexsions.rank.sovereign")) return 1.08; // +8%
-        if (player.hasPermission("apexsions.shop.sellbonus.archon") || player.hasPermission("apexsions.rank.archon")) return 1.05; // +5%
-        if (player.hasPermission("apexsions.shop.sellbonus.ascendant") || player.hasPermission("apexsions.rank.ascendant")) return 1.03; // +3%
+        if (player.hasPermission("apexsions.shop.sellbonus.sions") || player.hasPermission(Permissions.RANK_SIONS)) return 1.17; // +17%
+        if (player.hasPermission("apexsions.shop.sellbonus.emperor") || player.hasPermission(Permissions.RANK_EMPEROR)) return 1.12; // +12%
+        if (player.hasPermission("apexsions.shop.sellbonus.sovereign") || player.hasPermission(Permissions.RANK_SOVEREIGN)) return 1.08; // +8%
+        if (player.hasPermission("apexsions.shop.sellbonus.archon") || player.hasPermission(Permissions.RANK_ARCHON)) return 1.05; // +5%
+        if (player.hasPermission("apexsions.shop.sellbonus.ascendant") || player.hasPermission(Permissions.RANK_ASCENDANT)) return 1.03; // +3%
         return 1.0;
     }
 }

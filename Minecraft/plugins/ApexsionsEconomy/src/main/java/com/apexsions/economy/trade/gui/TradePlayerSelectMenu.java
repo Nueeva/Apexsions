@@ -1,5 +1,6 @@
 package com.apexsions.economy.trade.gui;
 
+import com.apexsions.core.api.Permissions;
 import com.apexsions.economy.gui.core.Gui;
 import com.apexsions.economy.gui.core.GuiButton;
 import com.apexsions.economy.gui.navigation.BackButton;
@@ -68,7 +69,7 @@ public class TradePlayerSelectMenu extends Gui {
                 .build(), event -> {
             plugin.getChatInputManager().startInput(player, "Masukkan nama pemain yang ingin diajak trade:", targetName -> {
                 Player target = Bukkit.getPlayer(targetName);
-                if (target == null || !target.isOnline() || (!player.canSee(target) && !player.hasPermission("apexsions.vanish.see"))) {
+                if (target == null || !target.isOnline() || (!player.canSee(target) && !player.hasPermission(Permissions.VANISH_SEE))) {
                     player.sendMessage("§cPemain " + targetName + " tidak ditemukan atau sedang offline!");
                     open();
                     return;
@@ -79,7 +80,7 @@ public class TradePlayerSelectMenu extends Gui {
 
         // 4. Online Players Grid
         List<Player> onlineList = new ArrayList<>();
-        boolean canSeeVanish = player.hasPermission("apexsions.vanish.see");
+        boolean canSeeVanish = player.hasPermission(Permissions.VANISH_SEE);
         for (Player p : Bukkit.getOnlinePlayers()) {
             if (!p.getUniqueId().equals(player.getUniqueId())) {
                 if (canSeeVanish || (player.canSee(p) && !p.hasMetadata("vanished") && !p.hasMetadata("vanish"))) {

@@ -1,5 +1,6 @@
 package com.apexsions.economy.service;
 
+import com.apexsions.core.api.Permissions;
 import com.apexsions.economy.ApexsionsEconomy;
 import com.apexsions.economy.bank.BankDeposit;
 import com.apexsions.economy.currency.Currency;
@@ -70,10 +71,10 @@ public class BankDepositService {
     public double getRankReturnMultiplier(Player player) {
         if (player == null) return 1.0;
         double base = 1.0;
-        if (player.hasPermission("apexsions.bank.multiplier.sions") || player.hasPermission("apexsions.rank.sions")) base = 3.0; // 3x
-        else if (player.hasPermission("apexsions.bank.multiplier.emperor") || player.hasPermission("apexsions.rank.emperor")) base = 2.0; // 2x
-        else if (player.hasPermission("apexsions.bank.multiplier.sovereign") || player.hasPermission("apexsions.rank.sovereign")) base = 1.5; // 1.5x
-        else if (player.hasPermission("apexsions.bank.multiplier.archon") || player.hasPermission("apexsions.rank.archon")) base = 1.2; // 1.2x
+        if (player.hasPermission("apexsions.bank.multiplier.sions") || player.hasPermission(Permissions.RANK_SIONS)) base = 3.0; // 3x
+        else if (player.hasPermission("apexsions.bank.multiplier.emperor") || player.hasPermission(Permissions.RANK_EMPEROR)) base = 2.0; // 2x
+        else if (player.hasPermission("apexsions.bank.multiplier.sovereign") || player.hasPermission(Permissions.RANK_SOVEREIGN)) base = 1.5; // 1.5x
+        else if (player.hasPermission("apexsions.bank.multiplier.archon") || player.hasPermission(Permissions.RANK_ARCHON)) base = 1.2; // 1.2x
 
         // Zenithar Aristocratic Mastery: +25% higher bank deposit yield!
         if (plugin.getCoreHook() != null) {

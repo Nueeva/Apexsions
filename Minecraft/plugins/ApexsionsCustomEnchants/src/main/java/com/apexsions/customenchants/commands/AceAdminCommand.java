@@ -1,5 +1,6 @@
 package com.apexsions.customenchants.commands;
 
+import com.apexsions.core.api.Permissions;
 import com.apexsions.customenchants.ApexsionsCustomEnchantsPlugin;
 import com.apexsions.customenchants.enchant.CustomEnchant;
 import com.apexsions.customenchants.gui.AceAdminHubGUI;
@@ -37,7 +38,7 @@ public class AceAdminCommand implements CommandExecutor, TabCompleter {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        if (!sender.hasPermission("apexsions.admin") && !sender.hasPermission("apexsions.ace.admin")) {
+        if (!sender.hasPermission(Permissions.ADMIN) && !sender.hasPermission("apexsions.ace.admin")) {
             sender.sendMessage(mm.deserialize("<red>Anda tidak memiliki izin untuk menggunakan perintah admin Custom Enchants.</red>"));
             return true;
         }
@@ -216,7 +217,7 @@ public class AceAdminCommand implements CommandExecutor, TabCompleter {
 
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        if (!sender.hasPermission("apexsions.admin") && !sender.hasPermission("apexsions.ace.admin")) {
+        if (!sender.hasPermission(Permissions.ADMIN) && !sender.hasPermission("apexsions.ace.admin")) {
             return List.of();
         }
 

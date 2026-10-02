@@ -1,6 +1,7 @@
 package com.apexsions.core.kit;
 
 import com.apexsions.core.ApexsionsCorePlugin;
+import com.apexsions.core.api.Permissions;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
@@ -33,7 +34,7 @@ public class KitsCommand implements CommandExecutor, TabCompleter {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         // Direct admin dashboard command (/kitadmin or /kitsadmin)
         if (label.equalsIgnoreCase("kitadmin") || label.equalsIgnoreCase("kitsadmin")) {
-            if (!sender.hasPermission("apexsions.admin") && !sender.isOp()) {
+            if (!sender.hasPermission(Permissions.ADMIN) && !sender.isOp()) {
                 sender.sendMessage(mm.deserialize("<red>Kamu tidak memiliki izin untuk membuka Admin Kits GUI!</red>"));
                 return true;
             }
@@ -58,7 +59,7 @@ public class KitsCommand implements CommandExecutor, TabCompleter {
 
         // 1. Admin Dashboard Subcommand (/kits admin)
         if (sub.equals("admin")) {
-            if (!sender.hasPermission("apexsions.admin") && !sender.isOp()) {
+            if (!sender.hasPermission(Permissions.ADMIN) && !sender.isOp()) {
                 sender.sendMessage(mm.deserialize("<red>Kamu tidak memiliki izin untuk membuka Admin Kits GUI!</red>"));
                 return true;
             }
@@ -117,7 +118,7 @@ public class KitsCommand implements CommandExecutor, TabCompleter {
         }
 
         // 4. Admin subcommands
-        if (!sender.hasPermission("apexsions.admin") && !sender.isOp()) {
+        if (!sender.hasPermission(Permissions.ADMIN) && !sender.isOp()) {
             sender.sendMessage(mm.deserialize("<red>Kamu tidak memiliki izin untuk menggunakan perintah admin ini!</red>"));
             return true;
         }
@@ -217,7 +218,7 @@ public class KitsCommand implements CommandExecutor, TabCompleter {
         if (args.length == 1) {
             list.add("preview");
             list.add("claim");
-            if (sender.hasPermission("apexsions.admin") || sender.isOp()) {
+            if (sender.hasPermission(Permissions.ADMIN) || sender.isOp()) {
                 list.add("admin");
                 list.add("create");
                 list.add("edit");

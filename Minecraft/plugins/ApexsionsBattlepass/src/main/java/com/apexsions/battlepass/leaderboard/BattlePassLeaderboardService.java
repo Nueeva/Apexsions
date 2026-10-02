@@ -2,6 +2,7 @@ package com.apexsions.battlepass.leaderboard;
 
 import com.apexsions.battlepass.ApexsionsBattlepass;
 import com.apexsions.battlepass.player.PlayerData;
+import com.apexsions.core.api.Permissions;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 
@@ -149,11 +150,10 @@ public class BattlePassLeaderboardService {
         // 4. Online player permissions
         org.bukkit.entity.Player onlineP = Bukkit.getPlayer(uuid);
         if (onlineP != null && (onlineP.isOp() 
-                || onlineP.hasPermission("apexsions.admin") 
-                || onlineP.hasPermission("apexsions.staff") 
-                || onlineP.hasPermission("apexsionscore.admin")
-                || onlineP.hasPermission("apexsions.conclave")
-                || onlineP.hasPermission("apexsions.leaderboard.exempt"))) {
+                || onlineP.hasPermission(Permissions.ADMIN)
+                || onlineP.hasPermission(Permissions.STAFF)
+                || onlineP.hasPermission(Permissions.CONCLAVE)
+                || onlineP.hasPermission(Permissions.LEADERBOARD_EXEMPT))) {
             return true;
         }
 

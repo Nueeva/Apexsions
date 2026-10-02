@@ -1,5 +1,6 @@
 package com.apexsions.customenchants;
 
+import com.apexsions.core.api.Permissions;
 import com.apexsions.customenchants.commands.AceAdminCommand;
 import com.apexsions.customenchants.commands.CustomEnchantsCommand;
 import com.apexsions.customenchants.enchant.EnchantmentRegistry;
@@ -77,7 +78,7 @@ public class ApexsionsCustomEnchantsPlugin extends JavaPlugin {
         PluginCommand presets = getCommand("presets");
         if (presets != null) {
             presets.setExecutor((sender, cmd, lbl, args) -> {
-                if (!sender.hasPermission("apexsions.admin") && !sender.hasPermission("apexsions.ace.admin")) {
+                if (!sender.hasPermission(Permissions.ADMIN) && !sender.hasPermission("apexsions.ace.admin")) {
                     sender.sendMessage(net.kyori.adventure.text.minimessage.MiniMessage.miniMessage().deserialize("<red>Anda tidak memiliki izin untuk menggunakan perintah preset.</red>"));
                     return true;
                 }

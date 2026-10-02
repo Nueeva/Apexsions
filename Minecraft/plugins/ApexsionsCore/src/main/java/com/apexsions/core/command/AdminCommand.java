@@ -1,6 +1,7 @@
 package com.apexsions.core.command;
 
 import com.apexsions.core.ApexsionsCorePlugin;
+import com.apexsions.core.api.Permissions;
 import com.apexsions.core.level.xp.XpSource;
 import com.apexsions.core.player.PlayerData;
 import com.apexsions.core.region.Region;
@@ -32,7 +33,7 @@ public class AdminCommand implements CommandExecutor, TabCompleter {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        if (!sender.hasPermission("apexsionscore.admin") && !sender.hasPermission("apexionscore.admin") && !sender.hasPermission("kingdomcore.admin")) {
+        if (!sender.hasPermission(Permissions.ADMIN)) {
             sender.sendMessage(miniMessage.deserialize("<red>You do not have permission to use ApexsionsCore admin commands.</red>"));
             return true;
         }

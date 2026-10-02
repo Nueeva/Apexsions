@@ -1,6 +1,7 @@
 package com.apexsions.core.command;
 
 import com.apexsions.core.ApexsionsCorePlugin;
+import com.apexsions.core.api.Permissions;
 import com.apexsions.core.integration.web.WebBridgeService;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
@@ -38,7 +39,7 @@ public class SyncCommand implements CommandExecutor, TabCompleter {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         Player targetPlayer;
 
-        if (args.length > 0 && (sender.hasPermission("apexsionscore.admin") || !(sender instanceof Player))) {
+        if (args.length > 0 && (sender.hasPermission(Permissions.ADMIN) || !(sender instanceof Player))) {
             targetPlayer = Bukkit.getPlayerExact(args[0]);
             if (targetPlayer == null) {
                 sender.sendMessage(miniMessage.deserialize("<red>Pemain <yellow>" + args[0] + "</yellow> tidak ditemukan atau sedang offline.</red>"));
@@ -128,7 +129,7 @@ public class SyncCommand implements CommandExecutor, TabCompleter {
 
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        if (args.length == 1 && (sender.hasPermission("apexsionscore.admin") || !(sender instanceof Player))) {
+        if (args.length == 1 && (sender.hasPermission(Permissions.ADMIN) || !(sender instanceof Player))) {
             List<String> list = new ArrayList<>();
             for (Player p : Bukkit.getOnlinePlayers()) {
                 if (p.getName().toLowerCase().startsWith(args[0].toLowerCase())) {

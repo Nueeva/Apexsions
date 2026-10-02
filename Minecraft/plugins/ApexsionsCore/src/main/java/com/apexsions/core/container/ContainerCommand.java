@@ -1,5 +1,6 @@
 package com.apexsions.core.container;
 
+import com.apexsions.core.api.Permissions;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Sound;
 import org.bukkit.command.Command;
@@ -48,7 +49,7 @@ public class ContainerCommand implements CommandExecutor, TabCompleter {
     }
 
     private void handleSort(Player player, String[] args) {
-        if (!player.hasPermission("apexsions.container.use")) {
+        if (!player.hasPermission(Permissions.CONTAINER_USE)) {
             player.sendMessage(mm.deserialize("<red>Anda tidak memiliki izin untuk merapikan item.</red>"));
             return;
         }
@@ -121,7 +122,7 @@ public class ContainerCommand implements CommandExecutor, TabCompleter {
     }
 
     private void handleDeposit(Player player) {
-        if (!player.hasPermission("apexsions.container.use")) {
+        if (!player.hasPermission(Permissions.CONTAINER_USE)) {
             player.sendMessage(mm.deserialize("<red>Anda tidak memiliki izin untuk menyetor item.</red>"));
             return;
         }

@@ -1,6 +1,7 @@
 package com.apexsions.core.security;
 
 import com.apexsions.core.ApexsionsCorePlugin;
+import com.apexsions.core.api.Permissions;
 import com.apexsions.core.integration.AuthMeHook;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
@@ -45,7 +46,7 @@ public class AuthSecurityGateKeeper implements Listener {
 
     private boolean isStaff(Player player) {
         if (player.isOp()) return true;
-        if (player.hasPermission("apexsions.admin") || player.hasPermission("apexsions.staff")) {
+        if (player.hasPermission(Permissions.ADMIN) || player.hasPermission(Permissions.STAFF)) {
             return true;
         }
         if (plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isAvailable()) {
@@ -131,7 +132,7 @@ public class AuthSecurityGateKeeper implements Listener {
                                     player.getName() + "</gold> dari IP <gray>" + ip + "</gray>! IP diblokir sementara.</yellow>";
 
                             Bukkit.getOnlinePlayers().stream()
-                                    .filter(p -> p.hasPermission("apexsions.admin") || p.isOp())
+                                    .filter(p -> p.hasPermission(Permissions.ADMIN) || p.isOp())
                                     .forEach(staff -> staff.sendMessage(mm.deserialize(alert)));
 
                             plugin.getLogger().severe("[Staff Shield] Brute-force attempt detected on staff account " + player.getName() + " from IP " + ip);

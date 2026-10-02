@@ -1,6 +1,7 @@
 package com.apexsions.core.claim;
 
 import com.apexsions.core.ApexsionsCorePlugin;
+import com.apexsions.core.api.Permissions;
 import com.apexsions.core.claim.gui.ClaimGUI;
 import com.apexsions.core.util.PlayerResolver;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -110,7 +111,7 @@ public class ClaimCommand implements CommandExecutor, TabCompleter {
 
         // Admin subcommands for Console and In-game Staff
         if (args.length > 0 && args[0].equalsIgnoreCase("admin")) {
-            if (!sender.hasPermission("apexsions.admin") && !sender.isOp()) {
+            if (!sender.hasPermission(Permissions.ADMIN) && !sender.isOp()) {
                 sender.sendMessage(mm.deserialize("<red>✖ Anda tidak memiliki izin untuk administrasi klaim tanah.</red>"));
                 return true;
             }
@@ -119,7 +120,7 @@ public class ClaimCommand implements CommandExecutor, TabCompleter {
         }
 
         if (args.length > 0 && args[0].equalsIgnoreCase("reload")) {
-            if (!sender.hasPermission("apexsions.admin") && !sender.isOp()) {
+            if (!sender.hasPermission(Permissions.ADMIN) && !sender.isOp()) {
                 sender.sendMessage(mm.deserialize("<red>✖ Anda tidak memiliki izin untuk memuat ulang claims.</red>"));
                 return true;
             }
@@ -597,7 +598,7 @@ public class ClaimCommand implements CommandExecutor, TabCompleter {
         List<String> completions = new ArrayList<>();
         if (args.length == 1) {
             List<String> subs = new ArrayList<>(List.of("gui", "home", "tp", "border", "name", "rename", "radius", "outpost", "freehold", "info", "bank", "deposit", "withdraw", "flag", "role", "trust", "untrust", "list", "unclaim", "unclaimall"));
-            if (sender.hasPermission("apexsions.admin") || sender.isOp()) {
+            if (sender.hasPermission(Permissions.ADMIN) || sender.isOp()) {
                 subs.add("admin");
                 subs.add("reload");
             }

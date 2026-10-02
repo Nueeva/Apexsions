@@ -1,5 +1,6 @@
 package com.apexsions.core.caravan;
 
+import com.apexsions.core.api.Permissions;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
@@ -32,7 +33,7 @@ public class CaravanCommand implements CommandExecutor, TabCompleter {
             sender.sendMessage("Hanya pemain dalam game yang dapat menggunakan perintah kafilah.");
             return true;
         }
-        if (!player.hasPermission("apexsions.caravan.use") && !player.hasPermission("apexsions.caravan.admin")) {
+        if (!player.hasPermission(Permissions.CARAVAN_USE) && !player.hasPermission(Permissions.CARAVAN_ADMIN)) {
             player.sendMessage(mm.deserialize("<red>Anda tidak memiliki izin untuk mengakses kafilah.</red>"));
             return true;
         }
@@ -71,7 +72,7 @@ public class CaravanCommand implements CommandExecutor, TabCompleter {
             Location loc = manager.getActiveLocation();
             player.sendMessage(mm.deserialize("<gray>Status: <green>AKTIF</green></gray>"));
             if (loc != null) {
-                boolean isAdmin = player.hasPermission("apexsions.caravan.admin") || player.hasPermission("apexsions.admin") || player.isOp();
+                boolean isAdmin = player.hasPermission(Permissions.CARAVAN_ADMIN) || player.hasPermission(Permissions.ADMIN) || player.isOp();
                 String tpButton = isAdmin
                         ? " <click:run_command:'/caravan admin tp'><hover:show_text:'<aqua>⚡ Klik untuk langsung teleportasi ke posisi kafilah</aqua>'><gradient:#00f2fe:#4facfe><bold>[⚡ KLIK TELEPORT]</bold></gradient></hover></click>"
                         : "";
@@ -88,7 +89,7 @@ public class CaravanCommand implements CommandExecutor, TabCompleter {
     }
 
     private void handleAdmin(Player player, String[] args) {
-        if (!player.hasPermission("apexsions.caravan.admin") && !player.hasPermission("apexsions.admin") && !player.isOp()) {
+        if (!player.hasPermission(Permissions.CARAVAN_ADMIN) && !player.hasPermission(Permissions.ADMIN) && !player.isOp()) {
             player.sendMessage(mm.deserialize("<red>Fitur admin kafilah hanya untuk Staff.</red>"));
             return;
         }
@@ -141,7 +142,7 @@ public class CaravanCommand implements CommandExecutor, TabCompleter {
             return Collections.emptyList();
         }
         List<String> completions = new ArrayList<>();
-        boolean isAdmin = player.hasPermission("apexsions.caravan.admin") || player.hasPermission("apexsions.admin") || player.isOp();
+        boolean isAdmin = player.hasPermission(Permissions.CARAVAN_ADMIN) || player.hasPermission(Permissions.ADMIN) || player.isOp();
 
         if (args.length == 1) {
             completions.add("status");

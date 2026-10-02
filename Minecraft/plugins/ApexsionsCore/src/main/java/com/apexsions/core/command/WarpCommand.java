@@ -1,6 +1,7 @@
 package com.apexsions.core.command;
 
 import com.apexsions.core.ApexsionsCorePlugin;
+import com.apexsions.core.api.Permissions;
 import com.apexsions.core.gui.warp.WarpAdminGUI;
 import com.apexsions.core.gui.warp.WarpGUI;
 import com.apexsions.core.warp.Warp;
@@ -38,7 +39,7 @@ public class WarpCommand implements CommandExecutor, TabCompleter {
 
         // Direct /warpmgr or /warpadmin command
         if (label.equalsIgnoreCase("warpmgr") || label.equalsIgnoreCase("warpadmin")) {
-            if (!player.hasPermission("apexsionscore.warp.admin") && !player.hasPermission("kingdomcore.admin")) {
+            if (!player.hasPermission(Permissions.WARP_ADMIN) && !player.hasPermission(Permissions.ADMIN)) {
                 player.sendMessage(mm.deserialize("<red>Kamu tidak memiliki izin untuk mengakses menu admin warp.</red>"));
                 return true;
             }
@@ -56,7 +57,7 @@ public class WarpCommand implements CommandExecutor, TabCompleter {
 
         // Subcommands
         if (sub.equals("admin") || sub.equals("mgr") || sub.equals("manage")) {
-            if (!player.hasPermission("apexsionscore.warp.admin") && !player.hasPermission("kingdomcore.admin")) {
+            if (!player.hasPermission(Permissions.WARP_ADMIN) && !player.hasPermission(Permissions.ADMIN)) {
                 player.sendMessage(mm.deserialize("<red>Kamu tidak memiliki izin untuk mengakses menu admin warp.</red>"));
                 return true;
             }
@@ -65,7 +66,7 @@ public class WarpCommand implements CommandExecutor, TabCompleter {
         }
 
         if (sub.equals("set") || sub.equals("create")) {
-            if (!player.hasPermission("apexsionscore.warp.admin") && !player.hasPermission("kingdomcore.admin")) {
+            if (!player.hasPermission(Permissions.WARP_ADMIN) && !player.hasPermission(Permissions.ADMIN)) {
                 player.sendMessage(mm.deserialize("<red>Kamu tidak memiliki izin untuk membuat warp.</red>"));
                 return true;
             }
@@ -99,7 +100,7 @@ public class WarpCommand implements CommandExecutor, TabCompleter {
         }
 
         if (sub.equals("del") || sub.equals("delete") || sub.equals("remove")) {
-            if (!player.hasPermission("apexsionscore.warp.admin") && !player.hasPermission("kingdomcore.admin")) {
+            if (!player.hasPermission(Permissions.WARP_ADMIN) && !player.hasPermission(Permissions.ADMIN)) {
                 player.sendMessage(mm.deserialize("<red>Kamu tidak memiliki izin untuk menghapus warp.</red>"));
                 return true;
             }
@@ -140,7 +141,7 @@ public class WarpCommand implements CommandExecutor, TabCompleter {
                 if (sender instanceof Player p && !w.canAccess(p)) continue;
                 suggestions.add(w.getId());
             }
-            if (sender.hasPermission("apexsionscore.warp.admin") || sender.hasPermission("kingdomcore.admin")) {
+            if (sender.hasPermission(Permissions.WARP_ADMIN) || sender.hasPermission(Permissions.ADMIN)) {
                 suggestions.addAll(Arrays.asList("admin", "set", "delete", "list"));
             }
             return filter(suggestions, args[0]);

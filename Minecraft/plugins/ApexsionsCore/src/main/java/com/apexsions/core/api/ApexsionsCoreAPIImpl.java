@@ -292,11 +292,10 @@ public class ApexsionsCoreAPIImpl implements ApexsionsCoreAPI {
         // 3. Online player permissions and OP
         org.bukkit.entity.Player onlineP = org.bukkit.Bukkit.getPlayer(uuid);
         if (onlineP != null && (onlineP.isOp() 
-                || onlineP.hasPermission("apexsions.admin") 
-                || onlineP.hasPermission("apexsions.staff") 
-                || onlineP.hasPermission("apexsionscore.admin")
-                || onlineP.hasPermission("apexsions.conclave")
-                || onlineP.hasPermission("apexsions.leaderboard.exempt"))) {
+                || onlineP.hasPermission(Permissions.ADMIN)
+                || onlineP.hasPermission(Permissions.STAFF)
+                || onlineP.hasPermission(Permissions.CONCLAVE)
+                || onlineP.hasPermission(Permissions.LEADERBOARD_EXEMPT))) {
             return true;
         }
 

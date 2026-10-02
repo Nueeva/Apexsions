@@ -1,6 +1,7 @@
 package com.apexsions.core.vanish;
 
 import com.apexsions.core.ApexsionsCorePlugin;
+import com.apexsions.core.api.Permissions;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
@@ -92,7 +93,7 @@ public class VanishManager {
                 if (viewer.getUniqueId().equals(uuid)) {
                     continue; // Self visibility: character remains 100% visible to self!
                 }
-                if (viewer.hasPermission("apexsions.vanish.see")) {
+                if (viewer.hasPermission(Permissions.VANISH_SEE)) {
                     viewer.showPlayer(plugin, player);
                 } else {
                     viewer.hidePlayer(plugin, player);
@@ -110,7 +111,7 @@ public class VanishManager {
                             + player.getName() + "</yellow> <gray>sekarang <red><bold>VANISHED</bold></red> (Tak terlihat oleh pemain biasa).</gray>"
             );
             for (Player staff : Bukkit.getOnlinePlayers()) {
-                if (staff.hasPermission("apexsions.vanish.see") && !staff.getUniqueId().equals(uuid)) {
+                if (staff.hasPermission(Permissions.VANISH_SEE) && !staff.getUniqueId().equals(uuid)) {
                     staff.sendMessage(staffNotif);
                 }
             }
@@ -151,7 +152,7 @@ public class VanishManager {
                             + player.getName() + "</yellow> <gray>sekarang <green><bold>TERLIHAT KEMBALI</bold></green> (Unvanished).</gray>"
             );
             for (Player staff : Bukkit.getOnlinePlayers()) {
-                if (staff.hasPermission("apexsions.vanish.see") && !staff.getUniqueId().equals(uuid)) {
+                if (staff.hasPermission(Permissions.VANISH_SEE) && !staff.getUniqueId().equals(uuid)) {
                     staff.sendMessage(staffNotif);
                 }
             }
@@ -218,7 +219,7 @@ public class VanishManager {
             // Hide the vanished joiner from everyone except staff
             for (Player viewer : Bukkit.getOnlinePlayers()) {
                 if (viewer.getUniqueId().equals(uuid)) continue;
-                if (!viewer.hasPermission("apexsions.vanish.see")) {
+                if (!viewer.hasPermission(Permissions.VANISH_SEE)) {
                     viewer.hidePlayer(plugin, joiner);
                 } else {
                     viewer.showPlayer(plugin, joiner);
@@ -238,7 +239,7 @@ public class VanishManager {
         }
 
         // Hide other vanished players from this new player if they don't have see permission
-        boolean canSee = joiner.hasPermission("apexsions.vanish.see");
+        boolean canSee = joiner.hasPermission(Permissions.VANISH_SEE);
         for (UUID vUuid : vanishedPlayers) {
             if (vUuid.equals(uuid)) continue;
             Player vPlayer = Bukkit.getPlayer(vUuid);
@@ -259,7 +260,7 @@ public class VanishManager {
         // Re-enforce hidePlayer across world transfers
         for (Player viewer : Bukkit.getOnlinePlayers()) {
             if (viewer.getUniqueId().equals(uuid)) continue;
-            if (!viewer.hasPermission("apexsions.vanish.see")) {
+            if (!viewer.hasPermission(Permissions.VANISH_SEE)) {
                 viewer.hidePlayer(plugin, player);
             } else {
                 viewer.showPlayer(plugin, player);

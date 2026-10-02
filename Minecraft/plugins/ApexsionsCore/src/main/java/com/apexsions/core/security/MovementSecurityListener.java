@@ -1,6 +1,7 @@
 package com.apexsions.core.security;
 
 import com.apexsions.core.ApexsionsCorePlugin;
+import com.apexsions.core.api.Permissions;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -111,7 +112,7 @@ public class MovementSecurityListener implements Listener {
         if (player.getAllowFlight() || player.isGliding() || player.isInsideVehicle() || player.isRiptiding()) {
             return;
         }
-        if (player.hasPermission("apexsions.bypass.movement")) {
+        if (player.hasPermission(Permissions.BYPASS_MOVEMENT)) {
             return;
         }
 
@@ -300,7 +301,7 @@ public class MovementSecurityListener implements Listener {
                         "</red> <gray>(VL: " + currentViolations + ", Ping: " + player.getPing() + "ms)</gray>";
 
                 Bukkit.getOnlinePlayers().stream()
-                        .filter(p -> p.hasPermission("apexsions.staff") || p.hasPermission("apexsions.admin"))
+                        .filter(p -> p.hasPermission(Permissions.STAFF) || p.hasPermission(Permissions.ADMIN))
                         .forEach(staff -> staff.sendMessage(mm.deserialize(staffAlert)));
 
                 plugin.getLogger().warning("[AntiCheat] " + player.getName() + " flagged for " + cheatType + " (" + currentViolations + " VL).");

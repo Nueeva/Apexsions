@@ -1,5 +1,6 @@
 package com.apexsions.economy.trade;
 
+import com.apexsions.core.api.Permissions;
 import com.apexsions.economy.ApexsionsEconomy;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
@@ -83,7 +84,7 @@ public class TradeManager implements Listener {
     public synchronized boolean sendRequest(Player sender, Player target) {
         if (sender == null || target == null || !sender.isOnline() || !target.isOnline()) return false;
 
-        if (!sender.canSee(target) && !sender.hasPermission("apexsions.vanish.see")) {
+        if (!sender.canSee(target) && !sender.hasPermission(Permissions.VANISH_SEE)) {
             sender.sendMessage("§cPemain §e" + target.getName() + " §ctidak ditemukan atau sedang offline!");
             return false;
         }

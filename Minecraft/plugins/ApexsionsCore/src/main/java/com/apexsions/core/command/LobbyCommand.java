@@ -1,6 +1,7 @@
 package com.apexsions.core.command;
 
 import com.apexsions.core.ApexsionsCorePlugin;
+import com.apexsions.core.api.Permissions;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Location;
 import org.bukkit.Sound;
@@ -29,7 +30,7 @@ public class LobbyCommand implements CommandExecutor {
             return true;
         }
 
-        if (!player.hasPermission("apexsionscore.command.lobby") && !player.hasPermission("kingdomcore.command.lobby")) {
+        if (!player.hasPermission(Permissions.COMMAND_LOBBY)) {
             player.sendMessage(miniMessage.deserialize("<red>You do not have permission to use /lobby.</red>"));
             return true;
         }

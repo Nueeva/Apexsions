@@ -1,6 +1,7 @@
 package com.apexsions.core.integration;
 
 import com.apexsions.core.ApexsionsCorePlugin;
+import com.apexsions.core.api.Permissions;
 import com.apexsions.core.player.PlayerData;
 import com.apexsions.core.region.Region;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
@@ -403,20 +404,20 @@ public class PlaceholderApiHook extends PlaceholderExpansion {
     }
 
     private long countTotalOnline(@Nullable OfflinePlayer viewer) {
-        boolean canSeeVanish = viewer != null && viewer.isOnline() && viewer.getPlayer() != null && viewer.getPlayer().hasPermission("apexsions.vanish.see");
+        boolean canSeeVanish = viewer != null && viewer.isOnline() && viewer.getPlayer() != null && viewer.getPlayer().hasPermission(Permissions.VANISH_SEE);
         return Bukkit.getOnlinePlayers().stream()
                 .filter(p -> canSeeVanish || plugin.getVanishManager() == null || !plugin.getVanishManager().isVanished(p))
                 .count();
     }
 
     private long countStaffOnline(@Nullable OfflinePlayer viewer) {
-        boolean canSeeVanish = viewer != null && viewer.isOnline() && viewer.getPlayer() != null && viewer.getPlayer().hasPermission("apexsions.vanish.see");
+        boolean canSeeVanish = viewer != null && viewer.isOnline() && viewer.getPlayer() != null && viewer.getPlayer().hasPermission(Permissions.VANISH_SEE);
         return Bukkit.getOnlinePlayers().stream()
                 .filter(p -> {
                     if (!canSeeVanish && plugin.getVanishManager() != null && plugin.getVanishManager().isVanished(p)) {
                         return false;
                     }
-                    if (p.isOp() || p.hasPermission("apexsions.staff")) return true;
+                    if (p.isOp() || p.hasPermission(Permissions.STAFF)) return true;
                     if (plugin.getLuckPermsHook() != null) {
                         String r = plugin.getLuckPermsHook().getPlayerRankKey(p).toLowerCase();
                         return r.equals("ancestor") || r.equals("architect") || r.equals("overseer") || r.equals("warden") || r.equals("herald") || r.equals("owner") || r.equals("admin") || r.equals("mod");
@@ -427,7 +428,7 @@ public class PlaceholderApiHook extends PlaceholderExpansion {
     }
 
     private long countKingdomOnline(String kingdomKey, @Nullable OfflinePlayer viewer) {
-        boolean canSeeVanish = viewer != null && viewer.isOnline() && viewer.getPlayer() != null && viewer.getPlayer().hasPermission("apexsions.vanish.see");
+        boolean canSeeVanish = viewer != null && viewer.isOnline() && viewer.getPlayer() != null && viewer.getPlayer().hasPermission(Permissions.VANISH_SEE);
         return Bukkit.getOnlinePlayers().stream()
                 .filter(p -> {
                     if (!canSeeVanish && plugin.getVanishManager() != null && plugin.getVanishManager().isVanished(p)) {

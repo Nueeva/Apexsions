@@ -1,6 +1,7 @@
 package com.apexsions.core.gui.warp;
 
 import com.apexsions.core.ApexsionsCorePlugin;
+import com.apexsions.core.api.Permissions;
 import com.apexsions.core.warp.Warp;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -75,7 +76,7 @@ public class WarpGUI implements InventoryHolder {
         // 2. Filter warps by category and player permissions
         displayedWarps.clear();
         for (Warp w : plugin.getWarpManager().getWarps()) {
-            if (w.isHidden() && !player.hasPermission("apexsionscore.warp.admin")) continue;
+            if (w.isHidden() && !player.hasPermission(Permissions.WARP_ADMIN)) continue;
             if (selectedCategory.equalsIgnoreCase("ALL") || w.getCategory().equalsIgnoreCase(selectedCategory)) {
                 displayedWarps.add(w);
             }

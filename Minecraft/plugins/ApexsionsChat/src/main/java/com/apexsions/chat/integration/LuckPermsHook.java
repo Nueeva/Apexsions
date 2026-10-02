@@ -1,6 +1,7 @@
 package com.apexsions.chat.integration;
 
 import com.apexsions.chat.ApexsionsChatPlugin;
+import com.apexsions.core.api.Permissions;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
 import net.luckperms.api.model.user.User;
@@ -89,8 +90,8 @@ public class LuckPermsHook {
 
     public boolean isConclaveStaff(Player player) {
         if (player == null) return false;
-        if (player.isOp() || player.hasPermission("apexsions.admin") || player.hasPermission("apexsions.staff")
-                || player.hasPermission("apexsionscore.admin") || player.hasPermission("apexsions.conclave")) {
+        if (player.isOp() || player.hasPermission(Permissions.ADMIN) || player.hasPermission(Permissions.STAFF)
+                || player.hasPermission(Permissions.CONCLAVE)) {
             return true;
         }
         if (com.apexsions.core.api.ApexsionsCoreProvider.isAvailable()) {

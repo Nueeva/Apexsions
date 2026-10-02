@@ -1,6 +1,7 @@
 package com.apexsions.core.command;
 
 import com.apexsions.core.ApexsionsCorePlugin;
+import com.apexsions.core.api.Permissions;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -32,7 +33,7 @@ public class RtpCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
-        if (args.length > 0 && ((plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isConclaveStaff(player)) || player.hasPermission("apexsionscore.admin"))) {
+        if (args.length > 0 && ((plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isConclaveStaff(player)) || player.hasPermission(Permissions.ADMIN))) {
             plugin.getKingdomRtpService().executeRtpTargeted(player, args[0]);
         } else {
             plugin.getKingdomRtpService().executeRtp(player);
@@ -42,7 +43,7 @@ public class RtpCommand implements CommandExecutor, TabCompleter {
 
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
-        if (args.length == 1 && sender instanceof Player p && ((plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isConclaveStaff(p)) || p.hasPermission("apexsionscore.admin"))) {
+        if (args.length == 1 && sender instanceof Player p && ((plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isConclaveStaff(p)) || p.hasPermission(Permissions.ADMIN))) {
             List<String> list = java.util.Arrays.asList("zenithar", "solterra", "sylvamoor", "wild");
             List<String> result = new java.util.ArrayList<>();
             for (String s : list) {

@@ -1,11 +1,10 @@
 package com.apexsions.core.title;
 
 import com.apexsions.core.ApexsionsCorePlugin;
+import com.apexsions.core.api.Permissions;
 import com.apexsions.core.cosmetics.condition.UnlockCondition;
 import com.apexsions.core.player.PlayerData;
 import org.bukkit.entity.Player;
-
-import java.util.Locale;
 
 /**
  * Model representing an unlockable prestige Title in Apexsions.
@@ -21,14 +20,14 @@ public class TitleItem {
     private final UnlockCondition condition;
 
     public TitleItem(String id, String displayName, String description, UnlockCondition condition) {
-        this(id, displayName, description, "apexsions.title." + (id != null ? id.toLowerCase(Locale.ROOT) : ""), condition);
+        this(id, displayName, description, Permissions.title(id), condition);
     }
 
     public TitleItem(String id, String displayName, String description, String permission, UnlockCondition condition) {
         this.id = id;
         this.displayName = displayName;
         this.description = description;
-        this.permission = (permission != null && !permission.isBlank()) ? permission : "apexsions.title." + (id != null ? id.toLowerCase(Locale.ROOT) : "");
+        this.permission = (permission != null && !permission.isBlank()) ? permission : Permissions.title(id);
         this.condition = condition;
     }
 
@@ -63,12 +62,12 @@ public class TitleItem {
         if (player == null) return false;
 
         // 1. Admin or Wildcard Bypass
-        if (player.isOp() || player.hasPermission("apexsions.admin") || player.hasPermission("apexsions.title.*")) {
+        if (player.isOp() || player.hasPermission(Permissions.ADMIN) || player.hasPermission(Permissions.TITLE_ALL)) {
             return true;
         }
 
         // 2. Specific Permission Node (Default: apexsions.title.<id>)
-        if (player.hasPermission("apexsions.title." + id.toLowerCase(Locale.ROOT))) {
+        if (player.hasPermission(Permissions.title(id))) {
             return true;
         }
 
