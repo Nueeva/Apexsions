@@ -5,6 +5,7 @@ import com.apexsions.chat.model.Mail;
 import com.apexsions.chat.model.Report;
 import com.apexsions.chat.model.ReportStatus;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -122,8 +123,10 @@ public class GUIListener implements Listener {
             }
             if (slot == 15) { // Archive / Delete
                 plugin.getMailRepository().deleteMailAsync(mail.getMailId()).thenAccept(success -> {
-                    player.sendMessage(miniMessage.deserialize("<yellow>Letter deleted from your mailbox.</yellow>"));
-                    new MailListGUI(plugin, 1).loadAndOpen(player);
+                    Bukkit.getScheduler().runTask(plugin, () -> {
+                        player.sendMessage(miniMessage.deserialize("<yellow>Letter deleted from your mailbox.</yellow>"));
+                        new MailListGUI(plugin, 1).loadAndOpen(player);
+                    });
                 });
                 return;
             }

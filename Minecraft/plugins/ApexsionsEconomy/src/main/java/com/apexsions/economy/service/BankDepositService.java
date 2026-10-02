@@ -4,6 +4,7 @@ import com.apexsions.economy.ApexsionsEconomy;
 import com.apexsions.economy.bank.BankDeposit;
 import com.apexsions.economy.currency.Currency;
 import com.apexsions.economy.util.NumberFormatUtil;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.List;
@@ -98,14 +99,32 @@ public class BankDepositService {
         }
 
         Currency currency = plugin.getCurrencyRegistry().get(deposit.getCurrencyId());
-        return plugin.getRepository().claimBankDeposit(deposit.getId()).thenApply(v -> {
-            deposit.setClaimed(true);
-            plugin.getCurrencyService().addBalance(player.getUniqueId(), deposit.getCurrencyId(), deposit.getExpectedReturn());
-            player.sendMessage("§a[✔] Selamat! Deposito Anda telah dicairkan sebesar §e§l" + NumberFormatUtil.format(deposit.getExpectedReturn(), currency) + "§a!");
-            try {
-                player.playSound(player.getLocation(), org.bukkit.Sound.ENTITY_PLAYER_LEVELUP, 1.0f, 1.2f);
-            } catch (Exception ignored) {}
-            return true;
+        TransactionLockManager lockManager = plugin.getCurrencyService().getLockManager();
+
+        // C-1: cek+payout dibungkus lock per deposit-id; payout HANYA jika klaim atomik
+        // di repository menang (UPDATE ... WHERE id=? AND claimed=0 menyentuh tepat 1 baris).
+        return CompletableFuture.supplyAsync(() ->
+            lockManager.executeWithResourceLock(deposit.getId(), () -> {
+                boolean claimedNow = plugin.getRepository().claimBankDeposit(deposit.getId()).join();
+                if (claimedNow) {
+                    plugin.getCurrencyService().addBalance(player.getUniqueId(), deposit.getCurrencyId(), deposit.getExpectedReturn());
+                    deposit.setClaimed(true);
+                }
+                return claimedNow;
+            })
+        ).thenApply(claimedNow -> {
+            // C-9: semua sentuhan Bukkit API hop ke main thread.
+            Bukkit.getScheduler().runTask(plugin, () -> {
+                if (claimedNow) {
+                    player.sendMessage("§a[✔] Selamat! Deposito Anda telah dicairkan sebesar §e§l" + NumberFormatUtil.format(deposit.getExpectedReturn(), currency) + "§a!");
+                    try {
+                        player.playSound(player.getLocation(), org.bukkit.Sound.ENTITY_PLAYER_LEVELUP, 1.0f, 1.2f);
+                    } catch (Exception ignored) {}
+                } else {
+                    player.sendMessage("§cDeposito ini sudah pernah dicairkan!");
+                }
+            });
+            return claimedNow;
         });
     }
 }

@@ -51,6 +51,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -98,7 +99,7 @@ public class Crate implements ConfigBacked {
 
     private List<String> postOpenCommands;
 
-    private boolean dirty;
+    private final AtomicBoolean dirty;
 
     public Crate(@NotNull CratesPlugin plugin, @NotNull Path path, @NotNull String id) {
         this.plugin = plugin;
@@ -111,6 +112,7 @@ public class Crate implements ConfigBacked {
         this.milestones = new HashSet<>();
         this.description = new ArrayList<>();
         this.customHologramLines = new ArrayList<>();
+        this.dirty = new AtomicBoolean();
     }
 
     public void load() throws IllegalStateException {
@@ -261,9 +263,8 @@ public class Crate implements ConfigBacked {
     }
 
     public void saveIfDirty() {
-        if (this.dirty) {
+        if (this.dirty.compareAndSet(true, false)) {
             this.loadConfig().edit(this::write);
-            this.dirty = false;
         }
     }
 
@@ -562,7 +563,7 @@ public class Crate implements ConfigBacked {
     }
 
     public void markDirty() {
-        this.dirty = true;
+        this.dirty.set(true);
     }
 
     public boolean hasFile() {

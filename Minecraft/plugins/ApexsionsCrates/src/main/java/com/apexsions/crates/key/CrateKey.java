@@ -20,6 +20,7 @@ import su.nightexpress.nightcore.util.problem.ProblemReporter;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.UnaryOperator;
 
 public class CrateKey implements ConfigBacked {
@@ -32,11 +33,12 @@ public class CrateKey implements ConfigBacked {
     private AdaptedItem item;
     private boolean     itemStackable;
 
-    private boolean dirty;
+    private final AtomicBoolean dirty;
 
     public CrateKey(@NotNull CratesPlugin plugin, @NotNull Path path, @NotNull String id) {
         this.path = path;
         this.id = id;
+        this.dirty = new AtomicBoolean();
     }
 
     public void load() throws IllegalStateException {
@@ -70,9 +72,8 @@ public class CrateKey implements ConfigBacked {
     }
 
     public void saveIfDirty() {
-        if (this.dirty) {
+        if (this.dirty.compareAndSet(true, false)) {
             this.loadConfig().edit(this::write);
-            this.dirty = false;
         }
     }
 
@@ -97,7 +98,7 @@ public class CrateKey implements ConfigBacked {
     }
 
     public void markDirty() {
-        this.dirty = true;
+        this.dirty.set(true);
     }
 
     public boolean hasFile() {

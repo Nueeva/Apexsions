@@ -26,4 +26,6 @@ dynamic-pricing:
 web-bridge:
   enabled: true
   api-url: "https://web.apexsions.com/api/apexsions-bridge"
-  api-key: "apexsions_bridge_key_live_2026"
+  # API key WebBridge dibaca dari environment variable APEXSIONS_BRIDGE_KEY.
+  # JANGAN commit key live ke repo — biarkan nilai di bawah ini kosong.
+  api-key: ""

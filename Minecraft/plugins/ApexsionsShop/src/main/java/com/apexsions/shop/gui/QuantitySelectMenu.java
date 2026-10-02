@@ -14,6 +14,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class QuantitySelectMenu extends ShopGui {
@@ -227,8 +228,33 @@ public class QuantitySelectMenu extends ShopGui {
         PriceResult result = plugin.getDynamicPriceCalculator().calculateSellPrice(shopItem, player, actualQuantity, kingdomOverride);
         double payout = result.finalTotalPrice();
 
+        // C-3: simpan salinan item yang akan dihapus agar bisa dikembalikan utuh (jumlah & metadata) bila deposit gagal
+        List<ItemStack> removedSnapshot = new ArrayList<>();
+        int toSnapshot = actualQuantity;
+        for (ItemStack is : player.getInventory().getStorageContents()) {
+            if (toSnapshot <= 0) break;
+            if (is != null && is.getType() == shopItem.getMaterial()) {
+                ItemStack copy = is.clone();
+                copy.setAmount(Math.min(toSnapshot, is.getAmount()));
+                removedSnapshot.add(copy);
+                toSnapshot -= copy.getAmount();
+            }
+        }
+
         InventoryUtil.removeItems(player, shopItem.getMaterial(), actualQuantity);
-        plugin.getEconomyHook().deposit(player, payout);
+        if (!plugin.getEconomyHook().deposit(player, payout)) {
+            // C-3: deposit gagal — kembalikan item utuh, batalkan penjualan
+            for (ItemStack refund : removedSnapshot) {
+                HashMap<Integer, ItemStack> leftover = player.getInventory().addItem(refund);
+                for (ItemStack drop : leftover.values()) {
+                    player.getWorld().dropItem(player.getLocation(), drop);
+                }
+            }
+            player.sendMessage(MM.deserialize(plugin.getConfig().getString("messages.prefix", "") +
+                    plugin.getConfig().getString("messages.sell-failed", "<red>Penjualan gagal: pembayaran tidak dapat diproses. Item kamu telah dikembalikan.</red>")));
+            player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
+            return;
+        }
 
         String kingdomKey = kingdomOverride != null ? kingdomOverride : plugin.getKingdomCoreHook().getPlayerKingdom(player);
         plugin.getSupplyScannerService().recordSale(kingdomKey, shopItem.getMaterial(), actualQuantity);

@@ -146,6 +146,7 @@ public class SellGuiMenu extends ShopGui {
         double totalTax = 0.0;
         int totalItemsSold = 0;
         List<ItemStack> invalidItems = new ArrayList<>();
+        List<ItemStack> soldItems = new ArrayList<>(); // C-3: simpan item terjual untuk refund bila deposit gagal
 
         String kingdomKey = plugin.getKingdomCoreHook().getPlayerKingdom(player);
         for (int slot : SELL_SLOTS) {
@@ -159,6 +160,7 @@ public class SellGuiMenu extends ShopGui {
                 totalTax += res.taxAmount();
                 totalItemsSold += is.getAmount();
                 plugin.getSupplyScannerService().recordSale(kingdomKey, shopItem.getMaterial(), is.getAmount());
+                soldItems.add(is);
                 inventory.setItem(slot, null);
             } else {
                 invalidItems.add(is);
@@ -177,19 +179,29 @@ public class SellGuiMenu extends ShopGui {
         }
 
         if (totalItemsSold > 0) {
-            plugin.getEconomyHook().deposit(player, totalPayout);
+            if (!plugin.getEconomyHook().deposit(player, totalPayout)) {
+                // C-3: deposit gagal — kembalikan item utuh ke inventori pemain, batalkan penjualan
+                for (ItemStack refund : soldItems) {
+                    HashMap<Integer, ItemStack> leftover = player.getInventory().addItem(refund);
+                    for (ItemStack drop : leftover.values()) {
+                        player.getWorld().dropItem(player.getLocation(), drop);
+                    }
+                }
+                player.sendMessage(MM.deserialize(plugin.getConfigManager().getMessage("sell-failed", "<red>Penjualan gagal: pembayaran tidak dapat diproses. Item kamu telah dikembalikan.</red>")));
+                player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
+            } else {
+                if (totalTax > 0 && kingdomKey != null && !kingdomKey.equalsIgnoreCase("NONE")) {
+                    plugin.getEconomyHook().depositKingdomTreasury(kingdomKey, totalTax);
+                    org.bukkit.Bukkit.getPluginManager().callEvent(new com.apexsions.shop.api.event.KingdomTaxCollectEvent(player, kingdomKey, totalTax));
+                }
 
-            if (totalTax > 0 && kingdomKey != null && !kingdomKey.equalsIgnoreCase("NONE")) {
-                plugin.getEconomyHook().depositKingdomTreasury(kingdomKey, totalTax);
-                org.bukkit.Bukkit.getPluginManager().callEvent(new com.apexsions.shop.api.event.KingdomTaxCollectEvent(player, kingdomKey, totalTax));
+                player.sendMessage(MM.deserialize(plugin.getConfigManager().getMessage("sell-success", "<green>Berhasil menjual item!</green>")
+                        .replace("%amount%", String.valueOf(totalItemsSold))
+                        .replace("%item%", "Item")
+                        .replace("%price%", plugin.getEconomyHook().format(totalPayout))
+                        .replace("%tax%", plugin.getEconomyHook().format(totalTax))));
+                player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1.0f, 1.6f);
             }
-
-            player.sendMessage(MM.deserialize(plugin.getConfigManager().getMessage("sell-success", "<green>Berhasil menjual item!</green>")
-                    .replace("%amount%", String.valueOf(totalItemsSold))
-                    .replace("%item%", "Item")
-                    .replace("%price%", plugin.getEconomyHook().format(totalPayout))
-                    .replace("%tax%", plugin.getEconomyHook().format(totalTax))));
-            player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1.0f, 1.6f);
         } else {
             player.sendMessage(MM.deserialize(plugin.getConfigManager().getMessage("cannot-sell-item", "<red>Tidak ada item valid untuk dijual!</red>")));
             player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);

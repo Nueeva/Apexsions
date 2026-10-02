@@ -28,6 +28,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.*;
 import java.util.function.Predicate;
 
@@ -40,7 +41,7 @@ public class KeyManager extends AbstractManager<CratesPlugin> {
     public KeyManager(@NotNull CratesPlugin plugin, @NotNull DialogRegistry dialogs) {
         super(plugin);
         this.dialogs = dialogs;
-        this.keyByIdMap = new HashMap<>();
+        this.keyByIdMap = new ConcurrentHashMap<>();
     }
 
     @Override

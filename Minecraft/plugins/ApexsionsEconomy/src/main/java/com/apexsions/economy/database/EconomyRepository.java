@@ -432,15 +432,25 @@ public class EconomyRepository {
         });
     }
 
-    public CompletableFuture<Void> claimBankDeposit(String depositId) {
-        return CompletableFuture.runAsync(() -> {
+    /**
+     * Klaim deposito secara atomik (C-1).
+     *
+     * <p>Guard {@code AND claimed = 0} + pengecekan {@code executeUpdate() == 1}
+     * memastikan dua klaim konkuren tidak bisa dua-duanya sukses: hanya pemenang
+     * pertama yang mengembalikan {@code true} dan berhak menerima payout.</p>
+     *
+     * @return future {@code true} hanya jika tepat 1 baris berhasil diklaim
+     */
+    public CompletableFuture<Boolean> claimBankDeposit(String depositId) {
+        return CompletableFuture.supplyAsync(() -> {
             synchronized (dbLock) {
-                String sql = "UPDATE economy_bank_deposits SET claimed = 1 WHERE id = ?";
+                String sql = "UPDATE economy_bank_deposits SET claimed = 1 WHERE id = ? AND claimed = 0";
                 try (PreparedStatement ps = connection.prepareStatement(sql)) {
                     ps.setString(1, depositId);
-                    ps.executeUpdate();
+                    return ps.executeUpdate() == 1;
                 } catch (SQLException e) {
                     plugin.getLogger().log(Level.SEVERE, "Error claiming bank deposit " + depositId, e);
+                    return false;
                 }
             }
         });

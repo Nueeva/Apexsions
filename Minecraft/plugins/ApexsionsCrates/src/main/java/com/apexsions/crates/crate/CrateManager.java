@@ -60,6 +60,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.*;
 
 public class CrateManager extends AbstractManager<CratesPlugin> {
@@ -80,8 +81,8 @@ public class CrateManager extends AbstractManager<CratesPlugin> {
         super(plugin);
         this.dialogs = dialogs;
 
-        this.rarityByIdMap = new HashMap<>();
-        this.crateByIdMap = new HashMap<>();
+        this.rarityByIdMap = new ConcurrentHashMap<>();
+        this.crateByIdMap = new ConcurrentHashMap<>();
         this.crateByPosMap = new HashMap<>();
         this.previewByIdMap = new HashMap<>();
         this.previewCooldown = new HashMap<>();
@@ -100,7 +101,7 @@ public class CrateManager extends AbstractManager<CratesPlugin> {
 
         this.addListener(new CrateListener(this.plugin, this));
 
-        this.addAsyncTask(this::playCrateEffects, 1L);
+        this.addTask(this::playCrateEffects, 1L);
         this.addAsyncTask(this::saveCrates, Config.CRATE_SAVE_INTERVAL.get());
     }
 

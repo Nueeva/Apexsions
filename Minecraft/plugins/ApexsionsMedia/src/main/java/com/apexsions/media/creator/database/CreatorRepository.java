@@ -182,11 +182,20 @@ public class CreatorRepository {
         });
     }
 
-    public CompletableFuture<Void> saveClaim(CreatorClaim claim) {
-        return CompletableFuture.runAsync(() -> {
-            if (dataSource == null) return;
+    /**
+     * C-4: mengembalikan {@code true} hanya jika klaim benar-benar tersimpan.
+     * Memakai {@code INSERT ... ON CONFLICT(video_id) DO NOTHING} + cek rowcount
+     * agar klaim ganda bersifat atomik (tidak ada reward tanpa persist).
+     */
+    public CompletableFuture<Boolean> saveClaim(CreatorClaim claim) {
+        return CompletableFuture.supplyAsync(() -> {
+            if (dataSource == null) return false;
 
-            String query = "INSERT INTO creator_claims (claim_id, uuid, platform, video_id, video_url, views, likes, tier_id, claimed_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            String query = """
+                INSERT INTO creator_claims (claim_id, uuid, platform, video_id, video_url, views, likes, tier_id, claimed_at)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+                ON CONFLICT(video_id) DO NOTHING
+            """;
             try (Connection conn = dataSource.getConnection();
                  PreparedStatement ps = conn.prepareStatement(query)) {
                 ps.setString(1, claim.getClaimId());
@@ -198,9 +207,14 @@ public class CreatorRepository {
                 ps.setLong(7, claim.getLikes());
                 ps.setString(8, claim.getTierId());
                 ps.setLong(9, claim.getClaimedAt());
-                ps.executeUpdate();
+                int rows = ps.executeUpdate();
+                if (rows == 0) {
+                    plugin.getLogger().warning("Creator claim for video " + claim.getVideoId() + " already exists; skipping duplicate save.");
+                }
+                return rows > 0;
             } catch (Exception e) {
                 plugin.getLogger().severe("Failed to save creator claim " + claim.getClaimId() + ": " + e.getMessage());
+                return false;
             }
         });
     }

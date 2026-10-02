@@ -82,7 +82,14 @@ public class SellCommand implements CommandExecutor, TabCompleter {
         double payout = res.finalTotalPrice();
 
         player.getInventory().setItemInMainHand(null);
-        plugin.getEconomyHook().deposit(player, payout);
+        if (!plugin.getEconomyHook().deposit(player, payout)) {
+            // C-3: deposit gagal — kembalikan item utuh ke tangan pemain, batalkan penjualan
+            player.getInventory().setItemInMainHand(held);
+            player.sendMessage(miniMessage.deserialize(plugin.getConfig().getString("messages.prefix", "") +
+                    plugin.getConfig().getString("messages.sell-failed", "<red>Penjualan gagal: pembayaran tidak dapat diproses. Item kamu telah dikembalikan.</red>")));
+            player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
+            return;
+        }
         String kingdomKey = plugin.getKingdomCoreHook().getPlayerKingdom(player);
         plugin.getSupplyScannerService().recordSale(kingdomKey, item.getMaterial(), amount);
 
