@@ -6,6 +6,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -18,12 +19,12 @@ import org.bukkit.util.RayTraceResult;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.awt.Dimension;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 public class MediaCommand implements CommandExecutor, TabCompleter {
 
@@ -85,29 +86,12 @@ public class MediaCommand implements CommandExecutor, TabCompleter {
 
         String id = args[1].toLowerCase();
         String source = args[2];
-        int width = 1;
-        int height = 1;
 
-        if (args.length >= 5) {
-            try {
-                width = Integer.parseInt(args[3]);
-                height = Integer.parseInt(args[4]);
-            } catch (NumberFormatException e) {
-                player.sendMessage(miniMessage.deserialize("<red>Lebar dan tinggi harus berupa angka.</red>"));
-                return;
-            }
-        } else {
-            Dimension detected = plugin.getImageRenderer().detectDimensions(source, plugin.getDataFolder());
-            width = detected.width;
-            height = detected.height;
-        }
-
-        final int finalWidth = Math.max(1, Math.min(10, width));
-        final int finalHeight = Math.max(1, Math.min(10, height));
-
-        String linkUrl = null;
+        final String linkUrl;
         if (args.length > 5 && !args[5].equalsIgnoreCase("none") && !args[5].equalsIgnoreCase("null")) {
             linkUrl = args[5];
+        } else {
+            linkUrl = null;
         }
 
         MediaBanner.ClickMode mode = MediaBanner.ClickMode.CHAT_PROMPT;
@@ -116,6 +100,45 @@ public class MediaCommand implements CommandExecutor, TabCompleter {
                 mode = MediaBanner.ClickMode.valueOf(args[6].toUpperCase());
             } catch (IllegalArgumentException ignored) {}
         }
+        final MediaBanner.ClickMode finalMode = mode;
+
+        if (args.length >= 5) {
+            final int width;
+            final int height;
+            try {
+                width = Integer.parseInt(args[3]);
+                height = Integer.parseInt(args[4]);
+            } catch (NumberFormatException e) {
+                player.sendMessage(miniMessage.deserialize("<red>Lebar dan tinggi harus berupa angka.</red>"));
+                return;
+            }
+            spawnBanner(player, id, source, width, height, linkUrl, finalMode);
+        } else {
+            // M-11: dimension detection may perform network I/O — never block the main thread.
+            player.sendMessage(miniMessage.deserialize("<yellow>⏳ Sedang memproses dimensi gambar...</yellow>"));
+            CompletableFuture.supplyAsync(() -> plugin.getImageRenderer().detectDimensions(source, plugin.getDataFolder()))
+                    .thenAccept(detected -> Bukkit.getScheduler().runTask(plugin, () -> {
+                        if (!player.isOnline()) return;
+                        if (detected == null) {
+                            player.sendMessage(miniMessage.deserialize("<red>✖ Gagal mendeteksi dimensi gambar dari sumber. Periksa kembali URL atau file gambar.</red>"));
+                            return;
+                        }
+                        spawnBanner(player, id, source, detected.width, detected.height, linkUrl, finalMode);
+                    }))
+                    .exceptionally(ex -> {
+                        Bukkit.getScheduler().runTask(plugin, () -> {
+                            if (player.isOnline()) {
+                                player.sendMessage(miniMessage.deserialize("<red>✖ Gagal mendeteksi dimensi gambar dari sumber. Periksa kembali URL atau file gambar.</red>"));
+                            }
+                        });
+                        return null;
+                    });
+        }
+    }
+
+    private void spawnBanner(Player player, String id, String source, int width, int height, String linkUrl, MediaBanner.ClickMode mode) {
+        final int finalWidth = Math.max(1, Math.min(10, width));
+        final int finalHeight = Math.max(1, Math.min(10, height));
 
         PlacementResult placement = getPlacement(player);
 

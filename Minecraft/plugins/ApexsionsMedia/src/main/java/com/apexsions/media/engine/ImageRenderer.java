@@ -17,6 +17,7 @@ import java.io.File;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.Collections;
 import java.util.Set;
 import java.util.UUID;
@@ -39,12 +40,27 @@ public class ImageRenderer {
                 .build();
     }
 
+    // M-11: timeouts for remote image fetches. Kept as code constants —
+    // there is no existing timeout config key for media image fetching.
+    private static final int DETECT_CONNECT_TIMEOUT_MS = 8000;
+    private static final int DETECT_READ_TIMEOUT_MS = 10000;
+
+    /**
+     * Detects the banner tile dimensions of an image source.
+     *
+     * @return the detected {@link Dimension}, or {@code null} when the image
+     *         cannot be loaded or decoded (missing file, unreachable/timed-out
+     *         URL, unsupported format).
+     */
     public Dimension detectDimensions(String source, File dataFolder) {
         try {
             BufferedImage original;
             if (source.startsWith("http://") || source.startsWith("https://")) {
                 URL url = URI.create(source).toURL();
-                try (InputStream in = url.openStream()) {
+                URLConnection connection = url.openConnection();
+                connection.setConnectTimeout(DETECT_CONNECT_TIMEOUT_MS);
+                connection.setReadTimeout(DETECT_READ_TIMEOUT_MS);
+                try (InputStream in = connection.getInputStream()) {
                     original = ImageIO.read(in);
                 }
             } else {
@@ -52,7 +68,7 @@ public class ImageRenderer {
                 if (!imgFile.isAbsolute()) {
                     imgFile = new File(new File(dataFolder, "images"), source);
                 }
-                if (!imgFile.exists()) return new Dimension(1, 1);
+                if (!imgFile.exists()) return null;
                 original = ImageIO.read(imgFile);
             }
 
@@ -62,7 +78,7 @@ public class ImageRenderer {
                 return new Dimension(w, h);
             }
         } catch (Exception ignored) {}
-        return new Dimension(1, 1);
+        return null;
     }
 
     public CompletableFuture<byte[][][]> loadAndProcessTiles(String source, int widthTiles, int heightTiles, File dataFolder) {

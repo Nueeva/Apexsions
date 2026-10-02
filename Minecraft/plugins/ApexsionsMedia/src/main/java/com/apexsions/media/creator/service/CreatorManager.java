@@ -104,8 +104,19 @@ public class CreatorManager {
 
     public CompletableFuture<Boolean> verifyLinking(Player player, Platform platform) {
         return getProfile(player.getUniqueId(), player.getName()).thenCompose(profile -> {
-            if (!profile.hasPendingVerification() || !platform.name().equalsIgnoreCase(profile.getPendingPlatform())) {
+            if (profile.getPendingVerifyCode() == null || profile.getPendingVerifyCode().isBlank()
+                    || !platform.name().equalsIgnoreCase(profile.getPendingPlatform())) {
                 return CompletableFuture.completedFuture(false);
+            }
+
+            // M-9: verification codes expire. A missing/unset expiry (0) is treated as
+            // expired, never as forever-valid, and the stale pending state is cleared.
+            long expiry = profile.getPendingVerifyExpiry();
+            if (expiry <= 0L || System.currentTimeMillis() >= expiry) {
+                profile.clearPendingVerification();
+                notifyPlayer(player, Sound.ENTITY_VILLAGER_NO,
+                        "<red><b>[Creator]</b> Sesi verifikasi telah kedaluwarsa. Silakan mulai ulang proses linking.</red>");
+                return repository.saveProfile(profile).thenApply(v -> false);
             }
 
             String identifier = profile.getPendingIdentifier();
