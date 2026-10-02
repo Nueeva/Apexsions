@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.apexsions</groupId>
+    <artifactId>apexsions-minecraft</artifactId>
+    <version>1.0.0</version>
+    <packaging>pom</packaging>
+
+    <name>Apexsions Minecraft (aggregator)</name>
+    <description>
+        Maven aggregator for the Apexsions plugin suite. Modules depend on each
+        other via normal Maven coordinates; sibling target/*.jar references are
+        resolved through the reactor instead of system-scope dependencies.
+    </description>
+
+    <modules>
+        <!-- dependency order (leaf modules first); Maven computes the real
+             build order from the inter-module dependency graph anyway -->
+        <module>plugins/ApexsionsCore</module>
+        <module>plugins/ApexsionsMedia</module>
+        <module>plugins/ApexsionsEconomy</module>
+        <module>plugins/ApexsionsShop</module>
+        <module>plugins/ApexsionsBattlepass</module>
+        <module>plugins/ApexsionsCustomEnchants</module>
+        <module>plugins/ApexsionsChat</module>
+        <module>plugins/ApexsionsFishing</module>
+        <module>plugins/ApexsionsCrates</module>
+    </modules>
+</project>

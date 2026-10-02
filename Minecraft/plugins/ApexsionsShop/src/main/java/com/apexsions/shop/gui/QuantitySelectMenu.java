@@ -14,6 +14,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class QuantitySelectMenu extends ShopGui {
@@ -165,8 +166,8 @@ public class QuantitySelectMenu extends ShopGui {
         double totalCost = result.finalTotalPrice();
 
         if (!plugin.getEconomyHook().has(player, totalCost)) {
-            player.sendMessage(MM.deserialize(plugin.getConfig().getString("messages.prefix", "") +
-                    plugin.getConfig().getString("messages.not-enough-money", "<red>Saldo tidak cukup!</red>")
+            player.sendMessage(MM.deserialize(plugin.getConfigManager().getMessage("not-enough-money",
+                    "<red>Saldo tidak cukup!</red>")
                             .replace("%required%", plugin.getEconomyHook().format(totalCost))));
             player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
             return;
@@ -174,8 +175,8 @@ public class QuantitySelectMenu extends ShopGui {
 
         ItemStack toAdd = new ItemStack(shopItem.getMaterial(), quantity);
         if (!InventoryUtil.hasEnoughSpace(player, toAdd)) {
-            player.sendMessage(MM.deserialize(plugin.getConfig().getString("messages.prefix", "") +
-                    plugin.getConfig().getString("messages.inventory-full", "<red>Inventori penuh!</red>")));
+            player.sendMessage(MM.deserialize(plugin.getConfigManager().getMessage("inventory-full",
+                    "<red>Inventori penuh!</red>")));
             player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
             return;
         }
@@ -193,8 +194,8 @@ public class QuantitySelectMenu extends ShopGui {
                 org.bukkit.Bukkit.getPluginManager().callEvent(new com.apexsions.shop.api.event.KingdomTaxCollectEvent(player, kingdomKey, result.taxAmount()));
             }
 
-            player.sendMessage(MM.deserialize(plugin.getConfig().getString("messages.prefix", "") +
-                    plugin.getConfig().getString("messages.buy-success", "<green>Beli berhasil!</green>")
+            player.sendMessage(MM.deserialize(plugin.getConfigManager().getMessage("buy-success",
+                    "<green>Beli berhasil!</green>")
                             .replace("%amount%", String.valueOf(quantity))
                             .replace("%item%", shopItem.getDisplayName())
                             .replace("%price%", plugin.getEconomyHook().format(totalCost))
@@ -207,8 +208,8 @@ public class QuantitySelectMenu extends ShopGui {
 
     private void sell(int quantity) {
         if (quantity <= 0) {
-            player.sendMessage(MM.deserialize(plugin.getConfig().getString("messages.prefix", "") +
-                    plugin.getConfig().getString("messages.not-enough-items", "<red>Kamu tidak memiliki item!</red>")
+            player.sendMessage(MM.deserialize(plugin.getConfigManager().getMessage("not-enough-items",
+                    "<red>Kamu tidak memiliki item!</red>")
                             .replace("%item%", shopItem.getDisplayName())));
             player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
             return;
@@ -217,8 +218,8 @@ public class QuantitySelectMenu extends ShopGui {
         int playerHas = InventoryUtil.countItems(player, shopItem.getMaterial());
         int actualQuantity = Math.min(quantity, playerHas);
         if (actualQuantity <= 0) {
-            player.sendMessage(MM.deserialize(plugin.getConfig().getString("messages.prefix", "") +
-                    plugin.getConfig().getString("messages.not-enough-items", "<red>Kamu tidak memiliki item!</red>")
+            player.sendMessage(MM.deserialize(plugin.getConfigManager().getMessage("not-enough-items",
+                    "<red>Kamu tidak memiliki item!</red>")
                             .replace("%item%", shopItem.getDisplayName())));
             player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
             return;
@@ -227,8 +228,33 @@ public class QuantitySelectMenu extends ShopGui {
         PriceResult result = plugin.getDynamicPriceCalculator().calculateSellPrice(shopItem, player, actualQuantity, kingdomOverride);
         double payout = result.finalTotalPrice();
 
+        // C-3: simpan salinan item yang akan dihapus agar bisa dikembalikan utuh (jumlah & metadata) bila deposit gagal
+        List<ItemStack> removedSnapshot = new ArrayList<>();
+        int toSnapshot = actualQuantity;
+        for (ItemStack is : player.getInventory().getStorageContents()) {
+            if (toSnapshot <= 0) break;
+            if (is != null && is.getType() == shopItem.getMaterial()) {
+                ItemStack copy = is.clone();
+                copy.setAmount(Math.min(toSnapshot, is.getAmount()));
+                removedSnapshot.add(copy);
+                toSnapshot -= copy.getAmount();
+            }
+        }
+
         InventoryUtil.removeItems(player, shopItem.getMaterial(), actualQuantity);
-        plugin.getEconomyHook().deposit(player, payout);
+        if (!plugin.getEconomyHook().deposit(player, payout)) {
+            // C-3: deposit gagal — kembalikan item utuh, batalkan penjualan
+            for (ItemStack refund : removedSnapshot) {
+                HashMap<Integer, ItemStack> leftover = player.getInventory().addItem(refund);
+                for (ItemStack drop : leftover.values()) {
+                    player.getWorld().dropItem(player.getLocation(), drop);
+                }
+            }
+            player.sendMessage(MM.deserialize(plugin.getConfigManager().getMessage("sell-failed",
+                    "<red>Penjualan gagal: pembayaran tidak dapat diproses. Item kamu telah dikembalikan.</red>")));
+            player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
+            return;
+        }
 
         String kingdomKey = kingdomOverride != null ? kingdomOverride : plugin.getKingdomCoreHook().getPlayerKingdom(player);
         plugin.getSupplyScannerService().recordSale(kingdomKey, shopItem.getMaterial(), actualQuantity);
@@ -241,8 +267,8 @@ public class QuantitySelectMenu extends ShopGui {
             org.bukkit.Bukkit.getPluginManager().callEvent(new com.apexsions.shop.api.event.KingdomTaxCollectEvent(player, kingdomKey, result.taxAmount()));
         }
 
-        player.sendMessage(MM.deserialize(plugin.getConfig().getString("messages.prefix", "") +
-                plugin.getConfig().getString("messages.sell-success", "<green>Jual berhasil!</green>")
+        player.sendMessage(MM.deserialize(plugin.getConfigManager().getMessage("sell-success",
+                "<green>Jual berhasil!</green>")
                         .replace("%amount%", String.valueOf(actualQuantity))
                         .replace("%item%", shopItem.getDisplayName())
                         .replace("%price%", plugin.getEconomyHook().format(payout))

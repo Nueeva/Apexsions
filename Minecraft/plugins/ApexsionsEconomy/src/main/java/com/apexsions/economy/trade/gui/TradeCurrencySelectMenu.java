@@ -1,7 +1,7 @@
 package com.apexsions.economy.trade.gui;
 
 import com.apexsions.economy.gui.core.Gui;
-import com.apexsions.economy.gui.core.GuiButton;
+import com.apexsions.core.gui.core.GuiButton;
 import com.apexsions.economy.gui.util.ItemBuilder;
 import com.apexsions.economy.ApexsionsEconomy;
 import com.apexsions.economy.currency.Currency;

@@ -1,6 +1,7 @@
 package com.apexsions.core.security;
 
 import com.apexsions.core.ApexsionsCorePlugin;
+import com.apexsions.core.api.Permissions;
 import com.destroystokyo.paper.event.server.AsyncTabCompleteEvent;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -111,7 +112,7 @@ public class PluginSecurityListener implements Listener {
     }
 
     private boolean isAdmin(Player player) {
-        return player.isOp() || player.hasPermission("apexsions.admin");
+        return player.isOp() || player.hasPermission(Permissions.ADMIN);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = false)

@@ -83,7 +83,9 @@ public class ExpShopService {
         // 3. Check Balance & Withdraw
         provider.hasBalance(player.getUniqueId(), price).thenAccept(hasBalance -> {
             if (!hasBalance) {
-                player.sendMessage("§8[§6§lEXP Shop§8] §cSaldo Anda tidak cukup! Butuh §e" + provider.format(price));
+                // C-9: sendMessage adalah Bukkit API — harus di main thread
+                plugin.getServer().getScheduler().runTask(plugin, () ->
+                    player.sendMessage("§8[§6§lEXP Shop§8] §cSaldo Anda tidak cukup! Butuh §e" + provider.format(price)));
                 return;
             }
 
@@ -95,7 +97,9 @@ public class ExpShopService {
                         player.sendMessage("§8[§6§lEXP Shop§8] §aBerhasil membeli §e+" + expAmount + " BP XP §aseharga §e" + provider.format(price) + "§a!");
                     });
                 } else {
-                    player.sendMessage("§8[§6§lEXP Shop§8] §cTransaksi gagal diproses oleh payment provider.");
+                    // C-9: sendMessage adalah Bukkit API — harus di main thread
+                    plugin.getServer().getScheduler().runTask(plugin, () ->
+                        player.sendMessage("§8[§6§lEXP Shop§8] §cTransaksi gagal diproses oleh payment provider."));
                 }
             });
         });

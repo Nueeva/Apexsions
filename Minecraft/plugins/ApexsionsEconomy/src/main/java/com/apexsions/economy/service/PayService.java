@@ -16,7 +16,15 @@ public class PayService {
         this.plugin = plugin;
     }
 
-    public synchronized boolean transfer(Player sender, UUID receiverUuid, String receiverName, Currency currency, double amount) {
+    /**
+     * Transfers currency from sender to receiver with a kingdom tax.
+     *
+     * <p>Threading (M-19): no method-level {@code synchronized}. The principal
+     * transfer goes through {@link CurrencyService#transferAtomic} (ordered
+     * dual-account locking, no global bottleneck); the tax is settled
+     * separately afterwards.</p>
+     */
+    public boolean transfer(Player sender, UUID receiverUuid, String receiverName, Currency currency, double amount) {
         if (sender == null || receiverUuid == null || currency == null) return false;
 
         if (sender.getUniqueId().equals(receiverUuid)) {
@@ -62,17 +70,29 @@ public class PayService {
         double taxAmount = (amount * (taxPercent / 100.0));
         double netAmount = amount - taxAmount;
 
-        // Atomic Transaction: withdraw gross from sender, deposit net to receiver
-        if (!cs.removeBalance(sender.getUniqueId(), currency.getId(), amount)) {
+        // Atomic principal transfer: single dual-account-locked operation
+        // (M-19) instead of separate has() -> removeBalance() -> addBalance().
+        // transferAtomic re-validates the sender balance under the lock, so the
+        // has() check above is only for the friendly message, not for safety.
+        if (!cs.transferAtomic(sender.getUniqueId(), receiverUuid, currency.getId(), netAmount)) {
             sender.sendMessage("§cGagal memproses transfer! Periksa saldo Anda kembali.");
             return false;
         }
 
-        cs.addBalance(receiverUuid, currency.getId(), netAmount);
-
-        // Deposit transaction tax into sender's kingdom treasury
-        if (taxAmount > 0 && kingdomKey != null && !kingdomKey.equalsIgnoreCase("NONE")) {
-            plugin.getRepository().depositKingdomTreasury(kingdomKey, currency.getId(), taxAmount);
+        // Settle the kingdom tax separately: it is collected from the sender
+        // even when there is no kingdom to receive it (burned, as before), but
+        // it is only deposited into the treasury when actually collected —
+        // tax is never minted from nothing.
+        if (taxAmount > 0) {
+            if (cs.removeBalance(sender.getUniqueId(), currency.getId(), taxAmount)) {
+                if (kingdomKey != null && !kingdomKey.equalsIgnoreCase("NONE")) {
+                    plugin.getRepository().depositKingdomTreasury(kingdomKey, currency.getId(), taxAmount);
+                }
+            } else {
+                plugin.getLogger().warning("Failed to collect transfer tax of " + taxAmount
+                        + " " + currency.getId() + " from " + sender.getName()
+                        + " after successful transfer; tax skipped.");
+            }
         }
 
         String grossFormatted = NumberFormatUtil.format(amount, currency);

@@ -1,6 +1,7 @@
 package com.apexsions.core.command;
 
 import com.apexsions.core.ApexsionsCorePlugin;
+import com.apexsions.core.api.Permissions;
 import com.apexsions.core.player.DeathCoordinateManager;
 import com.apexsions.core.player.DeathRecord;
 import com.apexsions.core.util.PlayerResolver;
@@ -133,9 +134,9 @@ public class DeathCoordsCommand implements CommandExecutor, TabCompleter {
     }
 
     private boolean hasStaffPermission(Player player) {
-        return player.hasPermission("apexsions.admin")
-                || player.hasPermission("apexsions.staff")
-                || player.hasPermission("apexsions.core.deathcoords.others")
+        return player.hasPermission(Permissions.ADMIN)
+                || player.hasPermission(Permissions.STAFF)
+                || player.hasPermission(Permissions.CORE_DEATHCOORDS_OTHERS)
                 || player.isOp();
     }
 

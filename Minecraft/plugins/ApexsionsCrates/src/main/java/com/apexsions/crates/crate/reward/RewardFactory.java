@@ -65,7 +65,8 @@ public class RewardFactory {
         Rarity rarity = plugin.getCrateManager().getRarity(rarityId);
         if (rarity == null) {
             plugin.error("Invalid rarity '" + rarityId + "', fallback to default rarity. Caused by '" + config.getFile().getName() + "' -> '" + path + "'.");
-            rarity = plugin.getCrateManager().getMostCommonRarity();
+            rarity = plugin.getCrateManager().getMostCommonRarity().orElseThrow(() ->
+                new IllegalStateException("No rarities configured; cannot resolve a fallback rarity. Caused by '" + config.getFile().getName() + "' -> '" + path + "'."));
         }
 
         RewardType type = config.getEnum(path + ".Type", RewardType.class, RewardType.ITEM);
@@ -78,7 +79,8 @@ public class RewardFactory {
     @NotNull
     public static Reward wizardCreation(@NotNull CratesPlugin plugin, @NotNull Crate crate, @NotNull ItemStack source, @NotNull RewardType type, @NotNull AdaptedItem item) {
         String id = CrateUtils.generateRewardID(crate, source);
-        Rarity rarity = plugin.getCrateManager().getMostCommonRarity();
+        Rarity rarity = plugin.getCrateManager().getMostCommonRarity().orElseThrow(() ->
+            new IllegalStateException("Cannot create reward: no rarities are configured."));
         Reward reward = create(plugin, crate, id, rarity, type);
 
         if (reward instanceof ItemReward itemReward) {

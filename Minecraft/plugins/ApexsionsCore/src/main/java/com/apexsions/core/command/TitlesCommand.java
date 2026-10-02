@@ -1,6 +1,7 @@
 package com.apexsions.core.command;
 
 import com.apexsions.core.ApexsionsCorePlugin;
+import com.apexsions.core.api.Permissions;
 import com.apexsions.core.player.PlayerData;
 import com.apexsions.core.title.TitleItem;
 import com.apexsions.core.title.gui.TitleVaultGUI;
@@ -54,7 +55,7 @@ public class TitlesCommand implements CommandExecutor, TabCompleter {
                     sender.sendMessage(mm.deserialize("<red>Penggunaan: /titles equip <player> <titleId></red>"));
                     return true;
                 }
-                if (!sender.hasPermission("apexsionscore.admin") && !sender.isOp() && !(sender instanceof org.bukkit.command.ConsoleCommandSender)) {
+                if (!sender.hasPermission(Permissions.ADMIN) && !sender.isOp() && !(sender instanceof org.bukkit.command.ConsoleCommandSender)) {
                     sender.sendMessage(mm.deserialize("<red>Anda tidak memiliki izin untuk mengubah gelar pemain lain.</red>"));
                     return true;
                 }
@@ -94,7 +95,7 @@ public class TitlesCommand implements CommandExecutor, TabCompleter {
                     sender.sendMessage(mm.deserialize("<red>Penggunaan: /titles unequip <player></red>"));
                     return true;
                 }
-                if (!sender.hasPermission("apexsionscore.admin") && !sender.isOp() && !(sender instanceof org.bukkit.command.ConsoleCommandSender)) {
+                if (!sender.hasPermission(Permissions.ADMIN) && !sender.isOp() && !(sender instanceof org.bukkit.command.ConsoleCommandSender)) {
                     sender.sendMessage(mm.deserialize("<red>Anda tidak memiliki izin untuk melepas gelar pemain lain.</red>"));
                     return true;
                 }
@@ -118,7 +119,7 @@ public class TitlesCommand implements CommandExecutor, TabCompleter {
                     sender.sendMessage(mm.deserialize("<red>Penggunaan: /titles unlock <player> <titleId></red>"));
                     return true;
                 }
-                if (!sender.hasPermission("apexsionscore.admin") && !sender.isOp() && !(sender instanceof org.bukkit.command.ConsoleCommandSender)) {
+                if (!sender.hasPermission(Permissions.ADMIN) && !sender.isOp() && !(sender instanceof org.bukkit.command.ConsoleCommandSender)) {
                     sender.sendMessage(mm.deserialize("<red>Anda tidak memiliki izin untuk membuka gelar pemain.</red>"));
                     return true;
                 }

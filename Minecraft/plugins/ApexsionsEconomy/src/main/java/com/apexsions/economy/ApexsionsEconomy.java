@@ -1,6 +1,6 @@
 package com.apexsions.economy;
 
-import com.apexsions.economy.gui.core.GuiClickListener;
+import com.apexsions.core.gui.core.GuiClickListener;
 import com.apexsions.economy.command.AdminEconomyCommand;
 import com.apexsions.economy.command.AuctionCommand;
 import com.apexsions.economy.command.EconomyCommand;

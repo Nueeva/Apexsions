@@ -1,6 +1,6 @@
 package com.apexsions.battlepass.gui.navigation;
 
-import com.apexsions.battlepass.gui.core.GuiButton;
+import com.apexsions.core.gui.core.GuiButton;
 import com.apexsions.battlepass.gui.util.ItemBuilder;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;

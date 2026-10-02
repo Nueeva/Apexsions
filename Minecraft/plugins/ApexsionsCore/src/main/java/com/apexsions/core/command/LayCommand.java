@@ -1,6 +1,7 @@
 package com.apexsions.core.command;
 
 import com.apexsions.core.ApexsionsCorePlugin;
+import com.apexsions.core.api.Permissions;
 import com.apexsions.core.pose.PlayerPoseType;
 import com.apexsions.core.pose.PoseManager;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -32,7 +33,7 @@ public class LayCommand implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         // Admin force lay another player
-        if (args.length >= 1 && sender.hasPermission("apexsions.pose.admin")) {
+        if (args.length >= 1 && sender.hasPermission(Permissions.POSE_ADMIN)) {
             Player target = Bukkit.getPlayer(args[0]);
             if (target == null || !target.isOnline()) {
                 sender.sendMessage(mm.deserialize("<red>❌ Pemain <yellow>" + args[0] + "</yellow> tidak ditemukan atau sedang offline.</red>"));
@@ -53,7 +54,7 @@ public class LayCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
-        if (!player.hasPermission("apexsions.pose.lay")) {
+        if (!player.hasPermission(Permissions.POSE_LAY)) {
             player.sendMessage(mm.deserialize("<red>❌ Anda tidak memiliki izin untuk menggunakan perintah ini.</red>"));
             return true;
         }
@@ -69,7 +70,7 @@ public class LayCommand implements CommandExecutor, TabCompleter {
 
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        if (args.length == 1 && sender.hasPermission("apexsions.pose.admin")) {
+        if (args.length == 1 && sender.hasPermission(Permissions.POSE_ADMIN)) {
             List<String> list = new ArrayList<>();
             for (Player p : Bukkit.getOnlinePlayers()) {
                 if (p.getName().toLowerCase().startsWith(args[0].toLowerCase())) {

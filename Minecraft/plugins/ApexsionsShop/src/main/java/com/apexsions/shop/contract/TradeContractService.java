@@ -26,6 +26,8 @@ public class TradeContractService {
     private final MiniMessage miniMessage = MiniMessage.miniMessage();
     private final File dataFile;
     private YamlConfiguration dataConfig;
+    // C-12: lock untuk saveData() yang dipanggil dari main thread (stop/rotateContracts) dan async thread (saveDataAsync)
+    private final Object saveLock = new Object();
 
     private final List<TradeContract> activeContracts = new ArrayList<>();
     private final Map<UUID, Map<String, Integer>> playerProgress = new ConcurrentHashMap<>();
@@ -317,23 +319,25 @@ public class TradeContractService {
     }
 
     public void saveData() {
-        if (dataConfig == null) dataConfig = new YamlConfiguration();
-        dataConfig.set("nextResetTime", nextResetTime);
+        synchronized (saveLock) {
+            if (dataConfig == null) dataConfig = new YamlConfiguration();
+            dataConfig.set("nextResetTime", nextResetTime);
 
-        for (Map.Entry<UUID, Map<String, Integer>> entry : playerProgress.entrySet()) {
-            for (Map.Entry<String, Integer> prog : entry.getValue().entrySet()) {
-                dataConfig.set("progress." + entry.getKey().toString() + "." + prog.getKey(), prog.getValue());
+            for (Map.Entry<UUID, Map<String, Integer>> entry : playerProgress.entrySet()) {
+                for (Map.Entry<String, Integer> prog : entry.getValue().entrySet()) {
+                    dataConfig.set("progress." + entry.getKey().toString() + "." + prog.getKey(), prog.getValue());
+                }
             }
-        }
 
-        for (Map.Entry<UUID, Set<String>> entry : completedContracts.entrySet()) {
-            dataConfig.set("completed." + entry.getKey().toString(), new ArrayList<>(entry.getValue()));
-        }
+            for (Map.Entry<UUID, Set<String>> entry : completedContracts.entrySet()) {
+                dataConfig.set("completed." + entry.getKey().toString(), new ArrayList<>(entry.getValue()));
+            }
 
-        try {
-            dataConfig.save(dataFile);
-        } catch (IOException e) {
-            plugin.getLogger().warning("Failed to save contracts_data.yml: " + e.getMessage());
+            try {
+                dataConfig.save(dataFile);
+            } catch (IOException e) {
+                plugin.getLogger().warning("Failed to save contracts_data.yml: " + e.getMessage());
+            }
         }
     }
 

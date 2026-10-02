@@ -1,5 +1,6 @@
 package com.apexsions.core.container;
 
+import com.apexsions.core.api.Permissions;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
@@ -41,7 +42,7 @@ public class ContainerListener implements Listener {
             return;
         }
         Player player = event.getPlayer();
-        if (!player.isSneaking() || !player.hasPermission("apexsions.container.use")) {
+        if (!player.isSneaking() || !player.hasPermission(Permissions.CONTAINER_USE)) {
             return;
         }
         Block block = event.getClickedBlock();
@@ -71,7 +72,7 @@ public class ContainerListener implements Listener {
             return;
         }
         Player player = event.getPlayer();
-        if (!player.isSneaking() || !player.hasPermission("apexsions.container.use")) {
+        if (!player.isSneaking() || !player.hasPermission(Permissions.CONTAINER_USE)) {
             return;
         }
 

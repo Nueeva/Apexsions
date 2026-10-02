@@ -103,9 +103,12 @@ public class RarityListMenu extends LinkedMenu<CratesPlugin, CrateManager> imple
                     viewer1.getPlayer().sendActionBar(MM.deserialize("<red>✖ Cannot delete the last rarity!</red>"));
                     return;
                 }
-                manager.removeRarity(rarity.getId());
-                viewer1.getPlayer().sendActionBar(MM.deserialize("<green>✔ Rarity '" + rarity.getId() + "' deleted.</green>"));
-                this.runNextTick(() -> this.flush(viewer1.getPlayer()));
+                if (manager.removeRarity(rarity.getId())) {
+                    viewer1.getPlayer().sendActionBar(MM.deserialize("<green>✔ Rarity '" + rarity.getId() + "' deleted.</green>"));
+                    this.runNextTick(() -> this.flush(viewer1.getPlayer()));
+                } else {
+                    viewer1.getPlayer().sendActionBar(MM.deserialize("<red>✖ Cannot delete the last rarity!</red>"));
+                }
                 return;
             }
             // Edit

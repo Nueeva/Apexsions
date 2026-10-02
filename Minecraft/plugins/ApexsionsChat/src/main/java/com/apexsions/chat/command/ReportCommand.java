@@ -93,15 +93,17 @@ public class ReportCommand implements CommandExecutor, TabCompleter {
         );
 
         plugin.getReportRepository().createReportAsync(report).thenAccept(reportId -> {
-            if (reportId > 0) {
-                reportCooldowns.put(player.getUniqueId(), System.currentTimeMillis());
-                player.sendMessage(miniMessage.deserialize("<green>✔ Your report against <yellow>" + finalTargetName + "</yellow> (Report #" + reportId + ") has been submitted to online staff.</green>"));
+            Bukkit.getScheduler().runTask(plugin, () -> {
+                if (reportId > 0) {
+                    reportCooldowns.put(player.getUniqueId(), System.currentTimeMillis());
+                    player.sendMessage(miniMessage.deserialize("<green>✔ Your report against <yellow>" + finalTargetName + "</yellow> (Report #" + reportId + ") has been submitted to online staff.</green>"));
 
-                // Notify online staff
-                notifyStaff(report);
-            } else {
-                player.sendMessage(miniMessage.deserialize("<red>✖ An error occurred while saving your report. Please contact an admin.</red>"));
-            }
+                    // Notify online staff
+                    notifyStaff(report);
+                } else {
+                    player.sendMessage(miniMessage.deserialize("<red>✖ An error occurred while saving your report. Please contact an admin.</red>"));
+                }
+            });
         });
 
         return true;

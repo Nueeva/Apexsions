@@ -1,6 +1,7 @@
 package com.apexsions.core.command;
 
 import com.apexsions.core.ApexsionsCorePlugin;
+import com.apexsions.core.api.Permissions;
 import com.apexsions.core.region.Region;
 import com.apexsions.core.sions.SionsKeyTier;
 import com.apexsions.core.sions.SionsTemporalService;
@@ -41,7 +42,7 @@ public class SionsCommand implements CommandExecutor, TabCompleter {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        if (!sender.hasPermission("apexsions.admin")) {
+        if (!sender.hasPermission(Permissions.ADMIN)) {
             sender.sendMessage(miniMessage.deserialize("<red>✖ Anda tidak memiliki izin untuk menggunakan perintah ini.</red>"));
             return true;
         }
@@ -238,7 +239,7 @@ public class SionsCommand implements CommandExecutor, TabCompleter {
 
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        if (!sender.hasPermission("apexsions.admin")) return List.of();
+        if (!sender.hasPermission(Permissions.ADMIN)) return List.of();
         if (args.length == 1) {
             List<String> subs = List.of("status", "restore", "set", "snapshot", "setkey", "givekey", "bypass", "tp");
             List<String> matches = new ArrayList<>();

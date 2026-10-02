@@ -1,6 +1,7 @@
 package com.apexsions.core.security;
 
 import com.apexsions.core.ApexsionsCorePlugin;
+import com.apexsions.core.api.Permissions;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.FluidCollisionMode;
@@ -68,7 +69,7 @@ public class CombatSecurityListener implements Listener {
         if (attacker.getGameMode() == GameMode.CREATIVE || attacker.getGameMode() == GameMode.SPECTATOR) {
             return;
         }
-        if (attacker.hasPermission("apexsions.bypass.combat")) {
+        if (attacker.hasPermission(Permissions.BYPASS_COMBAT)) {
             return;
         }
 
@@ -158,7 +159,7 @@ public class CombatSecurityListener implements Listener {
                         "</red> <gray>(VL: " + vl + ", Ping: " + attacker.getPing() + "ms)</gray>";
 
                 Bukkit.getOnlinePlayers().stream()
-                        .filter(p -> p.hasPermission("apexsions.staff") || p.hasPermission("apexsions.admin"))
+                        .filter(p -> p.hasPermission(Permissions.STAFF) || p.hasPermission(Permissions.ADMIN))
                         .forEach(staff -> staff.sendMessage(mm.deserialize(staffMsg)));
 
                 plugin.getLogger().warning("[CombatGuard] " + attacker.getName() + " flagged for " + detail + " (" + vl + " VL).");

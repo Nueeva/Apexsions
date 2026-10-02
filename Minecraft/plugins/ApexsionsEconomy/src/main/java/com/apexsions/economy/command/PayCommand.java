@@ -1,5 +1,6 @@
 package com.apexsions.economy.command;
 
+import com.apexsions.core.api.Permissions;
 import com.apexsions.economy.ApexsionsEconomy;
 import com.apexsions.economy.currency.Currency;
 import com.apexsions.economy.gui.PayMenu;
@@ -42,7 +43,7 @@ public class PayCommand implements CommandExecutor, TabCompleter {
 
         String targetName = args[0];
         Player target = PlayerResolver.resolveOnline(targetName);
-        if (target == null || (!player.canSee(target) && !player.hasPermission("apexsions.vanish.see"))) {
+        if (target == null || (!player.canSee(target) && !player.hasPermission(Permissions.VANISH_SEE))) {
             player.sendMessage("§cPemain " + targetName + " tidak ditemukan atau sedang offline!");
             return true;
         }

@@ -115,9 +115,14 @@ public class ReportDetailGUI extends BaseChatGUI {
             plugin.getReportRepository().updateReportStatusAsync(
                     report.getReportId(), ReportStatus.REVIEWING, staff.getUniqueId(), staff.getName(), "Sedang ditinjau oleh " + staff.getName()
             ).thenAccept(success -> {
-                staff.sendMessage(mm.deserialize("<yellow>✔ Laporan #" + report.getReportId() + " berstatus: <gold>REVIEWING</gold>.</yellow>"));
-                staff.playSound(staff.getLocation(), Sound.UI_BUTTON_CLICK, 0.8f, 1.2f);
-                staff.closeInventory();
+                Bukkit.getScheduler().runTask(plugin, () -> {
+                    if (!staff.isOnline()) {
+                        return;
+                    }
+                    staff.sendMessage(mm.deserialize("<yellow>✔ Laporan #" + report.getReportId() + " berstatus: <gold>REVIEWING</gold>.</yellow>"));
+                    staff.playSound(staff.getLocation(), Sound.UI_BUTTON_CLICK, 0.8f, 1.2f);
+                    staff.closeInventory();
+                });
             });
             return;
         }
@@ -126,9 +131,14 @@ public class ReportDetailGUI extends BaseChatGUI {
             plugin.getReportRepository().updateReportStatusAsync(
                     report.getReportId(), ReportStatus.RESOLVED, staff.getUniqueId(), staff.getName(), "Ditindaklanjuti oleh " + staff.getName()
             ).thenAccept(success -> {
-                staff.sendMessage(mm.deserialize("<green>✔ Laporan #" + report.getReportId() + " berhasil diselesaikan (<bold>RESOLVED</bold>)!</green>"));
-                staff.playSound(staff.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 0.8f, 1.5f);
-                staff.closeInventory();
+                Bukkit.getScheduler().runTask(plugin, () -> {
+                    if (!staff.isOnline()) {
+                        return;
+                    }
+                    staff.sendMessage(mm.deserialize("<green>✔ Laporan #" + report.getReportId() + " berhasil diselesaikan (<bold>RESOLVED</bold>)!</green>"));
+                    staff.playSound(staff.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 0.8f, 1.5f);
+                    staff.closeInventory();
+                });
             });
             return;
         }
@@ -137,9 +147,14 @@ public class ReportDetailGUI extends BaseChatGUI {
             plugin.getReportRepository().updateReportStatusAsync(
                     report.getReportId(), ReportStatus.DISMISSED, staff.getUniqueId(), staff.getName(), "Ditolak oleh " + staff.getName()
             ).thenAccept(success -> {
-                staff.sendMessage(mm.deserialize("<red>✔ Laporan #" + report.getReportId() + " telah <bold>DITOLAK (DISMISSED)</bold>.</red>"));
-                staff.playSound(staff.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 0.8f, 1.0f);
-                staff.closeInventory();
+                Bukkit.getScheduler().runTask(plugin, () -> {
+                    if (!staff.isOnline()) {
+                        return;
+                    }
+                    staff.sendMessage(mm.deserialize("<red>✔ Laporan #" + report.getReportId() + " telah <bold>DITOLAK (DISMISSED)</bold>.</red>"));
+                    staff.playSound(staff.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 0.8f, 1.0f);
+                    staff.closeInventory();
+                });
             });
             return;
         }

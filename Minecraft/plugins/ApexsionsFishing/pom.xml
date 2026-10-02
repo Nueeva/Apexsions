@@ -4,6 +4,13 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <parent>
+        <groupId>com.apexsions</groupId>
+        <artifactId>apexsions-minecraft</artifactId>
+        <version>1.0.0</version>
+        <relativePath>../../pom.xml</relativePath>
+    </parent>
+
     <groupId>com.apexsions.fishing</groupId>
     <artifactId>ApexsionsFishing</artifactId>
     <version>1.0.0</version>
@@ -65,17 +72,13 @@
             <groupId>com.apexsions.core</groupId>
             <artifactId>ApexsionsCore</artifactId>
             <version>1.0.0</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/../ApexsionsCore/target/ApexsionsCore-1.0.0.jar</systemPath>
         </dependency>
 
         <!-- ApexsionsEconomy Dependency -->
         <dependency>
-            <groupId>com.apexsions.economy</groupId>
+            <groupId>com.apex</groupId>
             <artifactId>ApexsionsEconomy</artifactId>
             <version>1.0.0</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/../ApexsionsEconomy/target/ApexsionsEconomy-1.0.0.jar</systemPath>
         </dependency>
 
         <!-- ApexsionsCustomEnchants Dependency (Optional/Softdepend) -->
@@ -83,8 +86,6 @@
             <groupId>com.apexsions.customenchants</groupId>
             <artifactId>ApexsionsCustomEnchants</artifactId>
             <version>1.0.0</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/../ApexsionsCustomEnchants/target/ApexsionsCustomEnchants-1.0.0.jar</systemPath>
         </dependency>
 
         <!-- WorldEdit Bukkit (Optional/Softdepend) -->

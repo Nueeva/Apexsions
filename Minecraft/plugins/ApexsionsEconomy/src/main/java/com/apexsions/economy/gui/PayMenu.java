@@ -1,7 +1,8 @@
 package com.apexsions.economy.gui;
 
+import com.apexsions.core.api.Permissions;
 import com.apexsions.economy.gui.core.Gui;
-import com.apexsions.economy.gui.core.GuiButton;
+import com.apexsions.core.gui.core.GuiButton;
 import com.apexsions.economy.gui.navigation.BackButton;
 import com.apexsions.economy.gui.navigation.CloseButton;
 import com.apexsions.economy.gui.util.ItemBuilder;
@@ -74,7 +75,7 @@ public class PayMenu extends Gui {
                 .build(), event -> {
             plugin.getChatInputManager().startInput(player, "Masukkan nama penerima transfer:", targetName -> {
                 Player target = Bukkit.getPlayer(targetName);
-                if (target == null || !target.isOnline() || (!player.canSee(target) && !player.hasPermission("apexsions.vanish.see"))) {
+                if (target == null || !target.isOnline() || (!player.canSee(target) && !player.hasPermission(Permissions.VANISH_SEE))) {
                     player.sendMessage("§cPemain " + targetName + " tidak ditemukan atau sedang offline!");
                     open();
                     return;
@@ -90,7 +91,7 @@ public class PayMenu extends Gui {
 
         // 3. Online Players Grid (Slots 10..16, 19..25, 28..34, 37..43)
         List<Player> onlineList = new ArrayList<>();
-        boolean canSeeVanish = player.hasPermission("apexsions.vanish.see");
+        boolean canSeeVanish = player.hasPermission(Permissions.VANISH_SEE);
         for (Player p : Bukkit.getOnlinePlayers()) {
             if (!p.getUniqueId().equals(player.getUniqueId())) {
                 if (canSeeVanish || (player.canSee(p) && !p.hasMetadata("vanished") && !p.hasMetadata("vanish"))) {

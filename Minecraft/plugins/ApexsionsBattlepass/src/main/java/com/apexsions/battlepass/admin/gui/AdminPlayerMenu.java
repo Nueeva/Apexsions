@@ -2,7 +2,7 @@ package com.apexsions.battlepass.admin.gui;
 
 import com.apexsions.battlepass.ApexsionsBattlepass;
 import com.apexsions.battlepass.gui.core.Gui;
-import com.apexsions.battlepass.gui.core.GuiButton;
+import com.apexsions.core.gui.core.GuiButton;
 import com.apexsions.battlepass.gui.navigation.BackButton;
 import com.apexsions.battlepass.gui.navigation.CloseButton;
 import com.apexsions.battlepass.gui.util.ItemBuilder;
@@ -31,17 +31,76 @@ public class AdminPlayerMenu extends Gui {
         this(plugin, player, parent, 1, "");
     }
 
+    private static final int[] PLAYER_SLOTS = {
+            10, 11, 12, 13, 14, 15, 16,
+            19, 20, 21, 22, 23, 24, 25,
+            28, 29, 30, 31, 32, 33, 34,
+            37, 38, 39, 40, 41, 42, 43
+    };
+
     @Override
     public void initialize() {
         fillBackground();
 
+        // M-1: the SELECT * over all players must not block the server thread.
+        // Show loading placeholders immediately; the real content is filled in
+        // on the main thread once the async query completes.
+        setButton(4, new GuiButton(new ItemBuilder(Material.COMPASS)
+                .name("&e&lDAFTAR SELURUH PLAYER")
+                .lore(List.of(
+                        "&7Memuat data pemain...",
+                        " ",
+                        "&7Mohon tunggu."
+                ))
+                .build()));
+
+        ItemStack loading = new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).name("&7Memuat...").build();
+        for (int slot : PLAYER_SLOTS) {
+            setButton(slot, new GuiButton(loading, null));
+        }
+
+        // Search Filter Button (Slot 8)
+        setButton(8, new GuiButton(new ItemBuilder(Material.NAME_TAG)
+                .name("&a&l[🔍] CARI NAMA PLAYER")
+                .lore(List.of(
+                        "&7Klik untuk mencari pemain berdasarkan nama.",
+                        " ",
+                        "&eKlik untuk memasukkan nama >"
+                ))
+                .build(), event -> {
+            plugin.getChatInputManager().startInput(player, "Masukkan nama pemain yang ingin dicari (atau 'semua' untuk reset):", input -> {
+                String f = (input.equalsIgnoreCase("semua") || input.equalsIgnoreCase("all") || input.equalsIgnoreCase("reset")) ? "" : input.trim();
+                new AdminPlayerMenu(plugin, player, parent, 1, f).open();
+            }, this::open);
+        }));
+
+        setButton(45, new BackButton(this, parent));
+        setButton(53, new CloseButton());
+
         int seasonId = plugin.getSeasonManager().getCurrentSeason().getId();
-        // Load all players (offline + cached in memory)
+        plugin.getRepository().loadAllPlayerData(seasonId).whenComplete((dbList, ex) -> {
+            if (ex != null) {
+                plugin.getLogger().warning("[AdminPlayerMenu] Gagal memuat data pemain: " + ex.getMessage());
+            }
+            final List<PlayerData> loaded = dbList != null ? dbList : Collections.emptyList();
+            // Bukkit API (inventories, OfflinePlayer) is not thread-safe: populate on the main thread.
+            Bukkit.getScheduler().runTask(plugin, () -> {
+                if (!plugin.isEnabled() || !player.isOnline()) return;
+                // Skip stale callbacks: the player closed this menu or opened another one.
+                if (player.getOpenInventory().getTopInventory() != inventory) return;
+                populate(loaded);
+            });
+        });
+    }
+
+    /**
+     * M-1: fills the menu on the main thread once the async player-data query completes.
+     * Shows exactly the same data as the previous blocking implementation.
+     */
+    private void populate(List<PlayerData> dbList) {
+        // Merge DB data with in-memory cache (offline + cached in memory)
         Map<UUID, PlayerData> allPlayers = new HashMap<>();
-        try {
-            List<PlayerData> dbList = plugin.getRepository().loadAllPlayerData(seasonId).get();
-            for (PlayerData d : dbList) allPlayers.put(d.getUuid(), d);
-        } catch (Exception ignored) {}
+        for (PlayerData d : dbList) allPlayers.put(d.getUuid(), d);
         for (PlayerData mem : plugin.getPlayerManager().getPlayerDataCache().values()) {
             allPlayers.put(mem.getUuid(), mem);
         }
@@ -80,33 +139,11 @@ public class AdminPlayerMenu extends Gui {
                 ))
                 .build()));
 
-        // Search Filter Button (Slot 8)
-        setButton(8, new GuiButton(new ItemBuilder(Material.NAME_TAG)
-                .name("&a&l[🔍] CARI NAMA PLAYER")
-                .lore(List.of(
-                        "&7Klik untuk mencari pemain berdasarkan nama.",
-                        " ",
-                        "&eKlik untuk memasukkan nama >"
-                ))
-                .build(), event -> {
-            plugin.getChatInputManager().startInput(player, "Masukkan nama pemain yang ingin dicari (atau 'semua' untuk reset):", input -> {
-                String f = (input.equalsIgnoreCase("semua") || input.equalsIgnoreCase("all") || input.equalsIgnoreCase("reset")) ? "" : input.trim();
-                new AdminPlayerMenu(plugin, player, parent, 1, f).open();
-            }, this::open);
-        }));
-
         // 2. Render Player Heads (Slots 10..16, 19..25, 28..34, 37..43)
-        int[] playerSlots = {
-                10, 11, 12, 13, 14, 15, 16,
-                19, 20, 21, 22, 23, 24, 25,
-                28, 29, 30, 31, 32, 33, 34,
-                37, 38, 39, 40, 41, 42, 43
-        };
-
         int startIdx = (validPage - 1) * PLAYERS_PER_PAGE;
         int slotIdx = 0;
 
-        for (int i = startIdx; i < totalPlayers && slotIdx < playerSlots.length; i++) {
+        for (int i = startIdx; i < totalPlayers && slotIdx < PLAYER_SLOTS.length; i++) {
             PlayerData data = filteredList.get(i);
             OfflinePlayer op = Bukkit.getOfflinePlayer(data.getUuid());
             String name = op.getName() != null ? op.getName() : "Player_" + data.getUuid().toString().substring(0, 6);
@@ -127,14 +164,17 @@ public class AdminPlayerMenu extends Gui {
                     ))
                     .build();
 
-            setButton(playerSlots[slotIdx++], new GuiButton(head, event -> {
+            setButton(PLAYER_SLOTS[slotIdx++], new GuiButton(head, event -> {
                 new AdminPlayerDetailMenu(plugin, player, data.getUuid(), name, this).open();
             }));
         }
 
-        // 3. Navigation Controls (Row 5)
-        setButton(45, new BackButton(this, parent));
+        // Restore filler on unused player slots (replaces the loading placeholders).
+        for (int i = slotIdx; i < PLAYER_SLOTS.length; i++) {
+            setButton(PLAYER_SLOTS[i], new GuiButton(fillerItem(), null));
+        }
 
+        // 3. Navigation Controls (Row 5)
         if (validPage > 1) {
             setButton(48, new GuiButton(new ItemBuilder(Material.PAPER).name("&e< Halaman " + (validPage - 1)).build(), event -> {
                 new AdminPlayerMenu(plugin, player, parent, validPage - 1, filter).open();
@@ -148,8 +188,16 @@ public class AdminPlayerMenu extends Gui {
                 new AdminPlayerMenu(plugin, player, parent, validPage + 1, filter).open();
             }));
         }
+    }
 
-        setButton(53, new CloseButton());
+    /** Background filler matching {@link Gui#fillBackground()}, used to clear loading placeholders. */
+    private ItemStack fillerItem() {
+        Material mat = Material.BLACK_STAINED_GLASS_PANE;
+        if (plugin.getGuiConfig() != null) {
+            Material matched = Material.matchMaterial(plugin.getGuiConfig().getString("filler.material", "BLACK_STAINED_GLASS_PANE"));
+            if (matched != null) mat = matched;
+        }
+        return new ItemBuilder(mat).name(" ").build();
     }
 }
 

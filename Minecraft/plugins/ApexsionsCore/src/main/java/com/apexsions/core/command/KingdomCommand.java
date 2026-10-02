@@ -1,6 +1,7 @@
 package com.apexsions.core.command;
 
 import com.apexsions.core.ApexsionsCorePlugin;
+import com.apexsions.core.api.Permissions;
 import com.apexsions.core.player.PlayerData;
 import com.apexsions.core.region.Region;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -94,7 +95,7 @@ public class KingdomCommand implements CommandExecutor, TabCompleter {
             case "reward":
             case "claim":
                 if (args.length > 1 && args[1].equalsIgnoreCase("admin")) {
-                    if (!player.hasPermission("apexsionscore.admin") && !player.isOp()) {
+                    if (!player.hasPermission(Permissions.ADMIN) && !player.isOp()) {
                         player.sendMessage(miniMessage.deserialize("<red>Anda tidak memiliki izin admin!</red>"));
                         return true;
                     }
@@ -105,7 +106,7 @@ public class KingdomCommand implements CommandExecutor, TabCompleter {
                 break;
 
             case "admin":
-                if (!player.hasPermission("apexsionscore.admin") && !player.isOp()) {
+                if (!player.hasPermission(Permissions.ADMIN) && !player.isOp()) {
                     player.sendMessage(miniMessage.deserialize("<red>Anda tidak memiliki izin admin!</red>"));
                     return true;
                 }
@@ -138,7 +139,7 @@ public class KingdomCommand implements CommandExecutor, TabCompleter {
 
             case "setspawn":
             case "setcapital":
-                if (!sender.hasPermission("apexsionscore.admin") && !sender.isOp()) {
+                if (!sender.hasPermission(Permissions.ADMIN) && !sender.isOp()) {
                     sender.sendMessage(miniMessage.deserialize("<red>Anda tidak memiliki izin untuk mengatur titik spawn kerajaan!</red>"));
                     return true;
                 }
@@ -160,7 +161,7 @@ public class KingdomCommand implements CommandExecutor, TabCompleter {
                 sender.sendMessage(miniMessage.deserialize("<yellow>/kingdom rewards</yellow> <gray>- View & claim Level 1–100 progression rewards</gray>"));
                 sender.sendMessage(miniMessage.deserialize("<yellow>/kingdom xp</yellow> <gray>- Open 13 XP gameplay sources and guide GUI</gray>"));
                 sender.sendMessage(miniMessage.deserialize("<yellow>/level</yellow> <gray>- Quick shortcut to your character profile & level progress</gray>"));
-                if (sender.hasPermission("apexsionscore.admin")) {
+                if (sender.hasPermission(Permissions.ADMIN)) {
                     sender.sendMessage(miniMessage.deserialize("<gold>/kingdom setspawn <kingdom></gold> <gray>- Atur titik spawn ibukota kerajaan</gray>"));
                     sender.sendMessage(miniMessage.deserialize("<gold>/kingdom setking <kingdom> <player></gold> <gray>- Angkat Raja baru kerajaan</gray>"));
                     sender.sendMessage(miniMessage.deserialize("<gold>/kingdom unsetking <kingdom></gold> <gray>- Cabut gelar Raja kerajaan</gray>"));
@@ -173,7 +174,7 @@ public class KingdomCommand implements CommandExecutor, TabCompleter {
     }
 
     private void handleUnsetKing(CommandSender sender, String[] args) {
-        if (!sender.hasPermission("apexsionscore.admin") && !sender.isOp()) {
+        if (!sender.hasPermission(Permissions.ADMIN) && !sender.isOp()) {
             sender.sendMessage(miniMessage.deserialize("<red>Anda tidak memiliki izin untuk mencabut gelar Raja!</red>"));
             return;
         }
@@ -227,7 +228,7 @@ public class KingdomCommand implements CommandExecutor, TabCompleter {
     }
 
     private void handleSetKing(CommandSender sender, String[] args) {
-        if (!sender.hasPermission("apexsionscore.admin") && !sender.isOp()) {
+        if (!sender.hasPermission(Permissions.ADMIN) && !sender.isOp()) {
             sender.sendMessage(miniMessage.deserialize("<red>Anda tidak memiliki izin untuk mengangkat Raja kerajaan!</red>"));
             return;
         }
@@ -288,7 +289,7 @@ public class KingdomCommand implements CommandExecutor, TabCompleter {
     }
 
     private void handleKingdomMenu(Player player) {
-        if (!player.hasPermission("apexsionscore.command.region") && !player.hasPermission("kingdomcore.command.kingdom")) {
+        if (!player.hasPermission(Permissions.COMMAND_REGION)) {
             player.sendMessage(miniMessage.deserialize("<red>You do not have permission to use kingdom commands.</red>"));
             return;
         }
@@ -315,7 +316,7 @@ public class KingdomCommand implements CommandExecutor, TabCompleter {
     }
 
     private void handleKingdomTeleport(Player player, String[] args) {
-        if (!player.hasPermission("apexsionscore.command.region") && !player.hasPermission("kingdomcore.command.kingdom")) {
+        if (!player.hasPermission(Permissions.COMMAND_REGION)) {
             player.sendMessage(miniMessage.deserialize("<red>You do not have permission to teleport to your kingdom.</red>"));
             return;
         }
@@ -380,7 +381,7 @@ public class KingdomCommand implements CommandExecutor, TabCompleter {
     }
 
     private void handleKingdomChoose(Player player) {
-        if (!player.hasPermission("apexsionscore.command.region") && !player.hasPermission("kingdomcore.command.kingdom.choose")) {
+        if (!player.hasPermission(Permissions.COMMAND_REGION)) {
             player.sendMessage(miniMessage.deserialize("<red>You do not have permission to choose a kingdom.</red>"));
             return;
         }
@@ -398,7 +399,7 @@ public class KingdomCommand implements CommandExecutor, TabCompleter {
     }
 
     private void handleKingdomInfo(Player player) {
-        if (!player.hasPermission("apexsionscore.command.level") && !player.hasPermission("kingdomcore.command.level")) {
+        if (!player.hasPermission(Permissions.COMMAND_LEVEL)) {
             player.sendMessage(miniMessage.deserialize("<red>You do not have permission to view your kingdom profile.</red>"));
             return;
         }
@@ -407,7 +408,7 @@ public class KingdomCommand implements CommandExecutor, TabCompleter {
     }
 
     private void handleKingdomRewards(Player player) {
-        if (!player.hasPermission("apexsionscore.command.level") && !player.hasPermission("kingdomcore.command.level")) {
+        if (!player.hasPermission(Permissions.COMMAND_LEVEL)) {
             player.sendMessage(miniMessage.deserialize("<red>You do not have permission to view level rewards.</red>"));
             return;
         }
@@ -416,7 +417,7 @@ public class KingdomCommand implements CommandExecutor, TabCompleter {
     }
 
     private void handleKingdomXpGuide(Player player) {
-        if (!player.hasPermission("apexsionscore.command.level") && !player.hasPermission("kingdomcore.command.level")) {
+        if (!player.hasPermission(Permissions.COMMAND_LEVEL)) {
             player.sendMessage(miniMessage.deserialize("<red>You do not have permission to view XP guide.</red>"));
             return;
         }
@@ -428,7 +429,7 @@ public class KingdomCommand implements CommandExecutor, TabCompleter {
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (args.length == 1) {
             List<String> list = new ArrayList<>(Arrays.asList("menu", "spawn", "capital", "ibukota", "choose", "info", "top", "profile", "rewards", "claim", "xp", "guide", "level", "rtp", "wild", "wilderness"));
-            if (sender.hasPermission("apexsionscore.admin")) {
+            if (sender.hasPermission(Permissions.ADMIN)) {
                 list.add("admin");
                 list.add("setspawn");
                 list.add("setcapital");
@@ -446,11 +447,11 @@ public class KingdomCommand implements CommandExecutor, TabCompleter {
         } else if (args.length == 2 && (args[0].equalsIgnoreCase("setking") || args[0].equalsIgnoreCase("unsetking") || args[0].equalsIgnoreCase("removeking") || args[0].equalsIgnoreCase("setspawn") || args[0].equalsIgnoreCase("setcapital"))) {
             return Arrays.asList("ZENITHAR", "SOLTERRA", "SYLVAMOOR");
         } else if (args.length == 2 && (args[0].equalsIgnoreCase("spawn") || args[0].equalsIgnoreCase("capital") || args[0].equalsIgnoreCase("ibukota") || args[0].equalsIgnoreCase("tp"))) {
-            if (sender instanceof Player p && ((plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isConclaveStaff(p)) || p.hasPermission("apexsionscore.admin"))) {
+            if (sender instanceof Player p && ((plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isConclaveStaff(p)) || p.hasPermission(Permissions.ADMIN))) {
                 return Arrays.asList("ZENITHAR", "SOLTERRA", "SYLVAMOOR", "SIONS", "LOBBY");
             }
         } else if (args.length == 2 && (args[0].equalsIgnoreCase("rewards") || args[0].equalsIgnoreCase("reward"))) {
-            if (sender.hasPermission("apexsionscore.admin")) {
+            if (sender.hasPermission(Permissions.ADMIN)) {
                 return Collections.singletonList("admin");
             }
         } else if (args.length == 3 && args[0].equalsIgnoreCase("setking")) {

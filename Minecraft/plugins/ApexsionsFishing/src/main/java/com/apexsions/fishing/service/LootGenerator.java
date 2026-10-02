@@ -153,10 +153,17 @@ public class LootGenerator {
         }
     }
 
+    /**
+     * Generates a random catch for the given player, or {@code null} when no loot
+     * is configured at all (all loot tables are empty). Callers must handle {@code null}
+     * (notify the player, cancel the catch) — an empty loot table is a config problem.
+     */
+    @Nullable
     public CatchResult generateCatch(@NotNull Player player, @Nullable ItemStack rod) {
         return generateCatch(player, rod, null);
     }
 
+    @Nullable
     public CatchResult generateCatch(@NotNull Player player, @Nullable ItemStack rod, @Nullable com.apexsions.fishing.model.FishingZone zone) {
         double luckBonus = plugin.getRodManager().getLuckBonus(rod);
         double weightBonus = plugin.getRodManager().getWeightBonus(rod);
@@ -202,6 +209,12 @@ public class LootGenerator {
         if (pool.isEmpty()) {
             pool = fishTable;
             selectedType = CatchType.FISH;
+        }
+
+        // M-13: all loot tables empty/broken -> bail out instead of throwing on pool.get(0)
+        if (pool.isEmpty()) {
+            plugin.getLogger().warning("Cannot generate catch: all fishing loot tables are empty. Check loot.yml configuration!");
+            return null;
         }
 
         // Weighted roll inside pool

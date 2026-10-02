@@ -1,6 +1,7 @@
 package com.apexsions.core.level;
 
 import com.apexsions.core.ApexsionsCorePlugin;
+import com.apexsions.core.api.Permissions;
 import com.apexsions.core.event.KingdomLevelUpEvent;
 import com.apexsions.core.event.KingdomXpGainEvent;
 import com.apexsions.core.level.xp.XpSource;
@@ -247,11 +248,11 @@ public class LevelManager {
 
     public double getRankXpMultiplier(Player player) {
         if (player == null) return 1.0;
-        if (player.hasPermission("apexsions.exp.bonus.sions") || player.hasPermission("apexsions.rank.sions")) return 1.20; // +20%
-        if (player.hasPermission("apexsions.exp.bonus.emperor") || player.hasPermission("apexsions.rank.emperor")) return 1.14; // +14%
-        if (player.hasPermission("apexsions.exp.bonus.sovereign") || player.hasPermission("apexsions.rank.sovereign")) return 1.10; // +10%
-        if (player.hasPermission("apexsions.exp.bonus.archon") || player.hasPermission("apexsions.rank.archon")) return 1.08; // +8%
-        if (player.hasPermission("apexsions.exp.bonus.ascendant") || player.hasPermission("apexsions.rank.ascendant")) return 1.05; // +5%
+        if (player.hasPermission(Permissions.EXP_BONUS_SIONS) || player.hasPermission(Permissions.RANK_SIONS)) return 1.20; // +20%
+        if (player.hasPermission(Permissions.EXP_BONUS_EMPEROR) || player.hasPermission(Permissions.RANK_EMPEROR)) return 1.14; // +14%
+        if (player.hasPermission(Permissions.EXP_BONUS_SOVEREIGN) || player.hasPermission(Permissions.RANK_SOVEREIGN)) return 1.10; // +10%
+        if (player.hasPermission(Permissions.EXP_BONUS_ARCHON) || player.hasPermission(Permissions.RANK_ARCHON)) return 1.08; // +8%
+        if (player.hasPermission(Permissions.EXP_BONUS_ASCENDANT) || player.hasPermission(Permissions.RANK_ASCENDANT)) return 1.05; // +5%
         return 1.0;
     }
 }

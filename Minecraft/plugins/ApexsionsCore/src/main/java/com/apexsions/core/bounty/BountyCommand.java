@@ -1,5 +1,6 @@
 package com.apexsions.core.bounty;
 
+import com.apexsions.core.api.Permissions;
 import com.apexsions.core.util.PlayerResolver;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
@@ -44,7 +45,7 @@ public class BountyCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
-        if (!player.hasPermission("apexsions.bounty.use") && !player.hasPermission("apexsions.bounty.admin")) {
+        if (!player.hasPermission(Permissions.BOUNTY_USE) && !player.hasPermission(Permissions.BOUNTY_ADMIN)) {
             player.sendMessage(mm.deserialize("<red>Anda tidak memiliki izin untuk menggunakan sistem bounty.</red>"));
             return true;
         }
@@ -210,8 +211,8 @@ public class BountyCommand implements CommandExecutor, TabCompleter {
     }
 
     private boolean hasAdmin(Player player) {
-        return player.hasPermission("apexsions.bounty.admin")
-                || player.hasPermission("apexsions.admin")
+        return player.hasPermission(Permissions.BOUNTY_ADMIN)
+                || player.hasPermission(Permissions.ADMIN)
                 || player.isOp();
     }
 

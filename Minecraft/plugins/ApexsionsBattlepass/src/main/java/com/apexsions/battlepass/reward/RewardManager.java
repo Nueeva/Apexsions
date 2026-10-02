@@ -36,6 +36,12 @@ public class RewardManager {
 
         this.maxLevel = plugin.getConfig().getInt("battlepass.max-level", 100);
         this.defaultRequiredXp = plugin.getConfig().getInt("battlepass.default-required-xp", 1000);
+        // C-5: nilai <= 0 akan membuat loop level-up di BattlePassXpService hang selamanya
+        if (this.defaultRequiredXp <= 0) {
+            plugin.getLogger().warning("[RewardManager] battlepass.default-required-xp harus > 0 (terbaca "
+                    + this.defaultRequiredXp + "); memakai default 1000.");
+            this.defaultRequiredXp = 1000;
+        }
 
         File targetFile = new File(plugin.getDataFolder(), "rewards/rewards.yml");
         File legacyFile = new File(plugin.getDataFolder(), "rewards.yml");
@@ -64,6 +70,12 @@ public class RewardManager {
                 try {
                     int lvl = Integer.parseInt(lvlKey);
                     int xp = levelsSec.getInt(lvlKey + ".required-xp", defaultRequiredXp);
+                    // C-5: tolak nilai <= 0 (pakai default) agar loop level-up tidak hang
+                    if (xp <= 0) {
+                        plugin.getLogger().warning("[RewardManager] levels." + lvlKey + ".required-xp harus > 0 (terbaca "
+                                + xp + "); memakai default-required-xp (" + defaultRequiredXp + ").");
+                        xp = defaultRequiredXp;
+                    }
                     levelRequiredXp.put(lvl, xp);
 
                     ConfigurationSection rewardsSec = levelsSec.getConfigurationSection(lvlKey + ".rewards");

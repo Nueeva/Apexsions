@@ -1,6 +1,7 @@
 package com.apexsions.core.region.gui;
 
 import com.apexsions.core.ApexsionsCorePlugin;
+import com.apexsions.core.api.Permissions;
 import com.apexsions.core.player.PlayerData;
 import com.apexsions.core.region.Region;
 import com.apexsions.core.region.gui.holder.KingdomProfileHolder;
@@ -118,7 +119,7 @@ public class KingdomProfileGUI implements Listener {
         long onlineKingdomCount = 0;
         if (regionOpt.isPresent()) {
             Region r = regionOpt.get();
-            boolean canSeeVanish = player.hasPermission("apexsions.vanish.see");
+            boolean canSeeVanish = player.hasPermission(Permissions.VANISH_SEE);
             onlineKingdomCount = Bukkit.getOnlinePlayers().stream()
                     .filter(p -> (canSeeVanish || plugin.getVanishManager() == null || !plugin.getVanishManager().isVanished(p))
                             && plugin.getApi().getPlayerRegionKey(p.getUniqueId()).equalsIgnoreCase(r.getKey()))

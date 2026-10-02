@@ -1,6 +1,7 @@
 package com.apexsions.core.command;
 
 import com.apexsions.core.ApexsionsCorePlugin;
+import com.apexsions.core.api.Permissions;
 import com.apexsions.core.pose.PlayerPoseType;
 import com.apexsions.core.pose.PoseManager;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -46,7 +47,7 @@ public class PoseCommand implements CommandExecutor, TabCompleter {
         Player targetPlayer = null;
 
         if (args.length >= 2) {
-            if (!sender.hasPermission("apexsions.pose.admin")) {
+            if (!sender.hasPermission(Permissions.POSE_ADMIN)) {
                 sender.sendMessage(mm.deserialize("<red>❌ Anda tidak memiliki izin untuk mengubah pose pemain lain.</red>"));
                 return true;
             }
@@ -64,7 +65,7 @@ public class PoseCommand implements CommandExecutor, TabCompleter {
 
         switch (sub) {
             case "sit" -> {
-                if (sender == targetPlayer && !sender.hasPermission("apexsions.pose.sit")) {
+                if (sender == targetPlayer && !sender.hasPermission(Permissions.POSE_SIT)) {
                     sender.sendMessage(mm.deserialize("<red>❌ Anda tidak memiliki izin untuk duduk.</red>"));
                     return true;
                 }
@@ -74,7 +75,7 @@ public class PoseCommand implements CommandExecutor, TabCompleter {
                 }
             }
             case "lay", "lie" -> {
-                if (sender == targetPlayer && !sender.hasPermission("apexsions.pose.lay")) {
+                if (sender == targetPlayer && !sender.hasPermission(Permissions.POSE_LAY)) {
                     sender.sendMessage(mm.deserialize("<red>❌ Anda tidak memiliki izin untuk tiduran.</red>"));
                     return true;
                 }
@@ -84,7 +85,7 @@ public class PoseCommand implements CommandExecutor, TabCompleter {
                 }
             }
             case "crawl" -> {
-                if (sender == targetPlayer && !sender.hasPermission("apexsions.pose.crawl")) {
+                if (sender == targetPlayer && !sender.hasPermission(Permissions.POSE_CRAWL)) {
                     sender.sendMessage(mm.deserialize("<red>❌ Anda tidak memiliki izin untuk merangkak.</red>"));
                     return true;
                 }
@@ -94,7 +95,7 @@ public class PoseCommand implements CommandExecutor, TabCompleter {
                 }
             }
             case "bellyflop", "flop" -> {
-                if (sender == targetPlayer && !sender.hasPermission("apexsions.pose.bellyflop")) {
+                if (sender == targetPlayer && !sender.hasPermission(Permissions.POSE_BELLYFLOP)) {
                     sender.sendMessage(mm.deserialize("<red>❌ Anda tidak memiliki izin untuk pose tengkurap.</red>"));
                     return true;
                 }
@@ -104,7 +105,7 @@ public class PoseCommand implements CommandExecutor, TabCompleter {
                 }
             }
             case "spin", "rotate" -> {
-                if (sender == targetPlayer && !sender.hasPermission("apexsions.pose.spin")) {
+                if (sender == targetPlayer && !sender.hasPermission(Permissions.POSE_SPIN)) {
                     sender.sendMessage(mm.deserialize("<red>❌ Anda tidak memiliki izin untuk pose berputar.</red>"));
                     return true;
                 }
@@ -136,7 +137,7 @@ public class PoseCommand implements CommandExecutor, TabCompleter {
                 }
             }
             return list;
-        } else if (args.length == 2 && sender.hasPermission("apexsions.pose.admin")) {
+        } else if (args.length == 2 && sender.hasPermission(Permissions.POSE_ADMIN)) {
             List<String> list = new ArrayList<>();
             for (Player p : Bukkit.getOnlinePlayers()) {
                 if (p.getName().toLowerCase().startsWith(args[1].toLowerCase())) {

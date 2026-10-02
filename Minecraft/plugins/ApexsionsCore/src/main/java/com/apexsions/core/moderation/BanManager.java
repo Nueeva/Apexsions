@@ -1,6 +1,7 @@
 package com.apexsions.core.moderation;
 
 import com.apexsions.core.ApexsionsCorePlugin;
+import com.apexsions.core.api.Permissions;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.BanList;
@@ -189,7 +190,7 @@ public class BanManager {
         Component staffNotice = mm.deserialize("<gray>[<gold>Apexsions Security</gold>] Sanksi ban untuk <yellow>" +
                 banToPardon.getPlayerName() + "</yellow> dicabut oleh <gold>" + unbannedBy + "</gold>. Alasan: <white>" + unbanReason + "</white></gray>");
         for (Player p : Bukkit.getOnlinePlayers()) {
-            if (p.hasPermission("apexsions.staff") || p.isOp()) {
+            if (p.hasPermission(Permissions.STAFF) || p.isOp()) {
                 p.sendMessage(staffNotice);
             }
         }
@@ -241,7 +242,7 @@ public class BanManager {
                 "</yellow> telah di-ban oleh <gold>" + record.getBannedBy() + "</gold> (<aqua>" + durStr +
                 "</aqua>). Alasan: <white>" + record.getReason() + "</white>");
         for (Player p : Bukkit.getOnlinePlayers()) {
-            if (p.hasPermission("apexsions.staff") || p.isOp()) {
+            if (p.hasPermission(Permissions.STAFF) || p.isOp()) {
                 p.sendMessage(msg);
             }
         }

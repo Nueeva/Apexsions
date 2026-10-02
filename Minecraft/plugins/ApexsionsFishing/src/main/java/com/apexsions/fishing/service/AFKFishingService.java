@@ -210,6 +210,13 @@ public class AFKFishingService {
             zone = plugin.getZoneManager().getZoneAt(player.getLocation());
         }
         LootGenerator.CatchResult result = plugin.getLootGenerator().generateCatch(player, currentRod, zone);
+        if (result == null) {
+            // M-13: loot tables are empty (warning already logged by LootGenerator).
+            // Bail out gracefully instead of throwing on an empty pool.
+            hook.remove();
+            player.sendMessage(mm.deserialize("<red>Tangkapan gagal: tabel loot memancing belum dikonfigurasi! Hubungi admin server.</red>"));
+            return;
+        }
 
         // Zone XP Bonus
         if (zone != null && zone.getXpMultiplier() > 1.0) {

@@ -97,22 +97,24 @@ public class MailCommand implements CommandExecutor, TabCompleter {
             );
 
             plugin.getMailRepository().sendMailAsync(mail).thenAccept(mailId -> {
-                if (mailId > 0) {
-                    sendCooldowns.put(player.getUniqueId(), System.currentTimeMillis());
-                    player.sendMessage(miniMessage.deserialize("<green>✔ Mail successfully sent to <yellow>" + finalTargetName + "</yellow>!</green>"));
+                Bukkit.getScheduler().runTask(plugin, () -> {
+                    if (mailId > 0) {
+                        sendCooldowns.put(player.getUniqueId(), System.currentTimeMillis());
+                        player.sendMessage(miniMessage.deserialize("<green>✔ Mail successfully sent to <yellow>" + finalTargetName + "</yellow>!</green>"));
 
-                    // If target is currently online, notify them immediately
-                    if (target != null && target.isOnline()) {
-                        target.sendMessage(miniMessage.deserialize(
-                                "<gold>📬 You just received a new offline letter from <yellow>" + player.getName() + "</yellow>! Type <yellow><underlined>/mail</underlined></yellow> to read.</gold>"
-                        ));
-                        try {
-                            target.playSound(target.getLocation(), Sound.ITEM_BOOK_PAGE_TURN, 1.0f, 1.0f);
-                        } catch (Exception ignored) {}
+                        // If target is currently online, notify them immediately
+                        if (target != null && target.isOnline()) {
+                            target.sendMessage(miniMessage.deserialize(
+                                    "<gold>📬 You just received a new offline letter from <yellow>" + player.getName() + "</yellow>! Type <yellow><underlined>/mail</underlined></yellow> to read.</gold>"
+                            ));
+                            try {
+                                target.playSound(target.getLocation(), Sound.ITEM_BOOK_PAGE_TURN, 1.0f, 1.0f);
+                            } catch (Exception ignored) {}
+                        }
+                    } else {
+                        player.sendMessage(miniMessage.deserialize("<red>✖ Failed to send mail. Please try again later.</red>"));
                     }
-                } else {
-                    player.sendMessage(miniMessage.deserialize("<red>✖ Failed to send mail. Please try again later.</red>"));
-                }
+                });
             });
 
             return true;

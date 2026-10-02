@@ -5,7 +5,7 @@ import com.apexsions.battlepass.quest.model.Quest;
 import com.apexsions.battlepass.quest.model.QuestCategory;
 import com.apexsions.battlepass.quest.model.QuestStatus;
 import com.apexsions.battlepass.season.SeasonState;
-import com.apexsions.battlepass.util.TimeUtil;
+import com.apexsions.core.util.TimeUtil;
 
 import java.time.*;
 

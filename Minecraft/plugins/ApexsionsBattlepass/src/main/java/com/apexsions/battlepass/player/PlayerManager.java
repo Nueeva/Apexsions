@@ -25,6 +25,19 @@ public class PlayerManager {
         if (data == null) {
             int currentSeasonId = (plugin.getSeasonManager() != null && plugin.getSeasonManager().getCurrentSeason() != null)
                     ? plugin.getSeasonManager().getCurrentSeason().getId() : 1;
+            if (org.bukkit.Bukkit.isPrimaryThread()) {
+                // M-1: never block the server thread on DB I/O. Kick off the async
+                // load to warm the cache and serve a transient empty profile immediately.
+                final PlayerData placeholder = new PlayerData(uuid, currentSeasonId);
+                repository.loadPlayerData(uuid, currentSeasonId).whenComplete((loaded, ex) -> {
+                    if (ex == null) {
+                        playerDataCache.putIfAbsent(uuid, loaded != null ? loaded : placeholder);
+                    }
+                    // On failure the placeholder stays transient; a later call retries.
+                });
+                return placeholder;
+            }
+            // Off-thread callers keep the previous blocking-with-timeout behavior.
             try {
                 data = repository.loadPlayerData(uuid, currentSeasonId).get(1, java.util.concurrent.TimeUnit.SECONDS);
             } catch (Exception ignored) {}

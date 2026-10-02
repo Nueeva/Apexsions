@@ -1,5 +1,6 @@
 package com.apexsions.customenchants.enchant;
 
+import com.apexsions.core.api.Permissions;
 import com.apexsions.customenchants.ApexsionsCustomEnchantsPlugin;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -27,7 +28,7 @@ public class EnchantLimitManager {
 
         // Admin and unlimited permissions bypass all limits
         if (player.isOp() ||
-                player.hasPermission("apexsions.admin") ||
+                player.hasPermission(Permissions.ADMIN) ||
                 player.hasPermission("apexsions.ace.admin") ||
                 player.hasPermission("apexsions.customenchants.limit.unlimited")) {
             return Integer.MAX_VALUE;

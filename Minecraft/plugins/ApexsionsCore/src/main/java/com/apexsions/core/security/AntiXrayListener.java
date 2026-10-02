@@ -1,6 +1,7 @@
 package com.apexsions.core.security;
 
 import com.apexsions.core.ApexsionsCorePlugin;
+import com.apexsions.core.api.Permissions;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -112,7 +113,7 @@ public class AntiXrayListener implements Listener {
                             "<gray>dalam 60 detik di </gray><yellow>[" + x + ", " + y + ", " + z + "]</yellow><gray>!</gray>";
 
                     for (Player online : Bukkit.getOnlinePlayers()) {
-                        if (online.hasPermission("apexsions.staff") || online.hasPermission("apexsions.staff.alerts") || online.isOp()) {
+                        if (online.hasPermission(Permissions.STAFF) || online.hasPermission(Permissions.STAFF_ALERTS) || online.isOp()) {
                             online.sendMessage(mm.deserialize(alertMsg));
                             online.playSound(online.getLocation(), Sound.BLOCK_NOTE_BLOCK_BELL, 0.7f, 1.8f);
                         }

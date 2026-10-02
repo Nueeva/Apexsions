@@ -65,15 +65,15 @@ public class SellCommand implements CommandExecutor, TabCompleter {
     private void sellHand(Player player) {
         ItemStack held = player.getInventory().getItemInMainHand();
         if (held == null || held.getType() == Material.AIR) {
-            player.sendMessage(miniMessage.deserialize(plugin.getConfig().getString("messages.prefix", "") +
-                    "<red>Pegang item di tangan utama untuk menjual!</red>"));
+            player.sendMessage(miniMessage.deserialize(plugin.getConfigManager().getMessage("sell-hand-empty",
+                    "<red>Pegang item di tangan utama untuk menjual!</red>")));
             return;
         }
 
         ShopItem item = plugin.getItemRegistry().getItem(held.getType());
         if (item == null) {
-            player.sendMessage(miniMessage.deserialize(plugin.getConfig().getString("messages.prefix", "") +
-                    plugin.getConfig().getString("messages.cannot-sell-item", "<red>Item ini tidak dapat dijual ke toko!</red>")));
+            player.sendMessage(miniMessage.deserialize(plugin.getConfigManager().getMessage("cannot-sell-item",
+                    "<red>Item ini tidak dapat dijual ke toko!</red>")));
             return;
         }
 
@@ -82,12 +82,19 @@ public class SellCommand implements CommandExecutor, TabCompleter {
         double payout = res.finalTotalPrice();
 
         player.getInventory().setItemInMainHand(null);
-        plugin.getEconomyHook().deposit(player, payout);
+        if (!plugin.getEconomyHook().deposit(player, payout)) {
+            // C-3: deposit gagal — kembalikan item utuh ke tangan pemain, batalkan penjualan
+            player.getInventory().setItemInMainHand(held);
+            player.sendMessage(miniMessage.deserialize(plugin.getConfigManager().getMessage("sell-failed",
+                    "<red>Penjualan gagal: pembayaran tidak dapat diproses. Item kamu telah dikembalikan.</red>")));
+            player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
+            return;
+        }
         String kingdomKey = plugin.getKingdomCoreHook().getPlayerKingdom(player);
         plugin.getSupplyScannerService().recordSale(kingdomKey, item.getMaterial(), amount);
 
-        player.sendMessage(miniMessage.deserialize(plugin.getConfig().getString("messages.prefix", "") +
-                plugin.getConfig().getString("messages.sell-success", "<green>Berhasil menjual item!</green>")
+        player.sendMessage(miniMessage.deserialize(plugin.getConfigManager().getMessage("sell-success",
+                "<green>Berhasil menjual item!</green>")
                         .replace("%amount%", String.valueOf(amount))
                         .replace("%item%", item.getDisplayName())
                         .replace("%price%", plugin.getEconomyHook().format(payout))
@@ -102,6 +109,8 @@ public class SellCommand implements CommandExecutor, TabCompleter {
         String kingdomKey = plugin.getKingdomCoreHook().getPlayerKingdom(player);
 
         ItemStack[] contents = player.getInventory().getStorageContents();
+        ItemStack[] original = contents.clone();
+        List<ItemStack> soldStacks = new ArrayList<>();
         for (int i = 0; i < contents.length; i++) {
             ItemStack is = contents[i];
             if (is == null || is.getType() == Material.AIR) continue;
@@ -112,25 +121,38 @@ public class SellCommand implements CommandExecutor, TabCompleter {
                 totalPayout += res.finalTotalPrice();
                 totalTax += res.taxAmount();
                 totalItemsSold += is.getAmount();
-                plugin.getSupplyScannerService().recordSale(kingdomKey, item.getMaterial(), is.getAmount());
+                soldStacks.add(is);
                 contents[i] = null;
             }
         }
 
         if (totalItemsSold > 0) {
             player.getInventory().setStorageContents(contents);
-            plugin.getEconomyHook().deposit(player, totalPayout);
+            if (!plugin.getEconomyHook().deposit(player, totalPayout)) {
+                // C-3 lanjutan: deposit gagal — kembalikan seluruh item utuh, batalkan penjualan
+                player.getInventory().setStorageContents(original);
+                player.sendMessage(miniMessage.deserialize(plugin.getConfigManager().getMessage("sell-failed",
+                        "<red>Penjualan gagal: pembayaran tidak dapat diproses. Item kamu telah dikembalikan.</red>")));
+                player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
+                return;
+            }
+            for (ItemStack is : soldStacks) {
+                ShopItem item = plugin.getItemRegistry().getItem(is.getType());
+                if (item != null) {
+                    plugin.getSupplyScannerService().recordSale(kingdomKey, item.getMaterial(), is.getAmount());
+                }
+            }
 
-            player.sendMessage(miniMessage.deserialize(plugin.getConfig().getString("messages.prefix", "") +
-                    plugin.getConfig().getString("messages.sell-success", "<green>Berhasil menjual seluruh item di inventori!</green>")
+            player.sendMessage(miniMessage.deserialize(plugin.getConfigManager().getMessage("sell-success",
+                    "<green>Berhasil menjual seluruh item di inventori!</green>")
                             .replace("%amount%", String.valueOf(totalItemsSold))
                             .replace("%item%", "Item")
                             .replace("%price%", plugin.getEconomyHook().format(totalPayout))
                             .replace("%tax%", plugin.getEconomyHook().format(totalTax))));
             player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1.0f, 1.6f);
         } else {
-            player.sendMessage(miniMessage.deserialize(plugin.getConfig().getString("messages.prefix", "") +
-                    plugin.getConfig().getString("messages.cannot-sell-item", "<red>Tidak ada item di inventori yang dapat dijual ke toko!</red>")));
+            player.sendMessage(miniMessage.deserialize(plugin.getConfigManager().getMessage("cannot-sell-item",
+                    "<red>Tidak ada item di inventori yang dapat dijual ke toko!</red>")));
             player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
         }
     }

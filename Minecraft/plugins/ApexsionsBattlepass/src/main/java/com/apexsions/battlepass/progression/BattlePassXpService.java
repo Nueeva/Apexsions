@@ -43,6 +43,8 @@ public class BattlePassXpService {
         if (currentLevel < maxLevel) {
             int reqXp = plugin.getRewardManager().getRequiredXp(currentLevel);
             while (data.getXp() >= reqXp && currentLevel < maxLevel) {
+                // C-5: required-xp <= 0 (salah config) tidak boleh membuat main thread hang selamanya
+                if (reqXp <= 0) break;
                 data.setXp(data.getXp() - reqXp);
                 currentLevel++;
                 data.setLevel(currentLevel);

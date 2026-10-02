@@ -14,8 +14,11 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
 import java.util.Map;
+import com.apexsions.core.gui.core.GuiAction;
+import com.apexsions.core.gui.core.GuiButton;
+import com.apexsions.core.gui.core.GuiHolder;
 
-public abstract class Gui {
+public abstract class Gui implements com.apexsions.core.gui.core.GuiHandler {
 
     protected final ApexsionsEconomy plugin;
     protected final Player player;

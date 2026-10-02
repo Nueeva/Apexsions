@@ -1,6 +1,7 @@
 package com.apexsions.core.region;
 
 import com.apexsions.core.ApexsionsCorePlugin;
+import com.apexsions.core.api.Permissions;
 import com.apexsions.core.player.PlayerData;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.title.Title;
@@ -49,7 +50,7 @@ public class KingdomRtpService {
      * Executes /rtp for the given player within their chosen kingdom bounds.
      */
     public void executeRtp(Player player) {
-        if (!player.hasPermission("apexsionscore.command.rtp") && !player.hasPermission("kingdomcore.command.rtp")) {
+        if (!player.hasPermission(Permissions.COMMAND_RTP)) {
             player.sendMessage(miniMessage.deserialize("<red>Kamu tidak memiliki izin untuk menggunakan perintah /rtp.</red>"));
             return;
         }
@@ -123,7 +124,7 @@ public class KingdomRtpService {
         // 5. Check Cooldown
         long now = System.currentTimeMillis();
         long cooldownSeconds = getCooldownSeconds(player);
-        if (!player.hasPermission("apexsionscore.rtp.bypass") && cooldownSeconds > 0) {
+        if (!player.hasPermission(Permissions.RTP_BYPASS) && cooldownSeconds > 0) {
             Long expireTime = cooldowns.get(player.getUniqueId());
             if (expireTime != null && now < expireTime) {
                 long leftSeconds = Math.max(1, (expireTime - now) / 1000);
@@ -203,12 +204,12 @@ public class KingdomRtpService {
     }
 
     public long getCooldownSeconds(Player player) {
-        if (player == null || player.hasPermission("apexsionscore.rtp.bypass")) return 0L;
-        if (player.hasPermission("apexsions.rtp.cooldown.sions") || player.hasPermission("apexsions.rank.sions")) return 50L;
-        if (player.hasPermission("apexsions.rtp.cooldown.emperor") || player.hasPermission("apexsions.rank.emperor")) return 70L;
-        if (player.hasPermission("apexsions.rtp.cooldown.sovereign") || player.hasPermission("apexsions.rank.sovereign")) return 95L;
-        if (player.hasPermission("apexsions.rtp.cooldown.archon") || player.hasPermission("apexsions.rank.archon")) return 120L;
-        if (player.hasPermission("apexsions.rtp.cooldown.ascendant") || player.hasPermission("apexsions.rank.ascendant")) return 135L;
+        if (player == null || player.hasPermission(Permissions.RTP_BYPASS)) return 0L;
+        if (player.hasPermission(Permissions.RTP_COOLDOWN_SIONS) || player.hasPermission(Permissions.RANK_SIONS)) return 50L;
+        if (player.hasPermission(Permissions.RTP_COOLDOWN_EMPEROR) || player.hasPermission(Permissions.RANK_EMPEROR)) return 70L;
+        if (player.hasPermission(Permissions.RTP_COOLDOWN_SOVEREIGN) || player.hasPermission(Permissions.RANK_SOVEREIGN)) return 95L;
+        if (player.hasPermission(Permissions.RTP_COOLDOWN_ARCHON) || player.hasPermission(Permissions.RANK_ARCHON)) return 120L;
+        if (player.hasPermission(Permissions.RTP_COOLDOWN_ASCENDANT) || player.hasPermission(Permissions.RANK_ASCENDANT)) return 135L;
         return plugin.getConfigManager().getMainConfig().getLong("rtp.cooldown-seconds", 150L);
     }
 

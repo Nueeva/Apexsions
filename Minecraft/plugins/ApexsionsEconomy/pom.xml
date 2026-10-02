@@ -1,8 +1,15 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.apexsions</groupId>
+        <artifactId>apexsions-minecraft</artifactId>
+        <version>1.0.0</version>
+        <relativePath>../../pom.xml</relativePath>
+    </parent>
 
     <groupId>com.apex</groupId>
     <artifactId>ApexsionsEconomy</artifactId>
@@ -61,13 +68,6 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- HikariCP -->
-        <dependency>
-            <groupId>com.zaxxer</groupId>
-            <artifactId>HikariCP</artifactId>
-            <version>6.2.1</version>
-        </dependency>
-
         <!-- SQLite JDBC -->
         <dependency>
             <groupId>org.xerial</groupId>
@@ -75,27 +75,25 @@
             <version>3.49.1.0</version>
         </dependency>
 
-        <!-- PostgreSQL JDBC -->
-        <dependency>
-            <groupId>org.postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-            <version>42.7.5</version>
-        </dependency>
-
         <!-- ApexsionsCore Dependency (for Kingdom Regions & Titles) -->
         <dependency>
             <groupId>com.apexsions.core</groupId>
             <artifactId>ApexsionsCore</artifactId>
             <version>1.0.0</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/../ApexsionsCore/target/ApexsionsCore-1.0.0.jar</systemPath>
         </dependency>
 
         <!-- JUnit 5 for Testing -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
-            <version>5.10.2</version>
+            <version>5.12.0</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- Mockito for Testing (same version as ApexsionsCore) -->
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>5.16.0</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -122,6 +120,14 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
                 <version>3.6.0</version>
+                <configuration>
+                    <relocations>
+                        <relocation>
+                            <pattern>org.sqlite</pattern>
+                            <shadedPattern>com.apexsions.economy.libs.sqlite</shadedPattern>
+                        </relocation>
+                    </relocations>
+                </configuration>
                 <executions>
                     <execution>
                         <phase>package</phase>

@@ -1,5 +1,6 @@
 package com.apexsions.core.caravan;
 
+import com.apexsions.core.api.Permissions;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Sound;
 import org.bukkit.entity.Entity;
@@ -32,7 +33,7 @@ public class CaravanListener implements Listener {
         }
         event.setCancelled(true);
         Player player = event.getPlayer();
-        if (!player.hasPermission("apexsions.caravan.use")) {
+        if (!player.hasPermission(Permissions.CARAVAN_USE)) {
             return;
         }
         new CaravanGUI(manager, player).open(player);

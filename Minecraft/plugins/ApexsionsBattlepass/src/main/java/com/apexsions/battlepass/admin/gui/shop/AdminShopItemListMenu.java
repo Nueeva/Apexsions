@@ -2,14 +2,14 @@ package com.apexsions.battlepass.admin.gui.shop;
 
 import com.apexsions.battlepass.ApexsionsBattlepass;
 import com.apexsions.battlepass.gui.core.Gui;
-import com.apexsions.battlepass.gui.core.GuiButton;
+import com.apexsions.core.gui.core.GuiButton;
 import com.apexsions.battlepass.gui.navigation.BackButton;
 import com.apexsions.battlepass.gui.navigation.CloseButton;
 import com.apexsions.battlepass.gui.util.ItemBuilder;
 import com.apexsions.battlepass.shop.ItemRarity;
 import com.apexsions.battlepass.shop.ShopCategory;
 import com.apexsions.battlepass.shop.ShopItem;
-import com.apexsions.battlepass.util.ItemSerializer;
+import com.apexsions.core.util.ItemSerializer;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;

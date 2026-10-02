@@ -1,6 +1,7 @@
 package com.apexsions.core.claim;
 
 import com.apexsions.core.ApexsionsCorePlugin;
+import com.apexsions.core.api.Permissions;
 import com.apexsions.core.player.PlayerData;
 import com.apexsions.core.region.Region;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -224,7 +225,7 @@ public class ClaimManager {
     }
 
     public int getMaxClaims(Player player) {
-        if (player.isOp() || player.hasPermission("apexsions.admin.claim.unlimited") || player.hasPermission("apexsions.claim.unlimited") || player.hasPermission("apexsions.admin")) {
+        if (player.isOp() || player.hasPermission(Permissions.ADMIN_CLAIM_UNLIMITED) || player.hasPermission(Permissions.CLAIM_UNLIMITED) || player.hasPermission(Permissions.ADMIN)) {
             return Integer.MAX_VALUE;
         }
 
@@ -244,9 +245,9 @@ public class ClaimManager {
         int highestPermLimit = 0;
         for (var perm : player.getEffectivePermissions()) {
             String pName = perm.getPermission().toLowerCase();
-            if (pName.startsWith("apexsions.claim.limit.")) {
+            if (pName.startsWith(Permissions.CLAIM_LIMIT_PREFIX)) {
                 try {
-                    int val = Integer.parseInt(pName.substring("apexsions.claim.limit.".length()));
+                    int val = Integer.parseInt(pName.substring(Permissions.CLAIM_LIMIT_PREFIX.length()));
                     if (val > highestPermLimit) highestPermLimit = val;
                 } catch (NumberFormatException ignored) {}
             }
@@ -324,121 +325,135 @@ public class ClaimManager {
             List<ClaimChunk> chunks = entry.getValue();
             if (chunks.isEmpty()) continue;
 
-            if (isTaxExempt(ownerId)) {
-                for (ClaimChunk claim : chunks) {
-                    claim.setDailyUpkeep(0.0);
-                    claim.setStatus(ClaimStatus.ACTIVE);
-                    claim.setGracePeriodUntil(0L);
-                }
-                continue;
-            }
-
-            double chunkRate = calculateChunkDailyTax(ownerId);
-
-            for (ClaimChunk claim : chunks) {
-                if (claim.isFreehold()) {
-                    claim.setDailyUpkeep(0.0);
-                    claim.setStatus(ClaimStatus.FREEHOLD);
-                    claim.setGracePeriodUntil(0L);
-
-                    // Server ghost claim protection: Check owner inactivity timeout
-                    OfflinePlayer ownerOffline = Bukkit.getOfflinePlayer(ownerId);
-                    long lastSeen = ownerOffline.getLastLogin();
-                    if (lastSeen > 0 && freeholdInactivityTimeoutDays > 0) {
-                        long inactiveMs = now - lastSeen;
-                        long maxInactiveMs = freeholdInactivityTimeoutDays * 24L * 3600L * 1000L;
-                        if (inactiveMs > maxInactiveMs) {
-                            Bukkit.getScheduler().runTask(plugin, () -> {
-                                forceUnclaimChunk(claim.getWorld(), claim.getChunkX(), claim.getChunkZ());
-                                plugin.getLogger().warning("Freehold claim at " + claim.getChunkKey() + " owned by " + claim.getOwnerName() + " was revoked due to " + freeholdInactivityTimeoutDays + "+ days of continuous player inactivity.");
-                            });
-                        }
-                    }
-                    continue; // 100% tax exempt
-                }
-
-                double effectiveRate = claim.isOutpost() ? (chunkRate * 0.5) : chunkRate;
-                claim.setDailyUpkeep(effectiveRate);
-
-                boolean isDue = (now - claim.getLastTaxCollectedAt() >= periodMs);
-                boolean isGrace = (claim.getStatus() == ClaimStatus.GRACE_PERIOD);
-
-                // Check if tax collection interval is due, OR if claim is in grace period and can be cured
-                if (isDue || isGrace) {
-                    boolean paid = false;
-                    boolean autoDebited = false;
-
-                    // 1. Try deducting from claim's bank balance first
-                    if (claim.deduct(effectiveRate)) {
-                        paid = true;
-                    } else if (fallbackWalletAutoDebit && plugin.getVaultHook() != null && plugin.getVaultHook().hasEconomy()) {
-                        // 2. Fallback: Auto-debit from owner's personal wallet (Vault /bal)
-                        OfflinePlayer ownerOffline = Bukkit.getOfflinePlayer(ownerId);
-                        double inBank = claim.getBankBalance();
-                        double neededFromWallet = effectiveRate - inBank;
-                        if (neededFromWallet <= 0) neededFromWallet = effectiveRate;
-
-                        if (plugin.getVaultHook().has(ownerOffline, neededFromWallet)) {
-                            if (plugin.getVaultHook().withdraw(ownerOffline, neededFromWallet)) {
-                                claim.setBankBalance(0.0);
-                                paid = true;
-                                autoDebited = true;
-                            }
-                        }
-                    }
-
-                    if (paid) {
-                        // Successfully collected
-                        claim.setStatus(ClaimStatus.ACTIVE);
-                        claim.setGracePeriodUntil(0L);
-                        claim.setLastTaxCollectedAt(now);
-                        repository.updateClaimFinancials(claim);
-
-                        if (autoDebited) {
-                            Player owner = Bukkit.getPlayer(ownerId);
-                            if (owner != null && owner.isOnline()) {
-                                owner.sendMessage(mm.deserialize("<gray><i>[Pajak Wilayah]</i> Saldo brankas chunk <gold>[" + claim.getChunkX() + ", " + claim.getChunkZ() + "]</gold> habis. Pajak harian <yellow>Rp" + String.format("%,.0f", effectiveRate) + "</yellow> otomatis dipotong dari dompet pribadi Anda.</gray>"));
-                            }
-                        }
-
-                        // Split with Kingdom Treasury
-                        if (claim.getKingdomId() != null && !claim.getKingdomId().isBlank() && kingdomTreasurySplit > 0) {
-                            double treasuryShare = effectiveRate * kingdomTreasurySplit;
-                            depositKingdomTreasury(claim.getKingdomId(), treasuryShare);
-                        }
-                    } else {
-                        // Failed to collect tax - Enter or progress grace period
-                        if (claim.getStatus() != ClaimStatus.GRACE_PERIOD) {
-                            claim.setStatus(ClaimStatus.GRACE_PERIOD);
-                            claim.setGracePeriodUntil(now + (gracePeriodHours * 3600L * 1000L));
-                            repository.updateClaimFinancials(claim);
-
-                            // Notify online owner
-                            Player owner = Bukkit.getPlayer(ownerId);
-                            if (owner != null && owner.isOnline()) {
-                                owner.sendMessage(mm.deserialize("<red><b>⚠ [PAJAK WILAYAH]</b> Saldo brankas dan dompet Anda tidak cukup untuk membayar sewa di <gold>[" + claim.getChunkX() + ", " + claim.getChunkZ() + "]</gold>! Masa tenggang <b>72 jam</b> dimulai sebelum tanah disita.</red>"));
-                                owner.playSound(owner.getLocation(), Sound.BLOCK_NOTE_BLOCK_DIDGERIDOO, 1.0f, 0.6f);
-                            }
-                        } else if (claim.isGracePeriodExpired()) {
-                            // Grace period expired!
-                            if (unclaimOnGraceExpire) {
-                                Bukkit.getScheduler().runTask(plugin, () -> {
-                                    forceUnclaimChunk(claim.getWorld(), claim.getChunkX(), claim.getChunkZ());
-                                    Player owner = Bukkit.getPlayer(ownerId);
-                                    if (owner != null && owner.isOnline()) {
-                                        owner.sendMessage(mm.deserialize("<dark_red><b>✖ [PENYITAAN TANAH]</b> Masa tenggang klaim Anda di <gold>[" + claim.getChunkX() + ", " + claim.getChunkZ() + "]</gold> telah berakhir! Tanah telah disita dan kembali menjadi alam liar.</dark_red>"));
-                                        owner.playSound(owner.getLocation(), Sound.ENTITY_LIGHTNING_BOLT_THUNDER, 0.7f, 1.0f);
-                                    }
-                                });
-                            }
-                        }
-                    }
-                }
-            }
+            // C-7: hop ke main thread — seluruh interaksi pemain/ekonomi di bawah
+            // (Bukkit API + Vault) tidak boleh berjalan di async thread. Kalkulasi
+            // agregasi (pengelompokan klaim per owner) di atas tetap di async thread.
+            Bukkit.getScheduler().runTask(plugin, () -> processOwnerTaxCycle(ownerId, chunks, now, periodMs));
         }
 
         if (plugin.getWebBridgeService() != null) {
             plugin.getWebBridgeService().syncClaimsAsync(getAllClaims());
+        }
+    }
+
+    /**
+     * Memproses siklus pajak untuk satu pemilik klaim.
+     *
+     * <p>HARUS dijalankan di main thread (dijadwalkan via
+     * {@code Bukkit.getScheduler().runTask}) karena menyentuh Bukkit API
+     * ({@code getOfflinePlayer}/{@code getPlayer}), Vault economy, dan chat/suara pemain.
+     */
+    private void processOwnerTaxCycle(UUID ownerId, List<ClaimChunk> chunks, long now, long periodMs) {
+        if (isTaxExempt(ownerId)) {
+            for (ClaimChunk claim : chunks) {
+                claim.setDailyUpkeep(0.0);
+                claim.setStatus(ClaimStatus.ACTIVE);
+                claim.setGracePeriodUntil(0L);
+            }
+            return; // C-7 fix: dulu 'continue' (sisa loop lama) — di method ini harus return
+        }
+
+        double chunkRate = calculateChunkDailyTax(ownerId);
+
+        for (ClaimChunk claim : chunks) {
+            if (claim.isFreehold()) {
+                claim.setDailyUpkeep(0.0);
+                claim.setStatus(ClaimStatus.FREEHOLD);
+                claim.setGracePeriodUntil(0L);
+
+                // Server ghost claim protection: Check owner inactivity timeout
+                OfflinePlayer ownerOffline = Bukkit.getOfflinePlayer(ownerId);
+                long lastSeen = ownerOffline.getLastLogin();
+                if (lastSeen > 0 && freeholdInactivityTimeoutDays > 0) {
+                    long inactiveMs = now - lastSeen;
+                    long maxInactiveMs = freeholdInactivityTimeoutDays * 24L * 3600L * 1000L;
+                    if (inactiveMs > maxInactiveMs) {
+                        Bukkit.getScheduler().runTask(plugin, () -> {
+                            forceUnclaimChunk(claim.getWorld(), claim.getChunkX(), claim.getChunkZ());
+                            plugin.getLogger().warning("Freehold claim at " + claim.getChunkKey() + " owned by " + claim.getOwnerName() + " was revoked due to " + freeholdInactivityTimeoutDays + "+ days of continuous player inactivity.");
+                        });
+                    }
+                }
+                continue; // 100% tax exempt
+            }
+
+            double effectiveRate = claim.isOutpost() ? (chunkRate * 0.5) : chunkRate;
+            claim.setDailyUpkeep(effectiveRate);
+
+            boolean isDue = (now - claim.getLastTaxCollectedAt() >= periodMs);
+            boolean isGrace = (claim.getStatus() == ClaimStatus.GRACE_PERIOD);
+
+            // Check if tax collection interval is due, OR if claim is in grace period and can be cured
+            if (isDue || isGrace) {
+                boolean paid = false;
+                boolean autoDebited = false;
+
+                // 1. Try deducting from claim's bank balance first
+                if (claim.deduct(effectiveRate)) {
+                    paid = true;
+                } else if (fallbackWalletAutoDebit && plugin.getVaultHook() != null && plugin.getVaultHook().hasEconomy()) {
+                    // 2. Fallback: Auto-debit from owner's personal wallet (Vault /bal)
+                    OfflinePlayer ownerOffline = Bukkit.getOfflinePlayer(ownerId);
+                    double inBank = claim.getBankBalance();
+                    double neededFromWallet = effectiveRate - inBank;
+                    if (neededFromWallet <= 0) neededFromWallet = effectiveRate;
+
+                    if (plugin.getVaultHook().has(ownerOffline, neededFromWallet)) {
+                        if (plugin.getVaultHook().withdraw(ownerOffline, neededFromWallet)) {
+                            claim.setBankBalance(0.0);
+                            paid = true;
+                            autoDebited = true;
+                        }
+                    }
+                }
+
+                if (paid) {
+                    // Successfully collected
+                    claim.setStatus(ClaimStatus.ACTIVE);
+                    claim.setGracePeriodUntil(0L);
+                    claim.setLastTaxCollectedAt(now);
+                    repository.updateClaimFinancials(claim);
+
+                    if (autoDebited) {
+                        Player owner = Bukkit.getPlayer(ownerId);
+                        if (owner != null && owner.isOnline()) {
+                            owner.sendMessage(mm.deserialize("<gray><i>[Pajak Wilayah]</i> Saldo brankas chunk <gold>[" + claim.getChunkX() + ", " + claim.getChunkZ() + "]</gold> habis. Pajak harian <yellow>Rp" + String.format("%,.0f", effectiveRate) + "</yellow> otomatis dipotong dari dompet pribadi Anda.</gray>"));
+                        }
+                    }
+
+                    // Split with Kingdom Treasury
+                    if (claim.getKingdomId() != null && !claim.getKingdomId().isBlank() && kingdomTreasurySplit > 0) {
+                        double treasuryShare = effectiveRate * kingdomTreasurySplit;
+                        depositKingdomTreasury(claim.getKingdomId(), treasuryShare);
+                    }
+                } else {
+                    // Failed to collect tax - Enter or progress grace period
+                    if (claim.getStatus() != ClaimStatus.GRACE_PERIOD) {
+                        claim.setStatus(ClaimStatus.GRACE_PERIOD);
+                        claim.setGracePeriodUntil(now + (gracePeriodHours * 3600L * 1000L));
+                        repository.updateClaimFinancials(claim);
+
+                        // Notify online owner
+                        Player owner = Bukkit.getPlayer(ownerId);
+                        if (owner != null && owner.isOnline()) {
+                            owner.sendMessage(mm.deserialize("<red><b>⚠ [PAJAK WILAYAH]</b> Saldo brankas dan dompet Anda tidak cukup untuk membayar sewa di <gold>[" + claim.getChunkX() + ", " + claim.getChunkZ() + "]</gold>! Masa tenggang <b>72 jam</b> dimulai sebelum tanah disita.</red>"));
+                            owner.playSound(owner.getLocation(), Sound.BLOCK_NOTE_BLOCK_DIDGERIDOO, 1.0f, 0.6f);
+                        }
+                    } else if (claim.isGracePeriodExpired()) {
+                        // Grace period expired!
+                        if (unclaimOnGraceExpire) {
+                            Bukkit.getScheduler().runTask(plugin, () -> {
+                                forceUnclaimChunk(claim.getWorld(), claim.getChunkX(), claim.getChunkZ());
+                                Player owner = Bukkit.getPlayer(ownerId);
+                                if (owner != null && owner.isOnline()) {
+                                    owner.sendMessage(mm.deserialize("<dark_red><b>✖ [PENYITAAN TANAH]</b> Masa tenggang klaim Anda di <gold>[" + claim.getChunkX() + ", " + claim.getChunkZ() + "]</gold> telah berakhir! Tanah telah disita dan kembali menjadi alam liar.</dark_red>"));
+                                    owner.playSound(owner.getLocation(), Sound.ENTITY_LIGHTNING_BOLT_THUNDER, 0.7f, 1.0f);
+                                }
+                            });
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -534,7 +549,7 @@ public class ClaimManager {
 
     public boolean canBuild(Player player, Location loc) {
         if (player == null || loc == null) return false;
-        if (player.isOp() || player.hasPermission("apexsions.admin.bypass.claim") || player.hasPermission("apexsions.admin")
+        if (player.isOp() || player.hasPermission(Permissions.ADMIN_BYPASS_CLAIM) || player.hasPermission(Permissions.ADMIN)
                 || (plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isConclaveStaff(player))) {
             return true;
         }
@@ -574,7 +589,7 @@ public class ClaimManager {
 
     public boolean canInteract(Player player, Location loc, Material mat) {
         if (player == null || loc == null) return false;
-        if (player.isOp() || player.hasPermission("apexsions.admin.bypass.claim") || player.hasPermission("apexsions.admin")
+        if (player.isOp() || player.hasPermission(Permissions.ADMIN_BYPASS_CLAIM) || player.hasPermission(Permissions.ADMIN)
                 || (plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isConclaveStaff(player))) {
             return true;
         }
@@ -860,7 +875,7 @@ public class ClaimManager {
             return new ClaimResult(false, "<yellow>⚠ Tanah di chunk ini tidak diklaim oleh siapapun.</yellow>");
         }
 
-        if (!claim.isOwner(player.getUniqueId()) && !player.isOp() && !player.hasPermission("apexsions.admin")) {
+        if (!claim.isOwner(player.getUniqueId()) && !player.isOp() && !player.hasPermission(Permissions.ADMIN)) {
             return new ClaimResult(false, "<red>✖ Anda bukan pemilik tanah ini! Dimiliki oleh <gold>" + claim.getOwnerName() + "</gold>.</red>");
         }
 
@@ -881,7 +896,7 @@ public class ClaimManager {
             return new ClaimResult(false, "<yellow>⚠ Wilayah pada chunk [" + chunkX + ", " + chunkZ + "] tidak diklaim oleh siapapun.</yellow>");
         }
 
-        if (!claim.isOwner(player.getUniqueId()) && !player.isOp() && !player.hasPermission("apexsions.admin")) {
+        if (!claim.isOwner(player.getUniqueId()) && !player.isOp() && !player.hasPermission(Permissions.ADMIN)) {
             return new ClaimResult(false, "<red>✖ Anda bukan pemilik tanah ini! Dimiliki oleh <gold>" + claim.getOwnerName() + "</gold>.</red>");
         }
 
@@ -902,7 +917,7 @@ public class ClaimManager {
             return new ClaimResult(false, "<yellow>⚠ Wilayah pada chunk [" + chunkX + ", " + chunkZ + "] tidak diklaim.</yellow>");
         }
 
-        if (!claim.isOwner(player.getUniqueId()) && !player.isOp() && !player.hasPermission("apexsions.admin")) {
+        if (!claim.isOwner(player.getUniqueId()) && !player.isOp() && !player.hasPermission(Permissions.ADMIN)) {
             return new ClaimResult(false, "<red>✖ Anda bukan pemilik tanah ini!</red>");
         }
 
@@ -943,7 +958,7 @@ public class ClaimManager {
             return new ClaimResult(false, "<yellow>⚠ Wilayah pada chunk [" + chunkX + ", " + chunkZ + "] tidak diklaim.</yellow>");
         }
 
-        if (!claim.isOwner(player.getUniqueId()) && !player.isOp() && !player.hasPermission("apexsions.admin")) {
+        if (!claim.isOwner(player.getUniqueId()) && !player.isOp() && !player.hasPermission(Permissions.ADMIN)) {
             return new ClaimResult(false, "<red>✖ Anda bukan pemilik tanah ini!</red>");
         }
 
@@ -1024,7 +1039,7 @@ public class ClaimManager {
             return new ClaimResult(false, "<yellow>⚠ Wilayah pada chunk [" + chunkX + ", " + chunkZ + "] tidak diklaim oleh siapapun.</yellow>");
         }
 
-        if (!claim.isOwner(player.getUniqueId()) && !player.isOp() && !player.hasPermission("apexsions.admin")) {
+        if (!claim.isOwner(player.getUniqueId()) && !player.isOp() && !player.hasPermission(Permissions.ADMIN)) {
             return new ClaimResult(false, "<red>✖ Anda bukan pemilik tanah ini! Dimiliki oleh <gold>" + claim.getOwnerName() + "</gold>.</red>");
         }
 

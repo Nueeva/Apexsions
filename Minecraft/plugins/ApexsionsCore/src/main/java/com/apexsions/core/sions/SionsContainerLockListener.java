@@ -1,5 +1,6 @@
 package com.apexsions.core.sions;
 
+import com.apexsions.core.api.Permissions;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -44,7 +45,7 @@ public class SionsContainerLockListener implements Listener {
         Player player = event.getPlayer();
 
         // 1. Check admin bypass
-        if (service.isBypassing(player) || (player.hasPermission("apexsions.admin") && player.isSneaking())) {
+        if (service.isBypassing(player) || (player.hasPermission(Permissions.ADMIN) && player.isSneaking())) {
             return;
         }
 

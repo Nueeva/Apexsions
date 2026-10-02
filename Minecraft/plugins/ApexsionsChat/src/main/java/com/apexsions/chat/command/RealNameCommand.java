@@ -1,6 +1,7 @@
 package com.apexsions.chat.command;
 
 import com.apexsions.chat.ApexsionsChatPlugin;
+import com.apexsions.core.api.Permissions;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -41,7 +42,7 @@ public class RealNameCommand implements CommandExecutor, TabCompleter {
                 if (opt.isPresent()) {
                     String realName = opt.get();
                     Player target = Bukkit.getPlayerExact(realName);
-                    boolean canSeeVanish = !(sender instanceof Player) || sender.hasPermission("apexsions.vanish.see");
+                    boolean canSeeVanish = !(sender instanceof Player) || sender.hasPermission(Permissions.VANISH_SEE);
                     boolean isOnline = target != null && target.isOnline() && (canSeeVanish || (!(sender instanceof Player sp) || (sp.canSee(target) && !target.hasMetadata("vanished") && !target.hasMetadata("vanish"))));
 
                     sender.sendMessage(miniMessage.deserialize(
@@ -63,7 +64,7 @@ public class RealNameCommand implements CommandExecutor, TabCompleter {
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (args.length == 1) {
             List<String> list = new ArrayList<>();
-            boolean canSeeVanish = !(sender instanceof Player) || sender.hasPermission("apexsions.vanish.see");
+            boolean canSeeVanish = !(sender instanceof Player) || sender.hasPermission(Permissions.VANISH_SEE);
             for (Player p : Bukkit.getOnlinePlayers()) {
                 if (sender instanceof Player sp && !canSeeVanish && (!sp.canSee(p) || p.hasMetadata("vanished") || p.hasMetadata("vanish"))) {
                     continue;

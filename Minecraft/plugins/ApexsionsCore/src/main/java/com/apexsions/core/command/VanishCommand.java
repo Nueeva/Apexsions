@@ -1,6 +1,7 @@
 package com.apexsions.core.command;
 
 import com.apexsions.core.ApexsionsCorePlugin;
+import com.apexsions.core.api.Permissions;
 import com.apexsions.core.vanish.VanishManager;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -31,7 +32,7 @@ public class VanishCommand implements CommandExecutor, TabCompleter {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        if (!sender.hasPermission("apexsions.vanish")) {
+        if (!sender.hasPermission(Permissions.VANISH)) {
             sender.sendMessage(mm.deserialize("<red>Kamu tidak memiliki izin untuk menggunakan perintah vanish.</red>"));
             return true;
         }
@@ -64,7 +65,7 @@ public class VanishCommand implements CommandExecutor, TabCompleter {
             }
 
             // Target player
-            if (!sender.hasPermission("apexsions.vanish.others")) {
+            if (!sender.hasPermission(Permissions.VANISH_OTHERS)) {
                 sender.sendMessage(mm.deserialize("<red>Kamu tidak memiliki izin untuk mengubah status vanish pemain lain.</red>"));
                 return true;
             }
@@ -85,7 +86,7 @@ public class VanishCommand implements CommandExecutor, TabCompleter {
 
         // Case 3: 2 args: /vanish <target> -s
         if (args.length >= 2) {
-            if (!sender.hasPermission("apexsions.vanish.others")) {
+            if (!sender.hasPermission(Permissions.VANISH_OTHERS)) {
                 sender.sendMessage(mm.deserialize("<red>Kamu tidak memiliki izin untuk mengubah status vanish pemain lain.</red>"));
                 return true;
             }
@@ -128,7 +129,7 @@ public class VanishCommand implements CommandExecutor, TabCompleter {
 
     @Override
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
-        if (!sender.hasPermission("apexsions.vanish")) {
+        if (!sender.hasPermission(Permissions.VANISH)) {
             return Collections.emptyList();
         }
 
@@ -136,7 +137,7 @@ public class VanishCommand implements CommandExecutor, TabCompleter {
             List<String> completions = new ArrayList<>();
             completions.add("-s");
             completions.add("list");
-            if (sender.hasPermission("apexsions.vanish.others")) {
+            if (sender.hasPermission(Permissions.VANISH_OTHERS)) {
                 for (Player p : Bukkit.getOnlinePlayers()) {
                     completions.add(p.getName());
                 }
@@ -146,7 +147,7 @@ public class VanishCommand implements CommandExecutor, TabCompleter {
                     .collect(Collectors.toList());
         }
 
-        if (args.length == 2 && sender.hasPermission("apexsions.vanish.others")) {
+        if (args.length == 2 && sender.hasPermission(Permissions.VANISH_OTHERS)) {
             if ("-s".startsWith(args[1].toLowerCase())) {
                 return List.of("-s");
             }

@@ -89,8 +89,10 @@ public class ItemRenameManager implements Listener {
         String plainText = PlainTextComponentSerializer.plainText().serialize(event.message()).trim();
 
         if (plainText.equalsIgnoreCase("cancel") || plainText.equalsIgnoreCase("batal")) {
-            player.sendMessage(mm.deserialize("<red>Input nama dibatalkan.</red>"));
-            player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
+            Bukkit.getScheduler().runTask(plugin, () -> {
+                player.sendMessage(mm.deserialize("<red>Input nama dibatalkan.</red>"));
+                player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
+            });
             if (session.onCancel != null) {
                 Bukkit.getScheduler().runTask(plugin, session.onCancel);
             }

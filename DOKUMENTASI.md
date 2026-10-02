@@ -28,7 +28,7 @@ Dokumen ini adalah **Single Source of Truth** untuk seluruh pengembang dan AI Co
 - **IP Address:** `89.144.53.100`
 - **SSH Port:** `22`
 - **Username:** `root`
-- **Password:** `9tEMjeqysCYYqhRhxBvH`
+- **Password:** `GANTI_DENGAN_PASSWORD_BARU`
 - **Domain Resmi:** `https://web.apexsions.com` (Akses langsung IP: `http://89.144.53.100`)
 - **Web Root:** `/var/www/azuriom`
 - **Custom Theme Path:** `/var/www/azuriom/themes/apexsions`
@@ -50,7 +50,7 @@ systemctl reload nginx
 - **Host / Server:** `falcon04.jagoanhosting.id`
 - **Port SFTP:** `2022`
 - **Username:** `rifqiariansyah123jt3.27e4a2f6`
-- **Password:** `NuevaStore123#`
+- **Password:** `GANTI_DENGAN_PASSWORD_BARU`
 - **Protokol:** SFTP (`sftp://falcon04.jagoanhosting.id:2022`)
 - **Runtime:** Paper API (Minecraft 26.2), Java 21 LTS.
 

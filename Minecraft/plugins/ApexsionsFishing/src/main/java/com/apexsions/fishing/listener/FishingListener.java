@@ -81,6 +81,14 @@ public class FishingListener implements Listener {
                         zone = plugin.getZoneManager().getZoneAt(player.getLocation());
                     }
                     LootGenerator.CatchResult res = plugin.getLootGenerator().generateCatch(player, rod, zone);
+                    if (res == null) {
+                        // M-13: loot tables are empty (warning already logged by LootGenerator).
+                        // Remove the vanilla drop, deny catch EXP, and tell the player what happened.
+                        event.setCancelled(true);
+                        caughtEntity.remove();
+                        player.sendMessage(mm.deserialize("<red>Tangkapan gagal: tabel loot memancing belum dikonfigurasi! Hubungi admin server.</red>"));
+                        return;
+                    }
                     caughtEntity.setItemStack(res.item);
 
                     if (zone != null && zone.getXpMultiplier() > 1.0) {

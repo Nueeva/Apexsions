@@ -1,6 +1,7 @@
 package com.apexsions.core.war;
 
 import com.apexsions.core.ApexsionsCorePlugin;
+import com.apexsions.core.api.Permissions;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -37,7 +38,7 @@ public class CombatTagService implements Listener {
             return false;
         }
         Player p = Bukkit.getPlayer(uuid);
-        if (p != null && (p.hasPermission("apexsionscore.admin.bypass.combat") || p.hasPermission("apexsionscore.admin"))) {
+        if (p != null && (p.hasPermission(Permissions.BYPASS_COMBAT) || p.hasPermission(Permissions.ADMIN))) {
             return false;
         }
         Long expireTime = combatTags.get(uuid);
@@ -69,7 +70,7 @@ public class CombatTagService implements Listener {
         if (plugin.getLuckPermsHook() != null && plugin.getLuckPermsHook().isConclaveStaff(player)) {
             return;
         }
-        if (player.hasPermission("apexsionscore.admin.bypass.combat") || player.hasPermission("apexsionscore.admin")) {
+        if (player.hasPermission(Permissions.BYPASS_COMBAT) || player.hasPermission(Permissions.ADMIN)) {
             return;
         }
         boolean wasTagged = isCombatTagged(player.getUniqueId());

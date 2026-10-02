@@ -60,6 +60,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.*;
 
 public class CrateManager extends AbstractManager<CratesPlugin> {
@@ -80,8 +81,8 @@ public class CrateManager extends AbstractManager<CratesPlugin> {
         super(plugin);
         this.dialogs = dialogs;
 
-        this.rarityByIdMap = new HashMap<>();
-        this.crateByIdMap = new HashMap<>();
+        this.rarityByIdMap = new ConcurrentHashMap<>();
+        this.crateByIdMap = new ConcurrentHashMap<>();
         this.crateByPosMap = new HashMap<>();
         this.previewByIdMap = new HashMap<>();
         this.previewCooldown = new HashMap<>();
@@ -100,7 +101,7 @@ public class CrateManager extends AbstractManager<CratesPlugin> {
 
         this.addListener(new CrateListener(this.plugin, this));
 
-        this.addAsyncTask(this::playCrateEffects, 1L);
+        this.addTask(this::playCrateEffects, 1L);
         this.addAsyncTask(this::saveCrates, Config.CRATE_SAVE_INTERVAL.get());
     }
 
@@ -284,8 +285,8 @@ public class CrateManager extends AbstractManager<CratesPlugin> {
     }
 
     @NotNull
-    public Rarity getMostCommonRarity() {
-        return this.getRarities().stream().max(Comparator.comparing(Rarity::getWeight)).orElseThrow();
+    public Optional<Rarity> getMostCommonRarity() {
+        return this.getRarities().stream().max(Comparator.comparing(Rarity::getWeight));
     }
 
     public void addRarity(@NotNull Rarity rarity) {
@@ -293,11 +294,23 @@ public class CrateManager extends AbstractManager<CratesPlugin> {
         this.saveRarities();
     }
 
+    /**
+     * Removes a rarity by id. Refuses to delete the last remaining rarity, because every
+     * reward requires a fallback rarity (see {@link #getMostCommonRarity()}).
+     *
+     * @param id The rarity id to remove.
+     * @return {@code true} if the rarity was removed, {@code false} if it did not exist
+     *         or it was the last remaining rarity.
+     */
     public boolean removeRarity(@NotNull String id) {
+        if (this.rarityByIdMap.size() <= 1) {
+            return false;
+        }
         Rarity removed = this.rarityByIdMap.remove(id.toLowerCase());
         if (removed != null) {
             this.saveRarities();
-            Rarity fallback = this.getMostCommonRarity();
+            Rarity fallback = this.getMostCommonRarity().orElseThrow(() ->
+                new IllegalStateException("No fallback rarity available after removing rarity '" + id + "'."));
             for (Crate crate : this.getCrates()) {
                 for (Reward reward : crate.getRewards()) {
                     if (reward.getRarity() == removed) {

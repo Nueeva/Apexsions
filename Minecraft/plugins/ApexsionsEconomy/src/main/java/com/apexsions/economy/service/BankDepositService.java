@@ -1,9 +1,11 @@
 package com.apexsions.economy.service;
 
+import com.apexsions.core.api.Permissions;
 import com.apexsions.economy.ApexsionsEconomy;
 import com.apexsions.economy.bank.BankDeposit;
 import com.apexsions.economy.currency.Currency;
 import com.apexsions.economy.util.NumberFormatUtil;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.List;
@@ -69,10 +71,10 @@ public class BankDepositService {
     public double getRankReturnMultiplier(Player player) {
         if (player == null) return 1.0;
         double base = 1.0;
-        if (player.hasPermission("apexsions.bank.multiplier.sions") || player.hasPermission("apexsions.rank.sions")) base = 3.0; // 3x
-        else if (player.hasPermission("apexsions.bank.multiplier.emperor") || player.hasPermission("apexsions.rank.emperor")) base = 2.0; // 2x
-        else if (player.hasPermission("apexsions.bank.multiplier.sovereign") || player.hasPermission("apexsions.rank.sovereign")) base = 1.5; // 1.5x
-        else if (player.hasPermission("apexsions.bank.multiplier.archon") || player.hasPermission("apexsions.rank.archon")) base = 1.2; // 1.2x
+        if (player.hasPermission("apexsions.bank.multiplier.sions") || player.hasPermission(Permissions.RANK_SIONS)) base = 3.0; // 3x
+        else if (player.hasPermission("apexsions.bank.multiplier.emperor") || player.hasPermission(Permissions.RANK_EMPEROR)) base = 2.0; // 2x
+        else if (player.hasPermission("apexsions.bank.multiplier.sovereign") || player.hasPermission(Permissions.RANK_SOVEREIGN)) base = 1.5; // 1.5x
+        else if (player.hasPermission("apexsions.bank.multiplier.archon") || player.hasPermission(Permissions.RANK_ARCHON)) base = 1.2; // 1.2x
 
         // Zenithar Aristocratic Mastery: +25% higher bank deposit yield!
         if (plugin.getCoreHook() != null) {
@@ -98,14 +100,32 @@ public class BankDepositService {
         }
 
         Currency currency = plugin.getCurrencyRegistry().get(deposit.getCurrencyId());
-        return plugin.getRepository().claimBankDeposit(deposit.getId()).thenApply(v -> {
-            deposit.setClaimed(true);
-            plugin.getCurrencyService().addBalance(player.getUniqueId(), deposit.getCurrencyId(), deposit.getExpectedReturn());
-            player.sendMessage("§a[✔] Selamat! Deposito Anda telah dicairkan sebesar §e§l" + NumberFormatUtil.format(deposit.getExpectedReturn(), currency) + "§a!");
-            try {
-                player.playSound(player.getLocation(), org.bukkit.Sound.ENTITY_PLAYER_LEVELUP, 1.0f, 1.2f);
-            } catch (Exception ignored) {}
-            return true;
+        TransactionLockManager lockManager = plugin.getCurrencyService().getLockManager();
+
+        // C-1: cek+payout dibungkus lock per deposit-id; payout HANYA jika klaim atomik
+        // di repository menang (UPDATE ... WHERE id=? AND claimed=0 menyentuh tepat 1 baris).
+        return CompletableFuture.supplyAsync(() ->
+            lockManager.executeWithResourceLock(deposit.getId(), () -> {
+                boolean claimedNow = plugin.getRepository().claimBankDeposit(deposit.getId()).join();
+                if (claimedNow) {
+                    plugin.getCurrencyService().addBalance(player.getUniqueId(), deposit.getCurrencyId(), deposit.getExpectedReturn());
+                    deposit.setClaimed(true);
+                }
+                return claimedNow;
+            })
+        ).thenApply(claimedNow -> {
+            // C-9: semua sentuhan Bukkit API hop ke main thread.
+            Bukkit.getScheduler().runTask(plugin, () -> {
+                if (claimedNow) {
+                    player.sendMessage("§a[✔] Selamat! Deposito Anda telah dicairkan sebesar §e§l" + NumberFormatUtil.format(deposit.getExpectedReturn(), currency) + "§a!");
+                    try {
+                        player.playSound(player.getLocation(), org.bukkit.Sound.ENTITY_PLAYER_LEVELUP, 1.0f, 1.2f);
+                    } catch (Exception ignored) {}
+                } else {
+                    player.sendMessage("§cDeposito ini sudah pernah dicairkan!");
+                }
+            });
+            return claimedNow;
         });
     }
 }

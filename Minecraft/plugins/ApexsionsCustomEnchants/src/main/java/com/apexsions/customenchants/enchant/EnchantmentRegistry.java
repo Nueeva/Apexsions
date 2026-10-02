@@ -53,7 +53,13 @@ public class EnchantmentRegistry {
                 } catch (Exception e) {
                     try {
                         plugin.saveResource("enchantments.yml", false);
-                    } catch (Exception ignored) {}
+                    } catch (Exception fallbackEx) {
+                        plugin.getLogger().warning("Failed to extract default enchantments.yml to " + file.getPath()
+                                + ": " + fallbackEx.getMessage()
+                                + ". Check that the plugin jar contains enchantments.yml and that the data folder is writable.");
+                        throw new IllegalStateException(
+                                "ApexsionsCustomEnchants failed to extract default enchantments.yml", fallbackEx);
+                    }
                 }
             }
         }

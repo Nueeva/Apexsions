@@ -2,6 +2,7 @@ package com.apexsions.core.command;
 
 import com.apexsions.core.ApexsionsCorePlugin;
 import com.apexsions.core.admin.AdminModule;
+import com.apexsions.core.api.Permissions;
 import com.apexsions.core.gui.admin.PlayerInspectorGUI;
 import com.apexsions.core.gui.admin.PlayerManagerGUI;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -38,7 +39,7 @@ public class AdminHubCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
-        if (!player.hasPermission("apexsions.admin.gui") && !player.hasPermission("apexsions.admin") && !player.isOp()) {
+        if (!player.hasPermission(Permissions.ADMIN_GUI) && !player.hasPermission(Permissions.ADMIN) && !player.isOp()) {
             player.sendMessage(mm.deserialize("<red>🔒 Kamu tidak memiliki hak akses untuk membuka Master Admin Hub!</red>"));
             return true;
         }
@@ -73,7 +74,7 @@ public class AdminHubCommand implements CommandExecutor, TabCompleter {
         Optional<AdminModule> moduleOpt = plugin.getAdminHubManager().getModule(sub);
         if (moduleOpt.isPresent()) {
             AdminModule module = moduleOpt.get();
-            if (player.hasPermission(module.getPermission()) || player.isOp() || player.hasPermission("apexsions.admin")) {
+            if (player.hasPermission(module.getPermission()) || player.isOp() || player.hasPermission(Permissions.ADMIN)) {
                 module.open(player);
             } else {
                 player.sendMessage(mm.deserialize("<red>🔒 Kamu tidak memiliki izin <yellow>" + module.getPermission() + "</yellow> untuk membuka modul ini!</red>"));

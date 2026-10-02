@@ -1,6 +1,6 @@
 package com.apexsions.economy.auction;
 
-import com.apexsions.economy.util.ItemSerializer;
+import com.apexsions.core.util.ItemSerializer;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.UUID;

@@ -1,44 +1,21 @@
 # ==============================================================================
 # ApexsionsEconomy — Core Configuration (config.yml)
 # ==============================================================================
+# NOTE (M-4): only the keys below are actually read by the plugin code.
+# Previously this file documented many more keys (currencies:, trade:,
+# auction limits/fees/duration, database.postgresql, ...) that no code ever
+# read, so changing them had zero effect. Those dead keys were removed so this
+# file never promises behavior the implementation does not have.
 
 database:
-  type: "SQLITE" # SQLITE or POSTGRESQL
+  # SQLite database file name inside the plugin's data folder.
   file: "economy.db"
-  postgresql:
-    host: "localhost"
-    port: 5432
-    database: "apexsions_economy"
-    username: "postgres"
-    password: "password"
-    ssl: false
-    maximum-pool-size: 10
-
-currencies:
-  rupiah:
-    id: "rupiah"
-    display-name: "Rupiah"
-    symbol: "Rp."
-    color: "&a"
-    starting-balance: 1000.0
-    decimals: 0
-  diamond:
-    id: "diamond"
-    display-name: "Diamond 💎"
-    symbol: "💎"
-    color: "&b"
-    starting-balance: 0.0
-    decimals: 0
-
-trade:
-  enabled: true
-  request-timeout-seconds: 60
-  # Additional transport tariff charged to BOTH players when trading across different kingdoms
-  cross-kingdom-transport-fee: 5000.0
-  # Same-kingdom trades are always 0.0 (FREE)
 
 auction:
-  enabled: true
-  max-listings-per-player: 10
-  listing-duration-hours: 24
-  listing-fee-percentage: 2.0
+  # Kingdom tax percentage applied to auction purchases.
+  tax-percent: 5.0
+
+bank:
+  deposit:
+    # Maximum principal allowed per bank deposit transaction.
+    max-amount: 100000000.0

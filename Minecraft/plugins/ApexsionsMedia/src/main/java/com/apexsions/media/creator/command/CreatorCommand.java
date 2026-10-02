@@ -72,20 +72,24 @@ public class CreatorCommand implements CommandExecutor, TabCompleter {
 
                 if (platformStr.equals("youtube") || platformStr.equals("yt")) {
                     plugin.getCreatorManager().startLinking(player, Platform.YOUTUBE, id).thenAccept(code -> {
-                        player.sendMessage(mm.deserialize(
-                                "\n<gradient:#f39c12:#f1c40f><b>✦ VERIFIKASI KEPEMILIKAN YOUTUBE ✦</b></gradient>\n" +
-                                "<gray>Kode Verifikasi: </gray><yellow><bold>" + code + "</bold></yellow>\n" +
-                                "<gray>Silakan masukkan kode di atas ke dalam <b>Deskripsi Channel (About)</b> atau <b>Deskripsi Video Terbarumu</b> di YouTube.</gray>\n" +
-                                "<gray>Setelah ditaruh, ketik perintah: <aqua>/creator verify youtube</aqua></gray>\n"
-                        ));
-                        player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1.0f, 1.2f);
+                        Bukkit.getScheduler().runTask(plugin, () -> {
+                            player.sendMessage(mm.deserialize(
+                                    "\n<gradient:#f39c12:#f1c40f><b>✦ VERIFIKASI KEPEMILIKAN YOUTUBE ✦</b></gradient>\n" +
+                                    "<gray>Kode Verifikasi: </gray><yellow><bold>" + code + "</bold></yellow>\n" +
+                                    "<gray>Silakan masukkan kode di atas ke dalam <b>Deskripsi Channel (About)</b> atau <b>Deskripsi Video Terbarumu</b> di YouTube.</gray>\n" +
+                                    "<gray>Setelah ditaruh, ketik perintah: <aqua>/creator verify youtube</aqua></gray>\n"
+                            ));
+                            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1.0f, 1.2f);
+                        });
                     });
                 } else if (platformStr.equals("tiktok") || platformStr.equals("tt")) {
                     plugin.getCreatorManager().startLinking(player, Platform.TIKTOK, id).thenCompose(code ->
                             plugin.getCreatorManager().verifyLinking(player, Platform.TIKTOK)
                     ).thenAccept(success -> {
-                        player.sendMessage(mm.deserialize("<green><b>[Creator]</b> Akun TikTok @" + id.replace("@", "") + " berhasil ditautkan!</green>"));
-                        player.playSound(player.getLocation(), Sound.UI_TOAST_CHALLENGE_COMPLETE, 1.0f, 1.5f);
+                        Bukkit.getScheduler().runTask(plugin, () -> {
+                            player.sendMessage(mm.deserialize("<green><b>[Creator]</b> Akun TikTok @" + id.replace("@", "") + " berhasil ditautkan!</green>"));
+                            player.playSound(player.getLocation(), Sound.UI_TOAST_CHALLENGE_COMPLETE, 1.0f, 1.5f);
+                        });
                     });
                 } else {
                     player.sendMessage(mm.deserialize("<red>Platform tidak valid! Pilihan: <yellow>youtube</yellow> atau <yellow>tiktok</yellow>.</red>"));
@@ -103,13 +107,15 @@ public class CreatorCommand implements CommandExecutor, TabCompleter {
 
                 player.sendMessage(mm.deserialize("<gray>Sedang memeriksa verifikasi channel YouTube...</gray>"));
                 plugin.getCreatorManager().verifyLinking(player, platform).thenAccept(success -> {
-                    if (success) {
-                        player.sendMessage(mm.deserialize("<green><b>[Creator]</b> Verifikasi kepemilikan channel YouTube berhasil! Channel kamu kini resmi terhubung.</green>"));
-                        player.playSound(player.getLocation(), Sound.UI_TOAST_CHALLENGE_COMPLETE, 1.0f, 1.5f);
-                    } else {
-                        player.sendMessage(mm.deserialize("<red><b>[Creator]</b> Verifikasi gagal! Kode verifikasi tidak ditemukan di deskripsi channel atau sesi telah kedaluwarsa.</red>"));
-                        player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
-                    }
+                    Bukkit.getScheduler().runTask(plugin, () -> {
+                        if (success) {
+                            player.sendMessage(mm.deserialize("<green><b>[Creator]</b> Verifikasi kepemilikan channel YouTube berhasil! Channel kamu kini resmi terhubung.</green>"));
+                            player.playSound(player.getLocation(), Sound.UI_TOAST_CHALLENGE_COMPLETE, 1.0f, 1.5f);
+                        } else {
+                            player.sendMessage(mm.deserialize("<red><b>[Creator]</b> Verifikasi gagal! Kode verifikasi tidak ditemukan di deskripsi channel atau sesi telah kedaluwarsa.</red>"));
+                            player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
+                        }
+                    });
                 });
                 return true;
             }
@@ -127,8 +133,10 @@ public class CreatorCommand implements CommandExecutor, TabCompleter {
                 Platform platform = (platformStr.equals("tiktok") || platformStr.equals("tt")) ? Platform.TIKTOK : Platform.YOUTUBE;
 
                 plugin.getCreatorManager().unlinkPlatform(player, platform).thenRun(() -> {
-                    player.sendMessage(mm.deserialize("<yellow><b>[Creator]</b> Akun " + platform.getDisplayName() + " berhasil diputuskan dari profilmu.</yellow>"));
-                    player.playSound(player.getLocation(), Sound.ENTITY_ITEM_BREAK, 1.0f, 1.0f);
+                    Bukkit.getScheduler().runTask(plugin, () -> {
+                        player.sendMessage(mm.deserialize("<yellow><b>[Creator]</b> Akun " + platform.getDisplayName() + " berhasil diputuskan dari profilmu.</yellow>"));
+                        player.playSound(player.getLocation(), Sound.ENTITY_ITEM_BREAK, 1.0f, 1.0f);
+                    });
                 });
                 return true;
             }
@@ -169,9 +177,11 @@ public class CreatorCommand implements CommandExecutor, TabCompleter {
                         return true;
                     }
                     plugin.getCreatorManager().getProfile(target.getUniqueId(), target.getName() != null ? target.getName() : args[2]).thenAccept(prof -> {
-                        sender.sendMessage(mm.deserialize("\n<gradient:#f39c12:#f1c40f><b>✦ INFO KREATOR: " + (target.getName() != null ? target.getName() : args[2]) + " ✦</b></gradient>"));
-                        sender.sendMessage(mm.deserialize("<gray>YouTube: " + (prof.isYouTubeLinked() ? "<green>" + prof.getYoutubeChannelId() + "</green>" : "<red>None</red>")));
-                        sender.sendMessage(mm.deserialize("<gray>TikTok: " + (prof.isTikTokLinked() ? "<green>@" + prof.getTiktokUsername() + "</green>" : "<red>None</red>")));
+                        Bukkit.getScheduler().runTask(plugin, () -> {
+                            sender.sendMessage(mm.deserialize("\n<gradient:#f39c12:#f1c40f><b>✦ INFO KREATOR: " + (target.getName() != null ? target.getName() : args[2]) + " ✦</b></gradient>"));
+                            sender.sendMessage(mm.deserialize("<gray>YouTube: " + (prof.isYouTubeLinked() ? "<green>" + prof.getYoutubeChannelId() + "</green>" : "<red>None</red>")));
+                            sender.sendMessage(mm.deserialize("<gray>TikTok: " + (prof.isTikTokLinked() ? "<green>@" + prof.getTiktokUsername() + "</green>" : "<red>None</red>")));
+                        });
                     });
                     return true;
                 }
@@ -187,7 +197,8 @@ public class CreatorCommand implements CommandExecutor, TabCompleter {
                         prof.setYoutubeHandle(null);
                         prof.setTiktokUsername(null);
                         plugin.getCreatorManager().getRepository().saveProfile(prof).thenRun(() -> {
-                            sender.sendMessage(mm.deserialize("<green><b>[Creator Admin]</b> Berhasil me-reset data penautan kreator untuk " + (target.getName() != null ? target.getName() : args[2]) + "!</green>"));
+                            Bukkit.getScheduler().runTask(plugin, () ->
+                                sender.sendMessage(mm.deserialize("<green><b>[Creator Admin]</b> Berhasil me-reset data penautan kreator untuk " + (target.getName() != null ? target.getName() : args[2]) + "!</green>")));
                         });
                     });
                     return true;

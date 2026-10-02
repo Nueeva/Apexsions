@@ -1,6 +1,7 @@
 package com.apexsions.core.grave;
 
 import com.apexsions.core.ApexsionsCorePlugin;
+import com.apexsions.core.api.Permissions;
 import com.apexsions.core.player.DeathRecord;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
@@ -314,7 +315,7 @@ public class GraveManager {
      * Determines whether the collector is permitted to loot the grave.
      */
     public boolean canCollect(@NotNull Player player, @NotNull GraveRecord grave) {
-        if (player.getUniqueId().equals(grave.getOwnerUuid()) || player.hasPermission("apexsions.grave.admin")) {
+        if (player.getUniqueId().equals(grave.getOwnerUuid()) || player.hasPermission(Permissions.GRAVE_ADMIN)) {
             return true;
         }
         if (!allowKingdomMembers()) {

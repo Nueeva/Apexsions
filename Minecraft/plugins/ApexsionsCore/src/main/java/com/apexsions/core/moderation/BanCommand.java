@@ -1,6 +1,7 @@
 package com.apexsions.core.moderation;
 
 import com.apexsions.core.ApexsionsCorePlugin;
+import com.apexsions.core.api.Permissions;
 import com.apexsions.core.util.PlayerResolver;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -60,7 +61,7 @@ public class BanCommand implements CommandExecutor, TabCompleter {
     }
 
     private void handleBan(CommandSender sender, String[] args, boolean forceTemp) {
-        if (!sender.hasPermission("apexsions.admin.ban") && !sender.hasPermission("apexsions.staff") && !sender.isOp()) {
+        if (!sender.hasPermission(Permissions.ADMIN_BAN) && !sender.hasPermission(Permissions.STAFF) && !sender.isOp()) {
             sender.sendMessage(mm.deserialize("<red>Anda tidak memiliki otoritas untuk menjatuhkan sanksi ban.</red>"));
             return;
         }
@@ -133,7 +134,7 @@ public class BanCommand implements CommandExecutor, TabCompleter {
     }
 
     private void handleBanIp(CommandSender sender, String[] args) {
-        if (!sender.hasPermission("apexsions.admin.banip") && !sender.hasPermission("apexsions.staff") && !sender.isOp()) {
+        if (!sender.hasPermission(Permissions.ADMIN_BANIP) && !sender.hasPermission(Permissions.STAFF) && !sender.isOp()) {
             sender.sendMessage(mm.deserialize("<red>Anda tidak memiliki otoritas untuk menjatuhkan IP ban.</red>"));
             return;
         }
@@ -194,7 +195,7 @@ public class BanCommand implements CommandExecutor, TabCompleter {
     }
 
     private void handleUnban(CommandSender sender, String[] args, boolean isIp) {
-        if (!sender.hasPermission("apexsions.admin.unban") && !sender.hasPermission("apexsions.staff") && !sender.isOp()) {
+        if (!sender.hasPermission(Permissions.ADMIN_UNBAN) && !sender.hasPermission(Permissions.STAFF) && !sender.isOp()) {
             sender.sendMessage(mm.deserialize("<red>Anda tidak memiliki otoritas untuk mencabut sanksi ban.</red>"));
             return;
         }

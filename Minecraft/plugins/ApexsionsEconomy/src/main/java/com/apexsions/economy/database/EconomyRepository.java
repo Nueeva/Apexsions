@@ -205,6 +205,50 @@ public class EconomyRepository {
         });
     }
 
+    // --- TRANSACTIONS AUDIT TRAIL (M-6) ---
+
+    /**
+     * Writes one audit row into {@code economy_transactions}.
+     *
+     * <p>Best-effort and fire-and-forget by design: a failure is logged at
+     * SEVERE but can never break the balance mutation that triggered it
+     * (the audit call is a separate async write, never in the mutation's
+     * success path). Callers invoke this inside the account lock, right after
+     * the balance write, so audit rows are ordered per account invocation.</p>
+     */
+    public CompletableFuture<Void> logTransaction(UUID senderUuid, UUID receiverUuid, String currencyId,
+                                                  double amount, String type, String details) {
+        return CompletableFuture.runAsync(() -> {
+            synchronized (dbLock) {
+                String sql = """
+                    INSERT INTO economy_transactions
+                        (timestamp, sender_uuid, receiver_uuid, currency_id, amount, type, details)
+                    VALUES (?, ?, ?, ?, ?, ?, ?);
+                """;
+                try (PreparedStatement ps = connection.prepareStatement(sql)) {
+                    ps.setLong(1, System.currentTimeMillis());
+                    if (senderUuid != null) {
+                        ps.setString(2, senderUuid.toString());
+                    } else {
+                        ps.setNull(2, Types.VARCHAR);
+                    }
+                    if (receiverUuid != null) {
+                        ps.setString(3, receiverUuid.toString());
+                    } else {
+                        ps.setNull(3, Types.VARCHAR);
+                    }
+                    ps.setString(4, currencyId.toLowerCase(Locale.ROOT));
+                    ps.setDouble(5, amount);
+                    ps.setString(6, type);
+                    ps.setString(7, details);
+                    ps.executeUpdate();
+                } catch (SQLException e) {
+                    plugin.getLogger().log(Level.SEVERE, "Error logging economy transaction (" + type + ")", e);
+                }
+            }
+        });
+    }
+
     // --- AUCTIONS ---
 
     public CompletableFuture<Void> saveAuction(AuctionListing listing) {
@@ -432,15 +476,25 @@ public class EconomyRepository {
         });
     }
 
-    public CompletableFuture<Void> claimBankDeposit(String depositId) {
-        return CompletableFuture.runAsync(() -> {
+    /**
+     * Klaim deposito secara atomik (C-1).
+     *
+     * <p>Guard {@code AND claimed = 0} + pengecekan {@code executeUpdate() == 1}
+     * memastikan dua klaim konkuren tidak bisa dua-duanya sukses: hanya pemenang
+     * pertama yang mengembalikan {@code true} dan berhak menerima payout.</p>
+     *
+     * @return future {@code true} hanya jika tepat 1 baris berhasil diklaim
+     */
+    public CompletableFuture<Boolean> claimBankDeposit(String depositId) {
+        return CompletableFuture.supplyAsync(() -> {
             synchronized (dbLock) {
-                String sql = "UPDATE economy_bank_deposits SET claimed = 1 WHERE id = ?";
+                String sql = "UPDATE economy_bank_deposits SET claimed = 1 WHERE id = ? AND claimed = 0";
                 try (PreparedStatement ps = connection.prepareStatement(sql)) {
                     ps.setString(1, depositId);
-                    ps.executeUpdate();
+                    return ps.executeUpdate() == 1;
                 } catch (SQLException e) {
                     plugin.getLogger().log(Level.SEVERE, "Error claiming bank deposit " + depositId, e);
+                    return false;
                 }
             }
         });

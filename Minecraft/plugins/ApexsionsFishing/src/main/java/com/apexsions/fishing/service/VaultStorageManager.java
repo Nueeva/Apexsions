@@ -1,5 +1,6 @@
 package com.apexsions.fishing.service;
 
+import com.apexsions.core.api.Permissions;
 import com.apexsions.fishing.ApexsionsFishing;
 import com.apexsions.fishing.model.PlayerFishingStats;
 import com.apexsions.fishing.model.PlayerVaultData;
@@ -255,11 +256,10 @@ public class VaultStorageManager {
         // 4. Online player permissions
         org.bukkit.entity.Player onlineP = Bukkit.getPlayer(uuid);
         if (onlineP != null && (onlineP.isOp() 
-                || onlineP.hasPermission("apexsions.admin") 
-                || onlineP.hasPermission("apexsions.staff") 
-                || onlineP.hasPermission("apexsionscore.admin")
-                || onlineP.hasPermission("apexsions.conclave")
-                || onlineP.hasPermission("apexsions.leaderboard.exempt"))) {
+                || onlineP.hasPermission(Permissions.ADMIN)
+                || onlineP.hasPermission(Permissions.STAFF)
+                || onlineP.hasPermission(Permissions.CONCLAVE)
+                || onlineP.hasPermission(Permissions.LEADERBOARD_EXEMPT))) {
             return true;
         }
 

@@ -1,6 +1,7 @@
 package com.apexsions.chat.gui;
 
 import com.apexsions.chat.ApexsionsChatPlugin;
+import com.apexsions.core.api.Permissions;
 import com.apexsions.core.api.PlayerChatProfile;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -51,7 +52,7 @@ public class SocialProfileGUI extends BaseChatGUI {
 
         // Slot 11: Last Death Coordinates (Visible to self or staff)
         boolean isSelf = viewer.getUniqueId().equals(target.getUniqueId());
-        boolean isStaff = viewer.hasPermission("apexsions.staff") || viewer.hasPermission("apexsions.admin") || viewer.isOp();
+        boolean isStaff = viewer.hasPermission(Permissions.STAFF) || viewer.hasPermission(Permissions.ADMIN) || viewer.isOp();
         if (isSelf || isStaff) {
             org.bukkit.Location deathLoc = null;
             if (plugin.getApexsionsCoreHook() != null && plugin.getApexsionsCoreHook().isAvailable()) {

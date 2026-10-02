@@ -125,7 +125,7 @@ public class YouTubeService {
                             }
                         }
 
-                        String canonicalUrl = "https://www.youtube.com/watch?v= " + videoId;
+                        String canonicalUrl = "https://www.youtube.com/watch?v=" + videoId;
                         return VideoValidationResult.success(
                                 Platform.YOUTUBE,
                                 videoId,

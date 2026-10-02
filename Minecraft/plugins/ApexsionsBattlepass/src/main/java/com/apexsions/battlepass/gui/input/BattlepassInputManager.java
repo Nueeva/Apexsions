@@ -4,6 +4,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import java.util.function.Consumer;
+import com.apexsions.core.gui.input.CustomInputTextGUI;
 
 public class BattlepassInputManager {
 

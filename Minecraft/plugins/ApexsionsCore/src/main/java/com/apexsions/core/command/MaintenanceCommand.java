@@ -1,6 +1,7 @@
 package com.apexsions.core.command;
 
 import com.apexsions.core.ApexsionsCorePlugin;
+import com.apexsions.core.api.Permissions;
 import com.apexsions.core.maintenance.MaintenanceManager;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.command.Command;
@@ -25,7 +26,7 @@ public class MaintenanceCommand implements CommandExecutor, TabCompleter {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        if (!sender.hasPermission("apexsions.maintenance.admin") && !sender.hasPermission("apexsions.admin")) {
+        if (!sender.hasPermission(Permissions.MAINTENANCE_ADMIN) && !sender.hasPermission(Permissions.ADMIN)) {
             sender.sendMessage(miniMessage.deserialize("<red>Anda tidak memiliki izin untuk mengelola mode pemeliharaan server.</red>"));
             return true;
         }
@@ -94,7 +95,7 @@ public class MaintenanceCommand implements CommandExecutor, TabCompleter {
 
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
-        if (!sender.hasPermission("apexsions.maintenance.admin") && !sender.hasPermission("apexsions.admin")) {
+        if (!sender.hasPermission(Permissions.MAINTENANCE_ADMIN) && !sender.hasPermission(Permissions.ADMIN)) {
             return List.of();
         }
         if (args.length == 1) {

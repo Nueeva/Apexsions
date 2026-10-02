@@ -1,5 +1,6 @@
 package com.apexsions.core.warp;
 
+import com.apexsions.core.api.Permissions;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -85,7 +86,7 @@ public class Warp {
 
     public boolean canAccess(Player player) {
         if (player == null) return false;
-        if (player.hasPermission("apexsionscore.warp.admin") || player.hasPermission("kingdomcore.admin")) return true;
+        if (player.hasPermission(Permissions.WARP_ADMIN) || player.hasPermission(Permissions.ADMIN)) return true;
         if (permission == null || permission.isBlank()) return true;
         return player.hasPermission(permission) || player.hasPermission("apexsionscore.warp." + id);
     }

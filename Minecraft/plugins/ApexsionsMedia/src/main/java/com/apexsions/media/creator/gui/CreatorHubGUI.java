@@ -203,8 +203,10 @@ public class CreatorHubGUI implements InventoryHolder {
             if (profile.isYouTubeLinked()) {
                 if (e.isRightClick()) {
                     plugin.getCreatorManager().unlinkPlatform(player, Platform.YOUTUBE).thenRun(() -> {
-                        player.sendMessage(mm.deserialize("<yellow><b>[Creator]</b> Tautan akun YouTube berhasil diputuskan.</yellow>"));
-                        player.playSound(player.getLocation(), Sound.ENTITY_ITEM_BREAK, 1.0f, 1.0f);
+                        Bukkit.getScheduler().runTask(plugin, () -> {
+                            player.sendMessage(mm.deserialize("<yellow><b>[Creator]</b> Tautan akun YouTube berhasil diputuskan.</yellow>"));
+                            player.playSound(player.getLocation(), Sound.ENTITY_ITEM_BREAK, 1.0f, 1.0f);
+                        });
                         loadAndBuild();
                     });
                 }
@@ -216,13 +218,15 @@ public class CreatorHubGUI implements InventoryHolder {
                         "<yellow>Masukkan <aqua>Channel ID (UC...)</aqua> atau <aqua>Handle (@nama)</aqua> YouTube kamu via GUI:</yellow>",
                         input -> {
                             plugin.getCreatorManager().startLinking(player, Platform.YOUTUBE, input).thenAccept(code -> {
-                                player.sendMessage(mm.deserialize(
-                                        "\n<gradient:#f39c12:#f1c40f><b>✦ VERIFIKASI KEPEMILIKAN YOUTUBE ✦</b></gradient>\n" +
-                                        "<gray>Kode Verifikasi: </gray><yellow><bold>" + code + "</bold></yellow>\n" +
-                                        "<gray>Silakan masukkan kode di atas ke dalam <b>Deskripsi Channel (About)</b> atau <b>Deskripsi Video Terbarumu</b> di YouTube.</gray>\n" +
-                                        "<gray>Setelah ditaruh, ketik perintah: <aqua>/creator verify youtube</aqua></gray>\n"
-                                ));
-                                player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1.0f, 1.2f);
+                                Bukkit.getScheduler().runTask(plugin, () -> {
+                                    player.sendMessage(mm.deserialize(
+                                            "\n<gradient:#f39c12:#f1c40f><b>✦ VERIFIKASI KEPEMILIKAN YOUTUBE ✦</b></gradient>\n" +
+                                            "<gray>Kode Verifikasi: </gray><yellow><bold>" + code + "</bold></yellow>\n" +
+                                            "<gray>Silakan masukkan kode di atas ke dalam <b>Deskripsi Channel (About)</b> atau <b>Deskripsi Video Terbarumu</b> di YouTube.</gray>\n" +
+                                            "<gray>Setelah ditaruh, ketik perintah: <aqua>/creator verify youtube</aqua></gray>\n"
+                                    ));
+                                    player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1.0f, 1.2f);
+                                });
                             });
                         }
                 );
@@ -235,8 +239,10 @@ public class CreatorHubGUI implements InventoryHolder {
             if (profile.isTikTokLinked()) {
                 if (e.isRightClick()) {
                     plugin.getCreatorManager().unlinkPlatform(player, Platform.TIKTOK).thenRun(() -> {
-                        player.sendMessage(mm.deserialize("<yellow><b>[Creator]</b> Tautan akun TikTok berhasil diputuskan.</yellow>"));
-                        player.playSound(player.getLocation(), Sound.ENTITY_ITEM_BREAK, 1.0f, 1.0f);
+                        Bukkit.getScheduler().runTask(plugin, () -> {
+                            player.sendMessage(mm.deserialize("<yellow><b>[Creator]</b> Tautan akun TikTok berhasil diputuskan.</yellow>"));
+                            player.playSound(player.getLocation(), Sound.ENTITY_ITEM_BREAK, 1.0f, 1.0f);
+                        });
                         loadAndBuild();
                     });
                 }
@@ -250,8 +256,10 @@ public class CreatorHubGUI implements InventoryHolder {
                             plugin.getCreatorManager().startLinking(player, Platform.TIKTOK, input).thenCompose(code ->
                                     plugin.getCreatorManager().verifyLinking(player, Platform.TIKTOK)
                             ).thenAccept(success -> {
-                                player.sendMessage(mm.deserialize("<green><b>[Creator]</b> Akun TikTok @" + input.replace("@", "") + " berhasil ditautkan!</green>"));
-                                player.playSound(player.getLocation(), Sound.UI_TOAST_CHALLENGE_COMPLETE, 1.0f, 1.5f);
+                                Bukkit.getScheduler().runTask(plugin, () -> {
+                                    player.sendMessage(mm.deserialize("<green><b>[Creator]</b> Akun TikTok @" + input.replace("@", "") + " berhasil ditautkan!</green>"));
+                                    player.playSound(player.getLocation(), Sound.UI_TOAST_CHALLENGE_COMPLETE, 1.0f, 1.5f);
+                                });
                             });
                         }
                 );

@@ -1,6 +1,7 @@
 package com.apexsions.crates.integration;
 
 import com.apexsions.core.admin.AdminModule;
+import com.apexsions.core.api.Permissions;
 import com.apexsions.crates.ApexsionsCratesPlugin;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -43,7 +44,7 @@ public class ApexsionsCratesAdminModule implements AdminModule {
 
     @Override
     public String getPermission() {
-        return "apexsions.admin";
+        return Permissions.ADMIN;
     }
 
     @Override

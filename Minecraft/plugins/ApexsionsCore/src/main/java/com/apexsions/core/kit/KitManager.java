@@ -1,6 +1,7 @@
 package com.apexsions.core.kit;
 
 import com.apexsions.core.ApexsionsCorePlugin;
+import com.apexsions.core.api.Permissions;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Material;
@@ -250,13 +251,13 @@ public class KitManager {
     }
 
     public boolean canClaim(Player player, Kit kit) {
-        if (player.hasPermission("apexsions.admin") || player.isOp()) {
+        if (player.hasPermission(Permissions.ADMIN) || player.isOp()) {
             return true;
         }
 
         // Trial Rank Rule: Trial ranks cannot claim permanent rank kits unless it is the default wanderer kit
-        boolean isTrial = player.hasPermission("apexsions.rank.trial") && !player.hasPermission("apexsions.rank.permanent");
-        if (isTrial && !kit.getId().equalsIgnoreCase("wanderer") && !player.hasPermission("apexsions.kit.trial.allow")) {
+        boolean isTrial = player.hasPermission(Permissions.RANK_TRIAL) && !player.hasPermission(Permissions.RANK_PERMANENT);
+        if (isTrial && !kit.getId().equalsIgnoreCase("wanderer") && !player.hasPermission(Permissions.KIT_TRIAL_ALLOW)) {
             return false;
         }
 
@@ -265,7 +266,7 @@ public class KitManager {
         int pWeight = plugin.getLuckPermsHook().getRankWeight(pRank);
         int reqWeight = plugin.getLuckPermsHook().getRankWeight(kit.getRequiredRank());
 
-        if (pWeight < reqWeight && !player.hasPermission("apexsions.kit." + kit.getId())) {
+        if (pWeight < reqWeight && !player.hasPermission(Permissions.KIT_PREFIX + kit.getId())) {
             return false;
         }
 
@@ -275,7 +276,7 @@ public class KitManager {
     }
 
     public long getRemainingCooldownSeconds(Player player, Kit kit) {
-        if (player.hasPermission("apexsions.admin") || player.isOp()) return 0;
+        if (player.hasPermission(Permissions.ADMIN) || player.isOp()) return 0;
         long expiry = getCooldownExpiry(player.getUniqueId(), kit.getId());
         long remaining = (expiry - System.currentTimeMillis()) / 1000;
         return Math.max(0, remaining);

@@ -2,13 +2,13 @@ package com.apexsions.battlepass.admin.gui.reward;
 
 import com.apexsions.battlepass.ApexsionsBattlepass;
 import com.apexsions.battlepass.gui.core.Gui;
-import com.apexsions.battlepass.gui.core.GuiButton;
+import com.apexsions.core.gui.core.GuiButton;
 import com.apexsions.battlepass.gui.navigation.BackButton;
 import com.apexsions.battlepass.gui.navigation.CloseButton;
 import com.apexsions.battlepass.gui.util.ItemBuilder;
 import com.apexsions.battlepass.reward.RewardItem;
 import com.apexsions.battlepass.reward.RewardType;
-import com.apexsions.battlepass.util.ItemSerializer;
+import com.apexsions.core.util.ItemSerializer;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;

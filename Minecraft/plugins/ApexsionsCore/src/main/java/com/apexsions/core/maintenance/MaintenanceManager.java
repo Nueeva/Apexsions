@@ -1,6 +1,7 @@
 package com.apexsions.core.maintenance;
 
 import com.apexsions.core.ApexsionsCorePlugin;
+import com.apexsions.core.api.Permissions;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
@@ -77,8 +78,8 @@ public class MaintenanceManager implements Listener {
 
         // Check if staff can bypass
         if (allowStaff) {
-            if (player.hasPermission("apexsions.maintenance.bypass") || 
-                player.hasPermission("apexsions.admin") || 
+            if (player.hasPermission(Permissions.MAINTENANCE_BYPASS) ||
+                player.hasPermission(Permissions.ADMIN) ||
                 player.isOp()) {
                 plugin.getLogger().info("[Maintenance] Staff " + player.getName() + " bypassed maintenance login gate.");
                 return;

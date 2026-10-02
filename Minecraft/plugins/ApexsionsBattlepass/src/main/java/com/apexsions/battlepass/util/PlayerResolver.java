@@ -1,5 +1,6 @@
 package com.apexsions.battlepass.util;
 
+import com.apexsions.core.api.Permissions;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
@@ -167,7 +168,7 @@ public final class PlayerResolver {
         String rawQuery = query.toLowerCase(Locale.ROOT);
         String cleanQuery = stripBedrockPrefix(query).toLowerCase(Locale.ROOT);
 
-        boolean canSeeVanish = viewer == null || !(viewer instanceof Player) || viewer.hasPermission("apexsions.vanish.see");
+        boolean canSeeVanish = viewer == null || !(viewer instanceof Player) || viewer.hasPermission(Permissions.VANISH_SEE);
         Player viewingPlayer = viewer instanceof Player p ? p : null;
 
         Set<String> results = new LinkedHashSet<>();

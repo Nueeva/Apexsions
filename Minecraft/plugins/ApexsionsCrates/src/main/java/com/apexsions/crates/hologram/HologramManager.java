@@ -23,6 +23,7 @@ import su.nightexpress.nightcore.util.LocationUtil;
 import su.nightexpress.nightcore.util.Plugins;
 import su.nightexpress.nightcore.util.placeholder.Replacer;
 
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.*;
 
 public class HologramManager extends AbstractManager<CratesPlugin> {
@@ -33,7 +34,7 @@ public class HologramManager extends AbstractManager<CratesPlugin> {
 
     public HologramManager(@NotNull CratesPlugin plugin) {
         super(plugin);
-        this.displayMap = new HashMap<>();
+        this.displayMap = new ConcurrentHashMap<>();
     }
 
     @Override
@@ -41,7 +42,7 @@ public class HologramManager extends AbstractManager<CratesPlugin> {
         if (this.detectHandler()) {
             this.addListener(new HologramListener(this.plugin, this));
 
-            this.addAsyncTask(this::tickHolograms, Config.CRATE_HOLOGRAM_UPDATE_INTERVAL.get());
+            this.addTask(this::tickHolograms, Config.CRATE_HOLOGRAM_UPDATE_INTERVAL.get());
         }
     }
 

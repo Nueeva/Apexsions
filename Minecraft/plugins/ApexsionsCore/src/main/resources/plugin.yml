@@ -110,7 +110,7 @@ commands:
     usage: /maintenance <enable|disable|status|setmessage> [reason]
   link:
     description: Link in-game Minecraft account to Apexsions web platform.
-    permission: apexsionscore.command.link
+    permission: apexsions.command.link
     usage: /link <pin>
   sync:
     aliases:
@@ -125,7 +125,7 @@ commands:
     usage: /vote
   lobby:
     description: Teleport to the main server lobby.
-    permission: apexsionscore.command.lobby
+    permission: apexsions.command.lobby
     usage: /lobby
   region:
     aliases:
@@ -133,14 +133,14 @@ commands:
       - kingdoms
       - k
     description: Region / Realm navigation, selection, and information.
-    permission: apexsionscore.command.region
+    permission: apexsions.command.region
     usage: /region [choose|info]
   kingdom:
     aliases:
       - k
       - kingdoms
     description: Realm / Kingdom navigation, selection, and information.
-    permission: apexsionscore.command.region
+    permission: apexsions.command.region
     usage: /kingdom [choose|info]
   apexsionscore:
     aliases:
@@ -149,20 +149,20 @@ commands:
       - kingdomcore
       - kc
     description: Administrative management for ApexsionsCore.
-    permission: apexsionscore.admin
+    permission: apexsions.admin
     usage: /apexsionscore <reload|setlevel|addxp|setkingdom|info>
   apexionscore:
     aliases:
       - ac
       - kc
     description: Alias for ApexsionsCore admin management.
-    permission: apexsionscore.admin
+    permission: apexsions.admin
     usage: /apexionscore <reload|setlevel|addxp|setkingdom|info>
   kingdomcore:
     aliases:
       - kc
     description: Legacy alias for ApexsionsCore admin management.
-    permission: apexsionscore.admin
+    permission: apexsions.admin
     usage: /kingdomcore <reload|setlevel|addxp|setkingdom|info>
   level:
     aliases:
@@ -172,7 +172,7 @@ commands:
       - exp
       - xpguide
     description: View character profile, level progression, rewards, and XP guide.
-    permission: apexsionscore.command.level
+    permission: apexsions.command.level
     usage: /level
   rtp:
     aliases:
@@ -183,33 +183,33 @@ commands:
       - randomteleport
       - rtpkingdom
     description: Random teleport strictly inside your pledged kingdom territory.
-    permission: apexsionscore.command.rtp
+    permission: apexsions.command.rtp
     usage: /rtp
   tpr:
     description: Safe random teleport strictly inside your pledged kingdom territory.
-    permission: apexsionscore.command.rtp
+    permission: apexsions.command.rtp
     usage: /tpr
   wild:
     aliases:
       - wilderness
     description: Random teleport strictly inside your pledged kingdom territory.
-    permission: apexsionscore.command.rtp
+    permission: apexsions.command.rtp
     usage: /wild
   warp:
     aliases:
       - warps
     description: Open warp navigation GUI or teleport to a specific warp location.
-    permission: apexsionscore.command.warp
+    permission: apexsions.command.warp
     usage: /warp [name|admin|set|del]
   warps:
     description: Open the interactive warp navigation menu.
-    permission: apexsionscore.command.warp
+    permission: apexsions.command.warp
     usage: /warps
   warpmgr:
     aliases:
       - warpadmin
     description: Open interactive Admin Warp Management GUI.
-    permission: apexsionscore.warp.admin
+    permission: apexsions.warp.admin
     usage: /warpmgr
   admingui:
     aliases:
@@ -232,7 +232,7 @@ commands:
       - title
       - tag
     description: Open the Title Vault GUI to equip prestige titles and honorific badges.
-    permission: apexsionscore.command.titles
+    permission: apexsions.command.titles
     usage: /titles
   cosmetics:
     aliases:
@@ -241,43 +241,43 @@ commands:
       - trail
       - trails
     description: Open the Particle Cosmetics GUI for Head Auras, Footstep Trails, and Kill Effects.
-    permission: apexsionscore.command.cosmetics
+    permission: apexsions.command.cosmetics
     usage: /cosmetics
   rank:
     aliases:
       - ranks
       - ranklist
     description: Open the interactive Rank Hierarchy and Donator Perks menu.
-    permission: apexsionscore.command.rank
+    permission: apexsions.command.rank
     usage: /rank
   ranks:
     description: Open the interactive Rank Hierarchy and Donator Perks menu.
-    permission: apexsionscore.command.rank
+    permission: apexsions.command.rank
     usage: /ranks
   enchant:
     aliases:
       - customenchant
       - apexenchant
     description: Apply custom or vanilla enchantments exceeding vanilla limits (up to 4x vanilla max level).
-    permission: apexsionscore.command.enchant
+    permission: apexsions.command.enchant
     usage: /enchant [player] <enchantment> <level>
   customenchant:
     description: Alias for /enchant.
-    permission: apexsionscore.command.enchant
+    permission: apexsions.command.enchant
     usage: /customenchant [player] <enchantment> <level>
   apexenchant:
     description: Alias for /enchant.
-    permission: apexsionscore.command.enchant
+    permission: apexsions.command.enchant
     usage: /apexenchant [player] <enchantment> <level>
   kits:
     aliases:
       - kit
     description: Open the Kingdom Kits menu to claim or preview equipment sets.
-    permission: apexsionscore.command.kits
+    permission: apexsions.command.kits
     usage: /kits [preview|claim|create|edit|delete|give|resetcooldown|list]
   kit:
     description: Alias for /kits.
-    permission: apexsionscore.command.kits
+    permission: apexsions.command.kits
     usage: /kit [preview|claim|create|edit|delete|give|resetcooldown|list]
   kitadmin:
     aliases:
@@ -359,80 +359,60 @@ permissions:
   apexsions.staff.alerts:
     description: Allows receiving anti-xray security alerts.
     default: op
-  apexsionscore.command.enchant:
+  apexsions.command.enchant:
     description: Allows applying custom enchantments with 4x multiplier.
     default: op
-  apexsionscore.enchant.bypass:
+  apexsions.enchant.bypass:
     description: Allows bypassing the 4x level multiplier up to server absolute hardcap.
     default: op
 
-  apexsionscore.command.rank:
+  apexsions.command.rank:
     description: Allows viewing the Rank Hierarchy GUI.
     default: true
-  apexsionscore.command.titles:
+  apexsions.command.titles:
     description: Allows accessing the Title Vault GUI.
     default: true
-  apexsionscore.command.cosmetics:
+  apexsions.command.cosmetics:
     description: Allows accessing the Particle Cosmetics GUI.
     default: true
   apexsions.admin.gui:
     description: Allows accessing the Centralized Master Admin Hub (/admingui).
     default: op
-  apexsionscore.command.warp:
+  apexsions.command.warp:
     description: Allows using /warp and accessing public server warps.
     default: true
-  apexsionscore.warp.admin:
+  apexsions.warp.admin:
     description: Allows managing warps, setting warps, and opening /warpmgr.
     default: op
-  apexsionscore.warp.bypass:
+  apexsions.warp.bypass:
     description: Bypasses warp teleportation countdown delay.
     default: op
-  apexsionscore.command.link:
+  apexsions.command.link:
     description: Allows linking in-game account to web account.
     default: true
-  apexsionscore.command.lobby:
+  apexsions.command.lobby:
     description: Allows teleporting to the lobby.
     default: true
-  apexsionscore.command.region:
+  apexsions.command.region:
     description: Allows teleporting to the player's realm/kingdom.
     default: true
-  apexsionscore.command.level:
+  apexsions.command.level:
     description: Allows accessing level, profile, rewards, and XP guide.
     default: true
-  apexsionscore.command.rtp:
+  apexsions.command.rtp:
     description: Allows random teleporting inside player's kingdom territory.
     default: true
-  apexsionscore.rtp.bypass:
+  apexsions.rtp.bypass:
     description: Bypasses /rtp cooldown timer.
     default: op
-  apexsionscore.admin:
+  apexsions.admin:
     description: Allows access to administrative commands.
     default: op
-  apexsionscore.admin.*:
+  apexsions.admin.*:
     description: Wildcard administrative access for ApexsionsCore.
     default: op
     children:
-      apexsionscore.admin: true
-  apexionscore.command.lobby:
-    default: true
-  apexionscore.command.region:
-    default: true
-  apexionscore.command.level:
-    default: true
-  apexionscore.command.rtp:
-    default: true
-  apexionscore.admin:
-    default: op
-  kingdomcore.command.lobby:
-    default: true
-  kingdomcore.command.kingdom:
-    default: true
-  kingdomcore.command.level:
-    default: true
-  kingdomcore.command.rtp:
-    default: true
-  kingdomcore.admin:
-    default: op
+      apexsions.admin: true
   apexsions.vanish:
     description: Allows entering vanish mode.
     default: op

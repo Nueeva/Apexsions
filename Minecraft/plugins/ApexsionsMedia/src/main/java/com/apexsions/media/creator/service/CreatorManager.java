@@ -104,8 +104,19 @@ public class CreatorManager {
 
     public CompletableFuture<Boolean> verifyLinking(Player player, Platform platform) {
         return getProfile(player.getUniqueId(), player.getName()).thenCompose(profile -> {
-            if (!profile.hasPendingVerification() || !platform.name().equalsIgnoreCase(profile.getPendingPlatform())) {
+            if (profile.getPendingVerifyCode() == null || profile.getPendingVerifyCode().isBlank()
+                    || !platform.name().equalsIgnoreCase(profile.getPendingPlatform())) {
                 return CompletableFuture.completedFuture(false);
+            }
+
+            // M-9: verification codes expire. A missing/unset expiry (0) is treated as
+            // expired, never as forever-valid, and the stale pending state is cleared.
+            long expiry = profile.getPendingVerifyExpiry();
+            if (expiry <= 0L || System.currentTimeMillis() >= expiry) {
+                profile.clearPendingVerification();
+                notifyPlayer(player, Sound.ENTITY_VILLAGER_NO,
+                        "<red><b>[Creator]</b> Sesi verifikasi telah kedaluwarsa. Silakan mulai ulang proses linking.</red>");
+                return repository.saveProfile(profile).thenApply(v -> false);
             }
 
             String identifier = profile.getPendingIdentifier();
@@ -144,6 +155,24 @@ public class CreatorManager {
         });
     }
 
+    /**
+     * C-10: semua sentuhan Bukkit API (sendMessage/playSound) dari rantai
+     * CompletableFuture (async) wajib hop ke main thread via scheduler.
+     * Logika murni/non-Bukkit tetap dibiarkan di thread async.
+     *
+     * @param sound suara yang dimainkan setelah pesan, atau {@code null} jika tidak ada
+     */
+    private void notifyPlayer(Player player, Sound sound, String... messages) {
+        Bukkit.getScheduler().runTask(plugin, () -> {
+            for (String message : messages) {
+                player.sendMessage(mm.deserialize(message));
+            }
+            if (sound != null) {
+                player.playSound(player.getLocation(), sound, 1.0f, 1.0f);
+            }
+        });
+    }
+
     public CompletableFuture<Void> processVideoSubmission(Player player, String videoUrl) {
         player.sendMessage(mm.deserialize("<gradient:#3498db:#2ecc71><b>[Creator]</b></gradient> <gray>Sedang memverifikasi tautan video secara asinkron...</gray>"));
 
@@ -152,12 +181,12 @@ public class CreatorManager {
             Platform platform = isTikTok ? Platform.TIKTOK : Platform.YOUTUBE;
 
             if (platform == Platform.YOUTUBE && !profile.isYouTubeLinked()) {
-                player.sendMessage(mm.deserialize("<red><b>[Creator]</b> Kamu belum menautkan channel YouTube! Ketik <yellow>/creator link youtube &lt;ChannelID/@handle&gt;</yellow></red>"));
+                notifyPlayer(player, null, "<red><b>[Creator]</b> Kamu belum menautkan channel YouTube! Ketik <yellow>/creator link youtube &lt;ChannelID/@handle&gt;</yellow></red>");
                 return CompletableFuture.completedFuture(null);
             }
 
             if (platform == Platform.TIKTOK && !profile.isTikTokLinked()) {
-                player.sendMessage(mm.deserialize("<red><b>[Creator]</b> Kamu belum menautkan username TikTok! Ketik <yellow>/creator link tiktok &lt;Username&gt;</yellow></red>"));
+                notifyPlayer(player, null, "<red><b>[Creator]</b> Kamu belum menautkan username TikTok! Ketik <yellow>/creator link tiktok &lt;Username&gt;</yellow></red>");
                 return CompletableFuture.completedFuture(null);
             }
 
@@ -167,8 +196,7 @@ public class CreatorManager {
 
             return validationFuture.thenCompose(result -> {
                 if (!result.success()) {
-                    player.sendMessage(mm.deserialize("<red><b>[Creator]</b> Verifikasi gagal: " + result.errorMessage() + "</red>"));
-                    player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
+                    notifyPlayer(player, Sound.ENTITY_VILLAGER_NO, "<red><b>[Creator]</b> Verifikasi gagal: " + result.errorMessage() + "</red>");
                     return CompletableFuture.completedFuture(null);
                 }
 
@@ -179,15 +207,13 @@ public class CreatorManager {
                     boolean channelMatch = (linkedId != null && linkedId.equalsIgnoreCase(result.authorOrChannelId()))
                             || (linkedHandle != null && linkedHandle.equalsIgnoreCase(result.authorName()));
                     if (!channelMatch) {
-                        player.sendMessage(mm.deserialize("<red><b>[Creator]</b> Video ini bukan milik channel YouTube kamu yang terdaftar! (" + result.authorName() + ")</red>"));
-                        player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
+                        notifyPlayer(player, Sound.ENTITY_VILLAGER_NO, "<red><b>[Creator]</b> Video ini bukan milik channel YouTube kamu yang terdaftar! (" + result.authorName() + ")</red>");
                         return CompletableFuture.completedFuture(null);
                     }
                 } else {
                     String linkedTiktok = profile.getTiktokUsername();
                     if (linkedTiktok == null || !linkedTiktok.equalsIgnoreCase(result.authorOrChannelId())) {
-                        player.sendMessage(mm.deserialize("<red><b>[Creator]</b> Video TikTok ini bukan diunggah oleh akun terdaftar kamu! (@" + result.authorOrChannelId() + ")</red>"));
-                        player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
+                        notifyPlayer(player, Sound.ENTITY_VILLAGER_NO, "<red><b>[Creator]</b> Video TikTok ini bukan diunggah oleh akun terdaftar kamu! (@" + result.authorOrChannelId() + ")</red>");
                         return CompletableFuture.completedFuture(null);
                     }
                 }
@@ -195,23 +221,20 @@ public class CreatorManager {
                 // Check video age
                 long ageDays = ChronoUnit.DAYS.between(Instant.ofEpochMilli(result.publishedAt()), Instant.now());
                 if (ageDays > maxVideoAgeDays) {
-                    player.sendMessage(mm.deserialize("<red><b>[Creator]</b> Video sudah terlalu lama (" + ageDays + " hari yang lalu). Batas maksimal umur video adalah " + maxVideoAgeDays + " hari.</red>"));
-                    player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
+                    notifyPlayer(player, Sound.ENTITY_VILLAGER_NO, "<red><b>[Creator]</b> Video sudah terlalu lama (" + ageDays + " hari yang lalu). Batas maksimal umur video adalah " + maxVideoAgeDays + " hari.</red>");
                     return CompletableFuture.completedFuture(null);
                 }
 
                 // Check hashtag
                 if (!result.hasRequiredHashtag()) {
-                    player.sendMessage(mm.deserialize("<red><b>[Creator]</b> Video tidak memuat hashtag wajib server (" + String.join(", ", requiredHashtags) + ") di judul atau deskripsi!</red>"));
-                    player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
+                    notifyPlayer(player, Sound.ENTITY_VILLAGER_NO, "<red><b>[Creator]</b> Video tidak memuat hashtag wajib server (" + String.join(", ", requiredHashtags) + ") di judul atau deskripsi!</red>");
                     return CompletableFuture.completedFuture(null);
                 }
 
                 // Check if already claimed
                 return repository.isVideoClaimed(result.videoId()).thenAccept(alreadyClaimed -> {
                     if (alreadyClaimed) {
-                        player.sendMessage(mm.deserialize("<red><b>[Creator]</b> Video ini sudah pernah diklaim sebelumnya!</red>"));
-                        player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
+                        notifyPlayer(player, Sound.ENTITY_VILLAGER_NO, "<red><b>[Creator]</b> Video ini sudah pernah diklaim sebelumnya!</red>");
                         return;
                     }
 
@@ -229,10 +252,10 @@ public class CreatorManager {
                         long reqViews = lowest != null ? lowest.getMinViews() : 100;
                         long reqLikes = lowest != null ? lowest.getMinLikes() : 10;
 
-                        player.sendMessage(mm.deserialize("<gold><b>[Creator]</b> Video terverifikasi valid, namun statistik belum mencapai Tier terendah!</gold>"));
-                        player.sendMessage(mm.deserialize("<gray>Views saat ini: <yellow>" + result.views() + "/" + reqViews + "</yellow> | Likes: <yellow>" + result.likes() + "/" + reqLikes + "</yellow></gray>"));
-                        player.sendMessage(mm.deserialize("<gray>Tingkatkan interaksi video kamu dan coba klaim kembali nanti!</gray>"));
-                        player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BELL, 1.0f, 1.0f);
+                        notifyPlayer(player, Sound.BLOCK_NOTE_BLOCK_BELL,
+                                "<gold><b>[Creator]</b> Video terverifikasi valid, namun statistik belum mencapai Tier terendah!</gold>",
+                                "<gray>Views saat ini: <yellow>" + result.views() + "/" + reqViews + "</yellow> | Likes: <yellow>" + result.likes() + "/" + reqLikes + "</yellow></gray>",
+                                "<gray>Tingkatkan interaksi video kamu dan coba klaim kembali nanti!</gray>");
                         return;
                     }
 
@@ -249,8 +272,14 @@ public class CreatorManager {
                             System.currentTimeMillis()
                     );
 
+                    // C-4: simpan klaim dulu; reward HANYA dikirim jika klaim
+                    // benar-benar tersimpan (saveClaim -> true).
                     CreatorTier finalTier = matchedTier;
-                    repository.saveClaim(claim).thenRun(() -> {
+                    repository.saveClaim(claim).thenAccept(saved -> {
+                        if (!saved) {
+                            notifyPlayer(player, Sound.ENTITY_VILLAGER_NO, "<red><b>[Creator]</b> Gagal menyimpan klaim video ke database! Reward dibatalkan — silakan coba lagi atau hubungi admin.</red>");
+                            return;
+                        }
                         Bukkit.getScheduler().runTask(plugin, () -> {
                             dispatchRewards(player, finalTier, result);
                         });
