@@ -40,7 +40,13 @@ public class GroupRegistry {
                 } catch (Exception e) {
                     try {
                         plugin.saveResource("groups.yml", false);
-                    } catch (Exception ignored) {}
+                    } catch (Exception fallbackEx) {
+                        plugin.getLogger().warning("Failed to extract default groups.yml to " + groupsFile.getPath()
+                                + ": " + fallbackEx.getMessage()
+                                + ". Check that the plugin jar contains groups.yml and that the data folder is writable.");
+                        throw new IllegalStateException(
+                                "ApexsionsCustomEnchants failed to extract default groups.yml", fallbackEx);
+                    }
                 }
             }
         }
