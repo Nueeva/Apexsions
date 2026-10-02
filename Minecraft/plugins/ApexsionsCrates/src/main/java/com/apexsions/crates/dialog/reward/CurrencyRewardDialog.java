@@ -25,6 +25,7 @@ import su.nightexpress.nightcore.ui.dialog.build.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static su.nightexpress.nightcore.util.text.night.wrapper.TagWrappers.*;
 
@@ -132,7 +133,12 @@ public class CurrencyRewardDialog extends Dialog<Crate> {
                     rewardId = idPrefix + ((long) amount) + "_" + counter++;
                 }
 
-                Rarity rarity = plugin.getCrateManager().getMostCommonRarity();
+                Optional<Rarity> rarityOpt = plugin.getCrateManager().getMostCommonRarity();
+                if (rarityOpt.isEmpty()) {
+                    player.sendMessage(MiniMessage.miniMessage().deserialize("<red>⚠ Tidak ada rarity yang dikonfigurasi! Tambahkan rarity dulu sebelum membuat reward.</red>"));
+                    return;
+                }
+                Rarity rarity = rarityOpt.get();
                 CommandReward reward = (CommandReward) RewardFactory.create(plugin, crate, rewardId, rarity, RewardType.COMMAND);
                 reward.setName(titleDisplay);
                 reward.setDescription(List.of(
