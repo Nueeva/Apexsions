@@ -127,16 +127,15 @@ public class BanRepository {
                     type = BanRecord.BanType.valueOf(typeStr.toUpperCase());
                 } catch (IllegalArgumentException ignored) {}
             }
-            Timestamp bannedAtTs = rs.getTimestamp("banned_at");
-            Instant bannedAt = bannedAtTs != null ? bannedAtTs.toInstant() : Instant.now();
+            Instant bannedAt = DatabaseManager.readInstant(rs, "banned_at", Instant.now());
 
-            Timestamp expiresAtTs = rs.getTimestamp("expires_at");
+            Timestamp expiresAtTs = DatabaseManager.readTimestamp(rs, "expires_at");
             Instant expiresAt = expiresAtTs != null ? expiresAtTs.toInstant() : null;
 
             boolean active = rs.getBoolean("active");
             String unbannedBy = rs.getString("unbanned_by");
             String unbanReason = rs.getString("unban_reason");
-            Timestamp unbannedAtTs = rs.getTimestamp("unbanned_at");
+            Timestamp unbannedAtTs = DatabaseManager.readTimestamp(rs, "unbanned_at");
             Instant unbannedAt = unbannedAtTs != null ? unbannedAtTs.toInstant() : null;
 
             return new BanRecord(id, playerUuid, playerName, ipAddress, bannedBy, reason, type,

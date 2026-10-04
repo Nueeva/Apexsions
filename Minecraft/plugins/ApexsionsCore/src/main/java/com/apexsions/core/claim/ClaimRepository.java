@@ -48,17 +48,17 @@ public class ClaimRepository {
                     String statusStr = rs.getString("status");
                     ClaimStatus status = ClaimStatus.fromString(statusStr);
 
-                    Timestamp gpTs = rs.getTimestamp("grace_period_until");
+                    Timestamp gpTs = DatabaseManager.readTimestamp(rs, "grace_period_until");
                     long gracePeriodUntil = gpTs != null ? gpTs.getTime() : 0L;
 
-                    Timestamp taxTs = rs.getTimestamp("last_tax_collected_at");
+                    Timestamp taxTs = DatabaseManager.readTimestamp(rs, "last_tax_collected_at");
                     long lastTaxCollectedAt = taxTs != null ? taxTs.getTime() : 0L;
 
                     String flagsStr = rs.getString("flags");
                     String rolesStr = rs.getString("roles");
                     String kingdomId = rs.getString("kingdom_id");
 
-                    Timestamp ts = rs.getTimestamp("created_at");
+                    Timestamp ts = DatabaseManager.readTimestamp(rs, "created_at");
                     long createdAt = ts != null ? ts.getTime() : System.currentTimeMillis();
 
                     Set<UUID> trusted = ClaimChunk.deserializeTrustedPlayers(trustedStr);

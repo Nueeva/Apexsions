@@ -39,7 +39,7 @@ public class PlayerDataService {
                 data.setUsername(username);
                 repository.save(data);
             }
-            Player p = Bukkit.getPlayer(uuid);
+            Player p = Bukkit.getServer() != null ? Bukkit.getPlayer(uuid) : null;
             plugin.getLevelManager().reconcileLevel(data, p);
             return CompletableFuture.completedFuture(data);
         }
@@ -52,14 +52,29 @@ public class PlayerDataService {
                     repository.save(data);
                 }
                 cache.put(uuid, data);
-                Player p = Bukkit.getPlayer(uuid);
+                Player p = Bukkit.getServer() != null ? Bukkit.getPlayer(uuid) : null;
                 plugin.getLevelManager().reconcileLevel(data, p);
                 return CompletableFuture.completedFuture(data);
             } else {
                 PlayerData newData = PlayerData.createDefault(uuid, username);
-                cache.put(uuid, newData);
-                return repository.save(newData).thenApply(v -> newData);
+                return repository.insertIfAbsent(newData).thenCompose(inserted -> {
+                    if (inserted) {
+                        cache.put(uuid, newData);
+                        return CompletableFuture.completedFuture(newData);
+                    }
+                    // Row already existed concurrently; re-read without overwriting
+                    return repository.findByUuid(uuid).thenApply(existingOpt -> {
+                        PlayerData resolved = existingOpt.orElse(newData);
+                        cache.put(uuid, resolved);
+                        Player p = Bukkit.getServer() != null ? Bukkit.getPlayer(uuid) : null;
+                        plugin.getLevelManager().reconcileLevel(resolved, p);
+                        return resolved;
+                    });
+                });
             }
+        }).exceptionally(ex -> {
+            plugin.getLogger().warning("Database error loading player data for " + username + " (" + uuid + "); preserving existing DB state without overwriting: " + ex.getMessage());
+            return cache.get(uuid).orElseGet(() -> PlayerData.createDefault(uuid, username));
         });
     }
 
@@ -105,8 +120,13 @@ public class PlayerDataService {
 
     public void flush(UUID uuid) {
         cache.get(uuid).ifPresent(data -> {
-            repository.save(data);
-            cache.invalidate(uuid);
+            data.markUpdated();
+            repository.save(data).whenComplete((v, ex) -> {
+                Player online = Bukkit.getPlayer(uuid);
+                if (online == null || !online.isOnline()) {
+                    cache.invalidate(uuid);
+                }
+            });
         });
     }
 

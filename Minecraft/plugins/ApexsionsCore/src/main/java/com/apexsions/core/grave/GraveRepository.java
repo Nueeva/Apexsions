@@ -130,8 +130,8 @@ public class GraveRepository {
             items = new ArrayList<>();
         }
 
-        Timestamp created = rs.getTimestamp("created_at");
-        Timestamp expires = rs.getTimestamp("expires_at");
+        Timestamp created = DatabaseManager.readTimestamp(rs, "created_at");
+        Timestamp expires = DatabaseManager.readTimestamp(rs, "expires_at");
         return new GraveRecord(id, owner, ownerName, world, x, y, z, yaw, pitch, items, xp, cause,
                 created != null ? created.getTime() : System.currentTimeMillis(),
                 expires != null ? expires.getTime() : 0L, false);

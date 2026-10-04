@@ -45,7 +45,7 @@ public class BountyRepository {
                 try (ResultSet rs = ps.executeQuery()) {
                     while (rs.next()) {
                         String claimedBy = rs.getString("claimed_by");
-                        Timestamp claimedAt = rs.getTimestamp("claimed_at");
+                        Timestamp claimedAt = DatabaseManager.readTimestamp(rs, "claimed_at");
                         list.add(new Bounty(
                                 rs.getString("id"),
                                 UUID.fromString(rs.getString("target_uuid")),

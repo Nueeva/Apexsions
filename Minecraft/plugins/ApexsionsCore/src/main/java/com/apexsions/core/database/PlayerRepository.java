@@ -48,11 +48,8 @@ public class PlayerRepository {
 
                         String claimedRewardsStr = rs.getString("claimed_rewards");
 
-                        Timestamp createdAtTs = rs.getTimestamp("created_at");
-                        Timestamp updatedAtTs = rs.getTimestamp("updated_at");
-
-                        Instant createdAt = createdAtTs != null ? createdAtTs.toInstant() : Instant.now();
-                        Instant updatedAt = updatedAtTs != null ? updatedAtTs.toInstant() : Instant.now();
+                        Instant createdAt = DatabaseManager.readInstant(rs, "created_at", Instant.now());
+                        Instant updatedAt = DatabaseManager.readInstant(rs, "updated_at", Instant.now());
 
                         PlayerData data = new PlayerData(pUuid, username, level, xp, regionId, createdAt, updatedAt);
                         if (claimedRewardsStr != null) {
@@ -63,8 +60,51 @@ public class PlayerRepository {
                 }
             } catch (SQLException e) {
                 plugin.getLogger().log(Level.SEVERE, "Failed finding player data for UUID: " + uuid, e);
+                throw new java.util.concurrent.CompletionException(e);
             }
             return Optional.empty();
+        });
+    }
+
+    /**
+     * Inserts a new default PlayerData row only if no row for {@code uuid} exists yet.
+     * Prevents accidental overwrite of existing level, XP, or kingdom data.
+     */
+    public CompletableFuture<Boolean> insertIfAbsent(PlayerData data) {
+        return db.supplyAsync(() -> {
+            String sql = "INSERT INTO players (uuid, username, level, xp, region_id, claimed_rewards, created_at, updated_at) " +
+                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?) " +
+                    "ON CONFLICT (uuid) DO NOTHING";
+
+            try (Connection conn = db.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+                if (db.isUsingFallback()) {
+                    ps.setString(1, data.getUuid().toString());
+                    ps.setString(2, data.getUsername());
+                    ps.setInt(3, data.getLevel());
+                    ps.setLong(4, data.getXp());
+                    if (data.getRegionId() != null) {
+                        ps.setString(5, data.getRegionId().toString());
+                    } else {
+                        ps.setNull(5, Types.VARCHAR);
+                    }
+                    ps.setString(6, data.getClaimedRewardsString());
+                    ps.setTimestamp(7, Timestamp.from(data.getCreatedAt()));
+                    ps.setTimestamp(8, Timestamp.from(data.getUpdatedAt()));
+                } else {
+                    ps.setObject(1, data.getUuid());
+                    ps.setString(2, data.getUsername());
+                    ps.setInt(3, data.getLevel());
+                    ps.setLong(4, data.getXp());
+                    ps.setObject(5, data.getRegionId());
+                    ps.setString(6, data.getClaimedRewardsString());
+                    ps.setTimestamp(7, Timestamp.from(data.getCreatedAt()));
+                    ps.setTimestamp(8, Timestamp.from(data.getUpdatedAt()));
+                }
+                return ps.executeUpdate() > 0;
+            } catch (SQLException e) {
+                plugin.getLogger().log(Level.SEVERE, "Failed inserting initial player data for UUID: " + data.getUuid(), e);
+                return false;
+            }
         });
     }
 
@@ -171,11 +211,8 @@ public class PlayerRepository {
                         }
 
                         String claimedRewardsStr = rs.getString("claimed_rewards");
-                        Timestamp createdAtTs = rs.getTimestamp("created_at");
-                        Timestamp updatedAtTs = rs.getTimestamp("updated_at");
-
-                        Instant createdAt = createdAtTs != null ? createdAtTs.toInstant() : Instant.now();
-                        Instant updatedAt = updatedAtTs != null ? updatedAtTs.toInstant() : Instant.now();
+                        Instant createdAt = DatabaseManager.readInstant(rs, "created_at", Instant.now());
+                        Instant updatedAt = DatabaseManager.readInstant(rs, "updated_at", Instant.now());
 
                         PlayerData data = new PlayerData(pUuid, username, level, xp, rId, createdAt, updatedAt);
                         if (claimedRewardsStr != null) {
@@ -279,11 +316,9 @@ public class PlayerRepository {
                             ? ((regObj instanceof UUID u) ? u : UUID.fromString(regObj.toString().trim()))
                             : null;
                     String claimed = rs.getString("claimed_rewards");
-                    Timestamp cTs = rs.getTimestamp("created_at");
-                    Timestamp uTs = rs.getTimestamp("updated_at");
-                    PlayerData data = new PlayerData(pUuid, username, level, xp, rId,
-                            cTs != null ? cTs.toInstant() : Instant.now(),
-                            uTs != null ? uTs.toInstant() : Instant.now());
+                    Instant createdAt = DatabaseManager.readInstant(rs, "created_at", Instant.now());
+                    Instant updatedAt = DatabaseManager.readInstant(rs, "updated_at", Instant.now());
+                    PlayerData data = new PlayerData(pUuid, username, level, xp, rId, createdAt, updatedAt);
                     if (claimed != null) {
                         data.setClaimedRewardsFromString(claimed);
                     }

@@ -175,7 +175,8 @@ public class DatabaseManager {
             "db/migration/V4__add_claimed_rewards.sql",
             "db/migration/V5__create_land_claims.sql",
             "db/migration/V6__create_unified_bans.sql",
-            "db/migration/V7__create_claim_tax_and_flags.sql"
+            "db/migration/V7__create_claim_tax_and_flags.sql",
+            "db/migration/V8__create_graves_and_bounties.sql"
         };
         try (Connection conn = dataSource.getConnection()) {
             for (String path : migrations) {
@@ -185,8 +186,8 @@ public class DatabaseManager {
                         continue;
                     }
                     String sql = new String(in.readAllBytes(), java.nio.charset.StandardCharsets.UTF_8);
-                    // Convert PostgreSQL syntax to SQLite-compatible
-                    sql = sql.replace("TIMESTAMPTZ", "TEXT");
+                    // Convert PostgreSQL syntax to SQLite-compatible (TIMESTAMP affinity avoids TEXT FastDateFormat failures)
+                    sql = sql.replace("TIMESTAMPTZ", "TIMESTAMP");
                     sql = sql.replace("NOW()", "CURRENT_TIMESTAMP");
                     sql = sql.replace("ADD COLUMN IF NOT EXISTS", "ADD COLUMN");
                     // UUID type works in SQLite via type affinity (treated as TEXT), keep it
@@ -224,6 +225,119 @@ public class DatabaseManager {
             plugin.getLogger().log(Level.WARNING,
                     "Direct SQLite migrations failed (" + e.getMessage() + "). Continuing with best-effort.", e);
         }
+    }
+
+    /**
+     * Safely reads a timestamp column across PostgreSQL, H2, and SQLite (where columns with TEXT or NUMERIC
+     * affinity may store epoch milliseconds as strings like "1790948536465", numbers, ISO-8601, or SQL strings).
+     */
+    public static java.sql.Timestamp readTimestamp(java.sql.ResultSet rs, String column) throws SQLException {
+        Object raw;
+        try {
+            raw = rs.getObject(column);
+        } catch (SQLException e) {
+            raw = rs.getString(column);
+        }
+        if (raw == null) {
+            return null;
+        }
+        java.sql.Timestamp parsed = parseTimestampValue(raw);
+        if (parsed != null) {
+            return parsed;
+        }
+        try {
+            return rs.getTimestamp(column);
+        } catch (SQLException ignored) {
+            return null;
+        }
+    }
+
+    /**
+     * Safely reads a timestamp column as an {@link java.time.Instant}, returning {@code fallback} if null or unparseable.
+     */
+    public static java.time.Instant readInstant(java.sql.ResultSet rs, String column, java.time.Instant fallback) throws SQLException {
+        java.sql.Timestamp ts = readTimestamp(rs, column);
+        return ts != null ? ts.toInstant() : fallback;
+    }
+
+    /**
+     * Parses any JDBC timestamp representation (Timestamp, Date, Instant, OffsetDateTime, Number, epoch string,
+     * ISO-8601 string, or SQL timestamp string) without throwing ParseException.
+     */
+    public static java.sql.Timestamp parseTimestampValue(Object raw) {
+        if (raw == null) {
+            return null;
+        }
+        if (raw instanceof java.sql.Timestamp ts) {
+            return ts;
+        }
+        if (raw instanceof java.time.Instant inst) {
+            return java.sql.Timestamp.from(inst);
+        }
+        if (raw instanceof java.util.Date d) {
+            return new java.sql.Timestamp(d.getTime());
+        }
+        if (raw instanceof java.time.OffsetDateTime odt) {
+            return java.sql.Timestamp.from(odt.toInstant());
+        }
+        if (raw instanceof java.time.ZonedDateTime zdt) {
+            return java.sql.Timestamp.from(zdt.toInstant());
+        }
+        if (raw instanceof java.time.LocalDateTime ldt) {
+            return java.sql.Timestamp.valueOf(ldt);
+        }
+        if (raw instanceof Number num) {
+            long val = num.longValue();
+            if (val <= 0L) {
+                return null;
+            }
+            if (val > 1_000_000_000L && val < 100_000_000_000L) {
+                val *= 1000L;
+            }
+            return new java.sql.Timestamp(val);
+        }
+
+        String s = raw.toString().trim();
+        if (s.isEmpty() || s.equalsIgnoreCase("null")) {
+            return null;
+        }
+
+        if (s.matches("^[+-]?\\d+$")) {
+            try {
+                long val = Long.parseLong(s);
+                if (val <= 0L) {
+                    return null;
+                }
+                if (val > 1_000_000_000L && val < 100_000_000_000L) {
+                    val *= 1000L;
+                }
+                return new java.sql.Timestamp(val);
+            } catch (NumberFormatException ignored) {
+            }
+        }
+
+        try {
+            return java.sql.Timestamp.valueOf(s);
+        } catch (IllegalArgumentException ignored) {
+        }
+
+        try {
+            return java.sql.Timestamp.from(java.time.Instant.parse(s));
+        } catch (Exception ignored) {
+        }
+
+        String isoNormalized = s.replace(' ', 'T');
+        try {
+            return java.sql.Timestamp.from(java.time.OffsetDateTime.parse(isoNormalized).toInstant());
+        } catch (Exception ignored) {
+        }
+
+        try {
+            return java.sql.Timestamp.valueOf(java.time.LocalDateTime.parse(isoNormalized));
+        } catch (Exception ignored) {
+        }
+
+        return null;
     }
 
     public Connection getConnection() throws SQLException {
